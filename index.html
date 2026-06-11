@@ -111,56 +111,82 @@
                                 <line x1="100" y1="225" x2="250" y2="325" class="line completed" />
                                 <line x1="250" y1="125" x2="420" y2="125" class="line active" />
                                 <line x1="250" y1="325" x2="420" y2="325" class="line active" />
+                                <line x1="250" y1="325" x2="510" y2="390" class="line active" />
+                                <line x1="420" y1="325" x2="510" y2="390" class="line active" />
                                 <line x1="420" y1="125" x2="600" y2="225" class="line locked" />
                                 <line x1="420" y1="325" x2="600" y2="225" class="line locked" />
+                                <line x1="510" y1="390" x2="600" y2="225" class="line locked" />
                                 <line x1="600" y1="225" x2="720" y2="225" class="line locked" />
 
                                 <!-- Node 1: Orígenes (Science Foundation) -->
                                 <g class="node node-completed" data-node="origins" transform="translate(100, 225)">
                                     <circle r="30" class="node-circle" />
-                                    <i class="fa-solid fa-atom node-icon"></i>
+                                    <foreignObject x="-9" y="-9" width="18" height="18" class="node-icon-wrapper">
+                                        <i class="fa-solid fa-atom node-icon"></i>
+                                    </foreignObject>
                                     <text y="48" class="node-text">Ciencia L1</text>
                                 </g>
 
                                 <!-- Node 2: Cosmología (Cosmology) -->
                                 <g class="node node-completed" data-node="cosmology" transform="translate(250, 125)">
                                     <circle r="26" class="node-circle" />
-                                    <i class="fa-solid fa-user-astronaut node-icon"></i>
+                                    <foreignObject x="-8" y="-8" width="16" height="16" class="node-icon-wrapper">
+                                        <i class="fa-solid fa-user-astronaut node-icon"></i>
+                                    </foreignObject>
                                     <text y="44" class="node-text">Cosmología</text>
                                 </g>
 
                                 <!-- Node 3: Transistores (Hardware) -->
                                 <g class="node node-completed" data-node="transistors" transform="translate(250, 325)">
                                     <circle r="26" class="node-circle" />
-                                    <i class="fa-solid fa-microchip node-icon"></i>
+                                    <foreignObject x="-8" y="-8" width="16" height="16" class="node-icon-wrapper">
+                                        <i class="fa-solid fa-microchip node-icon"></i>
+                                    </foreignObject>
                                     <text y="44" class="node-text">Transistores</text>
                                 </g>
 
                                 <!-- Node 4: Relatividad (Relativity) -->
                                 <g class="node node-active" data-node="relativity" transform="translate(420, 125)">
                                     <circle r="26" class="node-circle" />
-                                    <i class="fa-solid fa-compass-drafting node-icon"></i>
+                                    <foreignObject x="-8" y="-8" width="16" height="16" class="node-icon-wrapper">
+                                        <i class="fa-solid fa-compass-drafting node-icon"></i>
+                                    </foreignObject>
                                     <text y="44" class="node-text">Relatividad</text>
                                 </g>
 
                                 <!-- Node 5: Microprocesadores (CPU) -->
                                 <g class="node node-active" data-node="cpu" transform="translate(420, 325)">
                                     <circle r="26" class="node-circle" />
-                                    <i class="fa-solid fa-memory node-icon"></i>
+                                    <foreignObject x="-8" y="-8" width="16" height="16" class="node-icon-wrapper">
+                                        <i class="fa-solid fa-memory node-icon"></i>
+                                    </foreignObject>
                                     <text y="44" class="node-text">Procesadores</text>
+                                </g>
+
+                                <!-- Node 5b: Inglés ESP (english-esp) -->
+                                <g class="node node-active" data-node="english-esp" transform="translate(510, 390)">
+                                    <circle r="26" class="node-circle" />
+                                    <foreignObject x="-8" y="-8" width="16" height="16" class="node-icon-wrapper">
+                                        <i class="fa-solid fa-language node-icon"></i>
+                                    </foreignObject>
+                                    <text y="44" class="node-text">Inglés ESP</text>
                                 </g>
 
                                 <!-- Node 6: Computación Cuántica (Quantum Comp) -->
                                 <g class="node node-locked" data-node="quantum" transform="translate(600, 225)">
                                     <circle r="28" class="node-circle" />
-                                    <i class="fa-solid fa-wave-square node-icon"></i>
+                                    <foreignObject x="-8" y="-8" width="16" height="16" class="node-icon-wrapper">
+                                        <i class="fa-solid fa-wave-square node-icon"></i>
+                                    </foreignObject>
                                     <text y="46" class="node-text">C. Cuántica</text>
                                 </g>
 
                                 <!-- Node 7: Socratic AI Coding -->
                                 <g class="node node-locked" data-node="socratic-coding" transform="translate(720, 225)">
                                     <circle r="24" class="node-circle" />
-                                    <i class="fa-solid fa-code node-icon"></i>
+                                    <foreignObject x="-7" y="-7" width="14" height="14" class="node-icon-wrapper">
+                                        <i class="fa-solid fa-code node-icon"></i>
+                                    </foreignObject>
                                     <text y="40" class="node-text">Coding Socrático</text>
                                 </g>
                             </svg>

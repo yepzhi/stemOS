@@ -435,6 +435,7 @@ h1, h2, h3, h4, .brand-name, .node-text, .stat-num, .generating-title, .badge-ti
 .node-active .node-circle {
     stroke: var(--accent-indigo);
     fill: rgba(99, 102, 241, 0.08);
+    animation: active-pulse 2s infinite ease-in-out;
 }
 
 .node-locked .node-circle {
@@ -442,9 +443,24 @@ h1, h2, h3, h4, .brand-name, .node-text, .stat-num, .generating-title, .badge-ti
     opacity: 0.6;
 }
 
+.node-icon-wrapper {
+    overflow: visible;
+    pointer-events: none;
+}
+
+.node-icon-wrapper i {
+    color: var(--text-primary);
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+}
+
 .node-icon {
     font-size: 0.95rem;
-    transform: translate(-6px, -6px); /* adjust to center */
     fill: var(--text-primary);
 }
 
@@ -462,6 +478,18 @@ h1, h2, h3, h4, .brand-name, .node-text, .stat-num, .generating-title, .badge-ti
 .node-active:hover .node-circle {
     stroke-width: 3.5px;
     filter: drop-shadow(0 0 8px var(--accent-indigo-glow));
+}
+
+@keyframes active-pulse {
+    0%, 100% {
+        stroke-width: 2px;
+        opacity: 0.9;
+    }
+    50% {
+        stroke-width: 3.5px;
+        opacity: 1;
+        stroke: var(--accent-cyan);
+    }
 }
 
 /* --- Lateral Info Panel --- */

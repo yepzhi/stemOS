@@ -51,6 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
             xp: 200,
             chatTopic: "cpu"
         },
+        "english-esp": {
+            title: "Inglés ESP (Semiconductores)",
+            status: "active",
+            desc: "Inglés Técnico para Propósitos Específicos (ESP) enfocado en la cadena de suministro de microchips, salas limpias (cleanrooms) y especificaciones de fotolitografía.",
+            prereq: "Física de Transistores / CPU",
+            standard: "CONOCER EC1338 / MCER B2",
+            xp: 180,
+            chatTopic: "english-esp"
+        },
         quantum: {
             title: "Computación Cuántica",
             status: "locked",
@@ -253,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else if (chatState.topic === "transistors") {
             if (chatState.step === 1) {
-                addBotMessage("Excelente. Hablemos de la física de **Transistores**. Explícame de forma muy simple: **¿Qué es un transistor y cuál es su función principal dentro de tu celular?**");
+                addBotMessage("Excelente. Hablemos de la física de **Transistores**. Explécame de forma muy simple: **¿Qué es un transistor y cuál es su función principal dentro de tu celular?**");
             } else if (chatState.step === 2) {
                 addBotMessage("Exacto, funciona como un apagador o interruptor microscópico. Ahora, para apagar una luz física usamos el dedo. **¿Qué señal física activa o desactiva la compuerta de este micro-interruptor dentro del silicio?**");
             } else if (chatState.step === 3) {
@@ -261,6 +270,18 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (chatState.step === 4) {
                 addBotMessage("¡Exacto! El silicio puede comportarse como conductor o aislante dependiendo de la presencia de impurezas (dopaje) y campos eléctricos. Has demostrado un dominio conceptual sólido. **¡+150 XP añadidos!** 🔌");
                 awardXP(150);
+                resetTutor();
+            }
+        } else if (chatState.topic === "english-esp") {
+            if (chatState.step === 1) {
+                addBotMessage("Welcome to the **Semiconductor Technical English (ESP)** review! Let's check your communication skills. Imagine describing the difference between a **'wafer'** and a **'die'** in English. How would you explain them simply?");
+            } else if (chatState.step === 2) {
+                addBotMessage("Superb distinction! A wafer is the raw circular silicon disk, and a die is the individual chip block. Now, in the fabrication process, we build chips inside ultra-sterile environments. **What is the English term for these special rooms, and why is air filtering so critical there?**");
+            } else if (chatState.step === 3) {
+                addBotMessage("Indeed, a 'cleanroom'! And yes, dust particles (contaminants) are the ultimate enemy of nanometric circuits. Now, to protect the cleanroom from human lint and skin cells, workers must wear specialized protective overalls. **Do you know the popular name of these white suits?**");
+            } else if (chatState.step === 4) {
+                addBotMessage("Spot on! They are called **'bunny suits'**. You've proven that your English communication skills are perfectly aligned with cleanroom manufacturing requirements. **+180 XP awarded!** 🇺🇸📡");
+                awardXP(180);
                 resetTutor();
             }
         } else {
@@ -428,6 +449,16 @@ document.addEventListener('DOMContentLoaded', () => {
         circle.setAttribute("r", "26");
         circle.setAttribute("class", "node-circle");
         newNodeGroup.appendChild(circle);
+
+        // Standard-compliant SVG Icon
+        const foreignObj = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+        foreignObj.setAttribute("x", "-8");
+        foreignObj.setAttribute("y", "-8");
+        foreignObj.setAttribute("width", "16");
+        foreignObj.setAttribute("height", "16");
+        foreignObj.setAttribute("class", "node-icon-wrapper");
+        foreignObj.innerHTML = '<i class="fa-solid fa-atom node-icon"></i>';
+        newNodeGroup.appendChild(foreignObj);
 
         const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
         text.setAttribute("y", "44");
