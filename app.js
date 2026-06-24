@@ -6,66 +6,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* --- Skills Nodes Data --- */
     const skillsData = {
-        "esp-foundation": {
-            title: "A2 Bridge: Intro to ESP",
+        "lxp-foundation": {
+            title: "Tech Skills Foundation",
             status: "completed",
-            desc: "Transición lingüística del nivel A2 al inglés técnico especializado. Expresiones base, construcciones sintácticas y gramática del discurso tecnológico.",
-            prereq: "Ninguno (Nivel A2 alcanzado)",
-            standard: "MCER A2/B1 / Transición ESP",
+            desc: "Fundamentos de habilidades técnicas y LXP. Conceptos base y desarrollo de metodologías en el entorno tecnológico.",
+            prereq: "Ninguno",
+            standard: "Fundamentos Técnicos / LXP",
             xp: 150,
-            chatTopic: "esp-foundation"
+            chatTopic: "lxp-foundation"
         },
         semiconductors: {
-            title: "ESP: Semiconductores",
+            title: "STEM: Semiconductores",
             status: "completed",
-            desc: "Inglés técnico para la fabricación y ensamblaje de circuitos integrados. Vocabulario técnico sobre cleanrooms, obleas de silicio (wafers) y fotolitografía.",
-            prereq: "A2 Bridge: Intro to ESP",
-            standard: "CONOCER EC1338 / MCER B2",
+            desc: "Habilidades técnicas para la fabricación y ensamblaje de circuitos integrados. Conceptos clave sobre cleanrooms, obleas de silicio (wafers) y fotolitografía.",
+            prereq: "Tech Skills Foundation",
+            standard: "CONOCER EC1338 / Nivel Avanzado",
             xp: 150,
             chatTopic: "semiconductors"
         },
         cybersecurity: {
-            title: "ESP: Ciberseguridad & Redes",
+            title: "STEM: Ciberseguridad & Redes",
             status: "active",
-            desc: "Inglés técnico enfocado en ciberseguridad, topología de redes inteligentes, encriptación, firewalls y mitigación de amenazas digitales (threat intelligence).",
-            prereq: "A2 Bridge: Intro to ESP",
-            standard: "CONOCER EC1338 / MCER B2",
+            desc: "Conceptos clave enfocados en ciberseguridad, topología de redes inteligentes, encriptación, firewalls y mitigación de amenazas digitales (threat intelligence).",
+            prereq: "Tech Skills Foundation",
+            standard: "CONOCER EC1338 / Nivel Avanzado",
             xp: 180,
             chatTopic: "cybersecurity"
         },
         electromobility: {
-            title: "ESP: Electromovilidad",
+            title: "STEM: Electromovilidad",
             status: "active",
-            desc: "Esqueleto del módulo de electromovilidad. Vocabulario técnico sobre sistemas de tren motriz eléctrico, gestión de baterías (BMS) y estaciones de carga rápida.",
-            prereq: "ESP: Semiconductores",
-            standard: "MCER B2 / Electromobility ESP",
+            desc: "Esqueleto del módulo de electromovilidad. Conceptos clave sobre sistemas de tren motriz eléctrico, gestión de baterías (BMS) y estaciones de carga rápida.",
+            prereq: "STEM: Semiconductores",
+            standard: "Electromovilidad y Autotransporte",
             xp: 200,
             chatTopic: "electromobility"
         },
         "it-innovation": {
-            title: "ESP: TI & Innovación Digital",
+            title: "STEM: TI & Innovación Digital",
             status: "active",
-            desc: "Esqueleto del módulo de tecnologías de la información. Terminología de APIs, desarrollo frontend/backend, computación en la nube (Cloud) y transformación digital.",
-            prereq: "ESP: Ciberseguridad & Redes",
-            standard: "MCER B2 / IT ESP",
+            desc: "Esqueleto del módulo de tecnologías de la información. Fundamentos de APIs, desarrollo frontend/backend, computación en la nube (Cloud) y transformación digital.",
+            prereq: "STEM: Ciberseguridad & Redes",
+            standard: "Tecnologías de la Información",
             xp: 200,
             chatTopic: "it-innovation"
         },
         aerospace: {
-            title: "ESP: Manufactura Aeronáutica",
+            title: "STEM: Manufactura Aeronáutica",
             status: "locked",
-            desc: "Esqueleto de manufactura aeronáutica. Terminología de fuselajes, aviónica, motores de propulsión y materiales compuestos avanzados.",
-            prereq: "ESP: Electromovilidad & Innovación TI",
-            standard: "MCER B2 / Aerospace ESP",
+            desc: "Esqueleto de manufactura aeronáutica. Fundamentos de fuselajes, aviónica, motores de propulsión y materiales compuestos avanzados.",
+            prereq: "STEM: Electromovilidad & Innovación TI",
+            standard: "Manufactura de Alta Precisión",
             xp: 300,
             chatTopic: "aerospace"
         },
         "socratic-capstone": {
             title: "Feynman Capstone Assessment",
             status: "locked",
-            desc: "Módulo integrador final. Diálogo socrático abierto en inglés sobre resolución de retos técnicos reales en entornos industriales multidisciplinarios.",
-            prereq: "ESP: Manufactura Aeronáutica",
-            standard: "MCER C1 / Professional English",
+            desc: "Módulo integrador final. Diálogo socrático abierto sobre resolución de retos técnicos reales en entornos industriales multidisciplinarios.",
+            prereq: "STEM: Manufactura Aeronáutica",
+            standard: "LXP Capstone / Professional Level",
             xp: 400,
             chatTopic: "socratic-capstone"
         }
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     "semi-m6": true
                 },
                 completedTracks: {
-                    "esp-foundation": true,
+                    "lxp-foundation": true,
                     "semiconductors": true
                 },
                 nodeStatuses: {}
@@ -326,9 +326,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const reply = (chatState.lastUserReply || "").toLowerCase();
 
-        if (chatState.topic === "esp-foundation") {
+        if (chatState.topic === "lxp-foundation") {
             if (chatState.step === 1) {
-                addBotMessage("Welcome, Alberto! Let's start with your **A2 Bridge** assessment. Technical English uses specific verbs like **'conduct'**, **'amplify'**, and **'transmit'**. Can you tell me: **What is the difference in meaning between 'to transmit data' and 'to store data' in English?**");
+                addBotMessage("Welcome, Alberto! Let's start with your **LXP Foundation** assessment. Technical terminology uses specific verbs like **'conduct'**, **'amplify'**, and **'transmit'**. Can you tell me: **What is the difference in meaning between 'to transmit data' and 'to store data'?**");
             } else if (chatState.step === 2) {
                 const hasSend = reply.includes("send") || reply.includes("move") || reply.includes("transfer") || reply.includes("enviar") || reply.includes("transmitir");
                 const hasSave = reply.includes("save") || reply.includes("keep") || reply.includes("store") || reply.includes("guardar") || reply.includes("almacenar");
@@ -348,16 +348,16 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (chatState.step === 4) {
                 const isCorrect = reply.includes("debug") || reply.includes("troubleshoot") || reply.includes("depurar");
                 if (isCorrect) {
-                    addBotMessage("Yes, **'to debug'** (depurar) or **'troubleshoot'**! You have successfully crossed the bridge into specialized technical English. **+150 XP awarded!** 🎓");
+                    addBotMessage("Yes, **'to debug'** (depurar) or **'troubleshoot'**! You have successfully crossed the bridge into specialized technical terminology. **+150 XP awarded!** 🎓");
                 } else {
-                    addBotMessage("Good effort! The standard technical English verbs are **'to debug'** (depurar) or **'to troubleshoot'**. You have successfully crossed the bridge. **+150 XP awarded!** 🎓");
+                    addBotMessage("Good effort! The standard technical engineering verbs are **'to debug'** (depurar) or **'to troubleshoot'**. You have successfully crossed the bridge. **+150 XP awarded!** 🎓");
                 }
                 awardXP(150);
                 resetTutor();
             }
         } else if (chatState.topic === "semiconductors") {
             if (chatState.step === 1) {
-                addBotMessage("Welcome to the **Semiconductor Technical English (ESP)** review! Let's check your communication skills. Imagine describing the difference between a **'wafer'** and a **'die'** in English. How would you explain them simply?");
+                addBotMessage("Welcome to the **Semiconductor Technology** review! Let's check your conceptual engineering skills. Imagine describing the difference between a **'wafer'** and a **'die'** in English. How would you explain them simply?");
             } else if (chatState.step === 2) {
                 const hasWafer = reply.includes("wafer") || reply.includes("disk") || reply.includes("slice") || reply.includes("oblea") || reply.includes("circular");
                 const hasDie = reply.includes("die") || reply.includes("chip") || reply.includes("block") || reply.includes("square") || reply.includes("individual") || reply.includes("dado");
@@ -376,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (chatState.step === 4) {
                 const isBunny = reply.includes("bunny") || reply.includes("conejo");
                 if (isBunny) {
-                    addBotMessage("Spot on! They are called **'bunny suits'**. You've proven that your English communication skills are perfectly aligned with cleanroom manufacturing requirements. **+150 XP awarded!** 🇺🇸📡");
+                    addBotMessage("Spot on! They are called **'bunny suits'**. You've proven that your conceptual engineering skills are perfectly aligned with cleanroom manufacturing requirements. **+150 XP awarded!** 📡");
                 } else {
                     addBotMessage("They are popularly called **'bunny suits'** (due to the ears/hood design)! Excellent effort. You've proven that your English communication skills are aligned with cleanroom manufacturing. **+150 XP awarded!** 🇺🇸📡");
                 }
@@ -559,8 +559,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Get course data from courses.js (ESP_COURSES)
-        const course = typeof ESP_COURSES !== 'undefined' ? ESP_COURSES[nodeId] : null;
+        // Get course data from courses.js (LXP_COURSES)
+        const course = typeof LXP_COURSES !== 'undefined' ? LXP_COURSES[nodeId] : null;
         if (!course || !course.modules || course.modules.length === 0) {
             modulesList.innerHTML = `
                 <div class="info-empty-state" style="padding: 10px 0;">
@@ -641,8 +641,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reset scroll position
         readingContentArea.scrollTop = 0;
 
-        const track = ESP_COURSES[trackId];
-        acadTrackTitle.textContent = track ? (track.titleEN || track.title) : "ESP Track";
+        const track = LXP_COURSES[trackId];
+        acadTrackTitle.textContent = track ? (track.titleEN || track.title) : "LXP Track";
         
         // Check if there are readings:
         if (!mod.readings || mod.readings.length === 0) {
@@ -911,7 +911,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkTrackCompletion() {
         if (!activeTrackId) return;
-        const track = ESP_COURSES[activeTrackId];
+        const track = LXP_COURSES[activeTrackId];
         if (!track) return;
 
         const allCompleted = track.modules.every(mod => userProgress.completedModules[mod.id] === true);
@@ -938,7 +938,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (skillsData["electromobility"].status === 'completed' && skillsData["it-innovation"].status === 'completed') {
             if (skillsData["aerospace"].status === 'locked') {
                 skillsData["aerospace"].status = 'active';
-                alert("🔓 ¡Habilidad Desbloqueada! Ya puedes acceder a: ESP: Manufactura Aeronáutica.");
+                alert("🔓 ¡Habilidad Desbloqueada! Ya puedes acceder a: STEM: Manufactura Aeronáutica.");
             }
         }
         if (skillsData["aerospace"].status === 'completed') {
@@ -978,7 +978,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         icon.className = 'fa-solid fa-lock node-icon';
                     } else {
                         const iconMap = {
-                            "esp-foundation": "fa-graduation-cap",
+                            "lxp-foundation": "fa-graduation-cap",
                             "semiconductors": "fa-microchip",
                             "cybersecurity": "fa-shield-halved",
                             "electromobility": "fa-car-battery",

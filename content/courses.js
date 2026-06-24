@@ -1,7 +1,7 @@
 /**
- * stemOS ESP Course Content Database
+ * stemOS LXP Course Content Database
  * ====================================
- * English for Specific Purposes (ESP) — Nearshoring Industry Tracks
+ * STEM and Technical Skill — Nearshoring Industry Tracks
  * Target Level: A2+ (CEFR)
  * Format: 10-minute readings with key vocabulary and comprehension activities
  * 
@@ -12,7 +12,7 @@
  *  - Each reading has VOCABULARY (EN-ES glossary) and QUESTIONS
  */
 
-const ESP_COURSES = {
+const LXP_COURSES = {
 
     // =========================================================================
     // TRACK 1: SMART NETWORKS & CYBERSECURITY (FULL CONTENT)
@@ -27,7 +27,7 @@ const ESP_COURSES = {
         descriptionES: "Aprende el vocabulario y los conceptos en inglés que necesitas para trabajar en ingeniería de redes y ciberseguridad.",
         totalModules: 6,
         estimatedHours: 12,
-        prerequisites: ["esp-foundation"], // Bridge A2
+        prerequisites: ["lxp-foundation"], // Bridge A2
         standard: "CONOCER EC1290",
         modules: [
             // -----------------------------------------------------------------
@@ -1066,7 +1066,7 @@ In the cybersecurity field, English is not optional — it is **essential**:
 - **Certifications** exams are primarily in English
 - **Security conferences** (DEF CON, Black Hat, RSA) are conducted in English
 
-This is exactly why you are taking this ESP course — combining cybersecurity knowledge with English proficiency makes you a **highly competitive** candidate in the nearshoring market.
+This is exactly why you are taking this course — combining cybersecurity knowledge with technical and communication skills makes you a **highly competitive** candidate in the nearshoring market.
 
 ---
 
@@ -1825,14 +1825,14 @@ Process Engineers optimize the chemical recipes for oxidation, etching, depositi
 ### 4. Quality Control Technician (Técnico de calidad)
 Quality Technicians apply Statistical Process Control (SPC) methods, monitor cleanroom contamination levels, inspect wafer samples under microscopes, and analyze test failures.
 
-## The Power of English for Specific Purposes (ESP)
+## The Importance of Technical Specialization
 
 In a semiconductor fab, **English is the official language of operation**. All:
 - Equipment screens, operating software, and machine command consoles are in English.
 - Technical manuals, safety logs, and standard operating procedures (SOPs) are documented in English.
 - Global communications between factories in Mexico, the U.S., Taiwan, and Germany happen in English.
 
-Mastering the technical ESP vocabulary from this module is not just an academic exercise — it is a career-defining skill that separates entry-level workers from highly-paid global specialists.
+Mastering the technical vocabulary from this module is not just an academic exercise — it is a career-defining skill that separates entry-level workers from highly-paid global specialists.
 `,
                         vocabulary: [
                             { en: "Manufacturing Specialist", es: "Especialista en manufactura", definition: "Role monitoring fab runs, handling wafers, and managing automated systems" },
@@ -1844,7 +1844,7 @@ Mastering the technical ESP vocabulary from this module is not just an academic 
                         ],
                         questions: [
                             { q: "Which role focuses on preventive maintenance and repair of fab machinery?", options: ["Process Engineer", "Equipment Technician", "Manufacturing Specialist", "Quality Control Technician"], answer: 1 },
-                            { q: "Why is Technical English (ESP) critical in Mexican semiconductor facilities?", options: ["Because most workers are from England", "All manuals, equipment screens, and global operations are in English", "To write Spanish translations", "To communicate with local retail stores"], answer: 1 },
+                            { q: "Why is Technical English critical in Mexican semiconductor facilities?", options: ["Because most workers are from England", "All manuals, equipment screens, and global operations are in English", "To write Spanish translations", "To communicate with local retail stores"], answer: 1 },
                             { q: "What does a Process Engineer do in a fab?", options: ["Maintains cleanroom building structures", "Optimizes chemical and physical recipes of fabrication stages to improve yield", "Sorts packages into shipping boxes", "Dresses employees in the gown room"], answer: 1 },
                             { q: "What is a Manufacturing Specialist responsible for?", options: ["Writing software for smartphone apps", "Designing circuit architectures", "Monitoring automated production runs, handling wafers, and following gown room protocols", "Operating laser drills"], answer: 2 }
                         ]
@@ -1932,5 +1932,5 @@ Mastering the technical ESP vocabulary from this module is not just an academic 
 
 // Make available for import
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ESP_COURSES;
+    module.exports = LXP_COURSES;
 }
