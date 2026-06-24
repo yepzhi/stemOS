@@ -1,3 +1,10 @@
 .DS_Store
 ocr_pdf.py
 temp_page_*.png
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
