@@ -1,0 +1,4 @@
+Contact: mailto:yepzhi@gmail.com
+Expires: 2027-06-23T00:00:00Z
+Preferred-Languages: es, en
+Canonical: https://stemos.org/.well-known/security.txt
