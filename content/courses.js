@@ -1858,13 +1858,13 @@ Mastering the technical vocabulary from this module is not just an academic exer
     "electromobility": {
         id: "electromobility",
         title: "Electromovilidad",
-        titleEN: "Electromobility",
+        titleEN: "Electromobility & EV Engineering",
         level: "A2-B1",
         status: "skeleton",
         description: "English for electric vehicle engineering — battery technology, electric motors, charging infrastructure, and Mexico's EV manufacturing sector.",
         descriptionES: "Inglés para ingeniería de vehículos eléctricos — tecnología de baterías, motores eléctricos, infraestructura de carga y el sector de manufactura EV de México.",
-        totalModules: 6,
-        estimatedHours: 12,
+        totalModules: 10,
+        estimatedHours: 20,
         prerequisites: ["esp-foundation"],
         standard: "CONOCER EC0391",
         conocer: "EC0391 (Mantenimiento y Ensamble de Vehículos Eléctricos)",
@@ -1876,12 +1876,16 @@ Mastering the technical vocabulary from this module is not just an academic exer
             { id: "ev-m3", title: "Electric Motors and Powertrains", titleES: "Motores Eléctricos y Trenes Motrices", icon: "fa-solid fa-gear", readings: [] },
             { id: "ev-m4", title: "Charging Infrastructure and Standards", titleES: "Infraestructura de Carga y Estándares", icon: "fa-solid fa-charging-station", readings: [] },
             { id: "ev-m5", title: "EV Manufacturing Process", titleES: "Proceso de Manufactura de VE", icon: "fa-solid fa-industry", readings: [] },
-            { id: "ev-m6", title: "Mexico's EV Industry and Career Paths", titleES: "La Industria EV de México y Trayectorias Profesionales", icon: "fa-solid fa-road", readings: [] }
+            { id: "ev-m6", title: "BMS: Battery Management Systems", titleES: "Sistemas de Gestión de Baterías (BMS)", icon: "fa-solid fa-microchip", readings: [] },
+            { id: "ev-m7", title: "Regenerative Braking and Energy Recovery", titleES: "Frenado Regenerativo y Recuperación de Energía", icon: "fa-solid fa-bolt", readings: [] },
+            { id: "ev-m8", title: "Thermal Management in Electric Vehicles", titleES: "Gestión Térmica en Vehículos Eléctricos", icon: "fa-solid fa-temperature-high", readings: [] },
+            { id: "ev-m9", title: "High-Voltage Safety Protocols", titleES: "Protocolos de Seguridad de Alto Voltaje", icon: "fa-solid fa-triangle-exclamation", readings: [] },
+            { id: "ev-m10", title: "Mexico's EV Industry and Career Paths", titleES: "La Industria EV de México y Trayectorias Profesionales", icon: "fa-solid fa-road", readings: [] }
         ]
     },
 
     // =========================================================================
-    // TRACK 4: IT & DIGITAL INNOVATION (SKELETON ONLY)
+    // TRACK 4: IT & DIGITAL INNOVATION (FULL 10 MODULES)
     // =========================================================================
     "it-innovation": {
         id: "it-innovation",
@@ -1891,8 +1895,8 @@ Mastering the technical vocabulary from this module is not just an academic exer
         status: "skeleton",
         description: "English for IT professionals — cloud computing, software development, databases, DevOps, and digital transformation.",
         descriptionES: "Inglés para profesionales de TI — computación en la nube, desarrollo de software, bases de datos, DevOps y transformación digital.",
-        totalModules: 6,
-        estimatedHours: 12,
+        totalModules: 10,
+        estimatedHours: 20,
         prerequisites: ["esp-foundation"],
         standard: "CONOCER EC0217.01",
         conocer: "EC0217.01 (Capacitación Digital y Cloud)",
@@ -1904,12 +1908,16 @@ Mastering the technical vocabulary from this module is not just an academic exer
             { id: "it-m3", title: "Software Development Fundamentals", titleES: "Fundamentos de Desarrollo de Software", icon: "fa-solid fa-code", readings: [] },
             { id: "it-m4", title: "Databases and Data Management", titleES: "Bases de Datos y Gestión de Datos", icon: "fa-solid fa-database", readings: [] },
             { id: "it-m5", title: "DevOps and CI/CD Pipelines", titleES: "DevOps y Pipelines CI/CD", icon: "fa-solid fa-infinity", readings: [] },
-            { id: "it-m6", title: "Digital Transformation and Industry 4.0", titleES: "Transformación Digital e Industria 4.0", icon: "fa-solid fa-robot", readings: [] }
+            { id: "it-m6", title: "Containerization: Docker and Kubernetes", titleES: "Contenedores: Docker y Kubernetes", icon: "fa-solid fa-box-archive", readings: [] },
+            { id: "it-m7", title: "Cybersecurity Architecture in Cloud", titleES: "Arquitectura de Ciberseguridad en la Nube", icon: "fa-solid fa-shield", readings: [] },
+            { id: "it-m8", title: "Artificial Intelligence & ML Engineering", titleES: "Inteligencia Artificial e Ingeniería de ML", icon: "fa-solid fa-brain", readings: [] },
+            { id: "it-m9", title: "Data Pipelines and Big Data", titleES: "Pipelines de Datos y Big Data", icon: "fa-solid fa-diagram-project", readings: [] },
+            { id: "it-m10", title: "Digital Transformation and Industry 4.0", titleES: "Transformación Digital e Industria 4.0", icon: "fa-solid fa-robot", readings: [] }
         ]
     },
 
     // =========================================================================
-    // TRACK 5: AEROSPACE MANUFACTURING (SKELETON ONLY)
+    // TRACK 5: AEROSPACE MANUFACTURING (FULL 9 MODULES)
     // =========================================================================
     "aerospace": {
         id: "aerospace",
@@ -1919,8 +1927,8 @@ Mastering the technical vocabulary from this module is not just an academic exer
         status: "skeleton",
         description: "English for aerospace manufacturing — composite materials, precision machining, quality assurance, and Mexico's aerospace corridor.",
         descriptionES: "Inglés para manufactura aeronáutica — materiales compuestos, maquinado de precisión, aseguramiento de calidad y el corredor aeroespacial de México.",
-        totalModules: 6,
-        estimatedHours: 12,
+        totalModules: 9,
+        estimatedHours: 18,
         prerequisites: ["esp-foundation", "semiconductors"],
         standard: "AS9100D",
         conocer: "EC0892 (Manufactura Aeroespacial de Precisión)",
@@ -1930,9 +1938,12 @@ Mastering the technical vocabulary from this module is not just an academic exer
             { id: "aero-m1", title: "Introduction to Aerospace Engineering", titleES: "Introducción a la Ingeniería Aeroespacial", icon: "fa-solid fa-plane-up", readings: [] },
             { id: "aero-m2", title: "Materials Science: Composites and Alloys", titleES: "Ciencia de Materiales: Compuestos y Aleaciones", icon: "fa-solid fa-atom", readings: [] },
             { id: "aero-m3", title: "Precision Machining and CNC", titleES: "Maquinado de Precisión y CNC", icon: "fa-solid fa-cogs", readings: [] },
-            { id: "aero-m4", title: "Assembly and Integration", titleES: "Ensamblaje e Integración", icon: "fa-solid fa-puzzle-piece", readings: [] },
-            { id: "aero-m5", title: "Quality Assurance and AS9100", titleES: "Aseguramiento de Calidad y AS9100", icon: "fa-solid fa-clipboard-check", readings: [] },
-            { id: "aero-m6", title: "Mexico's Aerospace Corridor", titleES: "El Corredor Aeroespacial de México", icon: "fa-solid fa-map-location-dot", readings: [] }
+            { id: "aero-m4", title: "Avionics and Electrical Systems Integration", titleES: "Integración de Aviónica y Sistemas Eléctricos", icon: "fa-solid fa-microchip", readings: [] },
+            { id: "aero-m5", title: "Turbine Engine Components Manufacturing", titleES: "Manufactura de Componentes de Turbinas", icon: "fa-solid fa-fan", readings: [] },
+            { id: "aero-m6", title: "Non-Destructive Testing (NDT)", titleES: "Pruebas No Destructivas (NDT)", icon: "fa-solid fa-magnifying-glass-chart", readings: [] },
+            { id: "aero-m7", title: "Assembly and Structural Integration", titleES: "Ensamblaje e Integración Estructural", icon: "fa-solid fa-puzzle-piece", readings: [] },
+            { id: "aero-m8", title: "Quality Assurance and AS9100", titleES: "Aseguramiento de Calidad y AS9100", icon: "fa-solid fa-clipboard-check", readings: [] },
+            { id: "aero-m9", title: "Mexico's Aerospace Corridor and Career Paths", titleES: "El Corredor Aeroespacial de México", icon: "fa-solid fa-map-location-dot", readings: [] }
         ]
     }
 };
