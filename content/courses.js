@@ -23,11 +23,6 @@ const LXP_COURSES = {
         titleEN: "Smart Networks & Cybersecurity",
         level: "A2-B1",
         status: "full", // full content
-        description: "Learn the English vocabulary and concepts you need to work in network engineering and cybersecurity. From basic network components to advanced security protocols.",
-        descriptionES: "Aprende el vocabulario y los conceptos en inglés que necesitas para trabajar en ingeniería de redes y ciberseguridad.",
-        totalModules: 6,
-        estimatedHours: 12,
-        prerequisites: ["lxp-foundation"], // Bridge A2
         standard: "CONOCER EC1290",
         modules: [
             // -----------------------------------------------------------------
@@ -1111,7 +1106,10 @@ This is exactly why you are taking this course — combining cybersecurity knowl
         totalModules: 6,
         estimatedHours: 12,
         prerequisites: ["esp-foundation"],
-        standard: "CONOCER EC2034",
+        standard: "CONOCER EC1290",
+        conocer: "EC1290 (Inspección de Procesos de Alta Tecnología)",
+        ngss: "HS-PS1-1 / HS-PS3-2 (Matter & Energy in Chips)",
+        industry: "TSMC-GCU Manufacturing Specialist Intensive (MSI)",
         modules: [
             {
                 id: "semi-m1",
@@ -1868,7 +1866,10 @@ Mastering the technical vocabulary from this module is not just an academic exer
         totalModules: 6,
         estimatedHours: 12,
         prerequisites: ["esp-foundation"],
-        standard: "CONOCER EC-EV",
+        standard: "CONOCER EC0391",
+        conocer: "EC0391 (Mantenimiento y Ensamble de Vehículos Eléctricos)",
+        ngss: "HS-PS3-3 (Energy System Optimization)",
+        industry: "Tesla / SAE J1772 & ISO 26262 Standards",
         modules: [
             { id: "ev-m1", title: "Introduction to Electric Vehicles", titleES: "Introducción a los Vehículos Eléctricos", icon: "fa-solid fa-car-battery", readings: [] },
             { id: "ev-m2", title: "Battery Technology: Lithium-Ion and Beyond", titleES: "Tecnología de Baterías: Litio-Ion y Más Allá", icon: "fa-solid fa-battery-full", readings: [] },
@@ -1893,7 +1894,10 @@ Mastering the technical vocabulary from this module is not just an academic exer
         totalModules: 6,
         estimatedHours: 12,
         prerequisites: ["esp-foundation"],
-        standard: "CONOCER EC0982",
+        standard: "CONOCER EC0217.01",
+        conocer: "EC0217.01 (Capacitación Digital y Cloud)",
+        ngss: "HS-ETS1-4 (Computer Modeling & Cloud Infrastructure)",
+        industry: "AWS Cloud / Google Cloud Architecture",
         modules: [
             { id: "it-m1", title: "Introduction to Information Technology", titleES: "Introducción a las Tecnologías de la Información", icon: "fa-solid fa-laptop-code", readings: [] },
             { id: "it-m2", title: "Cloud Computing: AWS, Azure, and GCP", titleES: "Computación en la Nube: AWS, Azure y GCP", icon: "fa-solid fa-cloud", readings: [] },
@@ -1918,7 +1922,10 @@ Mastering the technical vocabulary from this module is not just an academic exer
         totalModules: 6,
         estimatedHours: 12,
         prerequisites: ["esp-foundation", "semiconductors"],
-        standard: "AS9100",
+        standard: "AS9100D",
+        conocer: "EC0892 (Manufactura Aeroespacial de Precisión)",
+        ngss: "HS-PS2-1 (Forces & Aerodynamics)",
+        industry: "AS9100D Aerospace Quality & Boeing Spec",
         modules: [
             { id: "aero-m1", title: "Introduction to Aerospace Engineering", titleES: "Introducción a la Ingeniería Aeroespacial", icon: "fa-solid fa-plane-up", readings: [] },
             { id: "aero-m2", title: "Materials Science: Composites and Alloys", titleES: "Ciencia de Materiales: Compuestos y Aleaciones", icon: "fa-solid fa-atom", readings: [] },
