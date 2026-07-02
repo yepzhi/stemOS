@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>stemOS Dev Studio — Explorador de Contenidos & Módulos</title>
+  <meta name="description" content="Entorno de desarrollo e inspección de contenidos de stemOS LXP para nearshoring e industria avanzada.">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="../dev.css">
+</head>
+
+<body>
+
+  <div class="studio-container">
+    <!-- Header & Brand Bar -->
+    <header class="studio-header">
+      <div class="brand-title">
+        <div class="brand-logo">
+          <i class="fa-solid fa-code-branch"></i>
+        </div>
+        <div class="brand-text">
+          <h1 class="font-head">stemOS Dev Studio</h1>
+          <p>Plataforma de Desarrollo & Inspección de Módulos (stemos.org/dev)</p>
+        </div>
+      </div>
+
+      <div class="header-badges">
+        <div class="stat-chip">
+          <i class="fa-solid fa-network-wired"></i>
+          <div>
+            <div class="val" id="stat-tracks">5</div>
+            <div class="lbl">Tracks</div>
+          </div>
+        </div>
+
+        <div class="stat-chip">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <div>
+            <div class="val" id="stat-modules">55</div>
+            <div class="lbl">Módulos</div>
+          </div>
+        </div>
+
+        <div class="stat-chip">
+          <i class="fa-solid fa-book-open-reader"></i>
+          <div>
+            <div class="val" id="stat-readings">0</div>
+            <div class="lbl">Lecturas</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Search & Filter Controls -->
+    <div class="controls-bar">
+      <div class="search-wrapper">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="studio-search" class="search-input" placeholder="Buscar módulo por nombre, concepto, estándar (CONOCER/NGSS) o ID..." autocomplete="off">
+      </div>
+
+      <div class="track-filters" id="track-filters">
+        <!-- Filter buttons dynamically injected here -->
+      </div>
+    </div>
+
+    <!-- Main Modules Grid -->
+    <main id="studio-grid">
+      <!-- Track sections and module cards dynamically injected here -->
+    </main>
+  </div>
+
+  <!-- Drawer Modal Reader -->
+  <div class="drawer-backdrop" id="drawer-backdrop">
+    <div class="drawer-panel" id="drawer-panel">
+      <div class="drawer-header">
+        <div>
+          <h2 class="font-head" id="drawer-mod-title" style="font-size: 1.4rem; color: #fff; margin-bottom: 4px;">Detalle del Módulo</h2>
+          <p id="drawer-mod-sub" style="font-size: 0.82rem; color: var(--cyan); font-weight: 500;">Track Industrial • ID</p>
+        </div>
+        <button class="drawer-close-btn" id="drawer-close" aria-label="Cerrar visor">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="drawer-body" id="drawer-body">
+        <!-- Readings, Glossary and Socratic Questions injected here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Load stemOS courses database and dev controller -->
+  <script src="../content/courses.js"></script>
+  <script src="../dev.js"></script>
+
+</body>
+
+</html>
