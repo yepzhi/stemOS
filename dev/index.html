@@ -32,6 +32,22 @@
       </div>
 
       <div class="header-badges">
+        <div class="offline-card" id="offline-card">
+          <div class="offline-pill online" id="offline-pill">
+            <span class="status-dot"></span>
+            <span id="offline-status-text">Online</span>
+          </div>
+
+          <label class="offline-switch" title="Activar / Desactivar Modo Offline">
+            <input type="checkbox" id="offline-toggle">
+            <span class="slider round"></span>
+          </label>
+
+          <button class="btn-sync-offline" id="sync-offline-btn" title="Descargar y guardar los 55 módulos en caché local para trabajar sin conexión">
+            <i class="fa-solid fa-cloud-arrow-down"></i> Save Offline
+          </button>
+        </div>
+
         <div class="stat-chip">
           <i class="fa-solid fa-network-wired"></i>
           <div>

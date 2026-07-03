@@ -1,15 +1,40 @@
-/**
- * stemOS Dev Content Studio — JavaScript Controller
- */
+// Register Service Worker for Offline PWA Support
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then(reg => {
+      console.log('[stemOS PWA] Service Worker registered:', reg.scope);
+    }).catch(err => {
+      console.warn('[stemOS PWA] Service Worker registration failed:', err);
+    });
+  });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   initStudio();
 });
 
 function initStudio() {
-  const coursesData = (typeof LXP_COURSES !== 'undefined' ? LXP_COURSES : (window.LXP_COURSES || {}));
-  const tracks = Object.values(coursesData);
+  let coursesData = (typeof LXP_COURSES !== 'undefined' ? LXP_COURSES : (window.LXP_COURSES || null));
   
+  // Offline fallback: load from LocalStorage if window object is missing
+  if (!coursesData || Object.keys(coursesData).length === 0) {
+    try {
+      const cached = localStorage.getItem('stemos_dev_courses_v1.0.3');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        coursesData = Array.isArray(parsed) ? parsed.reduce((acc, t) => { acc[t.id] = t; return acc; }, {}) : parsed;
+        console.log('[stemOS Offline] Loaded courses from LocalStorage cache');
+      }
+    } catch(e) {
+      console.warn('LocalStorage parse error:', e);
+    }
+  }
+
+  const tracks = Object.values(coursesData || {});
+  
+  // Auto-save data locally for offline backup
+  saveCoursesToLocalStorage(tracks);
+
   // Calculate stats
   let totalModules = 0;
   let totalReadings = 0;
@@ -24,9 +49,13 @@ function initStudio() {
   });
 
   // Update DOM stats
-  document.getElementById('stat-tracks').innerText = tracks.length;
-  document.getElementById('stat-modules').innerText = totalModules;
-  document.getElementById('stat-readings').innerText = totalReadings;
+  const statTracks = document.getElementById('stat-tracks');
+  const statModules = document.getElementById('stat-modules');
+  const statReadings = document.getElementById('stat-readings');
+
+  if (statTracks) statTracks.innerText = tracks.length;
+  if (statModules) statModules.innerText = totalModules;
+  if (statReadings) statReadings.innerText = totalReadings;
 
   // Render Filters
   renderFilters(tracks);
@@ -34,9 +63,78 @@ function initStudio() {
   // Render Modules Grid
   renderGrid(tracks);
 
-  // Setup Event Listeners
+  // Setup Event Listeners & Offline Controller
   setupSearch(tracks);
   setupDrawer();
+  setupOfflineController(tracks);
+}
+
+function setupOfflineController(tracks) {
+  const toggle = document.getElementById('offline-toggle');
+  const syncBtn = document.getElementById('sync-offline-btn');
+
+  // Check initial offline preference or connection
+  const savedOfflineMode = localStorage.getItem('stemos_offline_mode') === 'true';
+  const isCurrentlyOffline = !navigator.onLine || savedOfflineMode;
+
+  if (toggle) {
+    toggle.checked = isCurrentlyOffline;
+    updateOfflineUI(isCurrentlyOffline);
+
+    toggle.addEventListener('change', (e) => {
+      const active = e.target.checked;
+      localStorage.setItem('stemos_offline_mode', active ? 'true' : 'false');
+      updateOfflineUI(active);
+      if (active) {
+        saveCoursesToLocalStorage(tracks);
+      }
+    });
+  }
+
+  if (syncBtn) {
+    syncBtn.addEventListener('click', () => {
+      saveCoursesToLocalStorage(tracks);
+      const originalText = syncBtn.innerHTML;
+      syncBtn.innerHTML = `<i class="fa-solid fa-check" style="color:var(--emerald);"></i> Saved!`;
+      setTimeout(() => {
+        syncBtn.innerHTML = originalText;
+      }, 2000);
+    });
+  }
+
+  // Monitor browser network state
+  window.addEventListener('online', () => {
+    if (!toggle || !toggle.checked) updateOfflineUI(false);
+  });
+
+  window.addEventListener('offline', () => {
+    updateOfflineUI(true);
+    if (toggle) toggle.checked = true;
+  });
+}
+
+function updateOfflineUI(isOffline) {
+  const pill = document.getElementById('offline-pill');
+  const statusText = document.getElementById('offline-status-text');
+  if (!pill || !statusText) return;
+
+  if (isOffline) {
+    pill.className = 'offline-pill offline-active';
+    statusText.innerText = 'Modo Offline';
+  } else {
+    pill.className = 'offline-pill online';
+    statusText.innerText = 'Online';
+  }
+}
+
+function saveCoursesToLocalStorage(tracks) {
+  try {
+    if (tracks && tracks.length > 0) {
+      localStorage.setItem('stemos_dev_courses_v1.0.3', JSON.stringify(tracks));
+    }
+  } catch (err) {
+    console.warn('[stemOS Cache] LocalStorage write warning:', err);
+  }
 }
 
 function renderFilters(tracks) {
