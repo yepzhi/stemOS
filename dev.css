@@ -704,6 +704,68 @@ input:checked + .slider:before {
   background: linear-gradient(90deg, var(--cyan), var(--emerald));
   transition: width 0.3s ease;
 }
+
+/* Selective Offline Pin Buttons & Expiry Pills */
+.btn-pin-offline {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.btn-pin-offline:hover {
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
+
+.btn-pin-offline.pinned {
+  background: rgba(56, 189, 248, 0.2);
+  color: var(--cyan);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.btn-remove-pin {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+
+.btn-remove-pin:hover {
+  background: rgba(239, 68, 68, 0.25);
+  color: #fff;
+}
+
+.offline-expiry-pill {
+  margin-top: 10px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--cyan);
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 4px 10px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
   color: #000;
   font-weight: 800;
   font-size: 0.82rem;

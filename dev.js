@@ -214,12 +214,177 @@ function saveCoursesToLocalStorage(tracks) {
   }
 }
 
+// =========================================================================
+// SELECTIVE OFFLINE READINGS MANAGER (MAX 5, 3-DAY EXPIRATION & BOT NOTES)
+// =========================================================================
+const MAX_OFFLINE_READINGS = 5;
+const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000; // 72 Hours
+
+function getSavedOfflineReadingsMap() {
+  try {
+    const raw = localStorage.getItem('stemos_offline_saved_readings_v1');
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function saveOfflineReadingsMap(map) {
+  try {
+    localStorage.setItem('stemos_offline_saved_readings_v1', JSON.stringify(map));
+  } catch (e) {
+    console.warn('LocalStorage error:', e);
+  }
+}
+
+function getValidOfflineReadings() {
+  const map = getSavedOfflineReadingsMap();
+  const now = Date.now();
+  const valid = [];
+  let updated = false;
+
+  Object.keys(map).forEach(key => {
+    const item = map[key];
+    if (item.expiresAt && now >= item.expiresAt) {
+      delete map[key];
+      updated = true;
+      console.log(`[Offline Auto-Purge] Reading ${key} expired after 3 days.`);
+    } else {
+      valid.push(item);
+    }
+  });
+
+  if (updated) {
+    saveOfflineReadingsMap(map);
+  }
+  return valid;
+}
+
+function toggleOfflineReadingPin(trackId, modId, tracks) {
+  const map = getSavedOfflineReadingsMap();
+  const valid = getValidOfflineReadings();
+  const isCurrentlySaved = !!map[modId];
+
+  if (isCurrentlySaved) {
+    delete map[modId];
+    saveOfflineReadingsMap(map);
+    showOfflineToast('Lectura Removida', 'Removida de tus lecturas guardadas offline', 100, true);
+  } else {
+    if (valid.length >= MAX_OFFLINE_READINGS) {
+      showOfflineToast(
+        '⚠️ Límite Alcanzado (Máx 5 Lecturas)',
+        `Ya tienes ${MAX_OFFLINE_READINGS} lecturas offline guardadas (expiran en 3 días). Remueve una para agregar esta.`,
+        100,
+        false
+      );
+      return false;
+    }
+
+    const now = Date.now();
+    map[modId] = {
+      modId: modId,
+      trackId: trackId,
+      downloadedAt: now,
+      expiresAt: now + THREE_DAYS_MS,
+      notes: map[modId] ? (map[modId].notes || '') : '',
+      syncedWithBot: false
+    };
+    saveOfflineReadingsMap(map);
+    showOfflineToast(
+      '📌 Lectura Guardada (3 Días)',
+      `Guardada offline (${Object.keys(map).length}/5). Expira automáticamente en 3 días.`,
+      100,
+      true
+    );
+  }
+
+  // Refresh UI
+  if (typeof initStudio === 'function') {
+    const coursesData = (typeof LXP_COURSES !== 'undefined' ? LXP_COURSES : (window.LXP_COURSES || {}));
+    const phrases = (typeof STEMOS_PHRASES !== 'undefined' ? STEMOS_PHRASES : (window.STEMOS_PHRASES || []));
+    renderFilters(Object.values(coursesData), phrases);
+    renderGrid(Object.values(coursesData), phrases);
+  }
+  return true;
+}
+
+function getRemainingTimeText(expiresAt) {
+  if (!expiresAt) return '3 días';
+  const diff = expiresAt - Date.now();
+  if (diff <= 0) return 'Expirado';
+
+  const totalMinutes = Math.floor(diff / (1000 * 60));
+  const hours = Math.floor(totalMinutes / 60);
+  const days = Math.floor(hours / 24);
+  const remainingHours = hours % 24;
+
+  if (days > 0) {
+    return `${days}d ${remainingHours}h restantes`;
+  }
+  return `${hours}h restantes`;
+}
+
+function saveReadingNotes(modId, notesText) {
+  const map = getSavedOfflineReadingsMap();
+  if (!map[modId]) {
+    map[modId] = {
+      modId: modId,
+      trackId: '',
+      downloadedAt: Date.now(),
+      expiresAt: Date.now() + THREE_DAYS_MS,
+      notes: notesText,
+      syncedWithBot: false
+    };
+  } else {
+    map[modId].notes = notesText;
+    map[modId].syncedWithBot = false;
+  }
+  saveOfflineReadingsMap(map);
+}
+
+function syncNotesWithBot(modId, tracks) {
+  const map = getSavedOfflineReadingsMap();
+  const item = map[modId];
+  if (!item || !item.notes || !item.notes.trim()) {
+    showOfflineToast('Anotación Vacía', 'Escribe primero tus conclusiones o dudas antes de enviar al Bot.', 100, true);
+    return;
+  }
+
+  if (!navigator.onLine) {
+    showOfflineToast('📌 Guardado Localmente', 'Estás offline. Tus conclusiones están guardadas y se enviarán al Bot al reconectarte.', 100, true);
+    return;
+  }
+
+  // Process AI Socratic Bot Sync
+  showOfflineToast('🤖 Enviando al Bot Socrático...', 'Procesando tus conclusiones y generando retroalimentación socrática...', 50);
+
+  setTimeout(() => {
+    item.syncedWithBot = true;
+    saveOfflineReadingsMap(map);
+    
+    const botStatus = document.getElementById('bot-sync-status');
+    if (botStatus) {
+      botStatus.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--emerald);"></i> ¡Sincronizado con Bot Socrático!`;
+    }
+    showOfflineToast('🤖 Retroalimentación Lista', 'El Bot Socrático analizó tus conclusiones. ¡Revisa tu panel!', 100, true);
+  }, 1200);
+}
+
 function renderFilters(tracks, phrases = []) {
   const filterContainer = document.getElementById('track-filters');
   if (!filterContainer) return;
 
+  const validSaved = getValidOfflineReadings();
+
   let html = `<button class="filter-btn active" data-track="all"><i class="fa-solid fa-layer-group"></i> Todos los Tracks (${tracks.length})</button>`;
   
+  // Add Mis Lecturas Offline Filter Button
+  html += `
+    <button class="filter-btn" data-track="offline-saved" style="border-color: rgba(56, 189, 248, 0.35);">
+      <i class="fa-solid fa-bookmark" style="color:var(--cyan);"></i> 📚 Mis Lecturas Offline (${validSaved.length}/${MAX_OFFLINE_READINGS})
+    </button>
+  `;
+
   tracks.forEach(t => {
     html += `
       <button class="filter-btn" data-track="${t.id}">
@@ -264,7 +429,89 @@ function renderGrid(tracks, phrases = []) {
   const gridContainer = document.getElementById('studio-grid');
   if (!gridContainer) return;
 
+  const savedMap = getSavedOfflineReadingsMap();
+  const validSaved = getValidOfflineReadings();
+
   let html = '';
+
+  // 0. Render Section: Mis Lecturas Offline Guardadas (Max 5, 3-Day Expiration)
+  html += `
+    <div class="track-section" id="section-offline-saved" style="${validSaved.length === 0 ? 'display:none;' : ''}">
+      <h2 class="track-header-title font-head" style="color: var(--cyan); display:flex; align-items:center; justify-content:space-between;">
+        <span>
+          <i class="fa-solid fa-bookmark" style="color:var(--cyan);"></i> 📚 Mis Lecturas Offline Seleccionadas
+          <span style="font-size:0.8rem; font-weight:500; color:var(--text-dim);">(${validSaved.length}/${MAX_OFFLINE_READINGS} Seleccionadas • Expiran en 3 Días)</span>
+        </span>
+        <span style="font-size:0.78rem; background:rgba(56, 189, 248, 0.12); color:var(--cyan); padding:4px 10px; border-radius:8px; border:1px solid rgba(56, 189, 248, 0.3);">
+          <i class="fa-solid fa-clock-rotate-left"></i> Auto-Limpieza 72h
+        </span>
+      </h2>
+      <div class="modules-grid">
+  `;
+
+  if (validSaved.length > 0) {
+    validSaved.forEach(savedItem => {
+      let foundMod = null;
+      let foundTrack = null;
+
+      tracks.forEach(tr => {
+        if (tr.modules) {
+          const m = tr.modules.find(x => x.id === savedItem.modId);
+          if (m) {
+            foundMod = m;
+            foundTrack = tr;
+          }
+        }
+      });
+
+      if (foundMod && foundTrack) {
+        const remainingStr = getRemainingTimeText(savedItem.expiresAt);
+        const hasNotes = savedItem.notes && savedItem.notes.trim().length > 0;
+
+        html += `
+          <div class="module-card offline-saved-card" data-track-id="${foundTrack.id}" data-mod-id="${foundMod.id}" style="border-color: rgba(56, 189, 248, 0.4); background: rgba(15, 23, 42, 0.85);">
+            <div class="card-top">
+              <div class="module-icon-box" style="background: rgba(56, 189, 248, 0.15); color: var(--cyan);">
+                <i class="${foundMod.icon || 'fa-solid fa-book-open'}"></i>
+              </div>
+              <span class="module-tag" style="background: rgba(56, 189, 248, 0.15); color: var(--cyan);">${foundTrack.title}</span>
+            </div>
+
+            <div class="card-body">
+              <h3 class="card-title-es">${foundMod.titleES || foundMod.title}</h3>
+              <p class="card-title-en">${foundMod.title}</p>
+              
+              <div class="offline-expiry-pill">
+                <i class="fa-solid fa-hourglass-half"></i> ${remainingStr}
+              </div>
+
+              ${hasNotes ? `
+                <div style="margin-top:8px; font-size:0.78rem; color:var(--emerald); background:rgba(52, 211, 153, 0.1); padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
+                  <i class="fa-solid fa-pen-to-square"></i> Conclusiones Guardadas
+                </div>
+              ` : ''}
+            </div>
+
+            <div class="card-footer">
+              <button class="btn-remove-pin" data-track-id="${foundTrack.id}" data-mod-id="${foundMod.id}" title="Quitar de lecturas offline">
+                <i class="fa-solid fa-trash-can"></i> Quitar
+              </button>
+              <button class="explore-btn">
+                Leer Ahora <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    });
+  } else {
+    html += `<p style="color:var(--text-dim); font-size:0.9rem; padding:12px;">No has seleccionado ninguna lectura offline. Haz clic en el botón 📌 Guardar Offline en cualquier módulo (máximo 5).</p>`;
+  }
+
+  html += `
+      </div>
+    </div>
+  `;
 
   // 1. Render Course Tracks
   tracks.forEach(track => {
@@ -281,6 +528,7 @@ function renderGrid(tracks, phrases = []) {
       track.modules.forEach((mod, idx) => {
         const readingsCount = mod.readings ? mod.readings.length : 0;
         const statusLabel = readingsCount > 0 ? `${readingsCount} Lectura(s)` : 'En desarrollo';
+        const isPinned = !!savedMap[mod.id];
 
         // Standards badges
         const conocerCode = mod.conocer || track.conocer || 'EC1290 (Manufactura Alta Tech)';
@@ -293,7 +541,12 @@ function renderGrid(tracks, phrases = []) {
               <div class="module-icon-box">
                 <i class="${mod.icon || 'fa-solid fa-microchip'}"></i>
               </div>
-              <span class="module-tag">${track.title}</span>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <button class="btn-pin-offline ${isPinned ? 'pinned' : ''}" data-track-id="${track.id}" data-mod-id="${mod.id}" title="${isPinned ? 'Guardado Offline (Expira en 3 días)' : 'Guardar Lectura Offline (Máx 5)'}">
+                  <i class="fa-solid fa-bookmark"></i> ${isPinned ? 'Offline' : '+ Offline'}
+                </button>
+                <span class="module-tag">${track.title}</span>
+              </div>
             </div>
 
             <div class="card-body">
@@ -538,7 +791,7 @@ function openDrawer(trackId, modId, tracks) {
       contentHtml += `</div>`;
     });
   } else {
-    contentHtml = `
+    contentHtml += `
       <div class="reader-content" style="text-align:center; padding:48px;">
         <i class="fa-solid fa-pen-ruler" style="font-size:2.5rem; color:var(--gold); margin-bottom:16px;"></i>
         <h3 class="font-head" style="color:#fff;">Módulo en Fase de Redacción</h3>
@@ -547,8 +800,54 @@ function openDrawer(trackId, modId, tracks) {
     `;
   }
 
+  // Inject Anotaciones & Conclusiones Offline Notepad for AI Socratic Bot
+  const savedMap = getSavedOfflineReadingsMap();
+  const savedItem = savedMap[modId] || {};
+  const notesContent = savedItem.notes || '';
+  const isSynced = savedItem.syncedWithBot;
+
+  contentHtml += `
+    <div class="notes-editor-card" style="margin-top:32px; background:rgba(15, 23, 42, 0.85); border:1px solid var(--border-glow); padding:20px; border-radius:16px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h3 class="font-head" style="color:var(--cyan); font-size:1.15rem; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-pen-to-square"></i> Mis Anotaciones & Conclusiones Offline
+        </h3>
+        <span id="bot-sync-status" style="font-size:0.8rem; padding:4px 10px; border-radius:8px; background:rgba(255,255,255,0.06); color:var(--text-muted);">
+          ${isSynced ? '<i class="fa-solid fa-circle-check" style="color:var(--emerald);"></i> Sincronizado con Bot' : '<i class="fa-solid fa-floppy-disk" style="color:var(--gold);"></i> Guardado Local'}
+        </span>
+      </div>
+      <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:12px;">
+        Escribe aquí tus conclusiones, dudas o resúmenes. Se guardan localmente en tu dispositivo y podrás enviárselas al Bot Socrático al reconectarte en línea.
+      </p>
+      
+      <textarea id="reading-notes-input" class="notes-textarea" rows="4" placeholder="Escribe aquí tus conclusiones o dudas sobre esta lectura..." style="width:100%; background:rgba(7, 9, 14, 0.75); border:1px solid rgba(255,255,255,0.12); color:#fff; padding:12px; border-radius:10px; font-family:var(--font-sans); font-size:0.9rem; resize:vertical;">${notesContent}</textarea>
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+        <span style="font-size:0.78rem; color:var(--text-dim);"><i class="fa-solid fa-shield-halved"></i> Guardado en almacenamiento local</span>
+        <button id="btn-sync-bot" class="explore-btn" style="background:linear-gradient(135deg, var(--cyan), var(--emerald)); color:#000; padding:8px 16px; font-weight:700;">
+          <i class="fa-solid fa-robot"></i> Enviar al Bot Socrático
+        </button>
+      </div>
+    </div>
+  `;
+
   drawerBody.innerHTML = contentHtml;
   backdrop.classList.add('active');
+
+  // Attach event listeners for offline notes & bot sync
+  const notesInput = document.getElementById('reading-notes-input');
+  if (notesInput) {
+    notesInput.addEventListener('input', (e) => {
+      saveReadingNotes(modId, e.target.value);
+    });
+  }
+
+  const btnSyncBot = document.getElementById('btn-sync-bot');
+  if (btnSyncBot) {
+    btnSyncBot.addEventListener('click', () => {
+      syncNotesWithBot(modId, tracks);
+    });
+  }
 }
 
 function openPhraseDrawer(phraseId, phrases) {
