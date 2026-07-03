@@ -12,7 +12,7 @@
  *  - Each reading has VOCABULARY (EN-ES glossary) and QUESTIONS
  */
 
-const LXP_COURSES = {
+var LXP_COURSES = {
 
     // =========================================================================
     // TRACK 1: SMART NETWORKS & CYBERSECURITY (FULL CONTENT)
@@ -1948,7 +1948,10 @@ Mastering the technical vocabulary from this module is not just an academic exer
     }
 };
 
-// Make available for import
+// Make available for window and import
+if (typeof window !== 'undefined') {
+    window.LXP_COURSES = LXP_COURSES;
+}
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = LXP_COURSES;
 }

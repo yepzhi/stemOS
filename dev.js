@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initStudio() {
-  const coursesData = window.LXP_COURSES || {};
+  const coursesData = (typeof LXP_COURSES !== 'undefined' ? LXP_COURSES : (window.LXP_COURSES || {}));
   const tracks = Object.values(coursesData);
   
   // Calculate stats
