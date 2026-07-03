@@ -3,7 +3,7 @@
  * Enables 100% offline reading, searching, and working capabilities for stemos.org/dev
  */
 
-const CACHE_NAME = 'stemos-dev-v1.0.3';
+const CACHE_NAME = 'stemos-dev-v1.0.4';
 
 const ASSETS_TO_CACHE = [
   '/',
@@ -11,9 +11,10 @@ const ASSETS_TO_CACHE = [
   '/dev/',
   '/dev.html',
   '/dev/index.html',
-  '/dev.css?v=1.0.3',
-  '/dev.js?v=1.0.3',
-  '/content/courses.js?v=1.0.3',
+  '/dev.css?v=1.0.4',
+  '/dev.js?v=1.0.4',
+  '/content/courses.js?v=1.0.4',
+  '/content/phrases_library.js?v=1.0.4',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@600;700;800;900&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
 ];

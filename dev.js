@@ -31,6 +31,7 @@ function initStudio() {
   }
 
   const tracks = Object.values(coursesData || {});
+  const phrases = (typeof STEMOS_PHRASES !== 'undefined' ? STEMOS_PHRASES : (window.STEMOS_PHRASES || []));
   
   // Auto-save data locally for offline backup
   saveCoursesToLocalStorage(tracks);
@@ -52,16 +53,18 @@ function initStudio() {
   const statTracks = document.getElementById('stat-tracks');
   const statModules = document.getElementById('stat-modules');
   const statReadings = document.getElementById('stat-readings');
+  const statPhrases = document.getElementById('stat-phrases');
 
   if (statTracks) statTracks.innerText = tracks.length;
   if (statModules) statModules.innerText = totalModules;
   if (statReadings) statReadings.innerText = totalReadings;
+  if (statPhrases) statPhrases.innerText = phrases.length;
 
   // Render Filters
-  renderFilters(tracks);
+  renderFilters(tracks, phrases);
 
   // Render Modules Grid
-  renderGrid(tracks);
+  renderGrid(tracks, phrases);
 
   // Setup Event Listeners & Offline Controller
   setupSearch(tracks);
@@ -137,7 +140,7 @@ function saveCoursesToLocalStorage(tracks) {
   }
 }
 
-function renderFilters(tracks) {
+function renderFilters(tracks, phrases = []) {
   const filterContainer = document.getElementById('track-filters');
   if (!filterContainer) return;
 
@@ -150,6 +153,14 @@ function renderFilters(tracks) {
       </button>
     `;
   });
+
+  if (phrases && phrases.length > 0) {
+    html += `
+      <button class="filter-btn" data-track="phrases" style="border-color: rgba(251, 191, 36, 0.35);">
+        <i class="fa-solid fa-comments" style="color:var(--gold);"></i> 💬 Frases Nativas (${phrases.length})
+      </button>
+    `;
+  }
 
   filterContainer.innerHTML = html;
 
@@ -175,12 +186,13 @@ function getTrackIcon(id) {
   }
 }
 
-function renderGrid(tracks) {
+function renderGrid(tracks, phrases = []) {
   const gridContainer = document.getElementById('studio-grid');
   if (!gridContainer) return;
 
   let html = '';
 
+  // 1. Render Course Tracks
   tracks.forEach(track => {
     html += `
       <div class="track-section" id="section-${track.id}">
@@ -243,26 +255,85 @@ function renderGrid(tracks) {
     `;
   });
 
+  // 2. Render Native Phrases Section ("Lo que no enseñan en la escuela")
+  if (phrases && phrases.length > 0) {
+    html += `
+      <div class="track-section" id="section-phrases">
+        <h2 class="track-header-title font-head" style="color: var(--gold);">
+          <i class="fa-solid fa-comments"></i> Librería de Frases Nativas ("Lo que NO enseñan en la escuela")
+          <span style="font-size:0.8rem; font-weight:500; color:var(--text-dim);">(${phrases.length} Expresiones Reales)</span>
+        </h2>
+        <div class="modules-grid">
+    `;
+
+    phrases.forEach(p => {
+      html += `
+        <div class="module-card phrase-card" data-phrase-id="${p.id}" style="border-color: rgba(251, 191, 36, 0.25);">
+          <div class="card-top">
+            <div class="module-icon-box" style="background: rgba(251, 191, 36, 0.15); color: var(--gold);">
+              <i class="fa-solid fa-quote-left"></i>
+            </div>
+            <span class="module-tag" style="background: rgba(251, 191, 36, 0.15); color: var(--gold);">${p.category.toUpperCase()}</span>
+          </div>
+
+          <div class="card-body">
+            <h3 class="card-title-es" style="color: var(--gold); font-size: 1.15rem;">"${p.phrase}"</h3>
+            <p class="card-title-en" style="color: var(--text-muted); font-size: 0.86rem; margin-top: 4px;">${p.meaningES}</p>
+            
+            <div class="school-contrast-box">
+              <div class="school-row"><span class="bad-tag"><i class="fa-solid fa-school"></i> Escuela:</span> <s>${p.schoolVsNative.school}</s></div>
+              <div class="native-row"><span class="good-tag"><i class="fa-solid fa-bolt"></i> Nativo:</span> <strong>${p.schoolVsNative.native}</strong></div>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <div class="reading-count" style="color: var(--gold);">
+              <i class="fa-solid fa-volume-high"></i> ${p.pronunciationHint.split(':')[0] || 'Pronunciación'}
+            </div>
+            <button class="explore-btn" style="background: var(--gold); color: #000;">
+              Ver Matiz <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      `;
+    });
+
+    html += `
+        </div>
+      </div>
+    `;
+  }
+
   gridContainer.innerHTML = html;
 
-  // Add Card Click Events
-  gridContainer.querySelectorAll('.module-card').forEach(card => {
+  // Add Card Click Events for Modules
+  gridContainer.querySelectorAll('.module-card:not(.phrase-card)').forEach(card => {
     card.addEventListener('click', () => {
       const trackId = card.getAttribute('data-track-id');
       const modId = card.getAttribute('data-mod-id');
       openDrawer(trackId, modId, tracks);
     });
   });
+
+  // Add Card Click Events for Phrases
+  gridContainer.querySelectorAll('.phrase-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const phraseId = card.getAttribute('data-phrase-id');
+      openPhraseDrawer(phraseId, phrases);
+    });
+  });
 }
 
 function filterGridByTrack(trackId, tracks) {
-  tracks.forEach(t => {
-    const section = document.getElementById(`section-${t.id}`);
-    if (section) {
-      if (trackId === 'all' || trackId === t.id) {
-        section.style.display = 'block';
+  const allSections = document.querySelectorAll('.track-section');
+  allSections.forEach(sec => {
+    if (trackId === 'all') {
+      sec.style.display = 'block';
+    } else {
+      if (sec.id === `section-${trackId}`) {
+        sec.style.display = 'block';
       } else {
-        section.style.display = 'none';
+        sec.style.display = 'none';
       }
     }
   });
@@ -401,6 +472,69 @@ function openDrawer(trackId, modId, tracks) {
       </div>
     `;
   }
+
+  drawerBody.innerHTML = contentHtml;
+  backdrop.classList.add('active');
+}
+
+function openPhraseDrawer(phraseId, phrases) {
+  const p = (phrases || window.STEMOS_PHRASES || []).find(x => x.id === phraseId);
+  if (!p) return;
+
+  const backdrop = document.getElementById('drawer-backdrop');
+  const drawerTitle = document.getElementById('drawer-mod-title');
+  const drawerSub = document.getElementById('drawer-mod-sub');
+  const drawerBody = document.getElementById('drawer-body');
+
+  drawerTitle.innerText = `"${p.phrase}"`;
+  drawerSub.innerText = `Librería de Frases Nativas • ${p.category.toUpperCase()} • ID: ${p.id}`;
+
+  let contentHtml = `
+    <div class="accreditation-banner" style="border-color: rgba(251, 191, 36, 0.35);">
+      <h3 class="font-head" style="color:var(--gold); font-size:1.2rem; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-bolt"></i> Contraste Directo: Escuela vs. Inglés Nativo Real
+      </h3>
+      <p style="font-size:0.86rem; color:var(--text-muted); margin-top:4px;">
+        Expresión real que utilizan los profesionales y líderes de ingeniería en empresas de Nearshoring e industria de alta tecnología.
+      </p>
+
+      <div class="accred-grid" style="margin-top:16px;">
+        <div class="accred-box" style="border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.08);">
+          <div class="accred-title" style="color: #f87171;"><i class="fa-solid fa-school"></i> Lo que enseñan en la Escuela Tradicional</div>
+          <div class="accred-desc" style="color: #fca5a5; font-size:1rem;"><s>${p.schoolVsNative.school}</s></div>
+          <div class="accred-sub">Inglés de libro de texto rígido o literal</div>
+        </div>
+
+        <div class="accred-box" style="border-color: rgba(52, 211, 153, 0.35); background: rgba(52, 211, 153, 0.08);">
+          <div class="accred-title" style="color:var(--emerald);"><i class="fa-solid fa-bolt"></i> Cómo lo dice un Nativo Real</div>
+          <div class="accred-desc" style="color:#fff; font-size:1.1rem; font-weight:700;">"${p.schoolVsNative.native}"</div>
+          <div class="accred-sub">Expresión natural y fluida en la industria</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;">
+      <h3 class="font-head" style="color:var(--cyan); font-size:1.2rem; margin-bottom:10px;"><i class="fa-solid fa-lightbulb"></i> Explicación de Matiz y Contexto</h3>
+      <p style="color:var(--text-main); font-size:0.95rem; line-height:1.7; background:rgba(255,255,255,0.03); padding:16px; border-radius:12px; border:1px solid var(--border-glass);">
+        ${p.explanation}
+      </p>
+
+      <div style="margin-top:20px; background:rgba(251, 191, 36, 0.06); padding:16px; border-radius:12px; border:1px solid rgba(251, 191, 36, 0.2);">
+        <h4 class="font-head" style="color:var(--gold); font-size:1.05rem; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-volume-high"></i> Consejo de Pronunciación y Ritmo
+        </h4>
+        <p style="color:var(--text-main); font-size:0.9rem; margin-top:6px;">${p.pronunciationHint}</p>
+      </div>
+
+      <div style="margin-top:24px;">
+        <h3 class="font-head" style="color:var(--emerald); font-size:1.2rem; margin-bottom:12px;"><i class="fa-solid fa-briefcase"></i> Ejemplo en Entorno de Ingeniería & Nearshoring</h3>
+        <div style="background:rgba(15, 23, 42, 0.8); border:1px solid var(--border-glow); padding:20px; border-radius:14px;">
+          <div style="color:var(--cyan); font-family:var(--font-mono); font-size:1rem; font-weight:600;">"${p.exampleEN}"</div>
+          <div style="color:var(--text-muted); font-size:0.88rem; margin-top:8px;">📌 <em>${p.exampleES}</em></div>
+        </div>
+      </div>
+    </div>
+  `;
 
   drawerBody.innerHTML = contentHtml;
   backdrop.classList.add('active');

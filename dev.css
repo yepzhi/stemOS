@@ -575,6 +575,62 @@ input:checked + .slider:before {
 .explore-btn {
   background: linear-gradient(135deg, var(--cyan), var(--indigo));
   color: #000;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+/* Phrase Cards & School vs Native Contrast Box */
+.school-contrast-box {
+  margin-top: 12px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.school-row {
+  color: var(--text-dim);
+}
+
+.school-row s {
+  color: #fca5a5;
+  text-decoration: line-through;
+}
+
+.native-row {
+  color: #fff;
+  font-weight: 600;
+}
+
+.bad-tag {
+  color: #f87171;
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.good-tag {
+  color: var(--emerald);
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.phrase-card:hover {
+  border-color: var(--gold) !important;
+  box-shadow: 0 12px 28px rgba(251, 191, 36, 0.2) !important;
+}
+  color: #000;
   font-weight: 800;
   font-size: 0.82rem;
   padding: 8px 16px;

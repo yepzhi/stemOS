@@ -71,6 +71,14 @@
             <div class="lbl">Lecturas</div>
           </div>
         </div>
+
+        <div class="stat-chip" style="border-color: rgba(251, 191, 36, 0.3);">
+          <i class="fa-solid fa-comments" style="color: var(--gold);"></i>
+          <div>
+            <div class="val" id="stat-phrases" style="color: var(--gold);">0</div>
+            <div class="lbl">Frases Nativas</div>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -111,9 +119,10 @@
     </div>
   </div>
 
-  <!-- Load stemOS courses database and dev controller with cache buster -->
-  <script src="/content/courses.js?v=1.0.3"></script>
-  <script src="/dev.js?v=1.0.3"></script>
+  <!-- Load stemOS courses database, phrases library, and dev controller with cache buster -->
+  <script src="/content/courses.js?v=1.0.4"></script>
+  <script src="/content/phrases_library.js?v=1.0.4"></script>
+  <script src="/dev.js?v=1.0.4"></script>
 
 </body>
 
