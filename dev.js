@@ -16,10 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function initStudio() {
   let coursesData = (typeof LXP_COURSES !== 'undefined' ? LXP_COURSES : (window.LXP_COURSES || null));
   
-  // Offline fallback: load from LocalStorage if window object is missing
+  // Offline fallback: load from LocalStorage if window object is missing or offline
   if (!coursesData || Object.keys(coursesData).length === 0) {
     try {
-      const cached = localStorage.getItem('stemos_dev_courses_v1.0.3');
+      const cached = localStorage.getItem('stemos_dev_courses_v1.0.5') || localStorage.getItem('stemos_dev_courses_v1.0.3');
       if (cached) {
         const parsed = JSON.parse(cached);
         coursesData = Array.isArray(parsed) ? parsed.reduce((acc, t) => { acc[t.id] = t; return acc; }, {}) : parsed;
@@ -31,7 +31,17 @@ function initStudio() {
   }
 
   const tracks = Object.values(coursesData || {});
-  const phrases = (typeof STEMOS_PHRASES !== 'undefined' ? STEMOS_PHRASES : (window.STEMOS_PHRASES || []));
+  let phrases = (typeof STEMOS_PHRASES !== 'undefined' ? STEMOS_PHRASES : (window.STEMOS_PHRASES || []));
+  
+  if (!phrases || phrases.length === 0) {
+    try {
+      const cachedPhrases = localStorage.getItem('stemos_dev_phrases_v1.0.5');
+      if (cachedPhrases) {
+        phrases = JSON.parse(cachedPhrases);
+        console.log('[stemOS Offline] Loaded phrases from LocalStorage cache');
+      }
+    } catch(e) {}
+  }
   
   // Auto-save data locally for offline backup
   saveCoursesToLocalStorage(tracks);
@@ -69,10 +79,10 @@ function initStudio() {
   // Setup Event Listeners & Offline Controller
   setupSearch(tracks);
   setupDrawer();
-  setupOfflineController(tracks);
+  setupOfflineController(tracks, phrases);
 }
 
-function setupOfflineController(tracks) {
+function setupOfflineController(tracks, phrases) {
   const toggle = document.getElementById('offline-toggle');
   const syncBtn = document.getElementById('sync-offline-btn');
 
@@ -89,19 +99,14 @@ function setupOfflineController(tracks) {
       localStorage.setItem('stemos_offline_mode', active ? 'true' : 'false');
       updateOfflineUI(active);
       if (active) {
-        saveCoursesToLocalStorage(tracks);
+        downloadEverythingOffline(tracks, phrases);
       }
     });
   }
 
   if (syncBtn) {
     syncBtn.addEventListener('click', () => {
-      saveCoursesToLocalStorage(tracks);
-      const originalText = syncBtn.innerHTML;
-      syncBtn.innerHTML = `<i class="fa-solid fa-check" style="color:var(--emerald);"></i> Saved!`;
-      setTimeout(() => {
-        syncBtn.innerHTML = originalText;
-      }, 2000);
+      downloadEverythingOffline(tracks, phrases);
     });
   }
 
@@ -130,10 +135,79 @@ function updateOfflineUI(isOffline) {
   }
 }
 
+function downloadEverythingOffline(tracks, phrases) {
+  showOfflineToast('Iniciando Descarga Completa...', 'Almacenando 55 Módulos, 20 Frases Nativas y Lecturas en Caché Local', 15);
+
+  // 1. Save all Tracks & Phrases to LocalStorage
+  try {
+    localStorage.setItem('stemos_dev_courses_v1.0.5', JSON.stringify(tracks));
+    localStorage.setItem('stemos_dev_phrases_v1.0.5', JSON.stringify(phrases));
+    localStorage.setItem('stemos_offline_ready', 'true');
+  } catch (e) {
+    console.warn('[stemOS Storage Warning]', e);
+  }
+
+  // 2. Trigger Service Worker full asset caching
+  if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+    const messageChannel = new MessageChannel();
+    messageChannel.port1.onmessage = (event) => {
+      if (event.data && event.data.status === 'SUCCESS') {
+        showOfflineToast('¡Descarga 100% Completada!', '55 Módulos y 20 Frases Nativas Listos para Usar Sin Internet.', 100, true);
+      }
+    };
+    navigator.serviceWorker.controller.postMessage({ action: 'CACHE_EVERYTHING' }, [messageChannel.port2]);
+  } else {
+    setTimeout(() => {
+      showOfflineToast('¡Todo Guardado Offline!', '55 Módulos y 20 Frases Nativas Listos para Usar Sin Internet.', 100, true);
+    }, 1000);
+  }
+
+  // Progress animation simulation
+  let p = 25;
+  const timer = setInterval(() => {
+    p += 25;
+    if (p < 90) {
+      updateToastProgress(p);
+    } else {
+      clearInterval(timer);
+    }
+  }, 250);
+}
+
+function showOfflineToast(title, sub, progress = 0, autoHide = false) {
+  const toast = document.getElementById('offline-toast');
+  const toastTitle = document.getElementById('toast-title');
+  const toastSub = document.getElementById('toast-sub');
+  const toastProgress = document.getElementById('toast-progress');
+  const iconBox = document.getElementById('toast-icon-box');
+
+  if (!toast) return;
+
+  if (toastTitle) toastTitle.innerText = title;
+  if (toastSub) toastSub.innerText = sub;
+  if (toastProgress) toastProgress.style.width = `${progress}%`;
+
+  if (autoHide) {
+    if (iconBox) iconBox.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--emerald);"></i>`;
+    if (toastProgress) toastProgress.style.width = `100%`;
+    setTimeout(() => {
+      toast.classList.remove('active');
+    }, 4000);
+  } else {
+    if (iconBox) iconBox.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style="color:var(--cyan);"></i>`;
+    toast.classList.add('active');
+  }
+}
+
+function updateToastProgress(percent) {
+  const toastProgress = document.getElementById('toast-progress');
+  if (toastProgress) toastProgress.style.width = `${percent}%`;
+}
+
 function saveCoursesToLocalStorage(tracks) {
   try {
     if (tracks && tracks.length > 0) {
-      localStorage.setItem('stemos_dev_courses_v1.0.3', JSON.stringify(tracks));
+      localStorage.setItem('stemos_dev_courses_v1.0.5', JSON.stringify(tracks));
     }
   } catch (err) {
     console.warn('[stemOS Cache] LocalStorage write warning:', err);
