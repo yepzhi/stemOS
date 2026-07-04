@@ -795,9 +795,18 @@ function openDrawer(trackId, modId, tracks) {
   const backdrop = document.getElementById('drawer-backdrop');
   const drawerTitle = document.getElementById('drawer-mod-title');
   const drawerSub = document.getElementById('drawer-mod-sub');
-  const drawerBody = document.getElementById('drawer-body');
+  const activeLevel = localStorage.getItem('stemos_cefr_level') || 'A2';
 
-  drawerTitle.innerText = mod.titleES || mod.title;
+  drawerTitle.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:16px;">
+      <span>${mod.titleES || mod.title}</span>
+      <!-- In-Modal CEFR Level Switcher -->
+      <div class="modal-level-switcher" style="display:inline-flex; align-items:center; gap:2px; background:rgba(0,0,0,0.5); border:1px solid rgba(56,189,248,0.4); padding:3px; border-radius:10px; shrink:0;">
+        <button class="modal-level-btn ${activeLevel === 'A2' ? 'active' : ''}" data-level="A2" style="padding:4px 10px; border-radius:7px; font-size:0.75rem; font-weight:700; border:none; cursor:pointer; transition:all 0.2s ease; ${activeLevel === 'A2' ? 'background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; box-shadow:0 0 10px rgba(56, 189, 248, 0.4);' : 'background:transparent; color:var(--text-muted);'}">A2 (Básico)</button>
+        <button class="modal-level-btn ${activeLevel === 'B1' ? 'active' : ''}" data-level="B1" style="padding:4px 10px; border-radius:7px; font-size:0.75rem; font-weight:700; border:none; cursor:pointer; transition:all 0.2s ease; ${activeLevel === 'B1' ? 'background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; box-shadow:0 0 10px rgba(56, 189, 248, 0.4);' : 'background:transparent; color:var(--text-muted);'}">B1 (Técnico)</button>
+      </div>
+    </div>
+  `;
   drawerSub.innerText = `${track.title} • ${mod.title} • ID: ${mod.id}`;
 
   const conocerCode = mod.conocer || track.conocer || 'EC1290 (Inspección de Procesos de Alta Tecnología)';
@@ -810,9 +819,14 @@ function openDrawer(trackId, modId, tracks) {
     mod.readings.forEach((r, idx) => {
       contentHtml += `
         <div style="margin-bottom: 28px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; flex-wrap:wrap; gap:8px;">
             <h3 class="font-head" style="color:var(--cyan); font-size:1.2rem;">Lectura ${idx+1}: ${r.title}</h3>
-            <span style="font-size:0.8rem; background:rgba(255,255,255,0.06); padding:4px 10px; border-radius:8px; color:var(--text-dim);">${r.duration || '10 min'}</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="cefr-badge-inline" style="font-size:0.72rem; font-weight:800; padding:3px 8px; border-radius:6px; background:${activeLevel==='A2'?'rgba(56,189,248,0.2)':'rgba(168,85,247,0.2)'}; color:${activeLevel==='A2'?'var(--cyan)':'var(--purple)'}; border:1px solid ${activeLevel==='A2'?'rgba(56,189,248,0.4)':'rgba(168,85,247,0.4)'};">
+                Modo ${activeLevel}
+              </span>
+              <span style="font-size:0.8rem; background:rgba(255,255,255,0.06); padding:4px 10px; border-radius:8px; color:var(--text-dim);">${r.duration || '10 min'}</span>
+            </div>
           </div>
           <div class="reader-content">
             ${formatMarkdown(r.content || 'Sin contenido de lectura disponible.')}
@@ -923,6 +937,17 @@ function openDrawer(trackId, modId, tracks) {
       syncNotesWithBot(modId, tracks);
     });
   }
+
+  // Attach event listener for inside-modal CEFR level buttons
+  document.querySelectorAll('.modal-level-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const level = e.currentTarget.getAttribute('data-level');
+      localStorage.setItem('stemos_cefr_level', level);
+      openDrawer(trackId, modId, tracks);
+      showOfflineToast(`Nivel CEFR: ${level}`, `Ajustando la vista de lectura a nivel ${level} (${level === 'A2' ? 'Básico-Intermedio' : 'Técnico Avanzado'}).`, 100, true);
+    });
+  });
 }
 
 function openPhraseDrawer(phraseId, phrases) {
