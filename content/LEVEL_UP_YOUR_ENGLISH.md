@@ -198,5 +198,100 @@ Transforma las siguientes frases informales en expresiones de alto impacto técn
 
 ---
 
-## 🏆 Conclusión
-El dominio de estas estructuras permite a estudiantes, ingenieros y técnicos desenvolverse con naturalidad, seguridad y credibilidad en entornos bilingües de **Nearshoring, Semiconductores, Vehículos Eléctricos y Tecnologías de la Información**.
+## 🚀 CAPÍTULO 7: Frases Nativas "Que No Enseñan en la Escuela" (Real-World Native Spoken English)
+
+En las escuelas tradicionales se enseñan estructuras gramaticales de libro de texto que suenan demasiado formales o acartonadas para el ambiente diario de un equipo técnico o de ingeniería.
+
+### 7.1 Expresiones De Campo vs. Lo Que Te Enseña El Libro
+
+| Lo que te enseñan en la escuela | Lo que realmente dice un nativo en el trabajo | Significado / Contexto |
+| :--- | :--- | :--- |
+| *I understand what you mean.* | **"I hear you." / "I get where you're coming from."** | Entiendo tu punto / empatizo con tu situación. |
+| *That is impossible.* | **"That's a non-starter."** | Esa opción ni siquiera se contempla o no es viable de origen. |
+| *We must do this quickly.* | **"We need to step on the gas."** | Hay que acelerar el ritmo de trabajo. |
+| *I made a mistake.* | **"That was my bad." / "I dropped the ball on that."** | Reconocer un error de forma directa y sin rodeos. |
+| *I agree with your opinion.* | **"I'm with you on that."** | Coincido totalmente contigo. |
+| *Please wait for a moment.* | **"Bear with me for a second."** | Pide paciencia mientras solucionas algo técnico en vivo. |
+
+### 7.2 Modismos de Ingeniería y Resolución de Problemas
+
+- **"Sanity check"**
+  - *Significado:* Una revisión rápida e informal para confirmar que algo no tiene un error absurdo o evidente.
+  - *Ejemplo:* "Let's do a quick sanity check on these calculation parameters before launching the simulation."
+- **"Bench test"**
+  - *Significado:* Probar un componente en el banco de trabajo o entorno aislado antes de instalarlo en producción.
+  - *Ejemplo:* "We ran a bench test on the new inverter board, and it held up fine."
+- **"Gut check"**
+  - *Significado:* Una evaluación rápida basada en la intuición o experiencia previa sobre si algo va a funcionar o no.
+  - *Ejemplo:* "My gut check tells me this thermal threshold is set too low for desert conditions."
+- **"Shed light on [Something]"**
+  - *Significado:* Aclarar o dar contexto sobre un problema confuso.
+  - *Ejemplo:* "Can anyone shed light on why the telemetry service keeps dropping connections at midnight?"
+- **"On the same page"**
+  - *Significado:* Estar alineados y entender las cosas de la misma manera.
+  - *Ejemplo:* "Before we disconnect, let's make sure we're all on the same page regarding tomorrow's deadline."
+
+---
+
+## 🛠️ CAPÍTULO 8: Comunicación en Crisis, Troubleshooting y Soporte Técnico
+
+Durante un incidente en producción o una falla en la línea de ensamble, la claridad y velocidad en el lenguaje previenen caos.
+
+### 8.1 Diagnóstico e Incidentes en Vivo (Incident Response)
+
+- **"Walk me through what happened."**
+  - *Contexto:* Pedir a un técnico o desarrollador la secuencia paso a paso de los eventos previos a la falla.
+  - *Ejemplo:* "Walk me through what happened right before the SMT feeder stopped responding."
+- **"Is there a workaround in place?"**
+  - *Contexto:* Preguntar si existe una solución temporal mientras se resuelve el problema de raíz.
+  - *Ejemplo:* "The main database query is slow. Is there a workaround in place for the regional operators?"
+- **"Root-cause analysis (RCA)"**
+  - *Contexto:* El proceso formal para identificar qué provocó realmente la falla.
+  - *Ejemplo:* "We fixed the hotfix, but we still need to publish a root-cause analysis by tomorrow morning."
+- **"It's a known issue."**
+  - *Contexto:* Confirmar que el bug o falla ya está identificado y registrado en el sistema.
+  - *Ejemplo:* "Don't worry about that minor UI flicker; it's a known issue scheduled for sprint 14."
+
+### 8.2 Negociación de SLA y Tiempos de Respuesta
+
+- **"What's the ETA on the fix?"**
+  - *Contexto:* Preguntar la hora estimada de llegada / resolución de un problema (Estimated Time of Arrival).
+  - *Ejemplo:* "The production line is halted. What's the ETA on the replacement relay?"
+- **"We need to escalate this issue."**
+  - *Contexto:* Pasar el caso a un nivel superior de soporte o gerencia por su severidad.
+  - *Ejemplo:* "Since Tier 1 couldn't resolve the optical link failure, we need to escalate this to Tier 3 engineering."
+
+---
+
+## 🤝 CAPÍTULO 9: Negociación Técnica, Acuerdos y Cultura Nearshoring
+
+En el trabajo con equipos de EE.UU., Canadá y Europa, la etiqueta de reunión (Meeting Etiquette) y la negociación asertiva son fundamentales.
+
+### 9.1 Manejo de Expectativas y Límites (Managing Scope & Expectations)
+
+- **"That's outside our current scope."**
+  - *Contexto:* Decir amablemente que un requerimiento no está dentro del contrato o sprint actual.
+  - *Ejemplo:* "Adding real-time predictive analytics looks great, but that's outside our current scope for Phase 1."
+- **"Let me check our bandwidth."**
+  - *Contexto:* Verificar la disponibilidad de tiempo/recursos del equipo antes de comprometerse con más trabajo.
+  - *Ejemplo:* "I'll check our team's bandwidth for this week and get back to you with a commitment."
+- **"Trade-off"**
+  - *Contexto:* El compromiso o equilibrio entre dos factores (ejemplo: velocidad vs costo).
+  - *Ejemplo:* "Selecting aluminum over carbon fiber is a trade-off between weight reduction and budget."
+
+### 9.2 Acuerdos de Trabajo y Próximos Pasos (Action Items)
+
+- **"Who owns this action item?"**
+  - *Contexto:* Definir el responsable directo de una tarea tras una junta.
+  - *Ejemplo:* "Great meeting. Just to clarify, who owns the action item for updating the AS9100 checklist?"
+- **"Circle back"**
+  - *Contexto:* Volver a retomar un tema más adelante cuando se tenga más información.
+  - *Ejemplo:* "Let's circle back to the firmware architecture once the hardware specs are finalized."
+- **"Take this offline"**
+  - *Contexto:* Sugerir discutir un detalle técnico muy específico fuera de la reunión general para no quitar tiempo a todos.
+  - *Ejemplo:* "This signal routing detail only affects hardware team; let's take this offline after the standup."
+
+---
+
+## 🏆 Conclusión y Próximos Pasos en stemOS
+El dominio de estas estructuras y vocabulario real permite a estudiantes, ingenieros y técnicos desenvolverse con naturalidad, seguridad y credibilidad en entornos bilingües de **Nearshoring, Semiconductores, Vehículos Eléctricos, Tecnologías de la Información y Manufactura Aeroespacial**.
