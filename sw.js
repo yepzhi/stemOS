@@ -1,9 +1,9 @@
 /**
- * stemOS Dev Content Studio — PWA Service Worker (v1.2.1 Relocated Banner to Footer)
+ * stemOS Dev Content Studio — PWA Service Worker (v1.2.2 Prominent Level Switcher & Clean Modal)
  * Enables 100% complete offline caching for 50 modules, readings, native phrases, and assets.
  */
 
-const CACHE_NAME = 'stemos-dev-v1.2.1';
+const CACHE_NAME = 'stemos-dev-v1.2.2';
 
 const ASSETS_TO_CACHE = [
   '/',
@@ -11,10 +11,10 @@ const ASSETS_TO_CACHE = [
   '/dev/',
   '/dev.html',
   '/dev/index.html',
-  '/dev.css?v=1.2.1',
-  '/dev.js?v=1.2.1',
-  '/content/courses.js?v=1.2.1',
-  '/content/phrases_library.js?v=1.2.1',
+  '/dev.css?v=1.2.2',
+  '/dev.js?v=1.2.2',
+  '/content/courses.js?v=1.2.2',
+  '/content/phrases_library.js?v=1.2.2',
   '/content/LEVEL_UP_YOUR_ENGLISH.md',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@600;700;800;900&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'

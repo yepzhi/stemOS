@@ -421,8 +421,18 @@ function renderFilters(tracks, phrases = []) {
   if (!filterContainer) return;
 
   const validSaved = getValidOfflineReadings();
+  const activeLevel = localStorage.getItem('stemos_cefr_level') || 'A2';
 
-  let html = `<button class="filter-btn active" data-track="all"><i class="fa-solid fa-layer-group"></i> Todos los Tracks (${tracks.length})</button>`;
+  let html = `
+    <!-- Prominent CEFR A2/B1 Level Selector Pill -->
+    <div class="level-switcher-bar-pill" style="display:inline-flex; align-items:center; gap:4px; background:rgba(15, 23, 42, 0.9); border:1px solid rgba(56, 189, 248, 0.4); padding:3px 6px; border-radius:14px; margin-right:6px; box-shadow:0 0 15px rgba(56, 189, 248, 0.15);">
+      <span style="font-size:0.72rem; font-weight:700; color:var(--cyan); padding:0 6px; text-transform:uppercase; letter-spacing:0.04em;"><i class="fa-solid fa-language"></i> Nivel CEFR:</span>
+      <button class="level-bar-btn ${activeLevel === 'A2' ? 'active' : ''}" data-level="A2" style="padding:4px 12px; border-radius:10px; font-size:0.78rem; font-weight:700; border:none; cursor:pointer; transition:all 0.25s ease; ${activeLevel === 'A2' ? 'background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; box-shadow:0 0 10px rgba(56, 189, 248, 0.4);' : 'background:transparent; color:var(--text-muted);'}">A2 (Básico-Intermedio)</button>
+      <button class="level-bar-btn ${activeLevel === 'B1' ? 'active' : ''}" data-level="B1" style="padding:4px 12px; border-radius:10px; font-size:0.78rem; font-weight:700; border:none; cursor:pointer; transition:all 0.25s ease; ${activeLevel === 'B1' ? 'background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; box-shadow:0 0 10px rgba(56, 189, 248, 0.4);' : 'background:transparent; color:var(--text-muted);'}">B1 (Técnico Avanzado)</button>
+    </div>
+
+    <button class="filter-btn active" data-track="all"><i class="fa-solid fa-layer-group"></i> Todos los Tracks (${tracks.length})</button>
+  `;
   
   // Add Mis Lecturas Offline Filter Button
   html += `
@@ -448,6 +458,30 @@ function renderFilters(tracks, phrases = []) {
   }
 
   filterContainer.innerHTML = html;
+
+  // Attach event listener for the A2 / B1 Level Bar Buttons inside filters
+  filterContainer.querySelectorAll('.level-bar-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const level = e.currentTarget.getAttribute('data-level');
+      localStorage.setItem('stemos_cefr_level', level);
+      
+      // Update buttons style
+      filterContainer.querySelectorAll('.level-bar-btn').forEach(b => {
+        b.classList.remove('active');
+        b.style.background = 'transparent';
+        b.style.color = 'var(--text-muted)';
+        b.style.boxShadow = 'none';
+      });
+      e.currentTarget.classList.add('active');
+      e.currentTarget.style.background = 'linear-gradient(135deg, var(--cyan), var(--indigo))';
+      e.currentTarget.style.color = '#030508';
+      e.currentTarget.style.boxShadow = '0 0 10px rgba(56, 189, 248, 0.4)';
+
+      filterGridByLevel(level, tracks);
+      showOfflineToast(`Nivel CEFR: ${level}`, `Ajustando vocabulario y lecturas a nivel ${level} (${level === 'A2' ? 'Básico Intermedio' : 'Técnico Avanzado'}).`, 100, true);
+    });
+  });
 
   filterContainer.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
