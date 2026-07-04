@@ -1745,6 +1745,73 @@ Chips used in cars (automotive grade) or planes (aerospace grade) must follow ex
                             { q: "What is 'wire bonding'?", options: ["Welding micro-thin gold/aluminum wires from die pads to package leads", "Tying cables together inside the cleanroom", "Connecting wafers using copper bars", "Using lasers to glue the chip to glass"], answer: 0 },
                             { q: "Why do automotive grade chips require stricter certifications like AEC-Q100?", options: ["To make them cheaper for car buyers", "Because they experience extreme temperatures, vibrations, and failures can be fatal", "So they can connect to wireless networks", "To speed up their manufacturing time"], answer: 1 }
                         ]
+                    },
+                    {
+                        id: "semi-m5-r3",
+                        title: "Advanced Packaging & Data Center Architectures",
+                        duration: "12 min",
+                        content: `
+# Advanced Packaging & Data Center Architectures
+
+Data centers run on semiconductors — but not all chips use the same package. As AI, cloud computing, and hyperscale infrastructure continue to grow, **advanced packaging** has become one of the most critical technologies in the semiconductor industry. The package is no longer just protecting the chip; it has become a critical part of **system performance**.
+
+## Workload-Specific Package Architectures
+
+Different workloads require specialized package architectures:
+
+### 1. AI Accelerators (GPUs & AI ASICs)
+Used by NVIDIA (H100/B200), AMD (MI300), Google (TPU), Amazon (Trainium), Microsoft (Maia).
+- **Typical Packages**: Large fcBGA (Flip-Chip Ball Grid Array), 2.5D Packaging (CoWoS), HBM Integration, Chiplets.
+- **Key Priorities**: Massive memory bandwidth, high power delivery, advanced thermal performance.
+
+### 2. Data Center CPUs
+Used by Intel (Xeon), AMD (EPYC), NVIDIA (Grace).
+- **Typical Packages**: fcBGA, LGA (Land Grid Array), Multi-Die Packages.
+- **Key Specs**: Typically exceed **2,000–6,000+ I/O connections** and handle hundreds of watts of power.
+
+### 3. Networking & Switch ASICs
+Used by Broadcom (Tomahawk), NVIDIA (Spectrum), Cisco (Silicon One), Marvell (Teralynx).
+- **Typical Packages**: Large fcBGA, Co-Packaged Optics (CPO).
+- **Key Specs**: Next-generation AI switches require **800G, 1.6T, and future 3.2T** connectivity.
+
+### 4. Optical Transceivers
+- **Typical Packages**: LGA, Optical Modules, Silicon Photonics Packages.
+- **Used for**: High-speed fiber connectivity, AI cluster networking, and data center interconnects (DCI).
+
+### 5. Power Management & Power Semiconductors
+Used for voltage regulation, power conversion, and AI rack power delivery.
+- **Typical Packages**: QFN, Power QFN, LGA, Power Modules.
+- **Industry Challenge**: Next-generation AI racks are approaching **megawatt-scale power consumption**, making power packaging a strategic bottleneck.
+
+## Future Trends in Advanced Packaging
+
+As AI infrastructure scales, advanced packaging is becoming just as important as the silicon itself:
+- **Larger fcBGA substrates**: Accommodating multiple silicon dies on a single package.
+- **HBM (High Bandwidth Memory)**: Stacking DRAM dies vertically using 3D TSVs (Through-Silicon Vias).
+- **Chiplet Integration**: Breaking monolithic chips into smaller, specialized dies connected via high-speed interconnects (UCIe).
+- **Silicon Photonics & Co-Packaged Optics (CPO)**: Bringing optical optics directly into the chip package to reduce power consumption and latency.
+- **OSAT Expansion**: Offshore Assembly and Test facilities (including nearshoring facilities in North America) are investing heavily in advanced packaging lines.
+
+---
+
+> **Key Takeaway**: Advanced packaging (2.5D/3D, HBM, Chiplets, CPO, fcBGA) is transforming chip design. The package is no longer just a protective shell — it directly determines AI and data center performance.
+`,
+                        vocabulary: [
+                            { en: "Advanced Packaging", es: "Empaquetado avanzado", definition: "High-density packaging integrating multiple dies, 2.5D/3D structures, or HBM" },
+                            { en: "fcBGA (Flip-Chip Ball Grid Array)", es: "fcBGA", definition: "High-density package using solder bumps and a ball grid array substrate" },
+                            { en: "HBM (High Bandwidth Memory)", es: "Memoria de alto ancho de banda", definition: "3D-stacked DRAM offering ultra-fast memory access for AI chips" },
+                            { en: "Chiplet", es: "Chiplet / Die especializado", definition: "Small modular silicon die combined with others in a single package" },
+                            { en: "Silicon Photonics", es: "Fotónica de silicio", definition: "Using light/optics instead of electricity to transfer data on silicon" },
+                            { en: "CPO (Co-Packaged Optics)", es: "Óptica empaquetada conjuntamente", definition: "Integrating optical interfaces directly onto the semiconductor package" },
+                            { en: "OSAT", es: "OSAT", definition: "Outsourced Semiconductor Assembly and Test company" },
+                            { en: "Power Packaging", es: "Empaquetado de potencia", definition: "Packaging designed for high-current voltage regulation and thermal efficiency" }
+                        ],
+                        questions: [
+                            { q: "Why has advanced packaging become so critical for AI accelerators and data center CPUs?", options: ["It makes chips look bigger", "It is no longer just a protective shell — it directly determines memory bandwidth, power delivery, and system performance", "It eliminates the need for cleanrooms", "It allows chips to be made out of plastic"], answer: 1 },
+                            { q: "What is HBM (High Bandwidth Memory)?", options: ["A type of optical cable", "3D-stacked DRAM offering massive memory bandwidth for GPUs and AI ASICs", "A soft rubber coating for wafers", "A brand of power supply"], answer: 1 },
+                            { q: "What is Co-Packaged Optics (CPO)?", options: ["Eyeglasses worn by cleanroom technicians", "Integrating optical interfaces directly into the chip package for high-speed connectivity", "Using cameras to inspect chips", "A type of photolithography laser"], answer: 1 },
+                            { q: "What is a 'Chiplet' architecture?", options: ["A single tiny chip used only in watches", "Breaking a large monolithic processor into smaller specialized dies in one package", "A type of potato snack", "A defect found during wafer testing"], answer: 1 }
+                        ]
                     }
                 ]
             },
