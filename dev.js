@@ -770,42 +770,7 @@ function openDrawer(trackId, modId, tracks) {
   const ngssCode = mod.ngss || track.ngss || 'HS-PS1-1 / HS-PS3-2 (Matter & Energy in Chips)';
   const industrySource = mod.industry || track.industry || 'TSMC-GCU Manufacturing Specialist Intensive (MSI)';
 
-  let contentHtml = `
-    <div class="accreditation-banner">
-      <h3 class="font-head" style="color:var(--gold); font-size:1.1rem; display:flex; align-items:center; gap:8px;">
-        <i class="fa-solid fa-graduation-cap"></i> Alineación Curricular y Estándares de Empleabilidad
-      </h3>
-      <p style="font-size:0.84rem; color:var(--text-muted); margin-top:4px;">
-        Este módulo cuenta con rigurosa trazabilidad educativa y de la industria para validación en escuelas, universidades e industrias de Nearshoring.
-      </p>
-
-      <div class="accred-grid">
-        <div class="accred-box">
-          <div class="accred-title" style="color:var(--emerald);"><i class="fa-solid fa-award"></i> SEP CONOCER (México)</div>
-          <div class="accred-desc">${conocerCode}</div>
-          <div class="accred-sub">Estándar Nacional de Competencia Laboral</div>
-        </div>
-
-        <div class="accred-box">
-          <div class="accred-title" style="color:var(--cyan);"><i class="fa-solid fa-flask"></i> NGSS (EE.UU. / Global)</div>
-          <div class="accred-desc">${ngssCode}</div>
-          <div class="accred-sub">Next Generation Science Standards</div>
-        </div>
-
-        <div class="accred-box">
-          <div class="accred-title" style="color:var(--gold);"><i class="fa-solid fa-industry"></i> Origen de Datos Industria</div>
-          <div class="accred-desc">${industrySource}</div>
-          <div class="accred-sub">Réplica Curricular de Fabs de Semiconductores</div>
-        </div>
-
-        <div class="accred-box">
-          <div class="accred-title" style="color:var(--purple);"><i class="fa-solid fa-certificate"></i> Credencial Abierta</div>
-          <div class="accred-desc">Open Badges 3.0 (W3C / 1EdTech)</div>
-          <div class="accred-sub">Verifiable Credential portátil para LinkedIn</div>
-        </div>
-      </div>
-    </div>
-  `;
+  let contentHtml = '';
 
   if (mod.readings && mod.readings.length > 0) {
     mod.readings.forEach((r, idx) => {
@@ -875,6 +840,34 @@ function openDrawer(trackId, modId, tracks) {
         <button id="btn-sync-bot" class="explore-btn" style="background:linear-gradient(135deg, var(--cyan), var(--emerald)); color:#000; padding:8px 16px; font-weight:700;">
           <i class="fa-solid fa-robot"></i> Enviar al Bot Socrático
         </button>
+      </div>
+    </div>
+
+    <!-- Accreditation & Standards Footer Banner (Relocated to bottom) -->
+    <div class="accreditation-banner" style="margin-top:32px; margin-bottom:0; padding:16px 20px;">
+      <h3 class="font-head" style="color:var(--gold); font-size:0.95rem; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-graduation-cap"></i> Acreditación & Estándares de Empleabilidad
+      </h3>
+      <div class="accred-grid" style="margin-top:10px; gap:10px;">
+        <div class="accred-box" style="padding:10px;">
+          <div class="accred-title" style="color:var(--emerald); font-size:0.72rem;"><i class="fa-solid fa-award"></i> SEP CONOCER</div>
+          <div class="accred-desc" style="font-size:0.8rem;">${conocerCode}</div>
+        </div>
+
+        <div class="accred-box" style="padding:10px;">
+          <div class="accred-title" style="color:var(--cyan); font-size:0.72rem;"><i class="fa-solid fa-flask"></i> NGSS Global</div>
+          <div class="accred-desc" style="font-size:0.8rem;">${ngssCode}</div>
+        </div>
+
+        <div class="accred-box" style="padding:10px;">
+          <div class="accred-title" style="color:var(--gold); font-size:0.72rem;"><i class="fa-solid fa-industry"></i> Origen Industria</div>
+          <div class="accred-desc" style="font-size:0.8rem;">${industrySource}</div>
+        </div>
+
+        <div class="accred-box" style="padding:10px;">
+          <div class="accred-title" style="color:var(--purple); font-size:0.72rem;"><i class="fa-solid fa-certificate"></i> Credencial</div>
+          <div class="accred-desc" style="font-size:0.8rem;">Open Badges 3.0 (W3C)</div>
+        </div>
       </div>
     </div>
   `;
