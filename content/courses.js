@@ -40,6 +40,8 @@ var LXP_COURSES = {
                         title: "What Is a Network?",
                         duration: "10 min",
                         content: `
+> **Industry Certification Note**: The concepts in this module are directly aligned with the **CompTIA Network+ (N10-008)** certification — recognized as the #1 foundational credential for digital infrastructure engineering in global companies (Cisco, AWS, Microsoft).
+
 # What Is a Network?
 
 Every time you send a message on your phone, watch a video online, or check your email, you are using a **network**. But what exactly is a network?
@@ -94,7 +96,7 @@ Smart networks are essential for modern technologies like the **Internet of Thin
 
 ---
 
-> **Key Takeaway**: A network connects devices so they can share data. Understanding the basic components — devices, switches, routers, servers, and protocols — is the foundation for everything you will learn in this course.
+> **Key Takeaway**: A network connects devices so they can share data. Understanding the basic components — devices, switches, routers, servers, and protocols — is the foundation for everything you will learn in this course, directly aligned with **CompTIA Network+** and **ISO 27001** audit standards.
 `,
                         vocabulary: [
                             { en: "Network", es: "Red", definition: "A group of connected devices that share information" },
@@ -1123,6 +1125,8 @@ This is exactly why you are taking this course — combining cybersecurity knowl
                         title: "What Is a Semiconductor?",
                         duration: "10 min",
                         content: `
+> **Global Chip Industry Note**: The technical standards and vocabulary in this module are modeled directly from **TSMC (Taiwan Semiconductor Manufacturing Co.)** Fab 18 training specifications and **SEMI (Semiconductor Equipment and Materials International)** certification standards — essential for engineering roles in North American chip nearshoring facilities.
+
 # What Is a Semiconductor?
 
 Every electronic device you use — your phone, your computer, your car — contains **semiconductors**. These tiny components are the foundation of modern technology. In this reading, you'll learn what semiconductors are, why they matter, and why Mexico is becoming a key player in their manufacturing.

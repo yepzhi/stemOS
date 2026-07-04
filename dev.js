@@ -80,6 +80,52 @@ function initStudio() {
   setupSearch(tracks);
   setupDrawer();
   setupOfflineController(tracks, phrases);
+  setupLevelSwitcher(tracks, phrases);
+}
+
+function setupLevelSwitcher(tracks, phrases) {
+  const btnA2 = document.getElementById('btn-level-a2');
+  const btnB1 = document.getElementById('btn-level-b1');
+  if (!btnA2 || !btnB1) return;
+
+  const currentLevel = localStorage.getItem('stemos_cefr_level') || 'A2';
+  setActiveLevelButton(currentLevel);
+
+  [btnA2, btnB1].forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const selected = e.currentTarget.getAttribute('data-level');
+      localStorage.setItem('stemos_cefr_level', selected);
+      setActiveLevelButton(selected);
+      filterGridByLevel(selected, tracks);
+      showOfflineToast(`Nivel CEFR Actualizado: ${selected}`, `Ajustando vocabulario, lecturas e inglés de Nearshoring a nivel ${selected}.`, 100, true);
+    });
+  });
+}
+
+function setActiveLevelButton(level) {
+  const btnA2 = document.getElementById('btn-level-a2');
+  const btnB1 = document.getElementById('btn-level-b1');
+  if (!btnA2 || !btnB1) return;
+
+  if (level === 'B1') {
+    btnB1.classList.add('active');
+    btnA2.classList.remove('active');
+  } else {
+    btnA2.classList.add('active');
+    btnB1.classList.remove('active');
+  }
+}
+
+function filterGridByLevel(level, tracks) {
+  // Update badges & metadata dynamically
+  document.querySelectorAll('.module-card:not(.phrase-card)').forEach(card => {
+    const trackId = card.getAttribute('data-track-id');
+    const track = tracks.find(t => t.id === trackId);
+    const modTag = card.querySelector('.module-tag');
+    if (modTag && track) {
+      modTag.innerText = `${track.title} (${level})`;
+    }
+  });
 }
 
 function setupOfflineController(tracks, phrases) {
@@ -552,22 +598,24 @@ function renderGrid(tracks, phrases = []) {
             <div class="card-body">
               <h3 class="card-title-es">${mod.titleES || mod.title}</h3>
               <p class="card-title-en">${mod.title}</p>
-              
-              <div class="standards-badge-group">
-                <span class="std-pill std-conocer" title="Estándar SEP CONOCER México"><i class="fa-solid fa-award"></i> SEP ${conocerCode}</span>
-                <span class="std-pill std-ngss" title="Estándar Internacional Next Generation Science Standards"><i class="fa-solid fa-flask"></i> NGSS ${ngssCode}</span>
-                <span class="std-pill std-industry" title="Alineación a Currrículo y Estándares de la Industria"><i class="fa-solid fa-industry"></i> ${industrySource}</span>
-                <span class="std-pill std-badges-3" title="Micro-credencial Abierta Abierta Verificable W3C/1EdTech"><i class="fa-solid fa-certificate"></i> Open Badges 3.0</span>
-              </div>
             </div>
 
-            <div class="card-footer">
-              <div class="reading-count">
-                <i class="fa-solid fa-file-lines"></i> ${statusLabel}
+            <div class="card-footer" style="flex-direction:column; align-items:stretch; gap:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="reading-count">
+                  <i class="fa-solid fa-file-lines"></i> ${statusLabel}
+                </div>
+                <button class="explore-btn">
+                  Explorar <i class="fa-solid fa-arrow-right"></i>
+                </button>
               </div>
-              <button class="explore-btn">
-                Explorar <i class="fa-solid fa-arrow-right"></i>
-              </button>
+
+              <!-- Standards Badges at the bottom in compact micro-pills -->
+              <div class="standards-badge-group" style="margin:0; padding-top:10px; border-top:1px solid rgba(255,255,255,0.04);">
+                <span class="std-pill std-conocer" title="Estándar SEP CONOCER México"><i class="fa-solid fa-award"></i> SEP ${conocerCode}</span>
+                <span class="std-pill std-ngss" title="Estándar Internacional Next Generation Science Standards"><i class="fa-solid fa-flask"></i> NGSS ${ngssCode}</span>
+                <span class="std-pill std-industry" title="Alineación a Currículo e Industria"><i class="fa-solid fa-industry"></i> ${industrySource}</span>
+              </div>
             </div>
           </div>
         `;

@@ -137,15 +137,37 @@ body {
 }
 
 /* Offline Controls Card & Toggle Switch */
-.offline-card {
+/* CEFR Level Switcher (A2 / B1) */
+.level-switcher-pill {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(15, 23, 42, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 8px 14px;
-  border-radius: 14px;
-  backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.level-btn {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  padding: 4px 10px;
+  border-radius: 7px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: var(--font-sans);
+}
+
+.level-btn:hover {
+  color: #fff;
+}
+
+.level-btn.active {
+  background: linear-gradient(135deg, var(--cyan), var(--indigo));
+  color: #030508;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
 }
 
 .offline-pill {
@@ -413,14 +435,15 @@ input:checked + .slider:before {
 }
 
 .std-pill {
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 8px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 6px;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  letter-spacing: 0.03em;
+  gap: 4px;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
 }
 
 .std-conocer {
@@ -831,16 +854,20 @@ input:checked + .slider:before {
   gap: 5px;
 }
 
-/* Modal Reader Drawer */
+/* Centered Liquid Glass Modal Reader (JSweb Style) */
 .drawer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
+  background: rgba(3, 5, 8, 0.82);
+  backdrop-filter: blur(16px) saturate(180%);
   z-index: 100;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
 .drawer-backdrop.active {
@@ -849,23 +876,25 @@ input:checked + .slider:before {
 }
 
 .drawer-panel {
-  position: fixed;
-  top: 0;
-  right: -750px;
-  width: 750px;
-  max-width: 90vw;
-  height: 100vh;
-  background: #0b1120;
-  border-left: 1px solid var(--border-glass);
-  z-index: 101;
-  box-shadow: -20px 0 50px rgba(0, 0, 0, 0.7);
-  transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  width: 960px;
+  max-width: 95vw;
+  max-height: 90vh;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(12, 18, 32, 0.92) 40%, rgba(7, 11, 20, 0.98) 100%);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 28px;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  transform: scale(0.92) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .drawer-backdrop.active .drawer-panel {
-  right: 0;
+  transform: scale(1) translateY(0);
 }
 
 .drawer-header {
