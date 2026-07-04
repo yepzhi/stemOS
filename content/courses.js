@@ -23,6 +23,7 @@ var LXP_COURSES = {
         titleEN: "Smart Networks & Cybersecurity",
         level: "A2-B1",
         status: "full", // full content
+        totalModules: 10,
         standard: "CONOCER EC1290",
         modules: [
             // -----------------------------------------------------------------
@@ -1103,8 +1104,8 @@ This is exactly why you are taking this course — combining cybersecurity knowl
         status: "full",
         description: "Master the English vocabulary for semiconductor fabrication — from silicon wafers to FinFET transistors. Aligned with Mexico's nearshoring chip manufacturing boom.",
         descriptionES: "Domina el vocabulario en inglés para la fabricación de semiconductores — desde obleas de silicio hasta transistores FinFET.",
-        totalModules: 6,
-        estimatedHours: 12,
+        totalModules: 10,
+        estimatedHours: 20,
         prerequisites: ["esp-foundation"],
         standard: "CONOCER EC1290",
         conocer: "EC1290 (Inspección de Procesos de Alta Tecnología)",

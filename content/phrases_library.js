@@ -315,6 +315,298 @@ var STEMOS_PHRASES = [
     exampleEN: "With your stemOS semiconductor certificate, you'll hit the ground running on the wafer fabrication team.",
     exampleES: "Con tu certificado stemOS en semiconductores, arrancarás a toda velocidad en el equipo de fabricación de obleas.",
     pronunciationHint: "Cadencia ágil: /hɪt ðə graʊnd ˈrʌnɪŋ/."
+  },
+
+  // =========================================================================
+  // CATEGORÍA 6: CAPÍTULO 7 — FRASES QUE NO ENSEÑAN EN LA ESCUELA (NATIVE REAL-WORLD)
+  // =========================================================================
+  {
+    id: "phr-non-starter",
+    phrase: "That's a non-starter",
+    schoolVsNative: {
+      school: "That is impossible or not allowed.",
+      native: "That's a non-starter."
+    },
+    meaningES: "Eso es inviable desde el origen / Ni siquiera es una opción",
+    explanation: "Se usa para descartar una propuesta que viola normas de seguridad, presupuestos o especificaciones de cliente desde el principio.",
+    category: "workplace",
+    exampleEN: "Bypassing cleanroom ISO 5 air filters during chip fabrication is a non-starter.",
+    exampleES: "Omitir los filtros de aire ISO 5 del cuarto limpio durante la fabricación de chips es inviable desde el origen.",
+    pronunciationHint: "Cadencia rápida: /ðæts ə nɒnˈstɑːrtər/."
+  },
+  {
+    id: "phr-step-on-gas",
+    phrase: "We need to step on the gas",
+    schoolVsNative: {
+      school: "We must work much faster.",
+      native: "We need to step on the gas."
+    },
+    meaningES: "Acelerarle al ritmo / Pisar el acelerador",
+    explanation: "Metáfora automotriz para acelerar el desarrollo o entrega de un sprint técnico.",
+    category: "workplace",
+    exampleEN: "With the Boeing audit coming up in two weeks, we need to step on the gas with the AS9100 quality documentation.",
+    exampleES: "Con la auditoría de Boeing en dos semanas, necesitamos pisar el acelerador con la documentación de calidad AS9100.",
+    pronunciationHint: "Ritmo fluido: /stɛp ɒn ðə ɡæs/."
+  },
+  {
+    id: "phr-dropped-ball",
+    phrase: "That was my bad, I dropped the ball",
+    schoolVsNative: {
+      school: "I made a serious mistake.",
+      native: "That was my bad, I dropped the ball."
+    },
+    meaningES: "Fue mi error, se me fue de las manos / cometí un descuido",
+    explanation: "Una forma transparente y madura de asumir responsabilidad por un fallo menor en el trabajo.",
+    category: "conflict_resolution",
+    exampleEN: "I dropped the ball on updating the firmware repository link before the release build. Fixing it now.",
+    exampleES: "Fue mi error no actualizar el enlace del repositorio de firmware antes de la versión final. Lo arreglo ahora mismo.",
+    pronunciationHint: "Pronuncia 'dropped-the-ball': /drɒpt ðə bɔːl/."
+  },
+  {
+    id: "phr-bear-with-me",
+    phrase: "Bear with me for a second",
+    schoolVsNative: {
+      school: "Please wait a moment while I work.",
+      native: "Bear with me for a second."
+    },
+    meaningES: "Tenme un poco de paciencia un segundo / Acompáñame un momento",
+    explanation: "Pedir tiempo en vivo mientras abres una presentación, buscas un archivo o corriges un script en una pantalla compartida.",
+    category: "small_talk",
+    exampleEN: "Bear with me for a second while I share the wafer inspection telemetry dashboard.",
+    exampleES: "Ténganme paciencia un segundo mientras comparto el panel de telemetría de inspección de obleas.",
+    pronunciationHint: "Enlace suave: /bɛər wɪð miː/."
+  },
+  {
+    id: "phr-sanity-check",
+    phrase: "Let me do a quick sanity check",
+    schoolVsNative: {
+      school: "I will review if this makes sense.",
+      native: "Let me do a quick sanity check."
+    },
+    meaningES: "Déjame hacer una revisión rápida de coherencia / comprobación de cordura",
+    explanation: "Revisar parámetros o números para asegurar que no tengan un error obvio antes de simular o enviar a fábrica.",
+    category: "technical_debate",
+    exampleEN: "Let me do a quick sanity check on these thermal resistance values before pushing the simulation.",
+    exampleES: "Déjame hacer una revisión rápida de coherencia a estos valores de resistencia térmica antes de lanzar la simulación.",
+    pronunciationHint: "Ritmo: /sænəti tʃɛk/."
+  },
+  {
+    id: "phr-bench-test",
+    phrase: "We ran a bench test on the prototype",
+    schoolVsNative: {
+      school: "We tested the part in the laboratory.",
+      native: "We ran a bench test on the prototype."
+    },
+    meaningES: "Corrimos una prueba de banco en el prototipo",
+    explanation: "Probar un componente electrónico o mecánico en la mesa de trabajo de ingeniería antes de colocarlo en el sistema completo.",
+    category: "technical_debate",
+    exampleEN: "We ran a bench test on the new inverter board, and it handled 800V without thermal degradation.",
+    exampleES: "Hicimos una prueba de banco a la nueva tarjeta inversora y soportó 800V sin degradación térmica.",
+    pronunciationHint: "Énfasis en 'bench': /bɛntʃ tɛst/."
+  },
+  {
+    id: "phr-gut-check",
+    phrase: "My gut check tells me this is wrong",
+    schoolVsNative: {
+      school: "My intuition says this has errors.",
+      native: "My gut check tells me this is wrong."
+    },
+    meaningES: "Mi intuición técnica me dice que algo no cuadra",
+    explanation: "Usar la intuición perfeccionada por la experiencia para detectar anomalías antes de tener los reportes completos.",
+    category: "technical_debate",
+    exampleEN: "My gut check tells me this power density calculation is too high for a standard QFN package.",
+    exampleES: "Mi intuición técnica me dice que este cálculo de densidad de potencia es muy alto para un empaque QFN estándar.",
+    pronunciationHint: "Pronuncia 'gut': /ɡʌt tʃɛk/."
+  },
+  {
+    id: "phr-shed-light",
+    phrase: "Can anyone shed light on this defect?",
+    schoolVsNative: {
+      school: "Can anyone explain this problem?",
+      native: "Can anyone shed light on this defect?"
+    },
+    meaningES: "¿Alguien puede dar luz / aclarar este defecto?",
+    explanation: "Pedir contexto o explicación sobre una falla poco común o desconocida en producción.",
+    category: "technical_debate",
+    exampleEN: "Can anyone shed light on why the optical transceivers are experiencing high bit error rates at 800G?",
+    exampleES: "¿Alguien puede dar luz sobre por qué los transceptores ópticos están experimentando altas tasas de error de bits a 800G?",
+    pronunciationHint: "Fluido: /ʃɛd laɪt/."
+  },
+
+  // =========================================================================
+  // CATEGORÍA 7: CAPÍTULO 8 — TROUBLESHOOTING & INCIDENTES (CRISIS MANAGEMENT)
+  // =========================================================================
+  {
+    id: "phr-walk-me-through",
+    phrase: "Walk me through what happened",
+    schoolVsNative: {
+      school: "Explain step by step what you did.",
+      native: "Walk me through what happened."
+    },
+    meaningES: "Guíame paso a paso por lo que sucedió",
+    explanation: "Pedir la reconstrucción cronológica de los hechos antes de una falla en el servidor o línea de ensamble.",
+    category: "conflict_resolution",
+    exampleEN: "Walk me through what happened right before the robotic arm lost calibration on the SMT line.",
+    exampleES: "Guíame paso a paso por lo que pasó justo antes de que el brazo robótico perdiera la calibración en la línea SMT.",
+    pronunciationHint: "Conecta 'walk-me-through': /wɔːk miː θruː/."
+  },
+  {
+    id: "phr-workaround",
+    phrase: "Is there a temporary workaround in place?",
+    schoolVsNative: {
+      school: "Is there a temporary solution?",
+      native: "Is there a temporary workaround in place?"
+    },
+    meaningES: "¿Hay alguna solución temporal o rodeos implementados?",
+    explanation: "Preguntar si se creó un baipás temporal para mantener operando la planta mientras se arregla el problema de raíz.",
+    category: "conflict_resolution",
+    exampleEN: "The automated optical inspection server crashed, but is there a manual workaround in place?",
+    exampleES: "El servidor de inspección óptica automatizada falló, pero ¿hay alguna solución temporal manual en marcha?",
+    pronunciationHint: "Palabra clave 'workaround': /ˈwɜːrkəraʊnd/."
+  },
+  {
+    id: "phr-root-cause",
+    phrase: "We need a full root-cause analysis (RCA)",
+    schoolVsNative: {
+      school: "We must study why the primary failure happened.",
+      native: "We need a full root-cause analysis (RCA)."
+    },
+    meaningES: "Necesitamos un análisis completo de causa raíz",
+    explanation: "Metodología estándar en calidad (AS9100/ISO 9001) para investigar qué desencadenó el problema.",
+    category: "metrics",
+    exampleEN: "We contained the leak, but the aerospace client requires a full root-cause analysis by Friday.",
+    exampleES: "Contuvimos la fuga, pero el cliente aeroespacial requiere un análisis completo de causa raíz para el viernes.",
+    pronunciationHint: "Acrónimo 'R-C-A': /ruːt kɔːz əˈnæləsɪs/."
+  },
+  {
+    id: "phr-known-issue",
+    phrase: "Don't worry, it's a known issue",
+    schoolVsNative: {
+      school: "We already know about this bug.",
+      native: "Don't worry, it's a known issue."
+    },
+    meaningES: "No te preocupes, es un problema ya identificado",
+    explanation: "Tranquiliza a un técnico o cliente confirmando que la falla ya está registrada en el backlog para su parche.",
+    category: "conflict_resolution",
+    exampleEN: "The minor voltage fluctuation on pin 4 is a known issue being addressed in the next firmware patch.",
+    exampleES: "La fluctuación menor de voltaje en el pin 4 es un problema ya identificado que se corregirá en el siguiente parche.",
+    pronunciationHint: "Suena como 'known-issue': /noʊn ˈɪʃuː/."
+  },
+  {
+    id: "phr-eta-fix",
+    phrase: "What's the ETA on the fix?",
+    schoolVsNative: {
+      school: "What time will the repair finish?",
+      native: "What's the ETA on the fix?"
+    },
+    meaningES: "¿Cuál es el tiempo estimado de entrega / solución?",
+    explanation: "Pregunta directa por el horario o minutos faltantes para resolver un fallo en producción (ETA = Estimated Time of Arrival).",
+    category: "workplace",
+    exampleEN: "The CNC milling machine motor overheated. What's the ETA on the fix?",
+    exampleES: "El motor de la fresadora CNC se sobrecalentó. ¿Cuál es el tiempo estimado para repararlo?",
+    pronunciationHint: "Pronuncia 'E-T-A': /iː tiː eɪ ɒn ðə fɪks/."
+  },
+  {
+    id: "phr-escalate",
+    phrase: "We need to escalate this to Tier 3 support",
+    schoolVsNative: {
+      school: "We must send this problem to higher engineers.",
+      native: "We need to escalate this to Tier 3 support."
+    },
+    meaningES: "Necesitamos escalar este problema al soporte de Nivel 3",
+    explanation: "Transferir un incidente crítico que sobrepasa los permisos o conocimientos del soporte inicial.",
+    category: "conflict_resolution",
+    exampleEN: "Since local diagnostics didn't resolve the optical link drop, we need to escalate this to Tier 3 support.",
+    exampleES: "Dado que el diagnóstico local no resolvió la caída del enlace óptico, debemos escalar esto a soporte de Nivel 3.",
+    pronunciationHint: "Énfasis en 'escalate': /ˈɛskəleɪt/."
+  },
+
+  // =========================================================================
+  // CATEGORÍA 8: CAPÍTULO 9 — NEGOCIACIÓN Y NEARSHORING (MEETING ETIQUETTE)
+  // =========================================================================
+  {
+    id: "phr-outside-scope",
+    phrase: "That's outside our current scope",
+    schoolVsNative: {
+      school: "We cannot do that extra work in this contract.",
+      native: "That's outside our current scope."
+    },
+    meaningES: "Eso está fuera de nuestro alcance actual",
+    explanation: "Poner un límite profesional amigable cuando un cliente o jefe pide tareas no contempladas en el plan original.",
+    category: "workplace",
+    exampleEN: "Redesigning the entire battery enclosure is great, but that's outside our current scope for Phase 1.",
+    exampleES: "Rediseñar todo el compartimento de la batería es genial, pero está fuera de nuestro alcance actual para la Fase 1.",
+    pronunciationHint: "Palabra clave 'scope': /aʊtˈsaɪd aʊər ˈkʌrənt skoʊp/."
+  },
+  {
+    id: "phr-check-bandwidth",
+    phrase: "Let me check our team's bandwidth",
+    schoolVsNative: {
+      school: "I will check if my team has time to work.",
+      native: "Let me check our team's bandwidth."
+    },
+    meaningES: "Déjame verificar la disponibilidad / carga de trabajo de nuestro equipo",
+    explanation: "Usar 'bandwidth' (ancho de banda) para referirse a la capacidad de tiempo y energía humana de los ingenieros.",
+    category: "workplace",
+    exampleEN: "I'll check our engineering team's bandwidth for this week and get back to you with a commitment.",
+    exampleES: "Verificaré la disponibilidad de nuestro equipo de ingeniería para esta semana y te respondo con un compromiso.",
+    pronunciationHint: "Término técnico 'bandwidth': /ˈbændwɪdtθ/."
+  },
+  {
+    id: "phr-trade-off",
+    phrase: "It's a trade-off between weight and cost",
+    schoolVsNative: {
+      school: "It is a compromise of two things.",
+      native: "It's a trade-off between weight and cost."
+    },
+    meaningES: "Es un compromiso / un intercambio equilibrado entre dos factores",
+    explanation: "Concepto central de la ingeniería: ceder en un aspecto (ej. costo) para ganar en otro (ej. resistencia térmica).",
+    category: "technical_debate",
+    exampleEN: "Choosing titanium over aluminum is a trade-off between weight reduction and material cost.",
+    exampleES: "Elegir titanio en lugar de aluminio es un compromiso equilibrado entre reducción de peso y costo de material.",
+    pronunciationHint: "Pronuncia 'trade-off': /ˈtreɪd ɒf/."
+  },
+  {
+    id: "phr-action-item",
+    phrase: "Who owns this action item?",
+    schoolVsNative: {
+      school: "Who is responsible for this task?",
+      native: "Who owns this action item?"
+    },
+    meaningES: "¿Quién es el responsable directo de esta tarea?",
+    explanation: "Definir claridad absoluta al cerrar una junta corporativa para que los pendientes no queden flotando.",
+    category: "workplace",
+    exampleEN: "Great sync team. Who owns the action item for updating the AS9100 inspection checklist?",
+    exampleES: "Excelente junta equipo. ¿Quién es el responsable directo de actualizar la lista de cotejo de inspección AS9100?",
+    pronunciationHint: "Enlace: /uː oʊnz ðɪs ˈækʃən ˈaɪtəm/."
+  },
+  {
+    id: "phr-circle-back",
+    phrase: "Let's circle back to this later",
+    schoolVsNative: {
+      school: "We will talk about this point again later.",
+      native: "Let's circle back to this later."
+    },
+    meaningES: "Retomemos esto más adelante",
+    explanation: "Establecer que un punto importante se volverá a analizar cuando existan más datos o concluya otro módulo.",
+    category: "workplace",
+    exampleEN: "Let's circle back to the micro-inverter topology once we receive the thermal test results.",
+    exampleES: "Retomemos la topología del microinversor más adelante una vez que recibamos los resultados de las pruebas térmicas.",
+    pronunciationHint: "Pronuncia 'circle-back': /ˈsɜːrkl bæk/."
+  },
+  {
+    id: "phr-take-offline",
+    phrase: "Let me take this offline with Sarah",
+    schoolVsNative: {
+      school: "We will talk about this privately outside the meeting.",
+      native: "Let me take this offline with Sarah."
+    },
+    meaningES: "Déjame tratar este punto en privado / fuera de la reunión con Sarah",
+    explanation: "Desviar una discusión técnica muy detallada a una llamada de dos personas para no quitar tiempo a los demás asistentes.",
+    category: "small_talk",
+    exampleEN: "This signal integrity detail only affects the PCB layout team; let me take this offline with Sarah after the call.",
+    exampleES: "Este detalle de integridad de señal solo afecta al equipo de diseño de PCB; déjame tratarlo fuera de la reunión con Sarah.",
+    pronunciationHint: "Énfasis en 'offline': /teɪk ðɪs ˌɒfˈlaɪn/."
   }
 ];
 
