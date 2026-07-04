@@ -823,39 +823,51 @@ function openDrawer(trackId, modId, tracks) {
 
   if (mod.readings && mod.readings.length > 0) {
     mod.readings.forEach((r, idx) => {
+      const isFirst = (idx === 0);
+      const formattedText = renderMarkdownWithVocabulary(r.content || 'Sin contenido de lectura disponible.', r.vocabulary || []);
+
       contentHtml += `
-        <div style="margin-bottom: 28px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; flex-wrap:wrap; gap:8px;">
-            <h3 class="font-head" style="color:var(--cyan); font-size:1.2rem;">Lectura ${idx+1}: ${r.title}</h3>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span class="cefr-badge-inline" style="font-size:0.72rem; font-weight:800; padding:3px 8px; border-radius:6px; background:${activeLevel==='A2'?'rgba(56,189,248,0.2)':'rgba(168,85,247,0.2)'}; color:${activeLevel==='A2'?'var(--cyan)':'var(--purple)'}; border:1px solid ${activeLevel==='A2'?'rgba(56,189,248,0.4)':'rgba(168,85,247,0.4)'};">
+        <!-- Collapsible Reading Accordion -->
+        <div class="reading-accordion ${isFirst ? 'open' : ''}" id="accordion-reading-${idx}">
+          <div class="reading-accordion-header" onclick="this.parentElement.classList.toggle('open')">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span style="font-size:0.85rem; font-weight:800; color:var(--cyan); background:rgba(56,189,248,0.15); width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;">${idx+1}</span>
+              <h3 class="font-head" style="color:#fff; font-size:1.1rem; margin:0;">${r.title}</h3>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="cefr-badge-inline" style="font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:6px; background:${activeLevel==='A2'?'rgba(56,189,248,0.2)':'rgba(168,85,247,0.2)'}; color:${activeLevel==='A2'?'var(--cyan)':'var(--purple)'}; border:1px solid ${activeLevel==='A2'?'rgba(56,189,248,0.4)':'rgba(168,85,247,0.4)'};">
                 Modo ${activeLevel}
               </span>
-              <span style="font-size:0.8rem; background:rgba(255,255,255,0.06); padding:4px 10px; border-radius:8px; color:var(--text-dim);">${r.duration || '10 min'}</span>
+              <span style="font-size:0.78rem; background:rgba(255,255,255,0.06); padding:4px 8px; border-radius:6px; color:var(--text-dim);">${r.duration || '10 min'}</span>
+              <div class="reading-accordion-toggle-icon"><i class="fa-solid fa-chevron-down"></i></div>
             </div>
           </div>
-          <div class="reader-content">
-            ${formatMarkdown(r.content || 'Sin contenido de lectura disponible.')}
+
+          <div class="reading-accordion-body">
+            <div class="reader-content">
+              ${formattedText}
+            </div>
+
+            ${(r.vocabulary && r.vocabulary.length > 0) ? `
+              <h4 class="font-head" style="margin-top:24px; color:var(--gold); font-size:1.05rem;"><i class="fa-solid fa-book"></i> Glosario y Vocabulario Técnico (Pasa el cursor o presiona 'i')</h4>
+              <div class="glossary-list">
+                ${r.vocabulary.map(v => `
+                  <div class="glossary-item">
+                    <div class="glossary-term">
+                      <span class="term-tooltip">
+                        ${v.term || v.en} <i class="fa-solid fa-circle-info term-info-btn" data-term="${v.term || v.en}" data-def="${v.definition || v.definitionEN || v.es}"></i>
+                        <span class="tooltip-box"><strong>${v.term || v.en} (${v.es || ''})</strong><br>${v.definition || v.definitionEN || ''}</span>
+                      </span>
+                      <span style="font-weight:400; color:var(--text-dim); font-size:0.85rem;">— ${v.es || v.definitionES || ''}</span>
+                    </div>
+                    <div class="glossary-def">${v.definition || v.definitionEN || ''}</div>
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
           </div>
+        </div>
       `;
-
-      if (r.vocabulary && r.vocabulary.length > 0) {
-        contentHtml += `
-          <h4 class="font-head" style="margin-top:20px; color:var(--gold);">🔤 Glosario y Vocabulario Técnico</h4>
-          <div class="glossary-list">
-        `;
-        r.vocabulary.forEach(v => {
-          contentHtml += `
-            <div class="glossary-item">
-              <div class="glossary-term">${v.term || v.en} <span style="font-weight:400; color:var(--text-dim);">(${v.es || v.definitionES})</span></div>
-              <div class="glossary-def">${v.definition || v.definitionEN || ''}</div>
-            </div>
-          `;
-        });
-        contentHtml += `</div>`;
-      }
-
-      contentHtml += `</div>`;
     });
   } else {
     contentHtml += `
@@ -1022,6 +1034,31 @@ function openPhraseDrawer(phraseId, phrases) {
 function closeDrawer() {
   const backdrop = document.getElementById('drawer-backdrop');
   if (backdrop) backdrop.classList.remove('active');
+}
+
+function renderMarkdownWithVocabulary(mdText, vocabulary = []) {
+  if (!mdText) return '';
+  
+  let formatted = formatMarkdown(mdText);
+
+  // Auto-wrap vocabulary terms in interactive tooltip spans with mobile 'i' trigger
+  if (vocabulary && vocabulary.length > 0) {
+    vocabulary.forEach(v => {
+      const termStr = v.term || v.en;
+      if (!termStr) return;
+
+      const defStr = v.definition || v.definitionEN || v.es || '';
+      const esStr = v.es || '';
+
+      const regex = new RegExp(`\\b(${termStr.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})\\b`, 'gi');
+      
+      formatted = formatted.replace(regex, (match) => {
+        return `<span class="term-tooltip">${match} <i class="fa-solid fa-circle-info term-info-btn" onclick="event.stopPropagation(); alert('${match} (${esStr}):\\n${defStr}')" title="${defStr}"></i><span class="tooltip-box"><strong>${match} (${esStr})</strong><br>${defStr}</span></span>`;
+      });
+    });
+  }
+
+  return formatted;
 }
 
 function formatMarkdown(mdText) {

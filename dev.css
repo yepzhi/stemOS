@@ -977,3 +977,137 @@ input:checked + .slider:before {
   color: var(--text-muted);
   margin-top: 4px;
 }
+
+/* Collapsible Reading Accordions for Clean UI */
+.reading-accordion {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reading-accordion.open {
+  background: rgba(15, 23, 42, 0.7);
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+.reading-accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 22px;
+  cursor: pointer;
+  user-select: none;
+  background: rgba(255, 255, 255, 0.02);
+  transition: background 0.2s ease;
+}
+
+.reading-accordion-header:hover {
+  background: rgba(56, 189, 248, 0.06);
+}
+
+.reading-accordion-toggle-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cyan);
+  transition: transform 0.3s ease;
+}
+
+.reading-accordion.open .reading-accordion-toggle-icon {
+  transform: rotate(180deg);
+  background: rgba(56, 189, 248, 0.2);
+}
+
+.reading-accordion-body {
+  display: none;
+  padding: 24px 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.reading-accordion.open .reading-accordion-body {
+  display: block;
+}
+
+/* Interactive Hover Term Tooltips & Mobile Info Icons */
+.term-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--cyan);
+  font-weight: 600;
+  border-bottom: 1px dashed var(--cyan);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.term-tooltip:hover {
+  color: #fff;
+  border-bottom-style: solid;
+}
+
+/* Desktop Hover Tooltip Box */
+.term-tooltip .tooltip-box {
+  visibility: hidden;
+  opacity: 0;
+  width: 260px;
+  background: #0b1120;
+  color: #f1f5f9;
+  text-align: left;
+  border: 1px solid var(--border-glow);
+  border-radius: 12px;
+  padding: 12px 14px;
+  position: absolute;
+  z-index: 100;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  font-weight: 400;
+  pointer-events: none;
+}
+
+.term-tooltip .tooltip-box::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -6px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: #0b1120 transparent transparent transparent;
+}
+
+.term-tooltip:hover .tooltip-box {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.term-info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, 0.2);
+  color: var(--cyan);
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-left: 2px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
