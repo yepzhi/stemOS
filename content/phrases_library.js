@@ -607,6 +607,79 @@ var STEMOS_PHRASES = [
     exampleEN: "This signal integrity detail only affects the PCB layout team; let me take this offline with Sarah after the call.",
     exampleES: "Este detalle de integridad de señal solo afecta al equipo de diseño de PCB; déjame tratarlo fuera de la reunión con Sarah.",
     pronunciationHint: "Énfasis en 'offline': /teɪk ðɪs ˌɒfˈlaɪn/."
+  },
+  // =========================================================================
+  // CATEGORÍA 5: REAL-WORLD INDUSTRIAL & NEARSHORING IDIOMS
+  // =========================================================================
+  {
+    id: "phr-ducks-in-row",
+    phrase: "Let's get our ducks in a row before the audit",
+    schoolVsNative: {
+      school: "We must prepare everything before the audit.",
+      native: "Let's get our ducks in a row before the audit."
+    },
+    meaningES: "Pongamos todo perfectamente en orden antes de la auditoría",
+    explanation: "Expresión indispensable en plantas de manufactura para asegurar que los registros, certificaciones e insumos estén listos y verificados.",
+    category: "workplace",
+    exampleEN: "The ISO 13485 inspectors arrive at 9 AM tomorrow, so let's get our ducks in a row tonight.",
+    exampleES: "Los inspectores de ISO 13485 llegan mañana a las 9 AM, así que pongamos todo en perfecto orden esta noche.",
+    pronunciationHint: "Enlace fluido: /ɡɛt ˈaʊər dʌks ɪn ə roʊ/."
+  },
+  {
+    id: "phr-loop-me-in",
+    phrase: "Can you loop me in on that email thread?",
+    schoolVsNative: {
+      school: "Please send me that email too.",
+      native: "Can you loop me in on that email thread?"
+    },
+    meaningES: "¿Puedes incluirme / copias en esa cadena de correos?",
+    explanation: "Dominio diario en corporativos internacionales. 'Loop in' significa dar acceso o visibilidad a alguien en un hilo de trabajo.",
+    category: "workplace",
+    exampleEN: "I hear TSMC is updating the silicon wafer specifications; please loop me in on that email thread.",
+    exampleES: "Escuché que TSMC está actualizando las especificaciones de obleas de silicio; por favor inclúyme en esa cadena de correos.",
+    pronunciationHint: "Pronuncia 'loop me in': /luːp miː ɪn/."
+  },
+  {
+    id: "phr-showstopper",
+    phrase: "This issue is a showstopper for line 2",
+    schoolVsNative: {
+      school: "This is a very serious problem for line 2.",
+      native: "This issue is a showstopper for line 2."
+    },
+    meaningES: "Este problema es crítico / detiene por completo la producción",
+    explanation: "Término técnico de ingeniería y manufactura para un fallo impeditivo que no permite continuar el proceso hasta ser corregido.",
+    category: "technical_debate",
+    exampleEN: "The high-voltage interlock fault is a showstopper for testing the battery pack today.",
+    exampleES: "La falla en el enclavamiento de alto voltaje es un problema crítico que detiene las pruebas del paquete de baterías hoy.",
+    pronunciationHint: "Pronuncia 'show-stopper': /ˈʃoʊˌstɑːpər/."
+  },
+  {
+    id: "phr-play-by-ear",
+    phrase: "Let's play it by ear depending on the shipment",
+    schoolVsNative: {
+      school: "We will decide later.",
+      native: "Let's play it by ear depending on the shipment."
+    },
+    meaningES: "Improvisemos / Tomemos decisiones sobre la marcha según se den los hechos",
+    explanation: "Se usa cuando no se puede fijar un plan estricto debido a variables externas (demoras en aduanas, clima o entregas de componentes).",
+    category: "workplace",
+    exampleEN: "Customs clearance is delayed at Laredo, so let's play it by ear regarding the afternoon assembly shift.",
+    exampleES: "El despacho aduanal se retrasó en Laredo, así que tomemos decisiones sobre la marcha con respecto al turno de ensamble de la tarde.",
+    pronunciationHint: "Enlace nativo: /pleɪ ɪt baɪ ɪər/."
+  },
+  {
+    id: "phr-touch-base",
+    phrase: "Let me touch base with the plant manager",
+    schoolVsNative: {
+      school: "I will speak with the manager.",
+      native: "Let me touch base with the plant manager."
+    },
+    meaningES: "Déjame ponerme en contacto / alinear indicadores brevemente con el gerente",
+    explanation: "Llamada o mensaje corto de sincronización ejecutiva sin necesidad de convocar a una junta formal de 1 hora.",
+    category: "workplace",
+    exampleEN: "I will touch base with the Querétaro plant manager before finalizing the aerospace CNC procurement budget.",
+    exampleES: "Me pondré en contacto brevemente con el gerente de la planta de Querétaro antes de finalizar el presupuesto de compra del CNC aeroespacial.",
+    pronunciationHint: "Ritmo rápido: /tʌtʃ beɪs/."
   }
 ];
 

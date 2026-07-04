@@ -501,7 +501,13 @@ function getTrackIcon(id) {
     case 'electromobility': return 'fa-solid fa-car-battery';
     case 'it-innovation': return 'fa-solid fa-cloud';
     case 'aerospace': return 'fa-solid fa-plane-up';
-    default: return 'fa-solid fa-atom';
+    case 'no_stem_supply_chain': return 'fa-solid fa-truck-fast';
+    case 'no_stem_hr_compliance': return 'fa-solid fa-users-gear';
+    case 'no_stem_finance_tax': return 'fa-solid fa-calculator';
+    case 'no_stem_gastronomy': return 'fa-solid fa-utensils';
+    case 'no_stem_hospitality': return 'fa-solid fa-hotel';
+    case 'no_stem_medical_devices': return 'fa-solid fa-heart-pulse';
+    default: return 'fa-solid fa-graduation-cap';
   }
 }
 

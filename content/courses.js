@@ -2258,40 +2258,40 @@ A typical EV battery pack contains **thousands of individual cells** and weighs 
                         title: "Cell Formats: Cylindrical, Prismatic, and Pouch",
                         duration: "10 min",
                         content: `
-# Cell Formats: Cylindrical, Prismatic, and Pouch
+> **Automotive Battery Standards Note**: Battery cell formats and structural integration protocols are engineered according to **UN 38.3** (Transport Safety for Lithium Batteries) and **ISO 12405** (Electrically Propelled Road Vehicles — Test Specification for Lithium-Ion Battery Packs).
 
-Battery cells come in different physical shapes. Each shape has advantages and disadvantages for EV manufacturing.
+# Cell Formats Architecture: Cylindrical, Prismatic, and Pouch Systems
 
-## The Three Main Formats
+Battery cells are the fundamental building blocks of electric vehicle energy storage. Choosing the cell's physical geometry determines the battery pack's energy density, thermal dissipation capacity, structural integrity, and automated manufacturing complexity.
 
-### 1. Cylindrical Cells
-Shaped like a standard AA battery but larger. Common sizes: **18650** (18mm × 65mm), **2170** (21mm × 70mm), and **4680** (46mm × 80mm).
+## Mechanical & Volumetric Comparison of Cell Geometries
 
-**Advantages**: Mature manufacturing, excellent thermal management, strong structural integrity.
-**Disadvantages**: Wasted space between round cells, many cells needed per pack.
+### 1. Cylindrical Cells (High Reliability & Structural Strength)
+Constructed by tightly winding cathode, separator, and anode foils into a rigid metallic cylinder (can):
+- **Standard Industry Sizes**: **18650** (18mm diameter × 65mm length), **2170** (21mm × 70mm), and large-format **4680** (46mm × 80mm).
+- **Tabless Electrode Architecture**: Tesla's 4680 design eliminates traditional current collector tabs, using a continuous shingled edge. This reduces internal electrical resistance pathways by **5×**, preventing dangerous localized heat generation during 250 kW fast charging.
+- **Structural Integrity**: The cylindrical geometry provides superior resistance to internal pressure swelling and enables efficient cooling channels between round cells.
 
-### 2. Prismatic Cells
-Rectangular, flat metal cans. **Advantages**: Space efficient, fewer cells per pack. **Disadvantages**: More expensive, can swell under stress.
-**Used by**: BYD (Blade Battery), BMW, Volkswagen.
+### 2. Prismatic Cells (Maximum Volumetric Space Utilization)
+Large, rigid rectangular metal cans containing stacked or flat-wound electrode sheets:
+- **Volumetric Efficiency**: Packs tightly without interstitial air gaps, achieving up to 60-70% volumetric packing efficiency.
+- **Dominant Architectures**: BYD **Blade Battery** (LFP chemistry integrated as structural beams) and CATL Large Prismatic blocks used by BMW, Volkswagen, and Hyundai.
 
-### 3. Pouch Cells
-Flat, flexible cells in aluminum-laminated film. **Advantages**: Lightest format, most flexible shape. **Disadvantages**: Least structurally rigid, susceptible to swelling.
-**Used by**: LG Energy Solution (for GM, Hyundai), SK Innovation.
+### 3. Pouch Cells (Flexible & Lightweight Packaging)
+Electrodes enclosed in flexible, aluminum-laminated polymer foils:
+- **Weight Reduction**: Eliminates heavy outer metal cans, offering the highest gravimetric energy density (Wh/kg).
+- **Mechanical Constraint Requirements**: Pouch cells swell by up to 10% over their cycle life due to gas formation; they require rigid external compression frames and foam pads to prevent delamination.
 
-## The 4680 Revolution
+## Structural Evolution: Module-Less Integration (CTP & CTC)
 
-Tesla's **4680 cell** represents a major industry shift: 5× more energy per cell vs. 2170, 6× more power, 16% more range. However, the **Dry Battery Electrode (DBE)** process proved "way harder than expected." As of 2026, production has ramped but hasn't fully met original promises.
+Traditional EV battery packs used a three-tier hierarchy: **Cells → Modules → Pack**. Next-generation manufacturing eliminates intermediate structural layers:
 
-## Cell-to-Pack and Cell-to-Chassis
-
-- **Cell-to-Pack (CTP)**: Eliminate modules. Place cells directly into the pack. BYD's Blade Battery uses this — saving 50% of space.
-- **Cell-to-Chassis (CTC)**: The battery pack IS the vehicle floor. Tesla's structural battery in the Model Y is an early example.
-
-These innovations reduce weight, increase range, lower cost, and create new manufacturing jobs.
+- **Cell-to-Pack (CTP)**: Cells serve as load-bearing structural members directly secured into the main pack casing. Eliminating module housing, bus bar harnesses, and CMUs increases volumetric utilization by 15-20% and reduces total pack weight by 10%.
+- **Cell-to-Chassis (CTC) / Structural Battery**: The battery pack casing replaces the vehicle floor pan, directly connecting to the front and rear body die-castings (Gigacastings). This increases torsional rigidity by over 30% while maximizing passenger cabin space.
 
 ---
 
-> **Key Takeaway**: Battery cells come in cylindrical, prismatic, and pouch formats. The 4680 cylindrical cell and CTP/CTC integration are reshaping EV manufacturing.
+> **Key Takeaway**: Cell format selection balances volumetric packing, cooling, and structural rigidity. Governed by **UN 38.3** and **ISO 12405**, innovations like 4680 tabless design and Cell-to-Pack (CTP) integration are driving modern EV manufacturing efficiency.
 `,
                         vocabulary: [
                             { en: "Cylindrical Cell", es: "Celda Cilíndrica", definition: "Round battery cell (like a large AA battery)" },
@@ -4706,6 +4706,361 @@ The Federación Mexicana de la Industria Aeroespacial targets:
                 ]
             }
         ]
+    },
+
+    // =========================================================================
+    // NO-STEM MODULES: INGLÉS ESPECIALIZADO Y CARRERAS DE ALTA DEMANDA
+    // =========================================================================
+    no_stem_supply_chain: {
+        id: "no_stem_supply_chain",
+        title: "Supply Chain, Customs & Nearshoring Logistics",
+        titleES: "Logística de Cadena de Suministro, Aduanas y Nearshoring",
+        icon: "fa-solid fa-truck-fast",
+        description: "Inglés técnico para gestión aduanera, T-MEC, Incoterms (FOB, DDP) y logística Just-In-Time.",
+        estimatedHours: 15,
+        prerequisites: ["none"],
+        standard: "US-MX-CA T-MEC Chapter 5 / Incoterms 2020",
+        conocer: "EC0301 (Gestión de Operaciones de Comercio Exterior)",
+        ngss: "Logistics & Cross-Border Supply Chain Management",
+        industry: "US-MX Freight & Nearshoring Customs Standard",
+        isNoStem: true,
+        modules: [
+            {
+                id: "sc-m1",
+                title: "USMCA/T-MEC Rules of Origin & Customs Documentation",
+                titleES: "Reglas de Origen T-MEC y Documentación Aduanera",
+                icon: "fa-solid fa-file-contract",
+                readings: [
+                    {
+                        id: "sc-m1-r1",
+                        title: "Cross-Border Customs & Pedimentos in English",
+                        duration: "10 min",
+                        content: `
+> **Customs & Trade Note**: Cross-border logistics between Mexico and the United States operates under **USMCA / T-MEC Chapter 5** rules. Mastering English trade documentation is essential for Customs Brokers (Agentes Aduanales) and Logistics Managers.
+
+# Cross-Border Customs & Pedimentos in English
+
+In nearshoring operations, moving raw materials across the US-Mexico border requires seamless communication between customs brokers, freight forwarders, and logistics teams.
+
+## Key Customs Documents in English
+
+1. **Commercial Invoice**: Itemized bill from seller to buyer stating product descriptions, Harmonized System (HS) codes, and unit values.
+2. **Bill of Lading (BoL)**: Official contract between shipper and freight carrier detailing cargo quantity and destination.
+3. **Certificate of Origin (USMCA/T-MEC)**: Certifies that goods qualify for tariff-free treatment based on Regional Value Content (RVC).
+4. **Customs Entry Pedimento Summary**: Official declaration submitted to Mexican SAT/Customs detailing duty calculations and import regimes.
+
+## Incoterms 2020: FOB vs. DDP
+
+- **FOB (Free On Board)**: Seller delivers goods on board the vessel/truck at origin. Buyer assumes risk once loaded.
+- **DDP (Delivered Duty Paid)**: Seller assumes 100% of risk, shipping costs, customs clearance, and import duties until delivery at destination.
+
+---
+
+> **Key Takeaway**: Cross-border trade requires precise terminology under T-MEC rules. Understanding Incoterms like FOB and DDP ensures smooth supply chain operations.
+`,
+                        vocabulary: [
+                            { en: "Bill of Lading (BoL)", es: "Conocimiento de Embarque", definition: "Legal contract between carrier and shipper" },
+                            { en: "Harmonized System (HS) Code", es: "Fracción Arancelaria", definition: "International nomenclature for classifying traded products" },
+                            { en: "Delivered Duty Paid (DDP)", es: "Entregado con Derechos Pagados", definition: "Incoterm where seller pays all duties and shipping costs" },
+                            { en: "Free On Board (FOB)", es: "Libre a Bordo", definition: "Incoterm where buyer assumes responsibility after loading" },
+                            { en: "Customs Broker", es: "Agente Aduanal", definition: "Licensed specialist clearing goods through customs" }
+                        ],
+                        questions: [
+                            { q: "What does Incoterm DDP mean?", options: ["Buyer pays all taxes", "Seller pays all shipping, duties, and import taxes", "No taxes are paid", "Shipping is free"], answer: 1 },
+                            { q: "What is an HS Code?", options: ["A driver's license number", "International classification number for traded goods", "A warehouse locator", "A tax penalty"], answer: 1 }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    no_stem_hr_compliance: {
+        id: "no_stem_hr_compliance",
+        title: "Industrial HR, Talent Acquisition & Compliance",
+        titleES: "Recursos Humanos Industrial, Talento y Cumplimiento",
+        icon: "fa-solid fa-users-gear",
+        description: "Inglés técnico para reclutamiento de ingenieros, auditorías de cumplimiento T-MEC/NOM-035 y entrevistas executivas.",
+        estimatedHours: 15,
+        prerequisites: ["none"],
+        standard: "USMCA Labor Chapter 23 / ISO 30414 Human Resource Management",
+        conocer: "EC0305 (Gestión de Recursos Humanos)",
+        ngss: "Industrial HR & Cross-Cultural Workforce Leadership",
+        industry: "Global OEM Talent Acquisition Standard",
+        isNoStem: true,
+        modules: [
+            {
+                id: "hr-m1",
+                title: "Engineering Recruitment & Labor Audit Compliance",
+                titleES: "Reclutamiento de Ingenieros y Auditorías Laborales",
+                icon: "fa-solid fa-user-check",
+                readings: [
+                    {
+                        id: "hr-m1-r1",
+                        title: "Technical Interviewing & Labor Standards",
+                        duration: "10 min",
+                        content: `
+> **HR Compliance Note**: Industrial HR teams in nearshoring plants operate under **USMCA Labor Annex 31-A** (Rapid Response Labor Mechanism) and **ISO 30414** human capital reporting standards.
+
+# Technical Interviewing & Labor Standards
+
+Attracting top engineering talent for GigaFabs and automotive plants requires HR specialists to conduct technical screening interviews in English.
+
+## Key HR Functions in Nearshoring Plants
+
+1. **Competency-Based Technical Screening**: Evaluating candidates on engineering soft skills, technical English fluency, and Lean Manufacturing principles.
+2. **Onboarding & Safety Indoctrination**: Conducting bilingual safety protocols, EHS (Environmental Health and Safety) orientations, and plant rules.
+3. **Labor Audit Compliance**: Managing compliance with USMCA fair labor practices, freedom of association, and workplace safety certifications.
+
+---
+
+> **Key Takeaway**: Industrial HR bridges international corporate standards with local workforce management, requiring strong English communication for audits and talent acquisition.
+`,
+                        vocabulary: [
+                            { en: "Talent Acquisition", es: "Atracción de Talento", definition: "Process of identifying and hiring skilled workers" },
+                            { en: "Onboarding", es: "Inducción / Integración", definition: "Process of integrating new employees into an organization" },
+                            { en: "EHS (Environmental Health and Safety)", es: "Seguridad y Medio Ambiente", definition: "Department managing workplace health and environmental rules" },
+                            { en: "Competency Screening", es: "Evaluación por Competencias", definition: "Interviewing based on specific skills and behaviors" }
+                        ],
+                        questions: [
+                            { q: "What does EHS stand for in industrial HR?", options: ["Electric Heat System", "Environmental Health and Safety", "Employee Housing Service", "Executive Hiring Staff"], answer: 1 }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    no_stem_finance_tax: {
+        id: "no_stem_finance_tax",
+        title: "Finance, Cost Accounting & Nearshoring Tax",
+        titleES: "Finanzas Corporativas, Contabilidad y Precios de Transferencia",
+        icon: "fa-solid fa-calculator",
+        description: "Inglés para reportes CAPEX/OPEX, contabilidad de costos de manufactura, auditorías e impuestos transfronterizos.",
+        estimatedHours: 15,
+        prerequisites: ["none"],
+        standard: "US GAAP / IFRS / OECD Transfer Pricing Guidelines",
+        conocer: "EC0845 (Contabilidad Financiera Industrial)",
+        ngss: "Corporate Finance & Industrial Cost Engineering",
+        industry: "Big 4 Nearshoring Tax & Audit Standard",
+        isNoStem: true,
+        modules: [
+            {
+                id: "fin-m1",
+                title: "CAPEX/OPEX Reporting & Transfer Pricing",
+                titleES: "Reportes CAPEX/OPEX y Precios de Transferencia",
+                icon: "fa-solid fa-chart-line",
+                readings: [
+                    {
+                        id: "fin-m1-r1",
+                        title: "Industrial Cost Accounting & Financial Statements",
+                        duration: "10 min",
+                        content: `
+> **Financial Standard Note**: Nearshoring financial reporting must comply with **US GAAP** (Generally Accepted Accounting Principles), **IFRS** (International Financial Reporting Standards), and OECD transfer pricing rules.
+
+# Industrial Cost Accounting & Financial Reporting
+
+Financial Analysts and Cost Accountants in foreign-owned manufacturing facilities produce financial reports for headquarters in North America, Europe, and Asia.
+
+## Core Financial Terminology
+
+1. **CAPEX (Capital Expenditure)**: Investments in long-term physical assets such as CNC machines, cleanroom tooling, and factory buildings.
+2. **OPEX (Operational Expenditure)**: Day-to-day ongoing expenses required to run the facility (salaries, electricity, raw materials).
+3. **Transfer Pricing**: Internal pricing mechanisms for goods, services, or intellectual property transferred between subsidiary entities of the same parent company across borders.
+4. **COGS (Cost of Goods Sold)**: Direct costs attributable to the production of goods sold by a company.
+
+---
+
+> **Key Takeaway**: Mastering financial English enables accountants and financial analysts to present CAPEX/OPEX budgets and navigate cross-border audit compliance.
+`,
+                        vocabulary: [
+                            { en: "CAPEX (Capital Expenditure)", es: "Gasto de Capital / Inversión", definition: "Funds used to acquire or upgrade physical assets" },
+                            { en: "OPEX (Operational Expenditure)", es: "Gasto Operativo", definition: "Ongoing cost for running a product or business" },
+                            { en: "Transfer Pricing", es: "Precios de Transferencia", definition: "Pricing of goods and services transferred between related legal entities" },
+                            { en: "COGS (Cost of Goods Sold)", es: "Costo de Lo Vendido", definition: "Direct costs associated with producing goods" }
+                        ],
+                        questions: [
+                            { q: "What is CAPEX?", options: ["Monthly electric bill", "Capital expenditure for long-term physical assets like machinery", "Coffee expenses", "Employee salaries"], answer: 1 }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    no_stem_gastronomy: {
+        id: "no_stem_gastronomy",
+        title: "Gastronomy & Culinary Arts Management",
+        titleES: "Gastronomía Internacional y Gestión Culinaria",
+        icon: "fa-solid fa-utensils",
+        description: "Inglés profesional para artes culinarias, administración de restaurantes, maridaje y certificaciones HACCP.",
+        estimatedHours: 15,
+        prerequisites: ["none"],
+        standard: "HACCP Food Safety / Culinary Institute Operational Standard",
+        conocer: "EC0081 (Prepara Alimentos / Servicio Gastronómico)",
+        ngss: "Food Science & Culinary Arts Leadership",
+        industry: "International Fine Dining & Resort Culinary Standard",
+        isNoStem: true,
+        modules: [
+            {
+                id: "gas-m1",
+                title: "Culinary Operations & HACCP Food Safety",
+                titleES: "Operaciones Culinarias y Inocuidad Alimentaria HACCP",
+                icon: "fa-solid fa-kitchen-set",
+                readings: [
+                    {
+                        id: "gas-m1-r1",
+                        title: "Kitchen Brigade & Food Safety Terminology",
+                        duration: "10 min",
+                        content: `
+> **Culinary Standard Note**: Professional kitchens in international hotels and luxury restaurants operate under **HACCP** (Hazard Analysis Critical Control Point) food safety management systems.
+
+# Kitchen Brigade & Food Safety Terminology
+
+Working in international gastronomy requires executing classic French and international culinary techniques using global English terminology.
+
+## The Kitchen Brigade System (Brigade de Cuisine)
+
+1. **Executive Chef**: Overall head of kitchen operations, menu creation, and food cost management.
+2. **Sous Chef**: Second-in-command managing daily line operations and food preparation.
+3. **Chef de Partie (Station Chef)**: Specialist running specific stations (Sauté, Grill, Pastry, Garde Manger).
+
+## HACCP Food Safety Protocols
+
+- **Cross-Contamination**: Transfer of harmful bacteria between raw and cooked foods.
+- **Temperature Danger Zone**: Temperatures between 4°C and 60°C (40°F - 140°F) where bacteria multiply rapidly.
+
+---
+
+> **Key Takeaway**: Professional culinary leadership combines kitchen brigade hierarchy with strict HACCP food safety English protocols.
+`,
+                        vocabulary: [
+                            { en: "HACCP", es: "HACCP / Análisis de Peligros y Puntos Críticos", definition: "Systematic preventive approach to food safety" },
+                            { en: "Sous Chef", es: "Sub-Chef / Segundo al Mando", definition: "Direct assistant to the executive chef" },
+                            { en: "Cross-Contamination", es: "Contaminación Cruzada", definition: "Unintentional transfer of pathogens between foods" },
+                            { en: "Mise en Place", es: "Mise en Place / Todo en su Lugar", definition: "Preparation and organizing of ingredients before cooking" }
+                        ],
+                        questions: [
+                            { q: "What is the Temperature Danger Zone for food safety?", options: ["Below 0°C", "Between 4°C and 60°C (40°F-140°F)", "Above 100°C", "There is no danger zone"], answer: 1 }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    no_stem_hospitality: {
+        id: "no_stem_hospitality",
+        title: "Hospitality & Resort Management",
+        titleES: "Hotelería, Turismo de Lujo y Administración de Resorts",
+        icon: "fa-solid fa-hotel",
+        description: "Inglés de alto nivel para gestión hotelera, concierge VIP, operaciones de front desk y estándar Forbes 5-Star.",
+        estimatedHours: 15,
+        prerequisites: ["none"],
+        standard: "Forbes Travel Guide 5-Star / AHLA Hospitality Standards",
+        conocer: "EC0309 (Atención a Comensales y Servicios Hoteleros)",
+        ngss: "Hospitality Management & International Customer Experience",
+        industry: "Forbes 5-Star & Leading Hotels of the World Standard",
+        isNoStem: true,
+        modules: [
+            {
+                id: "hosp-m1",
+                title: "Front Office Operations & VIP Concierge",
+                titleES: "Operaciones de Recepción y Concierge VIP",
+                icon: "fa-solid fa-concierge-bell",
+                readings: [
+                    {
+                        id: "hosp-m1-r1",
+                        title: "Forbes 5-Star Service Standards & Guest Experience",
+                        duration: "10 min",
+                        content: `
+> **Hospitality Standard Note**: International luxury resorts and boutique hotels measure customer service excellence using **Forbes Travel Guide 5-Star Rating System** benchmarks.
+
+# Forbes 5-Star Service Standards & Guest Experience
+
+In high-end tourism regions like Cancún, Los Cabos, Riviera Nayarit, and Mexico City, hospitality professionals must deliver flawless English service.
+
+## Key Hospitality Terms & Metrics
+
+1. **ADR (Average Daily Rate)**: Key performance metric calculating average rental revenue per occupied room.
+2. **RevPAR (Revenue Per Available Room)**: Performance metric calculated by multiplying ADR by occupancy rate.
+3. **Turn-Down Service**: Evening room refreshment and housekeeping preparation for sleeping.
+4. **Service Recovery**: Immediate resolution of a guest complaint to transform a negative experience into loyalty.
+
+---
+
+> **Key Takeaway**: Delivering luxury guest experiences requires polished, empathetic English communication compliant with Forbes 5-Star standards.
+`,
+                        vocabulary: [
+                            { en: "RevPAR", es: "RevPAR / Ingreso por Habitación Disponible", definition: "Revenue per available room metric" },
+                            { en: "Concierge", es: "Concierge / Atencion Personalizada", definition: "Hotel staff member assisting guests with bookings and services" },
+                            { en: "Turn-Down Service", es: "Servicio de Nocturno / Arreglo de Cama", definition: "Evening housekeeping service preparing room for sleep" },
+                            { en: "Service Recovery", es: "Recuperación del Servicio", definition: "Action taken to resolve a guest issue effectively" }
+                        ],
+                        questions: [
+                            { q: "What does RevPAR stand for in hotel management?", options: ["Revenue Per Available Room", "Review Public Rating", "Restaurant Visitor Price", "Room Rental Value"], answer: 0 }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    no_stem_medical_devices: {
+        id: "no_stem_medical_devices",
+        title: "Medical Devices & Biomedical Manufacturing",
+        titleES: "Dispositivos Médicos e Manufactura Biomédica",
+        icon: "fa-solid fa-heart-pulse",
+        description: "Inglés técnico para la industria biomédica: FDA 21 CFR Part 820, salas limpias médicas y auditorías ISO 13485.",
+        estimatedHours: 20,
+        prerequisites: ["none"],
+        standard: "FDA 21 CFR Part 820 / ISO 13485 Quality Management for Medical Devices",
+        conocer: "EC1290 (Inspección en Manufactura de Dispositivos Médicos)",
+        ngss: "Biomedical Engineering & Healthcare Quality Assurance",
+        industry: "MedTech & FDA Medical Device Manufacturing Standard",
+        isNoStem: true,
+        modules: [
+            {
+                id: "med-m1",
+                title: "Biomedical Cleanrooms & FDA Regulatory Compliance",
+                titleES: "Salas Limpias Biomédicas y Regulación FDA",
+                icon: "fa-solid fa-microscope",
+                readings: [
+                    {
+                        id: "med-m1-r1",
+                        title: "ISO 13485 & FDA Medical Device Quality Assurance",
+                        duration: "10 min",
+                        content: `
+> **MedTech Regulatory Note**: Medical device manufacturing in Tijuana, Juarez, and Mexicali complies strictly with **FDA 21 CFR Part 820** Quality System Regulation (QSR) and **ISO 13485** medical quality standards.
+
+# ISO 13485 & FDA Medical Device Quality Assurance
+
+Mexico is one of the world's largest exporters of medical devices (catheters, pacemakers, surgical instruments, and diagnostic equipment).
+
+## Core Medical Device Manufacturing Terminology
+
+1. **CAPA (Corrective and Preventive Action)**: Formal quality management procedure to investigate and eliminate root causes of non-conformances.
+2. **DHF (Design History File)**: Comprehensive compilation of records describing the design history of a finished medical device.
+3. **Sterilization Validation**: Process of proving that products undergo reliable sterilization (Ethylene Oxide - EtO, Gamma Radiation) under ISO 11135.
+4. **Biocompatibility**: The ability of a material to perform with an appropriate host response in a specific application (ISO 10993).
+
+---
+
+> **Key Takeaway**: Medical device manufacturing demands absolute precision and compliance with **FDA** and **ISO 13485** regulations documented in English.
+`,
+                        vocabulary: [
+                            { en: "CAPA (Corrective and Preventive Action)", es: "CAPA / Acción Correctiva y Preventiva", definition: "Quality system process for resolving non-conformances" },
+                            { en: "FDA 21 CFR Part 820", es: "Regulación FDA QSR", definition: "US federal quality system regulation for medical devices" },
+                            { en: "Biocompatibility", es: "Biocompatibilidad", definition: "Material compatibility with living tissue without causing harm" },
+                            { en: "Sterilization", es: "Esterilización", definition: "Process destroying all forms of microbial life" }
+                        ],
+                        questions: [
+                            { q: "What is CAPA in medical device quality systems?", options: ["Capital Assignment Plan", "Corrective and Preventive Action to fix quality issues", "Cardiovascular Pressure Analysis", "Cleanroom Air Pump Assembly"], answer: 1 }
+                        ]
+                    }
+                ]
+            }
+        ]
     }
 };
 
@@ -4716,3 +5071,4 @@ if (typeof window !== 'undefined') {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = LXP_COURSES;
 }
+
