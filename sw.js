@@ -1,9 +1,9 @@
 /**
- * stemOS Dev Content Studio — PWA Service Worker (v1.0.9 UI/UX PRO Overhaul)
+ * stemOS Dev Content Studio — PWA Service Worker (v1.1.0 Liquid Glass Engine)
  * Enables 100% complete offline caching for 50 modules, readings, native phrases, and assets.
  */
 
-const CACHE_NAME = 'stemos-dev-v1.0.9';
+const CACHE_NAME = 'stemos-dev-v1.1.0';
 
 const ASSETS_TO_CACHE = [
   '/',
@@ -11,10 +11,10 @@ const ASSETS_TO_CACHE = [
   '/dev/',
   '/dev.html',
   '/dev/index.html',
-  '/dev.css?v=1.0.9',
-  '/dev.js?v=1.0.9',
-  '/content/courses.js?v=1.0.9',
-  '/content/phrases_library.js?v=1.0.9',
+  '/dev.css?v=1.1.0',
+  '/dev.js?v=1.1.0',
+  '/content/courses.js?v=1.1.0',
+  '/content/phrases_library.js?v=1.1.0',
   '/content/LEVEL_UP_YOUR_ENGLISH.md',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@600;700;800;900&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
