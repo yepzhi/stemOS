@@ -3078,62 +3078,45 @@ By 2026, Mexico has approximately **700,000 IT professionals**, but the industry
                         title: "Cloud Service Models: IaaS, PaaS, SaaS",
                         duration: "10 min",
                         content: `
-# Cloud Service Models: IaaS, PaaS, SaaS
+> **Cloud Certification Standard Note**: Cloud service architecture and security governance in this module align directly with **AWS Certified Cloud Practitioner (CLF-C02)**, **Microsoft Certified: Azure Fundamentals (AZ-900)**, and **ISO/IEC 27017** (Cloud Security Standards).
 
-Understanding cloud computing starts with understanding the three fundamental service models. Think of it like ordering food:
+# Cloud Service Models: IaaS, PaaS, SaaS & Nearshoring Governance
 
-## The Pizza Analogy
+Cloud computing is the utility-based delivery of computing services — including servers, storage, databases, networking, software, and analytics — over the Internet ("the cloud"). Nearshoring enterprises in Mexico rely on cloud infrastructure to connect U.S. corporate headquarters with local software engineering hubs.
 
-| Model | Pizza Analogy | What you manage | What the provider manages |
-|-------|--------------|-----------------|--------------------------|
-| **On-Premises** | Make pizza at home | Everything | Nothing |
-| **IaaS** | Buy ingredients, cook at home | OS, apps, data | Servers, storage, networking |
-| **PaaS** | Take-and-bake pizza | Just your app and data | Everything else |
-| **SaaS** | Eat at a restaurant | Nothing | Everything |
+## The Cloud Architecture Spectrum
 
-## IaaS — Infrastructure as a Service
+### 1. IaaS — Infrastructure as a Service (AWS EC2 / Azure Compute)
+Rent raw compute, block storage (AWS EBS), and Virtual Private Clouds (VPC). Engineers retain complete control over the guest Operating System (Linux/Windows), firewall rules, and runtime middleware.
 
-You rent **virtual machines**, storage, and networks. You install your own operating system and software.
+### 2. PaaS — Platform as a Service (AWS App Runner / Azure App Service)
+Cloud vendors manage the underlying OS, runtime patching, and hardware scaling. Developers deploy application code directly via Git pipelines, maximizing velocity.
 
-**Examples**: AWS EC2, Azure Virtual Machines, Google Compute Engine.
-**Use case**: A company migrating their existing servers to the cloud.
+### 3. SaaS — Software as a Service (Salesforce / Microsoft 365)
+Fully managed end-user software applications accessed over HTTPS, eliminating client-side installation or server infrastructure maintenance.
 
-## PaaS — Platform as a Service
+## The AWS/Azure Shared Responsibility Model & ISO 27017
 
-The provider gives you a **complete development platform**. You just write and deploy your code — no servers to configure.
+Cloud security operates under a strict dual-custody governance framework:
 
-**Examples**: Google App Engine, AWS Elastic Beanstalk, Azure App Service.
-**Use case**: A startup quickly building a web application without managing infrastructure.
+| Responsibility Domain | Managed by Cloud Provider (AWS/Azure) | Managed by Customer (Enterprise) |
+|-----------------------|---------------------------------------|----------------------------------|
+| **Physical Data Center** | Security guards, biometrics, power generators | None |
+| **Hardware & Hypervisors** | Server blade maintenance, SAN storage | None |
+| **Network Infrastructure** | DDoS mitigation, physical fiber backbones | None |
+| **Customer Data & IAM** | None | **Role-Based Access (RBAC), KMS Encryption** |
+| **Operating System & Apps** | None (in IaaS mode) | **OS Patching, Firewall Ports, SSL/TLS** |
 
-## SaaS — Software as a Service
+*Core Axiom*: The cloud vendor is responsible for security **OF** the cloud; the enterprise is responsible for security **IN** the cloud.
 
-A complete **application** delivered through your browser. No installation, no maintenance.
+## Cloud Architecture in Guadalajara & Querétaro IT Hubs
 
-**Examples**: Gmail, Microsoft 365, Salesforce, Slack, Zoom.
-**Use case**: An office team using cloud email and productivity tools.
-
-## The Shared Responsibility Model
-
-This is a critical concept: security in the cloud is **shared** between the customer and the cloud provider.
-
-- **Provider responsibility**: Physical security of data centers, hardware maintenance, network infrastructure, hypervisor patching.
-- **Customer responsibility**: Data encryption, access management (IAM), application security, operating system patches (for IaaS).
-
-> **Rule of thumb**: Security **OF** the cloud = provider. Security **IN** the cloud = customer.
-
-## The Well-Architected Framework
-
-AWS popularized the **Well-Architected Framework** with six pillars:
-1. **Operational Excellence** — run and monitor systems effectively
-2. **Security** — protect information and systems
-3. **Reliability** — recover from failures, meet demand
-4. **Performance Efficiency** — use resources efficiently
-5. **Cost Optimization** — avoid unnecessary spending
-6. **Sustainability** — minimize environmental impact
+- **Guadalajara IT Ecosystem ("Silicon Valley of Mexico")**: Major engineering centers for Oracle, Intel, IBM, and Amdocs leverage hybrid cloud architectures to maintain low-latency cross-border microservices for Fortune 500 clients.
+- **Querétaro Hyperscale Data Center Cluster**: Hyperscale cloud zones established by AWS, Microsoft Azure, and Google Cloud in Querétaro provide sub-10ms latency connectivity between Mexico City and Texas data centers.
 
 ---
 
-> **Key Takeaway**: IaaS gives you virtual hardware, PaaS gives you a development platform, SaaS gives you ready-to-use applications. Security responsibility is always shared between customer and provider.
+> **Key Takeaway**: Cloud architecture is categorized into **IaaS, PaaS, and SaaS**. Aligned with **AWS CLF-C02** and **ISO 27017**, cloud security follows a shared responsibility model, driving enterprise IT growth across Guadalajara and Querétaro.
 `,
                         vocabulary: [
                             { en: "IaaS (Infrastructure as a Service)", es: "Infraestructura como Servicio", definition: "Renting virtual servers, storage, and networking" },
@@ -4738,27 +4721,44 @@ The Federación Mexicana de la Industria Aeroespacial targets:
                         title: "Cross-Border Customs & Pedimentos in English",
                         duration: "10 min",
                         content: `
-> **Customs & Trade Note**: Cross-border logistics between Mexico and the United States operates under **USMCA / T-MEC Chapter 5** rules. Mastering English trade documentation is essential for Customs Brokers (Agentes Aduanales) and Logistics Managers.
+> **Customs & Trade Governance Note**: Cross-border logistics between Mexico and North American markets operate under **USMCA / T-MEC Chapter 5** (Customs Procedures), **Chapter 4** (Rules of Origin), and **Incoterms 2020** specifications published by the International Chamber of Commerce (ICC).
 
-# Cross-Border Customs & Pedimentos in English
+# Cross-Border Customs & Pedimentos in English: Nearshoring Logistics
 
-In nearshoring operations, moving raw materials across the US-Mexico border requires seamless communication between customs brokers, freight forwarders, and logistics teams.
+In high-velocity nearshoring manufacturing corridors (e.g., Laredo / Nuevo Laredo port of entry handling over 14,000 trucks daily), seamless logistics coordination between Customs Brokers (*Agentes Aduanales*), Freight Forwarders, and SAT/CBP customs inspectors requires total fluency in English trade documentation.
 
-## Key Customs Documents in English
+## Core Cross-Border Trade Documentation Matrix
 
-1. **Commercial Invoice**: Itemized bill from seller to buyer stating product descriptions, Harmonized System (HS) codes, and unit values.
-2. **Bill of Lading (BoL)**: Official contract between shipper and freight carrier detailing cargo quantity and destination.
-3. **Certificate of Origin (USMCA/T-MEC)**: Certifies that goods qualify for tariff-free treatment based on Regional Value Content (RVC).
-4. **Customs Entry Pedimento Summary**: Official declaration submitted to Mexican SAT/Customs detailing duty calculations and import regimes.
+1. **Commercial Invoice**: Itemized legal bill issued by the exporter detailing unit quantities, currency valuation (USD), line-item descriptions, and 6-to-10 digit **Harmonized System (HS) Tariff Codes**.
+2. **Bill of Lading (BoL)**: Multi-modal contract of carriage acting as proof of cargo ownership, specifying freight terms (Prepaid vs. Collect) and carrier liability limits.
+3. **USMCA / T-MEC Certificate of Origin**: Legally binding declaration certifying that goods satisfy **Regional Value Content (RVC)** thresholds (e.g., 75% regional automotive content) to claim preferential 0% tariff treatment.
+4. **Pedimento de Importación (Customs Entry Summary)**: Official electronic declaration submitted to Mexican Customs (SAT/ANAM) specifying import regimes (e.g., **IMMEX** temporary importation vs. Definitiva), IVA tax guarantees, and DTA fees.
 
-## Incoterms 2020: FOB vs. DDP
+## Incoterms 2020 Operational Execution: FOB vs. DDP
 
-- **FOB (Free On Board)**: Seller delivers goods on board the vessel/truck at origin. Buyer assumes risk once loaded.
-- **DDP (Delivered Duty Paid)**: Seller assumes 100% of risk, shipping costs, customs clearance, and import duties until delivery at destination.
+Choosing the correct International Commercial Term (**Incoterm**) governs risk transfer, freight liability, and insurance coverage across international borders:
+
+- **EXW (Ex Works)**: Factory floor handover where buyer assumes all risk.
+- **FOB (Free On Board — Named Port of Shipment)**: The Mexican exporter clears goods for export and loads them onto the carrier at Laredo. The U.S. buyer assumes financial risk and transport costs the moment goods cross the loading threshold.
+- **DDP (Delivered Duty Paid — Named Destination)**: The Mexican exporter assumes 100% of transport costs, border drayage fees, U.S. customs clearance, and import duties, delivering freight directly to the buyer's warehouse door with zero buyer liability.
+
+## The Laredo & Texas Cross-Border Logistics Gateway
+
+Over **65% of all Mexican manufactured exports** bound for North American retail and automotive assembly plants flow through the Texas-Tamaulipas trade corridor:
+- **Cross-Border Drayage Operations**: Specialized short-haul drayage tractor-trailers transfer loaded trailers across the Rio Grande river between Nuevo Laredo staging yards and Laredo distribution hubs.
+- **C-TPAT (Customs-Trade Partnership Against Terrorism)**: Joint U.S. Customs and Border Protection (CBP) security certification providing audited manufacturing plants with dedicated expedited "FAST Lanes" to bypass 4-hour border wait times.
+- **IMMEX Program Operations**: Mexican tax incentive program allowing foreign manufacturers to temporarily import raw materials duty-free, provided finished goods are exported within statutory timeframes.
+
+## Just-In-Time (JIT) Sequencing & Milk-Run Logistics
+
+Beyond customs clearance, nearshoring logistics managers coordinate high-precision **Just-In-Time (JIT)** component deliveries to tier-1 OEM plants:
+- **Milk-Run Routing**: Scheduled multi-stop pickup trucks collecting parts from multiple suppliers across Monterrey or Saltillo, optimizing container load factors.
+- **VMI (Vendor-Managed Inventory)**: Overseas suppliers maintain buffer stock in border warehouses in McAllen or El Paso, transferring ownership only when pulled onto the assembly line.
+- **Kanban Signal Integration**: Electronic Data Interchange (EDI 856 / ASN - Advanced Shipping Notice) triggers real-time freight dispatches when factory buffer stock drops below reorder thresholds.
 
 ---
 
-> **Key Takeaway**: Cross-border trade requires precise terminology under T-MEC rules. Understanding Incoterms like FOB and DDP ensures smooth supply chain operations.
+> **Key Takeaway**: Cross-border logistics relies on **T-MEC Chapter 5** documentation, **HS Codes**, **Incoterms 2020** (FOB vs. DDP), and **JIT Milk-Run** scheduling. Mastering these English customs protocols ensures sub-24h border clearance through the Laredo freight corridor.
 `,
                         vocabulary: [
                             { en: "Bill of Lading (BoL)", es: "Conocimiento de Embarque", definition: "Legal contract between carrier and shipper" },
@@ -4802,21 +4802,47 @@ In nearshoring operations, moving raw materials across the US-Mexico border requ
                         title: "Technical Interviewing & Labor Standards",
                         duration: "10 min",
                         content: `
-> **HR Compliance Note**: Industrial HR teams in nearshoring plants operate under **USMCA Labor Annex 31-A** (Rapid Response Labor Mechanism) and **ISO 30414** human capital reporting standards.
+> **Industrial HR Compliance Note**: Human Resources management in nearshoring manufacturing plants is governed by **USMCA Labor Chapter 23 / Annex 31-A** (Rapid Response Labor Mechanism - RRLM), **ISO 30414** (Human Capital Reporting), and **NOM-035-STPS** (Psychosocial Risk Factors in the Workplace).
 
-# Technical Interviewing & Labor Standards
+# Technical Interviewing & Labor Audit Compliance: Industrial HR
 
-Attracting top engineering talent for GigaFabs and automotive plants requires HR specialists to conduct technical screening interviews in English.
+In multi-national nearshoring plants across Monterrey, Tijuana, and Querétaro, Industrial HR and Talent Acquisition leads act as the primary bridge between U.S. corporate executive leadership and local plant operations. Fluency in technical English is essential for conducting engineering interviews, negotiating collective bargaining agreements, and surviving federal labor audits.
 
-## Key HR Functions in Nearshoring Plants
+## 1. Technical Screening & The STAR Interview Method
 
-1. **Competency-Based Technical Screening**: Evaluating candidates on engineering soft skills, technical English fluency, and Lean Manufacturing principles.
-2. **Onboarding & Safety Indoctrination**: Conducting bilingual safety protocols, EHS (Environmental Health and Safety) orientations, and plant rules.
-3. **Labor Audit Compliance**: Managing compliance with USMCA fair labor practices, freedom of association, and workplace safety certifications.
+When recruiting specialized roles (e.g., Quality Engineers, Embedded Systems Developers, CNC Programmers), HR managers utilize the structured **STAR Method** in English:
+- **Situation**: Candidate describes a specific technical challenge at a previous manufacturing plant.
+- **Task**: Candidate outlines their core responsibilities under tight production deadlines.
+- **Action**: Candidate explains their engineering interventions (e.g., 8D Problem Solving, Root Cause Analysis).
+- **Result**: Candidate quantifies measurable outcomes (e.g., reduced scrap rate by 14%, improved overall equipment effectiveness - OEE).
+
+## 2. USMCA Annex 31-A & Rapid Response Labor Mechanism (RRLM) Audits
+
+Under **T-MEC Annex 31-A**, U.S. and Mexican labor authorities conduct unannounced plant audits:
+- **Freedom of Association & Collective Bargaining**: Verifying that workers freely elect union representatives via secret ballot without factory management interference.
+- **Remediation Plan Execution**: HR teams must draft formal English response reports to the U.S. Department of Labor (USDOL) within 45 days if labor violations are alleged, preventing potential tariff penalties or border blockades on plant exports.
+
+## 3. Onboarding, EHS Safety Protocols & Work Instructions
+
+Beyond labor audits, Industrial HR leads direct bilingual orientation and safety indoctrination programs:
+- **EHS (Environmental Health and Safety) Compliance**: Enforcing OSHA and STPS safety protocols (Personal Protective Equipment - PPE, Lockout/Tagout - LOTO awareness, hazardous chemical handling under GHS).
+- **Standard Operating Procedures (SOPs)**: Ensuring assembly line workers and technicians understand English work instructions, defect logging, and quality escalation paths.
+
+## 4. NOM-035 & ISO 30414 Human Capital Metrics
+
+Industrial HR tracks human capital key performance indicators (KPIs) to align with global corporate governance:
+- **Turnover Rate (Atrición)**: Monitoring monthly attrition percentages across assembly shifts and exit interview insights.
+- **NOM-035 Psychosocial Risk Audits**: Evaluating workplace stress, shift rotation fatigue, and anti-harassment protocols to maintain compliance with Mexican Labor Law (LFT).
+
+## 5. Expatriate Management & Global Mobility
+
+Nearshoring facilities frequently host foreign engineering directors and expat specialists:
+- **Bilingual Onboarding Packages**: Drafting dual-language employment contracts, temporary work visa filings with INM (Instituto Nacional de Migración), and housing allowance packages.
+- **Cross-Cultural Leadership Workshops**: Facilitating communication alignment between American/Asian executive leadership and Mexican plant supervisors.
 
 ---
 
-> **Key Takeaway**: Industrial HR bridges international corporate standards with local workforce management, requiring strong English communication for audits and talent acquisition.
+> **Key Takeaway**: Industrial HR specialists must master **STAR technical interviewing** and ensure plant compliance with **USMCA Annex 31-A (RRLM)**, **EHS safety protocols**, and **NOM-035** standards to protect export supply chains.
 `,
                         vocabulary: [
                             { en: "Talent Acquisition", es: "Atracción de Talento", definition: "Process of identifying and hiring skilled workers" },
@@ -4858,31 +4884,52 @@ Attracting top engineering talent for GigaFabs and automotive plants requires HR
                         title: "Industrial Cost Accounting & Financial Statements",
                         duration: "10 min",
                         content: `
-> **Financial Standard Note**: Nearshoring financial reporting must comply with **US GAAP** (Generally Accepted Accounting Principles), **IFRS** (International Financial Reporting Standards), and OECD transfer pricing rules.
+> **Financial Governance Standard Note**: Nearshoring financial reporting in Mexican manufacturing subsidiaries must comply with **US GAAP** (Generally Accepted Accounting Principles), **IFRS** (International Financial Reporting Standards), and **OECD Transfer Pricing Guidelines for Multinational Enterprises**.
 
-# Industrial Cost Accounting & Financial Reporting
+# Industrial Cost Accounting & Financial Reporting: Nearshoring Tax
 
-Financial Analysts and Cost Accountants in foreign-owned manufacturing facilities produce financial reports for headquarters in North America, Europe, and Asia.
+Financial Analysts, Controllers, and Cost Accountants in Mexican manufacturing plants (*Maquiladoras*) operate under a dual financial system. They must produce local statutory accounts for SAT while presenting consolidated management accounts in English to corporate headquarters in New York, London, or Tokyo.
 
-## Core Financial Terminology
+## Core Financial Classification & Reporting Framework
 
-1. **CAPEX (Capital Expenditure)**: Investments in long-term physical assets such as CNC machines, cleanroom tooling, and factory buildings.
-2. **OPEX (Operational Expenditure)**: Day-to-day ongoing expenses required to run the facility (salaries, electricity, raw materials).
-3. **Transfer Pricing**: Internal pricing mechanisms for goods, services, or intellectual property transferred between subsidiary entities of the same parent company across borders.
-4. **COGS (Cost of Goods Sold)**: Direct costs attributable to the production of goods sold by a company.
+1. **CAPEX (Capital Expenditure)**: Investments in long-term physical assets such as automated CNC machines, cleanroom SMT lines, and industrial real estate. CAPEX items are capitalized on the Balance Sheet and depreciated over their useful economic life under **US GAAP ASC 360**.
+2. **OPEX (Operational Expenditure)**: Day-to-day operating expenses required to sustain plant production (direct labor, industrial electricity tariffs, preventive maintenance contracts, consumables). Tracked on the Income Statement (*P&L*).
+3. **COGS (Cost of Goods Sold)**: Direct costs tied to product manufacturing — including Direct Materials (BOM cost), Direct Labor (assembly payroll), and Factory Overhead (applied absorption rate).
+4. **EBITDA (Earnings Before Interest, Taxes, Depreciation, and Amortization)**: Core metric of operational profitability evaluated by C-suite executives during plant expansion decisions.
+
+## Transfer Pricing & OECD Arm's Length Principle
+
+Under **T-MEC Article 14** and **OECD Guidelines**, transactions between related subsidiary entities (e.g., a U.S. parent firm buying assembled circuit boards from its Mexican subsidiary) must comply with the **Arm's Length Principle**:
+- **Maquiladora Safe Harbor Rules (Article 182 LISR)**: Mexican maquiladoras must calculate taxable profit using the higher of **6.9% of asset value** or **6.5% of total operating costs and expenses** to prevent artificial profit shifting.
+- **Transfer Pricing Documentation**: Financial analysts must prepare annual English Transfer Pricing Studies detailing Functional Analysis (Functions, Risks, and Assets - FRA) to satisfy cross-border tax audits by SAT and the IRS.
+
+## Standard Costing Variance & Inventory Valuation
+
+Manufacturing controllers rely on **Standard Costing Systems** to track variance against budget:
+- **Material Price Variance (MPV)**: Quantifying financial impact when raw metal or silicon purchasing costs exceed standard BOM prices.
+- **Labor Efficiency Variance (LEV)**: Measuring actual assembly line hours against standard labor routing benchmarks.
+- **Inventory Valuation (US GAAP ASC 330)**: Managing FIFO (First-In, First-Out) vs. Weighted Average inventory valuation for imported raw components in bonded warehouses.
+
+## Internal Controls & Sarbanes-Oxley (SOX 404) Compliance
+
+For U.S. publicly traded parent corporations operating subsidiaries in Mexico, financial controllers enforce **SOX 404 Internal Controls**:
+- **Segregation of Duties (SoD)**: Ensuring purchase order creation, goods receipt verification, and invoice payment approval are executed by distinct individuals to prevent fraud.
+- **Audit Trail Compliance**: Maintaining immutable digital logs in ERP systems (SAP S/4HANA / Oracle Financials) for external Big 4 audits (Deloitte, PwC, EY, KPMG).
 
 ---
 
-> **Key Takeaway**: Mastering financial English enables accountants and financial analysts to present CAPEX/OPEX budgets and navigate cross-border audit compliance.
+> **Key Takeaway**: Industrial finance bridges **US GAAP / IFRS** accounting with **OECD Transfer Pricing** rules, Standard Costing variance analysis, and **SOX 404** internal controls. Fluency in financial English enables controllers to manage CAPEX/OPEX budgets and protect multinational firms during cross-border tax audits.
 `,
                         vocabulary: [
                             { en: "CAPEX (Capital Expenditure)", es: "Gasto de Capital / Inversión", definition: "Funds used to acquire or upgrade physical assets" },
                             { en: "OPEX (Operational Expenditure)", es: "Gasto Operativo", definition: "Ongoing cost for running a product or business" },
                             { en: "Transfer Pricing", es: "Precios de Transferencia", definition: "Pricing of goods and services transferred between related legal entities" },
-                            { en: "COGS (Cost of Goods Sold)", es: "Costo de Lo Vendido", definition: "Direct costs associated with producing goods" }
+                            { en: "COGS (Cost of Goods Sold)", es: "Costo de Lo Vendido", definition: "Direct costs associated with producing goods" },
+                            { en: "Arm's Length Principle", es: "Principio de Plena Competencia", definition: "Pricing transactions between related companies as if they were independent" },
+                            { en: "Safe Harbor", es: "Puerto Seguro Tax", definition: "Specific tax calculation method for Mexican Maquiladoras under LISR Article 182" }
                         ],
                         questions: [
-                            { q: "What is CAPEX?", options: ["Monthly electric bill", "Capital expenditure for long-term physical assets like machinery", "Coffee expenses", "Employee salaries"], answer: 1 }
+                            { q: "What is the difference between CAPEX and OPEX?", options: ["CAPEX is short-term; OPEX is long-term", "CAPEX buys physical assets capitalized on balance sheets; OPEX covers daily operating costs", "They are identical", "OPEX is only for taxes"], answer: 1 }
                         ]
                     }
                 ]
@@ -4915,35 +4962,42 @@ Financial Analysts and Cost Accountants in foreign-owned manufacturing facilitie
                         title: "Kitchen Brigade & Food Safety Terminology",
                         duration: "10 min",
                         content: `
-> **Culinary Standard Note**: Professional kitchens in international hotels and luxury restaurants operate under **HACCP** (Hazard Analysis Critical Control Point) food safety management systems.
+> **Culinary Excellence Standard Note**: High-end culinary management in international luxury resorts and Michelin-starred restaurants strictly enforces **HACCP** (Hazard Analysis Critical Control Point) and **ServSafe Manager** food safety protocols.
 
-# Kitchen Brigade & Food Safety Terminology
+# Kitchen Brigade System & HACCP Food Safety Governance
 
-Working in international gastronomy requires executing classic French and international culinary techniques using global English terminology.
+In luxury hospitality culinary hubs across Cancún, Riviera Maya, Los Cabos, and Mexico City, executive culinary teams operate under French classic hierarchy (*Brigade de Cuisine*) while communicating seamlessly in professional English with international guests and vendors.
 
-## The Kitchen Brigade System (Brigade de Cuisine)
+## 1. The Classical Kitchen Brigade Hierarchy
 
-1. **Executive Chef**: Overall head of kitchen operations, menu creation, and food cost management.
-2. **Sous Chef**: Second-in-command managing daily line operations and food preparation.
-3. **Chef de Partie (Station Chef)**: Specialist running specific stations (Sauté, Grill, Pastry, Garde Manger).
+1. **Executive Chef (Chef de Cuisine)**: Master culinary director managing menu development, food cost percentages (FCP), vendor purchasing contracts, and kitchen labor efficiency.
+2. **Sous Chef de Cuisine**: Second-in-command supervising line execution, expeding plates during high-volume service, and managing shift handovers.
+3. **Chef de Partie (Station Specialists)**:
+   - *Saucier*: Prepares stocks, reductions, and classic mother sauces.
+   - *Poissonier*: Specialist in seafood fabrication and precise fish cooking.
+   - *Grillardin / Rotisseur*: Directs open-flame grill operations and protein roasting.
+   - *Garde Manger*: Manages cold kitchen preparations, charcuterie, and hors d'oeuvres.
 
-## HACCP Food Safety Protocols
+## 2. HACCP Food Safety Protocols & Microbiological Controls
 
-- **Cross-Contamination**: Transfer of harmful bacteria between raw and cooked foods.
-- **Temperature Danger Zone**: Temperatures between 4°C and 60°C (40°F - 140°F) where bacteria multiply rapidly.
+Preventing foodborne illnesses requires microsecond temperature vigilance across storage and preparation zones:
+- **Temperature Danger Zone (TDZ)**: Bacteria multiply rapidly between **4°C and 60°C (40°F - 140°F)**. Perishable proteins must pass through this zone in less than 2 hours.
+- **Critical Control Points (CCPs)**: Mandatory temperature thresholds verified with calibrated digital probes (e.g., cooking poultry to 74°C / 165°F internal temperature for 15 seconds).
+- **Cross-Contamination Prevention**: Color-coded cutting board protocols (Red = Raw Meat, Blue = Raw Seafood, Green = Produce, Yellow = Poultry).
 
 ---
 
-> **Key Takeaway**: Professional culinary leadership combines kitchen brigade hierarchy with strict HACCP food safety English protocols.
+> **Key Takeaway**: Professional culinary leadership combines **Brigade de Cuisine** station management with strict **HACCP** food safety monitoring in English to maintain 5-Star guest standards.
 `,
                         vocabulary: [
                             { en: "HACCP", es: "HACCP / Análisis de Peligros y Puntos Críticos", definition: "Systematic preventive approach to food safety" },
                             { en: "Sous Chef", es: "Sub-Chef / Segundo al Mando", definition: "Direct assistant to the executive chef" },
                             { en: "Cross-Contamination", es: "Contaminación Cruzada", definition: "Unintentional transfer of pathogens between foods" },
-                            { en: "Mise en Place", es: "Mise en Place / Todo en su Lugar", definition: "Preparation and organizing of ingredients before cooking" }
+                            { en: "Mise en Place", es: "Mise en Place / Todo en su Lugar", definition: "Preparation and organizing of ingredients before cooking" },
+                            { en: "Temperature Danger Zone", es: "Zona de Peligro de Temperatura", definition: "Range between 4°C and 60°C where bacteria grow rapidly" }
                         ],
                         questions: [
-                            { q: "What is the Temperature Danger Zone for food safety?", options: ["Below 0°C", "Between 4°C and 60°C (40°F-140°F)", "Above 100°C", "There is no danger zone"], answer: 1 }
+                            { q: "What is the Temperature Danger Zone for food safety under HACCP?", options: ["Below 0°C", "Between 4°C and 60°C (40°F-140°F)", "Above 100°C", "There is no danger zone"], answer: 1 }
                         ]
                     }
                 ]
@@ -4976,28 +5030,41 @@ Working in international gastronomy requires executing classic French and intern
                         title: "Forbes 5-Star Service Standards & Guest Experience",
                         duration: "10 min",
                         content: `
-> **Hospitality Standard Note**: International luxury resorts and boutique hotels measure customer service excellence using **Forbes Travel Guide 5-Star Rating System** benchmarks.
+> **Luxury Hospitality Standard Note**: Ultra-luxury resorts and boutique hotels measure customer service excellence using **Forbes Travel Guide 5-Star Rating System** benchmarks and **AHLA** (American Hotel & Lodging Association) standards.
 
-# Forbes 5-Star Service Standards & Guest Experience
+# Forbes 5-Star Service Standards & VIP Guest Experience
 
-In high-end tourism regions like Cancún, Los Cabos, Riviera Nayarit, and Mexico City, hospitality professionals must deliver flawless English service.
+In premier Mexican luxury destinations — including Los Cabos, Punta Mita, Riviera Maya, and Mexico City — hospitality leaders must execute impeccable verbal and written English to deliver personalized 5-Star guest experiences.
 
-## Key Hospitality Terms & Metrics
+## Core Financial & Operational Hospitality Metrics
 
-1. **ADR (Average Daily Rate)**: Key performance metric calculating average rental revenue per occupied room.
-2. **RevPAR (Revenue Per Available Room)**: Performance metric calculated by multiplying ADR by occupancy rate.
-3. **Turn-Down Service**: Evening room refreshment and housekeeping preparation for sleeping.
-4. **Service Recovery**: Immediate resolution of a guest complaint to transform a negative experience into loyalty.
+1. **ADR (Average Daily Rate)**: Key performance metric calculating average rental revenue earned per occupied room:
+   $$\text{ADR} = \frac{\text{Total Room Revenue}}{\text{Number of Rooms Sold}}$$
+2. **RevPAR (Revenue Per Available Room)**: The ultimate financial health metric of a resort:
+   $$\text{RevPAR} = \text{ADR} \times \text{Occupancy Rate}$$
+3. **Property Management System (PMS)**: Central software suite (e.g., Opera PMS) managing reservations, guest folios, housekeeping room status, and guest preference profiles.
+
+## Forbes 5-Star Service Standards Execution
+
+The Forbes 5-Star inspection evaluates over 900 rigorous standards across guest interactions:
+- **First Impression & Arrival**: Greeting guests within 30 seconds of arrival using guest name recognition, providing chilled towels and signature welcome beverages.
+- **Anticipatory Service**: Staff must anticipate guest needs before they are requested (e.g., placing lens wiping cloths next to sunglasses by the pool).
+- **Service Recovery Protocol (LAST Model)**:
+  - **L**isten: Attentively without interruption.
+  - **A**pologize: Sincerely on behalf of the resort.
+  - **S**olve: Offer immediate resolution options.
+  - **T**hank: Thank the guest for bringing the issue to light.
 
 ---
 
-> **Key Takeaway**: Delivering luxury guest experiences requires polished, empathetic English communication compliant with Forbes 5-Star standards.
+> **Key Takeaway**: Delivering luxury guest experiences requires polished English communication, PMS operational control, and adherence to **Forbes 5-Star Service Standards**.
 `,
                         vocabulary: [
                             { en: "RevPAR", es: "RevPAR / Ingreso por Habitación Disponible", definition: "Revenue per available room metric" },
-                            { en: "Concierge", es: "Concierge / Atencion Personalizada", definition: "Hotel staff member assisting guests with bookings and services" },
-                            { en: "Turn-Down Service", es: "Servicio de Nocturno / Arreglo de Cama", definition: "Evening housekeeping service preparing room for sleep" },
-                            { en: "Service Recovery", es: "Recuperación del Servicio", definition: "Action taken to resolve a guest issue effectively" }
+                            { en: "Concierge", es: "Concierge / Atención Personalizada", definition: "Hotel staff member assisting guests with bookings and services" },
+                            { en: "Turn-Down Service", es: "Servicio Nocturno / Arreglo de Cama", definition: "Evening housekeeping service preparing room for sleep" },
+                            { en: "Service Recovery", es: "Recuperación del Servicio", definition: "Action taken to resolve a guest issue effectively" },
+                            { en: "ADR (Average Daily Rate)", es: "Tarifa Promedio Diaria", definition: "Average room revenue earned per occupied room" }
                         ],
                         questions: [
                             { q: "What does RevPAR stand for in hotel management?", options: ["Revenue Per Available Room", "Review Public Rating", "Restaurant Visitor Price", "Room Rental Value"], answer: 0 }
@@ -5033,28 +5100,36 @@ In high-end tourism regions like Cancún, Los Cabos, Riviera Nayarit, and Mexico
                         title: "ISO 13485 & FDA Medical Device Quality Assurance",
                         duration: "10 min",
                         content: `
-> **MedTech Regulatory Note**: Medical device manufacturing in Tijuana, Juarez, and Mexicali complies strictly with **FDA 21 CFR Part 820** Quality System Regulation (QSR) and **ISO 13485** medical quality standards.
+> **MedTech Regulatory Governance Note**: Medical device manufacturing facilities in Baja California (Tijuana/Mexicali) and Chihuahua operate under **FDA 21 CFR Part 820** Quality System Regulation (QSR), **ISO 13485** (Medical Devices Quality Management), and **ISO 14971** (Risk Management).
 
-# ISO 13485 & FDA Medical Device Quality Assurance
+# ISO 13485 & FDA Medical Device Quality Assurance: MedTech Nearshoring
 
-Mexico is one of the world's largest exporters of medical devices (catheters, pacemakers, surgical instruments, and diagnostic equipment).
+Mexico is the **#1 medical device exporter in Latin America** and the **#1 supplier of medical devices to the United States**. Clusters in Tijuana and Juarez manufacture life-critical devices — including cardiac pacemakers, vascular catheters, orthopedic implants, surgical staplers, and IV delivery sets.
 
-## Core Medical Device Manufacturing Terminology
+## Regulatory Framework: FDA 21 CFR Part 820 & ISO 13485
 
-1. **CAPA (Corrective and Preventive Action)**: Formal quality management procedure to investigate and eliminate root causes of non-conformances.
-2. **DHF (Design History File)**: Comprehensive compilation of records describing the design history of a finished medical device.
-3. **Sterilization Validation**: Process of proving that products undergo reliable sterilization (Ethylene Oxide - EtO, Gamma Radiation) under ISO 11135.
-4. **Biocompatibility**: The ability of a material to perform with an appropriate host response in a specific application (ISO 10993).
+Unlike general manufacturing, medical device production operates under total regulatory enforcement where non-compliance leads to FDA Warning Letters, product recalls, or criminal penalties.
+
+### 1. CAPA (Corrective and Preventive Action)
+A mandatory structured quality system to investigate non-conformances, determine root causes using 5-Why analysis, implement corrective actions, and track long-term effectiveness.
+
+### 2. DHF (Design History File) & DMR (Device Master Record)
+- **DHF**: Compilation of engineering design records demonstrating that the device was developed according to approved Design Controls.
+- **DMR**: The complete "recipe" containing specs, drawings, assembly SOPs, and packaging requirements needed to manufacture a single unit.
+
+### 3. Biocompatibility (ISO 10993) & Sterilization Validation (ISO 11135)
+Medical devices contacting human blood or tissue must undergo strict **Biocompatibility Testing** to ensure zero cytotoxicity. Finished products undergo validated **Ethylene Oxide (EtO)** or **Gamma Irradiation** sterilization cycles prior to distribution.
 
 ---
 
-> **Key Takeaway**: Medical device manufacturing demands absolute precision and compliance with **FDA** and **ISO 13485** regulations documented in English.
+> **Key Takeaway**: Biomedical manufacturing in Mexico relies on **FDA 21 CFR Part 820** and **ISO 13485** compliance. Fluency in technical English is vital for managing CAPA investigations, DHF documentation, and FDA audits.
 `,
                         vocabulary: [
-                            { en: "CAPA (Corrective and Preventive Action)", es: "CAPA / Acción Correctiva y Preventiva", definition: "Quality system process for resolving non-conformances" },
-                            { en: "FDA 21 CFR Part 820", es: "Regulación FDA QSR", definition: "US federal quality system regulation for medical devices" },
-                            { en: "Biocompatibility", es: "Biocompatibilidad", definition: "Material compatibility with living tissue without causing harm" },
-                            { en: "Sterilization", es: "Esterilización", definition: "Process destroying all forms of microbial life" }
+                            { en: "CAPA (Corrective and Preventive Action)", es: "CAPA / Acciones Correctivas y Preventivas", definition: "Formal system to eliminate root causes of non-conformances" },
+                            { en: "DHF (Design History File)", es: "Expediente de Historia de Diseño", definition: "Records demonstrating device design control compliance" },
+                            { en: "DMR (Device Master Record)", es: "Registro Maestro del Dispositivo", definition: "Manufacturing recipes and drawings to build a device" },
+                            { en: "Biocompatibility", es: "Biocompatibilidad", definition: "Material safety when contacting human tissue" },
+                            { en: "Sterilization Validation", es: "Validación de Esterilización", definition: "Proving product sterilization reliability under ISO 11135" }
                         ],
                         questions: [
                             { q: "What is CAPA in medical device quality systems?", options: ["Capital Assignment Plan", "Corrective and Preventive Action to fix quality issues", "Cardiovascular Pressure Analysis", "Cleanroom Air Pump Assembly"], answer: 1 }
