@@ -1,0 +1,6 @@
+docs/
+*.pdf
+*.py
+*.txt
+Cloudflare_*
+.git

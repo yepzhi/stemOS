@@ -8,3 +8,5 @@ temp_page_*.png
 !.dev.vars.example
 .env*
 !.env.example
+.ignore
+docs/
