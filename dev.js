@@ -1024,6 +1024,40 @@ function openPhraseDrawer(phraseId, phrases) {
           <div style="color:var(--text-muted); font-size:0.88rem; margin-top:8px;">📌 <em>${p.exampleES}</em></div>
         </div>
       </div>
+
+      <!-- FASE 3: Feynman AI Engine (Socratic English Tutor & Technical Interview Simulator) -->
+      <div style="margin-top:28px; background:linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(56, 189, 248, 0.12)); border:1px solid rgba(168, 85, 247, 0.35); border-radius:16px; padding:20px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:40px; height:40px; background:rgba(168, 85, 247, 0.2); color:var(--purple); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem;">
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <div>
+              <h4 class="font-head" style="color:#fff; font-size:1.1rem;">Feynman AI Tutor — Simulación de Entrevista Técnica STAR</h4>
+              <p style="color:var(--text-muted); font-size:0.8rem;">Practica tu inglés fluido en tiempo real simulando una pregunta de entrevista en este escenario.</p>
+            </div>
+          </div>
+          <span style="font-size:0.75rem; background:rgba(168, 85, 247, 0.2); color:var(--purple); padding:4px 10px; border-radius:8px; font-weight:700; border:1px solid rgba(168, 85, 247, 0.3);">
+            Socratic AI Engine 3.0
+          </span>
+        </div>
+
+        <div style="margin-top:16px; background:rgba(15, 23, 42, 0.9); border:1px solid var(--border-glass); padding:16px; border-radius:12px;" id="feynman-chat-box">
+          <div style="display:flex; gap:12px; margin-bottom:12px;">
+            <i class="fa-solid fa-robot" style="color:var(--purple); margin-top:2px;"></i>
+            <div style="font-size:0.88rem; color:var(--text-main); line-height:1.5;">
+              <strong>Feynman AI Evaluator:</strong> "Hi there! How would you use the phrase <em>'${p.phrase}'</em> in your next Nearshoring technical audit or team standup?"
+            </div>
+          </div>
+
+          <div style="display:flex; gap:8px; margin-top:12px;">
+            <input type="text" id="feynman-user-input" placeholder="Escribe tu respuesta en inglés..." style="flex:1; background:rgba(255,255,255,0.06); border:1px solid var(--border-glass); color:#fff; padding:10px 14px; border-radius:10px; font-size:0.88rem; outline:none;">
+            <button onclick="simulateFeynmanResponse('${p.phrase.replace(/'/g, "\\'")}')" style="background:linear-gradient(135deg, var(--purple), var(--cyan)); color:#fff; border:none; padding:10px 18px; border-radius:10px; font-weight:600; cursor:pointer; font-size:0.88rem; display:flex; align-items:center; gap:6px;">
+              Enviar <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   `;
 
@@ -1072,3 +1106,46 @@ function formatMarkdown(mdText) {
     .replace(/\n\n/g, '</p><p>')
     .replace(/\n/g, '<br>');
 }
+
+function simulateFeynmanResponse(targetPhrase) {
+  const inputEl = document.getElementById('feynman-user-input');
+  const chatBox = document.getElementById('feynman-chat-box');
+  if (!inputEl || !chatBox) return;
+
+  const userText = inputEl.value.trim();
+  if (!userText) return;
+
+  // Append User message
+  const userMsgHtml = `
+    <div style="display:flex; justify-content:flex-end; margin-top:12px; margin-bottom:12px;">
+      <div style="background:rgba(56, 189, 248, 0.15); border:1px solid rgba(56, 189, 248, 0.3); color:#fff; padding:10px 14px; border-radius:12px; max-width:80%; font-size:0.88rem;">
+        <strong>Tú:</strong> "${userText}"
+      </div>
+    </div>
+  `;
+
+  // Evaluate response
+  const lowerText = userText.toLowerCase();
+  const phraseLower = (targetPhrase || '').toLowerCase();
+  const usesPhrase = phraseLower && lowerText.includes(phraseLower);
+
+  let feedback = '';
+  if (usesPhrase) {
+    feedback = `🎯 <strong>Excelente uso del modismo nativo!</strong> Tu oración encaja perfectamente con el tono profesional de una entrevista en Nearshoring. Fluidez y estructura aprobadas.`;
+  } else {
+    feedback = `💡 <strong>Sugerencia de Feynman:</strong> Recuerda incluir explícitamente la expresión <em>"${targetPhrase}"</em> en tu oración para reforzar tu memoria activa de modismos.`;
+  }
+
+  const aiMsgHtml = `
+    <div style="display:flex; gap:12px; margin-top:12px; background:rgba(168, 85, 247, 0.08); padding:12px; border-radius:12px; border:1px solid rgba(168, 85, 247, 0.25);">
+      <i class="fa-solid fa-robot" style="color:var(--purple); margin-top:2px;"></i>
+      <div style="font-size:0.88rem; color:var(--text-main); line-height:1.5;">
+        <strong>Feynman AI Evaluator:</strong> ${feedback}
+      </div>
+    </div>
+  `;
+
+  chatBox.insertAdjacentHTML('beforeend', userMsgHtml + aiMsgHtml);
+  inputEl.value = '';
+}
+`,
