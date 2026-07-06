@@ -1112,10 +1112,59 @@ function closeDrawer() {
   if (backdrop) backdrop.classList.remove('active');
 }
 
+function adaptReadingContentForCEFR(mdText, level = 'A2') {
+  if (!mdText) return '';
+
+  if (level === 'A2') {
+    // LATAM A2 Adaptation: simplify complex sentence structures, add Spanish inline cognate hints, and LATAM grammar scaffolding
+    let text = mdText;
+
+    // 1. Simplify complex passive constructions into direct English with Spanish guidance for LATAM students
+    text = text.replace(/is directly aligned with/gi, "is aligned with (está alineado con)");
+    text = text.replace(/is governed by rules called/gi, "uses rules called (utiliza reglas llamadas)");
+    text = text.replace(/are reassembled into/gi, "join together to form (se unen para formar)");
+    text = text.replace(/is divided into small pieces called/gi, "is split into small parts called (se divide en partes llamadas)");
+    text = text.replace(/A computer network is a group of two or more devices/gi, "A computer network is a simple group of devices (red de computadoras)");
+
+    // 2. Inject LATAM Student Grammar & Scaffolding Box
+    const latamScaffoldingBox = `
+
+> **LATAM Student Grammar & Scaffolding (A2)**:
+> - **Present Simple in Tech**: In STEM English, use action verbs like *connects*, *sends*, *stores* (*un router conecta, envía y almacena*).
+> - **Key Cognates (Palabras Similares)**: *Network* = Red | *Device* = Dispositivo | *Data* = Datos | *Server* = Servidor | *Protocol* = Protocolo.
+> - **Reading Tip**: Identify the main subject first, then the action verb.
+`;
+    return text + latamScaffoldingBox;
+
+  } else if (level === 'B1') {
+    // B1/B2 Advanced Industrial Nearshoring Adaptation: add complex grammar structures, conditionals, and executive audit phrasing
+    let text = mdText;
+
+    // 1. Upgrade phrasing to B1/B2 executive engineering syntax
+    text = text.replace(/A computer network is a group of two or more devices/gi, "A computer network represents an interconnected infrastructure of heterogeneous endpoints");
+    text = text.replace(/Think of it like a road system in a city/gi, "Architecturally, it operates analogously to a municipal transit network routing packetized data");
+    text = text.replace(/Every time you send a message/gi, "Whenever an enterprise engineer dispatches telemetry data");
+
+    // 2. Inject B1/B2 Nearshoring Grammar & Audit Deep-Dive Box
+    const b1GrammarBox = `
+
+> **B1/B2 Industrial Grammar & Executive Nearshoring Focus**:
+> - **Conditional Logic in SLA/Audits**: *"If network latency exceeds 50ms, then automated failover protocols MUST trigger instantly."* (Conditionals for root-cause troubleshooting).
+> - **Audit Passive Voice (ISO 27001 / CompTIA)**: *"Data packets are encrypted and authenticated prior to transmission."* (Used in technical compliance reports and US standups).
+> - **Executive Acronyms**: CompTIA N10-008, TCP/IP Stack, Root-Cause CAPA, SLA Tier-1 Escalation.
+`;
+    return text + b1GrammarBox;
+  }
+
+  return mdText;
+}
+
 function renderMarkdownWithVocabulary(mdText, vocabulary = [], level = 'A2') {
   if (!mdText) return '';
   
-  let formatted = formatMarkdown(mdText);
+  // Transform text based on CEFR Level (A2 vs B1/B2 LATAM adaptation)
+  const adaptedMd = adaptReadingContentForCEFR(mdText, level);
+  let formatted = formatMarkdown(adaptedMd);
 
   // CEFR Mode Header Notice
   const levelBanner = (level === 'B1') ? `
