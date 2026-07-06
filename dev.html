@@ -10,10 +10,10 @@
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <link rel="stylesheet" href="/dev.css?v=1.0.5">
+  <link rel="stylesheet" href="/dev.css?v=1.2.0">
 </head>
 
 <body>
@@ -32,6 +32,15 @@
       </div>
 
       <div class="header-badges">
+        <!-- CEFR English Level Switcher (A2 / B1) -->
+        <div class="offline-card" id="level-switcher-card" style="border-color: rgba(56, 189, 248, 0.3);">
+          <span style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;">Nivel CEFR:</span>
+          <div class="level-switcher-pill" id="level-switcher-pill">
+            <button class="level-btn active" id="btn-level-a2" data-level="A2" title="Nivel A2: Vocabulario básico-intermedio, oraciones directas e inglés funcional">A2</button>
+            <button class="level-btn" id="btn-level-b1" data-level="B1" title="Nivel B1: Vocabulario técnico avanzado, reportes ejecutivos e modismos de Nearshoring">B1</button>
+          </div>
+        </div>
+
         <div class="offline-card" id="offline-card">
           <div class="offline-pill online" id="offline-pill">
             <span class="status-dot"></span>
@@ -43,7 +52,7 @@
             <span class="slider round"></span>
           </label>
 
-          <button class="btn-sync-offline" id="sync-offline-btn" title="Descargar y guardar los 55 módulos en caché local para trabajar sin conexión">
+          <button class="btn-sync-offline" id="sync-offline-btn" title="Descargar y guardar los 50 módulos en caché local para trabajar sin conexión">
             <i class="fa-solid fa-cloud-arrow-down"></i> Save Offline
           </button>
         </div>
@@ -124,15 +133,15 @@
     <div class="toast-icon" id="toast-icon-box"><i class="fa-solid fa-cloud-arrow-down"></i></div>
     <div class="toast-content">
       <div class="toast-title" id="toast-title">Descargando Todo para Modo Offline...</div>
-      <div class="toast-sub" id="toast-sub">Guardando 55 Módulos, 20 Frases Nativas y Lecturas en Caché Local.</div>
+      <div class="toast-sub" id="toast-sub">Guardando 50 Módulos, Frases Nativas y Lecturas en Caché Local.</div>
       <div class="toast-progress-bar"><div class="toast-progress-fill" id="toast-progress"></div></div>
     </div>
   </div>
 
   <!-- Load stemOS courses database, phrases library, and dev controller with cache buster -->
-  <script src="/content/courses.js?v=1.0.5"></script>
-  <script src="/content/phrases_library.js?v=1.0.5"></script>
-  <script src="/dev.js?v=1.0.5"></script>
+  <script src="/content/courses.js?v=1.5.0"></script>
+  <script src="/content/phrases_library.js?v=1.5.0"></script>
+  <script src="/dev.js?v=1.5.0"></script>
 
 </body>
 
