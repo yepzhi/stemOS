@@ -798,26 +798,23 @@ function setupSearch(tracks) {
 }
 
 function setupDrawer() {
-  const dialog = document.getElementById('drawer-backdrop');
+  const backdrop = document.getElementById('drawer-backdrop');
   const closeBtn = document.getElementById('drawer-close');
 
-  if (!dialog) return;
+  if (!backdrop) return;
 
-  // Close button
   if (closeBtn) {
     closeBtn.addEventListener('click', closeDrawer);
   }
 
-  // Fallback for Safari: light-dismiss by clicking the backdrop area
-  // (native <dialog closedby="any"> handles this in Chrome/Firefox/Edge)
-  dialog.addEventListener('click', (e) => {
-    if (e.target === dialog) closeDrawer();
+  // Light-dismiss: click on backdrop area (outside the panel)
+  backdrop.addEventListener('click', (e) => {
+    if (e.target === backdrop) closeDrawer();
   });
 
-  // Esc key handled natively by <dialog>, but also wire cancel event
-  dialog.addEventListener('cancel', (e) => {
-    e.preventDefault();
-    closeDrawer();
+  // Esc key closes drawer
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDrawer();
   });
 }
 
@@ -969,14 +966,7 @@ function openDrawer(trackId, modId, tracks) {
   `;
 
   drawerBody.innerHTML = contentHtml;
-
-  // Modern Web Guidance: use native showModal() for proper focus trap + top-layer
-  if (typeof backdrop.showModal === 'function') {
-    backdrop.showModal();
-  } else {
-    backdrop.classList.add('active');
-  }
-
+  backdrop.classList.add('active');
 
   // Attach event listeners for offline notes & bot sync
   const notesInput = document.getElementById('reading-notes-input');
@@ -1099,23 +1089,12 @@ function openPhraseDrawer(phraseId, phrases) {
   `;
 
   drawerBody.innerHTML = contentHtml;
-
-  // Modern Web Guidance: use native showModal() for proper focus trap + top-layer
-  if (typeof backdrop.showModal === 'function') {
-    backdrop.showModal();
-  } else {
-    backdrop.classList.add('active'); // fallback for non-dialog elements
-  }
+  backdrop.classList.add('active');
 }
 
 function closeDrawer() {
-  const dialog = document.getElementById('drawer-backdrop');
-  if (!dialog) return;
-  if (typeof dialog.close === 'function' && dialog.open) {
-    dialog.close();
-  } else {
-    dialog.classList.remove('active'); // fallback
-  }
+  const backdrop = document.getElementById('drawer-backdrop');
+  if (backdrop) backdrop.classList.remove('active');
 }
 
 function renderMarkdownWithVocabulary(mdText, vocabulary = []) {
