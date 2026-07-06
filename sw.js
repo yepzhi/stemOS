@@ -3,7 +3,7 @@
  * Enables 100% complete offline caching for 50 modules, readings, native phrases, and assets.
  */
 
-const CACHE_NAME = 'stemos-dev-v1.5.0';
+const CACHE_NAME = 'stemos-dev-v2.0.0';
 
 const ASSETS_TO_CACHE = [
   '/',
