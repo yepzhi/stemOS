@@ -1464,28 +1464,37 @@ The next evolution beyond FinFET is the **GAA transistor** (Gate-All-Around), wh
                         title: "How Photolithography Works",
                         duration: "10 min",
                         content: `
-# How Photolithography Works
+> **Semiconductor Equipment Standard Note**: Photolithography track equipment and scanner systems operate under **SEMI E187** (Cybersecurity for Fab Equipment), **SEMI E40** (Material Movement Management), and **ISO 14644-1 Class 1** ultra-pure cleanroom standards.
 
-**Photolithography** (fotolitografía) is the process of using light to transfer geometric patterns from a photomask to a light-sensitive chemical called a **photoresist** on the wafer. It is like printing a photograph, but on a microscopic scale. This is the key step that defines the size of the transistors on a chip.
+# How Photolithography Works: ArF Immersion & Optical Physics
 
-## The Step-by-Step Lithography Process
+**Photolithography** is the core process step in semiconductor manufacturing, using deep ultraviolet light to project microscopic circuit patterns from a quartz reticle (**photomask**) onto a light-sensitive chemical polymer (**photoresist**) coated on a silicon wafer. This process dictates transistor density and critical dimension (CD) scaling.
 
-To build a pattern on the silicon wafer, engineers follow these steps:
+## The Photolithography Processing Sequence
 
-1. **Surface Preparation & Cleaning**: The wafer is cleaned chemically to remove contaminants, and dehydrated at high temperatures.
-2. **Photoresist Coating (Recubrimiento de fotorresistencia)**: A liquid photoresist is applied to the wafer. The wafer is spun at high speed (1000 to 5000 RPM) to spread the chemical into a uniform, microscopically thin layer. This is called **spin coating**.
-3. **Soft Bake (Pre-horneado)**: The wafer is heated gently to evaporate the solvents and solidify the photoresist.
-4. **Alignment and UV Exposure (Alineación y exposición)**: A high-precision machine aligns a **photomask** (a template containing the circuit pattern) over the wafer. **Ultraviolet (UV) light** is projected through the mask, hitting the photoresist in specific areas.
-5. **Development (Revelado)**: The wafer is rinsed with a developer solution. Depending on the type of photoresist, the exposed or unexposed parts dissolve:
-   - **Positive Photoresist**: The areas exposed to light become soluble and dissolve. The unexposed areas remain. (This is the most common type used).
-   - **Negative Photoresist**: The areas exposed to light become insoluble and remain. The unexposed areas dissolve.
-6. **Hard Bake (Horneado final)**: The wafer is baked again to harden the remaining photoresist pattern before etching or doping begins.
+1. **Surface Priming (HMDS Vapor Prime)**: Wafers are treated with Hexamethyldisilazane (HMDS) gas in a vacuum oven at 150°C to promote adhesion between hydrophobic silicon dioxide and organic photoresist.
+2. **Precision Spin Coating**: Liquid photoresist is dispensed at the wafer center while spinning at 3,000 to 5,000 RPM, creating a uniform film thickness controlled down to **±0.5 nanometers**.
+3. **Soft Bake**: Thermal processing at 100°C–120°C drives out residual solvents and stabilizes photoresist viscoelasticity.
+4. **Reticle Alignment & DUV Exposure**: High-aperture optical scanners align the photomask with sub-nanometer precision. **ArF 193 nm Deep Ultraviolet (DUV)** laser pulses project light through the reticle pattern. In **Immersion Lithography (193nm i)**, ultra-pure water (refractive index $n = 1.44$) fills the gap between the final optical lens and the wafer, boosting the numerical aperture (NA > 1.35).
+5. **Post-Exposure Bake (PEB) & Chemical Development**: PEB catalyzes chemical amplification within the resist. Rinsing with **TMAH (Tetramethylammonium hydroxide)** developer dissolves exposed regions (positive resist), exposing underlying silicon for plasma etching.
 
-## The Importance of Alignment: Overlay Accuracy
+## Reticle Alignment & Overlay Metrology
 
-A modern microchip contains up to 80 separate layers. Each layer must align perfectly with the layers below it. The precision of this alignment is called **overlay accuracy** (precisión de superposición). If a layer is misaligned by even a fraction of a nanometer, the entire chip will fail.
+Modern microchip production stacks up to 80 separate patterned layers. Each layer must align with sub-nanometer accuracy:
+- **Overlay Budget**: Total allowable layer-to-layer misregistration must remain below **1.5 nanometers** across the entire 300mm wafer.
+- **Pellicle Protection**: Ultra-thin transparent membranes mounted above the quartz reticle protect photomask surfaces from airborne cleanroom dust.
+- **Critical Dimension Scanning Electron Microscopy (CD-SEM)**: High-resolution electron beam tools measure printed feature linewidths to ensure process compliance before wafers advance to plasma etching.
 
-> **Analogy**: Imagine drawing 80 different layers of a house on separate sheets of clear paper. If you don't stack them perfectly, the doors won't line up with the walls, and the roof will float in the air.
+## Computational Lithography & OPC (Optical Proximity Correction)
+
+As critical dimensions shrank below light wavelengths, physical diffraction caused pattern distortion on the wafer. Modern lithography relies on advanced computational algorithms:
+- **Optical Proximity Correction (OPC)**: Modifying reticle geometries by adding serifs and shifting polygon edges to compensate for optical diffraction.
+- **Source-Mask Optimization (SMO)**: Jointly optimizing laser illumination pupil shapes and reticle features to maximize process window latitude.
+- **Multiple Patterning (Self-Aligned Quad Patterning - SAQP)**: Using sacrificial spacer deposition and etching to split sub-resolution pitches when single-exposure DUV resolution limits are reached.
+
+---
+
+> **Key Takeaway**: Photolithography relies on **ArF 193nm immersion optics**, **OPC computational lithography**, chemical amplification, and sub-1.5nm overlay metrology. Governed by **SEMI** standards, it is the fundamental driver of microchip scaling.
 `,
                         vocabulary: [
                             { en: "Photoresist", es: "Fotorresistencia / Resina fotosensible", definition: "A light-sensitive chemical polymer coated on the wafer" },
@@ -3256,67 +3265,46 @@ Work in short **sprints** (1-4 weeks). Each sprint delivers a small, working inc
                         title: "SQL vs NoSQL: Choosing the Right Database",
                         duration: "10 min",
                         content: `
-# SQL vs NoSQL: Choosing the Right Database
+> **Data Architecture Standard Note**: Enterprise database management systems follow **ISO/IEC 9075** (SQL Standard), **CAP Theorem** (Consistency, Availability, Partition Tolerance), and **GDPR / LFPDPPP** data privacy regulations.
 
-Every application needs to store data. The type of database you choose determines how your data is organized, how fast you can access it, and how well it scales.
+# SQL vs NoSQL: Enterprise Data Architecture & The CAP Theorem
 
-## Relational Databases (SQL)
+Selecting the appropriate database paradigm is a foundational architectural decision. Software engineers and cloud architects must balance transactional consistency against distributed horizontal scalability across multi-region cloud clusters.
 
-**Relational databases** store data in structured **tables** with rows and columns — like a spreadsheet. Each table has a fixed **schema** (structure) defined in advance.
+## 1. Relational Database Management Systems (RDBMS / SQL)
 
-**SQL** (Structured Query Language) is the language used to create, read, update, and delete data. Example:
+Relational databases store structured records in predefined tables linked by primary and foreign key constraints:
+- **ACID Transaction Guarantees**:
+  - **Atomicity**: All operations in a transaction execute successfully or roll back completely.
+  - **Consistency**: Data transitions strictly from one valid schema state to another.
+  - **Isolation**: Concurrent transactions execute without cross-contamination.
+  - **Durability**: Committed transactions persist permanently in non-volatile storage.
+- **Enterprise Engines**: PostgreSQL, MySQL, Oracle Database, Microsoft SQL Server. Ideal for core banking, ERP systems, and inventory ledger management.
 
-\`\`\`sql
-SELECT name, email FROM users WHERE country = 'Mexico';
-\`\`\`
+## 2. Distributed Non-Relational Databases (NoSQL) & The CAP Theorem
 
-### Key Properties: ACID
-- **Atomicity**: Transactions are all-or-nothing
-- **Consistency**: Data always follows rules
-- **Isolation**: Concurrent transactions don't interfere
-- **Durability**: Committed data survives crashes
+NoSQL systems prioritize flexible JSON/document schemas and horizontal partitioning across thousands of server nodes:
 
-**Examples**: PostgreSQL, MySQL, Microsoft SQL Server, Oracle.
-**Best for**: Financial systems, inventory, ERP, anything needing strict data integrity.
+### The CAP Theorem (Brewer's Theorem)
+A distributed database system can simultaneously guarantee at most two of the following three properties:
+1. **Consistency (C)**: Every read receives the most recent write or an error.
+2. **Availability (A)**: Every non-failing node returns a non-error response without guarantee of latest data.
+3. **Partition Tolerance (P)**: The system continues operating despite network message loss or node disconnects.
 
-## Non-Relational Databases (NoSQL)
+- **CP Systems (Consistency + Partition Tolerance)**: Focus on atomic data accuracy (e.g., PostgreSQL, MongoDB).
+- **AP Systems (Availability + Partition Tolerance)**: Focus on continuous read/write uptime (e.g., Apache Cassandra, DynamoDB).
 
-**NoSQL** databases store data in flexible formats — not limited to tables. "NoSQL" means "Not Only SQL."
+- **Document Databases (MongoDB / Firestore)**: Store BSON documents with dynamic fields; ideal for content management and user profiles.
+- **In-Memory Key-Value Stores (Redis / Memcached)**: Deliver sub-millisecond read/write latency for active session tokens and leaderboards.
+- **Wide-Column Stores (Apache Cassandra / ScyllaDB)**: Built for high-throughput time-series metrics and IoT telematics streaming.
 
-### Types of NoSQL Databases:
+## 3. Modern Polyglot Persistence Architecture
 
-| Type | Structure | Example | Best For |
-|------|-----------|---------|----------|
-| **Document** | JSON-like documents | MongoDB, Firestore | User profiles, content management |
-| **Key-Value** | Simple key→value pairs | Redis, DynamoDB | Caching, sessions, real-time data |
-| **Graph** | Nodes and relationships | Neo4j | Social networks, recommendation engines |
-| **Wide-Column** | Column families | Apache Cassandra | IoT data, time-series at massive scale |
-
-### Key Properties: BASE
-- **Basically Available**: System always responds
-- **Soft State**: Data may be temporarily inconsistent
-- **Eventually Consistent**: All copies will sync eventually
-
-## SQL vs NoSQL Decision Framework
-
-| Factor | Choose SQL | Choose NoSQL |
-|--------|-----------|-------------|
-| Data structure | Fixed, well-defined schema | Flexible, evolving schema |
-| Relationships | Complex relationships between tables | Simple or no relationships |
-| Scaling | Vertical (bigger server) | Horizontal (more servers) |
-| Transactions | ACID required (banking, finance) | Eventual consistency OK (social media) |
-
-## The Modern Reality: Polyglot Persistence
-
-In 2026, most applications use **multiple database types** simultaneously:
-- **PostgreSQL** for billing and orders (ACID transactions)
-- **MongoDB** for user profiles (flexible documents)
-- **Redis** for caching and real-time features (speed)
-- **Neo4j** for social graphs and AI recommendations (relationships)
+Modern enterprise microservice architectures reject one-size-fits-all database choices. Under **Polyglot Persistence**, each microservice selects the optimal database engine (e.g., PostgreSQL for financial transactions, Redis for user auth caching, and Neo4j for fraud detection graphs).
 
 ---
 
-> **Key Takeaway**: SQL databases enforce structure and integrity (ACID). NoSQL databases offer flexibility and scale (BASE). Modern applications often use both — this is called polyglot persistence.
+> **Key Takeaway**: Enterprise data architecture balances **SQL (ACID)** integrity against **NoSQL (BASE/CAP)** distributed scaling, deploying **Polyglot Persistence** models under **ISO/IEC 9075** standards.
 `,
                         vocabulary: [
                             { en: "Database", es: "Base de Datos", definition: "Organized collection of structured data" },
@@ -4008,51 +3996,32 @@ Key aerospace clusters: **Querétaro** (manufacturing + MRO), **Sonora** (engine
                         title: "Aerospace Materials: From Aluminum to Carbon Fiber",
                         duration: "10 min",
                         content: `
-# Aerospace Materials: From Aluminum to Carbon Fiber
+> **Aerospace Materials Standard Note**: Structural aerospace materials and heat-treatment specifications are certified according to **AMS** (Aerospace Material Specifications), **ASTM E8** (Tension Testing of Metallic Materials), and **NADCAP** (Special Processes) standards.
 
-The materials used in aerospace are chosen for one primary reason: **strength-to-weight ratio**. Every kilogram saved on an aircraft structure saves approximately **$1,000-3,000 per year** in fuel costs over the aircraft's 20-30 year lifespan.
+# Aerospace Materials Engineering: Composites, Superalloys, & AMS Specifications
 
-## Key Material Categories
+Aerospace structural design centers on a singular engineering objective: **maximizing specific strength ($\text{MPa}/(\text{g/cm}^3)$)** while guaranteeing zero structural failure across 30,000+ flight pressurization cycles.
 
-### 1. Aluminum Alloys
-The "traditional" aerospace material. Lightweight, affordable, easy to machine.
-- **2024-T3**: High fatigue resistance — used for fuselage skins
-- **7075-T6**: Very strong — used for wing structures
-- **Content in modern aircraft**: ~20% of a Boeing 787 (down from 80% in older aircraft)
+## 1. Advanced Aerospace Metallic Alloys
 
-### 2. Titanium Alloys
-Extremely strong, corrosion-resistant, and lightweight — but expensive and hard to machine.
-- **Ti-6Al-4V**: The most common aerospace titanium alloy
-- **Used for**: Landing gear, engine mounts, wing fittings, fasteners
-- **Content**: ~15% of a Boeing 787
+- **Aluminum-Lithium Alloys (2024-T3 / 7075-T6 / Al-Li 2060)**: Al-Li substitution reduces density by 3% while increasing elastic modulus by 6%. Extensively used in wing spars and fuselage stringers under **AMS 4027**.
+- **Titanium Alloys (Ti-6Al-4V / AMS 4928)**: High specific strength and thermal tolerance up to 400°C. Used in high-load structural fittings, pylon attachments, and landing gear cylinders. Titanium avoids galvanic corrosion when joined with carbon fiber.
+- **Nickel-Based Superalloys (Inconel 718 / Rene 41)**: Retains mechanical tensile strength above **1,000°C** inside jet engine combustors and turbine blades under **AMS 5662**. Single-crystal directional solidification casting eliminates grain boundaries to resist creep deformation.
 
-### 3. CFRP — Carbon Fiber Reinforced Polymer
-Layers of carbon fiber sheets bonded with epoxy resin. Stronger than steel at 1/5 the weight.
-- **Used for**: Wings, fuselage panels, tail structures
-- **Content**: ~50% of a Boeing 787 Dreamliner and Airbus A350
-- **Manufacturing**: Autoclave curing at 180°C under 7 atm pressure
+## 2. Composite Materials: Carbon Fiber Reinforced Polymers (CFRP)
 
-### 4. Nickel-Based Superalloys
-Can withstand temperatures above **1,000°C** — critical for jet engine components.
-- **Inconel 718**: Most common aerospace superalloy
-- **Single-crystal castings**: Turbine blades grown as one crystal for maximum strength
-- **Used for**: High-pressure turbine blades, combustion chambers
+Modern commercial wide-body airliners (Boeing 787 Dreamliner, Airbus A350 XWB) feature **>50% composite structures by weight**:
 
-### 5. Ceramic Matrix Composites (CMCs)
-The cutting edge — ceramics reinforced with fibers. Can operate at **1,300°C+** while being 1/3 the weight of superalloys. Used in the LEAP engine by Safran/GE.
+- **Carbon Fiber Prepreg (T800 / HexPly)**: Formed via Automated Fiber Placement (AFP) or Automated Tape Laying (ATL).
+- **Autoclave Curing**: Polymerized at 180°C under 7 atm (100 psi) nitrogen pressure.
+- **NDT Quality Inspection**: Certified under Ultrasonic non-destructive testing standards.
 
-## Material Selection Matrix
-
-| Property | Aluminum | Titanium | CFRP | Superalloy |
-|----------|----------|----------|------|-----------|
-| Strength-to-Weight | Good | Excellent | Best | Good |
-| Temperature Resistance | Low (150°C) | Medium (300°C) | Low (180°C) | Very High (1,000°C+) |
-| Cost | Low | High | Very High | Very High |
-| Machinability | Easy | Difficult | Special tools | Very Difficult |
+- **Prepreg Carbon Tapes**: Continuous high-modulus carbon fibers pre-impregnated with toughened epoxy resin.
+- **Autoclave Curing (ISO 14644)**: Heat and nitrogen pressure drive out microscopic air voids (<0.1% void content limit), cross-linking polymer chains to yield lightweight structural panels stronger than titanium.
 
 ---
 
-> **Key Takeaway**: Modern aircraft use a mix of aluminum, titanium, CFRP composites, and superalloys. The 787 Dreamliner is 50% composite. Material choice depends on strength, weight, temperature, and cost.
+> **Key Takeaway**: Modern aerospace relies on **CFRP composites** for airframes and **Inconel superalloys** for jet turbines. Material fabrication and NDT testing must comply with strict **AMS** and **NADCAP** quality standards.
 `,
                         vocabulary: [
                             { en: "Composite", es: "Material Compuesto", definition: "Material made from two or more different materials" },
