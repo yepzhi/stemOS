@@ -1148,4 +1148,3 @@ function simulateFeynmanResponse(targetPhrase) {
   chatBox.insertAdjacentHTML('beforeend', userMsgHtml + aiMsgHtml);
   inputEl.value = '';
 }
-`,
