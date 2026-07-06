@@ -437,7 +437,8 @@ function renderFilters(tracks, phrases = []) {
   // Add Mis Lecturas Offline Filter Button
   html += `
     <button class="filter-btn" data-track="offline-saved" style="border-color: rgba(56, 189, 248, 0.35);">
-      <i class="fa-solid fa-bookmark" style="color:var(--cyan);"></i> 📚 Mis Lecturas Offline (${validSaved.length}/${MAX_OFFLINE_READINGS})
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Mis Lecturas Offline (${validSaved.length}/${MAX_OFFLINE_READINGS})
     </button>
   `;
 
@@ -452,7 +453,8 @@ function renderFilters(tracks, phrases = []) {
   if (phrases && phrases.length > 0) {
     html += `
       <button class="filter-btn" data-track="phrases" style="border-color: rgba(251, 191, 36, 0.35);">
-        <i class="fa-solid fa-comments" style="color:var(--gold);"></i> 💬 Frases Nativas (${phrases.length})
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Frases Nativas (${phrases.length})
       </button>
     `;
   }
@@ -524,11 +526,12 @@ function renderGrid(tracks, phrases = []) {
   html += `
     <div class="track-section" id="section-offline-saved" style="${validSaved.length === 0 ? 'display:none;' : ''}">
       <h2 class="track-header-title font-head" style="color: var(--cyan); display:flex; align-items:center; justify-content:space-between;">
-        <span>
-          <i class="fa-solid fa-bookmark" style="color:var(--cyan);"></i> 📚 Mis Lecturas Offline Seleccionadas
-          <span style="font-size:0.8rem; font-weight:500; color:var(--text-dim);">(${validSaved.length}/${MAX_OFFLINE_READINGS} Seleccionadas • Expiran en 3 Días)</span>
+        <span style="display:flex; align-items:center; gap:8px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Mis Lecturas Offline Seleccionadas
+          <span style="font-size:0.8rem; font-weight:500; color:var(--text-dim);">(${validSaved.length}/${MAX_OFFLINE_READINGS} Seleccionadas &bull; Expiran en 3 Días)</span>
         </span>
-        <span style="font-size:0.78rem; background:rgba(56, 189, 248, 0.12); color:var(--cyan); padding:4px 10px; border-radius:8px; border:1px solid rgba(56, 189, 248, 0.3);">
+        <span style="font-size:0.78rem; background:rgba(56, 189, 248, 0.12); color:var(--cyan); padding:4px 10px; border-radius:8px; border:1px solid rgba(56, 189, 248, 0.3); display:flex; align-items:center; gap:6px;">
           <i class="fa-solid fa-clock-rotate-left"></i> Auto-Limpieza 72h
         </span>
       </h2>
@@ -721,9 +724,41 @@ function renderGrid(tracks, phrases = []) {
 
   gridContainer.innerHTML = html;
 
-  // Add Card Click Events for Modules
+  // Stop propagation on pin/remove buttons so they don't open the drawer
+  gridContainer.querySelectorAll('.btn-pin-offline').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const trackId = btn.getAttribute('data-track-id');
+      const modId = btn.getAttribute('data-mod-id');
+      toggleOfflineReadingPin(trackId, modId, tracks);
+    });
+  });
+
+  gridContainer.querySelectorAll('.btn-remove-pin').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const trackId = btn.getAttribute('data-track-id');
+      const modId = btn.getAttribute('data-mod-id');
+      toggleOfflineReadingPin(trackId, modId, tracks);
+    });
+  });
+
+  // Explicit explore-btn click opens drawer (also stops propagation to avoid double-fire)
+  gridContainer.querySelectorAll('.module-card:not(.phrase-card) .explore-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = btn.closest('.module-card');
+      const trackId = card.getAttribute('data-track-id');
+      const modId = card.getAttribute('data-mod-id');
+      openDrawer(trackId, modId, tracks);
+    });
+  });
+
+  // Add Card Click Events for Modules (clicking anywhere else on card also opens drawer)
   gridContainer.querySelectorAll('.module-card:not(.phrase-card)').forEach(card => {
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
+      // Ignore clicks on interactive child buttons already handled above
+      if (e.target.closest('.btn-pin-offline, .btn-remove-pin, .explore-btn')) return;
       const trackId = card.getAttribute('data-track-id');
       const modId = card.getAttribute('data-mod-id');
       openDrawer(trackId, modId, tracks);
@@ -732,7 +767,17 @@ function renderGrid(tracks, phrases = []) {
 
   // Add Card Click Events for Phrases
   gridContainer.querySelectorAll('.phrase-card').forEach(card => {
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.explore-btn')) return;
+      const phraseId = card.getAttribute('data-phrase-id');
+      openPhraseDrawer(phraseId, phrases);
+    });
+  });
+
+  gridContainer.querySelectorAll('.phrase-card .explore-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = btn.closest('.phrase-card');
       const phraseId = card.getAttribute('data-phrase-id');
       openPhraseDrawer(phraseId, phrases);
     });
