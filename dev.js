@@ -117,7 +117,7 @@ function setActiveLevelButton(level) {
 }
 
 function filterGridByLevel(level, tracks) {
-  // Update badges & metadata dynamically
+  // Update badges & metadata dynamically on cards
   document.querySelectorAll('.module-card:not(.phrase-card)').forEach(card => {
     const trackId = card.getAttribute('data-track-id');
     const track = tracks.find(t => t.id === trackId);
@@ -126,6 +126,14 @@ function filterGridByLevel(level, tracks) {
       modTag.innerText = `${track.title} (${level})`;
     }
   });
+
+  // Live re-render active open drawer if visible
+  if (currentActiveTrackId && currentActiveModId) {
+    const backdrop = document.getElementById('drawer-backdrop');
+    if (backdrop && backdrop.classList.contains('active')) {
+      openDrawer(currentActiveTrackId, currentActiveModId, tracks);
+    }
+  }
 }
 
 function setupOfflineController(tracks, phrases) {
@@ -818,7 +826,13 @@ function setupDrawer() {
   });
 }
 
+let currentActiveTrackId = null;
+let currentActiveModId = null;
+
 function openDrawer(trackId, modId, tracks) {
+  currentActiveTrackId = trackId;
+  currentActiveModId = modId;
+
   const track = tracks.find(t => t.id === trackId);
   if (!track || !track.modules) return;
 
@@ -852,7 +866,7 @@ function openDrawer(trackId, modId, tracks) {
   if (mod.readings && mod.readings.length > 0) {
     mod.readings.forEach((r, idx) => {
       const isFirst = (idx === 0);
-      const formattedText = renderMarkdownWithVocabulary(r.content || 'Sin contenido de lectura disponible.', r.vocabulary || []);
+      const formattedText = renderMarkdownWithVocabulary(r.content || 'Sin contenido de lectura disponible.', r.vocabulary || [], activeLevel);
 
       contentHtml += `
         <!-- Collapsible Reading Accordion -->
@@ -1098,12 +1112,31 @@ function closeDrawer() {
   if (backdrop) backdrop.classList.remove('active');
 }
 
-function renderMarkdownWithVocabulary(mdText, vocabulary = []) {
+function renderMarkdownWithVocabulary(mdText, vocabulary = [], level = 'A2') {
   if (!mdText) return '';
   
   let formatted = formatMarkdown(mdText);
 
-  // Auto-wrap vocabulary terms in interactive tooltip spans with mobile 'i' trigger
+  // CEFR Mode Header Notice
+  const levelBanner = (level === 'B1') ? `
+    <div class="cefr-reading-banner" style="background:rgba(168, 85, 247, 0.12); border:1px solid rgba(168, 85, 247, 0.35); padding:10px 14px; border-radius:10px; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <span style="font-size:0.83rem; color:#e9d5ff; font-weight:600; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-briefcase" style="color:var(--purple);"></i> <strong>Modo CEFR B1 (Técnico Avanzado):</strong> Enfocado en terminología de Nearshoring, acrónimos industriales (CompTIA, ISO, SLA, CAPA) y reportes ejecutivos.
+      </span>
+      <span style="font-size:0.72rem; font-weight:800; background:linear-gradient(135deg, var(--purple), var(--indigo)); color:#fff; padding:3px 10px; border-radius:6px; white-space:nowrap;">Nivel B1</span>
+    </div>
+  ` : `
+    <div class="cefr-reading-banner" style="background:rgba(56, 189, 248, 0.1); border:1px solid rgba(56, 189, 248, 0.35); padding:10px 14px; border-radius:10px; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <span style="font-size:0.83rem; color:var(--cyan); font-weight:600; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-graduation-cap" style="color:var(--cyan);"></i> <strong>Modo CEFR A2 (Básico-Intermedio):</strong> Oraciones directas, explicaciones guiadas y glosario en español para aprendizaje progresivo.
+      </span>
+      <span style="font-size:0.72rem; font-weight:800; background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; padding:3px 10px; border-radius:6px; white-space:nowrap;">Nivel A2</span>
+    </div>
+  `;
+
+  formatted = levelBanner + formatted;
+
+  // Auto-wrap vocabulary terms in interactive tooltip spans with level styling
   if (vocabulary && vocabulary.length > 0) {
     vocabulary.forEach(v => {
       const termStr = v.term || v.en;
@@ -1111,11 +1144,14 @@ function renderMarkdownWithVocabulary(mdText, vocabulary = []) {
 
       const defStr = v.definition || v.definitionEN || v.es || '';
       const esStr = v.es || '';
+      const badgeStyle = (level === 'B1')
+        ? 'border-color:rgba(168,85,247,0.5); background:rgba(168,85,247,0.15); color:#e9d5ff;'
+        : 'border-color:rgba(56,189,248,0.4); background:rgba(56,189,248,0.15); color:var(--cyan);';
 
       const regex = new RegExp(`\\b(${termStr.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})\\b`, 'gi');
       
       formatted = formatted.replace(regex, (match) => {
-        return `<span class="term-tooltip">${match} <i class="fa-solid fa-circle-info term-info-btn" onclick="event.stopPropagation(); alert('${match} (${esStr}):\\n${defStr}')" title="${defStr}"></i><span class="tooltip-box"><strong>${match} (${esStr})</strong><br>${defStr}</span></span>`;
+        return `<span class="term-tooltip" style="${badgeStyle}">${match} <i class="fa-solid fa-circle-info term-info-btn" onclick="event.stopPropagation(); alert('${match} (${esStr}):\\n${defStr}')" title="${defStr}"></i><span class="tooltip-box"><strong>${match} (${esStr}) [${level}]</strong><br>${defStr}</span></span>`;
       });
     });
   }
