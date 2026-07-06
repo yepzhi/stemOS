@@ -724,63 +724,43 @@ function renderGrid(tracks, phrases = []) {
 
   gridContainer.innerHTML = html;
 
-  // Stop propagation on pin/remove buttons so they don't open the drawer
-  gridContainer.querySelectorAll('.btn-pin-offline').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const trackId = btn.getAttribute('data-track-id');
-      const modId = btn.getAttribute('data-mod-id');
+  // ── Modern Web Guidance: single delegated listener on the container ──────────
+  // One listener handles all card interactions — no per-element binding needed.
+  gridContainer.addEventListener('click', (e) => {
+    // 1. Pin / unpin offline reading
+    const pinBtn = e.target.closest('.btn-pin-offline');
+    if (pinBtn) {
+      const trackId = pinBtn.dataset.trackId;
+      const modId = pinBtn.dataset.modId;
       toggleOfflineReadingPin(trackId, modId, tracks);
-    });
-  });
+      return;
+    }
 
-  gridContainer.querySelectorAll('.btn-remove-pin').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const trackId = btn.getAttribute('data-track-id');
-      const modId = btn.getAttribute('data-mod-id');
+    // 2. Remove offline reading
+    const removeBtn = e.target.closest('.btn-remove-pin');
+    if (removeBtn) {
+      const trackId = removeBtn.dataset.trackId;
+      const modId = removeBtn.dataset.modId;
       toggleOfflineReadingPin(trackId, modId, tracks);
-    });
-  });
+      return;
+    }
 
-  // Explicit explore-btn click opens drawer (also stops propagation to avoid double-fire)
-  gridContainer.querySelectorAll('.module-card:not(.phrase-card) .explore-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const card = btn.closest('.module-card');
-      const trackId = card.getAttribute('data-track-id');
-      const modId = card.getAttribute('data-mod-id');
-      openDrawer(trackId, modId, tracks);
-    });
-  });
-
-  // Add Card Click Events for Modules (clicking anywhere else on card also opens drawer)
-  gridContainer.querySelectorAll('.module-card:not(.phrase-card)').forEach(card => {
-    card.addEventListener('click', (e) => {
-      // Ignore clicks on interactive child buttons already handled above
-      if (e.target.closest('.btn-pin-offline, .btn-remove-pin, .explore-btn')) return;
-      const trackId = card.getAttribute('data-track-id');
-      const modId = card.getAttribute('data-mod-id');
-      openDrawer(trackId, modId, tracks);
-    });
-  });
-
-  // Add Card Click Events for Phrases
-  gridContainer.querySelectorAll('.phrase-card').forEach(card => {
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('.explore-btn')) return;
-      const phraseId = card.getAttribute('data-phrase-id');
+    // 3. Click on a phrase card or its explore button → open phrase drawer
+    const phraseCard = e.target.closest('.phrase-card');
+    if (phraseCard) {
+      const phraseId = phraseCard.dataset.phraseId;
       openPhraseDrawer(phraseId, phrases);
-    });
-  });
+      return;
+    }
 
-  gridContainer.querySelectorAll('.phrase-card .explore-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const card = btn.closest('.phrase-card');
-      const phraseId = card.getAttribute('data-phrase-id');
-      openPhraseDrawer(phraseId, phrases);
-    });
+    // 4. Click anywhere on a module card (including its explore button) → open drawer
+    const moduleCard = e.target.closest('.module-card');
+    if (moduleCard) {
+      const trackId = moduleCard.dataset.trackId;
+      const modId = moduleCard.dataset.modId;
+      openDrawer(trackId, modId, tracks);
+      return;
+    }
   });
 }
 
@@ -818,21 +798,26 @@ function setupSearch(tracks) {
 }
 
 function setupDrawer() {
-  const backdrop = document.getElementById('drawer-backdrop');
+  const dialog = document.getElementById('drawer-backdrop');
   const closeBtn = document.getElementById('drawer-close');
 
+  if (!dialog) return;
+
+  // Close button
   if (closeBtn) {
     closeBtn.addEventListener('click', closeDrawer);
   }
 
-  if (backdrop) {
-    backdrop.addEventListener('click', (e) => {
-      if (e.target === backdrop) closeDrawer();
-    });
-  }
+  // Fallback for Safari: light-dismiss by clicking the backdrop area
+  // (native <dialog closedby="any"> handles this in Chrome/Firefox/Edge)
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) closeDrawer();
+  });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeDrawer();
+  // Esc key handled natively by <dialog>, but also wire cancel event
+  dialog.addEventListener('cancel', (e) => {
+    e.preventDefault();
+    closeDrawer();
   });
 }
 
@@ -984,7 +969,14 @@ function openDrawer(trackId, modId, tracks) {
   `;
 
   drawerBody.innerHTML = contentHtml;
-  backdrop.classList.add('active');
+
+  // Modern Web Guidance: use native showModal() for proper focus trap + top-layer
+  if (typeof backdrop.showModal === 'function') {
+    backdrop.showModal();
+  } else {
+    backdrop.classList.add('active');
+  }
+
 
   // Attach event listeners for offline notes & bot sync
   const notesInput = document.getElementById('reading-notes-input');
@@ -1107,12 +1099,23 @@ function openPhraseDrawer(phraseId, phrases) {
   `;
 
   drawerBody.innerHTML = contentHtml;
-  backdrop.classList.add('active');
+
+  // Modern Web Guidance: use native showModal() for proper focus trap + top-layer
+  if (typeof backdrop.showModal === 'function') {
+    backdrop.showModal();
+  } else {
+    backdrop.classList.add('active'); // fallback for non-dialog elements
+  }
 }
 
 function closeDrawer() {
-  const backdrop = document.getElementById('drawer-backdrop');
-  if (backdrop) backdrop.classList.remove('active');
+  const dialog = document.getElementById('drawer-backdrop');
+  if (!dialog) return;
+  if (typeof dialog.close === 'function' && dialog.open) {
+    dialog.close();
+  } else {
+    dialog.classList.remove('active'); // fallback
+  }
 }
 
 function renderMarkdownWithVocabulary(mdText, vocabulary = []) {

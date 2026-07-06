@@ -109,8 +109,8 @@
     </main>
   </div>
 
-  <!-- Drawer Modal Reader -->
-  <div class="drawer-backdrop" id="drawer-backdrop">
+  <!-- Drawer Modal Reader — Native <dialog> (Modern Web Guidance) -->
+  <dialog id="drawer-backdrop" class="drawer-backdrop" closedby="any" aria-labelledby="drawer-mod-title">
     <div class="drawer-panel" id="drawer-panel">
       <div class="drawer-header">
         <div>
@@ -126,7 +126,7 @@
         <!-- Readings, Glossary and Socratic Questions injected here -->
       </div>
     </div>
-  </div>
+  </dialog>
 
   <!-- Floating Offline Sync Toast Banner -->
   <div class="offline-toast-banner" id="offline-toast">
@@ -139,9 +139,9 @@
   </div>
 
   <!-- Load stemOS courses database, phrases library, and dev controller with cache buster -->
-  <script src="/content/courses.js?v=2.0.2"></script>
-  <script src="/content/phrases_library.js?v=2.0.2"></script>
-  <script src="/dev.js?v=2.0.2"></script>
+  <script src="/content/courses.js?v=2.0.3"></script>
+  <script src="/content/phrases_library.js?v=2.0.3"></script>
+  <script src="/dev.js?v=2.0.3"></script>
 
 </body>
 

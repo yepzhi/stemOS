@@ -854,13 +854,17 @@ input:checked + .slider:before {
   gap: 5px;
 }
 
-/* Centered Liquid Glass Modal Reader (JSweb Style) */
-.drawer-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(3, 5, 8, 0.82);
-  backdrop-filter: blur(16px) saturate(180%);
-  z-index: 100;
+/* Centered Liquid Glass Modal Reader — Native <dialog> (Modern Web Guidance) */
+dialog.drawer-backdrop {
+  /* Reset browser dialog defaults */
+  border: none;
+  padding: 0;
+  background: transparent;
+  max-width: 100vw;
+  max-height: 100dvh;
+  width: 100%;
+  height: 100%;
+  /* Hidden by default — dialog hides itself unless open */
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -868,9 +872,19 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: center;
   padding: 20px;
+  box-sizing: border-box;
 }
 
-.drawer-backdrop.active {
+/* Style the native ::backdrop */
+dialog.drawer-backdrop::backdrop {
+  background: rgba(3, 5, 8, 0.82);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+/* Show when open (native dialog[open] state OR .active fallback) */
+dialog.drawer-backdrop[open],
+dialog.drawer-backdrop.active {
   opacity: 1;
   pointer-events: auto;
 }
@@ -893,7 +907,8 @@ input:checked + .slider:before {
   overflow: hidden;
 }
 
-.drawer-backdrop.active .drawer-panel {
+dialog.drawer-backdrop[open] .drawer-panel,
+dialog.drawer-backdrop.active .drawer-panel {
   transform: scale(1) translateY(0);
 }
 
