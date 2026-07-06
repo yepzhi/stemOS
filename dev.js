@@ -19,7 +19,7 @@ function initStudio() {
   // Offline fallback: load from LocalStorage if window object is missing or offline
   if (!coursesData || Object.keys(coursesData).length === 0) {
     try {
-      const cached = localStorage.getItem('stemos_dev_courses_v1.0.5') || localStorage.getItem('stemos_dev_courses_v1.0.3');
+      const cached = localStorage.getItem('stemos_dev_courses_v1.5.0') || localStorage.getItem('stemos_dev_courses_v1.0.5');
       if (cached) {
         const parsed = JSON.parse(cached);
         coursesData = Array.isArray(parsed) ? parsed.reduce((acc, t) => { acc[t.id] = t; return acc; }, {}) : parsed;
@@ -35,7 +35,7 @@ function initStudio() {
   
   if (!phrases || phrases.length === 0) {
     try {
-      const cachedPhrases = localStorage.getItem('stemos_dev_phrases_v1.0.5');
+      const cachedPhrases = localStorage.getItem('stemos_dev_phrases_v1.5.0') || localStorage.getItem('stemos_dev_phrases_v1.0.5');
       if (cachedPhrases) {
         phrases = JSON.parse(cachedPhrases);
         console.log('[stemOS Offline] Loaded phrases from LocalStorage cache');
@@ -253,7 +253,7 @@ function updateToastProgress(percent) {
 function saveCoursesToLocalStorage(tracks) {
   try {
     if (tracks && tracks.length > 0) {
-      localStorage.setItem('stemos_dev_courses_v1.0.5', JSON.stringify(tracks));
+      localStorage.setItem('stemos_dev_courses_v1.5.0', JSON.stringify(tracks));
     }
   } catch (err) {
     console.warn('[stemOS Cache] LocalStorage write warning:', err);
