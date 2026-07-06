@@ -866,7 +866,7 @@ function openDrawer(trackId, modId, tracks) {
   if (mod.readings && mod.readings.length > 0) {
     mod.readings.forEach((r, idx) => {
       const isFirst = (idx === 0);
-      const formattedText = renderMarkdownWithVocabulary(r.content || 'Sin contenido de lectura disponible.', r.vocabulary || [], activeLevel);
+      const formattedText = renderMarkdownWithVocabulary(adaptReadingContentForCEFR(r, activeLevel), r.vocabulary || [], activeLevel);
 
       contentHtml += `
         <!-- Collapsible Reading Accordion -->
@@ -1112,51 +1112,86 @@ function closeDrawer() {
   if (backdrop) backdrop.classList.remove('active');
 }
 
-function adaptReadingContentForCEFR(mdText, level = 'A2') {
-  if (!mdText) return '';
+function adaptReadingContentForCEFR(reading, level = 'A2') {
+  if (!reading) return '';
+
+  // 1. If explicit contentA2 or contentB1 exist on the reading object, use them directly!
+  if (level === 'B1' && reading.contentB1) {
+    return reading.contentB1;
+  }
+  if (level === 'A2' && reading.contentA2) {
+    return reading.contentA2;
+  }
+
+  const rawContent = (typeof reading === 'string') ? reading : (reading.content || reading.contentA2 || reading.contentB1 || '');
+  if (!rawContent) return '';
 
   if (level === 'A2') {
-    // LATAM A2 Adaptation: simplify complex sentence structures, add Spanish inline cognate hints, and LATAM grammar scaffolding
-    let text = mdText;
+    // GENERATE FULL LATAM A2 READING VERSION
+    // - Simple Present & Direct Subject-Verb-Object sentences
+    // - Spanish inline cognates and clear definitions
+    // - LATAM Student Grammar & Scaffolding Box
+    let text = rawContent;
 
-    // 1. Simplify complex passive constructions into direct English with Spanish guidance for LATAM students
+    // Transform complex sentences into direct A2 structures
+    text = text.replace(/# What Is a Network\?/gi, "# What Is a Network? (Nivel A2 - Inglés Básico)");
+    text = text.replace(/Every time you send a message on your phone, watch a video online, or check your email, you are using a \*\*network\*\*\. But what exactly is a network\?/gi, 
+      "When you use your phone or computer to send a message or watch a video, you use a **network** (red de computadoras). A network connects devices together.");
+    text = text.replace(/A \*\*computer network\*\* is a group of two or more devices that are \*\*connected\*\* to each other so they can \*\*share information\*\*\./gi,
+      "A **computer network** is a group of connected devices (dispositivos conectados) that share data (datos).");
+    text = text.replace(/Think of it like a road system in a city\. The roads connect different buildings \(devices\), and cars \(data\) travel along these roads to reach their destination\./gi,
+      "**Analogy**: Think of a network like city roads. The roads connect houses (devices), and cars (data) move on the roads.");
+
     text = text.replace(/is directly aligned with/gi, "is aligned with (está alineado con)");
     text = text.replace(/is governed by rules called/gi, "uses rules called (utiliza reglas llamadas)");
     text = text.replace(/are reassembled into/gi, "join together to form (se unen para formar)");
     text = text.replace(/is divided into small pieces called/gi, "is split into small parts called (se divide en partes llamadas)");
-    text = text.replace(/A computer network is a group of two or more devices/gi, "A computer network is a simple group of devices (red de computadoras)");
 
-    // 2. Inject LATAM Student Grammar & Scaffolding Box
     const latamScaffoldingBox = `
 
-> **LATAM Student Grammar & Scaffolding (A2)**:
-> - **Present Simple in Tech**: In STEM English, use action verbs like *connects*, *sends*, *stores* (*un router conecta, envía y almacena*).
-> - **Key Cognates (Palabras Similares)**: *Network* = Red | *Device* = Dispositivo | *Data* = Datos | *Server* = Servidor | *Protocol* = Protocolo.
-> - **Reading Tip**: Identify the main subject first, then the action verb.
+---
+
+### 🇲🇽 LATAM Student Grammar & Cognate Guide (A2)
+- **Grammar Structure**: Subject + Simple Verb + Object (*A router sends data* = *Un router envía datos*).
+- **Essential Vocabulary**: 
+  - **Network**: Red de computadoras
+  - **Device**: Dispositivo (laptop, teléfono, servidor)
+  - **Data**: Información digital
+  - **Server**: Servidor que almacena información
+- **Cognate Tip**: Words ending in *-tion* (*connection*, *action*) usually end in *-ción* in Spanish (*conexión*, *acción*).
 `;
     return text + latamScaffoldingBox;
 
   } else if (level === 'B1') {
-    // B1/B2 Advanced Industrial Nearshoring Adaptation: add complex grammar structures, conditionals, and executive audit phrasing
-    let text = mdText;
+    // GENERATE FULL HIGH-COMPLEXITY B1/B2 NEARSHORING READING VERSION
+    // - Executive Engineering Syntax
+    // - Subordinate Clauses & Passive Voice
+    // - Incident Response Conditionals
+    // - Industry Audit Standards (CompTIA N10-008, ISO 27001, SLA Metrics)
+    let text = rawContent;
 
-    // 1. Upgrade phrasing to B1/B2 executive engineering syntax
-    text = text.replace(/A computer network is a group of two or more devices/gi, "A computer network represents an interconnected infrastructure of heterogeneous endpoints");
-    text = text.replace(/Think of it like a road system in a city/gi, "Architecturally, it operates analogously to a municipal transit network routing packetized data");
-    text = text.replace(/Every time you send a message/gi, "Whenever an enterprise engineer dispatches telemetry data");
+    text = text.replace(/# What Is a Network\?/gi, "# What Is a Network? (Level B1/B2 - Advanced Nearshoring Engineering)");
+    text = text.replace(/Every time you send a message on your phone, watch a video online, or check your email, you are using a \*\*network\*\*\. But what exactly is a network\?/gi,
+      "Whenever an enterprise infrastructure engineer dispatches real-time telemetry data or initiates remote cloud execution, the underlying communication relies entirely upon a resilient **network topology**. However, from a rigorous systems architecture perspective, how is a modern enterprise network formally defined?");
+    text = text.replace(/A \*\*computer network\*\* is a group of two or more devices that are \*\*connected\*\* to each other so they can \*\*share information\*\*\./gi,
+      "A **computer network** represents an interconnected infrastructure of heterogeneous endpoints—ranging from high-throughput switches and edge routers to cloud hypervisors—collaborating via standardized protocol suites to exchange data packets deterministically.");
+    text = text.replace(/Think of it like a road system in a city\. The roads connect different buildings \(devices\), and cars \(data\) travel along these roads to reach their destination\./gi,
+      "**Architectural Abstraction**: Analogous to a municipal transit network where traffic control systems regulate throughput, an enterprise network utilizes Layer-2 switching and Layer-3 routing mechanisms to govern packet encapsulation, VLAN segmentation, and bandwidth allocation across geographically distributed nodes.");
 
-    // 2. Inject B1/B2 Nearshoring Grammar & Audit Deep-Dive Box
     const b1GrammarBox = `
 
-> **B1/B2 Industrial Grammar & Executive Nearshoring Focus**:
-> - **Conditional Logic in SLA/Audits**: *"If network latency exceeds 50ms, then automated failover protocols MUST trigger instantly."* (Conditionals for root-cause troubleshooting).
-> - **Audit Passive Voice (ISO 27001 / CompTIA)**: *"Data packets are encrypted and authenticated prior to transmission."* (Used in technical compliance reports and US standups).
-> - **Executive Acronyms**: CompTIA N10-008, TCP/IP Stack, Root-Cause CAPA, SLA Tier-1 Escalation.
+---
+
+### 🇺🇸 B1/B2 Executive Nearshoring Engineering & Audit Focus
+- **Incident Response Conditionals**: *"If link utilization exceeds 85% for more than 30 seconds, then automated OSPF re-routing MUST trigger instantly to prevent SLA breach."*
+- **Compliance Passive Voice (ISO 27001 / CompTIA)**: *"Data packets are encrypted via AES-256 and authenticated prior to transmission across public backbones."*
+- **Executive Engineering Terms**: Heterogeneous endpoints, Packet encapsulation, VLAN segmentation, OSPF routing, SLA compliance thresholds.
+- **Standup Phrasing**: Use this phrasing when presenting network architecture reviews to US engineering managers.
 `;
     return text + b1GrammarBox;
   }
 
-  return mdText;
+  return rawContent;
 }
 
 function renderMarkdownWithVocabulary(mdText, vocabulary = [], level = 'A2') {
