@@ -828,6 +828,7 @@ function openDrawer(trackId, modId, tracks) {
   const backdrop = document.getElementById('drawer-backdrop');
   const drawerTitle = document.getElementById('drawer-mod-title');
   const drawerSub = document.getElementById('drawer-mod-sub');
+  const drawerBody = document.getElementById('drawer-body');
   const activeLevel = localStorage.getItem('stemos_cefr_level') || 'A2';
 
   drawerTitle.innerHTML = `
