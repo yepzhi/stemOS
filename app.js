@@ -595,6 +595,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 actionBtnHTML = '<button class="module-action-btn" disabled aria-label="Bloqueado"><i class="fa-solid fa-lock" aria-hidden="true"></i></button>';
             }
 
+            if (mod.isGoldModel) {
+                badgeHTML = '<span class="module-badge gold" style="background:rgba(251,191,36,0.22); color:#fbbf24; border:1px solid #fbbf24; font-weight:800; font-size:0.75rem; padding:2px 8px; border-radius:6px; margin-right:4px;"><i class="fa-solid fa-star"></i> GOLD ESP</span> ' + badgeHTML;
+            }
+
             const totalReadings = mod.readings ? mod.readings.length : 0;
             const completedReadingsInMod = mod.readings ? mod.readings.filter(r => userProgress.completedReadings[r.id]).length : 0;
             

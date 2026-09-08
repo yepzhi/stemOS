@@ -679,14 +679,19 @@ function renderGrid(tracks, phrases = []) {
             const conocerCode = mod.conocer || track.conocer || 'EC1290 (Manufactura Alta Tech)';
             const ngssCode = mod.ngss || track.ngss || 'HS-PS1-1 / HS-PS3-2';
             const industrySource = mod.industry || track.industry || 'Nearshoring Industry Standard';
+            const isGold = !!mod.isGoldModel;
+            const goldTagHtml = isGold ? `
+              <span class="gold-model-tag" title="Módulo Modelo Gold ESP: 4 Pilares de Alta Densidad (Lectura + Diálogo + Léxico + Socrático)"><i class="fa-solid fa-star"></i> MODELO GOLD ESP</span>
+            ` : '';
 
             html += `
-              <div class="module-card" data-track-id="${track.id}" data-mod-id="${mod.id}">
+              <div class="module-card ${isGold ? 'gold-card' : ''}" data-track-id="${track.id}" data-mod-id="${mod.id}">
                 <div class="card-top">
-                  <div class="module-icon-box">
+                  <div class="module-icon-box" ${isGold ? 'style="background:rgba(251,191,36,0.18); color:var(--gold); border:1px solid rgba(251,191,36,0.35);"' : ''}>
                     <i class="${mod.icon || 'fa-solid fa-microchip'}"></i>
                   </div>
-                  <div style="display:flex; align-items:center; gap:8px;">
+                  <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
+                    ${goldTagHtml}
                     <button class="btn-pin-offline ${isPinned ? 'pinned' : ''}" data-track-id="${track.id}" data-mod-id="${mod.id}" title="${isPinned ? 'Guardado Offline (Expira en 3 días)' : 'Guardar Lectura Offline (Máx 5)'}">
                       <i class="fa-solid fa-bookmark"></i> ${isPinned ? 'Offline' : '+ Offline'}
                     </button>
@@ -701,11 +706,11 @@ function renderGrid(tracks, phrases = []) {
 
                 <div class="card-footer" style="flex-direction:column; align-items:stretch; gap:12px;">
                   <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div class="reading-count">
-                      <i class="fa-solid fa-file-lines"></i> ${statusLabel}
+                    <div class="reading-count" ${isGold ? 'style="color:var(--gold); font-weight:700;"' : ''}>
+                      <i class="${isGold ? 'fa-solid fa-crown' : 'fa-solid fa-file-lines'}"></i> ${isGold ? '4 Pilares ESP' : statusLabel}
                     </div>
-                    <button class="explore-btn">
-                      Explorar <i class="fa-solid fa-arrow-right"></i>
+                    <button class="explore-btn" ${isGold ? 'style="background:linear-gradient(135deg, var(--gold), #d97706); color:#000;"' : ''}>
+                      ${isGold ? 'Abrir Modelo Gold' : 'Explorar'} <i class="fa-solid fa-arrow-right"></i>
                     </button>
                   </div>
 
@@ -930,48 +935,35 @@ function setupDrawer() {
 
 let currentActiveTrackId = null;
 let currentActiveModId = null;
+let isPlayingDialogueAudio = false;
 
-function openDrawer(trackId, modId, tracks) {
-  currentActiveTrackId = trackId;
-  currentActiveModId = modId;
+// Web Speech API Voice Synthesis helper
+function speakEnglishText(text, rate = 0.95, onEnd = null) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'en-US';
+  utterance.rate = rate;
+  if (onEnd) utterance.onend = onEnd;
+  window.speechSynthesis.speak(utterance);
+}
 
-  const track = tracks.find(t => t.id === trackId);
-  if (!track || !track.modules) return;
+function stopEnglishSpeech() {
+  isPlayingDialogueAudio = false;
+  if (window.speechSynthesis) {
+    window.speechSynthesis.cancel();
+  }
+}
 
-  const mod = track.modules.find(m => m.id === modId);
-  if (!mod) return;
-
-  const backdrop = document.getElementById('drawer-backdrop');
-  const drawerTitle = document.getElementById('drawer-mod-title');
-  const drawerSub = document.getElementById('drawer-mod-sub');
-  const drawerBody = document.getElementById('drawer-body');
-  const activeLevel = localStorage.getItem('stemos_cefr_level') || 'A2';
-
-  drawerTitle.innerHTML = `
-    <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:16px;">
-      <span>${mod.titleES || mod.title}</span>
-      <!-- In-Modal CEFR Level Switcher -->
-      <div class="modal-level-switcher" style="display:inline-flex; align-items:center; gap:2px; background:rgba(0,0,0,0.5); border:1px solid rgba(56,189,248,0.4); padding:3px; border-radius:10px; shrink:0;">
-        <button class="modal-level-btn ${activeLevel === 'A2' ? 'active' : ''}" data-level="A2" style="padding:4px 10px; border-radius:7px; font-size:0.75rem; font-weight:700; border:none; cursor:pointer; transition:all 0.2s ease; ${activeLevel === 'A2' ? 'background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; box-shadow:0 0 10px rgba(56, 189, 248, 0.4);' : 'background:transparent; color:var(--text-muted);'}">A2 (Básico)</button>
-        <button class="modal-level-btn ${activeLevel === 'B1' ? 'active' : ''}" data-level="B1" style="padding:4px 10px; border-radius:7px; font-size:0.75rem; font-weight:700; border:none; cursor:pointer; transition:all 0.2s ease; ${activeLevel === 'B1' ? 'background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; box-shadow:0 0 10px rgba(56, 189, 248, 0.4);' : 'background:transparent; color:var(--text-muted);'}">B1 (Técnico)</button>
-      </div>
-    </div>
-  `;
-  drawerSub.innerText = `${track.title} • ${mod.title} • ID: ${mod.id}`;
-
-  const conocerCode = mod.conocer || track.conocer || 'EC1290 (Inspección de Procesos de Alta Tecnología)';
-  const ngssCode = mod.ngss || track.ngss || 'HS-PS1-1 / HS-PS3-2 (Matter & Energy in Chips)';
-  const industrySource = mod.industry || track.industry || 'TSMC-GCU Manufacturing Specialist Intensive (MSI)';
-
-  let contentHtml = '';
-
+// 1. RENDER READING TAB
+function renderReadingAccordionHtml(mod, activeLevel) {
+  let html = '';
   if (mod.readings && mod.readings.length > 0) {
     mod.readings.forEach((r, idx) => {
       const isFirst = (idx === 0);
       const formattedText = renderMarkdownWithVocabulary(adaptReadingContentForCEFR(r, activeLevel), r.vocabulary || [], activeLevel);
 
-      contentHtml += `
-        <!-- Collapsible Reading Accordion -->
+      html += `
         <div class="reading-accordion ${isFirst ? 'open' : ''}" id="accordion-reading-${idx}">
           <div class="reading-accordion-header" onclick="this.parentElement.classList.toggle('open')">
             <div style="display:flex; align-items:center; gap:12px;">
@@ -1014,13 +1006,506 @@ function openDrawer(trackId, modId, tracks) {
       `;
     });
   } else {
-    contentHtml += `
+    html += `
       <div class="reader-content" style="text-align:center; padding:48px;">
         <i class="fa-solid fa-pen-ruler" style="font-size:2.5rem; color:var(--gold); margin-bottom:16px;"></i>
         <h3 class="font-head" style="color:#fff;">Módulo en Fase de Redacción</h3>
         <p style="color:var(--text-muted); margin-top:8px;">Este módulo está contemplado en la malla de Nearshoring de stemOS. Próximamente se generarán las lecturas y evaluaciones socráticas correspondientes.</p>
       </div>
     `;
+  }
+  return html;
+}
+
+// 2. RENDER REAL-WORLD DIALOGUE TAB
+function renderDialogueTabHtml(dialogue) {
+  if (!dialogue || !dialogue.turns) {
+    return `<div style="padding:32px; text-align:center; color:var(--text-muted);">No hay diálogo registrado para este módulo.</div>`;
+  }
+
+  const turnsHtml = dialogue.turns.map((turn, idx) => {
+    const char = (dialogue.characters || []).find(c => c.name === turn.speaker) || {
+      name: turn.speaker,
+      avatar: turn.speaker.split(' ').map(w => w[0]).join('').slice(0, 2),
+      color: 'var(--cyan)'
+    };
+
+    let highlightedText = turn.text;
+    (turn.targetTerms || []).forEach(term => {
+      const regex = new RegExp(`(${term})`, 'gi');
+      highlightedText = highlightedText.replace(regex, `<span class="dialogue-term-chip">$1</span>`);
+    });
+
+    return `
+      <div class="dialogue-turn" id="dialogue-turn-${idx}">
+        <div class="dialogue-avatar" style="background:${char.color}22; color:${char.color}; border:1px solid ${char.color}55;">
+          ${char.avatar}
+        </div>
+        <div class="dialogue-content">
+          <div class="dialogue-speaker-info">
+            <span class="dialogue-speaker-name" style="color:${char.color};">${turn.speaker}</span>
+            <span class="dialogue-speaker-role">${char.role || ''}</span>
+          </div>
+          <div class="dialogue-bubble">
+            ${highlightedText}
+            <div class="dialogue-translation-block" id="trans-block-${idx}" style="display:none;">
+              <i class="fa-solid fa-language" style="color:var(--cyan); margin-right:6px;"></i> ${turn.translation}
+            </div>
+            <div class="dialogue-turn-actions">
+              <button class="btn-turn-audio" data-speech-text="${encodeURIComponent(turn.text)}">
+                <i class="fa-solid fa-volume-high"></i> Escuchar línea
+              </button>
+              <button class="btn-turn-trans" data-target="trans-block-${idx}">
+                <i class="fa-solid fa-eye"></i> Traducción
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const contrastHtml = (dialogue.contrastTips || []).map(tip => `
+    <div style="background:rgba(7,11,20,0.85); border:1px solid rgba(251,191,36,0.3); border-radius:12px; padding:16px; margin-bottom:12px;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+        <span style="background:rgba(239,68,68,0.2); color:#f87171; border:1px solid rgba(239,68,68,0.4); font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:6px;"><i class="fa-solid fa-school"></i> INGLÉS DE ESCUELA</span>
+        <span style="color:var(--text-dim); font-size:0.8rem;">vs</span>
+        <span style="background:rgba(52,211,153,0.2); color:var(--emerald); border:1px solid rgba(52,211,153,0.4); font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:6px;"><i class="fa-solid fa-industry"></i> INGLÉS DE PLANTA REAL</span>
+      </div>
+      <div style="font-size:0.88rem; color:#fca5a5; margin-bottom:4px;"><s>"${tip.school}"</s></div>
+      <div style="font-size:0.95rem; color:#6ee7b7; font-weight:700; margin-bottom:8px;">"${tip.native}"</div>
+      <div style="font-size:0.8rem; color:var(--text-muted); line-height:1.4;">💡 <em>${tip.explanation}</em></div>
+    </div>
+  `).join('');
+
+  return `
+    <div class="dialogue-meta-card">
+      <h3 class="font-head" style="color:#fff; font-size:1.25rem; margin-bottom:4px;">${dialogue.title}</h3>
+      <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:12px;">${dialogue.titleES || ''}</p>
+      <div class="dialogue-context">
+        <i class="fa-solid fa-location-dot"></i> ${dialogue.scenarioContext}
+      </div>
+
+      <div class="dialogue-audio-bar">
+        <button id="btn-play-all-dialogue" class="btn-play-dialogue">
+          <i class="fa-solid fa-play"></i> Escuchar Standup Completo (TTS)
+        </button>
+        <button id="btn-stop-dialogue" class="btn-turn-audio" style="display:none; border-color:var(--rose); color:var(--rose); padding:8px 14px;">
+          <i class="fa-solid fa-stop"></i> Detener Audio
+        </button>
+        <span style="font-size:0.78rem; color:var(--text-dim); margin-left:auto;">
+          <i class="fa-solid fa-circle-info"></i> Audio en inglés sintetizado con Web Speech API
+        </span>
+      </div>
+    </div>
+
+    <div class="dialogue-flow" id="dialogue-flow-container">
+      ${turnsHtml}
+    </div>
+
+    ${contrastHtml ? `
+      <div class="contrast-tips-section">
+        <h4 class="font-head" style="color:var(--gold); font-size:1.1rem; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-bolt"></i> Lo que NO enseñan en la escuela vs. Lo que exige la industria real
+        </h4>
+        ${contrastHtml}
+      </div>
+    ` : ''}
+  `;
+}
+
+// 3. RENDER LEXICON MATRIX TAB
+function renderLexiconTabHtml(matrix) {
+  if (!matrix || matrix.length === 0) {
+    return `<div style="padding:32px; text-align:center; color:var(--text-muted);">No hay matriz léxica configurada.</div>`;
+  }
+
+  const cardsHtml = matrix.map((item, idx) => {
+    const collocationsHtml = (item.collocations || []).map(c => `
+      <span class="collocation-chip" data-speak-colloc="${encodeURIComponent(c)}" title="Click para escuchar"><i class="fa-solid fa-volume-high" style="font-size:0.65rem; margin-right:3px;"></i> ${c}</span>
+    `).join('');
+
+    return `
+      <div class="lexicon-card" id="lexicon-card-${idx}">
+        <div>
+          <div class="lexicon-cat-tag">${item.category || 'Término Clave'}</div>
+          <div class="lexicon-term-header">
+            <div>
+              <div class="lexicon-term-name">${item.term}</div>
+              <div style="font-size:0.84rem; color:var(--text-muted); font-weight:600;">${item.es}</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="lexicon-ipa">${item.ipa || ''}</span>
+              <button class="btn-turn-audio" data-speech-text="${encodeURIComponent(item.term)}" title="Pronunciación en inglés"><i class="fa-solid fa-volume-high"></i></button>
+            </div>
+          </div>
+          
+          <p class="lexicon-def">${item.definition}</p>
+
+          ${collocationsHtml ? `
+            <div class="collocations-block">
+              <div class="collocations-title"><i class="fa-solid fa-link" style="color:var(--cyan);"></i> Collocations Obligatorias (Verbo / Adjetivo)</div>
+              <div class="collocation-pills">${collocationsHtml}</div>
+            </div>
+          ` : ''}
+
+          ${item.falseFriends ? `
+            <div class="false-friends-alert">
+              <i class="fa-solid fa-triangle-exclamation" style="margin-top:2px;"></i>
+              <div><strong>Alerta de Falso Amigo / Matiz:</strong> ${item.falseFriends}</div>
+            </div>
+          ` : ''}
+        </div>
+
+        ${item.nativeUsage ? `
+          <div style="margin-top:14px; padding-top:10px; border-top:1px dashed rgba(255,255,255,0.08); font-size:0.84rem; color:var(--text-muted);">
+            <div style="font-size:0.72rem; font-weight:700; color:var(--emerald); text-transform:uppercase; margin-bottom:3px;"><i class="fa-solid fa-microchip"></i> Uso Real en Planta</div>
+            <em style="color:#e2e8f0;">"${item.nativeUsage}"</em>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+      <div>
+        <h3 class="font-head" style="color:var(--gold); font-size:1.25rem;">Matriz Léxica & Collocations de Alta Densidad</h3>
+        <p style="color:var(--text-muted); font-size:0.84rem;">12 términos críticos de ingeniería, seleccionados por frecuencia en especificaciones SEMI/ISO y juntas de planta.</p>
+      </div>
+      <span class="stat-chip" style="border-color:rgba(251,191,36,0.3); color:var(--gold); font-weight:800; padding:4px 12px;">
+        <i class="fa-solid fa-cubes-stacked"></i> ${matrix.length} Términos Clave
+      </span>
+    </div>
+
+    <div class="lexicon-grid">
+      ${cardsHtml}
+    </div>
+  `;
+}
+
+// 4. RENDER SOCRATIC FEYNMAN EVALUATOR TAB
+function renderSocraticTabHtml(mod, challenges) {
+  if (!challenges || challenges.length === 0) {
+    return `<div style="padding:32px; text-align:center; color:var(--text-muted);">Evaluador socrático no disponible.</div>`;
+  }
+
+  const firstQ = challenges[0].botQuestion;
+
+  return `
+    <div class="socratic-container">
+      <div class="socratic-header">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:40px; height:40px; border-radius:12px; background:rgba(192,132,252,0.2); color:var(--purple); display:flex; align-items:center; justify-content:center; font-size:1.2rem; border:1px solid rgba(192,132,252,0.4);">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div>
+            <div style="font-weight:800; color:#fff; font-size:1rem; display:flex; align-items:center; gap:8px;">
+              StemBot Feynman Evaluator <span style="font-size:0.7rem; background:rgba(192,132,252,0.2); color:var(--purple); padding:2px 8px; border-radius:6px; border:1px solid rgba(192,132,252,0.4);">Evaluación Socrática</span>
+            </div>
+            <div style="font-size:0.78rem; color:var(--text-muted);">Cero reactivos de opción múltiple: explica el concepto en inglés con primeros principios técnicos.</div>
+          </div>
+        </div>
+
+        <div class="socratic-progress-wrap">
+          <div class="socratic-progress-label">
+            <span>Progreso Matemático</span>
+            <span id="socratic-progress-pct" style="font-family:var(--font-mono); font-weight:800;">[PROGRESO: 0%]</span>
+          </div>
+          <div class="socratic-progress-bar">
+            <div class="socratic-progress-fill" id="socratic-progress-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="socratic-chat-body" id="socratic-chat-body">
+        <div class="socratic-msg bot">
+          <div class="socratic-msg-avatar"><i class="fa-solid fa-robot"></i></div>
+          <div class="socratic-content">
+            <div class="socratic-bubble">
+              ${firstQ}
+            </div>
+            <div style="display:flex; gap:10px; margin-top:6px;">
+              <button class="btn-turn-audio" data-speech-text="${encodeURIComponent(firstQ)}">
+                <i class="fa-solid fa-volume-high"></i> Escuchar Pregunta
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="socratic-input-bar">
+        <textarea id="socratic-user-input" class="socratic-textarea" placeholder="Escribe tu explicación en inglés con tus propias palabras... (Ej: An ingot is sliced into wafers because...)" rows="2"></textarea>
+        <button id="btn-socratic-send" class="btn-socratic-send">
+          <span>Enviar</span> <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// Interactive State & Event Handlers for Socratic Bot
+let socraticEvaluationState = {
+  step: 0,
+  progress: 0,
+  challenges: []
+};
+
+function setupSocraticEvaluator(mod) {
+  socraticEvaluationState.step = 0;
+  socraticEvaluationState.progress = 0;
+  socraticEvaluationState.challenges = mod.socraticChallenges || [];
+
+  const sendBtn = document.getElementById('btn-socratic-send');
+  const inputEl = document.getElementById('socratic-user-input');
+  const chatBody = document.getElementById('socratic-chat-body');
+  const progFill = document.getElementById('socratic-progress-fill');
+  const progPct = document.getElementById('socratic-progress-pct');
+
+  if (!sendBtn || !inputEl || !chatBody) return;
+
+  function handleSend() {
+    const text = inputEl.value.trim();
+    if (!text) return;
+
+    // Append user message
+    const userMsgDiv = document.createElement('div');
+    userMsgDiv.className = 'socratic-msg user';
+    userMsgDiv.innerHTML = `
+      <div class="socratic-msg-avatar"><i class="fa-solid fa-user"></i></div>
+      <div class="socratic-bubble">${text}</div>
+    `;
+    chatBody.appendChild(userMsgDiv);
+    inputEl.value = '';
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    const currentCh = socraticEvaluationState.challenges[socraticEvaluationState.step];
+    if (!currentCh) return;
+
+    // Check zero-tolerance for empty/filler answers
+    const lower = text.toLowerCase();
+    const words = lower.split(/\s+/).filter(Boolean);
+    const isFiller = words.length < 3 || /^(yes|no|ok|good|clean|cool|sure|idk|i agree|agree|hola|hello|hi|please approve)$/i.test(lower);
+
+    setTimeout(() => {
+      const botMsgDiv = document.createElement('div');
+      botMsgDiv.className = 'socratic-msg bot';
+
+      if (isFiller) {
+        botMsgDiv.innerHTML = `
+          <div class="socratic-msg-avatar"><i class="fa-solid fa-robot"></i></div>
+          <div class="socratic-content">
+            <div class="socratic-bubble" style="border-color:rgba(239,68,68,0.4); background:rgba(239,68,68,0.08);">
+              ⚠️ <strong>Cero tolerancia a respuestas vacías:</strong> En stemOS evaluamos tu producción técnica activa en inglés. Explica con tus propias palabras el concepto para validar tu progreso matemáticamente.
+            </div>
+          </div>
+        `;
+        chatBody.appendChild(botMsgDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
+        return;
+      }
+
+      // Keyword & conceptual check
+      const matched = currentCh.requiredKeywords.filter(kw => lower.includes(kw.toLowerCase()));
+      const passed = matched.length >= currentCh.minKeywords;
+
+      if (passed) {
+        socraticEvaluationState.step++;
+        socraticEvaluationState.progress = Math.round((socraticEvaluationState.step / socraticEvaluationState.challenges.length) * 100);
+
+        if (progFill) progFill.style.width = `${socraticEvaluationState.progress}%`;
+        if (progPct) progPct.innerText = `[PROGRESO: ${socraticEvaluationState.progress}%]`;
+
+        botMsgDiv.innerHTML = `
+          <div class="socratic-msg-avatar"><i class="fa-solid fa-robot"></i></div>
+          <div class="socratic-content">
+            <div class="socratic-bubble">
+              <div style="color:var(--emerald); font-weight:800; margin-bottom:6px;">
+                <i class="fa-solid fa-circle-check"></i> ¡Excelente explicación! Conceptos identificados: <em>${matched.join(', ')}</em>
+              </div>
+              ${currentCh.feedbackSuccess}
+            </div>
+            <div style="display:flex; gap:10px; margin-top:6px;">
+              <button class="btn-turn-audio" data-speech-text="${encodeURIComponent(currentCh.feedbackSuccess)}">
+                <i class="fa-solid fa-volume-high"></i> Escuchar feedback
+              </button>
+            </div>
+          </div>
+        `;
+        chatBody.appendChild(botMsgDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        // Next question or graduation
+        if (socraticEvaluationState.step < socraticEvaluationState.challenges.length) {
+          setTimeout(() => {
+            const nextCh = socraticEvaluationState.challenges[socraticEvaluationState.step];
+            const nextMsgDiv = document.createElement('div');
+            nextMsgDiv.className = 'socratic-msg bot';
+            nextMsgDiv.innerHTML = `
+              <div class="socratic-msg-avatar"><i class="fa-solid fa-robot"></i></div>
+              <div class="socratic-content">
+                <div class="socratic-bubble" style="border-color:rgba(192,132,252,0.4);">
+                  <div style="color:var(--purple); font-weight:800; font-size:0.8rem; margin-bottom:4px; text-transform:uppercase;">
+                    Reto Socrático ${socraticEvaluationState.step + 1} de ${socraticEvaluationState.challenges.length}: ${nextCh.concept}
+                  </div>
+                  ${nextCh.botQuestion}
+                </div>
+                <div style="display:flex; gap:10px; margin-top:6px;">
+                  <button class="btn-turn-audio" data-speech-text="${encodeURIComponent(nextCh.botQuestion)}">
+                    <i class="fa-solid fa-volume-high"></i> Escuchar Pregunta
+                  </button>
+                </div>
+              </div>
+            `;
+            chatBody.appendChild(nextMsgDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+          }, 800);
+        } else {
+          // 100% Passed!
+          setTimeout(() => {
+            const certDiv = document.createElement('div');
+            certDiv.className = 'apto-badge-container';
+            certDiv.innerHTML = `
+              <div style="font-size:2.2rem; color:var(--gold); margin-bottom:8px;"><i class="fa-solid fa-award"></i></div>
+              <h3 class="font-head" style="color:var(--gold); font-size:1.3rem;">¡EVALUACIÓN SOCRÁTICA SUPERADA AL 100%!</h3>
+              <p style="color:#fff; font-weight:800; margin-top:4px; font-family:var(--font-mono); font-size:1.05rem;">
+                [PROGRESO: 100%] [APTO_PARA_AVANZAR]
+              </p>
+              <p style="color:var(--text-muted); font-size:0.86rem; margin-top:8px; max-width:550px; margin-left:auto; margin-right:auto;">
+                Has demostrado dominio conceptual, vocabulario de primeros principios y fluidez técnica para <strong>${mod.title}</strong>. Tu insignia Open Badges 3.0 (W3C) ha quedado acreditada.
+              </p>
+              <div style="margin-top:16px; display:inline-flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+                <span class="std-pill std-conocer"><i class="fa-solid fa-check"></i> SEP CONOCER Validado</span>
+                <span class="std-pill std-ngss"><i class="fa-solid fa-microchip"></i> SEMI Fab Spec</span>
+                <span class="std-pill std-industry"><i class="fa-solid fa-certificate"></i> Open Badges 3.0</span>
+              </div>
+            `;
+            chatBody.appendChild(certDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+          }, 800);
+        }
+      } else {
+        // Did not pass
+        botMsgDiv.innerHTML = `
+          <div class="socratic-msg-avatar"><i class="fa-solid fa-robot"></i></div>
+          <div class="socratic-content">
+            <div class="socratic-bubble" style="border-color:rgba(251,191,36,0.4);">
+              <div style="color:var(--gold); font-weight:700; margin-bottom:6px;">
+                <i class="fa-solid fa-lightbulb"></i> Profundiza en el razonamiento físico
+              </div>
+              ${currentCh.feedbackRetry}
+              <div style="margin-top:10px; font-size:0.8rem; color:var(--text-muted); border-top:1px dashed rgba(255,255,255,0.1); padding-top:6px;">
+                Términos clave esperados en tu explicación: <em>${currentCh.requiredKeywords.slice(0, 5).join(', ')}</em>
+              </div>
+            </div>
+          </div>
+        `;
+        chatBody.appendChild(botMsgDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+    }, 450);
+  }
+
+  sendBtn.addEventListener('click', handleSend);
+  inputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  });
+}
+
+function openDrawer(trackId, modId, tracks) {
+  currentActiveTrackId = trackId;
+  currentActiveModId = modId;
+  stopEnglishSpeech();
+
+  const track = tracks.find(t => t.id === trackId);
+  if (!track || !track.modules) return;
+
+  const mod = track.modules.find(m => m.id === modId);
+  if (!mod) return;
+
+  const backdrop = document.getElementById('drawer-backdrop');
+  const drawerTitle = document.getElementById('drawer-mod-title');
+  const drawerSub = document.getElementById('drawer-mod-sub');
+  const drawerBody = document.getElementById('drawer-body');
+  const activeLevel = localStorage.getItem('stemos_cefr_level') || 'A2';
+  const isGold = !!mod.isGoldModel;
+
+  drawerTitle.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:16px; flex-wrap:wrap;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        ${isGold ? '<span class="gold-model-tag"><i class="fa-solid fa-star"></i> GOLD</span>' : ''}
+        <span>${mod.titleES || mod.title}</span>
+      </div>
+      <!-- In-Modal CEFR Level Switcher -->
+      <div class="modal-level-switcher" style="display:inline-flex; align-items:center; gap:2px; background:rgba(0,0,0,0.5); border:1px solid rgba(56,189,248,0.4); padding:3px; border-radius:10px; shrink:0;">
+        <button class="modal-level-btn ${activeLevel === 'A2' ? 'active' : ''}" data-level="A2" style="padding:4px 10px; border-radius:7px; font-size:0.75rem; font-weight:700; border:none; cursor:pointer; transition:all 0.2s ease; ${activeLevel === 'A2' ? 'background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; box-shadow:0 0 10px rgba(56, 189, 248, 0.4);' : 'background:transparent; color:var(--text-muted);'}">A2 (Básico)</button>
+        <button class="modal-level-btn ${activeLevel === 'B1' ? 'active' : ''}" data-level="B1" style="padding:4px 10px; border-radius:7px; font-size:0.75rem; font-weight:700; border:none; cursor:pointer; transition:all 0.2s ease; ${activeLevel === 'B1' ? 'background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; box-shadow:0 0 10px rgba(56, 189, 248, 0.4);' : 'background:transparent; color:var(--text-muted);'}">B1 (Técnico)</button>
+      </div>
+    </div>
+  `;
+  drawerSub.innerText = `${track.title} • ${mod.title} • ID: ${mod.id}`;
+
+  const conocerCode = mod.conocer || track.conocer || 'EC1290 (Inspección de Procesos de Alta Tecnología)';
+  const ngssCode = mod.ngss || track.ngss || 'HS-PS1-1 / HS-PS3-2 (Matter & Energy in Chips)';
+  const industrySource = mod.industry || track.industry || 'TSMC-GCU Manufacturing Specialist Intensive (MSI)';
+
+  let contentHtml = '';
+
+  if (isGold) {
+    contentHtml = `
+      <div class="gold-drawer-banner">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:38px; height:38px; border-radius:10px; background:rgba(251,191,36,0.2); color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:1.2rem;">
+            <i class="fa-solid fa-crown"></i>
+          </div>
+          <div>
+            <div style="font-weight:800; color:var(--gold); font-size:0.95rem; letter-spacing:0.02em;">MODELO GOLD ESP — BUCLE DE ALTA DENSIDAD TÉCNICA</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Blueprint de Especificación ➔ Diálogo de Planta ➔ Matriz Léxica ➔ Evaluador Socrático Feynman</div>
+          </div>
+        </div>
+        <span class="gold-model-tag"><i class="fa-solid fa-check-double"></i> Industria 4.0</span>
+      </div>
+
+      <nav class="drawer-nav-tabs" role="tablist">
+        <button class="drawer-tab-btn active" data-tab="tab-reading" role="tab">
+          <i class="fa-solid fa-file-lines"></i> 1. Technical Reading
+          <span class="tab-badge">Blueprint</span>
+        </button>
+        <button class="drawer-tab-btn" data-tab="tab-dialogue" role="tab">
+          <i class="fa-solid fa-headset"></i> 2. Real-World Dialogue
+          <span class="tab-badge" style="background:rgba(52,211,153,0.2); color:var(--emerald);">Planta Real</span>
+        </button>
+        <button class="drawer-tab-btn" data-tab="tab-lexicon" role="tab">
+          <i class="fa-solid fa-cubes-stacked"></i> 3. Lexicon & Collocations
+          <span class="tab-badge" style="background:rgba(251,191,36,0.2); color:var(--gold);">12 Términos</span>
+        </button>
+        <button class="drawer-tab-btn" data-tab="tab-socratic" role="tab">
+          <i class="fa-solid fa-robot"></i> 4. Evaluador Socrático
+          <span class="tab-badge" style="background:rgba(192,132,252,0.2); color:var(--purple);">Feynman Bot</span>
+        </button>
+      </nav>
+
+      <div class="tab-pane active" id="tab-reading">
+        ${renderReadingAccordionHtml(mod, activeLevel)}
+      </div>
+
+      <div class="tab-pane" id="tab-dialogue">
+        ${renderDialogueTabHtml(mod.dialogue)}
+      </div>
+
+      <div class="tab-pane" id="tab-lexicon">
+        ${renderLexiconTabHtml(mod.lexiconMatrix)}
+      </div>
+
+      <div class="tab-pane" id="tab-socratic">
+        ${renderSocraticTabHtml(mod, mod.socraticChallenges)}
+      </div>
+    `;
+  } else {
+    contentHtml = renderReadingAccordionHtml(mod, activeLevel);
   }
 
   // Inject Anotaciones & Conclusiones Offline Notepad for AI Socratic Bot
@@ -1084,6 +1569,112 @@ function openDrawer(trackId, modId, tracks) {
 
   drawerBody.innerHTML = contentHtml;
   backdrop.classList.add('active');
+
+  // Attach event listeners for tabs
+  if (isGold) {
+    document.querySelectorAll('.drawer-tab-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const targetId = btn.getAttribute('data-tab');
+        document.querySelectorAll('.drawer-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        const targetPane = document.getElementById(targetId);
+        if (targetPane) targetPane.classList.add('active');
+      });
+    });
+
+    // Attach Socratic Evaluator handlers
+    setupSocraticEvaluator(mod);
+
+    // Attach Play All Dialogue handler
+    const btnPlayAll = document.getElementById('btn-play-all-dialogue');
+    const btnStop = document.getElementById('btn-stop-dialogue');
+    if (btnPlayAll && mod.dialogue && mod.dialogue.turns) {
+      btnPlayAll.addEventListener('click', () => {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        isPlayingDialogueAudio = true;
+        if (btnStop) btnStop.style.display = 'inline-flex';
+        btnPlayAll.innerHTML = '<i class="fa-solid fa-pause"></i> Reproduciendo Standup...';
+
+        let tIdx = 0;
+        function playNext() {
+          if (!isPlayingDialogueAudio || tIdx >= mod.dialogue.turns.length) {
+            isPlayingDialogueAudio = false;
+            btnPlayAll.innerHTML = '<i class="fa-solid fa-play"></i> Escuchar Standup Completo (TTS)';
+            if (btnStop) btnStop.style.display = 'none';
+            document.querySelectorAll('.dialogue-turn').forEach(el => {
+              el.style.opacity = '1';
+            });
+            return;
+          }
+
+          const t = mod.dialogue.turns[tIdx];
+          document.querySelectorAll('.dialogue-turn').forEach((el, idx) => {
+            el.style.opacity = (idx === tIdx) ? '1' : '0.4';
+          });
+
+          const utter = new SpeechSynthesisUtterance(`${t.speaker} says: ${t.text}`);
+          utter.lang = 'en-US';
+          utter.rate = 0.95;
+          utter.onend = () => {
+            tIdx++;
+            setTimeout(playNext, 600);
+          };
+          utter.onerror = () => {
+            isPlayingDialogueAudio = false;
+            if (btnStop) btnStop.style.display = 'none';
+            btnPlayAll.innerHTML = '<i class="fa-solid fa-play"></i> Escuchar Standup Completo (TTS)';
+          };
+          window.speechSynthesis.speak(utter);
+        }
+        playNext();
+      });
+
+      if (btnStop) {
+        btnStop.addEventListener('click', () => {
+          stopEnglishSpeech();
+          btnPlayAll.innerHTML = '<i class="fa-solid fa-play"></i> Escuchar Standup Completo (TTS)';
+          btnStop.style.display = 'none';
+          document.querySelectorAll('.dialogue-turn').forEach(el => {
+            el.style.opacity = '1';
+          });
+        });
+      }
+    }
+  }
+
+  // Delegated click for audio buttons, collocations, and translation in drawerBody
+  drawerBody.addEventListener('click', (e) => {
+    // Speech button
+    const speechBtn = e.target.closest('[data-speech-text]');
+    if (speechBtn) {
+      const text = decodeURIComponent(speechBtn.getAttribute('data-speech-text'));
+      speakEnglishText(text);
+      return;
+    }
+
+    // Collocation speech
+    const collocChip = e.target.closest('[data-speak-colloc]');
+    if (collocChip) {
+      const text = decodeURIComponent(collocChip.getAttribute('data-speak-colloc'));
+      speakEnglishText(text);
+      return;
+    }
+
+    // Translation toggle
+    const transBtn = e.target.closest('.btn-turn-trans');
+    if (transBtn) {
+      const targetId = transBtn.getAttribute('data-target');
+      const block = document.getElementById(targetId);
+      if (block) {
+        const isHidden = (block.style.display === 'none' || !block.style.display);
+        block.style.display = isHidden ? 'block' : 'none';
+        transBtn.innerHTML = isHidden ? '<i class="fa-solid fa-eye-slash"></i> Ocultar' : '<i class="fa-solid fa-eye"></i> Traducción';
+      }
+      return;
+    }
+  });
 
   // Attach event listeners for offline notes & bot sync
   const notesInput = document.getElementById('reading-notes-input');
