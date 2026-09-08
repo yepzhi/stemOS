@@ -1114,3 +1114,93 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
+/* Category Grouping Banners & Section Blocks */
+.category-group {
+  margin-bottom: 56px;
+  position: relative;
+}
+
+.category-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 26px;
+  border-radius: 18px;
+  margin-bottom: 28px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.category-banner.cat-technology {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.14) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border-left: 5px solid var(--cyan);
+}
+
+.category-banner.cat-engineering {
+  background: linear-gradient(135deg, rgba(52, 211, 153, 0.14) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border-left: 5px solid var(--emerald);
+}
+
+.category-banner.cat-science {
+  background: linear-gradient(135deg, rgba(192, 132, 252, 0.14) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border-left: 5px solid var(--purple);
+}
+
+.category-banner.cat-career {
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.14) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border-left: 5px solid var(--gold);
+}
+
+.category-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.category-banner-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cat-technology .category-banner-icon { color: var(--cyan); background: rgba(56, 189, 248, 0.18); }
+.cat-engineering .category-banner-icon { color: var(--emerald); background: rgba(52, 211, 153, 0.18); }
+.cat-science .category-banner-icon { color: var(--purple); background: rgba(192, 132, 252, 0.18); }
+.cat-career .category-banner-icon { color: var(--gold); background: rgba(251, 191, 36, 0.18); }
+
+.category-banner-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.category-banner-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.category-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-main);
+}
+
+

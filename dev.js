@@ -431,6 +431,11 @@ function renderFilters(tracks, phrases = []) {
   const validSaved = getValidOfflineReadings();
   const activeLevel = localStorage.getItem('stemos_cefr_level') || 'A2';
 
+  const techCount = tracks.filter(t => (t.category || 'technology') === 'technology').length;
+  const engCount = tracks.filter(t => t.category === 'engineering').length;
+  const sciCount = tracks.filter(t => t.category === 'science').length;
+  const carCount = tracks.filter(t => t.category === 'career').length;
+
   let html = `
     <!-- Prominent CEFR A2/B1 Level Selector Pill -->
     <div class="level-switcher-bar-pill" style="display:inline-flex; align-items:center; gap:4px; background:rgba(15, 23, 42, 0.9); border:1px solid rgba(56, 189, 248, 0.4); padding:3px 6px; border-radius:14px; margin-right:6px; box-shadow:0 0 15px rgba(56, 189, 248, 0.15);">
@@ -439,7 +444,12 @@ function renderFilters(tracks, phrases = []) {
       <button class="level-bar-btn ${activeLevel === 'B1' ? 'active' : ''}" data-level="B1" style="padding:4px 12px; border-radius:10px; font-size:0.78rem; font-weight:700; border:none; cursor:pointer; transition:all 0.25s ease; ${activeLevel === 'B1' ? 'background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; box-shadow:0 0 10px rgba(56, 189, 248, 0.4);' : 'background:transparent; color:var(--text-muted);'}">B1 (Técnico Avanzado)</button>
     </div>
 
+    <!-- Category Master Filter Buttons -->
     <button class="filter-btn active" data-track="all"><i class="fa-solid fa-layer-group"></i> Todos los Tracks (${tracks.length})</button>
+    <button class="filter-btn filter-cat-btn" data-track="cat-technology" style="border-color: rgba(56, 189, 248, 0.4); color: var(--cyan);"><i class="fa-solid fa-laptop-code"></i> 🔵 Technology (${techCount})</button>
+    <button class="filter-btn filter-cat-btn" data-track="cat-engineering" style="border-color: rgba(52, 211, 153, 0.4); color: var(--emerald);"><i class="fa-solid fa-gears"></i> 🟢 Engineering (${engCount})</button>
+    <button class="filter-btn filter-cat-btn" data-track="cat-science" style="border-color: rgba(192, 132, 252, 0.4); color: var(--purple);"><i class="fa-solid fa-atom"></i> 🟣 Science (${sciCount})</button>
+    <button class="filter-btn filter-cat-btn" data-track="cat-career" style="border-color: rgba(251, 146, 60, 0.4); color: var(--gold);"><i class="fa-solid fa-plane-departure"></i> 🟠 Aviation & Career (${carCount})</button>
   `;
   
   // Add Mis Lecturas Offline Filter Button
@@ -449,14 +459,6 @@ function renderFilters(tracks, phrases = []) {
       Mis Lecturas Offline (${validSaved.length}/${MAX_OFFLINE_READINGS})
     </button>
   `;
-
-  tracks.forEach(t => {
-    html += `
-      <button class="filter-btn" data-track="${t.id}">
-        <i class="${getTrackIcon(t.id)}"></i> ${t.title}
-      </button>
-    `;
-  });
 
   if (phrases && phrases.length > 0) {
     html += `
@@ -507,16 +509,31 @@ function renderFilters(tracks, phrases = []) {
 function getTrackIcon(id) {
   switch (id) {
     case 'cybersecurity': return 'fa-solid fa-shield-halved';
+    case 'it-innovation': return 'fa-solid fa-cloud';
+    case 'ai-ml': return 'fa-solid fa-brain';
+    case 'telecom-iot': return 'fa-solid fa-tower-cell';
+    case 'software-dev': return 'fa-solid fa-code';
+    case 'data-analytics': return 'fa-solid fa-chart-pie';
     case 'semiconductors': return 'fa-solid fa-microchip';
     case 'electromobility': return 'fa-solid fa-car-battery';
-    case 'it-innovation': return 'fa-solid fa-cloud';
     case 'aerospace': return 'fa-solid fa-plane-up';
-    case 'no_stem_supply_chain': return 'fa-solid fa-truck-fast';
-    case 'no_stem_hr_compliance': return 'fa-solid fa-users-gear';
-    case 'no_stem_finance_tax': return 'fa-solid fa-calculator';
-    case 'no_stem_gastronomy': return 'fa-solid fa-utensils';
-    case 'no_stem_hospitality': return 'fa-solid fa-hotel';
-    case 'no_stem_medical_devices': return 'fa-solid fa-heart-pulse';
+    case 'robotics-automation': return 'fa-solid fa-robot';
+    case 'energy-renewables': return 'fa-solid fa-solar-panel';
+    case 'advanced-manufacturing': return 'fa-solid fa-industry';
+    case 'industrial-operations': case 'no_stem_supply_chain': return 'fa-solid fa-dolly';
+    case 'mechatronics': return 'fa-solid fa-cogs';
+    case 'biotechnology': return 'fa-solid fa-dna';
+    case 'space-satellite': return 'fa-solid fa-satellite';
+    case 'environmental-sustainability': return 'fa-solid fa-leaf';
+    case 'healthcare-tech': case 'no_stem_medical_devices': return 'fa-solid fa-heart-pulse';
+    case 'materials-nanotech': return 'fa-solid fa-atom';
+    case 'food-science': case 'no_stem_gastronomy': return 'fa-solid fa-wheat-awn';
+    case 'aviation-english': return 'fa-solid fa-plane-departure';
+    case 'airforce-aerospace': return 'fa-solid fa-jet-fighter';
+    case 'hospitality-food': case 'no_stem_hospitality': return 'fa-solid fa-hotel';
+    case 'business-leadership': case 'no_stem_hr_compliance': return 'fa-solid fa-briefcase';
+    case 'project-management': return 'fa-solid fa-list-check';
+    case 'entrepreneurship': return 'fa-solid fa-rocket';
     default: return 'fa-solid fa-graduation-cap';
   }
 }
@@ -610,75 +627,112 @@ function renderGrid(tracks, phrases = []) {
     </div>
   `;
 
-  // 1. Render Course Tracks
-  tracks.forEach(track => {
-    html += `
-      <div class="track-section" id="section-${track.id}">
-        <h2 class="track-header-title font-head">
-          <i class="${getTrackIcon(track.id)}"></i> ${track.title}
-          <span style="font-size:0.8rem; font-weight:500; color:var(--text-dim);">(${track.modules ? track.modules.length : 0} Módulos)</span>
-        </h2>
-        <div class="modules-grid">
-    `;
+  // 1. Render Course Tracks Grouped by 4 Master Categories
+  const categoryKeys = ["technology", "engineering", "science", "career"];
+  const categoriesMap = (typeof LXP_CATEGORIES !== 'undefined' ? LXP_CATEGORIES : {
+    "technology": { name: "Technology", badge: "🔵 TECHNOLOGY", icon: "fa-solid fa-laptop-code", description: "Redes avanzadas, IA, IoT, desarrollo de software y computación en la nube para la industria global." },
+    "engineering": { name: "Engineering & Industry", badge: "🟢 ENGINEERING & INDUSTRY", icon: "fa-solid fa-gears", description: "Manufactura de alta precisión, semiconductores, electromovilidad, robótica y sistemas mecatrónicos de nearshoring." },
+    "science": { name: "Science & Future Technology", badge: "🟣 SCIENCE & FUTURE TECHNOLOGY", icon: "fa-solid fa-atom", description: "Biotecnología, tecnología espacial, sustentabilidad ambiental, nanotecnología y ciencias aplicadas." },
+    "career": { name: "Aviation, Career & Professional English", badge: "🟠 AVIATION, CAREER & PROFESSIONAL ENGLISH", icon: "fa-solid fa-plane-departure", description: "Inglés técnico para aviación civil (OACI), aeroespacial de defensa, gestión ejecutiva, liderazgo y proyectos globales." }
+  });
 
-    if (track.modules && track.modules.length > 0) {
-      track.modules.forEach((mod, idx) => {
-        const readingsCount = mod.readings ? mod.readings.length : 0;
-        const statusLabel = readingsCount > 0 ? `${readingsCount} Lectura(s)` : 'En desarrollo';
-        const isPinned = !!savedMap[mod.id];
+  categoryKeys.forEach(catKey => {
+    const cat = categoriesMap[catKey] || { name: catKey, badge: catKey.toUpperCase(), icon: "fa-solid fa-layer-group", description: "" };
+    const catTracks = tracks.filter(t => (t.category || 'technology') === catKey);
 
-        // Standards badges
-        const conocerCode = mod.conocer || track.conocer || 'EC1290 (Manufactura Alta Tech)';
-        const ngssCode = mod.ngss || track.ngss || 'HS-PS1-1 / HS-PS3-2';
-        const industrySource = mod.industry || track.industry || 'TSMC-GCU MSI Replica';
+    if (catTracks.length > 0) {
+      html += `
+        <div class="category-group" id="group-${catKey}" data-category="${catKey}">
+          <div class="category-banner cat-${catKey}">
+            <div class="category-banner-left">
+              <div class="category-banner-icon">
+                <i class="${cat.icon}"></i>
+              </div>
+              <div>
+                <div class="category-banner-title">${cat.badge || cat.name}</div>
+                <div class="category-banner-desc">${cat.description}</div>
+              </div>
+            </div>
+            <div class="category-pill-badge">
+              ${catTracks.length} Tracks
+            </div>
+          </div>
+      `;
+
+      catTracks.forEach(track => {
+        html += `
+          <div class="track-section" id="section-${track.id}" data-category="${catKey}">
+            <h2 class="track-header-title font-head">
+              <i class="${getTrackIcon(track.id)}"></i> ${track.title}
+              <span style="font-size:0.8rem; font-weight:500; color:var(--text-dim);">(${track.modules ? track.modules.length : 0} Módulos &bull; ${track.titleEN || ''})</span>
+            </h2>
+            <div class="modules-grid">
+        `;
+
+        if (track.modules && track.modules.length > 0) {
+          track.modules.forEach((mod, idx) => {
+            const readingsCount = mod.readings ? mod.readings.length : 0;
+            const statusLabel = readingsCount > 0 ? `${readingsCount} Lectura(s)` : 'En desarrollo';
+            const isPinned = !!savedMap[mod.id];
+
+            // Standards badges
+            const conocerCode = mod.conocer || track.conocer || 'EC1290 (Manufactura Alta Tech)';
+            const ngssCode = mod.ngss || track.ngss || 'HS-PS1-1 / HS-PS3-2';
+            const industrySource = mod.industry || track.industry || 'Nearshoring Industry Standard';
+
+            html += `
+              <div class="module-card" data-track-id="${track.id}" data-mod-id="${mod.id}">
+                <div class="card-top">
+                  <div class="module-icon-box">
+                    <i class="${mod.icon || 'fa-solid fa-microchip'}"></i>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <button class="btn-pin-offline ${isPinned ? 'pinned' : ''}" data-track-id="${track.id}" data-mod-id="${mod.id}" title="${isPinned ? 'Guardado Offline (Expira en 3 días)' : 'Guardar Lectura Offline (Máx 5)'}">
+                      <i class="fa-solid fa-bookmark"></i> ${isPinned ? 'Offline' : '+ Offline'}
+                    </button>
+                    <span class="module-tag">${track.title}</span>
+                  </div>
+                </div>
+
+                <div class="card-body">
+                  <h3 class="card-title-es">${mod.titleES || mod.title}</h3>
+                  <p class="card-title-en">${mod.title}</p>
+                </div>
+
+                <div class="card-footer" style="flex-direction:column; align-items:stretch; gap:12px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div class="reading-count">
+                      <i class="fa-solid fa-file-lines"></i> ${statusLabel}
+                    </div>
+                    <button class="explore-btn">
+                      Explorar <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                  </div>
+
+                  <!-- Standards Badges at the bottom in compact micro-pills -->
+                  <div class="standards-badge-group" style="margin:0; padding-top:10px; border-top:1px solid rgba(255,255,255,0.04);">
+                    <span class="std-pill std-conocer" title="Estándar SEP CONOCER México"><i class="fa-solid fa-award"></i> SEP ${conocerCode}</span>
+                    <span class="std-pill std-ngss" title="Estándar Internacional Next Generation Science Standards"><i class="fa-solid fa-flask"></i> NGSS ${ngssCode}</span>
+                    <span class="std-pill std-industry" title="Alineación a Currículo e Industria"><i class="fa-solid fa-industry"></i> ${industrySource}</span>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+        } else {
+          html += `<p style="color:var(--text-dim); font-size:0.9rem;">No hay módulos en este track actualmente.</p>`;
+        }
 
         html += `
-          <div class="module-card" data-track-id="${track.id}" data-mod-id="${mod.id}">
-            <div class="card-top">
-              <div class="module-icon-box">
-                <i class="${mod.icon || 'fa-solid fa-microchip'}"></i>
-              </div>
-              <div style="display:flex; align-items:center; gap:8px;">
-                <button class="btn-pin-offline ${isPinned ? 'pinned' : ''}" data-track-id="${track.id}" data-mod-id="${mod.id}" title="${isPinned ? 'Guardado Offline (Expira en 3 días)' : 'Guardar Lectura Offline (Máx 5)'}">
-                  <i class="fa-solid fa-bookmark"></i> ${isPinned ? 'Offline' : '+ Offline'}
-                </button>
-                <span class="module-tag">${track.title}</span>
-              </div>
-            </div>
-
-            <div class="card-body">
-              <h3 class="card-title-es">${mod.titleES || mod.title}</h3>
-              <p class="card-title-en">${mod.title}</p>
-            </div>
-
-            <div class="card-footer" style="flex-direction:column; align-items:stretch; gap:12px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div class="reading-count">
-                  <i class="fa-solid fa-file-lines"></i> ${statusLabel}
-                </div>
-                <button class="explore-btn">
-                  Explorar <i class="fa-solid fa-arrow-right"></i>
-                </button>
-              </div>
-
-              <!-- Standards Badges at the bottom in compact micro-pills -->
-              <div class="standards-badge-group" style="margin:0; padding-top:10px; border-top:1px solid rgba(255,255,255,0.04);">
-                <span class="std-pill std-conocer" title="Estándar SEP CONOCER México"><i class="fa-solid fa-award"></i> SEP ${conocerCode}</span>
-                <span class="std-pill std-ngss" title="Estándar Internacional Next Generation Science Standards"><i class="fa-solid fa-flask"></i> NGSS ${ngssCode}</span>
-                <span class="std-pill std-industry" title="Alineación a Currículo e Industria"><i class="fa-solid fa-industry"></i> ${industrySource}</span>
-              </div>
             </div>
           </div>
         `;
       });
-    } else {
-      html += `<p style="color:var(--text-dim); font-size:0.9rem;">No hay módulos en este track actualmente.</p>`;
-    }
 
-    html += `
+      html += `
         </div>
-      </div>
-    `;
+      `;
+    }
   });
 
   // 2. Render Native Phrases Section ("Lo que no enseñan en la escuela")
@@ -733,7 +787,6 @@ function renderGrid(tracks, phrases = []) {
   gridContainer.innerHTML = html;
 
   // ── Modern Web Guidance: single delegated listener on the container ──────────
-  // One listener handles all card interactions — no per-element binding needed.
   gridContainer.addEventListener('click', (e) => {
     // 1. Pin / unpin offline reading
     const pinBtn = e.target.closest('.btn-pin-offline');
@@ -774,17 +827,66 @@ function renderGrid(tracks, phrases = []) {
 
 function filterGridByTrack(trackId, tracks) {
   const allSections = document.querySelectorAll('.track-section');
-  allSections.forEach(sec => {
-    if (trackId === 'all') {
-      sec.style.display = 'block';
-    } else {
-      if (sec.id === `section-${trackId}`) {
-        sec.style.display = 'block';
+  const allCatGroups = document.querySelectorAll('.category-group');
+  const offlineSec = document.getElementById('section-offline-saved');
+  const phrasesSec = document.getElementById('section-phrases');
+
+  if (trackId === 'all') {
+    allCatGroups.forEach(grp => grp.style.display = 'block');
+    allSections.forEach(sec => sec.style.display = 'block');
+    if (phrasesSec) phrasesSec.style.display = 'block';
+    return;
+  }
+
+  if (trackId.startsWith('cat-')) {
+    const catKey = trackId.replace('cat-', '');
+    allCatGroups.forEach(grp => {
+      if (grp.getAttribute('data-category') === catKey) {
+        grp.style.display = 'block';
+        grp.querySelectorAll('.track-section').forEach(sec => sec.style.display = 'block');
       } else {
-        sec.style.display = 'none';
+        grp.style.display = 'none';
       }
+    });
+    if (offlineSec) offlineSec.style.display = 'none';
+    if (phrasesSec) phrasesSec.style.display = 'none';
+    return;
+  }
+
+  if (trackId === 'offline-saved') {
+    allCatGroups.forEach(grp => grp.style.display = 'none');
+    allSections.forEach(sec => {
+      sec.style.display = (sec.id === 'section-offline-saved') ? 'block' : 'none';
+    });
+    if (offlineSec) offlineSec.style.display = 'block';
+    if (phrasesSec) phrasesSec.style.display = 'none';
+    return;
+  }
+
+  if (trackId === 'phrases') {
+    allCatGroups.forEach(grp => grp.style.display = 'none');
+    allSections.forEach(sec => {
+      sec.style.display = (sec.id === 'section-phrases') ? 'block' : 'none';
+    });
+    if (offlineSec) offlineSec.style.display = 'none';
+    if (phrasesSec) phrasesSec.style.display = 'block';
+    return;
+  }
+
+  // Specific track ID
+  allCatGroups.forEach(grp => {
+    const matchingSec = grp.querySelector(`#section-${trackId}`);
+    if (matchingSec) {
+      grp.style.display = 'block';
+      grp.querySelectorAll('.track-section').forEach(sec => {
+        sec.style.display = (sec.id === `section-${trackId}`) ? 'block' : 'none';
+      });
+    } else {
+      grp.style.display = 'none';
     }
   });
+  if (offlineSec) offlineSec.style.display = 'none';
+  if (phrasesSec) phrasesSec.style.display = 'none';
 }
 
 function setupSearch(tracks) {
