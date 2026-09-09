@@ -10,7 +10,7 @@
  *  - 🟠 AVIATION, CAREER & PROFESSIONAL ENGLISH (6 Tracks)
  * 
  * Target Level: A2+ / B1 CEFR Multi-Nivel
- * Incluye Modelos Gold ESP (Lectura de especificación pura, Diálogo real de planta, Matriz de colocaciones y Evaluador Socrático Feynman).
+ * Formato: Lecturas de 10 minutos (~500-800 palabras), glosario técnico EN-ES y preguntas socráticas.
  */
 
 var LXP_CATEGORIES = {
@@ -68,117 +68,147 @@ var LXP_COURSES = {
         "modules": [
             {
                 "id": "cyber-m1",
-                "title": "Introduction to Smart Networks",
-                "titleES": "Introducción a las Redes Inteligentes",
+                "title": "OT/ICS Zero-Trust Architecture & Air-Gapped Networks",
+                "titleES": "Arquitectura Zero-Trust en OT/ICS y Redes Aisladas",
                 "icon": "fa-solid fa-network-wired",
                 "readings": [
                     {
                         "id": "cyber-m1-r1",
-                        "title": "What Is a Network?",
-                        "duration": "10 min",
-                        "content": "\n> **Industry Certification Note**: The concepts in this module are directly aligned with the **CompTIA Network+ (N10-008)** certification — recognized as the #1 foundational credential for digital infrastructure engineering in global companies (Cisco, AWS, Microsoft).\n\n# What Is a Network?\n\nEvery time you send a message on your phone, watch a video online, or check your email, you are using a **network**. But what exactly is a network?\n\n## A Simple Definition\n\nA **computer network** is a group of two or more devices that are **connected** to each other so they can **share information**. These devices can be computers, phones, tablets, printers, or even smart refrigerators.\n\nThink of it like a road system in a city. The roads connect different buildings (devices), and cars (data) travel along these roads to reach their destination.\n\n## Why Do We Need Networks?\n\nBefore networks existed, if you wanted to share a file with a colleague, you had to copy it onto a **floppy disk** or USB drive and physically carry it to their computer. This was slow and inconvenient.\n\nNetworks solve this problem. They allow devices to:\n\n- **Share files** and documents instantly\n- **Share resources** like printers and storage\n- **Communicate** through email, chat, and video calls\n- **Access the internet** and cloud services\n\n## Key Components of a Network\n\nEvery network has some basic **components** (parts):\n\n1. **Devices** (also called **nodes** or **endpoints**): These are the computers, phones, and other equipment connected to the network. Each device has a unique address called an **IP address** (Internet Protocol address).\n\n2. **Cables and Connections**: Devices connect to each other using **cables** (like Ethernet cables) or **wireless signals** (Wi-Fi). The physical or wireless path between devices is called a **link**.\n\n3. **Switches**: A **switch** is a device that connects multiple devices within the same network. When Device A sends data to Device B, the switch makes sure the data goes to the right place.\n\n4. **Routers**: A **router** connects different networks together. For example, your home router connects your home network to the internet. The router decides the best **path** for data to travel.\n\n5. **Servers**: A **server** is a powerful computer that stores data and provides **services** to other devices (called **clients**). When you visit a website, your browser (the client) requests information from a server.\n\n## How Data Travels\n\nWhen you send a message, your device doesn't send it as one big piece. Instead, the message is divided into small pieces called **packets**. Each packet travels through the network independently and may take different routes. When all packets arrive at the destination, they are **reassembled** into the original message.\n\nThis process is governed by rules called **protocols**. The most important protocol on the internet is **TCP/IP** (Transmission Control Protocol / Internet Protocol).\n\n## Smart Networks\n\nA **smart network** is a modern network that uses **software** and **artificial intelligence** to manage itself. Traditional networks require a human administrator to configure every device manually. Smart networks can:\n\n- **Detect problems** automatically (like a broken connection)\n- **Optimize performance** by choosing the fastest routes for data\n- **Protect against threats** by identifying suspicious activity\n- **Adapt** to changes in the number of connected devices\n\nSmart networks are essential for modern technologies like the **Internet of Things (IoT)**, where thousands of sensors and devices need to communicate efficiently.\n\n---\n\n> **Key Takeaway**: A network connects devices so they can share data. Understanding the basic components — devices, switches, routers, servers, and protocols — is the foundation for everything you will learn in this course, directly aligned with **CompTIA Network+** and **ISO 27001** audit standards.\n",
+                        "title": "OT/ICS Zero-Trust Architecture & Air-Gapped Networks",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment & Security Standard**: Aligned with **IEC 62443 (Industrial Network and System Security)** and **NIST SP 800-82 (Guide to Operational Technology Security)**. Prepares plant engineers to defend air-gapped supervisory control and data acquisition (SCADA) environments.\n\n# OT/ICS Zero-Trust Architecture & Air-Gapped Networks: Industrial Defense Blueprint\n\nIn traditional manufacturing plants, the **Purdue Enterprise Reference Model** segmented Information Technology (IT) from Operational Technology (OT) networks using perimeter firewalls. Today, modern smart factories and Industrial IoT integration have eliminated the concept of a \"trusted internal zone,\" making **Zero-Trust Architecture (ZTA)** an operational imperative.\n\n## 1. The Purdue Model and the Air-Gap Myth\n\n1. **Air-Gapped Networks**: An air-gap physically isolates a secure industrial network from external networks (the Internet and corporate IT). However, modern targeted malware (e.g., Stuxnet, Industroyer) routinely bridges physical air-gaps via compromised vendor maintenance laptops, infected USB firmware update keys, and dual-homed industrial jump boxes.\n2. **Purdue Segmentation (Levels 0 to 3)**:\n   - **Level 0 (Process)**: Physical sensors, actuators, conveyor motors, and robotic servodrives.\n   - **Level 1 (Basic Control)**: **Programmable Logic Controllers (PLCs)** and Remote Terminal Units (RTUs) executing real-time ladder logic loops.\n   - **Level 2 (Supervisory Control)**: Human-Machine Interfaces (HMIs) and Supervisory Control and Data Acquisition (**SCADA**) servers.\n   - **Level 3 (Operations Management)**: Manufacturing Execution Systems (**MES**), plant historians, and batch management databases.\n   - **Industrial Demilitarized Zone (IDMZ / Level 3.5)**: The mandatory isolation barrier where all cross-domain sessions terminate. Direct Level 4 (Corporate IT) to Level 1 connections are strictly prohibited.\n\n## 2. Inherent Vulnerabilities of Legacy Industrial Protocols\n\nLegacy OT protocols were engineered in the 1970s for reliability and low latency over RS-485 serial lines, with **zero built-in encryption or authentication**:\n- **Modbus TCP**: Operates over TCP port 502 with plaintext function codes. Any host capable of sending raw TCP packets can inject unauthenticated command codes (e.g., `Function Code 05: Force Single Coil`), halting cooling pumps or altering thermal setpoints without credentials.\n- **EtherNet/IP & CIP**: Lacks cryptographic nonces, rendering sessions vulnerable to packet replay and unauthorized firmware injection attacks.\n- **DNP3**: Without Secure Authentication (SAv5), allows unauthorized broadcast commands to open electrical distribution circuit breakers.\n\n## 3. Implementing Zero-Trust Microsegmentation\n\nTo mitigate lateral traversal across manufacturing lines, engineers implement **Zero-Trust Microsegmentation**:\n1. **Never Trust, Always Verify**: Every device, PLC, and maintenance workstation must mutually authenticate before establishing a control session, regardless of physical port location.\n2. **Deep Packet Inspection (DPI) Firewalls**: Inline industrial firewalls inspect application-layer payload bytes. Instead of merely allowing TCP port 502, the DPI engine enforces whitelist policies (e.g., allowing read telemetry while dropping write commands unless signed by an authorized engineering station).\n3. **Micro-Perimeter Defense**: Isolating individual robotic cells into micro-segments prevents an infection on Line 1 from propagating laterally to the chassis assembly line.\n\n---\n> **Key Takeaway**: Industrial cybersecurity bridges **deterministic real-time control (PLCs, Modbus TCP, SCADA)** with **cryptographic zero-trust policies (IEC 62443, microsegmentation, DPI firewalls)**. Mastering technical English in this domain is essential for defending critical nearshoring manufacturing infrastructure.\n",
                         "vocabulary": [
                             {
-                                "en": "Network",
-                                "es": "Red",
-                                "definition": "A group of connected devices that share information"
+                                "en": "Air-Gapped Network",
+                                "es": "Red Aislada Físicamente (Air-Gap)",
+                                "definition": "Physical network isolation measure ensuring that a secure computer network is completely separated from unsecured networks.",
+                                "ipa": "/ˈɛər.ɡæpt ˈnɛt.wɜːrk/",
+                                "collocations": [
+                                    "bridge the air gap",
+                                    "air-gapped SCADA environment",
+                                    "strict air-gap policy"
+                                ]
                             },
                             {
-                                "en": "Device / Node",
-                                "es": "Dispositivo / Nodo",
-                                "definition": "Any equipment connected to a network (computer, phone, etc.)"
+                                "en": "Purdue Enterprise Reference Model",
+                                "es": "Modelo de Referencia Purdue",
+                                "definition": "Hierarchical reference architecture defining network segmentation levels (0 to 5) for Industrial Control Systems (ICS).",
+                                "ipa": "/pɜːrˈduː ˈɛn.tər.praɪz/",
+                                "collocations": [
+                                    "Purdue Model segmentation",
+                                    "Level 3.5 Industrial DMZ",
+                                    "collapse the Purdue model"
+                                ]
                             },
                             {
-                                "en": "Switch",
-                                "es": "Conmutador / Switch",
-                                "definition": "A device that connects multiple devices in the same network"
+                                "en": "Modbus TCP",
+                                "es": "Protocolo Modbus TCP",
+                                "definition": "Industrial communications protocol operating on port 502 transmitting raw telemetry and control coils over Ethernet.",
+                                "ipa": "/ˈmɒd.bʌs ˌtiː.siːˈpiː/",
+                                "collocations": [
+                                    "unencrypted Modbus payload",
+                                    "Modbus function code 05",
+                                    "Modbus polling cycle"
+                                ]
                             },
                             {
-                                "en": "Router",
-                                "es": "Enrutador / Router",
-                                "definition": "A device that connects different networks and directs data"
+                                "en": "Programmable Logic Controller (PLC)",
+                                "es": "Controlador Lógico Programable (PLC)",
+                                "definition": "Ruggedized industrial digital computer designed for real-time control of manufacturing machinery and robotic lines.",
+                                "ipa": "/ˈproʊ.ɡræm.ə.bəl ˈlɑː.dʒɪk/",
+                                "collocations": [
+                                    "PLC firmware integrity",
+                                    "ladder logic execution loop",
+                                    "safety-rated PLC"
+                                ]
                             },
                             {
-                                "en": "Server",
-                                "es": "Servidor",
-                                "definition": "A computer that stores data and provides services to other devices"
+                                "en": "Zero-Trust Architecture (ZTA)",
+                                "es": "Arquitectura de Confianza Cero",
+                                "definition": "Security model assuming that threats exist inside network boundaries, requiring continuous validation for every access request.",
+                                "ipa": "/ˈzɪr.oʊ trʌst/",
+                                "collocations": [
+                                    "never trust, always verify",
+                                    "zero-trust microsegmentation",
+                                    "least-privilege access"
+                                ]
                             },
                             {
-                                "en": "Client",
-                                "es": "Cliente",
-                                "definition": "A device that requests services from a server"
+                                "en": "Deep Packet Inspection (DPI)",
+                                "es": "Inspección Profunda de Paquetes",
+                                "definition": "Advanced packet processing method examining protocol payload bytes beyond IP and TCP headers to validate commands.",
+                                "ipa": "/diːp ˈpæk.ɪt ɪnˈspɛk.ʃən/",
+                                "collocations": [
+                                    "DPI industrial firewall",
+                                    "inspect application-layer payload",
+                                    "whitelist protocol commands"
+                                ]
                             },
                             {
-                                "en": "IP Address",
-                                "es": "Dirección IP",
-                                "definition": "A unique number that identifies each device on a network"
+                                "en": "Lateral Movement",
+                                "es": "Movimiento Lateral",
+                                "definition": "Technique used by attackers to progressively move through a network after establishing an initial compromised foothold.",
+                                "ipa": "/ˈlæt.ər.əl ˈmuːv.mənt/",
+                                "collocations": [
+                                    "prevent lateral traversal",
+                                    "lateral movement across subnets",
+                                    "quarantine infected hosts"
+                                ]
                             },
                             {
-                                "en": "Packet",
-                                "es": "Paquete",
-                                "definition": "A small piece of data sent through a network"
+                                "en": "Industrial DMZ (IDMZ)",
+                                "es": "Zona Desmilitarizada Industrial",
+                                "definition": "Perimeter network zone (Purdue Level 3.5) buffering enterprise IT systems from mission-critical plant-floor operations.",
+                                "ipa": "/ɪnˈdʌs.tri.əl ˌdiː.ɛmˈzɛd/",
+                                "collocations": [
+                                    "terminate sessions at IDMZ",
+                                    "dual-homed IDMZ jump box",
+                                    "cross-domain data broker"
+                                ]
                             },
                             {
-                                "en": "Protocol",
-                                "es": "Protocolo",
-                                "definition": "A set of rules for how data is sent and received"
+                                "en": "Deterministic Network",
+                                "es": "Red Determinista",
+                                "definition": "Network communication architecture guaranteeing that messages arrive within an exact, predictable bounded timeframe.",
+                                "ipa": "/dɪˌtɜːr.mɪˈnɪs.tɪk/",
+                                "collocations": [
+                                    "sub-millisecond determinism",
+                                    "deterministic cycle time",
+                                    "Time-Sensitive Networking (TSN)"
+                                ]
                             },
                             {
-                                "en": "TCP/IP",
-                                "es": "TCP/IP",
-                                "definition": "The main protocol used on the internet"
+                                "en": "Supervisory Control and Data Acquisition (SCADA)",
+                                "es": "Sistema SCADA",
+                                "definition": "Industrial software platform that monitors, collects telemetry from, and commands distributed plant-floor operations.",
+                                "ipa": "/ˈskeɪ.də/",
+                                "collocations": [
+                                    "SCADA human-machine interface",
+                                    "real-time telemetry alarm",
+                                    "SCADA server failover"
+                                ]
                             },
                             {
-                                "en": "Link",
-                                "es": "Enlace",
-                                "definition": "The connection path between two devices"
+                                "en": "Firmware Integrity",
+                                "es": "Integridad del Firmware",
+                                "definition": "Verification that controller operating software has not been tampered with, altered, or replaced by rogue code.",
+                                "ipa": "/ˈfɜːrm.wɛər ɪnˈtɛɡ.rə.ti/",
+                                "collocations": [
+                                    "cryptographic firmware signature",
+                                    "secure boot verification",
+                                    "firmware checksum mismatch"
+                                ]
                             },
                             {
-                                "en": "Wireless",
-                                "es": "Inalámbrico",
-                                "definition": "Without cables, using radio signals (Wi-Fi)"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "What is a computer network?",
-                                "options": [
-                                    "A single computer working alone",
-                                    "Two or more devices connected to share information",
-                                    "A type of software",
-                                    "A programming language"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "What does a router do?",
-                                "options": [
-                                    "It stores files",
-                                    "It connects devices in the same network",
-                                    "It connects different networks together",
-                                    "It prints documents"
-                                ],
-                                "answer": 2
-                            },
-                            {
-                                "q": "What are packets?",
-                                "options": [
-                                    "Large files",
-                                    "Small pieces of data sent through a network",
-                                    "Types of cables",
-                                    "Network passwords"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "What makes a network 'smart'?",
-                                "options": [
-                                    "It uses expensive cables",
-                                    "It uses software and AI to manage itself",
-                                    "It only works with smartphones",
-                                    "It has more than 100 devices"
-                                ],
-                                "answer": 1
+                                "en": "Safety Instrumented System (SIS)",
+                                "es": "Sistema Instrumentado de Seguridad (SIS)",
+                                "definition": "Dedicated control system designed specifically to bring a plant to a safe state when predetermined conditions are breached.",
+                                "ipa": "/ˈseɪf.ti ˌɪn.strəˈmɛn.tɪd/",
+                                "collocations": [
+                                    "Safety Integrity Level (SIL-3)",
+                                    "hardwired emergency stop",
+                                    "independent safety controller"
+                                ]
                             }
                         ]
                     },
@@ -291,6 +321,294 @@ var LXP_COURSES = {
                                 "answer": 2
                             }
                         ]
+                    }
+                ],
+                "isGoldModel": true,
+                "dialogue": {
+                    "title": "Emergency ICS Incident Response: Modbus Packet Injection in the Assembly Subnet",
+                    "titleES": "Respuesta a Incidentes en Sistemas de Control: Inyección de Paquetes Modbus en la Subred de Ensamble",
+                    "scenarioContext": "Detroit, MI (Global Cyber Defense Center) ⇄ Saltillo, Coahuila (Automotive Powertrain Assembly Plant). Critical Severity 1 Teams Call.",
+                    "characters": [
+                        {
+                            "name": "Marcus Brody",
+                            "role": "Global CISO & VP of Industrial Cybersecurity (Detroit)",
+                            "avatar": "MB",
+                            "color": "var(--cyan)"
+                        },
+                        {
+                            "name": "Ing. Valeria Ramos",
+                            "role": "Lead OT Security & SCADA Systems Engineer (Saltillo)",
+                            "avatar": "VR",
+                            "color": "var(--rose)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Marcus Brody",
+                            "text": "Valeria, our SIEM detected anomalous telemetry coming from the Saltillo Cell 3 stamping line. We're seeing hundreds of unauthenticated Modbus TCP write commands hitting the safety PLC. Has physical safety been compromised?",
+                            "translation": "Valeria, nuestro SIEM detectó telemetría anómala proveniente de la línea de troquelado de la Celda 3 en Saltillo. Estamos viendo cientos de comandos de escritura Modbus TCP no autenticados impactando el PLC de seguridad. ¿Se comprometió la seguridad física?",
+                            "targetTerms": [
+                                "SIEM",
+                                "telemetry",
+                                "Modbus TCP",
+                                "safety PLC"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Valeria Ramos",
+                            "text": "Negative on safety compromise, Marcus. The safety relay circuits are hardwired. However, our Deep Packet Inspection (DPI) firewall flagged unauthorized packets attempting to force coil 0x0412 on the hydraulic press PLC. The traffic originated from a contractor jump box inside Level 2.",
+                            "translation": "Negativo en compromiso de seguridad, Marcus. Los circuitos de relevadores de seguridad están cableados físicamente. Sin embargo, nuestro firewall de Inspección Profunda de Paquetes (DPI) alertó sobre paquetes no autorizados intentando forzar la bobina 0x0412 en el PLC de la prensa hidráulica. El tráfico se originó desde una máquina puente de un contratista en el Nivel 2.",
+                            "targetTerms": [
+                                "Deep Packet Inspection (DPI)",
+                                "force coil",
+                                "hydraulic press PLC",
+                                "jump box"
+                            ]
+                        },
+                        {
+                            "speaker": "Marcus Brody",
+                            "text": "Isolate that jump box immediately. Sever the VLAN trunk and enforce microsegmentation on the Industrial DMZ. Did the attacker establish lateral movement into the robot cell controllers?",
+                            "translation": "Aísla esa máquina puente de inmediato. Corta el enlace troncal VLAN y fuerza microsegmentación en la DMZ Industrial. ¿El atacante logró movimiento lateral hacia los controladores de las celdas de robots?",
+                            "targetTerms": [
+                                "sever the VLAN trunk",
+                                "microsegmentation",
+                                "Industrial DMZ",
+                                "lateral movement"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Valeria Ramos",
+                            "text": "No lateral movement observed. Our zero-trust policy strictly dropped all egress traffic to Level 1. I revoked the contractor's Kerberos certificate and locked down port 502 with an explicit IP whitelist. The stamping line is operating deterministically.",
+                            "translation": "No se observó movimiento lateral. Nuestra política de zero-trust descartó estrictamente todo el tráfico de salida hacia el Nivel 1. Revoqué el certificado Kerberos del contratista y bloqueé el puerto 502 con una lista blanca explícita de IPs. La línea de troquelado opera de forma determinista.",
+                            "targetTerms": [
+                                "zero-trust policy",
+                                "egress traffic",
+                                "Kerberos certificate",
+                                "operating deterministically"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The computer had a virus and the machine stopped.",
+                            "native": "The DPI industrial firewall intercepted an unauthenticated Modbus packet injection targeting PLC coil setpoints.",
+                            "explanation": "En la escuela se dice 'the computer had a virus', pero en ciberseguridad industrial se especifica el vector de ataque exacto (packet injection, protocol payload, setpoint manipulation)."
+                        },
+                        {
+                            "school": "Separate network with no internet.",
+                            "native": "Air-gapped Purdue Level 1/2 control architecture with microsegmented Industrial DMZ.",
+                            "explanation": "No se usa 'no internet'; los clientes de EE.UU. exigen especificar la arquitectura de aislamiento conforme al modelo Purdue e IEC 62443."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Air-Gapped Network",
+                        "ipa": "/ˈɛər.ɡæpt ˈnɛt.wɜːrk/",
+                        "es": "Red Aislada Físicamente (Air-Gap)",
+                        "category": "Arquitectura de Red",
+                        "definition": "Physical network isolation measure ensuring that a secure computer network is completely separated from unsecured networks.",
+                        "collocations": [
+                            "bridge the air gap",
+                            "air-gapped SCADA environment",
+                            "strict air-gap policy"
+                        ],
+                        "falseFriends": "No es simplemente 'desconectar el Wi-Fi'; implica aislamiento galvánico de fibra y prohibición de medios extraíbles.",
+                        "nativeUsage": "The nuclear plant's safety PLCs run in a strictly air-gapped network with dual-custody physical access controls."
+                    },
+                    {
+                        "term": "Purdue Enterprise Reference Model",
+                        "ipa": "/pɜːrˈduː ˈɛn.tər.praɪz/",
+                        "es": "Modelo de Referencia Purdue",
+                        "category": "Estándar Arquitectónico",
+                        "definition": "Hierarchical reference architecture defining network segmentation levels (0 to 5) for Industrial Control Systems (ICS).",
+                        "collocations": [
+                            "Purdue Model segmentation",
+                            "Level 3.5 Industrial DMZ",
+                            "collapse the Purdue model"
+                        ],
+                        "falseFriends": "No es una marca comercial; es el estándar de facto ISA-95 para seguridad de redes de manufactura.",
+                        "nativeUsage": "Engineers must never permit direct TCP routing from Level 4 enterprise IT down to Level 1 controller subnets."
+                    },
+                    {
+                        "term": "Modbus TCP",
+                        "ipa": "/ˈmɒd.bʌs ˌtiː.siːˈpiː/",
+                        "es": "Protocolo Modbus TCP",
+                        "category": "Protocolo Industrial",
+                        "definition": "Industrial communications protocol operating on port 502 transmitting raw telemetry and control coils over Ethernet.",
+                        "collocations": [
+                            "unencrypted Modbus payload",
+                            "Modbus function code 05",
+                            "Modbus polling cycle"
+                        ],
+                        "falseFriends": "Modbus carece por diseño de autenticación; cualquier paquete en la subred puede forzar bobinas (coils) físicas.",
+                        "nativeUsage": "The Deep Packet Inspection engine drops any Modbus TCP packet attempting unauthorized coil writes during production."
+                    },
+                    {
+                        "term": "Programmable Logic Controller (PLC)",
+                        "ipa": "/ˈproʊ.ɡræm.ə.bəl ˈlɑː.dʒɪk/",
+                        "es": "Controlador Lógico Programable (PLC)",
+                        "category": "Hardware de Control",
+                        "definition": "Ruggedized industrial digital computer designed for real-time control of manufacturing machinery and robotic lines.",
+                        "collocations": [
+                            "PLC firmware integrity",
+                            "ladder logic execution loop",
+                            "safety-rated PLC"
+                        ],
+                        "falseFriends": "No es una 'computadora de escritorio'; opera en microsegundos y soporta vibración y temperaturas extremas.",
+                        "nativeUsage": "Technicians verified that the PLC checksum matched the authorized master backup in the engineering vault."
+                    },
+                    {
+                        "term": "Zero-Trust Architecture (ZTA)",
+                        "ipa": "/ˈzɪr.oʊ trʌst/",
+                        "es": "Arquitectura de Confianza Cero",
+                        "category": "Modelo de Seguridad",
+                        "definition": "Security model assuming that threats exist inside network boundaries, requiring continuous validation for every access request.",
+                        "collocations": [
+                            "never trust, always verify",
+                            "zero-trust microsegmentation",
+                            "least-privilege access"
+                        ],
+                        "falseFriends": "No significa desconfiar de las personas; es una arquitectura matemática criptográfica por dispositivo y sesión.",
+                        "nativeUsage": "Implementing zero-trust architecture stopped the malware from traversing laterally into the robotic welding line."
+                    },
+                    {
+                        "term": "Deep Packet Inspection (DPI)",
+                        "ipa": "/diːp ˈpæk.ɪt ɪnˈspɛk.ʃən/",
+                        "es": "Inspección Profunda de Paquetes",
+                        "category": "Filtrado de Red",
+                        "definition": "Advanced packet processing method examining protocol payload bytes beyond IP and TCP headers to validate commands.",
+                        "collocations": [
+                            "DPI industrial firewall",
+                            "inspect application-layer payload",
+                            "whitelist protocol commands"
+                        ],
+                        "falseFriends": "Diferente de un firewall tradicional; el DPI analiza si el comando de ingeniería es legítimo o malicioso.",
+                        "nativeUsage": "The DPI gateway blocks any unauthorized setpoint changes on the furnace temperature controller."
+                    },
+                    {
+                        "term": "Lateral Movement",
+                        "ipa": "/ˈlæt.ər.əl ˈmuːv.mənt/",
+                        "es": "Movimiento Lateral",
+                        "category": "Vector de Amenaza",
+                        "definition": "Technique used by attackers to progressively move through a network after establishing an initial compromised foothold.",
+                        "collocations": [
+                            "prevent lateral traversal",
+                            "lateral movement across subnets",
+                            "quarantine infected hosts"
+                        ],
+                        "falseFriends": "En ingeniería mecánica significa desplazamiento físico; en ciberseguridad es la propagación de intrusiones en red.",
+                        "nativeUsage": "Microsegmenting each manufacturing line stopped the attacker's lateral movement dead in its tracks."
+                    },
+                    {
+                        "term": "Industrial DMZ (IDMZ)",
+                        "ipa": "/ɪnˈdʌs.tri.əl ˌdiː.ɛmˈzɛd/",
+                        "es": "Zona Desmilitarizada Industrial",
+                        "category": "Segmentación",
+                        "definition": "Perimeter network zone (Purdue Level 3.5) buffering enterprise IT systems from mission-critical plant-floor operations.",
+                        "collocations": [
+                            "terminate sessions at IDMZ",
+                            "dual-homed IDMZ jump box",
+                            "cross-domain data broker"
+                        ],
+                        "falseFriends": "No tiene fines militares; es una zona de aislamiento de servidores intermediarios (historians, jump servers).",
+                        "nativeUsage": "Plant historians replicate database tags across the IDMZ so corporate analysts never connect directly to PLCs."
+                    },
+                    {
+                        "term": "Deterministic Network",
+                        "ipa": "/dɪˌtɜːr.mɪˈnɪs.tɪk/",
+                        "es": "Red Determinista",
+                        "category": "Rendimiento de Red",
+                        "definition": "Network communication architecture guaranteeing that messages arrive within an exact, predictable bounded timeframe.",
+                        "collocations": [
+                            "sub-millisecond determinism",
+                            "deterministic cycle time",
+                            "Time-Sensitive Networking (TSN)"
+                        ],
+                        "falseFriends": "No es 'red decidida'; significa matemáticamente predecible con jitter cercano a cero.",
+                        "nativeUsage": "EtherCAT networks provide deterministic communication so robotic arms coordinate movements at microsecond precision."
+                    },
+                    {
+                        "term": "Supervisory Control and Data Acquisition (SCADA)",
+                        "ipa": "/ˈskeɪ.də/",
+                        "es": "Sistema SCADA",
+                        "category": "Software de Planta",
+                        "definition": "Industrial software platform that monitors, collects telemetry from, and commands distributed plant-floor operations.",
+                        "collocations": [
+                            "SCADA human-machine interface",
+                            "real-time telemetry alarm",
+                            "SCADA server failover"
+                        ],
+                        "falseFriends": "Se pronuncia /SKEI-da/, no 'escada'. Es el centro de mando digital de toda la planta manufacturera.",
+                        "nativeUsage": "The central SCADA console alerted the supervisor when hydraulic pressure dropped below the critical threshold."
+                    },
+                    {
+                        "term": "Firmware Integrity",
+                        "ipa": "/ˈfɜːrm.wɛər ɪnˈtɛɡ.rə.ti/",
+                        "es": "Integridad del Firmware",
+                        "category": "Seguridad de Dispositivo",
+                        "definition": "Verification that controller operating software has not been tampered with, altered, or replaced by rogue code.",
+                        "collocations": [
+                            "cryptographic firmware signature",
+                            "secure boot verification",
+                            "firmware checksum mismatch"
+                        ],
+                        "falseFriends": "Integridad aquí significa inalterabilidad criptográfica con llaves públicas, no 'honestidad moral'.",
+                        "nativeUsage": "The PLC refuses to boot if the cryptographic hash of the new firmware does not match the OEM signature."
+                    },
+                    {
+                        "term": "Safety Instrumented System (SIS)",
+                        "ipa": "/ˈseɪf.ti ˌɪn.strəˈmɛn.tɪd/",
+                        "es": "Sistema Instrumentado de Seguridad (SIS)",
+                        "category": "Seguridad Funcional",
+                        "definition": "Dedicated control system designed specifically to bring a plant to a safe state when predetermined conditions are breached.",
+                        "collocations": [
+                            "Safety Integrity Level (SIL-3)",
+                            "hardwired emergency stop",
+                            "independent safety controller"
+                        ],
+                        "falseFriends": "El SIS siempre opera de manera físicamente separada del PLC de control básico para evitar catástrofes.",
+                        "nativeUsage": "Even if the main PLC is hacked, the hardwired Safety Instrumented System will physically vent the emergency valves."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Purdue Model & Air-Gap Limitations",
+                        "botQuestion": "Welcome to the OT Security Audit! Explain in English why relying solely on a physical 'air-gap' is no longer sufficient to protect a manufacturing plant's PLCs. How do modern cyber-threats cross physical air-gaps?",
+                        "requiredKeywords": [
+                            "air-gap",
+                            "plc",
+                            "purdue",
+                            "usb",
+                            "maintenance",
+                            "vendor",
+                            "jump box",
+                            "isolation",
+                            "physical"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot-on! Air-gaps create a dangerous false sense of security because vendor maintenance laptops, infected firmware update USBs, and dual-homed jump boxes routinely bridge the physical gap, requiring internal microsegmentation.",
+                        "feedbackRetry": "Think about physical entry points: how do technicians update PLC code or connect diagnostic laptops when machinery breaks down? Mention maintenance access and USB devices!"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Legacy Modbus Vulnerabilities vs DPI",
+                        "botQuestion": "Why is Modbus TCP inherently vulnerable to packet injection attacks, and how does a Deep Packet Inspection (DPI) industrial firewall mitigate this vulnerability?",
+                        "requiredKeywords": [
+                            "modbus",
+                            "unauthenticated",
+                            "encryption",
+                            "payload",
+                            "dpi",
+                            "deep packet inspection",
+                            "coil",
+                            "firewall",
+                            "whitelist"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Outstanding technical precision! Modbus TCP lacks native authentication and encryption, allowing any host to send arbitrary coil writes. DPI firewalls inspect the application-layer payload, validating function codes against strict whitelists.",
+                        "feedbackRetry": "Remember that Modbus TCP operates over port 502 with plaintext payloads and no cryptographic handshakes. What does a DPI firewall do with the payload bytes that a basic firewall cannot?"
                     }
                 ]
             },
@@ -755,7 +1073,7 @@ var LXP_COURSES = {
                         "id": "cyber-m4-r1",
                         "title": "Firewalls, IDS, and Encryption",
                         "duration": "10 min",
-                        "content": "\n# Firewalls, IDS, and Encryption\n\nNow that we understand the threats, let's study the **tools** cybersecurity professionals use to defend networks. These are the essential defense mechanisms every network engineer must know.\n\n## Firewalls — The Network's Security Gate\n\nA **firewall** is a security device (hardware or software) that **monitors and controls** network traffic based on predefined security **rules**. It acts as a barrier between a trusted internal network and untrusted external networks (like the internet).\n\n### How a Firewall Works:\n\nThe firewall examines each **packet** of data and decides whether to **allow** it through or **block** it based on:\n\n- **Source IP address** — Where is the data coming from?\n- **Destination IP address** — Where is it going?\n- **Port number** — What service is it using? (Port 80 = HTTP, Port 443 = HTTPS, Port 22 = SSH)\n- **Protocol** — Is it TCP, UDP, or something else?\n\n### Types of Firewalls:\n\n| Type | Description | Use Case |\n|------|-------------|----------|\n| **Packet Filter** | Examines individual packets based on IP/port rules | Basic protection |\n| **Stateful Inspection** | Tracks active connections and context | Most modern firewalls |\n| **Application Layer** | Inspects the actual content of the data | Blocking specific web content |\n| **Next-Gen (NGFW)** | Combines all above + IDS + deep packet inspection | Enterprise networks |\n\n**Analogy**: A firewall is like the security guard at a building entrance. The guard checks your ID (IP address), your purpose (port/protocol), and decides whether to let you in.\n\n## IDS and IPS — Detecting and Preventing Intrusions\n\nWhile firewalls control access, **IDS** and **IPS** systems focus on detecting suspicious activity:\n\n### IDS — Intrusion Detection System\n\nAn IDS **monitors** network traffic and **alerts** administrators when it detects something suspicious. It does NOT block the traffic — it only reports it.\n\nThink of an IDS like a **security camera**. It watches everything and sends an alert if something looks wrong, but a human must respond.\n\n### IPS — Intrusion Prevention System\n\nAn IPS does everything an IDS does, but it can also **automatically block** the suspicious traffic. It's a security camera with an automatic door lock.\n\n### Detection Methods:\n\n- **Signature-based**: Compares traffic to a database of known attack patterns. Fast but can't detect new, unknown attacks.\n- **Anomaly-based**: Learns what \"normal\" traffic looks like and flags anything unusual. Can detect new attacks but may produce **false positives** (false alarms).\n\n## Encryption — Locking Data with Math\n\n**Encryption** is the process of converting readable data (**plaintext**) into unreadable code (**ciphertext**) using a mathematical **algorithm** and a **key**. Only someone with the correct key can convert the ciphertext back to plaintext (**decryption**).\n\n### Symmetric Encryption\n\nBoth the sender and receiver use the **same key** to encrypt and decrypt data.\n\n- **Fast** and efficient for large amounts of data\n- **Problem**: How do you securely share the key with the other person?\n- **Example algorithm**: AES (Advanced Encryption Standard) — used to protect top-secret government data\n\n### Asymmetric Encryption (Public-Key Cryptography)\n\nUses **two different keys**:\n- A **public key** (everyone can see it) — used to encrypt data\n- A **private key** (kept secret) — used to decrypt data\n\n- **Slower** than symmetric encryption\n- **Solves the key-sharing problem** — you can publish your public key openly\n- **Example algorithm**: RSA (Rivest–Shamir–Adleman)\n\n### Encryption in Practice:\n\n| Where | Protocol | Type |\n|-------|----------|------|\n| **Websites** | HTTPS (TLS/SSL) | Asymmetric + Symmetric |\n| **Wi-Fi** | WPA3 | Symmetric |\n| **Email** | PGP / S/MIME | Asymmetric |\n| **VPN** | IPsec / WireGuard | Both |\n| **Messaging** | Signal Protocol | Asymmetric |\n\nWhen you see the **lock icon** 🔒 in your browser, it means the connection is encrypted with TLS — your data is protected between your device and the server.\n\n## Defense in Depth\n\nGood cybersecurity uses **multiple layers** of defense — this strategy is called **Defense in Depth**. No single tool is enough:\n\n1. **Firewall** → Controls what enters the network\n2. **IDS/IPS** → Detects suspicious activity\n3. **Encryption** → Protects data even if intercepted\n4. **Antivirus** → Detects malware on individual devices\n5. **Training** → Educates users to recognize threats\n6. **Backups** → Ensures data recovery if everything else fails\n\n---\n\n> **Key Takeaway**: Firewalls control access, IDS/IPS detect threats, and encryption protects data. A strong defense uses all three together in a \"Defense in Depth\" strategy.\n",
+                        "content": "\n# Firewalls, IDS, and Encryption\n\nNow that we understand the threats, let's study the **tools** cybersecurity professionals use to defend networks. These are the essential defense mechanisms every network engineer must know.\n\n## Firewalls — The Network's Security Gate\n\nA **firewall** is a security device (hardware or software) that **monitors and controls** network traffic based on predefined security **rules**. It acts as a barrier between a trusted internal network and untrusted external networks (like the internet).\n\n### How a Firewall Works:\n\nThe firewall examines each **packet** of data and decides whether to **allow** it through or **block** it based on:\n\n- **Source IP address** — Where is the data coming from?\n- **Destination IP address** — Where is it going?\n- **Port number** — What service is it using? (Port 80 = HTTP, Port 443 = HTTPS, Port 22 = SSH)\n- **Protocol** — Is it TCP, UDP, or something else?\n\n### Types of Firewalls:\n\n| Type | Description | Use Case |\n|------|-------------|----------|\n| **Packet Filter** | Examines individual packets based on IP/port rules | Basic protection |\n| **Stateful Inspection** | Tracks active connections and context | Most modern firewalls |\n| **Application Layer** | Inspects the actual content of the data | Blocking specific web content |\n| **Next-Gen (NGFW)** | Combines all above + IDS + deep packet inspection | Enterprise networks |\n\n**Analogy**: A firewall is like the security guard at a building entrance. The guard checks your ID (IP address), your purpose (port/protocol), and decides whether to let you in.\n\n## IDS and IPS — Detecting and Preventing Intrusions\n\nWhile firewalls control access, **IDS** and **IPS** systems focus on detecting suspicious activity:\n\n### IDS — Intrusion Detection System\n\nAn IDS **monitors** network traffic and **alerts** administrators when it detects something suspicious. It does NOT block the traffic — it only reports it.\n\nThink of an IDS like a **security camera**. It watches everything and sends an alert if something looks wrong, but a human must respond.\n\n### IPS — Intrusion Prevention System\n\nAn IPS does everything an IDS does, but it can also **automatically block** the suspicious traffic. It's a security camera with an automatic door lock.\n\n### Detection Methods:\n\n- **Signature-based**: Compares traffic to a database of known attack patterns. Fast but can't detect new, unknown attacks.\n- **Anomaly-based**: Learns what \"normal\" traffic looks like and flags anything unusual. Can detect new attacks but may produce **false positives** (false alarms).\n\n## Encryption — Locking Data with Math\n\n**Encryption** is the process of converting readable data (**plaintext**) into unreadable code (**ciphertext**) using a mathematical **algorithm** and a **key**. Only someone with the correct key can convert the ciphertext back to plaintext (**decryption**).\n\n### Symmetric Encryption\n\nBoth the sender and receiver use the **same key** to encrypt and decrypt data.\n\n- **Fast** and efficient for large amounts of data\n- **Problem**: How do you securely share the key with the other person?\n- **Example algorithm**: AES (Advanced Encryption Standard) — used to protect top-secret government data\n\n### Asymmetric Encryption (Public-Key Cryptography)\n\nUses **two different keys**:\n- A **public key** (everyone can see it) — used to encrypt data\n- A **private key** (kept secret) — used to decrypt data\n\n- **Slower** than symmetric encryption\n- **Solves the key-sharing problem** — you can publish your public key openly\n- **Example algorithm**: RSA (Rivest–Shamir–Adleman)\n\n### Encryption in Practice:\n\n| Where | Protocol | Type |\n|-------|----------|------|\n| **Websites** | HTTPS (TLS/SSL) | Asymmetric + Symmetric |\n| **Wi-Fi** | WPA3 | Symmetric |\n| **Email** | PGP / S/MIME | Asymmetric |\n| **VPN** | IPsec / WireGuard | Both |\n| **Messaging** | Signal Protocol | Asymmetric |\n\nWhen you see the **lock icon** in your browser, it means the connection is encrypted with TLS — your data is protected between your device and the server.\n\n## Defense in Depth\n\nGood cybersecurity uses **multiple layers** of defense — this strategy is called **Defense in Depth**. No single tool is enough:\n\n1. **Firewall** → Controls what enters the network\n2. **IDS/IPS** → Detects suspicious activity\n3. **Encryption** → Protects data even if intercepted\n4. **Antivirus** → Detects malware on individual devices\n5. **Training** → Educates users to recognize threats\n6. **Backups** → Ensures data recovery if everything else fails\n\n---\n\n> **Key Takeaway**: Firewalls control access, IDS/IPS detect threats, and encryption protects data. A strong defense uses all three together in a \"Defense in Depth\" strategy.\n",
                         "vocabulary": [
                             {
                                 "en": "Firewall",
@@ -2987,7 +3305,7 @@ var LXP_COURSES = {
                     }
                 ],
                 "isGoldModel": true,
-                "goldBadge": "⭐ MODELO GOLD ESP",
+                "goldBadge": "MODELO GOLD ESP",
                 "dialogue": {
                     "title": "Daily Fab Standup: Yield Excursion & Reticle Alignment Root Cause Analysis",
                     "titleES": "Standup Diario de Planta: Análisis de Causa Raíz (RCA) por Caída de Rendimiento",
@@ -4234,117 +4552,147 @@ var LXP_COURSES = {
         "modules": [
             {
                 "id": "ev-m1",
-                "title": "Introduction to Electric Vehicles",
-                "titleES": "Introducción a los Vehículos Eléctricos",
+                "title": "800V High-Voltage Powertrain, SiC Inverters & Thermal Runaway",
+                "titleES": "Tren Motriz de 800V, Inversores SiC y Embalamiento Térmico",
                 "icon": "fa-solid fa-car-battery",
                 "readings": [
                     {
                         "id": "ev-m1-r1",
-                        "title": "What Is an Electric Vehicle?",
-                        "duration": "10 min",
-                        "content": "\n# What Is an Electric Vehicle?\n\nEvery year, millions of new electric vehicles (EVs) drive off factory floors around the world. In 2025, global EV sales exceeded 20 million units — roughly one in every five new cars sold. But what exactly makes a car \"electric,\" and why is this technology transforming the automotive industry?\n\n## The Basic Concept\n\nAn **electric vehicle** is a vehicle that uses one or more **electric motors** instead of (or in addition to) an internal combustion engine (ICE) to move. Instead of burning gasoline or diesel, an EV draws energy from a **battery pack** — a large collection of rechargeable battery cells stored in the floor of the vehicle.\n\nThink of it this way: a traditional car is like a stove that burns gas. An EV is like an induction cooktop that uses electricity — cleaner, quieter, and more efficient.\n\n## Types of Electric Vehicles\n\nNot all EVs are the same. Engineers classify them into four categories:\n\n### 1. BEV — Battery Electric Vehicle\nA **BEV** runs entirely on electricity. It has no gasoline engine at all. The battery is the only energy source.\n\n**Examples**: Tesla Model 3, BYD Seal, Nissan Leaf, Chevrolet Equinox EV.\n\n### 2. PHEV — Plug-in Hybrid Electric Vehicle\nA **PHEV** has both an electric motor and a gasoline engine. It can drive a short distance (typically 30-80 km) on electricity alone. After the battery is depleted, the gasoline engine takes over.\n\n**Examples**: Toyota RAV4 Prime, BMW X5 xDrive50e.\n\n### 3. HEV — Hybrid Electric Vehicle\nAn **HEV** also has both an electric motor and a gasoline engine, but it **cannot be plugged in**. The small battery is charged only through **regenerative braking** (recovering energy when slowing down). The electric motor assists the engine but cannot drive the car alone for long distances.\n\n**Examples**: Toyota Prius, Honda Accord Hybrid.\n\n### 4. FCEV — Fuel Cell Electric Vehicle\nAn **FCEV** uses a **hydrogen fuel cell** to generate electricity on board. Hydrogen gas reacts with oxygen in the fuel cell to produce electricity, water, and heat. FCEVs are rare and expensive, but they offer very fast refueling (~5 minutes).\n\n**Examples**: Toyota Mirai, Hyundai NEXO.\n\n## Key Components of a BEV\n\nA modern battery electric vehicle has these essential components:\n\n| Component | Function |\n|-----------|----------|\n| **Battery Pack** | Stores electrical energy (typically 40-100 kWh) |\n| **Electric Motor** | Converts electricity into mechanical rotation to spin the wheels |\n| **Inverter** | Converts DC (battery) to AC (motor) power |\n| **Onboard Charger** | Converts AC from the wall outlet to DC for the battery |\n| **Battery Management System (BMS)** | Monitors cell voltages, temperatures, and state of charge |\n| **Thermal Management System** | Keeps the battery at optimal temperature (15-35°C) |\n| **Regenerative Braking System** | Recovers kinetic energy during deceleration |\n\n## Why EVs Matter for Mexico's Nearshoring Industry\n\nMexico is Latin America's largest automotive manufacturer, producing approximately 4 million vehicles per year. As global automakers transition to electric, Mexico's factories must adapt. The nearshoring wave is bringing new EV component manufacturing:\n\n- **Battery module assembly** plants in Nuevo León and Coahuila\n- **Electric motor** and **power electronics** manufacturing in Querétaro and Puebla\n- **Wiring harness** production (the \"nervous system\" of every EV) in Chihuahua and Sonora\n\nBy 2026, electrified vehicles account for approximately 12.5% of light vehicle sales in Mexico, and this percentage is growing rapidly.\n\n---\n\n> **Key Takeaway**: An electric vehicle replaces the gasoline engine with an electric motor powered by a rechargeable battery. Mexico's automotive industry is transitioning to EV manufacturing, creating thousands of new technical jobs.\n",
+                        "title": "800V High-Voltage Powertrain & SiC Inverters",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Certification Alignment**: Follows **SAE J1772 / ISO 15118 (Combined Charging System)** and **UL 2580 (Batteries for Use in Electric Vehicles)** standards. Essential for powertrain and high-voltage engineers at Tesla, BMW, Rivian, and Tier-1 suppliers.\n\n# 800V High-Voltage Powertrain, SiC Inverters & Thermal Runaway Containment\n\nThe global transition from legacy 400-volt electric vehicle architectures to **800-volt high-voltage platforms** represents a quantum leap in charging speed, thermal efficiency, and powertrain power density.\n\n## 1. Electrical Physics of 800V vs 400V Architectures\n\nThe governing electrical equation for resistive heat loss in wiring harnesses is Joule's Law:\n$$P_{\\text{loss}} = I^2 R$$\nWhere $P$ is power loss in watts, $I$ is electrical current in amperes, and $R$ is copper conductor resistance.\n- **Current Halving**: To deliver **350 kW** of charging power at 400V, the vehicle must draw **875 Amperes**, requiring thick, heavy copper cabling and active liquid-cooled charging cables.\n- At **800V**, delivering the same 350 kW requires only **437.5 Amperes**. Because resistive losses scale quadratically ($I^2$), halving current reduces thermal heat generation in the vehicle's busbars by **75%**.\n- This enables lighter wiring harnesses (saving 20–30 kg per vehicle) and sustains 10% to 80% DC fast-charging cycles in under **18 minutes**.\n\n## 2. Silicon Carbide (SiC) MOSFET Inverter Switching\n\nIn an EV powertrain, the **Traction Inverter** converts direct current (DC) stored in the high-voltage battery pack into variable-frequency, three-phase alternating current (AC) to drive permanent magnet synchronous motors (PMSM):\n1. **Silicon IGBTs vs SiC MOSFETs**: Legacy inverters utilized Silicon Insulated-Gate Bipolar Transistors (IGBTs), which suffer from significant switching losses above 10 kHz due to tail currents.\n2. **Wide Bandgap (WBG) Semiconductor Physics**: Silicon Carbide (SiC) possesses a bandgap energy of **3.26 eV** (nearly 3x higher than Silicon's 1.12 eV) and a critical breakdown field 10x greater.\n3. **Operational Benefits**: SiC MOSFETs switch efficiently at frequencies exceeding **50 kHz** with up to **99% inverter efficiency**, reducing motor harmonic ripple and extending vehicle range by 5% to 8% on identical battery pack capacities.\n\n## 3. Battery Management Systems (BMS) and Thermal Runaway Propagation\n\nLithium-ion cells operating within automotive battery packs face the catastrophic threat of **Thermal Runaway**:\n- **Initiation**: Triggered by internal dendrite short-circuits, mechanical casing puncture, or severe overcharging, temperatures rise past the critical threshold (typically **120°C–140°C**), causing the solid-electrolyte interphase (SEI) layer to decompose exothermically.\n- **Oxygen Release**: Cathode materials release oxygen, fueling violent combustion of volatile organic carbonate solvents, generating temperatures over **900°C** and dangerous toxic gas venting (HF, CO).\n- **UL 2580 Compliance**: The Battery Management System (**BMS**) must monitor individual cell voltages to millivolt precision and cell temperatures every 10 milliseconds. Automotive packs must feature **aerogel thermal barriers** and directional pressure relief vent valves ensuring that thermal runaway in a single cell cannot propagate to adjacent cells for a minimum of **5 minutes**, providing critical occupant egress time.\n\n---\n> **Key Takeaway**: EV engineering links **solid-state physics (SiC MOSFET inverters, wide bandgap semiconductors)** with **electrochemistry (Joule heating, thermal runaway containment)** and **embedded safety (BMS, UL 2580)**.\n",
                         "vocabulary": [
                             {
-                                "en": "Electric Vehicle (EV)",
-                                "es": "Vehículo Eléctrico (VE)",
-                                "definition": "A vehicle powered by one or more electric motors"
+                                "en": "Silicon Carbide (SiC) Inverter",
+                                "es": "Inversor de Carburo de Silicio (SiC)",
+                                "definition": "High-efficiency traction inverter utilizing wide bandgap SiC MOSFET semiconductor switches operating up to 800V.",
+                                "ipa": "/ˈsɪl.ɪ.kən ˈkɑːr.baɪd ɪnˈvɜːr.tər/",
+                                "collocations": [
+                                    "SiC power module",
+                                    "switching frequency (50kHz)",
+                                    "inverter thermal dissipation"
+                                ]
                             },
                             {
-                                "en": "Battery Pack",
-                                "es": "Paquete de Baterías",
-                                "definition": "The large rechargeable energy storage unit in an EV"
+                                "en": "Thermal Runaway",
+                                "es": "Embalamiento Térmico / Fuga Térmica",
+                                "definition": "Unstoppable self-heating chemical reaction inside a battery cell releasing flammable gas, oxygen, and intense heat (>900°C).",
+                                "ipa": "/ˈθɜːr.məl ˈrʌn.ə.weɪ/",
+                                "collocations": [
+                                    "thermal runaway propagation",
+                                    "cell venting burst pressure",
+                                    "thermal barrier insulation"
+                                ]
                             },
                             {
-                                "en": "BEV (Battery Electric Vehicle)",
-                                "es": "Vehículo Eléctrico de Batería",
-                                "definition": "An EV that runs entirely on electricity"
+                                "en": "State of Charge (SoC)",
+                                "es": "Estado de Carga (SoC)",
+                                "definition": "The available capacity in a battery expressed as a percentage of its rated capacity (0% empty to 100% full).",
+                                "ipa": "/steɪt əv tʃɑːrdʒ/",
+                                "collocations": [
+                                    "SoC estimation algorithm",
+                                    "Coulomb counting",
+                                    "depth of discharge (DoD)"
+                                ]
                             },
                             {
-                                "en": "PHEV (Plug-in Hybrid)",
-                                "es": "Híbrido Enchufable",
-                                "definition": "A vehicle with both electric motor and gasoline engine that can be plugged in"
+                                "en": "High-Voltage Interlock Loop (HVIL)",
+                                "es": "Bucle de Enclavamiento de Alto Voltaje (HVIL)",
+                                "definition": "Low-voltage electrical safety circuit that passes through all high-voltage connectors to trigger instant contactor disconnect if breached.",
+                                "ipa": "/haɪ ˈvoʊl.tɪdʒ ˈɪn.tər.lɑːk/",
+                                "collocations": [
+                                    "HVIL circuit continuity",
+                                    "HVIL safety trip",
+                                    "high-voltage disconnect latch"
+                                ]
                             },
                             {
-                                "en": "Inverter",
-                                "es": "Inversor",
-                                "definition": "Device that converts DC to AC power"
+                                "en": "Cell Balancing",
+                                "es": "Balanceo de Celdas",
+                                "definition": "Technique equalizing charge levels across individual series-connected battery cells to maximize pack capacity and lifespan.",
+                                "ipa": "/sɛl ˈbæl.ən.sɪŋ/",
+                                "collocations": [
+                                    "active vs passive cell balancing",
+                                    "cell voltage delta (<10mV)",
+                                    "bleeder resistor circuit"
+                                ]
+                            },
+                            {
+                                "en": "Busbar",
+                                "es": "Barra Colectora / Barra Distribuidora",
+                                "definition": "Metallic strip or bar (copper or aluminum) conducting high electrical currents between battery modules and inverter stages.",
+                                "ipa": "/ˈbʌs.bɑːr/",
+                                "collocations": [
+                                    "ultrasonic busbar welding",
+                                    "busbar ampacity",
+                                    "laminated busbar inductance"
+                                ]
+                            },
+                            {
+                                "en": "DC Fast Charging (DCFC)",
+                                "es": "Carga Rápida en Corriente Continua",
+                                "definition": "High-power EV charging method bypassing the vehicle's on-board charger to feed DC current directly into the battery pack.",
+                                "ipa": "/diː siː fæst ˈtʃɑːr.dʒɪŋ/",
+                                "collocations": [
+                                    "350kW CCS charging standard",
+                                    "liquid-cooled charging cable",
+                                    "charging curve taper"
+                                ]
+                            },
+                            {
+                                "en": "Thermal Interface Material (TIM)",
+                                "es": "Material de Interfaz Térmica (TIM)",
+                                "definition": "Thermally conductive compound applied between heat sinks and power modules to eliminate microscopic air gaps.",
+                                "ipa": "/ˈθɜːr.məl ˈɪn.tər.feɪs/",
+                                "collocations": [
+                                    "TIM voiding inspection",
+                                    "thermal paste dispensability",
+                                    "TIM thermal conductivity (W/mK)"
+                                ]
+                            },
+                            {
+                                "en": "Liquid Immersion Cooling",
+                                "es": "Refrigeración por Inmersión Líquida",
+                                "definition": "Submerging battery cells directly in non-conductive dielectric fluid for maximum heat dissipation during extreme charging.",
+                                "ipa": "/ˈlɪk.wɪd ɪˈmɜːr.ʒən/",
+                                "collocations": [
+                                    "dielectric coolant circulation",
+                                    "immersion cooling fluid flow rate",
+                                    "direct thermal contact"
+                                ]
+                            },
+                            {
+                                "en": "Pyro-fuse (Pyrotechnic Disconnect)",
+                                "es": "Pirofusible / Desconectador Pirotécnico",
+                                "definition": "Safety device utilizing a micro-explosive propellant charge to physically sever the high-voltage circuit within 2 milliseconds of a crash.",
+                                "ipa": "/ˈpaɪ.roʊ fjuːz/",
+                                "collocations": [
+                                    "pyro-fuse deployment",
+                                    "millisecond circuit severance",
+                                    "crash sensor trigger"
+                                ]
                             },
                             {
                                 "en": "Regenerative Braking",
                                 "es": "Frenado Regenerativo",
-                                "definition": "A system that recovers kinetic energy when slowing down"
+                                "definition": "Mechanism slowing a vehicle by converting kinetic energy into electrical energy stored back in the high-voltage battery.",
+                                "ipa": "/rɪˈdʒɛn.ər.ə.tɪv ˈbreɪ.kɪŋ/",
+                                "collocations": [
+                                    "regenerative torque request",
+                                    "blended braking system",
+                                    "regen power limit"
+                                ]
                             },
                             {
-                                "en": "kWh (Kilowatt-hour)",
-                                "es": "kWh (Kilovatio-hora)",
-                                "definition": "Unit of energy — how much energy a battery stores"
-                            },
-                            {
-                                "en": "Fuel Cell",
-                                "es": "Celda de Combustible",
-                                "definition": "Device that generates electricity from hydrogen"
-                            },
-                            {
-                                "en": "Wiring Harness",
-                                "es": "Arnés de Cableado",
-                                "definition": "The bundle of electrical wires that connects all components"
-                            },
-                            {
-                                "en": "ICE (Internal Combustion Engine)",
-                                "es": "Motor de Combustión Interna",
-                                "definition": "Traditional gasoline/diesel engine"
-                            },
-                            {
-                                "en": "Nearshoring",
-                                "es": "Nearshoring",
-                                "definition": "Relocating manufacturing closer to the primary market"
-                            },
-                            {
-                                "en": "Thermal Management",
-                                "es": "Gestión Térmica",
-                                "definition": "Controlling temperature of battery and components"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "What is the main difference between a BEV and a PHEV?",
-                                "options": [
-                                    "Both use only electricity",
-                                    "A BEV runs only on electricity; a PHEV has both electric and gasoline power",
-                                    "A PHEV is faster",
-                                    "A BEV uses hydrogen"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "What does an inverter do in an EV?",
-                                "options": [
-                                    "Stores energy",
-                                    "Converts DC power from the battery to AC power for the motor",
-                                    "Cools the battery",
-                                    "Connects to the internet"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "What does regenerative braking recover?",
-                                "options": [
-                                    "Gasoline",
-                                    "Water",
-                                    "Kinetic energy during deceleration",
-                                    "Heat from the engine"
-                                ],
-                                "answer": 2
-                            },
-                            {
-                                "q": "Why is EV manufacturing important for Mexico?",
-                                "options": [
-                                    "Mexico invented EVs",
-                                    "Mexico is Latin America's largest auto manufacturer transitioning to electric",
-                                    "Mexico has the most hydrogen",
-                                    "EVs are cheaper to design"
-                                ],
-                                "answer": 1
+                                "en": "Depth of Discharge (DoD)",
+                                "es": "Profundidad de Descarga (DoD)",
+                                "definition": "Percentage of the battery that has been discharged relative to its overall capacity, inverse of State of Charge.",
+                                "ipa": "/dɛpθ əv dɪsˈtʃɑːrdʒ/",
+                                "collocations": [
+                                    "limit DoD to 80%",
+                                    "cycle life vs DoD curve",
+                                    "shallow cycling"
+                                ]
                             }
                         ]
                     },
@@ -4447,6 +4795,296 @@ var LXP_COURSES = {
                                 "answer": 0
                             }
                         ]
+                    }
+                ],
+                "isGoldModel": true,
+                "dialogue": {
+                    "title": "Powertrain Validation: SiC Inverter Thermal Drift during 350kW DC Fast Charge",
+                    "titleES": "Validación de Tren Motriz: Deriva Térmica del Inversor SiC durante Carga Rápida DC de 350kW",
+                    "scenarioContext": "Fremont, CA (EV Powertrain R&D) ⇄ Ramos Arizpe, Coahuila (Battery & Motor Gigafactory). Live Telemetry Review.",
+                    "characters": [
+                        {
+                            "name": "Derek Vance",
+                            "role": "VP of Powertrain Engineering (Fremont)",
+                            "avatar": "DV",
+                            "color": "var(--cyan)"
+                        },
+                        {
+                            "name": "Ing. Andrea Solís",
+                            "role": "Battery Pack Systems Lead (Ramos Arizpe)",
+                            "avatar": "AS",
+                            "color": "var(--emerald)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Derek Vance",
+                            "text": "Morning Andrea. Reviewing the telemetry from dyno bench 4. During the 350kW DC fast charging simulation, pack voltage crested at 820 volts, but junction temperature on Phase U of the SiC inverter reached 115°C. Did the liquid cooling loop cavitate?",
+                            "translation": "Buenos días Andrea. Revisando la telemetría del banco de dinamómetro 4. Durante la simulación de carga rápida DC a 350kW, el voltaje del paquete alcanzó un pico de 820 voltios, pero la temperatura de unión en la Fase U del inversor SiC llegó a 115°C. ¿Cavito el circuito de refrigeración líquida?",
+                            "targetTerms": [
+                                "dyno bench",
+                                "350kW DC fast charging",
+                                "pack voltage",
+                                "junction temperature",
+                                "SiC inverter"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Andrea Solís",
+                            "text": "No cavitation, Derek. Coolant flow was steady at 18 liters per minute with 50/50 water-glycol. However, thermal imaging revealed a void in the Thermal Interface Material (TIM) beneath the direct-cooled SiC power module, creating an 8-degree hotspot.",
+                            "translation": "Sin cavitación, Derek. El flujo de refrigerante se mantuvo estable a 18 litros por minuto con agua-glicol al 50/50. Sin embargo, la termografía reveló un vacío en el Material de Interfaz Térmica (TIM) debajo del módulo de potencia SiC refrigerado directamente, creando un punto caliente de 8 grados.",
+                            "targetTerms": [
+                                "water-glycol coolant",
+                                "Thermal Interface Material (TIM)",
+                                "direct-cooled SiC module",
+                                "hotspot"
+                            ]
+                        },
+                        {
+                            "speaker": "Derek Vance",
+                            "text": "Good catch. A thermal void like that at sustained 400-amp draw would cause gate oxide degradation over time. How did the cell balancing algorithm behave during the high-voltage constant-current phase?",
+                            "translation": "Buena detección. Un vacío térmico como ese con consumo sostenido de 400 amperios causaría degradación del óxido de compuerta con el tiempo. ¿Cómo se comportó el algoritmo de balanceo de celdas durante la fase de corriente constante a alto voltaje?",
+                            "targetTerms": [
+                                "gate oxide degradation",
+                                "sustained 400-amp draw",
+                                "cell balancing algorithm",
+                                "constant-current phase"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Andrea Solís",
+                            "text": "The BMS maintained cell-to-cell delta below 12 millivolts across all 192 series cells. The pyro-fuse circuit and High-Voltage Interlock Loop (HVIL) remained perfectly stable, and pressure relief vents showed zero gas discharge.",
+                            "translation": "El BMS mantuvo el diferencial celda a celda por debajo de 12 milivoltios a lo largo de las 192 celdas en serie. El circuito del pirofusible y el circuito de enclavamiento de alto voltaje (HVIL) se mantuvieron perfectamente estables, y las válvulas de alivio de presión mostraron cero descarga de gas.",
+                            "targetTerms": [
+                                "BMS cell delta",
+                                "pyro-fuse circuit",
+                                "High-Voltage Interlock Loop (HVIL)",
+                                "pressure relief vents"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The electric car battery is very hot and can burn.",
+                            "native": "The Battery Management System monitors cell delta to mitigate solid-electrolyte interphase decomposition and thermal runaway.",
+                            "explanation": "En la escuela se dice 'battery gets hot', pero en ingeniería automotriz se habla de 'thermal runaway propagation', 'SEI decomposition' y 'cell balancing telemetry'."
+                        },
+                        {
+                            "school": "Change electricity from direct to alternate.",
+                            "native": "The three-phase Silicon Carbide (SiC) traction inverter converts high-voltage DC to variable-frequency AC.",
+                            "explanation": "Se debe especificar la topología del inversor (SiC MOSFET, three-phase) y las frecuencias de conmutación en kHz."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Silicon Carbide (SiC) Inverter",
+                        "ipa": "/ˈsɪl.ɪ.kən ˈkɑːr.baɪd ɪnˈvɜːr.tər/",
+                        "es": "Inversor de Carburo de Silicio (SiC)",
+                        "category": "Electrónica de Potencia",
+                        "definition": "High-efficiency traction inverter utilizing wide bandgap SiC MOSFET semiconductor switches operating up to 800V.",
+                        "collocations": [
+                            "SiC power module",
+                            "switching frequency (50kHz)",
+                            "inverter thermal dissipation"
+                        ],
+                        "falseFriends": "No es un convertidor simple; conmuta cientos de kilowatts a microsegundos con 99% de eficiencia.",
+                        "nativeUsage": "Replacing Silicon IGBTs with SiC MOSFET inverters reduced powertrain energy losses by 70%."
+                    },
+                    {
+                        "term": "Thermal Runaway",
+                        "ipa": "/ˈθɜːr.məl ˈrʌn.ə.weɪ/",
+                        "es": "Embalamiento Térmico / Fuga Térmica",
+                        "category": "Seguridad Electroquímica",
+                        "definition": "Unstoppable self-heating chemical reaction inside a battery cell releasing flammable gas, oxygen, and intense heat (>900°C).",
+                        "collocations": [
+                            "thermal runaway propagation",
+                            "cell venting burst pressure",
+                            "thermal barrier insulation"
+                        ],
+                        "falseFriends": "No es que la batería 'se caliente rápido'; es una descomposición molecular en cadena irreversible.",
+                        "nativeUsage": "The pack's aerogel barriers prevent thermal runaway in cell 14 from igniting neighboring cells."
+                    },
+                    {
+                        "term": "State of Charge (SoC)",
+                        "ipa": "/steɪt əv tʃɑːrdʒ/",
+                        "es": "Estado de Carga (SoC)",
+                        "category": "Métrica de Batería",
+                        "definition": "The available capacity in a battery expressed as a percentage of its rated capacity (0% empty to 100% full).",
+                        "collocations": [
+                            "SoC estimation algorithm",
+                            "Coulomb counting",
+                            "depth of discharge (DoD)"
+                        ],
+                        "falseFriends": "En ingeniería no se dice 'battery percentage'; se reporta formalmente como 'State of Charge (SoC)'.",
+                        "nativeUsage": "The vehicle throttles fast charging power from 350kW down to 75kW once the SoC crosses 80%."
+                    },
+                    {
+                        "term": "High-Voltage Interlock Loop (HVIL)",
+                        "ipa": "/haɪ ˈvoʊl.tɪdʒ ˈɪn.tər.lɑːk/",
+                        "es": "Bucle de Enclavamiento de Alto Voltaje (HVIL)",
+                        "category": "Seguridad Funcional",
+                        "definition": "Low-voltage electrical safety circuit that passes through all high-voltage connectors to trigger instant contactor disconnect if breached.",
+                        "collocations": [
+                            "HVIL circuit continuity",
+                            "HVIL safety trip",
+                            "high-voltage disconnect latch"
+                        ],
+                        "falseFriends": "No es un candado mecánico; es un circuito serie de baja corriente monitoreado en microsegundos por el BMS.",
+                        "nativeUsage": "If a technician unplugs an orange 800V connector without isolating power, the broken HVIL circuit trips the main contactors instantly."
+                    },
+                    {
+                        "term": "Cell Balancing",
+                        "ipa": "/sɛl ˈbæl.ən.sɪŋ/",
+                        "es": "Balanceo de Celdas",
+                        "category": "Gestión BMS",
+                        "definition": "Technique equalizing charge levels across individual series-connected battery cells to maximize pack capacity and lifespan.",
+                        "collocations": [
+                            "active vs passive cell balancing",
+                            "cell voltage delta (<10mV)",
+                            "bleeder resistor circuit"
+                        ],
+                        "falseFriends": "No es equilibrar el peso físico de las celdas; es nivelar sus voltajes electroquímicos de circuito abierto.",
+                        "nativeUsage": "Passive balancing bleeds excess charge as heat to ensure weak cells do not get overcharged during DC fast charging."
+                    },
+                    {
+                        "term": "Busbar",
+                        "ipa": "/ˈbʌs.bɑːr/",
+                        "es": "Barra Colectora / Barra Distribuidora",
+                        "category": "Conducción Eléctrica",
+                        "definition": "Metallic strip or bar (copper or aluminum) conducting high electrical currents between battery modules and inverter stages.",
+                        "collocations": [
+                            "ultrasonic busbar welding",
+                            "busbar ampacity",
+                            "laminated busbar inductance"
+                        ],
+                        "falseFriends": "No es una 'barra de autobús'; es el conductor masivo de cobre que transporta 400+ amperios dentro de la batería.",
+                        "nativeUsage": "Laser-welded copper busbars interconnect the 192 prismatic battery cells with sub-milliohm electrical resistance."
+                    },
+                    {
+                        "term": "DC Fast Charging (DCFC)",
+                        "ipa": "/diː siː fæst ˈtʃɑːr.dʒɪŋ/",
+                        "es": "Carga Rápida en Corriente Continua",
+                        "category": "Infraestructura",
+                        "definition": "High-power EV charging method bypassing the vehicle's on-board charger to feed DC current directly into the battery pack.",
+                        "collocations": [
+                            "350kW CCS charging standard",
+                            "liquid-cooled charging cable",
+                            "charging curve taper"
+                        ],
+                        "falseFriends": "No confundir con la carga doméstica de CA (Nivel 1 o 2); el DCFC bombea cientos de kilowatts en corriente continua directa.",
+                        "nativeUsage": "The 800V architecture enables DC fast charging at 350 kW, adding 200 miles of range in just 15 minutes."
+                    },
+                    {
+                        "term": "Thermal Interface Material (TIM)",
+                        "ipa": "/ˈθɜːr.məl ˈɪn.tər.feɪs/",
+                        "es": "Material de Interfaz Térmica (TIM)",
+                        "category": "Gestión Térmica",
+                        "definition": "Thermally conductive compound applied between heat sinks and power modules to eliminate microscopic air gaps.",
+                        "collocations": [
+                            "TIM voiding inspection",
+                            "thermal paste dispensability",
+                            "TIM thermal conductivity (W/mK)"
+                        ],
+                        "falseFriends": "No es un pegamento ordinario; disipa megawatts de calor por metro cuadrado entre semiconductores y canales de refrigeración.",
+                        "nativeUsage": "Automated vision systems verified zero air bubbles in the thermal interface material applied beneath the inverter module."
+                    },
+                    {
+                        "term": "Liquid Immersion Cooling",
+                        "ipa": "/ˈlɪk.wɪd ɪˈmɜːr.ʒən/",
+                        "es": "Refrigeración por Inmersión Líquida",
+                        "category": "Refrigeración Avanzada",
+                        "definition": "Submerging battery cells directly in non-conductive dielectric fluid for maximum heat dissipation during extreme charging.",
+                        "collocations": [
+                            "dielectric coolant circulation",
+                            "immersion cooling fluid flow rate",
+                            "direct thermal contact"
+                        ],
+                        "falseFriends": "No utiliza agua corriente (que causaría un cortocircuito mortal); usa fluidos dieléctricos de hidrocarburos sintéticos.",
+                        "nativeUsage": "Liquid immersion cooling keeps battery cells under 45°C even during sustained full-throttle track driving."
+                    },
+                    {
+                        "term": "Pyro-fuse (Pyrotechnic Disconnect)",
+                        "ipa": "/ˈpaɪ.roʊ fjuːz/",
+                        "es": "Pirofusible / Desconectador Pirotécnico",
+                        "category": "Dispositivo de Seguridad",
+                        "definition": "Safety device utilizing a micro-explosive propellant charge to physically sever the high-voltage circuit within 2 milliseconds of a crash.",
+                        "collocations": [
+                            "pyro-fuse deployment",
+                            "millisecond circuit severance",
+                            "crash sensor trigger"
+                        ],
+                        "falseFriends": "No es un fusible térmico que se derrite; es un micro-detonador pirotécnico controlado electrónicamente.",
+                        "nativeUsage": "In a severe collision, the airbag control unit triggers the pyro-fuse to isolate the 800V battery pack before fuel or fire hazards develop."
+                    },
+                    {
+                        "term": "Regenerative Braking",
+                        "ipa": "/rɪˈdʒɛn.ər.ə.tɪv ˈbreɪ.kɪŋ/",
+                        "es": "Frenado Regenerativo",
+                        "category": "Recuperación de Energía",
+                        "definition": "Mechanism slowing a vehicle by converting kinetic energy into electrical energy stored back in the high-voltage battery.",
+                        "collocations": [
+                            "regenerative torque request",
+                            "blended braking system",
+                            "regen power limit"
+                        ],
+                        "falseFriends": "No reemplaza al 100% los frenos de disco hidráulicos; trabaja en modo combinado (blended) para recuperar energía.",
+                        "nativeUsage": "Aggressive regenerative braking recovers up to 80% of vehicle kinetic energy during stop-and-go city transit."
+                    },
+                    {
+                        "term": "Depth of Discharge (DoD)",
+                        "ipa": "/dɛpθ əv dɪsˈtʃɑːrdʒ/",
+                        "es": "Profundidad de Descarga (DoD)",
+                        "category": "Vida Útil de Batería",
+                        "definition": "Percentage of the battery that has been discharged relative to its overall capacity, inverse of State of Charge.",
+                        "collocations": [
+                            "limit DoD to 80%",
+                            "cycle life vs DoD curve",
+                            "shallow cycling"
+                        ],
+                        "falseFriends": "Descargar una celda a 100% de DoD acelera la degradación y el crecimiento de dendritas de litio.",
+                        "nativeUsage": "Restricting the vehicle's usable DoD window between 10% and 90% doubles overall battery pack cycle longevity."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "800V vs 400V Resistive Heat Physics",
+                        "botQuestion": "Welcome to the EV Powertrain Audit! Explain in English why moving from a 400V to an 800V vehicle architecture cuts resistive wiring heat generation by 75% for the same 350kW charging power. Mention Joule's Law!",
+                        "requiredKeywords": [
+                            "joule",
+                            "current",
+                            "amperes",
+                            "voltage",
+                            "resistance",
+                            "halved",
+                            "power",
+                            "heat",
+                            "75%"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Flawless physics explanation! By doubling voltage to 800V, current is halved for the same charging power. Because Joule's Law dictates that resistive heat loss scales quadratically (I²R), halving the current reduces thermal dissipation by exactly 75%.",
+                        "feedbackRetry": "Remember the formula P = I²R! If you double the voltage, what happens to current (I) for the same 350 kW? How does squaring that current affect the heat loss?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "SiC Wide Bandgap Semiconductors vs Silicon IGBTs",
+                        "botQuestion": "Why are Silicon Carbide (SiC) MOSFETs replacing traditional Silicon IGBTs in 800V traction inverters? What physical advantage does wide bandgap material provide at switching frequencies above 50 kHz?",
+                        "requiredKeywords": [
+                            "sic",
+                            "silicon",
+                            "carbide",
+                            "bandgap",
+                            "mosfet",
+                            "igbt",
+                            "efficiency",
+                            "switching",
+                            "frequency",
+                            "inverter"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Brilliant technical explanation! SiC has a wider bandgap (3.26 eV) and higher critical electric field than silicon, eliminating tail currents and enabling ultra-fast switching at 50+ kHz with over 99% inverter efficiency.",
+                        "feedbackRetry": "Focus on the material property: Wide Bandgap (WBG). Why does SiC allow faster switching with lower thermal losses compared to silicon transistors?"
                     }
                 ]
             },
@@ -5596,119 +6234,436 @@ var LXP_COURSES = {
         "modules": [
             {
                 "id": "aero-m1",
-                "title": "Introduction to Aerospace Engineering",
-                "titleES": "Introducción a la Ingeniería Aeroespacial",
+                "title": "5-Axis CNC Titanium Machining & AS9100D Geometric Tolerancing",
+                "titleES": "Maquinado CNC de 5 Ejes en Titanio y Tolerancias AS9100D",
                 "icon": "fa-solid fa-plane-up",
                 "readings": [
                     {
                         "id": "aero-m1-r1",
-                        "title": "The Aerospace Supply Chain: From OEM to Tier 3",
-                        "duration": "10 min",
-                        "content": "\n# The Aerospace Supply Chain: From OEM to Tier 3\n\nThe aerospace industry is one of the most complex and regulated manufacturing sectors in the world. Every commercial aircraft contains approximately **4 million parts** from thousands of suppliers across dozens of countries. Understanding the supply chain structure is essential for anyone entering this industry.\n\n## The Supply Chain Pyramid\n\n### OEM — Original Equipment Manufacturer\nThe companies that design, certify, and assemble complete aircraft. There are only a handful of major OEMs:\n- **Airbus** (European) — A320neo, A350, A380\n- **Boeing** (American) — 737 MAX, 787 Dreamliner, 777X\n- **Embraer** (Brazilian) — E-Jets for regional aviation\n- **COMAC** (Chinese) — C919 (new competitor)\n\n### Tier 1 — Major Systems Integrators\nCompanies that build complete **systems** delivered to OEMs:\n- **Safran** — engines (LEAP), landing gear, nacelles\n- **Collins Aerospace** (RTX) — avionics, interiors, mechanical systems\n- **Spirit AeroSystems** — fuselages, wings\n- **GE Aerospace** — jet engines (GE90, GEnx, CFM LEAP)\n\n### Tier 2 — Sub-assembly Manufacturers\nProduce **sub-assemblies and major components**: turbine blades, actuators, flight control surfaces, hydraulic systems.\n\n### Tier 3 — Parts and Materials Suppliers\nManufacture **individual parts and raw materials**: machined brackets, fasteners, composite panels, specialty metals. **This is where most Mexican aerospace factories operate.**\n\n## Aerospace vs. Automotive: Key Differences\n\n| Factor | Automotive | Aerospace |\n|--------|-----------|-----------|\n| Production volume | Millions per year | Hundreds per year |\n| Tolerance | ±0.1 mm typical | ±0.01 mm or tighter |\n| Quality standard | IATF 16949 | **AS9100D** |\n| Part traceability | Batch level | **Individual serial number** |\n| Certification cycle | Months | **Years** (FAA/EASA approval) |\n| Material cost | Low-moderate | Very high (titanium, composites) |\n\n## Mexico's Aerospace Position\n\nMexico is the **12th largest** aerospace manufacturer globally and **#1 in Latin America**:\n- **400+ aerospace companies** operating in Mexico\n- **US$11+ billion** in annual aerospace exports (2024)\n- **80%** of exports go to the United States\n- **FEMIA** (Federación Mexicana de la Industria Aeroespacial) coordinates the industry\n\nKey aerospace clusters: **Querétaro** (manufacturing + MRO), **Sonora** (engine components), **Baja California** (largest cluster by companies), **Chihuahua** (engineering + composites), **Nuevo León** (CNC machining).\n\n---\n\n> **Key Takeaway**: The aerospace supply chain is a pyramid from OEMs to Tier 3 suppliers. Mexico operates primarily at Tier 2-3, with 400+ companies exporting $11B+ annually. AS9100D is the required quality standard.\n",
+                        "title": "5-Axis CNC Titanium Machining & AS9100D GD&T",
+                        "duration": "14 min",
+                        "content": "\n> **Aerospace Certification Standard**: Aligned with **AS9100D (Aviation, Space, and Defense Quality Management)** and **ASME Y14.5 (Geometric Dimensioning and Tolerancing - GD&T)**. Mandatory knowledge for manufacturing engineers in Boeing, Airbus, Bombardier, and Safran supply chains.\n\n# 5-Axis CNC Titanium Machining & AS9100D Geometric Tolerancing\n\nAerospace structural bulkheads, wing-spar fittings, and jet engine pylons demand materials with exceptional strength-to-weight ratios capable of withstanding extreme cyclic stress and aerodynamic flutter.\n\n## 1. Material Properties of Titanium Grade 5 (Ti-6Al-4V)\n\nOver 50% of aerospace structural titanium is **Ti-6Al-4V (Titanium Grade 5)**:\n1. **Physical Advantages**: Yield strength exceeding **880 MPa**, exceptional corrosion resistance, and operational stability from cryogenic temperatures up to **400°C**.\n2. **Machining Difficulties (Superalloy Metallurgy)**:\n   - **Low Thermal Conductivity**: Ti-6Al-4V has a thermal conductivity of only **6.7 W/m·K** (compared to Aluminum's 200 W/m·K). Heat generated during cutting cannot conduct into the chip and instead concentrates at the tool cutting edge, generating temperatures past **1,000°C**.\n   - **Chemical Reactivity**: At elevated temperatures, titanium chemically adheres to carbide cutting inserts (galling), resulting in catastrophic tool chipping and work-hardening.\n   - **Low Modulus of Elasticity**: Titanium flexes under cutter pressure twice as much as steel ($E = 114\\text{ GPa}$), causing tool deflection, chatter harmonics, and dimensional drift.\n\n## 2. Advanced 5-Axis CNC Machining Strategies\n\nTo mill complex monolithic airframe bulkheads without thermal failure:\n- **Cryogenic Liquid CO2 / LN2 Tool Cooling**: Supercritical cryogenic CO2 or Liquid Nitrogen (-196°C) is fed directly through the tool spindle to the cutting tip, eliminating thermal heat concentration and extending carbide tool life by over 300%.\n- **High-Efficiency Trochoidal Milling**: Continuous circular toolpaths maintain a constant tool engagement angle, preventing cutter shock loads and ensuring ultra-consistent chip thinning.\n\n## 3. AS9100D Quality Audits & ASME Y14.5 GD&T\n\nIn aerospace manufacturing, traditional Cartesian plus-minus tolerances ($pm 0.05\\text{ mm}$) are obsolete:\n- **True Position Tolerance Zones**: **ASME Y14.5 GD&T** specifies cylindrical tolerance zones relative to a defined **Datum Reference Frame (A, B, C)**. A cylindrical tolerance zone permits 57% more usable manufacturing area while guaranteeing exact kinematic interchangeability of airframe bolt patterns.\n- **First Article Inspection (FAI - AS9102)**: Before serial production commences, the supplier must produce a comprehensive AS9102 Form 3 dimensional balloon drawing verified on a **Coordinate Measuring Machine (CMM)** measuring 100% of blueprint characteristics with traceable calibrated probes.\n\n---\n> **Key Takeaway**: Aerospace manufacturing links **metallurgical physics (Ti-6Al-4V thermal conductivity, cryogenic milling)** with **geometric precision (ASME Y14.5 GD&T, True Position)** and **regulatory compliance (AS9100D, AS9102 FAI)**.\n",
                         "vocabulary": [
                             {
-                                "en": "OEM (Original Equipment Manufacturer)",
-                                "es": "Fabricante de Equipo Original",
-                                "definition": "Company that designs and assembles the final aircraft"
+                                "en": "Geometric Dimensioning and Tolerancing (GD&T)",
+                                "es": "Dimensionamiento y Tolerancias Geométricas (GD&T)",
+                                "definition": "Standardized engineering language (ASME Y14.5) defining the permissible variation of geometric form, orientation, and location on blueprints.",
+                                "ipa": "/dʒiː.əˈmɛt.rɪk dɪˈmɛn.ʃən.ɪŋ/",
+                                "collocations": [
+                                    "ASME Y14.5 standard",
+                                    "feature control frame",
+                                    "maximum material condition (MMC)"
+                                ]
                             },
                             {
-                                "en": "Tier 1 Supplier",
-                                "es": "Proveedor de Nivel 1",
-                                "definition": "Major company supplying complete systems to OEMs"
+                                "en": "True Position",
+                                "es": "Posición Verdadera (True Position)",
+                                "definition": "The exact theoretical coordinate location of a feature, surrounded by a cylindrical or spherical tolerance zone relative to specified datums.",
+                                "ipa": "/truː pəˈzɪʃ.ən/",
+                                "collocations": [
+                                    "true position tolerance zone",
+                                    "diametrical tolerance symbol (⌀)",
+                                    "projected tolerance zone"
+                                ]
                             },
                             {
-                                "en": "Tier 2/3 Supplier",
-                                "es": "Proveedor de Nivel 2/3",
-                                "definition": "Companies making sub-assemblies or individual parts"
+                                "en": "Titanium Grade 5 (Ti-6Al-4V)",
+                                "es": "Titanio Grado 5 (Ti-6Al-4V)",
+                                "definition": "Alpha-beta titanium alloy containing 6% aluminum and 4% vanadium, combining high tensile strength with exceptional corrosion resistance.",
+                                "ipa": "/taɪˈteɪ.ni.əm ɡreɪd faɪv/",
+                                "collocations": [
+                                    "Ti-6Al-4V forged billet",
+                                    "low thermal conductivity (6.7 W/mK)",
+                                    "titanium galling"
+                                ]
                             },
                             {
-                                "en": "AS9100D",
-                                "es": "AS9100D",
-                                "definition": "International aerospace quality management standard"
+                                "en": "Datum Reference Frame (DRF)",
+                                "es": "Marco de Referencia de Datum",
+                                "definition": "Three mutually perpendicular datum planes (Primary, Secondary, Tertiary) establishing the coordinate reference system for all part features.",
+                                "ipa": "/ˈdeɪ.təm ˈrɛf.ər.əns freɪm/",
+                                "collocations": [
+                                    "establish the datum reference frame",
+                                    "primary datum feature",
+                                    "datum target points"
+                                ]
                             },
                             {
-                                "en": "Traceability",
-                                "es": "Trazabilidad",
-                                "definition": "Ability to track every part back to its origin"
+                                "en": "Coordinate Measuring Machine (CMM)",
+                                "es": "Máquina de Medición por Coordenadas (CMM)",
+                                "definition": "High-precision automated inspection device measuring the physical geometry of an object by sensing discrete points with an optical or ruby-tip probe.",
+                                "ipa": "/koʊˈɔːr.dɪ.nət ˈmɛʒ.ər.ɪŋ məˈʃiːn/",
+                                "collocations": [
+                                    "CMM ruby touch probe",
+                                    "laser scanning CMM",
+                                    "automated inspection routine"
+                                ]
                             },
                             {
-                                "en": "Tolerance",
-                                "es": "Tolerancia",
-                                "definition": "Acceptable range of variation in dimensions"
+                                "en": "First Article Inspection (FAI - AS9102)",
+                                "es": "Inspección de Primer Artículo (FAI)",
+                                "definition": "Formal verification and documentation process confirming that production processes can reliably manufacture parts to blueprint specifications.",
+                                "ipa": "/fɜːrst ˈɑːr.tɪ.kəl ɪnˈspɛk.ʃən/",
+                                "collocations": [
+                                    "AS9102 Form 1, 2, and 3",
+                                    "ballooned engineering drawing",
+                                    "FAI sign-off escrow"
+                                ]
                             },
                             {
-                                "en": "MRO",
-                                "es": "MRO (Mantenimiento, Reparación y Revisión)",
-                                "definition": "Maintenance, Repair, and Overhaul of aircraft"
+                                "en": "Cryogenic Machining",
+                                "es": "Maquinado Criogénico",
+                                "definition": "Metal cutting process delivering sub-zero fluids (liquid CO2 at -78°C or liquid nitrogen at -196°C) directly to the tool-chip interface.",
+                                "ipa": "/ˌkraɪ.oʊˈdʒɛn.ɪk məˈʃiːn.ɪŋ/",
+                                "collocations": [
+                                    "through-spindle cryogenic CO2",
+                                    "eliminate tool wear",
+                                    "supercritical fluid cooling"
+                                ]
                             },
                             {
-                                "en": "Nacelle",
-                                "es": "Nacela / Góndola",
-                                "definition": "Housing that covers an aircraft engine"
+                                "en": "Tool Deflection",
+                                "es": "Deflexión de Herramienta",
+                                "definition": "Bending of a cutting tool under lateral cutting forces, causing dimensional errors and wall taper on deep pockets.",
+                                "ipa": "/tuːl dɪˈflɛk.ʃən/",
+                                "collocations": [
+                                    "minimize endmill deflection",
+                                    "tool overhang ratio",
+                                    "radial cutting force"
+                                ]
                             },
                             {
-                                "en": "Fuselage",
-                                "es": "Fuselaje",
-                                "definition": "Main body of an aircraft"
+                                "en": "Surface Roughness (Ra)",
+                                "es": "Rugosidad Superficial (Ra)",
+                                "definition": "Arithmetical average roughness of a surface profile measured in micrometers (µm) or microinches (µin).",
+                                "ipa": "/ˈsɜːr.fɪs ˈrʌf.nəs/",
+                                "collocations": [
+                                    "Ra 0.8 micrometer finish",
+                                    "surface profilometer scan",
+                                    "fatigue life enhancement"
+                                ]
                             },
                             {
-                                "en": "FAA",
-                                "es": "FAA (Administración Federal de Aviación)",
-                                "definition": "US aviation safety authority"
+                                "en": "Chattering Harmonics",
+                                "es": "Vibración Armónica de Corte (Chatter)",
+                                "definition": "Self-excited high-frequency vibration between the cutting tool and workpiece causing severe surface waviness and cutter chipping.",
+                                "ipa": "/ˈtʃæt.ər.ɪŋ hɑːrˈmɑːn.ɪks/",
+                                "collocations": [
+                                    "suppress regenerative chatter",
+                                    "stability lobe diagram",
+                                    "spindle speed harmonics"
+                                ]
                             },
                             {
-                                "en": "EASA",
-                                "es": "EASA (Agencia Europea de Seguridad Aérea)",
-                                "definition": "European aviation safety authority"
+                                "en": "Non-Destructive Testing (NDT)",
+                                "es": "Ensayos No Destructivos (END / NDT)",
+                                "definition": "Analysis techniques used in science and industry to evaluate material properties without causing physical damage.",
+                                "ipa": "/ˌnɑːn.dɪˈstrʌk.tɪv ˈtɛs.tɪŋ/",
+                                "collocations": [
+                                    "fluorescent penetrant inspection (FPI)",
+                                    "ultrasonic phased array NDT",
+                                    "certified Level II NDT technician"
+                                ]
                             },
                             {
-                                "en": "FEMIA",
-                                "es": "FEMIA",
-                                "definition": "Mexican Federation of the Aerospace Industry"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "What quality standard is required in aerospace manufacturing?",
-                                "options": [
-                                    "ISO 9001",
-                                    "IATF 16949",
-                                    "AS9100D",
-                                    "Six Sigma"
-                                ],
-                                "answer": 2
-                            },
-                            {
-                                "q": "At which tier do most Mexican aerospace factories operate?",
-                                "options": [
-                                    "OEM level",
-                                    "Tier 1",
-                                    "Tier 2-3 (parts and sub-assemblies)",
-                                    "They don't participate"
-                                ],
-                                "answer": 2
-                            },
-                            {
-                                "q": "How do aerospace tolerances compare to automotive?",
-                                "options": [
-                                    "They are the same",
-                                    "Aerospace is less precise",
-                                    "Aerospace requires much tighter tolerances (±0.01mm vs ±0.1mm)",
-                                    "Automotive is more precise"
-                                ],
-                                "answer": 2
-                            },
-                            {
-                                "q": "What is FEMIA?",
-                                "options": [
-                                    "A type of aircraft",
-                                    "The Mexican Federation of the Aerospace Industry",
-                                    "A certification standard",
-                                    "A manufacturing process"
-                                ],
-                                "answer": 1
+                                "en": "Stress Relieving Heat Treatment",
+                                "es": "Tratamiento Térmico de Alivio de Tensiones",
+                                "definition": "Thermal process heating a metal component below its transformation temperature to relieve residual stresses induced by heavy milling.",
+                                "ipa": "/strɛs rɪˈliːv.ɪŋ hiːt ˈtriːt.mənt/",
+                                "collocations": [
+                                    "vacuum furnace stress relief",
+                                    "residual stress warping",
+                                    "post-machining thermal soak"
+                                ]
                             }
                         ]
+                    }
+                ],
+                "isGoldModel": true,
+                "dialogue": {
+                    "title": "AS9100D Quality Escrow: CMM Datum Shift on Titanium Wing-Spar Bulkhead",
+                    "titleES": "Auditoría de Calidad AS9100D: Desviación de Datum en CMM para Mampara de Ala de Titanio",
+                    "scenarioContext": "Seattle, WA (Aerospace Commercial Structures Quality) ⇄ Querétaro (Aerospace Machining Cluster). Urgent Root Cause Analysis.",
+                    "characters": [
+                        {
+                            "name": "Wayne Sterling",
+                            "role": "VP of Quality & Supplier Compliance (Seattle)",
+                            "avatar": "WS",
+                            "color": "var(--cyan)"
+                        },
+                        {
+                            "name": "Ing. Carlos Treviño",
+                            "role": "Lead 5-Axis CNC Machining Engineer (Querétaro)",
+                            "avatar": "CT",
+                            "color": "var(--gold)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Wayne Sterling",
+                            "text": "Carlos, we're reviewing the First Article Inspection (FAI) package for Lot 104 on the titanium wing-spar bulkhead. The Coordinate Measuring Machine (CMM) report shows the fastener hole pattern breached True Position tolerance by 0.04 millimeters relative to Datum B. What caused the datum shift?",
+                            "translation": "Carlos, estamos revisando el paquete de Inspección de Primer Artículo (FAI) del Lote 104 para la mampara de ala de titanio. El reporte de la Máquina de Medición por Coordenadas (CMM) muestra que el patrón de barrenos violó la tolerancia de Posición Verdadera por 0.04 milímetros respecto al Datum B. ¿Qué causó la desviación de datum?",
+                            "targetTerms": [
+                                "First Article Inspection (FAI)",
+                                "titanium wing-spar",
+                                "Coordinate Measuring Machine (CMM)",
+                                "True Position tolerance",
+                                "Datum B"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Carlos Treviño",
+                            "text": "Hello Wayne. We isolated the root cause to tool deflection and thermal expansion during roughing. The 5-axis gantry CNC experienced a minor chiller pressure drop, causing the Ti-6Al-4V billet to heat up to 68°C before the finish pass. The thermal growth shifted the secondary datum alignment.",
+                            "translation": "Hola Wayne. Aislamos la causa raíz en la deflexión de la herramienta y la expansión térmica durante el desbaste. La fresadora CNC de 5 ejes tipo pórtico experimentó una caída de presión en el enfriador, lo que provocó que el tocho de Ti-6Al-4V se calentara a 68°C antes de la pasada de acabado. El crecimiento térmico desplazó la alineación del datum secundario.",
+                            "targetTerms": [
+                                "tool deflection",
+                                "thermal expansion",
+                                "5-axis gantry CNC",
+                                "Ti-6Al-4V billet",
+                                "secondary datum"
+                            ]
+                        },
+                        {
+                            "speaker": "Wayne Sterling",
+                            "text": "That explains the coordinate shift. Titanium's thermal conductivity is notoriously low. Have you recalibrated the in-process touch probes, and are you using cryogenic CO2 through-spindle cooling for the finishing pass?",
+                            "translation": "Eso explica el cambio de coordenadas. La conductividad térmica del titanio es notoriamente baja. ¿Recalibraron las sondas de contacto en proceso y están utilizando refrigeración criogénica por CO2 a través del husillo para la pasada de acabado?",
+                            "targetTerms": [
+                                "thermal conductivity",
+                                "touch probes",
+                                "cryogenic CO2 through-spindle cooling",
+                                "finishing pass"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Carlos Treviño",
+                            "text": "Yes, Wayne. We engaged the through-spindle cryogenic CO2 delivery at -78°C, which stabilized the part temperature at 20°C throughout machining. We re-inspected the piece on the CMM with temperature compensation active; True Position is now within 0.012 millimeters, well inside blueprint tolerance.",
+                            "translation": "Sí, Wayne. Activamos el suministro criogénico de CO2 a través del husillo a -78°C, lo que estabilizó la temperatura de la pieza en 20°C durante todo el maquinado. Reinspeccionamos la pieza en la CMM con compensación térmica activa; la Posición Verdadera está ahora dentro de 0.012 milímetros, holgadamente dentro de la tolerancia de plano.",
+                            "targetTerms": [
+                                "through-spindle cryogenic CO2",
+                                "CMM temperature compensation",
+                                "blueprint tolerance"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The metal hole is in the wrong place.",
+                            "native": "The fastener hole pattern deviated from the True Position tolerance zone relative to the primary datum reference frame.",
+                            "explanation": "En la escuela se dice 'hole is in the wrong place', pero en la industria aeroespacial se especifica 'True Position tolerance zone' y 'Datum Reference Frame'."
+                        },
+                        {
+                            "school": "The machine cuts very hard metal.",
+                            "native": "The 5-axis CNC utilizes through-spindle cryogenic cooling to mill Ti-6Al-4V superalloys without thermal tool degradation.",
+                            "explanation": "Se debe especificar la aleación aeroespacial exacta (Ti-6Al-4V), la cinemática de 5 ejes y el método de refrigeración criogénica."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Geometric Dimensioning and Tolerancing (GD&T)",
+                        "ipa": "/dʒiː.əˈmɛt.rɪk dɪˈmɛn.ʃən.ɪŋ/",
+                        "es": "Dimensionamiento y Tolerancias Geométricas (GD&T)",
+                        "category": "Metrología de Diseño",
+                        "definition": "Standardized engineering language (ASME Y14.5) defining the permissible variation of geometric form, orientation, and location on blueprints.",
+                        "collocations": [
+                            "ASME Y14.5 standard",
+                            "feature control frame",
+                            "maximum material condition (MMC)"
+                        ],
+                        "falseFriends": "No es simplemente 'acotar medidas'; es una formulación matemática de zonas de tolerancia tridimensionales.",
+                        "nativeUsage": "Applying GD&T on the bulkhead blueprint ensured that bolt patterns align perfectly regardless of manufacturing site."
+                    },
+                    {
+                        "term": "True Position",
+                        "ipa": "/truː pəˈzɪʃ.ən/",
+                        "es": "Posición Verdadera (True Position)",
+                        "category": "Tolerancia Geométrica",
+                        "definition": "The exact theoretical coordinate location of a feature, surrounded by a cylindrical or spherical tolerance zone relative to specified datums.",
+                        "collocations": [
+                            "true position tolerance zone",
+                            "diametrical tolerance symbol (⌀)",
+                            "projected tolerance zone"
+                        ],
+                        "falseFriends": "No significa 'posición real'; es la ubicación matemática perfecta de diseño contra la cual se mide la pieza física.",
+                        "nativeUsage": "The fastener holes must hold a True Position of ⌀0.05mm at Maximum Material Condition relative to Datums A, B, and C."
+                    },
+                    {
+                        "term": "Titanium Grade 5 (Ti-6Al-4V)",
+                        "ipa": "/taɪˈteɪ.ni.əm ɡreɪd faɪv/",
+                        "es": "Titanio Grado 5 (Ti-6Al-4V)",
+                        "category": "Superaleación Aeroespacial",
+                        "definition": "Alpha-beta titanium alloy containing 6% aluminum and 4% vanadium, combining high tensile strength with exceptional corrosion resistance.",
+                        "collocations": [
+                            "Ti-6Al-4V forged billet",
+                            "low thermal conductivity (6.7 W/mK)",
+                            "titanium galling"
+                        ],
+                        "falseFriends": "No es titanio puro comercial; es una aleación termotratada con vanadio y aluminio para uso estructural crítico.",
+                        "nativeUsage": "Ti-6Al-4V is selected for landing gear support bulkheads due to its outstanding strength-to-weight ratio."
+                    },
+                    {
+                        "term": "Datum Reference Frame (DRF)",
+                        "ipa": "/ˈdeɪ.təm ˈrɛf.ər.əns freɪm/",
+                        "es": "Marco de Referencia de Datum",
+                        "category": "Metrología Dimensional",
+                        "definition": "Three mutually perpendicular datum planes (Primary, Secondary, Tertiary) establishing the coordinate reference system for all part features.",
+                        "collocations": [
+                            "establish the datum reference frame",
+                            "primary datum feature",
+                            "datum target points"
+                        ],
+                        "falseFriends": "En inglés técnico la pronunciación estándar en aviación es /ˈdeɪ-təm/ o /ˈdɑː-təm/, nunca 'dato'.",
+                        "nativeUsage": "The CMM aligned its coordinate axes to the three-plane Datum Reference Frame before probing the rib pockets."
+                    },
+                    {
+                        "term": "Coordinate Measuring Machine (CMM)",
+                        "ipa": "/koʊˈɔːr.dɪ.nət ˈmɛʒ.ər.ɪŋ məˈʃiːn/",
+                        "es": "Máquina de Medición por Coordenadas (CMM)",
+                        "category": "Equipo de Inspección",
+                        "definition": "High-precision automated inspection device measuring the physical geometry of an object by sensing discrete points with an optical or ruby-tip probe.",
+                        "collocations": [
+                            "CMM ruby touch probe",
+                            "laser scanning CMM",
+                            "automated inspection routine"
+                        ],
+                        "falseFriends": "No es un escáner común; mide piezas industriales con exactitud de sub-micrómetros en cuartos climatizados a 20°C.",
+                        "nativeUsage": "The aerospace inspector mounted the wing rib onto the CMM granite table to verify 150 feature characteristics."
+                    },
+                    {
+                        "term": "First Article Inspection (FAI - AS9102)",
+                        "ipa": "/fɜːrst ˈɑːr.tɪ.kəl ɪnˈspɛk.ʃən/",
+                        "es": "Inspección de Primer Artículo (FAI)",
+                        "category": "Aseguramiento de Calidad",
+                        "definition": "Formal verification and documentation process confirming that production processes can reliably manufacture parts to blueprint specifications.",
+                        "collocations": [
+                            "AS9102 Form 1, 2, and 3",
+                            "ballooned engineering drawing",
+                            "FAI sign-off escrow"
+                        ],
+                        "falseFriends": "No es inspeccionar 'el primer artículo que compraste en la tienda'; es el protocolo formal de validación inicial de línea de producción aeroespacial.",
+                        "nativeUsage": "Serial shipment is suspended until the OEM quality council signs off on the AS9102 First Article Inspection report."
+                    },
+                    {
+                        "term": "Cryogenic Machining",
+                        "ipa": "/ˌkraɪ.oʊˈdʒɛn.ɪk məˈʃiːn.ɪŋ/",
+                        "es": "Maquinado Criogénico",
+                        "category": "Proceso de Fabricación",
+                        "definition": "Metal cutting process delivering sub-zero fluids (liquid CO2 at -78°C or liquid nitrogen at -196°C) directly to the tool-chip interface.",
+                        "collocations": [
+                            "through-spindle cryogenic CO2",
+                            "eliminate tool wear",
+                            "supercritical fluid cooling"
+                        ],
+                        "falseFriends": "No significa congelar la fábrica entera; es la inyección de microchorros criogénicos exclusivamente en el filo de corte.",
+                        "nativeUsage": "Through-spindle cryogenic machining lowered cutting tip temperatures by 500°C, quadrupling tool longevity on titanium alloys."
+                    },
+                    {
+                        "term": "Tool Deflection",
+                        "ipa": "/tuːl dɪˈflɛk.ʃən/",
+                        "es": "Deflexión de Herramienta",
+                        "category": "Dinámica de Corte",
+                        "definition": "Bending of a cutting tool under lateral cutting forces, causing dimensional errors and wall taper on deep pockets.",
+                        "collocations": [
+                            "minimize endmill deflection",
+                            "tool overhang ratio",
+                            "radial cutting force"
+                        ],
+                        "falseFriends": "No es que la herramienta se rompa; es la flexión elástica microscópica que produce cortes cónicos en lugar de rectos.",
+                        "nativeUsage": "Reducing the endmill overhang length from 60mm to 35mm eliminated tool deflection during high-speed titanium milling."
+                    },
+                    {
+                        "term": "Surface Roughness (Ra)",
+                        "ipa": "/ˈsɜːr.fɪs ˈrʌf.nəs/",
+                        "es": "Rugosidad Superficial (Ra)",
+                        "category": "Métrica de Calidad",
+                        "definition": "Arithmetical average roughness of a surface profile measured in micrometers (µm) or microinches (µin).",
+                        "collocations": [
+                            "Ra 0.8 micrometer finish",
+                            "surface profilometer scan",
+                            "fatigue life enhancement"
+                        ],
+                        "falseFriends": "En aviación la rugosidad es crítica porque las micro-ranuras concentran esfuerzos que originan fracturas por fatiga.",
+                        "nativeUsage": "The wing spar pocket floor must meet a strict surface roughness requirement of Ra ≤ 0.8 µm to prevent stress concentration."
+                    },
+                    {
+                        "term": "Chattering Harmonics",
+                        "ipa": "/ˈtʃæt.ər.ɪŋ hɑːrˈmɑːn.ɪks/",
+                        "es": "Vibración Armónica de Corte (Chatter)",
+                        "category": "Dinámica de Mecanizado",
+                        "definition": "Self-excited high-frequency vibration between the cutting tool and workpiece causing severe surface waviness and cutter chipping.",
+                        "collocations": [
+                            "suppress regenerative chatter",
+                            "stability lobe diagram",
+                            "spindle speed harmonics"
+                        ],
+                        "falseFriends": "'Chatter' no es conversar amigablemente; en maquinado es el chirrido destructivo que destruye fresas de carburo y piezas caras.",
+                        "nativeUsage": "The CNC programmer consulted the stability lobe diagram to adjust spindle speed to 7,200 RPM, eliminating regenerative chattering."
+                    },
+                    {
+                        "term": "Non-Destructive Testing (NDT)",
+                        "ipa": "/ˌnɑːn.dɪˈstrʌk.tɪv ˈtɛs.tɪŋ/",
+                        "es": "Ensayos No Destructivos (END / NDT)",
+                        "category": "Inspección de Calidad",
+                        "definition": "Analysis techniques used in science and industry to evaluate material properties without causing physical damage.",
+                        "collocations": [
+                            "fluorescent penetrant inspection (FPI)",
+                            "ultrasonic phased array NDT",
+                            "certified Level II NDT technician"
+                        ],
+                        "falseFriends": "No es una prueba 'amable'; es una inspección rigurosa con líquidos penetrantes, ultrasonido o rayos X para detectar microfisuras internas.",
+                        "nativeUsage": "Following 5-axis machining, the titanium bulkhead underwent Fluorescent Penetrant Inspection (FPI) to verify zero surface microcracks."
+                    },
+                    {
+                        "term": "Stress Relieving Heat Treatment",
+                        "ipa": "/strɛs rɪˈliːv.ɪŋ hiːt ˈtriːt.mənt/",
+                        "es": "Tratamiento Térmico de Alivio de Tensiones",
+                        "category": "Metalurgia",
+                        "definition": "Thermal process heating a metal component below its transformation temperature to relieve residual stresses induced by heavy milling.",
+                        "collocations": [
+                            "vacuum furnace stress relief",
+                            "residual stress warping",
+                            "post-machining thermal soak"
+                        ],
+                        "falseFriends": "No es un descanso para operadores; es hornear la pieza en hornos de vacío para evitar que se doble por tensiones internas residuales.",
+                        "nativeUsage": "The titanium structural rib was held at 540°C in a vacuum furnace for two hours to relieve internal machining stresses."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Titanium Thermal Conductivity in Machining",
+                        "botQuestion": "Welcome to the Aerospace Machining Audit! Explain in English why Ti-6Al-4V (Titanium Grade 5) is notoriously difficult to machine compared to Aluminum alloys. How does its low thermal conductivity impact the cutting edge?",
+                        "requiredKeywords": [
+                            "titanium",
+                            "thermal conductivity",
+                            "heat",
+                            "carbide",
+                            "tool",
+                            "cutting edge",
+                            "aluminum",
+                            "temperatures"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Flawless metallurgical reasoning! Titanium has an extremely low thermal conductivity (6.7 W/m·K) compared to aluminum (200 W/m·K). The heat generated during shearing cannot dissipate into the chip and instead concentrates at the carbide tool edge, causing rapid galling and premature tool failure.",
+                        "feedbackRetry": "Think about where the heat goes: in aluminum, 80% of the heat leaves with the flying chips. What happens when titanium cannot conduct heat away from the tool contact point?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "True Position vs Cartesian Tolerances",
+                        "botQuestion": "Why does the aerospace industry use ASME Y14.5 True Position GD&T tolerances instead of traditional ± plus-minus Cartesian tolerances for wing-spar fastener holes?",
+                        "requiredKeywords": [
+                            "true position",
+                            "cylindrical",
+                            "tolerance zone",
+                            "datum",
+                            "asme",
+                            "cartesian",
+                            "square",
+                            "interchangeability"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Outstanding GD&T knowledge! Traditional plus-minus coordinates define a restrictive square tolerance zone. True Position defines a 360-degree cylindrical zone relative to defined Datums, granting 57% more allowable manufacturing area while mathematically ensuring kinematic interchangeability.",
+                        "feedbackRetry": "Contrast the geometric shape: plus-minus tolerances create a square box, while True Position defines a cylindrical zone with a diameter symbol (⌀). Why does a circle give more manufacturing freedom than a square?"
                     }
                 ]
             },
@@ -6676,8 +7631,8 @@ var LXP_COURSES = {
         "modules": [
             {
                 "id": "robot-m1",
-                "title": "6-Axis Kinematics & TCP Calibration",
-                "titleES": "Cinemática de 6 Ejes y Calibración de TCP (Modelo Gold)",
+                "title": "Industrial Robot Kinematics & Coordinate Systems",
+                "titleES": "Cinemática de Robots Industriales y Sistemas de Coordenadas",
                 "icon": "fa-solid fa-compass",
                 "readings": [
                     {
@@ -6759,216 +7714,6 @@ var LXP_COURSES = {
                                 "answer": 0
                             }
                         ]
-                    }
-                ],
-                "isGoldModel": true,
-                "goldBadge": "⭐ MODELO GOLD ESP",
-                "dialogue": {
-                    "title": "Robotic Cell Commissioning: Kinematic Singularity & TCP Calibration",
-                    "titleES": "Puesta en Marcha de Celda Robótica: Singularidad Cinemática y Calibración de TCP",
-                    "scenarioContext": "Detroit, MI (OEM Body-in-White Engineering) ⇄ Saltillo, Coahuila (Automotive Assembly Plant). Commissioning Station 14 via Secure Video.",
-                    "characters": [
-                        {
-                            "name": "Kevin Miller",
-                            "role": "Principal Automation Architect (Detroit OEM)",
-                            "avatar": "KM",
-                            "color": "var(--cyan)"
-                        },
-                        {
-                            "name": "Ing. Carlos Garza",
-                            "role": "Lead Robotics & Automation Integrator (Saltillo Plant)",
-                            "avatar": "CG",
-                            "color": "var(--emerald)"
-                        }
-                    ],
-                    "turns": [
-                        {
-                            "speaker": "Kevin Miller",
-                            "text": "Carlos, we're reviewing the line telemetry from Station 14. The 6-axis spot welding robot threw an overcurrent fault on Axis 5 during the door-pillar weld path. Are we running into a wrist singularity?",
-                            "translation": "Carlos, estamos revisando la telemetría de la línea de la Estación 14. El robot de soldadura por puntos de 6 ejes arrojó una falla de sobrecorriente en el Eje 5 durante la trayectoria de soldadura del pilar de la puerta. ¿Estamos cayendo en una singularidad de muñeca?",
-                            "targetTerms": [
-                                "6-axis",
-                                "spot welding robot",
-                                "overcurrent fault",
-                                "wrist singularity"
-                            ]
-                        },
-                        {
-                            "speaker": "Ing. Carlos Garza",
-                            "text": "Exactly, Kevin. When the tool center point (TCP) interpolated linearly across the B-pillar flange, Axis 4 and Axis 6 became collinear. The inverse kinematics algorithm tried to command an infinite angular velocity to maintain the path.",
-                            "translation": "Exacto, Kevin. Cuando el punto central de la herramienta (TCP) interpoló linealmente a través de la pestaña del pilar B, el Eje 4 y el Eje 6 se volvieron colineales. El algoritmo de cinemática inversa intentó ordenar una velocidad angular infinita para mantener la trayectoria.",
-                            "targetTerms": [
-                                "tool center point (TCP)",
-                                "interpolated linearly",
-                                "collinear",
-                                "inverse kinematics"
-                            ]
-                        },
-                        {
-                            "speaker": "Kevin Miller",
-                            "text": "That explains the servo drive trip. Can we alter the approach angle or rotate the welding gun's seventh external axis by 5 degrees to avoid the alignment?",
-                            "translation": "Eso explica el disparo del servoaccionamiento. ¿Podemos alterar el ángulo de aproximación o rotar el séptimo eje externo de la pistola de soldadura 5 grados para evitar la alineación?",
-                            "targetTerms": [
-                                "servo drive trip",
-                                "approach angle",
-                                "external axis"
-                            ]
-                        },
-                        {
-                            "speaker": "Ing. Carlos Garza",
-                            "text": "Yes. I adjusted the orientation vector in the teach pendant and ran a dry cycle at 20% reduced speed. The robot cleared the weld sequence with zero axis resonance, maintaining our required plus-minus 0.02mm repeatability.",
-                            "translation": "Sí. Ajusté el vector de orientación en el teach pendant y ejecuté un ciclo en seco al 20% de velocidad reducida. El robot completó la secuencia de soldadura con cero resonancia de ejes, manteniendo nuestra repetibilidad requerida de más-menos 0.02 mm.",
-                            "targetTerms": [
-                                "teach pendant",
-                                "dry cycle",
-                                "repeatability"
-                            ]
-                        },
-                        {
-                            "speaker": "Kevin Miller",
-                            "text": "Excellent work, Carlos. Upload the modified robot program (TP file) to the central cell repository and let's sign off on the production validation run.",
-                            "translation": "Excelente trabajo, Carlos. Sube el programa del robot modificado (archivo TP) al repositorio central de la celda y firmemos la corrida de validación de producción.",
-                            "targetTerms": [
-                                "robot program",
-                                "production validation run"
-                            ]
-                        }
-                    ],
-                    "contrastTips": [
-                        {
-                            "school": "The arm machine stopped because it cannot move.",
-                            "native": "The 6-axis articulated robot faulted out due to a kinematic wrist singularity during linear TCP interpolation.",
-                            "explanation": "Usa la terminología formal de cinemática inversa y describe la causa raíz en lugar de 'the machine stopped'."
-                        }
-                    ]
-                },
-                "lexiconMatrix": [
-                    {
-                        "term": "Inverse Kinematics (IK)",
-                        "ipa": "/ɪnˈvɜːs ˌkɪn.əˈmæt.ɪks/",
-                        "es": "Cinemática Inversa",
-                        "category": "Matemáticas de Control",
-                        "definition": "Mathematical computation determining the required joint angles to position an end-effector at a specified Cartesian pose.",
-                        "collocations": [
-                            "solve inverse kinematics",
-                            "analytical vs numerical IK",
-                            "IK solver convergence"
-                        ],
-                        "falseFriends": "No confundir con 'inverso' general. Es el cálculo inverso de la geometría del manipulador.",
-                        "nativeUsage": "The robot controller calculates real-time inverse kinematics solutions at a 1-millisecond clock rate."
-                    },
-                    {
-                        "term": "Tool Center Point (TCP)",
-                        "ipa": "/tuːl ˈsɛn.tər pɔɪnt/",
-                        "es": "Punto Central de la Herramienta (TCP)",
-                        "category": "Geometría de Herramental",
-                        "definition": "The origin coordinate of the tool frame located at the working tip of the end-effector.",
-                        "collocations": [
-                            "calibrate the TCP",
-                            "TCP 4-point method",
-                            "TCP speed vector",
-                            "reorient around TCP"
-                        ],
-                        "falseFriends": "No es el centro de la máquina, sino el punto exacto de contacto donde se suelda, corta o ensambla.",
-                        "nativeUsage": "Accurate TCP calibration ensures that the robot can rotate around a fixed spatial point without lateral drift."
-                    },
-                    {
-                        "term": "Kinematic Singularity",
-                        "ipa": "/ˌkɪn.əˈmæt.ɪk ˌsɪŋ.ɡjʊˈlær.ɪ.ti/",
-                        "es": "Singularidad Cinemática",
-                        "category": "Dinámica y Límites",
-                        "definition": "Configuration where joint axes align, causing the Jacobian matrix to lose rank and demanding infinite joint velocity.",
-                        "collocations": [
-                            "wrist singularity",
-                            "shoulder singularity",
-                            "singularity avoidance algorithm"
-                        ],
-                        "falseFriends": "No es singularidad gravitacional ni astronómica; es una pérdida matemática de grados de libertad mecánicos.",
-                        "nativeUsage": "The path planner automatically routes trajectories around kinematic singularities to prevent axis overspeed faults."
-                    },
-                    {
-                        "term": "End-Effector",
-                        "ipa": "/ɛnd ɪˈfɛk.tər/",
-                        "es": "Efector Final / Herramienta de Brazo",
-                        "category": "Mecánica Terminal",
-                        "definition": "The peripheral device attached to the robot mounting flange that interacts with workpieces (gripper, welder, laser).",
-                        "collocations": [
-                            "pneumatic end-effector",
-                            "quick-change tool flange",
-                            "end-effector payload capacity"
-                        ],
-                        "falseFriends": "No es simplemente 'la mano'; abarca pistolas de soldadura, cabezales láser y ventosas de vacío.",
-                        "nativeUsage": "The dual-vacuum end-effector can pick and place two lithium-ion battery cells simultaneously."
-                    },
-                    {
-                        "term": "Pose Repeatability (ISO 9283)",
-                        "ipa": "/poʊz rɪˌpiː.təˈbɪl.ɪ.ti/",
-                        "es": "Repetibilidad de Pose",
-                        "category": "Métrica de Calidad",
-                        "definition": "Closeness of agreement between the poses attained by a robot after moving to the same command position multiple times.",
-                        "collocations": [
-                            "high repeatability",
-                            "sub-millimeter repeatability (±0.02mm)",
-                            "repeatability drift"
-                        ],
-                        "falseFriends": "Diferente de 'Accuracy'. Un robot puede ser muy repetible (dar siempre en el mismo punto) aunque esté ligeramente descalibrado del punto absoluto.",
-                        "nativeUsage": "This high-speed SCARA robot offers a pose repeatability of ±0.01mm for surface-mount component placement."
-                    },
-                    {
-                        "term": "Teach Pendant",
-                        "ipa": "/tiːtʃ ˈpɛn.dənt/",
-                        "es": "Consola de Programación / Teach Pendant",
-                        "category": "Interfaz Hombre-Máquina",
-                        "definition": "Handheld control terminal with a deadman switch used to manually jog the robot, teach waypoints, and write routines.",
-                        "collocations": [
-                            "enable the teach pendant",
-                            "jog the robot axes",
-                            "3-position deadman switch"
-                        ],
-                        "falseFriends": "No es un 'colgante' decorativo; es la consola industrial de control manual con pantalla táctil y botones de seguridad.",
-                        "nativeUsage": "The robotics technician depressed the deadman switch to half-position to jog Axis 2 using the teach pendant."
-                    }
-                ],
-                "socraticChallenges": [
-                    {
-                        "step": 1,
-                        "concept": "TCP and Kinematic Transformations",
-                        "botQuestion": "Welcome to the Robotics Socratic Evaluation! Explain what a Tool Center Point (TCP) is and why calibration is vital before teaching points on an automated spot-welding line. What happens if the TCP is off by 2 millimeters?",
-                        "requiredKeywords": [
-                            "tcp",
-                            "tool",
-                            "center",
-                            "point",
-                            "calibrate",
-                            "weld",
-                            "flange",
-                            "frame",
-                            "accuracy",
-                            "error"
-                        ],
-                        "minKeywords": 3,
-                        "feedbackSuccess": "Excellent! The TCP defines the focal point where the welding gun tip contacts the metal. If the TCP is uncalibrated, rotating the torch will sweep the tip in an arc rather than pivoting in place, missing weld seams and causing collision trips.",
-                        "feedbackRetry": "Remember: The Tool Center Point (TCP) is the exact spatial coordinate of the working tip. If it's not calibrated accurately, what happens when the robot attempts to rotate around that point during a weld?"
-                    },
-                    {
-                        "step": 2,
-                        "concept": "Kinematic Singularities in 6-Axis Robots",
-                        "botQuestion": "In an industrial cell audit, how would you explain a 'Kinematic Wrist Singularity' to a non-technical plant director? Why does the robot trigger an overcurrent fault when two axes align collinearly?",
-                        "requiredKeywords": [
-                            "singularity",
-                            "wrist",
-                            "axes",
-                            "align",
-                            "collinear",
-                            "velocity",
-                            "infinite",
-                            "jacobian",
-                            "overcurrent",
-                            "motor"
-                        ],
-                        "minKeywords": 3,
-                        "feedbackSuccess": "Outstanding explanation! When Axis 4 and Axis 6 align collinearly, the robot mathematically loses one degree of freedom. To maintain a straight linear path, the controller commands the motor to spin at infinite angular speed, which instantly triggers an overcurrent safety trip.",
-                        "feedbackRetry": "Think of arm alignment: when two rotational axes line up along the same straight line, the arm can't move sideways without spinning the joint infinitely fast. Mention axes alignment and motor current!"
                     }
                 ]
             },
@@ -7203,67 +7948,39 @@ var LXP_COURSES = {
         "description": "Logística transfronteriza T-MEC, Incoterms 2020, Lean Manufacturing Six Sigma, balanceo de líneas y gestión de inventarios Just-In-Time.",
         "modules": [
             {
-                "id": "sc-m1",
-                "title": "USMCA/T-MEC Rules of Origin & Customs Documentation",
-                "titleES": "Reglas de Origen T-MEC y Documentación Aduanera",
+                "id": "io-m1",
+                "title": "USMCA/T-MEC Cross-Border Customs & Pedimentos",
+                "titleES": "Aduanas Transfronterizas T-MEC y Pedimentos en Inglés",
                 "icon": "fa-solid fa-file-contract",
-                "readings": [
-                    {
-                        "id": "sc-m1-r1",
-                        "title": "Cross-Border Customs & Pedimentos in English",
-                        "duration": "10 min",
-                        "content": "\n> **Customs & Trade Governance Note**: Cross-border logistics between Mexico and North American markets operate under **USMCA / T-MEC Chapter 5** (Customs Procedures), **Chapter 4** (Rules of Origin), and **Incoterms 2020** specifications published by the International Chamber of Commerce (ICC).\n\n# Cross-Border Customs & Pedimentos in English: Nearshoring Logistics\n\nIn high-velocity nearshoring manufacturing corridors (e.g., Laredo / Nuevo Laredo port of entry handling over 14,000 trucks daily), seamless logistics coordination between Customs Brokers (*Agentes Aduanales*), Freight Forwarders, and SAT/CBP customs inspectors requires total fluency in English trade documentation.\n\n## Core Cross-Border Trade Documentation Matrix\n\n1. **Commercial Invoice**: Itemized legal bill issued by the exporter detailing unit quantities, currency valuation (USD), line-item descriptions, and 6-to-10 digit **Harmonized System (HS) Tariff Codes**.\n2. **Bill of Lading (BoL)**: Multi-modal contract of carriage acting as proof of cargo ownership, specifying freight terms (Prepaid vs. Collect) and carrier liability limits.\n3. **USMCA / T-MEC Certificate of Origin**: Legally binding declaration certifying that goods satisfy **Regional Value Content (RVC)** thresholds (e.g., 75% regional automotive content) to claim preferential 0% tariff treatment.\n4. **Pedimento de Importación (Customs Entry Summary)**: Official electronic declaration submitted to Mexican Customs (SAT/ANAM) specifying import regimes (e.g., **IMMEX** temporary importation vs. Definitiva), IVA tax guarantees, and DTA fees.\n\n## Incoterms 2020 Operational Execution: FOB vs. DDP\n\nChoosing the correct International Commercial Term (**Incoterm**) governs risk transfer, freight liability, and insurance coverage across international borders:\n\n- **EXW (Ex Works)**: Factory floor handover where buyer assumes all risk.\n- **FOB (Free On Board — Named Port of Shipment)**: The Mexican exporter clears goods for export and loads them onto the carrier at Laredo. The U.S. buyer assumes financial risk and transport costs the moment goods cross the loading threshold.\n- **DDP (Delivered Duty Paid — Named Destination)**: The Mexican exporter assumes 100% of transport costs, border drayage fees, U.S. customs clearance, and import duties, delivering freight directly to the buyer's warehouse door with zero buyer liability.\n\n## The Laredo & Texas Cross-Border Logistics Gateway\n\nOver **65% of all Mexican manufactured exports** bound for North American retail and automotive assembly plants flow through the Texas-Tamaulipas trade corridor:\n- **Cross-Border Drayage Operations**: Specialized short-haul drayage tractor-trailers transfer loaded trailers across the Rio Grande river between Nuevo Laredo staging yards and Laredo distribution hubs.\n- **C-TPAT (Customs-Trade Partnership Against Terrorism)**: Joint U.S. Customs and Border Protection (CBP) security certification providing audited manufacturing plants with dedicated expedited \"FAST Lanes\" to bypass 4-hour border wait times.\n- **IMMEX Program Operations**: Mexican tax incentive program allowing foreign manufacturers to temporarily import raw materials duty-free, provided finished goods are exported within statutory timeframes.\n\n## Just-In-Time (JIT) Sequencing & Milk-Run Logistics\n\nBeyond customs clearance, nearshoring logistics managers coordinate high-precision **Just-In-Time (JIT)** component deliveries to tier-1 OEM plants:\n- **Milk-Run Routing**: Scheduled multi-stop pickup trucks collecting parts from multiple suppliers across Monterrey or Saltillo, optimizing container load factors.\n- **VMI (Vendor-Managed Inventory)**: Overseas suppliers maintain buffer stock in border warehouses in McAllen or El Paso, transferring ownership only when pulled onto the assembly line.\n- **Kanban Signal Integration**: Electronic Data Interchange (EDI 856 / ASN - Advanced Shipping Notice) triggers real-time freight dispatches when factory buffer stock drops below reorder thresholds.\n\n---\n\n> **Key Takeaway**: Cross-border logistics relies on **T-MEC Chapter 5** documentation, **HS Codes**, **Incoterms 2020** (FOB vs. DDP), and **JIT Milk-Run** scheduling. Mastering these English customs protocols ensures sub-24h border clearance through the Laredo freight corridor.\n",
-                        "vocabulary": [
-                            {
-                                "en": "Bill of Lading (BoL)",
-                                "es": "Conocimiento de Embarque",
-                                "definition": "Legal contract between carrier and shipper"
-                            },
-                            {
-                                "en": "Harmonized System (HS) Code",
-                                "es": "Fracción Arancelaria",
-                                "definition": "International nomenclature for classifying traded products"
-                            },
-                            {
-                                "en": "Delivered Duty Paid (DDP)",
-                                "es": "Entregado con Derechos Pagados",
-                                "definition": "Incoterm where seller pays all duties and shipping costs"
-                            },
-                            {
-                                "en": "Free On Board (FOB)",
-                                "es": "Libre a Bordo",
-                                "definition": "Incoterm where buyer assumes responsibility after loading"
-                            },
-                            {
-                                "en": "Customs Broker",
-                                "es": "Agente Aduanal",
-                                "definition": "Licensed specialist clearing goods through customs"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "What does Incoterm DDP mean?",
-                                "options": [
-                                    "Buyer pays all taxes",
-                                    "Seller pays all shipping, duties, and import taxes",
-                                    "No taxes are paid",
-                                    "Shipping is free"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "What is an HS Code?",
-                                "options": [
-                                    "A driver's license number",
-                                    "International classification number for traded goods",
-                                    "A warehouse locator",
-                                    "A tax penalty"
-                                ],
-                                "answer": 1
-                            }
-                        ]
-                    }
-                ]
+                "readings": []
+            },
+            {
+                "id": "io-m2",
+                "title": "Lean Manufacturing: 5S, Kanban and Value Stream Mapping (VSM)",
+                "titleES": "Manufactura Esbelta: 5S, Kanban y Mapeo de Flujo de Valor",
+                "icon": "fa-solid fa-arrow-progress",
+                "readings": []
+            },
+            {
+                "id": "io-m3",
+                "title": "Six Sigma DMAIC Methodology & Statistical Quality Control",
+                "titleES": "Metodología Six Sigma DMAIC y Control Estadístico",
+                "icon": "fa-solid fa-chart-simple",
+                "readings": []
+            },
+            {
+                "id": "io-m4",
+                "title": "Incoterms 2020 Operational Execution (FOB, DDP, EXW)",
+                "titleES": "Ejecución de Incoterms 2020 en Logística Internacional",
+                "icon": "fa-solid fa-truck-ramp-box",
+                "readings": []
+            },
+            {
+                "id": "io-m5",
+                "title": "Warehouse Management Systems (WMS) & Milk-Run Scheduling",
+                "titleES": "Sistemas WMS y Rutas Milk-Run Just-in-Time",
+                "icon": "fa-solid fa-warehouse",
+                "readings": []
             }
         ]
     },
@@ -7491,57 +8208,39 @@ var LXP_COURSES = {
         "description": "Regulación FDA 21 CFR 820, salas limpias médicas, biocompatibilidad ISO 10993, expedientes de diseño (DHF/DMR) y telesalud.",
         "modules": [
             {
-                "id": "med-m1",
-                "title": "Biomedical Cleanrooms & FDA Regulatory Compliance",
-                "titleES": "Salas Limpias Biomédicas y Regulación FDA",
-                "icon": "fa-solid fa-microscope",
-                "readings": [
-                    {
-                        "id": "med-m1-r1",
-                        "title": "ISO 13485 & FDA Medical Device Quality Assurance",
-                        "duration": "10 min",
-                        "content": "\n> **MedTech Regulatory Governance Note**: Medical device manufacturing facilities in Baja California (Tijuana/Mexicali) and Chihuahua operate under **FDA 21 CFR Part 820** Quality System Regulation (QSR), **ISO 13485** (Medical Devices Quality Management), and **ISO 14971** (Risk Management).\n\n# ISO 13485 & FDA Medical Device Quality Assurance: MedTech Nearshoring\n\nMexico is the **#1 medical device exporter in Latin America** and the **#1 supplier of medical devices to the United States**. Clusters in Tijuana and Juarez manufacture life-critical devices — including cardiac pacemakers, vascular catheters, orthopedic implants, surgical staplers, and IV delivery sets.\n\n## Regulatory Framework: FDA 21 CFR Part 820 & ISO 13485\n\nUnlike general manufacturing, medical device production operates under total regulatory enforcement where non-compliance leads to FDA Warning Letters, product recalls, or criminal penalties.\n\n### 1. CAPA (Corrective and Preventive Action)\nA mandatory structured quality system to investigate non-conformances, determine root causes using 5-Why analysis, implement corrective actions, and track long-term effectiveness.\n\n### 2. DHF (Design History File) & DMR (Device Master Record)\n- **DHF**: Compilation of engineering design records demonstrating that the device was developed according to approved Design Controls.\n- **DMR**: The complete \"recipe\" containing specs, drawings, assembly SOPs, and packaging requirements needed to manufacture a single unit.\n\n### 3. Biocompatibility (ISO 10993) & Sterilization Validation (ISO 11135)\nMedical devices contacting human blood or tissue must undergo strict **Biocompatibility Testing** to ensure zero cytotoxicity. Finished products undergo validated **Ethylene Oxide (EtO)** or **Gamma Irradiation** sterilization cycles prior to distribution.\n\n---\n\n> **Key Takeaway**: Biomedical manufacturing in Mexico relies on **FDA 21 CFR Part 820** and **ISO 13485** compliance. Fluency in technical English is vital for managing CAPA investigations, DHF documentation, and FDA audits.\n",
-                        "vocabulary": [
-                            {
-                                "en": "CAPA (Corrective and Preventive Action)",
-                                "es": "CAPA / Acciones Correctivas y Preventivas",
-                                "definition": "Formal system to eliminate root causes of non-conformances"
-                            },
-                            {
-                                "en": "DHF (Design History File)",
-                                "es": "Expediente de Historia de Diseño",
-                                "definition": "Records demonstrating device design control compliance"
-                            },
-                            {
-                                "en": "DMR (Device Master Record)",
-                                "es": "Registro Maestro del Dispositivo",
-                                "definition": "Manufacturing recipes and drawings to build a device"
-                            },
-                            {
-                                "en": "Biocompatibility",
-                                "es": "Biocompatibilidad",
-                                "definition": "Material safety when contacting human tissue"
-                            },
-                            {
-                                "en": "Sterilization Validation",
-                                "es": "Validación de Esterilización",
-                                "definition": "Proving product sterilization reliability under ISO 11135"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "What is CAPA in medical device quality systems?",
-                                "options": [
-                                    "Capital Assignment Plan",
-                                    "Corrective and Preventive Action to fix quality issues",
-                                    "Cardiovascular Pressure Analysis",
-                                    "Cleanroom Air Pump Assembly"
-                                ],
-                                "answer": 1
-                            }
-                        ]
-                    }
-                ]
+                "id": "health-m1",
+                "title": "ISO 13485 & FDA Medical Device Quality Assurance",
+                "titleES": "Aseguramiento de Calidad Médica ISO 13485 y FDA",
+                "icon": "fa-solid fa-stethoscope",
+                "readings": []
+            },
+            {
+                "id": "health-m2",
+                "title": "Biocompatibility Testing (ISO 10993) & Sterilization Validation",
+                "titleES": "Pruebas de Biocompatibilidad y Validación de Esterilización",
+                "icon": "fa-solid fa-shield-halved",
+                "readings": []
+            },
+            {
+                "id": "health-m3",
+                "title": "Design Controls: DHF, DMR, DHR and Risk Management (ISO 14971)",
+                "titleES": "Controles de Diseño: DHF, DMR, DHR y Gestión de Riesgo",
+                "icon": "fa-solid fa-folder-tree",
+                "readings": []
+            },
+            {
+                "id": "health-m4",
+                "title": "Medical Electrical Equipment Safety (IEC 60601)",
+                "titleES": "Seguridad de Equipos Eléctricos Médicos (IEC 60601)",
+                "icon": "fa-solid fa-bolt",
+                "readings": []
+            },
+            {
+                "id": "health-m5",
+                "title": "Software as a Medical Device (SaMD) & Cybersecurity Protocols",
+                "titleES": "Software como Dispositivo Médico (SaMD) y Ciberseguridad",
+                "icon": "fa-solid fa-laptop-medical",
+                "readings": []
             }
         ]
     },
@@ -7613,57 +8312,39 @@ var LXP_COURSES = {
         "description": "Química de alimentos, procesamiento térmico (pasteurización, UHT), empaque en atmósfera modificada (MAP) y certificaciones HACCP.",
         "modules": [
             {
-                "id": "gas-m1",
-                "title": "Culinary Operations & HACCP Food Safety",
-                "titleES": "Operaciones Culinarias y Inocuidad Alimentaria HACCP",
-                "icon": "fa-solid fa-kitchen-set",
-                "readings": [
-                    {
-                        "id": "gas-m1-r1",
-                        "title": "Kitchen Brigade & Food Safety Terminology",
-                        "duration": "10 min",
-                        "content": "\n> **Culinary Excellence Standard Note**: High-end culinary management in international luxury resorts and Michelin-starred restaurants strictly enforces **HACCP** (Hazard Analysis Critical Control Point) and **ServSafe Manager** food safety protocols.\n\n# Kitchen Brigade System & HACCP Food Safety Governance\n\nIn luxury hospitality culinary hubs across Cancún, Riviera Maya, Los Cabos, and Mexico City, executive culinary teams operate under French classic hierarchy (*Brigade de Cuisine*) while communicating seamlessly in professional English with international guests and vendors.\n\n## 1. The Classical Kitchen Brigade Hierarchy\n\n1. **Executive Chef (Chef de Cuisine)**: Master culinary director managing menu development, food cost percentages (FCP), vendor purchasing contracts, and kitchen labor efficiency.\n2. **Sous Chef de Cuisine**: Second-in-command supervising line execution, expeding plates during high-volume service, and managing shift handovers.\n3. **Chef de Partie (Station Specialists)**:\n   - *Saucier*: Prepares stocks, reductions, and classic mother sauces.\n   - *Poissonier*: Specialist in seafood fabrication and precise fish cooking.\n   - *Grillardin / Rotisseur*: Directs open-flame grill operations and protein roasting.\n   - *Garde Manger*: Manages cold kitchen preparations, charcuterie, and hors d'oeuvres.\n\n## 2. HACCP Food Safety Protocols & Microbiological Controls\n\nPreventing foodborne illnesses requires microsecond temperature vigilance across storage and preparation zones:\n- **Temperature Danger Zone (TDZ)**: Bacteria multiply rapidly between **4°C and 60°C (40°F - 140°F)**. Perishable proteins must pass through this zone in less than 2 hours.\n- **Critical Control Points (CCPs)**: Mandatory temperature thresholds verified with calibrated digital probes (e.g., cooking poultry to 74°C / 165°F internal temperature for 15 seconds).\n- **Cross-Contamination Prevention**: Color-coded cutting board protocols (Red = Raw Meat, Blue = Raw Seafood, Green = Produce, Yellow = Poultry).\n\n---\n\n> **Key Takeaway**: Professional culinary leadership combines **Brigade de Cuisine** station management with strict **HACCP** food safety monitoring in English to maintain 5-Star guest standards.\n",
-                        "vocabulary": [
-                            {
-                                "en": "HACCP",
-                                "es": "HACCP / Análisis de Peligros y Puntos Críticos",
-                                "definition": "Systematic preventive approach to food safety"
-                            },
-                            {
-                                "en": "Sous Chef",
-                                "es": "Sub-Chef / Segundo al Mando",
-                                "definition": "Direct assistant to the executive chef"
-                            },
-                            {
-                                "en": "Cross-Contamination",
-                                "es": "Contaminación Cruzada",
-                                "definition": "Unintentional transfer of pathogens between foods"
-                            },
-                            {
-                                "en": "Mise en Place",
-                                "es": "Mise en Place / Todo en su Lugar",
-                                "definition": "Preparation and organizing of ingredients before cooking"
-                            },
-                            {
-                                "en": "Temperature Danger Zone",
-                                "es": "Zona de Peligro de Temperatura",
-                                "definition": "Range between 4°C and 60°C where bacteria grow rapidly"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "What is the Temperature Danger Zone for food safety under HACCP?",
-                                "options": [
-                                    "Below 0°C",
-                                    "Between 4°C and 60°C (40°F-140°F)",
-                                    "Above 100°C",
-                                    "There is no danger zone"
-                                ],
-                                "answer": 1
-                            }
-                        ]
-                    }
-                ]
+                "id": "food-m1",
+                "title": "Food Microbiology & HACCP Critical Control Points",
+                "titleES": "Microbiología de Alimentos y Puntos Críticos HACCP",
+                "icon": "fa-solid fa-shield-virus",
+                "readings": []
+            },
+            {
+                "id": "food-m2",
+                "title": "Thermal Preservation: Pasteurization, Retort Canning and Aseptic Filling",
+                "titleES": "Preservación Térmica: Pasteurización y Envasado Aséptico",
+                "icon": "fa-solid fa-temperature-high",
+                "readings": []
+            },
+            {
+                "id": "food-m3",
+                "title": "Modified Atmosphere Packaging (MAP) & Barrier Polymers",
+                "titleES": "Empaque en Atmósfera Modificada (MAP) y Barreras",
+                "icon": "fa-solid fa-box",
+                "readings": []
+            },
+            {
+                "id": "food-m4",
+                "title": "Water Activity (Aw), pH Kinetics and Shelf-Life Modeling",
+                "titleES": "Actividad de Agua (Aw), Cinética de pH y Vida de Anaquel",
+                "icon": "fa-solid fa-droplet",
+                "readings": []
+            },
+            {
+                "id": "food-m5",
+                "title": "Functional Food Ingredients, Fermentation & Precision Agritech",
+                "titleES": "Alimentos Funcionales, Fermentación y Agrotecnología",
+                "icon": "fa-solid fa-seedling",
+                "readings": []
             }
         ]
     },
@@ -7950,56 +8631,38 @@ var LXP_COURSES = {
         "modules": [
             {
                 "id": "hosp-m1",
-                "title": "Front Office Operations & VIP Concierge",
-                "titleES": "Operaciones de Recepción y Concierge VIP",
-                "icon": "fa-solid fa-concierge-bell",
-                "readings": [
-                    {
-                        "id": "hosp-m1-r1",
-                        "title": "Forbes 5-Star Service Standards & Guest Experience",
-                        "duration": "10 min",
-                        "content": "\n> **Luxury Hospitality Standard Note**: Ultra-luxury resorts and boutique hotels measure customer service excellence using **Forbes Travel Guide 5-Star Rating System** benchmarks and **AHLA** (American Hotel & Lodging Association) standards.\n\n# Forbes 5-Star Service Standards & VIP Guest Experience\n\nIn premier Mexican luxury destinations — including Los Cabos, Punta Mita, Riviera Maya, and Mexico City — hospitality leaders must execute impeccable verbal and written English to deliver personalized 5-Star guest experiences.\n\n## Core Financial & Operational Hospitality Metrics\n\n1. **ADR (Average Daily Rate)**: Key performance metric calculating average rental revenue earned per occupied room:\n   $$\text{ADR} = \frac{\text{Total Room Revenue}}{\text{Number of Rooms Sold}}$$\n2. **RevPAR (Revenue Per Available Room)**: The ultimate financial health metric of a resort:\n   $$\text{RevPAR} = \text{ADR} \times \text{Occupancy Rate}$$\n3. **Property Management System (PMS)**: Central software suite (e.g., Opera PMS) managing reservations, guest folios, housekeeping room status, and guest preference profiles.\n\n## Forbes 5-Star Service Standards Execution\n\nThe Forbes 5-Star inspection evaluates over 900 rigorous standards across guest interactions:\n- **First Impression & Arrival**: Greeting guests within 30 seconds of arrival using guest name recognition, providing chilled towels and signature welcome beverages.\n- **Anticipatory Service**: Staff must anticipate guest needs before they are requested (e.g., placing lens wiping cloths next to sunglasses by the pool).\n- **Service Recovery Protocol (LAST Model)**:\n  - **L**isten: Attentively without interruption.\n  - **A**pologize: Sincerely on behalf of the resort.\n  - **S**olve: Offer immediate resolution options.\n  - **T**hank: Thank the guest for bringing the issue to light.\n\n---\n\n> **Key Takeaway**: Delivering luxury guest experiences requires polished English communication, PMS operational control, and adherence to **Forbes 5-Star Service Standards**.\n",
-                        "vocabulary": [
-                            {
-                                "en": "RevPAR",
-                                "es": "RevPAR / Ingreso por Habitación Disponible",
-                                "definition": "Revenue per available room metric"
-                            },
-                            {
-                                "en": "Concierge",
-                                "es": "Concierge / Atención Personalizada",
-                                "definition": "Hotel staff member assisting guests with bookings and services"
-                            },
-                            {
-                                "en": "Turn-Down Service",
-                                "es": "Servicio Nocturno / Arreglo de Cama",
-                                "definition": "Evening housekeeping service preparing room for sleep"
-                            },
-                            {
-                                "en": "Service Recovery",
-                                "es": "Recuperación del Servicio",
-                                "definition": "Action taken to resolve a guest issue effectively"
-                            },
-                            {
-                                "en": "ADR (Average Daily Rate)",
-                                "es": "Tarifa Promedio Diaria",
-                                "definition": "Average room revenue earned per occupied room"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "What does RevPAR stand for in hotel management?",
-                                "options": [
-                                    "Revenue Per Available Room",
-                                    "Review Public Rating",
-                                    "Restaurant Visitor Price",
-                                    "Room Rental Value"
-                                ],
-                                "answer": 0
-                            }
-                        ]
-                    }
-                ]
+                "title": "Forbes 5-Star Standards & VIP Guest Experience",
+                "titleES": "Estándares Forbes 5 Estrellas y Experiencia VIP",
+                "icon": "fa-solid fa-star",
+                "readings": []
+            },
+            {
+                "id": "hosp-m2",
+                "title": "Property Management Systems (PMS): Check-In, Folios and ADR",
+                "titleES": "Sistemas PMS: Registro, Folios y Métrica ADR",
+                "icon": "fa-solid fa-desktop",
+                "readings": []
+            },
+            {
+                "id": "hosp-m3",
+                "title": "Fine Dining Service, Wine Pairing and Table Etiquette",
+                "titleES": "Servicio de Alta Cocina, Maridaje y Etiqueta",
+                "icon": "fa-solid fa-wine-glass",
+                "readings": []
+            },
+            {
+                "id": "hosp-m4",
+                "title": "Service Recovery & Conflict Resolution Protocols (LAST Model)",
+                "titleES": "Recuperación del Servicio y Resolución de Conflictos",
+                "icon": "fa-solid fa-handshake-angle",
+                "readings": []
+            },
+            {
+                "id": "hosp-m5",
+                "title": "Events, Banquets & Luxury Conference Management",
+                "titleES": "Gestión de Eventos, Banquetes y Conferencias",
+                "icon": "fa-solid fa-champagne-glasses",
+                "readings": []
             }
         ]
     },
@@ -8019,52 +8682,39 @@ var LXP_COURSES = {
         "description": "Inglés corporativo para presentaciones a directivos (Board decks), entrevistas técnicas STAR, auditorías laborales T-MEC y liderazgo transcultural.",
         "modules": [
             {
-                "id": "hr-m1",
-                "title": "Engineering Recruitment & Labor Audit Compliance",
-                "titleES": "Reclutamiento de Ingenieros y Auditorías Laborales",
+                "id": "biz-m1",
+                "title": "Executive Decision Making & C-Suite Board Presentations",
+                "titleES": "Toma de Decisiones Ejecutivas y Presentaciones de Directorio",
+                "icon": "fa-solid fa-person-chalkboard",
+                "readings": []
+            },
+            {
+                "id": "biz-m2",
+                "title": "Cross-Cultural Team Leadership in US-Mexico Nearshoring",
+                "titleES": "Liderazgo de Equipos Transculturales en Nearshoring",
+                "icon": "fa-solid fa-users-rays",
+                "readings": []
+            },
+            {
+                "id": "biz-m3",
+                "title": "Technical Talent Acquisition & STAR Behavioral Interviewing",
+                "titleES": "Atracción de Talento Técnico y Entrevistas STAR",
                 "icon": "fa-solid fa-user-check",
-                "readings": [
-                    {
-                        "id": "hr-m1-r1",
-                        "title": "Technical Interviewing & Labor Standards",
-                        "duration": "10 min",
-                        "content": "\n> **Industrial HR Compliance Note**: Human Resources management in nearshoring manufacturing plants is governed by **USMCA Labor Chapter 23 / Annex 31-A** (Rapid Response Labor Mechanism - RRLM), **ISO 30414** (Human Capital Reporting), and **NOM-035-STPS** (Psychosocial Risk Factors in the Workplace).\n\n# Technical Interviewing & Labor Audit Compliance: Industrial HR\n\nIn multi-national nearshoring plants across Monterrey, Tijuana, and Querétaro, Industrial HR and Talent Acquisition leads act as the primary bridge between U.S. corporate executive leadership and local plant operations. Fluency in technical English is essential for conducting engineering interviews, negotiating collective bargaining agreements, and surviving federal labor audits.\n\n## 1. Technical Screening & The STAR Interview Method\n\nWhen recruiting specialized roles (e.g., Quality Engineers, Embedded Systems Developers, CNC Programmers), HR managers utilize the structured **STAR Method** in English:\n- **Situation**: Candidate describes a specific technical challenge at a previous manufacturing plant.\n- **Task**: Candidate outlines their core responsibilities under tight production deadlines.\n- **Action**: Candidate explains their engineering interventions (e.g., 8D Problem Solving, Root Cause Analysis).\n- **Result**: Candidate quantifies measurable outcomes (e.g., reduced scrap rate by 14%, improved overall equipment effectiveness - OEE).\n\n## 2. USMCA Annex 31-A & Rapid Response Labor Mechanism (RRLM) Audits\n\nUnder **T-MEC Annex 31-A**, U.S. and Mexican labor authorities conduct unannounced plant audits:\n- **Freedom of Association & Collective Bargaining**: Verifying that workers freely elect union representatives via secret ballot without factory management interference.\n- **Remediation Plan Execution**: HR teams must draft formal English response reports to the U.S. Department of Labor (USDOL) within 45 days if labor violations are alleged, preventing potential tariff penalties or border blockades on plant exports.\n\n## 3. Onboarding, EHS Safety Protocols & Work Instructions\n\nBeyond labor audits, Industrial HR leads direct bilingual orientation and safety indoctrination programs:\n- **EHS (Environmental Health and Safety) Compliance**: Enforcing OSHA and STPS safety protocols (Personal Protective Equipment - PPE, Lockout/Tagout - LOTO awareness, hazardous chemical handling under GHS).\n- **Standard Operating Procedures (SOPs)**: Ensuring assembly line workers and technicians understand English work instructions, defect logging, and quality escalation paths.\n\n## 4. NOM-035 & ISO 30414 Human Capital Metrics\n\nIndustrial HR tracks human capital key performance indicators (KPIs) to align with global corporate governance:\n- **Turnover Rate (Atrición)**: Monitoring monthly attrition percentages across assembly shifts and exit interview insights.\n- **NOM-035 Psychosocial Risk Audits**: Evaluating workplace stress, shift rotation fatigue, and anti-harassment protocols to maintain compliance with Mexican Labor Law (LFT).\n\n## 5. Expatriate Management & Global Mobility\n\nNearshoring facilities frequently host foreign engineering directors and expat specialists:\n- **Bilingual Onboarding Packages**: Drafting dual-language employment contracts, temporary work visa filings with INM (Instituto Nacional de Migración), and housing allowance packages.\n- **Cross-Cultural Leadership Workshops**: Facilitating communication alignment between American/Asian executive leadership and Mexican plant supervisors.\n\n---\n\n> **Key Takeaway**: Industrial HR specialists must master **STAR technical interviewing** and ensure plant compliance with **USMCA Annex 31-A (RRLM)**, **EHS safety protocols**, and **NOM-035** standards to protect export supply chains.\n",
-                        "vocabulary": [
-                            {
-                                "en": "Talent Acquisition",
-                                "es": "Atracción de Talento",
-                                "definition": "Process of identifying and hiring skilled workers"
-                            },
-                            {
-                                "en": "Onboarding",
-                                "es": "Inducción / Integración",
-                                "definition": "Process of integrating new employees into an organization"
-                            },
-                            {
-                                "en": "EHS (Environmental Health and Safety)",
-                                "es": "Seguridad y Medio Ambiente",
-                                "definition": "Department managing workplace health and environmental rules"
-                            },
-                            {
-                                "en": "Competency Screening",
-                                "es": "Evaluación por Competencias",
-                                "definition": "Interviewing based on specific skills and behaviors"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "What does EHS stand for in industrial HR?",
-                                "options": [
-                                    "Electric Heat System",
-                                    "Environmental Health and Safety",
-                                    "Employee Housing Service",
-                                    "Executive Hiring Staff"
-                                ],
-                                "answer": 1
-                            }
-                        ]
-                    }
-                ]
+                "readings": []
+            },
+            {
+                "id": "biz-m4",
+                "title": "USMCA Annex 31-A Rapid Response Labor Audits Compliance",
+                "titleES": "Cumplimiento de Auditorías Laborales T-MEC Anexo 31-A",
+                "icon": "fa-solid fa-scale-balanced",
+                "readings": []
+            },
+            {
+                "id": "biz-m5",
+                "title": "Executive Compensation, KPI Benchmarking & Plant Retention",
+                "titleES": "Compensación Ejecutiva y Retención de Talento",
+                "icon": "fa-solid fa-award",
+                "readings": []
             }
         ]
     },

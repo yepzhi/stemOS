@@ -10,58 +10,49 @@
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <link rel="stylesheet" href="/dev.css?v=1.2.0">
+  <link rel="stylesheet" href="/dev.css?v=3.0.0">
 </head>
 
 <body>
+
+  <!-- Liquid Gooey Ambient Background Mesh -->
+  <div class="ambient-glow-mesh" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+  </div>
 
   <div class="studio-container">
     <!-- Header & Brand Bar -->
     <header class="studio-header">
       <div class="brand-title">
         <div class="brand-logo">
-          <i class="fa-solid fa-code-branch"></i>
+          <i class="fa-solid fa-microchip"></i>
         </div>
         <div class="brand-text">
-          <h1 class="font-head">stemOS Dev Studio</h1>
-          <p>Plataforma de Desarrollo & Inspección de Módulos (stemos.org/dev)</p>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <h1 class="brand-heading">stemOS Dev Studio</h1>
+            <span id="version-badge" class="badge-version">v3.0 PRO</span>
+          </div>
+          <p class="brand-subtitle">Catálogo Maestro de Contenidos & Módulos Industriales ESP (Nearshoring Hub)</p>
         </div>
-        <span id="version-badge" style="display:inline-flex;align-items:center;gap:5px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.4);color:var(--cyan);font-size:0.7rem;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:0.06em;font-family:var(--font-mono);white-space:nowrap;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-          v2.0.9
-        </span>
       </div>
 
       <div class="header-badges">
         <!-- CEFR English Level Switcher (A2 / B1) -->
-        <div class="offline-card" id="level-switcher-card" style="border-color: rgba(56, 189, 248, 0.3);">
-          <span style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;">Nivel CEFR:</span>
+        <div class="cefr-header-pill" id="level-switcher-card">
+          <span class="cefr-pill-label"><i class="fa-solid fa-language"></i> Nivel CEFR:</span>
           <div class="level-switcher-pill" id="level-switcher-pill">
-            <button class="level-btn active" id="btn-level-a2" data-level="A2" title="Nivel A2: Vocabulario básico-intermedio, oraciones directas e inglés funcional">A2</button>
-            <button class="level-btn" id="btn-level-b1" data-level="B1" title="Nivel B1: Vocabulario técnico avanzado, reportes ejecutivos e modismos de Nearshoring">B1</button>
+            <button class="level-btn active" id="btn-level-a2" data-level="A2" title="Nivel A2: Vocabulario básico-intermedio, oraciones directas e inglés funcional">A2 Básico</button>
+            <button class="level-btn" id="btn-level-b1" data-level="B1" title="Nivel B1: Vocabulario técnico avanzado, reportes ejecutivos e modismos de Nearshoring">B1 Técnico</button>
           </div>
         </div>
 
-        <div class="offline-card" id="offline-card">
-          <div class="offline-pill online" id="offline-pill">
-            <span class="status-dot"></span>
-            <span id="offline-status-text">Online</span>
-          </div>
-
-          <label class="offline-switch" title="Activar / Desactivar Modo Offline">
-            <input type="checkbox" id="offline-toggle">
-            <span class="slider round"></span>
-          </label>
-
-          <button class="btn-sync-offline" id="sync-offline-btn" title="Descargar y guardar los 50 módulos en caché local para trabajar sin conexión">
-            <i class="fa-solid fa-cloud-arrow-down"></i> Save Offline
-          </button>
-        </div>
-
-        <div class="stat-chip">
+        <div class="stat-chip stat-chip-tracks">
           <i class="fa-solid fa-network-wired"></i>
           <div>
             <div class="val" id="stat-tracks">26</div>
@@ -69,15 +60,15 @@
           </div>
         </div>
 
-        <div class="stat-chip">
-          <i class="fa-solid fa-boxes-stacked"></i>
+        <div class="stat-chip stat-chip-modules">
+          <i class="fa-solid fa-cubes-stacked"></i>
           <div>
             <div class="val" id="stat-modules">--</div>
             <div class="lbl">Módulos</div>
           </div>
         </div>
 
-        <div class="stat-chip">
+        <div class="stat-chip stat-chip-readings">
           <i class="fa-solid fa-book-open-reader"></i>
           <div>
             <div class="val" id="stat-readings">0</div>
@@ -85,10 +76,10 @@
           </div>
         </div>
 
-        <div class="stat-chip" style="border-color: rgba(251, 191, 36, 0.3);">
-          <i class="fa-solid fa-comments" style="color: var(--gold);"></i>
+        <div class="stat-chip stat-chip-phrases">
+          <i class="fa-solid fa-comments"></i>
           <div>
-            <div class="val" id="stat-phrases" style="color: var(--gold);">0</div>
+            <div class="val" id="stat-phrases">0</div>
             <div class="lbl">Frases Nativas</div>
           </div>
         </div>
@@ -99,7 +90,7 @@
     <div class="controls-bar">
       <div class="search-wrapper">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="studio-search" class="search-input" placeholder="Buscar módulo por nombre, concepto, estándar (CONOCER/NGSS) o ID..." autocomplete="off">
+        <input type="text" id="studio-search" class="search-input" placeholder="Buscar por módulo, término clave, alineación (CONOCER/NGSS), proceso o ID..." autocomplete="off">
       </div>
 
       <div class="track-filters" id="track-filters">
@@ -118,8 +109,8 @@
     <div class="drawer-panel" id="drawer-panel">
       <div class="drawer-header">
         <div>
-          <h2 class="font-head" id="drawer-mod-title" style="font-size: 1.4rem; color: #fff; margin-bottom: 4px;">Detalle del Módulo</h2>
-          <p id="drawer-mod-sub" style="font-size: 0.82rem; color: var(--cyan); font-weight: 500;">Track Industrial • ID</p>
+          <h2 class="drawer-title-heading" id="drawer-mod-title">Detalle del Módulo</h2>
+          <p id="drawer-mod-sub" class="drawer-subtitle-text">Track Industrial • ID</p>
         </div>
         <button class="drawer-close-btn" id="drawer-close" aria-label="Cerrar visor">
           <i class="fa-solid fa-xmark"></i>
@@ -132,20 +123,10 @@
     </div>
   </div>
 
-  <!-- Floating Offline Sync Toast Banner -->
-  <div class="offline-toast-banner" id="offline-toast">
-    <div class="toast-icon" id="toast-icon-box"><i class="fa-solid fa-cloud-arrow-down"></i></div>
-    <div class="toast-content">
-      <div class="toast-title" id="toast-title">Descargando Todo para Modo Offline...</div>
-      <div class="toast-sub" id="toast-sub">Guardando 50 Módulos, Frases Nativas y Lecturas en Caché Local.</div>
-      <div class="toast-progress-bar"><div class="toast-progress-fill" id="toast-progress"></div></div>
-    </div>
-  </div>
-
   <!-- Load stemOS courses database, phrases library, and dev controller with cache buster -->
-  <script src="/content/courses.js?v=2.0.9"></script>
-  <script src="/content/phrases_library.js?v=2.0.9"></script>
-  <script src="/dev.js?v=2.0.9"></script>
+  <script src="/content/courses.js?v=3.0.0"></script>
+  <script src="/content/phrases_library.js?v=3.0.0"></script>
+  <script src="/dev.js?v=3.0.0"></script>
 
 </body>
 

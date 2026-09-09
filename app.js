@@ -348,9 +348,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (chatState.step === 4) {
                 const isCorrect = reply.includes("debug") || reply.includes("troubleshoot") || reply.includes("depurar");
                 if (isCorrect) {
-                    addBotMessage("Yes, **'to debug'** (depurar) or **'troubleshoot'**! You have successfully crossed the bridge into specialized technical terminology. **+150 XP awarded!** 🎓");
+                    addBotMessage("Yes, **'to debug'** (depurar) or **'troubleshoot'**! You have successfully crossed the bridge into specialized technical terminology. **+150 XP awarded!**");
                 } else {
-                    addBotMessage("Good effort! The standard technical engineering verbs are **'to debug'** (depurar) or **'to troubleshoot'**. You have successfully crossed the bridge. **+150 XP awarded!** 🎓");
+                    addBotMessage("Good effort! The standard technical engineering verbs are **'to debug'** (depurar) or **'to troubleshoot'**. You have successfully crossed the bridge. **+150 XP awarded!**");
                 }
                 awardXP(150);
                 resetTutor();
@@ -376,9 +376,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (chatState.step === 4) {
                 const isBunny = reply.includes("bunny") || reply.includes("conejo");
                 if (isBunny) {
-                    addBotMessage("Spot on! They are called **'bunny suits'**. You've proven that your conceptual engineering skills are perfectly aligned with cleanroom manufacturing requirements. **+150 XP awarded!** 📡");
+                    addBotMessage("Spot on! They are called **'bunny suits'**. You've proven that your conceptual engineering skills are perfectly aligned with cleanroom manufacturing requirements. **+150 XP awarded!**");
                 } else {
-                    addBotMessage("They are popularly called **'bunny suits'** (due to the ears/hood design)! Excellent effort. You've proven that your English communication skills are aligned with cleanroom manufacturing. **+150 XP awarded!** 🇺🇸📡");
+                    addBotMessage("They are popularly called **'bunny suits'** (due to the ears/hood design)! Excellent effort. You've proven that your English communication skills are aligned with cleanroom manufacturing. **+150 XP awarded!**");
                 }
                 awardXP(150);
                 resetTutor();
@@ -404,9 +404,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const hasVerb = reply.includes("encrypt") || reply.includes("encriptar");
                 const hasNoun = reply.includes("encryption") || reply.includes("encriptación") || reply.includes("encriptacion");
                 if (hasVerb && hasNoun) {
-                    addBotMessage("**'Encryption'** (noun) and **'encrypt'** (verb). Excellent job! You've shown that you have the vocabulary to discuss advanced security architecture in English. **+180 XP awarded!** 🛡️🌐");
+                    addBotMessage("**'Encryption'** (noun) and **'encrypt'** (verb). Excellent job! You've shown that you have the vocabulary to discuss advanced security architecture in English. **+180 XP awarded!**");
                 } else {
-                    addBotMessage("The correct English terms are **'encryption'** (noun) and **'encrypt'** (verb). Excellent effort! You've shown that you have the vocabulary to discuss advanced security architecture in English. **+180 XP awarded!** 🛡️🌐");
+                    addBotMessage("The correct English terms are **'encryption'** (noun) and **'encrypt'** (verb). Excellent effort! You've shown that you have the vocabulary to discuss advanced security architecture in English. **+180 XP awarded!**");
                 }
                 awardXP(180);
                 resetTutor();
@@ -928,7 +928,7 @@ document.addEventListener('DOMContentLoaded', () => {
             globalCompleted++;
             statCompleted.textContent = globalCompleted;
             
-            alert(`¡Excelente trabajo! Has completado exitosamente la especialidad: ${track.title}. (+100 XP Bonus y Certificado Desbloqueado) 🎓`);
+            alert(`¡Excelente trabajo! Has completado exitosamente la especialidad: ${track.title}. (+100 XP Bonus y Certificado Desbloqueado)`);
             
             checkUnlocks();
             updateGraphUI();
@@ -942,13 +942,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (skillsData["electromobility"].status === 'completed' && skillsData["it-innovation"].status === 'completed') {
             if (skillsData["aerospace"].status === 'locked') {
                 skillsData["aerospace"].status = 'active';
-                alert("🔓 ¡Habilidad Desbloqueada! Ya puedes acceder a: STEM: Manufactura Aeronáutica.");
+                alert("¡Habilidad Desbloqueada! Ya puedes acceder a: STEM: Manufactura Aeronáutica.");
             }
         }
         if (skillsData["aerospace"].status === 'completed') {
             if (skillsData["socratic-capstone"].status === 'locked') {
                 skillsData["socratic-capstone"].status = 'active';
-                alert("🔓 ¡Habilidad Final Desbloqueada! Comienza el Socratic Capstone Assessment.");
+                alert("¡Habilidad Final Desbloqueada! Comienza el Socratic Capstone Assessment.");
             }
         }
     }

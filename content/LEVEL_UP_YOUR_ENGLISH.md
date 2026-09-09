@@ -5,14 +5,14 @@
 
 ---
 
-## 📘 Introducción y Metodología
+## Introducción y Metodología
 *Level Up Your English: Frases que Hacen la Diferencia* es un método práctico diseñado para alejarse de la gramática rígida e memorística, enfocándose en **expresiones reales de uso nativo**, patrones de conversación diaria, profesionalismo corporativo y comunicación técnica.
 
 Esta guía expandida organiza las frases en **6 Capítulos Fundamentales**, incluyendo contextos de uso, contrastes entre lenguaje formal e informal, y ejemplos prácticos para entornos de ingeniería,Nearshoring y alta tecnología.
 
 ---
 
-## 💬 CAPÍTULO 1: Conversaciones Cotidianas, Saludos y Rompehielos (Small Talk)
+## CAPÍTULO 1: Conversaciones Cotidianas, Saludos y Rompehielos (Small Talk)
 
 ### 1.1 Saludos y Rompehielos de Entrada (Icebreakers)
 - **"How's everything coming along?"**
@@ -47,7 +47,7 @@ Esta guía expandida organiza las frases en **6 Capítulos Fundamentales**, incl
 
 ---
 
-## 💡 CAPÍTULO 2: Expresión de Opiniones, Dudas y Sentimientos
+## CAPÍTULO 2: Expresión de Opiniones, Dudas y Sentimientos
 
 ### 2.1 Dar Opiniones con Matiz y Rigor (Expressing Opinions)
 - **"From where I stand..."**
@@ -81,7 +81,7 @@ Esta guía expandida organiza las frases en **6 Capítulos Fundamentales**, incl
 
 ---
 
-## 💼 CAPÍTULO 3: Ámbito Profesional, Laboral y Técnico (Workplace & Engineering)
+## CAPÍTULO 3: Ámbito Profesional, Laboral y Técnico (Workplace & Engineering)
 
 ### 3.1 Manejo de Proyectos y Tareas (Project Delivery)
 - **"We need to streamline this process."**
@@ -114,7 +114,7 @@ Esta guía expandida organiza las frases en **6 Capítulos Fundamentales**, incl
 
 ---
 
-## ⚠️ CAPÍTULO 4: Manejo de Situaciones Difíciles y Resolución de Conflictos
+## CAPÍTULO 4: Manejo de Situaciones Difíciles y Resolución de Conflictos
 
 ### 4.1 Desacuerdos Constructivos (Constructive Disagreement)
 - **"I see it a bit differently."**
@@ -138,7 +138,7 @@ Esta guía expandida organiza las frases en **6 Capítulos Fundamentales**, incl
 
 ---
 
-## 🌐 CAPÍTULO 5: Ámbito Social, Cultural e Idioms Nativos (Formal vs Informal)
+## CAPÍTULO 5: Ámbito Social, Cultural e Idioms Nativos (Formal vs Informal)
 
 ### 5.1 Matices de Formalidad (Contrastes Formal vs Informal)
 
@@ -166,22 +166,22 @@ Esta guía expandida organiza las frases en **6 Capítulos Fundamentales**, incl
 
 ---
 
-## 📝 CAPÍTULO 6: Guía Práctica de Aplicación y Ejercicios (Workbook stemOS)
+## CAPÍTULO 6: Guía Práctica de Aplicación y Ejercicios (Workbook stemOS)
 
 ### 6.1 Ejercicio de Sustitución Profesional (Formalization Challenge)
 Transforma las siguientes frases informales en expresiones de alto impacto técnico y profesional:
 
 1. **Informal:** "I think the chip is broken."  
-   👉 **Profesional:** *"Based on our initial diagnostics, the integrated circuit appears to be malfunctioning."*
+   **Profesional:** *"Based on our initial diagnostics, the integrated circuit appears to be malfunctioning."*
 
 2. **Informal:** "Call me when you can."  
-   👉 **Profesional:** *"Please feel free to reach out at your earliest convenience."*
+   **Profesional:** *"Please feel free to reach out at your earliest convenience."*
 
 3. **Informal:** "We can't do this now."  
-   👉 **Profesional:** *"Due to resource constraints, we may need to defer this task to the next sprint."*
+   **Profesional:** *"Due to resource constraints, we may need to defer this task to the next sprint."*
 
 4. **Informal:** "I made a mistake in the code."  
-   👉 **Profesional:** *"I identified an anomaly in my commit and am pushing a hotfix immediately."*
+   **Profesional:** *"I identified an anomaly in my commit and am pushing a hotfix immediately."*
 
 ---
 
@@ -198,7 +198,7 @@ Transforma las siguientes frases informales en expresiones de alto impacto técn
 
 ---
 
-## 🚀 CAPÍTULO 7: Frases Nativas "Que No Enseñan en la Escuela" (Real-World Native Spoken English)
+## CAPÍTULO 7: Frases Nativas "Que No Enseñan en la Escuela" (Real-World Native Spoken English)
 
 En las escuelas tradicionales se enseñan estructuras gramaticales de libro de texto que suenan demasiado formales o acartonadas para el ambiente diario de un equipo técnico o de ingeniería.
 
@@ -233,7 +233,7 @@ En las escuelas tradicionales se enseñan estructuras gramaticales de libro de t
 
 ---
 
-## 🛠️ CAPÍTULO 8: Comunicación en Crisis, Troubleshooting y Soporte Técnico
+## CAPÍTULO 8: Comunicación en Crisis, Troubleshooting y Soporte Técnico
 
 Durante un incidente en producción o una falla en la línea de ensamble, la claridad y velocidad en el lenguaje previenen caos.
 
@@ -263,7 +263,7 @@ Durante un incidente en producción o una falla en la línea de ensamble, la cla
 
 ---
 
-## 🤝 CAPÍTULO 9: Negociación Técnica, Acuerdos y Cultura Nearshoring
+## CAPÍTULO 9: Negociación Técnica, Acuerdos y Cultura Nearshoring
 
 En el trabajo con equipos de EE.UU., Canadá y Europa, la etiqueta de reunión (Meeting Etiquette) y la negociación asertiva son fundamentales.
 
@@ -293,5 +293,5 @@ En el trabajo con equipos de EE.UU., Canadá y Europa, la etiqueta de reunión (
 
 ---
 
-## 🏆 Conclusión y Próximos Pasos en stemOS
+## Conclusión y Próximos Pasos en stemOS
 El dominio de estas estructuras y vocabulario real permite a estudiantes, ingenieros y técnicos desenvolverse con naturalidad, seguridad y credibilidad en entornos bilingües de **Nearshoring, Semiconductores, Vehículos Eléctricos, Tecnologías de la Información y Manufactura Aeroespacial**.

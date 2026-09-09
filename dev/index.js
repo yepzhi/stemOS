@@ -137,125 +137,35 @@ function filterGridByLevel(level, tracks) {
 }
 
 function setupOfflineController(tracks, phrases) {
-  const toggle = document.getElementById('offline-toggle');
-  const syncBtn = document.getElementById('sync-offline-btn');
-
-  // Check initial offline preference or connection
-  const savedOfflineMode = localStorage.getItem('stemos_offline_mode') === 'true';
-  const isCurrentlyOffline = !navigator.onLine || savedOfflineMode;
-
-  if (toggle) {
-    toggle.checked = isCurrentlyOffline;
-    updateOfflineUI(isCurrentlyOffline);
-
-    toggle.addEventListener('change', (e) => {
-      const active = e.target.checked;
-      localStorage.setItem('stemos_offline_mode', active ? 'true' : 'false');
-      updateOfflineUI(active);
-      if (active) {
-        downloadEverythingOffline(tracks, phrases);
-      }
-    });
-  }
-
-  if (syncBtn) {
-    syncBtn.addEventListener('click', () => {
-      downloadEverythingOffline(tracks, phrases);
-    });
-  }
-
-  // Monitor browser network state
-  window.addEventListener('online', () => {
-    if (!toggle || !toggle.checked) updateOfflineUI(false);
-  });
-
-  window.addEventListener('offline', () => {
-    updateOfflineUI(true);
-    if (toggle) toggle.checked = true;
-  });
-}
-
-function updateOfflineUI(isOffline) {
-  const pill = document.getElementById('offline-pill');
-  const statusText = document.getElementById('offline-status-text');
-  if (!pill || !statusText) return;
-
-  if (isOffline) {
-    pill.className = 'offline-pill offline-active';
-    statusText.innerText = 'Modo Offline';
-  } else {
-    pill.className = 'offline-pill online';
-    statusText.innerText = 'Online';
-  }
-}
-
-function downloadEverythingOffline(tracks, phrases) {
-  showOfflineToast('Iniciando Descarga Completa...', 'Almacenando 55 Módulos, 20 Frases Nativas y Lecturas en Caché Local', 15);
-
-  // 1. Save all Tracks & Phrases to LocalStorage
+  // Silent background resilience: Cache all courses, modules and phrases in local storage
+  // and trigger service worker asset caching without manual user toggles.
   try {
     localStorage.setItem('stemos_dev_courses_v1.0.5', JSON.stringify(tracks));
     localStorage.setItem('stemos_dev_phrases_v1.0.5', JSON.stringify(phrases));
     localStorage.setItem('stemos_offline_ready', 'true');
   } catch (e) {
-    console.warn('[stemOS Storage Warning]', e);
+    console.warn('[stemOS Silent Offline Cache Warning]', e);
   }
 
-  // 2. Trigger Service Worker full asset caching
   if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-    const messageChannel = new MessageChannel();
-    messageChannel.port1.onmessage = (event) => {
-      if (event.data && event.data.status === 'SUCCESS') {
-        showOfflineToast('¡Descarga 100% Completada!', '55 Módulos y 20 Frases Nativas Listos para Usar Sin Internet.', 100, true);
-      }
-    };
-    navigator.serviceWorker.controller.postMessage({ action: 'CACHE_EVERYTHING' }, [messageChannel.port2]);
-  } else {
-    setTimeout(() => {
-      showOfflineToast('¡Todo Guardado Offline!', '55 Módulos y 20 Frases Nativas Listos para Usar Sin Internet.', 100, true);
-    }, 1000);
+    navigator.serviceWorker.controller.postMessage({ action: 'CACHE_EVERYTHING' });
   }
+}
 
-  // Progress animation simulation
-  let p = 25;
-  const timer = setInterval(() => {
-    p += 25;
-    if (p < 90) {
-      updateToastProgress(p);
-    } else {
-      clearInterval(timer);
-    }
-  }, 250);
+function updateOfflineUI(isOffline) {
+  // Manual offline toggle UI removed
+}
+
+function downloadEverythingOffline(tracks, phrases) {
+  // Handled silently by setupOfflineController
 }
 
 function showOfflineToast(title, sub, progress = 0, autoHide = false) {
-  const toast = document.getElementById('offline-toast');
-  const toastTitle = document.getElementById('toast-title');
-  const toastSub = document.getElementById('toast-sub');
-  const toastProgress = document.getElementById('toast-progress');
-  const iconBox = document.getElementById('toast-icon-box');
-
-  if (!toast) return;
-
-  if (toastTitle) toastTitle.innerText = title;
-  if (toastSub) toastSub.innerText = sub;
-  if (toastProgress) toastProgress.style.width = `${progress}%`;
-
-  if (autoHide) {
-    if (iconBox) iconBox.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--emerald);"></i>`;
-    if (toastProgress) toastProgress.style.width = `100%`;
-    setTimeout(() => {
-      toast.classList.remove('active');
-    }, 4000);
-  } else {
-    if (iconBox) iconBox.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style="color:var(--cyan);"></i>`;
-    toast.classList.add('active');
-  }
+  // Manual offline toast banner removed
 }
 
 function updateToastProgress(percent) {
-  const toastProgress = document.getElementById('toast-progress');
-  if (toastProgress) toastProgress.style.width = `${percent}%`;
+  // No-op
 }
 
 function saveCoursesToLocalStorage(tracks) {
@@ -326,7 +236,7 @@ function toggleOfflineReadingPin(trackId, modId, tracks) {
   } else {
     if (valid.length >= MAX_OFFLINE_READINGS) {
       showOfflineToast(
-        '⚠️ Límite Alcanzado (Máx 5 Lecturas)',
+        'Límite Alcanzado (Máx 5 Lecturas)',
         `Ya tienes ${MAX_OFFLINE_READINGS} lecturas offline guardadas (expiran en 3 días). Remueve una para agregar esta.`,
         100,
         false
@@ -345,7 +255,7 @@ function toggleOfflineReadingPin(trackId, modId, tracks) {
     };
     saveOfflineReadingsMap(map);
     showOfflineToast(
-      '📌 Lectura Guardada (3 Días)',
+      'Lectura Guardada (3 Días)',
       `Guardada offline (${Object.keys(map).length}/5). Expira automáticamente en 3 días.`,
       100,
       true
@@ -405,12 +315,12 @@ function syncNotesWithBot(modId, tracks) {
   }
 
   if (!navigator.onLine) {
-    showOfflineToast('📌 Guardado Localmente', 'Estás offline. Tus conclusiones están guardadas y se enviarán al Bot al reconectarte.', 100, true);
+    showOfflineToast('Guardado Localmente', 'Estás offline. Tus conclusiones están guardadas y se enviarán al Bot al reconectarte.', 100, true);
     return;
   }
 
   // Process AI Socratic Bot Sync
-  showOfflineToast('🤖 Enviando al Bot Socrático...', 'Procesando tus conclusiones y generando retroalimentación socrática...', 50);
+  showOfflineToast('Enviando al Bot Socrático...', 'Procesando tus conclusiones y generando retroalimentación socrática...', 50);
 
   setTimeout(() => {
     item.syncedWithBot = true;
@@ -420,7 +330,7 @@ function syncNotesWithBot(modId, tracks) {
     if (botStatus) {
       botStatus.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--emerald);"></i> ¡Sincronizado con Bot Socrático!`;
     }
-    showOfflineToast('🤖 Retroalimentación Lista', 'El Bot Socrático analizó tus conclusiones. ¡Revisa tu panel!', 100, true);
+    showOfflineToast('Retroalimentación Lista', 'El Bot Socrático analizó tus conclusiones. ¡Revisa tu panel!', 100, true);
   }, 1200);
 }
 
@@ -446,18 +356,10 @@ function renderFilters(tracks, phrases = []) {
 
     <!-- Category Master Filter Buttons -->
     <button class="filter-btn active" data-track="all"><i class="fa-solid fa-layer-group"></i> Todos los Tracks (${tracks.length})</button>
-    <button class="filter-btn filter-cat-btn" data-track="cat-technology" style="border-color: rgba(56, 189, 248, 0.4); color: var(--cyan);"><i class="fa-solid fa-laptop-code"></i> 🔵 Technology (${techCount})</button>
-    <button class="filter-btn filter-cat-btn" data-track="cat-engineering" style="border-color: rgba(52, 211, 153, 0.4); color: var(--emerald);"><i class="fa-solid fa-gears"></i> 🟢 Engineering (${engCount})</button>
-    <button class="filter-btn filter-cat-btn" data-track="cat-science" style="border-color: rgba(192, 132, 252, 0.4); color: var(--purple);"><i class="fa-solid fa-atom"></i> 🟣 Science (${sciCount})</button>
-    <button class="filter-btn filter-cat-btn" data-track="cat-career" style="border-color: rgba(251, 146, 60, 0.4); color: var(--gold);"><i class="fa-solid fa-plane-departure"></i> 🟠 Aviation & Career (${carCount})</button>
-  `;
-  
-  // Add Mis Lecturas Offline Filter Button
-  html += `
-    <button class="filter-btn" data-track="offline-saved" style="border-color: rgba(56, 189, 248, 0.35);">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-      Mis Lecturas Offline (${validSaved.length}/${MAX_OFFLINE_READINGS})
-    </button>
+    <button class="filter-btn filter-cat-btn" data-track="cat-technology" style="border-color: rgba(56, 189, 248, 0.4); color: var(--cyan);"><i class="fa-solid fa-laptop-code"></i> Technology (${techCount})</button>
+    <button class="filter-btn filter-cat-btn" data-track="cat-engineering" style="border-color: rgba(52, 211, 153, 0.4); color: var(--emerald);"><i class="fa-solid fa-gears"></i> Engineering (${engCount})</button>
+    <button class="filter-btn filter-cat-btn" data-track="cat-science" style="border-color: rgba(192, 132, 252, 0.4); color: var(--purple);"><i class="fa-solid fa-atom"></i> Science (${sciCount})</button>
+    <button class="filter-btn filter-cat-btn" data-track="cat-career" style="border-color: rgba(251, 146, 60, 0.4); color: var(--gold);"><i class="fa-solid fa-plane-departure"></i> Aviation & Career (${carCount})</button>
   `;
 
   if (phrases && phrases.length > 0) {
@@ -547,93 +449,13 @@ function renderGrid(tracks, phrases = []) {
 
   let html = '';
 
-  // 0. Render Section: Mis Lecturas Offline Guardadas (Max 5, 3-Day Expiration)
-  html += `
-    <div class="track-section" id="section-offline-saved" style="${validSaved.length === 0 ? 'display:none;' : ''}">
-      <h2 class="track-header-title font-head" style="color: var(--cyan); display:flex; align-items:center; justify-content:space-between;">
-        <span style="display:flex; align-items:center; gap:8px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-          Mis Lecturas Offline Seleccionadas
-          <span style="font-size:0.8rem; font-weight:500; color:var(--text-dim);">(${validSaved.length}/${MAX_OFFLINE_READINGS} Seleccionadas &bull; Expiran en 3 Días)</span>
-        </span>
-        <span style="font-size:0.78rem; background:rgba(56, 189, 248, 0.12); color:var(--cyan); padding:4px 10px; border-radius:8px; border:1px solid rgba(56, 189, 248, 0.3); display:flex; align-items:center; gap:6px;">
-          <i class="fa-solid fa-clock-rotate-left"></i> Auto-Limpieza 72h
-        </span>
-      </h2>
-      <div class="modules-grid">
-  `;
-
-  if (validSaved.length > 0) {
-    validSaved.forEach(savedItem => {
-      let foundMod = null;
-      let foundTrack = null;
-
-      tracks.forEach(tr => {
-        if (tr.modules) {
-          const m = tr.modules.find(x => x.id === savedItem.modId);
-          if (m) {
-            foundMod = m;
-            foundTrack = tr;
-          }
-        }
-      });
-
-      if (foundMod && foundTrack) {
-        const remainingStr = getRemainingTimeText(savedItem.expiresAt);
-        const hasNotes = savedItem.notes && savedItem.notes.trim().length > 0;
-
-        html += `
-          <div class="module-card offline-saved-card" data-track-id="${foundTrack.id}" data-mod-id="${foundMod.id}" style="border-color: rgba(56, 189, 248, 0.4); background: rgba(15, 23, 42, 0.85);">
-            <div class="card-top">
-              <div class="module-icon-box" style="background: rgba(56, 189, 248, 0.15); color: var(--cyan);">
-                <i class="${foundMod.icon || 'fa-solid fa-book-open'}"></i>
-              </div>
-              <span class="module-tag" style="background: rgba(56, 189, 248, 0.15); color: var(--cyan);">${foundTrack.title}</span>
-            </div>
-
-            <div class="card-body">
-              <h3 class="card-title-es">${foundMod.titleES || foundMod.title}</h3>
-              <p class="card-title-en">${foundMod.title}</p>
-              
-              <div class="offline-expiry-pill">
-                <i class="fa-solid fa-hourglass-half"></i> ${remainingStr}
-              </div>
-
-              ${hasNotes ? `
-                <div style="margin-top:8px; font-size:0.78rem; color:var(--emerald); background:rgba(52, 211, 153, 0.1); padding:4px 8px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
-                  <i class="fa-solid fa-pen-to-square"></i> Conclusiones Guardadas
-                </div>
-              ` : ''}
-            </div>
-
-            <div class="card-footer">
-              <button class="btn-remove-pin" data-track-id="${foundTrack.id}" data-mod-id="${foundMod.id}" title="Quitar de lecturas offline">
-                <i class="fa-solid fa-trash-can"></i> Quitar
-              </button>
-              <button class="explore-btn">
-                Leer Ahora <i class="fa-solid fa-arrow-right"></i>
-              </button>
-            </div>
-          </div>
-        `;
-      }
-    });
-  } else {
-    html += `<p style="color:var(--text-dim); font-size:0.9rem; padding:12px;">No has seleccionado ninguna lectura offline. Haz clic en el botón 📌 Guardar Offline en cualquier módulo (máximo 5).</p>`;
-  }
-
-  html += `
-      </div>
-    </div>
-  `;
-
   // 1. Render Course Tracks Grouped by 4 Master Categories
   const categoryKeys = ["technology", "engineering", "science", "career"];
   const categoriesMap = (typeof LXP_CATEGORIES !== 'undefined' ? LXP_CATEGORIES : {
-    "technology": { name: "Technology", badge: "🔵 TECHNOLOGY", icon: "fa-solid fa-laptop-code", description: "Redes avanzadas, IA, IoT, desarrollo de software y computación en la nube para la industria global." },
-    "engineering": { name: "Engineering & Industry", badge: "🟢 ENGINEERING & INDUSTRY", icon: "fa-solid fa-gears", description: "Manufactura de alta precisión, semiconductores, electromovilidad, robótica y sistemas mecatrónicos de nearshoring." },
-    "science": { name: "Science & Future Technology", badge: "🟣 SCIENCE & FUTURE TECHNOLOGY", icon: "fa-solid fa-atom", description: "Biotecnología, tecnología espacial, sustentabilidad ambiental, nanotecnología y ciencias aplicadas." },
-    "career": { name: "Aviation, Career & Professional English", badge: "🟠 AVIATION, CAREER & PROFESSIONAL ENGLISH", icon: "fa-solid fa-plane-departure", description: "Inglés técnico para aviación civil (OACI), aeroespacial de defensa, gestión ejecutiva, liderazgo y proyectos globales." }
+    "technology": { name: "Technology", badge: "TECHNOLOGY", icon: "fa-solid fa-laptop-code", description: "Redes avanzadas, IA, IoT, desarrollo de software y computación en la nube para la industria global." },
+    "engineering": { name: "Engineering & Industry", badge: "ENGINEERING & INDUSTRY", icon: "fa-solid fa-gears", description: "Manufactura de alta precisión, semiconductores, electromovilidad, robótica y sistemas mecatrónicos de nearshoring." },
+    "science": { name: "Science & Future Technology", badge: "SCIENCE & FUTURE TECHNOLOGY", icon: "fa-solid fa-atom", description: "Biotecnología, tecnología espacial, sustentabilidad ambiental, nanotecnología y ciencias aplicadas." },
+    "career": { name: "Aviation, Career & Professional English", badge: "AVIATION, CAREER & PROFESSIONAL ENGLISH", icon: "fa-solid fa-plane-departure", description: "Inglés técnico para aviación civil (OACI), aeroespacial de defensa, gestión ejecutiva, liderazgo y proyectos globales." }
   });
 
   categoryKeys.forEach(catKey => {
@@ -692,9 +514,6 @@ function renderGrid(tracks, phrases = []) {
                   </div>
                   <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
                     ${goldTagHtml}
-                    <button class="btn-pin-offline ${isPinned ? 'pinned' : ''}" data-track-id="${track.id}" data-mod-id="${mod.id}" title="${isPinned ? 'Guardado Offline (Expira en 3 días)' : 'Guardar Lectura Offline (Máx 5)'}">
-                      <i class="fa-solid fa-bookmark"></i> ${isPinned ? 'Offline' : '+ Offline'}
-                    </button>
                     <span class="module-tag">${track.title}</span>
                   </div>
                 </div>
@@ -716,9 +535,9 @@ function renderGrid(tracks, phrases = []) {
 
                   <!-- Standards Badges at the bottom in compact micro-pills -->
                   <div class="standards-badge-group" style="margin:0; padding-top:10px; border-top:1px solid rgba(255,255,255,0.04);">
-                    <span class="std-pill std-conocer" title="Estándar SEP CONOCER México"><i class="fa-solid fa-award"></i> SEP ${conocerCode}</span>
-                    <span class="std-pill std-ngss" title="Estándar Internacional Next Generation Science Standards"><i class="fa-solid fa-flask"></i> NGSS ${ngssCode}</span>
-                    <span class="std-pill std-industry" title="Alineación a Currículo e Industria"><i class="fa-solid fa-industry"></i> ${industrySource}</span>
+                    <span class="std-pill std-conocer" title="Apego Formativo a Estándar SEP CONOCER"><i class="fa-solid fa-award"></i> Apego ${conocerCode}</span>
+                    <span class="std-pill std-ngss" title="Alineación Temática NGSS Global"><i class="fa-solid fa-flask"></i> NGSS ${ngssCode}</span>
+                    <span class="std-pill std-industry" title="Referencia Metodológica de Industria"><i class="fa-solid fa-industry"></i> ${industrySource}</span>
                   </div>
                 </div>
               </div>
@@ -1074,7 +893,7 @@ function renderDialogueTabHtml(dialogue) {
       </div>
       <div style="font-size:0.88rem; color:#fca5a5; margin-bottom:4px;"><s>"${tip.school}"</s></div>
       <div style="font-size:0.95rem; color:#6ee7b7; font-weight:700; margin-bottom:8px;">"${tip.native}"</div>
-      <div style="font-size:0.8rem; color:var(--text-muted); line-height:1.4;">💡 <em>${tip.explanation}</em></div>
+      <div style="font-size:0.8rem; color:var(--text-muted); line-height:1.4;"><i class="fa-regular fa-lightbulb" style="color:var(--gold); margin-right:4px;"></i><em>${tip.explanation}</em></div>
     </div>
   `).join('');
 
@@ -1296,7 +1115,7 @@ function setupSocraticEvaluator(mod) {
           <div class="socratic-msg-avatar"><i class="fa-solid fa-robot"></i></div>
           <div class="socratic-content">
             <div class="socratic-bubble" style="border-color:rgba(239,68,68,0.4); background:rgba(239,68,68,0.08);">
-              ⚠️ <strong>Cero tolerancia a respuestas vacías:</strong> En stemOS evaluamos tu producción técnica activa en inglés. Explica con tus propias palabras el concepto para validar tu progreso matemáticamente.
+              <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444; margin-right:4px;"></i><strong>Cero tolerancia a respuestas vacías:</strong> En stemOS evaluamos tu producción técnica activa en inglés. Explica con tus propias palabras el concepto para validar tu progreso matemáticamente.
             </div>
           </div>
         `;
@@ -1463,7 +1282,7 @@ function openDrawer(trackId, modId, tracks) {
           </div>
           <div>
             <div style="font-weight:800; color:var(--gold); font-size:0.95rem; letter-spacing:0.02em;">MODELO GOLD ESP — BUCLE DE ALTA DENSIDAD TÉCNICA</div>
-            <div style="font-size:0.8rem; color:var(--text-muted);">Blueprint de Especificación ➔ Diálogo de Planta ➔ Matriz Léxica ➔ Evaluador Socrático Feynman</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Blueprint de Especificación <i class="fa-solid fa-arrow-right" style="font-size:0.7rem; opacity:0.6; margin:0 4px;"></i> Diálogo de Planta <i class="fa-solid fa-arrow-right" style="font-size:0.7rem; opacity:0.6; margin:0 4px;"></i> Matriz Léxica <i class="fa-solid fa-arrow-right" style="font-size:0.7rem; opacity:0.6; margin:0 4px;"></i> Evaluador Socrático Feynman</div>
           </div>
         </div>
         <span class="gold-model-tag"><i class="fa-solid fa-check-double"></i> Industria 4.0</span>
@@ -1539,29 +1358,48 @@ function openDrawer(trackId, modId, tracks) {
     </div>
 
     <!-- Accreditation & Standards Footer Banner (Relocated to bottom) -->
-    <div class="accreditation-banner" style="margin-top:32px; margin-bottom:0; padding:16px 20px;">
-      <h3 class="font-head" style="color:var(--gold); font-size:0.95rem; display:flex; align-items:center; gap:8px;">
-        <i class="fa-solid fa-graduation-cap"></i> Acreditación & Estándares de Empleabilidad
-      </h3>
-      <div class="accred-grid" style="margin-top:10px; gap:10px;">
-        <div class="accred-box" style="padding:10px;">
-          <div class="accred-title" style="color:var(--emerald); font-size:0.72rem;"><i class="fa-solid fa-award"></i> SEP CONOCER</div>
-          <div class="accred-desc" style="font-size:0.8rem;">${conocerCode}</div>
+    <div class="accreditation-banner" style="margin-top:32px; margin-bottom:0; padding:20px 24px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+        <h3 class="font-head" style="color:var(--gold); font-size:1.05rem; display:flex; align-items:center; gap:8px; margin:0;">
+          <i class="fa-solid fa-graduation-cap"></i> Acreditación & Estándares de Empleabilidad
+        </h3>
+        <span style="font-size:0.75rem; font-weight:700; color:var(--cyan); background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3); padding:3px 10px; border-radius:20px;">
+          <i class="fa-solid fa-scale-balanced"></i> Apego Formativo y Alineación Curricular
+        </span>
+      </div>
+
+      <div class="accred-grid" style="gap:12px;">
+        <div class="accred-box" style="padding:12px 14px;">
+          <div class="accred-title" style="color:var(--emerald); font-size:0.75rem;"><i class="fa-solid fa-award"></i> SEP CONOCER (Apego a Estándar)</div>
+          <div class="accred-desc" style="font-size:0.85rem; font-weight:600;">${conocerCode}</div>
+          <div style="font-size:0.72rem; color:var(--text-dim); margin-top:4px;">Apego temático a competencias laborales</div>
         </div>
 
-        <div class="accred-box" style="padding:10px;">
-          <div class="accred-title" style="color:var(--cyan); font-size:0.72rem;"><i class="fa-solid fa-flask"></i> NGSS Global</div>
-          <div class="accred-desc" style="font-size:0.8rem;">${ngssCode}</div>
+        <div class="accred-box" style="padding:12px 14px;">
+          <div class="accred-title" style="color:var(--cyan); font-size:0.75rem;"><i class="fa-solid fa-flask"></i> NGSS Global (Alineación)</div>
+          <div class="accred-desc" style="font-size:0.85rem; font-weight:600;">${ngssCode}</div>
+          <div style="font-size:0.72rem; color:var(--text-dim); margin-top:4px;">Alineación curricular a ciencias aplicadas</div>
         </div>
 
-        <div class="accred-box" style="padding:10px;">
-          <div class="accred-title" style="color:var(--gold); font-size:0.72rem;"><i class="fa-solid fa-industry"></i> Origen Industria</div>
-          <div class="accred-desc" style="font-size:0.8rem;">${industrySource}</div>
+        <div class="accred-box" style="padding:12px 14px;">
+          <div class="accred-title" style="color:var(--gold); font-size:0.75rem;"><i class="fa-solid fa-industry"></i> Origen Industria (Referencia)</div>
+          <div class="accred-desc" style="font-size:0.85rem; font-weight:600;">${industrySource}</div>
+          <div style="font-size:0.72rem; color:var(--text-dim); margin-top:4px;">Metodología técnica referencial de planta</div>
         </div>
 
-        <div class="accred-box" style="padding:10px;">
-          <div class="accred-title" style="color:var(--purple); font-size:0.72rem;"><i class="fa-solid fa-certificate"></i> Credencial</div>
-          <div class="accred-desc" style="font-size:0.8rem;">Open Badges 3.0 (W3C)</div>
+        <div class="accred-box" style="padding:12px 14px;">
+          <div class="accred-title" style="color:var(--purple); font-size:0.75rem;"><i class="fa-solid fa-certificate"></i> Credencial Digital Verificable</div>
+          <div class="accred-desc" style="font-size:0.85rem; font-weight:600;">Open Badges 3.0 (W3C Standard)</div>
+          <div style="font-size:0.72rem; color:var(--text-dim); margin-top:4px;">Insignia digital criptográfica para CV/LinkedIn</div>
+        </div>
+      </div>
+
+      <!-- Institutional Disclaimer Requested by User -->
+      <div style="margin-top:16px; padding:12px 16px; background:rgba(0,0,0,0.35); border-left:3px solid var(--gold); border-radius:8px; display:flex; gap:12px; align-items:flex-start;">
+        <i class="fa-solid fa-circle-info" style="color:var(--gold); font-size:1rem; margin-top:3px; flex-shrink:0;"></i>
+        <div style="font-size:0.78rem; color:var(--text-muted); line-height:1.5;">
+          <strong style="color:#fff;">Aviso Institucional de Alineación Curricular:</strong>
+          Los estándares <strong>SEP CONOCER</strong> y <strong>NGSS Global</strong> citados corresponden a <em>apegos temáticos y alineaciones curriculares formativas</em> para asegurar rigor de empleabilidad industrial. <strong>NO constituyen certificados directos emitidos por CONOCER ni por NGSS</strong>. La acreditación del estudiante se otorga mediante insignias digitales criptográficas verificables bajo el estándar internacional <strong>Open Badges 3.0 (W3C)</strong> al completar los módulos y evaluaciones socráticas.
         </div>
       </div>
     </div>
@@ -1756,7 +1594,7 @@ function openPhraseDrawer(phraseId, phrases) {
         <h3 class="font-head" style="color:var(--emerald); font-size:1.2rem; margin-bottom:12px;"><i class="fa-solid fa-briefcase"></i> Ejemplo en Entorno de Ingeniería & Nearshoring</h3>
         <div style="background:rgba(15, 23, 42, 0.8); border:1px solid var(--border-glow); padding:20px; border-radius:14px;">
           <div style="color:var(--cyan); font-family:var(--font-mono); font-size:1rem; font-weight:600;">"${p.exampleEN}"</div>
-          <div style="color:var(--text-muted); font-size:0.88rem; margin-top:8px;">📌 <em>${p.exampleES}</em></div>
+          <div style="color:var(--text-muted); font-size:0.88rem; margin-top:8px;"><i class="fa-solid fa-quote-left" style="font-size:0.75rem; color:var(--cyan); margin-right:6px; opacity:0.8;"></i><em>${p.exampleES}</em></div>
         </div>
       </div>
 
@@ -1844,7 +1682,7 @@ function adaptReadingContentForCEFR(reading, level = 'A2') {
 
 ---
 
-### 🇲🇽 LATAM Student Grammar & Cognate Guide (A2)
+### LATAM Student Grammar & Cognate Guide (A2)
 - **Grammar Structure**: Subject + Simple Verb + Object (*A router sends data* = *Un router envía datos*).
 - **Essential Vocabulary**: 
   - **Network**: Red de computadoras
@@ -1875,7 +1713,7 @@ function adaptReadingContentForCEFR(reading, level = 'A2') {
 
 ---
 
-### 🇺🇸 B1/B2 Executive Nearshoring Engineering & Audit Focus
+### B1/B2 Executive Nearshoring Engineering & Audit Focus
 - **Incident Response Conditionals**: *"If link utilization exceeds 85% for more than 30 seconds, then automated OSPF re-routing MUST trigger instantly to prevent SLA breach."*
 - **Compliance Passive Voice (ISO 27001 / CompTIA)**: *"Data packets are encrypted via AES-256 and authenticated prior to transmission across public backbones."*
 - **Executive Engineering Terms**: Heterogeneous endpoints, Packet encapsulation, VLAN segmentation, OSPF routing, SLA compliance thresholds.
@@ -1890,9 +1728,7 @@ function adaptReadingContentForCEFR(reading, level = 'A2') {
 function renderMarkdownWithVocabulary(mdText, vocabulary = [], level = 'A2') {
   if (!mdText) return '';
   
-  // Transform text based on CEFR Level (A2 vs B1/B2 LATAM adaptation)
-  const adaptedMd = adaptReadingContentForCEFR(mdText, level);
-  let formatted = formatMarkdown(adaptedMd);
+  let formatted = formatMarkdown(mdText);
 
   // CEFR Mode Header Notice
   const levelBanner = (level === 'B1') ? `
@@ -1913,22 +1749,26 @@ function renderMarkdownWithVocabulary(mdText, vocabulary = [], level = 'A2') {
 
   formatted = levelBanner + formatted;
 
-  // Auto-wrap vocabulary terms in interactive tooltip spans with level styling
+  // Auto-wrap vocabulary terms ONLY within <p> paragraphs (prevent corrupting headings or existing HTML)
   if (vocabulary && vocabulary.length > 0) {
     vocabulary.forEach(v => {
       const termStr = v.term || v.en;
-      if (!termStr) return;
+      if (!termStr || termStr.length < 3) return;
 
-      const defStr = v.definition || v.definitionEN || v.es || '';
-      const esStr = v.es || '';
+      const defStr = (v.definition || v.definitionEN || v.es || '').replace(/"/g, '&quot;');
+      const esStr = (v.es || '').replace(/"/g, '&quot;');
+      const ipaStr = v.ipa ? ` <span class="term-ipa">[${v.ipa}]</span>` : '';
       const badgeStyle = (level === 'B1')
-        ? 'border-color:rgba(168,85,247,0.5); background:rgba(168,85,247,0.15); color:#e9d5ff;'
-        : 'border-color:rgba(56,189,248,0.4); background:rgba(56,189,248,0.15); color:var(--cyan);';
+        ? 'border-color:rgba(168,85,247,0.4); background:rgba(168,85,247,0.12); color:#e9d5ff;'
+        : 'border-color:rgba(56,189,248,0.4); background:rgba(56,189,248,0.12); color:var(--cyan);';
 
-      const regex = new RegExp(`\\b(${termStr.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})\\b`, 'gi');
-      
-      formatted = formatted.replace(regex, (match) => {
-        return `<span class="term-tooltip" style="${badgeStyle}">${match} <i class="fa-solid fa-circle-info term-info-btn" onclick="event.stopPropagation(); alert('${match} (${esStr}):\\n${defStr}')" title="${defStr}"></i><span class="tooltip-box"><strong>${match} (${esStr}) [${level}]</strong><br>${defStr}</span></span>`;
+      // Match paragraph tags and replace terms strictly inside inner paragraph text
+      formatted = formatted.replace(/(<p[^>]*>)([\s\S]*?)(<\/p>)/gi, (fullP, pOpen, pInner, pClose) => {
+        const termRegex = new RegExp(`\\b(${termStr.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})\\b(?![^<]*>|[^<]*<\\/span>)`, 'gi');
+        const replacedInner = pInner.replace(termRegex, (match) => {
+          return `<span class="term-tooltip" style="${badgeStyle}">${match} <i class="fa-solid fa-circle-info term-info-btn" title="${defStr}"></i><span class="tooltip-box"><strong>${match} (${esStr})</strong>${ipaStr}<br>${defStr}</span></span>`;
+        });
+        return pOpen + replacedInner + pClose;
       });
     });
   }
@@ -1938,14 +1778,36 @@ function renderMarkdownWithVocabulary(mdText, vocabulary = [], level = 'A2') {
 
 function formatMarkdown(mdText) {
   if (!mdText) return '';
-  return mdText
-    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/\n/g, '<br>');
+  let out = mdText;
+  
+  // Callout blockquotes with bold title: > **Title**: Content
+  out = out.replace(/^>\s*\*\*([^*]+)\*\*:\s*(.*$)/gim, '<div class="reading-callout-quote"><div class="callout-badge"><i class="fa-solid fa-shield-halved"></i> $1</div><div class="callout-text">$2</div></div>');
+  // Generic blockquotes: > Content
+  out = out.replace(/^>\s*(.*$)/gim, '<blockquote class="reading-callout-quote"><i class="fa-solid fa-circle-info"></i> <div>$1</div></blockquote>');
+
+  // Headings
+  out = out.replace(/^### (.*$)/gim, '<h3 class="reader-subheading">$1</h3>');
+  out = out.replace(/^## (.*$)/gim, '<h2 class="reader-section-heading">$1</h2>');
+  out = out.replace(/^# (.*$)/gim, '<h1 class="reader-main-title">$1</h1>');
+
+  // Bold and italic
+  out = out.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  out = out.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+  // Paragraphs
+  const paragraphs = out.split(/\n\n+/);
+  out = paragraphs.map(p => {
+    const trimmed = p.trim();
+    if (!trimmed) return '';
+    if (trimmed.startsWith('<h1') || trimmed.startsWith('<h2') || trimmed.startsWith('<h3') || trimmed.startsWith('<div class="reading-callout') || trimmed.startsWith('<blockquote') || trimmed.startsWith('---')) {
+      return trimmed;
+    }
+    return `<p>${trimmed.replace(/\n/g, '<br>')}</p>`;
+  }).join('\n');
+
+  out = out.replace(/---/g, '<hr class="reader-divider">');
+
+  return out;
 }
 
 function simulateFeynmanResponse(targetPhrase) {
@@ -1972,9 +1834,9 @@ function simulateFeynmanResponse(targetPhrase) {
 
   let feedback = '';
   if (usesPhrase) {
-    feedback = `🎯 <strong>Excelente uso del modismo nativo!</strong> Tu oración encaja perfectamente con el tono profesional de una entrevista en Nearshoring. Fluidez y estructura aprobadas.`;
+    feedback = `<i class="fa-solid fa-circle-check" style="color:var(--emerald); margin-right:6px;"></i><strong>Excelente uso del modismo nativo:</strong> Tu oración encaja perfectamente con el tono profesional de una entrevista en Nearshoring. Fluidez y estructura aprobadas.`;
   } else {
-    feedback = `💡 <strong>Sugerencia de Feynman:</strong> Recuerda incluir explícitamente la expresión <em>"${targetPhrase}"</em> en tu oración para reforzar tu memoria activa de modismos.`;
+    feedback = `<i class="fa-solid fa-lightbulb" style="color:var(--gold); margin-right:6px;"></i><strong>Sugerencia de Feynman:</strong> Recuerda incluir explícitamente la expresión <em>"${targetPhrase}"</em> en tu oración para reforzar tu memoria activa de modismos.`;
   }
 
   const aiMsgHtml = `
