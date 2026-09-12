@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 userProgress = JSON.parse(saved);
                 globalXP = userProgress.xp || 450;
-                statPoints.textContent = globalXP;
+                if (statPoints) statPoints.textContent = globalXP;
 
                 let completedCount = 0;
                 for (let node in userProgress.nodeStatuses) {
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
                 globalCompleted = completedCount;
-                statCompleted.textContent = globalCompleted;
+                if (statCompleted) statCompleted.textContent = globalCompleted;
 
                 // Sync skillsData statuses from userProgress
                 for (let key in userProgress.nodeStatuses) {
@@ -136,6 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
             saveProgress();
         }
         updateProgressBar();
+        if (typeof updateKPIMetrics === 'function') updateKPIMetrics();
+        if (typeof renderSegmentedProgressBar === 'function') renderSegmentedProgressBar();
     }
 
     function saveProgress() {
@@ -144,6 +146,11 @@ document.addEventListener('DOMContentLoaded', () => {
             userProgress.nodeStatuses[key] = skillsData[key].status;
         }
         localStorage.setItem('stemos_user_progress', JSON.stringify(userProgress));
+        if (typeof updateKPIMetrics === 'function') updateKPIMetrics();
+        if (typeof renderSegmentedProgressBar === 'function') renderSegmentedProgressBar();
+        if (typeof renderAllUnitsGrid === 'function' && typeof activeFilterCategory !== 'undefined') {
+            renderAllUnitsGrid(activeFilterCategory);
+        }
     }
 
     // Load progress and update UI

@@ -81,6 +81,7 @@ function initStudio() {
   setupDrawer();
   setupOfflineController(tracks, phrases);
   setupLevelSwitcher(tracks, phrases);
+  setupSupasteInteractions(tracks, phrases);
 }
 
 function setupLevelSwitcher(tracks, phrases) {
@@ -90,14 +91,16 @@ function setupLevelSwitcher(tracks, phrases) {
 
   const currentLevel = localStorage.getItem('stemos_cefr_level') || 'A2';
   setActiveLevelButton(currentLevel);
+  updateHeroStageLevel(currentLevel);
 
   [btnA2, btnB1].forEach(btn => {
     btn.addEventListener('click', (e) => {
       const selected = e.currentTarget.getAttribute('data-level');
       localStorage.setItem('stemos_cefr_level', selected);
       setActiveLevelButton(selected);
+      updateHeroStageLevel(selected);
       filterGridByLevel(selected, tracks);
-      showOfflineToast(`Nivel CEFR Actualizado: ${selected}`, `Ajustando vocabulario, lecturas e inglés de Nearshoring a nivel ${selected}.`, 100, true);
+      showOfflineToast(`Nivel CEFR: ${selected}`, `Ajustando vocabulario, lecturas e inglés técnico a nivel ${selected}.`, 100, true);
     });
   });
 }
@@ -105,14 +108,38 @@ function setupLevelSwitcher(tracks, phrases) {
 function setActiveLevelButton(level) {
   const btnA2 = document.getElementById('btn-level-a2');
   const btnB1 = document.getElementById('btn-level-b1');
-  if (!btnA2 || !btnB1) return;
+  if (btnA2 && btnB1) {
+    if (level === 'B1') {
+      btnB1.classList.add('active');
+      btnA2.classList.remove('active');
+    } else {
+      btnA2.classList.add('active');
+      btnB1.classList.remove('active');
+    }
+  }
 
-  if (level === 'B1') {
-    btnB1.classList.add('active');
-    btnA2.classList.remove('active');
-  } else {
-    btnA2.classList.add('active');
-    btnB1.classList.remove('active');
+  // Also sync any level bar buttons in filters
+  document.querySelectorAll('.level-bar-btn').forEach(btn => {
+    if (btn.getAttribute('data-level') === level) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
+
+function updateHeroStageLevel(level) {
+  const heroStageLevel = document.getElementById('hero-stage-level');
+  const heroStageText = document.getElementById('hero-stage-text');
+  if (heroStageLevel) {
+    heroStageLevel.innerText = `Nivel ${level} (${level === 'A2' ? 'Básico' : 'Técnico'})`;
+  }
+  if (heroStageText) {
+    if (level === 'A2') {
+      heroStageText.innerHTML = '&ldquo;In computer chip factories, workers wear white cleanroom suits. They keep the air pure so microchips do not have dust damage. Silicon wafers are washed with special chemical liquids.&rdquo;';
+    } else {
+      heroStageText.innerHTML = '&ldquo;In extreme ultraviolet (EUV) photolithography, wafer steppers operate inside ISO Class 1 cleanrooms with laminar airflow. Photoresist deposition requires precise chemical handling to prevent sub-micron yield defects.&rdquo;';
+    }
   }
 }
 
@@ -126,6 +153,8 @@ function filterGridByLevel(level, tracks) {
       modTag.innerText = `${track.title} (${level})`;
     }
   });
+
+  updateHeroStageLevel(level);
 
   // Live re-render active open drawer if visible
   if (currentActiveTrackId && currentActiveModId) {
@@ -338,64 +367,30 @@ function renderFilters(tracks, phrases = []) {
   const filterContainer = document.getElementById('track-filters');
   if (!filterContainer) return;
 
-  const validSaved = getValidOfflineReadings();
-  const activeLevel = localStorage.getItem('stemos_cefr_level') || 'A2';
-
   const techCount = tracks.filter(t => (t.category || 'technology') === 'technology').length;
   const engCount = tracks.filter(t => t.category === 'engineering').length;
   const sciCount = tracks.filter(t => t.category === 'science').length;
   const carCount = tracks.filter(t => t.category === 'career').length;
 
   let html = `
-    <!-- Prominent CEFR A2/B1 Level Selector Pill -->
-    <div class="level-switcher-bar-pill" style="display:inline-flex; align-items:center; gap:4px; background:rgba(15, 23, 42, 0.9); border:1px solid rgba(56, 189, 248, 0.4); padding:3px 6px; border-radius:14px; margin-right:6px; box-shadow:0 0 15px rgba(56, 189, 248, 0.15);">
-      <span style="font-size:0.72rem; font-weight:700; color:var(--cyan); padding:0 6px; text-transform:uppercase; letter-spacing:0.04em;"><i class="fa-solid fa-language"></i> Nivel CEFR:</span>
-      <button class="level-bar-btn ${activeLevel === 'A2' ? 'active' : ''}" data-level="A2" style="padding:4px 12px; border-radius:10px; font-size:0.78rem; font-weight:700; border:none; cursor:pointer; transition:all 0.25s ease; ${activeLevel === 'A2' ? 'background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; box-shadow:0 0 10px rgba(56, 189, 248, 0.4);' : 'background:transparent; color:var(--text-muted);'}">A2 (Básico-Intermedio)</button>
-      <button class="level-bar-btn ${activeLevel === 'B1' ? 'active' : ''}" data-level="B1" style="padding:4px 12px; border-radius:10px; font-size:0.78rem; font-weight:700; border:none; cursor:pointer; transition:all 0.25s ease; ${activeLevel === 'B1' ? 'background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; box-shadow:0 0 10px rgba(56, 189, 248, 0.4);' : 'background:transparent; color:var(--text-muted);'}">B1 (Técnico Avanzado)</button>
-    </div>
-
-    <!-- Category Master Filter Buttons -->
-    <button class="filter-btn active" data-track="all"><i class="fa-solid fa-layer-group"></i> Todos los Tracks (${tracks.length})</button>
-    <button class="filter-btn filter-cat-btn" data-track="cat-technology" style="border-color: rgba(56, 189, 248, 0.4); color: var(--cyan);"><i class="fa-solid fa-laptop-code"></i> Technology (${techCount})</button>
-    <button class="filter-btn filter-cat-btn" data-track="cat-engineering" style="border-color: rgba(52, 211, 153, 0.4); color: var(--emerald);"><i class="fa-solid fa-gears"></i> Engineering (${engCount})</button>
-    <button class="filter-btn filter-cat-btn" data-track="cat-science" style="border-color: rgba(192, 132, 252, 0.4); color: var(--purple);"><i class="fa-solid fa-atom"></i> Science (${sciCount})</button>
-    <button class="filter-btn filter-cat-btn" data-track="cat-career" style="border-color: rgba(251, 146, 60, 0.4); color: var(--gold);"><i class="fa-solid fa-plane-departure"></i> Aviation & Career (${carCount})</button>
+    <!-- Category Master Filter Buttons (Supaste Segmented Pills) -->
+    <button class="filter-btn active" data-track="all"><i class="fa-solid fa-layer-group"></i> All Tracks (${tracks.length})</button>
+    <button class="filter-btn filter-cat-btn" data-track="cat-technology"><i class="fa-solid fa-laptop-code" style="color:#0284c7;"></i> Technology (${techCount})</button>
+    <button class="filter-btn filter-cat-btn" data-track="cat-engineering"><i class="fa-solid fa-gears" style="color:#059669;"></i> Engineering (${engCount})</button>
+    <button class="filter-btn filter-cat-btn" data-track="cat-science"><i class="fa-solid fa-atom" style="color:#7c3aed;"></i> Science (${sciCount})</button>
+    <button class="filter-btn filter-cat-btn" data-track="cat-career"><i class="fa-solid fa-plane-departure" style="color:#ea580c;"></i> Aviation &amp; Career (${carCount})</button>
   `;
 
   if (phrases && phrases.length > 0) {
     html += `
-      <button class="filter-btn" data-track="phrases" style="border-color: rgba(251, 191, 36, 0.35);">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Frases Nativas (${phrases.length})
+      <button class="filter-btn" data-track="phrases">
+        <i class="fa-solid fa-comments" style="color:#f59e0b;"></i>
+        Native Idioms (${phrases.length})
       </button>
     `;
   }
 
   filterContainer.innerHTML = html;
-
-  // Attach event listener for the A2 / B1 Level Bar Buttons inside filters
-  filterContainer.querySelectorAll('.level-bar-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const level = e.currentTarget.getAttribute('data-level');
-      localStorage.setItem('stemos_cefr_level', level);
-      
-      // Update buttons style
-      filterContainer.querySelectorAll('.level-bar-btn').forEach(b => {
-        b.classList.remove('active');
-        b.style.background = 'transparent';
-        b.style.color = 'var(--text-muted)';
-        b.style.boxShadow = 'none';
-      });
-      e.currentTarget.classList.add('active');
-      e.currentTarget.style.background = 'linear-gradient(135deg, var(--cyan), var(--indigo))';
-      e.currentTarget.style.color = '#030508';
-      e.currentTarget.style.boxShadow = '0 0 10px rgba(56, 189, 248, 0.4)';
-
-      filterGridByLevel(level, tracks);
-      showOfflineToast(`Nivel CEFR: ${level}`, `Ajustando vocabulario y lecturas a nivel ${level} (${level === 'A2' ? 'Básico Intermedio' : 'Técnico Avanzado'}).`, 100, true);
-    });
-  });
 
   filterContainer.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -403,7 +398,16 @@ function renderFilters(tracks, phrases = []) {
       const targetBtn = e.currentTarget;
       targetBtn.classList.add('active');
       const trackId = targetBtn.getAttribute('data-track');
-      filterGridByTrack(trackId, tracks);
+      filterGridByTrack(trackId, tracks, phrases);
+
+      // Sync top nav active state if applicable
+      document.querySelectorAll('.supaste-nav-links .nav-link').forEach(navL => {
+        if (navL.getAttribute('data-filter-jump') === trackId) {
+          navL.classList.add('active');
+        } else {
+          navL.classList.remove('active');
+        }
+      });
     });
   });
 }
@@ -440,162 +444,313 @@ function getTrackIcon(id) {
   }
 }
 
-function renderGrid(tracks, phrases = []) {
-  const gridContainer = document.getElementById('studio-grid');
-  if (!gridContainer) return;
+// ── Render Level 1: Modular Units Grid (Screenshot Model: media_1789248905260.png) ──
+function renderUnitsGrid(tracks, phrases = []) {
+  const unitsContainer = document.getElementById('units-grid');
+  if (!unitsContainer) return;
 
-  const savedMap = getSavedOfflineReadingsMap();
-  const validSaved = getValidOfflineReadings();
+  const categoriesMap = {
+    "technology": { name: "Technology", class: "cat-tech", color: "#0284c7" },
+    "engineering": { name: "Engineering", class: "cat-eng", color: "#059669" },
+    "science": { name: "Science", class: "cat-sci", color: "#7c3aed" },
+    "career": { name: "Aviation & Career", class: "cat-car", color: "#ea580c" }
+  };
 
   let html = '';
 
-  // 1. Render Course Tracks Grouped by 4 Master Categories
-  const categoryKeys = ["technology", "engineering", "science", "career"];
-  const categoriesMap = (typeof LXP_CATEGORIES !== 'undefined' ? LXP_CATEGORIES : {
-    "technology": { name: "Technology", badge: "TECHNOLOGY", icon: "fa-solid fa-laptop-code", description: "Redes avanzadas, IA, IoT, desarrollo de software y computación en la nube para la industria global." },
-    "engineering": { name: "Engineering & Industry", badge: "ENGINEERING & INDUSTRY", icon: "fa-solid fa-gears", description: "Manufactura de alta precisión, semiconductores, electromovilidad, robótica y sistemas mecatrónicos de nearshoring." },
-    "science": { name: "Science & Future Technology", badge: "SCIENCE & FUTURE TECHNOLOGY", icon: "fa-solid fa-atom", description: "Biotecnología, tecnología espacial, sustentabilidad ambiental, nanotecnología y ciencias aplicadas." },
-    "career": { name: "Aviation, Career & Professional English", badge: "AVIATION, CAREER & PROFESSIONAL ENGLISH", icon: "fa-solid fa-plane-departure", description: "Inglés técnico para aviación civil (OACI), aeroespacial de defensa, gestión ejecutiva, liderazgo y proyectos globales." }
+  tracks.forEach((track, idx) => {
+    const unitNumber = String(idx + 1).padStart(2, '0');
+    const catKey = track.category || 'technology';
+    const cat = categoriesMap[catKey] || { name: 'Engineering', class: 'cat-eng', color: '#059669' };
+    const modCount = track.modules ? track.modules.length : 0;
+    
+    let totalReadings = 0;
+    if (track.modules) {
+      track.modules.forEach(m => {
+        if (m.readings) totalReadings += m.readings.length;
+      });
+    }
+
+    const progressPct = 70 + (idx % 6) * 5; // Clean realistic curriculum distribution
+
+    html += `
+      <div class="unit-card ${cat.class}" data-track-id="${track.id}" data-category="${catKey}">
+        <div class="unit-card-banner">
+          <div class="unit-banner-overlay">
+            <span class="unit-number-pill">Unit ${unitNumber}</span>
+            <span class="unit-category-chip">${cat.name}</span>
+          </div>
+          <div class="unit-banner-watermark">
+            <i class="${getTrackIcon(track.id)}"></i>
+          </div>
+        </div>
+
+        <div class="unit-card-body">
+          <h3 class="unit-card-title">${track.titleEN || track.title}</h3>
+          <p class="unit-card-en">${track.title}</p>
+          <p class="unit-card-desc">${track.description || track.industry || 'Advanced technical English training for nearshoring engineering teams.'}</p>
+        </div>
+
+        <div class="unit-progress-section">
+          <div class="unit-progress-row">
+            <span>Curriculum Scope</span>
+            <span>${modCount} Modules &bull; ${totalReadings} Texts</span>
+          </div>
+          <div class="unit-progress-track">
+            <div class="unit-progress-bar" style="width: ${progressPct}%;"></div>
+          </div>
+        </div>
+
+        <div class="unit-card-footer">
+          <div class="unit-modules-badge">
+            <i class="fa-solid fa-graduation-cap"></i> Level ${track.level || 'B1-B2'}
+          </div>
+          <button class="unit-explore-btn" data-track-id="${track.id}">
+            View Modules <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    `;
   });
 
-  categoryKeys.forEach(catKey => {
-    const cat = categoriesMap[catKey] || { name: catKey, badge: catKey.toUpperCase(), icon: "fa-solid fa-layer-group", description: "" };
-    const catTracks = tracks.filter(t => (t.category || 'technology') === catKey);
+  unitsContainer.innerHTML = html;
 
-    if (catTracks.length > 0) {
-      html += `
-        <div class="category-group" id="group-${catKey}" data-category="${catKey}">
-          <div class="category-banner cat-${catKey}">
-            <div class="category-banner-left">
-              <div class="category-banner-icon">
-                <i class="${cat.icon}"></i>
-              </div>
-              <div>
-                <div class="category-banner-title">${cat.badge || cat.name}</div>
-                <div class="category-banner-desc">${cat.description}</div>
-              </div>
-            </div>
-            <div class="category-pill-badge">
-              ${catTracks.length} Tracks
-            </div>
-          </div>
-      `;
-
-      catTracks.forEach(track => {
-        html += `
-          <div class="track-section" id="section-${track.id}" data-category="${catKey}">
-            <h2 class="track-header-title font-head">
-              <i class="${getTrackIcon(track.id)}"></i> ${track.title}
-              <span style="font-size:0.8rem; font-weight:500; color:var(--text-dim);">(${track.modules ? track.modules.length : 0} Módulos &bull; ${track.titleEN || ''})</span>
-            </h2>
-            <div class="modules-grid">
-        `;
-
-        if (track.modules && track.modules.length > 0) {
-          track.modules.forEach((mod, idx) => {
-            const readingsCount = mod.readings ? mod.readings.length : 0;
-            const statusLabel = readingsCount > 0 ? `${readingsCount} Lectura(s)` : 'En desarrollo';
-            const isPinned = !!savedMap[mod.id];
-
-            // Standards badges
-            const conocerCode = mod.conocer || track.conocer || 'EC1290 (Manufactura Alta Tech)';
-            const ngssCode = mod.ngss || track.ngss || 'HS-PS1-1 / HS-PS3-2';
-            const industrySource = mod.industry || track.industry || 'Nearshoring Industry Standard';
-            const isGold = !!mod.isGoldModel;
-            const goldTagHtml = isGold ? `
-              <span class="gold-model-tag" title="Módulo Modelo Gold ESP: 4 Pilares de Alta Densidad (Lectura + Diálogo + Léxico + Socrático)"><i class="fa-solid fa-star"></i> MODELO GOLD ESP</span>
-            ` : '';
-
-            html += `
-              <div class="module-card ${isGold ? 'gold-card' : ''}" data-track-id="${track.id}" data-mod-id="${mod.id}">
-                <div class="card-top">
-                  <div class="module-icon-box" ${isGold ? 'style="background:rgba(251,191,36,0.18); color:var(--gold); border:1px solid rgba(251,191,36,0.35);"' : ''}>
-                    <i class="${mod.icon || 'fa-solid fa-microchip'}"></i>
-                  </div>
-                  <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
-                    ${goldTagHtml}
-                    <span class="module-tag">${track.title}</span>
-                  </div>
-                </div>
-
-                <div class="card-body">
-                  <h3 class="card-title-es">${mod.titleES || mod.title}</h3>
-                  <p class="card-title-en">${mod.title}</p>
-                </div>
-
-                <div class="card-footer" style="flex-direction:column; align-items:stretch; gap:12px;">
-                  <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div class="reading-count" ${isGold ? 'style="color:var(--gold); font-weight:700;"' : ''}>
-                      <i class="${isGold ? 'fa-solid fa-crown' : 'fa-solid fa-file-lines'}"></i> ${isGold ? '4 Pilares ESP' : statusLabel}
-                    </div>
-                    <button class="explore-btn" ${isGold ? 'style="background:linear-gradient(135deg, var(--gold), #d97706); color:#000;"' : ''}>
-                      ${isGold ? 'Abrir Modelo Gold' : 'Explorar'} <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                  </div>
-
-                  <!-- Standards Badges at the bottom in compact micro-pills -->
-                  <div class="standards-badge-group" style="margin:0; padding-top:10px; border-top:1px solid rgba(255,255,255,0.04);">
-                    <span class="std-pill std-conocer" title="Apego Formativo a Estándar SEP CONOCER"><i class="fa-solid fa-award"></i> Apego ${conocerCode}</span>
-                    <span class="std-pill std-ngss" title="Alineación Temática NGSS Global"><i class="fa-solid fa-flask"></i> NGSS ${ngssCode}</span>
-                    <span class="std-pill std-industry" title="Referencia Metodológica de Industria"><i class="fa-solid fa-industry"></i> ${industrySource}</span>
-                  </div>
-                </div>
-              </div>
-            `;
-          });
-        } else {
-          html += `<p style="color:var(--text-dim); font-size:0.9rem;">No hay módulos en este track actualmente.</p>`;
-        }
-
-        html += `
-            </div>
-          </div>
-        `;
-      });
-
-      html += `
-        </div>
-      `;
+  // Single delegated listener for unit card clicks
+  unitsContainer.addEventListener('click', (e) => {
+    const card = e.target.closest('.unit-card');
+    if (card) {
+      const trackId = card.getAttribute('data-track-id');
+      showUnitDetail(trackId, tracks, phrases);
     }
   });
+}
 
-  // 2. Render Native Phrases Section ("Lo que no enseñan en la escuela")
+// ── Render Level 2: Drill-Down Unit Detail View (Reveals Modules inside that Unit) ──
+function showUnitDetail(trackId, tracks, phrases = []) {
+  const unitsGrid = document.getElementById('units-grid');
+  const detailView = document.getElementById('unit-detail-view');
+  const legacyGrid = document.getElementById('studio-grid');
+  if (!detailView || !unitsGrid) return;
+
+  const currentIdx = tracks.findIndex(t => t.id === trackId);
+  if (currentIdx === -1) return;
+  const track = tracks[currentIdx];
+
+  const prevTrack = currentIdx > 0 ? tracks[currentIdx - 1] : null;
+  const nextTrack = currentIdx < tracks.length - 1 ? tracks[currentIdx + 1] : null;
+  const unitNumber = String(currentIdx + 1).padStart(2, '0');
+
+  const categoriesMap = {
+    "technology": { name: "Technology", badge: "TECHNOLOGY", icon: "fa-solid fa-laptop-code" },
+    "engineering": { name: "Engineering & Industry", badge: "ENGINEERING", icon: "fa-solid fa-gears" },
+    "science": { name: "Science & Future Tech", badge: "SCIENCE", icon: "fa-solid fa-atom" },
+    "career": { name: "Aviation & Career", badge: "AVIATION & CAREER", icon: "fa-solid fa-plane-departure" }
+  };
+  const catKey = track.category || 'technology';
+  const cat = categoriesMap[catKey] || { name: "Specialized", badge: "ESP", icon: "fa-solid fa-layer-group" };
+
+  const savedMap = getSavedOfflineReadingsMap();
+
+  let modulesHtml = '';
+  if (track.modules && track.modules.length > 0) {
+    track.modules.forEach((mod) => {
+      const readingsCount = mod.readings ? mod.readings.length : 0;
+      const statusLabel = readingsCount > 0 ? `${readingsCount} Reading(s)` : 'In Development';
+      const isGold = !!mod.isGoldModel;
+      const goldTagHtml = isGold ? `
+        <span class="gold-model-tag" title="Gold Model ESP: 4 High-Density Pillars"><i class="fa-solid fa-star"></i> GOLD MODEL ESP</span>
+      ` : '';
+
+      const conocerCode = mod.conocer || track.conocer || 'EC1290 (High-Tech Manufacturing)';
+      const ngssCode = mod.ngss || track.ngss || 'HS-PS1-1 / HS-PS3-2';
+      const industrySource = mod.industry || track.industry || 'Nearshoring Industry Benchmark';
+
+      modulesHtml += `
+        <div class="module-card ${isGold ? 'gold-card' : ''}" data-track-id="${track.id}" data-mod-id="${mod.id}">
+          <div class="card-top">
+            <div class="module-icon-box" ${isGold ? 'style="background:rgba(251,191,36,0.18); color:var(--gold-accent); border:1px solid rgba(251,191,36,0.35);"' : ''}>
+              <i class="${mod.icon || 'fa-solid fa-microchip'}"></i>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
+              ${goldTagHtml}
+              <span class="module-tag">${track.titleEN || track.title}</span>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <h3 class="card-title-es">${mod.title}</h3>
+            <p class="card-title-en">${mod.titleES || mod.title}</p>
+          </div>
+
+          <div class="card-footer" style="flex-direction:column; align-items:stretch; gap:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div class="reading-count" ${isGold ? 'style="color:var(--gold-accent); font-weight:700;"' : ''}>
+                <i class="${isGold ? 'fa-solid fa-crown' : 'fa-solid fa-file-lines'}"></i> ${isGold ? '4 ESP Pillars' : statusLabel}
+              </div>
+              <button class="explore-btn" ${isGold ? 'style="background:linear-gradient(135deg, var(--gold-accent), #d97706); color:#000;"' : ''}>
+                ${isGold ? 'Open Gold Model' : 'Open Module'} <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+
+            <!-- Standards Badges -->
+            <div class="standards-badge-group" style="margin:0; padding-top:10px; border-top:1px solid rgba(0,0,0,0.05);">
+              <span class="std-pill std-conocer" title="Apego Formativo SEP CONOCER"><i class="fa-solid fa-award"></i> ${conocerCode}</span>
+              <span class="std-pill std-ngss" title="NGSS Alignment"><i class="fa-solid fa-flask"></i> ${ngssCode}</span>
+              <span class="std-pill std-industry" title="Industry Benchmark"><i class="fa-solid fa-industry"></i> ${industrySource}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  detailView.innerHTML = `
+    <div class="unit-detail-nav">
+      <button class="btn-back-units" id="btn-back-units">
+        <i class="fa-solid fa-arrow-left"></i> All Units
+      </button>
+
+      <div class="unit-detail-pager">
+        <button class="pager-btn" id="pager-prev" ${prevTrack ? '' : 'disabled'} data-track-id="${prevTrack ? prevTrack.id : ''}">
+          <i class="fa-solid fa-chevron-left"></i> Previous
+        </button>
+        <span style="font-size:0.85rem; font-weight:700; color:var(--text-muted); font-family:var(--font-mono);">
+          Unit ${currentIdx + 1} of ${tracks.length}
+        </span>
+        <button class="pager-btn" id="pager-next" ${nextTrack ? '' : 'disabled'} data-track-id="${nextTrack ? nextTrack.id : ''}">
+          Next <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="unit-detail-header-card">
+      <div class="unit-detail-meta-top">
+        <span class="unit-number-pill" style="background:#0f172a; color:#fff;">Unit ${unitNumber}</span>
+        <span class="unit-category-chip" style="background:rgba(2,132,199,0.1); color:#0284c7; border:1px solid rgba(2,132,199,0.2);">
+          <i class="${cat.icon}"></i> ${cat.badge}
+        </span>
+        <span style="font-size:0.82rem; font-weight:600; color:var(--text-muted);">
+          ${track.modules ? track.modules.length : 0} Specialized Modules
+        </span>
+      </div>
+
+      <h2 class="unit-detail-title">${track.titleEN || track.title}</h2>
+      <p class="unit-detail-sub">${track.title}</p>
+      <p style="font-size:0.95rem; color:var(--text-muted); line-height:1.6; max-width:850px; margin-bottom:20px;">
+        ${track.description || 'Curated English for Specific Purposes (ESP) curriculum designed for advanced nearshoring manufacturing, aerospace, and precision engineering.'}
+      </p>
+
+      <div class="unit-detail-standards-row">
+        <span class="std-pill std-conocer"><i class="fa-solid fa-award"></i> SEP CONOCER ${track.conocer || 'EC1290'}</span>
+        <span class="std-pill std-ngss"><i class="fa-solid fa-flask"></i> NGSS ${track.ngss || 'HS-PS1-1'}</span>
+        <span class="std-pill std-industry"><i class="fa-solid fa-industry"></i> ${track.industry || 'Nearshoring Industry Benchmark'}</span>
+        <span class="std-pill" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1;"><i class="fa-solid fa-signal"></i> Level ${track.level || 'B1-B2'}</span>
+      </div>
+    </div>
+
+    <div class="unit-modules-grid">
+      ${modulesHtml}
+    </div>
+  `;
+
+  // Attach event listeners inside detail view
+  document.getElementById('btn-back-units')?.addEventListener('click', hideUnitDetail);
+  
+  document.getElementById('pager-prev')?.addEventListener('click', (e) => {
+    const targetId = e.currentTarget.getAttribute('data-track-id');
+    if (targetId) showUnitDetail(targetId, tracks, phrases);
+  });
+
+  document.getElementById('pager-next')?.addEventListener('click', (e) => {
+    const targetId = e.currentTarget.getAttribute('data-track-id');
+    if (targetId) showUnitDetail(targetId, tracks, phrases);
+  });
+
+  detailView.querySelectorAll('.module-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const tId = card.getAttribute('data-track-id');
+      const mId = card.getAttribute('data-mod-id');
+      openDrawer(tId, mId, tracks);
+    });
+  });
+
+  // Switch views
+  unitsGrid.style.display = 'none';
+  if (legacyGrid) legacyGrid.style.display = 'none';
+  detailView.style.display = 'block';
+
+  // Smooth scroll to catalog section
+  const catalogSection = document.getElementById('catalog-section');
+  if (catalogSection) {
+    const yOffset = -80;
+    const y = catalogSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+}
+
+function hideUnitDetail() {
+  const unitsGrid = document.getElementById('units-grid');
+  const detailView = document.getElementById('unit-detail-view');
+  const legacyGrid = document.getElementById('studio-grid');
+
+  if (detailView) detailView.style.display = 'none';
+  if (legacyGrid) legacyGrid.style.display = 'none';
+  if (unitsGrid) unitsGrid.style.display = 'grid';
+
+  const catalogSection = document.getElementById('catalog-section');
+  if (catalogSection) {
+    const yOffset = -80;
+    const y = catalogSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+}
+
+// ── Render Native Phrases & Main Grid Controller ──
+function renderGrid(tracks, phrases = []) {
+  // 1. Render Level 1: Modular Units Grid
+  renderUnitsGrid(tracks, phrases);
+
+  // 2. Render Native Phrases into studio-grid for direct access
+  const gridContainer = document.getElementById('studio-grid');
+  if (!gridContainer) return;
+
+  let html = '';
   if (phrases && phrases.length > 0) {
     html += `
       <div class="track-section" id="section-phrases">
-        <h2 class="track-header-title font-head" style="color: var(--gold);">
-          <i class="fa-solid fa-comments"></i> Librería de Frases Nativas ("Lo que NO enseñan en la escuela")
-          <span style="font-size:0.8rem; font-weight:500; color:var(--text-dim);">(${phrases.length} Expresiones Reales)</span>
+        <h2 class="track-header-title font-head" style="color: var(--blue-core);">
+          <i class="fa-solid fa-comments"></i> Native Technical Idioms ("What They Don't Teach in School")
+          <span style="font-size:0.85rem; font-weight:500; color:var(--text-muted);">(${phrases.length} Professional Shopfloor Expressions)</span>
         </h2>
         <div class="modules-grid">
     `;
 
     phrases.forEach(p => {
       html += `
-        <div class="module-card phrase-card" data-phrase-id="${p.id}" style="border-color: rgba(251, 191, 36, 0.25);">
+        <div class="module-card phrase-card" data-phrase-id="${p.id}" style="border-color: rgba(2, 132, 199, 0.25);">
           <div class="card-top">
-            <div class="module-icon-box" style="background: rgba(251, 191, 36, 0.15); color: var(--gold);">
+            <div class="module-icon-box" style="background: rgba(2, 132, 199, 0.12); color: var(--blue-core);">
               <i class="fa-solid fa-quote-left"></i>
             </div>
-            <span class="module-tag" style="background: rgba(251, 191, 36, 0.15); color: var(--gold);">${p.category.toUpperCase()}</span>
+            <span class="module-tag" style="background: rgba(2, 132, 199, 0.1); color: var(--blue-core);">${p.category.toUpperCase()}</span>
           </div>
 
           <div class="card-body">
-            <h3 class="card-title-es" style="color: var(--gold); font-size: 1.15rem;">"${p.phrase}"</h3>
-            <p class="card-title-en" style="color: var(--text-muted); font-size: 0.86rem; margin-top: 4px;">${p.meaningES}</p>
+            <h3 class="card-title-es" style="color: var(--blue-core); font-size: 1.15rem;">"${p.phrase}"</h3>
+            <p class="card-title-en" style="color: var(--text-muted); font-size: 0.88rem; margin-top: 4px;">${p.meaningES}</p>
             
             <div class="school-contrast-box">
-              <div class="school-row"><span class="bad-tag"><i class="fa-solid fa-school"></i> Escuela:</span> <s>${p.schoolVsNative.school}</s></div>
-              <div class="native-row"><span class="good-tag"><i class="fa-solid fa-bolt"></i> Nativo:</span> <strong>${p.schoolVsNative.native}</strong></div>
+              <div class="school-row"><span class="bad-tag"><i class="fa-solid fa-school"></i> Textbook:</span> <s>${p.schoolVsNative.school}</s></div>
+              <div class="native-row"><span class="good-tag"><i class="fa-solid fa-bolt"></i> Native:</span> <strong>${p.schoolVsNative.native}</strong></div>
             </div>
           </div>
 
           <div class="card-footer">
-            <div class="reading-count" style="color: var(--gold);">
-              <i class="fa-solid fa-volume-high"></i> ${p.pronunciationHint.split(':')[0] || 'Pronunciación'}
+            <div class="reading-count" style="color: var(--blue-core);">
+              <i class="fa-solid fa-volume-high"></i> ${p.pronunciationHint.split(':')[0] || 'Pronunciation'}
             </div>
-            <button class="explore-btn" style="background: var(--gold); color: #000;">
-              Ver Matiz <i class="fa-solid fa-arrow-right"></i>
+            <button class="explore-btn" style="background: var(--blue-core); color: #fff;">
+              View Nuance <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
         </div>
@@ -610,124 +765,175 @@ function renderGrid(tracks, phrases = []) {
 
   gridContainer.innerHTML = html;
 
-  // ── Modern Web Guidance: single delegated listener on the container ──────────
   gridContainer.addEventListener('click', (e) => {
-    // 1. Pin / unpin offline reading
-    const pinBtn = e.target.closest('.btn-pin-offline');
-    if (pinBtn) {
-      const trackId = pinBtn.dataset.trackId;
-      const modId = pinBtn.dataset.modId;
-      toggleOfflineReadingPin(trackId, modId, tracks);
-      return;
-    }
-
-    // 2. Remove offline reading
-    const removeBtn = e.target.closest('.btn-remove-pin');
-    if (removeBtn) {
-      const trackId = removeBtn.dataset.trackId;
-      const modId = removeBtn.dataset.modId;
-      toggleOfflineReadingPin(trackId, modId, tracks);
-      return;
-    }
-
-    // 3. Click on a phrase card or its explore button → open phrase drawer
     const phraseCard = e.target.closest('.phrase-card');
     if (phraseCard) {
       const phraseId = phraseCard.dataset.phraseId;
       openPhraseDrawer(phraseId, phrases);
-      return;
-    }
-
-    // 4. Click anywhere on a module card (including its explore button) → open drawer
-    const moduleCard = e.target.closest('.module-card');
-    if (moduleCard) {
-      const trackId = moduleCard.dataset.trackId;
-      const modId = moduleCard.dataset.modId;
-      openDrawer(trackId, modId, tracks);
-      return;
     }
   });
 }
 
-function filterGridByTrack(trackId, tracks) {
-  const allSections = document.querySelectorAll('.track-section');
-  const allCatGroups = document.querySelectorAll('.category-group');
-  const offlineSec = document.getElementById('section-offline-saved');
-  const phrasesSec = document.getElementById('section-phrases');
+function filterGridByTrack(trackId, tracks, phrases = []) {
+  const unitsGrid = document.getElementById('units-grid');
+  const detailView = document.getElementById('unit-detail-view');
+  const legacyGrid = document.getElementById('studio-grid');
+  if (!unitsGrid) return;
+
+  if (detailView) detailView.style.display = 'none';
 
   if (trackId === 'all') {
-    allCatGroups.forEach(grp => grp.style.display = 'block');
-    allSections.forEach(sec => sec.style.display = 'block');
-    if (phrasesSec) phrasesSec.style.display = 'block';
+    if (legacyGrid) legacyGrid.style.display = 'none';
+    unitsGrid.style.display = 'grid';
+    unitsGrid.querySelectorAll('.unit-card').forEach(card => {
+      card.style.display = 'flex';
+    });
     return;
   }
 
   if (trackId.startsWith('cat-')) {
     const catKey = trackId.replace('cat-', '');
-    allCatGroups.forEach(grp => {
-      if (grp.getAttribute('data-category') === catKey) {
-        grp.style.display = 'block';
-        grp.querySelectorAll('.track-section').forEach(sec => sec.style.display = 'block');
-      } else {
-        grp.style.display = 'none';
-      }
-    });
-    if (offlineSec) offlineSec.style.display = 'none';
-    if (phrasesSec) phrasesSec.style.display = 'none';
-    return;
-  }
-
-  if (trackId === 'offline-saved') {
-    allCatGroups.forEach(grp => grp.style.display = 'none');
-    allSections.forEach(sec => {
-      sec.style.display = (sec.id === 'section-offline-saved') ? 'block' : 'none';
-    });
-    if (offlineSec) offlineSec.style.display = 'block';
-    if (phrasesSec) phrasesSec.style.display = 'none';
-    return;
-  }
-
-  if (trackId === 'phrases') {
-    allCatGroups.forEach(grp => grp.style.display = 'none');
-    allSections.forEach(sec => {
-      sec.style.display = (sec.id === 'section-phrases') ? 'block' : 'none';
-    });
-    if (offlineSec) offlineSec.style.display = 'none';
-    if (phrasesSec) phrasesSec.style.display = 'block';
-    return;
-  }
-
-  // Specific track ID
-  allCatGroups.forEach(grp => {
-    const matchingSec = grp.querySelector(`#section-${trackId}`);
-    if (matchingSec) {
-      grp.style.display = 'block';
-      grp.querySelectorAll('.track-section').forEach(sec => {
-        sec.style.display = (sec.id === `section-${trackId}`) ? 'block' : 'none';
-      });
-    } else {
-      grp.style.display = 'none';
-    }
-  });
-  if (offlineSec) offlineSec.style.display = 'none';
-  if (phrasesSec) phrasesSec.style.display = 'none';
-}
-
-function setupSearch(tracks) {
-  const searchInput = document.getElementById('studio-search');
-  if (!searchInput) return;
-
-  searchInput.addEventListener('input', (e) => {
-    const q = e.target.value.toLowerCase().trim();
-    
-    document.querySelectorAll('.module-card').forEach(card => {
-      const text = card.innerText.toLowerCase();
-      if (text.includes(q)) {
+    if (legacyGrid) legacyGrid.style.display = 'none';
+    unitsGrid.style.display = 'grid';
+    unitsGrid.querySelectorAll('.unit-card').forEach(card => {
+      if (card.getAttribute('data-category') === catKey) {
         card.style.display = 'flex';
       } else {
         card.style.display = 'none';
       }
     });
+    return;
+  }
+
+  if (trackId === 'phrases') {
+    unitsGrid.style.display = 'none';
+    if (legacyGrid) {
+      legacyGrid.style.display = 'block';
+      const phrasesSec = document.getElementById('section-phrases');
+      if (phrasesSec) phrasesSec.style.display = 'block';
+    }
+    return;
+  }
+}
+
+function setupSearch(tracks, phrases = []) {
+  const searchInput = document.getElementById('studio-search');
+  const unitsGrid = document.getElementById('units-grid');
+  const detailView = document.getElementById('unit-detail-view');
+  const legacyGrid = document.getElementById('studio-grid');
+
+  if (!searchInput) return;
+
+  // Global search shortcut ⌘K or Ctrl+K
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+
+  searchInput.addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase().trim();
+
+    if (!q) {
+      // Restore normal units view
+      if (legacyGrid) legacyGrid.style.display = 'none';
+      if (detailView) detailView.style.display = 'none';
+      if (unitsGrid) {
+        unitsGrid.style.display = 'grid';
+        unitsGrid.querySelectorAll('.unit-card').forEach(c => c.style.display = 'flex');
+      }
+      return;
+    }
+
+    // Filter modules across all 26 tracks
+    let matches = [];
+    tracks.forEach(track => {
+      if (track.modules) {
+        track.modules.forEach(mod => {
+          const modText = `${mod.title} ${mod.titleES || ''} ${track.title} ${track.titleEN || ''}`.toLowerCase();
+          if (modText.includes(q)) {
+            matches.push({ track, mod });
+          }
+        });
+      }
+    });
+
+    if (unitsGrid) unitsGrid.style.display = 'none';
+    if (detailView) detailView.style.display = 'none';
+
+    if (legacyGrid) {
+      legacyGrid.style.display = 'block';
+
+      if (matches.length === 0) {
+        legacyGrid.innerHTML = `
+          <div style="text-align:center; padding:60px 20px; background:#fff; border-radius:20px; border:1px solid rgba(0,0,0,0.08);">
+            <i class="fa-solid fa-magnifying-glass" style="font-size:2.5rem; color:#94a3b8; margin-bottom:16px;"></i>
+            <h3 style="font-size:1.3rem; font-weight:700; color:#0f172a; margin-bottom:8px;">No modules found for "${q}"</h3>
+            <p style="color:#64748b; font-size:0.95rem; margin-bottom:20px;">Try searching for keywords like MEMS, PLC, CAD, EV, Cleanroom, or ISO.</p>
+            <button id="btn-clear-search-empty" style="background:#0f172a; color:#fff; border:none; padding:10px 22px; border-radius:999px; font-weight:600; cursor:pointer;">
+              Clear Search
+            </button>
+          </div>
+        `;
+        document.getElementById('btn-clear-search-empty')?.addEventListener('click', () => {
+          searchInput.value = '';
+          searchInput.dispatchEvent(new Event('input'));
+        });
+        return;
+      }
+
+      let cardsHtml = '';
+      matches.forEach(({ track, mod }) => {
+        const isGold = !!mod.isGoldModel;
+        const readingsCount = mod.readings ? mod.readings.length : 0;
+        cardsHtml += `
+          <div class="module-card ${isGold ? 'gold-card' : ''}" data-track-id="${track.id}" data-mod-id="${mod.id}">
+            <div class="card-top">
+              <div class="module-icon-box">
+                <i class="${mod.icon || 'fa-solid fa-microchip'}"></i>
+              </div>
+              <span class="module-tag">${track.titleEN || track.title}</span>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title-es">${mod.title}</h3>
+              <p class="card-title-en">${mod.titleES || mod.title}</p>
+            </div>
+            <div class="card-footer">
+              <div class="reading-count"><i class="fa-solid fa-file-lines"></i> ${readingsCount} Reading(s)</div>
+              <button class="explore-btn">Open Module <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+        `;
+      });
+
+      legacyGrid.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; padding:16px 22px; background:#fff; border:1px solid rgba(0,0,0,0.08); border-radius:16px;">
+          <div style="font-size:0.96rem; color:#0f172a;">
+            <strong>Found ${matches.length} modules</strong> matching &ldquo;${q}&rdquo;
+          </div>
+          <button id="btn-clear-search" style="background:#f1f5f9; border:1px solid #cbd5e1; padding:6px 16px; border-radius:999px; font-weight:600; cursor:pointer; color:#0f172a;">
+            <i class="fa-solid fa-xmark"></i> Clear
+          </button>
+        </div>
+        <div class="modules-grid">
+          ${cardsHtml}
+        </div>
+      `;
+
+      document.getElementById('btn-clear-search')?.addEventListener('click', () => {
+        searchInput.value = '';
+        searchInput.dispatchEvent(new Event('input'));
+      });
+
+      legacyGrid.querySelectorAll('.module-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const tId = card.getAttribute('data-track-id');
+          const mId = card.getAttribute('data-mod-id');
+          openDrawer(tId, mId, tracks);
+        });
+      });
+    }
   });
 }
 
@@ -1551,47 +1757,47 @@ function openPhraseDrawer(phraseId, phrases) {
   const drawerBody = document.getElementById('drawer-body');
 
   drawerTitle.innerText = `"${p.phrase}"`;
-  drawerSub.innerText = `Librería de Frases Nativas • ${p.category.toUpperCase()} • ID: ${p.id}`;
+  drawerSub.innerText = `Native Technical Idioms • ${p.category.toUpperCase()} • ID: ${p.id}`;
 
   let contentHtml = `
     <div class="accreditation-banner" style="border-color: rgba(251, 191, 36, 0.35);">
       <h3 class="font-head" style="color:var(--gold); font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-        <i class="fa-solid fa-bolt"></i> Contraste Directo: Escuela vs. Inglés Nativo Real
+        <i class="fa-solid fa-bolt"></i> Direct Contrast: Textbook English vs. Real Native English
       </h3>
       <p style="font-size:0.86rem; color:var(--text-muted); margin-top:4px;">
-        Expresión real que utilizan los profesionales y líderes de ingeniería en empresas de Nearshoring e industria de alta tecnología.
+        Authentic technical expressions used by engineers, technical managers, and nearshoring leaders in advanced high-tech industries.
       </p>
 
       <div class="accred-grid" style="margin-top:16px;">
         <div class="accred-box" style="border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.08);">
-          <div class="accred-title" style="color: #f87171;"><i class="fa-solid fa-school"></i> Lo que enseñan en la Escuela Tradicional</div>
+          <div class="accred-title" style="color: #f87171;"><i class="fa-solid fa-school"></i> What Traditional Schools Teach</div>
           <div class="accred-desc" style="color: #fca5a5; font-size:1rem;"><s>${p.schoolVsNative.school}</s></div>
-          <div class="accred-sub">Inglés de libro de texto rígido o literal</div>
+          <div class="accred-sub">Rigid, overly literal, or outdated phrasing</div>
         </div>
 
         <div class="accred-box" style="border-color: rgba(52, 211, 153, 0.35); background: rgba(52, 211, 153, 0.08);">
-          <div class="accred-title" style="color:var(--emerald);"><i class="fa-solid fa-bolt"></i> Cómo lo dice un Nativo Real</div>
+          <div class="accred-title" style="color:var(--emerald);"><i class="fa-solid fa-bolt"></i> How Real Natives Say It</div>
           <div class="accred-desc" style="color:#fff; font-size:1.1rem; font-weight:700;">"${p.schoolVsNative.native}"</div>
-          <div class="accred-sub">Expresión natural y fluida en la industria</div>
+          <div class="accred-sub">Natural, fluid, high-impact industry communication</div>
         </div>
       </div>
     </div>
 
     <div style="margin-top:28px;">
-      <h3 class="font-head" style="color:var(--cyan); font-size:1.2rem; margin-bottom:10px;"><i class="fa-solid fa-lightbulb"></i> Explicación de Matiz y Contexto</h3>
+      <h3 class="font-head" style="color:var(--cyan); font-size:1.2rem; margin-bottom:10px;"><i class="fa-solid fa-lightbulb"></i> Nuance & Context Breakdown</h3>
       <p style="color:var(--text-main); font-size:0.95rem; line-height:1.7; background:rgba(255,255,255,0.03); padding:16px; border-radius:12px; border:1px solid var(--border-glass);">
         ${p.explanation}
       </p>
 
       <div style="margin-top:20px; background:rgba(251, 191, 36, 0.06); padding:16px; border-radius:12px; border:1px solid rgba(251, 191, 36, 0.2);">
         <h4 class="font-head" style="color:var(--gold); font-size:1.05rem; display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-volume-high"></i> Consejo de Pronunciación y Ritmo
+          <i class="fa-solid fa-volume-high"></i> Pronunciation & Rhythm Tip
         </h4>
         <p style="color:var(--text-main); font-size:0.9rem; margin-top:6px;">${p.pronunciationHint}</p>
       </div>
 
       <div style="margin-top:24px;">
-        <h3 class="font-head" style="color:var(--emerald); font-size:1.2rem; margin-bottom:12px;"><i class="fa-solid fa-briefcase"></i> Ejemplo en Entorno de Ingeniería & Nearshoring</h3>
+        <h3 class="font-head" style="color:var(--emerald); font-size:1.2rem; margin-bottom:12px;"><i class="fa-solid fa-briefcase"></i> Real-World Engineering & Nearshoring Context</h3>
         <div style="background:rgba(15, 23, 42, 0.8); border:1px solid var(--border-glow); padding:20px; border-radius:14px;">
           <div style="color:var(--cyan); font-family:var(--font-mono); font-size:1rem; font-weight:600;">"${p.exampleEN}"</div>
           <div style="color:var(--text-muted); font-size:0.88rem; margin-top:8px;"><i class="fa-solid fa-quote-left" style="font-size:0.75rem; color:var(--cyan); margin-right:6px; opacity:0.8;"></i><em>${p.exampleES}</em></div>
@@ -1606,8 +1812,8 @@ function openPhraseDrawer(phraseId, phrases) {
               <i class="fa-solid fa-robot"></i>
             </div>
             <div>
-              <h4 class="font-head" style="color:#fff; font-size:1.1rem;">Feynman AI Tutor — Simulación de Entrevista Técnica STAR</h4>
-              <p style="color:var(--text-muted); font-size:0.8rem;">Practica tu inglés fluido en tiempo real simulando una pregunta de entrevista en este escenario.</p>
+              <h4 class="font-head" style="color:#fff; font-size:1.1rem;">Feynman AI Tutor — STAR Technical Interview Simulation</h4>
+              <p style="color:var(--text-muted); font-size:0.8rem;">Practice fluid technical English in real time by simulating an engineering interview scenario.</p>
             </div>
           </div>
           <span style="font-size:0.75rem; background:rgba(168, 85, 247, 0.2); color:var(--purple); padding:4px 10px; border-radius:8px; font-weight:700; border:1px solid rgba(168, 85, 247, 0.3);">
@@ -1619,14 +1825,14 @@ function openPhraseDrawer(phraseId, phrases) {
           <div style="display:flex; gap:12px; margin-bottom:12px;">
             <i class="fa-solid fa-robot" style="color:var(--purple); margin-top:2px;"></i>
             <div style="font-size:0.88rem; color:var(--text-main); line-height:1.5;">
-              <strong>Feynman AI Evaluator:</strong> "Hi there! How would you use the phrase <em>'${p.phrase}'</em> in your next Nearshoring technical audit or team standup?"
+              <strong>Feynman AI Evaluator:</strong> "Hi there! How would you use the expression <em>'${p.phrase}'</em> in your next Nearshoring technical audit or engineering standup?"
             </div>
           </div>
 
           <div style="display:flex; gap:8px; margin-top:12px;">
-            <input type="text" id="feynman-user-input" placeholder="Escribe tu respuesta en inglés..." style="flex:1; background:rgba(255,255,255,0.06); border:1px solid var(--border-glass); color:#fff; padding:10px 14px; border-radius:10px; font-size:0.88rem; outline:none;">
+            <input type="text" id="feynman-user-input" placeholder="Type your answer in English..." style="flex:1; background:rgba(255,255,255,0.06); border:1px solid var(--border-glass); color:#fff; padding:10px 14px; border-radius:10px; font-size:0.88rem; outline:none;">
             <button onclick="simulateFeynmanResponse('${p.phrase.replace(/'/g, "\\'")}')" style="background:linear-gradient(135deg, var(--purple), var(--cyan)); color:#fff; border:none; padding:10px 18px; border-radius:10px; font-weight:600; cursor:pointer; font-size:0.88rem; display:flex; align-items:center; gap:6px;">
-              Enviar <i class="fa-solid fa-paper-plane"></i>
+              Send <i class="fa-solid fa-paper-plane"></i>
             </button>
           </div>
         </div>
@@ -1851,3 +2057,144 @@ function simulateFeynmanResponse(targetPhrase) {
   chatBox.insertAdjacentHTML('beforeend', userMsgHtml + aiMsgHtml);
   inputEl.value = '';
 }
+
+// =========================================================================
+// SUPASTE DESIGN SYSTEM CONTROLLER & INTERACTION ENGINE
+// =========================================================================
+function setupSupasteInteractions(tracks, phrases) {
+  // 1. Navigation links with [data-filter-jump]
+  document.querySelectorAll('[data-filter-jump]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetCat = link.getAttribute('data-filter-jump');
+      
+      // Update active state on nav links
+      document.querySelectorAll('.supaste-nav-links .nav-link').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+
+      // Trigger filter
+      const filterBtn = document.querySelector(`.filter-btn[data-track="${targetCat}"]`);
+      if (filterBtn) {
+        filterBtn.click();
+      } else {
+        filterGridByTrack(targetCat, tracks);
+      }
+
+      // Smooth scroll to main studio area
+      const targetEl = document.getElementById(targetCat === 'phrases' ? 'section-phrases' : (targetCat.startsWith('cat-') ? `group-${targetCat.replace('cat-', '')}` : 'studio-grid'));
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        const controls = document.getElementById('controls-bar');
+        if (controls) controls.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // 2. Keyboard shortcut Cmd+K / Ctrl+K to focus Spotlight search
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      const searchInput = document.getElementById('studio-search');
+      if (searchInput) {
+        searchInput.focus();
+        searchInput.select();
+        searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  });
+
+  // 3. Hero Showcase Audio Player (Native Technical Speech Pronunciation Player)
+  const heroStagePlay = document.getElementById('hero-stage-play');
+  const stagePlayerPill = document.getElementById('stage-player-pill');
+  const heroStageIcon = document.getElementById('hero-stage-icon');
+
+  let isPlayingHeroAudio = false;
+
+  function toggleHeroAudio() {
+    if (!isPlayingHeroAudio) {
+      isPlayingHeroAudio = true;
+      if (stagePlayerPill) stagePlayerPill.classList.add('playing');
+      if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-pause';
+
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const currentLevel = localStorage.getItem('stemos_cefr_level') || 'A2';
+        const sampleText = currentLevel === 'A2' 
+          ? "In computer chip factories, workers wear white cleanroom suits. They keep the air pure so microchips do not have dust damage. Silicon wafers are washed with special chemical liquids."
+          : "In extreme ultraviolet photolithography, wafer steppers operate inside ISO Class 1 cleanrooms with laminar airflow. Photoresist deposition requires precise chemical handling to prevent sub-micron yield defects.";
+        
+        const utter = new SpeechSynthesisUtterance(sampleText);
+        utter.lang = 'en-US';
+        utter.rate = 0.93; // 93% speed requested by user
+        utter.onend = () => {
+          isPlayingHeroAudio = false;
+          if (stagePlayerPill) stagePlayerPill.classList.remove('playing');
+          if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-play';
+        };
+        utter.onerror = () => {
+          isPlayingHeroAudio = false;
+          if (stagePlayerPill) stagePlayerPill.classList.remove('playing');
+          if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-play';
+        };
+        window.speechSynthesis.speak(utter);
+      } else {
+        setTimeout(() => {
+          isPlayingHeroAudio = false;
+          if (stagePlayerPill) stagePlayerPill.classList.remove('playing');
+          if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-play';
+        }, 4500);
+      }
+    } else {
+      isPlayingHeroAudio = false;
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      if (stagePlayerPill) stagePlayerPill.classList.remove('playing');
+      if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-play';
+    }
+  }
+
+  if (heroStagePlay) heroStagePlay.addEventListener('click', toggleHeroAudio);
+
+  // 4. Hero Stage "Abrir Módulo" Button
+  const heroStageOpenBtn = document.getElementById('hero-stage-open-btn');
+  if (heroStageOpenBtn) {
+    heroStageOpenBtn.addEventListener('click', () => {
+      openDrawer('semiconductors', 'semiconductors_mod_01', tracks);
+    });
+  }
+
+  // 5. Traffic light close button in drawer
+  const drawerDotClose = document.getElementById('drawer-dot-close');
+  if (drawerDotClose) {
+    drawerDotClose.addEventListener('click', closeDrawer);
+  }
+
+  // 6. Home brand link smoothly scrolls to top
+  const brandHomeLink = document.getElementById('brand-home-link');
+  if (brandHomeLink) {
+    brandHomeLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // 7. Footer clear cache button
+  const footerClearCache = document.getElementById('footer-clear-cache');
+  if (footerClearCache) {
+    footerClearCache.addEventListener('click', () => {
+      try {
+        localStorage.clear();
+        if ('caches' in window) {
+          caches.keys().then(names => {
+            names.forEach(name => caches.delete(name));
+          });
+        }
+        alert('Cache offline de stemOS reiniciada. Recargando catálogo...');
+        window.location.reload();
+      } catch (e) {
+        window.location.reload();
+      }
+    });
+  }
+}
+
