@@ -2564,6 +2564,15 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
     color: #1e293b;
     letter-spacing: -0.02em;
     font-family: 'Outfit', sans-serif;
+    line-height: 1.1;
+}
+
+.ed-units-subheading {
+    display: block;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: #64748b;
+    margin-top: 4px;
 }
 
 .ed-segmented-progress-wrapper {

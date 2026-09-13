@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>stemOS LXP | Next-Gen Learning Experience Platform</title>
-    <meta name="description" content="stemOS is a LATAM + US native platform that combines a skills graph engine, a Socratic AI tutor (Feynman Engine), and Open Badges 3.0 credentials — all running on local GenAI infrastructure. Our mission: to make high-quality technical English and STEM education accessible to the next generation of engineers, technicians, and innovators.">
-    <!-- Google Fonts: Space Grotesk & Inter -->
+    <title>stemOS — Technical English Learning Platform for STEM & Engineering</title>
+    <meta name="description" content="stemOS is an AI-powered Technical English (ESP) learning platform engineered for STEM disciplines, coding, semiconductors, aerospace, and advanced manufacturing. Master engineering vocabulary, CEFR A2/B1 bilingual fluency, and Socratic AI evaluations.">
+    <!-- Google Fonts: Instrument Serif, Inter, Outfit & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css?v=1.0.1">
@@ -119,9 +119,9 @@
         /* ─── GLASSMORPHIC CARD ─────────────────────────────────── */
         .cs-container {
             width: 95%;
-            max-width: 660px;
-            padding: 2rem 1.5rem 1.5rem;
-            border-radius: 24px;
+            max-width: 800px;
+            padding: 2.2rem 1.6rem 1.8rem;
+            border-radius: 26px;
             background: var(--cs-card-bg);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
@@ -135,8 +135,8 @@
         }
         @media (min-width: 768px) {
             .cs-container {
-                padding: 3rem 2.5rem 2.5rem;
-                border-radius: 30px;
+                padding: 3rem 2.8rem 2.6rem;
+                border-radius: 32px;
             }
         }
         @keyframes cs-fadeIn {
@@ -169,48 +169,32 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: rgba(39, 126, 255, 0.1);
-            border: 1px solid rgba(39, 126, 255, 0.25);
+            background: rgba(39, 126, 255, 0.12);
+            border: 1px solid rgba(0, 210, 255, 0.3);
             color: #7dd3fc;
-            padding: 4px 14px;
+            padding: 5px 16px;
             border-radius: 9999px;
-            font-size: 0.72rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1.2px;
         }
 
-        /* ─── LAUNCH DATE BADGE ─────────────────────────────────── */
-        .cs-launch-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, rgba(39,126,255,0.12) 0%, rgba(0,210,255,0.12) 100%);
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            color: #00d2ff;
-            padding: 8px 18px;
-            border-radius: 9999px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 0.4px;
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.12), 0 0 40px rgba(0, 210, 255, 0.05);
-            margin-bottom: 1.25rem;
-            animation: float-badge 3.5s infinite ease-in-out;
-        }
-        .cs-launch-badge i { font-size: 0.85rem; }
-        @keyframes float-badge {
-            0%, 100% { transform: translateY(0px); }
-            50%       { transform: translateY(-4px); }
-        }
-
-        /* ─── HEADLINE ──────────────────────────────────────────── */
+        /* ─── HEADLINE WITH SERIF ITALIC ────────────────────────── */
         .cs-container h1 {
             font-family: 'Outfit', sans-serif;
-            font-size: clamp(1.5rem, 4vw, 2.1rem);
+            font-size: clamp(1.75rem, 4.4vw, 2.55rem);
             font-weight: 800;
-            line-height: 1.25;
-            margin-bottom: 0.75rem;
+            line-height: 1.2;
+            margin-bottom: 0.85rem;
             letter-spacing: -0.025em;
+            color: #ffffff;
+        }
+        .cs-serif-italic {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: 0.01em;
             color: #ffffff;
         }
         .cs-highlight {
@@ -223,25 +207,62 @@
         /* ─── DESCRIPTION ───────────────────────────────────────── */
         .cs-description {
             font-family: 'Inter', sans-serif;
-            font-size: 0.92rem;
-            line-height: 1.65;
+            font-size: 0.95rem;
+            line-height: 1.7;
             color: var(--cs-text-secondary);
             margin-bottom: 0;
-            max-width: 560px;
+            max-width: 660px;
             margin-left: auto;
             margin-right: auto;
             font-weight: 400;
         }
         .cs-description strong {
-            color: rgba(255, 255, 255, 0.92);
+            color: rgba(255, 255, 255, 0.95);
             font-weight: 600;
+        }
+
+        /* ─── METRICS STRIP (Matches dev.html ESP Stats) ─────────── */
+        .cs-metrics-strip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.045);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 8px 20px;
+            border-radius: 9999px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            margin: 1.3rem auto 0.4rem;
+            flex-wrap: wrap;
+        }
+        .metric-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .metric-val {
+            font-family: 'JetBrains Mono', monospace, sans-serif;
+            font-weight: 700;
+            color: #00d2ff;
+            font-size: 0.94rem;
+        }
+        .metric-lbl {
+            color: rgba(255, 255, 255, 0.88);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .metric-dot {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.9rem;
         }
 
         /* ─── DIVIDER ───────────────────────────────────────────── */
         .cs-divider {
             width: 100%;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 30%, rgba(0,210,255,0.12) 50%, rgba(255,255,255,0.08) 70%, transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 30%, rgba(0,210,255,0.14) 50%, rgba(255,255,255,0.08) 70%, transparent);
             margin: 1.25rem 0;
         }
 
@@ -585,35 +606,60 @@
                     <!-- Logo / Brand -->
                     <div class="cs-brand">
                         <div class="cs-logo-text">stem<span id="backdoor-trigger">O</span>S</div>
-                        <div class="cs-badge">LXP Platform</div>
+                        <div class="cs-badge"><i class="fa-solid fa-language"></i> Technical English Platform</div>
                     </div>
 
-                    <!-- Launch Date Badge -->
-                    <div class="cs-launch-badge">
-                        Launching&nbsp;<strong>October 2026</strong>
-                    </div>
+                    <!-- Headline with Soft Construction & Handcrafted Italic Serif Accent -->
+                    <h1>
+                        Mastering <span class="cs-highlight">Technical English</span><br>
+                        for <span class="cs-serif-italic">Advanced Industry</span> &amp; <span class="cs-serif-italic">Nearshoring</span>
+                    </h1>
 
-                    <!-- Headline -->
-                    <h1>Next-Gen Learning Experience<br><span class="cs-highlight">Is Coming Soon</span></h1>
-
-                    <div class="cs-divider"></div>
-
-                    <!-- Tagline description -->
+                    <!-- Refined Subtitle exactly as requested -->
                     <p class="cs-description">
-                        <strong>stemOS</strong> is an AI-powered Learning Experience Platform (LXP) designed to
-                        bridge the STEM talent and technical skills gap — through personalized
-                        pathways, industry-aligned micro-credentials, and Socratic AI tutoring.
+                        <strong>26 specialized industry tracks</strong> of English for Specific Purposes (ESP) &mdash; engineered for semiconductor fabrication, aerospace avionics, industrial robotics, and advanced manufacturing teams. Aligned with IEEE, SEMI, ISO, and OACI standards.
                     </p>
+
+                    <!-- Key Metrics Strip -->
+                    <div class="cs-metrics-strip">
+                        <div class="metric-pill">
+                            <span class="metric-val">26</span>
+                            <span class="metric-lbl">Tracks ESP</span>
+                        </div>
+                        <span class="metric-dot">&bull;</span>
+                        <div class="metric-pill">
+                            <span class="metric-val">146</span>
+                            <span class="metric-lbl">Modules</span>
+                        </div>
+                        <span class="metric-dot">&bull;</span>
+                        <div class="metric-pill">
+                            <span class="metric-val">58</span>
+                            <span class="metric-lbl">Readings</span>
+                        </div>
+                        <span class="metric-dot">&bull;</span>
+                        <div class="metric-pill">
+                            <span class="metric-val">45</span>
+                            <span class="metric-lbl">Native Idioms</span>
+                        </div>
+                        <span class="metric-dot">&bull;</span>
+                        <div class="metric-pill">
+                            <span class="metric-val">100%</span>
+                            <span class="metric-lbl">Standards Aligned</span>
+                        </div>
+                    </div>
 
                     <div class="cs-divider"></div>
 
                     <!-- CTAs -->
                     <div class="cs-btn-group">
-                        <a href="https://jovenesstem.com" class="cs-btn cs-btn-primary" target="_blank" rel="noopener noreferrer">
-                            <i class="fa-solid fa-seedling"></i> Explore JóvenesSTEM
+                        <a href="/dev.html#catalog-section" class="cs-btn cs-btn-primary" target="_blank" rel="noopener">
+                            <i class="fa-solid fa-compass"></i> Explore 26 Tracks
                         </a>
-                        <a href="https://yepzhi.com" class="cs-btn cs-btn-secondary">
-                            <i class="fa-solid fa-arrow-left"></i> Back to yepzhi.com
+                        <a href="/dev.html#hero-showcase-window" class="cs-btn cs-btn-secondary" target="_blank" rel="noopener">
+                            <i class="fa-solid fa-laptop-code"></i> Interactive Demo
+                        </a>
+                        <a href="https://jovenesstem.com" class="cs-btn cs-btn-secondary" target="_blank" rel="noopener">
+                            <i class="fa-solid fa-seedling"></i> JóvenesSTEM Ecosystem
                         </a>
                     </div>
                 </div>
@@ -623,15 +669,12 @@
             <section class="cs-section" id="cs-section-1">
                 <div class="cs-container">
                     <div class="cs-brand" style="margin-bottom:1rem">
-                        <div class="cs-badge"><i class="fa-solid fa-circle-info"></i>&nbsp;About stemOS</div>
+                        <div class="cs-badge"><i class="fa-solid fa-book-bookmark"></i>&nbsp;Specialized ESP Methodology</div>
                     </div>
-                    <h1 style="font-size:clamp(1.6rem,4vw,2.1rem); margin-bottom:1.25rem;">What is <span class="cs-highlight">stemOS</span>?</h1>
+                    <h1 style="font-size:clamp(1.6rem,4vw,2.2rem); margin-bottom:1.25rem;">Why <span class="cs-highlight">Technical English</span> for Industry?</h1>
 
                     <p class="cs-description" style="margin-bottom:0;">
-                        stemOS is a <strong>LATAM + US native</strong> platform that combines a skills graph engine,
-                        a Socratic AI tutor (<em>Feynman Engine</em>), and Open Badges 3.0 credentials — all running on
-                        <strong>local GenAI infrastructure</strong>. Our mission: to make high-quality technical
-                        English and STEM education accessible to the next generation of engineers, technicians, and innovators.
+                        High-tech manufacturing, semiconductor cleanrooms, avionics engineering, and industrial robotics operate 100% in specialized English. <strong>stemOS</strong> is a <strong>LATAM + US native Learning Platform</strong> that transforms general English into precise, industry-ready technical fluency. Master IEEE, SEMI, and ISO vocabulary, technical documentation, and real workplace communication with our Socratic <em>Feynman Engine</em>.
                     </p>
 
                     <div class="cs-divider"></div>
@@ -646,24 +689,24 @@
                             <g transform="translate(80,65)">
                                 <circle r="19" fill="rgba(8,17,31,0.9)" stroke="#277eff" stroke-width="2" filter="url(#glow-blue)"/>
                                 <path d="M-5.5 -1.5 L-1.5 2.5 L5.5 -4.5" fill="none" stroke="#277eff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <text y="32" font-family="'Outfit',sans-serif" font-size="9" fill="rgba(255,255,255,0.6)" font-weight="600" text-anchor="middle">Tech Skills</text>
+                                <text y="32" font-family="'Outfit',sans-serif" font-size="9" fill="rgba(255,255,255,0.7)" font-weight="600" text-anchor="middle">Technical Lexicon</text>
                             </g>
                             <!-- Node 2 -->
                             <g transform="translate(200,65)">
                                 <circle r="23" fill="rgba(8,17,31,0.9)" stroke="#00d2ff" stroke-width="2.5" filter="url(#glow-cyan)"/>
                                 <path d="M-1 -10 L5 -2 L1 -2 L3 10 L-5 2 L-1 2 Z" fill="#00d2ff"/>
-                                <text y="36" font-family="'Outfit',sans-serif" font-size="9.5" fill="#ffffff" font-weight="700" text-anchor="middle">stemOS Core</text>
+                                <text y="36" font-family="'Outfit',sans-serif" font-size="9.5" fill="#ffffff" font-weight="700" text-anchor="middle">stemOS ESP Core</text>
                             </g>
                             <!-- Node 3 -->
                             <g transform="translate(320,65)">
                                 <circle r="19" fill="rgba(8,17,31,0.9)" stroke="#00d2ff" stroke-width="2" filter="url(#glow-cyan)"/>
                                 <path d="M-8 -6 h16 a4 4 0 0 1 4 4 v5 a4 4 0 0 1 -4 4 h-7 l-5 4 v-4 h-4 a4 4 0 0 1 -4 -4 v-5 a4 4 0 0 1 4 -4 z" fill="#00d2ff" transform="scale(0.7) translate(-1, -1)"/>
-                                <text y="32" font-family="'Outfit',sans-serif" font-size="9" fill="rgba(255,255,255,0.6)" font-weight="600" text-anchor="middle">Feynman AI</text>
+                                <text y="32" font-family="'Outfit',sans-serif" font-size="9" fill="rgba(255,255,255,0.7)" font-weight="600" text-anchor="middle">Feynman English AI</text>
                             </g>
                             <!-- Node 4 Locked -->
                             <g transform="translate(200,28)">
-                                <circle r="14" fill="rgba(8,17,31,0.9)" stroke="rgba(255,255,255,0.12)" stroke-width="1.2"/>
-                                <path d="M-4.5 -2 h9 v7 h-9 z M-3 -2 v-2.5 a3 3 0 0 1 6 0 v2.5" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1.5" stroke-linecap="round" transform="translate(0, 1)"/>
+                                <circle r="14" fill="rgba(8,17,31,0.9)" stroke="rgba(0,210,255,0.4)" stroke-width="1.2"/>
+                                <text y="3.5" font-family="'Outfit',sans-serif" font-size="8" fill="#38bdf8" font-weight="700" text-anchor="middle">A2/B1</text>
                             </g>
                             <defs>
                                 <filter id="glow-blue"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -678,41 +721,41 @@
             <section class="cs-section" id="cs-section-2">
                 <div class="cs-container">
                     <div class="cs-brand" style="margin-bottom:1rem">
-                        <div class="cs-badge"><i class="fa-solid fa-star"></i>&nbsp;Core Features</div>
+                        <div class="cs-badge"><i class="fa-solid fa-layer-group"></i>&nbsp;Learning Architecture</div>
                     </div>
-                    <h1 style="font-size:clamp(1.6rem,4vw,2.1rem); margin-bottom:1.5rem;">What to <span class="cs-highlight">Expect</span></h1>
+                    <h1 style="font-size:clamp(1.6rem,4vw,2.2rem); margin-bottom:1.5rem;">Engineered for <span class="cs-highlight">Industry Fluency</span></h1>
 
                     <div class="cs-features-grid">
                         <div class="cs-feature-item">
-                            <div class="cs-feature-icon"><i class="fa-solid fa-diagram-project"></i></div>
-                            <span class="cs-feature-title">Skills Graph</span>
-                            <span class="cs-feature-desc">Adaptive competency maps per industry track</span>
+                            <div class="cs-feature-icon"><i class="fa-solid fa-microchip"></i></div>
+                            <span class="cs-feature-title">26 Industry Tracks</span>
+                            <span class="cs-feature-desc">English for semiconductors, avionics, cleanrooms, robotics &amp; AI</span>
                         </div>
                         <div class="cs-feature-item">
                             <div class="cs-feature-icon"><i class="fa-solid fa-brain"></i></div>
-                            <span class="cs-feature-title">Feynman Engine</span>
-                            <span class="cs-feature-desc">Socratic AI tutor powered by local GenAI</span>
+                            <span class="cs-feature-title">Feynman English Tutor</span>
+                            <span class="cs-feature-desc">Socratic AI voice coach evaluating technical explanations</span>
+                        </div>
+                        <div class="cs-feature-item">
+                            <div class="cs-feature-icon"><i class="fa-solid fa-language"></i></div>
+                            <span class="cs-feature-title">45+ Native Idioms</span>
+                            <span class="cs-feature-desc">Real engineering idioms, collocations &amp; nearshoring workplace jargon</span>
                         </div>
                         <div class="cs-feature-item">
                             <div class="cs-feature-icon"><i class="fa-solid fa-award"></i></div>
                             <span class="cs-feature-title">Open Badges 3.0</span>
-                            <span class="cs-feature-desc">Verifiable credentials (W3C / 1EdTech)</span>
-                        </div>
-                        <div class="cs-feature-item">
-                            <div class="cs-feature-icon"><i class="fa-solid fa-language"></i></div>
-                            <span class="cs-feature-title">Technical English</span>
-                            <span class="cs-feature-desc">Specialized tracks: semiconductor, aerospace & more</span>
+                            <span class="cs-feature-desc">Verifiable W3C credentials in Technical English for nearshoring jobs</span>
                         </div>
                     </div>
 
                     <div class="cs-divider"></div>
 
                     <div class="cs-btn-group">
-                        <a href="https://jovenesstem.com" class="cs-btn cs-btn-primary" target="_blank" rel="noopener noreferrer">
-                            <i class="fa-solid fa-seedling"></i> Explore JóvenesSTEM
+                        <a href="/dev.html#catalog-section" class="cs-btn cs-btn-primary" target="_blank" rel="noopener">
+                            <i class="fa-solid fa-compass"></i> Explore 26 ESP Tracks
                         </a>
-                        <a href="https://yepzhi.com" class="cs-btn cs-btn-secondary">
-                            <i class="fa-solid fa-user"></i> yepzhi.com
+                        <a href="/dev.html#hero-showcase-window" class="cs-btn cs-btn-secondary" target="_blank" rel="noopener">
+                            <i class="fa-solid fa-laptop-code"></i> Interactive Demo
                         </a>
                     </div>
                 </div>
@@ -786,7 +829,7 @@
                             <span class="ed-brand-logo-icon">st</span>
                             <div class="ed-brand-text">
                                 <span class="ed-brand-title">stem<span class="ed-brand-accent">OS</span></span>
-                                <span class="ed-brand-sub">English for STEM & Industry</span>
+                                <span class="ed-brand-sub">Technical English for STEM & Industry</span>
                             </div>
                         </div>
                         <div class="ed-student-greeting">
@@ -798,7 +841,7 @@
                         <!-- CEFR Level Indicator -->
                         <div class="ed-level-indicator" title="Nivel de Inglés Técnico Activo">
                             <i class="fa-solid fa-language"></i>
-                            <span>A2 / B1 Dual CEFR</span>
+                            <span>Technical English · A2 / B1 Dual CEFR</span>
                         </div>
 
                         <!-- Voice TTS Audio Status -->
@@ -871,6 +914,7 @@
                     <div class="ed-units-header-row">
                         <div class="ed-units-title-box">
                             <h2 class="ed-section-heading">All Units</h2>
+                            <span class="ed-units-subheading">26 Specialized Technical English (ESP) Tracks</span>
                         </div>
                         <div class="ed-segmented-progress-wrapper" title="Progreso de Unidades Aprobadas en stemOS">
                             <div class="ed-segmented-bar" id="ed-segmented-bar">
