@@ -267,12 +267,13 @@ body.supaste-theme {
   justify-content: center;
   width: 100%;
   background: linear-gradient(180deg, 
-    #0d2b99 0%, 
-    #0066ff 16%, 
-    #0284c7 38%, 
-    #38bdf8 62%, 
-    #7dd3fc 82%, 
-    #e0f2fe 94%, 
+    #061a70 0%, 
+    #0d2b99 12%, 
+    #0056e0 26%, 
+    #0284c7 48%, 
+    #38bdf8 68%, 
+    #7dd3fc 84%, 
+    #e0f2fe 95%, 
     #ffffff 100%
   );
 }
@@ -282,10 +283,12 @@ body.supaste-theme {
   position: absolute;
   inset: -60px;
   background-image: linear-gradient(180deg, 
-    rgba(16, 42, 156, 0.8) 0%, 
-    rgba(0, 119, 255, 0.85) 20%, 
-    rgba(56, 189, 248, 0.9) 50%, 
-    rgba(125, 211, 252, 0.75) 75%, 
+    rgba(6, 26, 112, 0.92) 0%, 
+    rgba(13, 43, 153, 0.90) 15%, 
+    rgba(0, 86, 224, 0.88) 32%, 
+    rgba(2, 132, 199, 0.85) 52%, 
+    rgba(56, 189, 248, 0.80) 72%, 
+    rgba(125, 211, 252, 0.60) 88%, 
     rgba(255, 255, 255, 0) 100%
   );
   filter: blur(45px);
@@ -302,13 +305,13 @@ body.supaste-theme {
   width: 1200px;
   height: 600px;
   background: radial-gradient(ellipse 60% 45% at 50% 30%,
-    #bae6fd 0%,
-    #7dd3fc 30%,
-    #e0f2fe 60%,
+    #7dd3fc 0%,
+    #38bdf8 30%,
+    #0284c7 60%,
     transparent 100%
   );
   filter: blur(50px);
-  opacity: 0.5;
+  opacity: 0.35;
   pointer-events: none;
 }
 
