@@ -2,15 +2,6 @@
  * stemOS LXP Course Content Database
  * ====================================
  * STEM & Specialized English (ESP) — Nearshoring & High-Tech Industry Tracks
- * 
- * Organizado en 4 Categorías Maestras y 26 Tracks Modulares:
- *  - 🔵 TECHNOLOGY (6 Tracks)
- *  - 🟢 ENGINEERING & INDUSTRY (8 Tracks)
- *  - 🟣 SCIENCE & FUTURE TECHNOLOGY (6 Tracks)
- *  - 🟠 AVIATION, CAREER & PROFESSIONAL ENGLISH (6 Tracks)
- * 
- * Target Level: A2+ / B1 CEFR Multi-Nivel
- * Formato: Lecturas de 10 minutos (~500-800 palabras), glosario técnico EN-ES y preguntas socráticas.
  */
 
 var LXP_CATEGORIES = {
@@ -2802,11 +2793,287 @@ var LXP_COURSES = {
         "description": "Ingeniería de software moderna: paradigmas funcionales y OOP, APIs REST/gRPC, microservicios, testing automatizado y patrones de diseño.",
         "modules": [
             {
-                "id": "soft-m1",
-                "title": "Modern Software Paradigms: OOP vs Functional Architecture",
-                "titleES": "Paradigmas Modernos: OOP vs Arquitectura Funcional",
-                "icon": "fa-solid fa-cubes",
-                "readings": []
+                "id": "software-m1",
+                "title": "Clean Architecture & Microservices",
+                "titleES": "Clean Architecture y Microservicios",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "software-m1-r1",
+                        "title": "Microservices, Sagas & Event-Driven Design",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment & Engineering Standard**: Aligned with **ISO/IEC 25010 (Systems and software Quality Requirements)** and **Cloud Native Computing Foundation (CNCF) Patterns**. Essential for Full-Stack Developers, Backend Engineers, and DevOps Specialists.\n\n# Clean Architecture, Microservices, and Event-Driven Design\n\nIn modern software engineering, scaling an application from a monolithic codebase to a highly distributed, cloud-native architecture requires rigorous adherence to design patterns. The transition mitigates technical debt and ensures that the system remains maintainable, testable, and highly available.\n\n## 1. Clean Architecture and Domain-Driven Design (DDD)\nAt the core of maintainable software is the separation of concerns. **Clean Architecture** (popularized by Robert C. Martin) dictates that the business logic must be completely isolated from external frameworks, UI, and databases.\n- **Dependency Inversion Principle (DIP)**: High-level modules (business rules) should not depend on low-level modules (database connectors). Both should depend on abstractions (interfaces).\n- **Ubiquitous Language**: In Domain-Driven Design, developers and business stakeholders must agree on a shared vocabulary (e.g., instead of saying \"change status to 2\", the code and the business logic both say \"MarkOrderAsFulfilled\").\n\n## 2. Microservices Architecture vs. Monoliths\nA **Monolithic Application** packages the user interface, business logic, and data access into a single deployable unit. As the team grows, this creates a deployment bottleneck.\n- **Microservices**: The application is decomposed into small, independently deployable services organized around business capabilities (e.g., Auth Service, Billing Service, Inventory Service). \n- **API Gateways**: Clients do not connect directly to microservices. Instead, an API Gateway acts as a reverse proxy, handling authentication, rate limiting, and request routing.\n- **Database per Service**: A critical rule of microservices is that each service must own its database schema. Services must never share tables; they must communicate via well-defined APIs or events to prevent tightly coupled schemas.\n\n## 3. Event-Driven Communication and Saga Patterns\nWhen microservices do not share a database, maintaining data consistency across services requires specialized patterns.\n- **Synchronous vs. Asynchronous**: Synchronous HTTP/REST calls between services can cause cascading failures (if Billing is down, Checkout fails). Asynchronous communication uses message brokers (like RabbitMQ or Kafka) to publish events (e.g., `OrderPlacedEvent`) that other services consume independently.\n- **The Saga Pattern**: Since distributed databases lack traditional ACID transactions spanning multiple services, the Saga pattern manages a sequence of local transactions. If one step fails (e.g., Inventory is out of stock after Payment succeeds), the Saga executes **Compensating Transactions** (e.g., refunding the payment) to restore the system to a consistent state.\n\n---\n> **Key Takeaway**: Enterprise software engineering links **structural design (Clean Architecture, DDD)** with **distributed systems (Microservices, API Gateways)** and **eventual consistency (Sagas, Message Brokers)**.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Microservices",
+                                "es": "Microservicios",
+                                "definition": "An architectural style that structures an application as a collection of small, autonomous services modeled around a business domain.",
+                                "ipa": "/ˈmaɪ.kroʊˌsɜːr.vɪ.sɪz/",
+                                "collocations": [
+                                    "microservices architecture",
+                                    "deploy a microservice",
+                                    "strangler fig pattern"
+                                ]
+                            },
+                            {
+                                "en": "Tight Coupling",
+                                "es": "Acoplamiento Fuerte",
+                                "definition": "A state in software design where components are highly dependent on one another, making the system difficult to modify, test, or scale independently.",
+                                "ipa": "/taɪt ˈkʌp.lɪŋ/",
+                                "collocations": [
+                                    "avoid tight coupling",
+                                    "tightly coupled databases",
+                                    "loose coupling"
+                                ]
+                            },
+                            {
+                                "en": "Cascading Failure",
+                                "es": "Fallo en Cascada",
+                                "definition": "A failure that grows progressively over time as one part of the system fails and shifts its load to other parts, causing them to fail as well.",
+                                "ipa": "/kæsˈkeɪ.dɪŋ ˈfeɪl.jər/",
+                                "collocations": [
+                                    "prevent a cascading failure",
+                                    "circuit breaker pattern",
+                                    "cascading outage"
+                                ]
+                            },
+                            {
+                                "en": "Saga Pattern",
+                                "es": "Patrón Saga",
+                                "definition": "A design pattern used to manage data consistency across microservices in distributed transaction scenarios by executing a sequence of local transactions.",
+                                "ipa": "/ˈsɑː.ɡə ˈpæt.ərn/",
+                                "collocations": [
+                                    "orchestration saga",
+                                    "choreography saga",
+                                    "implement the saga pattern"
+                                ]
+                            },
+                            {
+                                "en": "Compensating Transaction",
+                                "es": "Transacción Compensatoria",
+                                "definition": "An operation that semantically undoes the effect of a previous operation in a distributed system where standard database rollbacks are impossible.",
+                                "ipa": "/ˈkɑːm.pən.seɪ.tɪŋ trænˈzæk.ʃən/",
+                                "collocations": [
+                                    "trigger a compensating transaction",
+                                    "compensating logic",
+                                    "eventual consistency"
+                                ]
+                            },
+                            {
+                                "en": "Dependency Inversion",
+                                "es": "Inversión de Dependencias (D del SOLID)",
+                                "definition": "A software design principle stating that high-level modules should not depend on low-level modules; both should depend on abstractions (interfaces).",
+                                "ipa": "/dɪˈpɛn.dən.si ɪnˈvɜːr.ʒən/",
+                                "collocations": [
+                                    "dependency inversion principle",
+                                    "inject dependencies",
+                                    "inversion of control"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "dialogue": {
+                    "title": "Architecture Review: Cascading Failures and the Saga Pattern",
+                    "titleES": "Revisión de Arquitectura: Fallos en Cascada y el Patrón Saga",
+                    "scenarioContext": "San Francisco, CA (HQ Architecture Board) ⇄ Bogotá, Colombia (Backend Core Team). Post-mortem analysis.",
+                    "characters": [
+                        {
+                            "name": "Emily Chen",
+                            "role": "Staff Software Engineer (San Francisco)",
+                            "avatar": "EC",
+                            "color": "var(--emerald)"
+                        },
+                        {
+                            "name": "Ing. Javier Ruiz",
+                            "role": "Lead Backend Developer (Bogotá)",
+                            "avatar": "JR",
+                            "color": "var(--cyan)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Emily Chen",
+                            "text": "Javier, during yesterday's Black Friday spike, the Checkout Service crashed. It looks like it was waiting for a synchronous HTTP response from the Legacy Inventory API, causing a thread pool exhaustion. We had a textbook cascading failure.",
+                            "translation": "Javier, durante el pico de Black Friday de ayer, el Servicio de Pago (Checkout) colapsó. Parece que estaba esperando una respuesta HTTP síncrona de la API de Inventario Legacy, causando el agotamiento del pool de hilos (thread pool). Tuvimos un fallo en cascada de manual.",
+                            "targetTerms": [
+                                "Checkout Service",
+                                "synchronous HTTP response",
+                                "thread pool exhaustion",
+                                "cascading failure"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Javier Ruiz",
+                            "text": "Agreed, Emily. The tight coupling killed us. I propose we decouple the services by implementing an Event-Driven architecture. Checkout will publish an 'OrderCreated' event to an Amazon SQS queue, and Inventory can consume it asynchronously.",
+                            "translation": "De acuerdo, Emily. El acoplamiento fuerte (tight coupling) nos mató. Propongo que desacoplemos los servicios implementando una arquitectura Orientada a Eventos. El Checkout publicará un evento 'OrderCreated' en una cola de Amazon SQS, y el Inventario podrá consumirlo de forma asíncrona.",
+                            "targetTerms": [
+                                "tight coupling",
+                                "decouple the services",
+                                "Event-Driven architecture",
+                                "publish an event",
+                                "asynchronously"
+                            ]
+                        },
+                        {
+                            "speaker": "Emily Chen",
+                            "text": "That solves the availability issue, but what about data consistency? If Payment processes successfully but Inventory later determines the item is out of stock, we can't use a standard SQL transaction rollback since they have separate databases.",
+                            "translation": "Eso resuelve el problema de disponibilidad, pero ¿qué pasa con la consistencia de los datos? Si el Pago se procesa con éxito pero luego el Inventario determina que el artículo está agotado, no podemos usar un rollback de transacción SQL estándar ya que tienen bases de datos separadas.",
+                            "targetTerms": [
+                                "availability issue",
+                                "data consistency",
+                                "transaction rollback",
+                                "separate databases"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Javier Ruiz",
+                            "text": "We will implement an Orchestration-based Saga pattern. If the inventory reservation fails, the Saga orchestrator will trigger a compensating transaction—specifically, emitting a 'RefundRequested' command to reverse the initial payment.",
+                            "translation": "Implementaremos un patrón Saga basado en orquestación. Si la reserva de inventario falla, el orquestador Saga activará una transacción compensatoria; específicamente, emitiendo un comando 'RefundRequested' para revertir el pago inicial.",
+                            "targetTerms": [
+                                "Saga pattern",
+                                "orchestrator",
+                                "compensating transaction",
+                                "reverse the initial payment"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The website broke because the other server was slow.",
+                            "native": "We experienced a cascading failure due to thread pool exhaustion from a synchronous dependency.",
+                            "explanation": "En la escuela se dice 'the website broke', pero un ingeniero debe especificar el mecanismo exacto del fallo: 'cascading failure' y 'thread pool exhaustion'."
+                        },
+                        {
+                            "school": "I will make the code undo the changes.",
+                            "native": "The Saga orchestrator will trigger a compensating transaction.",
+                            "explanation": "En sistemas distribuidos, no existe un simple 'undo' (rollback). Se utiliza terminología arquitectónica formal como 'compensating transaction'."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Microservices",
+                        "ipa": "/ˈmaɪ.kroʊˌsɜːr.vɪ.sɪz/",
+                        "es": "Microservicios",
+                        "category": "Arquitectura",
+                        "definition": "An architectural style that structures an application as a collection of small, autonomous services modeled around a business domain.",
+                        "collocations": [
+                            "microservices architecture",
+                            "deploy a microservice",
+                            "strangler fig pattern"
+                        ],
+                        "falseFriends": "No son servidores físicamente pequeños; son componentes de software independientes con su propia base de datos y despliegue.",
+                        "nativeUsage": "We are migrating the legacy PHP monolith into containerized Go and Node.js microservices."
+                    },
+                    {
+                        "term": "Tight Coupling",
+                        "ipa": "/taɪt ˈkʌp.lɪŋ/",
+                        "es": "Acoplamiento Fuerte",
+                        "category": "Diseño de Software",
+                        "definition": "A state in software design where components are highly dependent on one another, making the system difficult to modify, test, or scale independently.",
+                        "collocations": [
+                            "avoid tight coupling",
+                            "tightly coupled databases",
+                            "loose coupling"
+                        ],
+                        "falseFriends": "Coupling aquí no se refiere a parejas románticas (pareja), sino a la dependencia técnica entre dos piezas de código.",
+                        "nativeUsage": "The tight coupling between the UI rendering and the database queries makes unit testing almost impossible."
+                    },
+                    {
+                        "term": "Cascading Failure",
+                        "ipa": "/kæsˈkeɪ.dɪŋ ˈfeɪl.jər/",
+                        "es": "Fallo en Cascada",
+                        "category": "Confiabilidad de Sistemas",
+                        "definition": "A failure that grows progressively over time as one part of the system fails and shifts its load to other parts, causing them to fail as well.",
+                        "collocations": [
+                            "prevent a cascading failure",
+                            "circuit breaker pattern",
+                            "cascading outage"
+                        ],
+                        "falseFriends": "No es una 'cascada de agua que falla'; es un efecto dominó destructivo en redes de servidores.",
+                        "nativeUsage": "Without a circuit breaker pattern in place, the slow database caused a cascading failure across all upstream services."
+                    },
+                    {
+                        "term": "Saga Pattern",
+                        "ipa": "/ˈsɑː.ɡə ˈpæt.ərn/",
+                        "es": "Patrón Saga",
+                        "category": "Patrones Distribuidos",
+                        "definition": "A design pattern used to manage data consistency across microservices in distributed transaction scenarios by executing a sequence of local transactions.",
+                        "collocations": [
+                            "orchestration saga",
+                            "choreography saga",
+                            "implement the saga pattern"
+                        ],
+                        "falseFriends": "En ingeniería de software no es un 'cuento épico' (saga); es el protocolo de transacciones distribuidas compensatorias.",
+                        "nativeUsage": "The e-commerce checkout relies on the Saga pattern to handle inventory reservation and payment processing across different microservices."
+                    },
+                    {
+                        "term": "Compensating Transaction",
+                        "ipa": "/ˈkɑːm.pən.seɪ.tɪŋ trænˈzæk.ʃən/",
+                        "es": "Transacción Compensatoria",
+                        "category": "Sistemas Distribuidos",
+                        "definition": "An operation that semantically undoes the effect of a previous operation in a distributed system where standard database rollbacks are impossible.",
+                        "collocations": [
+                            "trigger a compensating transaction",
+                            "compensating logic",
+                            "eventual consistency"
+                        ],
+                        "falseFriends": "No significa 'pagarle/compensarle con dinero al usuario'; significa revertir los cambios de estado en bases de datos asíncronas.",
+                        "nativeUsage": "When the hotel booking failed, the saga executed a compensating transaction to refund the customer's flight payment."
+                    },
+                    {
+                        "term": "Dependency Inversion",
+                        "ipa": "/dɪˈpɛn.dən.si ɪnˈvɜːr.ʒən/",
+                        "es": "Inversión de Dependencias (D del SOLID)",
+                        "category": "Principios SOLID",
+                        "definition": "A software design principle stating that high-level modules should not depend on low-level modules; both should depend on abstractions (interfaces).",
+                        "collocations": [
+                            "dependency inversion principle",
+                            "inject dependencies",
+                            "inversion of control"
+                        ],
+                        "falseFriends": "No es poner el código 'de cabeza'; es hacer que el código dependa de 'interfaces/contratos' y no de implementaciones directas.",
+                        "nativeUsage": "By applying Dependency Inversion, we easily swapped the MySQL database for Postgres without changing the core business logic."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Tight Coupling vs Loose Coupling",
+                        "botQuestion": "Welcome to the Software Architecture Audit! Explain in English why 'Tight Coupling' is dangerous in a Microservices architecture. What happens if Service A makes a synchronous HTTP request to Service B, and Service B becomes slow?",
+                        "requiredKeywords": [
+                            "tight",
+                            "coupling",
+                            "synchronous",
+                            "cascading",
+                            "failure",
+                            "dependent",
+                            "wait"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Perfect! Tight coupling means components are highly dependent on each other. If Service A makes a synchronous call to a slow Service B, Service A's threads will block (wait), leading to thread pool exhaustion and a dangerous cascading failure.",
+                        "feedbackRetry": "Think about dependencies! If you 'tightly couple' two services with a synchronous call, what happens to the first service when the second one stops responding? Mention 'cascading failure'."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "The Saga Pattern & Compensating Transactions",
+                        "botQuestion": "In a distributed system, you cannot use a traditional SQL 'rollback' to undo a transaction that spans multiple separate databases. Explain how the 'Saga Pattern' solves this problem using 'Compensating Transactions'.",
+                        "requiredKeywords": [
+                            "saga",
+                            "compensating",
+                            "transaction",
+                            "undo",
+                            "reverse",
+                            "distributed",
+                            "eventual consistency"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot-on! Since microservices don't share a database, the Saga Pattern orchestrates a sequence of local transactions. If one step fails, it triggers a Compensating Transaction (like a refund command) to semantically undo the previous steps.",
+                        "feedbackRetry": "How do you undo an action if you can't use a database rollback? Think about what the system has to do manually to reverse a change. Use the term 'Compensating Transaction'."
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "soft-m2",
@@ -2855,91 +3122,289 @@ var LXP_COURSES = {
         "modules": [
             {
                 "id": "data-m1",
-                "title": "High-Throughput Data Pipelines & Modern Lakehouse Architecture",
-                "titleES": "Pipelines de Datos de Alto Rendimiento y Arquitectura Lakehouse",
-                "icon": "fa-solid fa-database",
+                "title": "Kafka, Lakehouse & Embeddings",
+                "titleES": "Kafka, Lakehouse e Incrustaciones (Embeddings)",
+                "isGoldModel": true,
                 "readings": [
                     {
                         "id": "data-m1-r1",
-                        "title": "Modern Data Engineering: Ingestion, Streaming, and Lakehouse Storage at Scale",
-                        "duration": "10 min",
-                        "content": "\n> **Industry Certification Note**: This module aligns with the **Databricks Certified Data Engineer Associate** and **AWS Certified Data Engineer - Associate (DEA-C01)** frameworks, validating high-throughput ETL/ELT pipeline design and modern Lakehouse storage architecture.\n\n# Modern Data Engineering: Ingestion, Streaming, and Lakehouse Storage at Scale\n\nIn multi-national nearshoring manufacturing operations, industrial telemetry is generated at staggering rates. Thousands of automated test benches, robotic arms, and CNC controllers stream vibration metrics, thermal logs, and cycle times continuously. Transforming this raw deluge into actionable executive insights requires a resilient **Modern Data Architecture**.\n\n## 1. Batch Processing vs. Event-Driven Streaming\n\nTraditionally, data was collected throughout a shift and processed in large **batch jobs** overnight using tools like Apache Hadoop MapReduce. While efficient for payroll and monthly billing, batch processing introduces hours of data latency.\n\nModern industrial operations rely instead on **Event-Driven Streaming Ingestion**:\n- **Message Brokers (Apache Kafka, AWS Kinesis)**: Act as durable, distributed, fault-tolerant ingestion buffers capable of handling millions of concurrent events per second with sub-second latency.\n- **Stream Processing Engines (Apache Flink, Spark Structured Streaming)**: Apply continuous stateful transformations, windowed aggregations (e.g., computing a rolling 5-minute temperature average), and anomaly detection algorithms in flight.\n\n## 2. Columnar Storage: Parquet and ORC vs. Row-Based Formats\n\nData lakes no longer store analytical datasets in legacy row-oriented formats like CSV or JSON. Row-oriented storage requires reading entire records from disk just to query a single column:\n\n- **Row-Oriented (CSV / PostgreSQL)**: Ideal for Online Transaction Processing (**OLTP**) where single records are inserted or updated by ID.\n- **Columnar Storage (Apache Parquet / ORC)**: The bedrock of Online Analytical Processing (**OLAP**). Values from the same column are stored contiguously on disk.\n\nBecause values within a column share the same data type (e.g., floating-point sensor voltages), columnar engines achieve massive **Snappy/ZSTD compression ratios (up to 80%)** and utilize **Dictionary Encoding**. Furthermore, query engines utilize **Projection Pushdown** (reading only requested columns) and **Predicate Pushdown** (skipping disk blocks using min/max metadata statistics), accelerating query execution by orders of magnitude.\n\n## 3. The Lakehouse Paradigm: ACID Guarantees on Object Storage\n\nHistorically, enterprises maintained two separate systems: a scalable but unmanaged **Data Lake** (AWS S3, Azure Blob, MinIO) for raw files, and a high-performance **Data Warehouse** (Snowflake, BigQuery) for structured queries. \n\nThe **Data Lakehouse** architecture merges both worlds by introducing a transactional storage layer (such as **Delta Lake** or **Apache Iceberg**) directly on top of cheap cloud object storage:\n- **ACID Transactions**: Guarantees Atomicity, Consistency, Isolation, and Durability, eliminating corrupted reads during concurrent write operations.\n- **Time Travel & Data Versioning**: Enables engineers to query historical snapshots of the dataset to audit algorithmic models or reproduce quality defect investigations.\n- **Schema Enforcement**: Prevents corrupt or malformed payloads from polluting clean analytical tables.\n\n---\n\n> **Key Takeaway**: Modern data analytics depends on **event streaming buffers (Kafka)**, **compressed columnar formats (Parquet)**, and **transactional lakehouse layers (Iceberg/Delta Lake)**. Mastering this technical English vocabulary empowers engineers to build scalable data telemetry backbones across cross-border industrial enterprises.\n",
+                        "title": "Streaming, Parquet & Vector Search Architecture",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment & Architecture Standard**: Aligned with **Databricks Data Engineer Professional** concepts and **ISO/IEC 20547 (Big Data Reference Architecture)**. Essential for Data Engineers, ML Ops, and Backend Systems Architects.\n\n# Real-Time Streaming, Lakehouse Architecture & Vector Embeddings\n\nThe era of monolithic relational databases performing nightly batch ETL (Extract, Transform, Load) jobs is over. Modern data science relies on real-time event streaming, unified Lakehouse architectures, and high-dimensional vector spaces to power GenAI applications.\n\n## 1. Event Streaming with Apache Kafka\nInstead of querying a database for state changes, modern applications use **event-driven architecture**.\n- **Topics and Partitions**: In Apache Kafka, an event (e.g., a user click or a sensor reading) is published to a specific **Topic**. To scale horizontally, topics are split into **Partitions** across multiple broker nodes. \n- **Offset and Consumer Groups**: Consumers read messages from partitions. Kafka keeps track of what has been read using an **Offset** pointer. If a consumer crashes, it restarts and resumes exactly from its last committed offset, ensuring no data loss (At-Least-Once delivery semantics).\n\n## 2. The Lakehouse Architecture (Parquet & Iceberg)\nHistorically, companies maintained cheap Data Lakes (raw unstructured files) and expensive Data Warehouses (structured SQL databases). The **Data Lakehouse** merges both:\n- **Columnar Storage (Apache Parquet)**: Unlike CSV or JSON, which store data row-by-row, Parquet stores data column-by-column. This enables aggressive compression and allows analytical queries to instantly skip irrelevant columns, reducing I/O costs by 90%.\n- **Table Formats (Apache Iceberg / Delta Lake)**: A metadata layer sits on top of the Parquet files in object storage (like AWS S3). Iceberg provides ACID transactions (Atomicity, Consistency, Isolation, Durability), enabling time-travel queries and schema evolution without locking the entire table.\n\n## 3. Vector Embeddings and RAG (Retrieval-Augmented Generation)\nLarge Language Models (LLMs) require domain-specific context. \n- **Embeddings**: Text, images, or audio are passed through an embedding model (e.g., text-embedding-3) to generate a dense vector of floating-point numbers (e.g., 1536 dimensions). Vectors that are mathematically close (measured by Cosine Similarity) are semantically related in meaning.\n- **Vector Databases**: These high-dimensional arrays are indexed in specialized vector databases (Pinecone, Milvus) using algorithms like HNSW (Hierarchical Navigable Small World).\n- **RAG Pipeline**: When a user asks a question, the query is embedded, the vector database retrieves the nearest neighbors (most relevant documents), and these documents are injected into the LLM's prompt context before generation.\n\n---\n> **Key Takeaway**: Modern data engineering links **low-latency streaming (Kafka partitions)** with **high-throughput storage (Parquet/Iceberg)** and **semantic AI retrieval (Vector Embeddings, Cosine Similarity)**.\n",
                         "vocabulary": [
                             {
-                                "en": "Columnar Storage",
-                                "es": "Almacenamiento Columnar",
-                                "definition": "Data organization storing columns together on disk, optimizing analytical aggregation"
+                                "en": "Consumer Lag",
+                                "es": "Retraso del Consumidor",
+                                "definition": "The difference between the latest offset produced to a Kafka partition and the latest offset that has been read and committed by a consumer group.",
+                                "ipa": "/kənˈsuː.mər læɡ/",
+                                "collocations": [
+                                    "high consumer lag",
+                                    "monitor lag in Datadog",
+                                    "lag spike"
+                                ]
                             },
                             {
-                                "en": "Lakehouse",
-                                "es": "Lakehouse de Datos",
-                                "definition": "Architecture combining the low cost of data lakes with the ACID transactions of warehouses"
+                                "en": "Parquet",
+                                "es": "Formato Parquet",
+                                "definition": "An open-source, column-oriented data file format designed for efficient data storage and retrieval in Hadoop/Spark ecosystems.",
+                                "ipa": "/pɑːrˈkeɪ/",
+                                "collocations": [
+                                    "columnar Parquet file",
+                                    "snappy compressed Parquet",
+                                    "Parquet schema"
+                                ]
                             },
                             {
-                                "en": "Predicate Pushdown",
-                                "es": "Empuje de Predicados (Predicate Pushdown)",
-                                "definition": "Query optimization filtering data at disk storage level before loading into memory"
+                                "en": "Metadata Overhead",
+                                "es": "Sobrecarga de Metadatos",
+                                "definition": "The excessive processing time and memory required by a system to read the structural information (metadata) of millions of tiny files rather than the actual data.",
+                                "ipa": "/ˈmɛt.əˌdeɪ.tə ˈoʊ.vər.hɛd/",
+                                "collocations": [
+                                    "choked by metadata overhead",
+                                    "Iceberg manifest metadata",
+                                    "reduce overhead"
+                                ]
                             },
                             {
-                                "en": "ACID Transactions",
-                                "es": "Transacciones ACID",
-                                "definition": "Set of properties (Atomicity, Consistency, Isolation, Durability) ensuring database reliability"
+                                "en": "Vector Embedding",
+                                "es": "Incrustación Vectorial / Embedding Vectorial",
+                                "definition": "A learned representation of text, images, or audio where semantic meaning is mapped to a dense array of continuous numbers (a vector) in a high-dimensional space.",
+                                "ipa": "/ˈvɛk.tər ɪmˈbɛd.ɪŋ/",
+                                "collocations": [
+                                    "generate embeddings",
+                                    "embedding model API",
+                                    "cosine similarity of embeddings"
+                                ]
                             },
                             {
-                                "en": "Event-Driven Streaming",
-                                "es": "Transmisión Basada en Eventos",
-                                "definition": "Real-time continuous data processing as individual events occur"
+                                "en": "Cosine Similarity",
+                                "es": "Similitud del Coseno",
+                                "definition": "A metric used to measure how similar two vectors are, irrespective of their magnitude, by calculating the cosine of the angle between them.",
+                                "ipa": "/ˈkoʊ.saɪn ˌsɪm.əˈlær.ə.ti/",
+                                "collocations": [
+                                    "high cosine similarity",
+                                    "nearest neighbor search",
+                                    "semantic similarity"
+                                ]
                             },
                             {
-                                "en": "Data Pipeline",
-                                "es": "Pipeline de Datos (ETL/ELT)",
-                                "definition": "Series of automated stages extracting, transforming, and loading data"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "Why is Apache Parquet preferred over CSV for analytical queries on billions of records?",
-                                "options": [
-                                    "Parquet files are human-readable in Notepad",
-                                    "Parquet utilizes columnar storage and compression to read only requested columns",
-                                    "CSV files cannot store numbers",
-                                    "Parquet is an executable binary file"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "What does Predicate Pushdown achieve in modern query engines?",
-                                "options": [
-                                    "It crashes slow queries",
-                                    "It evaluates WHERE filters at the storage layer to skip irrelevant disk blocks",
-                                    "It translates queries to Spanish",
-                                    "It encrypts network passwords"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "Which feature of a Data Lakehouse allows developers to query past historical states of a table?",
-                                "options": [
-                                    "Time Travel / Data Versioning",
-                                    "RAM Caching",
-                                    "Garbage Collection",
-                                    "DNS Routing"
-                                ],
-                                "answer": 0
-                            },
-                            {
-                                "q": "Which tool is standard for real-time distributed message streaming in data engineering?",
-                                "options": [
-                                    "Apache Kafka",
-                                    "Microsoft Excel",
-                                    "HTML5 Canvas",
-                                    "SQLite"
-                                ],
-                                "answer": 0
+                                "en": "Compaction",
+                                "es": "Compactación",
+                                "definition": "A background maintenance process in data lakes/databases that merges many small data files into fewer, larger optimal-sized files to improve query performance.",
+                                "ipa": "/kəmˈpæk.ʃən/",
+                                "collocations": [
+                                    "trigger compaction job",
+                                    "asynchronous compaction",
+                                    "bin-packing compaction"
+                                ]
                             }
                         ]
                     }
-                ]
+                ],
+                "dialogue": {
+                    "title": "Incident Triage: Kafka Consumer Lag and Iceberg Compaction",
+                    "titleES": "Triaje de Incidentes: Retraso de Consumidor Kafka y Compactación Iceberg",
+                    "scenarioContext": "Austin, TX (Data Platform Team) ⇄ Monterrey, NL (Data Engineering Squad). P1 incident on live dashboard.",
+                    "characters": [
+                        {
+                            "name": "Sarah Jenkins",
+                            "role": "Principal Data Architect (Austin)",
+                            "avatar": "SJ",
+                            "color": "var(--purple)"
+                        },
+                        {
+                            "name": "Ing. David Garza",
+                            "role": "Senior Data Engineer (Monterrey)",
+                            "avatar": "DG",
+                            "color": "var(--emerald)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Sarah Jenkins",
+                            "text": "David, the real-time anomaly detection dashboard is severely delayed. Datadog is showing a massive consumer lag on the 'sensor-telemetry' Kafka topic. What's bottlenecking the Spark Structured Streaming job?",
+                            "translation": "David, el tablero de detección de anomalías en tiempo real está severamente retrasado. Datadog muestra un retraso de consumidor masivo en el tópico Kafka 'sensor-telemetry'. ¿Qué está creando un cuello de botella en el trabajo de Spark Structured Streaming?",
+                            "targetTerms": [
+                                "delayed",
+                                "consumer lag",
+                                "Kafka topic",
+                                "bottlenecking",
+                                "Spark Structured Streaming"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. David Garza",
+                            "text": "I checked the Spark executors. The ingestion isn't the problem; it's the write side. The Iceberg table on S3 suffers from the small files problem. The streaming job is writing thousands of tiny 5KB Parquet files per minute, destroying our I/O throughput.",
+                            "translation": "Revisé los ejecutores de Spark. La ingesta no es el problema; es el lado de escritura. La tabla Iceberg en S3 sufre el problema de archivos pequeños. El trabajo de streaming está escribiendo miles de pequeños archivos Parquet de 5KB por minuto, destruyendo nuestro rendimiento de I/O.",
+                            "targetTerms": [
+                                "Spark executors",
+                                "Iceberg table",
+                                "small files problem",
+                                "Parquet files",
+                                "I/O throughput"
+                            ]
+                        },
+                        {
+                            "speaker": "Sarah Jenkins",
+                            "text": "Ah, the metadata overhead is choking the catalog. Have you triggered an asynchronous compaction job to merge those small files into larger 128MB chunks?",
+                            "translation": "Ah, la sobrecarga de metadatos está ahogando el catálogo. ¿Has activado un trabajo de compactación asíncrono para fusionar esos pequeños archivos en fragmentos más grandes de 128MB?",
+                            "targetTerms": [
+                                "metadata overhead",
+                                "catalog",
+                                "asynchronous compaction job",
+                                "merge"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. David Garza",
+                            "text": "Yes, I just submitted a bin-packing rewrite data files procedure via Airflow. I also increased the Kafka poll timeout so the consumers don't rebalance while the write commits. The consumer lag should drop to zero in about ten minutes.",
+                            "translation": "Sí, acabo de enviar un procedimiento de reescritura de archivos de datos tipo bin-packing a través de Airflow. También aumenté el tiempo de espera (timeout) de sondeo de Kafka para que los consumidores no se rebalanceen mientras se confirma la escritura. El retraso del consumidor debería caer a cero en unos diez minutos.",
+                            "targetTerms": [
+                                "bin-packing",
+                                "rewrite data files",
+                                "poll timeout",
+                                "rebalance",
+                                "write commits"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The system is slow because there are too many files.",
+                            "native": "The Iceberg table suffers from the small files problem, degrading I/O throughput due to metadata overhead.",
+                            "explanation": "En ingeniería de datos, no se dice 'system is slow'; se especifica el problema arquitectónico exacto ('small files problem') y su impacto ('metadata overhead', 'I/O throughput')."
+                        },
+                        {
+                            "school": "The app is not reading messages fast enough.",
+                            "native": "Datadog is reporting high consumer lag on the Kafka partition.",
+                            "explanation": "El término estándar para el retraso en la lectura de eventos en streaming es 'consumer lag'."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Consumer Lag",
+                        "ipa": "/kənˈsuː.mər læɡ/",
+                        "es": "Retraso del Consumidor",
+                        "category": "Streaming",
+                        "definition": "The difference between the latest offset produced to a Kafka partition and the latest offset that has been read and committed by a consumer group.",
+                        "collocations": [
+                            "high consumer lag",
+                            "monitor lag in Datadog",
+                            "lag spike"
+                        ],
+                        "falseFriends": "No significa que el cliente/usuario (consumer) tenga una mala conexión a internet; se refiere a la aplicación backend que lee de Kafka.",
+                        "nativeUsage": "During the Black Friday sale, consumer lag on the transaction topic spiked to 5 million messages."
+                    },
+                    {
+                        "term": "Parquet",
+                        "ipa": "/pɑːrˈkeɪ/",
+                        "es": "Formato Parquet",
+                        "category": "Almacenamiento",
+                        "definition": "An open-source, column-oriented data file format designed for efficient data storage and retrieval in Hadoop/Spark ecosystems.",
+                        "collocations": [
+                            "columnar Parquet file",
+                            "snappy compressed Parquet",
+                            "Parquet schema"
+                        ],
+                        "falseFriends": "No es un piso de madera ('parqué'); es el formato de datos analítico estándar de la industria.",
+                        "nativeUsage": "Switching from JSON to Parquet reduced our S3 storage costs by 80% and sped up queries tenfold."
+                    },
+                    {
+                        "term": "Metadata Overhead",
+                        "ipa": "/ˈmɛt.əˌdeɪ.tə ˈoʊ.vər.hɛd/",
+                        "es": "Sobrecarga de Metadatos",
+                        "category": "Arquitectura",
+                        "definition": "The excessive processing time and memory required by a system to read the structural information (metadata) of millions of tiny files rather than the actual data.",
+                        "collocations": [
+                            "choked by metadata overhead",
+                            "Iceberg manifest metadata",
+                            "reduce overhead"
+                        ],
+                        "falseFriends": "Overhead aquí no es 'sobre la cabeza' ni 'techo'; significa costo indirecto o penalización de rendimiento.",
+                        "nativeUsage": "Querying the data lake took 5 minutes purely due to the metadata overhead of scanning 100,000 tiny log files."
+                    },
+                    {
+                        "term": "Vector Embedding",
+                        "ipa": "/ˈvɛk.tər ɪmˈbɛd.ɪŋ/",
+                        "es": "Incrustación Vectorial / Embedding Vectorial",
+                        "category": "Machine Learning",
+                        "definition": "A learned representation of text, images, or audio where semantic meaning is mapped to a dense array of continuous numbers (a vector) in a high-dimensional space.",
+                        "collocations": [
+                            "generate embeddings",
+                            "embedding model API",
+                            "cosine similarity of embeddings"
+                        ],
+                        "falseFriends": "No es 'incrustar' un video en HTML; es la representación matemática del significado de una palabra o frase.",
+                        "nativeUsage": "The RAG pipeline calculates the distance between the user's query embedding and the document embeddings in Pinecone."
+                    },
+                    {
+                        "term": "Cosine Similarity",
+                        "ipa": "/ˈkoʊ.saɪn ˌsɪm.əˈlær.ə.ti/",
+                        "es": "Similitud del Coseno",
+                        "category": "Matemáticas / IA",
+                        "definition": "A metric used to measure how similar two vectors are, irrespective of their magnitude, by calculating the cosine of the angle between them.",
+                        "collocations": [
+                            "high cosine similarity",
+                            "nearest neighbor search",
+                            "semantic similarity"
+                        ],
+                        "falseFriends": "Es una métrica de proximidad semántica, un valor de 1 significa vectores idénticos, 0 ortogonales.",
+                        "nativeUsage": "The search engine returns documents that have the highest cosine similarity to the embedded search query."
+                    },
+                    {
+                        "term": "Compaction",
+                        "ipa": "/kəmˈpæk.ʃən/",
+                        "es": "Compactación",
+                        "category": "Gestión de Datos",
+                        "definition": "A background maintenance process in data lakes/databases that merges many small data files into fewer, larger optimal-sized files to improve query performance.",
+                        "collocations": [
+                            "trigger compaction job",
+                            "asynchronous compaction",
+                            "bin-packing compaction"
+                        ],
+                        "falseFriends": "No es aplastar basura; es una optimización crítica de I/O para evitar el 'small files problem'.",
+                        "nativeUsage": "We scheduled a nightly Airflow DAG to run Iceberg table compaction across all event-driven datasets."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Lakehouse & Small Files Problem",
+                        "botQuestion": "Welcome to the Data Engineering Audit! Explain in English what the 'small files problem' is in a Data Lake. Why does writing thousands of 5KB files degrade query performance, and how is it fixed?",
+                        "requiredKeywords": [
+                            "small files",
+                            "metadata",
+                            "overhead",
+                            "throughput",
+                            "compaction",
+                            "merge",
+                            "parquet"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Perfect! Millions of tiny files create massive metadata overhead, choking the catalog and destroying I/O throughput. The solution is running a compaction job to merge them into larger (e.g., 128MB) Parquet chunks.",
+                        "feedbackRetry": "Think about the catalog trying to read the list of files before even reading the data. What is 'metadata overhead'? What background process (starting with C) merges files?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Vector Embeddings & RAG",
+                        "botQuestion": "In a Retrieval-Augmented Generation (RAG) architecture, what is a 'vector embedding' and how does the system know which documents are semantically related to the user's query?",
+                        "requiredKeywords": [
+                            "vector",
+                            "embedding",
+                            "cosine",
+                            "similarity",
+                            "numbers",
+                            "semantic",
+                            "distance",
+                            "nearest"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot-on! A vector embedding converts text meaning into an array of numbers. The system finds related documents by measuring the spatial distance between vectors, typically using 'Cosine Similarity'.",
+                        "feedbackRetry": "How do we turn text into math? Mention 'array of numbers' or 'dense vector'. How do we measure the distance between two vectors in space to check if they mean the same thing? (Starts with Cosine)."
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "data-m2",
@@ -7631,91 +8096,288 @@ var LXP_COURSES = {
         "modules": [
             {
                 "id": "robot-m1",
-                "title": "Industrial Robot Kinematics & Coordinate Systems",
-                "titleES": "Cinemática de Robots Industriales y Sistemas de Coordenadas",
-                "icon": "fa-solid fa-compass",
+                "title": "6-DoF Kinematics & IEC 61131",
+                "titleES": "Cinemática 6-DoF e IEC 61131",
+                "isGoldModel": true,
                 "readings": [
                     {
                         "id": "robot-m1-r1",
-                        "title": "6-Axis Articulated Robots: Forward and Inverse Kinematics in Modern Automation",
-                        "duration": "10 min",
-                        "content": "\n> **Industrial Robotics Standard Note**: This curriculum adheres to **ISO 10218-1/2** (Safety requirements for industrial robots) and **RIA R15.06** standards, providing foundational competencies for robotic cell integration across automotive, aerospace, and electronics manufacturing.\n\n# 6-Axis Articulated Robots: Forward and Inverse Kinematics in Modern Automation\n\nAcross automotive plants in Saltillo, Puebla, and Hermosillo, **6-Axis Articulated Industrial Robots** (manufactured by FANUC, ABB, KUKA, and Yaskawa) form the backbone of high-volume manufacturing. Whether executing high-amperage spot welding on vehicle chassis or precision dispensing of thermal adhesive on EV battery modules, these robotic arms operate with sub-millimeter precision.\n\n## 1. Anatomy and Degrees of Freedom (6-DoF)\n\nAn articulated industrial manipulator utilizes an open kinematic chain composed of rigid links connected by motorized revolute joints. A standard 6-axis arm possesses **six degrees of freedom (6-DoF)**, mirroring human arm dexterity:\n\n1. **Axis 1 (Base / Waist)**: Rotates the entire arm horizontally around the central pedestal.\n2. **Axis 2 (Shoulder)**: Moves the lower arm vertically forward and backward.\n3. **Axis 3 (Elbow)**: Pivots the upper arm up and down.\n4. **Axis 4 (Forearm Roll)**: Rotates the wrist mechanism along its longitudinal axis.\n5. **Axis 5 (Wrist Pitch / Bend)**: Tilts the end-of-arm tool up and down.\n6. **Axis 6 (Wrist Roll / Flange)**: Rotates the mounting flange where the **End-Effector** (gripper, laser head, welding torch) is secured.\n\nSix independent axes are the mathematical minimum required to position a tool at any arbitrary coordinate in 3D space $(X, Y, Z)$ while orienting it at any rotational angle (Roll, Pitch, Yaw).\n\n## 2. Forward vs. Inverse Kinematics\n\nControlling a robotic manipulator requires mastering coordinate transformations between **Joint Space** and **Cartesian Space**:\n\n- **Forward Kinematics (FK)**: Given the angular positions of all six revolute joints $(\\theta_1, \\theta_2, \\theta_3, \\theta_4, \\theta_5, \\theta_6)$, Forward Kinematics computes the exact Cartesian pose (position and orientation) of the Tool Center Point (TCP). Because each joint angle directly dictates link geometry, FK always yields a single, deterministic solution calculated using **Denavit-Hartenberg (D-H) parameter matrices**.\n- **Inverse Kinematics (IK)**: The reverse and vastly more complex problem. Given a desired spatial destination for the TCP $(X, Y, Z, W, P, R)$, Inverse Kinematics calculates the required joint angles to achieve that pose. IK often yields **multiple mathematical configurations** (e.g., elbow-up vs. elbow-down, wrist-flipped) or no solution if the target lies outside the robot's **Work Envelope**.\n\n## 3. Singularity Avoidance and Path Planning\n\nA critical challenge in robot programming is avoiding **Kinematic Singularities**:\n- A singularity occurs when two joint axes align collinearly, causing the robot's Jacobian matrix to lose mathematical rank.\n- At a singularity point, the robot loses a degree of freedom in Cartesian space, requiring infinite joint velocity to sustain linear tool movement.\n- Modern robot controllers enforce singularity avoidance algorithms, decelerating the arm or re-routing trajectory to prevent mechanical motor overcurrent and violent vibrations.\n\n## 4. Repeatability vs. Accuracy (ISO 9283)\n\nEngineers must never confuse precision metrics:\n- **Pose Accuracy**: The ability of the robot to move to a command target coordinate in free space.\n- **Pose Repeatability**: The ability of the robot to return to the exact same taught position after hundreds of thousands of cycles. Industrial robots exhibit outstanding repeatability (typically **$\\pm 0.02$ mm**), even if absolute spatial accuracy varies slightly due to arm deflection and temperature expansion.\n\n---\n\n> **Key Takeaway**: Industrial robotic integration combines **joint mechanics (6-DoF)** with rigorous spatial mathematics (**Forward/Inverse Kinematics, Tool Center Point calibration, and singularity avoidance**). Fluency in robotics English enables automation engineers to commission robotic workcells and resolve critical faults in multinational plants.\n",
+                        "title": "6-DoF Industrial Robotics & Collaborative Kinematics",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment & Safety Standard**: Aligned with **ISO 10218-1 (Robots and robotic devices — Safety requirements)** and **IEC 61131-3 (Programmable Controllers)**. Essential for automation engineers, system integrators, and plant floor robotics technicians.\n\n# 6-DoF Industrial Robotics, Collaborative Robots (Cobots) & Kinematic Control\n\nThe integration of Six Degrees of Freedom (6-DoF) articulated robots and collaborative robots (Cobots) has revolutionized modern manufacturing, transitioning assembly lines from rigid automation to highly flexible, safety-rated intelligent cells.\n\n## 1. Kinematics and Inverse Kinematics (IK)\nIndustrial articulated robots position their End-of-Arm Tooling (EOAT) in 3D space using complex mathematical transformations:\n- **Forward Kinematics**: Calculates the exact Cartesian coordinates ($X, Y, Z, Rx, Ry, Rz$) of the end-effector based on known joint angles ($\\theta_1, \\theta_2, ..., \\theta_6$).\n- **Inverse Kinematics (IK)**: The computationally intensive process where the robot controller calculates the required joint angles to reach a desired target Cartesian coordinate. Since multiple joint configurations can reach the same point (e.g., elbow-up vs. elbow-down), the controller must avoid **kinematic singularities**—positions where the robot loses a degree of freedom and infinite joint velocities are mathematically required, triggering a safety fault.\n\n## 2. Collaborative Robots (Cobots) and ISO 10218\nUnlike traditional industrial robots confined within physical safety fences and light curtains, Cobots are designed to share a workspace with human operators:\n1. **Power and Force Limiting (PFL)**: Cobots feature dual-encoder joints and torque sensors. If the arm detects a sudden spike in motor current (indicating a collision with a human), the safety controller halts motion within milliseconds.\n2. **Speed and Separation Monitoring (SSM)**: Utilizing LiDAR scanners or 3D time-of-flight cameras, the robotic cell dynamically scales down the robot's Tool Center Point (TCP) velocity as a human enters the collaborative zone, ultimately enforcing a Category 0 or Category 1 Safe Stop if the minimum separation distance is breached.\n\n## 3. IEC 61131-3 PLC Integration & Fieldbus Networks\nRobots rarely operate in isolation. They are orchestrated by a master Programmable Logic Controller (PLC):\n- **IEC 61131-3 Programming**: Engineers write supervisory control logic using standard languages like Ladder Diagram (LD) or Structured Text (ST). \n- **Deterministic Fieldbus**: The PLC commands the robot controller via industrial ethernet protocols such as **PROFINET IRT** or **EtherCAT**. These networks provide sub-millisecond deterministic cyclic data exchange, ensuring that a robotic weld triggers exactly when the conveyor encoder reports the chassis is in position.\n- **Safety over Ethernet (CIP Safety / PROFIsafe)**: Emergency stop (E-Stop) signals and safety gate interlocks are transmitted over the same ethernet cable using black-channel cryptographic safety protocols, eliminating complex hardwiring.\n\n---\n> **Key Takeaway**: Advanced automation merges **spatial mathematics (Inverse Kinematics, Singularities)** with **functional safety (ISO 10218, Force Limiting)** and **deterministic network orchestration (PROFINET, IEC 61131-3)**.\n",
                         "vocabulary": [
                             {
                                 "en": "Inverse Kinematics (IK)",
                                 "es": "Cinemática Inversa",
-                                "definition": "Mathematical calculation of required joint angles to place a tool at a target Cartesian coordinate"
+                                "definition": "The mathematical process of calculating the variable joint parameters needed to place the end of a kinematic chain in a given position and orientation.",
+                                "ipa": "/ɪnˈvɜːrs ˌkɪn.əˈmæt.ɪks/",
+                                "collocations": [
+                                    "IK solver",
+                                    "kinematic singularity",
+                                    "calculate joint angles"
+                                ]
                             },
                             {
                                 "en": "Tool Center Point (TCP)",
-                                "es": "Punto Central de la Herramienta (TCP)",
-                                "definition": "The exact coordinate point at the tip of the end-effector where work is executed"
+                                "es": "Centro de Herramienta (TCP)",
+                                "definition": "The focal point of the robotic end-effector (tool) relative to which all programmed motion paths and velocities are calculated.",
+                                "ipa": "/tuːl ˈsɛn.tər pɔɪnt/",
+                                "collocations": [
+                                    "calibrate the TCP",
+                                    "TCP velocity",
+                                    "TCP offset"
+                                ]
                             },
                             {
                                 "en": "Kinematic Singularity",
                                 "es": "Singularidad Cinemática",
-                                "definition": "Alignment of joint axes causing loss of degrees of freedom and unbounded joint velocity"
+                                "definition": "A robot configuration where two or more joint axes align, causing a loss of a degree of freedom and requiring infinite joint speeds to maintain linear motion.",
+                                "ipa": "/ˌkɪn.əˈmæt.ɪk ˌsɪŋ.ɡjəˈlær.ə.ti/",
+                                "collocations": [
+                                    "wrist singularity",
+                                    "pass through singularity",
+                                    "singularity avoidance algorithm"
+                                ]
                             },
                             {
-                                "en": "End-Effector",
-                                "es": "Efector Final / Garra",
-                                "definition": "Tool mounted to the robot flange that interacts with parts (gripper, welder, dispenser)"
+                                "en": "End-of-Arm Tooling (EOAT)",
+                                "es": "Herramienta de Extremo de Brazo",
+                                "definition": "The specialized equipment, such as grippers, welding torches, or vacuum cups, mounted at the end of the robotic arm to interact with parts.",
+                                "ipa": "/ɛnd əv ɑːrm ˈtuː.lɪŋ/",
+                                "collocations": [
+                                    "custom EOAT design",
+                                    "EOAT payload capacity",
+                                    "pneumatic EOAT gripper"
+                                ]
                             },
                             {
-                                "en": "Work Envelope",
-                                "es": "Espacio de Trabajo",
-                                "definition": "The total 3D spatial boundary within which a robot can position its TCP"
+                                "en": "Collaborative Robot (Cobot)",
+                                "es": "Robot Colaborativo (Cobot)",
+                                "definition": "A robot intended for direct human-robot interaction within a shared workspace without physical safety fencing, relying on force and speed limits.",
+                                "ipa": "/kəˈlæb.rə.tɪv ˈroʊ.bɑːt/",
+                                "collocations": [
+                                    "cobot payload limit",
+                                    "ISO 10218 compliance",
+                                    "force-limited cobot"
+                                ]
                             },
                             {
-                                "en": "Pose Repeatability",
-                                "es": "Repetibilidad de Pose",
-                                "definition": "Ability of a robot to return to an identical taught position across continuous cycles"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "What is the primary difference between Forward Kinematics (FK) and Inverse Kinematics (IK)?",
-                                "options": [
-                                    "FK computes Cartesian pose from joint angles; IK calculates joint angles from a desired Cartesian pose",
-                                    "FK moves backward; IK moves forward",
-                                    "FK is only for electric motors; IK is for pneumatic valves",
-                                    "There is no mathematical difference"
-                                ],
-                                "answer": 0
-                            },
-                            {
-                                "q": "What dangerous operational condition occurs at a Kinematic Singularity?",
-                                "options": [
-                                    "The battery discharges completely",
-                                    "Joint axes align, requiring theoretical infinite joint velocity for linear motion",
-                                    "The TCP changes color",
-                                    "The gripper opens automatically"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "How many degrees of freedom (DoF) are mathematically required for full 3D spatial positioning and orientation?",
-                                "options": [
-                                    "2 DoF",
-                                    "4 DoF",
-                                    "6 DoF",
-                                    "12 DoF"
-                                ],
-                                "answer": 2
-                            },
-                            {
-                                "q": "Which metric describes a robot's ability to return to the exact same taught coordinate cycle after cycle?",
-                                "options": [
-                                    "Pose Repeatability",
-                                    "Operating Voltage",
-                                    "Network Latency",
-                                    "Thermal Dissipation"
-                                ],
-                                "answer": 0
+                                "en": "Programmable Logic Controller (PLC)",
+                                "es": "Controlador Lógico Programable",
+                                "definition": "An industrial solid-state computer that monitors inputs and makes decisions based on a custom program to control outputs (machines or processes).",
+                                "ipa": "/ˈproʊ.ɡræm.ə.bəl ˈlɑː.dʒɪk kənˈtroʊ.lər/",
+                                "collocations": [
+                                    "safety PLC",
+                                    "PLC ladder logic",
+                                    "PLC scan time"
+                                ]
                             }
                         ]
                     }
-                ]
+                ],
+                "dialogue": {
+                    "title": "Robotic Cell Commissioning: Singularities and PROFIsafe Faults",
+                    "titleES": "Puesta en Marcha de Celda Robótica: Singularidades y Fallos PROFIsafe",
+                    "scenarioContext": "Querétaro, Qro (Aerospace Machining Cell) ⇄ Stuttgart, Germany (Automation OEM Support). Live commissioning debug.",
+                    "characters": [
+                        {
+                            "name": "Ing. Carlos Mendoza",
+                            "role": "Lead Automation Integrator (Querétaro)",
+                            "avatar": "CM",
+                            "color": "var(--cyan)"
+                        },
+                        {
+                            "name": "Lukas Weber",
+                            "role": "Senior Robotics Controls Engineer (Stuttgart)",
+                            "avatar": "LW",
+                            "color": "var(--amber)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Ing. Carlos Mendoza",
+                            "text": "Lukas, we are validating the payload transfer on the new 6-axis milling robot. Whenever the Tool Center Point approaches the zenith of the CNC fixture, joint 4 spins uncontrollably and the controller throws a kinematics singularity fault.",
+                            "translation": "Lukas, estamos validando la transferencia de carga útil en el nuevo robot de fresado de 6 ejes. Cada vez que el Centro de Herramienta (TCP) se acerca al cenit del montaje CNC, la articulación 4 gira sin control y el controlador arroja un fallo de singularidad cinemática.",
+                            "targetTerms": [
+                                "payload transfer",
+                                "Tool Center Point (TCP)",
+                                "zenith",
+                                "kinematics singularity fault"
+                            ]
+                        },
+                        {
+                            "speaker": "Lukas Weber",
+                            "text": "That’s a classic wrist singularity, Carlos. Joints 4 and 6 are perfectly aligned in a straight line, making joint 5's axis vector zero. The inverse kinematics solver divides by zero, commanding infinite acceleration. You need to offset the approach angle by at least 5 degrees.",
+                            "translation": "Esa es una clásica singularidad de muñeca, Carlos. Las articulaciones 4 y 6 están perfectamente alineadas en línea recta, haciendo que el vector del eje de la articulación 5 sea cero. El solucionador de cinemática inversa divide por cero, comandando una aceleración infinita. Necesitas desfasar el ángulo de aproximación por al menos 5 grados.",
+                            "targetTerms": [
+                                "wrist singularity",
+                                "axis vector",
+                                "inverse kinematics solver",
+                                "offset the approach angle"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Carlos Mendoza",
+                            "text": "Understood, I'll rewrite the structured text motion block to interpolate a joint move (PTP) instead of a linear move (LIN) near that zone. However, we're also getting intermittent PROFIsafe communication drops from the safety PLC.",
+                            "translation": "Entendido, reescribiré el bloque de movimiento en texto estructurado para interpolar un movimiento de articulación (PTP) en lugar de un movimiento lineal (LIN) cerca de esa zona. Sin embargo, también estamos teniendo caídas intermitentes de comunicación PROFIsafe desde el PLC de seguridad.",
+                            "targetTerms": [
+                                "structured text motion block",
+                                "interpolate",
+                                "joint move (PTP)",
+                                "linear move (LIN)",
+                                "PROFIsafe communication drops"
+                            ]
+                        },
+                        {
+                            "speaker": "Lukas Weber",
+                            "text": "Check the PROFINET update time in the hardware config. If you have the cyclic watchdog set to 2 milliseconds, background network jitter might cause a timeout. Increase the F-Watchdog time to 8 milliseconds for the robot's safety telegram.",
+                            "translation": "Revisa el tiempo de actualización de PROFINET en la configuración de hardware. Si tienes el watchdog cíclico ajustado a 2 milisegundos, la fluctuación de fondo de la red podría causar un tiempo de espera excedido. Aumenta el tiempo del F-Watchdog a 8 milisegundos para el telegrama de seguridad del robot.",
+                            "targetTerms": [
+                                "cyclic watchdog",
+                                "network jitter",
+                                "timeout",
+                                "F-Watchdog time",
+                                "safety telegram"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The robot arm got stuck and moved very fast.",
+                            "native": "The robot controller encountered a wrist singularity, causing a safety fault due to infinite commanded joint acceleration.",
+                            "explanation": "En la industria no se dice 'got stuck'; se diagnostica el problema matemático exacto (singularidad cinemática) que provocó el paro de seguridad."
+                        },
+                        {
+                            "school": "I will make the machine move in a straight line.",
+                            "native": "I will program a linear interpolation (LIN) move for the Tool Center Point (TCP).",
+                            "explanation": "El vocabulario técnico distingue entre movimientos interpolados lineales (LIN) y movimientos eje por eje (PTP / Joint)."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Inverse Kinematics (IK)",
+                        "ipa": "/ɪnˈvɜːrs ˌkɪn.əˈmæt.ɪks/",
+                        "es": "Cinemática Inversa",
+                        "category": "Matemáticas Robóticas",
+                        "definition": "The mathematical process of calculating the variable joint parameters needed to place the end of a kinematic chain in a given position and orientation.",
+                        "collocations": [
+                            "IK solver",
+                            "kinematic singularity",
+                            "calculate joint angles"
+                        ],
+                        "falseFriends": "No es mecánica de reversa; es el cálculo matricial para determinar cómo mover cada motor para alcanzar una coordenada XYZ.",
+                        "nativeUsage": "The robotic controller's inverse kinematics solver failed because the target coordinate was outside the physical reach envelope."
+                    },
+                    {
+                        "term": "Tool Center Point (TCP)",
+                        "ipa": "/tuːl ˈsɛn.tər pɔɪnt/",
+                        "es": "Centro de Herramienta (TCP)",
+                        "category": "Programación Robótica",
+                        "definition": "The focal point of the robotic end-effector (tool) relative to which all programmed motion paths and velocities are calculated.",
+                        "collocations": [
+                            "calibrate the TCP",
+                            "TCP velocity",
+                            "TCP offset"
+                        ],
+                        "falseFriends": "En este contexto, TCP no significa 'Transmission Control Protocol' (redes), sino el punto físico exacto de la pinza o antorcha.",
+                        "nativeUsage": "After changing the welding torch nozzle, we had to recalibrate the Tool Center Point offset to maintain weld accuracy."
+                    },
+                    {
+                        "term": "Kinematic Singularity",
+                        "ipa": "/ˌkɪn.əˈmæt.ɪk ˌsɪŋ.ɡjəˈlær.ə.ti/",
+                        "es": "Singularidad Cinemática",
+                        "category": "Mecánica Robótica",
+                        "definition": "A robot configuration where two or more joint axes align, causing a loss of a degree of freedom and requiring infinite joint speeds to maintain linear motion.",
+                        "collocations": [
+                            "wrist singularity",
+                            "pass through singularity",
+                            "singularity avoidance algorithm"
+                        ],
+                        "falseFriends": "No es un agujero negro astronómico; es una posición geométrica donde el robot matemáticamente se 'traba'.",
+                        "nativeUsage": "Programming a linear path directly over the robot's base will trigger a kinematic singularity fault on joint 1."
+                    },
+                    {
+                        "term": "End-of-Arm Tooling (EOAT)",
+                        "ipa": "/ɛnd əv ɑːrm ˈtuː.lɪŋ/",
+                        "es": "Herramienta de Extremo de Brazo",
+                        "category": "Hardware de Robot",
+                        "definition": "The specialized equipment, such as grippers, welding torches, or vacuum cups, mounted at the end of the robotic arm to interact with parts.",
+                        "collocations": [
+                            "custom EOAT design",
+                            "EOAT payload capacity",
+                            "pneumatic EOAT gripper"
+                        ],
+                        "falseFriends": "No se dice 'the robot hand'; el término industrial obligatorio es EOAT o End-Effector.",
+                        "nativeUsage": "The lightweight carbon fiber EOAT allowed us to increase the payload capacity for the heavy casting components."
+                    },
+                    {
+                        "term": "Collaborative Robot (Cobot)",
+                        "ipa": "/kəˈlæb.rə.tɪv ˈroʊ.bɑːt/",
+                        "es": "Robot Colaborativo (Cobot)",
+                        "category": "Automatización",
+                        "definition": "A robot intended for direct human-robot interaction within a shared workspace without physical safety fencing, relying on force and speed limits.",
+                        "collocations": [
+                            "cobot payload limit",
+                            "ISO 10218 compliance",
+                            "force-limited cobot"
+                        ],
+                        "falseFriends": "Un cobot no es cualquier robot pequeño; debe cumplir certificaciones de seguridad biométrica estrictas para no lastimar humanos.",
+                        "nativeUsage": "The facility replaced caged industrial robots with cobots to allow operators to perform simultaneous quality checks on the same assembly bench."
+                    },
+                    {
+                        "term": "Programmable Logic Controller (PLC)",
+                        "ipa": "/ˈproʊ.ɡræm.ə.bəl ˈlɑː.dʒɪk kənˈtroʊ.lər/",
+                        "es": "Controlador Lógico Programable",
+                        "category": "Sistemas de Control",
+                        "definition": "An industrial solid-state computer that monitors inputs and makes decisions based on a custom program to control outputs (machines or processes).",
+                        "collocations": [
+                            "safety PLC",
+                            "PLC ladder logic",
+                            "PLC scan time"
+                        ],
+                        "falseFriends": "No es un PC de escritorio; es un cerebro industrial determinista y robusto resistente a vibración e interferencia electromagnética.",
+                        "nativeUsage": "The master PLC orchestrates the conveyor belt speed, the robot pick-and-place sequence, and the safety light curtains."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Inverse Kinematics & Singularities",
+                        "botQuestion": "Welcome to the Robotics Engineering Audit! Explain in English what a 'Kinematic Singularity' is during a linear move. Why does it cause the robot controller to throw a fault?",
+                        "requiredKeywords": [
+                            "singularity",
+                            "axes",
+                            "align",
+                            "infinite",
+                            "speed",
+                            "acceleration",
+                            "linear",
+                            "inverse kinematics"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Perfect! When joint axes align (like a wrist singularity), the robot loses a degree of freedom. To maintain a linear TCP path through this zone, the inverse kinematics solver demands infinite joint speeds, causing a safety fault.",
+                        "feedbackRetry": "Think about the math! What happens when two axes line up perfectly? What does the controller calculate that the physical motors cannot perform? (Mention infinite speed and inverse kinematics)."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Cobot Safety vs Traditional Robots",
+                        "botQuestion": "According to ISO 10218, what makes a Collaborative Robot (Cobot) fundamentally different from a traditional industrial robot in terms of safety? Mention at least one specific technical feature.",
+                        "requiredKeywords": [
+                            "force limiting",
+                            "torque sensors",
+                            "speed",
+                            "separation",
+                            "fences",
+                            "human",
+                            "shared workspace"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot-on! Cobots operate in a shared workspace without physical fences by utilizing Power and Force Limiting (PFL) with torque sensors, or Speed and Separation Monitoring (SSM) to safely halt upon human contact.",
+                        "feedbackRetry": "How does a cobot 'feel' a collision? Think about torque sensors, force limiting, and the absence of physical safety fences."
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "robot-m2",
@@ -7764,91 +8426,285 @@ var LXP_COURSES = {
         "modules": [
             {
                 "id": "energy-m1",
-                "title": "Utility-Scale Solar PV Systems & Grid Synchronization",
-                "titleES": "Sistemas Fotovoltaicos a Gran Escala y Sincronización a la Red",
-                "icon": "fa-solid fa-sun",
+                "title": "Grid-Forming Inverters & BESS",
+                "titleES": "Inversores Formadores de Red e Integración BESS",
+                "isGoldModel": true,
                 "readings": [
                     {
                         "id": "energy-m1-r1",
-                        "title": "Utility-Scale Photovoltaics: Inverter Dynamics, MPPT, and Grid Stability",
-                        "duration": "10 min",
-                        "content": "\n> **Clean Energy Engineering Note**: This module aligns with **IEEE 1547-2018** (Standard for Interconnection and Interoperability of Distributed Energy Resources with Associated Electric Power Systems Interfaces) and **IEC 62109** safety protocols for solar power converters.\n\n# Utility-Scale Photovoltaics: Inverter Dynamics, MPPT, and Grid Stability\n\nAs multinational nearshoring corporations mandate 100% renewable energy procurement for Mexican industrial facilities, utility-scale solar farms across Sonora, Coahuila, and Chihuahua play a pivotal role. Generating hundreds of megawatts of clean power requires far more than placing solar panels under sunlight; it demands complex power electronics, real-time grid synchronization, and active voltage regulation.\n\n## 1. Photovoltaic Physics and Maximum Power Point Tracking (MPPT)\n\nA solar cell generates direct current (DC) electricity via the **photovoltaic effect**, where incident photons excite valence electrons into the conduction band of a doped silicon semiconductor.\n\nHowever, a photovoltaic panel's power output is strictly non-linear and governed by irradiance $(W/m^2)$ and operating junction temperature:\n- **I-V Curve**: Plots cell current against voltage from Short-Circuit Current $(I_{sc})$ to Open-Circuit Voltage $(V_{oc})$.\n- **P-V Curve**: Plots instantaneous power against voltage, displaying a distinct peak known as the **Maximum Power Point (MPP)**.\n\nBecause clouds and ambient temperatures shift continuously, utility-scale inverters run sophisticated **Maximum Power Point Tracking (MPPT)** algorithms (e.g., Perturb & Observe or Incremental Conductance). The inverter rapidly adjusts its internal DC bus impedance hundreds of times per second to keep photovoltaic strings operating precisely at their peak electrical efficiency ($V_{mpp} \\times I_{mpp}$).\n\n## 2. Inverter Topologies: Centralized vs. String Inverters\n\nIn multi-megawatt solar plant engineering, choosing the right inverter topology is a foundational CAPEX/OPEX decision:\n- **Central Inverters (1.5 MW - 4.5 MW)**: Large, centralized power stations housed in concrete enclosures. DC cabling from hundreds of solar combiner boxes runs to a single central inverter, which steps up power via an integrated transformer. They offer lower initial capital expenditure per watt but introduce a single point of failure.\n- **String Inverters (150 kW - 350 kW)**: Distributed across solar array rows. Each string inverter manages a smaller subset of panels with independent MPPT trackers. If one inverter fails, 98% of the solar plant continues feeding power to the grid, optimizing plant **Capacity Factor** and simplifying field maintenance.\n\n## 3. Grid-Following vs. Grid-Forming Inverters (IEEE 1547)\n\nAs renewable penetration on the electric grid increases, conventional synchronous generators (coal and gas turbines with massive spinning mechanical inertia) are decommissioned. This creates grid instability:\n\n- **Grid-Following (GFL) Inverters**: Legacy inverters that monitor grid voltage and frequency via a Phase-Locked Loop (PLL), injecting current in synchrony. If grid voltage collapses, GFL inverters disconnect immediately to prevent islanding hazards.\n- **Grid-Forming (GFM) Inverters**: The cutting edge of clean power engineering. GFM inverters act as independent AC voltage sources, establishing frequency and voltage reference signals using virtual synchronous machine (VSM) algorithms. They provide synthetic inertia, suppress rapid voltage dips, and facilitate black-start capability after widespread blackout events.\n\n---\n\n> **Key Takeaway**: Utility-scale solar engineering merges **semiconductor physics (photovoltaic effect)** with advanced **power electronics (MPPT algorithms, Central vs. String topologies, and Grid-Forming inverters)**. Command of these technical English concepts is vital for grid interconnection engineers managing multi-million-dollar clean energy projects.\n",
+                        "title": "Utility-Scale Solar PV & Grid-Forming Inverters",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment & Grid Standard**: Aligned with **IEEE 1547 (Interconnection of Distributed Energy Resources)** and **IEC 61215 (Terrestrial photovoltaic modules)**. Essential for grid interconnection engineers and utility-scale solar developers.\n\n# Utility-Scale Solar PV, BESS, and Grid-Forming Inverters\n\nAs the global power grid transitions from synchronous fossil-fuel generators to highly distributed inverter-based resources (IBRs), the physics of grid stability is fundamentally changing. Utility-scale Solar Photovoltaic (PV) plants and Battery Energy Storage Systems (BESS) must now actively support grid frequency and voltage.\n\n## 1. Solar PV Arrays and Maximum Power Point Tracking (MPPT)\nUtility-scale solar farms consist of thousands of PV modules wired in series (strings) and parallel. \n- **The P-V Curve**: A solar panel's output is non-linear and heavily dependent on irradiance and cell temperature. As temperature increases, voltage drops significantly.\n- **MPPT**: The central inverter continuously adjusts the electrical load (impedance) using a Maximum Power Point Tracking (MPPT) algorithm to ensure the DC bus voltage always operates exactly at the \"knee\" of the P-V curve, extracting the absolute maximum wattage available at that millisecond.\n\n## 2. Grid-Following vs. Grid-Forming Inverters\nHistorically, solar inverters were **Grid-Following (GFL)**. They acted as current sources, relying on a stable AC grid waveform (from rotating turbines) to lock onto using a Phase-Locked Loop (PLL). If the grid collapsed, the inverter would trip offline (Anti-Islanding).\nToday, with fewer rotating turbines providing physical inertia, the grid is fragile. We now deploy **Grid-Forming (GFM) Inverters**:\n- **Synthetic Inertia**: GFM inverters act as voltage sources. They mathematically simulate the mechanical mass of a spinning turbine. If grid frequency suddenly drops (e.g., a transmission line faults), the GFM inverter instantly injects massive amounts of real power within milliseconds to arrest the frequency decay (Rate of Change of Frequency - RoCoF).\n- **Black Start Capability**: GFM inverters can establish a stable 60Hz grid from scratch during a total blackout, allowing other renewables to sync to them.\n\n## 3. Battery Energy Storage Systems (BESS) Integration\nA 100-Megawatt solar farm is useless during the evening peak demand unless paired with a BESS.\n- **DC-Coupled vs. AC-Coupled**: In a DC-coupled architecture, the battery racks connect directly to the solar farm's DC bus. This captures \"clipped\" energy that would otherwise be lost when the solar panels generate more DC power than the inverter's AC rating.\n- **Frequency Regulation Market**: BESS facilities monitor grid frequency (normally exactly 60.00 Hz). If the frequency dips to 59.95 Hz, the BESS discharges megawatts of power into the grid in under 200 milliseconds to balance supply and demand.\n\n---\n> **Key Takeaway**: Renewable energy engineering is no longer just about generating electrons; it is about providing **grid ancillary services (Synthetic Inertia, Frequency Regulation)** using **advanced power electronics (GFM Inverters, MPPT)**.\n",
                         "vocabulary": [
                             {
+                                "en": "Grid-Forming Inverter (GFM)",
+                                "es": "Inversor Formador de Red",
+                                "definition": "An advanced inverter that acts as a voltage source, actively establishing grid voltage and frequency, and providing synthetic inertia without relying on a pre-existing grid.",
+                                "ipa": "/ɡrɪd ˈfɔːr.mɪŋ ɪnˈvɜːr.tər/",
+                                "collocations": [
+                                    "GFM synthetic inertia",
+                                    "droop control",
+                                    "black start capability"
+                                ]
+                            },
+                            {
                                 "en": "Maximum Power Point Tracking (MPPT)",
-                                "es": "Seguimiento del Punto de Máxima Potencia (MPPT)",
-                                "definition": "Algorithm maximizing inverter power extraction across variable sunlight and temperature"
+                                "es": "Seguimiento del Punto de Máxima Potencia",
+                                "definition": "An algorithm included in solar inverters that continuously adjusts the electrical load to extract the absolute maximum power from PV modules as sunlight varies.",
+                                "ipa": "/ˈmæk.sə.məm ˈpaʊ.ər pɔɪnt ˈtræk.ɪŋ/",
+                                "collocations": [
+                                    "MPPT algorithm",
+                                    "DC bus voltage",
+                                    "P-V curve knee"
+                                ]
                             },
                             {
-                                "en": "Grid-Forming Inverter",
-                                "es": "Inversor Formador de Red (Grid-Forming)",
-                                "definition": "Advanced power inverter establishing voltage and frequency independently without grid dependency"
+                                "en": "Battery Energy Storage System (BESS)",
+                                "es": "Sistema de Almacenamiento de Energía en Baterías",
+                                "definition": "Large-scale lithium-ion or alternative chemistry battery installations used by utilities for load shifting, peak shaving, and frequency regulation.",
+                                "ipa": "/ˈbæt.ər.i ˈɛn.ər.dʒi ˈstɔːr.ɪdʒ/",
+                                "collocations": [
+                                    "utility-scale BESS",
+                                    "BESS dispatch",
+                                    "DC-coupled BESS"
+                                ]
                             },
                             {
-                                "en": "Capacity Factor",
-                                "es": "Factor de Planta / Capacidad",
-                                "definition": "Ratio of actual power generated over a time period to the theoretical maximum output"
+                                "en": "Rate of Change of Frequency (RoCoF)",
+                                "es": "Tasa de Cambio de Frecuencia",
+                                "definition": "The speed at which the electrical grid frequency (Hz) drops or rises following a sudden loss of generation or a massive load connection.",
+                                "ipa": "/reɪt əv tʃeɪndʒ əv ˈfriː.kwən.si/",
+                                "collocations": [
+                                    "arrest RoCoF",
+                                    "high RoCoF event",
+                                    "synthetic inertia response"
+                                ]
                             },
                             {
-                                "en": "Open-Circuit Voltage (Voc)",
-                                "es": "Voltaje de Circuito Abierto (Voc)",
-                                "definition": "Maximum voltage available from a solar cell with zero current flowing"
-                            },
-                            {
-                                "en": "Harmonic Distortion (THD)",
-                                "es": "Distorsión Armónica Total (THD)",
-                                "definition": "Measurement of electrical noise and waveform deviation in AC power output"
+                                "en": "Over-Voltage Ride Through (OVRT)",
+                                "es": "Soporte de Sobrevoltaje",
+                                "definition": "A grid code requirement mandating that renewable energy generators must remain connected to the grid during temporary voltage spikes rather than tripping offline.",
+                                "ipa": "/ˈoʊ.vər ˈvoʊl.tɪdʒ raɪd θruː/",
+                                "collocations": [
+                                    "OVRT compliance",
+                                    "trip limits",
+                                    "Low-Voltage Ride Through (LVRT)"
+                                ]
                             },
                             {
                                 "en": "Synthetic Inertia",
-                                "es": "Inercia Sintética / Virtual",
-                                "definition": "Emulated mechanical inertia provided by electronic inverters to stabilize grid frequency"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "What is the primary function of an MPPT algorithm in a solar inverter?",
-                                "options": [
-                                    "To rotate solar panels physically",
-                                    "To continuously adjust electrical impedance so the array operates at peak power output",
-                                    "To disconnect panels at night",
-                                    "To clean panel glass automatically"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "Why are Grid-Forming (GFM) inverters superior to Grid-Following inverters in high-renewable grids?",
-                                "options": [
-                                    "They establish independent voltage/frequency references and provide synthetic inertia",
-                                    "They are cheaper to manufacture",
-                                    "They consume zero solar energy",
-                                    "They only work in DC current"
-                                ],
-                                "answer": 0
-                            },
-                            {
-                                "q": "What does an I-V curve characterize in photovoltaic engineering?",
-                                "options": [
-                                    "Internet velocity vs download time",
-                                    "Current output as a function of voltage across varying irradiance and temperature",
-                                    "Internal vibration of transformers",
-                                    "Inverter warranty period"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "Which standard establishes interconnection rules for distributed energy resources in North America?",
-                                "options": [
-                                    "IEEE 1547",
-                                    "ISO 9001",
-                                    "HTML 5.2",
-                                    "OSHA 1910"
-                                ],
-                                "answer": 0
+                                "es": "Inercia Sintética",
+                                "definition": "The capability of a power electronic inverter to mimic the kinetic energy and physical momentum of massive rotating turbines to resist sudden changes in grid frequency.",
+                                "ipa": "/sɪnˈθɛt.ɪk ɪˈnɜːr.ʃə/",
+                                "collocations": [
+                                    "inject synthetic inertia",
+                                    "virtual synchronous machine",
+                                    "fast frequency response"
+                                ]
                             }
                         ]
                     }
-                ]
+                ],
+                "dialogue": {
+                    "title": "Substation Interconnection: Overvoltage and GFM Parameter Tuning",
+                    "titleES": "Interconexión de Subestación: Sobrevoltaje y Ajuste de Parámetros GFM",
+                    "scenarioContext": "Pecos, TX (250MW Solar+Storage Plant) ⇄ ERCOT ISO Control Room. Commissioning test of Grid-Forming inverters.",
+                    "characters": [
+                        {
+                            "name": "Ing. Sofia Morales",
+                            "role": "Lead Interconnection Engineer (Pecos)",
+                            "avatar": "SM",
+                            "color": "var(--amber)"
+                        },
+                        {
+                            "name": "John Taggart",
+                            "role": "ERCOT Grid Operations Coordinator",
+                            "avatar": "JT",
+                            "color": "var(--cyan)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "John Taggart",
+                            "text": "Sofia, we're analyzing the data from the capacitor bank switching test. When we dropped the 345kV transmission line, your inverters failed to inject sufficient reactive power. We saw a severe transient overvoltage on the collector bus.",
+                            "translation": "Sofia, estamos analizando los datos de la prueba de conmutación del banco de capacitores. Cuando desconectamos la línea de transmisión de 345kV, tus inversores fallaron en inyectar suficiente potencia reactiva. Vimos un sobrevoltaje transitorio severo en el bus colector.",
+                            "targetTerms": [
+                                "capacitor bank switching",
+                                "reactive power",
+                                "transient overvoltage",
+                                "collector bus"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Sofia Morales",
+                            "text": "I see it on the fault recorder, John. The Grid-Following inverters tripped on Over-Voltage Ride Through (OVRT) limits. However, the two Grid-Forming (GFM) inverters on Pad 14 stayed online and tried to clamp the voltage.",
+                            "translation": "Lo veo en el registrador de fallas, John. Los inversores Grid-Following se desconectaron por los límites de Soporte de Sobrevoltaje (OVRT). Sin embargo, los dos inversores Grid-Forming (GFM) en la Plataforma 14 se mantuvieron en línea e intentaron estabilizar el voltaje.",
+                            "targetTerms": [
+                                "fault recorder",
+                                "Over-Voltage Ride Through (OVRT)",
+                                "Grid-Forming (GFM)",
+                                "clamp the voltage"
+                            ]
+                        },
+                        {
+                            "speaker": "John Taggart",
+                            "text": "That's the issue. The GFM droop control parameters are too sluggish. We need them to provide dynamic voltage support within 16 milliseconds to prevent the rest of the plant from cascading offline.",
+                            "translation": "Ese es el problema. Los parámetros de control de estatismo (droop) del GFM son muy lentos. Necesitamos que proporcionen soporte dinámico de voltaje en menos de 16 milisegundos para evitar que el resto de la planta se desconecte en cascada.",
+                            "targetTerms": [
+                                "droop control parameters",
+                                "sluggish",
+                                "dynamic voltage support",
+                                "cascading offline"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Sofia Morales",
+                            "text": "Copy that. I will decrease the voltage droop deadband and increase the proportional gain on the synthetic inertia loop. We will flash the new firmware to the plant controller and be ready for a retest in 30 minutes.",
+                            "translation": "Copiado. Disminuiré la banda muerta del estatismo de voltaje y aumentaré la ganancia proporcional en el lazo de inercia sintética. Cargaremos el nuevo firmware al controlador de la planta y estaremos listos para repetir la prueba en 30 minutos.",
+                            "targetTerms": [
+                                "voltage droop deadband",
+                                "proportional gain",
+                                "synthetic inertia loop",
+                                "plant controller"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The solar panels turned off because there was too much electricity.",
+                            "native": "The grid-following inverters tripped on Over-Voltage Ride Through (OVRT) limits during the capacitor bank switching.",
+                            "explanation": "En interconexión de redes, 'too much electricity' no significa nada. Se debe especificar el tipo de fallo (Over-Voltage) y la función de protección que actuó (OVRT trip)."
+                        },
+                        {
+                            "school": "The battery sends power to help the grid.",
+                            "native": "The BESS injects real power for frequency regulation and provides synthetic inertia.",
+                            "explanation": "La palabra 'help' es inaceptable en ingeniería eléctrica. Se especifican los servicios auxiliares: 'frequency regulation' o 'synthetic inertia'."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Grid-Forming Inverter (GFM)",
+                        "ipa": "/ɡrɪd ˈfɔːr.mɪŋ ɪnˈvɜːr.tər/",
+                        "es": "Inversor Formador de Red",
+                        "category": "Electrónica de Potencia",
+                        "definition": "An advanced inverter that acts as a voltage source, actively establishing grid voltage and frequency, and providing synthetic inertia without relying on a pre-existing grid.",
+                        "collocations": [
+                            "GFM synthetic inertia",
+                            "droop control",
+                            "black start capability"
+                        ],
+                        "falseFriends": "No solo 'convierte corriente'; crea físicamente la onda senoidal de 60Hz y estabiliza a toda la red local.",
+                        "nativeUsage": "Replacing synchronous condensers with Grid-Forming inverters allowed the island to operate on 100% renewable energy."
+                    },
+                    {
+                        "term": "Maximum Power Point Tracking (MPPT)",
+                        "ipa": "/ˈmæk.sə.məm ˈpaʊ.ər pɔɪnt ˈtræk.ɪŋ/",
+                        "es": "Seguimiento del Punto de Máxima Potencia",
+                        "category": "Control Solar",
+                        "definition": "An algorithm included in solar inverters that continuously adjusts the electrical load to extract the absolute maximum power from PV modules as sunlight varies.",
+                        "collocations": [
+                            "MPPT algorithm",
+                            "DC bus voltage",
+                            "P-V curve knee"
+                        ],
+                        "falseFriends": "No es un sistema de rastreo mecánico que gira los paneles hacia el sol; es un algoritmo de software que varía la impedancia eléctrica.",
+                        "nativeUsage": "When the cloud passed over, the MPPT instantly shifted the DC voltage to find the new optimal power point."
+                    },
+                    {
+                        "term": "Battery Energy Storage System (BESS)",
+                        "ipa": "/ˈbæt.ər.i ˈɛn.ər.dʒi ˈstɔːr.ɪdʒ/",
+                        "es": "Sistema de Almacenamiento de Energía en Baterías",
+                        "category": "Infraestructura de Red",
+                        "definition": "Large-scale lithium-ion or alternative chemistry battery installations used by utilities for load shifting, peak shaving, and frequency regulation.",
+                        "collocations": [
+                            "utility-scale BESS",
+                            "BESS dispatch",
+                            "DC-coupled BESS"
+                        ],
+                        "falseFriends": "Un BESS a escala de servicios públicos no es una 'pila grande'; incluye sistemas de HVAC, supresión de incendios y subestaciones.",
+                        "nativeUsage": "The 100MW BESS absorbed excess solar generation at noon and dispatched it into the grid during the 7 PM peak demand."
+                    },
+                    {
+                        "term": "Rate of Change of Frequency (RoCoF)",
+                        "ipa": "/reɪt əv tʃeɪndʒ əv ˈfriː.kwən.si/",
+                        "es": "Tasa de Cambio de Frecuencia",
+                        "category": "Estabilidad de Red",
+                        "definition": "The speed at which the electrical grid frequency (Hz) drops or rises following a sudden loss of generation or a massive load connection.",
+                        "collocations": [
+                            "arrest RoCoF",
+                            "high RoCoF event",
+                            "synthetic inertia response"
+                        ],
+                        "falseFriends": "Es la 'aceleración' de la caída de frecuencia. Una tasa alta desencadena apagones en cascada si no se detiene a tiempo.",
+                        "nativeUsage": "The Grid-Forming inverters injected massive real power to arrest the RoCoF before it triggered under-frequency load shedding."
+                    },
+                    {
+                        "term": "Over-Voltage Ride Through (OVRT)",
+                        "ipa": "/ˈoʊ.vər ˈvoʊl.tɪdʒ raɪd θruː/",
+                        "es": "Soporte de Sobrevoltaje",
+                        "category": "Protección Eléctrica",
+                        "definition": "A grid code requirement mandating that renewable energy generators must remain connected to the grid during temporary voltage spikes rather than tripping offline.",
+                        "collocations": [
+                            "OVRT compliance",
+                            "trip limits",
+                            "Low-Voltage Ride Through (LVRT)"
+                        ],
+                        "falseFriends": "Ride Through significa 'soportar y no desconectarse'; el inversor debe 'cabalgar' la falla para no empeorar la caída de la red.",
+                        "nativeUsage": "The solar farm successfully demonstrated its OVRT capability by staying online during the 1.2 per-unit voltage transient."
+                    },
+                    {
+                        "term": "Synthetic Inertia",
+                        "ipa": "/sɪnˈθɛt.ɪk ɪˈnɜːr.ʃə/",
+                        "es": "Inercia Sintética",
+                        "category": "Física de Redes",
+                        "definition": "The capability of a power electronic inverter to mimic the kinetic energy and physical momentum of massive rotating turbines to resist sudden changes in grid frequency.",
+                        "collocations": [
+                            "inject synthetic inertia",
+                            "virtual synchronous machine",
+                            "fast frequency response"
+                        ],
+                        "falseFriends": "No tiene masa física (hierro o rotores girando); es una simulación matemática que engaña a la red inyectando energía almacenada.",
+                        "nativeUsage": "Since solar panels have no moving parts, the BESS uses synthetic inertia to stabilize the grid when a coal plant trips."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Grid-Forming vs Grid-Following Inverters",
+                        "botQuestion": "Welcome to the Renewable Energy Audit! Explain in English the fundamental difference between a Grid-Following inverter and a Grid-Forming (GFM) inverter. Which one can perform a 'black start' and why?",
+                        "requiredKeywords": [
+                            "forming",
+                            "following",
+                            "voltage source",
+                            "current source",
+                            "black start",
+                            "synthetic inertia"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot-on! A grid-following inverter is a current source that needs an existing AC waveform to lock onto. A Grid-Forming (GFM) inverter acts as a voltage source, creating its own 60Hz waveform, which is why it can perform a black start and provide synthetic inertia.",
+                        "feedbackRetry": "Think about the terms 'Source'. Which inverter acts as a 'Current Source' and which acts as a 'Voltage Source'? Why does an islanded grid need a Grid-Forming inverter?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "MPPT & Solar PV Curves",
+                        "botQuestion": "Why do utility-scale solar inverters use a Maximum Power Point Tracking (MPPT) algorithm? What happens to the solar panel's voltage when the temperature increases?",
+                        "requiredKeywords": [
+                            "maximum",
+                            "power",
+                            "point",
+                            "voltage",
+                            "drops",
+                            "temperature",
+                            "impedance",
+                            "knee"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Perfect! As solar cell temperature increases, the voltage drops significantly. The MPPT algorithm constantly adjusts the electrical impedance to find the 'knee' of the P-V curve, extracting the absolute maximum wattage at any given moment.",
+                        "feedbackRetry": "Remember the P-V (Power-Voltage) curve. What does heat do to a solar panel's voltage? What is the algorithm constantly adjusting to stay on the 'knee' of the curve?"
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "energy-m2",
@@ -8365,91 +9221,285 @@ var LXP_COURSES = {
         "modules": [
             {
                 "id": "aveng-m1",
-                "title": "ICAO Standard Radiotelephony & Emergency Readbacks",
-                "titleES": "Radiotelefonía Estándar OACI y Colaciones de Emergencia",
-                "icon": "fa-solid fa-headset",
+                "title": "ICAO Phraseology & ATC Communications",
+                "titleES": "Fraseología OACI y Comunicaciones ATC",
+                "isGoldModel": true,
                 "readings": [
                     {
                         "id": "aveng-m1-r1",
-                        "title": "ICAO Standard Phraseology: Clear Readback, Runway Safety, and Critical Radiotelephony",
-                        "duration": "10 min",
-                        "content": "\n> **International Aviation Standard Note**: This curriculum is structured in accordance with **ICAO Annex 1** (Personnel Licensing — Language Proficiency Requirements), **ICAO Doc 9835** (Manual on the Implementation of ICAO Language Proficiency Requirements), and **ICAO Doc 4444** (Air Traffic Management).\n\n# ICAO Standard Phraseology: Clear Readback, Runway Safety, and Critical Radiotelephony\n\nIn international civil aviation, language ambiguity is a direct flight safety hazard. Historically, misheard clearances, non-standard slang, and hearback errors have contributed to catastrophic aviation disasters (such as the 1977 Tenerife airport collision). In response, the **International Civil Aviation Organization (ICAO)** mandates that all pilots and air traffic controllers (ATCs) operating across international airspace demonstrate minimum **ICAO Operational Level 4** proficiency in English.\n\n## 1. The Core Purpose of Standard Phraseology\n\nAviation English is not general conversational English; it is a highly structured, unambiguous, closed-loop communications protocol. **Standard Phraseology** is engineered to:\n- Maximize voice transmission clarity over noisy, low-bandwidth High-Frequency (HF) and Very High-Frequency (VHF) amplitude-modulated (AM) radio channels.\n- Eliminate regional idioms, cultural idioms, and conversational fillers (\"um\", \"like\", \"you know\").\n- Ensure immediate comprehension across multinational flight crews and controllers whose native languages differ.\n\n## 2. Phonetic Alphabet and Numerical Pronunciation\n\nTo prevent phonetic confusion between similar-sounding letters and digits, ICAO specifies strict pronunciation rules:\n- **Letters**: *Alfa, Bravo, Charlie, Delta, Echo, Foxtrot... Zulu*.\n- **Numbers**:\n  - `3` is pronounced **\"TREE\"** (avoiding confusion with \"three\" / \"free\").\n  - `4` is pronounced **\"FOW-er\"**.\n  - `5` is pronounced **\"FIFE\"** (preventing confusion with \"fire\" or \"nine\").\n  - `9` is pronounced **\"NIN-er\"** (preventing acoustic confusion with German \"nein\").\n  - Decimals are explicitly spoken as **\"DAY-SEE-MAL\"** (e.g., VHF frequency 118.7 is spoken *\"ONE ONE EIGHT DECIMAL SEVEN\"*).\n\n## 3. Strict Readback Mandates: Closed-Loop Communication\n\nIn aviation radio communications, saying *\"Roger\"* or *\"Copy\"* does **NOT** confirm that a safety-critical instruction was understood. A controller cannot verify what a pilot actually heard unless the pilot reads back the exact operational parameters.\n\nUnder ICAO Doc 4444, flight crews **MUST** read back all parts of the following clearances verbatim:\n1. **Runway in Use, Hold Short Instructions, and Clearances to Enter, Land, Take Off, or Backtrack on any Runway**.\n2. **Altimeter Settings (QNH / QFE)**: Failure to correctly set atmospheric altimeter pressure leads directly to Controlled Flight Into Terrain (CFIT).\n3. **Assigned Heading, Speed, and Altitude / Flight Level (FL)**.\n4. **Secondary Surveillance Radar (SSR) Transponder Codes (\"Squawk\" codes)**.\n5. **Frequency Handoffs to Next Sector**.\n\n### Operational Dialogue Example:\n> **Controller**: *\"AeroMexico 402, climb and maintain Flight Level 280, turn right heading 090, squawk 4321.\"*  \n> **Pilot**: *\"Climb and maintain Flight Level 280, turn right heading 090, squawk 4321, AeroMexico 402.\"*\n\nIf the pilot had simply replied *\"Roger, AeroMexico 402\"*, the controller would immediately intervene: *\"AeroMexico 402, read back altitude and squawk.\"*\n\n## 4. Runway Incursions and \"Hold Short\" Discipline\n\nRunway incursions remain the #1 ground safety risk at international aerodromes. When instructed to *\"Taxi to Runway 23L, hold short of Runway 23R\"*, the phrase **\"HOLD SHORT\"** is legally binding. The aircraft must come to a complete stop prior to crossing the solid yellow double line. If a pilot fails to say \"Hold short\" in the readback, the controller is required by federal aviation regulations to reissue the restriction and obtain an explicit verbal readback.\n\n---\n\n> **Key Takeaway**: Aeronautical radiotelephony is a zero-tolerance protocol founded on **ICAO standard phraseology**, **phonetic clarity (Fife, Niner)**, and **mandatory closed-loop readbacks**. Fluency in standard aviation English guarantees clear coordination between flight decks and international ATC towers.\n",
+                        "title": "Standardized ICAO Phraseology & Readbacks",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment & Safety Standard**: Aligned with **ICAO Annex 1 (Personnel Licensing)** and **Doc 9835 (Manual on the Implementation of ICAO Language Proficiency Requirements)**. Essential for pilots, air traffic controllers, and dispatchers aiming for ICAO Level 4+ compliance.\n\n# Standardized ICAO Phraseology, Readbacks & ATC Clearances\n\nIn the highly regulated environment of international civil aviation, precise and unambiguous communication between the flight deck and Air Traffic Control (ATC) is a matter of life and death. The International Civil Aviation Organization (ICAO) mandates standardized phraseology to mitigate the risk of catastrophic runway incursions and mid-air collisions caused by linguistic misunderstandings.\n\n## 1. The Anatomy of an ATC Clearance and Pilot Readback\nA clearance is an authorization from ATC for an aircraft to proceed under specified conditions. Pilots must strictly adhere to the **Readback requirement**: repeating critical parts of the clearance to confirm accurate reception.\n- **Critical Elements Requiring Strict Readback**: Runway-in-use, altimeter settings (QNH), heading instructions, speed instructions, and clearance to enter, land on, take off from, hold short of, or cross a runway.\n- **Format**: [Callsign], [Instruction], [Readback]. \n  *ATC: \"AeroMexico 492, cleared for takeoff runway 05 Right, wind 060 at 12 knots.\"*\n  *Pilot: \"Cleared for takeoff runway 05 Right, AeroMexico 492.\"*\n\n## 2. Standard Phraseology vs. Plain Language\nWhile standard phraseology covers 90% of routine operations, emergencies and non-standard situations require **plain language proficiency**. \n- **Affirm / Negative**: Standard phraseology replaces colloquial terms like \"yes\" or \"no\" with \"AFFIRM\" and \"NEGATIVE\" to prevent radio clipping from obscuring single-syllable words.\n- **Standby vs. Hold**: \"Standby\" means ATC is busy and will call you back (do not execute a maneuver). \"Hold position\" or \"Hold short\" is a direct instruction to stop the aircraft on the ground to prevent a runway incursion.\n- **WILCO**: Abbreviation for \"Will Comply\", used to indicate that the instruction has been received, understood, and will be executed.\n\n## 3. Emergency and Urgency Communications (MAYDAY vs. PAN-PAN)\nWhen an aircraft's safety is compromised, the pilot must declare the level of threat using internationally recognized prefixes, repeated three times:\n- **MAYDAY, MAYDAY, MAYDAY**: Indicates an aircraft is threatened by grave and imminent danger and requires immediate assistance (e.g., dual engine failure, uncontrollable fire).\n- **PAN-PAN, PAN-PAN, PAN-PAN**: Indicates an urgency condition concerning the safety of the aircraft or persons on board, but does not require immediate assistance (e.g., passenger medical emergency, single engine failure on a multi-engine aircraft).\n\n---\n> **Key Takeaway**: Aviation safety depends on **standardized syntax (Readbacks, ICAO Phraseology)**, **clear enunciation of numbers (Tree, Niner)**, and the disciplined transition to **plain language** during non-routine urgency scenarios.\n",
                         "vocabulary": [
                             {
                                 "en": "Readback",
-                                "es": "Colación / Lectura de Confirmación",
-                                "definition": "Repetition by the flight crew of ATC clearances to verify accurate comprehension"
+                                "es": "Colación / Repetición de Autorización",
+                                "definition": "The procedure whereby the receiving station repeats a received message or an appropriate part thereof back to the transmitting station so as to obtain confirmation of correct reception.",
+                                "ipa": "/ˈriːd.bæk/",
+                                "collocations": [
+                                    "strict readback requirement",
+                                    "readback clearance",
+                                    "incomplete readback"
+                                ]
                             },
                             {
                                 "en": "Hold Short",
-                                "es": "Mantener Fuera / Mantener Antes de",
-                                "definition": "Mandatory instruction requiring an aircraft to stop before a designated runway or taxiway"
+                                "es": "Mantener Fuera De / Esperar Antes De",
+                                "definition": "An ATC instruction requiring an aircraft to stop and wait before crossing a specific point on the aerodrome, typically an active runway intersection.",
+                                "ipa": "/hoʊld ʃɔːrt/",
+                                "collocations": [
+                                    "hold short of runway 27",
+                                    "hold short instruction",
+                                    "cross the hold short line"
+                                ]
                             },
                             {
-                                "en": "Altimeter Setting (QNH)",
-                                "es": "Ajuste Altimétrico (QNH)",
-                                "definition": "Barometric pressure setting calibrated to mean sea level, ensuring correct altitude readout"
+                                "en": "Flight Level (FL)",
+                                "es": "Nivel de Vuelo",
+                                "definition": "A surface of constant atmospheric pressure which is related to a specific pressure datum, 1013.2 hectopascals (hPa), and is separated from other such surfaces by specific pressure intervals.",
+                                "ipa": "/flaɪt ˈlɛv.əl/",
+                                "collocations": [
+                                    "climb and maintain flight level",
+                                    "cruise flight level",
+                                    "transition altitude"
+                                ]
                             },
                             {
-                                "en": "Squawk Code",
-                                "es": "Código Transponder (Squawk)",
-                                "definition": "Four-digit discrete octal code assigned by ATC for radar identification"
+                                "en": "Runway Incursion",
+                                "es": "Incursión en Pista",
+                                "definition": "Any occurrence at an aerodrome involving the incorrect presence of an aircraft, vehicle, or person on the protected area of a surface designated for the landing and take-off of aircraft.",
+                                "ipa": "/ˈrʌn.weɪ ɪnˈkɜːr.ʒən/",
+                                "collocations": [
+                                    "prevent a runway incursion",
+                                    "runway incursion hazard",
+                                    "ground radar system"
+                                ]
                             },
                             {
-                                "en": "Hearback Error",
-                                "es": "Error de Escucha (Hearback)",
-                                "definition": "Failure of a controller to notice a pilot's incorrect readback of a clearance"
+                                "en": "WILCO",
+                                "es": "Entendido y Cumpliré",
+                                "definition": "Abbreviation for 'Will Comply'. Used in radio communications to indicate that an instruction has been received, understood, and will be carried out.",
+                                "ipa": "/ˈwɪl.koʊ/",
+                                "collocations": [
+                                    "roger, wilco",
+                                    "affirmative wilco"
+                                ]
                             },
                             {
-                                "en": "Standard Phraseology",
-                                "es": "Fraseología Estándar",
-                                "definition": "Uniform set of words and concise terms authorized by ICAO for aviation radiotelephony"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "Why is saying only 'Roger' or 'Copy' unacceptable for safety-critical ATC clearances?",
-                                "options": [
-                                    "It is too polite",
-                                    "It fails closed-loop communication; ATC cannot confirm the pilot heard the correct altitude or runway",
-                                    "It wastes radio battery",
-                                    "It disconnects the autopilot"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "How is the number '9' explicitly pronounced in ICAO standard radiotelephony?",
-                                "options": [
-                                    "Nine",
-                                    "Niner",
-                                    "Nueve",
-                                    "Nein"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "What does the ATC command 'Hold Short of Runway 05' legally require the pilot to do?",
-                                "options": [
-                                    "Accelerate and cross quickly",
-                                    "Stop completely before the runway holding line and read back the instruction",
-                                    "Turn around and return to the gate",
-                                    "Shut down the engines"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "What is the minimum ICAO Language Proficiency Level required for international commercial pilots?",
-                                "options": [
-                                    "Level 1 Elementary",
-                                    "Level 2 Pre-operational",
-                                    "Level 4 Operational",
-                                    "Level 10 Master"
-                                ],
-                                "answer": 2
+                                "en": "Squawk",
+                                "es": "Código Transpondedor",
+                                "definition": "To set a specific four-digit octal code on the aircraft's transponder, allowing ATC radar to identify the aircraft and display its altitude and ground speed.",
+                                "ipa": "/skwɔːk/",
+                                "collocations": [
+                                    "squawk 7700 (emergency)",
+                                    "squawk ident",
+                                    "reset squawk code"
+                                ]
                             }
                         ]
                     }
-                ]
+                ],
+                "dialogue": {
+                    "title": "VFR to IFR Transition and Weather Deviation Request",
+                    "titleES": "Transición de VFR a IFR y Solicitud de Desvío por Clima",
+                    "scenarioContext": "Houston ARTCC ⇄ Learjet 45 (XA-JET) in flight over the Gulf of Mexico. Approaching convective weather.",
+                    "characters": [
+                        {
+                            "name": "Captain Reyes",
+                            "role": "Pilot in Command (Learjet XA-JET)",
+                            "avatar": "CR",
+                            "color": "var(--cyan)"
+                        },
+                        {
+                            "name": "Houston Center",
+                            "role": "Air Route Traffic Control Center (ARTCC)",
+                            "avatar": "HC",
+                            "color": "var(--purple)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Captain Reyes",
+                            "text": "Houston Center, XA-JET, we are painting heavy precipitation on our weather radar 20 miles ahead. Request 15 degrees right of track for weather deviation.",
+                            "translation": "Centro Houston, XA-JET, estamos pintando precipitación fuerte en nuestro radar meteorológico 20 millas al frente. Solicitamos desvío por clima de 15 grados a la derecha de la ruta.",
+                            "targetTerms": [
+                                "painting heavy precipitation",
+                                "weather radar",
+                                "right of track",
+                                "weather deviation request"
+                            ]
+                        },
+                        {
+                            "speaker": "Houston Center",
+                            "text": "XA-JET, Houston Center, deviation 15 degrees right of track approved. When able, proceed direct to the Laredo VOR. Report established on course.",
+                            "translation": "XA-JET, Centro Houston, desvío de 15 grados a la derecha de la ruta aprobado. Cuando pueda, proceda directo al VOR de Laredo. Reporte establecido en curso.",
+                            "targetTerms": [
+                                "deviation approved",
+                                "When able",
+                                "proceed direct",
+                                "VOR",
+                                "Report established on course"
+                            ]
+                        },
+                        {
+                            "speaker": "Captain Reyes",
+                            "text": "Deviation 15 degrees right approved, direct Laredo when able, will report established. We also have a passenger requiring medical attention, declaring PAN-PAN, PAN-PAN, PAN-PAN. Requesting priority handling to Monterrey.",
+                            "translation": "Desvío de 15 grados a la derecha aprobado, directo a Laredo cuando pueda, reportaré establecido. También tenemos un pasajero que requiere atención médica, declarando PAN-PAN, PAN-PAN, PAN-PAN. Solicitamos manejo prioritario a Monterrey.",
+                            "targetTerms": [
+                                "will report established",
+                                "medical attention",
+                                "declaring PAN-PAN",
+                                "priority handling"
+                            ]
+                        },
+                        {
+                            "speaker": "Houston Center",
+                            "text": "XA-JET, PAN-PAN copied. You are cleared direct Monterrey, descend and maintain Flight Level 240. Advise if you require medical personnel upon arrival.",
+                            "translation": "XA-JET, PAN-PAN copiado. Está autorizado directo a Monterrey, descienda y mantenga Nivel de Vuelo 240. Avise si requiere personal médico a la llegada.",
+                            "targetTerms": [
+                                "copied",
+                                "cleared direct",
+                                "descend and maintain",
+                                "Flight Level"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "I need to turn right because of the rain.",
+                            "native": "Request 15 degrees right of track for weather deviation.",
+                            "explanation": "En radiotelefonía aeronáutica no se dice 'rain' ni 'turn right'; se usa la fraseología estándar 'weather deviation' y los grados específicos de desviación."
+                        },
+                        {
+                            "school": "We have an emergency with a sick person.",
+                            "native": "Declaring PAN-PAN, passenger requires immediate medical attention, requesting priority handling.",
+                            "explanation": "Se debe usar el prefijo de urgencia oficial (PAN-PAN) e indicar 'priority handling' para notificar al ATC sobre la situación médica."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Readback",
+                        "ipa": "/ˈriːd.bæk/",
+                        "es": "Colación / Repetición de Autorización",
+                        "category": "Comunicaciones ATC",
+                        "definition": "The procedure whereby the receiving station repeats a received message or an appropriate part thereof back to the transmitting station so as to obtain confirmation of correct reception.",
+                        "collocations": [
+                            "strict readback requirement",
+                            "readback clearance",
+                            "incomplete readback"
+                        ],
+                        "falseFriends": "No es simplemente 'leer hacia atrás'; es el protocolo obligatorio de confirmación de instrucciones críticas como altitud y pista.",
+                        "nativeUsage": "The controller caught the runway incursion early because the pilot's readback of the hold short instruction was incorrect."
+                    },
+                    {
+                        "term": "Hold Short",
+                        "ipa": "/hoʊld ʃɔːrt/",
+                        "es": "Mantener Fuera De / Esperar Antes De",
+                        "category": "Control Terrestre",
+                        "definition": "An ATC instruction requiring an aircraft to stop and wait before crossing a specific point on the aerodrome, typically an active runway intersection.",
+                        "collocations": [
+                            "hold short of runway 27",
+                            "hold short instruction",
+                            "cross the hold short line"
+                        ],
+                        "falseFriends": "No significa 'esperar un poco'; es una orden absoluta de no cruzar la línea de seguridad de la pista.",
+                        "nativeUsage": "American 302, taxi via Alpha, hold short of Runway 14 Right and monitor tower."
+                    },
+                    {
+                        "term": "Flight Level (FL)",
+                        "ipa": "/flaɪt ˈlɛv.əl/",
+                        "es": "Nivel de Vuelo",
+                        "category": "Navegación Vertical",
+                        "definition": "A surface of constant atmospheric pressure which is related to a specific pressure datum, 1013.2 hectopascals (hPa), and is separated from other such surfaces by specific pressure intervals.",
+                        "collocations": [
+                            "climb and maintain flight level",
+                            "cruise flight level",
+                            "transition altitude"
+                        ],
+                        "falseFriends": "En aviación de gran altitud no se dice 'altitude of 30,000 feet', sino 'Flight Level 300' (FL300) con el altímetro en ajuste estándar.",
+                        "nativeUsage": "Delta 129, climb and maintain Flight Level 350, contact Center on 124.7."
+                    },
+                    {
+                        "term": "Runway Incursion",
+                        "ipa": "/ˈrʌn.weɪ ɪnˈkɜːr.ʒən/",
+                        "es": "Incursión en Pista",
+                        "category": "Seguridad Operacional",
+                        "definition": "Any occurrence at an aerodrome involving the incorrect presence of an aircraft, vehicle, or person on the protected area of a surface designated for the landing and take-off of aircraft.",
+                        "collocations": [
+                            "prevent a runway incursion",
+                            "runway incursion hazard",
+                            "ground radar system"
+                        ],
+                        "falseFriends": "No es una 'invasión militar'; es el cruce no autorizado de un avión en una pista activa, un riesgo gravísimo.",
+                        "nativeUsage": "The pilot initiated an immediate go-around to avoid a collision following a runway incursion by a baggage cart."
+                    },
+                    {
+                        "term": "WILCO",
+                        "ipa": "/ˈwɪl.koʊ/",
+                        "es": "Entendido y Cumpliré",
+                        "category": "Abreviaturas OACI",
+                        "definition": "Abbreviation for 'Will Comply'. Used in radio communications to indicate that an instruction has been received, understood, and will be carried out.",
+                        "collocations": [
+                            "roger, wilco",
+                            "affirmative wilco"
+                        ],
+                        "falseFriends": "WILCO ya incluye la afirmación de que se cumplirá la orden, no debe confundirse con 'Roger' que solo significa 'mensaje recibido'.",
+                        "nativeUsage": "ATC instructed us to expedite our climb to FL280 due to traffic, and the captain replied 'Wilco'."
+                    },
+                    {
+                        "term": "Squawk",
+                        "ipa": "/skwɔːk/",
+                        "es": "Código Transpondedor",
+                        "category": "Vigilancia Radar",
+                        "definition": "To set a specific four-digit octal code on the aircraft's transponder, allowing ATC radar to identify the aircraft and display its altitude and ground speed.",
+                        "collocations": [
+                            "squawk 7700 (emergency)",
+                            "squawk ident",
+                            "reset squawk code"
+                        ],
+                        "falseFriends": "No significa 'graznar' en este contexto; es el comando del ATC para ingresar un código numérico en el panel.",
+                        "nativeUsage": "Learjet 214, radar contact, squawk 4531 and ident."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Readbacks & Critical Instructions",
+                        "botQuestion": "Welcome to the Aviation English Audit! According to ICAO phraseology, why must a pilot perform a 'readback' of specific ATC clearances, such as altimeter settings and runway assignments? What risk does this mitigate?",
+                        "requiredKeywords": [
+                            "readback",
+                            "confirm",
+                            "correct",
+                            "reception",
+                            "runway",
+                            "incursion",
+                            "misunderstanding"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Excellent! Readbacks are critical for ATC to confirm the correct reception of instructions. This strict protocol directly mitigates the risk of catastrophic runway incursions or mid-air collisions caused by miscommunication.",
+                        "feedbackRetry": "Think about the safety loop. If ATC gives a clearance to cross a runway, how do they verify you heard the correct runway number? Mention the risk of 'runway incursions'."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Urgency vs Emergency Phraseology",
+                        "botQuestion": "Explain the difference in English between declaring 'MAYDAY' and declaring 'PAN-PAN' over the radio. Give one example of a situation where a pilot should use PAN-PAN.",
+                        "requiredKeywords": [
+                            "mayday",
+                            "pan-pan",
+                            "imminent",
+                            "danger",
+                            "immediate",
+                            "urgency",
+                            "medical",
+                            "passenger"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Perfect distinction. MAYDAY is reserved for grave and imminent danger requiring immediate assistance (like an engine fire). PAN-PAN denotes an urgency regarding safety, such as a passenger medical issue, but without imminent danger to the aircraft itself.",
+                        "feedbackRetry": "Compare the level of threat. Which one requires 'immediate assistance' due to imminent danger? What word is used for a medical issue that is urgent but doesn't threaten the whole aircraft?"
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "aveng-m2",
@@ -8498,91 +9548,291 @@ var LXP_COURSES = {
         "modules": [
             {
                 "id": "af-m1",
-                "title": "Tactical Flight Operations & Supersonic Aerodynamics",
-                "titleES": "Operaciones de Vuelo Táctico y Aerodinámica Supersónica",
-                "icon": "fa-solid fa-gauge-high",
+                "title": "NATO STANAG & Supersonic Aerodynamics",
+                "titleES": "OTAN STANAG y Aerodinámica Supersónica",
+                "isGoldModel": true,
                 "readings": [
                     {
                         "id": "af-m1-r1",
-                        "title": "Supersonic Flight Envelopes: Transonic Drag, Shock Waves, and Tactical Maneuvering",
-                        "duration": "10 min",
-                        "content": "\n> **Defense Aerospace Curriculum Note**: This module aligns with **NATO STANAG 6001** (Language Proficiency Levels for Defense Personnel) and **MIL-STD-1797** (Flying Qualities of Piloted Aircraft), preparing technical officers and defense contractors for cross-national aerospace integration.\n\n# Supersonic Flight Envelopes: Transonic Drag, Shock Waves, and Tactical Maneuvering\n\nIn military aerospace engineering and air combat operations, tactical aircraft operate across extreme velocity regimes. Understanding supersonic flight dynamics, structural load limits, and tactical communications requires deep technical fluency in aeronautical defense English.\n\n## 1. Aerodynamic Velocity Regimes and Mach Numbers\n\nAircraft airspeed is evaluated relative to the local speed of sound ($a$) via the dimensionless **Mach Number** ($M = v / a$):\n- **Subsonic Flow ($M < 0.8$)**: Airflow across the entire airframe remains below the speed of sound. Air is treated as an incompressible fluid.\n- **Transonic Flow ($0.8 \\le M < 1.2$)**: The most volatile aerodynamic regime. While the free-stream airspeed may be Mach 0.85, air accelerating over the curved upper surface of the wing reaches local supersonic speeds ($M > 1.0$). This creates local **shock waves** and induces massive **wave drag** and turbulent boundary layer separation (\"Mach Tuck\").\n- **Supersonic Flow ($1.2 \\le M < 5.0$)**: The entire aircraft moves faster than the speed of sound. Oblique shock waves form at the nose cone and leading wing edges.\n- **Hypersonic Flow ($M \\ge 5.0$)**: Aerodynamic friction causes extreme molecular dissociation and high-temperature plasma ionization.\n\nTo minimize transonic wave drag, supersonic military aircraft incorporate thin, highly swept delta wings, sharp leading edges, and the aerodynamic **Whitcomb Area Rule** (pinched \"coke-bottle\" fuselage geometry that smoothly transitions cross-sectional area).\n\n## 2. The Flight Envelope (V-n Diagram) and G-Limits\n\nA fighter jet's operational capabilities are strictly defined by its **Flight Envelope**, plotted on a Velocity-Load Factor (**V-n**) diagram:\n- **Load Factor ($n$)**: The ratio of aerodynamic lift ($L$) to aircraft weight ($W$), measured in gravitational units ($g$):\n  $$n = \\frac{L}{W}$$\n- **Corner Velocity ($V_c$)**: The minimum airspeed at which the pilot can pull the maximum design structural load factor (typically **$+9.0g$** in modern fighters like the F-16 or F-35) without aerodynamic stalling. It yields the sharpest possible instantaneous turn radius.\n- **Structural Limits**: Exceeding the maximum positive or negative $g$-limits causes structural airframe plastic deformation, wing spar shear failure, or catastrophic loss of pilot consciousness (**G-LOC** — G-induced Loss of Consciousness).\n\n## 3. NATO Tactical Brevity Words\n\nDuring air combat maneuvering and joint military exercises, multinational flight leads communicate over secure tactical radios using standardized **NATO Brevity Codes**:\n- **\"Bogeys\"**: An unidentified radar or visual contact.\n- **\"Bandit\"**: A contact positively identified as an enemy aircraft (does not automatically imply authority to engage).\n- **\"Fox Three\"**: Simulated or live launch of an active radar-guided missile (such as the AIM-120 AMRAAM).\n- **\"Tally\"**: Sighting of a target, bandit, or bogey visually.\n- **\"Bingo Fuel\"**: Fuel state requiring immediate departure from the operational combat area to return safely to base.\n\n---\n\n> **Key Takeaway**: Military aerospace engineering synthesizes **supersonic fluid mechanics (shock wave formation, Area Rule)** with physiological **flight envelope boundaries ($+9g$ load limits, V-n diagrams)** and **NATO tactical brevity codes**. Mastery of these specialized English terms enables defense engineers, flight technicians, and liaison officers to operate in multinational defense programs.\n",
+                        "title": "Flight Envelope, Sensor Fusion & Brevity Codes",
+                        "duration": "12 min",
+                        "content": "\n> **Military & Aerospace Standard**: Aligned with **NATO STANAG 6001 (Language Proficiency Levels)** and **MIL-STD-1553 (Digital Time Division Command/Response Multiplex Data Bus)**. Essential for defense contractors, military pilots, and avionics systems engineers.\n\n# Supersonic Aerodynamics, Flight Envelope & Brevity Codes\n\nMilitary aviation operates at the extreme edges of aerodynamic physics and human endurance. Communication in this domain is highly compressed, utilizing standardized \"Brevity Codes\" to transmit complex tactical information in fractions of a second during high-G combat maneuvers.\n\n## 1. Supersonic Aerodynamics and the Flight Envelope\nWhen an aircraft approaches the speed of sound (Mach 1), it enters the **transonic regime**. \n- **Compressibility and Shock Waves**: As the aircraft accelerates, air molecules cannot move out of the way fast enough. They compress, forming a **shock wave** at the nose and wing leading edges. This creates a massive increase in aerodynamic drag known as **Wave Drag**.\n- **Mach Tuck**: As the shock wave moves aft along the wing, the center of lift shifts backward, causing the aircraft's nose to pitch down violently—a phenomenon called Mach Tuck. Advanced fly-by-wire (FBW) systems automatically adjust the horizontal stabilators to counter this.\n- **Flight Envelope**: The operational boundaries of an aircraft, defined by airspeed (Mach number), altitude, and structural load factor (G-force). Operating outside this \"doghouse plot\" results in aerodynamic stall or structural failure.\n\n## 2. Multi-Sensor Fusion and MIL-STD-1553\nModern 5th-generation fighters (like the F-35) do not present raw sensor data to the pilot. Instead, they utilize **Sensor Fusion**.\n- **MIL-STD-1553 Databus**: The military standard for avionics data integration. It is a dual-redundant, deterministic serial bus where a Bus Controller coordinates all communications between Remote Terminals (Radar, Electronic Warfare suite, Weapons systems) using a command/response protocol.\n- **Active Electronically Scanned Array (AESA) Radar**: Unlike mechanical radars that physically sweep a dish, AESA radars steer radio beams electronically using thousands of solid-state transmit/receive modules, allowing simultaneous air-to-air tracking and air-to-ground mapping without moving parts.\n\n## 3. Tactical Brevity Codes\nDuring Beyond Visual Range (BVR) engagements, pilots use standardized, unclassified Brevity Words to convey information instantly over UHF/VHF radios without clogging the frequency:\n- **BINGO**: Fuel state needed for recovery. (e.g., \"Bingo fuel\" means the aircraft must return to base immediately).\n- **JOKER**: Fuel state above BINGO at which separation/bugout should begin.\n- **FOX 3**: Simulated or actual launch of an active radar-guided missile (e.g., AIM-120 AMRAAM).\n- **SPIKE**: Radar warning receiver (RWR) indication of an airborne threat in track or launch mode.\n\n---\n> **Key Takeaway**: Defense aerospace merges **extreme aerodynamics (Shock Waves, Mach Tuck)** with **deterministic avionics (MIL-STD-1553)** and **tactical linguistic compression (Brevity Codes, STANAG 6001)**.\n",
                         "vocabulary": [
                             {
-                                "en": "Mach Number",
-                                "es": "Número Mach",
-                                "definition": "Ratio of aircraft true airspeed to the local speed of sound in the surrounding medium"
+                                "en": "Flight Envelope",
+                                "es": "Envolvente de Vuelo",
+                                "definition": "The strict operational limits of an aircraft based on airspeed, load factor (G-force), and altitude. Exceeding it causes structural damage or stall.",
+                                "ipa": "/flaɪt ˈɛn.və.loʊp/",
+                                "collocations": [
+                                    "push the flight envelope",
+                                    "operate within the envelope",
+                                    "V-n diagram"
+                                ]
                             },
                             {
-                                "en": "Wave Drag",
-                                "es": "Resistencia de Onda",
-                                "definition": "Dramatic increase in aerodynamic drag caused by shock wave formation at transonic speeds"
+                                "en": "AESA Radar",
+                                "es": "Radar AESA (Barrido Electrónico Activo)",
+                                "definition": "Active Electronically Scanned Array. A type of phased array radar whose transmitter and receiver functions are composed of numerous small solid-state transmit/receive modules (TRMs).",
+                                "ipa": "/eɪˈiː.sə ˈreɪ.dɑːr/",
+                                "collocations": [
+                                    "AESA radar upgrade",
+                                    "electronic beam steering",
+                                    "jam-resistant AESA"
+                                ]
                             },
                             {
-                                "en": "Flight Envelope (V-n)",
-                                "es": "Envolvente de Vuelo (Diagrama V-n)",
-                                "definition": "Boundary diagram delineating safe structural airspeed and g-load limitations"
+                                "en": "Mach Tuck",
+                                "es": "Mach Tuck (Caída de nariz transónica)",
+                                "definition": "An aerodynamic effect where the nose of an aircraft tends to pitch downward as it approaches the speed of sound due to the rearward shift of the center of lift.",
+                                "ipa": "/mɑːk tʌk/",
+                                "collocations": [
+                                    "counteract Mach tuck",
+                                    "transonic regime",
+                                    "stabilator trim"
+                                ]
                             },
                             {
-                                "en": "Corner Velocity",
-                                "es": "Velocidad de Esquina (Corner Speed)",
-                                "definition": "Airspeed at which maximum instantaneous turn rate and structural g-limit coincide"
+                                "en": "MIL-STD-1553",
+                                "es": "Estándar Militar 1553 (Bus de Datos)",
+                                "definition": "A military standard published by the US Department of Defense that defines the mechanical, electrical, and functional characteristics of a serial data bus.",
+                                "ipa": "/mɪl stænd ˈfɪf.tiːn ˈfɪf.ti θriː/",
+                                "collocations": [
+                                    "1553 databus architecture",
+                                    "dual-redundant 1553",
+                                    "bus controller"
+                                ]
                             },
                             {
-                                "en": "Tactical Brevity Code",
-                                "es": "Código Breve Táctico (NATO)",
-                                "definition": "Standardized military words providing concise, unambiguous tactical commands over radio"
+                                "en": "Fox 3",
+                                "es": "Fox 3 (Lanzamiento de misil activo)",
+                                "definition": "NATO brevity code indicating the simulated or actual launch of an active radar-guided air-to-air missile (e.g., AIM-120 AMRAAM).",
+                                "ipa": "/fɑːks θriː/",
+                                "collocations": [
+                                    "call Fox 3",
+                                    "Fox 3 on target",
+                                    "Fox 1, 2, 3"
+                                ]
                             },
                             {
-                                "en": "G-LOC",
-                                "es": "G-LOC (Pérdida de Conciencia Inducida por Fuerza G)",
-                                "definition": "Loss of pilot consciousness caused by blood draining from the brain under high g-forces"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "What aerodynamic phenomenon causes extreme drag rise in the Transonic regime (Mach 0.8 - 1.2)?",
-                                "options": [
-                                    "Engine flameout",
-                                    "Shock wave formation and boundary layer separation over the wing",
-                                    "Fuel tank freezing",
-                                    "Rudder disconnect"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "What does the NATO brevity term 'Bingo Fuel' communicate to mission commanders?",
-                                "options": [
-                                    "The aircraft has refueled to 100%",
-                                    "The aircraft has reached critical minimum fuel and must return to base immediately",
-                                    "The fuel pump has failed",
-                                    "Drop all external fuel tanks"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "What is Corner Velocity on a fighter aircraft's V-n Flight Envelope?",
-                                "options": [
-                                    "The speed required to taxi around runway corners",
-                                    "The airspeed that allows pulling maximum structural g-load for the sharpest turn radius",
-                                    "The landing stall speed",
-                                    "The speed of sound at sea level"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "Which NATO brevity phrase announces the launch of an active radar-guided missile (like AIM-120)?",
-                                "options": [
-                                    "Guns Guns Guns",
-                                    "Fox Three",
-                                    "Raygun",
-                                    "Winchester"
-                                ],
-                                "answer": 1
+                                "en": "Bullseye",
+                                "es": "Punto de Referencia (Bullseye)",
+                                "definition": "An established reference point from which the position of an object can be referenced by bearing (magnetic) and range (nautical miles).",
+                                "ipa": "/ˈbʊl.zaɪ/",
+                                "collocations": [
+                                    "bullseye call",
+                                    "reference bullseye",
+                                    "bullseye coordinates"
+                                ]
                             }
                         ]
                     }
-                ]
+                ],
+                "dialogue": {
+                    "title": "BVR Intercept: Sensor Fusion and Avionics Fault",
+                    "titleES": "Intercepción BVR: Fusión de Sensores y Fallo de Aviónica",
+                    "scenarioContext": "Red Flag Exercise, Nellis AFB. ⇄ F-16 Viper (Callsign: VIPER 1) and AWACS (Callsign: DARKSTAR).",
+                    "characters": [
+                        {
+                            "name": "Captain Mitchell (VIPER 1)",
+                            "role": "F-16 Flight Lead",
+                            "avatar": "V1",
+                            "color": "var(--amber)"
+                        },
+                        {
+                            "name": "DARKSTAR Control",
+                            "role": "AWACS Airborne Controller",
+                            "avatar": "DS",
+                            "color": "var(--cyan)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "DARKSTAR Control",
+                            "text": "Viper 1, Darkstar. Picture clean. New contact, bullseye 045 for 60 miles, tracking south, 30 thousand, fast.",
+                            "translation": "Viper 1, Darkstar. Imagen limpia. Nuevo contacto, bullseye 045 a 60 millas, rumbo sur, 30 mil pies, rápido.",
+                            "targetTerms": [
+                                "Picture clean",
+                                "bullseye",
+                                "tracking south",
+                                "fast"
+                            ]
+                        },
+                        {
+                            "speaker": "Captain Mitchell (VIPER 1)",
+                            "text": "Viper 1, contact. AESA radar shows a two-ship formation. However, I have an intermittent fault on the MIL-STD-1553 bus. My tactical display dropped the datalink tracks.",
+                            "translation": "Viper 1, contacto. El radar AESA muestra una formación de dos naves. Sin embargo, tengo un fallo intermitente en el bus MIL-STD-1553. Mi pantalla táctica perdió las trazas del enlace de datos.",
+                            "targetTerms": [
+                                "AESA radar",
+                                "two-ship formation",
+                                "MIL-STD-1553 bus",
+                                "tactical display",
+                                "datalink tracks"
+                            ]
+                        },
+                        {
+                            "speaker": "DARKSTAR Control",
+                            "text": "Copy Viper 1. Be advised, contact is maneuvering. Spike, 12 o'clock, 40 miles. Hostile.",
+                            "translation": "Copiado Viper 1. Tenga en cuenta, el contacto está maniobrando. Spike, a las 12 en punto, 40 millas. Hostil.",
+                            "targetTerms": [
+                                "maneuvering",
+                                "Spike",
+                                "12 o'clock",
+                                "Hostile"
+                            ]
+                        },
+                        {
+                            "speaker": "Captain Mitchell (VIPER 1)",
+                            "text": "Viper 1 is spiked. Defensive, pushing 9G, deploying countermeasures. I am Joker fuel. Engaging with Fox 3.",
+                            "translation": "Viper 1 está siendo rastreado (spiked). Defensivo, empujando 9G, desplegando contramedidas. Estoy en combustible Joker. Atacando con Fox 3 (misil guiado por radar activo).",
+                            "targetTerms": [
+                                "spiked",
+                                "Defensive",
+                                "pushing 9G",
+                                "countermeasures",
+                                "Joker fuel",
+                                "Fox 3"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "I am shooting a missile at the enemy.",
+                            "native": "Viper 1, Fox 3.",
+                            "explanation": "En combate aéreo, la fraseología civil o escolar ('shooting a missile') se reemplaza por 'Brevity Codes' ultracortos. 'Fox 3' indica el lanzamiento específico de un misil guiado por radar activo."
+                        },
+                        {
+                            "school": "The computer screen stopped showing the map.",
+                            "native": "I have a MIL-STD-1553 bus fault; the tactical display dropped the datalink tracks.",
+                            "explanation": "Los ingenieros y pilotos militares diagnostican los componentes exactos (bus 1553, datalink) en lugar de usar términos genéricos como 'computer screen'."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Flight Envelope",
+                        "ipa": "/flaɪt ˈɛn.və.loʊp/",
+                        "es": "Envolvente de Vuelo",
+                        "category": "Aerodinámica",
+                        "definition": "The strict operational limits of an aircraft based on airspeed, load factor (G-force), and altitude. Exceeding it causes structural damage or stall.",
+                        "collocations": [
+                            "push the flight envelope",
+                            "operate within the envelope",
+                            "V-n diagram"
+                        ],
+                        "falseFriends": "No es un sobre de correo para vuelos; es la gráfica de límites físicos (también llamada 'doghouse plot') del avión.",
+                        "nativeUsage": "The test pilot expanded the flight envelope by successfully recovering from a Mach 1.2 dive at 50,000 feet."
+                    },
+                    {
+                        "term": "AESA Radar",
+                        "ipa": "/eɪˈiː.sə ˈreɪ.dɑːr/",
+                        "es": "Radar AESA (Barrido Electrónico Activo)",
+                        "category": "Aviónica",
+                        "definition": "Active Electronically Scanned Array. A type of phased array radar whose transmitter and receiver functions are composed of numerous small solid-state transmit/receive modules (TRMs).",
+                        "collocations": [
+                            "AESA radar upgrade",
+                            "electronic beam steering",
+                            "jam-resistant AESA"
+                        ],
+                        "falseFriends": "A diferencia del radar mecánico, la antena AESA no se mueve físicamente; el haz se dirige alterando la fase de las ondas de radio.",
+                        "nativeUsage": "The F-35's AESA radar can simultaneously jam enemy signals while tracking multiple airborne targets."
+                    },
+                    {
+                        "term": "Mach Tuck",
+                        "ipa": "/mɑːk tʌk/",
+                        "es": "Mach Tuck (Caída de nariz transónica)",
+                        "category": "Aerodinámica Supersónica",
+                        "definition": "An aerodynamic effect where the nose of an aircraft tends to pitch downward as it approaches the speed of sound due to the rearward shift of the center of lift.",
+                        "collocations": [
+                            "counteract Mach tuck",
+                            "transonic regime",
+                            "stabilator trim"
+                        ],
+                        "falseFriends": "No es 'esconderse a Mach'; es un peligroso picado aerodinámico provocado por las ondas de choque transónicas.",
+                        "nativeUsage": "Early jet fighters crashed because pilots lacked the hydraulic authority to pull out of the Mach tuck dive."
+                    },
+                    {
+                        "term": "MIL-STD-1553",
+                        "ipa": "/mɪl stænd ˈfɪf.tiːn ˈfɪf.ti θriː/",
+                        "es": "Estándar Militar 1553 (Bus de Datos)",
+                        "category": "Arquitectura de Aviónica",
+                        "definition": "A military standard published by the US Department of Defense that defines the mechanical, electrical, and functional characteristics of a serial data bus.",
+                        "collocations": [
+                            "1553 databus architecture",
+                            "dual-redundant 1553",
+                            "bus controller"
+                        ],
+                        "falseFriends": "Se pronuncia 'fifteen-fifty-three'. Es el sistema nervioso central de casi todos los aviones de combate occidentales.",
+                        "nativeUsage": "The flight control computer communicates with the smart munitions via the MIL-STD-1553 dual-redundant bus."
+                    },
+                    {
+                        "term": "Fox 3",
+                        "ipa": "/fɑːks θriː/",
+                        "es": "Fox 3 (Lanzamiento de misil activo)",
+                        "category": "Brevity Codes",
+                        "definition": "NATO brevity code indicating the simulated or actual launch of an active radar-guided air-to-air missile (e.g., AIM-120 AMRAAM).",
+                        "collocations": [
+                            "call Fox 3",
+                            "Fox 3 on target",
+                            "Fox 1, 2, 3"
+                        ],
+                        "falseFriends": "No tiene nada que ver con zorros. Fox 1 es radar semi-activo, Fox 2 es guiado por calor (IR), y Fox 3 es radar activo.",
+                        "nativeUsage": "Viper 1 called Fox 3 and immediately executed a crank maneuver to defeat the enemy's return fire."
+                    },
+                    {
+                        "term": "Bullseye",
+                        "ipa": "/ˈbʊl.zaɪ/",
+                        "es": "Punto de Referencia (Bullseye)",
+                        "category": "Navegación Táctica",
+                        "definition": "An established reference point from which the position of an object can be referenced by bearing (magnetic) and range (nautical miles).",
+                        "collocations": [
+                            "bullseye call",
+                            "reference bullseye",
+                            "bullseye coordinates"
+                        ],
+                        "falseFriends": "No significa dar en el blanco de un tiro de dardos; es una coordenada geográfica secreta compartida por todo el escuadrón.",
+                        "nativeUsage": "AWACS reported a hostile group at Bullseye zero-four-zero for forty miles."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Mach Tuck & Transonic Aerodynamics",
+                        "botQuestion": "Welcome to the Aerospace Engineering Audit! Explain what happens to an aircraft's center of lift when it enters the transonic regime (approaching Mach 1). Why does this cause a phenomenon called 'Mach Tuck'?",
+                        "requiredKeywords": [
+                            "center",
+                            "lift",
+                            "shifts",
+                            "backward",
+                            "rearward",
+                            "nose",
+                            "pitch",
+                            "down",
+                            "shock wave"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Perfect aerodynamics! As the shock wave forms and moves aft, the center of lift shifts backward. This creates a strong nose-down pitching moment called Mach Tuck, which advanced fly-by-wire systems must automatically trim out.",
+                        "feedbackRetry": "Think about the balance of the aircraft. As the shock wave moves along the wing, where does the 'center of lift' go? What does that shift cause the nose of the plane to do?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Tactical Brevity Codes",
+                        "botQuestion": "In NATO brevity codes, what does it mean when a pilot transmits 'BINGO' over the radio? How is this different from 'JOKER'?",
+                        "requiredKeywords": [
+                            "bingo",
+                            "fuel",
+                            "recovery",
+                            "return",
+                            "base",
+                            "joker",
+                            "separation",
+                            "bugout"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot-on! 'BINGO' is the critical fuel state requiring an immediate return to base. 'JOKER' is a pre-briefed fuel level just above Bingo, signaling when the pilot should begin to disengage (bugout) from the fight.",
+                        "feedbackRetry": "Both terms relate to the aircraft's fuel gauge. Which one means 'I must return to base right now' and which one is the warning limit just above that?"
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "af-m2",
@@ -8824,14 +10074,10 @@ var LXP_COURSES = {
     }
 };
 
-// Make available for window and import
 if (typeof window !== 'undefined') {
     window.LXP_CATEGORIES = LXP_CATEGORIES;
     window.LXP_COURSES = LXP_COURSES;
 }
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        LXP_CATEGORIES: LXP_CATEGORIES,
-        LXP_COURSES: LXP_COURSES
-    };
+    module.exports = { LXP_CATEGORIES, LXP_COURSES };
 }
