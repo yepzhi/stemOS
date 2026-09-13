@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>stemOS — Technical English Learning Platform for STEM & Engineering</title>
     <meta name="description" content="stemOS is an AI-powered Technical English (ESP) learning platform engineered for STEM disciplines, coding, semiconductors, aerospace, and advanced manufacturing. Master engineering vocabulary, CEFR A2/B1 bilingual fluency, and Socratic AI evaluations.">
-    <!-- Google Fonts: Instrument Serif, Inter, Outfit & JetBrains Mono -->
+    <!-- Google Fonts: Instrument Serif, Inter, Outfit, Plus Jakarta Sans & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css?v=1.0.1">
+    <link rel="stylesheet" href="dev.css?v=4.0.0">
 
     <!-- Local Backdoor Initializer script to prevent screen flash -->
     <script>
@@ -41,7 +42,7 @@
             width: 100%;
             position: fixed;
             top: 0; left: 0;
-            background-color: var(--cs-bg-color);
+            background: transparent;
             color: var(--cs-text-primary);
             z-index: 999999;
             overflow-y: auto;
@@ -140,8 +141,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1.5rem;
-            padding: 3rem 0;
+            gap: 2.5rem;
+            padding: 0 0 3.5rem 0;
         }
 
         /* Each "page" section fills the viewport */
@@ -492,7 +493,7 @@
             transform: translateY(-1.5px);
         }
 
-        /* ─── SCROLL PROGRESS BAR (Ada Lovelace Theme) ──────────── */
+        /* ─── SCROLL PROGRESS BAR ──────────────────────────── */
         .cs-scroll-dots {
             position: fixed;
             right: 1.4rem;
@@ -503,11 +504,17 @@
             flex-direction: column;
             align-items: center;
             gap: 14px;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 10px 6px;
+            border-radius: 999px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .cs-dot {
-            width: 22px;
-            height: 22px;
+            width: 14px;
+            height: 14px;
             cursor: pointer;
             position: relative;
             display: flex;
@@ -524,7 +531,7 @@
 
         /* The circle shape */
         .cs-dot-circle {
-            fill: #94a3b8;
+            fill: rgba(255, 255, 255, 0.45);
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             transform-origin: center;
         }
@@ -532,7 +539,7 @@
         /* The heart path shape */
         .cs-dot-heart-path {
             fill: none;
-            stroke: rgba(0, 210, 255, 0.65);
+            stroke: #ffffff;
             stroke-width: 2.2;
             stroke-linecap: round;
             stroke-linejoin: round;
@@ -542,68 +549,26 @@
             transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* Tooltip label on the left */
+        /* Tooltip label hidden to prevent visual clutter */
         .cs-dot::after {
-            content: attr(data-label);
-            position: absolute;
-            right: calc(100% + 10px);
-            top: 50%;
-            transform: translateY(-50%) translateX(6px);
-            white-space: nowrap;
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: rgba(255,255,255,0.0);
-            font-family: 'Outfit', sans-serif;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            pointer-events: none;
-            background: linear-gradient(135deg, #00d2ff, #277eff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            display: none !important;
         }
 
         /* HOVER state */
         .cs-dot:hover {
-            transform: scale(1.3);
+            transform: scale(1.25);
         }
         .cs-dot:hover .cs-dot-circle {
-            opacity: 0;
-            transform: scale(0);
-        }
-        .cs-dot:hover .cs-dot-heart-path {
-            opacity: 1;
-            transform: scale(1.1);
-            stroke: #00d2ff;
-            filter: drop-shadow(0 0 6px rgba(0, 210, 255, 0.8));
-        }
-        .cs-dot:hover::after {
-            opacity: 1;
-            transform: translateY(-50%) translateX(0);
+            fill: #ffffff;
         }
 
-        /* ACTIVE state (representing current section) */
+        /* ACTIVE state */
         .cs-dot.active {
-            transform: scale(1.35);
+            transform: scale(1.3);
         }
         .cs-dot.active .cs-dot-circle {
-            opacity: 0;
-            transform: scale(0);
-        }
-        .cs-dot.active .cs-dot-heart-path {
-            opacity: 1;
-            transform: scale(1.2);
-            stroke: #00d2ff;
-            filter:
-                drop-shadow(0 0 8px rgba(0, 210, 255, 0.9))
-                drop-shadow(0 0 20px rgba(0, 210, 255, 0.3));
-            animation: lovelace-heartbeat 1.6s ease-in-out infinite;
-        }
-        .cs-dot.active::after {
-            opacity: 1;
-            transform: translateY(-50%) translateX(0);
+            fill: #ffffff;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
         }
 
         @keyframes lovelace-heartbeat {
@@ -764,33 +729,92 @@
             </div>
         </nav>
 
+        <!-- ── Top-Docked Supaste Navigation Capsule (Fused with top of screen) ── -->
+        <header class="supaste-nav-wrapper">
+            <nav class="supaste-nav" id="supaste-nav" aria-label="Main Navigation">
+                <div class="supaste-nav-left">
+                    <a href="#" class="supaste-brand-link" id="brand-home-link">
+                        <div class="supaste-squircle-logo">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                <path d="M12 22V12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                                <path d="M21 7l-9 5-9-5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                <circle cx="12" cy="12" r="2.5" fill="currentColor" opacity="0.7"/>
+                            </svg>
+                        </div>
+                        <div class="supaste-brand-name">
+                            <span class="brand-stem">stem</span><span class="brand-os">OS</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="supaste-nav-links">
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('ESP Catalog')" class="nav-link active">ESP Catalog</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Technology')" class="nav-link">Technology</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Engineering')" class="nav-link">Engineering</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Science')" class="nav-link">Science</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Aviation')" class="nav-link">Aviation</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Native Idioms')" class="nav-link">Native Idioms</a>
+                </div>
+
+                <div class="supaste-nav-right">
+                    <button type="button" onclick="openUnderDevModal('Explore')" class="supaste-nav-cta" id="nav-cta-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span>Explore</span>
+                    </button>
+                </div>
+            </nav>
+        </header>
+
         <!-- Scrollable content wrapper -->
         <div class="cs-scroll-wrapper">
 
-            <!-- ══ SECTION 1 — HERO ═════════════════════════════ -->
-            <section class="cs-section" id="cs-section-0">
-                <div class="cs-container">
+            <!-- ══ SECTION 1 — HERO (Supaste Radiant Sky Atmosphere) ═════════════════════════════ -->
+            <section class="cs-section" id="cs-section-0" style="padding-top:76px; width:100%;">
+                <div class="supaste-hero-container">
 
-                    <!-- Logo / Brand -->
-                    <div class="cs-brand">
-                        <div class="cs-dev-signal-pill"><span class="cs-pulse-dot"></span> Under Active Development</div>
-                        <div class="cs-logo-text">stem<span id="backdoor-trigger">O</span>S</div>
-                        <div class="cs-badge">LXP, Learning Experience Platform, for Technical English</div>
+                    <!-- Pill / Brand Header -->
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:20px;">
+                        <div class="cs-dev-signal-pill" style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.4); color:#ffffff; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 4px 16px rgba(13,43,153,0.2); font-size:0.75rem; font-weight:700; padding:5px 16px;">
+                            <span class="cs-pulse-dot" style="background:#ffffff; box-shadow:0 0 10px #ffffff;"></span> Under Active Development
+                        </div>
+                        <div class="cs-logo-text" style="color:#ffffff; font-family:'Outfit',sans-serif; font-size:clamp(2.8rem,7vw,4.2rem); font-weight:900; letter-spacing:-0.04em; line-height:1; -webkit-text-fill-color:#ffffff; text-shadow:0 4px 24px rgba(13,43,153,0.35);">
+                            stem<span id="backdoor-trigger" style="cursor:pointer;" title="stemOS">O</span>S
+                        </div>
+                        <div class="cs-badge" style="background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.38); color:#ffffff; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); font-size:0.88rem; font-weight:600; padding:7px 22px; border-radius:999px; box-shadow:0 4px 20px rgba(13,43,153,0.15);">
+                            LXP, Learning Experience Platform for Technical English
+                        </div>
                     </div>
 
-                    <!-- Headline with Soft Construction & Handcrafted Italic Serif Accent -->
-                    <h1>
-                        Mastering <span class="cs-highlight">Technical English</span><br>
-                        for <span class="cs-serif-italic">Advanced Industry</span> &amp; <span class="cs-serif-italic">Nearshoring</span>
+                    <!-- Editorial Headline in Pure White -->
+                    <h1 class="supaste-hero-title">
+                        Mastering Technical English <br>
+                        for <span class="supaste-serif-italic">Advanced Industry &amp; Nearshoring</span>
                     </h1>
 
-                    <!-- Refined Subtitle exactly as requested -->
-                    <p class="cs-description">
+                    <!-- Refined Subtitle in Crisp White -->
+                    <p class="supaste-hero-subtitle">
                         <strong>26 specialized industry tracks</strong> of English for Specific Purposes (ESP) &mdash; engineered for semiconductor fabrication, aerospace avionics, industrial robotics, and advanced manufacturing teams. Aligned with IEEE, SEMI, ISO, and OACI standards.
                     </p>
 
+                    <!-- CTAs -->
+                    <div class="supaste-hero-actions">
+                        <button type="button" onclick="openUnderDevModal('Explore 26 Tracks')" class="supaste-btn-primary">
+                            <span>Explore 26 Tracks</span>
+                            <i class="fa-solid fa-arrow-right btn-arrow"></i>
+                        </button>
+                        <button type="button" onclick="openUnderDevModal('Interactive Demo')" class="supaste-btn-secondary">
+                            <i class="fa-solid fa-laptop-code"></i>
+                            <span>Interactive Demo</span>
+                        </button>
+                        <a href="https://jovenesstem.com" class="supaste-btn-secondary" target="_blank" rel="noopener">
+                            <i class="fa-solid fa-seedling"></i>
+                            <span>JóvenesSTEM Ecosystem</span>
+                        </a>
+                    </div>
+
                     <!-- Key Metrics Strip -->
-                    <div class="cs-metrics-strip">
+                    <div class="supaste-metrics-strip">
                         <div class="metric-pill">
                             <span class="metric-val">26</span>
                             <span class="metric-lbl">Tracks ESP</span>
@@ -817,20 +841,56 @@
                         </div>
                     </div>
 
-                    <div class="cs-divider"></div>
+                    <!-- Supaste macOS Stage Window Live Preview -->
+                    <div class="supaste-stage-window" id="hero-showcase-window" style="margin-top:14px; margin-bottom:10px;">
+                        <div class="window-titlebar">
+                            <div class="traffic-lights">
+                                <span class="dot dot-close"></span>
+                                <span class="dot dot-min"></span>
+                                <span class="dot dot-max"></span>
+                            </div>
+                            <div class="window-title">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 22V12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M21 7l-9 5-9-5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.5" fill="currentColor" opacity="0.7"/></svg>
+                                <span>stemOS Studio &mdash; Semiconductors: Photolithography Cleanroom Protocols</span>
+                            </div>
+                            <div class="window-right-tags">
+                                <span class="win-tag win-tag-cefr">Level B1</span>
+                                <span class="win-tag win-tag-conocer"><i class="fa-solid fa-award"></i> IEEE Standard</span>
+                            </div>
+                        </div>
 
-                    <!-- CTAs -->
-                    <div class="cs-btn-group">
-                        <button type="button" onclick="openUnderDevModal('Explore 26 Tracks')" class="cs-btn cs-btn-primary">
-                            <i class="fa-solid fa-compass"></i> Explore 26 Tracks
-                        </button>
-                        <button type="button" onclick="openUnderDevModal('Interactive Demo')" class="cs-btn cs-btn-secondary">
-                            <i class="fa-solid fa-laptop-code"></i> Interactive Demo
-                        </button>
-                        <a href="https://jovenesstem.com" class="cs-btn cs-btn-secondary" target="_blank" rel="noopener">
-                            <i class="fa-solid fa-seedling"></i> JóvenesSTEM Ecosystem
-                        </a>
+                        <div class="window-content-area">
+                            <div class="stage-player-pill">
+                                <button type="button" onclick="openUnderDevModal('Technical Audio')" class="stage-play-btn" aria-label="Play pronunciation">
+                                    <i class="fa-solid fa-play"></i>
+                                </button>
+                                <div class="stage-wave-bars">
+                                    <span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span>
+                                </div>
+                                <div class="stage-track-info">
+                                    <span class="stage-speaker"><i class="fa-solid fa-headphones"></i> Technical Pronunciation (Native Audio)</span>
+                                    <span class="stage-reading-title">Cleanroom ISO Class 1 Protocols</span>
+                                </div>
+                                <div class="stage-speed-pill">Audio EN</div>
+                            </div>
+
+                            <p class="stage-reading-quote">
+                                &ldquo;In extreme ultraviolet (EUV) photolithography, wafer steppers operate inside ISO Class 1 cleanrooms with laminar airflow. Photoresist deposition requires precise chemical handling to prevent sub-micron yield defects.&rdquo;
+                            </p>
+
+                            <div class="stage-bottom-bar">
+                                <div class="stage-socratic-badge">
+                                    <i class="fa-solid fa-brain"></i>
+                                    <span><strong>Socratic Bot:</strong> &ldquo;Why does uniform photoresist deposition prevent defects at 3nm nodes?&rdquo;</span>
+                                </div>
+                                <button type="button" onclick="openUnderDevModal('Open Module')" class="stage-action-btn">
+                                    <span>Open Module</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </section>
 
