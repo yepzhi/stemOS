@@ -8752,11 +8752,284 @@ var LXP_COURSES = {
         "description": "Manufactura aditiva metálica (DMLS/SLM), gemelos digitales (Digital Twins), GD&T avanzado y celdas de mecanizado automatizado.",
         "modules": [
             {
-                "id": "am-m1",
-                "title": "Geometric Dimensioning and Tolerancing (GD&T - ASME Y14.5)",
-                "titleES": "Dimensionamiento Geométrico y Tolerancias (GD&T)",
-                "icon": "fa-solid fa-ruler-combined",
-                "readings": []
+                "id": "mfg-m1",
+                "title": "GD&T & Additive Manufacturing",
+                "titleES": "GD&T y Manufactura Aditiva",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "mfg-m1-r1",
+                        "title": "Precision Engineering & CNC",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment & Engineering Standard**: Aligned with **ASME Y14.5 (GD&T)** and **ASTM International Committee F42 on Additive Manufacturing Technologies**. Essential for Manufacturing Engineers, CNC Machinists, and Quality Inspectors.\n\n# Engineering and Advanced Manufacturing\n\nModern manufacturing has moved far beyond simple assembly lines. The production of aerospace turbines, medical implants, and high-performance automotive components requires microscopic precision and a universal engineering language to communicate exactly what needs to be built.\n\n## 1. Geometric Dimensioning and Tolerancing (GD&T)\nGD&T is the universal language of engineering design. It is a system of symbols and rules used on engineering drawings to communicate manufacturing constraints.\n- **Tolerances**: No manufacturing process is perfect; every cut has a margin of error. A tolerance specifies how much variation is allowed from the nominal dimension. If a tolerance is too tight, the part becomes unnecessarily expensive to machine.\n- **Datums**: A theoretically exact plane, axis, or point location that GD&T tolerances are referenced to. Think of it as the \"anchor\" from which all measurements are taken.\n- **Feature Control Frame**: A rectangular box on a drawing that contains the geometric characteristic symbol (e.g., flatness, perpendicularity, true position), the tolerance value, and the referenced datums.\n\n## 2. CNC Machining (Subtractive Manufacturing)\nComputer Numerical Control (CNC) machining involves removing material from a solid block to achieve the desired shape.\n- **Milling and Turning**: In **milling**, the cutting tool rotates while the workpiece is stationary. In **turning** (using a lathe), the workpiece rotates while the cutting tool is stationary.\n- **G-Code**: The programming language that tells the CNC machine exactly where to move the cutting tool, how fast to spin the spindle, and when to turn on the coolant.\n\n## 3. Additive Manufacturing (3D Printing)\nInstead of cutting material away, Additive Manufacturing (AM) builds a part layer by layer.\n- **Selective Laser Sintering (SLS)**: A high-power laser fuses small particles of polymer powder into a solid structure based on a 3D CAD model.\n- **Direct Metal Laser Sintering (DMLS)**: Similar to SLS, but it melts metal powders (e.g., titanium or Inconel) to create fully dense metal parts. DMLS is heavily used in aerospace to print complex internal cooling channels inside rocket engine nozzles—geometries that are physically impossible to create using traditional CNC machining.\n- **Post-Processing**: Additive parts rarely come out of the printer ready for use. They often require heat treatment to relieve internal stresses and CNC machining to achieve the tight surface finish tolerances required by GD&T.\n\n---\n> **Key Takeaway**: The future of production blends the complex geometries of **Additive Manufacturing** with the extreme precision of **CNC Machining**, all strictly governed by the universal language of **GD&T**.\n",
+                        "vocabulary": [
+                            {
+                                "en": "GD&T",
+                                "es": "Dimensionamiento y Tolerancias Geométricas",
+                                "definition": "Geometric Dimensioning and Tolerancing. A system of symbols, rules, and definitions used to define the nominal geometry of parts and assemblies, to communicate the allowable variation in form and possible size of individual features.",
+                                "ipa": "/dʒiː-diː-æn-tiː/",
+                                "collocations": [
+                                    "GD&T symbols",
+                                    "ASME Y14.5",
+                                    "Feature Control Frame"
+                                ]
+                            },
+                            {
+                                "en": "Datum",
+                                "es": "Datum / Referencia Geométrica",
+                                "definition": "A theoretically exact plane, point, or axis from which dimensional measurements are made to other features on the part.",
+                                "ipa": "/ˈdeɪ.təm/",
+                                "collocations": [
+                                    "Datum A",
+                                    "primary datum reference",
+                                    "Datum simulator"
+                                ]
+                            },
+                            {
+                                "en": "True Position",
+                                "es": "Posición Verdadera",
+                                "definition": "The exact, theoretically perfect coordinate location of a feature, such as the center of a hole, as defined by basic dimensions on a drawing.",
+                                "ipa": "/truː pəˈzɪʃ.ən/",
+                                "collocations": [
+                                    "true position tolerance",
+                                    "out of position",
+                                    "feature control frame"
+                                ]
+                            },
+                            {
+                                "en": "Spindle",
+                                "es": "Husillo",
+                                "definition": "The rotating axis of the machine, which often has a shaft at its heart. In a milling machine, the spindle holds and spins the cutting tool. In a lathe, it holds and spins the workpiece.",
+                                "ipa": "/ˈspɪn.dəl/",
+                                "collocations": [
+                                    "spindle speed",
+                                    "high-speed spindle",
+                                    "spindle thermal expansion"
+                                ]
+                            },
+                            {
+                                "en": "Additive Manufacturing",
+                                "es": "Manufactura Aditiva (Impresión 3D)",
+                                "definition": "The process of joining materials to make objects from 3D model data, usually layer upon layer, as opposed to subtractive manufacturing methodologies (like CNC machining).",
+                                "ipa": "/ˈæd.ɪ.tɪv ˌmæn.jəˈfæk.tʃɚ.ɪŋ/",
+                                "collocations": [
+                                    "metal additive manufacturing",
+                                    "DMLS",
+                                    "layer-by-layer"
+                                ]
+                            },
+                            {
+                                "en": "Coordinate Measuring Machine (CMM)",
+                                "es": "Máquina de Medición por Coordenadas (MMC)",
+                                "definition": "A device that measures the geometry of physical objects by sensing discrete points on the surface of the object with a probe, verifying if the part meets GD&T specifications.",
+                                "ipa": "/koʊˈɔːr.dən.ət ˈmɛʒ.ər.ɪŋ məˈʃiːn/",
+                                "collocations": [
+                                    "CMM report",
+                                    "touch probe",
+                                    "automated CMM inspection"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "dialogue": {
+                    "title": "Quality Control: GD&T True Position Failure",
+                    "titleES": "Control de Calidad: Falla de Posición Verdadera (GD&T)",
+                    "scenarioContext": "Toluca, MX (Automotive Manufacturing Plant). Inspecting a machined engine block.",
+                    "characters": [
+                        {
+                            "name": "Ing. Roberto Valdez",
+                            "role": "Quality Control Inspector",
+                            "avatar": "RV",
+                            "color": "var(--cyan)"
+                        },
+                        {
+                            "name": "Sarah Miller",
+                            "role": "CNC Programming Lead",
+                            "avatar": "SM",
+                            "color": "var(--amber)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Ing. Roberto Valdez",
+                            "text": "Sarah, we have a non-conformance on the latest batch of engine blocks. The CMM (Coordinate Measuring Machine) report shows that the four mounting holes are out of tolerance.",
+                            "translation": "Sarah, tenemos una no conformidad (non-conformance) en el último lote de bloques de motor. El reporte de la CMM (Máquina de Medición por Coordenadas) muestra que los cuatro agujeros de montaje están fuera de tolerancia.",
+                            "targetTerms": [
+                                "non-conformance",
+                                "engine blocks",
+                                "Coordinate Measuring Machine",
+                                "out of tolerance"
+                            ]
+                        },
+                        {
+                            "speaker": "Sarah Miller",
+                            "text": "Out of tolerance? I checked the diameter with a micrometer, and it’s perfectly within the +/- 0.05 millimeter spec.",
+                            "translation": "¿Fuera de tolerancia? Revisé el diámetro con un micrómetro y está perfectamente dentro de la especificación de +/- 0.05 milímetros.",
+                            "targetTerms": [
+                                "diameter",
+                                "micrometer",
+                                "spec"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Roberto Valdez",
+                            "text": "The diameter is fine. The issue is the GD&T Feature Control Frame. The true position of the holes relative to Datum A and Datum B shifted by 0.2 millimeters. The mating part won't align.",
+                            "translation": "El diámetro está bien. El problema es el Marco de Control de Características de GD&T (Feature Control Frame). La posición verdadera (true position) de los agujeros en relación con el Datum A y el Datum B se desplazó 0.2 milímetros. La pieza de acoplamiento no se alineará.",
+                            "targetTerms": [
+                                "GD&T",
+                                "Feature Control Frame",
+                                "true position",
+                                "Datum",
+                                "mating part",
+                                "align"
+                            ]
+                        },
+                        {
+                            "speaker": "Sarah Miller",
+                            "text": "Ah, I see. The spindle must have experienced thermal expansion during the heavy milling operation, causing the tool path to drift. I will update the G-Code to add a cool-down pause before drilling those critical holes.",
+                            "translation": "Ah, ya veo. El husillo (spindle) debe haber experimentado expansión térmica durante la operación de fresado pesado, causando que la trayectoria de la herramienta (tool path) se desvíe. Actualizaré el Código G (G-Code) para agregar una pausa de enfriamiento antes de perforar esos agujeros críticos.",
+                            "targetTerms": [
+                                "spindle",
+                                "thermal expansion",
+                                "milling operation",
+                                "tool path",
+                                "drift",
+                                "G-Code"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The holes are in the wrong place.",
+                            "native": "The true position of the holes relative to Datum A is out of tolerance.",
+                            "explanation": "En la manufactura de precisión, no se dice 'el lugar equivocado'; se especifica la falla exacta en GD&T: 'True Position out of tolerance relative to a Datum'."
+                        },
+                        {
+                            "school": "The machine got too hot and moved.",
+                            "native": "The spindle experienced thermal expansion, causing the tool path to drift.",
+                            "explanation": "Los ingenieros describen el fenómeno físico exacto: 'thermal expansion' (expansión térmica) del 'spindle' (husillo) que afecta el 'tool path' (trayectoria de la herramienta)."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "GD&T",
+                        "ipa": "/dʒiː-diː-æn-tiː/",
+                        "es": "Dimensionamiento y Tolerancias Geométricas",
+                        "category": "Ingeniería de Diseño",
+                        "definition": "Geometric Dimensioning and Tolerancing. A system of symbols, rules, and definitions used to define the nominal geometry of parts and assemblies, to communicate the allowable variation in form and possible size of individual features.",
+                        "collocations": [
+                            "GD&T symbols",
+                            "ASME Y14.5",
+                            "Feature Control Frame"
+                        ],
+                        "falseFriends": "Es un lenguaje visual internacional; los planos en Alemania, Japón y EE.UU. usan exactamente los mismos símbolos GD&T.",
+                        "nativeUsage": "The engineering drawing uses GD&T to ensure the aerospace parts are perfectly interchangeable on the assembly line."
+                    },
+                    {
+                        "term": "Datum",
+                        "ipa": "/ˈdeɪ.təm/",
+                        "es": "Datum / Referencia Geométrica",
+                        "category": "GD&T",
+                        "definition": "A theoretically exact plane, point, or axis from which dimensional measurements are made to other features on the part.",
+                        "collocations": [
+                            "Datum A",
+                            "primary datum reference",
+                            "Datum simulator"
+                        ],
+                        "falseFriends": "En este contexto no significa 'dato' (información); es una referencia física de anclaje geométrico.",
+                        "nativeUsage": "Before inspecting the true position of the holes, the part must be clamped flush against Datum A."
+                    },
+                    {
+                        "term": "True Position",
+                        "ipa": "/truː pəˈzɪʃ.ən/",
+                        "es": "Posición Verdadera",
+                        "category": "GD&T",
+                        "definition": "The exact, theoretically perfect coordinate location of a feature, such as the center of a hole, as defined by basic dimensions on a drawing.",
+                        "collocations": [
+                            "true position tolerance",
+                            "out of position",
+                            "feature control frame"
+                        ],
+                        "falseFriends": "No es una 'posición honesta'; es la coordenada (X,Y,Z) matemáticamente perfecta dictada por el plano.",
+                        "nativeUsage": "The hole's diameter was correct, but its true position drifted by 0.1mm, causing assembly issues."
+                    },
+                    {
+                        "term": "Spindle",
+                        "ipa": "/ˈspɪn.dəl/",
+                        "es": "Husillo",
+                        "category": "Maquinado CNC",
+                        "definition": "The rotating axis of the machine, which often has a shaft at its heart. In a milling machine, the spindle holds and spins the cutting tool. In a lathe, it holds and spins the workpiece.",
+                        "collocations": [
+                            "spindle speed",
+                            "high-speed spindle",
+                            "spindle thermal expansion"
+                        ],
+                        "falseFriends": "No es un 'huso' de tejer; es el eje rotatorio principal de alta potencia de una máquina CNC.",
+                        "nativeUsage": "Increase the spindle speed to 10,000 RPM to achieve a smoother surface finish on the aluminum block."
+                    },
+                    {
+                        "term": "Additive Manufacturing",
+                        "ipa": "/ˈæd.ɪ.tɪv ˌmæn.jəˈfæk.tʃɚ.ɪŋ/",
+                        "es": "Manufactura Aditiva (Impresión 3D)",
+                        "category": "Procesos de Producción",
+                        "definition": "The process of joining materials to make objects from 3D model data, usually layer upon layer, as opposed to subtractive manufacturing methodologies (like CNC machining).",
+                        "collocations": [
+                            "metal additive manufacturing",
+                            "DMLS",
+                            "layer-by-layer"
+                        ],
+                        "falseFriends": "No es 'añadir extras'; es el término industrial formal para la impresión 3D a nivel de ingeniería.",
+                        "nativeUsage": "The complex internal cooling channels of the rocket nozzle can only be created using metal additive manufacturing."
+                    },
+                    {
+                        "term": "Coordinate Measuring Machine (CMM)",
+                        "ipa": "/koʊˈɔːr.dən.ət ˈmɛʒ.ər.ɪŋ məˈʃiːn/",
+                        "es": "Máquina de Medición por Coordenadas (MMC)",
+                        "category": "Control de Calidad",
+                        "definition": "A device that measures the geometry of physical objects by sensing discrete points on the surface of the object with a probe, verifying if the part meets GD&T specifications.",
+                        "collocations": [
+                            "CMM report",
+                            "touch probe",
+                            "automated CMM inspection"
+                        ],
+                        "falseFriends": "No es una máquina de coser; es un robot de altísima precisión usado en laboratorios de metrología.",
+                        "nativeUsage": "The CMM inspection report proved that the aerospace turbine blade perfectly matched the CAD model."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "GD&T & Datums",
+                        "botQuestion": "Welcome to the Metrology Lab! When reading an engineering drawing, what is the acronym for the system of symbols (Geometric Dimensioning and Tolerancing)? And what do we call the 'exact reference plane' or anchor point that all measurements are taken from?",
+                        "requiredKeywords": [
+                            "gd&t",
+                            "datum",
+                            "reference",
+                            "measurements"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Perfect! GD&T is the universal language of engineering, and a 'Datum' is the exact reference plane used to anchor the measurements.",
+                        "feedbackRetry": "The acronym stands for Geometric Dimensioning & Tolerancing (4 letters/symbols). The 'anchor point' for measurements starts with the letter 'D'."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Subtractive vs Additive & CNC",
+                        "botQuestion": "If a CNC machine cuts material away from a solid block of aluminum to make a part, is that 'additive' or 'subtractive' manufacturing? What is the name of the rotating shaft (starts with 'S') that holds the cutting tool in the CNC machine?",
+                        "requiredKeywords": [
+                            "subtractive",
+                            "spindle",
+                            "rotating",
+                            "cnc",
+                            "cutting"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Spot-on! CNC machining is 'subtractive' because it removes material. The rotating shaft that spins the cutting tool is called the 'spindle'.",
+                        "feedbackRetry": "Think about math: if you are cutting material AWAY, are you adding or subtracting? And what is the technical term for the spinning axis that holds the drill bit? (Starts with S-P-I-N...)"
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "am-m2",
@@ -8856,11 +9129,286 @@ var LXP_COURSES = {
         "description": "Diseño mecánico de precisión, servomotores, sistemas electrohidráulicos y neumáticos, y análisis de esfuerzos por elementos finitos (FEA).",
         "modules": [
             {
-                "id": "mech-m1",
-                "title": "Finite Element Analysis (FEA): Stress, Strain and Thermal Load",
-                "titleES": "Análisis por Elementos Finitos (FEA): Esfuerzo y Deformación",
-                "icon": "fa-solid fa-vector-square",
-                "readings": []
+                "id": "mechatronics-m1",
+                "title": "Robotics & PLC Automation",
+                "titleES": "Robótica y Automatización PLC",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "mechatronics-m1-r1",
+                        "title": "Industrial Control Systems",
+                        "duration": "11 min",
+                        "content": "\n> **Industry Alignment & Automation Standard**: Aligned with **IEC 61131-3 (PLC Programming)** and **ISO 10218 (Robots and Robotic Devices)**. Essential for Automation Engineers, Controls Technicians, and Mechatronics Integrators.\n\n# Mechatronics, Robotics, and Industrial Automation\n\nMechatronics is the synergistic integration of mechanical engineering, electronics, control engineering, and computer science. It is the foundation of modern automated manufacturing, moving industries from manual labor to intelligent, autonomous production lines.\n\n## 1. Programmable Logic Controllers (PLCs)\nThe brain of an industrial automation system is the PLC, a ruggedized computer designed specifically to control manufacturing processes.\n- **Ladder Logic**: The most common programming language for PLCs. It visually resembles the electrical relay diagrams it was designed to replace, with \"rungs\" containing inputs (contacts) and outputs (coils).\n- **I/O Modules**: PLCs interact with the physical world through Input/Output modules. Sensors (like proximity switches or thermocouples) send data to the Inputs, and the PLC's program logic dictates the response sent to the Outputs (like motors, valves, or pneumatic actuators).\n- **SCADA (Supervisory Control and Data Acquisition)**: A high-level software architecture that gathers data in real-time from PLCs across an entire factory floor, providing operators with a graphical interface (HMI) to monitor and control the systems.\n\n## 2. Industrial Robotics and Kinematics\nRobots are the muscles of the mechatronic system, executing repetitive or dangerous tasks with extreme precision.\n- **Degrees of Freedom (DOF)**: The number of independent parameters that define a robot's configuration. A standard industrial robotic arm (articulated robot) typically has 6 DOF, allowing it to reach any point in its workspace with any orientation.\n- **End Effector**: The \"hand\" of the robot. Depending on the application, the end effector (or End-of-Arm Tooling, EOAT) could be a welding torch, a vacuum gripper, or a paint sprayer.\n- **Forward and Inverse Kinematics**: **Forward kinematics** calculates the exact position of the end effector based on the given angles of the robot's joints. **Inverse kinematics** does the opposite (and much harder) calculation: determining the required joint angles to place the end effector at a specific target (X,Y,Z) coordinate.\n\n## 3. Actuators and Drives\nTranslating electrical control signals into physical movement requires powerful actuators.\n- **Servo Motors**: A rotary actuator that allows for precise control of angular position, velocity, and acceleration. They use a closed-loop system, relying on an encoder to feed position data back to the controller, correcting any errors in real-time.\n- **Pneumatics vs. Hydraulics**: **Pneumatic systems** use compressed air for fast, clean, and relatively low-force movements (like sorting packages on a conveyor). **Hydraulic systems** use pressurized liquid for heavy-duty, high-force applications (like stamping presses), but risk fluid leaks.\n\n---\n> **Key Takeaway**: A Mechatronics engineer must seamlessly program the logic in a **PLC**, design the **SCADA** monitoring system, calculate the **Inverse Kinematics** for the robotic arm, and tune the **Servo Motors** to execute the physical work.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Programmable Logic Controller (PLC)",
+                                "es": "Controlador Lógico Programable (PLC)",
+                                "definition": "An industrial solid-state computer that monitors inputs and outputs, and makes logic-based decisions for automated processes or machines.",
+                                "ipa": "/piː-ɛl-siː/",
+                                "collocations": [
+                                    "PLC programming",
+                                    "ladder logic",
+                                    "I/O modules"
+                                ]
+                            },
+                            {
+                                "en": "Ladder Logic",
+                                "es": "Lógica de Escalera (Lenguaje Ladder)",
+                                "definition": "A programming language that represents a program by a graphical diagram based on the circuit diagrams of relay logic hardware.",
+                                "ipa": "/ˈlæd.ər ˈlɑː.dʒɪk/",
+                                "collocations": [
+                                    "troubleshoot ladder logic",
+                                    "rungs and coils",
+                                    "normally open contact"
+                                ]
+                            },
+                            {
+                                "en": "SCADA",
+                                "es": "SCADA (Supervisión, Control y Adquisición de Datos)",
+                                "definition": "Supervisory Control and Data Acquisition. A control system architecture comprising computers, networked data communications, and graphical user interfaces for high-level process supervisory management.",
+                                "ipa": "/ˈskeɪ.də/",
+                                "collocations": [
+                                    "SCADA system",
+                                    "HMI display",
+                                    "real-time monitoring"
+                                ]
+                            },
+                            {
+                                "en": "Inverse Kinematics",
+                                "es": "Cinemática Inversa",
+                                "definition": "The mathematical process of calculating the variable joint parameters (angles) needed to place the end of a kinematic chain (such as a robot end effector) in a given position and orientation relative to the start of the chain.",
+                                "ipa": "/ɪnˈvɜːrs ˌkɪn.əˈmæt.ɪks/",
+                                "collocations": [
+                                    "solve inverse kinematics",
+                                    "robot trajectory",
+                                    "joint space"
+                                ]
+                            },
+                            {
+                                "en": "End Effector",
+                                "es": "Efector Final / Herramienta de Fin de Brazo",
+                                "definition": "The device at the end of a robotic arm, designed to interact with the environment (e.g., a gripper, welding torch, or suction cup). Also called End-of-Arm Tooling (EOAT).",
+                                "ipa": "/ɛnd ɪˈfɛk.tər/",
+                                "collocations": [
+                                    "custom end effector",
+                                    "vacuum gripper",
+                                    "EOAT"
+                                ]
+                            },
+                            {
+                                "en": "Servo Motor",
+                                "es": "Servomotor",
+                                "definition": "A rotary or linear actuator that allows for precise control of angular or linear position, velocity, and acceleration. It consists of a suitable motor coupled to a sensor for position feedback (closed-loop).",
+                                "ipa": "/ˈsɜːr.voʊ ˈmoʊ.tər/",
+                                "collocations": [
+                                    "servo drive",
+                                    "position feedback",
+                                    "closed-loop control"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "dialogue": {
+                    "title": "Line Down: PLC Fault & Actuator Tuning",
+                    "titleES": "Línea Detenida: Falla de PLC y Ajuste de Actuador",
+                    "scenarioContext": "Detroit, MI (Automotive Assembly Plant). A robotic welding cell has stopped mid-production.",
+                    "characters": [
+                        {
+                            "name": "Ing. Carlos Mendoza",
+                            "role": "Mechatronics Integrator",
+                            "avatar": "CM",
+                            "color": "var(--cyan)"
+                        },
+                        {
+                            "name": "John Davis",
+                            "role": "Maintenance Supervisor",
+                            "avatar": "JD",
+                            "color": "var(--amber)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "John Davis",
+                            "text": "Carlos, Line 4 is down. The HMI shows a general fault on the 6-axis welding robot. It stopped halfway through its trajectory. The line is losing $5,000 a minute.",
+                            "translation": "Carlos, la Línea 4 está detenida. La interfaz HMI muestra una falla general en el robot de soldadura de 6 ejes. Se detuvo a la mitad de su trayectoria. La línea está perdiendo $5,000 por minuto.",
+                            "targetTerms": [
+                                "Line 4 is down",
+                                "HMI",
+                                "general fault",
+                                "6-axis",
+                                "trajectory"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Carlos Mendoza",
+                            "text": "I'm checking the PLC ladder logic now. The safety interlock rung is closed, so it's not a safety sensor. Let me look at the servo drive parameters over the industrial network.",
+                            "translation": "Estoy revisando la lógica de escalera (ladder logic) del PLC ahora. El peldaño del enclavamiento de seguridad está cerrado, así que no es un sensor de seguridad. Déjame ver los parámetros del servomotor a través de la red industrial.",
+                            "targetTerms": [
+                                "ladder logic",
+                                "safety interlock",
+                                "rung",
+                                "servo drive",
+                                "industrial network"
+                            ]
+                        },
+                        {
+                            "speaker": "John Davis",
+                            "text": "Did one of the axes hit a hard stop? The pneumatic clamp holding the chassis looks like it lost pressure right before the robot faulted.",
+                            "translation": "¿Alguno de los ejes golpeó un tope mecánico (hard stop)? La abrazadera neumática que sostiene el chasis parece haber perdido presión justo antes de que el robot fallara.",
+                            "targetTerms": [
+                                "axes",
+                                "hard stop",
+                                "pneumatic clamp",
+                                "pressure",
+                                "faulted"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Carlos Mendoza",
+                            "text": "You're right. The PLC detected the pressure drop on the pneumatic clamp and triggered an emergency halt to prevent a collision. The robot's inverse kinematics program is fine. We need to replace the leaking pneumatic valve.",
+                            "translation": "Tienes razón. El PLC detectó la caída de presión en la abrazadera neumática y activó un paro de emergencia para evitar una colisión. El programa de cinemática inversa del robot está bien. Necesitamos reemplazar la válvula neumática que tiene fuga.",
+                            "targetTerms": [
+                                "pressure drop",
+                                "emergency halt",
+                                "collision",
+                                "inverse kinematics",
+                                "pneumatic valve"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The robot stopped because the air tube broke.",
+                            "native": "The PLC triggered an emergency halt due to a pressure drop in the pneumatic clamp.",
+                            "explanation": "En la automatización, un 'air tube' se describe como un sistema 'pneumatic' (neumático), y la parada es un 'emergency halt' comandado por el 'PLC'."
+                        },
+                        {
+                            "school": "I'm reading the computer program for the machine.",
+                            "native": "I'm troubleshooting the ladder logic in the PLC to identify the fault.",
+                            "explanation": "El 'programa' de una máquina industrial se refiere específicamente como 'ladder logic' (lógica de escalera) ejecutada en un 'PLC'."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Programmable Logic Controller (PLC)",
+                        "ipa": "/piː-ɛl-siː/",
+                        "es": "Controlador Lógico Programable (PLC)",
+                        "category": "Automatización",
+                        "definition": "An industrial solid-state computer that monitors inputs and outputs, and makes logic-based decisions for automated processes or machines.",
+                        "collocations": [
+                            "PLC programming",
+                            "ladder logic",
+                            "I/O modules"
+                        ],
+                        "falseFriends": "No es una 'PC' normal; es una computadora industrial robusta diseñada para no fallar nunca en entornos extremos.",
+                        "nativeUsage": "The technician connected their laptop to the PLC to troubleshoot the malfunctioning conveyor belt."
+                    },
+                    {
+                        "term": "Ladder Logic",
+                        "ipa": "/ˈlæd.ər ˈlɑː.dʒɪk/",
+                        "es": "Lógica de Escalera (Lenguaje Ladder)",
+                        "category": "Programación",
+                        "definition": "A programming language that represents a program by a graphical diagram based on the circuit diagrams of relay logic hardware.",
+                        "collocations": [
+                            "troubleshoot ladder logic",
+                            "rungs and coils",
+                            "normally open contact"
+                        ],
+                        "falseFriends": "No tiene que ver con escaleras físicas (stairs); se llama así porque el código visual parece una escalera de mano (ladder).",
+                        "nativeUsage": "I added a new rung to the ladder logic to ensure the motor doesn't start until the safety gate is closed."
+                    },
+                    {
+                        "term": "SCADA",
+                        "ipa": "/ˈskeɪ.də/",
+                        "es": "SCADA (Supervisión, Control y Adquisición de Datos)",
+                        "category": "Sistemas",
+                        "definition": "Supervisory Control and Data Acquisition. A control system architecture comprising computers, networked data communications, and graphical user interfaces for high-level process supervisory management.",
+                        "collocations": [
+                            "SCADA system",
+                            "HMI display",
+                            "real-time monitoring"
+                        ],
+                        "falseFriends": "No es una marca; es la arquitectura de red de toda la fábrica que conecta todos los PLCs a la sala de control.",
+                        "nativeUsage": "The plant manager monitored the temperature of all three boilers simultaneously from the central SCADA dashboard."
+                    },
+                    {
+                        "term": "Inverse Kinematics",
+                        "ipa": "/ɪnˈvɜːrs ˌkɪn.əˈmæt.ɪks/",
+                        "es": "Cinemática Inversa",
+                        "category": "Robótica",
+                        "definition": "The mathematical process of calculating the variable joint parameters (angles) needed to place the end of a kinematic chain (such as a robot end effector) in a given position and orientation relative to the start of the chain.",
+                        "collocations": [
+                            "solve inverse kinematics",
+                            "robot trajectory",
+                            "joint space"
+                        ],
+                        "falseFriends": "No es 'movimiento al revés'; es la matemática compleja que le dice al robot cuánto doblar cada articulación para llegar a un punto XYZ.",
+                        "nativeUsage": "The robot's software struggled to compute the inverse kinematics near its singularity point, causing erratic movement."
+                    },
+                    {
+                        "term": "End Effector",
+                        "ipa": "/ɛnd ɪˈfɛk.tər/",
+                        "es": "Efector Final / Herramienta de Fin de Brazo",
+                        "category": "Robótica",
+                        "definition": "The device at the end of a robotic arm, designed to interact with the environment (e.g., a gripper, welding torch, or suction cup). Also called End-of-Arm Tooling (EOAT).",
+                        "collocations": [
+                            "custom end effector",
+                            "vacuum gripper",
+                            "EOAT"
+                        ],
+                        "falseFriends": "No es el 'efecto final' de una película; es literalmente la 'mano' del robot que hace el trabajo.",
+                        "nativeUsage": "We had to design a custom 3D-printed end effector to pick up the fragile glass panels without breaking them."
+                    },
+                    {
+                        "term": "Servo Motor",
+                        "ipa": "/ˈsɜːr.voʊ ˈmoʊ.tər/",
+                        "es": "Servomotor",
+                        "category": "Actuadores",
+                        "definition": "A rotary or linear actuator that allows for precise control of angular or linear position, velocity, and acceleration. It consists of a suitable motor coupled to a sensor for position feedback (closed-loop).",
+                        "collocations": [
+                            "servo drive",
+                            "position feedback",
+                            "closed-loop control"
+                        ],
+                        "falseFriends": "No es un motor que 'sirve' cosas; es un motor de altísima precisión que 'sabe' en todo momento en qué ángulo exacto está.",
+                        "nativeUsage": "The CNC machine uses three high-torque servo motors to drive the X, Y, and Z axes with micrometer precision."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "PLCs & Ladder Logic",
+                        "botQuestion": "Welcome to the Factory Floor! What is the 3-letter acronym for the rugged industrial computer that acts as the 'brain' of the assembly line? And what is the name of the visual programming language it uses that looks like an electrical relay diagram (starts with 'Ladder...')?",
+                        "requiredKeywords": [
+                            "plc",
+                            "programmable",
+                            "logic",
+                            "controller",
+                            "ladder"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Perfect! The PLC (Programmable Logic Controller) is the brain, and it is traditionally programmed using 'Ladder Logic'.",
+                        "feedbackRetry": "The industrial computer acronym stands for Programmable Logic Controller (P _ _). Its programming language resembles something you climb to reach the roof (L _ _ _ _ _ Logic)."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Robotics & Inverse Kinematics",
+                        "botQuestion": "If you want a 6-axis robot's 'hand' (the End Effector) to move to the exact coordinate X:100, Y:50, Z:200, the robot must calculate the required angles for all 6 joints. What is this complex mathematical calculation called? (Hint: It's the opposite of Forward Kinematics).",
+                        "requiredKeywords": [
+                            "inverse",
+                            "kinematics",
+                            "calculate",
+                            "angles",
+                            "joints"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Exactly! The robot uses 'Inverse Kinematics' to calculate the joint angles needed to position the end effector at a specific 3D coordinate.",
+                        "feedbackRetry": "If calculating where the hand ends up based on joint angles is 'Forward' Kinematics, what is the 'opposite' calculation called?"
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "mech-m2",
@@ -8908,11 +9456,290 @@ var LXP_COURSES = {
         "description": "Bioprocesamiento en biorreactores, edición genética CRISPR, fermentación industrial, formulación farmacéutica y cGMP en salas limpias.",
         "modules": [
             {
-                "id": "bio-m1",
-                "title": "Bioreactor Operations: Aerobic & Anaerobic Fermentation Scaling",
-                "titleES": "Operaciones en Biorreactores y Escalamiento de Fermentación",
-                "icon": "fa-solid fa-flask",
-                "readings": []
+                "id": "biotech-m1",
+                "title": "Bioprocessing, cGMP & Cleanrooms",
+                "titleES": "Bioprocesamiento, cGMP y Cuartos Limpios",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "biotech-m1-r1",
+                        "title": "Biomanufacturing & Quality Assurance",
+                        "duration": "13 min",
+                        "content": "\n> **Industry Alignment & Regulatory Standard**: Aligned with **FDA 21 CFR Part 211 (cGMP)** and **ISO 14644 (Cleanrooms)**. Essential for Bioprocessing Engineers, Quality Assurance (QA) Specialists, and Life Science Technicians.\n\n# Bioprocessing, cGMP, and Cleanroom Technology\n\nThe biotechnology industry transforms living cells into microscopic factories to produce life-saving therapeutics, such as monoclonal antibodies, vaccines, and recombinant proteins. Unlike traditional chemical synthesis, bioprocessing is highly sensitive to environmental factors and contamination.\n\n## 1. Upstream and Downstream Processing\nBiomanufacturing is divided into two distinct phases:\n- **Upstream Processing**: The initial stage where genetically engineered cells (e.g., CHO - Chinese Hamster Ovary cells) are cultivated. It begins in small flasks and scales up to massive **Bioreactors** where temperature, pH, and dissolved oxygen are strictly controlled to maximize cell growth and protein expression.\n- **Downstream Processing**: Once the cells have produced the target therapeutic, the protein must be isolated and purified. This involves **Centrifugation** to separate cells from the liquid broth, followed by **Chromatography** (e.g., affinity, ion-exchange) to capture the specific protein and remove impurities like host cell DNA and endotoxins.\n\n## 2. cGMP (Current Good Manufacturing Practice)\nThe FDA strictly enforces cGMP regulations to ensure the identity, strength, quality, and purity of drug products.\n- **Traceability**: Every raw material, equipment calibration, and operator action must be documented. The golden rule is: *\"If it isn't documented, it didn't happen.\"*\n- **SOPs (Standard Operating Procedures)**: Deviations from validated SOPs can result in a batch rejection (costing millions of dollars) or a severe FDA warning letter.\n- **Aseptic Technique**: Operators must execute procedures without introducing microbial contamination.\n\n## 3. Cleanroom Classification (ISO 14644)\nBecause therapeutics are often injected directly into patients, they must be manufactured in sterile environments.\n- **Cleanrooms**: Specialized facilities where the concentration of airborne particles is controlled. They use **HEPA (High-Efficiency Particulate Air)** filters to sweep the room with clean air.\n- **ISO Classifications**: Cleanrooms are graded by the number of particles per cubic meter. An **ISO Class 5** (formerly Class 100) environment is highly sterile and typically used for the final aseptic filling of vials, whereas an ISO Class 8 might be used for less critical prep areas.\n- **Gowning**: Operators act as the biggest source of contamination. They must wear specialized sterile garments (bunny suits, goggles, double gloves) to prevent shedding skin cells and microbes into the controlled environment.\n\n---\n> **Key Takeaway**: A successful bioprocessing facility relies equally on the biological science in the **Bioreactor**, the rigorous documentation of **cGMP**, and the strict environmental control of an **ISO-certified Cleanroom**.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Bioreactor",
+                                "es": "Biorreactor",
+                                "definition": "A controlled vessel or system that supports a biologically active environment, used to grow cells or microorganisms under optimal conditions (temperature, pH, oxygen) to produce a desired biological product.",
+                                "ipa": "/ˌbaɪ.oʊ.riˈæk.tər/",
+                                "collocations": [
+                                    "stainless steel bioreactor",
+                                    "single-use bioreactor",
+                                    "cell cultivation"
+                                ]
+                            },
+                            {
+                                "en": "Downstream Processing",
+                                "es": "Procesamiento Downstream (Purificación)",
+                                "definition": "The recovery and purification of biosynthetic products, particularly pharmaceuticals, from natural sources such as animal or bacterial cell cultures. Involves chromatography and filtration.",
+                                "ipa": "/ˈdaʊn.striːm ˈprɑː.sɛ.sɪŋ/",
+                                "collocations": [
+                                    "downstream purification",
+                                    "chromatography column",
+                                    "protein recovery"
+                                ]
+                            },
+                            {
+                                "en": "cGMP",
+                                "es": "Buenas Prácticas de Manufactura Actuales",
+                                "definition": "Current Good Manufacturing Practice. Regulations enforced by the FDA that provide for systems that assure proper design, monitoring, and control of manufacturing processes and facilities.",
+                                "ipa": "/siː-dʒiː-ɛm-piː/",
+                                "collocations": [
+                                    "cGMP compliance",
+                                    "FDA guidelines",
+                                    "batch record documentation"
+                                ]
+                            },
+                            {
+                                "en": "CAPA",
+                                "es": "Acción Correctiva y Preventiva",
+                                "definition": "Corrective and Preventive Action. A system for investigating, solving, and preventing deviations, non-conformances, and systemic issues in a manufacturing process.",
+                                "ipa": "/ˈkæp.ə/",
+                                "collocations": [
+                                    "initiate a CAPA",
+                                    "root cause analysis",
+                                    "close the CAPA report"
+                                ]
+                            },
+                            {
+                                "en": "HEPA Filter",
+                                "es": "Filtro HEPA (Filtro de Aire de Alta Eficiencia)",
+                                "definition": "High-Efficiency Particulate Air filter. A type of pleated mechanical air filter designed to remove at least 99.97% of dust, pollen, mold, bacteria, and any airborne particles with a size of 0.3 microns.",
+                                "ipa": "/ˈhɛp.ə ˈfɪl.tər/",
+                                "collocations": [
+                                    "HEPA filtration",
+                                    "laminar flow hood",
+                                    "airborne particulates"
+                                ]
+                            },
+                            {
+                                "en": "Aseptic Technique",
+                                "es": "Técnica Aséptica",
+                                "definition": "A set of specific practices and procedures performed under carefully controlled conditions with the goal of minimizing contamination by pathogens.",
+                                "ipa": "/əˈsɛp.tɪk tɛkˈniːk/",
+                                "collocations": [
+                                    "strict aseptic technique",
+                                    "sterile gowning",
+                                    "microbial contamination"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "dialogue": {
+                    "title": "Upstream Deviation: Bioreactor Contamination",
+                    "titleES": "Desviación en Upstream: Contaminación en Biorreactor",
+                    "scenarioContext": "San Diego, CA (Biomanufacturing Hub). Shift Handover between Lead Bioprocess Engineer and QA Manager.",
+                    "characters": [
+                        {
+                            "name": "Dr. Elena Rojas",
+                            "role": "Lead Bioprocess Engineer",
+                            "avatar": "ER",
+                            "color": "var(--cyan)"
+                        },
+                        {
+                            "name": "Mark Stevenson",
+                            "role": "Quality Assurance (QA) Manager",
+                            "avatar": "MS",
+                            "color": "var(--amber)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Dr. Elena Rojas",
+                            "text": "Mark, we have a critical deviation in Bioreactor B-104. During the upstream cultivation phase, the dissolved oxygen sensors spiked, and the CHO cell viability dropped from 98% to 65% in two hours.",
+                            "translation": "Mark, tenemos una desviación crítica en el Biorreactor B-104. Durante la fase de cultivo upstream, los sensores de oxígeno disuelto se dispararon y la viabilidad de las células CHO cayó del 98% al 65% en dos horas.",
+                            "targetTerms": [
+                                "critical deviation",
+                                "Bioreactor",
+                                "upstream",
+                                "dissolved oxygen",
+                                "cell viability"
+                            ]
+                        },
+                        {
+                            "speaker": "Mark Stevenson",
+                            "text": "That indicates a potential microbial contamination. Did the operators log any pressure drops across the HEPA filters or breaches in aseptic technique during the media feed?",
+                            "translation": "Eso indica una posible contaminación microbiana. ¿Registraron los operadores alguna caída de presión a través de los filtros HEPA o brechas en la técnica aséptica durante la alimentación del medio?",
+                            "targetTerms": [
+                                "microbial contamination",
+                                "HEPA filters",
+                                "aseptic technique",
+                                "media feed"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. Elena Rojas",
+                            "text": "The HEPA filter logs in the ISO Class 7 cleanroom look normal. However, I suspect a sterile seal failed on the addition port. We pulled a sample for bioburden testing, but we have to quarantine the batch.",
+                            "translation": "Los registros del filtro HEPA en el cuarto limpio ISO Clase 7 se ven normales. Sin embargo, sospecho que falló un sello estéril en el puerto de adición. Tomamos una muestra para pruebas de biocarga (bioburden), pero tenemos que poner el lote en cuarentena.",
+                            "targetTerms": [
+                                "ISO Class 7 cleanroom",
+                                "sterile seal",
+                                "addition port",
+                                "bioburden testing",
+                                "quarantine the batch"
+                            ]
+                        },
+                        {
+                            "speaker": "Mark Stevenson",
+                            "text": "Under cGMP guidelines, we must initiate a CAPA (Corrective and Preventive Action) immediately. Halt downstream processing for this lot until the lab confirms the contaminant. If it's a mycoplasma breach, we'll need to decontaminate the entire suite.",
+                            "translation": "Bajo las pautas cGMP, debemos iniciar un CAPA (Acción Correctiva y Preventiva) inmediatamente. Detén el procesamiento downstream para este lote hasta que el laboratorio confirme el contaminante. Si es una brecha de micoplasma, tendremos que descontaminar toda la suite.",
+                            "targetTerms": [
+                                "cGMP guidelines",
+                                "CAPA",
+                                "downstream processing",
+                                "contaminant",
+                                "decontaminate"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The cells died because of bacteria.",
+                            "native": "The CHO cell viability dropped due to a microbial contamination breach.",
+                            "explanation": "En la industria biofarmacéutica, no se dice simplemente que las células murieron; se habla de la 'viabilidad celular' (cell viability) y 'contaminación microbiana' (microbial contamination)."
+                        },
+                        {
+                            "school": "We need to fix the mistake and throw away the medicine.",
+                            "native": "We must initiate a CAPA, quarantine the batch, and halt downstream processing.",
+                            "explanation": "El cumplimiento de cGMP requiere terminología regulatoria exacta: CAPA (Corrective and Preventive Action), cuarentena ('quarantine') y detener la fase ('halt processing')."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Bioreactor",
+                        "ipa": "/ˌbaɪ.oʊ.riˈæk.tər/",
+                        "es": "Biorreactor",
+                        "category": "Equipamiento Upstream",
+                        "definition": "A controlled vessel or system that supports a biologically active environment, used to grow cells or microorganisms under optimal conditions (temperature, pH, oxygen) to produce a desired biological product.",
+                        "collocations": [
+                            "stainless steel bioreactor",
+                            "single-use bioreactor",
+                            "cell cultivation"
+                        ],
+                        "falseFriends": "No es un reactor nuclear; es un tanque de fermentación altamente controlado para cultivar células.",
+                        "nativeUsage": "The CHO cells are currently in the exponential growth phase inside the 2000-liter bioreactor."
+                    },
+                    {
+                        "term": "Downstream Processing",
+                        "ipa": "/ˈdaʊn.striːm ˈprɑː.sɛ.sɪŋ/",
+                        "es": "Procesamiento Downstream (Purificación)",
+                        "category": "Fases de Manufactura",
+                        "definition": "The recovery and purification of biosynthetic products, particularly pharmaceuticals, from natural sources such as animal or bacterial cell cultures. Involves chromatography and filtration.",
+                        "collocations": [
+                            "downstream purification",
+                            "chromatography column",
+                            "protein recovery"
+                        ],
+                        "falseFriends": "No significa 'corriente abajo' en un río; en biotecnología es la fase donde se aísla y purifica el medicamento después de cultivarlo.",
+                        "nativeUsage": "After the bioreactor harvest, the broth moves to downstream processing to separate the monoclonal antibodies from the host cell proteins."
+                    },
+                    {
+                        "term": "cGMP",
+                        "ipa": "/siː-dʒiː-ɛm-piː/",
+                        "es": "Buenas Prácticas de Manufactura Actuales",
+                        "category": "Asuntos Regulatorios",
+                        "definition": "Current Good Manufacturing Practice. Regulations enforced by the FDA that provide for systems that assure proper design, monitoring, and control of manufacturing processes and facilities.",
+                        "collocations": [
+                            "cGMP compliance",
+                            "FDA guidelines",
+                            "batch record documentation"
+                        ],
+                        "falseFriends": "Es un acrónimo. La 'c' (current) es vital porque las tecnologías y expectativas de calidad cambian constantemente.",
+                        "nativeUsage": "Failing to sign the batch record exactly when the step was completed is a severe cGMP violation."
+                    },
+                    {
+                        "term": "CAPA",
+                        "ipa": "/ˈkæp.ə/",
+                        "es": "Acción Correctiva y Preventiva",
+                        "category": "Gestión de Calidad (QA)",
+                        "definition": "Corrective and Preventive Action. A system for investigating, solving, and preventing deviations, non-conformances, and systemic issues in a manufacturing process.",
+                        "collocations": [
+                            "initiate a CAPA",
+                            "root cause analysis",
+                            "close the CAPA report"
+                        ],
+                        "falseFriends": "No es una 'capa' de ropa; es el protocolo formal para investigar por qué falló algo y asegurar que no vuelva a pasar.",
+                        "nativeUsage": "Because the cleanroom temperature exceeded the validated range, QA forced us to open a CAPA to investigate the HVAC failure."
+                    },
+                    {
+                        "term": "HEPA Filter",
+                        "ipa": "/ˈhɛp.ə ˈfɪl.tər/",
+                        "es": "Filtro HEPA (Filtro de Aire de Alta Eficiencia)",
+                        "category": "Sistemas Cleanroom",
+                        "definition": "High-Efficiency Particulate Air filter. A type of pleated mechanical air filter designed to remove at least 99.97% of dust, pollen, mold, bacteria, and any airborne particles with a size of 0.3 microns.",
+                        "collocations": [
+                            "HEPA filtration",
+                            "laminar flow hood",
+                            "airborne particulates"
+                        ],
+                        "falseFriends": "HEPA es un estándar estricto (0.3 micrones), no cualquier filtro de aire.",
+                        "nativeUsage": "The ISO Class 5 filling suite relies on ceiling-mounted HEPA filters to maintain unidirectional clean airflow over the open vials."
+                    },
+                    {
+                        "term": "Aseptic Technique",
+                        "ipa": "/əˈsɛp.tɪk tɛkˈniːk/",
+                        "es": "Técnica Aséptica",
+                        "category": "Operaciones Cleanroom",
+                        "definition": "A set of specific practices and procedures performed under carefully controlled conditions with the goal of minimizing contamination by pathogens.",
+                        "collocations": [
+                            "strict aseptic technique",
+                            "sterile gowning",
+                            "microbial contamination"
+                        ],
+                        "falseFriends": "Asepsia significa ausencia de microbios, no simplemente 'limpio'.",
+                        "nativeUsage": "Operators must demonstrate perfect aseptic technique when connecting the sterile transfer lines to the bioreactor."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Upstream vs. Downstream",
+                        "botQuestion": "Welcome to the Biotech QA Audit! In biomanufacturing, what is the primary difference between 'upstream' and 'downstream' processing? If I need to use chromatography to purify a monoclonal antibody, which phase am I in?",
+                        "requiredKeywords": [
+                            "upstream",
+                            "grow",
+                            "cells",
+                            "bioreactor",
+                            "downstream",
+                            "purify",
+                            "isolate",
+                            "chromatography"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Exactly! Upstream is where we grow the cells in the bioreactor, and downstream is where we purify the target protein. Chromatography is a classic downstream purification technique.",
+                        "feedbackRetry": "Think about the sequence: first you cultivate the cells, then you extract the medicine. Which one is 'upstream' and which one involves purification ('downstream')?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "cGMP & CAPA",
+                        "botQuestion": "Suppose a technician forgets to document a temperature check on the bioreactor batch record. According to 'cGMP' rules, why is this a massive problem, and what quality protocol (acronym starting with C) must be initiated to investigate it?",
+                        "requiredKeywords": [
+                            "cgmp",
+                            "documented",
+                            "happen",
+                            "traceability",
+                            "capa",
+                            "corrective",
+                            "action"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot-on! In cGMP, 'if it isn't documented, it didn't happen.' A missing signature breaks traceability, and QA must initiate a CAPA (Corrective and Preventive Action) to investigate the root cause.",
+                        "feedbackRetry": "Remember the golden rule of FDA compliance: 'If it isn't _____, it didn't happen.' Also, what is the 4-letter acronym for 'Corrective and Preventive Action'?"
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "bio-m2",
@@ -8961,10 +9788,292 @@ var LXP_COURSES = {
         "modules": [
             {
                 "id": "space-m1",
-                "title": "Orbital Mechanics: Keplerian Elements, LEO, GEO and Sun-Sync",
-                "titleES": "Mecánica Orbital: Elementos Keplerianos, LEO y GEO",
-                "icon": "fa-solid fa-earth-americas",
-                "readings": []
+                "title": "Orbital Mechanics & CubeSats",
+                "titleES": "Mecánica Orbital y CubeSats",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "space-m1-r1",
+                        "title": "NewSpace, LEO & ADCS",
+                        "duration": "11 min",
+                        "content": "\n> **Industry Alignment & Engineering Standard**: Aligned with **NASA Systems Engineering Handbook** and **CubeSat Design Specification (CDS)**. Essential for Aerospace Engineers, Mission Planners, and Satellite Technicians.\n\n# Space Technology, Orbital Mechanics, and CubeSat Design\n\nThe commercialization of space, often referred to as \"NewSpace,\" has dramatically lowered the barrier to entry for satellite deployment. Engineers are no longer constrained to massive, billion-dollar geostationary satellites; instead, they are deploying massive constellations of miniature satellites in Low Earth Orbit.\n\n## 1. Orbital Mechanics and LEO\nChoosing the correct orbit dictates the satellite's mission capabilities, launch costs, and operational lifespan.\n- **Low Earth Orbit (LEO)**: Typically between 160 km and 2,000 km altitude. LEO offers low latency for communications (e.g., Starlink) and high resolution for Earth observation. However, objects in LEO experience significant atmospheric drag and require periodic re-boosting or they will de-orbit and burn up in the atmosphere.\n- **Geostationary Equatorial Orbit (GEO)**: At an altitude of exactly 35,786 km, a satellite's orbital period matches Earth's rotation (24 hours). The satellite appears stationary over a single point on the equator, making it ideal for weather monitoring and television broadcasting, though latency is high (around 250ms).\n- **Delta-v (Δv)**: A measure of the impulse required to perform a maneuver, such as launching, orbital insertion, or inclination changes. Engineers budget Delta-v like fuel in a car.\n\n## 2. The CubeSat Revolution\nThe **CubeSat** is a standardized class of nanosatellites that has revolutionized space access for universities and private companies.\n- **Form Factor (The 'U')**: A standard 1U CubeSat measures 10x10x10 cm and weighs no more than 1.33 kg. They can be scaled up (e.g., 3U, 6U, 12U) by stacking these basic units.\n- **COTS Components**: Commercial Off-The-Shelf components are heavily utilized in NewSpace to reduce costs, unlike traditional space-grade hardware which is radiation-hardened and extremely expensive.\n- **Deployment (P-POD)**: CubeSats are typically launched as secondary payloads. Once in orbit, a Poly Picosatellite Orbital Deployer (P-POD) uses a spring mechanism to eject the CubeSats safely without interfering with the primary payload.\n\n## 3. Subsystem Architecture\nA satellite is a highly constrained system operating in a hostile environment (extreme thermal cycling, vacuum, and ionizing radiation).\n- **EPS (Electrical Power System)**: Manages solar panel generation, battery storage, and power distribution to other subsystems during the eclipse phase of the orbit.\n- **ADCS (Attitude Determination and Control System)**: Maintains the satellite's orientation. It uses sensors (star trackers, sun sensors) to determine its attitude, and actuators (reaction wheels, magnetorquers) to point antennas toward Earth or solar panels toward the sun.\n- **Telemetry, Tracking, and Command (TT&C)**: The two-way communication link between the spacecraft and the ground station.\n\n---\n> **Key Takeaway**: Modern space engineering relies on the standardization of the **CubeSat form factor**, the low latency of **LEO constellations**, and the rigorous management of **Delta-v** and **ADCS**.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Delta-v (Δv)",
+                                "es": "Delta-v (Cambio de Velocidad)",
+                                "definition": "A measure of the impulse needed to perform a trajectory maneuver. It is the mathematical measure of how much a spacecraft's velocity must change to move from one orbit to another.",
+                                "ipa": "/ˈdɛl.tə viː/",
+                                "collocations": [
+                                    "Delta-v budget",
+                                    "orbital insertion",
+                                    "plane change"
+                                ]
+                            },
+                            {
+                                "en": "CubeSat",
+                                "es": "Nanosatélite CubeSat",
+                                "definition": "A class of miniaturized satellites for space research made up of multiples of 10×10×10 cm cubic units (1U).",
+                                "ipa": "/ˈkjuːb.sæt/",
+                                "collocations": [
+                                    "3U form factor",
+                                    "CubeSat constellation",
+                                    "P-POD deployer"
+                                ]
+                            },
+                            {
+                                "en": "ADCS",
+                                "es": "Sistema de Control y Determinación de Actitud",
+                                "definition": "Attitude Determination and Control System. The subsystem responsible for determining the spacecraft's orientation in space (attitude) and actively controlling it.",
+                                "ipa": "/eɪ-diː-siː-ɛs/",
+                                "collocations": [
+                                    "ADCS sensors",
+                                    "magnetorquers",
+                                    "reaction wheels"
+                                ]
+                            },
+                            {
+                                "en": "Low Earth Orbit (LEO)",
+                                "es": "Órbita Terrestre Baja",
+                                "definition": "An Earth-centered orbit with an altitude of 2,000 km or less. It is the most common orbit for imaging satellites and the International Space Station.",
+                                "ipa": "/liː.oʊ/",
+                                "collocations": [
+                                    "LEO constellation",
+                                    "atmospheric drag",
+                                    "de-orbit"
+                                ]
+                            },
+                            {
+                                "en": "Telemetry",
+                                "es": "Telemetría",
+                                "definition": "The automated communications process by which measurements and other data are collected at remote or inaccessible points (like a spacecraft) and transmitted to receiving equipment for monitoring.",
+                                "ipa": "/təˈlɛm.ɪ.tri/",
+                                "collocations": [
+                                    "telemetry downlink",
+                                    "TT&C subsystem",
+                                    "ground station"
+                                ]
+                            },
+                            {
+                                "en": "Propellant",
+                                "es": "Propulsor (Combustible Espacial)",
+                                "definition": "A chemical mixture burned to produce thrust in rockets or spacecraft. It typically consists of a fuel and an oxidizer.",
+                                "ipa": "/prəˈpɛl.ənt/",
+                                "collocations": [
+                                    "hypergolic propellant",
+                                    "conserve propellant",
+                                    "thruster firing"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "dialogue": {
+                    "title": "Mission Planning: CubeSat Constellation Deployment",
+                    "titleES": "Planificación de Misión: Despliegue de Constelación CubeSat",
+                    "scenarioContext": "Houston, TX (Mission Control) ⇄ Monterrey, MX (Satellite Design Lab). Discussing a 6U CubeSat deployment.",
+                    "characters": [
+                        {
+                            "name": "Ing. Sofia Morales",
+                            "role": "Lead Systems Engineer",
+                            "avatar": "SM",
+                            "color": "var(--cyan)"
+                        },
+                        {
+                            "name": "Dr. James Carter",
+                            "role": "Flight Dynamics Officer",
+                            "avatar": "JC",
+                            "color": "var(--amber)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Ing. Sofia Morales",
+                            "text": "James, we finished the thermal vacuum testing on the 6U CubeSat. However, our Delta-v budget is extremely tight for the planned inclination change after deployment.",
+                            "translation": "James, terminamos las pruebas de vacío térmico en el CubeSat 6U. Sin embargo, nuestro presupuesto de Delta-v está extremadamente ajustado para el cambio de inclinación planeado después del despliegue.",
+                            "targetTerms": [
+                                "thermal vacuum testing",
+                                "6U CubeSat",
+                                "Delta-v budget",
+                                "inclination change",
+                                "deployment"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. James Carter",
+                            "text": "Understood, Sofia. If the primary payload drops you at a 500-kilometer Low Earth Orbit, the atmospheric drag will be minimal, but performing a significant plane change maneuver requires too much propellant.",
+                            "translation": "Entendido, Sofía. Si la carga útil principal los deja en una Órbita Terrestre Baja de 500 kilómetros, el arrastre atmosférico será mínimo, pero realizar una maniobra significativa de cambio de plano requiere demasiado propulsor.",
+                            "targetTerms": [
+                                "primary payload",
+                                "Low Earth Orbit",
+                                "atmospheric drag",
+                                "plane change maneuver",
+                                "propellant"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Sofia Morales",
+                            "text": "Exactly. To conserve propellant, I recommend we rely on the ADCS to stabilize the spacecraft using magnetorquers, rather than firing the thrusters. We can accept a slight drift in the orbital plane.",
+                            "translation": "Exactamente. Para conservar propulsor, recomiendo que dependamos del ADCS para estabilizar la nave espacial usando magnetorquers, en lugar de encender los propulsores. Podemos aceptar una ligera deriva en el plano orbital.",
+                            "targetTerms": [
+                                "conserve propellant",
+                                "ADCS",
+                                "stabilize the spacecraft",
+                                "magnetorquers",
+                                "thrusters",
+                                "orbital plane"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. James Carter",
+                            "text": "That’s a smart tradeoff. As long as the solar panels maintain optimal sun-pointing during the eclipse phase, the EPS won't suffer. I will update the telemetry parameters for the ground station pass.",
+                            "translation": "Ese es un intercambio inteligente. Mientras los paneles solares mantengan un apunte óptimo al sol durante la fase de eclipse, el EPS no sufrirá. Actualizaré los parámetros de telemetría para el pase de la estación terrena.",
+                            "targetTerms": [
+                                "tradeoff",
+                                "sun-pointing",
+                                "eclipse phase",
+                                "EPS",
+                                "telemetry",
+                                "ground station pass"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The satellite doesn't have enough gas.",
+                            "native": "The spacecraft has an extremely tight Delta-v budget and limited propellant.",
+                            "explanation": "En la ingeniería aeroespacial, no se usa 'gas'; se planifica un 'presupuesto de Delta-v' (Delta-v budget) basado en el 'propulsor' (propellant)."
+                        },
+                        {
+                            "school": "We need to turn the satellite to face the sun.",
+                            "native": "The ADCS must execute a sun-pointing maneuver to stabilize the attitude.",
+                            "explanation": "El control de posición en el espacio se llama 'Attitude Determination and Control System' (ADCS), y 'orientar' se describe como 'attitude' o 'pointing'."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Delta-v (Δv)",
+                        "ipa": "/ˈdɛl.tə viː/",
+                        "es": "Delta-v (Cambio de Velocidad)",
+                        "category": "Mecánica Orbital",
+                        "definition": "A measure of the impulse needed to perform a trajectory maneuver. It is the mathematical measure of how much a spacecraft's velocity must change to move from one orbit to another.",
+                        "collocations": [
+                            "Delta-v budget",
+                            "orbital insertion",
+                            "plane change"
+                        ],
+                        "falseFriends": "No es simplemente 'velocidad'; es el 'presupuesto de esfuerzo' o impulso total del que dispone una nave.",
+                        "nativeUsage": "We lack the Delta-v required to reach GEO, so we must settle for a highly elliptical orbit."
+                    },
+                    {
+                        "term": "CubeSat",
+                        "ipa": "/ˈkjuːb.sæt/",
+                        "es": "Nanosatélite CubeSat",
+                        "category": "Diseño de Naves",
+                        "definition": "A class of miniaturized satellites for space research made up of multiples of 10×10×10 cm cubic units (1U).",
+                        "collocations": [
+                            "3U form factor",
+                            "CubeSat constellation",
+                            "P-POD deployer"
+                        ],
+                        "falseFriends": "No es un 'cubo satelital' de TV; es un estándar internacional de diseño de hardware aeroespacial.",
+                        "nativeUsage": "The university successfully launched a 3U CubeSat to study ionizing radiation in LEO."
+                    },
+                    {
+                        "term": "ADCS",
+                        "ipa": "/eɪ-diː-siː-ɛs/",
+                        "es": "Sistema de Control y Determinación de Actitud",
+                        "category": "Subsistemas",
+                        "definition": "Attitude Determination and Control System. The subsystem responsible for determining the spacecraft's orientation in space (attitude) and actively controlling it.",
+                        "collocations": [
+                            "ADCS sensors",
+                            "magnetorquers",
+                            "reaction wheels"
+                        ],
+                        "falseFriends": "En el espacio, 'attitude' no significa 'actitud mental', sino la orientación física de la nave en 3D.",
+                        "nativeUsage": "The ADCS utilizes three reaction wheels to maintain precise pointing toward the ground station."
+                    },
+                    {
+                        "term": "Low Earth Orbit (LEO)",
+                        "ipa": "/liː.oʊ/",
+                        "es": "Órbita Terrestre Baja",
+                        "category": "Mecánica Orbital",
+                        "definition": "An Earth-centered orbit with an altitude of 2,000 km or less. It is the most common orbit for imaging satellites and the International Space Station.",
+                        "collocations": [
+                            "LEO constellation",
+                            "atmospheric drag",
+                            "de-orbit"
+                        ],
+                        "falseFriends": "LEO no es el signo zodiacal; es la órbita de baja altura donde el arrastre atmosférico es un factor.",
+                        "nativeUsage": "Starlink operates thousands of satellites in LEO to provide low-latency internet."
+                    },
+                    {
+                        "term": "Telemetry",
+                        "ipa": "/təˈlɛm.ɪ.tri/",
+                        "es": "Telemetría",
+                        "category": "Comunicaciones",
+                        "definition": "The automated communications process by which measurements and other data are collected at remote or inaccessible points (like a spacecraft) and transmitted to receiving equipment for monitoring.",
+                        "collocations": [
+                            "telemetry downlink",
+                            "TT&C subsystem",
+                            "ground station"
+                        ],
+                        "falseFriends": "No tiene que ver con 'telequinesis'; es la transmisión de datos métricos (temperatura, voltaje) desde el satélite.",
+                        "nativeUsage": "Mission control lost the telemetry downlink just as the spacecraft entered the eclipse phase."
+                    },
+                    {
+                        "term": "Propellant",
+                        "ipa": "/prəˈpɛl.ənt/",
+                        "es": "Propulsor (Combustible Espacial)",
+                        "category": "Propulsión",
+                        "definition": "A chemical mixture burned to produce thrust in rockets or spacecraft. It typically consists of a fuel and an oxidizer.",
+                        "collocations": [
+                            "hypergolic propellant",
+                            "conserve propellant",
+                            "thruster firing"
+                        ],
+                        "falseFriends": "No digas 'gas' o 'fuel' de forma aislada; 'propellant' abarca la masa expulsada para generar empuje en el vacío.",
+                        "nativeUsage": "The satellite has enough hydrazine propellant to maintain its orbit for another five years."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Orbital Mechanics & LEO",
+                        "botQuestion": "Welcome to Mission Control! If you are launching a satellite constellation to provide low-latency internet (like Starlink), which orbit should you choose: LEO or GEO? What is a major disadvantage (related to the atmosphere) of being in that orbit?",
+                        "requiredKeywords": [
+                            "leo",
+                            "low",
+                            "earth",
+                            "orbit",
+                            "latency",
+                            "drag",
+                            "atmosphere",
+                            "de-orbit"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot-on! You must choose Low Earth Orbit (LEO) for low latency. However, objects in LEO experience atmospheric drag, requiring periodic boosts to avoid burning up.",
+                        "feedbackRetry": "Think about distance. Which orbit is closer to Earth (yielding lower latency)? What does the thin upper atmosphere do to objects flying close to Earth?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "ADCS & Delta-v",
+                        "botQuestion": "Suppose your CubeSat needs to turn its solar panels toward the sun, but you want to save 'fuel'. Which subsystem (acronym) is responsible for turning the satellite, and what is the term for the 'fuel budget' or impulse required for maneuvers?",
+                        "requiredKeywords": [
+                            "adcs",
+                            "attitude",
+                            "determination",
+                            "control",
+                            "delta-v",
+                            "budget",
+                            "propellant"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Perfect! The ADCS (Attitude Determination and Control System) handles the pointing maneuver, saving your precious Delta-v (Δv) budget for larger trajectory changes.",
+                        "feedbackRetry": "What 4-letter acronym stands for the system that controls the satellite's 'attitude' (orientation)? And what is the mathematical term (Delta-something) for the impulse budget?"
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "space-m2",
@@ -9013,10 +10122,285 @@ var LXP_COURSES = {
         "modules": [
             {
                 "id": "env-m1",
-                "title": "Carbon Accounting: Scope 1, 2 and 3 Greenhouse Gas Protocol",
-                "titleES": "Contabilidad de Carbono: Alcances 1, 2 y 3 Protocolo GEI",
-                "icon": "fa-solid fa-smog",
-                "readings": []
+                "title": "Carbon Accounting & ESG",
+                "titleES": "Contabilidad de Carbono y ESG",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "env-m1-r1",
+                        "title": "Corporate Sustainability & Decarbonization",
+                        "duration": "10 min",
+                        "content": "\n> **Industry Alignment & Sustainability Standard**: Aligned with **GHG Protocol** and **ISO 14001 (Environmental Management)**. Essential for ESG Analysts, Environmental Engineers, and Sustainability Officers.\n\n# Corporate Sustainability, ESG, and Carbon Accounting\n\nThe transition to a low-carbon economy is no longer just an environmental goal; it is a strict regulatory and financial requirement for modern corporations. Supply chains, industrial operations, and energy procurement are now heavily audited under Environmental, Social, and Governance (ESG) frameworks.\n\n## 1. The GHG Protocol and Scopes\nCarbon accounting is the process of calculating a company's total greenhouse gas emissions. The global standard for this is the **Greenhouse Gas (GHG) Protocol**, which categorizes emissions into three scopes:\n- **Scope 1 (Direct)**: Emissions from sources that are owned or controlled by the company (e.g., fuel combustion in company vehicles or factory furnaces).\n- **Scope 2 (Indirect - Energy)**: Emissions from the generation of purchased electricity, steam, heating, or cooling consumed by the company.\n- **Scope 3 (Indirect - Value Chain)**: All other indirect emissions that occur in a company's value chain. This is often the largest source and includes business travel, waste disposal, and the lifecycle emissions of purchased raw materials.\n\n## 2. Life Cycle Assessment (LCA)\nEnvironmental engineers use Life Cycle Assessments to evaluate the environmental impact of a product from \"cradle to grave.\"\n- **System Boundary**: The defined limits of the assessment. Does the boundary stop when the product leaves the factory (cradle-to-gate), or does it include consumer use and recycling (cradle-to-grave)?\n- **Carbon Footprint**: The total amount of greenhouse gases (expressed in CO2 equivalent) generated by our actions. LCAs pinpoint \"hotspots\" in the supply chain where redesigning a material can drastically lower the overall carbon footprint.\n\n## 3. Decarbonization Strategies\nOnce emissions are quantified, companies must implement decarbonization strategies to reach \"Net Zero.\"\n- **Energy Efficiency**: Upgrading HVAC systems, insulating facilities, and optimizing industrial processes.\n- **Renewable Energy Certificates (RECs)**: Purchasing RECs to offset Scope 2 emissions, proving that a specific amount of electricity was generated from renewable sources.\n- **Carbon Offsets**: Investing in external projects (like reforestation or direct air capture) to compensate for emissions that are technically impossible to eliminate today.\n\n---\n> **Key Takeaway**: Authentic sustainability requires rigorous data. By applying **Life Cycle Assessments** and strictly categorizing emissions via the **GHG Protocol (Scopes 1-3)**, companies transition from greenwashing to measurable decarbonization.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Scope 3 Emissions",
+                                "es": "Emisiones de Alcance 3 (Cadena de Valor)",
+                                "definition": "Indirect greenhouse gas emissions that occur in a company's value chain, including both upstream and downstream activities (e.g., supplier emissions, business travel, product disposal).",
+                                "ipa": "/skoʊp θriː ɪˈmɪʃ.ənz/",
+                                "collocations": [
+                                    "calculate Scope 3",
+                                    "upstream logistics",
+                                    "value chain"
+                                ]
+                            },
+                            {
+                                "en": "Life Cycle Assessment (LCA)",
+                                "es": "Análisis de Ciclo de Vida (ACV)",
+                                "definition": "A methodology for assessing environmental impacts associated with all the stages of the life cycle of a commercial product, process, or service.",
+                                "ipa": "/laɪf ˈsaɪ.kəl əˈsɛs.mənt/",
+                                "collocations": [
+                                    "cradle to grave",
+                                    "LCA report",
+                                    "environmental impact"
+                                ]
+                            },
+                            {
+                                "en": "Carbon Offset",
+                                "es": "Compensación de Carbono / Bono de Carbono",
+                                "definition": "A reduction or removal of emissions of carbon dioxide or other greenhouse gases made in order to compensate for emissions made elsewhere.",
+                                "ipa": "/ˈkɑːr.bən ˈɔːf.sɛt/",
+                                "collocations": [
+                                    "purchase carbon offsets",
+                                    "verified offsets",
+                                    "reforestation projects"
+                                ]
+                            },
+                            {
+                                "en": "Decarbonization",
+                                "es": "Descarbonización",
+                                "definition": "The process of reducing or eliminating carbon dioxide emissions from a company's operations, typically by switching to low-carbon energy sources.",
+                                "ipa": "/diːˌkɑːr.bə.nəˈzeɪ.ʃən/",
+                                "collocations": [
+                                    "decarbonization strategy",
+                                    "energy transition",
+                                    "Net Zero"
+                                ]
+                            },
+                            {
+                                "en": "ESG",
+                                "es": "Criterios ASG (Ambiental, Social y Gobernanza)",
+                                "definition": "Environmental, Social, and Governance. A framework used to assess an organization's business practices and performance on various sustainability and ethical issues.",
+                                "ipa": "/iː-ɛs-dʒiː/",
+                                "collocations": [
+                                    "ESG reporting",
+                                    "ESG rating",
+                                    "sustainability goals"
+                                ]
+                            },
+                            {
+                                "en": "Net Zero",
+                                "es": "Cero Neto (Emisiones)",
+                                "definition": "A state in which the greenhouse gases going into the atmosphere are balanced by removal out of the atmosphere.",
+                                "ipa": "/nɛt ˈzɪr.oʊ/",
+                                "collocations": [
+                                    "Net Zero targets",
+                                    "carbon neutrality",
+                                    "Paris Agreement"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "dialogue": {
+                    "title": "ESG Audit: Supply Chain Emissions",
+                    "titleES": "Auditoría ESG: Emisiones en la Cadena de Suministro",
+                    "scenarioContext": "Corporate HQ (Sustainability Office). Preparing the annual ESG report for investors.",
+                    "characters": [
+                        {
+                            "name": "Diana Reyes",
+                            "role": "Chief Sustainability Officer",
+                            "avatar": "DR",
+                            "color": "var(--cyan)"
+                        },
+                        {
+                            "name": "Robert Hill",
+                            "role": "Supply Chain Manager",
+                            "avatar": "RH",
+                            "color": "var(--emerald)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Diana Reyes",
+                            "text": "Robert, our Scope 1 and Scope 2 emissions look solid thanks to the new solar panels at the factory. However, our Scope 3 emissions have spiked by 15% this quarter.",
+                            "translation": "Robert, nuestras emisiones de Alcance 1 y Alcance 2 se ven sólidas gracias a los nuevos paneles solares en la fábrica. Sin embargo, nuestras emisiones de Alcance 3 se han disparado un 15% este trimestre.",
+                            "targetTerms": [
+                                "Scope 1",
+                                "Scope 2 emissions",
+                                "solar panels",
+                                "Scope 3 emissions",
+                                "spiked"
+                            ]
+                        },
+                        {
+                            "speaker": "Robert Hill",
+                            "text": "I reviewed the Life Cycle Assessment (LCA) data. The spike is coming from upstream logistics. We had to switch to air freight because the maritime shipping lanes were disrupted.",
+                            "translation": "Revisé los datos del Análisis de Ciclo de Vida (LCA). El pico proviene de la logística upstream. Tuvimos que cambiar a flete aéreo porque las rutas de envío marítimo estaban interrumpidas.",
+                            "targetTerms": [
+                                "Life Cycle Assessment",
+                                "upstream logistics",
+                                "air freight",
+                                "maritime shipping"
+                            ]
+                        },
+                        {
+                            "speaker": "Diana Reyes",
+                            "text": "We can't let this jeopardize our Net Zero targets. We need a decarbonization strategy for logistics. Have you looked into purchasing verified carbon offsets to mitigate the air freight impact?",
+                            "translation": "No podemos dejar que esto ponga en peligro nuestros objetivos Net Zero. Necesitamos una estrategia de descarbonización para la logística. ¿Has considerado comprar compensaciones de carbono (carbon offsets) verificadas para mitigar el impacto del flete aéreo?",
+                            "targetTerms": [
+                                "Net Zero targets",
+                                "decarbonization strategy",
+                                "verified carbon offsets",
+                                "mitigate"
+                            ]
+                        },
+                        {
+                            "speaker": "Robert Hill",
+                            "text": "Yes, but offsets are getting expensive. A better long-term solution is to source raw materials from local suppliers. That shrinks our system boundary and drastically reduces transport emissions.",
+                            "translation": "Sí, pero las compensaciones se están encareciendo. Una mejor solución a largo plazo es obtener materias primas de proveedores locales. Eso reduce nuestro límite de sistema (system boundary) y reduce drásticamente las emisiones de transporte.",
+                            "targetTerms": [
+                                "long-term solution",
+                                "raw materials",
+                                "system boundary",
+                                "transport emissions"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The factory's smoke is polluting.",
+                            "native": "The factory's Scope 1 emissions must be reduced to meet our Net Zero targets.",
+                            "explanation": "En la jerga ESG, la contaminación del humo se clasifica formalmente como 'Scope 1 emissions' (emisiones directas) y el objetivo corporativo es 'Net Zero' (Cero Neto)."
+                        },
+                        {
+                            "school": "We need to plant trees to fix the pollution.",
+                            "native": "We should purchase verified carbon offsets to mitigate our environmental impact.",
+                            "explanation": "El término corporativo para 'plantar árboles para compensar' es comprar 'carbon offsets' (compensaciones de carbono)."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Scope 3 Emissions",
+                        "ipa": "/skoʊp θriː ɪˈmɪʃ.ənz/",
+                        "es": "Emisiones de Alcance 3 (Cadena de Valor)",
+                        "category": "Contabilidad de Carbono",
+                        "definition": "Indirect greenhouse gas emissions that occur in a company's value chain, including both upstream and downstream activities (e.g., supplier emissions, business travel, product disposal).",
+                        "collocations": [
+                            "calculate Scope 3",
+                            "upstream logistics",
+                            "value chain"
+                        ],
+                        "falseFriends": "No es un alcance visual; es la categoría más difícil de rastrear en la contabilidad ambiental, ya que está fuera del control directo de la empresa.",
+                        "nativeUsage": "Scope 3 emissions account for over 80% of our total carbon footprint due to our extensive global supply chain."
+                    },
+                    {
+                        "term": "Life Cycle Assessment (LCA)",
+                        "ipa": "/laɪf ˈsaɪ.kəl əˈsɛs.mənt/",
+                        "es": "Análisis de Ciclo de Vida (ACV)",
+                        "category": "Ingeniería Ambiental",
+                        "definition": "A methodology for assessing environmental impacts associated with all the stages of the life cycle of a commercial product, process, or service.",
+                        "collocations": [
+                            "cradle to grave",
+                            "LCA report",
+                            "environmental impact"
+                        ],
+                        "falseFriends": "No es una evaluación médica; es un estudio ingenieril del impacto de un producto desde la extracción de materia prima hasta la basura.",
+                        "nativeUsage": "The LCA revealed that the manufacturing phase consumes more energy than the actual usage phase of the product."
+                    },
+                    {
+                        "term": "Carbon Offset",
+                        "ipa": "/ˈkɑːr.bən ˈɔːf.sɛt/",
+                        "es": "Compensación de Carbono / Bono de Carbono",
+                        "category": "Economía Verde",
+                        "definition": "A reduction or removal of emissions of carbon dioxide or other greenhouse gases made in order to compensate for emissions made elsewhere.",
+                        "collocations": [
+                            "purchase carbon offsets",
+                            "verified offsets",
+                            "reforestation projects"
+                        ],
+                        "falseFriends": "No es un 'desfase'; es pagar para que alguien más reduzca emisiones y así 'compensar' las tuyas.",
+                        "nativeUsage": "Airlines often allow passengers to buy carbon offsets to neutralize the emissions of their flight."
+                    },
+                    {
+                        "term": "Decarbonization",
+                        "ipa": "/diːˌkɑːr.bə.nəˈzeɪ.ʃən/",
+                        "es": "Descarbonización",
+                        "category": "Estrategia Corporativa",
+                        "definition": "The process of reducing or eliminating carbon dioxide emissions from a company's operations, typically by switching to low-carbon energy sources.",
+                        "collocations": [
+                            "decarbonization strategy",
+                            "energy transition",
+                            "Net Zero"
+                        ],
+                        "falseFriends": "No es quitarle el carbón a un motor viejo; es la reestructuración energética total de una corporación hacia energías limpias.",
+                        "nativeUsage": "Our industrial decarbonization plan involves replacing gas furnaces with electric arc furnaces."
+                    },
+                    {
+                        "term": "ESG",
+                        "ipa": "/iː-ɛs-dʒiː/",
+                        "es": "Criterios ASG (Ambiental, Social y Gobernanza)",
+                        "category": "Finanzas y Reportes",
+                        "definition": "Environmental, Social, and Governance. A framework used to assess an organization's business practices and performance on various sustainability and ethical issues.",
+                        "collocations": [
+                            "ESG reporting",
+                            "ESG rating",
+                            "sustainability goals"
+                        ],
+                        "falseFriends": "Es el acrónimo fundamental para inversores modernos; una mala calificación ESG puede cerrar el acceso a financiamiento.",
+                        "nativeUsage": "Investors are demanding stricter ESG reporting to avoid the financial risks of climate change."
+                    },
+                    {
+                        "term": "Net Zero",
+                        "ipa": "/nɛt ˈzɪr.oʊ/",
+                        "es": "Cero Neto (Emisiones)",
+                        "category": "Objetivos Globales",
+                        "definition": "A state in which the greenhouse gases going into the atmosphere are balanced by removal out of the atmosphere.",
+                        "collocations": [
+                            "Net Zero targets",
+                            "carbon neutrality",
+                            "Paris Agreement"
+                        ],
+                        "falseFriends": "No significa 'cero contaminación' absoluto, sino que las emisiones residuales son eliminadas (compensadas) en igual cantidad.",
+                        "nativeUsage": "The company pledged to achieve Net Zero carbon emissions by 2040 through aggressive renewable energy procurement."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "GHG Protocol Scopes",
+                        "botQuestion": "Welcome to the ESG Audit! If our company's delivery trucks burn diesel fuel, is that considered a Scope 1, 2, or 3 emission under the GHG Protocol? What about the emissions generated by the airline when our executives fly for business?",
+                        "requiredKeywords": [
+                            "scope",
+                            "1",
+                            "direct",
+                            "3",
+                            "indirect",
+                            "travel",
+                            "airline"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Perfect! The delivery trucks are owned by the company, making it a direct Scope 1 emission. The business flights are on a third-party airline, making it an indirect Scope 3 emission.",
+                        "feedbackRetry": "Remember, Scope 1 is direct emissions (things the company owns). Scope 3 is indirect emissions in the value chain (things the company doesn't own but pays for, like a flight). Try classifying the delivery trucks vs. the airline travel again."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Carbon Offsets & Decarbonization",
+                        "botQuestion": "If an airline cannot physically run on solar panels yet, how can it achieve a 'Net Zero' target? What financial instrument or mechanism (starts with 'carbon o...') can they purchase to compensate for their jet fuel emissions?",
+                        "requiredKeywords": [
+                            "carbon",
+                            "offsets",
+                            "compensate",
+                            "net",
+                            "zero",
+                            "projects"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Exactly! When direct decarbonization is impossible, companies purchase 'carbon offsets' (funding projects like reforestation) to balance their emissions and reach Net Zero.",
+                        "feedbackRetry": "Think about the phrase used when you pay someone else to reduce emissions on your behalf. It's called a 'carbon o_______'. How does this help reach 'Net Zero'?"
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "env-m2",
@@ -9116,11 +10500,290 @@ var LXP_COURSES = {
         "description": "Estructura atómica, polímeros avanzados, grafeno, nanotubos de carbono, microscopía electrónica (SEM/TEM) y recubrimientos PVD/CVD.",
         "modules": [
             {
-                "id": "mat-m1",
-                "title": "Crystal Lattice Structures, Miller Indices and Phase Diagrams",
-                "titleES": "Estructuras Cristalinas, Índices de Miller y Diagramas de Fase",
-                "icon": "fa-solid fa-cubes",
-                "readings": []
+                "id": "nano-m1",
+                "title": "Advanced Materials & Characterization",
+                "titleES": "Materiales Avanzados y Caracterización",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "nano-m1-r1",
+                        "title": "Nanoscale Physics & Composites",
+                        "duration": "11 min",
+                        "content": "\n> **Industry Alignment & Testing Standard**: Aligned with **ASTM International Standards for Advanced Materials** and **ISO/TS 80004 (Nanotechnologies)**. Essential for Materials Scientists, Metallurgical Engineers, and Nanofabrication Technicians.\n\n# Advanced Materials and Nanotechnology\n\nThe boundaries of modern engineering are entirely dictated by the properties of the materials available. From the thermal shielding on a spacecraft to the structural integrity of a hydrogen fuel cell, breakthroughs in technology are fundamentally breakthroughs in materials science and nanotechnology.\n\n## 1. The Nanoscale and Quantum Effects\nNanotechnology involves the manipulation of matter on an atomic, molecular, and supramolecular scale—typically between 1 and 100 nanometers.\n- **Surface Area to Volume Ratio**: As particles shrink to the nanoscale, their surface area relative to their volume increases exponentially. This makes nanoparticles highly reactive, which is critical for designing more efficient catalysts in industrial chemistry or batteries.\n- **Quantum Confinement**: Below 10 nanometers, classical physics gives way to quantum mechanics. Materials like **Quantum Dots** exhibit unique optical and electronic properties simply based on their physical size, enabling ultra-precise medical imaging and advanced displays.\n\n## 2. Advanced Composites and Metamaterials\nModern aerospace and automotive industries rely heavily on replacing heavy metals with advanced engineered materials.\n- **Carbon Fiber Reinforced Polymers (CFRP)**: These composites provide a strength-to-weight ratio vastly superior to aluminum or steel. However, they are anisotropic (their strength is directional) and prone to delamination under impact.\n- **Metamaterials**: Artificial materials engineered to have properties that have not yet been found in nature. By structuring a material's physical geometry at a scale smaller than the wavelength of the phenomena they influence, engineers can manipulate electromagnetic waves (e.g., creating invisibility cloaks for radar or super-lenses).\n\n## 3. Material Characterization\nBefore a new material can be used in a commercial product, its physical and chemical properties must be rigorously characterized using advanced microscopy and spectroscopy.\n- **SEM (Scanning Electron Microscopy)**: Uses a focused beam of electrons to generate high-resolution, 3D-like topographical images of a material's surface, essential for identifying micro-fractures or grain boundaries.\n- **XRD (X-Ray Diffraction)**: A non-destructive technique used to determine the crystallographic structure of a material, revealing the atomic arrangement and identifying specific chemical compounds within a sample.\n\n---\n> **Key Takeaway**: Controlling matter at the nanoscale via **Quantum Confinement** and engineering **Advanced Composites** allows us to surpass the limits of natural materials. However, these innovations demand strict characterization using **SEM** and **XRD** to guarantee structural integrity.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Nanoscale",
+                                "es": "Nanoescala",
+                                "definition": "A scale of length ranging from 1 to 100 nanometers, where materials begin to exhibit unique quantum and physical properties not seen in bulk materials.",
+                                "ipa": "/ˈnæn.oʊˌskeɪl/",
+                                "collocations": [
+                                    "nanoscale engineering",
+                                    "surface area",
+                                    "quantum confinement"
+                                ]
+                            },
+                            {
+                                "en": "Delamination",
+                                "es": "Delaminación",
+                                "definition": "A mode of failure in laminated composite materials where the layers separate, causing a significant loss of mechanical toughness and structural integrity.",
+                                "ipa": "/diːˌlæm.əˈneɪ.ʃən/",
+                                "collocations": [
+                                    "interlaminar delamination",
+                                    "composite failure",
+                                    "shear stress"
+                                ]
+                            },
+                            {
+                                "en": "Scanning Electron Microscopy (SEM)",
+                                "es": "Microscopía Electrónica de Barrido (MEB)",
+                                "definition": "A type of electron microscope that produces images of a sample by scanning the surface with a focused beam of electrons, providing detailed 3D topographical information.",
+                                "ipa": "/ˈskæn.ɪŋ ɪˈlɛk.trɑːn maɪˈkrɑː.skə.pi/",
+                                "collocations": [
+                                    "SEM analysis",
+                                    "surface topography",
+                                    "electron beam"
+                                ]
+                            },
+                            {
+                                "en": "X-Ray Diffraction (XRD)",
+                                "es": "Difracción de Rayos X (DRX)",
+                                "definition": "An analytical technique primarily used for phase identification of a crystalline material and can provide information on unit cell dimensions.",
+                                "ipa": "/ˈɛks.reɪ dɪˈfræk.ʃən/",
+                                "collocations": [
+                                    "XRD pattern",
+                                    "crystal structure",
+                                    "phase identification"
+                                ]
+                            },
+                            {
+                                "en": "Composite Material",
+                                "es": "Material Compuesto",
+                                "definition": "A material produced from two or more constituent materials with notably different chemical or physical properties that, when merged, create a material with characteristics different from the individual components.",
+                                "ipa": "/kəmˈpɑː.zɪt məˈtɪr.i.əl/",
+                                "collocations": [
+                                    "fiber-reinforced composite",
+                                    "epoxy matrix",
+                                    "high strength-to-weight ratio"
+                                ]
+                            },
+                            {
+                                "en": "Quantum Dots",
+                                "es": "Puntos Cuánticos",
+                                "definition": "Nanoscale semiconductor particles whose electronic and optical properties are highly tunable by simply changing their size, due to quantum mechanical effects.",
+                                "ipa": "/ˈkwɑːn.təm dɑːts/",
+                                "collocations": [
+                                    "tunable bandgap",
+                                    "medical imaging",
+                                    "QLED displays"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "dialogue": {
+                    "title": "Material Failure Analysis: Composite Delamination",
+                    "titleES": "Análisis de Falla de Material: Delaminación de Compuesto",
+                    "scenarioContext": "Querétaro, MX (Aerospace Cluster). Reviewing a structural failure in a carbon fiber drone wing.",
+                    "characters": [
+                        {
+                            "name": "Dr. Hector Silva",
+                            "role": "Chief Metallurgist & Materials Scientist",
+                            "avatar": "HS",
+                            "color": "var(--cyan)"
+                        },
+                        {
+                            "name": "Laura Chen",
+                            "role": "Quality Engineering Lead",
+                            "avatar": "LC",
+                            "color": "var(--emerald)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Laura Chen",
+                            "text": "Dr. Silva, the latest batch of drone wings failed the stress test. The Carbon Fiber Reinforced Polymer (CFRP) panels snapped at 80% of the designed load limit.",
+                            "translation": "Dr. Silva, el último lote de alas de dron falló la prueba de estrés. Los paneles de Polímero Reforzado con Fibra de Carbono (CFRP) se rompieron al 80% del límite de carga diseñado.",
+                            "targetTerms": [
+                                "stress test",
+                                "Carbon Fiber Reinforced Polymer",
+                                "CFRP",
+                                "load limit"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. Hector Silva",
+                            "text": "I analyzed the fracture under the Scanning Electron Microscope (SEM). The failure wasn't in the carbon fibers themselves. The images show massive delamination between the composite layers.",
+                            "translation": "Analicé la fractura bajo el Microscopio Electrónico de Barrido (SEM). La falla no fue en las fibras de carbono en sí. Las imágenes muestran una delaminación masiva entre las capas del compuesto.",
+                            "targetTerms": [
+                                "fracture",
+                                "Scanning Electron Microscope",
+                                "SEM",
+                                "delamination",
+                                "composite layers"
+                            ]
+                        },
+                        {
+                            "speaker": "Laura Chen",
+                            "text": "If it's delamination, the epoxy resin matrix must have cured improperly in the autoclave. Could there be a contaminant or a void in the matrix?",
+                            "translation": "Si es delaminación, la matriz de resina epoxi debió haberse curado incorrectamente en el autoclave. ¿Podría haber un contaminante o un vacío (void) en la matriz?",
+                            "targetTerms": [
+                                "epoxy resin matrix",
+                                "cured",
+                                "autoclave",
+                                "contaminant",
+                                "void"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. Hector Silva",
+                            "text": "Exactly. We're running an X-Ray Diffraction (XRD) scan now to check for crystallization anomalies in the resin. Until we identify the root cause, place a hold on all CFRP layup processes.",
+                            "translation": "Exactamente. Estamos realizando un escaneo de Difracción de Rayos X (XRD) ahora para verificar anomalías de cristalización en la resina. Hasta que identifiquemos la causa raíz, suspenda todos los procesos de laminado (layup) de CFRP.",
+                            "targetTerms": [
+                                "X-Ray Diffraction",
+                                "XRD",
+                                "crystallization anomalies",
+                                "root cause",
+                                "layup processes"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The plastic broke because it was weak.",
+                            "native": "The CFRP panel suffered delamination under the applied stress load.",
+                            "explanation": "En ingeniería de materiales, los compuestos no 'se rompen' simplemente; sufren fallas específicas como 'delamination' (separación de capas) o 'fracture' debido a un 'stress load' (carga de estrés)."
+                        },
+                        {
+                            "school": "Let's look at the material closely.",
+                            "native": "We need to characterize the fracture using Scanning Electron Microscopy (SEM).",
+                            "explanation": "El término profesional para analizar la estructura microscópica de un material es 'characterize' (caracterizar), utilizando equipos específicos como el SEM."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Nanoscale",
+                        "ipa": "/ˈnæn.oʊˌskeɪl/",
+                        "es": "Nanoescala",
+                        "category": "Física",
+                        "definition": "A scale of length ranging from 1 to 100 nanometers, where materials begin to exhibit unique quantum and physical properties not seen in bulk materials.",
+                        "collocations": [
+                            "nanoscale engineering",
+                            "surface area",
+                            "quantum confinement"
+                        ],
+                        "falseFriends": "No es simplemente 'muy pequeño'; es la escala específica donde la física clásica deja de funcionar y domina la mecánica cuántica.",
+                        "nativeUsage": "At the nanoscale, gold particles change color and become highly reactive catalysts."
+                    },
+                    {
+                        "term": "Delamination",
+                        "ipa": "/diːˌlæm.əˈneɪ.ʃən/",
+                        "es": "Delaminación",
+                        "category": "Falla de Materiales",
+                        "definition": "A mode of failure in laminated composite materials where the layers separate, causing a significant loss of mechanical toughness and structural integrity.",
+                        "collocations": [
+                            "interlaminar delamination",
+                            "composite failure",
+                            "shear stress"
+                        ],
+                        "falseFriends": "No tiene que ver con 'laminar' un documento de identidad; es cuando las capas de un material compuesto de alta tecnología se despegan.",
+                        "nativeUsage": "The carbon fiber wing experienced catastrophic delamination after a bird strike impact."
+                    },
+                    {
+                        "term": "Scanning Electron Microscopy (SEM)",
+                        "ipa": "/ˈskæn.ɪŋ ɪˈlɛk.trɑːn maɪˈkrɑː.skə.pi/",
+                        "es": "Microscopía Electrónica de Barrido (MEB)",
+                        "category": "Caracterización",
+                        "definition": "A type of electron microscope that produces images of a sample by scanning the surface with a focused beam of electrons, providing detailed 3D topographical information.",
+                        "collocations": [
+                            "SEM analysis",
+                            "surface topography",
+                            "electron beam"
+                        ],
+                        "falseFriends": "Es 'Scanning' (barrido), no 'Scamming' (estafa).",
+                        "nativeUsage": "We used SEM to characterize the micro-fractures in the 3D-printed titanium alloy."
+                    },
+                    {
+                        "term": "X-Ray Diffraction (XRD)",
+                        "ipa": "/ˈɛks.reɪ dɪˈfræk.ʃən/",
+                        "es": "Difracción de Rayos X (DRX)",
+                        "category": "Caracterización",
+                        "definition": "An analytical technique primarily used for phase identification of a crystalline material and can provide information on unit cell dimensions.",
+                        "collocations": [
+                            "XRD pattern",
+                            "crystal structure",
+                            "phase identification"
+                        ],
+                        "falseFriends": "No es una simple radiografía médica; se usa para ver cómo están ordenados los átomos en un cristal.",
+                        "nativeUsage": "The XRD results confirmed that the battery cathode material was properly crystallized without impurities."
+                    },
+                    {
+                        "term": "Composite Material",
+                        "ipa": "/kəmˈpɑː.zɪt məˈtɪr.i.əl/",
+                        "es": "Material Compuesto",
+                        "category": "Ingeniería",
+                        "definition": "A material produced from two or more constituent materials with notably different chemical or physical properties that, when merged, create a material with characteristics different from the individual components.",
+                        "collocations": [
+                            "fiber-reinforced composite",
+                            "epoxy matrix",
+                            "high strength-to-weight ratio"
+                        ],
+                        "falseFriends": "No es un material 'compostable' (para abono); es un material avanzado hecho de varias partes (ej. fibra de carbono + resina).",
+                        "nativeUsage": "Aerospace engineers prefer composite materials because they are lighter than aluminum but stronger than steel."
+                    },
+                    {
+                        "term": "Quantum Dots",
+                        "ipa": "/ˈkwɑːn.təm dɑːts/",
+                        "es": "Puntos Cuánticos",
+                        "category": "Nanotecnología",
+                        "definition": "Nanoscale semiconductor particles whose electronic and optical properties are highly tunable by simply changing their size, due to quantum mechanical effects.",
+                        "collocations": [
+                            "tunable bandgap",
+                            "medical imaging",
+                            "QLED displays"
+                        ],
+                        "falseFriends": "No son 'puntos' hechos de átomos al azar; son semiconductores cristalinos exactos.",
+                        "nativeUsage": "By adjusting the size of the quantum dots, we can tune the solar cell to absorb specific wavelengths of infrared light."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Nanoscale & Properties",
+                        "botQuestion": "Welcome to the Materials Science Lab! When a material shrinks down to the 'nanoscale' (1-100 nm), what happens to its surface-area-to-volume ratio? How does this affect its chemical reactivity?",
+                        "requiredKeywords": [
+                            "nanoscale",
+                            "surface",
+                            "area",
+                            "volume",
+                            "ratio",
+                            "increases",
+                            "reactive"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot-on! At the nanoscale, the surface area to volume ratio increases exponentially. This makes nanoparticles highly reactive and excellent catalysts.",
+                        "feedbackRetry": "Think about cutting a block into millions of tiny pieces. You expose more of the inside. What happens to the 'surface area' compared to its 'volume'? Does it become more or less chemically reactive?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Composites & Delamination",
+                        "botQuestion": "If an aerospace engineer is testing a Carbon Fiber Reinforced Polymer (CFRP) wing and it fails because the layers peel apart, what is the specific engineering term for this failure? What instrument (acronym) would you use to examine the surface fracture up close?",
+                        "requiredKeywords": [
+                            "delamination",
+                            "layers",
+                            "composite",
+                            "sem",
+                            "scanning",
+                            "electron",
+                            "microscope",
+                            "microscopy"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Perfect! The separation of layers in a composite is called 'delamination', and a Materials Scientist would use an SEM (Scanning Electron Microscope) to characterize the fracture topography.",
+                        "feedbackRetry": "When the layers of a laminated composite separate, it's called 'de-_______-ation'. To look at the tiny micro-fractures on the surface, what 3-letter acronym is used for the electron microscope?"
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "mat-m2",
@@ -9985,10 +11648,284 @@ var LXP_COURSES = {
         "modules": [
             {
                 "id": "pm-m1",
-                "title": "Agile & Scrum Frameworks: Sprints, Epics and User Stories",
-                "titleES": "Metodologías Agile y Scrum: Sprints e Historias de Usuario",
-                "icon": "fa-solid fa-person-running",
-                "readings": []
+                "title": "Agile & PMBOK",
+                "titleES": "Agile y PMBOK",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "pm-m1-r1",
+                        "title": "Scope Management & Scrum",
+                        "duration": "10 min",
+                        "content": "\n> **Industry Alignment & Certification Standard**: Aligned with **PMI PMBOK® Guide 7th Edition** and **Agile Scrum Framework**. Essential for Project Managers, Scrum Masters, and Engineering Team Leads.\n\n# Project Management and Professional Communication\n\nEngineering brilliant technology is only half the battle; delivering it on time, within budget, and to the client's specifications requires rigorous project management. Today's high-tech industries rely on a blend of traditional predictive planning and modern adaptive frameworks to navigate complex supply chains and shifting requirements.\n\n## 1. Predictive (Waterfall) vs. Adaptive (Agile)\n- **Predictive (Waterfall)**: The traditional approach where the project is fully planned upfront. It moves linearly through phases: Requirements, Design, Implementation, Verification, and Maintenance. It is ideal for construction or hardware manufacturing where changes late in the process are catastrophically expensive.\n- **Adaptive (Agile)**: An iterative approach designed to embrace change. Instead of delivering the entire product at the end, the team delivers functional increments of the product in short cycles (usually 2-4 weeks). It is the dominant methodology in software development.\n\n## 2. The Scrum Framework\nScrum is the most popular Agile framework, providing specific roles, events, and artifacts to manage complex knowledge work.\n- **Roles**: The **Product Owner** maximizes the value of the product and manages the backlog. The **Scrum Master** is a servant-leader who removes impediments and ensures the team follows Scrum theory. The **Developers** do the actual work.\n- **Sprints**: A time-boxed iteration (usually two weeks) during which a \"Done\", usable, and potentially releasable product increment is created.\n- **The Daily Scrum**: A 15-minute daily sync for the Developers to inspect progress toward the Sprint Goal and adapt their plan for the next 24 hours. *It is not a status report for management.*\n\n## 3. Scope Management and Communication\nFailure to control the boundaries of a project is the most common reason for budget overruns.\n- **Scope Creep**: The uncontrolled expansion to product or project scope without adjustments to time, cost, and resources. A professional Project Manager must ruthlessly defend the scope and negotiate change requests through a formal board.\n- **Stakeholder Management**: Identifying the people or organizations impacted by the project and tailoring communication strategies to their needs. A Chief Technology Officer requires a high-level executive summary of risks, while an engineering lead requires detailed technical blockers.\n\n---\n> **Key Takeaway**: Modern engineering leadership requires mastering both the structured predictability of the **PMBOK** and the rapid iteration of **Agile Scrum**, while fiercely protecting the team from **Scope Creep**.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Scope Creep",
+                                "es": "Desviación / Corrupción del Alcance",
+                                "definition": "The uncontrolled expansion to product or project scope without adjustments to time, cost, and resources.",
+                                "ipa": "/skoʊp kriːp/",
+                                "collocations": [
+                                    "avoid scope creep",
+                                    "manage scope",
+                                    "change request"
+                                ]
+                            },
+                            {
+                                "en": "Scrum Master",
+                                "es": "Scrum Master (Facilitador Ágil)",
+                                "definition": "The role responsible for ensuring Scrum is understood and enacted. Scrum Masters do this by ensuring that the Scrum Team adheres to Scrum theory, practices, and rules.",
+                                "ipa": "/skrʌm ˈmæs.tər/",
+                                "collocations": [
+                                    "servant-leader",
+                                    "remove impediments",
+                                    "facilitate events"
+                                ]
+                            },
+                            {
+                                "en": "Stakeholder",
+                                "es": "Parte Interesada / Involucrado",
+                                "definition": "An individual, group, or organization that may affect, be affected by, or perceive itself to be affected by a decision, activity, or outcome of a project.",
+                                "ipa": "/ˈsteɪkˌhoʊl.dər/",
+                                "collocations": [
+                                    "stakeholder management",
+                                    "key stakeholders",
+                                    "manage expectations"
+                                ]
+                            },
+                            {
+                                "en": "Sprint Backlog",
+                                "es": "Lista de Pendientes del Sprint",
+                                "definition": "The set of Product Backlog items selected for the Sprint, plus a plan for delivering the product Increment and realizing the Sprint Goal.",
+                                "ipa": "/sprɪnt ˈbæk.lɔːɡ/",
+                                "collocations": [
+                                    "protect the backlog",
+                                    "refine the backlog",
+                                    "user stories"
+                                ]
+                            },
+                            {
+                                "en": "Impediment",
+                                "es": "Impedimento / Bloqueador",
+                                "definition": "Any obstacle that prevents the team from achieving its goal or completing work efficiently (often referred to interchangeably with 'blocker').",
+                                "ipa": "/ɪmˈpɛd.ə.mənt/",
+                                "collocations": [
+                                    "remove impediments",
+                                    "report a blocker",
+                                    "Daily Scrum"
+                                ]
+                            },
+                            {
+                                "en": "Velocity",
+                                "es": "Velocidad (Puntos por Sprint)",
+                                "definition": "A measure of the amount of work a Team can tackle during a single Sprint, usually calculated by adding up the story points of all fully completed user stories.",
+                                "ipa": "/vəˈlɑː.sə.ti/",
+                                "collocations": [
+                                    "team velocity",
+                                    "predictable velocity",
+                                    "burndown chart"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "dialogue": {
+                    "title": "Agile Retrospective: Scope Creep",
+                    "titleES": "Retrospectiva Ágil: Desviación del Alcance",
+                    "scenarioContext": "Austin, TX (Software Hub) ⇄ Remote Dev Team. Discussing a missed deadline in the Sprint Retrospective.",
+                    "characters": [
+                        {
+                            "name": "Sarah Jenkins",
+                            "role": "Scrum Master",
+                            "avatar": "SJ",
+                            "color": "var(--cyan)"
+                        },
+                        {
+                            "name": "Ing. David Torres",
+                            "role": "Lead Full-Stack Developer",
+                            "avatar": "DT",
+                            "color": "var(--amber)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Sarah Jenkins",
+                            "text": "David, looking at our burndown chart for Sprint 4, we missed our commitment by 30 story points. What was the main impediment blocking the team?",
+                            "translation": "David, viendo nuestro gráfico de trabajo pendiente (burndown chart) para el Sprint 4, fallamos en nuestro compromiso por 30 puntos de historia. ¿Cuál fue el principal impedimento que bloqueó al equipo?",
+                            "targetTerms": [
+                                "burndown chart",
+                                "Sprint 4",
+                                "commitment",
+                                "story points",
+                                "impediment"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. David Torres",
+                            "text": "The main blocker was scope creep. Mid-sprint, the Product Owner asked us to add real-time analytics to the dashboard. It completely derailed our velocity.",
+                            "translation": "El bloqueador principal fue la desviación del alcance (scope creep). A mitad del sprint, el Product Owner nos pidió agregar analíticas en tiempo real al panel. Descarriló por completo nuestra velocidad.",
+                            "targetTerms": [
+                                "blocker",
+                                "scope creep",
+                                "Mid-sprint",
+                                "Product Owner",
+                                "velocity"
+                            ]
+                        },
+                        {
+                            "speaker": "Sarah Jenkins",
+                            "text": "I see. As the Scrum Master, I should have protected the Sprint Backlog. Changes to the scope during an active sprint should be heavily restricted to protect the team's focus.",
+                            "translation": "Ya veo. Como Scrum Master, debí haber protegido el Backlog del Sprint. Los cambios al alcance durante un sprint activo deben estar fuertemente restringidos para proteger el enfoque del equipo.",
+                            "targetTerms": [
+                                "Scrum Master",
+                                "Sprint Backlog",
+                                "scope",
+                                "active sprint"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. David Torres",
+                            "text": "Agreed. For the next sprint, if a stakeholder requests a new feature, we must push it to the Product Backlog for refinement, rather than injecting it directly into our current iteration.",
+                            "translation": "De acuerdo. Para el próximo sprint, si una parte interesada (stakeholder) solicita una nueva función, debemos enviarla al Backlog del Producto para su refinamiento, en lugar de inyectarla directamente en nuestra iteración actual.",
+                            "targetTerms": [
+                                "stakeholder",
+                                "Product Backlog",
+                                "refinement",
+                                "iteration"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The boss added more work and we couldn't finish.",
+                            "native": "We experienced severe scope creep mid-sprint, which derailed our velocity.",
+                            "explanation": "En la gestión de proyectos de software, no se habla de 'jefes agregando trabajo', sino de 'scope creep' (desviación del alcance) afectando la 'velocity' (velocidad del equipo ágil)."
+                        },
+                        {
+                            "school": "I had a problem that stopped me.",
+                            "native": "I had a blocker/impediment that prevented me from completing the story.",
+                            "explanation": "En los Daily Scrums, los problemas que detienen el progreso se reportan formalmente como 'blockers' o 'impediments'."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Scope Creep",
+                        "ipa": "/skoʊp kriːp/",
+                        "es": "Desviación / Corrupción del Alcance",
+                        "category": "Gestión de Proyectos",
+                        "definition": "The uncontrolled expansion to product or project scope without adjustments to time, cost, and resources.",
+                        "collocations": [
+                            "avoid scope creep",
+                            "manage scope",
+                            "change request"
+                        ],
+                        "falseFriends": "No es un 'alcance espeluznante' (creepy); 'creep' aquí significa arrastrarse o expandirse lentamente sin ser notado.",
+                        "nativeUsage": "The project failed because the client's constant feature requests caused massive scope creep."
+                    },
+                    {
+                        "term": "Scrum Master",
+                        "ipa": "/skrʌm ˈmæs.tər/",
+                        "es": "Scrum Master (Facilitador Ágil)",
+                        "category": "Metodología Ágil",
+                        "definition": "The role responsible for ensuring Scrum is understood and enacted. Scrum Masters do this by ensuring that the Scrum Team adheres to Scrum theory, practices, and rules.",
+                        "collocations": [
+                            "servant-leader",
+                            "remove impediments",
+                            "facilitate events"
+                        ],
+                        "falseFriends": "No es el 'jefe' del equipo de desarrollo; es un líder-sirviente que facilita el proceso y quita bloqueos.",
+                        "nativeUsage": "Our Scrum Master canceled the unnecessary meetings so the developers could focus on the sprint goal."
+                    },
+                    {
+                        "term": "Stakeholder",
+                        "ipa": "/ˈsteɪkˌhoʊl.dər/",
+                        "es": "Parte Interesada / Involucrado",
+                        "category": "Negocios",
+                        "definition": "An individual, group, or organization that may affect, be affected by, or perceive itself to be affected by a decision, activity, or outcome of a project.",
+                        "collocations": [
+                            "stakeholder management",
+                            "key stakeholders",
+                            "manage expectations"
+                        ],
+                        "falseFriends": "No es el que 'sostiene el filete' (steak); es alguien con un interés o inversión (stake) en el proyecto.",
+                        "nativeUsage": "Before changing the software architecture, we need to get buy-in from the key stakeholders."
+                    },
+                    {
+                        "term": "Sprint Backlog",
+                        "ipa": "/sprɪnt ˈbæk.lɔːɡ/",
+                        "es": "Lista de Pendientes del Sprint",
+                        "category": "Metodología Ágil",
+                        "definition": "The set of Product Backlog items selected for the Sprint, plus a plan for delivering the product Increment and realizing the Sprint Goal.",
+                        "collocations": [
+                            "protect the backlog",
+                            "refine the backlog",
+                            "user stories"
+                        ],
+                        "falseFriends": "No es un 'registro de espalda'; es el inventario de tareas comprometidas para la iteración actual.",
+                        "nativeUsage": "Once the sprint starts, the sprint backlog is locked and no new features can be added without canceling the sprint."
+                    },
+                    {
+                        "term": "Impediment",
+                        "ipa": "/ɪmˈpɛd.ə.mənt/",
+                        "es": "Impedimento / Bloqueador",
+                        "category": "Comunicación Profesional",
+                        "definition": "Any obstacle that prevents the team from achieving its goal or completing work efficiently (often referred to interchangeably with 'blocker').",
+                        "collocations": [
+                            "remove impediments",
+                            "report a blocker",
+                            "Daily Scrum"
+                        ],
+                        "falseFriends": "Es sinónimo de obstáculo o bloqueo, usado formalmente en las reuniones diarias.",
+                        "nativeUsage": "My main impediment today is that the testing database is down, blocking my QA tasks."
+                    },
+                    {
+                        "term": "Velocity",
+                        "ipa": "/vəˈlɑː.sə.ti/",
+                        "es": "Velocidad (Puntos por Sprint)",
+                        "category": "Métricas Ágiles",
+                        "definition": "A measure of the amount of work a Team can tackle during a single Sprint, usually calculated by adding up the story points of all fully completed user stories.",
+                        "collocations": [
+                            "team velocity",
+                            "predictable velocity",
+                            "burndown chart"
+                        ],
+                        "falseFriends": "En Scrum, no es rapidez en km/h, sino la capacidad de producción del equipo medida en 'story points' por iteración.",
+                        "nativeUsage": "If our team's average velocity is 40 points, we shouldn't commit to 60 points in the next sprint."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Scope Creep & Stakeholders",
+                        "botQuestion": "Welcome to the PMO (Project Management Office)! If a client (a key 'stakeholder') keeps asking for extra features without increasing the budget or timeline, what is the professional term for this uncontrolled expansion? Why is it dangerous?",
+                        "requiredKeywords": [
+                            "scope",
+                            "creep",
+                            "stakeholder",
+                            "uncontrolled",
+                            "budget",
+                            "time"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Perfect! That is 'Scope Creep', driven by stakeholders. It is incredibly dangerous because it forces the team to do more work within the same time and budget, leading to burnout and missed deadlines.",
+                        "feedbackRetry": "Think about the word 'Scope' (the boundaries of the project). What happens when it slowly 'creeps' outward? Who are the people (starts with 'S') demanding these changes?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Scrum Roles & Impediments",
+                        "botQuestion": "In the Agile Scrum framework, if a developer cannot finish their code because a server is down, what do they call this problem during the Daily Scrum? Whose specific role (title) is it to remove this obstacle?",
+                        "requiredKeywords": [
+                            "impediment",
+                            "blocker",
+                            "scrum",
+                            "master",
+                            "remove"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot-on! The developer reports an 'impediment' or 'blocker', and the Scrum Master is the servant-leader responsible for removing it so the team can maintain their velocity.",
+                        "feedbackRetry": "What is the formal word for a 'blocker' or obstacle? And who is the 'Master' of the Scrum process tasked with removing it?"
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "pm-m2",
@@ -10036,11 +11973,283 @@ var LXP_COURSES = {
         "description": "Inglés para pitch de inversión, rondas de capital de riesgo (VC), hojas de términos (Term Sheets), modelo Lean Canvas y validación de mercado.",
         "modules": [
             {
-                "id": "ent-m1",
-                "title": "The Pitch Deck: Hook, Problem-Solution Fit and Market Sizing (TAM/SAM/SOM)",
-                "titleES": "El Pitch Deck: Ajuste Problema-Solución y Tamaño de Mercado",
-                "icon": "fa-solid fa-chart-pie",
-                "readings": []
+                "id": "entre-m1",
+                "title": "Startups & Venture Capital",
+                "titleES": "Startups y Capital Emprendedor",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "entre-m1-r1",
+                        "title": "MVP, Product-Market Fit & Due Diligence",
+                        "duration": "10 min",
+                        "content": "\n> **Industry Alignment & Business Standard**: Aligned with **Lean Startup Methodology** and **Silicon Valley Venture Capital Due Diligence**. Essential for Founders, CTOs, and Product Managers.\n\n# Tech Entrepreneurship, Innovation, and Venture Capital\n\nBuilding a revolutionary piece of technology is only the first step. To bring it to the world, engineers must often become entrepreneurs. The technology startup ecosystem operates on its own specialized language, focusing on rapid iteration, market validation, and high-risk capital.\n\n## 1. The Lean Startup Methodology\nMost startups fail not because their technology doesn't work, but because they build something nobody wants. The Lean Startup methodology combats this by emphasizing speed and customer feedback over rigid business plans.\n- **Minimum Viable Product (MVP)**: The version of a new product which allows a team to collect the maximum amount of validated learning about customers with the least effort. It is not a \"broken\" product; it is the core functionality necessary to test a hypothesis.\n- **Pivot vs. Persevere**: If the MVP proves that the initial hypothesis was wrong, the startup must **pivot**—a structured course correction designed to test a new fundamental hypothesis about the product, strategy, or engine of growth.\n- **Product-Market Fit (PMF)**: The holy grail for a startup. It means being in a good market with a product that can satisfy that market. You know you have PMF when customers are buying the product faster than you can make it.\n\n## 2. Venture Capital (VC) and Fundraising\nStartups that aim to scale massively usually require external funding. This capital comes from Angel Investors or Venture Capitalists.\n- **Bootstrapping**: Funding a company using personal finances or the operating revenues of the new company. This preserves equity (ownership) but usually limits the speed of growth.\n- **Seed Round**: The first official equity funding stage. It typically helps the company finance its first steps, including market research and product development, often ending with the launch of the MVP.\n- **Series A, B, C**: Subsequent rounds of funding designed to scale the business, enter new markets, or acquire competitors. \n- **Burn Rate and Runway**: **Burn Rate** is the rate at which a company is spending its venture capital to finance overhead before generating positive cash flow. **Runway** is the amount of time the company has before it runs out of money (calculated as Cash Balance divided by Burn Rate).\n\n## 3. Intellectual Property and Due Diligence\nBefore a VC writes a check, they perform rigorous **Due Diligence**—an investigation or audit of a potential investment.\n- **Cap Table (Capitalization Table)**: A spreadsheet that details who owns what in the company (founders, investors, employees with stock options).\n- **IP Protection**: Investors want to ensure the startup actually owns its core technology. Patents, trademarks, and strictly enforced Non-Disclosure Agreements (NDAs) are critical during technical due diligence.\n\n---\n> **Key Takeaway**: Engineering innovation must be paired with extreme market focus (**MVP** and **Product-Market Fit**) and disciplined financial management (**Burn Rate** and **Runway**) to survive the rigorous **Due Diligence** of Venture Capitalists.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Minimum Viable Product (MVP)",
+                                "es": "Producto Mínimo Viable (MVP)",
+                                "definition": "A version of a product with just enough features to be usable by early customers who can then provide feedback for future product development.",
+                                "ipa": "/ˈmɪn.ɪ.məm ˈvaɪ.ə.bəl ˈprɑː.dʌkt/",
+                                "collocations": [
+                                    "launch an MVP",
+                                    "iterate the MVP",
+                                    "core functionality"
+                                ]
+                            },
+                            {
+                                "en": "Burn Rate",
+                                "es": "Tasa de Quema / Consumo (de Capital)",
+                                "definition": "The rate at which a new company is spending its venture capital to finance overhead before generating positive cash flow from operations.",
+                                "ipa": "/bɜːrn reɪt/",
+                                "collocations": [
+                                    "monthly burn rate",
+                                    "reduce the burn rate",
+                                    "cash flow"
+                                ]
+                            },
+                            {
+                                "en": "Runway",
+                                "es": "Pista (Tiempo de vida financiero)",
+                                "definition": "The amount of time a company has until it runs out of cash, assuming current income and expenses stay constant. Calculated as Cash Balance ÷ Monthly Burn Rate.",
+                                "ipa": "/ˈrʌn.weɪ/",
+                                "collocations": [
+                                    "extend the runway",
+                                    "12 months of runway",
+                                    "run out of cash"
+                                ]
+                            },
+                            {
+                                "en": "Due Diligence",
+                                "es": "Debida Diligencia (Auditoría de Inversión)",
+                                "definition": "An investigation, audit, or review performed to confirm facts or details of a matter under consideration, typically before a venture capital firm signs a term sheet.",
+                                "ipa": "/duː ˈdɪl.ɪ.dʒəns/",
+                                "collocations": [
+                                    "technical due diligence",
+                                    "pass due diligence",
+                                    "legal audit"
+                                ]
+                            },
+                            {
+                                "en": "Product-Market Fit (PMF)",
+                                "es": "Ajuste Producto-Mercado",
+                                "definition": "The degree to which a product satisfies a strong market demand. It is the first step to building a successful venture.",
+                                "ipa": "/ˈprɑː.dʌkt ˈmɑːr.kɪt fɪt/",
+                                "collocations": [
+                                    "achieve PMF",
+                                    "strong PMF",
+                                    "scale after PMF"
+                                ]
+                            },
+                            {
+                                "en": "Cap Table",
+                                "es": "Tabla de Capitalización",
+                                "definition": "A spreadsheet or table that shows the capitalization, or ownership stakes, in a startup or early-stage company.",
+                                "ipa": "/kæp ˈteɪ.bəl/",
+                                "collocations": [
+                                    "clean cap table",
+                                    "equity distribution",
+                                    "stock options"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "dialogue": {
+                    "title": "Board Meeting: Seed Round Runway",
+                    "titleES": "Reunión de Junta: Pista Financiera en Ronda Semilla",
+                    "scenarioContext": "Silicon Valley, CA (Venture Capital Office). The founding team is pitching their hardware startup's progress.",
+                    "characters": [
+                        {
+                            "name": "Jessica Chen",
+                            "role": "Partner, Horizon Ventures",
+                            "avatar": "JC",
+                            "color": "var(--cyan)"
+                        },
+                        {
+                            "name": "Ing. Mateo Ruiz",
+                            "role": "CEO & Co-Founder",
+                            "avatar": "MR",
+                            "color": "var(--amber)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Jessica Chen",
+                            "text": "Mateo, your user growth is impressive, but looking at the financials, your monthly burn rate has increased to $150k. With your current cash balance, your runway is down to barely four months.",
+                            "translation": "Mateo, tu crecimiento de usuarios es impresionante, pero viendo las finanzas, tu tasa de consumo mensual (burn rate) ha aumentado a $150k. Con tu saldo de efectivo actual, tu pista (runway) se ha reducido a apenas cuatro meses.",
+                            "targetTerms": [
+                                "financials",
+                                "burn rate",
+                                "cash balance",
+                                "runway"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Mateo Ruiz",
+                            "text": "We know. The hardware prototyping for the MVP was more expensive than anticipated. However, we've finally achieved strong product-market fit; our churn rate is less than 2%.",
+                            "translation": "Lo sabemos. El prototipado de hardware para el MVP fue más caro de lo anticipado. Sin embargo, finalmente hemos logrado un fuerte ajuste producto-mercado (product-market fit); nuestra tasa de abandono (churn rate) es de menos del 2%.",
+                            "targetTerms": [
+                                "MVP",
+                                "product-market fit",
+                                "churn rate"
+                            ]
+                        },
+                        {
+                            "speaker": "Jessica Chen",
+                            "text": "That low churn rate is exactly what we want to see. But before we lead your Series A round, we need to conduct full technical due diligence and review the updated cap table.",
+                            "translation": "Esa baja tasa de abandono es exactamente lo que queremos ver. Pero antes de liderar tu ronda Serie A, necesitamos realizar una debida diligencia (due diligence) técnica completa y revisar la tabla de capitalización (cap table) actualizada.",
+                            "targetTerms": [
+                                "Series A round",
+                                "due diligence",
+                                "cap table"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Mateo Ruiz",
+                            "text": "We are ready. We have also filed two provisional patents for the core sensor technology, ensuring our IP is fully protected before scaling.",
+                            "translation": "Estamos listos. También hemos presentado dos patentes provisionales para la tecnología de sensores central, asegurando que nuestra propiedad intelectual (IP) esté completamente protegida antes de escalar.",
+                            "targetTerms": [
+                                "provisional patents",
+                                "sensor technology",
+                                "IP",
+                                "scaling"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "We spend a lot of money and will run out in 4 months.",
+                            "native": "Our burn rate is high, reducing our runway to four months.",
+                            "explanation": "En finanzas de startups, el gasto mensual para operar a pérdida se llama 'burn rate', y el tiempo de vida restante con el efectivo actual es el 'runway'."
+                        },
+                        {
+                            "school": "We checked that people like our first basic product.",
+                            "native": "Our MVP has demonstrated strong product-market fit.",
+                            "explanation": "El 'producto básico' es el Minimum Viable Product (MVP), y la aceptación comprobada en el mercado es el codiciado 'Product-Market Fit'."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Minimum Viable Product (MVP)",
+                        "ipa": "/ˈmɪn.ɪ.məm ˈvaɪ.ə.bəl ˈprɑː.dʌkt/",
+                        "es": "Producto Mínimo Viable (MVP)",
+                        "category": "Desarrollo de Producto",
+                        "definition": "A version of a product with just enough features to be usable by early customers who can then provide feedback for future product development.",
+                        "collocations": [
+                            "launch an MVP",
+                            "iterate the MVP",
+                            "core functionality"
+                        ],
+                        "falseFriends": "No significa que el producto es defectuoso o 'mínimamente funcional' de mala forma; es la versión más pequeña posible para validar un negocio.",
+                        "nativeUsage": "Instead of building the full app, we launched an MVP using a simple landing page to test customer interest."
+                    },
+                    {
+                        "term": "Burn Rate",
+                        "ipa": "/bɜːrn reɪt/",
+                        "es": "Tasa de Quema / Consumo (de Capital)",
+                        "category": "Finanzas de Startup",
+                        "definition": "The rate at which a new company is spending its venture capital to finance overhead before generating positive cash flow from operations.",
+                        "collocations": [
+                            "monthly burn rate",
+                            "reduce the burn rate",
+                            "cash flow"
+                        ],
+                        "falseFriends": "No es la tasa de incendios; es qué tan rápido la empresa está quemando (gastando) el dinero de los inversionistas.",
+                        "nativeUsage": "If we don't reduce our monthly burn rate, we will be out of business by Q3."
+                    },
+                    {
+                        "term": "Runway",
+                        "ipa": "/ˈrʌn.weɪ/",
+                        "es": "Pista (Tiempo de vida financiero)",
+                        "category": "Finanzas de Startup",
+                        "definition": "The amount of time a company has until it runs out of cash, assuming current income and expenses stay constant. Calculated as Cash Balance ÷ Monthly Burn Rate.",
+                        "collocations": [
+                            "extend the runway",
+                            "12 months of runway",
+                            "run out of cash"
+                        ],
+                        "falseFriends": "En este contexto no es una pista de aterrizaje para aviones, es la 'pista' de tiempo que tiene la empresa para despegar financieramente.",
+                        "nativeUsage": "The new $2M seed investment gives us 18 months of runway to finish developing the hardware."
+                    },
+                    {
+                        "term": "Due Diligence",
+                        "ipa": "/duː ˈdɪl.ɪ.dʒəns/",
+                        "es": "Debida Diligencia (Auditoría de Inversión)",
+                        "category": "Legal y Financiero",
+                        "definition": "An investigation, audit, or review performed to confirm facts or details of a matter under consideration, typically before a venture capital firm signs a term sheet.",
+                        "collocations": [
+                            "technical due diligence",
+                            "pass due diligence",
+                            "legal audit"
+                        ],
+                        "falseFriends": "No es simplemente ser 'diligente'; es una auditoría legal y financiera exhaustiva y formal.",
+                        "nativeUsage": "The VC firm discovered a flaw in our software architecture during their technical due diligence."
+                    },
+                    {
+                        "term": "Product-Market Fit (PMF)",
+                        "ipa": "/ˈprɑː.dʌkt ˈmɑːr.kɪt fɪt/",
+                        "es": "Ajuste Producto-Mercado",
+                        "category": "Estrategia",
+                        "definition": "The degree to which a product satisfies a strong market demand. It is the first step to building a successful venture.",
+                        "collocations": [
+                            "achieve PMF",
+                            "strong PMF",
+                            "scale after PMF"
+                        ],
+                        "falseFriends": "No es un producto 'en forma'; es el momento crítico donde el mercado realmente necesita y compra lo que estás haciendo.",
+                        "nativeUsage": "You shouldn't spend money on massive marketing campaigns until you have definitively achieved product-market fit."
+                    },
+                    {
+                        "term": "Cap Table",
+                        "ipa": "/kæp ˈteɪ.bəl/",
+                        "es": "Tabla de Capitalización",
+                        "category": "Legal y Financiero",
+                        "definition": "A spreadsheet or table that shows the capitalization, or ownership stakes, in a startup or early-stage company.",
+                        "collocations": [
+                            "clean cap table",
+                            "equity distribution",
+                            "stock options"
+                        ],
+                        "falseFriends": "No es una 'mesa con gorras'; es el documento legal que dice quién es dueño de qué porcentaje de la empresa.",
+                        "nativeUsage": "The new investor refused to fund us because our cap table was too complicated with too many early advisors holding large equity stakes."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "MVP & Product-Market Fit",
+                        "botQuestion": "Welcome to the Startup Incubator! Instead of spending two years building a perfect, complex app in secret, what is the 'lean' strategy you should use? Once you launch it, what is the ultimate goal (3-word phrase starting with P) that proves people actually want to buy it?",
+                        "requiredKeywords": [
+                            "mvp",
+                            "minimum",
+                            "viable",
+                            "product",
+                            "product-market",
+                            "fit",
+                            "pmf"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Perfect! You build a Minimum Viable Product (MVP) to quickly test your idea, and you keep iterating until you achieve Product-Market Fit (PMF) – the proof that the market actually wants your product.",
+                        "feedbackRetry": "Think about the acronym for 'Minimum Viable Product'. And what is the term for when your product perfectly matches the needs of the market?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Burn Rate & Runway",
+                        "botQuestion": "If your startup has $500,000 in the bank and you are spending $50,000 a month to pay developers without making any profit, what is the term for that $50k/month spending? And how many months of 'runway' do you have left?",
+                        "requiredKeywords": [
+                            "burn",
+                            "rate",
+                            "10",
+                            "ten",
+                            "months",
+                            "runway"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot-on! The $50k spending is your 'Burn Rate', and dividing your $500k cash balance by that burn rate means you have exactly 10 months of 'Runway' left before you go bankrupt.",
+                        "feedbackRetry": "The money you are 'burning' through each month is called the B____ R____. If you divide $500k by $50k, how many months of 'Runway' do you get?"
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "ent-m2",
