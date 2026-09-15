@@ -3984,7 +3984,7 @@ var LXP_COURSES = {
         "titleEN": "Software Development & Programming",
         "category": "technology",
         "level": "A2-B1",
-        "status": "catalog_blueprint",
+        "status": "full",
         "totalModules": 5,
         "standard": "ISO/IEC 25010 Software Engineering / Clean Code",
         "conocer": "EC1086 (Programación de Aplicaciones Web)",
@@ -4281,28 +4281,128 @@ var LXP_COURSES = {
                 "title": "High-Performance API Design: REST, GraphQL and gRPC",
                 "titleES": "Diseño de APIs de Alto Rendimiento: REST, GraphQL y gRPC",
                 "icon": "fa-solid fa-network-wired",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "soft-m2-r1",
+                        "title": "Comparing API Paradigms",
+                        "duration": "10 min",
+                        "content": "\n# Comparing API Paradigms\n\nIn modern software development, deciding how services communicate is foundational. We typically choose between REST, GraphQL, and gRPC based on the specific needs of the application.\n\n## REST (Representational State Transfer)\n\nREST is the most common architectural style. It uses standard HTTP methods (GET, POST, PUT, DELETE) and organizes data around **Resources** (like `/users` or `/orders`).\n- **Pros**: Easy to cache, widely understood, uses standard HTTP infrastructure.\n- **Cons**: Can lead to **Over-fetching** (getting more data than you need) or **Under-fetching** (requiring multiple requests to get all needed data).\n\n## GraphQL\n\nCreated by Facebook, GraphQL allows the client to specify exactly what data it wants. Instead of multiple endpoints, it exposes a single endpoint (`/graphql`).\n- **Pros**: Solves over/under-fetching. Clients dictate the shape of the response.\n- **Cons**: Difficult to cache on the network edge. Can lead to complex, heavy database queries if not carefully optimized.\n\n## gRPC (gRPC Remote Procedure Calls)\n\nDeveloped by Google, gRPC uses **Protocol Buffers (Protobuf)** instead of JSON and runs over HTTP/2. It calls functions on remote servers as if they were local functions.\n- **Pros**: Extremely fast, heavily compressed binary payload, strong typing with Protobuf contracts. Ideal for microservice-to-microservice communication.\n- **Cons**: Harder to debug (payload is binary, not human-readable JSON), not natively supported by all web browsers.\n\n---\n> **Key Takeaway**: Use REST for public APIs, GraphQL for complex client-facing applications, and gRPC for internal, high-speed microservice communication.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Over-fetching",
+                                "es": "Sobrecarga de datos",
+                                "definition": "Downloading more data than the client actually needs for the UI."
+                            },
+                            {
+                                "en": "Payload",
+                                "es": "Carga útil",
+                                "definition": "The actual data being transmitted in an API request or response."
+                            },
+                            {
+                                "en": "Endpoint",
+                                "es": "Punto de acceso / Endpoint",
+                                "definition": "A specific URL where an API can be accessed by a client application."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "soft-m3",
                 "title": "Containerization & Orchestration: Docker and Kubernetes",
                 "titleES": "Contenedores y Orquestación: Docker y Kubernetes",
                 "icon": "fa-solid fa-box",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "soft-m3-r1",
+                        "title": "The Shift to Containers",
+                        "duration": "12 min",
+                        "content": "\n# The Shift to Containers\n\nBefore containers, applications were deployed on physical servers or Virtual Machines (VMs). A VM requires a full guest Operating System (OS), which consumes gigabytes of memory and takes minutes to boot. \n\n## Docker and Containers\n\n**Docker** revolutionized deployment by introducing lightweight containers. A container packages the application code along with its specific dependencies (libraries, runtime) but **shares the host OS kernel**. \n- Containers boot in milliseconds.\n- They ensure environment consistency: \"It works on my machine\" means it will work in production.\n\n## Kubernetes (K8s)\n\nWhen you only have three containers, Docker is enough. But modern enterprise architectures have thousands of microservices. How do you ensure they are running, scale them up during high traffic, and restart them if they crash?\n\n**Kubernetes** is an open-source container orchestration system.\n- **Pods**: The smallest deployable unit in K8s, usually containing one container.\n- **Nodes**: Physical or virtual machines that run the Pods.\n- **Control Plane**: The master system that schedules Pods across Nodes and ensures the desired state.\n\n---\n> **Key Takeaway**: Docker builds and runs the container. Kubernetes manages and orchestrates thousands of them in a production cluster.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Container",
+                                "es": "Contenedor",
+                                "definition": "A lightweight, standalone, executable package of software that includes everything needed to run an application."
+                            },
+                            {
+                                "en": "Kernel",
+                                "es": "Núcleo / Kernel",
+                                "definition": "The core program of an operating system that manages system resources."
+                            },
+                            {
+                                "en": "Orchestration",
+                                "es": "Orquestación",
+                                "definition": "The automated configuration, management, and coordination of computer systems and software."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "soft-m4",
                 "title": "Test-Driven Development (TDD) & Automated CI/CD",
-                "titleES": "Desarrollo Guiado por Pruebas (TDD) y CI/CD Automatizado",
-                "icon": "fa-solid fa-vial-circle-check",
-                "readings": []
+                "titleES": "Desarrollo Basado en Pruebas (TDD) y CI/CD Automatizado",
+                "icon": "fa-solid fa-code-branch",
+                "readings": [
+                    {
+                        "id": "soft-m4-r1",
+                        "title": "TDD and the Deployment Pipeline",
+                        "duration": "10 min",
+                        "content": "\n# TDD and the Deployment Pipeline\n\nHigh-performing software teams release code to production multiple times a day. This velocity is only possible through strict testing practices and automated deployment pipelines.\n\n## Test-Driven Development (TDD)\n\nTDD is a software development process that relies on a very short development cycle:\n1. **Red**: Write a failing test for a new feature.\n2. **Green**: Write the minimum amount of code necessary to make the test pass.\n3. **Refactor**: Clean up the code while ensuring the test stays green.\n\nTDD ensures that every piece of logic is covered by tests, reducing bugs and allowing developers to refactor with confidence.\n\n## CI/CD (Continuous Integration and Continuous Deployment)\n\n**Continuous Integration (CI)**:\nEvery time a developer pushes code to a repository (like GitHub), an automated pipeline builds the app and runs all unit tests. If a test fails, the code cannot be merged.\n\n**Continuous Deployment (CD)**:\nIf the CI phase passes, the CD pipeline automatically deploys the code to a staging or production environment. This eliminates manual release processes, drastically reducing human error.\n\n---\n> **Key Takeaway**: Without comprehensive automated tests (TDD), CI/CD pipelines become a mechanism to push bugs into production faster.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Refactor",
+                                "es": "Refactorizar",
+                                "definition": "Restructuring existing computer code without changing its external behavior."
+                            },
+                            {
+                                "en": "Pipeline",
+                                "es": "Tubería / Pipeline",
+                                "definition": "A set of automated processes that allow developers and DevOps to compile, build, and deploy code."
+                            },
+                            {
+                                "en": "Staging Environment",
+                                "es": "Entorno de pruebas / Staging",
+                                "definition": "An environment for testing that exactly resembles the production environment."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "soft-m5",
                 "title": "Design Patterns & Scalable Microservices Architecture",
                 "titleES": "Patrones de Diseño y Arquitectura de Microservicios",
-                "icon": "fa-solid fa-diagram-project",
-                "readings": []
+                "icon": "fa-solid fa-sitemap",
+                "readings": [
+                    {
+                        "id": "soft-m5-r1",
+                        "title": "Microservices and Resilience",
+                        "duration": "12 min",
+                        "content": "\n# Microservices and Resilience\n\nUnlike a **Monolith**, where all application logic is compiled into a single massive codebase, a **Microservices Architecture** divides the application into small, independent services that communicate over a network.\n\n## Benefits of Microservices\n- **Independent Scaling**: If the billing service experiences high load, you can scale it independently without scaling the user profile service.\n- **Technology Agnosticism**: Team A can write their service in Go, while Team B uses Python.\n\n## The Cost of Distributed Systems\nMicroservices introduce network latency and the possibility of partial failures. What happens if Service A calls Service B, but Service B is down?\n\n### The Circuit Breaker Pattern\nTo prevent cascading failures, architects implement the **Circuit Breaker** pattern. If Service B starts timing out, the Circuit Breaker \"opens\" and immediately fails any new requests from Service A without waiting. This gives Service B time to recover instead of overwhelming it with retries.\n\n### Event-Driven Architecture\nInstead of synchronous HTTP calls (which block and wait), services can communicate asynchronously using an Event Bus (like Apache Kafka). If the email service goes down, the checkout service can still process an order and just drop an \"OrderCreated\" event into the queue. The email service will process it when it comes back online.\n\n---\n> **Key Takeaway**: Microservices solve organizational scaling problems but introduce distributed computing complexity that must be managed with patterns like Circuit Breakers and Event Queues.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Monolith",
+                                "es": "Monolito",
+                                "definition": "A unified software application that is self-contained and independent from other computing applications."
+                            },
+                            {
+                                "en": "Latency",
+                                "es": "Latencia",
+                                "definition": "The delay before a transfer of data begins following an instruction for its transfer."
+                            },
+                            {
+                                "en": "Asynchronous",
+                                "es": "Asíncrono",
+                                "definition": "Communication where the sender does not wait for a response before continuing its work."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             }
         ]
     },
@@ -10879,7 +10979,7 @@ var LXP_COURSES = {
         "titleEN": "Engineering & Advanced Manufacturing",
         "category": "engineering",
         "level": "A2-B1",
-        "status": "catalog_blueprint",
+        "status": "full",
         "totalModules": 5,
         "standard": "ISO 9001 / AS9100 / ASTM Additive Manufacturing",
         "conocer": "EC0845 (Supervisión de Procesos de Manufactura)",
@@ -11169,32 +11269,132 @@ var LXP_COURSES = {
                 "quiz": []
             },
             {
-                "id": "am-m2",
+                "id": "mfg-m2",
                 "title": "Metal Additive Manufacturing: DMLS, SLM and Binder Jetting",
-                "titleES": "Manufactura Aditiva Metálica: DMLS, SLM y Binder Jetting",
-                "icon": "fa-solid fa-cubes-stacked",
-                "readings": []
+                "titleES": "Manufactura Aditiva de Metales: DMLS, SLM y Binder Jetting",
+                "icon": "fa-solid fa-cube",
+                "readings": [
+                    {
+                        "id": "mfg-m2-r1",
+                        "title": "Industrial 3D Printing of Metals",
+                        "duration": "10 min",
+                        "content": "\n# Industrial 3D Printing of Metals\n\nWhile plastic 3D printing is common, the aerospace and medical industries rely on **Metal Additive Manufacturing (AM)** to create lightweight, complex parts that cannot be traditionally machined.\n\n## DMLS and SLM\n\n**Direct Metal Laser Sintering (DMLS)** and **Selective Laser Melting (SLM)** are powder-bed fusion techniques. \n1. A thin layer of fine metal powder (like Titanium or Inconel) is spread across the build platform.\n2. A high-powered laser melts the powder exactly where the part's cross-section is.\n3. The platform lowers, more powder is spread, and the process repeats.\n\nThese methods create parts with extreme density and strength, ideal for jet engine turbine blades.\n\n## Binder Jetting\n\nUnlike lasers that melt metal, **Binder Jetting** uses a print head to deposit a liquid binding agent onto the powder bed. This creates a \"green part\" which is fragile. The part is then placed in a sintering furnace to burn away the binder and fuse the metal particles together.\n- **Advantage**: It is much faster and cheaper for mass production than laser-based systems.\n\n---\n> **Key Takeaway**: Metal Additive Manufacturing allows engineers to design organic, topology-optimized shapes that reduce the weight of an aircraft by hundreds of kilograms.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Sintering",
+                                "es": "Sinterización",
+                                "definition": "The process of compacting and forming a solid mass of material by heat or pressure without melting it to the point of liquefaction."
+                            },
+                            {
+                                "en": "Powder-bed fusion",
+                                "es": "Fusión de lecho de polvo",
+                                "definition": "An additive manufacturing process in which thermal energy selectively fuses regions of a powder bed."
+                            },
+                            {
+                                "en": "Topology optimization",
+                                "es": "Optimización topológica",
+                                "definition": "A mathematical method that optimizes material layout within a given design space."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
-                "id": "am-m3",
+                "id": "mfg-m3",
                 "title": "Digital Twins & Industrial Simulation (Siemens, Dassault)",
                 "titleES": "Gemelos Digitales y Simulación Industrial",
-                "icon": "fa-solid fa-vr-cardboard",
-                "readings": []
+                "icon": "fa-solid fa-clone",
+                "readings": [
+                    {
+                        "id": "mfg-m3-r1",
+                        "title": "The Power of the Digital Twin",
+                        "duration": "12 min",
+                        "content": "\n# The Power of the Digital Twin\n\nBuilding a physical prototype of a new factory line costs millions of dollars. Instead, modern engineers use a **Digital Twin**.\n\n## What is a Digital Twin?\n\nA Digital Twin is a highly complex virtual model that is the exact counterpart of a physical physical object or process. Companies use software like **Siemens NX** or **Dassault Systèmes DELMIA** to create these twins.\n\n## Simulation Before Production\n\nBefore a single robot is installed on the factory floor, the Digital Twin is used to:\n1. **Simulate Kinematics**: Verify that the robotic arms won't collide with each other.\n2. **Ergonomic Assessment**: Ensure human workers can reach tools without straining their backs.\n3. **Throughput Analysis**: Calculate exactly how many parts the line will produce per hour.\n\n## Real-Time Synchronization\n\nThe most advanced Digital Twins are connected to the physical factory via Industrial IoT sensors. If a physical motor overheats, the virtual Digital Twin turns red in the simulation software, allowing remote engineers to diagnose the problem instantly.\n\n---\n> **Key Takeaway**: Digital Twins eliminate the \"trial and error\" phase of manufacturing, saving millions in capital expenditure (CapEx) and preventing costly downtime.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Digital Twin",
+                                "es": "Gemelo Digital",
+                                "definition": "A virtual representation that serves as the real-time digital counterpart of a physical object or process."
+                            },
+                            {
+                                "en": "Kinematics",
+                                "es": "Cinemática",
+                                "definition": "The branch of mechanics concerned with the motion of objects without reference to the forces which cause the motion."
+                            },
+                            {
+                                "en": "Throughput",
+                                "es": "Rendimiento / Tasa de producción",
+                                "definition": "The amount of material or items passing through a system or process."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
-                "id": "am-m4",
+                "id": "mfg-m4",
                 "title": "High-Speed 5-Axis CNC Milling & Toolpath Optimization",
-                "titleES": "Fresado CNC de 5 Ejes y Optimización de Trayectorias",
-                "icon": "fa-solid fa-screwdriver-wrench",
-                "readings": []
+                "titleES": "Fresado CNC de 5 Ejes de Alta Velocidad",
+                "icon": "fa-solid fa-cogs",
+                "readings": [
+                    {
+                        "id": "mfg-m4-r1",
+                        "title": "Advanced Subtractive Manufacturing",
+                        "duration": "10 min",
+                        "content": "\n# Advanced Subtractive Manufacturing\n\nWhile 3D printing adds material, **CNC (Computer Numerical Control)** machining removes material from a solid block to achieve extreme tolerances (up to 0.001 mm).\n\n## 3-Axis vs 5-Axis CNC\n\nA standard 3-axis CNC moves a cutting tool along the X, Y, and Z axes. \nA **5-Axis CNC** adds two rotational axes (usually A and B). This allows the cutting tool to approach the part from almost any angle.\n- **Benefit**: Complex parts (like an impeller) can be machined in a single setup, drastically reducing human error and production time.\n\n## High-Speed Machining (HSM)\n\nHSM involves using very high spindle speeds (e.g., 20,000 RPM) but very light cuts. This reduces the heat generated on the cutting tool and transfers the heat into the chips that fly away. \n\n## Toolpath Optimization\n\nCAM (Computer-Aided Manufacturing) software calculates the exact path the tool must take. Modern **Trochoidal Milling** toolpaths keep the tool engaged with the material at a constant angle, preventing tool breakage and allowing for much deeper cuts.\n\n---\n> **Key Takeaway**: 5-axis CNC machines and optimized toolpaths have transformed subtractive manufacturing, making it possible to cut hardened steels faster and with tighter tolerances than ever before.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Subtractive Manufacturing",
+                                "es": "Manufactura Sustractiva",
+                                "definition": "Manufacturing processes that remove material from a solid block to produce a part."
+                            },
+                            {
+                                "en": "Spindle",
+                                "es": "Husillo",
+                                "definition": "The rotating axis of the machine, which often holds the cutting tool."
+                            },
+                            {
+                                "en": "Tolerance",
+                                "es": "Tolerancia",
+                                "definition": "The allowable limit or limits of variation in a physical dimension."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
-                "id": "am-m5",
+                "id": "mfg-m5",
                 "title": "Overall Equipment Effectiveness (OEE) & Kaizen Principles",
                 "titleES": "Efectividad Global del Equipo (OEE) y Principios Kaizen",
                 "icon": "fa-solid fa-chart-line",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "mfg-m5-r1",
+                        "title": "Measuring Manufacturing Productivity",
+                        "duration": "10 min",
+                        "content": "\n# Measuring Manufacturing Productivity\n\nHow do plant managers know if their factory is truly efficient? They use a gold-standard metric called **OEE (Overall Equipment Effectiveness)**.\n\n## The Three Factors of OEE\n\nOEE is calculated by multiplying three factors:\n1. **Availability**: Is the machine running when it is scheduled to run? (Subtracts downtime, breakdowns, and setup time).\n2. **Performance**: Is the machine running at its maximum designed speed? (Subtracts minor stops and slow cycles).\n3. **Quality**: Is the machine producing good parts? (Subtracts scrap, defects, and parts that need rework).\n\n**OEE = Availability × Performance × Quality**\n\nAn OEE of 100% means you are producing only good parts, as fast as possible, with no stop time. World-class manufacturing plants aim for an OEE of 85%.\n\n## Kaizen: Continuous Improvement\n\nWhen OEE is low, engineers use **Kaizen** (Japanese for \"Continuous Improvement\"). It is the philosophy that small, incremental changes made daily will result in massive productivity gains over time. \nInstead of spending a million dollars on a new machine, Kaizen asks: \"How can we reduce the tool changeover time by 3 minutes today?\"\n\n---\n> **Key Takeaway**: OEE gives you a mathematical baseline for factory performance, while Kaizen provides the cultural philosophy to constantly improve that number.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Downtime",
+                                "es": "Tiempo de inactividad / Paro",
+                                "definition": "Time during which a machine, especially a computer, is out of action or unavailable for use."
+                            },
+                            {
+                                "en": "Scrap",
+                                "es": "Desecho / Chatarra",
+                                "definition": "Manufactured parts that do not meet quality standards and must be discarded or melted down."
+                            },
+                            {
+                                "en": "Changeover",
+                                "es": "Cambio de formato / Cambio de modelo",
+                                "definition": "The process of converting a line or machine from running one product to another."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             }
         ]
     },
@@ -11256,7 +11456,7 @@ var LXP_COURSES = {
         "titleEN": "Mechanical Engineering & Mechatronics",
         "category": "engineering",
         "level": "A2-B1",
-        "status": "catalog_blueprint",
+        "status": "full",
         "totalModules": 5,
         "standard": "ASME BTH-1 / ISO 12100 Machine Safety",
         "conocer": "EC1120 (Mantenimiento de Sistemas Mecatrónicos)",
@@ -11548,32 +11748,132 @@ var LXP_COURSES = {
                 "quiz": []
             },
             {
-                "id": "mech-m2",
+                "id": "mecha-m2",
                 "title": "Actuators & Servomotors: Closed-Loop PID Motion Control",
-                "titleES": "Actuadores y Servomotores: Control de Movimiento PID",
-                "icon": "fa-solid fa-rotate",
-                "readings": []
+                "titleES": "Actuadores y Servomotores: Control PID de Lazo Cerrado",
+                "icon": "fa-solid fa-cogs",
+                "readings": [
+                    {
+                        "id": "mecha-m2-r1",
+                        "title": "Principles of Closed-Loop Control",
+                        "duration": "10 min",
+                        "content": "\n# Principles of Closed-Loop Control\n\nIn mechatronics, moving a robotic arm precisely to a specific coordinate requires more than just sending voltage to a motor. It requires a **closed-loop system** with constant feedback.\n\n## Servomotors vs Stepper Motors\n\n- **Stepper Motors**: Move in discrete steps (e.g., 1.8 degrees per pulse). They operate in an *open-loop*, meaning the controller assumes the motor reached the position. If the motor gets stuck, the controller doesn't know.\n- **Servomotors**: Use a high-speed DC or AC motor coupled with an encoder (sensor) that constantly reports the exact rotational position back to the controller.\n\n## The PID Controller\n\nTo ensure the servomotor reaches its target quickly without overshooting, engineers use a **PID (Proportional-Integral-Derivative)** controller.\n1. **Proportional (P)**: The further away from the target, the harder the motor pushes.\n2. **Integral (I)**: Looks at past errors to eliminate steady-state error (e.g., if friction stops the arm just short of the target).\n3. **Derivative (D)**: Looks at the rate of change and acts like a brake to prevent the arm from swinging past the target (overshoot).\n\n---\n> **Key Takeaway**: Servomotors paired with finely tuned PID controllers are the foundation of precise, high-speed industrial robotics.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Closed-loop",
+                                "es": "Lazo cerrado / Bucle cerrado",
+                                "definition": "A control system that uses feedback from the output to control the input."
+                            },
+                            {
+                                "en": "Encoder",
+                                "es": "Codificador (Sensor de posición)",
+                                "definition": "A sensor that translates mechanical motion into electrical signals to report position or speed."
+                            },
+                            {
+                                "en": "Overshoot",
+                                "es": "Sobrepaso",
+                                "definition": "When a system exceeds its target before correcting itself."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
-                "id": "mech-m3",
+                "id": "mecha-m3",
                 "title": "Electro-Pneumatic & Hydraulic Power Transmission Systems",
-                "titleES": "Sistemas de Transmisión Electro-Neumática e Hidráulica",
-                "icon": "fa-solid fa-faucet-drip",
-                "readings": []
+                "titleES": "Sistemas de Transmisión de Potencia Electro-Neumática e Hidráulica",
+                "icon": "fa-solid fa-compress-arrows-alt",
+                "readings": [
+                    {
+                        "id": "mecha-m3-r1",
+                        "title": "Fluid Power in Industrial Automation",
+                        "duration": "12 min",
+                        "content": "\n# Fluid Power in Industrial Automation\n\nWhen electric motors aren't enough to generate massive linear force, mechatronics engineers turn to fluid power: **Pneumatics** and **Hydraulics**.\n\n## Pneumatics (Air)\n\nPneumatic systems use compressed air to generate fast, clean, and safe linear motion.\n- **Common Components**: Compressors, air prep units (FRL - Filter, Regulator, Lubricator), directional control valves, and pneumatic cylinders.\n- **Applications**: High-speed sorting, pick-and-place packaging, and automated assembly where cleanliness is critical (e.g., food processing).\n- **Limitation**: Air is compressible, so pneumatics are not ideal for stopping a load at a precise intermediate position.\n\n## Hydraulics (Oil)\n\nHydraulic systems use pressurized liquid (usually mineral oil).\n- **Advantage**: Because liquid is virtually incompressible, hydraulics can generate immense, steady force and hold heavy loads in precise positions.\n- **Applications**: Heavy stamping presses, construction equipment, and injection molding machines.\n- **Limitation**: Prone to leaks, messy, and requires robust, heavy hosing.\n\n## Electro-Pneumatics\n\nModern systems are \"electro-pneumatic\". A PLC (Programmable Logic Controller) sends an electrical 24V signal to a **solenoid valve**, which magnetically shifts a spool to redirect the pressurized air, extending or retracting the cylinder.\n\n---\n> **Key Takeaway**: Use pneumatics for high speed and clean environments. Use hydraulics for immense force and rigidity.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Compressible",
+                                "es": "Compresible",
+                                "definition": "Capable of being reduced in volume by pressure (like air)."
+                            },
+                            {
+                                "en": "Solenoid valve",
+                                "es": "Electroválvula",
+                                "definition": "An electromechanically operated valve used to control the flow of fluid or air."
+                            },
+                            {
+                                "en": "Cylinder",
+                                "es": "Cilindro / Pistón",
+                                "definition": "An actuator that creates linear motion using fluid power."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
-                "id": "mech-m4",
+                "id": "mecha-m4",
                 "title": "Shaft Couplings, Bearing Selection and Harmonic Drives",
-                "titleES": "Acoplamientos de Ejes, Rodamientos y Reductores Armónicos",
-                "icon": "fa-solid fa-ring",
-                "readings": []
+                "titleES": "Acoplamientos de Ejes, Selección de Rodamientos y Reductores Armónicos",
+                "icon": "fa-solid fa-wrench",
+                "readings": [
+                    {
+                        "id": "mecha-m4-r1",
+                        "title": "Mechanical Power Transmission",
+                        "duration": "10 min",
+                        "content": "\n# Mechanical Power Transmission\n\nGetting power from a motor shaft to a robotic joint requires careful mechanical design. Any play or looseness in the mechanical system will ruin the precision of the PID controller.\n\n## Backlash and Harmonic Drives\n\n**Backlash** is the clearance or \"play\" between mating gear teeth. In a robotic arm, even 1 millimeter of backlash at the shoulder joint translates to massive inaccuracy at the gripper.\n\nTo solve this, industrial robots use **Harmonic Drives** (Strain wave gearing). \n- A Harmonic Drive has zero backlash.\n- It provides a massive gear reduction ratio in a very compact, lightweight package.\n- It works by using a flexible splined cup that deforms slightly as it rotates inside a circular ring gear.\n\n## Bearings and Couplings\n\n- **Couplings**: Connect the motor shaft to the driven shaft. A *flexible coupling* is often used to accommodate slight misalignments and absorb shock.\n- **Bearings**: Support rotating shafts while reducing friction. *Linear guide bearings* are used in CNC machines for smooth, rigid linear travel, while *tapered roller bearings* handle both radial (side-to-side) and axial (thrust) loads.\n\n---\n> **Key Takeaway**: The best software controller in the world cannot compensate for a poorly designed mechanical drivetrain with high backlash and friction.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Backlash",
+                                "es": "Juego mecánico / Holgura",
+                                "definition": "The clearance or lost motion in a mechanism caused by gaps between the parts."
+                            },
+                            {
+                                "en": "Harmonic Drive",
+                                "es": "Reductor armónico",
+                                "definition": "A type of gear system that can improve certain characteristics compared to traditional gearing, specifically zero backlash."
+                            },
+                            {
+                                "en": "Bearing",
+                                "es": "Rodamiento / Balero",
+                                "definition": "A machine element that constrains relative motion to only the desired motion, and reduces friction between moving parts."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
-                "id": "mech-m5",
+                "id": "mecha-m5",
                 "title": "Thermal Management in Electronic Enclosures & Heat Pipes",
                 "titleES": "Gestión Térmica en Gabinetes Electrónicos y Tubos de Calor",
-                "icon": "fa-solid fa-temperature-arrow-up",
-                "readings": []
+                "icon": "fa-solid fa-thermometer-half",
+                "readings": [
+                    {
+                        "id": "mecha-m5-r1",
+                        "title": "Cooling High-Power Electronics",
+                        "duration": "12 min",
+                        "content": "\n# Cooling High-Power Electronics\n\nMechatronic systems combine heavy mechanical loads with sensitive electronics. As motor drivers and processors consume power, they generate heat. Without proper **thermal management**, components degrade rapidly or fail catastrophically.\n\n## Heat Transfer Mechanisms\n\nEngineers must manage heat through three mechanisms:\n1. **Conduction**: Heat transfer through solid materials (e.g., a copper heatsink attached to a CPU).\n2. **Convection**: Heat transfer via fluids or air (e.g., a fan blowing cold air across the heatsink fins).\n3. **Radiation**: Heat emitted as infrared waves.\n\n## Advanced Cooling Technologies\n\nFor extreme environments where fans are not enough (or where dust prevents their use), engineers use advanced solutions:\n\n- **Heat Pipes**: A sealed copper tube containing a small amount of liquid (like water) under a vacuum. The liquid boils at the hot end, absorbing massive heat, travels to the cool end as vapor, condenses, and returns via capillary action. Heat pipes transfer heat hundreds of times faster than solid copper.\n- **Liquid Cooling**: Pumping a coolant (like water-glycol) through cold plates attached directly to high-power components, commonly used in EV battery packs and high-end server racks.\n\n---\n> **Key Takeaway**: Effective thermal design requires moving heat away from the source via conduction (heatsinks/heat pipes) and exhausting it from the system via convection (fans/liquid loops).\n",
+                        "vocabulary": [
+                            {
+                                "en": "Conduction",
+                                "es": "Conducción",
+                                "definition": "The transfer of heat through a solid material from a region of higher temperature to lower temperature."
+                            },
+                            {
+                                "en": "Convection",
+                                "es": "Convección",
+                                "definition": "The transfer of heat by the circulation or movement of the heated parts of a liquid or gas."
+                            },
+                            {
+                                "en": "Heat Pipe",
+                                "es": "Tubo de calor",
+                                "definition": "A heat-transfer device that combines the principles of both thermal conductivity and phase transition."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             }
         ]
     },
@@ -11583,7 +11883,7 @@ var LXP_COURSES = {
         "titleEN": "Biotechnology & Life Sciences",
         "category": "science",
         "level": "A2-B1",
-        "status": "catalog_blueprint",
+        "status": "full",
         "totalModules": 5,
         "standard": "cGMP / FDA 21 CFR Part 211 / ISO 14644 Biocleanrooms",
         "conocer": "EC1240 (Operación de Procesos Biotecnológicos)",
@@ -11879,32 +12179,132 @@ var LXP_COURSES = {
                 "quiz": []
             },
             {
-                "id": "bio-m2",
+                "id": "biotech-m2",
                 "title": "CRISPR-Cas9 & Genetic Engineering Methodologies",
                 "titleES": "CRISPR-Cas9 y Metodologías de Ingeniería Genética",
                 "icon": "fa-solid fa-dna",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "biotech-m2-r1",
+                        "title": "Precision Gene Editing",
+                        "duration": "10 min",
+                        "content": "\n# Precision Gene Editing\n\nFor decades, genetic engineering relied on inefficient techniques like viral vectors to insert DNA randomly. **CRISPR-Cas9** changed everything by allowing scientists to edit DNA with absolute precision.\n\n## The CRISPR Mechanism\n\nCRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) is actually a bacterial immune system used to fight off viruses. Scientists adapted it into a two-part tool:\n1. **Cas9 Enzyme**: The \"molecular scissors\" that can cut the double-stranded DNA.\n2. **Guide RNA (gRNA)**: A customizable piece of RNA that guides the Cas9 enzyme to the exact spot on the genome that needs to be cut.\n\n## Knock-outs and Knock-ins\n\nOnce Cas9 cuts the DNA, the cell's natural repair mechanisms kick in:\n- **NHEJ (Non-Homologous End Joining)**: A sloppy repair process that usually disables the gene (a \"Knock-out\"). Useful for turning off disease-causing genes.\n- **HDR (Homology-Directed Repair)**: If scientists provide a DNA template, the cell will use it to fix the break, effectively pasting new genetic code into the genome (a \"Knock-in\").\n\n---\n> **Key Takeaway**: CRISPR-Cas9 revolutionized biotechnology because it is programmable, cheap, and works in almost every living organism, from bacteria to humans.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Genome",
+                                "es": "Genoma",
+                                "definition": "The complete set of genes or genetic material present in a cell or organism."
+                            },
+                            {
+                                "en": "Enzyme",
+                                "es": "Enzima",
+                                "definition": "A substance produced by a living organism which acts as a catalyst to bring about a specific biochemical reaction."
+                            },
+                            {
+                                "en": "Knock-out",
+                                "es": "Inactivación genética (Knock-out)",
+                                "definition": "A genetic technique in which an organism is engineered to carry genes that have been made inoperative."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
-                "id": "bio-m3",
+                "id": "biotech-m3",
                 "title": "Downstream Processing: Chromatography & Ultrafiltration",
-                "titleES": "Procesamiento Downstream: Cromatografía y Ultrafiltración",
+                "titleES": "Procesamiento Descendente: Cromatografía y Ultrafiltración",
                 "icon": "fa-solid fa-filter",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "biotech-m3-r1",
+                        "title": "Purifying Biological Products",
+                        "duration": "12 min",
+                        "content": "\n# Purifying Biological Products\n\nIn a bioreactor, genetically engineered bacteria produce a valuable protein (like insulin). But that protein is swimming in a \"soup\" of bacterial cells, nutrients, and waste. The process of extracting and purifying the target protein is called **Downstream Processing**.\n\n## Centrifugation and Lysis\n\nFirst, the cells must be separated from the liquid broth (often using huge industrial centrifuges). If the protein is inside the bacteria, the cells must be broken open (lysed) using high-pressure homogenizers.\n\n## Chromatography\n\nThe most critical purification step is **Chromatography**. The liquid is pumped through a massive column packed with specialized resin beads.\n- **Affinity Chromatography**: The beads are coated with a molecule that *only* binds to the target protein. Everything else washes through. The target protein is then released using a chemical wash.\n- **Ion-Exchange Chromatography**: Separates proteins based on their electrical charge.\n\n## Ultrafiltration\n\nFinally, the purified protein must be concentrated. **Ultrafiltration** pushes the liquid through a microscopic membrane. The pores are just small enough to trap the protein while letting water and salts pass through.\n\n---\n> **Key Takeaway**: Downstream processing is often the most expensive and complex part of biomanufacturing, sometimes accounting for up to 80% of total production costs.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Downstream processing",
+                                "es": "Procesamiento descendente",
+                                "definition": "The recovery and purification of biosynthetic products from natural sources such as animal or bacterial tissue."
+                            },
+                            {
+                                "en": "Chromatography",
+                                "es": "Cromatografía",
+                                "definition": "A laboratory technique for the separation of a mixture into its components."
+                            },
+                            {
+                                "en": "Centrifuge",
+                                "es": "Centrífuga",
+                                "definition": "A machine with a rapidly rotating container that applies centrifugal force to its contents to separate fluids of different densities."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
-                "id": "bio-m4",
+                "id": "biotech-m4",
                 "title": "Current Good Manufacturing Practices (cGMP) in Cleanrooms",
                 "titleES": "Buenas Prácticas de Manufactura (cGMP) en Cuartos Limpios",
-                "icon": "fa-solid fa-square-check",
-                "readings": []
+                "icon": "fa-solid fa-shield-virus",
+                "readings": [
+                    {
+                        "id": "biotech-m4-r1",
+                        "title": "Ensuring Sterility in Biomanufacturing",
+                        "duration": "10 min",
+                        "content": "\n# Ensuring Sterility in Biomanufacturing\n\nIf you are manufacturing a biologic drug (like a monoclonal antibody) that will be injected into a patient's bloodstream, a single speck of dust or bacteria can be deadly.\n\n## Cleanrooms\n\nBiomanufacturing takes place in **Cleanrooms**. These are highly controlled environments classified by the maximum number of particles permitted per cubic meter of air.\n- They use massive **HEPA (High-Efficiency Particulate Air)** filters to constantly cycle and clean the air.\n- The rooms are kept at positive pressure, so if a door opens, air rushes *out*, preventing contaminated air from coming *in*.\n\n## cGMP (Current Good Manufacturing Practices)\n\nThe FDA legally enforces **cGMP**. It is a strict system that ensures products are consistently produced and controlled according to quality standards.\n- **Traceability**: Every single raw material must be tracked. If a batch fails, engineers must be able to trace exactly which bag of sugar fed the bacteria 3 weeks ago.\n- **Gowning**: Humans are the dirtiest things in a cleanroom. Operators must wear full sterile \"bunny suits\" (goggles, masks, coveralls, double gloves) to prevent shedding skin cells.\n\n---\n> **Key Takeaway**: In cGMP biomanufacturing, documentation is as important as the product. The golden rule is: \"If it wasn't documented, it didn't happen.\"\n",
+                        "vocabulary": [
+                            {
+                                "en": "Cleanroom",
+                                "es": "Cuarto limpio / Sala blanca",
+                                "definition": "An engineered space that maintains a very low concentration of airborne particulates."
+                            },
+                            {
+                                "en": "Sterile",
+                                "es": "Estéril",
+                                "definition": "Free from bacteria or other living microorganisms; totally clean."
+                            },
+                            {
+                                "en": "Traceability",
+                                "es": "Trazabilidad",
+                                "definition": "The capability to trace something, like a raw material, through all stages of production."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
-                "id": "bio-m5",
+                "id": "biotech-m5",
                 "title": "Enzyme Kinetics & Industrial Biocatalysis Applications",
-                "titleES": "Cinética Enzimática y Biocatálisis Industrial",
-                "icon": "fa-solid fa-atom",
-                "readings": []
+                "titleES": "Cinética Enzimática y Aplicaciones de Biocatálisis Industrial",
+                "icon": "fa-solid fa-flask",
+                "readings": [
+                    {
+                        "id": "biotech-m5-r1",
+                        "title": "Industrial Biocatalysis",
+                        "duration": "10 min",
+                        "content": "\n# Industrial Biocatalysis\n\nTraditional chemical manufacturing relies on toxic solvents, extreme heat, and high pressure to force reactions. **Biocatalysis** uses natural enzymes to perform these exact same chemical reactions at room temperature, in water, with zero toxic byproducts.\n\n## Enzyme Kinetics\n\nEnzymes are protein catalysts. **Enzyme Kinetics** is the study of how fast they work.\n- **Substrate**: The target molecule the enzyme binds to.\n- **Active Site**: The precise physical \"pocket\" on the enzyme where the reaction happens.\n- **Michaelis-Menten Equation**: The mathematical model used by engineers to calculate the maximum velocity ($V_{max}$) of the reaction and how efficiently the enzyme binds to the substrate.\n\n## Industrial Applications\n\nEnzymes are used at a massive scale today:\n- **Detergents**: Protease and lipase enzymes in laundry detergent break down blood and fat stains at cold temperatures.\n- **Food & Beverage**: Amylase enzymes convert corn starch into high-fructose corn syrup.\n- **Pharmaceuticals**: Highly specific enzymes are used to synthesize complex drug molecules that are impossible to build using traditional chemistry.\n\n---\n> **Key Takeaway**: Industrial biocatalysis is rapidly replacing toxic chemical engineering, leading to greener, more sustainable manufacturing processes across the globe.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Catalyst",
+                                "es": "Catalizador",
+                                "definition": "A substance that increases the rate of a chemical reaction without itself undergoing any permanent chemical change."
+                            },
+                            {
+                                "en": "Substrate",
+                                "es": "Sustrato",
+                                "definition": "The substance on which an enzyme acts."
+                            },
+                            {
+                                "en": "Kinetics",
+                                "es": "Cinética",
+                                "definition": "The branch of chemistry or biochemistry concerned with measuring and studying the rates of reactions."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             }
         ]
     },
@@ -11914,7 +12314,7 @@ var LXP_COURSES = {
         "titleEN": "Space & Satellite Technology",
         "category": "science",
         "level": "A2-B1",
-        "status": "catalog_blueprint",
+        "status": "full",
         "totalModules": 5,
         "standard": "NASA-STD / ESA ECSS / CubeSat Design Specification",
         "conocer": "EC1450 (Integración y Operación Satelital)",
@@ -12215,30 +12615,130 @@ var LXP_COURSES = {
             {
                 "id": "space-m2",
                 "title": "CubeSat Subsystems: EPS, OBC, ADCS and Payload Integration",
-                "titleES": "Subsistemas CubeSat: EPS, OBC, ADCS e Integración",
-                "icon": "fa-solid fa-cube",
-                "readings": []
+                "titleES": "Subsistemas CubeSat: EPS, OBC, ADCS e Integración de Carga Útil",
+                "icon": "fa-solid fa-satellite",
+                "readings": [
+                    {
+                        "id": "space-m2-r1",
+                        "title": "Anatomy of a Nanosatellite",
+                        "duration": "10 min",
+                        "content": "\n# Anatomy of a Nanosatellite\n\nA **CubeSat** is a class of nanosatellites that use a standard size and form factor. The standard unit (1U) is a $10 \\times 10 \\times 10$ cm cube weighing roughly 1 kg. Despite their small size, they contain all the critical subsystems of a school-bus-sized satellite.\n\n## Core Subsystems\n\n- **EPS (Electrical Power System)**: Consists of solar panels (often deployable), batteries, and a power distribution board. It manages the energy budget of the satellite.\n- **OBC (On-Board Computer)**: The \"brain.\" It manages data storage, executes commands, and schedules when the payload should take readings.\n- **ADCS (Attitude Determination and Control System)**: Figures out where the satellite is pointing (using sun sensors, star trackers, and magnetometers) and physically rotates it (using reaction wheels or magnetorquers) to point cameras at Earth or solar panels at the sun.\n\n## The Payload\n\nThe **Payload** is the reason the satellite was launched. It could be a high-resolution camera, a radio receiver, or a biological experiment. Every subsystem exists purely to keep the payload alive and transmit its data back to Earth.\n\n---\n> **Key Takeaway**: CubeSats have democratized space by standardizing the satellite bus, allowing universities and startups to launch payloads into Low Earth Orbit (LEO) at a fraction of historical costs.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Attitude",
+                                "es": "Actitud (Orientación)",
+                                "definition": "The orientation of a spacecraft relative to its direction of motion or another frame of reference."
+                            },
+                            {
+                                "en": "Payload",
+                                "es": "Carga útil",
+                                "definition": "The cargo carried by a spacecraft, which performs the primary mission."
+                            },
+                            {
+                                "en": "Subsystem",
+                                "es": "Subsistema",
+                                "definition": "A self-contained system within a larger system."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "space-m3",
                 "title": "Rocket Propulsion: Chemical, Cryogenic and Hall-Effect Thrusters",
-                "titleES": "Propulsión de Cohetes: Química, Criogénica e Iónica",
-                "icon": "fa-solid fa-fire",
-                "readings": []
+                "titleES": "Propulsión de Cohetes: Propulsores Químicos, Criogénicos y de Efecto Hall",
+                "icon": "fa-solid fa-rocket",
+                "readings": [
+                    {
+                        "id": "space-m3-r1",
+                        "title": "Reaching Orbit and Beyond",
+                        "duration": "12 min",
+                        "content": "\n# Reaching Orbit and Beyond\n\nSpacecraft propulsion is divided into two phases: Launch (escaping Earth's gravity) and In-Space Propulsion (maneuvering once in orbit).\n\n## Chemical Propulsion\n\nLaunch vehicles rely on massive chemical rockets. They mix a **fuel** (like RP-1 kerosene or liquid hydrogen) with an **oxidizer** (like liquid oxygen) in a combustion chamber.\n- **Cryogenic Engines**: Use super-chilled liquid gases. The space shuttle main engines used liquid hydrogen/oxygen. They are highly efficient but extremely difficult to handle and store.\n- **Hypergolic Engines**: Use chemicals that spontaneously ignite when they touch. They are highly reliable (no spark plug needed) and are often used for maneuvering thrusters, but they are highly toxic.\n\n## Electric Propulsion (Hall-Effect Thrusters)\n\nOnce a satellite is in orbit, it doesn't need millions of pounds of thrust. It needs efficiency. \n**Hall-Effect Thrusters** use electricity (from solar panels) to ionize a noble gas (like Xenon) and accelerate it to extremely high speeds using a magnetic field. \n- **Advantage**: They have very high **Specific Impulse ($I_{sp}$)**, meaning they use very little propellant.\n- **Disadvantage**: They produce very low thrust—equivalent to the weight of a piece of paper. They accelerate the spacecraft very slowly over months.\n\n---\n> **Key Takeaway**: Chemical rockets provide the brute force needed to escape gravity, while electric propulsion provides the extreme efficiency needed for long-duration deep space missions.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Cryogenic",
+                                "es": "Criogénico",
+                                "definition": "Relating to the production and behavior of materials at very low temperatures."
+                            },
+                            {
+                                "en": "Oxidizer",
+                                "es": "Oxidante",
+                                "definition": "A substance that provides the oxygen necessary for combustion."
+                            },
+                            {
+                                "en": "Thrust",
+                                "es": "Empuje",
+                                "definition": "The propulsive force generated by a rocket engine."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "space-m4",
                 "title": "Satellite Ground Stations: Telemetry, Tracking and Command (TT&C)",
-                "titleES": "Estaciones Terrenas: Telemetría, Seguimiento y Comando",
-                "icon": "fa-solid fa-tower-broadcast",
-                "readings": []
+                "titleES": "Estaciones Terrenas: Telemetría, Rastreo y Comando (TT&C)",
+                "icon": "fa-solid fa-satellite-dish",
+                "readings": [
+                    {
+                        "id": "space-m4-r1",
+                        "title": "Talking to Spacecraft",
+                        "duration": "10 min",
+                        "content": "\n# Talking to Spacecraft\n\nA satellite in orbit is useless if we cannot receive its data or send it instructions. This communication is handled by the **Ground Segment**, specifically Ground Stations with large parabolic dish antennas.\n\n## The TT&C Subsystem\n\n1. **Telemetry**: The \"health check\" data the satellite sends down. This includes battery voltage, temperatures, and error logs.\n2. **Tracking**: Determining the exact orbital position and velocity of the satellite from Earth.\n3. **Command**: The instructions sent *up* to the satellite (e.g., \"turn on the camera,\" or \"fire the thrusters for 3 seconds\").\n\n## The Challenge of LEO\n\nSatellites in **Low Earth Orbit (LEO)** travel at roughly 7.8 km per second. From the perspective of a single Ground Station on Earth, the satellite will rise over the horizon and set just 10 minutes later. \n- During this short \"pass,\" the antenna must physically track the fast-moving satellite across the sky.\n- The satellite must download all its collected data (often gigabytes of imagery) in that tiny 10-minute window before connection is lost.\n\n---\n> **Key Takeaway**: To maintain continuous contact with a LEO satellite, operators must rent time on a global network of ground stations distributed across different continents.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Telemetry",
+                                "es": "Telemetría",
+                                "definition": "The automated communications process by which measurements and other data are collected at remote or inaccessible points and transmitted to receiving equipment."
+                            },
+                            {
+                                "en": "Orbit",
+                                "es": "Órbita",
+                                "definition": "The gravitationally curved trajectory of an object, such as the trajectory of a planet around a star or a natural satellite around a planet."
+                            },
+                            {
+                                "en": "Antenna",
+                                "es": "Antena",
+                                "definition": "A rod, wire, or other device used to transmit or receive radio or television signals."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "space-m5",
                 "title": "Space Debris Mitigation & Radiation Hardening in Orbit",
-                "titleES": "Mitigación de Basura Espacial y Blindaje contra Radiación",
-                "icon": "fa-solid fa-shield",
-                "readings": []
+                "titleES": "Mitigación de Basura Espacial y Endurecimiento contra Radiación",
+                "icon": "fa-solid fa-meteor",
+                "readings": [
+                    {
+                        "id": "space-m5-r1",
+                        "title": "Surviving the Orbital Environment",
+                        "duration": "12 min",
+                        "content": "\n# Surviving the Orbital Environment\n\nSpace is an incredibly hostile environment for both humans and electronics. The two greatest threats to a satellite's lifespan are radiation and collisions.\n\n## Radiation Hardening\n\nOutside Earth's protective atmosphere, satellites are bombarded by high-energy cosmic rays and solar flares.\n- **Single Event Upsets (SEUs)**: A high-energy particle can strike a memory chip and flip a '0' to a '1'. This \"bit flip\" can crash the onboard computer or corrupt data.\n- **Radiation Hardening**: To survive, aerospace engineers use specialized, older-generation computer chips with physical shielding. They also use software redundancy, where three computers calculate the same math problem; if one gets hit by radiation and disagrees with the other two, it is ignored (Triple Modular Redundancy).\n\n## Space Debris Mitigation\n\nThere are over 30,000 tracked pieces of \"space junk\" larger than a softball in orbit. At orbital speeds, a collision with a 1-centimeter screw carries the energy of an exploding hand grenade.\n- **The Kessler Syndrome**: A theoretical scenario where collisions create more debris, causing a cascade effect that could render Low Earth Orbit unusable for generations.\n- **Mitigation**: International regulations now require satellites to have a de-orbit plan. At the end of their 5-year mission, satellites must lower their orbit so they burn up safely in the atmosphere, rather than floating dead in space for centuries.\n\n---\n> **Key Takeaway**: Designing for space is fundamentally different from terrestrial engineering. You cannot send a technician to fix a broken computer or buff out a scratch in Low Earth Orbit.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Radiation",
+                                "es": "Radiación",
+                                "definition": "The emission of energy as electromagnetic waves or as moving subatomic particles, especially high-energy particles which cause ionization."
+                            },
+                            {
+                                "en": "Debris",
+                                "es": "Escombros / Basura",
+                                "definition": "Scattered pieces of waste or remains."
+                            },
+                            {
+                                "en": "Redundancy",
+                                "es": "Redundancia",
+                                "definition": "The inclusion of extra components which are not strictly necessary to functioning, in case of failure in other components."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             }
         ]
     },
@@ -12248,7 +12748,7 @@ var LXP_COURSES = {
         "titleEN": "Environmental & Sustainability",
         "category": "science",
         "level": "A2-B1",
-        "status": "catalog_blueprint",
+        "status": "full",
         "totalModules": 5,
         "standard": "ISO 14001 Environmental Management / GHG Protocol / ESG",
         "conocer": "EC0945 (Gestión Ambiental y Huella de Carbono)",
@@ -12540,32 +13040,132 @@ var LXP_COURSES = {
                 "quiz": []
             },
             {
-                "id": "env-m2",
+                "id": "enviro-m2",
                 "title": "Industrial Wastewater Treatment: Reverse Osmosis and ZLD Systems",
-                "titleES": "Tratamiento de Aguas Residuales: Ósmosis Inversa y ZLD",
-                "icon": "fa-solid fa-droplet",
-                "readings": []
+                "titleES": "Tratamiento de Aguas Residuales: Ósmosis Inversa y Sistemas ZLD",
+                "icon": "fa-solid fa-water",
+                "readings": [
+                    {
+                        "id": "enviro-m2-r1",
+                        "title": "Closing the Water Loop",
+                        "duration": "10 min",
+                        "content": "\n# Closing the Water Loop\n\nIndustrial processes, particularly in semiconductor and textile manufacturing, consume millions of gallons of freshwater daily and produce highly toxic effluent. **Zero Liquid Discharge (ZLD)** is an engineering approach that ensures not a single drop of wastewater leaves the factory.\n\n## Reverse Osmosis (RO)\n\nThe workhorse of industrial water treatment is **Reverse Osmosis**. \nNormal osmosis naturally moves water from low salt concentration to high salt concentration. Reverse Osmosis uses massive, high-pressure pumps to force salty wastewater through a semi-permeable membrane in the *opposite* direction.\n- Pure water molecules pass through the membrane (the permeate).\n- Heavy metals, salts, and chemicals are blocked and concentrated (the brine).\n\n## ZLD Systems (Zero Liquid Discharge)\n\nRO can recover about 80% of the water. To achieve ZLD, the remaining toxic brine is pumped into thermal evaporators and crystallizers.\n- The water is boiled off as steam, captured, and condensed back into pure liquid water.\n- What remains is a dry, solid block of salt and chemicals that is safely disposed of in a specialized landfill or sold as raw material.\n\n---\n> **Key Takeaway**: ZLD systems require massive amounts of energy to run high-pressure pumps and evaporators, but they protect local ecosystems from irreversible contamination.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Effluent",
+                                "es": "Efluente / Aguas residuales",
+                                "definition": "Liquid waste or sewage discharged into a river or the sea."
+                            },
+                            {
+                                "en": "Membrane",
+                                "es": "Membrana",
+                                "definition": "A pliable sheet-like structure acting as a boundary, lining, or partition in an organism or filtration system."
+                            },
+                            {
+                                "en": "Brine",
+                                "es": "Salmuera",
+                                "definition": "Water highly impregnated with salt."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
-                "id": "env-m3",
+                "id": "enviro-m3",
                 "title": "Carbon Capture, Utilization and Storage (CCUS) Technologies",
-                "titleES": "Captura, Utilización y Almacenamiento de Carbono (CCUS)",
-                "icon": "fa-solid fa-cloud-arrow-down",
-                "readings": []
+                "titleES": "Tecnologías de Captura, Uso y Almacenamiento de Carbono (CCUS)",
+                "icon": "fa-solid fa-smog",
+                "readings": [
+                    {
+                        "id": "enviro-m3-r1",
+                        "title": "Tackling Industrial Emissions",
+                        "duration": "12 min",
+                        "content": "\n# Tackling Industrial Emissions\n\nWhile renewable energy is replacing coal for electricity, industries like cement and steel manufacturing chemically release $CO_2$ directly from their raw materials. To reach net-zero emissions, we must capture this carbon at the source.\n\n## Carbon Capture Technologies\n\n- **Post-Combustion Capture**: The exhaust gases (flue gas) from a factory are bubbled through a liquid solvent (like amines). The solvent chemically binds to the $CO_2$ but lets the nitrogen and oxygen escape. The solvent is then heated to release the pure $CO_2$.\n- **Direct Air Capture (DAC)**: Giant industrial fans pull normal ambient air over solid sorbent filters that trap $CO_2$. This is much more difficult because $CO_2$ makes up only 0.04% of the atmosphere.\n\n## Storage and Utilization\n\nOnce we have captured thousands of tons of compressed liquid $CO_2$, what do we do with it?\n1. **Storage**: The $CO_2$ is pumped 2 kilometers underground into porous rock formations (like depleted oil wells or saline aquifers) where it mineralizes into solid rock over thousands of years.\n2. **Utilization**: $CO_2$ can be injected into concrete to make it stronger, or combined with green hydrogen to synthesize carbon-neutral aviation fuels.\n\n---\n> **Key Takeaway**: CCUS is not an excuse to keep burning fossil fuels, but it is an absolute engineering necessity for decarbonizing heavy industries like cement and steel.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Flue gas",
+                                "es": "Gas de combustión",
+                                "definition": "The gas exiting to the atmosphere via a flue, which is a pipe or channel for conveying exhaust gases."
+                            },
+                            {
+                                "en": "Solvent",
+                                "es": "Solvente / Disolvente",
+                                "definition": "Able to dissolve other substances."
+                            },
+                            {
+                                "en": "Aquifer",
+                                "es": "Acuífero",
+                                "definition": "A body of permeable rock which can contain or transmit groundwater."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
-                "id": "env-m4",
+                "id": "enviro-m4",
                 "title": "Circular Economy: Cradle-to-Cradle Life Cycle Assessment (LCA)",
                 "titleES": "Economía Circular y Análisis de Ciclo de Vida (LCA)",
-                "icon": "fa-solid fa-arrows-spin",
-                "readings": []
+                "icon": "fa-solid fa-recycle",
+                "readings": [
+                    {
+                        "id": "enviro-m4-r1",
+                        "title": "Designing for the End of Life",
+                        "duration": "10 min",
+                        "content": "\n# Designing for the End of Life\n\nThe traditional manufacturing model is linear: **Take, Make, Dispose**. The **Circular Economy** aims to decouple economic growth from resource consumption by designing products that never become waste.\n\n## Life Cycle Assessment (LCA)\n\nTo truly know if a product is \"green,\" engineers perform a **Life Cycle Assessment**. This is a rigorous scientific method to calculate the environmental impact of a product from the moment the raw materials are mined until it is thrown away.\n- **Scope 1 Emissions**: Direct emissions from owned or controlled sources (e.g., fuel burned in company trucks).\n- **Scope 2 Emissions**: Indirect emissions from the generation of purchased electricity.\n- **Scope 3 Emissions**: All other indirect emissions in the value chain (e.g., the emissions created by the supplier who mined the aluminum).\n\n## Cradle-to-Cradle Design\n\n\"Cradle-to-Grave\" thinking ends at the landfill. \"Cradle-to-Cradle\" thinking dictates that at the end of a product's life, 100% of its materials must return to the industrial cycle (as high-quality raw materials) or the biological cycle (as safe compost).\n- **Example**: Designing a smartphone using standardized screws instead of chemical adhesives, so that when it breaks, a robot can easily disassemble it and recycle the rare-earth metals.\n\n---\n> **Key Takeaway**: True sustainability is not just about recycling plastic bottles; it is a fundamental redesign of industrial supply chains to ensure materials flow in infinite loops.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Linear",
+                                "es": "Lineal",
+                                "definition": "Arranged in or extending along a straight or nearly straight line (Take-Make-Dispose)."
+                            },
+                            {
+                                "en": "Scope",
+                                "es": "Alcance",
+                                "definition": "The extent of the area or subject matter that something deals with or to which it is relevant."
+                            },
+                            {
+                                "en": "Supply chain",
+                                "es": "Cadena de suministro",
+                                "definition": "The sequence of processes involved in the production and distribution of a commodity."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
-                "id": "env-m5",
+                "id": "enviro-m5",
                 "title": "ISO 14001 Environmental Auditing & Zero-Waste Certification",
-                "titleES": "Auditorías ISO 14001 y Certificación Basura Cero",
+                "titleES": "Auditoría Ambiental ISO 14001 y Certificación Zero-Waste",
                 "icon": "fa-solid fa-clipboard-check",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "enviro-m5-r1",
+                        "title": "Environmental Management Systems",
+                        "duration": "10 min",
+                        "content": "\n# Environmental Management Systems\n\nCorporate sustainability promises are meaningless without standardized, third-party verification. **ISO 14001** is the internationally recognized standard for Environmental Management Systems (EMS).\n\n## The ISO 14001 Framework\n\nISO 14001 does not dictate exactly how much a company must reduce its emissions. Instead, it provides a framework to ensure the company is legally compliant and actively improving. It follows the **Plan-Do-Check-Act (PDCA)** cycle:\n- **Plan**: Establish environmental objectives (e.g., reduce electricity use by 10%).\n- **Do**: Implement the processes (e.g., install motion-sensor LED lighting).\n- **Check**: Monitor and measure the processes (e.g., audit the monthly electricity bill).\n- **Act**: Take actions to continually improve (e.g., install solar panels).\n\n## Zero-Waste to Landfill Certification\n\nA specific and rigorous goal for modern factories is achieving \"Zero Waste to Landfill\" certification.\nThis means that at least 99% of all waste generated by the facility is diverted from landfills through:\n- **Reduction**: Using less packaging material.\n- **Reuse**: Sending wooden pallets back to the supplier.\n- **Recycling**: Segregating plastics, metals, and cardboard.\n- **Waste-to-Energy (WtE)**: Burning non-recyclable trash in high-temperature incinerators to generate electricity (the absolute last resort).\n\n---\n> **Key Takeaway**: Achieving ISO 14001 certification proves to clients, investors, and governments that a factory's environmental commitments are backed by rigorous, audited data.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Audit",
+                                "es": "Auditoría",
+                                "definition": "An official inspection of an organization's accounts or procedures, typically by an independent body."
+                            },
+                            {
+                                "en": "Compliance",
+                                "es": "Cumplimiento (legal o normativo)",
+                                "definition": "The action or fact of complying with a wish or command, or adhering to laws and regulations."
+                            },
+                            {
+                                "en": "Landfill",
+                                "es": "Vertedero / Basurero",
+                                "definition": "A place to dispose of refuse and other waste material by burying it and covering it over with soil."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             }
         ]
     },
@@ -12627,7 +13227,7 @@ var LXP_COURSES = {
         "titleEN": "Materials Science & Nanotechnology",
         "category": "science",
         "level": "A2-B1",
-        "status": "catalog_blueprint",
+        "status": "full",
         "totalModules": 5,
         "standard": "ASTM International Standards for Advanced Materials",
         "conocer": "EC1180 (Análisis de Propiedades de Materiales Avanzados)",
@@ -12925,30 +13525,130 @@ var LXP_COURSES = {
             {
                 "id": "mat-m2",
                 "title": "Carbon Nanomaterials: Graphene, Carbon Nanotubes and Fullerenes",
-                "titleES": "Nanomateriales de Carbono: Grafeno y Nanotubos",
-                "icon": "fa-solid fa-circle-nodes",
-                "readings": []
+                "titleES": "Nanomateriales de Carbono: Grafeno, Nanotubos de Carbono y Fullerenos",
+                "icon": "fa-solid fa-hexagon-nodes",
+                "readings": [
+                    {
+                        "id": "mat-m2-r1",
+                        "title": "The Carbon Revolution",
+                        "duration": "10 min",
+                        "content": "\n# The Carbon Revolution\n\nCarbon is one of the most versatile elements on Earth. By rearranging its atoms at the nanoscale, scientists have created materials with properties that seem like science fiction.\n\n## Graphene\n\n**Graphene** is a single layer of carbon atoms arranged in a 2D hexagonal lattice (like chicken wire). \n- It is 200 times stronger than steel by weight.\n- It is an incredible conductor of heat and electricity.\n- It is almost completely transparent.\n- **Applications**: Flexible electronics, advanced batteries, and ultra-strong composite materials.\n\n## Carbon Nanotubes (CNTs)\n\nImagine taking a sheet of graphene and rolling it into a seamless cylinder. That is a **Carbon Nanotube**. \nDepending on how the sheet is rolled (its \"chirality\"), a CNT can be either metallic (conducting electricity like copper) or a semiconductor (acting like silicon).\n\n## Fullerenes\n\nAlso known as \"Buckyballs,\" fullerenes are carbon molecules in the shape of a hollow sphere (like a soccer ball made of 60 carbon atoms). They are primarily used in medical research for targeted drug delivery, acting as a microscopic cage to carry medicine directly to a cancer cell.\n\n---\n> **Key Takeaway**: Carbon nanomaterials possess mechanical and electrical properties far superior to traditional metals, but mass-producing them cheaply remains the biggest hurdle for commercialization.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Lattice",
+                                "es": "Red cristalina / Estructura reticular",
+                                "definition": "A regular repeated three-dimensional arrangement of atoms, ions, or molecules in a metal or other crystalline solid."
+                            },
+                            {
+                                "en": "Semiconductor",
+                                "es": "Semiconductor",
+                                "definition": "A solid substance that has a conductivity between that of an insulator and that of most metals."
+                            },
+                            {
+                                "en": "Chirality",
+                                "es": "Quiralidad",
+                                "definition": "A property of asymmetry important in several branches of science."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "mat-m3",
                 "title": "Electron Microscopy: SEM, TEM, AFM and Diffraction Spectroscopy",
                 "titleES": "Microscopía Electrónica: SEM, TEM, AFM y Espectroscopía",
                 "icon": "fa-solid fa-microscope",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "mat-m3-r1",
+                        "title": "Seeing the Invisible",
+                        "duration": "12 min",
+                        "content": "\n# Seeing the Invisible\n\nTraditional optical microscopes are limited by the wavelength of visible light; they cannot resolve anything smaller than 200 nanometers. To see viruses, nanoparticles, or individual atoms, scientists use **Electron Microscopes**.\n\n## SEM and TEM\n\nInstead of light, these microscopes fire a beam of highly energetic electrons in a vacuum.\n- **Scanning Electron Microscope (SEM)**: Bounces electrons *off the surface* of a sample to create stunning, high-resolution 3D images of topographies (like the eye of a fly or the surface of a microchip).\n- **Transmission Electron Microscope (TEM)**: Shoots electrons *through* an ultra-thin slice of a sample. It provides internal structural information and has a much higher resolution than SEM, capable of imaging individual columns of atoms.\n\n## Atomic Force Microscopy (AFM)\n\nAFM doesn't use lenses or beams. Instead, it uses a microscopic physical probe (a cantilever) that literally \"feels\" the surface of the sample, much like a blind person reading Braille. It can map a surface down to the atomic level.\n\n## Spectroscopy\n\nWhile microscopy shows you what a material looks like, **Spectroscopy** (like X-Ray Diffraction or EDS) tells you exactly what elements are in it by measuring how the material scatters X-rays or light.\n\n---\n> **Key Takeaway**: In nanotechnology, you cannot build what you cannot see. Advanced microscopy is the foundational tool that makes nanoscale engineering possible.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Resolution",
+                                "es": "Resolución",
+                                "definition": "The shortest distance between two points on a specimen that can still be distinguished by the observer or camera system as separate entities."
+                            },
+                            {
+                                "en": "Vacuum",
+                                "es": "Vacío",
+                                "definition": "A space entirely devoid of matter."
+                            },
+                            {
+                                "en": "Topography",
+                                "es": "Topografía",
+                                "definition": "The arrangement of the natural and artificial physical features of an area."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "mat-m4",
                 "title": "Thin Film Deposition: PVD Sputtering, CVD and Atomic Layer Deposition",
-                "titleES": "Deposición de Películas Delgadas: PVD, CVD y ALD",
+                "titleES": "Deposición de Películas Finas: PVD, CVD y ALD",
                 "icon": "fa-solid fa-layer-group",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "mat-m4-r1",
+                        "title": "Building Atom by Atom",
+                        "duration": "10 min",
+                        "content": "\n# Building Atom by Atom\n\nThe semiconductor industry (which makes computer chips) and the solar panel industry rely on **Thin Film Deposition**—the process of applying a microscopic layer of material onto a substrate (like a silicon wafer).\n\n## PVD (Physical Vapor Deposition)\n\nIn PVD (often called Sputtering), a solid block of metal (the target) is placed in a vacuum chamber. Argon plasma is fired at the target, knocking individual metal atoms loose. These atoms fly across the chamber and stick to the substrate, forming a pure, highly conductive metallic film. It is purely a physical process.\n\n## CVD (Chemical Vapor Deposition)\n\nIn CVD, the substrate is exposed to volatile chemical gases in a heated chamber. The gases react with the heat and deposit a solid film onto the surface. Unlike PVD, this involves a chemical reaction. It is often used to deposit high-quality insulators (like silicon dioxide).\n\n## ALD (Atomic Layer Deposition)\n\nAs microchips get smaller, precision becomes paramount. ALD is a variant of CVD that deposits material exactly *one atomic layer at a time*. It pulses gas A into the chamber, which bonds to the surface. Then it purges the chamber and pulses gas B, which reacts with layer A. This creates perfect, uniform films even on complex 3D nanostructures.\n\n---\n> **Key Takeaway**: Without Thin Film Deposition, modern electronics—from the screen on your smartphone to the processor running it—would not exist.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Substrate",
+                                "es": "Sustrato",
+                                "definition": "The base material on which processing is conducted to produce electronic devices."
+                            },
+                            {
+                                "en": "Plasma",
+                                "es": "Plasma",
+                                "definition": "An ionized gas consisting of positive ions and free electrons."
+                            },
+                            {
+                                "en": "Volatile",
+                                "es": "Volátil",
+                                "definition": "Easily evaporated at normal temperatures."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "mat-m5",
                 "title": "Smart Polymers, Shape Memory Alloys (SMA) and Superconductors",
-                "titleES": "Polímeros Inteligentes, Aleaciones SMA y Superconductores",
-                "icon": "fa-solid fa-wand-magic-sparkles",
-                "readings": []
+                "titleES": "Polímeros Inteligentes, Aleaciones de Memoria y Superconductores",
+                "icon": "fa-solid fa-brain",
+                "readings": [
+                    {
+                        "id": "mat-m5-r1",
+                        "title": "Materials with a Memory",
+                        "duration": "10 min",
+                        "content": "\n# Materials with a Memory\n\nMost materials are passive (a piece of steel stays a piece of steel). **Smart Materials** actively respond to changes in their environment (temperature, stress, magnetic fields, or electricity).\n\n## Shape Memory Alloys (SMAs)\n\nAn SMA (like **Nitinol**, a mix of Nickel and Titanium) remembers its original shape. \n- You can bend a Nitinol wire completely out of shape when it is cold. \n- But if you heat it (by passing an electrical current through it, or dropping it in hot water), it instantly snaps back to its original shape with immense force. \n- **Applications**: Medical stents that expand inside an artery, or actuators in robotics that act like artificial muscles.\n\n## Smart Polymers\n\nAlso known as stimuli-responsive polymers, these plastics change their properties when exposed to stimuli like pH, temperature, or light. Some hydrogels shrink dramatically when heated, squeezing out water (useful for targeted drug delivery).\n\n## Superconductors\n\nNormally, when electricity flows through a wire, electrical resistance creates heat, wasting energy. **Superconductors** are materials that have exactly *zero electrical resistance* when cooled below a critical temperature (usually close to absolute zero, using liquid nitrogen or helium).\n- **Applications**: MRI machines, Maglev (magnetic levitation) bullet trains, and quantum computers.\n\n---\n> **Key Takeaway**: Smart materials blur the line between a structure and a machine, allowing components to sense and react without the need for complex electronics.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Alloy",
+                                "es": "Aleación",
+                                "definition": "A metal made by combining two or more metallic elements, especially to give greater strength or resistance to corrosion."
+                            },
+                            {
+                                "en": "Polymer",
+                                "es": "Polímero",
+                                "definition": "A substance that has a molecular structure consisting chiefly or entirely of a large number of similar units bonded together, e.g., many synthetic organic materials used as plastics and resins."
+                            },
+                            {
+                                "en": "Resistance",
+                                "es": "Resistencia (eléctrica)",
+                                "definition": "A measure of the difficulty to pass an electric current through a conductor."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             }
         ]
     },
@@ -14710,7 +15410,7 @@ var LXP_COURSES = {
         "titleEN": "Project Management & Professional Communication",
         "category": "career",
         "level": "A2-B1",
-        "status": "catalog_blueprint",
+        "status": "full",
         "totalModules": 5,
         "standard": "PMI PMBOK Guide 7th Edition / Agile Scrum Alliance",
         "conocer": "EC0435 (Gestión de Proyectos de Base Tecnológica)",
@@ -15003,30 +15703,130 @@ var LXP_COURSES = {
             {
                 "id": "pm-m2",
                 "title": "Critical Path Method (CPM), Gantt Charts and Resource Leveling",
-                "titleES": "Método de Ruta Crítica (CPM) y Nivelación de Recursos",
-                "icon": "fa-solid fa-timeline",
-                "readings": []
+                "titleES": "Ruta Crítica (CPM), Diagramas de Gantt y Nivelación de Recursos",
+                "icon": "fa-solid fa-project-diagram",
+                "readings": [
+                    {
+                        "id": "pm-m2-r1",
+                        "title": "Scheduling and The Critical Path",
+                        "duration": "10 min",
+                        "content": "\n# Scheduling and The Critical Path\n\nA project manager's primary tool for scheduling is the **Gantt Chart**, a visual timeline that shows when tasks start, when they end, and how they relate to each other.\n\n## Task Dependencies\nMost tasks cannot start until another finishes (Finish-to-Start dependency). For example, you cannot pour a concrete foundation until you have dug the hole. \n\n## The Critical Path Method (CPM)\nBecause of these dependencies, certain tasks form a chain. The **Critical Path** is the longest sequence of dependent tasks that must be completed on time for the project to finish by its deadline.\n- If a task *not* on the critical path is delayed by 2 days, the project deadline does not change.\n- If a task *on* the critical path is delayed by 1 hour, the entire project is delayed by 1 hour.\n\n## Resource Leveling\nSometimes the schedule requires 15 engineers on week 3, but you only have 10. **Resource Leveling** is the process of adjusting the schedule (often by delaying non-critical tasks) so that resource demand remains stable and achievable.\n\n---\n> **Key Takeaway**: Identifying the Critical Path tells the project manager exactly which tasks require their immediate daily attention, as there is zero margin for error.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Dependency",
+                                "es": "Dependencia",
+                                "definition": "A logical relationship where one task relies on the completion or initiation of another."
+                            },
+                            {
+                                "en": "Critical Path",
+                                "es": "Ruta Crítica",
+                                "definition": "The sequence of stages determining the minimum time needed for an operation."
+                            },
+                            {
+                                "en": "Resource Leveling",
+                                "es": "Nivelación de Recursos",
+                                "definition": "A technique in project management that resolves resource allocation problems."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "pm-m3",
                 "title": "Project Risk Management: FMEA Matrix and Mitigation Plans",
-                "titleES": "Gestión de Riesgos del Proyecto y Matriz FMEA",
-                "icon": "fa-solid fa-shield-halved",
-                "readings": []
+                "titleES": "Gestión de Riesgos: Matriz FMEA y Planes de Mitigación",
+                "icon": "fa-solid fa-exclamation-triangle",
+                "readings": [
+                    {
+                        "id": "pm-m3-r1",
+                        "title": "Anticipating Failure",
+                        "duration": "12 min",
+                        "content": "\n# Anticipating Failure\n\nIn complex projects, things will go wrong. **Risk Management** is the formal process of identifying what could go wrong *before* it happens, and deciding what to do about it.\n\n## The FMEA Matrix\n**Failure Mode and Effects Analysis (FMEA)** is a highly structured method for evaluating risks. Each potential risk is scored on three criteria, usually from 1 to 10:\n1. **Severity**: If this happens, how bad is the impact? (10 = catastrophic failure).\n2. **Occurrence**: How likely is this to happen? (10 = almost certain).\n3. **Detection**: If the problem occurs, how likely are we to notice it before it hits the customer? (10 = we have no way to detect it).\n\nMultiplying these three numbers gives the **Risk Priority Number (RPN)**. The team must address the risks with the highest RPNs first.\n\n## Mitigation Plans\nOnce a high-priority risk is identified, the project manager creates a **Mitigation Plan** to either lower the probability of occurrence (e.g., buying backup parts) or lower the severity (e.g., buying insurance).\n\n---\n> **Key Takeaway**: Good project managers do not hope for the best; they mathematically calculate the worst and plan for it using tools like the FMEA matrix.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Severity",
+                                "es": "Severidad / Gravedad",
+                                "definition": "The fact or condition of being severe, serious, or strict."
+                            },
+                            {
+                                "en": "Mitigation",
+                                "es": "Mitigación",
+                                "definition": "The action of reducing the severity, seriousness, or painfulness of something."
+                            },
+                            {
+                                "en": "Detection",
+                                "es": "Detección",
+                                "definition": "The action or process of identifying the presence of something concealed."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "pm-m4",
                 "title": "Stakeholder Communication & Conflict Resolution in Tech Projects",
                 "titleES": "Comunicación con Stakeholders y Resolución de Conflictos",
-                "icon": "fa-solid fa-comments",
-                "readings": []
+                "icon": "fa-solid fa-users",
+                "readings": [
+                    {
+                        "id": "pm-m4-r1",
+                        "title": "Managing People, Not Just Spreadsheets",
+                        "duration": "10 min",
+                        "content": "\n# Managing People, Not Just Spreadsheets\n\nA **Stakeholder** is anyone who is affected by the project or can influence it. This includes the client, the CEO, the engineering team, and even local government regulators.\n\n## The Stakeholder Register\nProject managers maintain a register mapping out each stakeholder's influence and interest. \n- A powerful client with high interest requires daily updates.\n- A low-power department with low interest just needs a monthly newsletter.\n\n## Conflict Resolution\nIn technical projects, conflicts usually arise over scope, schedule, or resources. When Team A needs the test lab at the same time as Team B, the Project Manager must intervene.\n- **Avoidance**: Ignoring the problem (rarely works).\n- **Compromise**: Both sides give up something.\n- **Collaboration (Win-Win)**: The ideal approach. The PM works with both teams to find a creative solution (e.g., running tests overnight using automation so both teams hit their goals).\n\n---\n> **Key Takeaway**: A project rarely fails solely due to technical problems; it fails because of poor communication and misaligned stakeholder expectations.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Stakeholder",
+                                "es": "Parte interesada / Stakeholder",
+                                "definition": "A person with an interest or concern in something, especially a business."
+                            },
+                            {
+                                "en": "Compromise",
+                                "es": "Compromiso / Término medio",
+                                "definition": "An agreement reached by each side making concessions."
+                            },
+                            {
+                                "en": "Scope",
+                                "es": "Alcance",
+                                "definition": "The combined objectives and requirements necessary to complete a project."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "pm-m5",
                 "title": "Statement of Work (SOW), SLA Governance and Milestone Sign-Off",
-                "titleES": "Declaración de Trabajo (SOW), SLAs y Cierre de Hitos",
+                "titleES": "Declaración de Trabajo (SOW), SLA y Cierre de Hitos",
                 "icon": "fa-solid fa-file-signature",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "pm-m5-r1",
+                        "title": "The Contractual Foundation",
+                        "duration": "10 min",
+                        "content": "\n# The Contractual Foundation\n\nBefore a project begins, the client and the vendor must agree on exactly what is being built. This is legally defined in the **Statement of Work (SOW)**.\n\n## The Statement of Work (SOW)\nThe SOW details the deliverables, the timeline, the payment schedule, and crucially, what is *out of scope*. If a client asks for a new feature midway through the project, the PM references the SOW to initiate a formal \"Change Request,\" which usually costs the client more money.\n\n## Service Level Agreements (SLA)\nFor ongoing services (like hosting a website), an **SLA** dictates the acceptable level of performance. For example, an SLA might guarantee 99.9% \"uptime.\" If the website goes down, the vendor owes the client a financial penalty.\n\n## Milestones and Sign-Off\nA project is broken into major phases called **Milestones**. When a milestone is reached, the client must formally \"sign-off\" on it. This proves they accept the work done so far and triggers the next payment invoice.\n\n---\n> **Key Takeaway**: The SOW and SLA protect the engineering team from \"scope creep\"—the slow, unapproved expansion of project requirements by the client.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Scope Creep",
+                                "es": "Desviación del alcance",
+                                "definition": "Changes, continuous or uncontrolled growth in a project's scope, at any point after the project begins."
+                            },
+                            {
+                                "en": "Deliverable",
+                                "es": "Entregable",
+                                "definition": "A thing able to be provided, especially as a product of a development process."
+                            },
+                            {
+                                "en": "Milestone",
+                                "es": "Hito",
+                                "definition": "An action or event marking a significant change or stage in development."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             }
         ]
     },
@@ -15036,7 +15836,7 @@ var LXP_COURSES = {
         "titleEN": "Entrepreneurship & Innovation English",
         "category": "career",
         "level": "A2-B1",
-        "status": "catalog_blueprint",
+        "status": "full",
         "totalModules": 5,
         "standard": "Venture Capital Due Diligence / Lean Startup Methodology",
         "conocer": "EC0777 (Desarrollo y Lanzamiento de Startups)",
@@ -15327,30 +16127,130 @@ var LXP_COURSES = {
             {
                 "id": "ent-m2",
                 "title": "Venture Capital Financing: SAFE Agreements, Seed Rounds and Cap Tables",
-                "titleES": "Financiamiento VC: Acuerdos SAFE y Tablas de Capitalización",
-                "icon": "fa-solid fa-coins",
-                "readings": []
+                "titleES": "Financiamiento VC: Acuerdos SAFE, Rondas Semilla y Cap Tables",
+                "icon": "fa-solid fa-chart-pie",
+                "readings": [
+                    {
+                        "id": "ent-m2-r1",
+                        "title": "Raising Startup Capital",
+                        "duration": "10 min",
+                        "content": "\n# Raising Startup Capital\n\nHigh-growth tech startups require capital to build their product before they generate revenue. They raise this money from Angel Investors and **Venture Capital (VC)** firms.\n\n## The SAFE Agreement\nIn the early days (Pre-Seed or Seed stages), pricing the company is difficult. Instead of issuing priced shares, startups use a **SAFE (Simple Agreement for Future Equity)**. \nThe investor gives the startup cash today. In return, the SAFE guarantees that the investor will receive shares in the future when the company raises a formal \"Series A\" priced round.\n\n## The Cap Table (Capitalization Table)\nThe **Cap Table** is a spreadsheet detailing exactly who owns what percentage of the company. \n- **Founders**: Usually start with 100%.\n- **Option Pool**: Shares reserved for early employees (usually 10-15%).\n- **Investors**: As the company raises money, they issue new shares to investors, which *dilutes* the ownership percentage of the founders.\n\n---\n> **Key Takeaway**: Understanding equity dilution is critical. A founder who raises too much money too early may end up owning only a tiny fraction of the company they built.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Equity",
+                                "es": "Capital social / Acciones",
+                                "definition": "The value of the shares issued by a company."
+                            },
+                            {
+                                "en": "Dilution",
+                                "es": "Dilución",
+                                "definition": "A reduction in the ownership percentage of a share of stock caused by the issuance of new shares."
+                            },
+                            {
+                                "en": "Venture Capital",
+                                "es": "Capital de riesgo",
+                                "definition": "Capital invested in a project in which there is a substantial element of risk, typically a new or expanding business."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "ent-m3",
                 "title": "Term Sheets: Pre-Money Valuation, Liquidation Preference and Vesting",
-                "titleES": "Hojas de Términos: Valuación Pre-Money y Preferencias",
-                "icon": "fa-solid fa-handshake",
-                "readings": []
+                "titleES": "Term Sheets: Valuación Pre-Money, Preferencia de Liquidación y Vesting",
+                "icon": "fa-solid fa-file-contract",
+                "readings": [
+                    {
+                        "id": "ent-m3-r1",
+                        "title": "Decoding the Term Sheet",
+                        "duration": "12 min",
+                        "content": "\n# Decoding the Term Sheet\n\nWhen a Venture Capital firm wants to invest, they issue a **Term Sheet**, a non-binding document outlining the financial and legal terms of the investment.\n\n## Valuation: Pre-Money vs. Post-Money\n- **Pre-Money Valuation**: What the company is worth *before* the investment arrives.\n- **Post-Money Valuation**: Pre-Money Valuation + The Investment Amount.\nIf your Pre-Money valuation is $8M and a VC invests $2M, your Post-Money valuation is $10M. The VC now owns 20% of the company ($2M / $10M).\n\n## Liquidation Preference\nThis clause protects the investor if the startup sells for a low price. A \"1x Liquidation Preference\" means that if the company is sold, the VC gets their original investment back *first*, before the founders get a single penny.\n\n## Vesting Schedules\nFounders do not get all their shares on day one. Shares are subject to **Vesting**, usually over 4 years with a \"1-year cliff.\" This means if a founder quits after 6 months, they walk away with 0% of the company, protecting the investors and the remaining co-founders.\n\n---\n> **Key Takeaway**: The Term Sheet defines who controls the board of directors and who gets paid when the company is sold. It is the most important legal document a founder will sign.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Valuation",
+                                "es": "Valuación",
+                                "definition": "An estimation of something's worth, especially one carried out by a professional appraiser."
+                            },
+                            {
+                                "en": "Vesting",
+                                "es": "Vesting (Adquisición de derechos)",
+                                "definition": "The process of earning the right to stock or stock options over time."
+                            },
+                            {
+                                "en": "Liquidation",
+                                "es": "Liquidación",
+                                "definition": "The process of bringing a business to an end and distributing its assets to claimants."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "ent-m4",
                 "title": "Lean Startup: Minimum Viable Product (MVP) and Pivot Strategies",
-                "titleES": "Lean Startup: Producto Mínimo Viable (MVP) y Estrategias Pivot",
-                "icon": "fa-solid fa-rotate-left",
-                "readings": []
+                "titleES": "Lean Startup: Producto Mínimo Viable (MVP) y Estrategias de Pivote",
+                "icon": "fa-solid fa-lightbulb",
+                "readings": [
+                    {
+                        "id": "ent-m4-r1",
+                        "title": "The Build-Measure-Learn Loop",
+                        "duration": "10 min",
+                        "content": "\n# The Build-Measure-Learn Loop\n\nHistorically, entrepreneurs wrote 50-page business plans, spent a year building the product in secret, and then launched—only to discover nobody wanted it. The **Lean Startup** methodology flips this entirely.\n\n## The Minimum Viable Product (MVP)\nInstead of building a perfect product, you build an **MVP**. This is the absolute bare-minimum version of your product required to test your core hypothesis with real customers.\n- If you want to start a food delivery app, don't build the app. Put up a simple webpage with a phone number and see if anyone actually calls.\n\n## Pivot or Persevere\nOnce the MVP is in the hands of customers, you measure the data. \n- If the data proves your hypothesis, you **Persevere** and build the next feature.\n- If the data shows customers don't care, you **Pivot**. A pivot is a structured course correction designed to test a new fundamental hypothesis about the product or strategy.\n\n---\n> **Key Takeaway**: The goal of a startup is not to execute a business plan; the goal is to search for a scalable, repeatable business model as quickly and cheaply as possible.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Minimum Viable Product",
+                                "es": "Producto Mínimo Viable (MVP)",
+                                "definition": "A version of a product with just enough features to be usable by early customers who can then provide feedback."
+                            },
+                            {
+                                "en": "Pivot",
+                                "es": "Pivote",
+                                "definition": "A fundamental change in a business strategy based on direct market feedback."
+                            },
+                            {
+                                "en": "Hypothesis",
+                                "es": "Hipótesis",
+                                "definition": "A supposition or proposed explanation made on the basis of limited evidence as a starting point for further investigation."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "ent-m5",
                 "title": "Intellectual Property: Patents, Trade Secrets and International Licensing",
-                "titleES": "Propiedad Intelectual: Patentes, Secretos y Licenciamiento",
-                "icon": "fa-solid fa-certificate",
-                "readings": []
+                "titleES": "Propiedad Intelectual: Patentes, Secretos Comerciales y Licencias",
+                "icon": "fa-solid fa-gavel",
+                "readings": [
+                    {
+                        "id": "ent-m5-r1",
+                        "title": "Protecting Your Innovation",
+                        "duration": "10 min",
+                        "content": "\n# Protecting Your Innovation\n\nFor a tech startup, the code they write or the hardware they design is their most valuable asset. This is known as **Intellectual Property (IP)**, and it must be legally protected.\n\n## Patents vs. Trade Secrets\n- **Patents**: You publicly disclose exactly how your invention works to the government. In exchange, the government grants you a 20-year monopoly to stop anyone else from making, using, or selling it. It is expensive and takes years.\n- **Trade Secrets**: You do not tell the government anything. You protect the invention by locking it down (like the Coca-Cola recipe or Google's search algorithm). It lasts forever, but if someone else reverse-engineers it, you have no legal protection.\n\n## Licensing\nOnce you own a patent, you don't necessarily have to build a factory to make the product. You can **License** the patent to an established manufacturing corporation. They build the product and pay you a **Royalty** (a percentage of sales) for every unit they sell globally.\n\n---\n> **Key Takeaway**: A brilliant invention is financially worthless if a larger competitor can legally copy it the day it launches. IP strategy must be built into the company from day one.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Patent",
+                                "es": "Patente",
+                                "definition": "A government authority conferring a right or title for a set period, especially the sole right to exclude others from making or selling an invention."
+                            },
+                            {
+                                "en": "Royalty",
+                                "es": "Regalía",
+                                "definition": "A sum paid to a patentee for the use of a patent or to an author or composer for each copy of a book sold or for each public performance."
+                            },
+                            {
+                                "en": "Reverse Engineering",
+                                "es": "Ingeniería inversa",
+                                "definition": "The reproduction of another manufacturer's product following detailed examination of its construction or composition."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             }
         ]
     }
