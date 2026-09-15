@@ -2609,89 +2609,439 @@ var LXP_COURSES = {
         "modules": [
             {
                 "id": "aiml-m1",
-                "title": "Foundational Neural Networks & Edge AI Accelerators",
-                "titleES": "Redes Neuronales Fundamentales y Aceleradores Edge AI",
+                "title": "Transformer Weights, Attention Matrices & Tensor Parallelism",
+                "titleES": "Pesos Transformer, Matrices de Atención y Paralelismo de Tensores",
                 "icon": "fa-solid fa-microchip",
                 "readings": [
                     {
                         "id": "aiml-m1-r1",
-                        "title": "Deep Learning Architectures & Edge AI Accelerators",
-                        "duration": "10 min",
-                        "content": "\n> **Industry Certification Note**: This module aligns with the **NVIDIA Certified Associate: Generative AI and LLMs** and **AWS Certified Machine Learning - Specialty (MLS-C01)** frameworks, establishing technical competency in deep learning architectures and hardware deployment.\n\n# Deep Learning Architectures & Edge AI Accelerators: From Backpropagation to On-Device NPU Inference\n\nIn modern industrial engineering, Artificial Intelligence is no longer restricted to remote cloud data centers. From high-speed SMT assembly lines in Guadalajara to vision-guided quality stations in Ciudad Juárez, machine learning models execute directly on **Edge Hardware Accelerators**—including Neural Processing Units (NPUs), Tensor Processing Units (TPUs), and embedded GPUs.\n\n## 1. The Core Mechanics of Artificial Neural Networks\n\nAn **Artificial Neural Network (ANN)** is a computational architecture inspired by biological neural networks. It consists of layers of interconnected nodes called **neurons**:\n\n- **Input Layer**: Receives raw numerical features (e.g., sensor telemetry, image pixel tensors).\n- **Hidden Layers**: Perform mathematical transformations via weighted linear combinations followed by non-linear **activation functions** (such as ReLU, GELU, or Sigmoid).\n- **Output Layer**: Produces target predictions, such as categorical classifications (e.g., defective vs. non-defective PCB) or regression values (e.g., estimated time-to-failure in hours).\n\nDuring the training phase, the model calculates the error between its prediction and the ground-truth label using a **Loss Function** (e.g., Cross-Entropy Loss or Mean Squared Error). The **Backpropagation algorithm** then computes partial derivatives via the mathematical chain rule, updating synaptic weights through **Stochastic Gradient Descent (SGD)** or Adam optimizers:\n\n$$w_{new} = w_{old} - \\eta \\cdot \\nabla L(w)$$\n\nWhere $\\eta$ represents the learning rate and $\\nabla L(w)$ is the gradient of the loss function with respect to weights.\n\n## 2. Cloud Training vs. Edge Inference\n\nA critical distinction in industrial AI engineering is the operational divergence between **training** and **inference**:\n\n1. **Model Training**: Extremely compute-intensive process requiring high-precision floating-point arithmetic (FP32 or BF16) executed on clusters of data center GPUs across days or weeks.\n2. **Edge Inference**: The execution of a pre-trained model on local embedded devices in real time under strict electrical power, memory, and thermal constraints.\n\nIn nearshoring manufacturing plants, edge inference is mandatory because cloud round-trips introduce **network latency** (typically 60–150 milliseconds) and pose severe cybersecurity and data-sovereignty risks. An industrial automated optical inspection (AOI) robot inspecting 20 semiconductor wafers per second cannot tolerate network drops; it must classify images within **<15 milliseconds** entirely on-device.\n\n## 3. Quantization and Model Optimization for Edge NPUs\n\nTo deploy a multi-million parameter neural network on an edge device, engineers apply rigorous model compression techniques:\n\n- **Quantization (PTQ & QAT)**: Converting high-precision 32-bit floating point weights (FP32) into 8-bit integers (INT8). Quantization slashes memory footprints by **75%** and unlocks ultra-high throughput on specialized integer matrix engines (NPUs) with negligible accuracy degradation (<0.5%).\n- **Weight Pruning**: Removing redundant synaptic weights whose mathematical contribution is near zero, inducing sparsity and reducing computational FLOPs.\n- **Knowledge Distillation**: Training a compact, lightweight \"Student\" model to mimic the probability distribution of an unwieldy \"Teacher\" model.\n\n---\n\n> **Key Takeaway**: Industrial AI bridges mathematical deep learning (**backpropagation, loss functions, activation curves**) with low-latency hardware execution (**Edge NPUs, INT8 quantization, sub-20ms inference**). Mastery of these technical English concepts enables engineers to design and audit autonomous inspection systems for multinational OEM operations.\n",
+                        "title": "Transformer Weights & Tensor Parallelism",
+                        "duration": "14 min",
+                        "content": "\n> **Industry Alignment & Compute Standards**: Follows **MLPerf Training & Inference Benchmarks** and **NVIDIA NeMo Distributed Training Protocols**. Critical for GPU cluster engineers, model optimization specialists, and MLOps leads.\n\n# Transformer Weights, Attention Matrices & Tensor Parallelism: Frontier Model Infrastructure\n\nTraining and deploying frontier Large Language Models (LLMs) with over 70 billion parameters exceeds the physical memory capacity of any single GPU accelerator, necessitating **distributed tensor parallelism** across high-speed interconnect fabrics.\n\n## 1. The Anatomy of Transformer Parameter Memory Allocation\n\nWhen loading a dense transformer model into accelerator VRAM, memory overhead comprises:\n1. **Model Weights**: In standard 16-bit floating-point (**FP16/BF16**), each parameter occupies **2 bytes**. A 70-billion-parameter model requires:\n   $$\\text{Weight Memory} = 70 \\times 10^9 \\times 2\\text{ bytes} = 140\\text{ GB}$$\n   Even an 80GB NVIDIA H100 SXM5 GPU cannot fit the base model weights alone into memory.\n2. **Optimizer States (AdamW)**: During training, AdamW stores FP32 master weights (4 bytes), first-order momentum vectors (4 bytes), and second-order variance estimates (4 bytes) per parameter—adding **12 bytes per parameter** (840 GB for a 70B model).\n3. **Activation & KV Cache Memory**: During inference, generating text token-by-token requires caching the Key and Value projection vectors of every preceding token across all transformer layers to avoid recomputing self-attention:\n   $$\\text{KV Cache Size} = 2 \\times b \\times s \\times l \\times h \\times d$$\n   Where $b$ is batch size, $s$ is sequence length, $l$ is layer count, $h$ is attention head count, and $d$ is head dimension. Long-context inference (128k tokens) rapidly exhausts remaining VRAM without **PagedAttention** memory management.\n\n## 2. Distributed Parallelism Topologies\n\nTo distribute computational graphs across server nodes:\n- **Tensor Parallelism (TP - Megatron-LM)**: Splits individual weight matrices across GPUs within the same NVLink domain. In multi-head attention, Query ($W_Q$), Key ($W_K$), and Value ($W_V$) weight matrices are column-sliced across 8 GPUs, followed by an **All-Reduce** collective communication step to sum partial outputs.\n- **Pipeline Parallelism (PP)**: Partitions sequential transformer layers across distinct physical servers, using 1F1B (One-Forward-One-Backward) scheduling to minimize pipeline bubble idle time.\n- **Data Parallelism (ZeRO / FSDP)**: Shards optimizer states, gradients, and model parameters across data-parallel ranks, dynamically gathering weights via All-Gather communication right before forward execution.\n\n## 3. High-Throughput Interconnect Fabrics: NVLink and InfiniBand\n\nBecause Tensor Parallelism requires synchronizing layer activations at every single transformer block, interconnect latency is the pacing constraint:\n- **Intra-Node NVLink 4**: Delivers **900 GB/s bidirectional bandwidth** per GPU with sub-microsecond latency, making tensor slicing mathematically feasible.\n- **Inter-Node InfiniBand (NDR 400 Gbps)**: Employs **Remote Direct Memory Access (RDMA)** over Converged Ethernet (RoCE v2), allowing one server's GPU to read another server's VRAM directly, bypassing host CPUs and OS kernel network stacks.\n\n---\n> **Key Takeaway**: Enterprise AI systems link **linear algebra (attention matrices, tensor slicing)** with **distributed networking (NVLink, RDMA RoCE v2, All-Reduce collectives)** and **memory compression (FP8 quantization, PagedAttention)**.\n",
                         "vocabulary": [
                             {
-                                "en": "Backpropagation",
-                                "es": "Retropropagación",
-                                "definition": "Algorithm computing gradients of loss with respect to weights via the chain rule"
+                                "en": "Tensor Parallelism (TP)",
+                                "es": "Paralelismo de Tensores",
+                                "definition": "Parallel computing technique splitting individual weight matrices of a transformer layer across multiple GPUs within the same server node.",
+                                "ipa": "/ˈtɛn.sər ˈpær.ə.lɛl.ɪ.zəm/",
+                                "collocations": [
+                                    "Megatron-LM tensor slicing",
+                                    "TP degree 8",
+                                    "All-Reduce synchronization"
+                                ]
                             },
                             {
-                                "en": "Activation Function",
-                                "es": "Función de Activación",
-                                "definition": "Non-linear mathematical function (e.g., ReLU, GELU) determining neuron firing"
+                                "en": "KV Cache (Key-Value Cache)",
+                                "es": "Caché de Llaves y Valores (KV Cache)",
+                                "definition": "Memory buffer storing previously computed attention Key and Value vectors to prevent quadratic recomputation during auto-regressive generation.",
+                                "ipa": "/kiː ˈvæl.juː kæʃ/",
+                                "collocations": [
+                                    "KV cache VRAM footprint",
+                                    "PagedAttention memory allocation",
+                                    "KV cache eviction policy"
+                                ]
                             },
                             {
-                                "en": "Quantization (INT8)",
-                                "es": "Cuantización (INT8)",
-                                "definition": "Process of reducing model weights from 32-bit float to 8-bit integers for edge efficiency"
+                                "en": "Quantization (FP8 / INT4)",
+                                "es": "Cuantificación Numérica",
+                                "definition": "Process of reducing the bit-precision of model weights and activations (e.g., from FP16 to FP8 or INT4) to decrease memory usage and boost inference speed.",
+                                "ipa": "/ˌkwɑːn.tɪˈzeɪ.ʃən/",
+                                "collocations": [
+                                    "post-training quantization (PTQ)",
+                                    "FP8 weight-only quantization",
+                                    "perplexity degradation"
+                                ]
                             },
                             {
-                                "en": "Neural Processing Unit (NPU)",
-                                "es": "Unidad de Procesamiento Neural (NPU)",
-                                "definition": "Specialized silicon accelerator optimized for tensor and matrix operations"
+                                "en": "FlashAttention",
+                                "es": "FlashAttention / Algoritmo de Atención Rápida",
+                                "definition": "IO-aware exact attention algorithm minimizing slow GPU HBM memory read/writes by computing softmax tiling directly inside fast SRAM cache.",
+                                "ipa": "/flæʃ əˈtɛn.ʃən/",
+                                "collocations": [
+                                    "FlashAttention-2 kernel",
+                                    "tiling attention matrix",
+                                    "memory-bound self-attention"
+                                ]
                             },
                             {
-                                "en": "Inference Latency",
-                                "es": "Latencia de Inferencia",
-                                "definition": "Time elapsed from input presentation to output prediction by a neural model"
+                                "en": "All-Reduce Collective",
+                                "es": "Operación Colectiva All-Reduce",
+                                "definition": "Distributed networking operation where all participating GPUs exchange and sum their local gradients so every worker receives the identical combined result.",
+                                "ipa": "/ɔːl rɪˈduːs kəˈlɛk.tɪv/",
+                                "collocations": [
+                                    "Ring All-Reduce",
+                                    "NCCL collective communication",
+                                    "All-Reduce latency barrier"
+                                ]
                             },
                             {
-                                "en": "Loss Function",
-                                "es": "Función de Pérdida",
-                                "definition": "Metric measuring discrepancy between predicted outputs and ground-truth labels"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "Why is Edge Inference preferred over Cloud Inference in manufacturing AOI stations?",
-                                "options": [
-                                    "Cloud inference is free",
-                                    "Edge inference eliminates network latency (<15ms) and guarantees local reliability",
-                                    "Edge hardware requires no electricity",
-                                    "Cloud models cannot process numbers"
-                                ],
-                                "answer": 1
+                                "en": "InfiniBand RoCE v2",
+                                "es": "Red InfiniBand y RoCE v2",
+                                "definition": "Ultra-low latency, high-bandwidth interconnect architecture supporting Remote Direct Memory Access (RDMA) across distributed compute nodes.",
+                                "ipa": "/ɪnˈfɪn.ɪ.bænd ˈroʊ.siː/",
+                                "collocations": [
+                                    "RDMA zero-copy transfer",
+                                    "400Gbps NDR InfiniBand",
+                                    "lossless Ethernet fabric"
+                                ]
                             },
                             {
-                                "q": "What is the primary operational benefit of INT8 Quantization?",
-                                "options": [
-                                    "It increases image resolution",
-                                    "It reduces memory footprint by ~75% and accelerates NPU matrix calculations",
-                                    "It deletes the loss function",
-                                    "It converts code from Python to C++"
-                                ],
-                                "answer": 1
+                                "en": "Activation Checkpointing",
+                                "es": "Puntos de Control de Activaciones",
+                                "definition": "Technique trading compute for memory by discarding forward-pass activations and recomputing them on-the-fly during the backward pass.",
+                                "ipa": "/ˌæk.tɪˈveɪ.ʃən ˈtʃɛk.pɔɪn.tɪŋ/",
+                                "collocations": [
+                                    "gradient checkpointing",
+                                    "recompute activations",
+                                    "VRAM headroom optimization"
+                                ]
                             },
                             {
-                                "q": "Which mathematical algorithm calculates gradients for weight updates in neural networks?",
-                                "options": [
-                                    "QuickSort",
-                                    "Backpropagation",
-                                    "Monte Carlo Tree Search",
-                                    "K-Means Clustering"
-                                ],
-                                "answer": 1
+                                "en": "Parameter-Efficient Fine-Tuning (PEFT / LoRA)",
+                                "es": "Ajuste Fino Eficiente (PEFT / LoRA)",
+                                "definition": "Method freezing base model weights and training only low-rank decomposed adapter matrices, drastically reducing trainable parameters.",
+                                "ipa": "/ˌpɪə.ɛfˈtiː / ˈlɔː.rə/",
+                                "collocations": [
+                                    "Low-Rank Adaptation (LoRA)",
+                                    "rank 16 adapter",
+                                    "freeze base foundation model"
+                                ]
                             },
                             {
-                                "q": "What does the activation function introduce into a deep neural network?",
-                                "options": [
-                                    "Non-linearity",
-                                    "Network latency",
-                                    "Hardware failure",
-                                    "Database indexing"
-                                ],
-                                "answer": 0
+                                "en": "Latency Budget (TTFT & TPOT)",
+                                "es": "Presupuesto de Latencia",
+                                "definition": "Strict SLA thresholds measuring Time to First Token (TTFT) and Time Per Output Token (TPOT) during live LLM serving.",
+                                "ipa": "/ˈleɪ.tən.si ˈbʌdʒ.ɪt/",
+                                "collocations": [
+                                    "sub-50ms TTFT",
+                                    "token throughput per second",
+                                    "p99 inference latency"
+                                ]
+                            },
+                            {
+                                "en": "GPU VRAM Allocation",
+                                "es": "Asignación de Memoria VRAM",
+                                "definition": "High-Bandwidth Memory (HBM3) allocated on the accelerator board for weights, cache, and CUDA execution contexts.",
+                                "ipa": "/ˌviːˈræm ˌæl.əˈkeɪ.ʃən/",
+                                "collocations": [
+                                    "HBM3 bandwidth (3.35 TB/s)",
+                                    "CUDA out-of-memory exception",
+                                    "static vs dynamic memory pool"
+                                ]
+                            },
+                            {
+                                "en": "Perplexity Drift",
+                                "es": "Deriva de Perplejidad",
+                                "definition": "Statistical metric measuring how well a probability distribution predicts a sample; lower perplexity indicates higher linguistic confidence.",
+                                "ipa": "/pərˈplɛk.sə.ti drɪft/",
+                                "collocations": [
+                                    "eval set perplexity",
+                                    "detect perplexity spikes",
+                                    "cross-entropy loss correlation"
+                                ]
+                            },
+                            {
+                                "en": "Inference Engine",
+                                "es": "Motor de Inferencia de Alto Rendimiento",
+                                "definition": "Specialized runtime environment (e.g., vLLM, TensorRT-LLM) engineered to maximize GPU throughput and batching during model serving.",
+                                "ipa": "/ˈɪn.fər.əns ˈɛn.dʒɪn/",
+                                "collocations": [
+                                    "continuous batching",
+                                    "TensorRT-LLM engine build",
+                                    "multi-GPU inference server"
+                                ]
                             }
                         ]
+                    }
+                ],
+                "isGoldModel": true,
+                "dialogue": {
+                    "title": "GPU Cluster Out-of-Memory (OOM) Root Cause Analysis during Distributed LLM Fine-Tuning",
+                    "titleES": "Análisis de Causa Raíz de Falla por Memoria (OOM) en Clúster de GPUs durante Fine-Tuning Distribuido",
+                    "scenarioContext": "Santa Clara, CA (AI Compute Architecture Team) ⇄ Guadalajara, Jalisco (High-Performance Computing Cluster). Slack Huddle Incident.",
+                    "characters": [
+                        {
+                            "name": "Dr. Aris Thorne",
+                            "role": "Principal AI Infrastructure Architect (Santa Clara)",
+                            "avatar": "AT",
+                            "color": "var(--purple)"
+                        },
+                        {
+                            "name": "Ing. Mateo Fuentes",
+                            "role": "Lead MLOps & Distributed Systems Engineer (Guadalajara)",
+                            "avatar": "MF",
+                            "color": "var(--cyan)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Dr. Aris Thorne",
+                            "text": "Mateo, our 70B parameter fine-tuning job crashed with a CUDA out-of-memory error on Node 14 right after step 4,200. We were running Tensor Parallelism 8 and Pipeline Parallelism 4. Did the KV Cache allocate beyond the VRAM ceiling?",
+                            "translation": "Mateo, nuestro trabajo de fine-tuning de 70B parámetros colapsó con un error CUDA de falta de memoria en el Nodo 14 justo después del paso 4,200. Estábamos corriendo Paralelismo de Tensores en 8 y Paralelismo de Pipeline en 4. ¿La caché KV se asignó más allá del límite de VRAM?",
+                            "targetTerms": [
+                                "CUDA out-of-memory",
+                                "Tensor Parallelism",
+                                "Pipeline Parallelism",
+                                "KV Cache",
+                                "VRAM ceiling"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Mateo Fuentes",
+                            "text": "Investigating now, Aris. It wasn't the KV Cache; inference wasn't active. The crash occurred during an All-Reduce collective operation across the InfiniBand fabric. A burst in sequence length to 8,192 tokens caused the activation tensors to spike VRAM usage by 18 gigabytes per GPU.",
+                            "translation": "Investigando ahora, Aris. No fue la caché KV; la inferencia no estaba activa. La caída ocurrió durante una operación colectiva All-Reduce a través de la red InfiniBand. Un pico repentino en la longitud de secuencia a 8,192 tokens provocó que los tensores de activación dispararan el uso de VRAM en 18 gigabytes por GPU.",
+                            "targetTerms": [
+                                "All-Reduce collective",
+                                "InfiniBand fabric",
+                                "activation tensors",
+                                "sequence length"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. Aris Thorne",
+                            "text": "Understood. The activation memory blew past our headroom. Can we enable FlashAttention-2 with activation checkpointing to recompute activations during the backward pass instead of storing them all in VRAM?",
+                            "translation": "Entendido. La memoria de activación rebasó nuestro margen de seguridad. ¿Podemos habilitar FlashAttention-2 con puntos de control de activación (checkpointing) para recalcular las activaciones durante la pasada hacia atrás en lugar de almacenarlas todas en VRAM?",
+                            "targetTerms": [
+                                "FlashAttention-2",
+                                "activation checkpointing",
+                                "backward pass",
+                                "recompute activations"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Mateo Fuentes",
+                            "text": "Done. I've reconfigured the PyTorch training manifest with FlashAttention-2, enabled full activation recomputation, and quantized optimizer states to FP8. That freed up 24GB of VRAM per H100 card, so we're resuming the distributed training run safely.",
+                            "translation": "Listo. Reconfiguré el manifiesto de entrenamiento de PyTorch con FlashAttention-2, habilité el recálculo completo de activaciones y cuantifiqué los estados del optimizador a FP8. Eso liberó 24GB de VRAM por tarjeta H100, así que estamos reanudando la corrida de entrenamiento distribuido de manera segura.",
+                            "targetTerms": [
+                                "activation recomputation",
+                                "quantized optimizer states",
+                                "FP8 quantization",
+                                "distributed training run"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The AI program crashed because the computer graphics card was small.",
+                            "native": "The distributed training cluster triggered a CUDA Out-of-Memory exception during the All-Reduce collective due to uncheckpointed activation tensor spikes.",
+                            "explanation": "En la escuela se dice 'graphics card was small', pero en centros de datos de IA se describe con precisión el tensor de activación, el colectivo de comunicación y la excepción de VRAM."
+                        },
+                        {
+                            "school": "Make the AI answer faster.",
+                            "native": "Optimize prompt throughput by deploying PagedAttention and FP8 weight quantization on the inference engine.",
+                            "explanation": "En la industria de tecnología se habla de 'throughput', 'token latency (TTFT)', 'PagedAttention' y 'quantization'."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Tensor Parallelism (TP)",
+                        "ipa": "/ˈtɛn.sər ˈpær.ə.lɛl.ɪ.zəm/",
+                        "es": "Paralelismo de Tensores",
+                        "category": "Cómputo Distribuido",
+                        "definition": "Parallel computing technique splitting individual weight matrices of a transformer layer across multiple GPUs within the same server node.",
+                        "collocations": [
+                            "Megatron-LM tensor slicing",
+                            "TP degree 8",
+                            "All-Reduce synchronization"
+                        ],
+                        "falseFriends": "No es correr 8 modelos separados; es dividir una sola multiplicación matricial en 8 aceleradores simultáneamente.",
+                        "nativeUsage": "Tensor Parallelism splits the feed-forward projection matrix across eight H100 GPUs connected via NVLink."
+                    },
+                    {
+                        "term": "KV Cache (Key-Value Cache)",
+                        "ipa": "/kiː ˈvæl.juː kæʃ/",
+                        "es": "Caché de Llaves y Valores (KV Cache)",
+                        "category": "Optimización de Inferencia",
+                        "definition": "Memory buffer storing previously computed attention Key and Value vectors to prevent quadratic recomputation during auto-regressive generation.",
+                        "collocations": [
+                            "KV cache VRAM footprint",
+                            "PagedAttention memory allocation",
+                            "KV cache eviction policy"
+                        ],
+                        "falseFriends": "No es una caché web de navegador; es una estructura de tensores en memoria GPU que crece con cada palabra generada.",
+                        "nativeUsage": "Without PagedAttention, managing the KV Cache for 50 concurrent users causes severe VRAM fragmentation."
+                    },
+                    {
+                        "term": "Quantization (FP8 / INT4)",
+                        "ipa": "/ˌkwɑːn.tɪˈzeɪ.ʃən/",
+                        "es": "Cuantificación Numérica",
+                        "category": "Compresión de Modelos",
+                        "definition": "Process of reducing the bit-precision of model weights and activations (e.g., from FP16 to FP8 or INT4) to decrease memory usage and boost inference speed.",
+                        "collocations": [
+                            "post-training quantization (PTQ)",
+                            "FP8 weight-only quantization",
+                            "perplexity degradation"
+                        ],
+                        "falseFriends": "No es 'contar cantidades'; es comprimir la representación matemática de números flotantes.",
+                        "nativeUsage": "Quantizing the 70B model to FP8 slashed required GPU VRAM from 140GB down to 70GB with zero perceptible loss in reasoning accuracy."
+                    },
+                    {
+                        "term": "FlashAttention",
+                        "ipa": "/flæʃ əˈtɛn.ʃən/",
+                        "es": "FlashAttention / Algoritmo de Atención Rápida",
+                        "category": "Algoritmo de Aceleración",
+                        "definition": "IO-aware exact attention algorithm minimizing slow GPU HBM memory read/writes by computing softmax tiling directly inside fast SRAM cache.",
+                        "collocations": [
+                            "FlashAttention-2 kernel",
+                            "tiling attention matrix",
+                            "memory-bound self-attention"
+                        ],
+                        "falseFriends": "No es una animación Flash antigua; es el avance algorítmico más importante de la IA moderna para evitar cuellos de botella de memoria.",
+                        "nativeUsage": "Enabling FlashAttention-2 accelerated training throughput by 2.4x while keeping GPU SRAM memory utilization optimal."
+                    },
+                    {
+                        "term": "All-Reduce Collective",
+                        "ipa": "/ɔːl rɪˈduːs kəˈlɛk.tɪv/",
+                        "es": "Operación Colectiva All-Reduce",
+                        "category": "Comunicación de Red",
+                        "definition": "Distributed networking operation where all participating GPUs exchange and sum their local gradients so every worker receives the identical combined result.",
+                        "collocations": [
+                            "Ring All-Reduce",
+                            "NCCL collective communication",
+                            "All-Reduce latency barrier"
+                        ],
+                        "falseFriends": "No significa 'reducir todo'; es la operación de suma y sincronización vectorial fundamental de la IA distribuida.",
+                        "nativeUsage": "The NCCL library executed an All-Reduce operation across all 64 GPUs in under 1.2 milliseconds via InfiniBand."
+                    },
+                    {
+                        "term": "InfiniBand RoCE v2",
+                        "ipa": "/ɪnˈfɪn.ɪ.bænd ˈroʊ.siː/",
+                        "es": "Red InfiniBand y RoCE v2",
+                        "category": "Interconexión de Clúster",
+                        "definition": "Ultra-low latency, high-bandwidth interconnect architecture supporting Remote Direct Memory Access (RDMA) across distributed compute nodes.",
+                        "collocations": [
+                            "RDMA zero-copy transfer",
+                            "400Gbps NDR InfiniBand",
+                            "lossless Ethernet fabric"
+                        ],
+                        "falseFriends": "No es un cable Ethernet doméstico; permite a una GPU leer la memoria VRAM de otra GPU en otro rack sin intervención del procesador CPU.",
+                        "nativeUsage": "Using InfiniBand RoCE v2 bypassed the host CPU kernel stack, dropping cross-rack tensor synchronization latency to under 2 microseconds."
+                    },
+                    {
+                        "term": "Activation Checkpointing",
+                        "ipa": "/ˌæk.tɪˈveɪ.ʃən ˈtʃɛk.pɔɪn.tɪŋ/",
+                        "es": "Puntos de Control de Activaciones",
+                        "category": "Gestión de Memoria",
+                        "definition": "Technique trading compute for memory by discarding forward-pass activations and recomputing them on-the-fly during the backward pass.",
+                        "collocations": [
+                            "gradient checkpointing",
+                            "recompute activations",
+                            "VRAM headroom optimization"
+                        ],
+                        "falseFriends": "No es guardar el archivo a disco; es recalcular la matemática hacia atrás para no saturar los 80GB de la GPU.",
+                        "nativeUsage": "Activation checkpointing reduced peak training VRAM consumption by 60% at the cost of a modest 15% increase in compute runtime."
+                    },
+                    {
+                        "term": "Parameter-Efficient Fine-Tuning (PEFT / LoRA)",
+                        "ipa": "/ˌpɪə.ɛfˈtiː / ˈlɔː.rə/",
+                        "es": "Ajuste Fino Eficiente (PEFT / LoRA)",
+                        "category": "Entrenamiento de Modelos",
+                        "definition": "Method freezing base model weights and training only low-rank decomposed adapter matrices, drastically reducing trainable parameters.",
+                        "collocations": [
+                            "Low-Rank Adaptation (LoRA)",
+                            "rank 16 adapter",
+                            "freeze base foundation model"
+                        ],
+                        "falseFriends": "LoRA no es la tecnología de radio (LoRa); en IA significa Low-Rank Adaptation de matrices de pesos.",
+                        "nativeUsage": "With LoRA, the team fine-tuned the model on specialized legal terminology by training just 0.2% of the parameters."
+                    },
+                    {
+                        "term": "Latency Budget (TTFT & TPOT)",
+                        "ipa": "/ˈleɪ.tən.si ˈbʌdʒ.ɪt/",
+                        "es": "Presupuesto de Latencia",
+                        "category": "Métricas de Servicio",
+                        "definition": "Strict SLA thresholds measuring Time to First Token (TTFT) and Time Per Output Token (TPOT) during live LLM serving.",
+                        "collocations": [
+                            "sub-50ms TTFT",
+                            "token throughput per second",
+                            "p99 inference latency"
+                        ],
+                        "falseFriends": "No es un presupuesto financiero; es la cantidad máxima de milisegundos permitida antes de que el usuario perciba lentitud.",
+                        "nativeUsage": "The autonomous agent architecture requires a Time to First Token (TTFT) under 120 milliseconds to maintain fluid real-time responses."
+                    },
+                    {
+                        "term": "GPU VRAM Allocation",
+                        "ipa": "/ˌviːˈræm ˌæl.əˈkeɪ.ʃən/",
+                        "es": "Asignación de Memoria VRAM",
+                        "category": "Hardware de Aceleración",
+                        "definition": "High-Bandwidth Memory (HBM3) allocated on the accelerator board for weights, cache, and CUDA execution contexts.",
+                        "collocations": [
+                            "HBM3 bandwidth (3.35 TB/s)",
+                            "CUDA out-of-memory exception",
+                            "static vs dynamic memory pool"
+                        ],
+                        "falseFriends": "La memoria VRAM de una GPU H100 es soldada de ultra alta velocidad (HBM3); no se puede expandir agregando módulos RAM normales.",
+                        "nativeUsage": "PyTorch's memory allocator fragmented the VRAM pool until an explicit cache empty call reclaimed 12GB of contiguous space."
+                    },
+                    {
+                        "term": "Perplexity Drift",
+                        "ipa": "/pərˈplɛk.sə.ti drɪft/",
+                        "es": "Deriva de Perplejidad",
+                        "category": "Métrica de Calidad",
+                        "definition": "Statistical metric measuring how well a probability distribution predicts a sample; lower perplexity indicates higher linguistic confidence.",
+                        "collocations": [
+                            "eval set perplexity",
+                            "detect perplexity spikes",
+                            "cross-entropy loss correlation"
+                        ],
+                        "falseFriends": "No significa que la IA esté 'sorprendida'; es la exponencial de la pérdida de entropía cruzada del modelo.",
+                        "nativeUsage": "During quantization testing, FP8 precision maintained baseline perplexity within a strict 0.05 margin of error."
+                    },
+                    {
+                        "term": "Inference Engine",
+                        "ipa": "/ˈɪn.fər.əns ˈɛn.dʒɪn/",
+                        "es": "Motor de Inferencia de Alto Rendimiento",
+                        "category": "Software de Despliegue",
+                        "definition": "Specialized runtime environment (e.g., vLLM, TensorRT-LLM) engineered to maximize GPU throughput and batching during model serving.",
+                        "collocations": [
+                            "continuous batching",
+                            "TensorRT-LLM engine build",
+                            "multi-GPU inference server"
+                        ],
+                        "falseFriends": "No es un motor de búsqueda; es el compilador de bajo nivel que ejecuta los tensores en silicio optimizado.",
+                        "nativeUsage": "Deploying the model via vLLM with continuous batching increased server throughput from 80 to 520 tokens per second."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Tensor Parallelism vs Pipeline Parallelism",
+                        "botQuestion": "Welcome to the Frontier AI Cluster Audit! Explain in English why a single 80GB GPU cannot train a 70B parameter model. What is the fundamental difference between Tensor Parallelism and Pipeline Parallelism?",
+                        "requiredKeywords": [
+                            "vram",
+                            "weights",
+                            "parameters",
+                            "tensor",
+                            "pipeline",
+                            "megatron",
+                            "layer",
+                            "split",
+                            "optimizer",
+                            "memory"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot-on! A 70B model requires 140GB just for FP16 weights plus 840GB for AdamW optimizer states. Tensor Parallelism slices individual matrices across GPUs inside the same node using NVLink, while Pipeline Parallelism partitions sequential layers across separate servers.",
+                        "feedbackRetry": "Think about the memory math: at 2 bytes per parameter (FP16), how much memory does a 70B model need? Then contrast how Tensor Parallelism splits individual weight matrices inside a layer versus Pipeline Parallelism dividing entire layers across machines!"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "All-Reduce Communication & InfiniBand",
+                        "botQuestion": "Why does Tensor Parallelism require ultra-fast interconnects like NVLink and InfiniBand RoCE v2? What happens to GPU compute utilization if the All-Reduce collective suffers from high latency?",
+                        "requiredKeywords": [
+                            "all-reduce",
+                            "nvlink",
+                            "infiniband",
+                            "latency",
+                            "bandwidth",
+                            "synchronization",
+                            "compute",
+                            "idle",
+                            "roce"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Brilliant explanation of distributed scaling bottlenecks! Tensor Parallelism requires an All-Reduce synchronization after every single transformer layer. If network latency is high, GPUs sit completely idle waiting for peer activations, collapsing compute utilization.",
+                        "feedbackRetry": "Think about what happens at every layer: each GPU calculates a piece of the attention matrix and must sum it with all other GPUs before moving forward. What happens if the network is slow?"
                     }
                 ]
             },
@@ -2700,28 +3050,496 @@ var LXP_COURSES = {
                 "title": "Transformers & Large Language Model Architecture",
                 "titleES": "Arquitectura Transformer y Modelos de Lenguaje Masivo (LLM)",
                 "icon": "fa-solid fa-layer-group",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "aiml-m2-r1",
+                        "title": "Transformer Architecture, Self-Attention & LLM Training Pipelines",
+                        "duration": "14 min",
+                        "content": "\n> **Industry Certification Note**: Aligned with **Google Cloud Professional Machine Learning Engineer** and **NVIDIA Certified Associate: Generative AI and LLMs** frameworks.\n\n# Transformer Architecture, Self-Attention & LLM Training Pipelines\n\nThe **Transformer** architecture, introduced in the 2017 paper *\"Attention Is All You Need\"*, fundamentally replaced recurrent neural networks (RNNs) and long short-term memory (LSTM) networks as the dominant paradigm for sequence-to-sequence tasks. Today, every Large Language Model (LLM)—from GPT to Gemini to LLaMA—is built on Transformer variants.\n\n## 1. The Self-Attention Mechanism\n\nThe core innovation of the Transformer is the **Self-Attention** (also called **Scaled Dot-Product Attention**) mechanism. Unlike recurrent architectures that process tokens sequentially (left-to-right), self-attention allows every token in a sequence to attend to every other token simultaneously in a single parallel computation.\n\nFor a given input sequence of token embeddings, the mechanism computes three matrices:\n- **Query (Q)**: What information is this token looking for?\n- **Key (K)**: What information does this token contain?\n- **Value (V)**: What information should this token transmit if selected?\n\nThe attention score is computed as:\n\n$$\\text{Attention}(Q, K, V) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right) V$$\n\nWhere $d_k$ is the dimensionality of the key vectors. The $\\sqrt{d_k}$ scaling prevents the dot products from becoming excessively large, which would push the softmax function into regions with vanishingly small gradients.\n\n**Multi-Head Attention (MHA)** extends this by running multiple self-attention operations in parallel across different learned subspaces, allowing the model to jointly attend to information from different representation subspaces at different positions.\n\n## 2. Encoder-Decoder vs. Decoder-Only Architectures\n\nThe original Transformer used an **Encoder-Decoder** structure:\n- **Encoder**: Processes the entire input sequence bidirectionally. Used in models like BERT (Bidirectional Encoder Representations from Transformers) for classification and named entity recognition (NER).\n- **Decoder**: Generates output tokens autoregressively (one token at a time), using **causal masking** to prevent attending to future positions.\n\nModern generative LLMs (GPT-4, Gemini, Claude, LLaMA) are predominantly **Decoder-Only** architectures. They process the concatenated prompt and generated text as a single sequence, predicting the next token at each step. This simplification enables massively scalable training on internet-scale corpora.\n\n## 3. Tokenization: BPE, SentencePiece & Vocabulary Construction\n\nBefore text enters the Transformer, it must be converted into numerical tokens. **Byte-Pair Encoding (BPE)** is the dominant tokenization algorithm:\n1. Start with individual characters as the initial vocabulary.\n2. Iteratively merge the most frequent adjacent pair of tokens into a new single token.\n3. Repeat until the vocabulary reaches a target size (e.g., 32,000 or 100,000 tokens).\n\n**SentencePiece** extends BPE to handle raw byte sequences without language-specific preprocessing, enabling truly multilingual tokenization (critical for Spanish-English industrial contexts).\n\nThe tokenizer vocabulary size directly impacts model capacity: larger vocabularies reduce average sequence length but increase the embedding matrix size and memory consumption.\n\n## 4. Pre-Training, Fine-Tuning & Alignment\n\nLLM development follows a three-stage pipeline:\n\n1. **Pre-Training**: The model learns to predict the next token on massive unsupervised text corpora (trillions of tokens from the internet, books, and code). This stage requires thousands of GPU-hours and costs millions of dollars.\n2. **Supervised Fine-Tuning (SFT)**: The pre-trained base model is further trained on curated instruction-response pairs (e.g., \"Summarize this paragraph\" → high-quality summary) to improve instruction-following behavior.\n3. **Alignment (RLHF/DPO)**: **Reinforcement Learning from Human Feedback (RLHF)** trains a reward model based on human preference rankings, then uses Proximal Policy Optimization (PPO) to align the model's outputs with human values. **Direct Preference Optimization (DPO)** simplifies this by directly optimizing on preference pairs without a separate reward model.\n\n## 5. Context Windows & Positional Encoding\n\nTransformers have a fixed **context window** (e.g., 8K, 128K, or 1M tokens). This defines the maximum number of tokens the model can process in a single forward pass. Extending context windows requires advanced positional encoding techniques:\n- **Rotary Position Embeddings (RoPE)**: Encodes absolute position using rotation matrices in the complex plane, naturally decaying attention scores for distant tokens.\n- **ALiBi (Attention with Linear Biases)**: Adds a linear bias to attention scores proportional to token distance, enabling length extrapolation beyond training context.\n\n---\n> **Key Takeaway**: The Transformer architecture powers all modern LLMs through **parallel self-attention** (replacing sequential RNNs), **BPE tokenization** for multilingual text, and a **three-stage pipeline** (Pre-Training → SFT → RLHF/DPO) that transforms raw next-token predictors into aligned, instruction-following AI systems.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Self-Attention (Scaled Dot-Product)",
+                                "es": "Autoatención (Producto Punto Escalado)",
+                                "definition": "Mechanism allowing each token to compute relevance scores against all other tokens in a sequence simultaneously.",
+                                "ipa": "/sɛlf əˈtɛn.ʃən/",
+                                "collocations": [
+                                    "multi-head self-attention",
+                                    "causal attention mask",
+                                    "attention score matrix"
+                                ]
+                            },
+                            {
+                                "en": "Transformer",
+                                "es": "Transformador (Transformer)",
+                                "definition": "Neural network architecture based entirely on attention mechanisms, replacing recurrence and convolutions.",
+                                "ipa": "/trænsˈfɔːr.mər/",
+                                "collocations": [
+                                    "Transformer block",
+                                    "decoder-only Transformer",
+                                    "Transformer layer"
+                                ]
+                            },
+                            {
+                                "en": "Byte-Pair Encoding (BPE)",
+                                "es": "Codificación por Pares de Bytes (BPE)",
+                                "definition": "Subword tokenization algorithm that iteratively merges the most frequent adjacent character pairs.",
+                                "ipa": "/baɪt pɛr ɪnˈkoʊ.dɪŋ/",
+                                "collocations": [
+                                    "BPE vocabulary",
+                                    "tokenizer training",
+                                    "subword segmentation"
+                                ]
+                            },
+                            {
+                                "en": "Reinforcement Learning from Human Feedback (RLHF)",
+                                "es": "Aprendizaje por Refuerzo con Retroalimentación Humana",
+                                "definition": "Alignment technique training a reward model on human preferences to guide LLM behavior via policy optimization.",
+                                "ipa": "/ˌɑːr.ɛl.eɪtʃˈɛf/",
+                                "collocations": [
+                                    "RLHF alignment",
+                                    "reward model",
+                                    "preference ranking"
+                                ]
+                            },
+                            {
+                                "en": "Context Window",
+                                "es": "Ventana de Contexto",
+                                "definition": "Maximum number of tokens an LLM can process in a single forward pass, defining its working memory capacity.",
+                                "ipa": "/ˈkɑːn.tɛkst ˈwɪn.doʊ/",
+                                "collocations": [
+                                    "128K context window",
+                                    "extend context length",
+                                    "context overflow"
+                                ]
+                            },
+                            {
+                                "en": "Fine-Tuning (SFT)",
+                                "es": "Ajuste Fino Supervisado (SFT)",
+                                "definition": "Process of further training a pre-trained model on curated task-specific datasets to improve performance.",
+                                "ipa": "/faɪn ˈtuː.nɪŋ/",
+                                "collocations": [
+                                    "instruction fine-tuning",
+                                    "domain-specific SFT",
+                                    "fine-tune on labeled data"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What is the primary advantage of Self-Attention over Recurrent Neural Networks (RNNs)?",
+                                "options": [
+                                    "It uses less memory",
+                                    "It processes all tokens in parallel rather than sequentially",
+                                    "It requires no training data",
+                                    "It only works with English text"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "In the LLM development pipeline, what follows Supervised Fine-Tuning (SFT)?",
+                                "options": [
+                                    "Pre-Training on raw text",
+                                    "Alignment via RLHF or DPO",
+                                    "Byte-Pair Encoding",
+                                    "Quantization to INT8"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What does the scaling factor √dk prevent in the attention computation?",
+                                "options": [
+                                    "Memory overflow in GPUs",
+                                    "Dot products from becoming too large, causing vanishing softmax gradients",
+                                    "The model from learning multiple languages",
+                                    "Tokenizer vocabulary explosion"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "Which tokenization algorithm iteratively merges the most frequent adjacent pairs?",
+                                "options": [
+                                    "Word2Vec",
+                                    "One-Hot Encoding",
+                                    "Byte-Pair Encoding (BPE)",
+                                    "TF-IDF Vectorization"
+                                ],
+                                "answer": 2
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "aiml-m3",
                 "title": "Computer Vision & Automated Optical Inspection (AOI)",
                 "titleES": "Visión Artificial e Inspección Óptica Automatizada",
                 "icon": "fa-solid fa-eye",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "aiml-m3-r1",
+                        "title": "Convolutional Neural Networks, Object Detection & Industrial AOI Systems",
+                        "duration": "13 min",
+                        "content": "\n> **Industry Certification Note**: Aligned with **AWS Certified Machine Learning — Specialty** and **SEMI E142 (Automated Defect Classification)** standards for semiconductor and automotive quality inspection.\n\n# Convolutional Neural Networks, Object Detection & Industrial AOI Systems\n\nIn high-volume manufacturing environments—from SMT (Surface Mount Technology) PCB assembly lines in Guadalajara to automotive paint shops in Monterrey—**Automated Optical Inspection (AOI)** systems powered by deep learning have replaced manual visual inspection. These systems capture high-resolution images at line speed and classify defects with sub-millisecond latency.\n\n## 1. Convolutional Neural Networks (CNNs): Feature Extraction Hierarchy\n\nA **Convolutional Neural Network (CNN)** is a specialized deep learning architecture designed to process grid-structured data (images, spectrograms). Its fundamental building blocks are:\n\n- **Convolutional Layer**: Applies a set of learnable **filters** (kernels) across the input image. Each filter slides (convolves) over the image computing element-wise dot products, producing a **feature map** that detects specific patterns (edges, textures, shapes). Early layers detect low-level features (horizontal edges, color gradients); deeper layers learn high-level abstractions (component shapes, solder joint morphology).\n- **Pooling Layer**: Reduces spatial dimensions through **Max Pooling** (selecting the maximum value in a local region) or **Average Pooling**, decreasing computational cost and providing translational invariance.\n- **Fully Connected Layer**: Flattens the final feature maps into a 1D vector for classification via softmax or sigmoid activation.\n\nThe hierarchy of feature extraction—from raw pixels to edges to textures to objects—is the key insight that makes CNNs extraordinarily effective for visual recognition tasks.\n\n## 2. Object Detection Architectures\n\nIndustrial AOI requires not just classifying an entire image, but **localizing and classifying multiple defects** simultaneously within a single frame. Modern object detection architectures include:\n\n- **YOLO (You Only Look Once)**: A single-stage detector that divides the image into a grid and predicts bounding boxes and class probabilities simultaneously in one forward pass. YOLOv8/v9 variants achieve real-time inference (>100 FPS) on industrial GPUs, making them ideal for high-speed manufacturing lines.\n- **SSD (Single Shot MultiBox Detector)**: Uses multi-scale feature maps from different layers to detect objects of varying sizes without separate region proposal steps.\n- **Faster R-CNN**: A two-stage detector with a **Region Proposal Network (RPN)** that first identifies candidate regions, then classifies each proposal. Higher accuracy but slower than single-stage methods.\n\nFor semiconductor wafer inspection, **instance segmentation** models like **Mask R-CNN** generate pixel-level defect masks (e.g., precisely outlining a micro-crack on a die), enabling automated defect area measurement and severity classification.\n\n## 3. AOI System Architecture in Manufacturing\n\nA complete industrial AOI station consists of:\n\n1. **Illumination System**: Structured lighting (coaxial, ring, dome, dark-field) engineered to maximize defect contrast. For solder paste inspection (SPI), 3D structured light uses phase-shifted fringe patterns to measure paste volume with micrometer precision.\n2. **High-Speed Camera Array**: Industrial cameras (CoaXPress or Camera Link interfaces) capturing 12-bit grayscale or color images at 500+ frames per second. Resolution ranges from 5 to 25 megapixels depending on the required field-of-view and minimum detectable defect size.\n3. **Edge AI Inference Engine**: An embedded GPU or NPU (e.g., NVIDIA Jetson AGX Orin) running the quantized CNN model. The inference pipeline processes each captured frame through preprocessing (geometric correction, normalization), model inference, and post-processing (non-maximum suppression, confidence thresholding) within a single production cycle time.\n4. **Classification & Disposition**: Defects are classified by type (missing component, tombstoned capacitor, solder bridge, polarity reversal) and severity. The system triggers real-time rejection of defective units via pneumatic diverter gates or robotic pick-and-place arms.\n\n## 4. Transfer Learning & Domain Adaptation\n\nTraining a CNN from scratch requires millions of labeled images. In practice, engineers use **Transfer Learning**: starting from a model pre-trained on ImageNet (14 million images, 1,000 classes) and fine-tuning only the final classification layers on a factory-specific dataset of a few thousand labeled defect images. This dramatically reduces training time from weeks to hours while maintaining high accuracy (>99.5% defect detection rate).\n\n**Data Augmentation** techniques—random rotation, horizontal flipping, brightness jittering, Gaussian noise injection—artificially expand small training datasets and improve model robustness to real-world variations in lighting, component placement, and camera angle.\n\n---\n> **Key Takeaway**: Industrial AOI merges **CNN feature extraction** (convolutional filters → feature maps → classification) with **real-time object detection** (YOLO, Mask R-CNN) deployed on **edge inference hardware** (NVIDIA Jetson) to achieve >99.5% defect detection at manufacturing line speed—replacing human visual inspectors with consistent, tireless machine intelligence.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Convolutional Neural Network (CNN)",
+                                "es": "Red Neuronal Convolucional (CNN)",
+                                "definition": "Deep learning architecture using learnable filters to extract hierarchical spatial features from images.",
+                                "ipa": "/ˌkɑːn.vəˈluː.ʃən.əl/",
+                                "collocations": [
+                                    "CNN feature map",
+                                    "convolutional filter",
+                                    "deep CNN backbone"
+                                ]
+                            },
+                            {
+                                "en": "YOLO (You Only Look Once)",
+                                "es": "YOLO (Solo Miras Una Vez)",
+                                "definition": "Single-stage real-time object detection architecture that predicts bounding boxes and classes in one forward pass.",
+                                "ipa": "/ˈjoʊ.loʊ/",
+                                "collocations": [
+                                    "YOLOv8 inference",
+                                    "real-time YOLO detection",
+                                    "YOLO bounding box"
+                                ]
+                            },
+                            {
+                                "en": "Transfer Learning",
+                                "es": "Aprendizaje por Transferencia",
+                                "definition": "Technique of reusing a pre-trained model on a new task, fine-tuning only the final layers on domain-specific data.",
+                                "ipa": "/ˈtræns.fɜːr ˈlɜːr.nɪŋ/",
+                                "collocations": [
+                                    "ImageNet pre-trained",
+                                    "fine-tune via transfer",
+                                    "domain adaptation"
+                                ]
+                            },
+                            {
+                                "en": "Feature Map",
+                                "es": "Mapa de Características",
+                                "definition": "Output matrix produced by applying a convolutional filter to an input, encoding detected spatial patterns.",
+                                "ipa": "/ˈfiː.tʃər mæp/",
+                                "collocations": [
+                                    "multi-scale feature maps",
+                                    "feature extraction layer",
+                                    "activation map"
+                                ]
+                            },
+                            {
+                                "en": "Non-Maximum Suppression (NMS)",
+                                "es": "Supresión de No Máximos (NMS)",
+                                "definition": "Post-processing algorithm that eliminates overlapping duplicate bounding box predictions, keeping only the highest-confidence detection.",
+                                "ipa": "/nɒn ˈmæk.sɪ.məm/",
+                                "collocations": [
+                                    "NMS threshold",
+                                    "suppress overlapping boxes",
+                                    "confidence score filtering"
+                                ]
+                            },
+                            {
+                                "en": "Data Augmentation",
+                                "es": "Aumento de Datos",
+                                "definition": "Technique of artificially expanding training datasets through random transformations (rotation, flip, noise) to improve model robustness.",
+                                "ipa": "/ˈdeɪ.tə ˌɔːɡ.mɛnˈteɪ.ʃən/",
+                                "collocations": [
+                                    "augmentation pipeline",
+                                    "random crop augmentation",
+                                    "synthetic training data"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "In a CNN, what does a convolutional filter (kernel) produce when applied to an input image?",
+                                "options": [
+                                    "A tokenized sequence",
+                                    "A feature map encoding detected spatial patterns",
+                                    "A compressed audio file",
+                                    "A SQL query result"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "Why is YOLO preferred over Faster R-CNN for high-speed manufacturing AOI?",
+                                "options": [
+                                    "YOLO requires no training data",
+                                    "YOLO achieves real-time inference (>100 FPS) in a single forward pass",
+                                    "Faster R-CNN cannot detect objects",
+                                    "YOLO uses no GPU memory"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What is the primary benefit of Transfer Learning in industrial AOI deployment?",
+                                "options": [
+                                    "It eliminates the need for cameras",
+                                    "It reduces training time from weeks to hours by reusing pre-trained weights",
+                                    "It converts images to text automatically",
+                                    "It removes the need for edge hardware"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What post-processing technique eliminates redundant overlapping bounding boxes?",
+                                "options": [
+                                    "Backpropagation",
+                                    "Byte-Pair Encoding",
+                                    "Non-Maximum Suppression (NMS)",
+                                    "Gradient Descent"
+                                ],
+                                "answer": 2
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "aiml-m4",
                 "title": "MLOps: CI/CD Pipelines & Model Deployment",
                 "titleES": "MLOps: Pipelines CI/CD y Despliegue de Modelos",
                 "icon": "fa-solid fa-server",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "aiml-m4-r1",
+                        "title": "MLOps Lifecycle, Model Registries & Production Serving Infrastructure",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Certification Note**: Aligned with **Google Cloud Professional Machine Learning Engineer**, **AWS Certified Machine Learning — Specialty**, and **MLflow Open Source Standard** for production ML lifecycle management.\n\n# MLOps Lifecycle, Model Registries & Production Serving Infrastructure\n\nBuilding a high-accuracy machine learning model in a Jupyter notebook is only 20% of the challenge. The remaining 80% is **MLOps (Machine Learning Operations)**—the engineering discipline of deploying, monitoring, and maintaining ML models in production at industrial scale.\n\n## 1. The MLOps Lifecycle\n\nMLOps extends traditional DevOps principles (CI/CD, infrastructure-as-code, monitoring) to the unique challenges of machine learning systems:\n\n1. **Data Pipeline**: Automated ingestion, validation, and preprocessing of training data. Schema drift detection ensures that incoming data maintains the expected feature distributions. Tools: Apache Airflow, Kubeflow Pipelines, Prefect.\n2. **Experiment Tracking**: Every training run logs hyperparameters (learning rate, batch size, optimizer), metrics (accuracy, F1-score, AUC-ROC), and artifact hashes. This enables reproducibility and systematic comparison across experiments. Tools: MLflow, Weights & Biases (W&B), Neptune.\n3. **Model Registry**: A versioned repository storing trained model artifacts alongside metadata (training dataset version, performance metrics, lineage). The registry enforces promotion gates: a model must pass automated validation tests before transitioning from \"Staging\" to \"Production.\" Tools: MLflow Model Registry, Vertex AI Model Registry.\n4. **CI/CD for ML**: Continuous Integration validates code changes (unit tests, linting) and triggers retraining pipelines. Continuous Deployment automatically packages validated models into serving containers and deploys them to production endpoints with canary or blue-green rollout strategies.\n5. **Monitoring & Observability**: Production models degrade over time due to **data drift** (the statistical distribution of input data shifts) and **concept drift** (the relationship between inputs and targets changes). Automated monitoring pipelines detect drift using statistical tests (KS-test, PSI) and trigger retraining workflows.\n\n## 2. Model Serving Architectures\n\nOnce a model passes the registry's promotion gates, it must be served to production applications:\n\n- **Real-Time Inference (Synchronous)**: REST or gRPC endpoints serving predictions with sub-100ms latency. The model is loaded into GPU memory and responds to individual requests. Frameworks: TensorFlow Serving, NVIDIA Triton Inference Server, TorchServe.\n- **Batch Inference (Asynchronous)**: Processing large volumes of data offline (e.g., scoring all customer records nightly). Apache Spark ML or dedicated batch prediction jobs process millions of records in parallel.\n- **Streaming Inference**: Models consume events from message queues (Apache Kafka, Amazon Kinesis) and produce predictions in near real-time. Essential for fraud detection, IoT anomaly alerting, and manufacturing quality monitoring.\n\n## 3. Containerization & Orchestration\n\nProduction ML deployments rely on **containerization** for reproducibility:\n\n- **Docker**: Packages the model, runtime dependencies (Python version, library versions), and serving framework into an immutable container image. This eliminates the \"it works on my machine\" problem.\n- **Kubernetes (K8s)**: Orchestrates container deployment, auto-scaling (Horizontal Pod Autoscaler adjusts replica count based on request latency or GPU utilization), health checking (liveness/readiness probes), and rolling updates with zero downtime.\n- **Model Optimization at Serving Time**: NVIDIA TensorRT compiles models into optimized execution plans targeting specific GPU architectures. ONNX Runtime provides hardware-agnostic inference acceleration.\n\n## 4. Feature Stores & Training-Serving Skew\n\nA **Feature Store** (e.g., Feast, Tecton, Vertex AI Feature Store) is a centralized repository for computing, storing, and serving ML features. It solves the critical problem of **training-serving skew**—when the features used during training differ from those available at inference time due to inconsistent data processing logic. The feature store maintains a single source of truth for feature computation, ensuring that training and serving pipelines produce identical feature values.\n\n---\n> **Key Takeaway**: MLOps transforms experimental ML models into reliable production systems through **experiment tracking** (MLflow), **model registries** with promotion gates, **containerized serving** (Docker + Kubernetes + Triton), and **continuous monitoring** for data drift—ensuring that industrial AI maintains accuracy and reliability 24/7.\n",
+                        "vocabulary": [
+                            {
+                                "en": "MLOps (Machine Learning Operations)",
+                                "es": "MLOps (Operaciones de Aprendizaje Automático)",
+                                "definition": "Engineering discipline for deploying, monitoring, and maintaining ML models in production at scale.",
+                                "ipa": "/ˌɛm.ɛlˈɒps/",
+                                "collocations": [
+                                    "MLOps pipeline",
+                                    "MLOps lifecycle",
+                                    "production MLOps"
+                                ]
+                            },
+                            {
+                                "en": "Model Registry",
+                                "es": "Registro de Modelos",
+                                "definition": "Versioned repository storing trained model artifacts with metadata, lineage, and promotion gates for staging-to-production transitions.",
+                                "ipa": "/ˈmɒd.əl ˈrɛdʒ.ɪ.stri/",
+                                "collocations": [
+                                    "register model version",
+                                    "promote to production",
+                                    "model artifact lineage"
+                                ]
+                            },
+                            {
+                                "en": "Data Drift",
+                                "es": "Deriva de Datos",
+                                "definition": "Statistical shift in the distribution of production input data compared to the training dataset, degrading model accuracy.",
+                                "ipa": "/ˈdeɪ.tə drɪft/",
+                                "collocations": [
+                                    "detect data drift",
+                                    "drift monitoring alert",
+                                    "distribution shift"
+                                ]
+                            },
+                            {
+                                "en": "Feature Store",
+                                "es": "Almacén de Características (Feature Store)",
+                                "definition": "Centralized system for computing, storing, and serving ML features consistently across training and inference.",
+                                "ipa": "/ˈfiː.tʃər stɔːr/",
+                                "collocations": [
+                                    "online feature store",
+                                    "feature engineering pipeline",
+                                    "training-serving consistency"
+                                ]
+                            },
+                            {
+                                "en": "Canary Deployment",
+                                "es": "Despliegue Canario",
+                                "definition": "Gradual rollout strategy routing a small percentage of traffic to the new model version while monitoring for regressions before full deployment.",
+                                "ipa": "/kəˈnɛr.i dɪˈplɔɪ.mənt/",
+                                "collocations": [
+                                    "canary rollout",
+                                    "percentage-based routing",
+                                    "automated rollback"
+                                ]
+                            },
+                            {
+                                "en": "NVIDIA Triton Inference Server",
+                                "es": "Servidor de Inferencia NVIDIA Triton",
+                                "definition": "Open-source inference serving platform supporting multiple ML frameworks with dynamic batching and GPU scheduling.",
+                                "ipa": "/ˈtraɪ.tɒn/",
+                                "collocations": [
+                                    "Triton model repository",
+                                    "dynamic batching",
+                                    "multi-model serving"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What percentage of the ML production challenge does model building typically represent?",
+                                "options": [
+                                    "80%",
+                                    "100%",
+                                    "50%",
+                                    "Approximately 20%, with the remaining 80% being MLOps"
+                                ],
+                                "answer": 3
+                            },
+                            {
+                                "q": "What is the primary purpose of a Model Registry in MLOps?",
+                                "options": [
+                                    "To train neural networks faster",
+                                    "To version and store model artifacts with promotion gates from Staging to Production",
+                                    "To compress images for AOI",
+                                    "To replace Kubernetes"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What causes a deployed ML model to degrade in accuracy over time?",
+                                "options": [
+                                    "Hardware failure exclusively",
+                                    "Data drift and concept drift in production inputs",
+                                    "Running out of disk space",
+                                    "Using Python instead of C++"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "How does a Feature Store prevent training-serving skew?",
+                                "options": [
+                                    "By deleting old training data",
+                                    "By maintaining a single source of truth for feature computation across training and serving",
+                                    "By increasing GPU memory",
+                                    "By converting models to ONNX format"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "aiml-m5",
                 "title": "AI Governance, Safety & Bias Mitigation",
                 "titleES": "Gobernanza de IA, Seguridad y Mitigación de Sesgos",
                 "icon": "fa-solid fa-shield-halved",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "aiml-m5-r1",
+                        "title": "Responsible AI Frameworks, Algorithmic Bias & Regulatory Compliance",
+                        "duration": "11 min",
+                        "content": "\n> **Industry Certification Note**: Aligned with **ISO/IEC 42001:2023 (AI Management System)**, **IEEE 7000 (Model Process for Ethical Engineering)**, and the **EU AI Act (2024)** regulatory framework.\n\n# Responsible AI Frameworks, Algorithmic Bias & Regulatory Compliance\n\nAs AI systems increasingly make high-stakes decisions—from hiring and lending to medical diagnostics and autonomous driving—the engineering community must address fundamental questions of **fairness**, **transparency**, **accountability**, and **safety**. AI Governance is no longer a philosophical exercise; it is an engineering discipline with formal standards, auditing procedures, and legal mandates.\n\n## 1. Sources of Algorithmic Bias\n\n**Algorithmic bias** occurs when an AI system produces systematically prejudiced results due to flawed assumptions in the machine learning process. Bias can enter the pipeline at multiple stages:\n\n- **Training Data Bias**: The dataset reflects historical inequities. Example: a hiring model trained on ten years of résumé data from a company that historically hired predominantly male engineers will learn to penalize résumés containing female-associated terms.\n- **Sampling Bias**: Underrepresentation of minority groups in the training dataset. If a facial recognition system is trained on 85% light-skinned faces, its error rate on dark-skinned individuals will be disproportionately higher.\n- **Label Bias**: Human annotators inject subjective judgment into ground-truth labels. In medical imaging, diagnostic labels may reflect regional clinical practices rather than objective pathology.\n- **Feedback Loop Bias**: A deployed model's predictions influence future data collection, creating a self-reinforcing cycle. Predictive policing systems that direct patrols to historically over-policed neighborhoods generate more arrests in those areas, which then trains the next model iteration to predict even higher crime rates there.\n\n## 2. Fairness Metrics & Bias Auditing\n\nEngineers must quantify fairness using mathematical metrics:\n\n- **Demographic Parity**: The probability of a positive prediction should be equal across all protected groups (e.g., gender, ethnicity). $P(\\hat{Y}=1 | A=a) = P(\\hat{Y}=1 | A=b)$\n- **Equalized Odds**: The true positive rate (TPR) and false positive rate (FPR) should be equal across groups. This ensures the model is equally accurate for all demographics.\n- **Calibration**: Among all individuals predicted to have a 70% probability of an outcome, approximately 70% should actually experience that outcome, regardless of group membership.\n\n**Bias auditing tools** (IBM AI Fairness 360, Google What-If Tool, Microsoft Fairlearn) automate the computation of these metrics across protected attributes and generate compliance reports.\n\n## 3. Explainability & Interpretability (XAI)\n\nRegulatory frameworks increasingly mandate that AI decisions be **explainable**:\n\n- **SHAP (SHapley Additive exPlanations)**: Assigns each feature a contribution score based on cooperative game theory (Shapley values), explaining how much each input feature pushed the prediction above or below the baseline.\n- **LIME (Local Interpretable Model-agnostic Explanations)**: Generates a locally faithful linear model around a specific prediction to explain which features most influenced the decision.\n- **Attention Visualization**: In Transformer models, visualizing attention weight matrices reveals which input tokens the model focused on when generating each output token.\n\n## 4. Regulatory Landscape\n\nThe global regulatory framework for AI is rapidly crystallizing:\n\n- **EU AI Act (2024)**: The world's first comprehensive AI law. Classifies AI systems by risk level: **Unacceptable Risk** (social scoring, real-time biometric surveillance) → banned; **High Risk** (medical devices, hiring, credit scoring) → mandatory conformity assessments, human oversight, and documentation; **Limited Risk** → transparency obligations; **Minimal Risk** → no restrictions.\n- **ISO/IEC 42001:2023**: International standard for AI Management Systems, defining requirements for establishing, implementing, and continually improving responsible AI practices within organizations.\n- **NIST AI Risk Management Framework (AI RMF 1.0)**: Voluntary U.S. framework providing a structured approach to AI risk identification, assessment, and mitigation.\n\n## 5. Red Teaming & AI Safety\n\n**AI Red Teaming** involves adversarial testing of AI systems to discover failure modes, harmful outputs, and security vulnerabilities before deployment:\n- **Prompt Injection Attacks**: Crafted inputs that override the model's system instructions, causing it to leak confidential data or execute unintended behaviors.\n- **Jailbreaking**: Techniques that bypass safety guardrails (content filters, refusal training) to elicit prohibited outputs.\n- **Adversarial Examples**: Imperceptible perturbations to input data (e.g., adding noise to a stop sign image) that cause misclassification while appearing identical to human observers.\n\n---\n> **Key Takeaway**: AI Governance requires engineers to **audit for algorithmic bias** (demographic parity, equalized odds), ensure **model explainability** (SHAP, LIME), comply with **international regulations** (EU AI Act, ISO 42001), and conduct **red team adversarial testing** before deploying AI systems in high-stakes industrial and social applications.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Algorithmic Bias",
+                                "es": "Sesgo Algorítmico",
+                                "definition": "Systematic and unfair discrimination in AI outputs caused by flawed data, assumptions, or model design.",
+                                "ipa": "/ˌæl.ɡəˈrɪð.mɪk ˈbaɪ.əs/",
+                                "collocations": [
+                                    "bias in training data",
+                                    "mitigate algorithmic bias",
+                                    "bias audit report"
+                                ]
+                            },
+                            {
+                                "en": "SHAP (SHapley Additive exPlanations)",
+                                "es": "SHAP (Explicaciones Aditivas de Shapley)",
+                                "definition": "Explainability method assigning each feature a contribution value based on cooperative game theory.",
+                                "ipa": "/ʃæp/",
+                                "collocations": [
+                                    "SHAP feature importance",
+                                    "Shapley value plot",
+                                    "model explainability"
+                                ]
+                            },
+                            {
+                                "en": "Demographic Parity",
+                                "es": "Paridad Demográfica",
+                                "definition": "Fairness metric requiring equal probability of positive predictions across all protected demographic groups.",
+                                "ipa": "/ˌdɛm.əˈɡræf.ɪk ˈpær.ɪ.ti/",
+                                "collocations": [
+                                    "achieve demographic parity",
+                                    "fairness constraint",
+                                    "protected attribute"
+                                ]
+                            },
+                            {
+                                "en": "EU AI Act",
+                                "es": "Ley de IA de la UE",
+                                "definition": "World's first comprehensive AI regulation classifying systems by risk level and mandating conformity assessments for high-risk AI.",
+                                "ipa": "/ˌiː.juː eɪˈaɪ ækt/",
+                                "collocations": [
+                                    "high-risk AI classification",
+                                    "conformity assessment",
+                                    "EU regulatory compliance"
+                                ]
+                            },
+                            {
+                                "en": "Red Teaming",
+                                "es": "Equipo Rojo (Red Teaming)",
+                                "definition": "Adversarial testing methodology probing AI systems for failure modes, biases, and security vulnerabilities before deployment.",
+                                "ipa": "/rɛd ˈtiː.mɪŋ/",
+                                "collocations": [
+                                    "AI red team exercise",
+                                    "adversarial testing",
+                                    "discover attack vectors"
+                                ]
+                            },
+                            {
+                                "en": "Prompt Injection",
+                                "es": "Inyección de Prompt",
+                                "definition": "Attack technique using crafted inputs to override an LLM's system instructions, causing unintended or harmful behavior.",
+                                "ipa": "/prɑːmpt ɪnˈdʒɛk.ʃən/",
+                                "collocations": [
+                                    "indirect prompt injection",
+                                    "jailbreak attempt",
+                                    "safety guardrail bypass"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What is 'feedback loop bias' in a deployed AI system?",
+                                "options": [
+                                    "The model crashes from too many requests",
+                                    "The model's predictions influence future data, creating a self-reinforcing cycle of bias",
+                                    "The model forgets its training data",
+                                    "Users provide too much positive feedback"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "Under the EU AI Act, what happens to AI systems classified as 'Unacceptable Risk'?",
+                                "options": [
+                                    "They receive a warning label",
+                                    "They are banned entirely",
+                                    "They require a software update",
+                                    "They are reclassified as Low Risk"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What does SHAP measure for each input feature?",
+                                "options": [
+                                    "The feature's storage size in bytes",
+                                    "How much each feature contributed to pushing the prediction above or below the baseline",
+                                    "The feature's pixel resolution",
+                                    "The training time per epoch"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What is the purpose of AI Red Teaming?",
+                                "options": [
+                                    "To make the model faster",
+                                    "To adversarially test for failure modes, harmful outputs, and security vulnerabilities",
+                                    "To compress the model for edge deployment",
+                                    "To translate the model into Spanish"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
@@ -2731,7 +3549,7 @@ var LXP_COURSES = {
         "titleEN": "Telecommunications & IoT",
         "category": "technology",
         "level": "A2-B1",
-        "status": "catalog_blueprint",
+        "status": "full",
         "totalModules": 5,
         "standard": "IEEE 802.11 / 3GPP 5G NR / LoRaWAN Standard",
         "conocer": "EC1290 (Instalación de Sistemas de Telecomunicaciones)",
@@ -2741,39 +3559,422 @@ var LXP_COURSES = {
         "description": "Protocolos de comunicación inalámbrica (5G NR, LoRaWAN, MQTT), sensores embebidos y redes industriales de telemetría.",
         "modules": [
             {
-                "id": "iot-m1",
-                "title": "Industrial IoT Protocols: MQTT, CoAP and OPC UA",
-                "titleES": "Protocolos IoT Industrial: MQTT, CoAP y OPC UA",
-                "icon": "fa-solid fa-wifi",
-                "readings": []
+                "id": "telecom-m1",
+                "title": "5G NR, LoRaWAN & Edge Computing",
+                "titleES": "5G NR, LoRaWAN y Edge Computing",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "telecom-m1-r1",
+                        "title": "IoT Connectivity, Network Slicing & MQTT",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment & Connectivity Standard**: Aligned with **3GPP Release 16 (5G NR)** and **LoRaWAN® Specification 1.0.4**. Essential for IoT Network Architects, RF Engineers, and Telecommunications Specialists.\n\n# 5G New Radio, LoRaWAN, and Edge Computing in IoT\n\nThe Internet of Things (IoT) requires vastly different connectivity profiles depending on the use case. A robotic surgeon requires ultra-low latency, while a smart water meter in a basement requires massive battery life and deep indoor penetration. Telecommunications engineers must architect networks utilizing the correct spectrum and protocol.\n\n## 1. 5G NR (New Radio) and Network Slicing\nUnlike 4G LTE, 5G is not just about faster smartphones; it is a foundational technology for critical infrastructure.\n- **eMBB (Enhanced Mobile Broadband)**: High throughput for video streaming and AR/VR applications.\n- **URLLC (Ultra-Reliable Low-Latency Communication)**: Designed for autonomous driving and industrial robotics, guaranteeing sub-millisecond latency and 99.999% reliability.\n- **Network Slicing**: Using Software-Defined Networking (SDN), a single physical 5G network is virtually \"sliced\" into multiple logical networks. The hospital's URLLC slice is completely isolated from the consumer's eMBB slice, ensuring bandwidth is never compromised during an emergency.\n\n## 2. LPWAN and the LoRaWAN Protocol\nFor massive IoT deployments (e.g., smart agriculture, asset tracking), 5G is often overkill and too power-hungry. Low-Power Wide-Area Networks (LPWAN) fill this gap.\n- **LoRa (Long Range)**: A proprietary physical layer radio modulation technique based on Chirp Spread Spectrum (CSS) technology. It operates in unlicensed ISM bands (e.g., 915 MHz in North America).\n- **LoRaWAN**: The MAC (Media Access Control) layer protocol built on top of LoRa. It allows a sensor to transmit a few bytes of data over 10+ kilometers while running on a single coin-cell battery for 10 years. \n- **Spreading Factor (SF)**: Engineers trade data rate for range. A higher Spreading Factor (e.g., SF12) increases the time on air, maximizing range and deep indoor penetration, but severely limits the payload size to bytes per hour.\n\n## 3. Edge Computing and MQTT\nSending billions of raw sensor readings to the cloud is expensive and introduces latency.\n- **Edge Computing**: Data processing is pushed to the \"edge\" of the network (e.g., an industrial gateway on the factory floor). Only aggregated data or anomalies are forwarded to the cloud.\n- **MQTT (Message Queuing Telemetry Transport)**: The de facto messaging protocol for IoT. It uses a lightweight **Publish/Subscribe** model. Sensors publish telemetry to a centralized MQTT Broker on specific \"topics,\" and edge gateways subscribe to those topics, decoupling the hardware from the software layer.\n\n---\n> **Key Takeaway**: Modern IoT architecture links **spectrum efficiency (LoRaWAN Spreading Factors)** with **critical infrastructure (5G URLLC Network Slicing)** and **decoupled messaging (MQTT Pub/Sub)**.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Network Slicing",
+                                "es": "Corte de Red / Segmentación de Red (5G)",
+                                "definition": "A network architecture that enables the multiplexing of virtualized and independent logical networks on the same physical network infrastructure, each tailored for a specific service requirement.",
+                                "ipa": "/ˈnɛt.wɜːrk ˈslaɪ.sɪŋ/",
+                                "collocations": [
+                                    "5G network slicing",
+                                    "URLLC slice",
+                                    "SLA guarantees"
+                                ]
+                            },
+                            {
+                                "en": "LoRaWAN",
+                                "es": "LoRaWAN (Red de Área Amplia de Largo Alcance)",
+                                "definition": "A Low-Power, Wide-Area (LPWA) networking protocol designed to wirelessly connect battery-operated 'things' to the internet in regional, national or global networks.",
+                                "ipa": "/ˈlɔː.rə.wæn/",
+                                "collocations": [
+                                    "LoRaWAN gateway",
+                                    "unlicensed spectrum",
+                                    "Chirp Spread Spectrum"
+                                ]
+                            },
+                            {
+                                "en": "Spreading Factor (SF)",
+                                "es": "Factor de Dispersión / Esparcimiento",
+                                "definition": "In LoRa modulation, the duration of the chirp. A higher SF increases the receiver's sensitivity and range but exponentially increases the time on air and decreases the data rate.",
+                                "ipa": "/ˈsprɛd.ɪŋ ˈfæk.tər/",
+                                "collocations": [
+                                    "increase spreading factor",
+                                    "SF12 deep indoor",
+                                    "time on air"
+                                ]
+                            },
+                            {
+                                "en": "URLLC",
+                                "es": "Comunicaciones Ultra Confiables de Baja Latencia",
+                                "definition": "Ultra-Reliable Low-Latency Communication. A 5G NR category designed for mission-critical applications requiring sub-millisecond latency and 99.999% availability.",
+                                "ipa": "/juː-ɑːr-ɛl-ɛl-siː/",
+                                "collocations": [
+                                    "URLLC backhaul",
+                                    "mission-critical IoT",
+                                    "robotic telesurgery"
+                                ]
+                            },
+                            {
+                                "en": "MQTT",
+                                "es": "MQTT (Message Queuing Telemetry Transport)",
+                                "definition": "A lightweight, publish-subscribe network protocol that transports messages between devices, ideal for remote locations with a small code footprint and limited network bandwidth.",
+                                "ipa": "/ɛm-kjuː-tiː-tiː/",
+                                "collocations": [
+                                    "MQTT broker",
+                                    "publish/subscribe model",
+                                    "telemetry payload"
+                                ]
+                            },
+                            {
+                                "en": "Path Loss",
+                                "es": "Pérdida de Trayectoria",
+                                "definition": "The reduction in power density of an electromagnetic wave as it propagates through space, caused by free space dispersion, absorption, and diffraction.",
+                                "ipa": "/pæθ lɔːs/",
+                                "collocations": [
+                                    "severe path loss",
+                                    "calculate link budget",
+                                    "penetration loss"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "dialogue": {
+                    "title": "Network Architecture: Smart City Water Metering",
+                    "titleES": "Arquitectura de Red: Medición de Agua en Smart City",
+                    "scenarioContext": "Guadalajara, Jalisco (IoT Design Center) ⇄ Cisco IoT Solutions Team. Planning a massive smart meter deployment.",
+                    "characters": [
+                        {
+                            "name": "Ing. Carlos Mendoza",
+                            "role": "IoT Solutions Architect",
+                            "avatar": "CM",
+                            "color": "var(--cyan)"
+                        },
+                        {
+                            "name": "Rachel Adams",
+                            "role": "Lead RF Engineer (Cisco)",
+                            "avatar": "RA",
+                            "color": "var(--emerald)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Ing. Carlos Mendoza",
+                            "text": "Rachel, the city wants to deploy 500,000 smart water meters underground. Initially, they requested 5G modules, but I pushed back. 5G NR is too power-hungry for a 10-year battery life, and high-frequency bands suffer from severe path loss in basements.",
+                            "translation": "Rachel, la ciudad quiere desplegar 500,000 medidores de agua inteligentes bajo tierra. Inicialmente pidieron módulos 5G, pero me opuse. 5G NR consume demasiada energía para una batería de 10 años, y las bandas de alta frecuencia sufren de severa pérdida de trayectoria (path loss) en sótanos.",
+                            "targetTerms": [
+                                "5G NR",
+                                "power-hungry",
+                                "battery life",
+                                "high-frequency bands",
+                                "path loss"
+                            ]
+                        },
+                        {
+                            "speaker": "Rachel Adams",
+                            "text": "Exactly, Carlos. For massive machine-type communication deep indoors, we need a Low-Power Wide-Area Network. I recommend a LoRaWAN architecture operating in the unlicensed 915 MHz ISM band.",
+                            "translation": "Exactamente, Carlos. Para comunicación masiva tipo máquina en interiores profundos, necesitamos una red de área amplia de baja potencia (LPWAN). Recomiendo una arquitectura LoRaWAN operando en la banda libre ISM de 915 MHz.",
+                            "targetTerms": [
+                                "massive machine-type communication",
+                                "Low-Power Wide-Area Network",
+                                "LoRaWAN architecture",
+                                "unlicensed",
+                                "ISM band"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Carlos Mendoza",
+                            "text": "Agreed. To guarantee signal penetration through the concrete, we will configure the end-nodes with a Spreading Factor of 12. The data rate will drop to around 250 bits per second, but water meters only need to transmit a tiny MQTT payload once a day.",
+                            "translation": "De acuerdo. Para garantizar la penetración de la señal a través del concreto, configuraremos los nodos finales con un Factor de Dispersión (Spreading Factor) de 12. La tasa de datos caerá a unos 250 bits por segundo, pero los medidores solo necesitan transmitir una pequeña carga útil (payload) MQTT una vez al día.",
+                            "targetTerms": [
+                                "signal penetration",
+                                "end-nodes",
+                                "Spreading Factor",
+                                "data rate",
+                                "MQTT payload"
+                            ]
+                        },
+                        {
+                            "speaker": "Rachel Adams",
+                            "text": "Perfect. We will deploy the LoRa gateways on the city's cellular towers. The gateways will act as packet forwarders, tunneling the MQTT messages back to the central network server via a secure 5G URLLC backhaul.",
+                            "translation": "Perfecto. Desplegaremos los gateways LoRa en las torres celulares de la ciudad. Los gateways actuarán como reenviadores de paquetes (packet forwarders), tunelizando los mensajes MQTT de vuelta al servidor de red central a través de un backhaul seguro 5G URLLC.",
+                            "targetTerms": [
+                                "gateways",
+                                "cellular towers",
+                                "packet forwarders",
+                                "tunneling",
+                                "backhaul"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The signal doesn't reach the basement.",
+                            "native": "The high-frequency bands suffer from severe path loss in deep indoor environments.",
+                            "explanation": "En telecomunicaciones, la 'señal que no llega' se cuantifica como 'path loss' (pérdida de trayectoria o atenuación) y penetración ('deep indoor')."
+                        },
+                        {
+                            "school": "The sensor sends a small message over the internet.",
+                            "native": "The end-node transmits a small MQTT payload over the LoRaWAN physical layer.",
+                            "explanation": "Los ingenieros de IoT especifican el rol del dispositivo ('end-node'), el protocolo de aplicación ('MQTT payload') y la capa física ('LoRaWAN')."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Network Slicing",
+                        "ipa": "/ˈnɛt.wɜːrk ˈslaɪ.sɪŋ/",
+                        "es": "Corte de Red / Segmentación de Red (5G)",
+                        "category": "Arquitectura 5G",
+                        "definition": "A network architecture that enables the multiplexing of virtualized and independent logical networks on the same physical network infrastructure, each tailored for a specific service requirement.",
+                        "collocations": [
+                            "5G network slicing",
+                            "URLLC slice",
+                            "SLA guarantees"
+                        ],
+                        "falseFriends": "No es 'rebanar cables'; es la virtualización extrema por software (SDN) para garantizar el ancho de banda a servicios críticos.",
+                        "nativeUsage": "The autonomous vehicle fleet operates on a dedicated URLLC network slice to prevent latency spikes during high-traffic hours."
+                    },
+                    {
+                        "term": "LoRaWAN",
+                        "ipa": "/ˈlɔː.rə.wæn/",
+                        "es": "LoRaWAN (Red de Área Amplia de Largo Alcance)",
+                        "category": "Protocolos LPWAN",
+                        "definition": "A Low-Power, Wide-Area (LPWA) networking protocol designed to wirelessly connect battery-operated 'things' to the internet in regional, national or global networks.",
+                        "collocations": [
+                            "LoRaWAN gateway",
+                            "unlicensed spectrum",
+                            "Chirp Spread Spectrum"
+                        ],
+                        "falseFriends": "LoRa es la modulación de radio física; LoRaWAN es el protocolo de software MAC que se ejecuta por encima.",
+                        "nativeUsage": "We covered the entire 5,000-acre farm with soil moisture sensors using just three LoRaWAN gateways."
+                    },
+                    {
+                        "term": "Spreading Factor (SF)",
+                        "ipa": "/ˈsprɛd.ɪŋ ˈfæk.tər/",
+                        "es": "Factor de Dispersión / Esparcimiento",
+                        "category": "Radiofrecuencia",
+                        "definition": "In LoRa modulation, the duration of the chirp. A higher SF increases the receiver's sensitivity and range but exponentially increases the time on air and decreases the data rate.",
+                        "collocations": [
+                            "increase spreading factor",
+                            "SF12 deep indoor",
+                            "time on air"
+                        ],
+                        "falseFriends": "No es factor de 'propagación de virus'; es la configuración de radio que intercambia velocidad de datos por alcance kilométrico.",
+                        "nativeUsage": "The basement water meters required Spreading Factor 12 to punch through the concrete foundation."
+                    },
+                    {
+                        "term": "URLLC",
+                        "ipa": "/juː-ɑːr-ɛl-ɛl-siː/",
+                        "es": "Comunicaciones Ultra Confiables de Baja Latencia",
+                        "category": "Clasificación 5G",
+                        "definition": "Ultra-Reliable Low-Latency Communication. A 5G NR category designed for mission-critical applications requiring sub-millisecond latency and 99.999% availability.",
+                        "collocations": [
+                            "URLLC backhaul",
+                            "mission-critical IoT",
+                            "robotic telesurgery"
+                        ],
+                        "falseFriends": "Es un acrónimo. No se lee como palabra, se deletrea U-R-L-L-C.",
+                        "nativeUsage": "Remote robotic surgery is only possible over a 5G URLLC connection due to the strict latency limits."
+                    },
+                    {
+                        "term": "MQTT",
+                        "ipa": "/ɛm-kjuː-tiː-tiː/",
+                        "es": "MQTT (Message Queuing Telemetry Transport)",
+                        "category": "Mensajería IoT",
+                        "definition": "A lightweight, publish-subscribe network protocol that transports messages between devices, ideal for remote locations with a small code footprint and limited network bandwidth.",
+                        "collocations": [
+                            "MQTT broker",
+                            "publish/subscribe model",
+                            "telemetry payload"
+                        ],
+                        "falseFriends": "Originalmente 'MQ Telemetry Transport', pero hoy es el estándar ISO (ISO/IEC 20922) para conectar sensores a la nube.",
+                        "nativeUsage": "The temperature sensor publishes its data to the MQTT broker on the topic 'factory/zone1/temp'."
+                    },
+                    {
+                        "term": "Path Loss",
+                        "ipa": "/pæθ lɔːs/",
+                        "es": "Pérdida de Trayectoria",
+                        "category": "Física de Ondas",
+                        "definition": "The reduction in power density of an electromagnetic wave as it propagates through space, caused by free space dispersion, absorption, and diffraction.",
+                        "collocations": [
+                            "severe path loss",
+                            "calculate link budget",
+                            "penetration loss"
+                        ],
+                        "falseFriends": "No significa que perdiste tu camino; es la atenuación o pérdida de fuerza de la señal de radio a través del aire y obstáculos.",
+                        "nativeUsage": "The high-frequency 5G mmWave signals suffer from massive path loss when passing through tinted glass windows."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "5G URLLC & Network Slicing",
+                        "botQuestion": "Welcome to the Telecom Engineering Audit! In 5G networks, what is 'Network Slicing'? Why is it crucial to put a remote robotic surgery application on a URLLC slice rather than a consumer eMBB slice?",
+                        "requiredKeywords": [
+                            "slicing",
+                            "virtual",
+                            "logical",
+                            "isolated",
+                            "urllc",
+                            "latency",
+                            "reliable",
+                            "bandwidth"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Perfect! Network slicing creates isolated virtual networks on the same physical hardware. Robotic surgery demands a URLLC slice to guarantee sub-millisecond latency and extreme reliability, which shouldn't be interrupted by someone streaming Netflix on the eMBB slice.",
+                        "feedbackRetry": "Think about dividing a single physical network into virtual pieces. What is the term for that? Why does a surgeon need 'Ultra-Reliable Low-Latency' (URLLC) instead of consumer broadband?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "LoRaWAN & Spreading Factor",
+                        "botQuestion": "When designing an IoT network for underground water meters, why would an engineer choose LoRaWAN instead of 5G? What happens to the data rate and the signal range when you increase the 'Spreading Factor' (e.g., to SF12)?",
+                        "requiredKeywords": [
+                            "lorawan",
+                            "battery",
+                            "power",
+                            "spreading",
+                            "factor",
+                            "range",
+                            "penetration",
+                            "data",
+                            "rate"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot-on! LoRaWAN is chosen for its 10-year battery life and long range. Increasing the Spreading Factor to 12 drastically improves signal penetration (range) through concrete, but as a tradeoff, it severely decreases the data rate.",
+                        "feedbackRetry": "Compare battery usage: which one lasts 10 years on a coin cell? Also, consider the trade-off in radio physics: if you increase the 'Spreading Factor' to push the signal through thick concrete, what happens to the speed (data rate)?"
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "iot-m2",
                 "title": "5G New Radio (NR) & Private Industrial Cellular Networks",
                 "titleES": "5G New Radio y Redes Celulares Privadas Industriales",
-                "icon": "fa-solid fa-signal",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "iot-m2-r1",
+                        "title": "Private 5G Networks in Smart Factories",
+                        "duration": "10 min",
+                        "content": "\n# Private 5G Networks in Smart Factories\n\nThe implementation of Industry 4.0 relies heavily on wireless connectivity. While Wi-Fi is common, **Private 5G Networks** are becoming the standard for mission-critical industrial applications.\n\n## What is a Private 5G Network?\n\nA private 5G network is a cellular network built specifically for an enterprise (like a factory, port, or mine). Unlike public 5G networks operated by carriers, a private network is owned and controlled entirely by the company, utilizing unlicensed or dedicated spectrum (like CBRS in the US).\n\n## Key Advantages of 5G for Industry\n\n1. **URLLC (Ultra-Reliable Low-Latency Communication)**: Achieves latency below 1 millisecond. This is critical for robotic arms, automated guided vehicles (AGVs), and safety systems.\n2. **eMBB (Enhanced Mobile Broadband)**: Provides massive bandwidth for transmitting high-resolution video streams for AI quality inspection.\n3. **mMTC (Massive Machine-Type Communications)**: Supports up to 1 million devices per square kilometer, perfect for dense sensor networks.\n\n## Wi-Fi vs. 5G in Manufacturing\n\nWhile Wi-Fi is cheaper to deploy, 5G offers **seamless mobility** without connection drops as devices (like drones or robots) move around a large facility. It also provides better security and protection against interference.\n\n---\n> **Key Takeaway**: Private 5G provides the low latency, high reliability, and massive device density needed for advanced robotics and automation.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Latency",
+                                "es": "Latencia",
+                                "definition": "The time it takes for data to travel from its source to its destination."
+                            },
+                            {
+                                "en": "Bandwidth",
+                                "es": "Ancho de banda",
+                                "definition": "The maximum rate of data transfer across a given path."
+                            },
+                            {
+                                "en": "Automated Guided Vehicle (AGV)",
+                                "es": "Vehículo Guiado Automáticamente",
+                                "definition": "Mobile robots used in industrial applications to move materials."
+                            },
+                            {
+                                "en": "Spectrum",
+                                "es": "Espectro (de radiofrecuencia)",
+                                "definition": "The range of electromagnetic radio frequencies used for wireless communication."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "iot-m3",
                 "title": "LPWAN Technologies: LoRaWAN and NB-IoT Deployment",
                 "titleES": "Tecnologías LPWAN: Despliegue de LoRaWAN y NB-IoT",
-                "icon": "fa-solid fa-satellite-dish",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "iot-m3-r1",
+                        "title": "Introduction to LoRaWAN",
+                        "duration": "10 min",
+                        "content": "\n# Introduction to LoRaWAN\n\nWhen we need to connect sensors over vast distances (like across a city or a large agricultural farm), Wi-Fi and Bluetooth don't reach far enough. Cellular networks can reach, but they consume too much battery. This is where **LPWAN (Low-Power Wide-Area Network)** comes in.\n\n## What is LoRaWAN?\n\n**LoRaWAN** (Long Range Wide Area Network) is a networking protocol designed to wirelessly connect battery-operated devices to the internet in regional, national, or global networks.\n\n- **Long Range**: Can transmit data up to 15 kilometers in rural areas and 5 kilometers in dense urban environments.\n- **Low Power**: Sensors can run for 5 to 10 years on a single coin-cell battery.\n- **Low Bandwidth**: Designed to send tiny amounts of data (a few bytes), like a temperature reading once per hour.\n\n## Use Cases for LoRaWAN\n\n1. **Smart Agriculture**: Soil moisture sensors deployed across thousands of hectares.\n2. **Smart Cities**: Smart parking meters, waste management (trash cans that alert when full), and street lighting control.\n3. **Asset Tracking**: Tracking the location of shipping containers across a logistics yard.\n\n---\n> **Key Takeaway**: LoRaWAN is ideal for applications that require long-range communication and long battery life, but only need to send small amounts of data infrequently.\n",
+                        "vocabulary": [
+                            {
+                                "en": "LPWAN",
+                                "es": "LPWAN (Red de Área Amplia y Baja Potencia)",
+                                "definition": "A type of wireless network designed for long-range communications at a low bit rate."
+                            },
+                            {
+                                "en": "Payload",
+                                "es": "Carga útil",
+                                "definition": "The actual data or message being transmitted, excluding network headers."
+                            },
+                            {
+                                "en": "Gateway",
+                                "es": "Puerta de enlace / Gateway",
+                                "definition": "A device that routes data from a sensor network to the internet."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "iot-m4",
                 "title": "Embedded Microcontrollers & Sensor Interfacing (I2C, SPI)",
                 "titleES": "Microcontroladores Embebidos e Interfaces de Sensores (I2C, SPI)",
-                "icon": "fa-solid fa-microchip",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "iot-m4-r1",
+                        "title": "Sensor Communication Protocols: I2C vs SPI",
+                        "duration": "12 min",
+                        "content": "\n# Sensor Communication Protocols: I2C vs SPI\n\nAt the very edge of the IoT network, microcontrollers (like ESP32 or STM32) need to read data from physical sensors (temperature, pressure, accelerometer). They do this using synchronous serial communication protocols.\n\n## I2C (Inter-Integrated Circuit)\n\nI2C is a two-wire protocol used for short-distance communication on a circuit board.\n\n- **SDA (Serial Data)**: The line for the master and slave to send and receive data.\n- **SCL (Serial Clock)**: The line that carries the clock signal.\n\n**Advantages**: It only requires two wires, no matter how many sensors you connect. Each sensor has a unique address.\n**Disadvantages**: It is relatively slow and only works well over short distances.\n\n## SPI (Serial Peripheral Interface)\n\nSPI is a four-wire communication protocol.\n\n- **MOSI (Master Out Slave In)**: Data from microcontroller to sensor.\n- **MISO (Master In Slave Out)**: Data from sensor to microcontroller.\n- **SCLK (Serial Clock)**: Clock signal.\n- **CS/SS (Chip Select)**: Used to select which sensor to talk to.\n\n**Advantages**: SPI is much faster than I2C and supports full-duplex communication (sending and receiving at the same time).\n**Disadvantages**: Requires more pins on the microcontroller. Every new sensor needs an additional Chip Select wire.\n\n---\n> **Key Takeaway**: Use I2C when you want to save pins and connect many simple sensors. Use SPI when you need high-speed data transfer.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Microcontroller",
+                                "es": "Microcontrolador",
+                                "definition": "A compact integrated circuit designed to govern a specific operation in an embedded system."
+                            },
+                            {
+                                "en": "Full-duplex",
+                                "es": "Full-duplex (Bidireccional simultáneo)",
+                                "definition": "The ability to send and receive data simultaneously."
+                            },
+                            {
+                                "en": "Synchronous",
+                                "es": "Síncrono",
+                                "definition": "Data transmission synchronized by a shared clock signal."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             },
             {
                 "id": "iot-m5",
                 "title": "Edge Gateway Security & Remote Telemetry Management",
                 "titleES": "Seguridad en Gateways de Borde y Gestión de Telemetría",
-                "icon": "fa-solid fa-lock",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "iot-m5-r1",
+                        "title": "Securing the IoT Edge Gateway",
+                        "duration": "10 min",
+                        "content": "\n# Securing the IoT Edge Gateway\n\nIn an industrial network, sensors do not usually connect directly to the cloud. Instead, they connect to an **Edge Gateway**. This gateway collects data from all local sensors, translates protocols, and forwards the data to the cloud.\n\n## The Role of the Edge Gateway\n\nAn edge gateway sits between the OT (Operational Technology) network on the factory floor and the IT (Information Technology) network or the cloud. It acts as a bridge and a firewall.\n\n## Security Challenges at the Edge\n\nIf a hacker gains access to the edge gateway, they can intercept sensitive manufacturing data or even send malicious commands to industrial robots.\n\n### Key Security Measures\n\n1. **Mutual TLS (mTLS)**: The gateway and the cloud server must mutually authenticate using digital certificates.\n2. **Encrypted Storage**: Credentials and API keys stored on the gateway must be encrypted, often using a hardware TPM (Trusted Platform Module).\n3. **Over-The-Air (OTA) Updates**: The gateway must be able to securely download and install firmware patches to fix vulnerabilities.\n4. **Firewall and Port Closure**: All unnecessary inbound network ports on the gateway must be closed to prevent unauthorized access.\n\n---\n> **Key Takeaway**: The edge gateway is the critical chokepoint between the physical factory and the digital cloud. Securing it with certificates and encryption is paramount.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Edge Gateway",
+                                "es": "Puerta de enlace de borde / Gateway",
+                                "definition": "A device that connects a local network of IoT devices to the cloud."
+                            },
+                            {
+                                "en": "Mutual Authentication",
+                                "es": "Autenticación mutua",
+                                "definition": "A security process in which both entities verify each other's identity."
+                            },
+                            {
+                                "en": "Firmware",
+                                "es": "Firmware",
+                                "definition": "Software programmed into read-only memory, providing low-level control for hardware."
+                            }
+                        ]
+                    }
+                ],
+                "quiz": []
             }
         ]
     },
@@ -3409,30 +4610,498 @@ var LXP_COURSES = {
             {
                 "id": "data-m2",
                 "title": "SQL at Scale, Indexing & Query Execution Plans",
-                "titleES": "SQL a Escala, Indexación y Planes de Ejecución",
-                "icon": "fa-solid fa-bolt",
-                "readings": []
+                "titleES": "SQL a Escala, Indexación y Planes de Ejecución de Consultas",
+                "icon": "fa-solid fa-database",
+                "readings": [
+                    {
+                        "id": "data-m2-r1",
+                        "title": "Advanced SQL Optimization, B-Tree Indexes & Query Planner Architecture",
+                        "duration": "13 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **Databricks Certified Data Engineer Associate**, **AWS Certified Data Analytics — Specialty**, and **ISO/IEC 9075 (SQL Standard)**.\n\n# Advanced SQL Optimization, B-Tree Indexes & Query Planner Architecture\n\nSQL remains the universal language of data. But writing correct SQL is only the first step—writing **performant SQL** that executes efficiently across billions of rows requires deep understanding of indexing, query execution plans, and database engine internals.\n\n## 1. B-Tree Index Architecture\n\nThe **B-Tree (Balanced Tree)** is the default index structure in virtually all relational databases (PostgreSQL, MySQL, SQL Server, Oracle):\n- **Structure**: A self-balancing tree where each node contains sorted keys and pointers. Leaf nodes contain pointers to the actual data rows (or the rows themselves in clustered indexes).\n- **Search Complexity**: O(log N) — searching 1 billion rows requires at most ~30 node comparisons instead of scanning all 1 billion rows sequentially.\n- **Clustered vs. Non-Clustered**: A **clustered index** physically sorts the table data by the index key (one per table). A **non-clustered index** maintains a separate structure with pointers to the heap (data rows).\n\n**Composite Indexes**: An index on multiple columns (e.g., `CREATE INDEX idx_order ON orders(customer_id, order_date)`). The **leftmost prefix rule** means this index accelerates queries filtering on `customer_id` alone or `customer_id + order_date`, but NOT `order_date` alone.\n\n## 2. Query Execution Plans\n\nThe **query planner** (also called the optimizer) transforms a SQL statement into an execution plan—a directed acyclic graph (DAG) of physical operations:\n- **Seq Scan (Full Table Scan)**: Reads every row in the table. Acceptable for small tables but catastrophic for large ones.\n- **Index Scan**: Uses the B-Tree index to locate matching rows directly. Orders of magnitude faster for selective queries.\n- **Index Only Scan (Covering Index)**: All requested columns exist within the index itself, eliminating the need to fetch data from the main table (heap).\n- **Hash Join**: Builds an in-memory hash table from the smaller relation, then probes it with rows from the larger relation. Optimal for equi-joins on large datasets.\n- **Nested Loop Join**: For each row in the outer table, scans the inner table. Efficient only when the inner table has an index and the outer table is small.\n- **Sort + Merge Join**: Sorts both relations on the join key, then merges them in a single pass. Efficient when both inputs are already sorted or when the result set is very large.\n\nUse `EXPLAIN ANALYZE` (PostgreSQL) or `EXPLAIN FORMAT=JSON` (MySQL) to inspect the actual execution plan, including row estimates, execution time per node, and memory usage.\n\n## 3. Partitioning & Sharding\n\nFor tables exceeding hundreds of millions of rows:\n- **Table Partitioning**: Divides a table into smaller physical segments based on a partition key (date range, region, hash). The query planner performs **partition pruning**—skipping irrelevant partitions entirely.\n- **Horizontal Sharding**: Distributes data across multiple database servers. Each shard holds a subset of rows. Requires a shard key strategy and a routing layer (Vitess, Citus, CockroachDB).\n\n## 4. Window Functions & Analytical SQL\n\nModern analytical queries use **window functions** to compute running totals, rankings, and moving averages without GROUP BY aggregation:\n- `ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC)` — assigns a unique rank within each department.\n- `SUM(revenue) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)` — computes a 7-day rolling revenue sum.\n- `LAG(value, 1) OVER (ORDER BY timestamp)` — retrieves the previous row's value for time-series delta calculations.\n\n---\n> **Key Takeaway**: Performant SQL requires understanding **B-Tree index mechanics** (O(log N) search, composite index leftmost prefix rule), reading **query execution plans** (EXPLAIN ANALYZE), applying **partitioning** for billion-row tables, and leveraging **window functions** for analytical computations at scale.\n",
+                        "vocabulary": [
+                            {
+                                "en": "B-Tree Index",
+                                "es": "Índice B-Tree (Árbol B)",
+                                "definition": "Self-balancing tree data structure enabling O(log N) search, insertion, and deletion in relational databases.",
+                                "ipa": "/biː triː/",
+                                "collocations": [
+                                    "B-Tree leaf node",
+                                    "clustered B-Tree index",
+                                    "index key lookup"
+                                ]
+                            },
+                            {
+                                "en": "Query Execution Plan",
+                                "es": "Plan de Ejecución de Consulta",
+                                "definition": "The optimized sequence of physical operations (scans, joins, sorts) the database engine executes to fulfill a SQL statement.",
+                                "ipa": "/ˈkwɪr.i ˌɛk.sɪˈkjuː.ʃən/",
+                                "collocations": [
+                                    "EXPLAIN ANALYZE",
+                                    "execution plan node",
+                                    "optimizer cost estimate"
+                                ]
+                            },
+                            {
+                                "en": "Partition Pruning",
+                                "es": "Poda de Particiones",
+                                "definition": "Query optimization technique where the planner skips irrelevant table partitions based on filter predicates.",
+                                "ipa": "/pɑːrˈtɪʃ.ən ˈpruː.nɪŋ/",
+                                "collocations": [
+                                    "date-range partitioning",
+                                    "prune unused partitions",
+                                    "partition key selection"
+                                ]
+                            },
+                            {
+                                "en": "Window Function",
+                                "es": "Función de Ventana (Window Function)",
+                                "definition": "SQL function computing a value across a set of table rows related to the current row, without collapsing rows like GROUP BY.",
+                                "ipa": "/ˈwɪn.doʊ ˈfʌŋk.ʃən/",
+                                "collocations": [
+                                    "ROW_NUMBER() OVER",
+                                    "PARTITION BY clause",
+                                    "rolling window aggregate"
+                                ]
+                            },
+                            {
+                                "en": "Hash Join",
+                                "es": "Unión por Hash (Hash Join)",
+                                "definition": "Join algorithm building an in-memory hash table from the smaller relation and probing it with rows from the larger relation.",
+                                "ipa": "/hæʃ dʒɔɪn/",
+                                "collocations": [
+                                    "hash join build phase",
+                                    "probe the hash table",
+                                    "equi-join optimization"
+                                ]
+                            },
+                            {
+                                "en": "Horizontal Sharding",
+                                "es": "Fragmentación Horizontal (Sharding)",
+                                "definition": "Distributing table rows across multiple database servers, each holding a subset of the data for scalability.",
+                                "ipa": "/ˈʃɑːr.dɪŋ/",
+                                "collocations": [
+                                    "shard key strategy",
+                                    "cross-shard query",
+                                    "shard rebalancing"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What is the search complexity of a B-Tree index?",
+                                "options": [
+                                    "O(N) linear scan",
+                                    "O(log N) logarithmic",
+                                    "O(N²) quadratic",
+                                    "O(1) constant"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What does 'partition pruning' accomplish?",
+                                "options": [
+                                    "Deletes old data permanently",
+                                    "Skips irrelevant table partitions during query execution, dramatically reducing scan volume",
+                                    "Creates new indexes automatically",
+                                    "Compresses data files"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "In a composite index on (customer_id, order_date), which query can use this index?",
+                                "options": [
+                                    "WHERE order_date = '2024-01-01' (alone)",
+                                    "WHERE customer_id = 42 AND order_date > '2024-01-01'",
+                                    "WHERE product_name = 'Widget'",
+                                    "WHERE amount > 100"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What command reveals the actual execution plan in PostgreSQL?",
+                                "options": [
+                                    "SELECT *",
+                                    "DROP TABLE",
+                                    "EXPLAIN ANALYZE",
+                                    "CREATE INDEX"
+                                ],
+                                "answer": 2
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "data-m3",
                 "title": "Statistical Inference, Hypothesis Testing & A/B Experimentation",
-                "titleES": "Inferencia Estadística y Pruebas de Hipótesis",
-                "icon": "fa-solid fa-calculator",
-                "readings": []
+                "titleES": "Inferencia Estadística, Pruebas de Hipótesis y Experimentación A/B",
+                "icon": "fa-solid fa-chart-column",
+                "readings": [
+                    {
+                        "id": "data-m3-r1",
+                        "title": "Frequentist Hypothesis Testing, P-Values & Controlled Experimentation",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **Google Data Analytics Professional Certificate**, **Meta Marketing Science Professional**, and **ASA Statement on P-Values (2016)**.\n\n# Frequentist Hypothesis Testing, P-Values & Controlled Experimentation\n\nData-driven decision making in technology companies—from optimizing UI conversions to validating manufacturing process changes—relies on **statistical hypothesis testing**. Understanding these methods in English is essential for communicating with international data science teams and publishing results.\n\n## 1. The Hypothesis Testing Framework\n\n1. **Null Hypothesis (H₀)**: The default assumption that there is NO effect, NO difference, or NO relationship. Example: \"The new landing page does NOT increase conversion rate.\"\n2. **Alternative Hypothesis (H₁ or Hₐ)**: The claim that there IS an effect. \"The new landing page DOES increase conversion rate.\"\n3. **Test Statistic**: A numerical value computed from sample data (z-score, t-statistic, chi-squared) that quantifies how far the observed result deviates from what H₀ predicts.\n4. **P-Value**: The probability of observing a test statistic at least as extreme as the one computed, ASSUMING H₀ is true. A small p-value (typically < 0.05) provides evidence against H₀.\n5. **Decision**: If p-value < α (significance level, typically 0.05), reject H₀ in favor of H₁. Otherwise, fail to reject H₀.\n\n## 2. Type I and Type II Errors\n\n- **Type I Error (False Positive, α)**: Rejecting H₀ when it is actually true. \"We concluded the new design works, but it actually doesn't.\" Controlled by the significance level α.\n- **Type II Error (False Negative, β)**: Failing to reject H₀ when H₁ is actually true. \"We concluded the new design has no effect, but it actually does.\"\n- **Statistical Power (1 - β)**: The probability of correctly detecting a real effect. Standard target: 80%. Power increases with larger sample sizes and larger effect sizes.\n\n## 3. A/B Testing (Controlled Experimentation)\n\nA/B testing is the gold standard for causal inference in product and process optimization:\n1. **Randomization**: Users (or production units) are randomly assigned to Control (A) or Treatment (B) groups, eliminating confounding variables.\n2. **Sample Size Calculation**: Before launching, calculate the required sample size using: desired significance level (α = 0.05), desired power (1-β = 0.80), minimum detectable effect (MDE), and baseline conversion rate.\n3. **Run Duration**: The experiment must run long enough to capture full business cycles (weekday/weekend effects, payroll cycles) and reach the required sample size.\n4. **Analysis**: Compare the metric (conversion rate, revenue per user, defect rate) between groups using a two-proportion z-test or t-test. Report the point estimate, confidence interval, and p-value.\n5. **Decision**: Ship the treatment if statistically significant AND practically significant (the effect size is large enough to matter operationally).\n\n## 4. Common Pitfalls\n\n- **Peeking**: Checking results repeatedly during the experiment inflates the false positive rate. Use sequential testing methods or pre-commit to a fixed analysis time.\n- **Multiple Comparisons**: Testing many metrics simultaneously increases the chance of at least one false positive. Apply Bonferroni correction or False Discovery Rate (FDR) control.\n- **Simpson's Paradox**: A trend that appears in aggregated data can reverse when the data is split by a confounding variable (e.g., by device type or user segment).\n\n---\n> **Key Takeaway**: Statistical inference follows the **H₀/H₁ → test statistic → p-value → decision** framework. A/B testing requires **randomization**, pre-calculated **sample sizes**, and awareness of pitfalls (**peeking, multiple comparisons, Simpson's Paradox**) to draw valid causal conclusions.\n",
+                        "vocabulary": [
+                            {
+                                "en": "P-Value",
+                                "es": "Valor P (P-Value)",
+                                "definition": "Probability of observing a test statistic as extreme as the one computed, assuming the null hypothesis is true.",
+                                "ipa": "/piː ˈvæl.juː/",
+                                "collocations": [
+                                    "p-value below 0.05",
+                                    "statistically significant p-value",
+                                    "interpret the p-value"
+                                ]
+                            },
+                            {
+                                "en": "Null Hypothesis (H₀)",
+                                "es": "Hipótesis Nula (H₀)",
+                                "definition": "Default assumption that there is no effect, no difference, or no relationship in the population.",
+                                "ipa": "/nʌl haɪˈpɒθ.ə.sɪs/",
+                                "collocations": [
+                                    "reject the null",
+                                    "fail to reject H₀",
+                                    "null hypothesis of no effect"
+                                ]
+                            },
+                            {
+                                "en": "Statistical Power",
+                                "es": "Potencia Estadística (Power)",
+                                "definition": "Probability of correctly detecting a real effect when it exists (1 minus the Type II error rate β).",
+                                "ipa": "/pˈaʊ.ər/",
+                                "collocations": [
+                                    "80% power target",
+                                    "underpowered study",
+                                    "power analysis calculation"
+                                ]
+                            },
+                            {
+                                "en": "Confidence Interval",
+                                "es": "Intervalo de Confianza",
+                                "definition": "Range of values within which the true population parameter lies with a specified probability (typically 95%).",
+                                "ipa": "/ˈkɒn.fɪ.dəns/",
+                                "collocations": [
+                                    "95% confidence interval",
+                                    "narrow CI",
+                                    "CI contains zero"
+                                ]
+                            },
+                            {
+                                "en": "Type I Error (False Positive)",
+                                "es": "Error Tipo I (Falso Positivo)",
+                                "definition": "Incorrectly rejecting a true null hypothesis — concluding there is an effect when there actually is none.",
+                                "ipa": "/taɪp wʌn/",
+                                "collocations": [
+                                    "α = 0.05 controls Type I",
+                                    "false positive rate",
+                                    "significance level"
+                                ]
+                            },
+                            {
+                                "en": "Minimum Detectable Effect (MDE)",
+                                "es": "Efecto Mínimo Detectable (MDE)",
+                                "definition": "The smallest effect size that the experiment is designed to detect with the specified power and significance level.",
+                                "ipa": "/ˌɛm.diːˈiː/",
+                                "collocations": [
+                                    "set the MDE",
+                                    "MDE of 2% lift",
+                                    "sample size for MDE"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What does a p-value of 0.03 mean?",
+                                "options": [
+                                    "There is a 3% chance the treatment works",
+                                    "Assuming the null hypothesis is true, there is a 3% probability of observing results this extreme",
+                                    "The treatment is 97% effective",
+                                    "The experiment has a 3% error rate"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What is a Type II Error?",
+                                "options": [
+                                    "Concluding there is an effect when there is none",
+                                    "Failing to detect a real effect that actually exists",
+                                    "A calculation mistake",
+                                    "A data entry error"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "Why is 'peeking' at A/B test results problematic?",
+                                "options": [
+                                    "It slows down the website",
+                                    "Repeatedly checking results inflates the false positive rate",
+                                    "It reveals the experiment to competitors",
+                                    "It uses too much server memory"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What is the standard target for statistical power in experiment design?",
+                                "options": [
+                                    "50%",
+                                    "80%",
+                                    "95%",
+                                    "100%"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "data-m4",
                 "title": "Predictive Analytics, Time-Series & Anomaly Detection",
-                "titleES": "Analítica Predictiva, Series de Tiempo y Anomalías",
+                "titleES": "Analítica Predictiva, Series Temporales y Detección de Anomalías",
                 "icon": "fa-solid fa-chart-line",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "data-m4-r1",
+                        "title": "Time-Series Forecasting, Anomaly Detection & Predictive Maintenance",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **AWS Certified Machine Learning**, **Google Cloud Professional Data Engineer**, and **ISO 55000 (Asset Management)** for predictive maintenance analytics.\n\n# Time-Series Forecasting, Anomaly Detection & Predictive Maintenance\n\n**Predictive analytics** transforms historical data into forward-looking insights. In industrial settings, it prevents equipment failures, optimizes inventory, and detects quality deviations before they become costly production stops.\n\n## 1. Time-Series Decomposition\n\nA **time series** is a sequence of data points indexed by time. Classical decomposition separates the signal into three components:\n- **Trend (T)**: Long-term directional movement (increasing production output, declining defect rates).\n- **Seasonality (S)**: Repeating patterns at fixed intervals (daily shift patterns, monthly demand cycles, quarterly peaks).\n- **Residual (R)**: Random noise remaining after trend and seasonality are removed.\n\nAdditive model: Y(t) = T(t) + S(t) + R(t)\nMultiplicative model: Y(t) = T(t) × S(t) × R(t)\n\n## 2. Forecasting Methods\n\n- **Exponential Smoothing (ETS)**: Family of methods assigning exponentially decreasing weights to older observations. Holt-Winters method handles both trend and seasonality.\n- **ARIMA (AutoRegressive Integrated Moving Average)**: Statistical model combining autoregression (past values predict future), differencing (achieving stationarity), and moving average (past forecast errors). Specified as ARIMA(p,d,q) where p=AR order, d=differencing order, q=MA order.\n- **Prophet (Meta)**: Decomposition-based model designed for business time series with daily/weekly/yearly seasonality and holiday effects. Robust to missing data and trend changes.\n- **Temporal Fusion Transformers**: Deep learning architecture combining recurrent processing with attention mechanisms for multi-horizon forecasting with interpretable variable importance.\n\n## 3. Anomaly Detection\n\nAn **anomaly** (outlier) is a data point that deviates significantly from expected behavior:\n- **Statistical Methods**: Z-score (flag points >3 standard deviations from mean), IQR method (points beyond 1.5× interquartile range).\n- **Isolation Forest**: Ensemble algorithm that isolates anomalies by randomly partitioning the feature space. Anomalies require fewer partitions to isolate.\n- **Autoencoders**: Neural networks trained to reconstruct normal data. High reconstruction error indicates an anomaly (the model has not learned to reproduce that pattern).\n- **DBSCAN**: Density-based clustering that labels points in sparse regions as anomalies.\n\n## 4. Predictive Maintenance (PdM)\n\nIn manufacturing, PdM uses sensor telemetry (vibration, temperature, current, pressure) to predict equipment failures before they occur:\n- **Remaining Useful Life (RUL)**: Predicting how many operating hours remain before a component fails, enabling just-in-time replacement.\n- **Health Index**: A normalized score (0–100%) combining multiple sensor features into a single equipment health metric using supervised learning models.\n- **Condition-Based Maintenance**: Maintenance is triggered by actual equipment condition (vibration exceeds threshold) rather than fixed calendar intervals, reducing unnecessary maintenance by 30–50%.\n\n---\n> **Key Takeaway**: Predictive analytics combines **time-series decomposition** (trend, seasonality, residual) with **forecasting models** (ARIMA, Prophet, Transformers) and **anomaly detection** (Isolation Forest, Autoencoders) to enable **predictive maintenance** that prevents equipment failures and optimizes industrial operations.\n",
+                        "vocabulary": [
+                            {
+                                "en": "ARIMA",
+                                "es": "ARIMA (Modelo Autorregresivo Integrado de Media Móvil)",
+                                "definition": "Statistical forecasting model combining autoregression, differencing for stationarity, and moving average of past errors.",
+                                "ipa": "/əˈriː.mə/",
+                                "collocations": [
+                                    "ARIMA(1,1,1)",
+                                    "seasonal ARIMA",
+                                    "ARIMA forecast horizon"
+                                ]
+                            },
+                            {
+                                "en": "Anomaly Detection",
+                                "es": "Detección de Anomalías",
+                                "definition": "Identifying data points or patterns that deviate significantly from expected normal behavior.",
+                                "ipa": "/əˈnɒm.ə.li/",
+                                "collocations": [
+                                    "real-time anomaly detection",
+                                    "anomaly score threshold",
+                                    "unsupervised anomaly detection"
+                                ]
+                            },
+                            {
+                                "en": "Time-Series Decomposition",
+                                "es": "Descomposición de Series Temporales",
+                                "definition": "Separating a time series into trend, seasonality, and residual components for analysis and forecasting.",
+                                "ipa": "/taɪm ˈsɪr.iːz/",
+                                "collocations": [
+                                    "additive decomposition",
+                                    "seasonal component",
+                                    "detrended residual"
+                                ]
+                            },
+                            {
+                                "en": "Remaining Useful Life (RUL)",
+                                "es": "Vida Útil Restante (RUL)",
+                                "definition": "Predicted number of operating hours before a component fails, enabling proactive replacement scheduling.",
+                                "ipa": "/ˌɑːr.juːˈɛl/",
+                                "collocations": [
+                                    "RUL prediction model",
+                                    "estimate remaining life",
+                                    "failure threshold"
+                                ]
+                            },
+                            {
+                                "en": "Isolation Forest",
+                                "es": "Bosque de Aislamiento (Isolation Forest)",
+                                "definition": "Anomaly detection algorithm isolating outliers by randomly partitioning feature space, requiring fewer splits for anomalies.",
+                                "ipa": "/ˌaɪ.səˈleɪ.ʃən/",
+                                "collocations": [
+                                    "isolation tree split",
+                                    "anomaly score",
+                                    "ensemble anomaly detector"
+                                ]
+                            },
+                            {
+                                "en": "Stationarity",
+                                "es": "Estacionariedad",
+                                "definition": "Property of a time series whose statistical properties (mean, variance) do not change over time, required by ARIMA.",
+                                "ipa": "/ˌsteɪ.ʃəˈnær.ɪ.ti/",
+                                "collocations": [
+                                    "test for stationarity",
+                                    "differencing to achieve stationarity",
+                                    "ADF test"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What are the three components of classical time-series decomposition?",
+                                "options": [
+                                    "Mean, median, mode",
+                                    "Trend, seasonality, and residual",
+                                    "Input, output, error",
+                                    "Training, validation, testing"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What does ARIMA(p,d,q) represent?",
+                                "options": [
+                                    "Price, demand, quantity",
+                                    "Autoregression order, differencing order, moving average order",
+                                    "Precision, deviation, quality",
+                                    "Probability, distribution, quartile"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "How does an Autoencoder detect anomalies?",
+                                "options": [
+                                    "By counting the number of data points",
+                                    "By flagging data points with high reconstruction error, indicating unlearned patterns",
+                                    "By sorting data alphabetically",
+                                    "By comparing timestamps"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What is the advantage of condition-based maintenance over calendar-based maintenance?",
+                                "options": [
+                                    "It is always cheaper",
+                                    "Maintenance is triggered by actual equipment condition, reducing unnecessary maintenance by 30-50%",
+                                    "It requires no sensors",
+                                    "It eliminates all equipment failures"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "data-m5",
                 "title": "Vector Databases, High-Dimensional Embeddings & Semantic Search",
-                "titleES": "Bases de Datos Vectoriales y Búsqueda Semántica",
+                "titleES": "Bases de Datos Vectoriales, Embeddings de Alta Dimensión y Búsqueda Semántica",
                 "icon": "fa-solid fa-magnifying-glass-chart",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "data-m5-r1",
+                        "title": "Embedding Models, Vector Similarity Search & RAG Architectures",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **Google Cloud Vertex AI**, **OpenAI Embedding API**, and **Pinecone/Weaviate/Milvus** vector database architectures.\n\n# Embedding Models, Vector Similarity Search & RAG Architectures\n\nTraditional keyword search fails when users express the same concept in different words. **Semantic search** solves this by representing text, images, and other data as dense numerical vectors (**embeddings**) where proximity in vector space reflects semantic similarity.\n\n## 1. What Are Embeddings?\n\nAn **embedding** is a dense, fixed-dimensional numerical vector (e.g., 768 or 1536 floating-point numbers) produced by a neural network encoder. The model is trained so that semantically similar inputs map to nearby points in high-dimensional space:\n- \"machine learning engineer\" → [0.23, -0.41, 0.87, ...]\n- \"ML software developer\" → [0.25, -0.39, 0.85, ...] (very close in vector space)\n- \"chocolate cake recipe\" → [-0.71, 0.56, -0.12, ...] (far away)\n\nEmbedding models (OpenAI text-embedding-3, Google Gecko, Cohere Embed v3, BGE-M3) are trained on massive text corpora using contrastive learning objectives.\n\n## 2. Vector Similarity Metrics\n\nTo find the most similar vectors to a query, databases compute distance or similarity:\n- **Cosine Similarity**: Measures the angle between two vectors, ignoring magnitude. Range: -1 (opposite) to +1 (identical). Most common for text embeddings.\n- **Euclidean Distance (L2)**: Straight-line distance between two points. Lower = more similar. Sensitive to vector magnitude.\n- **Dot Product**: Combines both direction and magnitude. Used when embedding models produce normalized vectors.\n\n## 3. Vector Database Architecture\n\n**Vector databases** (Pinecone, Weaviate, Milvus, Qdrant, ChromaDB, pgvector) are purpose-built for storing, indexing, and querying high-dimensional vectors:\n- **Approximate Nearest Neighbor (ANN) Indexes**: Exact brute-force search across millions of vectors is computationally prohibitive. ANN algorithms trade minimal accuracy for massive speed improvements:\n  - **HNSW (Hierarchical Navigable Small World)**: Graph-based index creating multi-layered proximity graphs. The most popular ANN algorithm due to high recall (>99%) at sub-millisecond query times.\n  - **IVF (Inverted File Index)**: Clusters vectors using k-means, then searches only the nearest clusters. Faster index construction but lower recall than HNSW.\n  - **Product Quantization (PQ)**: Compresses vectors by splitting them into subvectors and quantizing each independently, drastically reducing memory requirements.\n- **Metadata Filtering**: Combines vector similarity search with traditional attribute filters (e.g., \"find the most similar product descriptions WHERE category = 'electronics' AND price < 500\").\n\n## 4. Retrieval-Augmented Generation (RAG)\n\n**RAG** is the dominant architecture for building LLM applications grounded in factual data:\n1. **Indexing Phase**: Documents are chunked (split into segments of 256–1024 tokens), each chunk is embedded, and the vectors are stored in a vector database alongside the original text.\n2. **Query Phase**: The user's question is embedded using the same model. A similarity search retrieves the top-K most relevant chunks.\n3. **Generation Phase**: The retrieved chunks are injected into the LLM's prompt as context. The LLM generates an answer grounded in the retrieved evidence, dramatically reducing hallucination.\n\nAdvanced RAG techniques:\n- **Hybrid Search**: Combining vector similarity with BM25 keyword scoring via Reciprocal Rank Fusion (RRF) for better recall.\n- **Re-Ranking**: A cross-encoder model re-scores the initial retrieval results for higher precision.\n- **Chunking Strategies**: Sentence-level, paragraph-level, or semantic chunking (splitting on topic boundaries detected by embedding similarity).\n\n---\n> **Key Takeaway**: **Embeddings** encode semantic meaning as dense vectors, enabling **similarity search** via cosine similarity on **ANN-indexed vector databases** (HNSW, IVF). **RAG architectures** ground LLM responses in factual retrieved data, combining vector search with generation to reduce hallucination.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Embedding (Vector)",
+                                "es": "Embedding (Vector Denso)",
+                                "definition": "Dense fixed-dimensional numerical representation of text or data, where proximity in vector space reflects semantic similarity.",
+                                "ipa": "/ɪmˈbɛd.ɪŋ/",
+                                "collocations": [
+                                    "text embedding model",
+                                    "768-dimensional embedding",
+                                    "embed the document"
+                                ]
+                            },
+                            {
+                                "en": "Cosine Similarity",
+                                "es": "Similitud Coseno",
+                                "definition": "Metric measuring the angle between two vectors, ranging from -1 (opposite) to +1 (identical), used to compare embeddings.",
+                                "ipa": "/ˈkoʊ.saɪn/",
+                                "collocations": [
+                                    "cosine similarity score",
+                                    "cosine distance threshold",
+                                    "semantic similarity"
+                                ]
+                            },
+                            {
+                                "en": "Approximate Nearest Neighbor (ANN)",
+                                "es": "Vecino Más Cercano Aproximado (ANN)",
+                                "definition": "Algorithm family trading minimal accuracy for massive speed improvements in high-dimensional vector search.",
+                                "ipa": "/əˈprɒk.sɪ.mət/",
+                                "collocations": [
+                                    "HNSW ANN index",
+                                    "ANN query latency",
+                                    "recall-speed tradeoff"
+                                ]
+                            },
+                            {
+                                "en": "RAG (Retrieval-Augmented Generation)",
+                                "es": "RAG (Generación Aumentada por Recuperación)",
+                                "definition": "Architecture grounding LLM responses in factual retrieved data by embedding, searching, and injecting relevant context into prompts.",
+                                "ipa": "/ræɡ/",
+                                "collocations": [
+                                    "RAG pipeline",
+                                    "RAG retrieval",
+                                    "ground the LLM with RAG"
+                                ]
+                            },
+                            {
+                                "en": "HNSW (Hierarchical Navigable Small World)",
+                                "es": "HNSW (Mundo Pequeño Navegable Jerárquico)",
+                                "definition": "Graph-based ANN index creating multi-layered proximity graphs achieving >99% recall at sub-millisecond query times.",
+                                "ipa": "/ˌeɪtʃ.ɛn.ɛs.ˈdʌb.əl.juː/",
+                                "collocations": [
+                                    "HNSW graph layer",
+                                    "HNSW recall rate",
+                                    "build HNSW index"
+                                ]
+                            },
+                            {
+                                "en": "Chunking (Document)",
+                                "es": "Fragmentación de Documentos (Chunking)",
+                                "definition": "Splitting documents into smaller segments (256-1024 tokens) for individual embedding and retrieval in RAG systems.",
+                                "ipa": "/tʃʌŋk.ɪŋ/",
+                                "collocations": [
+                                    "semantic chunking",
+                                    "chunk overlap",
+                                    "chunk size optimization"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "Why are semantically similar texts close together in embedding space?",
+                                "options": [
+                                    "Because they have the same number of words",
+                                    "Because the embedding model was trained to map similar meanings to nearby vectors",
+                                    "Because they were written on the same date",
+                                    "Because they share the same file format"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What does HNSW achieve in vector databases?",
+                                "options": [
+                                    "Exact nearest neighbor search",
+                                    ">99% recall at sub-millisecond query times by building navigable graph layers",
+                                    "SQL query optimization",
+                                    "Data compression to save disk space"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "In a RAG pipeline, what is the purpose of the retrieval step?",
+                                "options": [
+                                    "To train the LLM from scratch",
+                                    "To find the most relevant document chunks and inject them as context to reduce hallucination",
+                                    "To delete irrelevant data",
+                                    "To compute the model's loss function"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "Which similarity metric measures the angle between two vectors, ignoring magnitude?",
+                                "options": [
+                                    "Euclidean distance",
+                                    "Dot product",
+                                    "Cosine similarity",
+                                    "Manhattan distance"
+                                ],
+                                "answer": 2
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
@@ -8382,30 +10051,498 @@ var LXP_COURSES = {
             {
                 "id": "robot-m2",
                 "title": "Programmable Logic Controllers (PLCs) & IEC 61131-3",
-                "titleES": "Controladores Lógicos Programables (PLCs) y Norma IEC 61131-3",
-                "icon": "fa-solid fa-gears",
-                "readings": []
+                "titleES": "Controladores Lógicos Programables (PLCs) e IEC 61131-3",
+                "icon": "fa-solid fa-microchip",
+                "readings": [
+                    {
+                        "id": "robot-m2-r1",
+                        "title": "PLC Architecture, Scan Cycle & IEC 61131-3 Programming Languages",
+                        "duration": "13 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **IEC 61131-3 (Programmable Controller Programming Languages)**, **Rockwell Automation / Allen-Bradley** certification paths, and **Siemens TIA Portal** proficiency standards.\n\n# PLC Architecture, Scan Cycle & IEC 61131-3 Programming Languages\n\nThe **Programmable Logic Controller (PLC)** is the central nervous system of every automated manufacturing line, robotic workcell, and process control system. From automotive body-in-white welding stations to pharmaceutical filling machines, PLCs execute deterministic real-time control logic with scan cycle times measured in milliseconds.\n\n## 1. PLC Hardware Architecture\n\nA modern industrial PLC consists of modular hardware components mounted on a DIN rail backplane:\n\n- **CPU Module**: Contains the processor, program memory (flash), and communications interfaces. Industrial CPUs from Siemens (S7-1500), Rockwell Allen-Bradley (ControlLogix 5580), and Mitsubishi (iQ-R) execute millions of instructions per second with deterministic timing guaranteed by a real-time operating system (RTOS).\n- **Power Supply Module**: Converts facility AC power (120/240V) to the 24V DC bus powering all I/O modules and the CPU backplane.\n- **Digital Input Modules**: Interface with discrete field devices (proximity sensors, limit switches, push buttons). Each input channel reads a binary state (ON/OFF, 24V/0V) and maps it to a memory bit in the PLC's input image table.\n- **Digital Output Modules**: Drive discrete actuators (solenoid valves, indicator lamps, motor contactors) by energizing relay or solid-state outputs based on the output image table.\n- **Analog I/O Modules**: Read continuous process variables (4–20 mA current loops from pressure transmitters, 0–10V signals from temperature sensors) and output proportional control signals to variable frequency drives (VFDs) or proportional valves.\n\n## 2. The PLC Scan Cycle\n\nThe PLC operates in a continuous, deterministic **scan cycle** consisting of four phases:\n\n1. **Input Scan**: The CPU reads the physical state of all input modules and copies the data into the **Input Image Table** (a mirror of the physical inputs in CPU memory).\n2. **Program Execution**: The CPU sequentially evaluates every rung of the ladder logic program (or every statement in structured text), reading from the input image table and writing results to the **Output Image Table**.\n3. **Output Update**: The CPU transfers the output image table values to the physical output modules, energizing or de-energizing field devices.\n4. **Housekeeping**: Communications processing (Ethernet/IP, PROFINET), diagnostics, and watchdog timer management.\n\nA typical scan cycle completes in **1–10 milliseconds**, ensuring that safety-critical interlocks (emergency stop circuits, light curtain monitoring) respond within deterministic time bounds.\n\n## 3. IEC 61131-3 Programming Languages\n\nThe international standard **IEC 61131-3** defines five programming languages for PLCs:\n\n1. **Ladder Diagram (LD)**: Graphical language resembling electrical relay schematics. Contacts (inputs) and coils (outputs) are arranged on horizontal \"rungs.\" It remains the most widely used PLC language because maintenance electricians can read it intuitively.\n2. **Function Block Diagram (FBD)**: Graphical language connecting function blocks (timers, counters, PID controllers, math operations) with signal flow lines. Ideal for continuous process control and analog signal processing.\n3. **Structured Text (ST)**: High-level textual language syntactically similar to Pascal. Supports IF/THEN/ELSE, FOR/WHILE loops, CASE statements, and complex mathematical expressions. Preferred for algorithm-intensive applications (trajectory calculation, recipe management).\n4. **Instruction List (IL)**: Low-level assembly-like textual language. Deprecated in the 2013 revision but still found in legacy systems.\n5. **Sequential Function Chart (SFC)**: Graphical language for programming sequential processes as a series of steps and transitions. Each step contains actions programmed in any of the other four languages. Ideal for batch processes, CNC tool changers, and multi-step robotic sequences.\n\n## 4. Safety PLCs & SIL Ratings\n\nSafety-critical applications (robot safeguarding, press brake two-hand controls, emergency stop circuits) require **Safety PLCs** certified to **IEC 61508 (Functional Safety)** and **IEC 62061 (Safety of Machinery)**:\n\n- **SIL (Safety Integrity Level)**: Rated from SIL 1 (lowest) to SIL 3 (highest). SIL 3 requires a probability of dangerous failure per hour (PFH) of less than 10⁻⁷.\n- **Redundant Architecture**: Safety PLCs use dual-channel processing (1oo2D—one-out-of-two with diagnostics). Both channels must agree before enabling a safety output. If a discrepancy is detected, the system transitions to a safe state (de-energized outputs).\n\n---\n> **Key Takeaway**: PLCs execute **deterministic scan cycles** (input → program → output) in 1–10 ms using **IEC 61131-3 languages** (Ladder, Structured Text, FBD, SFC). Safety-critical automation requires **SIL-rated Safety PLCs** with redundant dual-channel architectures to protect human operators and equipment.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Scan Cycle",
+                                "es": "Ciclo de Escaneo (Scan)",
+                                "definition": "The continuous loop in which a PLC reads inputs, executes the program, and updates outputs within deterministic time bounds.",
+                                "ipa": "/skæn ˈsaɪ.kəl/",
+                                "collocations": [
+                                    "scan cycle time",
+                                    "deterministic scan",
+                                    "1ms scan rate"
+                                ]
+                            },
+                            {
+                                "en": "Ladder Diagram (LD)",
+                                "es": "Diagrama de Escalera (Ladder)",
+                                "definition": "Graphical PLC programming language resembling electrical relay schematics with contacts and coils on horizontal rungs.",
+                                "ipa": "/ˈlæd.ər ˈdaɪ.ə.ɡræm/",
+                                "collocations": [
+                                    "ladder logic rung",
+                                    "normally open contact",
+                                    "output coil"
+                                ]
+                            },
+                            {
+                                "en": "Structured Text (ST)",
+                                "es": "Texto Estructurado (ST)",
+                                "definition": "High-level IEC 61131-3 textual programming language with Pascal-like syntax supporting loops, conditionals, and complex math.",
+                                "ipa": "/ˈstrʌk.tʃərd tɛkst/",
+                                "collocations": [
+                                    "IF-THEN-ELSE in ST",
+                                    "FOR loop",
+                                    "algorithm in structured text"
+                                ]
+                            },
+                            {
+                                "en": "Input Image Table",
+                                "es": "Tabla de Imagen de Entradas",
+                                "definition": "CPU memory buffer mirroring the physical state of all input modules, read at the start of each scan cycle.",
+                                "ipa": "/ˈɪn.pʊt ˈɪm.ɪdʒ/",
+                                "collocations": [
+                                    "read input image",
+                                    "memory-mapped I/O",
+                                    "image table refresh"
+                                ]
+                            },
+                            {
+                                "en": "Safety Integrity Level (SIL)",
+                                "es": "Nivel de Integridad de Seguridad (SIL)",
+                                "definition": "IEC 61508 rating (SIL 1-3) quantifying the probability of dangerous failure per hour for safety-related control systems.",
+                                "ipa": "/sɪl/",
+                                "collocations": [
+                                    "SIL 3 certified",
+                                    "safety PLC rating",
+                                    "probability of dangerous failure"
+                                ]
+                            },
+                            {
+                                "en": "Variable Frequency Drive (VFD)",
+                                "es": "Variador de Frecuencia (VFD)",
+                                "definition": "Electronic motor controller that adjusts the speed of an AC motor by varying the frequency and voltage of the power supply.",
+                                "ipa": "/ˌviː.ɛfˈdiː/",
+                                "collocations": [
+                                    "VFD speed reference",
+                                    "4-20 mA to VFD",
+                                    "motor frequency control"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What are the four phases of a PLC scan cycle in correct order?",
+                                "options": [
+                                    "Output → Input → Housekeeping → Program",
+                                    "Input Scan → Program Execution → Output Update → Housekeeping",
+                                    "Program → Housekeeping → Input → Output",
+                                    "Initialization → Shutdown → Restart → Idle"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "Which IEC 61131-3 language is most widely used because maintenance electricians can read it intuitively?",
+                                "options": [
+                                    "Structured Text (ST)",
+                                    "Instruction List (IL)",
+                                    "Ladder Diagram (LD)",
+                                    "Sequential Function Chart (SFC)"
+                                ],
+                                "answer": 2
+                            },
+                            {
+                                "q": "What does a SIL 3 Safety PLC use to ensure safe operation?",
+                                "options": [
+                                    "Single-channel processing only",
+                                    "Dual-channel redundant architecture (1oo2D) with diagnostics",
+                                    "Wi-Fi connectivity",
+                                    "Cloud-based monitoring"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What type of I/O module reads continuous process variables like 4–20 mA signals?",
+                                "options": [
+                                    "Digital Input Module",
+                                    "Power Supply Module",
+                                    "Analog Input Module",
+                                    "Communications Module"
+                                ],
+                                "answer": 2
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "robot-m3",
                 "title": "Collaborative Robots (Cobots) & ISO 10218 / TS 15066 Safety",
-                "titleES": "Robots Colaborativos (Cobots) y Seguridad ISO 10218",
-                "icon": "fa-solid fa-shield-virus",
-                "readings": []
+                "titleES": "Robots Colaborativos (Cobots) e ISO 10218 / TS 15066",
+                "icon": "fa-solid fa-people-arrows",
+                "readings": [
+                    {
+                        "id": "robot-m3-r1",
+                        "title": "Cobot Technology, Power & Force Limiting & ISO Safety Standards",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **ISO 10218-1/2 (Industrial Robot Safety)**, **ISO/TS 15066 (Collaborative Robot Operation)**, and **RIA R15.06 (ANSI Safety Requirements for Industrial Robots)**.\n\n# Cobot Technology, Power & Force Limiting & ISO Safety Standards\n\n**Collaborative robots (cobots)** represent a paradigm shift in industrial automation: they are designed to operate in direct physical proximity to human workers without the traditional safety fencing required by conventional industrial robots. This shared workspace model enables flexible, human-robot collaborative manufacturing cells.\n\n## 1. The Four Collaborative Operation Modes (ISO/TS 15066)\n\nISO/TS 15066 defines four methods for achieving safe collaborative operation:\n\n1. **Safety-Rated Monitored Stop (SMS)**: The robot operates at full industrial speed but monitors the collaborative workspace using safety-rated sensors (laser scanners, pressure mats). When a human enters the zone, the robot executes an immediate category 2 stop (controlled deceleration). The robot resumes automatically when the human exits.\n\n2. **Hand Guiding**: The operator physically grasps a force-sensing handle mounted on the robot's end-effector to manually guide the robot through waypoints. The robot's servo drives are in a compliant, low-impedance mode. Used for teaching and cooperative material handling.\n\n3. **Speed & Separation Monitoring (SSM)**: Safety-rated 3D vision systems (SICK, PILZ, Keyence) continuously track the human's position and velocity. The robot dynamically adjusts its speed proportionally to the closing distance—slowing to a crawl as the human approaches and stopping if the minimum protective distance is breached.\n\n4. **Power & Force Limiting (PFL)**: The cobot's servo joints incorporate high-resolution torque sensors that detect contact forces in real time. If an external force exceeds predefined thresholds, the robot instantly stops or reverses. ISO/TS 15066 specifies maximum permissible forces and pressures for each body region (e.g., 150N transient force for the hand, 65N quasi-static force for the chest).\n\n## 2. Cobot Hardware Architecture\n\nModern cobots (Universal Robots UR series, FANUC CRX, ABB GoFa) share common design principles:\n\n- **Series-Elastic Actuators**: Each joint contains a precision torque sensor between the motor and the output link, providing intrinsic force feedback at >1 kHz sampling rates.\n- **Rounded, Clamping-Free Geometry**: All external surfaces are smooth and rounded with minimum 3mm radii to eliminate pinch points and reduce contact pressure.\n- **Payload Capacity**: Typically 3–25 kg, significantly less than industrial robots (which reach 500+ kg) because the cobot must remain safe even during unexpected contact.\n- **Teach Pendant & Programming Interface**: Polyscope (UR), FANUC iHMI, or ABB FlexPendant provide graphical programming with drag-and-drop waypoints, enabling operators without formal robotics training to program tasks in minutes.\n\n## 3. Risk Assessment for Collaborative Cells\n\nBefore deploying a cobot, engineers must conduct a formal **Risk Assessment** per ISO 12100:\n\n1. **Hazard Identification**: Catalog all potential contact scenarios (operator reaching into the robot's swing radius, tool-change collisions, dropped workpieces).\n2. **Risk Estimation**: For each hazard, estimate severity (S), frequency of exposure (F), and possibility of avoidance (P) using the risk matrix.\n3. **Risk Reduction**: Apply the hierarchy: (1) Inherently safe design (PFL mode, rounded geometry), (2) Safeguarding (light curtains, area scanners), (3) Complementary measures (warning signs, training).\n4. **Residual Risk Validation**: Verify through physical contact-force measurements using calibrated force gauges on body-model dummies that all contact scenarios remain below ISO/TS 15066 biomechanical limits.\n\n---\n> **Key Takeaway**: Cobots achieve safe human-robot collaboration through **four ISO/TS 15066 modes** (SMS, Hand Guiding, SSM, PFL), with **power-and-force-limited joints** detecting contact in real time. Deployment requires rigorous **ISO 12100 risk assessments** validating that all contact forces remain below biomechanical injury thresholds.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Collaborative Robot (Cobot)",
+                                "es": "Robot Colaborativo (Cobot)",
+                                "definition": "Industrial robot designed to operate safely in direct physical proximity to human workers without protective fencing.",
+                                "ipa": "/ˈkoʊ.bɒt/",
+                                "collocations": [
+                                    "cobot workcell",
+                                    "fenceless cobot operation",
+                                    "human-robot collaboration"
+                                ]
+                            },
+                            {
+                                "en": "Power & Force Limiting (PFL)",
+                                "es": "Limitación de Potencia y Fuerza (PFL)",
+                                "definition": "Collaborative mode where joint torque sensors detect contact forces and instantly stop the robot if thresholds are exceeded.",
+                                "ipa": "/ˈpaʊ.ər ænd fɔːrs/",
+                                "collocations": [
+                                    "PFL mode activation",
+                                    "torque sensor threshold",
+                                    "maximum permissible force"
+                                ]
+                            },
+                            {
+                                "en": "Risk Assessment (ISO 12100)",
+                                "es": "Evaluación de Riesgos (ISO 12100)",
+                                "definition": "Systematic process of hazard identification, risk estimation, and risk reduction for machinery safety.",
+                                "ipa": "/rɪsk əˈsɛs.mənt/",
+                                "collocations": [
+                                    "conduct risk assessment",
+                                    "residual risk validation",
+                                    "risk reduction hierarchy"
+                                ]
+                            },
+                            {
+                                "en": "Speed & Separation Monitoring (SSM)",
+                                "es": "Monitoreo de Velocidad y Separación (SSM)",
+                                "definition": "Collaborative mode dynamically adjusting robot speed based on real-time distance measurement to the nearest human.",
+                                "ipa": "/spiːd ˌsɛp.əˈreɪ.ʃən/",
+                                "collocations": [
+                                    "3D safety scanner",
+                                    "minimum protective distance",
+                                    "dynamic speed reduction"
+                                ]
+                            },
+                            {
+                                "en": "Series-Elastic Actuator",
+                                "es": "Actuador Serie-Elástico",
+                                "definition": "Joint actuator with a built-in torque sensor between motor and output link, providing intrinsic force feedback.",
+                                "ipa": "/ˈsɪr.iːz ɪˈlæs.tɪk/",
+                                "collocations": [
+                                    "joint torque sensing",
+                                    "compliant actuator",
+                                    "1 kHz force feedback"
+                                ]
+                            },
+                            {
+                                "en": "Teach Pendant",
+                                "es": "Consola de Programación (Teach Pendant)",
+                                "definition": "Handheld device for programming and operating an industrial robot, allowing waypoint definition and parameter adjustment.",
+                                "ipa": "/tiːtʃ ˈpɛn.dənt/",
+                                "collocations": [
+                                    "jog the robot via pendant",
+                                    "teach waypoints",
+                                    "pendant programming mode"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "Which ISO/TS 15066 collaborative mode uses joint torque sensors to detect contact forces?",
+                                "options": [
+                                    "Safety-Rated Monitored Stop",
+                                    "Speed & Separation Monitoring",
+                                    "Power & Force Limiting (PFL)",
+                                    "Hand Guiding"
+                                ],
+                                "answer": 2
+                            },
+                            {
+                                "q": "What is the first step in a formal Risk Assessment per ISO 12100?",
+                                "options": [
+                                    "Install warning signs",
+                                    "Hazard Identification",
+                                    "Purchase insurance",
+                                    "Increase robot speed"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "Why do cobots have lower payload capacity (3–25 kg) compared to industrial robots?",
+                                "options": [
+                                    "They use weaker motors",
+                                    "They must remain safe during unexpected contact with humans",
+                                    "They are designed for children",
+                                    "They run on batteries"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "In Speed & Separation Monitoring, what happens as a human approaches the robot?",
+                                "options": [
+                                    "The robot increases speed",
+                                    "The robot dynamically reduces speed proportional to closing distance",
+                                    "The robot shuts down permanently",
+                                    "Nothing changes"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "robot-m4",
                 "title": "Robot Operating System (ROS 2) & Real-Time Middleware",
-                "titleES": "Robot Operating System (ROS 2) y Middleware en Tiempo Real",
-                "icon": "fa-solid fa-network-wired",
-                "readings": []
+                "titleES": "Robot Operating System (ROS 2) y Middleware de Tiempo Real",
+                "icon": "fa-solid fa-robot",
+                "readings": [
+                    {
+                        "id": "robot-m4-r1",
+                        "title": "ROS 2 Architecture, DDS Communication & Real-Time Robotics",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **Open Robotics ROS 2 (Jazzy Jalisco/Rolling)**, **OMG DDS (Data Distribution Service)**, and **AUTOSAR Adaptive Platform** for automotive robotics middleware.\n\n# ROS 2 Architecture, DDS Communication & Real-Time Robotics\n\nThe **Robot Operating System 2 (ROS 2)** is the de facto open-source middleware framework for robotics research and industrial deployment. Unlike its predecessor ROS 1 (which relied on a single-point-of-failure Master node), ROS 2 is built on the **Data Distribution Service (DDS)** standard, providing decentralized, real-time-capable, publish-subscribe communication.\n\n## 1. ROS 2 Core Concepts\n\n- **Nodes**: Individual processes performing specific tasks (sensor driver, path planner, motor controller). Each node is a self-contained computational unit.\n- **Topics**: Named publish-subscribe channels. A node publishes messages to a topic (e.g., `/camera/image_raw`), and any number of subscriber nodes receive them asynchronously.\n- **Services**: Synchronous request-response communication. A client node sends a request (e.g., \"plan a path from A to B\") and blocks until the server node returns a response.\n- **Actions**: Asynchronous goal-oriented communication with feedback. Used for long-running tasks (e.g., \"navigate to waypoint\") where the client needs periodic progress updates and the ability to cancel.\n- **Parameters**: Runtime-configurable key-value settings for each node (PID gains, sensor thresholds, speed limits).\n\n## 2. DDS: The Communication Backbone\n\nROS 2 delegates all inter-node communication to a **DDS (Data Distribution Service)** implementation (Eclipse Cyclone DDS, eProsima Fast DDS, RTI Connext DDS):\n\n- **Quality of Service (QoS) Policies**: DDS offers granular control over message delivery: **Reliability** (best-effort vs. reliable delivery), **Durability** (transient local for late-joining subscribers), **Deadline** (maximum acceptable inter-message period), **Liveliness** (automatic node health detection).\n- **Zero-Configuration Discovery**: DDS uses multicast-based **Simple Discovery Protocol (SDP)** to automatically find all nodes on the network without a central broker. This eliminates the single-point-of-failure inherent in ROS 1's Master architecture.\n- **Real-Time Transport**: DDS implementations can be configured with deterministic shared-memory transports and pre-allocated memory pools, enabling microsecond-level latency for safety-critical control loops.\n\n## 3. The ROS 2 Navigation Stack (Nav2)\n\nFor autonomous mobile robots (AMRs) in warehouse logistics and manufacturing floor material transport:\n\n- **SLAM (Simultaneous Localization and Mapping)**: Algorithms (Cartographer, SLAM Toolbox) fuse LiDAR scans and odometry data to build a 2D or 3D occupancy grid map while simultaneously tracking the robot's position within it.\n- **Path Planning**: The global planner (NavFn, Smac Planner) computes an optimal collision-free path through the map. The local planner (DWB, MPPI) generates real-time velocity commands to follow the global path while avoiding dynamic obstacles detected by onboard sensors.\n- **Costmap**: A multi-layered grid map combining static obstacles (walls from the SLAM map), dynamic obstacles (humans detected by LiDAR), and inflation zones (safety buffers around obstacles).\n\n## 4. Real-Time Considerations\n\nIndustrial robotics demands **hard real-time** guarantees—a missed control deadline can cause physical damage or injury:\n\n- **PREEMPT_RT Linux Kernel**: A patched Linux kernel providing deterministic scheduling with worst-case latencies under 50 microseconds, enabling ROS 2 nodes to run control loops at 1 kHz without jitter.\n- **Executor Models**: ROS 2 provides SingleThreadedExecutor and MultiThreadedExecutor for callback scheduling. For real-time control, dedicated high-priority threads with CPU core affinity prevent interference from non-critical processes.\n- **ros2_control Framework**: A standardized hardware abstraction layer connecting ROS 2 controllers (joint_trajectory_controller, diff_drive_controller) to physical actuators through hardware interface plugins, ensuring portable, vendor-agnostic motion control.\n\n---\n> **Key Takeaway**: ROS 2 provides a **decentralized, DDS-based middleware** with QoS-controlled topics, services, and actions. The **Nav2 stack** enables autonomous navigation via SLAM and costmap planning, while **PREEMPT_RT kernels** and the **ros2_control** framework deliver the hard real-time guarantees required for industrial robotic control loops.\n",
+                        "vocabulary": [
+                            {
+                                "en": "ROS 2 (Robot Operating System 2)",
+                                "es": "ROS 2 (Sistema Operativo de Robots 2)",
+                                "definition": "Open-source robotics middleware framework built on DDS providing decentralized publish-subscribe communication for robotic systems.",
+                                "ipa": "/rɒs tuː/",
+                                "collocations": [
+                                    "ROS 2 node",
+                                    "ROS 2 workspace",
+                                    "launch ROS 2 stack"
+                                ]
+                            },
+                            {
+                                "en": "DDS (Data Distribution Service)",
+                                "es": "DDS (Servicio de Distribución de Datos)",
+                                "definition": "OMG standard for real-time, decentralized publish-subscribe middleware with configurable Quality of Service policies.",
+                                "ipa": "/ˌdiː.diːˈɛs/",
+                                "collocations": [
+                                    "DDS QoS policy",
+                                    "DDS discovery protocol",
+                                    "reliable DDS transport"
+                                ]
+                            },
+                            {
+                                "en": "SLAM (Simultaneous Localization and Mapping)",
+                                "es": "SLAM (Localización y Mapeo Simultáneo)",
+                                "definition": "Algorithm that builds a map of an unknown environment while simultaneously tracking the robot's position within it.",
+                                "ipa": "/slæm/",
+                                "collocations": [
+                                    "LiDAR SLAM",
+                                    "visual SLAM",
+                                    "SLAM occupancy grid"
+                                ]
+                            },
+                            {
+                                "en": "Topic (Publish-Subscribe)",
+                                "es": "Tópico (Publicar-Suscribir)",
+                                "definition": "Named communication channel in ROS 2 where publisher nodes send messages and subscriber nodes receive them asynchronously.",
+                                "ipa": "/ˈtɒp.ɪk/",
+                                "collocations": [
+                                    "publish to topic",
+                                    "subscribe to /cmd_vel",
+                                    "topic message type"
+                                ]
+                            },
+                            {
+                                "en": "Quality of Service (QoS)",
+                                "es": "Calidad de Servicio (QoS)",
+                                "definition": "DDS configuration policies controlling reliability, durability, deadline, and liveliness of inter-node message delivery.",
+                                "ipa": "/ˌkjuː.oʊˈɛs/",
+                                "collocations": [
+                                    "reliable QoS",
+                                    "best-effort delivery",
+                                    "QoS profile"
+                                ]
+                            },
+                            {
+                                "en": "PREEMPT_RT Kernel",
+                                "es": "Kernel PREEMPT_RT (Tiempo Real)",
+                                "definition": "Patched Linux kernel providing deterministic scheduling with worst-case latencies under 50 microseconds for real-time control.",
+                                "ipa": "/priːˈɛmpt ˌɑːrˈtiː/",
+                                "collocations": [
+                                    "hard real-time kernel",
+                                    "deterministic scheduling",
+                                    "sub-millisecond jitter"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What fundamental problem does ROS 2 solve by using DDS instead of ROS 1's Master node?",
+                                "options": [
+                                    "It makes robots cheaper",
+                                    "It eliminates the single-point-of-failure with decentralized discovery",
+                                    "It removes the need for sensors",
+                                    "It converts Python to C++"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "In ROS 2, what is the difference between a Topic and a Service?",
+                                "options": [
+                                    "Topics are faster",
+                                    "Topics are asynchronous pub-sub; Services are synchronous request-response",
+                                    "Services are free; Topics cost money",
+                                    "There is no difference"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What does SLAM produce as its primary output?",
+                                "options": [
+                                    "A 3D-printed robot part",
+                                    "A map of the environment and the robot's position within it simultaneously",
+                                    "A trained neural network",
+                                    "A PLC ladder diagram"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "Why is a PREEMPT_RT Linux kernel essential for industrial robotics?",
+                                "options": [
+                                    "It provides a graphical user interface",
+                                    "It guarantees deterministic scheduling with sub-50μs latencies for real-time control loops",
+                                    "It enables internet browsing",
+                                    "It compiles code faster"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "robot-m5",
                 "title": "End-Effectors, Grippers & Sensor-Guided Manipulation",
-                "titleES": "Efectores Finales, Garras y Manipulación Guiada por Sensores",
+                "titleES": "Efectores Finales, Grippers y Manipulación Guiada por Sensores",
                 "icon": "fa-solid fa-hand",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "robot-m5-r1",
+                        "title": "Gripper Technologies, Force-Torque Sensing & Vision-Guided Robotic Manipulation",
+                        "duration": "11 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **ISO 9283 (Robot Performance Criteria)**, **ISO 14539 (Grasping Grippers)**, and **Schunk / OnRobot / Robotiq** industrial gripper certification programs.\n\n# Gripper Technologies, Force-Torque Sensing & Vision-Guided Manipulation\n\nThe **end-effector** is the tool mounted at the terminal link of a robotic arm—the interface between the robot and the workpiece. The choice of end-effector determines what a robot can do: weld, paint, pick, place, screw, sand, or inspect. In nearshoring manufacturing, where product mix changes frequently, **flexible gripper systems** with sensor-guided intelligence are essential.\n\n## 1. Gripper Taxonomies\n\n- **Mechanical Grippers (Parallel Jaw)**: Two or three fingers actuated by pneumatic cylinders or electric servomotors. Jaw stroke, grip force (5–500 N), and finger geometry are application-specific. Widely used for prismatic parts (boxes, CNC blanks, machined housings).\n- **Vacuum Grippers (Suction Cups)**: Generate negative pressure via Venturi ejectors or electric vacuum pumps. Ideal for flat, smooth, non-porous surfaces (sheet metal, glass panels, cardboard packaging). Multi-zone vacuum grippers handle irregular shapes by selectively activating cup arrays.\n- **Magnetic Grippers**: Electromagnets or switchable permanent magnets grip ferromagnetic workpieces (steel plates, automotive body stampings). Switching off the magnet enables instant release without residual magnetism contaminating sensitive assembly areas.\n- **Soft Grippers**: Flexible elastomeric fingers or inflatable bladders conform around irregular, fragile, or organic objects (fruits, bread rolls, electronics assemblies). Actuated by compressed air (pneumatic soft actuators) or cable-driven tendons.\n- **Adaptive / Multi-Modal Grippers**: Combine two or more technologies (e.g., parallel fingers with suction cups on the fingertips) to handle diverse part geometries without tool changes.\n\n## 2. Force-Torque Sensors (F/T Sensors)\n\nMounted between the robot's wrist flange and the end-effector, a **6-axis Force-Torque sensor** measures all three force components (Fx, Fy, Fz) and three torque components (Tx, Ty, Tz):\n\n- **Force-Controlled Assembly**: Enables compliant insertion tasks (peg-in-hole, snap-fit, connector mating) where the robot adjusts its trajectory in real time based on contact forces, preventing part damage and compensating for positional uncertainty.\n- **Polishing & Deburring**: The F/T sensor maintains constant contact force against curved surfaces, ensuring uniform material removal regardless of surface geometry variations.\n- **Quality Verification**: Post-assembly force measurements confirm that fasteners are seated, clips are engaged, and seals are compressed within specification.\n\nTypical specifications: 6-DOF measurement, ±200 N force range, ±5 Nm torque range, 10,000 Hz sampling rate, IP67 protection for industrial environments.\n\n## 3. Vision-Guided Robotics (VGR)\n\n**2D/3D Vision Systems** transform robots from blind, position-programmed machines into adaptive, intelligent agents:\n\n- **2D Machine Vision**: Industrial cameras with pattern-matching algorithms locate parts on conveyors, measure orientation angles, and guide the robot to pick from non-fixed positions. Calibrated in the robot's coordinate frame via hand-eye calibration.\n- **3D Structured Light / Stereo Vision**: Projects structured light patterns or uses stereo camera pairs to generate point clouds. Enables **bin picking**—the ability to reach into a random pile of parts, identify individual items, compute grasp poses, and extract them collision-free.\n- **Eye-in-Hand vs. Eye-to-Hand**: Camera mounted on the robot wrist (eye-in-hand) provides the highest accuracy for close-range tasks; camera fixed above the workspace (eye-to-hand) provides a global overview for part localization.\n\n## 4. Tool Changer Systems\n\n**Automatic Tool Changers (ATCs)** enable a single robot to perform multiple tasks by swapping end-effectors in seconds:\n\n- **Pneumatic Locking Mechanism**: The robot-side master plate locks onto the tool-side slave plate using pneumatic pistons engaging precision balls into V-grooves. Repeatability: ±0.005 mm.\n- **Pass-Through Utilities**: The ATC interface transmits pneumatic pressure, electrical signals (24V digital I/O, analog signals), Ethernet communication, and even coolant/welding gas through the coupling, eliminating external cable routing.\n\n---\n> **Key Takeaway**: Industrial end-effectors span **mechanical, vacuum, magnetic, and soft grippers**, augmented by **6-axis F/T sensors** for force-controlled assembly and **3D vision systems** for adaptive bin picking. **Automatic tool changers** enable a single robot to perform multiple operations, maximizing cell flexibility in high-mix nearshoring production.\n",
+                        "vocabulary": [
+                            {
+                                "en": "End-Effector",
+                                "es": "Efector Final (End-Effector)",
+                                "definition": "The tool mounted at the terminal link of a robotic arm that directly interacts with the workpiece or environment.",
+                                "ipa": "/ɛnd ɪˈfɛk.tər/",
+                                "collocations": [
+                                    "end-effector payload",
+                                    "swap end-effector",
+                                    "custom gripper design"
+                                ]
+                            },
+                            {
+                                "en": "Force-Torque Sensor (F/T Sensor)",
+                                "es": "Sensor de Fuerza-Torque (F/T)",
+                                "definition": "6-axis sensor measuring three force and three torque components, enabling compliant force-controlled robotic operations.",
+                                "ipa": "/fɔːrs tɔːrk ˈsɛn.sər/",
+                                "collocations": [
+                                    "6-DOF F/T sensor",
+                                    "force-controlled insertion",
+                                    "contact force measurement"
+                                ]
+                            },
+                            {
+                                "en": "Bin Picking",
+                                "es": "Recogida de Contenedor (Bin Picking)",
+                                "definition": "Robotic capability to identify and extract individual parts from a randomly arranged pile using 3D vision and grasp planning.",
+                                "ipa": "/bɪn ˈpɪk.ɪŋ/",
+                                "collocations": [
+                                    "3D bin picking",
+                                    "random bin picking",
+                                    "grasp pose estimation"
+                                ]
+                            },
+                            {
+                                "en": "Vacuum Gripper",
+                                "es": "Gripper de Vacío (Ventosa)",
+                                "definition": "End-effector using negative air pressure through suction cups to grip flat, smooth, non-porous workpieces.",
+                                "ipa": "/ˈvæk.juːm ˈɡrɪp.ər/",
+                                "collocations": [
+                                    "Venturi vacuum generator",
+                                    "multi-zone suction",
+                                    "vacuum seal check"
+                                ]
+                            },
+                            {
+                                "en": "Automatic Tool Changer (ATC)",
+                                "es": "Cambiador Automático de Herramienta (ATC)",
+                                "definition": "Mechanism enabling a robot to swap end-effectors automatically using pneumatic locking master/slave plates.",
+                                "ipa": "/ˌɔː.tə.ˈmæt.ɪk tuːl/",
+                                "collocations": [
+                                    "ATC master plate",
+                                    "tool change cycle",
+                                    "pass-through utilities"
+                                ]
+                            },
+                            {
+                                "en": "Hand-Eye Calibration",
+                                "es": "Calibración Mano-Ojo",
+                                "definition": "Process of establishing the geometric transformation between a camera's coordinate frame and the robot's tool frame.",
+                                "ipa": "/hænd aɪ ˌkæl.ɪˈbreɪ.ʃən/",
+                                "collocations": [
+                                    "eye-in-hand calibration",
+                                    "camera-to-robot transform",
+                                    "calibration target board"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "Which gripper type is best suited for picking flat, smooth sheet metal parts?",
+                                "options": [
+                                    "Mechanical parallel jaw gripper",
+                                    "Vacuum gripper with suction cups",
+                                    "Soft elastomeric gripper",
+                                    "Magnetic gripper with electromagnets"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What does a 6-axis Force-Torque sensor enable in robotic assembly?",
+                                "options": [
+                                    "Wireless communication",
+                                    "Compliant force-controlled insertion that adapts trajectory based on contact forces",
+                                    "3D printing of parts",
+                                    "PLC scan cycle timing"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What is 'bin picking' in industrial robotics?",
+                                "options": [
+                                    "Selecting bins for storage",
+                                    "Using 3D vision to identify and extract individual parts from a random pile",
+                                    "Programming a PLC in ladder logic",
+                                    "Cleaning the robot's workspace"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What is the purpose of hand-eye calibration?",
+                                "options": [
+                                    "To calibrate the robot's paint gun",
+                                    "To establish the geometric transform between the camera and robot tool frames",
+                                    "To focus the operator's safety glasses",
+                                    "To adjust the PLC scan cycle time"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
@@ -11167,30 +13304,498 @@ var LXP_COURSES = {
             {
                 "id": "aveng-m2",
                 "title": "Air Traffic Control (ATC) Clearances & Radar Vectoring",
-                "titleES": "Autorizaciones ATC y Vectores Radar",
-                "icon": "fa-solid fa-tower-observation",
-                "readings": []
+                "titleES": "Autorizaciones de Control de Tráfico Aéreo (ATC) y Vectores Radar",
+                "icon": "fa-solid fa-tower-broadcast",
+                "readings": [
+                    {
+                        "id": "aveng-m2-r1",
+                        "title": "ATC Clearance Phraseology, Radar Vectoring & Separation Standards",
+                        "duration": "13 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **ICAO Annex 10 (Aeronautical Telecommunications)**, **ICAO Doc 4444 (PANS-ATM)**, and **FAA Order 7110.65 (ATC Procedures)**.\n\n# ATC Clearance Phraseology, Radar Vectoring & Separation Standards\n\nEvery commercial flight operates under the direct control of **Air Traffic Control (ATC)** services. The standardized phraseology used in controller-pilot communications is not casual language—it is a precision-engineered protocol designed to eliminate ambiguity in safety-critical airspace operations.\n\n## 1. Types of ATC Clearances\n\nA **clearance** is an authorization for an aircraft to proceed under specified conditions within controlled airspace. Key clearance types include:\n\n- **IFR Clearance (CRAFT Format)**: Before departure, pilots receive an Instrument Flight Rules clearance containing: **C**learance limit (destination airport), **R**oute (SID and airways), **A**ltitude (initial and cruise), **F**requency (departure frequency), **T**ransponder code (squawk).\n- **Takeoff Clearance**: \"Runway 27 Left, cleared for takeoff, wind 260 at 12.\" This is the ONLY clearance that authorizes an aircraft to use the runway for departure.\n- **Landing Clearance**: \"Cleared to land runway 09 Right.\" Without this explicit clearance, an aircraft must execute a missed approach (go-around).\n- **En Route Clearance Amendments**: \"Turn left heading 180, climb and maintain flight level 350, direct ROMEO intersection.\"\n\n## 2. Radar Vectoring\n\n**Radar vectors** are headings assigned by ATC to guide aircraft for:\n- **Traffic Separation**: Maintaining the required 3 NM (nautical miles) lateral or 1,000 ft vertical separation in terminal airspace.\n- **Sequencing for Approach**: Spacing arrivals at optimal intervals (typically 4–6 NM in trail) for the ILS/VOR approach.\n- **Weather Deviation**: Guiding aircraft around convective cells (thunderstorms) depicted on the controller's weather radar overlay.\n\nStandard phraseology: \"Turn right heading 270, vectors for the ILS Runway 27 Left approach.\" The pilot reads back: \"Right heading 270, vectors ILS 27 Left, Volaris 512.\"\n\n## 3. Readback & Hearback Protocol\n\nThe **readback** is the pilot's verbal repetition of critical ATC instructions. Items that MUST be read back per ICAO standards:\n- Runway assignments and holding instructions\n- Altimeter settings (QNH)\n- Assigned altitudes and flight levels\n- Speed restrictions and heading assignments\n- Transponder (squawk) codes\n- Route clearances and frequency changes\n\nIf the controller detects an incorrect readback (**hearback error**), they must issue a correction immediately: \"Negative, I say again, climb and maintain flight level 310, not 350.\"\n\n## 4. Standard Phraseology Examples\n\n| Controller Instruction | Pilot Readback |\n|---|---|\n| \"Descend and maintain 4,000 feet, altimeter 29.92\" | \"Descending to 4,000, altimeter 29.92, United 437\" |\n| \"Turn left heading 090, vectors ILS 27L\" | \"Left heading 090, vectors ILS 27 Left, Delta 1218\" |\n| \"Hold short of Runway 27 Left\" | \"Holding short 27 Left, Aeroméxico 401\" |\n| \"Contact approach 124.5\" | \"Over to 124.5, VivaAerobus 638\" |\n\n---\n> **Key Takeaway**: ATC communications follow **ICAO standardized phraseology** with mandatory **readback/hearback** protocols for safety-critical instructions. **Radar vectoring** provides heading guidance for traffic separation, approach sequencing, and weather avoidance—all communicated using precise, unambiguous English terminology.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Clearance (ATC)",
+                                "es": "Autorización (ATC)",
+                                "definition": "Authorization from Air Traffic Control for an aircraft to proceed under specified conditions within controlled airspace.",
+                                "ipa": "/ˈklɪr.əns/",
+                                "collocations": [
+                                    "IFR clearance",
+                                    "clearance limit",
+                                    "cleared for takeoff"
+                                ]
+                            },
+                            {
+                                "en": "Radar Vector",
+                                "es": "Vector Radar",
+                                "definition": "A specific heading assigned by ATC to guide an aircraft for separation, sequencing, or weather avoidance.",
+                                "ipa": "/ˈreɪ.dɑːr ˈvɛk.tər/",
+                                "collocations": [
+                                    "vectors for the approach",
+                                    "turn left heading",
+                                    "radar-guided sequencing"
+                                ]
+                            },
+                            {
+                                "en": "Readback",
+                                "es": "Colación (Readback)",
+                                "definition": "Pilot's verbal repetition of critical ATC instructions to confirm correct reception and understanding.",
+                                "ipa": "/ˈriːd.bæk/",
+                                "collocations": [
+                                    "mandatory readback",
+                                    "readback error",
+                                    "correct readback confirmed"
+                                ]
+                            },
+                            {
+                                "en": "Squawk Code",
+                                "es": "Código Squawk (Transpondedor)",
+                                "definition": "Four-digit octal code assigned by ATC to identify an aircraft on radar displays.",
+                                "ipa": "/skwɔːk koʊd/",
+                                "collocations": [
+                                    "squawk 4521",
+                                    "transponder code assignment",
+                                    "squawk ident"
+                                ]
+                            },
+                            {
+                                "en": "Flight Level (FL)",
+                                "es": "Nivel de Vuelo (FL)",
+                                "definition": "Altitude expressed in hundreds of feet above the standard datum plane (29.92 inHg), used above the transition altitude.",
+                                "ipa": "/flaɪt ˈlɛv.əl/",
+                                "collocations": [
+                                    "climb to flight level 350",
+                                    "maintain FL 280",
+                                    "transition altitude"
+                                ]
+                            },
+                            {
+                                "en": "Go-Around (Missed Approach)",
+                                "es": "Aproximación Frustrada (Go-Around)",
+                                "definition": "Procedure where a pilot aborts the landing and climbs away from the runway, following the published missed approach procedure.",
+                                "ipa": "/ɡoʊ əˈraʊnd/",
+                                "collocations": [
+                                    "execute a go-around",
+                                    "missed approach procedure",
+                                    "initiate go-around"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What does the acronym CRAFT represent in an IFR clearance?",
+                                "options": [
+                                    "Crew, Radio, Altitude, Fuel, Time",
+                                    "Clearance limit, Route, Altitude, Frequency, Transponder code",
+                                    "Control, Radar, Approach, Frequency, Takeoff",
+                                    "Climb, Right, Assigned, Flight level, Turn"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What must a pilot do if they have NOT received a landing clearance?",
+                                "options": [
+                                    "Land anyway",
+                                    "Execute a missed approach (go-around)",
+                                    "Request a new squawk code",
+                                    "Turn off the transponder"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What is the standard lateral radar separation minimum in terminal airspace?",
+                                "options": [
+                                    "1 nautical mile",
+                                    "3 nautical miles",
+                                    "10 kilometers",
+                                    "500 feet"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What is a 'hearback error'?",
+                                "options": [
+                                    "A pilot hearing loss condition",
+                                    "When ATC detects an incorrect readback from the pilot",
+                                    "A radar malfunction",
+                                    "A radio frequency interference"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "aveng-m3",
                 "title": "Aviation Meteorology: Decoding METAR, TAF & SIGMET",
-                "titleES": "Meteorología Aeronáutica: Reportes METAR y TAF",
-                "icon": "fa-solid fa-cloud-bolt",
-                "readings": []
+                "titleES": "Meteorología Aeronáutica: Decodificación de METAR, TAF y SIGMET",
+                "icon": "fa-solid fa-cloud-sun-rain",
+                "readings": [
+                    {
+                        "id": "aveng-m3-r1",
+                        "title": "Aviation Weather Reports, Forecasts & Hazardous Weather Briefings",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **ICAO Annex 3 (Meteorological Service for International Air Navigation)** and **WMO Technical Regulations**.\n\n# Aviation Weather Reports, Forecasts & Hazardous Weather Briefings\n\nWeather is the single largest variable affecting flight safety and operational efficiency. Pilots must decode standardized weather products rapidly and make time-critical decisions based on coded meteorological information.\n\n## 1. METAR (Meteorological Aerodrome Report)\n\nA **METAR** is an hourly surface weather observation issued by certified meteorological observers at airports worldwide. Format:\n\n`METAR MMTJ 141850Z 28012G22KT 9999 FEW030 SCT120 BKN250 28/14 A2992 RMK AO2`\n\nDecoded:\n- **MMTJ**: Station identifier (Tijuana International Airport, Mexico)\n- **141850Z**: Day 14, time 18:50 UTC (Zulu)\n- **28012G22KT**: Wind from 280° at 12 knots, gusting to 22 knots\n- **9999**: Visibility 10+ kilometers (unrestricted)\n- **FEW030 SCT120 BKN250**: Few clouds at 3,000 ft, Scattered at 12,000 ft, Broken at 25,000 ft\n- **28/14**: Temperature 28°C / Dewpoint 14°C\n- **A2992**: Altimeter setting 29.92 inHg\n- **RMK AO2**: Remarks — Automated observation with precipitation discriminator\n\n## 2. TAF (Terminal Aerodrome Forecast)\n\nA **TAF** is a 24–30 hour forecast for airport weather conditions, issued every 6 hours:\n\n`TAF MMTJ 141730Z 1418/1518 27010KT 9999 SCT040 TEMPO 1500/1506 4000 TSRA BKN025CB`\n\nKey change indicators:\n- **TEMPO**: Temporary fluctuations (lasting less than 1 hour each, totaling less than half the period)\n- **BECMG**: Becoming — a gradual permanent change over the specified period\n- **FM**: From — an abrupt change at the specified time\n- **PROB30/40**: Probability (30% or 40%) of the following conditions\n\n## 3. SIGMET & AIRMET\n\n- **SIGMET (Significant Meteorological Information)**: Warnings for hazardous weather phenomena affecting en route aircraft safety: severe turbulence, severe icing, thunderstorms (embedded CBs), volcanic ash, tropical cyclones, sandstorms. Valid for up to 4 hours.\n- **AIRMET**: Advisories for weather phenomena hazardous to light aircraft and VFR operations: moderate turbulence, moderate icing, IFR conditions (ceiling below 1,000 ft, visibility below 3 miles), sustained surface winds above 30 knots, mountain obscuration.\n\n## 4. Practical Decision Making\n\nPilots use weather products to determine:\n- **Fuel Planning**: Alternate airport requirements based on TAF ceiling/visibility forecasts\n- **Approach Minimums**: Whether reported conditions meet the Decision Altitude (DA) and Runway Visual Range (RVR) minimums for the planned instrument approach\n- **Route Deviation**: Whether to file amended routes avoiding SIGMETs for convective activity\n- **Delay Assessment**: Whether departure should be delayed based on TEMPO or PROB groups indicating below-minimum conditions\n\n---\n> **Key Takeaway**: Aviation meteorology relies on **coded products** (METAR for current observations, TAF for forecasts, SIGMET/AIRMET for hazards) that pilots must decode rapidly to make **fuel, route, approach, and delay decisions** critical to flight safety.\n",
+                        "vocabulary": [
+                            {
+                                "en": "METAR",
+                                "es": "METAR (Informe Meteorológico de Aeródromo)",
+                                "definition": "Standardized hourly surface weather observation report issued at airports worldwide.",
+                                "ipa": "/ˈmiː.tɑːr/",
+                                "collocations": [
+                                    "decode a METAR",
+                                    "current METAR observation",
+                                    "METAR wind group"
+                                ]
+                            },
+                            {
+                                "en": "TAF (Terminal Aerodrome Forecast)",
+                                "es": "TAF (Pronóstico de Aeródromo Terminal)",
+                                "definition": "24–30 hour weather forecast for airport conditions, issued every 6 hours in coded format.",
+                                "ipa": "/tæf/",
+                                "collocations": [
+                                    "TAF validity period",
+                                    "TEMPO group",
+                                    "BECMG change indicator"
+                                ]
+                            },
+                            {
+                                "en": "SIGMET",
+                                "es": "SIGMET (Información Meteorológica Significativa)",
+                                "definition": "Warning advisory for hazardous en route weather: severe turbulence, severe icing, volcanic ash, embedded thunderstorms.",
+                                "ipa": "/ˈsɪɡ.mɛt/",
+                                "collocations": [
+                                    "convective SIGMET",
+                                    "SIGMET for volcanic ash",
+                                    "valid SIGMET area"
+                                ]
+                            },
+                            {
+                                "en": "Ceiling",
+                                "es": "Techo (Ceiling)",
+                                "definition": "Height of the lowest cloud layer reported as Broken (BKN) or Overcast (OVC), defining the vertical extent of visual flight conditions.",
+                                "ipa": "/ˈsiː.lɪŋ/",
+                                "collocations": [
+                                    "ceiling 800 feet",
+                                    "below minimums ceiling",
+                                    "indefinite ceiling"
+                                ]
+                            },
+                            {
+                                "en": "Altimeter Setting",
+                                "es": "Ajuste de Altímetro (QNH)",
+                                "definition": "Atmospheric pressure value set on the altimeter to read correct altitude above mean sea level.",
+                                "ipa": "/ælˈtɪm.ɪ.tər/",
+                                "collocations": [
+                                    "altimeter 29.92",
+                                    "QNH setting",
+                                    "transition level altimeter"
+                                ]
+                            },
+                            {
+                                "en": "Runway Visual Range (RVR)",
+                                "es": "Alcance Visual de Pista (RVR)",
+                                "definition": "Instrumentally measured distance a pilot can see down the runway from a specific point, critical for low-visibility approach minimums.",
+                                "ipa": "/ˌɑːr.viːˈɑːr/",
+                                "collocations": [
+                                    "RVR 2400 feet",
+                                    "touchdown RVR",
+                                    "approach minimums RVR"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "In a METAR, what does '28012G22KT' mean?",
+                                "options": [
+                                    "Temperature 28°C, humidity 12%",
+                                    "Wind from 280° at 12 knots gusting to 22 knots",
+                                    "Runway 28 visibility 12 km",
+                                    "Cloud base at 280 meters"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What is the difference between TEMPO and BECMG in a TAF?",
+                                "options": [
+                                    "TEMPO is for wind, BECMG is for clouds",
+                                    "TEMPO indicates temporary fluctuations; BECMG indicates a gradual permanent change",
+                                    "They are the same",
+                                    "TEMPO is international, BECMG is US-only"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What type of weather information does a SIGMET warn about?",
+                                "options": [
+                                    "Normal weather conditions",
+                                    "Hazardous phenomena: severe turbulence, severe icing, volcanic ash, embedded CBs",
+                                    "Light winds and clear skies",
+                                    "Airport construction notices"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "Why is the altimeter setting critical for safe flight?",
+                                "options": [
+                                    "It controls the engine power",
+                                    "It ensures the altimeter displays correct altitude above mean sea level for terrain and traffic separation",
+                                    "It adjusts the cabin temperature",
+                                    "It activates the autopilot"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "aveng-m4",
                 "title": "Crew Resource Management (CRM) & Cockpit Communication",
-                "titleES": "Gestión de Recursos de Cabina (CRM) y Comunicación",
-                "icon": "fa-solid fa-users",
-                "readings": []
+                "titleES": "Gestión de Recursos de Tripulación (CRM) y Comunicación en Cabina",
+                "icon": "fa-solid fa-users-gear",
+                "readings": [
+                    {
+                        "id": "aveng-m4-r1",
+                        "title": "CRM Principles, Threat & Error Management (TEM) & Assertive Communication",
+                        "duration": "11 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **ICAO Doc 9683 (Human Factors Training Manual)** and **FAA AC 120-51E (CRM Training)**.\n\n# CRM Principles, Threat & Error Management & Assertive Communication\n\n**Crew Resource Management (CRM)** is the training methodology designed to reduce human error in aviation by optimizing the use of all available resources: equipment, procedures, and—most critically—the people in the cockpit.\n\n## 1. The Evolution of CRM\n\nCRM emerged from the investigation of catastrophic accidents caused not by mechanical failure, but by breakdowns in crew communication, leadership, and decision-making. The landmark 1977 Tenerife disaster (583 fatalities) and the 1978 United Airlines Flight 173 fuel exhaustion crash demonstrated that captains who ignored input from junior crew members created fatal authority gradients.\n\nModern CRM (6th generation) emphasizes **Threat and Error Management (TEM)**:\n- **Threats**: External factors that increase operational complexity (weather, ATC congestion, aircraft malfunctions, fatigue). Threats are anticipated and managed proactively.\n- **Errors**: Crew actions or inactions that lead to a deviation from organizational expectations. Errors are inevitable; the goal is detection and recovery before they become **undesired aircraft states** (e.g., unstabilized approach, runway incursion).\n- **Undesired Aircraft States**: Conditions resulting from unmanaged errors that reduce safety margins (incorrect altitude, excessive speed on approach, wrong runway alignment).\n\n## 2. Core CRM Competencies\n\n- **Communication**: Clear, concise, unambiguous communication using standard phraseology. The **two-challenge rule** empowers any crew member to voice a safety concern twice; if ignored, they must take direct action.\n- **Situational Awareness (SA)**: Maintaining a mental model of the current state of the aircraft, systems, environment, and crew. SA has three levels: perception (Level 1), comprehension (Level 2), and projection (Level 3—anticipating future states).\n- **Decision Making**: Structured models like **FORDEC** (Facts, Options, Risks, Decision, Execution, Check) provide a systematic framework for time-critical operational decisions.\n- **Workload Management**: Distributing tasks between Pilot Flying (PF) and Pilot Monitoring (PM) based on operational phase, preventing task saturation during high-workload phases (approach, engine failure, go-around).\n- **Leadership & Followership**: Effective captains create an environment where first officers feel empowered to speak up. The authority gradient must be flat enough for assertive communication but structured enough for decisive command authority.\n\n## 3. Assertive Communication Techniques\n\nWhen a crew member identifies a safety concern:\n1. **State the observation**: \"I see our airspeed is decaying below Vref.\"\n2. **Express concern**: \"I'm concerned we may be getting too slow for a stabilized approach.\"\n3. **Propose a solution**: \"I recommend adding thrust and considering a go-around.\"\n4. **Seek agreement**: \"Do you agree, Captain?\"\n\nIf overruled and the threat persists, the crew member escalates: \"Captain, I am unable to accept this approach. We need to go around NOW.\"\n\n---\n> **Key Takeaway**: CRM optimizes cockpit teamwork through **Threat and Error Management**, **structured decision-making (FORDEC)**, and **assertive communication** that empowers all crew members to challenge unsafe situations—transforming the cockpit from an authoritarian hierarchy into a collaborative safety system.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Crew Resource Management (CRM)",
+                                "es": "Gestión de Recursos de Tripulación (CRM)",
+                                "definition": "Training methodology optimizing crew communication, leadership, and decision-making to reduce human error in aviation.",
+                                "ipa": "/kruː rɪˈsɔːrs/",
+                                "collocations": [
+                                    "CRM training program",
+                                    "CRM competencies",
+                                    "CRM scenario exercise"
+                                ]
+                            },
+                            {
+                                "en": "Threat and Error Management (TEM)",
+                                "es": "Gestión de Amenazas y Errores (TEM)",
+                                "definition": "Framework for proactively identifying threats, trapping errors, and recovering from undesired aircraft states.",
+                                "ipa": "/θrɛt ænd ˈɛr.ər/",
+                                "collocations": [
+                                    "TEM model",
+                                    "error trapping",
+                                    "unmanaged threat"
+                                ]
+                            },
+                            {
+                                "en": "Situational Awareness (SA)",
+                                "es": "Conciencia Situacional (SA)",
+                                "definition": "Pilot's mental model of the current state and projected future state of the aircraft, systems, and environment.",
+                                "ipa": "/ˌsɪtʃ.uˈeɪ.ʃən.əl/",
+                                "collocations": [
+                                    "loss of SA",
+                                    "maintain situational awareness",
+                                    "SA Level 3 projection"
+                                ]
+                            },
+                            {
+                                "en": "Authority Gradient",
+                                "es": "Gradiente de Autoridad",
+                                "definition": "The perceived difference in authority between the captain and first officer, affecting the junior crew member's willingness to speak up.",
+                                "ipa": "/ɔːˈθɒr.ɪ.ti ˈɡreɪ.di.ənt/",
+                                "collocations": [
+                                    "steep authority gradient",
+                                    "flat cockpit hierarchy",
+                                    "assertive first officer"
+                                ]
+                            },
+                            {
+                                "en": "FORDEC",
+                                "es": "FORDEC (Modelo de Decisión)",
+                                "definition": "Structured decision-making model: Facts, Options, Risks & benefits, Decision, Execution, Check.",
+                                "ipa": "/ˈfɔːr.dɛk/",
+                                "collocations": [
+                                    "apply FORDEC model",
+                                    "time-critical FORDEC",
+                                    "FORDEC decision audit"
+                                ]
+                            },
+                            {
+                                "en": "Stabilized Approach",
+                                "es": "Aproximación Estabilizada",
+                                "definition": "An approach where the aircraft meets all required parameters (speed, configuration, descent rate, alignment) by a defined gate altitude.",
+                                "ipa": "/ˈsteɪ.bɪ.laɪzd/",
+                                "collocations": [
+                                    "stabilized by 1,000 feet",
+                                    "unstabilized approach go-around",
+                                    "approach criteria met"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What event catalyzed the development of modern CRM training?",
+                                "options": [
+                                    "The invention of autopilot",
+                                    "Fatal accidents caused by crew communication failures, not mechanical problems",
+                                    "The introduction of GPS",
+                                    "A change in fuel regulations"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "In the TEM framework, what is an 'undesired aircraft state'?",
+                                "options": [
+                                    "A clean aircraft",
+                                    "A condition resulting from unmanaged errors that reduces safety margins",
+                                    "A new aircraft model",
+                                    "An aircraft on the ground"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What does the 'two-challenge rule' empower a crew member to do?",
+                                "options": [
+                                    "Challenge the airline's management twice per year",
+                                    "Voice a safety concern twice, and if ignored, take direct action",
+                                    "Change the flight plan twice",
+                                    "Request two meals during the flight"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What does FORDEC stand for?",
+                                "options": [
+                                    "Flight, Operations, Runway, Departure, Engine, Checklist",
+                                    "Facts, Options, Risks, Decision, Execution, Check",
+                                    "Fuel, Oil, Radar, Distance, Elevation, Course",
+                                    "Forward, Observe, Report, Decide, Engage, Confirm"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "aveng-m5",
                 "title": "Emergency Communications: Pan-Pan, Mayday & Escalation",
-                "titleES": "Comunicaciones de Emergencia: Pan-Pan, Mayday y Contingencias",
+                "titleES": "Comunicaciones de Emergencia: Pan-Pan, Mayday y Escalación",
                 "icon": "fa-solid fa-triangle-exclamation",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "aveng-m5-r1",
+                        "title": "Emergency & Urgency Phraseology, Squawk 7700 & Ditching Procedures",
+                        "duration": "11 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **ICAO Annex 2 (Rules of the Air)**, **ICAO Annex 10 Vol. II**, and **FAA AIM Chapter 6 (Emergency Procedures)**.\n\n# Emergency & Urgency Phraseology, Squawk 7700 & Ditching Procedures\n\nAviation emergencies demand immediate, precise communication. The international radiotelephony distress and urgency protocol, established by ICAO, ensures that any pilot worldwide can declare an emergency using universally understood phrases.\n\n## 1. Distress vs. Urgency\n\n- **MAYDAY (Distress)**: Declared when the aircraft or its occupants are in **grave and imminent danger** and require immediate assistance. Examples: engine fire, complete engine failure, structural failure, rapid depressurization. The word \"MAYDAY\" is spoken three times.\n- **PAN-PAN (Urgency)**: Declared when the situation is **urgent but not immediately life-threatening**. Examples: partial system failure, sick passenger requiring medical diversion, fuel status approaching minimum reserves. \"PAN-PAN\" is spoken three times.\n\n## 2. Standard Distress Call Format\n\n```\n\"MAYDAY, MAYDAY, MAYDAY,\n[Station addressed] — Monterrey Approach,\n[Callsign] — Volaris 512,\n[Nature of distress] — Engine fire, left engine,\n[Intentions] — Returning to Monterrey,\n[Position, altitude] — 15 miles north, 8,000 feet,\n[Souls on board] — 162 souls,\n[Fuel remaining] — 45 minutes,\n[Other information] — Requesting crash fire rescue.\"\n```\n\n## 3. Emergency Transponder Codes\n\n- **Squawk 7700**: General emergency. Activates a prominent flashing symbol on all ATC radar displays, instantly prioritizing the aircraft.\n- **Squawk 7600**: Communication failure (NORDO — No Radio). ATC provides separation services assuming the pilot is following the last assigned route and altitude.\n- **Squawk 7500**: Hijack/unlawful interference. Triggers immediate security response protocols without requiring verbal communication that could alert the hijacker.\n\n## 4. ATC Priority Handling\n\nUpon receiving a distress declaration:\n1. ATC acknowledges: \"Volaris 512, Mayday acknowledged. You are cleared to Monterrey via direct, descend at your discretion. All traffic will be cleared from your path.\"\n2. **Priority over all other traffic**: The distressed aircraft receives unrestricted clearance. All other aircraft are vectored clear.\n3. **Alert notification**: ATC activates the Alerting Service, notifying rescue coordination centers (RCC) and airport crash/fire/rescue (CFR) services.\n4. **Silence on frequency**: The controller may transmit \"All stations, stop transmitting, MAYDAY traffic\" to clear the frequency.\n\n## 5. Communication Failure Procedures\n\nIf radio communication is lost (NORDO):\n- Squawk 7600 and attempt communication on the emergency frequency 121.5 MHz.\n- In VMC (Visual Meteorological Conditions): Continue VFR, land at the nearest suitable airport.\n- In IMC (Instrument Meteorological Conditions): Follow the last assigned route and altitude, then the filed flight plan route. Commence the approach at the Expected Approach Time (EAT) or, if none received, at the Estimated Time of Arrival (ETA).\n\n---\n> **Key Takeaway**: Aviation emergencies use **MAYDAY** (grave danger) and **PAN-PAN** (urgency) protocols with **structured distress call formats**. Emergency transponder codes (**7700, 7600, 7500**) provide instant identification on ATC radar, triggering priority handling, traffic clearance, and rescue coordination.\n",
+                        "vocabulary": [
+                            {
+                                "en": "MAYDAY",
+                                "es": "MAYDAY (Señal de Socorro)",
+                                "definition": "International distress signal indicating the aircraft or occupants are in grave and imminent danger requiring immediate assistance.",
+                                "ipa": "/ˈmeɪ.deɪ/",
+                                "collocations": [
+                                    "declare MAYDAY",
+                                    "MAYDAY three times",
+                                    "Mayday acknowledged"
+                                ]
+                            },
+                            {
+                                "en": "PAN-PAN",
+                                "es": "PAN-PAN (Señal de Urgencia)",
+                                "definition": "International urgency signal indicating a condition requiring assistance but not immediate danger to life or aircraft.",
+                                "ipa": "/pæn pæn/",
+                                "collocations": [
+                                    "declare PAN-PAN",
+                                    "urgency situation",
+                                    "medical PAN-PAN"
+                                ]
+                            },
+                            {
+                                "en": "Squawk 7700",
+                                "es": "Squawk 7700 (Código de Emergencia)",
+                                "definition": "Transponder code activating an emergency alert on all ATC radar displays, providing instant visual identification.",
+                                "ipa": "/skwɔːk/",
+                                "collocations": [
+                                    "squawk 7700 emergency",
+                                    "transponder emergency code",
+                                    "radar alert symbol"
+                                ]
+                            },
+                            {
+                                "en": "Souls on Board (SOB)",
+                                "es": "Almas a Bordo (SOB)",
+                                "definition": "Total number of persons (passengers and crew) on the aircraft, reported during emergency declarations for rescue planning.",
+                                "ipa": "/soʊlz ɒn bɔːrd/",
+                                "collocations": [
+                                    "162 souls on board",
+                                    "report souls and fuel",
+                                    "rescue coordination"
+                                ]
+                            },
+                            {
+                                "en": "NORDO (No Radio)",
+                                "es": "NORDO (Sin Radio)",
+                                "definition": "Condition where an aircraft has lost all radio communication capability, requiring transponder code 7600 and visual signal procedures.",
+                                "ipa": "/ˈnɔːr.doʊ/",
+                                "collocations": [
+                                    "NORDO procedures",
+                                    "squawk 7600",
+                                    "communication failure"
+                                ]
+                            },
+                            {
+                                "en": "Emergency Frequency 121.5 MHz",
+                                "es": "Frecuencia de Emergencia 121.5 MHz",
+                                "definition": "International aeronautical emergency and distress frequency monitored by all ATC facilities and many aircraft.",
+                                "ipa": "/ɪˈmɜːr.dʒən.si/",
+                                "collocations": [
+                                    "guard frequency",
+                                    "monitor 121.5",
+                                    "emergency locator transmitter"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "When should a pilot declare MAYDAY instead of PAN-PAN?",
+                                "options": [
+                                    "When requesting a meal",
+                                    "When the aircraft or occupants are in grave and imminent danger",
+                                    "When requesting a frequency change",
+                                    "When the weather is slightly bad"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What transponder code indicates a hijack situation?",
+                                "options": [
+                                    "7700",
+                                    "7600",
+                                    "7500",
+                                    "1200"
+                                ],
+                                "answer": 2
+                            },
+                            {
+                                "q": "How many times must the word 'MAYDAY' be spoken at the beginning of a distress call?",
+                                "options": [
+                                    "Once",
+                                    "Twice",
+                                    "Three times",
+                                    "Five times"
+                                ],
+                                "answer": 2
+                            },
+                            {
+                                "q": "What should a pilot do first when experiencing total radio communication failure?",
+                                "options": [
+                                    "Land immediately regardless of conditions",
+                                    "Squawk 7600 and attempt contact on 121.5 MHz",
+                                    "Turn off all electrical systems",
+                                    "Descend to the lowest altitude"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
@@ -11500,30 +14105,498 @@ var LXP_COURSES = {
             {
                 "id": "af-m2",
                 "title": "Military Avionics: HUD, AESA Radar & EW Suites",
-                "titleES": "Aviónica Militar: HUD, Radar AESA y Guerra Electrónica",
-                "icon": "fa-solid fa-crosshairs",
-                "readings": []
+                "titleES": "Aviónica Militar: HUD, Radar AESA y Suites de Guerra Electrónica",
+                "icon": "fa-solid fa-satellite-dish",
+                "readings": [
+                    {
+                        "id": "af-m2-r1",
+                        "title": "Head-Up Display Systems, AESA Radar Technology & Electronic Warfare Architecture",
+                        "duration": "13 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **MIL-STD-1553B (Digital Data Bus)**, **NATO STANAG 3910 (Avionics Data Bus)**, and **IEEE 1394b (FireWire for Avionics)**.\n\n# Head-Up Display Systems, AESA Radar Technology & Electronic Warfare Architecture\n\nModern tactical aircraft integrate multiple avionics subsystems into a unified sensor fusion architecture. The pilot receives a composite tactical picture through the **Head-Up Display (HUD)**, **Helmet-Mounted Display (HMD)**, and **Multi-Function Displays (MFDs)**, while the aircraft's **Active Electronically Scanned Array (AESA)** radar and **Electronic Warfare (EW)** suite operate autonomously.\n\n## 1. Head-Up Display (HUD) & Helmet-Mounted Display Systems\n\nThe **HUD** projects critical flight and weapons data onto a transparent combiner glass in the pilot's forward field of view, enabling the pilot to maintain eyes-out situational awareness:\n- **Flight symbology**: Pitch ladder, bank angle, airspeed tape, altitude tape, heading tape, angle of attack (AoA) bracket, flight path marker (velocity vector).\n- **Weapons symbology**: Target designation diamond, continuously computed impact point (CCIP) for air-to-ground, gun cross/pipper, missile seeker circle.\n- **Wide-Field-of-View (WFOV) HUDs**: Modern HUDs (BAE Systems, Elbit) provide 25°×18° field of view with >10,000 cd/m² luminance for visibility in direct sunlight.\n\n**Helmet-Mounted Display Systems (HMDS)** like the F-35's AN/PAS-46 project symbology directly onto the pilot's visor, enabling off-boresight target cueing—the pilot simply looks at a target and designates it, regardless of aircraft heading.\n\n## 2. AESA (Active Electronically Scanned Array) Radar\n\nAESA radar represents a generational leap from mechanically scanned and passive electronically scanned arrays:\n- **Architecture**: Hundreds to thousands of individual **Transmit/Receive (T/R) modules**, each containing its own signal generator and phase shifter. Each element can independently control beam direction, frequency, and waveform.\n- **Beam Agility**: Electronic beam steering enables simultaneous multi-function operation: tracking multiple air targets, performing ground mapping (SAR—Synthetic Aperture Radar), guiding semi-active missiles, and conducting electronic attack—all interleaved at microsecond intervals.\n- **Low Probability of Intercept (LPI)**: AESA radars spread energy across wide bandwidths and rapidly change frequencies (frequency hopping), making them extremely difficult for enemy radar warning receivers to detect and classify.\n- **Operational Range**: Modern AESA radars (AN/APG-81 on F-35, AN/APG-82(V)1 on F-15EX) detect fighter-sized targets beyond 150 nautical miles while tracking over 20 targets simultaneously.\n\n## 3. Electronic Warfare (EW) Suite\n\nThe EW suite provides the aircraft with self-protection and offensive electronic attack capabilities:\n- **Radar Warning Receiver (RWR)**: Detects, identifies, and geolocates hostile radar emissions. Classifies threats by comparing received signal parameters (frequency, pulse repetition frequency, scan pattern) against a mission data file (threat library).\n- **Electronic Countermeasures (ECM/Jamming)**: Transmits electromagnetic energy to deceive or disrupt enemy radar. Techniques include noise jamming (overpowering the radar's receiver), deceptive jamming (creating false targets), and range-gate pull-off (RGPO—gradually shifting the apparent target range).\n- **Chaff & Flare Dispensers**: Chaff (metallic strips) creates radar-reflective clouds to break missile radar lock. Flares (pyrotechnic decoys) seduce infrared-guided missiles away from the aircraft's heat signature.\n- **Directed Infrared Countermeasures (DIRCM)**: Laser-based systems that track and dazzle the seekers of incoming IR missiles.\n\n---\n> **Key Takeaway**: Military avionics integrate **HUD/HMD symbology** for eyes-out tactical awareness, **AESA radar** with beam-agile multi-function capability, and **EW suites** (RWR, ECM, chaff/flare, DIRCM) providing layered self-protection in contested electromagnetic environments.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Head-Up Display (HUD)",
+                                "es": "Pantalla de Visualización Frontal (HUD)",
+                                "definition": "Transparent display projecting flight and weapons data into the pilot's forward field of view without requiring them to look down at instruments.",
+                                "ipa": "/hʌd/",
+                                "collocations": [
+                                    "HUD symbology",
+                                    "flight path marker",
+                                    "combiner glass"
+                                ]
+                            },
+                            {
+                                "en": "AESA Radar",
+                                "es": "Radar AESA (Barrido Electrónico Activo)",
+                                "definition": "Radar with hundreds of independent transmit/receive modules enabling agile electronic beam steering and simultaneous multi-function operation.",
+                                "ipa": "/ˌeɪ.iː.ɛs.ˈeɪ/",
+                                "collocations": [
+                                    "T/R modules",
+                                    "beam agility",
+                                    "low probability of intercept"
+                                ]
+                            },
+                            {
+                                "en": "Radar Warning Receiver (RWR)",
+                                "es": "Receptor de Alerta Radar (RWR)",
+                                "definition": "Passive sensor detecting and classifying hostile radar emissions to warn the pilot of threats.",
+                                "ipa": "/ˌɑːr.dʌb.əl.juːˈɑːr/",
+                                "collocations": [
+                                    "RWR threat display",
+                                    "threat library",
+                                    "hostile emitter classification"
+                                ]
+                            },
+                            {
+                                "en": "Electronic Countermeasures (ECM)",
+                                "es": "Contramedidas Electrónicas (ECM)",
+                                "definition": "Techniques using electromagnetic energy to deceive, disrupt, or deny enemy radar and communications systems.",
+                                "ipa": "/ˌiː.siːˈɛm/",
+                                "collocations": [
+                                    "noise jamming",
+                                    "deceptive ECM",
+                                    "self-protection jamming"
+                                ]
+                            },
+                            {
+                                "en": "Low Probability of Intercept (LPI)",
+                                "es": "Baja Probabilidad de Interceptación (LPI)",
+                                "definition": "Radar emission characteristic making detection by enemy receivers extremely difficult through spread spectrum and frequency agility.",
+                                "ipa": "/ˌɛl.piːˈaɪ/",
+                                "collocations": [
+                                    "LPI waveform",
+                                    "frequency hopping",
+                                    "covert radar operation"
+                                ]
+                            },
+                            {
+                                "en": "Synthetic Aperture Radar (SAR)",
+                                "es": "Radar de Apertura Sintética (SAR)",
+                                "definition": "Radar imaging technique creating high-resolution ground maps by synthesizing a large antenna aperture from aircraft motion.",
+                                "ipa": "/ˌɛs.eɪˈɑːr/",
+                                "collocations": [
+                                    "SAR ground mapping",
+                                    "SAR imagery resolution",
+                                    "strip-map SAR mode"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What is the primary advantage of AESA radar over mechanically scanned radar?",
+                                "options": [
+                                    "It is cheaper to manufacture",
+                                    "Electronic beam steering enables simultaneous multi-function operation at microsecond intervals",
+                                    "It requires no electrical power",
+                                    "It only works in clear weather"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What does a Radar Warning Receiver (RWR) do?",
+                                "options": [
+                                    "Transmits jamming signals",
+                                    "Detects, identifies, and geolocates hostile radar emissions",
+                                    "Navigates the aircraft",
+                                    "Controls the landing gear"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What is the purpose of chaff dispensed from a military aircraft?",
+                                "options": [
+                                    "To improve radar performance",
+                                    "To create radar-reflective clouds that break enemy missile radar lock",
+                                    "To fuel the engines",
+                                    "To communicate with ground stations"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What does 'off-boresight target cueing' mean with a Helmet-Mounted Display?",
+                                "options": [
+                                    "Aiming straight ahead only",
+                                    "The pilot can designate targets simply by looking at them, regardless of aircraft heading",
+                                    "A GPS navigation technique",
+                                    "A maintenance procedure"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "af-m3",
                 "title": "Tactical Data Networks: Link 16 & C4ISR Architecture",
-                "titleES": "Redes Tácticas de Datos: Link 16 y C4ISR",
-                "icon": "fa-solid fa-satellite-dish",
-                "readings": []
+                "titleES": "Redes Tácticas de Datos: Link 16 y Arquitectura C4ISR",
+                "icon": "fa-solid fa-network-wired",
+                "readings": [
+                    {
+                        "id": "af-m3-r1",
+                        "title": "Link 16 TADIL-J, Network-Centric Warfare & C4ISR Integration",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **NATO STANAG 5516 (Link 16)**, **MIL-STD-6016 (TADIL-J Message Standard)**, and **U.S. DoD Joint Publication 6-0 (Joint Communications System)**.\n\n# Link 16 TADIL-J, Network-Centric Warfare & C4ISR Integration\n\nModern military operations depend on secure, jam-resistant data networks that share real-time tactical information between aircraft, ships, ground forces, and command centers. **Link 16** is the primary tactical data link used by NATO and allied forces.\n\n## 1. Link 16 Architecture\n\nLink 16 (also designated **TADIL-J / Tactical Digital Information Link - J**) operates on the L-band (960–1215 MHz) using **frequency hopping spread spectrum (FHSS)** across 51 pseudo-randomly selected frequencies, changing frequency every 13 microseconds. This provides inherent resistance to jamming and interception.\n\n- **JTIDS/MIDS Terminal**: Each platform carries a Joint Tactical Information Distribution System / Multifunctional Information Distribution System terminal that transmits and receives **J-series messages** in fixed time slots assigned by a **Network Design** document.\n- **Time Division Multiple Access (TDMA)**: The Link 16 network divides time into 12.8-minute **epochs**, each containing 98,304 individual time slots. Each participant is assigned specific slots for transmission, preventing collisions.\n- **Participant Groups**: Platforms are organized into **Net Participation Groups (NPGs)** based on function: Surveillance, Fighter-to-Fighter, Air Control, Weapons Coordination.\n\n## 2. J-Series Messages\n\nLink 16 transmits standardized message types:\n- **J2.2 (Air Track)**: Position, altitude, speed, heading, and identification (friend/foe/unknown) of an airborne contact.\n- **J3.2 (Surface Track)**: Ship or ground vehicle track data.\n- **J7.0 (Command)**: Weapons assignment and engagement orders.\n- **J9.0 (Electronic Warfare)**: Emitter reports and jamming coordination.\n- **J12.6 (Mission Assignment)**: Targeting data and coordinates.\n\n## 3. C4ISR Architecture\n\n**C4ISR** stands for **Command, Control, Communications, Computers, Intelligence, Surveillance, and Reconnaissance**. It represents the integrated architecture enabling military decision-making:\n\n- **Command & Control (C2)**: The authority structure and decision-making processes through which commanders direct forces.\n- **Communications**: The data transport layer (Link 16, SATCOM, HF/UHF radios, cyber networks).\n- **Computers**: Processing nodes that fuse sensor data, maintain the Common Operational Picture (COP), and run decision-support algorithms.\n- **Intelligence**: Analysis of collected information to produce actionable intelligence products.\n- **Surveillance & Reconnaissance (ISR)**: Sensors that collect information: AESA radar, electro-optical/infrared (EO/IR) cameras, signals intelligence (SIGINT) receivers, unmanned aerial systems (UAS).\n\n## 4. Network-Centric Warfare (NCW)\n\nThe fundamental concept is that **shared situational awareness** dramatically improves combat effectiveness:\n- Every platform contributes sensor data to the network.\n- A composite **Common Operational Picture (COP)** is generated and distributed to all participants.\n- Any \"shooter\" can engage any target detected by any \"sensor\" on the network, enabling **distributed kill chains**.\n\n---\n> **Key Takeaway**: **Link 16** provides NATO forces with a **jam-resistant, TDMA-based tactical data link** sharing real-time track data through J-series messages. Integrated within the **C4ISR architecture**, it enables **network-centric warfare** where shared situational awareness creates decisive information superiority.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Link 16 (TADIL-J)",
+                                "es": "Link 16 (TADIL-J)",
+                                "definition": "NATO tactical data link operating on L-band with frequency hopping, enabling secure real-time information exchange between military platforms.",
+                                "ipa": "/lɪŋk sɪksˈtiːn/",
+                                "collocations": [
+                                    "Link 16 time slot",
+                                    "MIDS terminal",
+                                    "J-series message"
+                                ]
+                            },
+                            {
+                                "en": "C4ISR",
+                                "es": "C4ISR (Mando, Control, Comunicaciones, Computadoras, Inteligencia, Vigilancia y Reconocimiento)",
+                                "definition": "Integrated military architecture encompassing command, control, communications, computers, intelligence, surveillance, and reconnaissance.",
+                                "ipa": "/ˌsiː.fɔːr.aɪ.ɛs.ˈɑːr/",
+                                "collocations": [
+                                    "C4ISR integration",
+                                    "joint C4ISR",
+                                    "sensor-to-shooter"
+                                ]
+                            },
+                            {
+                                "en": "Common Operational Picture (COP)",
+                                "es": "Imagen Operacional Común (COP)",
+                                "definition": "Shared display of tactical information fusing all sensor data into a single unified view for all participants.",
+                                "ipa": "/kɒp/",
+                                "collocations": [
+                                    "maintain the COP",
+                                    "real-time COP update",
+                                    "situational awareness via COP"
+                                ]
+                            },
+                            {
+                                "en": "Frequency Hopping Spread Spectrum (FHSS)",
+                                "es": "Espectro Ensanchado por Salto de Frecuencia (FHSS)",
+                                "definition": "Transmission technique rapidly changing carrier frequency among 51 pseudo-random channels to resist jamming and interception.",
+                                "ipa": "/ˈfriː.kwən.si ˈhɒp.ɪŋ/",
+                                "collocations": [
+                                    "FHSS anti-jam",
+                                    "pseudo-random hopping",
+                                    "spread spectrum signal"
+                                ]
+                            },
+                            {
+                                "en": "Time Division Multiple Access (TDMA)",
+                                "es": "Acceso Múltiple por División de Tiempo (TDMA)",
+                                "definition": "Network access method dividing time into discrete slots assigned to participants to prevent transmission collisions.",
+                                "ipa": "/ˌtiː.diː.ɛm.ˈeɪ/",
+                                "collocations": [
+                                    "TDMA time slot",
+                                    "epoch structure",
+                                    "slot assignment"
+                                ]
+                            },
+                            {
+                                "en": "Network-Centric Warfare (NCW)",
+                                "es": "Guerra Centrada en Red (NCW)",
+                                "definition": "Doctrine where shared network information creates superior situational awareness and enables distributed engagement.",
+                                "ipa": "/ˈnɛt.wɜːrk ˈsɛn.trɪk/",
+                                "collocations": [
+                                    "distributed kill chain",
+                                    "sensor-to-shooter link",
+                                    "information superiority"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "How does Link 16 resist enemy jamming?",
+                                "options": [
+                                    "By transmitting at maximum power only",
+                                    "Through frequency hopping spread spectrum across 51 frequencies, changing every 13 microseconds",
+                                    "By using unencrypted signals",
+                                    "By operating only at night"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What does a J2.2 message in Link 16 contain?",
+                                "options": [
+                                    "Weather data",
+                                    "Air track data: position, altitude, speed, heading, and identification of airborne contacts",
+                                    "Maintenance schedules",
+                                    "Fuel status reports"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What does the 'I' in C4ISR stand for?",
+                                "options": [
+                                    "Internet",
+                                    "Intelligence",
+                                    "Infrastructure",
+                                    "Integration"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "In Network-Centric Warfare, what is a 'distributed kill chain'?",
+                                "options": [
+                                    "A physical chain on the aircraft",
+                                    "Any shooter can engage any target detected by any sensor on the network",
+                                    "A maintenance procedure",
+                                    "A supply chain concept"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "af-m4",
                 "title": "NATO STANAG Compliance & Multinational Interoperability",
-                "titleES": "Cumplimiento OTAN STANAG e Interoperabilidad",
-                "icon": "fa-solid fa-file-shield",
-                "readings": []
+                "titleES": "Cumplimiento STANAG OTAN e Interoperabilidad Multinacional",
+                "icon": "fa-solid fa-handshake",
+                "readings": [
+                    {
+                        "id": "af-m4-r1",
+                        "title": "STANAG Framework, Interoperability Levels & Coalition Operations",
+                        "duration": "11 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **NATO STANAG 6001 (Language Proficiency)**, **STANAG 4586 (UAV Interoperability)**, and **Allied Joint Publication AJP-6 (C3 Doctrine)**.\n\n# STANAG Framework, Interoperability Levels & Coalition Operations\n\nNATO's **Standardization Agreements (STANAGs)** are the foundation of multinational military interoperability. They establish common procedures, equipment interfaces, and technical standards ensuring that forces from 31+ member nations can operate together seamlessly.\n\n## 1. The STANAG System\n\nA STANAG is a normative document establishing an agreement among member nations to adopt the same or similar military equipment, ammunition, supplies, and operational procedures. The process:\n1. **Ratification**: Each nation reviews and officially accepts the STANAG.\n2. **Implementation**: Nations modify their national doctrine, training, and equipment to comply.\n3. **Verification**: Through exercises and evaluations, NATO assesses actual interoperability levels.\n\nKey STANAGs for aerospace operations:\n- **STANAG 6001**: Language proficiency standardized profile. Level 3 (Professional) across listening, speaking, reading, and writing is required for most NATO staff positions.\n- **STANAG 4586**: Interoperability standard for unmanned aerial systems (UAS), defining common data link interfaces and control architectures.\n- **STANAG 4609**: Digital motion imagery standards for full-motion video (FMV) from ISR platforms.\n- **STANAG 5516**: Link 16 technical implementation standard.\n\n## 2. Interoperability Levels (NIOL)\n\nNATO defines interoperability across four levels:\n- **Level 1 (De-Confliction)**: Minimal interaction; forces avoid interfering with each other's operations through geographic or temporal separation.\n- **Level 2 (Coordination)**: Forces share information and synchronize activities but maintain separate command structures.\n- **Level 3 (Collaboration)**: Shared planning, common procedures, and integrated logistics. Joint staff work together daily.\n- **Level 4 (Full Integration)**: Seamless combined operations under unified command, using shared systems, networks, and doctrine as if they were a single force.\n\n## 3. Language Interoperability\n\nEnglish is the designated working language of NATO. **STANAG 6001** rates military personnel on a 0-5 scale:\n- **Level 0 (No Proficiency)**: Cannot function in the language.\n- **Level 1 (Survival)**: Elementary needs only.\n- **Level 2 (Functional)**: Can handle routine social and professional situations.\n- **Level 3 (Professional)**: Can participate effectively in most formal and informal conversations on practical, social, and professional topics.\n- **Level 4 (Expert)**: Fluent, precise, and culturally attuned.\n- **Level 5 (Highly Articulate Native)**: Equivalent to a well-educated native speaker.\n\nMost NATO billets require SLP (Standardized Language Profile) 3-3-3-3 across all four skills.\n\n## 4. Combined Air Operations Center (CAOC)\n\nThe **CAOC** is the central command facility for planning and executing NATO air operations:\n- **Air Tasking Order (ATO)**: The master document assigning specific missions, targets, and time-on-target to all participating aircraft from all contributing nations.\n- **Special Instructions (SPINS)**: Supplementary tactical directives covering rules of engagement (ROE), communications plans, identification procedures, and airspace coordination.\n- **Battle Rhythm**: The daily cycle of intelligence briefings, planning sessions, ATO production, and mission execution monitoring.\n\n---\n> **Key Takeaway**: NATO **STANAGs** standardize everything from language proficiency (6001) to data links (5516) and UAV interfaces (4586). **Interoperability levels** progress from de-confliction to full integration, enabled by English as the working language and centralized air operations through the **CAOC** and its **Air Tasking Order**.\n",
+                        "vocabulary": [
+                            {
+                                "en": "STANAG (Standardization Agreement)",
+                                "es": "STANAG (Acuerdo de Estandarización)",
+                                "definition": "NATO normative document establishing common procedures, equipment interfaces, and technical standards for multinational interoperability.",
+                                "ipa": "/ˈstæn.æɡ/",
+                                "collocations": [
+                                    "ratify a STANAG",
+                                    "STANAG compliance",
+                                    "implement STANAG 6001"
+                                ]
+                            },
+                            {
+                                "en": "Interoperability",
+                                "es": "Interoperabilidad",
+                                "definition": "The ability of military forces from different nations to operate together effectively using compatible systems, procedures, and doctrine.",
+                                "ipa": "/ˌɪn.tər.ɒp.ər.əˈbɪl.ɪ.ti/",
+                                "collocations": [
+                                    "technical interoperability",
+                                    "interoperability testing",
+                                    "coalition interoperability"
+                                ]
+                            },
+                            {
+                                "en": "Air Tasking Order (ATO)",
+                                "es": "Orden de Tarea Aérea (ATO)",
+                                "definition": "Master planning document assigning specific air missions, targets, and timing to all participating aircraft in a theater of operations.",
+                                "ipa": "/ˌeɪ.tiːˈoʊ/",
+                                "collocations": [
+                                    "publish the ATO",
+                                    "ATO cycle",
+                                    "mission assignment in ATO"
+                                ]
+                            },
+                            {
+                                "en": "Rules of Engagement (ROE)",
+                                "es": "Reglas de Enfrentamiento (ROE)",
+                                "definition": "Directives defining the circumstances, conditions, and limitations under which military force may be applied.",
+                                "ipa": "/ruːlz ɒv/",
+                                "collocations": [
+                                    "ROE restrictions",
+                                    "weapons release authority",
+                                    "escalation of force ROE"
+                                ]
+                            },
+                            {
+                                "en": "Combined Air Operations Center (CAOC)",
+                                "es": "Centro de Operaciones Aéreas Combinadas (CAOC)",
+                                "definition": "NATO facility responsible for planning, directing, and coordinating all air operations in a theater.",
+                                "ipa": "/keɪ.ɒk/",
+                                "collocations": [
+                                    "CAOC battle rhythm",
+                                    "CAOC mission planning",
+                                    "Joint Force Air Component"
+                                ]
+                            },
+                            {
+                                "en": "Standardized Language Profile (SLP)",
+                                "es": "Perfil Lingüístico Estandarizado (SLP)",
+                                "definition": "NATO STANAG 6001 rating expressing an individual's proficiency in listening, speaking, reading, and writing on a 0-5 scale.",
+                                "ipa": "/ˌɛs.ɛlˈpiː/",
+                                "collocations": [
+                                    "SLP 3-3-3-3",
+                                    "language proficiency testing",
+                                    "NATO language requirement"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What is a STANAG?",
+                                "options": [
+                                    "A type of aircraft",
+                                    "A NATO standardization agreement establishing common procedures and standards for interoperability",
+                                    "A fuel type",
+                                    "A weather code"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What STANAG 6001 level is typically required for NATO staff positions?",
+                                "options": [
+                                    "Level 1 (Survival)",
+                                    "Level 3 (Professional) across all four skills",
+                                    "Level 5 (Native)",
+                                    "Level 0 (No Proficiency)"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What is the Air Tasking Order (ATO)?",
+                                "options": [
+                                    "A maintenance manual",
+                                    "The master document assigning air missions, targets, and timing to all participating aircraft",
+                                    "A training schedule",
+                                    "A fuel requisition form"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "At NATO Interoperability Level 4, what is achieved?",
+                                "options": [
+                                    "Minimal de-confliction only",
+                                    "Seamless combined operations under unified command as a single force",
+                                    "Information sharing only",
+                                    "Separate operations with no interaction"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": "af-m5",
                 "title": "Defense Aerospace MRO, Airframe Depot Maintenance & AS9110",
-                "titleES": "Mantenimiento MRO Militar y Norma AS9110",
+                "titleES": "MRO Aeroespacial de Defensa, Mantenimiento de Aeronaves y AS9110",
                 "icon": "fa-solid fa-wrench",
-                "readings": []
+                "readings": [
+                    {
+                        "id": "af-m5-r1",
+                        "title": "Military MRO Operations, Depot-Level Maintenance & AS9110C Quality Systems",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment**: Aligned with **AS9110C (Quality Management Systems for Aviation Maintenance)**, **MIL-STD-1530 (Aircraft Structural Integrity Program)**, and **NAVAIR/AFMC Depot Maintenance Standards**.\n\n# Military MRO Operations, Depot-Level Maintenance & AS9110C Quality Systems\n\n**Maintenance, Repair, and Overhaul (MRO)** of military aircraft is a complex engineering discipline ensuring that combat aircraft maintain structural integrity, airworthiness, and mission capability throughout their operational lifespan (often 30–50 years).\n\n## 1. Maintenance Levels\n\nMilitary aviation maintenance is organized into three tiers:\n\n- **Organizational Level (O-Level)**: Flight line maintenance performed by squadron personnel. Includes pre-flight/post-flight inspections, servicing (fuel, oil, hydraulic fluid), minor repairs (tire changes, filter replacements), and fault isolation using Built-In Test Equipment (BITE).\n- **Intermediate Level (I-Level)**: Specialized maintenance at the wing or base level. Includes component repair (avionics LRU bench testing), engine module removal/installation, and non-destructive inspection (NDI) of structural elements.\n- **Depot Level (D-Level)**: The most comprehensive maintenance, performed at major facilities (Ogden ALC, Warner Robins ALC, or contractor depots). Includes complete airframe teardown, structural inspection, corrosion treatment, systems overhaul, technology insertion (avionics upgrades), and life extension modifications.\n\n## 2. Programmed Depot Maintenance (PDM)\n\nA **PDM** event is a scheduled depot visit occurring at fixed intervals (typically every 4–8 years or after a set number of flight hours):\n1. **Induction**: Aircraft arrives and undergoes wash rack cleaning, full documentation review, and initial deficiency assessment.\n2. **Disassembly**: Panels, fairings, access doors, and components are removed for inspection. The airframe is stripped to structural members.\n3. **Inspection**: **Non-Destructive Inspection (NDI)** methods—eddy current, ultrasonic, magnetic particle, radiographic—examine critical structure for fatigue cracks, corrosion, and disbonds.\n4. **Repair & Modification**: Structural repairs per engineering disposition. Modification compliance (Time Compliance Technical Orders—TCTOs) installs upgrades and safety modifications.\n5. **Reassembly & Test**: Components reinstalled, systems tested, functional check flights performed.\n6. **Delivery**: Aircraft returns to operational unit with refreshed structural life.\n\n## 3. AS9110C Quality Management\n\n**AS9110C** is the aerospace quality management standard specifically for maintenance organizations (equivalent to AS9100D for manufacturing):\n- **Process Approach**: All maintenance activities are documented as controlled processes with defined inputs, outputs, resources, and performance metrics.\n- **Human Factors in Maintenance (HFIM)**: Addresses the \"Dirty Dozen\" human factors causing maintenance errors: lack of communication, complacency, lack of knowledge, distraction, lack of teamwork, fatigue, lack of resources, pressure, lack of assertiveness, stress, lack of awareness, and norms.\n- **Foreign Object Damage/Debris (FOD) Prevention**: Rigorous tool control, hardware accountability, and workspace cleanliness programs to prevent FOD from causing catastrophic in-flight failures.\n- **Configuration Management**: Ensures that every aircraft's actual configuration (installed parts, software versions, modification status) matches the master engineering records.\n\n## 4. Corrosion Control & Structural Life Management\n\n- **Aircraft Structural Integrity Program (ASIP)**: MIL-STD-1530 requires tracking individual aircraft fatigue damage through flight-by-flight load monitoring, periodic inspection, and analytical life predictions.\n- **Corrosion Prevention and Control Program (CPCP)**: Systematic inspection, treatment (chromate conversion coatings, primer application), and documentation of all corrosion findings.\n- **Damage Tolerance Analysis**: Engineering methodology proving that if a crack exists, it will be detected by scheduled inspections before growing to critical length that would cause structural failure.\n\n---\n> **Key Takeaway**: Military MRO operates across **three maintenance levels** (O/I/D-Level) with **Programmed Depot Maintenance** events performing complete structural inspection using **NDI methods**. Quality is governed by **AS9110C**, addressing human factors, FOD prevention, and configuration management to maintain combat aircraft safely for decades of service.\n",
+                        "vocabulary": [
+                            {
+                                "en": "MRO (Maintenance, Repair & Overhaul)",
+                                "es": "MRO (Mantenimiento, Reparación y Revisión General)",
+                                "definition": "The complete lifecycle of maintaining aircraft airworthiness through scheduled inspections, component repair, and depot-level overhaul.",
+                                "ipa": "/ˌɛm.ɑːr.ˈoʊ/",
+                                "collocations": [
+                                    "MRO facility",
+                                    "depot-level MRO",
+                                    "MRO turnaround time"
+                                ]
+                            },
+                            {
+                                "en": "Non-Destructive Inspection (NDI)",
+                                "es": "Inspección No Destructiva (NDI/END)",
+                                "definition": "Examination techniques (eddy current, ultrasonic, magnetic particle) that detect defects without damaging the component.",
+                                "ipa": "/nɒn dɪˈstrʌk.tɪv/",
+                                "collocations": [
+                                    "NDI methods",
+                                    "eddy current inspection",
+                                    "ultrasonic NDI"
+                                ]
+                            },
+                            {
+                                "en": "Programmed Depot Maintenance (PDM)",
+                                "es": "Mantenimiento Programado de Depósito (PDM)",
+                                "definition": "Scheduled comprehensive maintenance event at a depot facility involving airframe teardown, inspection, repair, and modification.",
+                                "ipa": "/ˌpiː.diːˈɛm/",
+                                "collocations": [
+                                    "PDM induction",
+                                    "PDM cycle interval",
+                                    "depot turnaround"
+                                ]
+                            },
+                            {
+                                "en": "Foreign Object Damage/Debris (FOD)",
+                                "es": "Daño/Escombros por Objetos Extraños (FOD)",
+                                "definition": "Damage or debris from loose objects (tools, hardware, materials) that can cause catastrophic failure if ingested or left in an aircraft.",
+                                "ipa": "/fɒd/",
+                                "collocations": [
+                                    "FOD prevention program",
+                                    "FOD walk-down",
+                                    "tool accountability"
+                                ]
+                            },
+                            {
+                                "en": "AS9110C",
+                                "es": "AS9110C (Norma de Calidad para Mantenimiento Aeroespacial)",
+                                "definition": "Aerospace quality management standard for maintenance organizations, addressing human factors, configuration management, and process control.",
+                                "ipa": "/ˌeɪ.ɛs.naɪn.wʌn.wʌn.ˈoʊ/",
+                                "collocations": [
+                                    "AS9110 audit",
+                                    "quality management system",
+                                    "maintenance process control"
+                                ]
+                            },
+                            {
+                                "en": "Damage Tolerance",
+                                "es": "Tolerancia al Daño",
+                                "definition": "Engineering methodology proving that cracks will be detected by inspection before reaching critical size that causes structural failure.",
+                                "ipa": "/ˈdæm.ɪdʒ ˈtɒl.ər.əns/",
+                                "collocations": [
+                                    "damage tolerance analysis",
+                                    "crack growth prediction",
+                                    "inspection interval determination"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What level of maintenance involves complete airframe teardown and structural inspection?",
+                                "options": [
+                                    "Organizational Level (O-Level)",
+                                    "Intermediate Level (I-Level)",
+                                    "Depot Level (D-Level)",
+                                    "Pre-flight inspection"
+                                ],
+                                "answer": 2
+                            },
+                            {
+                                "q": "What does FOD stand for and why is it critical?",
+                                "options": [
+                                    "Flight Operations Document — for planning",
+                                    "Foreign Object Damage/Debris — loose objects can cause catastrophic in-flight failure",
+                                    "Fuel Oil Delivery — for logistics",
+                                    "Forward Operating Depot — a base type"
+                                ],
+                                "answer": 1
+                            },
+                            {
+                                "q": "What standard governs quality management specifically for aerospace maintenance organizations?",
+                                "options": [
+                                    "ISO 9001",
+                                    "AS9100D",
+                                    "AS9110C",
+                                    "MIL-STD-1553"
+                                ],
+                                "answer": 2
+                            },
+                            {
+                                "q": "What is the purpose of Damage Tolerance Analysis?",
+                                "options": [
+                                    "To make aircraft fly faster",
+                                    "To prove cracks will be detected by inspection before reaching critical failure size",
+                                    "To reduce fuel consumption",
+                                    "To improve radar performance"
+                                ],
+                                "answer": 1
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
