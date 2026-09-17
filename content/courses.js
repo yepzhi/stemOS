@@ -212,62 +212,74 @@ var LXP_COURSES = {
                             {
                                 "en": "LAN (Local Area Network)",
                                 "es": "Red de Área Local",
-                                "definition": "A network covering a small area like an office or home"
+                                "definition": "A network covering a small area like an office or home",
+                                "ipa": "/læn/"
                             },
                             {
                                 "en": "WAN (Wide Area Network)",
                                 "es": "Red de Área Amplia",
-                                "definition": "A network covering a large geographic area"
+                                "definition": "A network covering a large geographic area",
+                                "ipa": "/wæn/"
                             },
                             {
                                 "en": "MAN (Metropolitan Area Network)",
                                 "es": "Red de Área Metropolitana",
-                                "definition": "A network covering a city or metropolitan area"
+                                "definition": "A network covering a city or metropolitan area",
+                                "ipa": "/mæn/"
                             },
                             {
                                 "en": "PAN (Personal Area Network)",
                                 "es": "Red de Área Personal",
-                                "definition": "A very small network for one person's devices"
+                                "definition": "A very small network for one person's devices",
+                                "ipa": "/pæn/"
                             },
                             {
                                 "en": "VPN (Virtual Private Network)",
                                 "es": "Red Privada Virtual",
-                                "definition": "A secure, encrypted connection over the internet"
+                                "definition": "A secure, encrypted connection over the internet",
+                                "ipa": "/ˌviː.piːˈɛn/"
                             },
                             {
                                 "en": "Topology",
                                 "es": "Topología",
-                                "definition": "The physical or logical arrangement of devices in a network"
+                                "definition": "The physical or logical arrangement of devices in a network",
+                                "ipa": "/təˈpɒl.ə.dʒi/"
                             },
                             {
                                 "en": "Bandwidth",
                                 "es": "Ancho de banda",
-                                "definition": "The maximum amount of data a network can transfer"
+                                "definition": "The maximum amount of data a network can transfer",
+                                "ipa": "/ˈbænd.wɪdθ/"
                             },
                             {
                                 "en": "Mbps / Gbps",
                                 "es": "Mbps / Gbps",
-                                "definition": "Megabits/Gigabits per second — units of data transfer speed"
+                                "definition": "Megabits/Gigabits per second — units of data transfer speed",
+                                "ipa": "/ˈmɛɡ.ə.bɪts pər ˈsɛk.ənd/"
                             },
                             {
                                 "en": "Ethernet",
                                 "es": "Ethernet",
-                                "definition": "A wired networking technology using cables"
+                                "definition": "A wired networking technology using cables",
+                                "ipa": "/ˈiː.θər.nɛt/"
                             },
                             {
                                 "en": "Bluetooth",
                                 "es": "Bluetooth",
-                                "definition": "A wireless technology for short-range connections"
+                                "definition": "A wireless technology for short-range connections",
+                                "ipa": "/ˈbluː.tuːθ/"
                             },
                             {
                                 "en": "Encrypted",
                                 "es": "Cifrado / Encriptado",
-                                "definition": "Data that is coded so only authorized people can read it"
+                                "definition": "Data that is coded so only authorized people can read it",
+                                "ipa": "/ɪnˈkrɪp.tɪd/"
                             },
                             {
                                 "en": "Nearshoring",
                                 "es": "Nearshoring",
-                                "definition": "Outsourcing business operations to a nearby country"
+                                "definition": "Outsourcing business operations to a nearby country",
+                                "ipa": "/ˈnɪr.ʃɔːr.ɪŋ/"
                             }
                         ],
                         "questions": [
@@ -618,57 +630,68 @@ var LXP_COURSES = {
                             {
                                 "en": "OSI Model",
                                 "es": "Modelo OSI",
-                                "definition": "A 7-layer framework for understanding network communication"
+                                "definition": "A 7-layer framework for understanding network communication",
+                                "ipa": "/ˌoʊ.ɛs.ˈaɪ ˈmɒd.əl/"
                             },
                             {
                                 "en": "Frame",
                                 "es": "Trama",
-                                "definition": "A unit of data at the Data Link layer"
+                                "definition": "A unit of data at the Data Link layer",
+                                "ipa": "/freɪm/"
                             },
                             {
                                 "en": "MAC Address",
                                 "es": "Dirección MAC",
-                                "definition": "A unique hardware identifier for network devices"
+                                "definition": "A unique hardware identifier for network devices",
+                                "ipa": "/mæk əˈdrɛs/"
                             },
                             {
                                 "en": "Routing",
                                 "es": "Enrutamiento",
-                                "definition": "The process of finding the best path for data"
+                                "definition": "The process of finding the best path for data",
+                                "ipa": "/ˈruː.tɪŋ/"
                             },
                             {
                                 "en": "TCP",
                                 "es": "TCP",
-                                "definition": "Reliable protocol that ensures all data arrives correctly"
+                                "definition": "Reliable protocol that ensures all data arrives correctly",
+                                "ipa": "/ˌtiː.siːˈpiː/"
                             },
                             {
                                 "en": "UDP",
                                 "es": "UDP",
-                                "definition": "Fast protocol that doesn't guarantee delivery"
+                                "definition": "Fast protocol that doesn't guarantee delivery",
+                                "ipa": "/ˌjuː.diːˈpiː/"
                             },
                             {
                                 "en": "Session",
                                 "es": "Sesión",
-                                "definition": "A connection between two communicating devices"
+                                "definition": "A connection between two communicating devices",
+                                "ipa": "/ˈsɛʃ.ən/"
                             },
                             {
                                 "en": "Encryption",
                                 "es": "Cifrado",
-                                "definition": "The process of converting data into unreadable code for security"
+                                "definition": "The process of converting data into unreadable code for security",
+                                "ipa": "/ɪnˈkrɪp.ʃən/"
                             },
                             {
                                 "en": "HTTP / HTTPS",
                                 "es": "HTTP / HTTPS",
-                                "definition": "Protocol for web pages. S = Secure (encrypted)"
+                                "definition": "Protocol for web pages. S = Secure (encrypted)",
+                                "ipa": "/ˌeɪtʃ.tiː.tiːˈpiː/"
                             },
                             {
                                 "en": "Fiber Optic",
                                 "es": "Fibra Óptica",
-                                "definition": "Cable that transmits data as light pulses, very fast"
+                                "definition": "Cable that transmits data as light pulses, very fast",
+                                "ipa": "/ˈfaɪ.bər ˈɒp.tɪk/"
                             },
                             {
                                 "en": "Spoofing",
                                 "es": "Suplantación",
-                                "definition": "Faking an identity (IP, MAC, email) to deceive"
+                                "definition": "Faking an identity (IP, MAC, email) to deceive",
+                                "ipa": "/ˈspuː.fɪŋ/"
                             }
                         ],
                         "questions": [
@@ -723,62 +746,74 @@ var LXP_COURSES = {
                             {
                                 "en": "IP Address",
                                 "es": "Dirección IP",
-                                "definition": "A unique number identifying a device on a network"
+                                "definition": "A unique number identifying a device on a network",
+                                "ipa": "/ˌaɪˈpiː əˈdrɛs/"
                             },
                             {
                                 "en": "IPv4",
                                 "es": "IPv4",
-                                "definition": "Internet Protocol version 4, uses 32-bit addresses (e.g., 192.168.1.1)"
+                                "definition": "Internet Protocol version 4, uses 32-bit addresses (e.g., 192.168.1.1)",
+                                "ipa": "/ˌaɪ.piːˈviː.fɔːr/"
                             },
                             {
                                 "en": "IPv6",
                                 "es": "IPv6",
-                                "definition": "Internet Protocol version 6, uses 128-bit addresses for more devices"
+                                "definition": "Internet Protocol version 6, uses 128-bit addresses for more devices",
+                                "ipa": "/ˌaɪ.piːˈviː.sɪks/"
                             },
                             {
                                 "en": "DNS",
                                 "es": "Sistema de Nombres de Dominio",
-                                "definition": "System that translates domain names to IP addresses"
+                                "definition": "System that translates domain names to IP addresses",
+                                "ipa": "/ˌdiː.ɛnˈɛs/"
                             },
                             {
                                 "en": "Domain Name",
                                 "es": "Nombre de Dominio",
-                                "definition": "A human-readable website address (e.g., google.com)"
+                                "definition": "A human-readable website address (e.g., google.com)",
+                                "ipa": "/doʊˈmeɪn neɪm/"
                             },
                             {
                                 "en": "NAT",
                                 "es": "Traducción de Direcciones de Red",
-                                "definition": "Technology that translates private IPs to public IPs"
+                                "definition": "Technology that translates private IPs to public IPs",
+                                "ipa": "/næt/"
                             },
                             {
                                 "en": "ISP",
                                 "es": "Proveedor de Servicios de Internet",
-                                "definition": "Company that provides internet access"
+                                "definition": "Company that provides internet access",
+                                "ipa": "/ˌaɪ.ɛsˈpiː/"
                             },
                             {
                                 "en": "Cache",
                                 "es": "Caché",
-                                "definition": "Stored data for quick future access"
+                                "definition": "Stored data for quick future access",
+                                "ipa": "/kæʃ/"
                             },
                             {
                                 "en": "DHCP",
                                 "es": "DHCP",
-                                "definition": "Protocol that automatically assigns IP addresses to devices"
+                                "definition": "Protocol that automatically assigns IP addresses to devices",
+                                "ipa": "/ˌdiː.eɪtʃ.siːˈpiː/"
                             },
                             {
                                 "en": "DNSSEC",
                                 "es": "DNSSEC",
-                                "definition": "Security extension for DNS to prevent spoofing"
+                                "definition": "Security extension for DNS to prevent spoofing",
+                                "ipa": "/ˌdiː.ɛn.ɛs.ˈsɛk/"
                             },
                             {
                                 "en": "Static IP",
                                 "es": "IP Estática",
-                                "definition": "A fixed, permanent IP address"
+                                "definition": "A fixed, permanent IP address",
+                                "ipa": "/ˈstæt.ɪk ˌaɪˈpiː/"
                             },
                             {
                                 "en": "Dynamic IP",
                                 "es": "IP Dinámica",
-                                "definition": "A temporary IP address assigned by DHCP"
+                                "definition": "A temporary IP address assigned by DHCP",
+                                "ipa": "/daɪˈnæm.ɪk ˌaɪˈpiː/"
                             }
                         ],
                         "questions": [
@@ -841,62 +876,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Cybersecurity",
                                 "es": "Ciberseguridad",
-                                "definition": "The practice of protecting systems, networks, and data from attacks"
+                                "definition": "The practice of protecting systems, networks, and data from attacks",
+                                "ipa": "/ˈsaɪ.bər.sɪˌkjʊr.ɪ.ti/"
                             },
                             {
                                 "en": "CIA Triad",
                                 "es": "Tríada CID",
-                                "definition": "Confidentiality, Integrity, Availability — the three pillars of security"
+                                "definition": "Confidentiality, Integrity, Availability — the three pillars of security",
+                                "ipa": "/ˌsiː.aɪˈeɪ ˈtraɪ.æd/"
                             },
                             {
                                 "en": "Confidentiality",
                                 "es": "Confidencialidad",
-                                "definition": "Ensuring data is only accessible to authorized people"
+                                "definition": "Ensuring data is only accessible to authorized people",
+                                "ipa": "/ˌkɒn.fɪ.dɛn.ʃiˈæl.ɪ.ti/"
                             },
                             {
                                 "en": "Integrity",
                                 "es": "Integridad",
-                                "definition": "Ensuring data is accurate and unmodified"
+                                "definition": "Ensuring data is accurate and unmodified",
+                                "ipa": "/ɪnˈtɛɡ.rɪ.ti/"
                             },
                             {
                                 "en": "Availability",
                                 "es": "Disponibilidad",
-                                "definition": "Ensuring systems and data are accessible when needed"
+                                "definition": "Ensuring systems and data are accessible when needed",
+                                "ipa": "/əˌveɪ.ləˈbɪl.ɪ.ti/"
                             },
                             {
                                 "en": "Data Breach",
                                 "es": "Filtración de Datos",
-                                "definition": "Unauthorized access to sensitive data"
+                                "definition": "Unauthorized access to sensitive data",
+                                "ipa": "/ˈdeɪ.tə briːtʃ/"
                             },
                             {
                                 "en": "Authentication",
                                 "es": "Autenticación",
-                                "definition": "Verifying the identity of a user or device"
+                                "definition": "Verifying the identity of a user or device",
+                                "ipa": "/ɔːˌθɛn.tɪˈkeɪ.ʃən/"
                             },
                             {
                                 "en": "Access Control",
                                 "es": "Control de Acceso",
-                                "definition": "Rules determining who can access what resources"
+                                "definition": "Rules determining who can access what resources",
+                                "ipa": "/ˈæk.sɛs kənˈtroʊl/"
                             },
                             {
                                 "en": "Redundancy",
                                 "es": "Redundancia",
-                                "definition": "Backup systems ready to take over if the primary fails"
+                                "definition": "Backup systems ready to take over if the primary fails",
+                                "ipa": "/rɪˈdʌn.dən.si/"
                             },
                             {
                                 "en": "DDoS",
                                 "es": "DDoS",
-                                "definition": "Distributed Denial of Service — overwhelming a server with traffic"
+                                "definition": "Distributed Denial of Service — overwhelming a server with traffic",
+                                "ipa": "/ˌdiː.diː.oʊˈɛs/"
                             },
                             {
                                 "en": "Hash Function",
                                 "es": "Función Hash",
-                                "definition": "Mathematical calculation that creates a unique fingerprint of data"
+                                "definition": "Mathematical calculation that creates a unique fingerprint of data",
+                                "ipa": "/hæʃ ˈfʌŋk.ʃən/"
                             },
                             {
                                 "en": "Compliance",
                                 "es": "Cumplimiento",
-                                "definition": "Following legal and regulatory requirements"
+                                "definition": "Following legal and regulatory requirements",
+                                "ipa": "/kəmˈplaɪ.əns/"
                             }
                         ],
                         "questions": [
@@ -951,62 +998,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Malware",
                                 "es": "Software Malicioso",
-                                "definition": "Software designed to harm or exploit computer systems"
+                                "definition": "Software designed to harm or exploit computer systems",
+                                "ipa": "/ˈmæl.wɛr/"
                             },
                             {
                                 "en": "Virus",
                                 "es": "Virus",
-                                "definition": "Malware that attaches to files and spreads when opened"
+                                "definition": "Malware that attaches to files and spreads when opened",
+                                "ipa": "/ˈvaɪ.rəs/"
                             },
                             {
                                 "en": "Worm",
                                 "es": "Gusano",
-                                "definition": "Self-replicating malware that spreads across networks automatically"
+                                "definition": "Self-replicating malware that spreads across networks automatically",
+                                "ipa": "/wɜːrm/"
                             },
                             {
                                 "en": "Trojan",
                                 "es": "Troyano",
-                                "definition": "Malware disguised as legitimate software"
+                                "definition": "Malware disguised as legitimate software",
+                                "ipa": "/ˈtroʊ.dʒən/"
                             },
                             {
                                 "en": "Phishing",
                                 "es": "Phishing / Suplantación",
-                                "definition": "Tricking users into revealing passwords by impersonating trusted entities"
+                                "definition": "Tricking users into revealing passwords by impersonating trusted entities",
+                                "ipa": "/ˈfɪʃ.ɪŋ/"
                             },
                             {
                                 "en": "Social Engineering",
                                 "es": "Ingeniería Social",
-                                "definition": "Manipulating people psychologically to obtain information"
+                                "definition": "Manipulating people psychologically to obtain information",
+                                "ipa": "/ˈsoʊ.ʃəl ˌɛn.dʒɪˈnɪr.ɪŋ/"
                             },
                             {
                                 "en": "Ransomware",
                                 "es": "Ransomware / Secuestro de datos",
-                                "definition": "Malware that encrypts files and demands payment"
+                                "definition": "Malware that encrypts files and demands payment",
+                                "ipa": "/ˈræn.sʌm.wɛr/"
                             },
                             {
                                 "en": "Credentials",
                                 "es": "Credenciales",
-                                "definition": "Username and password used to access a system"
+                                "definition": "Username and password used to access a system",
+                                "ipa": "/krɪˈdɛn.ʃəlz/"
                             },
                             {
                                 "en": "Spear Phishing",
                                 "es": "Phishing Dirigido",
-                                "definition": "Phishing targeted at a specific individual"
+                                "definition": "Phishing targeted at a specific individual",
+                                "ipa": "/spɪr ˈfɪʃ.ɪŋ/"
                             },
                             {
                                 "en": "Endpoint",
                                 "es": "Punto Final / Endpoint",
-                                "definition": "Any device connected to a network (computer, phone)"
+                                "definition": "Any device connected to a network (computer, phone)",
+                                "ipa": "/ˈɛnd.pɔɪnt/"
                             },
                             {
                                 "en": "Patch",
                                 "es": "Parche",
-                                "definition": "A software update that fixes security vulnerabilities"
+                                "definition": "A software update that fixes security vulnerabilities",
+                                "ipa": "/pætʃ/"
                             },
                             {
                                 "en": "Backup",
                                 "es": "Respaldo / Copia de seguridad",
-                                "definition": "A copy of data stored separately for recovery"
+                                "definition": "A copy of data stored separately for recovery",
+                                "ipa": "/ˈbæk.ʌp/"
                             }
                         ],
                         "questions": [
@@ -1069,62 +1128,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Firewall",
                                 "es": "Cortafuegos / Firewall",
-                                "definition": "A device that monitors and filters network traffic"
+                                "definition": "A device that monitors and filters network traffic",
+                                "ipa": "/ˈfaɪ.ər.wɔːl/"
                             },
                             {
                                 "en": "IDS",
                                 "es": "Sistema de Detección de Intrusos",
-                                "definition": "System that detects and alerts about suspicious activity"
+                                "definition": "System that detects and alerts about suspicious activity",
+                                "ipa": "/ˌaɪ.diːˈɛs/"
                             },
                             {
                                 "en": "IPS",
                                 "es": "Sistema de Prevención de Intrusos",
-                                "definition": "System that detects AND blocks suspicious activity"
+                                "definition": "System that detects AND blocks suspicious activity",
+                                "ipa": "/ˌaɪ.piːˈɛs/"
                             },
                             {
                                 "en": "Encryption",
                                 "es": "Cifrado",
-                                "definition": "Converting data into unreadable code using a key"
+                                "definition": "Converting data into unreadable code using a key",
+                                "ipa": "/ɪnˈkrɪp.ʃən/"
                             },
                             {
                                 "en": "Plaintext",
                                 "es": "Texto Plano",
-                                "definition": "Readable, unencrypted data"
+                                "definition": "Readable, unencrypted data",
+                                "ipa": "/ˈpleɪn.tɛkst/"
                             },
                             {
                                 "en": "Ciphertext",
                                 "es": "Texto Cifrado",
-                                "definition": "Encrypted, unreadable data"
+                                "definition": "Encrypted, unreadable data",
+                                "ipa": "/ˈsaɪ.fər.tɛkst/"
                             },
                             {
                                 "en": "Public Key",
                                 "es": "Clave Pública",
-                                "definition": "Key shared openly, used to encrypt data"
+                                "definition": "Key shared openly, used to encrypt data",
+                                "ipa": "/ˈpʌb.lɪk kiː/"
                             },
                             {
                                 "en": "Private Key",
                                 "es": "Clave Privada",
-                                "definition": "Secret key used to decrypt data"
+                                "definition": "Secret key used to decrypt data",
+                                "ipa": "/ˈpraɪ.vɪt kiː/"
                             },
                             {
                                 "en": "AES",
                                 "es": "AES",
-                                "definition": "Advanced Encryption Standard — a symmetric algorithm"
+                                "definition": "Advanced Encryption Standard — a symmetric algorithm",
+                                "ipa": "/ˌeɪ.iːˈɛs/"
                             },
                             {
                                 "en": "TLS/SSL",
                                 "es": "TLS/SSL",
-                                "definition": "Protocols that encrypt web traffic (HTTPS)"
+                                "definition": "Protocols that encrypt web traffic (HTTPS)",
+                                "ipa": "/ˌtiː.ɛl.ˈɛs/"
                             },
                             {
                                 "en": "False Positive",
                                 "es": "Falso Positivo",
-                                "definition": "A security alert triggered by non-malicious activity"
+                                "definition": "A security alert triggered by non-malicious activity",
+                                "ipa": "/fɔːls ˈpɒz.ɪ.tɪv/"
                             },
                             {
                                 "en": "Defense in Depth",
                                 "es": "Defensa en Profundidad",
-                                "definition": "Using multiple layers of security"
+                                "definition": "Using multiple layers of security",
+                                "ipa": "/dɪˈfɛns ɪn dɛpθ/"
                             }
                         ],
                         "questions": [
@@ -1187,57 +1258,68 @@ var LXP_COURSES = {
                             {
                                 "en": "Brute Force Attack",
                                 "es": "Ataque de Fuerza Bruta",
-                                "definition": "Trying every possible password combination"
+                                "definition": "Trying every possible password combination",
+                                "ipa": "/bruːt fɔːrs əˈtæk/"
                             },
                             {
                                 "en": "Dictionary Attack",
                                 "es": "Ataque de Diccionario",
-                                "definition": "Using a list of common words to guess passwords"
+                                "definition": "Using a list of common words to guess passwords",
+                                "ipa": "/ˈdɪk.ʃən.ɛr.i əˈtæk/"
                             },
                             {
                                 "en": "Credential Stuffing",
                                 "es": "Relleno de Credenciales",
-                                "definition": "Using stolen passwords from one site on other sites"
+                                "definition": "Using stolen passwords from one site on other sites",
+                                "ipa": "/krɪˈdɛn.ʃəl ˈstʌf.ɪŋ/"
                             },
                             {
                                 "en": "Passphrase",
                                 "es": "Frase de Contraseña",
-                                "definition": "A long password made of multiple random words"
+                                "definition": "A long password made of multiple random words",
+                                "ipa": "/ˈpæs.freɪz/"
                             },
                             {
                                 "en": "Password Manager",
                                 "es": "Gestor de Contraseñas",
-                                "definition": "Software that generates and stores strong passwords"
+                                "definition": "Software that generates and stores strong passwords",
+                                "ipa": "/ˈpæs.wɜːrd ˈmæn.ɪ.dʒər/"
                             },
                             {
                                 "en": "MFA",
                                 "es": "Autenticación Multifactor",
-                                "definition": "Requiring two or more forms of ID to access an account"
+                                "definition": "Requiring two or more forms of ID to access an account",
+                                "ipa": "/ˌɛm.ɛfˈeɪ/"
                             },
                             {
                                 "en": "TOTP",
                                 "es": "TOTP",
-                                "definition": "Time-based One-Time Password — code that changes every 30 seconds"
+                                "definition": "Time-based One-Time Password — code that changes every 30 seconds",
+                                "ipa": "/ˈtiː.oʊ.tiː.piː/"
                             },
                             {
                                 "en": "Biometrics",
                                 "es": "Biometría",
-                                "definition": "Using physical characteristics (fingerprint, face) for identification"
+                                "definition": "Using physical characteristics (fingerprint, face) for identification",
+                                "ipa": "/ˌbaɪ.oʊˈmɛt.rɪks/"
                             },
                             {
                                 "en": "Zero Trust",
                                 "es": "Confianza Cero",
-                                "definition": "Security model where nothing is automatically trusted"
+                                "definition": "Security model where nothing is automatically trusted",
+                                "ipa": "/ˈzɪr.oʊ trʌst/"
                             },
                             {
                                 "en": "Least Privilege",
                                 "es": "Privilegio Mínimo",
-                                "definition": "Giving users only the access they need, nothing more"
+                                "definition": "Giving users only the access they need, nothing more",
+                                "ipa": "/liːst ˈprɪv.əl.ɪdʒ/"
                             },
                             {
                                 "en": "Vault",
                                 "es": "Bóveda",
-                                "definition": "Encrypted storage for sensitive data like passwords"
+                                "definition": "Encrypted storage for sensitive data like passwords",
+                                "ipa": "/vɔːlt/"
                             }
                         ],
                         "questions": [
@@ -1300,57 +1382,68 @@ var LXP_COURSES = {
                             {
                                 "en": "SOC (Security Operations Center)",
                                 "es": "Centro de Operaciones de Seguridad",
-                                "definition": "A team/facility that monitors security 24/7"
+                                "definition": "A team/facility that monitors security 24/7",
+                                "ipa": "/sɒk/"
                             },
                             {
                                 "en": "SIEM",
                                 "es": "SIEM",
-                                "definition": "Software that collects and analyzes security logs from all systems"
+                                "definition": "Software that collects and analyzes security logs from all systems",
+                                "ipa": "/sɪm/"
                             },
                             {
                                 "en": "Penetration Testing",
                                 "es": "Pruebas de Penetración",
-                                "definition": "Legally hacking systems to find vulnerabilities"
+                                "definition": "Legally hacking systems to find vulnerabilities",
+                                "ipa": "/ˌpɛn.ɪˈtreɪ.ʃən ˈtɛs.tɪŋ/"
                             },
                             {
                                 "en": "Vulnerability",
                                 "es": "Vulnerabilidad",
-                                "definition": "A weakness in a system that can be exploited"
+                                "definition": "A weakness in a system that can be exploited",
+                                "ipa": "/ˌvʌl.nər.əˈbɪl.ɪ.ti/"
                             },
                             {
                                 "en": "Ethical Hacker",
                                 "es": "Hacker Ético",
-                                "definition": "A security professional who hacks with permission to find weaknesses"
+                                "definition": "A security professional who hacks with permission to find weaknesses",
+                                "ipa": "/ˈɛθ.ɪ.kəl ˈhæk.ər/"
                             },
                             {
                                 "en": "Incident Response",
                                 "es": "Respuesta a Incidentes",
-                                "definition": "The process of handling a cyber attack"
+                                "definition": "The process of handling a cyber attack",
+                                "ipa": "/ˈɪn.sɪ.dənt rɪˈspɒns/"
                             },
                             {
                                 "en": "CISO",
                                 "es": "Director de Seguridad de la Información",
-                                "definition": "Chief Information Security Officer — top security executive"
+                                "definition": "Chief Information Security Officer — top security executive",
+                                "ipa": "/ˈsiː.soʊ/"
                             },
                             {
                                 "en": "Certification",
                                 "es": "Certificación",
-                                "definition": "Official proof of professional knowledge and skills"
+                                "definition": "Official proof of professional knowledge and skills",
+                                "ipa": "/ˌsɜːr.tɪ.fɪˈkeɪ.ʃən/"
                             },
                             {
                                 "en": "Compliance",
                                 "es": "Cumplimiento Normativo",
-                                "definition": "Following laws and regulations (SOC 2, HIPAA, GDPR)"
+                                "definition": "Following laws and regulations (SOC 2, HIPAA, GDPR)",
+                                "ipa": "/kəmˈplaɪ.əns/"
                             },
                             {
                                 "en": "CVE",
                                 "es": "CVE",
-                                "definition": "Common Vulnerabilities and Exposures — public database of known security flaws"
+                                "definition": "Common Vulnerabilities and Exposures — public database of known security flaws",
+                                "ipa": "/ˌsiː.viːˈiː/"
                             },
                             {
                                 "en": "Remediate",
                                 "es": "Remediar",
-                                "definition": "To fix a security problem"
+                                "definition": "To fix a security problem",
+                                "ipa": "/rɪˈmiː.di.eɪt/"
                             }
                         ],
                         "questions": [
@@ -1434,62 +1527,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Information Technology (IT)",
                                 "es": "Tecnologías de la Información (TI)",
-                                "definition": "Use of computers and systems to manage information"
+                                "definition": "Use of computers and systems to manage information",
+                                "ipa": "/ˌɪn.fərˈmeɪ.ʃən tɛkˈnɒl.ə.dʒi/"
                             },
                             {
                                 "en": "Hardware",
                                 "es": "Hardware",
-                                "definition": "Physical computer equipment and devices"
+                                "definition": "Physical computer equipment and devices",
+                                "ipa": "/ˈhɑːrd.wɛr/"
                             },
                             {
                                 "en": "Software",
                                 "es": "Software",
-                                "definition": "Programs and applications running on hardware"
+                                "definition": "Programs and applications running on hardware",
+                                "ipa": "/ˈsɒf.wɛr/"
                             },
                             {
                                 "en": "Cloud Computing",
                                 "es": "Computación en la Nube",
-                                "definition": "Using remote servers via internet instead of local machines"
+                                "definition": "Using remote servers via internet instead of local machines",
+                                "ipa": "/klaʊd kəmˈpjuː.tɪŋ/"
                             },
                             {
                                 "en": "On-Premises",
                                 "es": "En Sitio / Local",
-                                "definition": "IT infrastructure physically located at the organization"
+                                "definition": "IT infrastructure physically located at the organization",
+                                "ipa": "/ɒn ˈprɛm.ɪ.sɪz/"
                             },
                             {
                                 "en": "Server",
                                 "es": "Servidor",
-                                "definition": "A computer that provides services to other computers"
+                                "definition": "A computer that provides services to other computers",
+                                "ipa": "/ˈsɜːr.vər/"
                             },
                             {
                                 "en": "VPN",
                                 "es": "Red Privada Virtual",
-                                "definition": "Encrypted tunnel for secure internet access"
+                                "definition": "Encrypted tunnel for secure internet access",
+                                "ipa": "/ˌviː.piːˈɛn/"
                             },
                             {
                                 "en": "Data Center",
                                 "es": "Centro de Datos",
-                                "definition": "A facility housing many servers and networking equipment"
+                                "definition": "A facility housing many servers and networking equipment",
+                                "ipa": "/ˈdeɪ.tə ˈsɛn.tər/"
                             },
                             {
                                 "en": "Operating System",
                                 "es": "Sistema Operativo",
-                                "definition": "Core software managing hardware (Windows, Linux, macOS)"
+                                "definition": "Core software managing hardware (Windows, Linux, macOS)",
+                                "ipa": "/ˈɒp.ər.eɪ.tɪŋ ˈsɪs.təm/"
                             },
                             {
                                 "en": "Scalability",
                                 "es": "Escalabilidad",
-                                "definition": "Ability to grow or shrink resources as needed"
+                                "definition": "Ability to grow or shrink resources as needed",
+                                "ipa": "/ˌskeɪ.ləˈbɪl.ɪ.ti/"
                             },
                             {
                                 "en": "Capital Expense (CapEx)",
                                 "es": "Gasto de Capital",
-                                "definition": "Large upfront investment in physical assets"
+                                "definition": "Large upfront investment in physical assets",
+                                "ipa": "/ˈkæp.ɪ.təl ɪkˈspɛns/"
                             },
                             {
                                 "en": "Pay-as-you-go",
                                 "es": "Pago por Uso",
-                                "definition": "Paying only for resources consumed"
+                                "definition": "Paying only for resources consumed",
+                                "ipa": "/ˈpeɪ.æz.juːˈɡoʊ/"
                             }
                         ],
                         "questions": [
@@ -1552,52 +1657,62 @@ var LXP_COURSES = {
                             {
                                 "en": "IaaS (Infrastructure as a Service)",
                                 "es": "Infraestructura como Servicio",
-                                "definition": "Renting virtual servers, storage, and networking"
+                                "definition": "Renting virtual servers, storage, and networking",
+                                "ipa": "/ˈaɪ.æs/"
                             },
                             {
                                 "en": "PaaS (Platform as a Service)",
                                 "es": "Plataforma como Servicio",
-                                "definition": "Ready-to-use platform for deploying applications"
+                                "definition": "Ready-to-use platform for deploying applications",
+                                "ipa": "/pæs/"
                             },
                             {
                                 "en": "SaaS (Software as a Service)",
                                 "es": "Software como Servicio",
-                                "definition": "Complete application accessible via browser"
+                                "definition": "Complete application accessible via browser",
+                                "ipa": "/sæs/"
                             },
                             {
                                 "en": "Virtual Machine (VM)",
                                 "es": "Máquina Virtual",
-                                "definition": "Software emulation of a physical computer"
+                                "definition": "Software emulation of a physical computer",
+                                "ipa": "/ˈvɜːr.tʃu.əl məˈʃiːn/"
                             },
                             {
                                 "en": "Shared Responsibility Model",
                                 "es": "Modelo de Responsabilidad Compartida",
-                                "definition": "Security duties split between provider and customer"
+                                "definition": "Security duties split between provider and customer",
+                                "ipa": "/ʃɛrd rɪˌspɒn.sɪˈbɪl.ɪ.ti ˈmɒd.əl/"
                             },
                             {
                                 "en": "IAM (Identity and Access Management)",
                                 "es": "Gestión de Identidad y Acceso",
-                                "definition": "Controlling who can access which resources"
+                                "definition": "Controlling who can access which resources",
+                                "ipa": "/ˌaɪ.eɪˈɛm/"
                             },
                             {
                                 "en": "Hypervisor",
                                 "es": "Hipervisor",
-                                "definition": "Software creating and managing virtual machines"
+                                "definition": "Software creating and managing virtual machines",
+                                "ipa": "/ˈhaɪ.pər.vaɪ.zər/"
                             },
                             {
                                 "en": "Well-Architected Framework",
                                 "es": "Marco de Buena Arquitectura",
-                                "definition": "Best practices for cloud architecture design"
+                                "definition": "Best practices for cloud architecture design",
+                                "ipa": "/wɛl ˈɑːr.kɪ.tɛk.tɪd ˈfreɪm.wɜːrk/"
                             },
                             {
                                 "en": "Data Encryption",
                                 "es": "Cifrado de Datos",
-                                "definition": "Converting data to unreadable format for security"
+                                "definition": "Converting data to unreadable format for security",
+                                "ipa": "/ˈdeɪ.tə ɪnˈkrɪp.ʃən/"
                             },
                             {
                                 "en": "Elasticity",
                                 "es": "Elasticidad",
-                                "definition": "Ability to automatically scale resources up or down"
+                                "definition": "Ability to automatically scale resources up or down",
+                                "ipa": "/ˌɪ.læsˈtɪs.ɪ.ti/"
                             }
                         ],
                         "questions": [
@@ -1660,62 +1775,74 @@ var LXP_COURSES = {
                             {
                                 "en": "SDLC",
                                 "es": "Ciclo de Vida del Desarrollo de Software",
-                                "definition": "Structured process for building software"
+                                "definition": "Structured process for building software",
+                                "ipa": "/ˌɛs.diː.ɛlˈsiː/"
                             },
                             {
                                 "en": "Requirements",
                                 "es": "Requisitos / Requerimientos",
-                                "definition": "What the software must do (functional and non-functional)"
+                                "definition": "What the software must do (functional and non-functional)",
+                                "ipa": "/rɪˈkwaɪr.mənts/"
                             },
                             {
                                 "en": "Architecture",
                                 "es": "Arquitectura",
-                                "definition": "High-level structure and design of a system"
+                                "definition": "High-level structure and design of a system",
+                                "ipa": "/ˈɑːr.kɪ.tɛk.tʃər/"
                             },
                             {
                                 "en": "API (Application Programming Interface)",
                                 "es": "Interfaz de Programación de Aplicaciones",
-                                "definition": "Set of rules for software to communicate"
+                                "definition": "Set of rules for software to communicate",
+                                "ipa": "/ˌeɪ.piːˈaɪ/"
                             },
                             {
                                 "en": "Agile",
                                 "es": "Ágil",
-                                "definition": "Iterative methodology with short sprints"
+                                "definition": "Iterative methodology with short sprints",
+                                "ipa": "/ˈædʒ.aɪl/"
                             },
                             {
                                 "en": "Waterfall",
                                 "es": "Cascada",
-                                "definition": "Linear, sequential development methodology"
+                                "definition": "Linear, sequential development methodology",
+                                "ipa": "/ˈwɔː.tər.fɔːl/"
                             },
                             {
                                 "en": "Sprint",
                                 "es": "Sprint",
-                                "definition": "A fixed work cycle (1-4 weeks) in Agile"
+                                "definition": "A fixed work cycle (1-4 weeks) in Agile",
+                                "ipa": "/sprɪnt/"
                             },
                             {
                                 "en": "Scrum",
                                 "es": "Scrum",
-                                "definition": "Most popular Agile framework with sprints and standups"
+                                "definition": "Most popular Agile framework with sprints and standups",
+                                "ipa": "/skrʌm/"
                             },
                             {
                                 "en": "Unit Test",
                                 "es": "Prueba Unitaria",
-                                "definition": "Test for a single function or component"
+                                "definition": "Test for a single function or component",
+                                "ipa": "/ˈjuː.nɪt tɛst/"
                             },
                             {
                                 "en": "Deployment",
                                 "es": "Despliegue",
-                                "definition": "Releasing software to production"
+                                "definition": "Releasing software to production",
+                                "ipa": "/dɪˈplɔɪ.mənt/"
                             },
                             {
                                 "en": "Stakeholder",
                                 "es": "Parte Interesada",
-                                "definition": "Anyone with interest in the project (users, managers)"
+                                "definition": "Anyone with interest in the project (users, managers)",
+                                "ipa": "/ˈsteɪk.hoʊl.dər/"
                             },
                             {
                                 "en": "Retrospective",
                                 "es": "Retrospectiva",
-                                "definition": "Meeting to reflect on what went well and what to improve"
+                                "definition": "Meeting to reflect on what went well and what to improve",
+                                "ipa": "/ˌrɛt.roʊˈspɛk.tɪv/"
                             }
                         ],
                         "questions": [
@@ -1778,62 +1905,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Database",
                                 "es": "Base de Datos",
-                                "definition": "Organized collection of structured data"
+                                "definition": "Organized collection of structured data",
+                                "ipa": "/ˈdeɪ.tə.beɪs/"
                             },
                             {
                                 "en": "SQL",
                                 "es": "SQL (Lenguaje de Consulta Estructurado)",
-                                "definition": "Language for managing relational databases"
+                                "definition": "Language for managing relational databases",
+                                "ipa": "/ˌɛs.kjuːˈɛl/"
                             },
                             {
                                 "en": "Schema",
                                 "es": "Esquema",
-                                "definition": "The defined structure of a database (tables, columns, types)"
+                                "definition": "The defined structure of a database (tables, columns, types)",
+                                "ipa": "/ˈskiː.mə/"
                             },
                             {
                                 "en": "NoSQL",
                                 "es": "NoSQL",
-                                "definition": "Non-relational database types (document, key-value, graph)"
+                                "definition": "Non-relational database types (document, key-value, graph)",
+                                "ipa": "/ˌnoʊˈsiː.kwəl/"
                             },
                             {
                                 "en": "ACID",
                                 "es": "ACID",
-                                "definition": "Properties ensuring reliable database transactions"
+                                "definition": "Properties ensuring reliable database transactions",
+                                "ipa": "/ˈæs.ɪd/"
                             },
                             {
                                 "en": "Document Database",
                                 "es": "Base de Datos Documental",
-                                "definition": "NoSQL database storing JSON-like documents"
+                                "definition": "NoSQL database storing JSON-like documents",
+                                "ipa": "/ˈdɒk.jʊ.mənt ˈdeɪ.tə.beɪs/"
                             },
                             {
                                 "en": "Key-Value Store",
                                 "es": "Almacén Clave-Valor",
-                                "definition": "Simplest NoSQL model — lookup by key"
+                                "definition": "Simplest NoSQL model — lookup by key",
+                                "ipa": "/kiː ˈvæl.juː stɔːr/"
                             },
                             {
                                 "en": "Graph Database",
                                 "es": "Base de Datos de Grafos",
-                                "definition": "Database optimized for relationship traversal"
+                                "definition": "Database optimized for relationship traversal",
+                                "ipa": "/ɡræf ˈdeɪ.tə.beɪs/"
                             },
                             {
                                 "en": "Query",
                                 "es": "Consulta",
-                                "definition": "A request to retrieve or modify data"
+                                "definition": "A request to retrieve or modify data",
+                                "ipa": "/ˈkwɪr.i/"
                             },
                             {
                                 "en": "Horizontal Scaling",
                                 "es": "Escalamiento Horizontal",
-                                "definition": "Adding more servers to handle load"
+                                "definition": "Adding more servers to handle load",
+                                "ipa": "/ˌhɒr.ɪˈzɒn.təl ˈskeɪ.lɪŋ/"
                             },
                             {
                                 "en": "Polyglot Persistence",
                                 "es": "Persistencia Políglota",
-                                "definition": "Using multiple database types in one application"
+                                "definition": "Using multiple database types in one application",
+                                "ipa": "/ˈpɒl.i.ɡlɒt pərˈsɪs.təns/"
                             },
                             {
                                 "en": "Caching",
                                 "es": "Caché / Almacenamiento en Caché",
-                                "definition": "Storing frequently accessed data in fast memory"
+                                "definition": "Storing frequently accessed data in fast memory",
+                                "ipa": "/ˈkæʃ.ɪŋ/"
                             }
                         ],
                         "questions": [
@@ -1896,62 +2035,74 @@ var LXP_COURSES = {
                             {
                                 "en": "DevOps",
                                 "es": "DevOps",
-                                "definition": "Culture and practices unifying Development and Operations"
+                                "definition": "Culture and practices unifying Development and Operations",
+                                "ipa": "/ˈdɛv.ɒps/"
                             },
                             {
                                 "en": "CI (Continuous Integration)",
                                 "es": "Integración Continua",
-                                "definition": "Automatically building and testing code on every push"
+                                "definition": "Automatically building and testing code on every push",
+                                "ipa": "/ˌsiːˈaɪ/"
                             },
                             {
                                 "en": "CD (Continuous Delivery/Deployment)",
                                 "es": "Entrega/Despliegue Continuo",
-                                "definition": "Automatically preparing or deploying code to production"
+                                "definition": "Automatically preparing or deploying code to production",
+                                "ipa": "/ˌsiːˈdiː/"
                             },
                             {
                                 "en": "Pipeline",
                                 "es": "Pipeline / Tubería",
-                                "definition": "Automated sequence of build, test, deploy stages"
+                                "definition": "Automated sequence of build, test, deploy stages",
+                                "ipa": "/ˈpaɪp.laɪn/"
                             },
                             {
                                 "en": "Infrastructure as Code (IaC)",
                                 "es": "Infraestructura como Código",
-                                "definition": "Defining servers and networks in code files"
+                                "definition": "Defining servers and networks in code files",
+                                "ipa": "/ˈɪn.frə.strʌk.tʃər æz koʊd/"
                             },
                             {
                                 "en": "Version Control",
                                 "es": "Control de Versiones",
-                                "definition": "Tracking changes to code over time (Git)"
+                                "definition": "Tracking changes to code over time (Git)",
+                                "ipa": "/ˈvɜːr.ʒən kənˈtroʊl/"
                             },
                             {
                                 "en": "Repository",
                                 "es": "Repositorio",
-                                "definition": "A storage location for code and its history"
+                                "definition": "A storage location for code and its history",
+                                "ipa": "/rɪˈpɒz.ɪ.tɔːr.i/"
                             },
                             {
                                 "en": "Build",
                                 "es": "Compilación / Build",
-                                "definition": "Converting source code into runnable software"
+                                "definition": "Converting source code into runnable software",
+                                "ipa": "/bɪld/"
                             },
                             {
                                 "en": "Staging Environment",
                                 "es": "Entorno de Pruebas",
-                                "definition": "Pre-production environment for final testing"
+                                "definition": "Pre-production environment for final testing",
+                                "ipa": "/ˈsteɪ.dʒɪŋ ɪnˈvaɪ.rən.mənt/"
                             },
                             {
                                 "en": "DORA Metrics",
                                 "es": "Métricas DORA",
-                                "definition": "Industry-standard DevOps performance measurements"
+                                "definition": "Industry-standard DevOps performance measurements",
+                                "ipa": "/ˈdɔːr.ə ˈmɛt.rɪks/"
                             },
                             {
                                 "en": "Terraform",
                                 "es": "Terraform",
-                                "definition": "Popular Infrastructure as Code tool by HashiCorp"
+                                "definition": "Popular Infrastructure as Code tool by HashiCorp",
+                                "ipa": "/ˈtɛr.ə.fɔːrm/"
                             },
                             {
                                 "en": "Deployment Frequency",
                                 "es": "Frecuencia de Despliegue",
-                                "definition": "How often new code reaches production"
+                                "definition": "How often new code reaches production",
+                                "ipa": "/dɪˈplɔɪ.mənt ˈfriː.kwən.si/"
                             }
                         ],
                         "questions": [
@@ -2014,62 +2165,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Container",
                                 "es": "Contenedor",
-                                "definition": "Lightweight, portable package with everything an app needs"
+                                "definition": "Lightweight, portable package with everything an app needs",
+                                "ipa": "/kənˈteɪ.nər/"
                             },
                             {
                                 "en": "Docker",
                                 "es": "Docker",
-                                "definition": "Platform for building and running containers"
+                                "definition": "Platform for building and running containers",
+                                "ipa": "/ˈdɒk.ər/"
                             },
                             {
                                 "en": "Image",
                                 "es": "Imagen",
-                                "definition": "Read-only template used to create containers"
+                                "definition": "Read-only template used to create containers",
+                                "ipa": "/ˈɪm.ɪdʒ/"
                             },
                             {
                                 "en": "Dockerfile",
                                 "es": "Dockerfile",
-                                "definition": "Recipe file with instructions to build an image"
+                                "definition": "Recipe file with instructions to build an image",
+                                "ipa": "/ˈdɒk.ər.faɪl/"
                             },
                             {
                                 "en": "Kubernetes (K8s)",
                                 "es": "Kubernetes (K8s)",
-                                "definition": "Container orchestration platform"
+                                "definition": "Container orchestration platform",
+                                "ipa": "/ˌkuː.bərˈnɛt.iːz/"
                             },
                             {
                                 "en": "Pod",
                                 "es": "Pod",
-                                "definition": "Smallest deployable unit in Kubernetes"
+                                "definition": "Smallest deployable unit in Kubernetes",
+                                "ipa": "/pɒd/"
                             },
                             {
                                 "en": "Cluster",
                                 "es": "Clúster",
-                                "definition": "Group of machines managed together"
+                                "definition": "Group of machines managed together",
+                                "ipa": "/ˈklʌs.tər/"
                             },
                             {
                                 "en": "Orchestration",
                                 "es": "Orquestación",
-                                "definition": "Automated management of multiple containers"
+                                "definition": "Automated management of multiple containers",
+                                "ipa": "/ˌɔːr.kɪˈstreɪ.ʃən/"
                             },
                             {
                                 "en": "Load Balancing",
                                 "es": "Balanceo de Carga",
-                                "definition": "Distributing traffic across multiple servers"
+                                "definition": "Distributing traffic across multiple servers",
+                                "ipa": "/loʊd ˈbæl.ən.sɪŋ/"
                             },
                             {
                                 "en": "Rolling Update",
                                 "es": "Actualización Gradual",
-                                "definition": "Deploying new versions without downtime"
+                                "definition": "Deploying new versions without downtime",
+                                "ipa": "/ˈroʊ.lɪŋ ˈʌp.deɪt/"
                             },
                             {
                                 "en": "GitOps",
                                 "es": "GitOps",
-                                "definition": "Using Git as single source of truth for infrastructure"
+                                "definition": "Using Git as single source of truth for infrastructure",
+                                "ipa": "/ˈɡɪt.ɒps/"
                             },
                             {
                                 "en": "Self-healing",
                                 "es": "Auto-reparación",
-                                "definition": "Automatically restarting failed containers"
+                                "definition": "Automatically restarting failed containers",
+                                "ipa": "/sɛlf ˈhiː.lɪŋ/"
                             }
                         ],
                         "questions": [
@@ -2132,62 +2295,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Zero Trust",
                                 "es": "Confianza Cero",
-                                "definition": "Security model: never trust, always verify"
+                                "definition": "Security model: never trust, always verify",
+                                "ipa": "/ˈzɪr.oʊ trʌst/"
                             },
                             {
                                 "en": "Defense in Depth",
                                 "es": "Defensa en Profundidad",
-                                "definition": "Multiple layers of security controls"
+                                "definition": "Multiple layers of security controls",
+                                "ipa": "/dɪˈfɛns ɪn dɛpθ/"
                             },
                             {
                                 "en": "MFA (Multi-Factor Authentication)",
                                 "es": "Autenticación Multifactor",
-                                "definition": "Requiring multiple verification methods"
+                                "definition": "Requiring multiple verification methods",
+                                "ipa": "/ˌɛm.ɛfˈeɪ/"
                             },
                             {
                                 "en": "Firewall",
                                 "es": "Cortafuegos / Firewall",
-                                "definition": "Network security device filtering traffic"
+                                "definition": "Network security device filtering traffic",
+                                "ipa": "/ˈfaɪ.ər.wɔːl/"
                             },
                             {
                                 "en": "Encryption",
                                 "es": "Cifrado / Encriptación",
-                                "definition": "Converting data to unreadable format"
+                                "definition": "Converting data to unreadable format",
+                                "ipa": "/ɪnˈkrɪp.ʃən/"
                             },
                             {
                                 "en": "Least Privilege",
                                 "es": "Privilegio Mínimo",
-                                "definition": "Giving users only necessary permissions"
+                                "definition": "Giving users only necessary permissions",
+                                "ipa": "/liːst ˈprɪv.əl.ɪdʒ/"
                             },
                             {
                                 "en": "Misconfiguration",
                                 "es": "Mala Configuración",
-                                "definition": "Incorrectly set security settings"
+                                "definition": "Incorrectly set security settings",
+                                "ipa": "/ˌmɪs.kənˌfɪɡ.jʊˈreɪ.ʃən/"
                             },
                             {
                                 "en": "Ransomware",
                                 "es": "Ransomware / Secuestro de Datos",
-                                "definition": "Malware that encrypts data and demands payment"
+                                "definition": "Malware that encrypts data and demands payment",
+                                "ipa": "/ˈræn.sʌm.wɛr/"
                             },
                             {
                                 "en": "Phishing",
                                 "es": "Phishing / Suplantación",
-                                "definition": "Fake emails tricking users into revealing credentials"
+                                "definition": "Fake emails tricking users into revealing credentials",
+                                "ipa": "/ˈfɪʃ.ɪŋ/"
                             },
                             {
                                 "en": "SIEM",
                                 "es": "SIEM",
-                                "definition": "Security Information and Event Management system"
+                                "definition": "Security Information and Event Management system",
+                                "ipa": "/sɪm/"
                             },
                             {
                                 "en": "OWASP Top 10",
                                 "es": "OWASP Top 10",
-                                "definition": "The 10 most critical web application security risks"
+                                "definition": "The 10 most critical web application security risks",
+                                "ipa": "/ˈoʊ.wɒsp/"
                             },
                             {
                                 "en": "SSO (Single Sign-On)",
                                 "es": "Inicio de Sesión Único",
-                                "definition": "One login grants access to multiple systems"
+                                "definition": "One login grants access to multiple systems",
+                                "ipa": "/ˌɛs.ɛsˈoʊ/"
                             }
                         ],
                         "questions": [
@@ -2250,62 +2425,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Artificial Intelligence (AI)",
                                 "es": "Inteligencia Artificial (IA)",
-                                "definition": "Systems performing tasks requiring human-like intelligence"
+                                "definition": "Systems performing tasks requiring human-like intelligence",
+                                "ipa": "/ˌɑːr.tɪˈfɪʃ.əl ɪnˈtɛl.ɪ.dʒəns/"
                             },
                             {
                                 "en": "Machine Learning (ML)",
                                 "es": "Aprendizaje Automático",
-                                "definition": "Systems that learn patterns from data"
+                                "definition": "Systems that learn patterns from data",
+                                "ipa": "/məˈʃiːn ˈlɜːr.nɪŋ/"
                             },
                             {
                                 "en": "Deep Learning",
                                 "es": "Aprendizaje Profundo",
-                                "definition": "ML using multi-layer neural networks"
+                                "definition": "ML using multi-layer neural networks",
+                                "ipa": "/diːp ˈlɜːr.nɪŋ/"
                             },
                             {
                                 "en": "LLM (Large Language Model)",
                                 "es": "Modelo de Lenguaje Grande",
-                                "definition": "AI trained on massive text to generate human-like responses"
+                                "definition": "AI trained on massive text to generate human-like responses",
+                                "ipa": "/ˌɛl.ɛlˈɛm/"
                             },
                             {
                                 "en": "Neural Network",
                                 "es": "Red Neuronal",
-                                "definition": "Computing system inspired by biological brain structure"
+                                "definition": "Computing system inspired by biological brain structure",
+                                "ipa": "/ˈnjʊr.əl ˈnɛt.wɜːrk/"
                             },
                             {
                                 "en": "Transformer",
                                 "es": "Transformer",
-                                "definition": "Neural network architecture using self-attention"
+                                "definition": "Neural network architecture using self-attention",
+                                "ipa": "/trænsˈfɔːr.mər/"
                             },
                             {
                                 "en": "Self-Attention",
                                 "es": "Auto-Atención",
-                                "definition": "Mechanism allowing model to weigh relationships between all words"
+                                "definition": "Mechanism allowing model to weigh relationships between all words",
+                                "ipa": "/sɛlf əˈtɛn.ʃən/"
                             },
                             {
                                 "en": "RAG",
                                 "es": "Generación Aumentada por Recuperación",
-                                "definition": "Connecting LLMs to external data sources"
+                                "definition": "Connecting LLMs to external data sources",
+                                "ipa": "/ræɡ/"
                             },
                             {
                                 "en": "Prompt Engineering",
                                 "es": "Ingeniería de Prompts",
-                                "definition": "Crafting effective instructions for AI models"
+                                "definition": "Crafting effective instructions for AI models",
+                                "ipa": "/prɒmpt ˌɛn.dʒɪˈnɪr.ɪŋ/"
                             },
                             {
                                 "en": "Fine-tuning",
                                 "es": "Ajuste Fino",
-                                "definition": "Adapting a pre-trained model for a specific task"
+                                "definition": "Adapting a pre-trained model for a specific task",
+                                "ipa": "/ˈfaɪn ˌtjuː.nɪŋ/"
                             },
                             {
                                 "en": "Supervised Learning",
                                 "es": "Aprendizaje Supervisado",
-                                "definition": "Training with labeled input-output pairs"
+                                "definition": "Training with labeled input-output pairs",
+                                "ipa": "/ˈsuː.pər.vaɪzd ˈlɜːr.nɪŋ/"
                             },
                             {
                                 "en": "Agentic AI",
                                 "es": "IA Agéntica",
-                                "definition": "AI systems that plan, act, and use tools autonomously"
+                                "definition": "AI systems that plan, act, and use tools autonomously",
+                                "ipa": "/eɪˈdʒɛn.tɪk ˌeɪˈaɪ/"
                             }
                         ],
                         "questions": [
@@ -2368,62 +2555,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Data Pipeline",
                                 "es": "Pipeline de Datos",
-                                "definition": "Automated workflow moving data from source to destination"
+                                "definition": "Automated workflow moving data from source to destination",
+                                "ipa": "/ˈdeɪ.tə ˈpaɪp.laɪn/"
                             },
                             {
                                 "en": "ETL (Extract, Transform, Load)",
                                 "es": "ETL (Extraer, Transformar, Cargar)",
-                                "definition": "Traditional data processing pattern"
+                                "definition": "Traditional data processing pattern",
+                                "ipa": "/ˌiː.tiːˈɛl/"
                             },
                             {
                                 "en": "ELT (Extract, Load, Transform)",
                                 "es": "ELT (Extraer, Cargar, Transformar)",
-                                "definition": "Modern pattern — load raw, transform in warehouse"
+                                "definition": "Modern pattern — load raw, transform in warehouse",
+                                "ipa": "/ˌiː.ɛlˈtiː/"
                             },
                             {
                                 "en": "Data Warehouse",
                                 "es": "Almacén de Datos",
-                                "definition": "Storage optimized for structured data and queries"
+                                "definition": "Storage optimized for structured data and queries",
+                                "ipa": "/ˈdeɪ.tə ˈwɛr.haʊs/"
                             },
                             {
                                 "en": "Data Lake",
                                 "es": "Lago de Datos",
-                                "definition": "Storage for raw data in any format"
+                                "definition": "Storage for raw data in any format",
+                                "ipa": "/ˈdeɪ.tə leɪk/"
                             },
                             {
                                 "en": "Data Lakehouse",
                                 "es": "Lakehouse de Datos",
-                                "definition": "Hybrid combining warehouse and lake features"
+                                "definition": "Hybrid combining warehouse and lake features",
+                                "ipa": "/ˈdeɪ.tə ˈleɪk.haʊs/"
                             },
                             {
                                 "en": "Batch Processing",
                                 "es": "Procesamiento por Lotes",
-                                "definition": "Processing large data volumes on a schedule"
+                                "definition": "Processing large data volumes on a schedule",
+                                "ipa": "/bætʃ ˈprɒs.ɛs.ɪŋ/"
                             },
                             {
                                 "en": "Stream Processing",
                                 "es": "Procesamiento en Tiempo Real",
-                                "definition": "Processing data events as they arrive"
+                                "definition": "Processing data events as they arrive",
+                                "ipa": "/striːm ˈprɒs.ɛs.ɪŋ/"
                             },
                             {
                                 "en": "Apache Kafka",
                                 "es": "Apache Kafka",
-                                "definition": "Platform for real-time data streaming"
+                                "definition": "Platform for real-time data streaming",
+                                "ipa": "/əˈpætʃ.i ˈkæf.kə/"
                             },
                             {
                                 "en": "Big Data",
                                 "es": "Big Data / Macrodatos",
-                                "definition": "Extremely large datasets requiring special tools"
+                                "definition": "Extremely large datasets requiring special tools",
+                                "ipa": "/bɪɡ ˈdeɪ.tə/"
                             },
                             {
                                 "en": "Schema-on-Read",
                                 "es": "Esquema en Lectura",
-                                "definition": "Structure applied when reading data (data lake approach)"
+                                "definition": "Structure applied when reading data (data lake approach)",
+                                "ipa": "/ˈskiː.mə ɒn riːd/"
                             },
                             {
                                 "en": "Orchestration",
                                 "es": "Orquestación",
-                                "definition": "Coordinating and scheduling pipeline workflows"
+                                "definition": "Coordinating and scheduling pipeline workflows",
+                                "ipa": "/ˌɔːr.kɪˈstreɪ.ʃən/"
                             }
                         ],
                         "questions": [
@@ -2486,62 +2685,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Industry 4.0",
                                 "es": "Industria 4.0",
-                                "definition": "Fourth industrial revolution — digital transformation of manufacturing"
+                                "definition": "Fourth industrial revolution — digital transformation of manufacturing",
+                                "ipa": "/ˈɪn.dəs.tri fɔːr pɔɪnt ˈoʊ/"
                             },
                             {
                                 "en": "IIoT (Industrial Internet of Things)",
                                 "es": "Internet Industrial de las Cosas",
-                                "definition": "Network of sensors and devices in factories"
+                                "definition": "Network of sensors and devices in factories",
+                                "ipa": "/ˌaɪ.aɪ.oʊˈtiː/"
                             },
                             {
                                 "en": "Digital Twin",
                                 "es": "Gemelo Digital",
-                                "definition": "Virtual replica of a physical system"
+                                "definition": "Virtual replica of a physical system",
+                                "ipa": "/ˈdɪdʒ.ɪ.təl twɪn/"
                             },
                             {
                                 "en": "Edge Computing",
                                 "es": "Computación en el Borde",
-                                "definition": "Processing data locally near sensors (low latency)"
+                                "definition": "Processing data locally near sensors (low latency)",
+                                "ipa": "/ɛdʒ kəmˈpjuː.tɪŋ/"
                             },
                             {
                                 "en": "Cobot (Collaborative Robot)",
                                 "es": "Robot Colaborativo",
-                                "definition": "Robot designed to work safely alongside humans"
+                                "definition": "Robot designed to work safely alongside humans",
+                                "ipa": "/ˈkoʊ.bɒt/"
                             },
                             {
                                 "en": "PLC (Programmable Logic Controller)",
                                 "es": "Controlador Lógico Programable",
-                                "definition": "Industrial computer controlling machines"
+                                "definition": "Industrial computer controlling machines",
+                                "ipa": "/ˌpiː.ɛlˈsiː/"
                             },
                             {
                                 "en": "SCADA",
                                 "es": "SCADA",
-                                "definition": "Supervisory Control and Data Acquisition system"
+                                "definition": "Supervisory Control and Data Acquisition system",
+                                "ipa": "/ˈskeɪ.dɑː/"
                             },
                             {
                                 "en": "MES (Manufacturing Execution System)",
                                 "es": "Sistema de Ejecución de Manufactura",
-                                "definition": "Software tracking production in real-time"
+                                "definition": "Software tracking production in real-time",
+                                "ipa": "/mɛs/"
                             },
                             {
                                 "en": "Predictive Maintenance",
                                 "es": "Mantenimiento Predictivo",
-                                "definition": "Using data to predict equipment failure before it happens"
+                                "definition": "Using data to predict equipment failure before it happens",
+                                "ipa": "/prɪˈdɪk.tɪv ˈmeɪn.tən.əns/"
                             },
                             {
                                 "en": "Additive Manufacturing",
                                 "es": "Manufactura Aditiva",
-                                "definition": "3D printing — building parts layer by layer"
+                                "definition": "3D printing — building parts layer by layer",
+                                "ipa": "/ˈæd.ɪ.tɪv ˌmæn.jʊˈfæk.tʃər.ɪŋ/"
                             },
                             {
                                 "en": "OT Security",
                                 "es": "Seguridad OT",
-                                "definition": "Cybersecurity for operational technology (factory systems)"
+                                "definition": "Cybersecurity for operational technology (factory systems)",
+                                "ipa": "/ˌoʊˈtiː sɪˈkjʊr.ɪ.ti/"
                             },
                             {
                                 "en": "Smartshoring",
                                 "es": "Smartshoring",
-                                "definition": "Nearshoring combined with advanced digital infrastructure"
+                                "definition": "Nearshoring combined with advanced digital infrastructure",
+                                "ipa": "/ˈsmɑːrt.ʃɔːr.ɪŋ/"
                             }
                         ],
                         "questions": [
@@ -3861,22 +4072,26 @@ var LXP_COURSES = {
                             {
                                 "en": "Latency",
                                 "es": "Latencia",
-                                "definition": "The time it takes for data to travel from its source to its destination."
+                                "definition": "The time it takes for data to travel from its source to its destination.",
+                                "ipa": "/ˈleɪ.tən.si/"
                             },
                             {
                                 "en": "Bandwidth",
                                 "es": "Ancho de banda",
-                                "definition": "The maximum rate of data transfer across a given path."
+                                "definition": "The maximum rate of data transfer across a given path.",
+                                "ipa": "/ˈbænd.wɪdθ/"
                             },
                             {
                                 "en": "Automated Guided Vehicle (AGV)",
                                 "es": "Vehículo Guiado Automáticamente",
-                                "definition": "Mobile robots used in industrial applications to move materials."
+                                "definition": "Mobile robots used in industrial applications to move materials.",
+                                "ipa": "/ˈɔː.tə.meɪ.tɪd ˈɡaɪ.dɪd ˈviː.ɪ.kəl/"
                             },
                             {
                                 "en": "Spectrum",
                                 "es": "Espectro (de radiofrecuencia)",
-                                "definition": "The range of electromagnetic radio frequencies used for wireless communication."
+                                "definition": "The range of electromagnetic radio frequencies used for wireless communication.",
+                                "ipa": "/ˈspɛk.trəm/"
                             }
                         ]
                     }
@@ -3897,17 +4112,20 @@ var LXP_COURSES = {
                             {
                                 "en": "LPWAN",
                                 "es": "LPWAN (Red de Área Amplia y Baja Potencia)",
-                                "definition": "A type of wireless network designed for long-range communications at a low bit rate."
+                                "definition": "A type of wireless network designed for long-range communications at a low bit rate.",
+                                "ipa": "/ˌɛl.piː.dʌb.əl.juːˈeɪ.ɛn/"
                             },
                             {
                                 "en": "Payload",
                                 "es": "Carga útil",
-                                "definition": "The actual data or message being transmitted, excluding network headers."
+                                "definition": "The actual data or message being transmitted, excluding network headers.",
+                                "ipa": "/ˈpeɪ.loʊd/"
                             },
                             {
                                 "en": "Gateway",
                                 "es": "Puerta de enlace / Gateway",
-                                "definition": "A device that routes data from a sensor network to the internet."
+                                "definition": "A device that routes data from a sensor network to the internet.",
+                                "ipa": "/ˈɡeɪt.weɪ/"
                             }
                         ]
                     }
@@ -3928,17 +4146,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Microcontroller",
                                 "es": "Microcontrolador",
-                                "definition": "A compact integrated circuit designed to govern a specific operation in an embedded system."
+                                "definition": "A compact integrated circuit designed to govern a specific operation in an embedded system.",
+                                "ipa": "/ˌmaɪ.kroʊ.kənˈtroʊ.lər/"
                             },
                             {
                                 "en": "Full-duplex",
                                 "es": "Full-duplex (Bidireccional simultáneo)",
-                                "definition": "The ability to send and receive data simultaneously."
+                                "definition": "The ability to send and receive data simultaneously.",
+                                "ipa": "/fʊl ˈdjuː.plɛks/"
                             },
                             {
                                 "en": "Synchronous",
                                 "es": "Síncrono",
-                                "definition": "Data transmission synchronized by a shared clock signal."
+                                "definition": "Data transmission synchronized by a shared clock signal.",
+                                "ipa": "/ˈsɪŋ.krə.nəs/"
                             }
                         ]
                     }
@@ -3959,17 +4180,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Edge Gateway",
                                 "es": "Puerta de enlace de borde / Gateway",
-                                "definition": "A device that connects a local network of IoT devices to the cloud."
+                                "definition": "A device that connects a local network of IoT devices to the cloud.",
+                                "ipa": "/ɛdʒ ˈɡeɪt.weɪ/"
                             },
                             {
                                 "en": "Mutual Authentication",
                                 "es": "Autenticación mutua",
-                                "definition": "A security process in which both entities verify each other's identity."
+                                "definition": "A security process in which both entities verify each other's identity.",
+                                "ipa": "/ˈmjuː.tʃu.əl ɔːˌθɛn.tɪˈkeɪ.ʃən/"
                             },
                             {
                                 "en": "Firmware",
                                 "es": "Firmware",
-                                "definition": "Software programmed into read-only memory, providing low-level control for hardware."
+                                "definition": "Software programmed into read-only memory, providing low-level control for hardware.",
+                                "ipa": "/ˈfɜːrm.wɛr/"
                             }
                         ]
                     }
@@ -4291,17 +4515,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Over-fetching",
                                 "es": "Sobrecarga de datos",
-                                "definition": "Downloading more data than the client actually needs for the UI."
+                                "definition": "Downloading more data than the client actually needs for the UI.",
+                                "ipa": "/ˈoʊ.vər ˈfɛtʃ.ɪŋ/"
                             },
                             {
                                 "en": "Payload",
                                 "es": "Carga útil",
-                                "definition": "The actual data being transmitted in an API request or response."
+                                "definition": "The actual data being transmitted in an API request or response.",
+                                "ipa": "/ˈpeɪ.loʊd/"
                             },
                             {
                                 "en": "Endpoint",
                                 "es": "Punto de acceso / Endpoint",
-                                "definition": "A specific URL where an API can be accessed by a client application."
+                                "definition": "A specific URL where an API can be accessed by a client application.",
+                                "ipa": "/ˈɛnd.pɔɪnt/"
                             }
                         ]
                     }
@@ -4323,17 +4550,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Container",
                                 "es": "Contenedor",
-                                "definition": "A lightweight, standalone, executable package of software that includes everything needed to run an application."
+                                "definition": "A lightweight, standalone, executable package of software that includes everything needed to run an application.",
+                                "ipa": "/kənˈteɪ.nər/"
                             },
                             {
                                 "en": "Kernel",
                                 "es": "Núcleo / Kernel",
-                                "definition": "The core program of an operating system that manages system resources."
+                                "definition": "The core program of an operating system that manages system resources.",
+                                "ipa": "/ˈkɜːr.nəl/"
                             },
                             {
                                 "en": "Orchestration",
                                 "es": "Orquestación",
-                                "definition": "The automated configuration, management, and coordination of computer systems and software."
+                                "definition": "The automated configuration, management, and coordination of computer systems and software.",
+                                "ipa": "/ˌɔːr.kɪˈstreɪ.ʃən/"
                             }
                         ]
                     }
@@ -4355,17 +4585,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Refactor",
                                 "es": "Refactorizar",
-                                "definition": "Restructuring existing computer code without changing its external behavior."
+                                "definition": "Restructuring existing computer code without changing its external behavior.",
+                                "ipa": "/riːˈfæk.tər/"
                             },
                             {
                                 "en": "Pipeline",
                                 "es": "Tubería / Pipeline",
-                                "definition": "A set of automated processes that allow developers and DevOps to compile, build, and deploy code."
+                                "definition": "A set of automated processes that allow developers and DevOps to compile, build, and deploy code.",
+                                "ipa": "/ˈpaɪp.laɪn/"
                             },
                             {
                                 "en": "Staging Environment",
                                 "es": "Entorno de pruebas / Staging",
-                                "definition": "An environment for testing that exactly resembles the production environment."
+                                "definition": "An environment for testing that exactly resembles the production environment.",
+                                "ipa": "/ˈsteɪ.dʒɪŋ ɪnˈvaɪ.rən.mənt/"
                             }
                         ]
                     }
@@ -4387,17 +4620,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Monolith",
                                 "es": "Monolito",
-                                "definition": "A unified software application that is self-contained and independent from other computing applications."
+                                "definition": "A unified software application that is self-contained and independent from other computing applications.",
+                                "ipa": "/ˈmɒn.ə.lɪθ/"
                             },
                             {
                                 "en": "Latency",
                                 "es": "Latencia",
-                                "definition": "The delay before a transfer of data begins following an instruction for its transfer."
+                                "definition": "The delay before a transfer of data begins following an instruction for its transfer.",
+                                "ipa": "/ˈleɪ.tən.si/"
                             },
                             {
                                 "en": "Asynchronous",
                                 "es": "Asíncrono",
-                                "definition": "Communication where the sender does not wait for a response before continuing its work."
+                                "definition": "Communication where the sender does not wait for a response before continuing its work.",
+                                "ipa": "/eɪˈsɪŋ.krə.nəs/"
                             }
                         ]
                     }
@@ -5431,67 +5667,80 @@ var LXP_COURSES = {
                             {
                                 "en": "Doping",
                                 "es": "Dopaje",
-                                "definition": "Adding impurity atoms to silicon to control its conductivity"
+                                "definition": "Adding impurity atoms to silicon to control its conductivity",
+                                "ipa": "/ˈdoʊ.pɪŋ/"
                             },
                             {
                                 "en": "N-Type",
                                 "es": "Tipo N",
-                                "definition": "Silicon doped with atoms that provide extra electrons"
+                                "definition": "Silicon doped with atoms that provide extra electrons",
+                                "ipa": "/ˈɛn taɪp/"
                             },
                             {
                                 "en": "P-Type",
                                 "es": "Tipo P",
-                                "definition": "Silicon doped with atoms that create holes"
+                                "definition": "Silicon doped with atoms that create holes",
+                                "ipa": "/ˈpiː taɪp/"
                             },
                             {
                                 "en": "Electron",
                                 "es": "Electrón",
-                                "definition": "A negatively charged subatomic particle"
+                                "definition": "A negatively charged subatomic particle",
+                                "ipa": "/ɪˈlɛk.trɒn/"
                             },
                             {
                                 "en": "Hole",
                                 "es": "Hueco / Laguna",
-                                "definition": "An empty space where an electron could be — acts as positive charge"
+                                "definition": "An empty space where an electron could be — acts as positive charge",
+                                "ipa": "/hoʊl/"
                             },
                             {
                                 "en": "Covalent Bond",
                                 "es": "Enlace Covalente",
-                                "definition": "A chemical bond formed by sharing electrons"
+                                "definition": "A chemical bond formed by sharing electrons",
+                                "ipa": "/koʊˈveɪ.lənt bɒnd/"
                             },
                             {
                                 "en": "Donor",
                                 "es": "Donador",
-                                "definition": "An atom (like phosphorus) that donates an extra electron"
+                                "definition": "An atom (like phosphorus) that donates an extra electron",
+                                "ipa": "/ˈdoʊ.nər/"
                             },
                             {
                                 "en": "Acceptor",
                                 "es": "Aceptor",
-                                "definition": "An atom (like boron) that accepts electrons"
+                                "definition": "An atom (like boron) that accepts electrons",
+                                "ipa": "/əkˈsɛp.tər/"
                             },
                             {
                                 "en": "P-N Junction",
                                 "es": "Unión P-N",
-                                "definition": "The boundary between P-Type and N-Type silicon"
+                                "definition": "The boundary between P-Type and N-Type silicon",
+                                "ipa": "/ˌpiːˈɛn ˈdʒʌŋk.ʃən/"
                             },
                             {
                                 "en": "Depletion Zone",
                                 "es": "Zona de Agotamiento",
-                                "definition": "The region at a P-N junction with no free carriers"
+                                "definition": "The region at a P-N junction with no free carriers",
+                                "ipa": "/dɪˈpliː.ʃən zoʊn/"
                             },
                             {
                                 "en": "Forward Bias",
                                 "es": "Polarización Directa",
-                                "definition": "Voltage applied to make a diode conduct"
+                                "definition": "Voltage applied to make a diode conduct",
+                                "ipa": "/ˈfɔːr.wərd ˈbaɪ.əs/"
                             },
                             {
                                 "en": "Ion Implantation",
                                 "es": "Implantación de Iones",
-                                "definition": "Shooting dopant atoms into silicon at high speed"
+                                "definition": "Shooting dopant atoms into silicon at high speed",
+                                "ipa": "/ˈaɪ.ɒn ˌɪm.plænˈteɪ.ʃən/"
                             },
                             {
                                 "en": "Fab (Fabrication Plant)",
                                 "es": "Fábrica / Planta de Fabricación",
-                                "definition": "A factory where semiconductor chips are manufactured"
+                                "definition": "A factory where semiconductor chips are manufactured",
+                                "ipa": "/fæb/"
                             }
                         ],
                         "questions": [
@@ -5893,62 +6142,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Transistor",
                                 "es": "Transistor",
-                                "definition": "An electronic switch/amplifier — the building block of all chips"
+                                "definition": "An electronic switch/amplifier — the building block of all chips",
+                                "ipa": "/trænˈzɪs.tər/"
                             },
                             {
                                 "en": "MOSFET",
                                 "es": "MOSFET",
-                                "definition": "Metal-Oxide-Semiconductor Field-Effect Transistor — the most common type"
+                                "definition": "Metal-Oxide-Semiconductor Field-Effect Transistor — the most common type",
+                                "ipa": "/ˈmɒs.fɛt/"
                             },
                             {
                                 "en": "Gate",
                                 "es": "Compuerta",
-                                "definition": "The terminal that controls ON/OFF state in a transistor"
+                                "definition": "The terminal that controls ON/OFF state in a transistor",
+                                "ipa": "/ɡeɪt/"
                             },
                             {
                                 "en": "Source",
                                 "es": "Fuente",
-                                "definition": "Where current enters a transistor"
+                                "definition": "Where current enters a transistor",
+                                "ipa": "/sɔːrs/"
                             },
                             {
                                 "en": "Drain",
                                 "es": "Drenaje",
-                                "definition": "Where current exits a transistor"
+                                "definition": "Where current exits a transistor",
+                                "ipa": "/dreɪn/"
                             },
                             {
                                 "en": "Channel",
                                 "es": "Canal",
-                                "definition": "The conductive path between source and drain"
+                                "definition": "The conductive path between source and drain",
+                                "ipa": "/ˈtʃæn.əl/"
                             },
                             {
                                 "en": "CMOS",
                                 "es": "CMOS",
-                                "definition": "Complementary MOS — technology using both NMOS and PMOS"
+                                "definition": "Complementary MOS — technology using both NMOS and PMOS",
+                                "ipa": "/ˈsiː.mɒs/"
                             },
                             {
                                 "en": "Moore's Law",
                                 "es": "Ley de Moore",
-                                "definition": "Transistor count doubles roughly every two years"
+                                "definition": "Transistor count doubles roughly every two years",
+                                "ipa": "/mʊrz lɔː/"
                             },
                             {
                                 "en": "Process Node",
                                 "es": "Nodo de Proceso",
-                                "definition": "The size of smallest features on a chip (measured in nm)"
+                                "definition": "The size of smallest features on a chip (measured in nm)",
+                                "ipa": "/ˈprɒs.ɛs noʊd/"
                             },
                             {
                                 "en": "FinFET",
                                 "es": "FinFET",
-                                "definition": "3D transistor with a vertical fin for better gate control"
+                                "definition": "3D transistor with a vertical fin for better gate control",
+                                "ipa": "/ˈfɪn.fɛt/"
                             },
                             {
                                 "en": "GAA",
                                 "es": "GAA (Compuerta Envolvente)",
-                                "definition": "Gate-All-Around — next-gen transistor with gate on all sides"
+                                "definition": "Gate-All-Around — next-gen transistor with gate on all sides",
+                                "ipa": "/ˌdʒiː.eɪˈeɪ/"
                             },
                             {
                                 "en": "Leakage Current",
                                 "es": "Corriente de Fuga",
-                                "definition": "Unwanted current flow when a transistor should be OFF"
+                                "definition": "Unwanted current flow when a transistor should be OFF",
+                                "ipa": "/ˈliː.kɪdʒ ˈkʌr.ənt/"
                             }
                         ],
                         "questions": [
@@ -6011,32 +6272,38 @@ var LXP_COURSES = {
                             {
                                 "en": "Photoresist",
                                 "es": "Fotorresistencia / Resina fotosensible",
-                                "definition": "A light-sensitive chemical polymer coated on the wafer"
+                                "definition": "A light-sensitive chemical polymer coated on the wafer",
+                                "ipa": "/ˈfoʊ.toʊ.rɪ.zɪst/"
                             },
                             {
                                 "en": "Photomask",
                                 "es": "Fotomáscara / Retícula",
-                                "definition": "A glass plate with metal patterns used to block UV light"
+                                "definition": "A glass plate with metal patterns used to block UV light",
+                                "ipa": "/ˈfoʊ.toʊ.mæsk/"
                             },
                             {
                                 "en": "UV Exposure",
                                 "es": "Exposición ultravioleta",
-                                "definition": "Shining UV light through a mask onto a photoresist"
+                                "definition": "Shining UV light through a mask onto a photoresist",
+                                "ipa": "/ˌjuːˈviː ɪkˈspoʊ.ʒər/"
                             },
                             {
                                 "en": "Development",
                                 "es": "Revelado",
-                                "definition": "Rinsing the wafer in chemical developer to reveal the pattern"
+                                "definition": "Rinsing the wafer in chemical developer to reveal the pattern",
+                                "ipa": "/dɪˈvɛl.əp.mənt/"
                             },
                             {
                                 "en": "Spin Coating",
                                 "es": "Recubrimiento por centrifugado",
-                                "definition": "Method to apply liquid photoresist uniformly by spinning the wafer"
+                                "definition": "Method to apply liquid photoresist uniformly by spinning the wafer",
+                                "ipa": "/spɪn ˈkoʊ.tɪŋ/"
                             },
                             {
                                 "en": "Overlay Accuracy",
                                 "es": "Precisión de superposición",
-                                "definition": "How precisely layers of a chip align on top of each other"
+                                "definition": "How precisely layers of a chip align on top of each other",
+                                "ipa": "/ˈoʊ.vər.leɪ ˈæk.jʊr.ə.si/"
                             }
                         ],
                         "questions": [
@@ -6091,32 +6358,38 @@ var LXP_COURSES = {
                             {
                                 "en": "EUV Lithography",
                                 "es": "Litografía ultravioleta extrema",
-                                "definition": "Next-gen lithography using 13.5nm wavelength light"
+                                "definition": "Next-gen lithography using 13.5nm wavelength light",
+                                "ipa": "/ˌiː.juːˈviː lɪˈθɒɡ.rə.fi/"
                             },
                             {
                                 "en": "Wavelength",
                                 "es": "Longitud de onda",
-                                "definition": "The distance between successive crests of a wave of light"
+                                "definition": "The distance between successive crests of a wave of light",
+                                "ipa": "/ˈweɪv.lɛŋθ/"
                             },
                             {
                                 "en": "Vacuum",
                                 "es": "Vacío",
-                                "definition": "A space entirely devoid of matter/air"
+                                "definition": "A space entirely devoid of matter/air",
+                                "ipa": "/ˈvæk.juːm/"
                             },
                             {
                                 "en": "Reflective Mirror",
                                 "es": "Espejo reflector",
-                                "definition": "Ultra-smooth mirror used to redirect light instead of lenses"
+                                "definition": "Ultra-smooth mirror used to redirect light instead of lenses",
+                                "ipa": "/rɪˈflɛk.tɪv ˈmɪr.ər/"
                             },
                             {
                                 "en": "Tin",
                                 "es": "Estaño",
-                                "definition": "Metal melted and vaporized by laser to produce EUV light"
+                                "definition": "Metal melted and vaporized by laser to produce EUV light",
+                                "ipa": "/tɪn/"
                             },
                             {
                                 "en": "High-NA EUV",
                                 "es": "EUV de alta apertura numérica",
-                                "definition": "Advanced EUV systems using larger angles to print smaller sizes"
+                                "definition": "Advanced EUV systems using larger angles to print smaller sizes",
+                                "ipa": "/haɪ ˌɛn.ˈeɪ ˌiː.juːˈviː/"
                             }
                         ],
                         "questions": [
@@ -6179,32 +6452,38 @@ var LXP_COURSES = {
                             {
                                 "en": "Cleanroom",
                                 "es": "Sala limpia / Cuarto limpio",
-                                "definition": "A controlled room with extremely low levels of dust and pollutants"
+                                "definition": "A controlled room with extremely low levels of dust and pollutants",
+                                "ipa": "/ˈkliːn.ruːm/"
                             },
                             {
                                 "en": "Gown Room",
                                 "es": "Sala de vestimenta",
-                                "definition": "The locker area where workers put on protective suits"
+                                "definition": "The locker area where workers put on protective suits",
+                                "ipa": "/ɡaʊn ruːm/"
                             },
                             {
                                 "en": "Bunny Suit",
                                 "es": "Traje de sala limpia / Traje protector",
-                                "definition": "The full-body suit worn to prevent human contamination"
+                                "definition": "The full-body suit worn to prevent human contamination",
+                                "ipa": "/ˈbʌn.i suːt/"
                             },
                             {
                                 "en": "Air Shower",
                                 "es": "Ducha de aire",
-                                "definition": "Chamber that blows air to remove particles from clothing before entry"
+                                "definition": "Chamber that blows air to remove particles from clothing before entry",
+                                "ipa": "/ɛr ˈʃaʊ.ər/"
                             },
                             {
                                 "en": "Contamination",
                                 "es": "Contaminación",
-                                "definition": "Unwanted particles that damage wafer circuits"
+                                "definition": "Unwanted particles that damage wafer circuits",
+                                "ipa": "/kənˌtæm.ɪˈneɪ.ʃən/"
                             },
                             {
                                 "en": "Gowning Protocol",
                                 "es": "Protocolo de vestimenta",
-                                "definition": "The strict sequence of steps to dress in cleanroom gear"
+                                "definition": "The strict sequence of steps to dress in cleanroom gear",
+                                "ipa": "/ˈɡaʊ.nɪŋ ˈproʊ.tə.kɒl/"
                             }
                         ],
                         "questions": [
@@ -6259,37 +6538,44 @@ var LXP_COURSES = {
                             {
                                 "en": "Wet Etching",
                                 "es": "Grabado en húmedo (químico)",
-                                "definition": "Removing material using liquid chemicals"
+                                "definition": "Removing material using liquid chemicals",
+                                "ipa": "/wɛt ˈɛtʃ.ɪŋ/"
                             },
                             {
                                 "en": "Dry Etching",
                                 "es": "Grabado en seco (por plasma)",
-                                "definition": "Removing material using reactive gases and plasma ions"
+                                "definition": "Removing material using reactive gases and plasma ions",
+                                "ipa": "/draɪ ˈɛtʃ.ɪŋ/"
                             },
                             {
                                 "en": "Isotropic",
                                 "es": "Isotrópico",
-                                "definition": "Etching that occurs in all directions at the same rate"
+                                "definition": "Etching that occurs in all directions at the same rate",
+                                "ipa": "/ˌaɪ.soʊˈtrɒp.ɪk/"
                             },
                             {
                                 "en": "Anisotropic",
                                 "es": "Anisotrópico",
-                                "definition": "Etching that occurs in one preferred direction (typically vertical)"
+                                "definition": "Etching that occurs in one preferred direction (typically vertical)",
+                                "ipa": "/ˌæn.aɪ.soʊˈtrɒp.ɪk/"
                             },
                             {
                                 "en": "Chemical Vapor Deposition (CVD)",
                                 "es": "Deposición química de vapor",
-                                "definition": "Depositing materials through chemical reactions of gases"
+                                "definition": "Depositing materials through chemical reactions of gases",
+                                "ipa": "/ˈkɛm.ɪ.kəl ˈveɪ.pər ˌdɛp.əˈzɪʃ.ən/"
                             },
                             {
                                 "en": "Physical Vapor Deposition (PVD)",
                                 "es": "Deposición física de vapor",
-                                "definition": "Coating wafer with metal by physically knocking atoms off a target"
+                                "definition": "Coating wafer with metal by physically knocking atoms off a target",
+                                "ipa": "/ˈfɪz.ɪ.kəl ˈveɪ.pər ˌdɛp.əˈzɪʃ.ən/"
                             },
                             {
                                 "en": "Atomic Layer Deposition (ALD)",
                                 "es": "Deposición por capa atómica",
-                                "definition": "Adding films one atomic layer at a time for maximum control"
+                                "definition": "Adding films one atomic layer at a time for maximum control",
+                                "ipa": "/əˈtɒm.ɪk ˈleɪ.ər ˌdɛp.əˈzɪʃ.ən/"
                             }
                         ],
                         "questions": [
@@ -6352,32 +6638,38 @@ var LXP_COURSES = {
                             {
                                 "en": "Probe Testing",
                                 "es": "Prueba con sonda / Testeo de obleas",
-                                "definition": "Electrical testing of chips while still on the wafer"
+                                "definition": "Electrical testing of chips while still on the wafer",
+                                "ipa": "/proʊb ˈtɛs.tɪŋ/"
                             },
                             {
                                 "en": "Die",
                                 "es": "Pastilla / Chip individual",
-                                "definition": "A single unpackaged square of silicon containing a circuit"
+                                "definition": "A single unpackaged square of silicon containing a circuit",
+                                "ipa": "/daɪ/"
                             },
                             {
                                 "en": "Yield",
                                 "es": "Rendimiento",
-                                "definition": "The ratio of working chips to the total chips produced"
+                                "definition": "The ratio of working chips to the total chips produced",
+                                "ipa": "/jiːld/"
                             },
                             {
                                 "en": "Binning",
                                 "es": "Clasificación de chips",
-                                "definition": "Sorting chips into groups based on performance and speed"
+                                "definition": "Sorting chips into groups based on performance and speed",
+                                "ipa": "/ˈbɪn.ɪŋ/"
                             },
                             {
                                 "en": "Wafer Map",
                                 "es": "Mapa de oblea",
-                                "definition": "A digital grid recording the layout and status of each die"
+                                "definition": "A digital grid recording the layout and status of each die",
+                                "ipa": "/ˈweɪ.fər mæp/"
                             },
                             {
                                 "en": "Statistical Process Control (SPC)",
                                 "es": "Control estadístico de procesos",
-                                "definition": "Using statistical methods to monitor and control a production process"
+                                "definition": "Using statistical methods to monitor and control a production process",
+                                "ipa": "/stəˈtɪs.tɪ.kəl ˈprɒs.ɛs kənˈtroʊl/"
                             }
                         ],
                         "questions": [
@@ -6432,32 +6724,38 @@ var LXP_COURSES = {
                             {
                                 "en": "Chip Packaging",
                                 "es": "Empaquetado de chips / Encapsulado",
-                                "definition": "Enclosing a silicon die in a protective container"
+                                "definition": "Enclosing a silicon die in a protective container",
+                                "ipa": "/tʃɪp ˈpæk.ɪ.dʒɪŋ/"
                             },
                             {
                                 "en": "Wire Bonding",
                                 "es": "Conexión de micro-alambres",
-                                "definition": "Connecting die to package leads using ultra-thin metal wires"
+                                "definition": "Connecting die to package leads using ultra-thin metal wires",
+                                "ipa": "/waɪr ˈbɒn.dɪŋ/"
                             },
                             {
                                 "en": "Solder Ball",
                                 "es": "Bola de soldadura",
-                                "definition": "Tiny sphere of solder used to connect BGA packages to PCBs"
+                                "definition": "Tiny sphere of solder used to connect BGA packages to PCBs",
+                                "ipa": "/ˈsɒd.ər bɔːl/"
                             },
                             {
                                 "en": "BGA (Ball Grid Array)",
                                 "es": "Matriz de rejilla de bolas",
-                                "definition": "Package style using a grid of solder balls on the bottom"
+                                "definition": "Package style using a grid of solder balls on the bottom",
+                                "ipa": "/ˌbiː.dʒiːˈeɪ/"
                             },
                             {
                                 "en": "Heat Dissipation",
                                 "es": "Disipación de calor",
-                                "definition": "The process of transfering thermal energy away from the chip"
+                                "definition": "The process of transfering thermal energy away from the chip",
+                                "ipa": "/hiːt ˌdɪs.ɪˈpeɪ.ʃən/"
                             },
                             {
                                 "en": "Substrate",
                                 "es": "Sustrato",
-                                "definition": "The base material that holds the die and wiring in the package"
+                                "definition": "The base material that holds the die and wiring in the package",
+                                "ipa": "/ˈsʌb.streɪt/"
                             }
                         ],
                         "questions": [
@@ -6512,42 +6810,50 @@ var LXP_COURSES = {
                             {
                                 "en": "Advanced Packaging",
                                 "es": "Empaquetado avanzado",
-                                "definition": "High-density packaging integrating multiple dies, 2.5D/3D structures, or HBM"
+                                "definition": "High-density packaging integrating multiple dies, 2.5D/3D structures, or HBM",
+                                "ipa": "/ədˈvænst ˈpæk.ɪ.dʒɪŋ/"
                             },
                             {
                                 "en": "fcBGA (Flip-Chip Ball Grid Array)",
                                 "es": "fcBGA",
-                                "definition": "High-density package using solder bumps and a ball grid array substrate"
+                                "definition": "High-density package using solder bumps and a ball grid array substrate",
+                                "ipa": "/ˌɛf.siːˌbiː.dʒiːˈeɪ/"
                             },
                             {
                                 "en": "HBM (High Bandwidth Memory)",
                                 "es": "Memoria de alto ancho de banda",
-                                "definition": "3D-stacked DRAM offering ultra-fast memory access for AI chips"
+                                "definition": "3D-stacked DRAM offering ultra-fast memory access for AI chips",
+                                "ipa": "/ˌeɪtʃ.biːˈɛm/"
                             },
                             {
                                 "en": "Chiplet",
                                 "es": "Chiplet / Die especializado",
-                                "definition": "Small modular silicon die combined with others in a single package"
+                                "definition": "Small modular silicon die combined with others in a single package",
+                                "ipa": "/ˈtʃɪp.lɪt/"
                             },
                             {
                                 "en": "Silicon Photonics",
                                 "es": "Fotónica de silicio",
-                                "definition": "Using light/optics instead of electricity to transfer data on silicon"
+                                "definition": "Using light/optics instead of electricity to transfer data on silicon",
+                                "ipa": "/ˈsɪl.ɪ.kən foʊˈtɒn.ɪks/"
                             },
                             {
                                 "en": "CPO (Co-Packaged Optics)",
                                 "es": "Óptica empaquetada conjuntamente",
-                                "definition": "Integrating optical interfaces directly onto the semiconductor package"
+                                "definition": "Integrating optical interfaces directly onto the semiconductor package",
+                                "ipa": "/ˌsiː.piːˈoʊ/"
                             },
                             {
                                 "en": "OSAT",
                                 "es": "OSAT",
-                                "definition": "Outsourced Semiconductor Assembly and Test company"
+                                "definition": "Outsourced Semiconductor Assembly and Test company",
+                                "ipa": "/ˈoʊ.sæt/"
                             },
                             {
                                 "en": "Power Packaging",
                                 "es": "Empaquetado de potencia",
-                                "definition": "Packaging designed for high-current voltage regulation and thermal efficiency"
+                                "definition": "Packaging designed for high-current voltage regulation and thermal efficiency",
+                                "ipa": "/ˈpaʊ.ər ˈpæk.ɪ.dʒɪŋ/"
                             }
                         ],
                         "questions": [
@@ -6610,32 +6916,38 @@ var LXP_COURSES = {
                             {
                                 "en": "Supply Chain",
                                 "es": "Cadena de suministro",
-                                "definition": "The sequence of processes involved in the production and distribution of a commodity"
+                                "definition": "The sequence of processes involved in the production and distribution of a commodity",
+                                "ipa": "/səˈplaɪ tʃeɪn/"
                             },
                             {
                                 "en": "Foundry",
                                 "es": "Fundidora de semiconductores",
-                                "definition": "A factory that manufactures chips for other design companies"
+                                "definition": "A factory that manufactures chips for other design companies",
+                                "ipa": "/ˈfaʊn.dri/"
                             },
                             {
                                 "en": "Fabless",
                                 "es": "Sin fábrica",
-                                "definition": "A business model where a company designs chips but outsources fabrication"
+                                "definition": "A business model where a company designs chips but outsources fabrication",
+                                "ipa": "/ˈfæb.lɪs/"
                             },
                             {
                                 "en": "IDM",
                                 "es": "Fabricante de dispositivos integrados",
-                                "definition": "A company that designs, manufactures, and sells its own chips"
+                                "definition": "A company that designs, manufactures, and sells its own chips",
+                                "ipa": "/ˌaɪ.diːˈɛm/"
                             },
                             {
                                 "en": "Nearshoring",
                                 "es": "Nearshoring / Relocalización cercana",
-                                "definition": "Moving manufacturing operations close to the primary market"
+                                "definition": "Moving manufacturing operations close to the primary market",
+                                "ipa": "/ˈnɪr.ʃɔːr.ɪŋ/"
                             },
                             {
                                 "en": "CHIPS Act",
                                 "es": "Ley de Chips (EE. UU.)",
-                                "definition": "US federal law funding domestic semiconductor manufacturing and research"
+                                "definition": "US federal law funding domestic semiconductor manufacturing and research",
+                                "ipa": "/tʃɪps ækt/"
                             }
                         ],
                         "questions": [
@@ -6690,32 +7002,38 @@ var LXP_COURSES = {
                             {
                                 "en": "Manufacturing Specialist",
                                 "es": "Especialista en manufactura",
-                                "definition": "Role monitoring fab runs, handling wafers, and managing automated systems"
+                                "definition": "Role monitoring fab runs, handling wafers, and managing automated systems",
+                                "ipa": "/ˌmæn.jʊˈfæk.tʃər.ɪŋ ˈspɛʃ.əl.ɪst/"
                             },
                             {
                                 "en": "Equipment Technician",
                                 "es": "Técnico de equipo",
-                                "definition": "Technician responsible for maintaining and repairing fab machinery"
+                                "definition": "Technician responsible for maintaining and repairing fab machinery",
+                                "ipa": "/ɪˈkwɪp.mənt tɛkˈnɪʃ.ən/"
                             },
                             {
                                 "en": "Process Engineer",
                                 "es": "Ingeniero de procesos",
-                                "definition": "Engineer optimizing chemical and physical manufacturing stages to improve yield"
+                                "definition": "Engineer optimizing chemical and physical manufacturing stages to improve yield",
+                                "ipa": "/ˈprɒs.ɛs ˌɛn.dʒɪˈnɪr/"
                             },
                             {
                                 "en": "Quality Control",
                                 "es": "Control de calidad",
-                                "definition": "Monitoring and maintaining product standards using metrics like SPC"
+                                "definition": "Monitoring and maintaining product standards using metrics like SPC",
+                                "ipa": "/ˈkwɒl.ɪ.ti kənˈtroʊl/"
                             },
                             {
                                 "en": "SOP",
                                 "es": "Procedimiento operativo estándar",
-                                "definition": "Standard Operating Procedure — detailed instructions for operations"
+                                "definition": "Standard Operating Procedure — detailed instructions for operations",
+                                "ipa": "/ˌɛs.oʊˈpiː/"
                             },
                             {
                                 "en": "Technical English",
                                 "es": "Inglés técnico",
-                                "definition": "English vocabulary and phrasing used for specific fields like engineering"
+                                "definition": "English vocabulary and phrasing used for specific fields like engineering",
+                                "ipa": "/ˈtɛk.nɪ.kəl ˈɪŋ.ɡlɪʃ/"
                             }
                         ],
                         "questions": [
@@ -6939,52 +7257,62 @@ var LXP_COURSES = {
                             {
                                 "en": "Internal Combustion Engine (ICE)",
                                 "es": "Motor de Combustión Interna",
-                                "definition": "Engine that burns fuel (gasoline/diesel)"
+                                "definition": "Engine that burns fuel (gasoline/diesel)",
+                                "ipa": "/ɪnˈtɜːr.nəl kəmˈbʌs.tʃən ˈɛn.dʒɪn/"
                             },
                             {
                                 "en": "Mass Production",
                                 "es": "Producción en Masa",
-                                "definition": "Manufacturing large quantities at low cost"
+                                "definition": "Manufacturing large quantities at low cost",
+                                "ipa": "/mæs prəˈdʌk.ʃən/"
                             },
                             {
                                 "en": "Lithium-Ion Battery",
                                 "es": "Batería de Iones de Litio",
-                                "definition": "The most common rechargeable battery type in EVs"
+                                "definition": "The most common rechargeable battery type in EVs",
+                                "ipa": "/ˈlɪθ.i.əm ˈaɪ.ɒn ˈbæt.ər.i/"
                             },
                             {
                                 "en": "Solid-State Battery",
                                 "es": "Batería de Estado Sólido",
-                                "definition": "Next-gen battery replacing liquid electrolyte with solid"
+                                "definition": "Next-gen battery replacing liquid electrolyte with solid",
+                                "ipa": "/ˈsɒl.ɪd steɪt ˈbæt.ər.i/"
                             },
                             {
                                 "en": "Energy Density",
                                 "es": "Densidad Energética",
-                                "definition": "Amount of energy stored per unit of weight or volume"
+                                "definition": "Amount of energy stored per unit of weight or volume",
+                                "ipa": "/ˈɛn.ər.dʒi ˈdɛn.sɪ.ti/"
                             },
                             {
                                 "en": "Vehicle-to-Grid (V2G)",
                                 "es": "Vehículo a Red (V2G)",
-                                "definition": "Technology allowing EVs to send electricity back to the grid"
+                                "definition": "Technology allowing EVs to send electricity back to the grid",
+                                "ipa": "/ˈviː.ɪ.kəl tuː ɡrɪd/"
                             },
                             {
                                 "en": "Autonomous Driving",
                                 "es": "Conducción Autónoma",
-                                "definition": "Self-driving vehicle technology"
+                                "definition": "Self-driving vehicle technology",
+                                "ipa": "/ɔːˈtɒn.ə.məs ˈdraɪ.vɪŋ/"
                             },
                             {
                                 "en": "Range",
                                 "es": "Autonomía",
-                                "definition": "How far a vehicle can travel on a single charge"
+                                "definition": "How far a vehicle can travel on a single charge",
+                                "ipa": "/reɪndʒ/"
                             },
                             {
                                 "en": "Electrolyte",
                                 "es": "Electrolito",
-                                "definition": "The medium that carries ions between battery electrodes"
+                                "definition": "The medium that carries ions between battery electrodes",
+                                "ipa": "/ɪˈlɛk.trə.laɪt/"
                             },
                             {
                                 "en": "Powertrain",
                                 "es": "Tren Motriz",
-                                "definition": "All components that generate and deliver power to wheels"
+                                "definition": "All components that generate and deliver power to wheels",
+                                "ipa": "/ˈpaʊ.ər.treɪn/"
                             }
                         ],
                         "questions": [
@@ -7337,62 +7665,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Cathode",
                                 "es": "Cátodo",
-                                "definition": "Positive electrode of a battery cell"
+                                "definition": "Positive electrode of a battery cell",
+                                "ipa": "/ˈkæθ.oʊd/"
                             },
                             {
                                 "en": "Anode",
                                 "es": "Ánodo",
-                                "definition": "Negative electrode (usually graphite)"
+                                "definition": "Negative electrode (usually graphite)",
+                                "ipa": "/ˈæn.oʊd/"
                             },
                             {
                                 "en": "Electrolyte",
                                 "es": "Electrolito",
-                                "definition": "Liquid/solid medium that conducts ions"
+                                "definition": "Liquid/solid medium that conducts ions",
+                                "ipa": "/ɪˈlɛk.trə.laɪt/"
                             },
                             {
                                 "en": "Separator",
                                 "es": "Separador",
-                                "definition": "Thin membrane preventing electrodes from touching"
+                                "definition": "Thin membrane preventing electrodes from touching",
+                                "ipa": "/ˈsɛp.ə.reɪ.tər/"
                             },
                             {
                                 "en": "Intercalation",
                                 "es": "Intercalación",
-                                "definition": "Insertion of lithium ions between graphite layers"
+                                "definition": "Insertion of lithium ions between graphite layers",
+                                "ipa": "/ɪnˌtɜːr.kəˈleɪ.ʃən/"
                             },
                             {
                                 "en": "LFP (Lithium Iron Phosphate)",
                                 "es": "Fosfato de Hierro y Litio",
-                                "definition": "Safe, affordable battery chemistry"
+                                "definition": "Safe, affordable battery chemistry",
+                                "ipa": "/ˌɛl.ɛfˈpiː/"
                             },
                             {
                                 "en": "NMC (Nickel Manganese Cobalt)",
                                 "es": "Níquel Manganeso Cobalto",
-                                "definition": "High-energy-density battery chemistry"
+                                "definition": "High-energy-density battery chemistry",
+                                "ipa": "/ˌɛn.ɛmˈsiː/"
                             },
                             {
                                 "en": "Thermal Runaway",
                                 "es": "Fuga Térmica",
-                                "definition": "Dangerous chain reaction causing a battery fire"
+                                "definition": "Dangerous chain reaction causing a battery fire",
+                                "ipa": "/ˈθɜːr.məl ˈrʌn.ə.weɪ/"
                             },
                             {
                                 "en": "Cycle Life",
                                 "es": "Vida de Ciclo",
-                                "definition": "Number of charge-discharge cycles before degradation"
+                                "definition": "Number of charge-discharge cycles before degradation",
+                                "ipa": "/ˈsaɪ.kəl laɪf/"
                             },
                             {
                                 "en": "Short Circuit",
                                 "es": "Cortocircuito",
-                                "definition": "Unintended direct connection between electrodes"
+                                "definition": "Unintended direct connection between electrodes",
+                                "ipa": "/ʃɔːrt ˈsɜːr.kɪt/"
                             },
                             {
                                 "en": "Module",
                                 "es": "Módulo",
-                                "definition": "Group of battery cells wired together"
+                                "definition": "Group of battery cells wired together",
+                                "ipa": "/ˈmɒdʒ.uːl/"
                             },
                             {
                                 "en": "Battery Pack",
                                 "es": "Paquete de Baterías",
-                                "definition": "Complete assembly of modules in a vehicle"
+                                "definition": "Complete assembly of modules in a vehicle",
+                                "ipa": "/ˈbæt.ər.i pæk/"
                             }
                         ],
                         "questions": [
@@ -7447,52 +7787,62 @@ var LXP_COURSES = {
                             {
                                 "en": "Cylindrical Cell",
                                 "es": "Celda Cilíndrica",
-                                "definition": "Round battery cell (like a large AA battery)"
+                                "definition": "Round battery cell (like a large AA battery)",
+                                "ipa": "/sɪˈlɪn.drɪ.kəl sɛl/"
                             },
                             {
                                 "en": "Prismatic Cell",
                                 "es": "Celda Prismática",
-                                "definition": "Rectangular metal-cased battery cell"
+                                "definition": "Rectangular metal-cased battery cell",
+                                "ipa": "/prɪzˈmæt.ɪk sɛl/"
                             },
                             {
                                 "en": "Pouch Cell",
                                 "es": "Celda de Bolsa / Pouch",
-                                "definition": "Flat, flexible battery cell in aluminum film"
+                                "definition": "Flat, flexible battery cell in aluminum film",
+                                "ipa": "/paʊtʃ sɛl/"
                             },
                             {
                                 "en": "4680 Cell",
                                 "es": "Celda 4680",
-                                "definition": "Tesla's large-format cylindrical cell (46mm × 80mm)"
+                                "definition": "Tesla's large-format cylindrical cell (46mm × 80mm)",
+                                "ipa": "/ˈfɔːr.sɪks.eɪ.ti sɛl/"
                             },
                             {
                                 "en": "Tabless Electrode",
                                 "es": "Electrodo sin Pestaña",
-                                "definition": "Electrode design reducing internal resistance"
+                                "definition": "Electrode design reducing internal resistance",
+                                "ipa": "/ˈtæb.lɪs ɪˈlɛk.troʊd/"
                             },
                             {
                                 "en": "Cell-to-Pack (CTP)",
                                 "es": "Celda a Paquete",
-                                "definition": "Eliminating modules to place cells directly in pack"
+                                "definition": "Eliminating modules to place cells directly in pack",
+                                "ipa": "/sɛl tuː pæk/"
                             },
                             {
                                 "en": "Cell-to-Chassis (CTC)",
                                 "es": "Celda a Chasis",
-                                "definition": "Integrating battery directly into vehicle structure"
+                                "definition": "Integrating battery directly into vehicle structure",
+                                "ipa": "/sɛl tuː ˈtʃæs.i/"
                             },
                             {
                                 "en": "Swelling",
                                 "es": "Hinchamiento",
-                                "definition": "Expansion of cells due to internal gas or pressure"
+                                "definition": "Expansion of cells due to internal gas or pressure",
+                                "ipa": "/ˈswɛl.ɪŋ/"
                             },
                             {
                                 "en": "Packing Efficiency",
                                 "es": "Eficiencia de Empaque",
-                                "definition": "How well cells fit together without wasted space"
+                                "definition": "How well cells fit together without wasted space",
+                                "ipa": "/ˈpæk.ɪŋ ɪˈfɪʃ.ən.si/"
                             },
                             {
                                 "en": "Dry Battery Electrode",
                                 "es": "Electrodo Seco",
-                                "definition": "Manufacturing process eliminating liquid solvents"
+                                "definition": "Manufacturing process eliminating liquid solvents",
+                                "ipa": "/draɪ ˈbæt.ər.i ɪˈlɛk.troʊd/"
                             }
                         ],
                         "questions": [
@@ -7555,62 +7905,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Stator",
                                 "es": "Estátor",
-                                "definition": "The stationary part of an electric motor"
+                                "definition": "The stationary part of an electric motor",
+                                "ipa": "/ˈsteɪ.tər/"
                             },
                             {
                                 "en": "Rotor",
                                 "es": "Rotor",
-                                "definition": "The rotating part of an electric motor"
+                                "definition": "The rotating part of an electric motor",
+                                "ipa": "/ˈroʊ.tər/"
                             },
                             {
                                 "en": "Torque",
                                 "es": "Par Motor / Torque",
-                                "definition": "Rotational force applied to wheels"
+                                "definition": "Rotational force applied to wheels",
+                                "ipa": "/tɔːrk/"
                             },
                             {
                                 "en": "PMSM",
                                 "es": "Motor Síncrono de Imanes Permanentes",
-                                "definition": "High-efficiency motor using rare earth magnets"
+                                "definition": "High-efficiency motor using rare earth magnets",
+                                "ipa": "/ˌpiː.ɛm.ɛsˈɛm/"
                             },
                             {
                                 "en": "Induction Motor",
                                 "es": "Motor de Inducción",
-                                "definition": "Motor where rotor current is induced by stator field"
+                                "definition": "Motor where rotor current is induced by stator field",
+                                "ipa": "/ɪnˈdʌk.ʃən ˈmoʊ.tər/"
                             },
                             {
                                 "en": "Rare Earth Elements",
                                 "es": "Elementos de Tierras Raras",
-                                "definition": "Minerals like neodymium used in permanent magnets"
+                                "definition": "Minerals like neodymium used in permanent magnets",
+                                "ipa": "/rɛr ɜːrθ ˈɛl.ɪ.mənts/"
                             },
                             {
                                 "en": "Lorentz Force",
                                 "es": "Fuerza de Lorentz",
-                                "definition": "Force on a current-carrying wire in a magnetic field"
+                                "definition": "Force on a current-carrying wire in a magnetic field",
+                                "ipa": "/ˈlɒr.ənts fɔːrs/"
                             },
                             {
                                 "en": "Reduction Gear",
                                 "es": "Engranaje Reductor",
-                                "definition": "Single-speed gearbox in EVs"
+                                "definition": "Single-speed gearbox in EVs",
+                                "ipa": "/rɪˈdʌk.ʃən ɡɪr/"
                             },
                             {
                                 "en": "Torque Vectoring",
                                 "es": "Vectorización de Torque",
-                                "definition": "Sending different power to each wheel"
+                                "definition": "Sending different power to each wheel",
+                                "ipa": "/tɔːrk ˈvɛk.tər.ɪŋ/"
                             },
                             {
                                 "en": "All-Wheel Drive (AWD)",
                                 "es": "Tracción en las Cuatro Ruedas",
-                                "definition": "Power delivered to all four wheels"
+                                "definition": "Power delivered to all four wheels",
+                                "ipa": "/ˌɔːl wiːl ˈdraɪv/"
                             },
                             {
                                 "en": "RPM",
                                 "es": "RPM (Revoluciones Por Minuto)",
-                                "definition": "Speed of motor rotation"
+                                "definition": "Speed of motor rotation",
+                                "ipa": "/ˌɑːr.piːˈɛm/"
                             },
                             {
                                 "en": "Efficiency",
                                 "es": "Eficiencia",
-                                "definition": "Ratio of useful output to total input energy"
+                                "definition": "Ratio of useful output to total input energy",
+                                "ipa": "/ɪˈfɪʃ.ən.si/"
                             }
                         ],
                         "questions": [
@@ -7673,52 +8035,62 @@ var LXP_COURSES = {
                             {
                                 "en": "Level 1 Charging",
                                 "es": "Carga Nivel 1",
-                                "definition": "Slow charging from standard household outlet (120V)"
+                                "definition": "Slow charging from standard household outlet (120V)",
+                                "ipa": "/ˈlɛv.əl wʌn ˈtʃɑːr.dʒɪŋ/"
                             },
                             {
                                 "en": "Level 2 Charging",
                                 "es": "Carga Nivel 2",
-                                "definition": "Medium charging from dedicated 240V charger"
+                                "definition": "Medium charging from dedicated 240V charger",
+                                "ipa": "/ˈlɛv.əl tuː ˈtʃɑːr.dʒɪŋ/"
                             },
                             {
                                 "en": "DC Fast Charging (DCFC)",
                                 "es": "Carga Rápida DC",
-                                "definition": "High-power direct-current charging (50-350+ kW)"
+                                "definition": "High-power direct-current charging (50-350+ kW)",
+                                "ipa": "/ˌdiːˈsiː fæst ˈtʃɑːr.dʒɪŋ/"
                             },
                             {
                                 "en": "EVSE",
                                 "es": "Equipo de Suministro EV",
-                                "definition": "Wall-mounted charging unit with safety features"
+                                "definition": "Wall-mounted charging unit with safety features",
+                                "ipa": "/ˌiː.viː.ɛsˈiː/"
                             },
                             {
                                 "en": "NACS / SAE J3400",
                                 "es": "NACS / SAE J3400",
-                                "definition": "North American Charging Standard — the new unified connector"
+                                "definition": "North American Charging Standard — the new unified connector",
+                                "ipa": "/næks/"
                             },
                             {
                                 "en": "CCS",
                                 "es": "Sistema de Carga Combinada",
-                                "definition": "Legacy connector standard being phased out in NA"
+                                "definition": "Legacy connector standard being phased out in NA",
+                                "ipa": "/ˌsiː.siːˈɛs/"
                             },
                             {
                                 "en": "Supercharger",
                                 "es": "Supercargador",
-                                "definition": "Tesla's DC fast charging network"
+                                "definition": "Tesla's DC fast charging network",
+                                "ipa": "/ˈsuː.pər.tʃɑːr.dʒər/"
                             },
                             {
                                 "en": "Charging Curve",
                                 "es": "Curva de Carga",
-                                "definition": "How charging speed varies with battery state of charge"
+                                "definition": "How charging speed varies with battery state of charge",
+                                "ipa": "/ˈtʃɑːr.dʒɪŋ kɜːrv/"
                             },
                             {
                                 "en": "State of Charge (SoC)",
                                 "es": "Estado de Carga",
-                                "definition": "Percentage of battery currently full"
+                                "definition": "Percentage of battery currently full",
+                                "ipa": "/steɪt əv tʃɑːrdʒ/"
                             },
                             {
                                 "en": "kW (Kilowatt)",
                                 "es": "kW (Kilovatio)",
-                                "definition": "Unit of power — how fast energy is delivered"
+                                "definition": "Unit of power — how fast energy is delivered",
+                                "ipa": "/ˈkɪl.ə.wɒt/"
                             }
                         ],
                         "questions": [
@@ -7781,62 +8153,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Gigafactory",
                                 "es": "Gigafábrica",
-                                "definition": "Massive factory dedicated to battery production"
+                                "definition": "Massive factory dedicated to battery production",
+                                "ipa": "/ˈɡɪɡ.ə.fæk.tər.i/"
                             },
                             {
                                 "en": "Electrode",
                                 "es": "Electrodo",
-                                "definition": "Cathode or anode component of a battery cell"
+                                "definition": "Cathode or anode component of a battery cell",
+                                "ipa": "/ɪˈlɛk.troʊd/"
                             },
                             {
                                 "en": "Calendering",
                                 "es": "Calandrado",
-                                "definition": "Compressing electrode coating to precise thickness"
+                                "definition": "Compressing electrode coating to precise thickness",
+                                "ipa": "/ˈkæl.ən.dər.ɪŋ/"
                             },
                             {
                                 "en": "Formation",
                                 "es": "Formación",
-                                "definition": "First charge/discharge cycle to activate a battery cell"
+                                "definition": "First charge/discharge cycle to activate a battery cell",
+                                "ipa": "/fɔːrˈmeɪ.ʃən/"
                             },
                             {
                                 "en": "Bus Bar",
                                 "es": "Barra Colectora",
-                                "definition": "Thick copper connector linking battery cells"
+                                "definition": "Thick copper connector linking battery cells",
+                                "ipa": "/bʌs bɑːr/"
                             },
                             {
                                 "en": "E-Axle",
                                 "es": "Eje Eléctrico",
-                                "definition": "Integrated unit: motor + inverter + reduction gear"
+                                "definition": "Integrated unit: motor + inverter + reduction gear",
+                                "ipa": "/ˈiː.æk.səl/"
                             },
                             {
                                 "en": "Body-in-White",
                                 "es": "Carrocería en Blanco",
-                                "definition": "Welded car body before painting"
+                                "definition": "Welded car body before painting",
+                                "ipa": "/ˌbɒd.i.ɪn.ˈwaɪt/"
                             },
                             {
                                 "en": "Marriage (assembly)",
                                 "es": "Matrimonio (ensamble)",
-                                "definition": "Joining battery pack to vehicle body"
+                                "definition": "Joining battery pack to vehicle body",
+                                "ipa": "/ˈmær.ɪdʒ/"
                             },
                             {
                                 "en": "ADAS",
                                 "es": "ADAS (Asistencia Avanzada)",
-                                "definition": "Advanced Driver Assistance Systems"
+                                "definition": "Advanced Driver Assistance Systems",
+                                "ipa": "/ˈeɪ.dæs/"
                             },
                             {
                                 "en": "Dyno Testing",
                                 "es": "Prueba en Dinamómetro",
-                                "definition": "Testing vehicle performance on rollers"
+                                "definition": "Testing vehicle performance on rollers",
+                                "ipa": "/ˈdaɪ.noʊ ˈtɛs.tɪŋ/"
                             },
                             {
                                 "en": "Laser Welding",
                                 "es": "Soldadura Láser",
-                                "definition": "High-precision joining using focused light"
+                                "definition": "High-precision joining using focused light",
+                                "ipa": "/ˈleɪ.zər ˈwɛl.dɪŋ/"
                             },
                             {
                                 "en": "Slurry",
                                 "es": "Pasta / Suspensión",
-                                "definition": "Wet mixture of active materials applied to metal foil"
+                                "definition": "Wet mixture of active materials applied to metal foil",
+                                "ipa": "/ˈslʌr.i/"
                             }
                         ],
                         "questions": [
@@ -7899,62 +8283,74 @@ var LXP_COURSES = {
                             {
                                 "en": "BMS (Battery Management System)",
                                 "es": "Sistema de Gestión de Baterías",
-                                "definition": "Electronic controller monitoring all battery functions"
+                                "definition": "Electronic controller monitoring all battery functions",
+                                "ipa": "/ˌbiː.ɛmˈɛs/"
                             },
                             {
                                 "en": "State of Charge (SoC)",
                                 "es": "Estado de Carga",
-                                "definition": "Percentage of battery energy remaining"
+                                "definition": "Percentage of battery energy remaining",
+                                "ipa": "/steɪt əv tʃɑːrdʒ/"
                             },
                             {
                                 "en": "State of Health (SoH)",
                                 "es": "Estado de Salud",
-                                "definition": "Remaining capacity vs. original capacity"
+                                "definition": "Remaining capacity vs. original capacity",
+                                "ipa": "/steɪt əv hɛlθ/"
                             },
                             {
                                 "en": "Cell Balancing",
                                 "es": "Balanceo de Celdas",
-                                "definition": "Equalizing energy across cells in a pack"
+                                "definition": "Equalizing energy across cells in a pack",
+                                "ipa": "/sɛl ˈbæl.ən.sɪŋ/"
                             },
                             {
                                 "en": "Contactor",
                                 "es": "Contactor",
-                                "definition": "High-voltage relay that connects/disconnects battery"
+                                "definition": "High-voltage relay that connects/disconnects battery",
+                                "ipa": "/kɒnˈtæk.tər/"
                             },
                             {
                                 "en": "Coulomb Counting",
                                 "es": "Conteo de Coulombs",
-                                "definition": "Tracking current flow to estimate charge level"
+                                "definition": "Tracking current flow to estimate charge level",
+                                "ipa": "/ˈkuː.lɒm ˈkaʊn.tɪŋ/"
                             },
                             {
                                 "en": "Thermal Runaway",
                                 "es": "Fuga Térmica",
-                                "definition": "Uncontrolled temperature rise causing battery failure"
+                                "definition": "Uncontrolled temperature rise causing battery failure",
+                                "ipa": "/ˈθɜːr.məl ˈrʌn.ə.weɪ/"
                             },
                             {
                                 "en": "Lithium Plating",
                                 "es": "Deposición de Litio",
-                                "definition": "Metallic lithium forming on anode in cold conditions"
+                                "definition": "Metallic lithium forming on anode in cold conditions",
+                                "ipa": "/ˈlɪθ.i.əm ˈpleɪ.tɪŋ/"
                             },
                             {
                                 "en": "CAN Bus",
                                 "es": "Bus CAN",
-                                "definition": "Communication protocol between vehicle systems"
+                                "definition": "Communication protocol between vehicle systems",
+                                "ipa": "/kæn bʌs/"
                             },
                             {
                                 "en": "Passive Balancing",
                                 "es": "Balanceo Pasivo",
-                                "definition": "Wasting excess energy as heat to equalize cells"
+                                "definition": "Wasting excess energy as heat to equalize cells",
+                                "ipa": "/ˈpæs.ɪv ˈbæl.ən.sɪŋ/"
                             },
                             {
                                 "en": "Active Balancing",
                                 "es": "Balanceo Activo",
-                                "definition": "Transferring energy between cells to equalize them"
+                                "definition": "Transferring energy between cells to equalize them",
+                                "ipa": "/ˈæk.tɪv ˈbæl.ən.sɪŋ/"
                             },
                             {
                                 "en": "ISO 26262",
                                 "es": "ISO 26262",
-                                "definition": "Functional safety standard for automotive electronics"
+                                "definition": "Functional safety standard for automotive electronics",
+                                "ipa": "/ˌaɪ.ɛs.ˈoʊ/"
                             }
                         ],
                         "questions": [
@@ -8017,52 +8413,62 @@ var LXP_COURSES = {
                             {
                                 "en": "Regenerative Braking",
                                 "es": "Frenado Regenerativo",
-                                "definition": "Recovery of kinetic energy as electricity during braking"
+                                "definition": "Recovery of kinetic energy as electricity during braking",
+                                "ipa": "/rɪˈdʒɛn.ər.ə.tɪv ˈbreɪ.kɪŋ/"
                             },
                             {
                                 "en": "Electromagnetic Induction",
                                 "es": "Inducción Electromagnética",
-                                "definition": "Generating electricity by moving a conductor through a magnetic field"
+                                "definition": "Generating electricity by moving a conductor through a magnetic field",
+                                "ipa": "/ɪˌlɛk.troʊ.mæɡˈnɛt.ɪk ɪnˈdʌk.ʃən/"
                             },
                             {
                                 "en": "One-Pedal Driving",
                                 "es": "Conducción de un Solo Pedal",
-                                "definition": "Driving mode where lifting the accelerator causes strong deceleration"
+                                "definition": "Driving mode where lifting the accelerator causes strong deceleration",
+                                "ipa": "/wʌn ˈpɛd.əl ˈdraɪ.vɪŋ/"
                             },
                             {
                                 "en": "Blended Braking",
                                 "es": "Frenado Combinado",
-                                "definition": "Combining regenerative and friction braking seamlessly"
+                                "definition": "Combining regenerative and friction braking seamlessly",
+                                "ipa": "/ˈblɛn.dɪd ˈbreɪ.kɪŋ/"
                             },
                             {
                                 "en": "Kinetic Energy",
                                 "es": "Energía Cinética",
-                                "definition": "Energy of a moving object"
+                                "definition": "Energy of a moving object",
+                                "ipa": "/kɪˈnɛt.ɪk ˈɛn.ər.dʒi/"
                             },
                             {
                                 "en": "Generator Mode",
                                 "es": "Modo Generador",
-                                "definition": "Motor operating in reverse to produce electricity"
+                                "definition": "Motor operating in reverse to produce electricity",
+                                "ipa": "/ˈdʒɛn.ə.reɪ.tər moʊd/"
                             },
                             {
                                 "en": "Friction Braking",
                                 "es": "Frenado por Fricción",
-                                "definition": "Traditional brakes using pads pressing against rotors"
+                                "definition": "Traditional brakes using pads pressing against rotors",
+                                "ipa": "/ˈfrɪk.ʃən ˈbreɪ.kɪŋ/"
                             },
                             {
                                 "en": "Regen Limit",
                                 "es": "Límite de Regeneración",
-                                "definition": "When the battery cannot accept regenerative energy"
+                                "definition": "When the battery cannot accept regenerative energy",
+                                "ipa": "/ˈriː.dʒɛn ˈlɪm.ɪt/"
                             },
                             {
                                 "en": "Faraday's Law",
                                 "es": "Ley de Faraday",
-                                "definition": "Physical law governing electromagnetic induction"
+                                "definition": "Physical law governing electromagnetic induction",
+                                "ipa": "/ˈfær.ə.deɪz lɔː/"
                             },
                             {
                                 "en": "Brake Pad",
                                 "es": "Pastilla de Freno",
-                                "definition": "Component that presses against the rotor to create friction"
+                                "definition": "Component that presses against the rotor to create friction",
+                                "ipa": "/breɪk pæd/"
                             }
                         ],
                         "questions": [
@@ -8125,52 +8531,62 @@ var LXP_COURSES = {
                             {
                                 "en": "Thermal Management",
                                 "es": "Gestión Térmica",
-                                "definition": "Controlling temperature of EV components"
+                                "definition": "Controlling temperature of EV components",
+                                "ipa": "/ˈθɜːr.məl ˈmæn.ɪdʒ.mənt/"
                             },
                             {
                                 "en": "Coolant",
                                 "es": "Refrigerante",
-                                "definition": "Liquid (water-glycol) circulating to absorb heat"
+                                "definition": "Liquid (water-glycol) circulating to absorb heat",
+                                "ipa": "/ˈkuː.lənt/"
                             },
                             {
                                 "en": "Radiator",
                                 "es": "Radiador",
-                                "definition": "Heat exchanger that dissipates heat to the air"
+                                "definition": "Heat exchanger that dissipates heat to the air",
+                                "ipa": "/ˈreɪ.di.eɪ.tər/"
                             },
                             {
                                 "en": "Chiller",
                                 "es": "Enfriador",
-                                "definition": "Refrigeration unit that cools liquid below ambient temperature"
+                                "definition": "Refrigeration unit that cools liquid below ambient temperature",
+                                "ipa": "/ˈtʃɪl.ər/"
                             },
                             {
                                 "en": "Heat Pump",
                                 "es": "Bomba de Calor",
-                                "definition": "Efficient device extracting heat from air for heating"
+                                "definition": "Efficient device extracting heat from air for heating",
+                                "ipa": "/hiːt pʌmp/"
                             },
                             {
                                 "en": "Battery Preconditioning",
                                 "es": "Preacondicionamiento de Batería",
-                                "definition": "Warming battery before fast charging"
+                                "definition": "Warming battery before fast charging",
+                                "ipa": "/ˈbæt.ər.i ˌpriː.kənˈdɪʃ.ən.ɪŋ/"
                             },
                             {
                                 "en": "Dielectric Fluid",
                                 "es": "Fluido Dieléctrico",
-                                "definition": "Non-conductive liquid used in immersion cooling"
+                                "definition": "Non-conductive liquid used in immersion cooling",
+                                "ipa": "/ˌdaɪ.ɪˈlɛk.trɪk ˈfluː.ɪd/"
                             },
                             {
                                 "en": "Lithium Plating",
                                 "es": "Deposición de Litio",
-                                "definition": "Dangerous metallic lithium forming on anode in cold"
+                                "definition": "Dangerous metallic lithium forming on anode in cold",
+                                "ipa": "/ˈlɪθ.i.əm ˈpleɪ.tɪŋ/"
                             },
                             {
                                 "en": "Thermal Runaway",
                                 "es": "Fuga Térmica",
-                                "definition": "Uncontrolled temperature chain reaction"
+                                "definition": "Uncontrolled temperature chain reaction",
+                                "ipa": "/ˈθɜːr.məl ˈrʌn.ə.weɪ/"
                             },
                             {
                                 "en": "Degradation",
                                 "es": "Degradación",
-                                "definition": "Gradual loss of battery capacity over time"
+                                "definition": "Gradual loss of battery capacity over time",
+                                "ipa": "/ˌdɛɡ.rəˈdeɪ.ʃən/"
                             }
                         ],
                         "questions": [
@@ -8233,62 +8649,74 @@ var LXP_COURSES = {
                             {
                                 "en": "High Voltage (HV)",
                                 "es": "Alto Voltaje (AV)",
-                                "definition": "Electrical systems above 60V DC or 30V AC"
+                                "definition": "Electrical systems above 60V DC or 30V AC",
+                                "ipa": "/haɪ ˈvoʊl.tɪdʒ/"
                             },
                             {
                                 "en": "Electrocution",
                                 "es": "Electrocución",
-                                "definition": "Injury or death from electric shock"
+                                "definition": "Injury or death from electric shock",
+                                "ipa": "/ɪˌlɛk.trəˈkjuː.ʃən/"
                             },
                             {
                                 "en": "Lockout/Tagout (LOTO)",
                                 "es": "Bloqueo/Etiquetado",
-                                "definition": "Procedure to ensure HV systems are safely de-energized"
+                                "definition": "Procedure to ensure HV systems are safely de-energized",
+                                "ipa": "/ˈlɒk.aʊt ˈtæɡ.aʊt/"
                             },
                             {
                                 "en": "Service Disconnect",
                                 "es": "Desconexión de Servicio",
-                                "definition": "Physical plug that breaks the HV circuit"
+                                "definition": "Physical plug that breaks the HV circuit",
+                                "ipa": "/ˈsɜːr.vɪs ˌdɪs.kəˈnɛkt/"
                             },
                             {
                                 "en": "Multimeter",
                                 "es": "Multímetro",
-                                "definition": "Instrument measuring voltage, current, resistance"
+                                "definition": "Instrument measuring voltage, current, resistance",
+                                "ipa": "/ˈmʌl.tɪˌmiː.tər/"
                             },
                             {
                                 "en": "PPE",
                                 "es": "EPP (Equipo de Protección Personal)",
-                                "definition": "Safety gear worn by workers"
+                                "definition": "Safety gear worn by workers",
+                                "ipa": "/ˌpiː.piːˈiː/"
                             },
                             {
                                 "en": "Arc Flash",
                                 "es": "Arco Eléctrico",
-                                "definition": "Explosion of energy from an electrical fault"
+                                "definition": "Explosion of energy from an electrical fault",
+                                "ipa": "/ɑːrk flæʃ/"
                             },
                             {
                                 "en": "ASIL",
                                 "es": "Nivel de Integridad de Seguridad Automotriz",
-                                "definition": "Risk classification under ISO 26262"
+                                "definition": "Risk classification under ISO 26262",
+                                "ipa": "/ˈeɪ.sɪl/"
                             },
                             {
                                 "en": "Contactor",
                                 "es": "Contactor",
-                                "definition": "High-voltage relay in the battery system"
+                                "definition": "High-voltage relay in the battery system",
+                                "ipa": "/kɒnˈtæk.tər/"
                             },
                             {
                                 "en": "Ventricular Fibrillation",
                                 "es": "Fibrilación Ventricular",
-                                "definition": "Lethal irregular heartbeat caused by electric shock"
+                                "definition": "Lethal irregular heartbeat caused by electric shock",
+                                "ipa": "/vɛnˈtrɪk.jʊ.lər ˌfɪb.rɪˈleɪ.ʃən/"
                             },
                             {
                                 "en": "Rescue Sheet",
                                 "es": "Hoja de Rescate",
-                                "definition": "Document showing first responders safe cut zones"
+                                "definition": "Document showing first responders safe cut zones",
+                                "ipa": "/ˈrɛs.kjuː ʃiːt/"
                             },
                             {
                                 "en": "Capacitor Discharge",
                                 "es": "Descarga de Capacitor",
-                                "definition": "Waiting for stored electrical charge to dissipate"
+                                "definition": "Waiting for stored electrical charge to dissipate",
+                                "ipa": "/kəˈpæs.ɪ.tər ˈdɪs.tʃɑːrdʒ/"
                             }
                         ],
                         "questions": [
@@ -8351,52 +8779,62 @@ var LXP_COURSES = {
                             {
                                 "en": "USMCA",
                                 "es": "T-MEC",
-                                "definition": "US-Mexico-Canada trade agreement (successor to NAFTA)"
+                                "definition": "US-Mexico-Canada trade agreement (successor to NAFTA)",
+                                "ipa": "/ˌjuː.ɛs.ɛmˈsiː.eɪ/"
                             },
                             {
                                 "en": "Tier 1 Supplier",
                                 "es": "Proveedor Nivel 1",
-                                "definition": "Company that supplies directly to automakers"
+                                "definition": "Company that supplies directly to automakers",
+                                "ipa": "/tɪr wʌn səˈplaɪ.ər/"
                             },
                             {
                                 "en": "IATF 16949",
                                 "es": "IATF 16949",
-                                "definition": "Automotive quality management standard"
+                                "definition": "Automotive quality management standard",
+                                "ipa": "/ˌaɪ.eɪ.tiːˈɛf/"
                             },
                             {
                                 "en": "NOM",
                                 "es": "NOM (Norma Oficial Mexicana)",
-                                "definition": "Mexican official technical standard"
+                                "definition": "Mexican official technical standard",
+                                "ipa": "/nɒm/"
                             },
                             {
                                 "en": "Firmware",
                                 "es": "Firmware",
-                                "definition": "Low-level software controlling electronic hardware"
+                                "definition": "Low-level software controlling electronic hardware",
+                                "ipa": "/ˈfɜːrm.wɛr/"
                             },
                             {
                                 "en": "SPC",
                                 "es": "Control Estadístico de Procesos",
-                                "definition": "Using statistics to monitor manufacturing quality"
+                                "definition": "Using statistics to monitor manufacturing quality",
+                                "ipa": "/ˌɛs.piːˈsiː/"
                             },
                             {
                                 "en": "SOP",
                                 "es": "Procedimiento Operativo Estándar",
-                                "definition": "Step-by-step work instruction"
+                                "definition": "Step-by-step work instruction",
+                                "ipa": "/ˌɛs.oʊˈpiː/"
                             },
                             {
                                 "en": "Charging Infrastructure",
                                 "es": "Infraestructura de Carga",
-                                "definition": "Network of EV charging stations"
+                                "definition": "Network of EV charging stations",
+                                "ipa": "/ˈtʃɑːr.dʒɪŋ ˈɪn.frə.strʌk.tʃər/"
                             },
                             {
                                 "en": "Regional Content",
                                 "es": "Contenido Regional",
-                                "definition": "Percentage of vehicle parts made in USMCA region"
+                                "definition": "Percentage of vehicle parts made in USMCA region",
+                                "ipa": "/ˈriː.dʒən.əl ˈkɒn.tɛnt/"
                             },
                             {
                                 "en": "Duty-Free",
                                 "es": "Libre de Aranceles",
-                                "definition": "Exempt from import taxes"
+                                "definition": "Exempt from import taxes",
+                                "ipa": "/ˈdjuː.ti friː/"
                             }
                         ],
                         "questions": [
@@ -8916,62 +9354,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Composite",
                                 "es": "Material Compuesto",
-                                "definition": "Material made from two or more different materials"
+                                "definition": "Material made from two or more different materials",
+                                "ipa": "/kəmˈpɒz.ɪt/"
                             },
                             {
                                 "en": "CFRP",
                                 "es": "Polímero Reforzado con Fibra de Carbono",
-                                "definition": "Carbon fiber + epoxy resin — stronger than steel, lighter"
+                                "definition": "Carbon fiber + epoxy resin — stronger than steel, lighter",
+                                "ipa": "/ˌsiː.ɛf.ɑːrˈpiː/"
                             },
                             {
                                 "en": "Alloy",
                                 "es": "Aleación",
-                                "definition": "A metal made by combining two or more elements"
+                                "definition": "A metal made by combining two or more elements",
+                                "ipa": "/ˈæl.ɔɪ/"
                             },
                             {
                                 "en": "Titanium",
                                 "es": "Titanio",
-                                "definition": "Strong, light, corrosion-resistant metal"
+                                "definition": "Strong, light, corrosion-resistant metal",
+                                "ipa": "/taɪˈteɪ.ni.əm/"
                             },
                             {
                                 "en": "Superalloy",
                                 "es": "Superaleación",
-                                "definition": "High-performance alloy resisting extreme temperatures"
+                                "definition": "High-performance alloy resisting extreme temperatures",
+                                "ipa": "/ˈsuː.pər.æl.ɔɪ/"
                             },
                             {
                                 "en": "Fatigue Resistance",
                                 "es": "Resistencia a la Fatiga",
-                                "definition": "Ability to withstand repeated stress without cracking"
+                                "definition": "Ability to withstand repeated stress without cracking",
+                                "ipa": "/fəˈtiːɡ rɪˈzɪs.təns/"
                             },
                             {
                                 "en": "Autoclave",
                                 "es": "Autoclave",
-                                "definition": "Pressurized oven for curing composite materials"
+                                "definition": "Pressurized oven for curing composite materials",
+                                "ipa": "/ˈɔː.toʊ.kleɪv/"
                             },
                             {
                                 "en": "Single Crystal",
                                 "es": "Monocristal / Cristal Único",
-                                "definition": "Material grown as one continuous crystal structure"
+                                "definition": "Material grown as one continuous crystal structure",
+                                "ipa": "/ˈsɪŋ.ɡəl ˈkrɪs.təl/"
                             },
                             {
                                 "en": "Strength-to-Weight Ratio",
                                 "es": "Relación Resistencia-Peso",
-                                "definition": "How strong a material is relative to its weight"
+                                "definition": "How strong a material is relative to its weight",
+                                "ipa": "/strɛŋθ tuː weɪt ˈreɪ.ʃi.oʊ/"
                             },
                             {
                                 "en": "Corrosion Resistance",
                                 "es": "Resistencia a la Corrosión",
-                                "definition": "Ability to resist chemical degradation"
+                                "definition": "Ability to resist chemical degradation",
+                                "ipa": "/kəˈroʊ.ʒən rɪˈzɪs.təns/"
                             },
                             {
                                 "en": "Epoxy Resin",
                                 "es": "Resina Epóxica",
-                                "definition": "Strong adhesive binding composite fibers together"
+                                "definition": "Strong adhesive binding composite fibers together",
+                                "ipa": "/ɪˈpɒk.si ˈrɛz.ɪn/"
                             },
                             {
                                 "en": "CMC",
                                 "es": "Compuesto de Matriz Cerámica",
-                                "definition": "Ceramic reinforced with fibers for extreme heat"
+                                "definition": "Ceramic reinforced with fibers for extreme heat",
+                                "ipa": "/ˌsiː.ɛmˈsiː/"
                             }
                         ],
                         "questions": [
@@ -9034,62 +9484,74 @@ var LXP_COURSES = {
                             {
                                 "en": "CNC (Computer Numerical Control)",
                                 "es": "Control Numérico Computarizado",
-                                "definition": "Computer-controlled precision machining"
+                                "definition": "Computer-controlled precision machining",
+                                "ipa": "/ˌsiː.ɛnˈsiː/"
                             },
                             {
                                 "en": "5-Axis Machining",
                                 "es": "Maquinado de 5 Ejes",
-                                "definition": "CNC with 5 degrees of movement for complex parts"
+                                "definition": "CNC with 5 degrees of movement for complex parts",
+                                "ipa": "/faɪv ˈæk.sɪs məˈʃiː.nɪŋ/"
                             },
                             {
                                 "en": "CAD (Computer-Aided Design)",
                                 "es": "Diseño Asistido por Computadora",
-                                "definition": "Software for creating 3D part designs"
+                                "definition": "Software for creating 3D part designs",
+                                "ipa": "/kæd/"
                             },
                             {
                                 "en": "G-code",
                                 "es": "Código G",
-                                "definition": "Programming language that controls CNC machines"
+                                "definition": "Programming language that controls CNC machines",
+                                "ipa": "/ˈdʒiː.koʊd/"
                             },
                             {
                                 "en": "CMM",
                                 "es": "Máquina de Medición por Coordenadas",
-                                "definition": "Precision measurement device for 3D verification"
+                                "definition": "Precision measurement device for 3D verification",
+                                "ipa": "/ˌsiː.ɛmˈɛm/"
                             },
                             {
                                 "en": "Milling",
                                 "es": "Fresado",
-                                "definition": "Removing material with a rotating cutting tool"
+                                "definition": "Removing material with a rotating cutting tool",
+                                "ipa": "/ˈmɪl.ɪŋ/"
                             },
                             {
                                 "en": "Turning",
                                 "es": "Torneado",
-                                "definition": "Machining cylindrical parts on a lathe"
+                                "definition": "Machining cylindrical parts on a lathe",
+                                "ipa": "/ˈtɜːr.nɪŋ/"
                             },
                             {
                                 "en": "EDM",
                                 "es": "Electroerosión",
-                                "definition": "Cutting hard materials using electrical sparks"
+                                "definition": "Cutting hard materials using electrical sparks",
+                                "ipa": "/ˌiː.diːˈɛm/"
                             },
                             {
                                 "en": "Delamination",
                                 "es": "Delaminación",
-                                "definition": "Layers of composite material separating"
+                                "definition": "Layers of composite material separating",
+                                "ipa": "/ˌdiː.læm.ɪˈneɪ.ʃən/"
                             },
                             {
                                 "en": "Surface Roughness (Ra)",
                                 "es": "Rugosidad Superficial",
-                                "definition": "Measure of surface smoothness"
+                                "definition": "Measure of surface smoothness",
+                                "ipa": "/ˈsɜːr.fɪs ˈrʌf.nəs/"
                             },
                             {
                                 "en": "Carbide Tooling",
                                 "es": "Herramienta de Carburo",
-                                "definition": "Very hard cutting tools for tough materials"
+                                "definition": "Very hard cutting tools for tough materials",
+                                "ipa": "/ˈkɑːr.baɪd ˈtuː.lɪŋ/"
                             },
                             {
                                 "en": "Tolerance",
                                 "es": "Tolerancia",
-                                "definition": "Acceptable deviation from specified dimension"
+                                "definition": "Acceptable deviation from specified dimension",
+                                "ipa": "/ˈtɒl.ər.əns/"
                             }
                         ],
                         "questions": [
@@ -9152,62 +9614,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Avionics",
                                 "es": "Aviónica",
-                                "definition": "Electronic systems used in aircraft"
+                                "definition": "Electronic systems used in aircraft",
+                                "ipa": "/ˌeɪ.viˈɒn.ɪks/"
                             },
                             {
                                 "en": "FMS (Flight Management System)",
                                 "es": "Sistema de Gestión de Vuelo",
-                                "definition": "Computer managing flight routes and navigation"
+                                "definition": "Computer managing flight routes and navigation",
+                                "ipa": "/ˌɛf.ɛmˈɛs/"
                             },
                             {
                                 "en": "Glass Cockpit",
                                 "es": "Cabina de Cristal",
-                                "definition": "Digital display-based cockpit (replacing analog gauges)"
+                                "definition": "Digital display-based cockpit (replacing analog gauges)",
+                                "ipa": "/ɡlæs ˈkɒk.pɪt/"
                             },
                             {
                                 "en": "Wire Harness",
                                 "es": "Arnés de Cableado",
-                                "definition": "Organized bundle of wires connecting aircraft systems"
+                                "definition": "Organized bundle of wires connecting aircraft systems",
+                                "ipa": "/waɪr ˈhɑːr.nɪs/"
                             },
                             {
                                 "en": "Connector",
                                 "es": "Conector",
-                                "definition": "Component joining two wires or circuits"
+                                "definition": "Component joining two wires or circuits",
+                                "ipa": "/kəˈnɛk.tər/"
                             },
                             {
                                 "en": "Autopilot",
                                 "es": "Piloto Automático",
-                                "definition": "System that flies the aircraft without manual input"
+                                "definition": "System that flies the aircraft without manual input",
+                                "ipa": "/ˈɔː.toʊ.paɪ.lət/"
                             },
                             {
                                 "en": "IPC/WHMA-A-620",
                                 "es": "IPC/WHMA-A-620",
-                                "definition": "Industry standard for wire harness quality"
+                                "definition": "Industry standard for wire harness quality",
+                                "ipa": "/ˌaɪ.piːˈsiː/"
                             },
                             {
                                 "en": "Circuit Breaker",
                                 "es": "Interruptor de Circuito",
-                                "definition": "Safety device that cuts power during overload"
+                                "definition": "Safety device that cuts power during overload",
+                                "ipa": "/ˈsɜːr.kɪt ˈbreɪ.kər/"
                             },
                             {
                                 "en": "MEA (More Electric Aircraft)",
                                 "es": "Aeronave Más Eléctrica",
-                                "definition": "Aircraft replacing hydraulics with electric systems"
+                                "definition": "Aircraft replacing hydraulics with electric systems",
+                                "ipa": "/ˌɛm.iːˈeɪ/"
                             },
                             {
                                 "en": "Actuator",
                                 "es": "Actuador",
-                                "definition": "Device converting energy into physical movement"
+                                "definition": "Device converting energy into physical movement",
+                                "ipa": "/ˈæk.tʃu.eɪ.tər/"
                             },
                             {
                                 "en": "Crimp",
                                 "es": "Crimpar / Engarzar",
-                                "definition": "Joining wire to a connector by compression"
+                                "definition": "Joining wire to a connector by compression",
+                                "ipa": "/krɪmp/"
                             },
                             {
                                 "en": "TCAS",
                                 "es": "Sistema de Alerta Anticolisión",
-                                "definition": "System preventing mid-air collisions"
+                                "definition": "System preventing mid-air collisions",
+                                "ipa": "/ˈtiː.kæs/"
                             }
                         ],
                         "questions": [
@@ -9270,62 +9744,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Turbofan",
                                 "es": "Turbofán",
-                                "definition": "Most common jet engine type — fan + gas turbine"
+                                "definition": "Most common jet engine type — fan + gas turbine",
+                                "ipa": "/ˈtɜːr.boʊ.fæn/"
                             },
                             {
                                 "en": "Compressor",
                                 "es": "Compresor",
-                                "definition": "Engine section that compresses incoming air"
+                                "definition": "Engine section that compresses incoming air",
+                                "ipa": "/kəmˈprɛs.ər/"
                             },
                             {
                                 "en": "Combustion Chamber",
                                 "es": "Cámara de Combustión",
-                                "definition": "Where fuel and air mix and ignite"
+                                "definition": "Where fuel and air mix and ignite",
+                                "ipa": "/kəmˈbʌs.tʃən ˈtʃeɪm.bər/"
                             },
                             {
                                 "en": "Turbine Blade",
                                 "es": "Álabe / Aspa de Turbina",
-                                "definition": "High-temperature rotating blade extracting energy from hot gases"
+                                "definition": "High-temperature rotating blade extracting energy from hot gases",
+                                "ipa": "/ˈtɜːr.baɪn bleɪd/"
                             },
                             {
                                 "en": "Single-Crystal Casting",
                                 "es": "Fundición Monocristalina",
-                                "definition": "Growing a blade as one crystal for maximum strength"
+                                "definition": "Growing a blade as one crystal for maximum strength",
+                                "ipa": "/ˈsɪŋ.ɡəl ˈkrɪs.təl ˈkæs.tɪŋ/"
                             },
                             {
                                 "en": "Investment Casting",
                                 "es": "Fundición a la Cera Perdida",
-                                "definition": "Lost-wax casting process for complex shapes"
+                                "definition": "Lost-wax casting process for complex shapes",
+                                "ipa": "/ɪnˈvɛst.mənt ˈkæs.tɪŋ/"
                             },
                             {
                                 "en": "Thermal Barrier Coating (TBC)",
                                 "es": "Recubrimiento de Barrera Térmica",
-                                "definition": "Ceramic layer insulating metal from extreme heat"
+                                "definition": "Ceramic layer insulating metal from extreme heat",
+                                "ipa": "/ˈθɜːr.məl ˈbær.i.ər ˈkoʊ.tɪŋ/"
                             },
                             {
                                 "en": "Bypass Ratio",
                                 "es": "Relación de Derivación",
-                                "definition": "Ratio of air bypassing vs entering the core"
+                                "definition": "Ratio of air bypassing vs entering the core",
+                                "ipa": "/ˈbaɪ.pæs ˈreɪ.ʃi.oʊ/"
                             },
                             {
                                 "en": "Creep Resistance",
                                 "es": "Resistencia al Flujo Plástico",
-                                "definition": "Ability to resist deformation under sustained heat and stress"
+                                "definition": "Ability to resist deformation under sustained heat and stress",
+                                "ipa": "/kriːp rɪˈzɪs.təns/"
                             },
                             {
                                 "en": "Grain Boundary",
                                 "es": "Límite de Grano",
-                                "definition": "Interface between crystal grains — a weak point at high temperature"
+                                "definition": "Interface between crystal grains — a weak point at high temperature",
+                                "ipa": "/ɡreɪn ˈbaʊn.dri/"
                             },
                             {
                                 "en": "RPM",
                                 "es": "RPM (Revoluciones Por Minuto)",
-                                "definition": "Rotational speed of engine components"
+                                "definition": "Rotational speed of engine components",
+                                "ipa": "/ˌɑːr.piːˈɛm/"
                             },
                             {
                                 "en": "Thrust",
                                 "es": "Empuje",
-                                "definition": "Forward force generated by the engine"
+                                "definition": "Forward force generated by the engine",
+                                "ipa": "/θrʌst/"
                             }
                         ],
                         "questions": [
@@ -9388,62 +9874,74 @@ var LXP_COURSES = {
                             {
                                 "en": "NDT (Non-Destructive Testing)",
                                 "es": "Pruebas No Destructivas",
-                                "definition": "Inspection methods that don't damage the part"
+                                "definition": "Inspection methods that don't damage the part",
+                                "ipa": "/ˌɛn.diːˈtiː/"
                             },
                             {
                                 "en": "Ultrasonic Testing (UT)",
                                 "es": "Prueba Ultrasónica",
-                                "definition": "Using sound waves to detect internal flaws"
+                                "definition": "Using sound waves to detect internal flaws",
+                                "ipa": "/ˌʌl.trə.ˈsɒn.ɪk ˈtɛs.tɪŋ/"
                             },
                             {
                                 "en": "Radiographic Testing (RT)",
                                 "es": "Prueba Radiográfica",
-                                "definition": "Using X-rays to image internal structure"
+                                "definition": "Using X-rays to image internal structure",
+                                "ipa": "/ˌreɪ.di.oʊˈɡræf.ɪk ˈtɛs.tɪŋ/"
                             },
                             {
                                 "en": "Eddy Current Testing (ET)",
                                 "es": "Prueba de Corrientes Inducidas",
-                                "definition": "Electromagnetic method for surface/near-surface cracks"
+                                "definition": "Electromagnetic method for surface/near-surface cracks",
+                                "ipa": "/ˈɛd.i ˈkʌr.ənt ˈtɛs.tɪŋ/"
                             },
                             {
                                 "en": "Liquid Penetrant (PT)",
                                 "es": "Líquidos Penetrantes",
-                                "definition": "Dye seeps into surface cracks to reveal them"
+                                "definition": "Dye seeps into surface cracks to reveal them",
+                                "ipa": "/ˈlɪk.wɪd ˈpɛn.ɪ.trənt/"
                             },
                             {
                                 "en": "Phased Array",
                                 "es": "Arreglo de Fase",
-                                "definition": "Advanced ultrasonic technique with multiple elements"
+                                "definition": "Advanced ultrasonic technique with multiple elements",
+                                "ipa": "/feɪzd əˈreɪ/"
                             },
                             {
                                 "en": "ASNT",
                                 "es": "ASNT",
-                                "definition": "American Society for Nondestructive Testing"
+                                "definition": "American Society for Nondestructive Testing",
+                                "ipa": "/ˌeɪ.ɛs.ɛnˈtiː/"
                             },
                             {
                                 "en": "NAS 410",
                                 "es": "NAS 410",
-                                "definition": "Aerospace NDT personnel certification standard"
+                                "definition": "Aerospace NDT personnel certification standard",
+                                "ipa": "/næs/"
                             },
                             {
                                 "en": "Transducer",
                                 "es": "Transductor",
-                                "definition": "Device converting electrical signals to sound waves"
+                                "definition": "Device converting electrical signals to sound waves",
+                                "ipa": "/trænzˈdjuː.sər/"
                             },
                             {
                                 "en": "Porosity",
                                 "es": "Porosidad",
-                                "definition": "Small holes or voids in a material"
+                                "definition": "Small holes or voids in a material",
+                                "ipa": "/pɔːˈrɒs.ɪ.ti/"
                             },
                             {
                                 "en": "Borescope",
                                 "es": "Boroscopio",
-                                "definition": "Camera on flexible tube for internal inspection"
+                                "definition": "Camera on flexible tube for internal inspection",
+                                "ipa": "/ˈbɔːr.skoʊp/"
                             },
                             {
                                 "en": "Discontinuity",
                                 "es": "Discontinuidad",
-                                "definition": "Any interruption in the normal structure of a material"
+                                "definition": "Any interruption in the normal structure of a material",
+                                "ipa": "/ˌdɪs.kɒn.tɪˈnjuː.ɪ.ti/"
                             }
                         ],
                         "questions": [
@@ -9506,62 +10004,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Final Assembly Line (FAL)",
                                 "es": "Línea de Ensamble Final",
-                                "definition": "Where all major aircraft sections are joined together"
+                                "definition": "Where all major aircraft sections are joined together",
+                                "ipa": "/ˈfaɪ.nəl əˈsɛm.bli laɪn/"
                             },
                             {
                                 "en": "Rivet",
                                 "es": "Remache",
-                                "definition": "Metal fastener joining two sheets permanently"
+                                "definition": "Metal fastener joining two sheets permanently",
+                                "ipa": "/ˈrɪv.ɪt/"
                             },
                             {
                                 "en": "Fuselage",
                                 "es": "Fuselaje",
-                                "definition": "Main body tube of the aircraft"
+                                "definition": "Main body tube of the aircraft",
+                                "ipa": "/ˈfjuː.zəl.ɑːʒ/"
                             },
                             {
                                 "en": "Empennage",
                                 "es": "Empenaje / Cola",
-                                "definition": "Tail section (horizontal + vertical stabilizer)"
+                                "definition": "Tail section (horizontal + vertical stabilizer)",
+                                "ipa": "/ˌɛm.pɪˈnɑːʒ/"
                             },
                             {
                                 "en": "Stringer",
                                 "es": "Larguerillo",
-                                "definition": "Longitudinal structural member reinforcing the skin"
+                                "definition": "Longitudinal structural member reinforcing the skin",
+                                "ipa": "/ˈstrɪŋ.ər/"
                             },
                             {
                                 "en": "Bulkhead",
                                 "es": "Mamparo",
-                                "definition": "Vertical partition dividing the fuselage into sections"
+                                "definition": "Vertical partition dividing the fuselage into sections",
+                                "ipa": "/ˈbʊlk.hɛd/"
                             },
                             {
                                 "en": "Pylon",
                                 "es": "Pilón",
-                                "definition": "Structure connecting engine to wing"
+                                "definition": "Structure connecting engine to wing",
+                                "ipa": "/ˈpaɪ.lɒn/"
                             },
                             {
                                 "en": "Friction Stir Welding",
                                 "es": "Soldadura por Fricción",
-                                "definition": "Solid-state welding using a rotating tool"
+                                "definition": "Solid-state welding using a rotating tool",
+                                "ipa": "/ˈfrɪk.ʃən stɜːr ˈwɛl.dɪŋ/"
                             },
                             {
                                 "en": "Adhesive Bonding",
                                 "es": "Unión Adhesiva",
-                                "definition": "Joining parts with structural glue"
+                                "definition": "Joining parts with structural glue",
+                                "ipa": "/ədˈhiː.sɪv ˈbɒn.dɪŋ/"
                             },
                             {
                                 "en": "Laser Tracker",
                                 "es": "Rastreador Láser",
-                                "definition": "Precision measurement device for large assemblies"
+                                "definition": "Precision measurement device for large assemblies",
+                                "ipa": "/ˈleɪ.zər ˈtræk.ər/"
                             },
                             {
                                 "en": "Hi-Lok Fastener",
                                 "es": "Sujetador Hi-Lok",
-                                "definition": "High-strength aerospace fastener"
+                                "definition": "High-strength aerospace fastener",
+                                "ipa": "/haɪ lɒk ˈfæs.ən.ər/"
                             },
                             {
                                 "en": "IFE (In-Flight Entertainment)",
                                 "es": "Entretenimiento a Bordo",
-                                "definition": "Passenger entertainment system"
+                                "definition": "Passenger entertainment system",
+                                "ipa": "/ˌaɪ.ɛfˈiː/"
                             }
                         ],
                         "questions": [
@@ -9624,62 +10134,74 @@ var LXP_COURSES = {
                             {
                                 "en": "AS9100D",
                                 "es": "AS9100D",
-                                "definition": "International aerospace quality management standard"
+                                "definition": "International aerospace quality management standard",
+                                "ipa": "/ˌeɪ.ɛs.naɪn.wʌn.hʌn.drəd.ˈdiː/"
                             },
                             {
                                 "en": "NADCAP",
                                 "es": "NADCAP",
-                                "definition": "Special process accreditation for aerospace"
+                                "definition": "Special process accreditation for aerospace",
+                                "ipa": "/ˈnæd.kæp/"
                             },
                             {
                                 "en": "First Article Inspection (FAI)",
                                 "es": "Inspección del Primer Artículo",
-                                "definition": "Complete verification of the first part produced"
+                                "definition": "Complete verification of the first part produced",
+                                "ipa": "/fɜːrst ˈɑːr.tɪ.kəl ɪnˈspɛk.ʃən/"
                             },
                             {
                                 "en": "FMEA",
                                 "es": "Análisis de Modo y Efecto de Falla",
-                                "definition": "Systematic analysis of potential failure modes"
+                                "definition": "Systematic analysis of potential failure modes",
+                                "ipa": "/ˌɛf.ɛm.iːˈeɪ/"
                             },
                             {
                                 "en": "Traceability",
                                 "es": "Trazabilidad",
-                                "definition": "Tracking every part back to raw materials and processes"
+                                "definition": "Tracking every part back to raw materials and processes",
+                                "ipa": "/ˌtreɪ.sə.ˈbɪl.ɪ.ti/"
                             },
                             {
                                 "en": "Non-Conformance (NC)",
                                 "es": "No Conformidad",
-                                "definition": "A part or process that doesn't meet requirements"
+                                "definition": "A part or process that doesn't meet requirements",
+                                "ipa": "/ˌnɒn.kənˈfɔːr.məns/"
                             },
                             {
                                 "en": "Configuration Management",
                                 "es": "Gestión de Configuración",
-                                "definition": "Tracking all changes to product design and documentation"
+                                "definition": "Tracking all changes to product design and documentation",
+                                "ipa": "/kənˌfɪɡ.jʊˈreɪ.ʃən ˈmæn.ɪdʒ.mənt/"
                             },
                             {
                                 "en": "Flow-Down",
                                 "es": "Flujo de Requisitos",
-                                "definition": "Passing quality requirements to all suppliers in the chain"
+                                "definition": "Passing quality requirements to all suppliers in the chain",
+                                "ipa": "/ˈfloʊ.daʊn/"
                             },
                             {
                                 "en": "Counterfeit Part",
                                 "es": "Parte Falsificada",
-                                "definition": "Unapproved or fraudulent component"
+                                "definition": "Unapproved or fraudulent component",
+                                "ipa": "/ˈkaʊn.tər.fɪt pɑːrt/"
                             },
                             {
                                 "en": "Special Process",
                                 "es": "Proceso Especial",
-                                "definition": "Process whose quality can't be fully verified by inspection alone"
+                                "definition": "Process whose quality can't be fully verified by inspection alone",
+                                "ipa": "/ˈspɛʃ.əl ˈprɒs.ɛs/"
                             },
                             {
                                 "en": "Heat Lot",
                                 "es": "Lote de Fundición",
-                                "definition": "A batch of metal from the same melting/processing"
+                                "definition": "A batch of metal from the same melting/processing",
+                                "ipa": "/hiːt lɒt/"
                             },
                             {
                                 "en": "Stop-Ship",
                                 "es": "Detención de Envío",
-                                "definition": "Immediate halt to shipping any product"
+                                "definition": "Immediate halt to shipping any product",
+                                "ipa": "/stɒp ʃɪp/"
                             }
                         ],
                         "questions": [
@@ -9742,62 +10264,74 @@ var LXP_COURSES = {
                             {
                                 "en": "Aerospace Cluster",
                                 "es": "Clúster Aeroespacial",
-                                "definition": "Geographic concentration of aerospace companies"
+                                "definition": "Geographic concentration of aerospace companies",
+                                "ipa": "/ˈɛr.oʊ.speɪs ˈklʌs.tər/"
                             },
                             {
                                 "en": "MRO",
                                 "es": "MRO (Mantenimiento, Reparación, Revisión)",
-                                "definition": "Maintenance, Repair, and Overhaul of aircraft"
+                                "definition": "Maintenance, Repair, and Overhaul of aircraft",
+                                "ipa": "/ˌɛm.ɑːrˈoʊ/"
                             },
                             {
                                 "en": "A&P License",
                                 "es": "Licencia A&P",
-                                "definition": "Airframe and Powerplant mechanic certification"
+                                "definition": "Airframe and Powerplant mechanic certification",
+                                "ipa": "/ˌeɪ.ən ˈpiː ˈlaɪ.səns/"
                             },
                             {
                                 "en": "UNAQ",
                                 "es": "UNAQ",
-                                "definition": "Universidad Nacional Aeronáutica de Querétaro"
+                                "definition": "Universidad Nacional Aeronáutica de Querétaro",
+                                "ipa": "/ˈjuː.næk/"
                             },
                             {
                                 "en": "Binational Megaregion",
                                 "es": "Megaregión Binacional",
-                                "definition": "Cross-border industrial zone (e.g., Sonora-Arizona)"
+                                "definition": "Cross-border industrial zone (e.g., Sonora-Arizona)",
+                                "ipa": "/ˌbaɪˈnæʃ.ən.əl ˈmɛɡ.ə.riː.dʒən/"
                             },
                             {
                                 "en": "NCR (Non-Conformance Report)",
                                 "es": "Reporte de No Conformidad",
-                                "definition": "Document recording a quality deviation"
+                                "definition": "Document recording a quality deviation",
+                                "ipa": "/ˌɛn.siːˈɑːr/"
                             },
                             {
                                 "en": "SOP (Standard Operating Procedure)",
                                 "es": "Procedimiento Operativo Estándar",
-                                "definition": "Step-by-step work instruction"
+                                "definition": "Step-by-step work instruction",
+                                "ipa": "/ˌɛs.oʊˈpiː/"
                             },
                             {
                                 "en": "Fixture",
                                 "es": "Dispositivo / Fixture",
-                                "definition": "Tool that holds a part in position during manufacturing"
+                                "definition": "Tool that holds a part in position during manufacturing",
+                                "ipa": "/ˈfɪks.tʃər/"
                             },
                             {
                                 "en": "Stress Analysis",
                                 "es": "Análisis de Esfuerzos",
-                                "definition": "Engineering analysis of forces on a structure"
+                                "definition": "Engineering analysis of forces on a structure",
+                                "ipa": "/strɛs əˈnæl.ɪ.sɪs/"
                             },
                             {
                                 "en": "Lay-up",
                                 "es": "Laminado",
-                                "definition": "Process of placing composite fiber sheets in a mold"
+                                "definition": "Process of placing composite fiber sheets in a mold",
+                                "ipa": "/ˈleɪ.ʌp/"
                             },
                             {
                                 "en": "Work Instruction",
                                 "es": "Instrucción de Trabajo",
-                                "definition": "Detailed guide for performing a specific task"
+                                "definition": "Detailed guide for performing a specific task",
+                                "ipa": "/wɜːrk ɪnˈstrʌk.ʃən/"
                             },
                             {
                                 "en": "Nearshoring",
                                 "es": "Nearshoring",
-                                "definition": "Relocating manufacturing closer to the end market"
+                                "definition": "Relocating manufacturing closer to the end market",
+                                "ipa": "/ˈnɪr.ʃɔːr.ɪŋ/"
                             }
                         ],
                         "questions": [
@@ -11283,17 +11817,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Sintering",
                                 "es": "Sinterización",
-                                "definition": "The process of compacting and forming a solid mass of material by heat or pressure without melting it to the point of liquefaction."
+                                "definition": "The process of compacting and forming a solid mass of material by heat or pressure without melting it to the point of liquefaction.",
+                                "ipa": "/ˈsɪn.tər.ɪŋ/"
                             },
                             {
                                 "en": "Powder-bed fusion",
                                 "es": "Fusión de lecho de polvo",
-                                "definition": "An additive manufacturing process in which thermal energy selectively fuses regions of a powder bed."
+                                "definition": "An additive manufacturing process in which thermal energy selectively fuses regions of a powder bed.",
+                                "ipa": "/ˈpaʊ.dɚ bɛd ˈfjuː.ʒən/"
                             },
                             {
                                 "en": "Topology optimization",
                                 "es": "Optimización topológica",
-                                "definition": "A mathematical method that optimizes material layout within a given design space."
+                                "definition": "A mathematical method that optimizes material layout within a given design space.",
+                                "ipa": "/təˌpɒl.ə.dʒi ˌɒp.tɪ.maɪˈzeɪ.ʃən/"
                             }
                         ]
                     }
@@ -11315,17 +11852,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Digital Twin",
                                 "es": "Gemelo Digital",
-                                "definition": "A virtual representation that serves as the real-time digital counterpart of a physical object or process."
+                                "definition": "A virtual representation that serves as the real-time digital counterpart of a physical object or process.",
+                                "ipa": "/ˈdɪdʒ.ɪ.təl twɪn/"
                             },
                             {
                                 "en": "Kinematics",
                                 "es": "Cinemática",
-                                "definition": "The branch of mechanics concerned with the motion of objects without reference to the forces which cause the motion."
+                                "definition": "The branch of mechanics concerned with the motion of objects without reference to the forces which cause the motion.",
+                                "ipa": "/ˌkɪn.ɪˈmæt.ɪks/"
                             },
                             {
                                 "en": "Throughput",
                                 "es": "Rendimiento / Tasa de producción",
-                                "definition": "The amount of material or items passing through a system or process."
+                                "definition": "The amount of material or items passing through a system or process.",
+                                "ipa": "/ˈθruː.pʊt/"
                             }
                         ]
                     }
@@ -11347,17 +11887,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Subtractive Manufacturing",
                                 "es": "Manufactura Sustractiva",
-                                "definition": "Manufacturing processes that remove material from a solid block to produce a part."
+                                "definition": "Manufacturing processes that remove material from a solid block to produce a part.",
+                                "ipa": "/səbˈtræk.tɪv ˌmæn.jʊˈfæk.tʃər.ɪŋ/"
                             },
                             {
                                 "en": "Spindle",
                                 "es": "Husillo",
-                                "definition": "The rotating axis of the machine, which often holds the cutting tool."
+                                "definition": "The rotating axis of the machine, which often holds the cutting tool.",
+                                "ipa": "/ˈspɪn.dəl/"
                             },
                             {
                                 "en": "Tolerance",
                                 "es": "Tolerancia",
-                                "definition": "The allowable limit or limits of variation in a physical dimension."
+                                "definition": "The allowable limit or limits of variation in a physical dimension.",
+                                "ipa": "/ˈtɒl.ər.əns/"
                             }
                         ]
                     }
@@ -11379,17 +11922,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Downtime",
                                 "es": "Tiempo de inactividad / Paro",
-                                "definition": "Time during which a machine, especially a computer, is out of action or unavailable for use."
+                                "definition": "Time during which a machine, especially a computer, is out of action or unavailable for use.",
+                                "ipa": "/ˈdaʊn.taɪm/"
                             },
                             {
                                 "en": "Scrap",
                                 "es": "Desecho / Chatarra",
-                                "definition": "Manufactured parts that do not meet quality standards and must be discarded or melted down."
+                                "definition": "Manufactured parts that do not meet quality standards and must be discarded or melted down.",
+                                "ipa": "/skræp/"
                             },
                             {
                                 "en": "Changeover",
                                 "es": "Cambio de formato / Cambio de modelo",
-                                "definition": "The process of converting a line or machine from running one product to another."
+                                "definition": "The process of converting a line or machine from running one product to another.",
+                                "ipa": "/ˈtʃeɪndʒˌoʊ.vər/"
                             }
                         ]
                     }
@@ -11404,7 +11950,7 @@ var LXP_COURSES = {
         "titleEN": "Industrial Engineering & Operations",
         "category": "engineering",
         "level": "A2-B1",
-        "status": "full",
+        "status": "blueprint",
         "totalModules": 5,
         "standard": "USMCA T-MEC / Six Sigma Black Belt / APICS CSCP",
         "conocer": "EC0301 (Operaciones de Comercio Exterior y Logística)",
@@ -11762,17 +12308,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Closed-loop",
                                 "es": "Lazo cerrado / Bucle cerrado",
-                                "definition": "A control system that uses feedback from the output to control the input."
+                                "definition": "A control system that uses feedback from the output to control the input.",
+                                "ipa": "/kloʊzd luːp/"
                             },
                             {
                                 "en": "Encoder",
                                 "es": "Codificador (Sensor de posición)",
-                                "definition": "A sensor that translates mechanical motion into electrical signals to report position or speed."
+                                "definition": "A sensor that translates mechanical motion into electrical signals to report position or speed.",
+                                "ipa": "/ɪnˈkoʊ.dər/"
                             },
                             {
                                 "en": "Overshoot",
                                 "es": "Sobrepaso",
-                                "definition": "When a system exceeds its target before correcting itself."
+                                "definition": "When a system exceeds its target before correcting itself.",
+                                "ipa": "/ˈoʊ.vər.ʃuːt/"
                             }
                         ]
                     }
@@ -11794,17 +12343,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Compressible",
                                 "es": "Compresible",
-                                "definition": "Capable of being reduced in volume by pressure (like air)."
+                                "definition": "Capable of being reduced in volume by pressure (like air).",
+                                "ipa": "/kəmˈprɛs.ɪ.bəl/"
                             },
                             {
                                 "en": "Solenoid valve",
                                 "es": "Electroválvula",
-                                "definition": "An electromechanically operated valve used to control the flow of fluid or air."
+                                "definition": "An electromechanically operated valve used to control the flow of fluid or air.",
+                                "ipa": "/ˈsoʊ.lɪ.nɔɪd vælv/"
                             },
                             {
                                 "en": "Cylinder",
                                 "es": "Cilindro / Pistón",
-                                "definition": "An actuator that creates linear motion using fluid power."
+                                "definition": "An actuator that creates linear motion using fluid power.",
+                                "ipa": "/ˈsɪl.ɪn.dər/"
                             }
                         ]
                     }
@@ -11826,17 +12378,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Backlash",
                                 "es": "Juego mecánico / Holgura",
-                                "definition": "The clearance or lost motion in a mechanism caused by gaps between the parts."
+                                "definition": "The clearance or lost motion in a mechanism caused by gaps between the parts.",
+                                "ipa": "/ˈbæk.læʃ/"
                             },
                             {
                                 "en": "Harmonic Drive",
                                 "es": "Reductor armónico",
-                                "definition": "A type of gear system that can improve certain characteristics compared to traditional gearing, specifically zero backlash."
+                                "definition": "A type of gear system that can improve certain characteristics compared to traditional gearing, specifically zero backlash.",
+                                "ipa": "/hɑːrˈmɒn.ɪk draɪv/"
                             },
                             {
                                 "en": "Bearing",
                                 "es": "Rodamiento / Balero",
-                                "definition": "A machine element that constrains relative motion to only the desired motion, and reduces friction between moving parts."
+                                "definition": "A machine element that constrains relative motion to only the desired motion, and reduces friction between moving parts.",
+                                "ipa": "/ˈbɛr.ɪŋ/"
                             }
                         ]
                     }
@@ -11858,17 +12413,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Conduction",
                                 "es": "Conducción",
-                                "definition": "The transfer of heat through a solid material from a region of higher temperature to lower temperature."
+                                "definition": "The transfer of heat through a solid material from a region of higher temperature to lower temperature.",
+                                "ipa": "/kənˈdʌk.ʃən/"
                             },
                             {
                                 "en": "Convection",
                                 "es": "Convección",
-                                "definition": "The transfer of heat by the circulation or movement of the heated parts of a liquid or gas."
+                                "definition": "The transfer of heat by the circulation or movement of the heated parts of a liquid or gas.",
+                                "ipa": "/kənˈvɛk.ʃən/"
                             },
                             {
                                 "en": "Heat Pipe",
                                 "es": "Tubo de calor",
-                                "definition": "A heat-transfer device that combines the principles of both thermal conductivity and phase transition."
+                                "definition": "A heat-transfer device that combines the principles of both thermal conductivity and phase transition.",
+                                "ipa": "/hiːt paɪp/"
                             }
                         ]
                     }
@@ -12193,17 +12751,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Genome",
                                 "es": "Genoma",
-                                "definition": "The complete set of genes or genetic material present in a cell or organism."
+                                "definition": "The complete set of genes or genetic material present in a cell or organism.",
+                                "ipa": "/ˈdʒiː.noʊm/"
                             },
                             {
                                 "en": "Enzyme",
                                 "es": "Enzima",
-                                "definition": "A substance produced by a living organism which acts as a catalyst to bring about a specific biochemical reaction."
+                                "definition": "A substance produced by a living organism which acts as a catalyst to bring about a specific biochemical reaction.",
+                                "ipa": "/ˈɛn.zaɪm/"
                             },
                             {
                                 "en": "Knock-out",
                                 "es": "Inactivación genética (Knock-out)",
-                                "definition": "A genetic technique in which an organism is engineered to carry genes that have been made inoperative."
+                                "definition": "A genetic technique in which an organism is engineered to carry genes that have been made inoperative.",
+                                "ipa": "/ˈnɒk.aʊt/"
                             }
                         ]
                     }
@@ -12225,17 +12786,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Downstream processing",
                                 "es": "Procesamiento descendente",
-                                "definition": "The recovery and purification of biosynthetic products from natural sources such as animal or bacterial tissue."
+                                "definition": "The recovery and purification of biosynthetic products from natural sources such as animal or bacterial tissue.",
+                                "ipa": "/ˌdaʊnˈstriːm ˈprɒs.ɛs.ɪŋ/"
                             },
                             {
                                 "en": "Chromatography",
                                 "es": "Cromatografía",
-                                "definition": "A laboratory technique for the separation of a mixture into its components."
+                                "definition": "A laboratory technique for the separation of a mixture into its components.",
+                                "ipa": "/ˌkroʊ.məˈtɒɡ.rə.fi/"
                             },
                             {
                                 "en": "Centrifuge",
                                 "es": "Centrífuga",
-                                "definition": "A machine with a rapidly rotating container that applies centrifugal force to its contents to separate fluids of different densities."
+                                "definition": "A machine with a rapidly rotating container that applies centrifugal force to its contents to separate fluids of different densities.",
+                                "ipa": "/ˈsɛn.trɪ.fjuːdʒ/"
                             }
                         ]
                     }
@@ -12257,17 +12821,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Cleanroom",
                                 "es": "Cuarto limpio / Sala blanca",
-                                "definition": "An engineered space that maintains a very low concentration of airborne particulates."
+                                "definition": "An engineered space that maintains a very low concentration of airborne particulates.",
+                                "ipa": "/ˈkliːn.ruːm/"
                             },
                             {
                                 "en": "Sterile",
                                 "es": "Estéril",
-                                "definition": "Free from bacteria or other living microorganisms; totally clean."
+                                "definition": "Free from bacteria or other living microorganisms; totally clean.",
+                                "ipa": "/ˈstɛr.aɪl/"
                             },
                             {
                                 "en": "Traceability",
                                 "es": "Trazabilidad",
-                                "definition": "The capability to trace something, like a raw material, through all stages of production."
+                                "definition": "The capability to trace something, like a raw material, through all stages of production.",
+                                "ipa": "/ˌtreɪ.sə.ˈbɪl.ɪ.ti/"
                             }
                         ]
                     }
@@ -12289,17 +12856,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Catalyst",
                                 "es": "Catalizador",
-                                "definition": "A substance that increases the rate of a chemical reaction without itself undergoing any permanent chemical change."
+                                "definition": "A substance that increases the rate of a chemical reaction without itself undergoing any permanent chemical change.",
+                                "ipa": "/ˈkæt.ə.lɪst/"
                             },
                             {
                                 "en": "Substrate",
                                 "es": "Sustrato",
-                                "definition": "The substance on which an enzyme acts."
+                                "definition": "The substance on which an enzyme acts.",
+                                "ipa": "/ˈsʌb.streɪt/"
                             },
                             {
                                 "en": "Kinetics",
                                 "es": "Cinética",
-                                "definition": "The branch of chemistry or biochemistry concerned with measuring and studying the rates of reactions."
+                                "definition": "The branch of chemistry or biochemistry concerned with measuring and studying the rates of reactions.",
+                                "ipa": "/kɪˈnɛt.ɪks/"
                             }
                         ]
                     }
@@ -12627,17 +13197,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Attitude",
                                 "es": "Actitud (Orientación)",
-                                "definition": "The orientation of a spacecraft relative to its direction of motion or another frame of reference."
+                                "definition": "The orientation of a spacecraft relative to its direction of motion or another frame of reference.",
+                                "ipa": "/ˈæt.ɪ.tjuːd/"
                             },
                             {
                                 "en": "Payload",
                                 "es": "Carga útil",
-                                "definition": "The cargo carried by a spacecraft, which performs the primary mission."
+                                "definition": "The cargo carried by a spacecraft, which performs the primary mission.",
+                                "ipa": "/ˈpeɪ.loʊd/"
                             },
                             {
                                 "en": "Subsystem",
                                 "es": "Subsistema",
-                                "definition": "A self-contained system within a larger system."
+                                "definition": "A self-contained system within a larger system.",
+                                "ipa": "/ˈsʌb.sɪs.təm/"
                             }
                         ]
                     }
@@ -12659,17 +13232,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Cryogenic",
                                 "es": "Criogénico",
-                                "definition": "Relating to the production and behavior of materials at very low temperatures."
+                                "definition": "Relating to the production and behavior of materials at very low temperatures.",
+                                "ipa": "/ˌkraɪ.oʊˈdʒɛn.ɪk/"
                             },
                             {
                                 "en": "Oxidizer",
                                 "es": "Oxidante",
-                                "definition": "A substance that provides the oxygen necessary for combustion."
+                                "definition": "A substance that provides the oxygen necessary for combustion.",
+                                "ipa": "/ˈɒk.sɪ.daɪ.zər/"
                             },
                             {
                                 "en": "Thrust",
                                 "es": "Empuje",
-                                "definition": "The propulsive force generated by a rocket engine."
+                                "definition": "The propulsive force generated by a rocket engine.",
+                                "ipa": "/θrʌst/"
                             }
                         ]
                     }
@@ -12691,17 +13267,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Telemetry",
                                 "es": "Telemetría",
-                                "definition": "The automated communications process by which measurements and other data are collected at remote or inaccessible points and transmitted to receiving equipment."
+                                "definition": "The automated communications process by which measurements and other data are collected at remote or inaccessible points and transmitted to receiving equipment.",
+                                "ipa": "/tɪˈlɛm.ɪ.tri/"
                             },
                             {
                                 "en": "Orbit",
                                 "es": "Órbita",
-                                "definition": "The gravitationally curved trajectory of an object, such as the trajectory of a planet around a star or a natural satellite around a planet."
+                                "definition": "The gravitationally curved trajectory of an object, such as the trajectory of a planet around a star or a natural satellite around a planet.",
+                                "ipa": "/ˈɔːr.bɪt/"
                             },
                             {
                                 "en": "Antenna",
                                 "es": "Antena",
-                                "definition": "A rod, wire, or other device used to transmit or receive radio or television signals."
+                                "definition": "A rod, wire, or other device used to transmit or receive radio or television signals.",
+                                "ipa": "/ænˈtɛn.ə/"
                             }
                         ]
                     }
@@ -12723,17 +13302,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Radiation",
                                 "es": "Radiación",
-                                "definition": "The emission of energy as electromagnetic waves or as moving subatomic particles, especially high-energy particles which cause ionization."
+                                "definition": "The emission of energy as electromagnetic waves or as moving subatomic particles, especially high-energy particles which cause ionization.",
+                                "ipa": "/ˌreɪ.diˈeɪ.ʃən/"
                             },
                             {
                                 "en": "Debris",
                                 "es": "Escombros / Basura",
-                                "definition": "Scattered pieces of waste or remains."
+                                "definition": "Scattered pieces of waste or remains.",
+                                "ipa": "/dəˈbriː/"
                             },
                             {
                                 "en": "Redundancy",
                                 "es": "Redundancia",
-                                "definition": "The inclusion of extra components which are not strictly necessary to functioning, in case of failure in other components."
+                                "definition": "The inclusion of extra components which are not strictly necessary to functioning, in case of failure in other components.",
+                                "ipa": "/rɪˈdʌn.dən.si/"
                             }
                         ]
                     }
@@ -13054,17 +13636,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Effluent",
                                 "es": "Efluente / Aguas residuales",
-                                "definition": "Liquid waste or sewage discharged into a river or the sea."
+                                "definition": "Liquid waste or sewage discharged into a river or the sea.",
+                                "ipa": "/ˈɛf.lu.ənt/"
                             },
                             {
                                 "en": "Membrane",
                                 "es": "Membrana",
-                                "definition": "A pliable sheet-like structure acting as a boundary, lining, or partition in an organism or filtration system."
+                                "definition": "A pliable sheet-like structure acting as a boundary, lining, or partition in an organism or filtration system.",
+                                "ipa": "/ˈmɛm.breɪn/"
                             },
                             {
                                 "en": "Brine",
                                 "es": "Salmuera",
-                                "definition": "Water highly impregnated with salt."
+                                "definition": "Water highly impregnated with salt.",
+                                "ipa": "/braɪn/"
                             }
                         ]
                     }
@@ -13086,17 +13671,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Flue gas",
                                 "es": "Gas de combustión",
-                                "definition": "The gas exiting to the atmosphere via a flue, which is a pipe or channel for conveying exhaust gases."
+                                "definition": "The gas exiting to the atmosphere via a flue, which is a pipe or channel for conveying exhaust gases.",
+                                "ipa": "/fluː ɡæs/"
                             },
                             {
                                 "en": "Solvent",
                                 "es": "Solvente / Disolvente",
-                                "definition": "Able to dissolve other substances."
+                                "definition": "Able to dissolve other substances.",
+                                "ipa": "/ˈsɒl.vənt/"
                             },
                             {
                                 "en": "Aquifer",
                                 "es": "Acuífero",
-                                "definition": "A body of permeable rock which can contain or transmit groundwater."
+                                "definition": "A body of permeable rock which can contain or transmit groundwater.",
+                                "ipa": "/ˈæk.wɪ.fər/"
                             }
                         ]
                     }
@@ -13118,17 +13706,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Linear",
                                 "es": "Lineal",
-                                "definition": "Arranged in or extending along a straight or nearly straight line (Take-Make-Dispose)."
+                                "definition": "Arranged in or extending along a straight or nearly straight line (Take-Make-Dispose).",
+                                "ipa": "/ˈlɪn.i.ər/"
                             },
                             {
                                 "en": "Scope",
                                 "es": "Alcance",
-                                "definition": "The extent of the area or subject matter that something deals with or to which it is relevant."
+                                "definition": "The extent of the area or subject matter that something deals with or to which it is relevant.",
+                                "ipa": "/skoʊp/"
                             },
                             {
                                 "en": "Supply chain",
                                 "es": "Cadena de suministro",
-                                "definition": "The sequence of processes involved in the production and distribution of a commodity."
+                                "definition": "The sequence of processes involved in the production and distribution of a commodity.",
+                                "ipa": "/səˈplaɪ tʃeɪn/"
                             }
                         ]
                     }
@@ -13150,17 +13741,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Audit",
                                 "es": "Auditoría",
-                                "definition": "An official inspection of an organization's accounts or procedures, typically by an independent body."
+                                "definition": "An official inspection of an organization's accounts or procedures, typically by an independent body.",
+                                "ipa": "/ˈɔː.dɪt/"
                             },
                             {
                                 "en": "Compliance",
                                 "es": "Cumplimiento (legal o normativo)",
-                                "definition": "The action or fact of complying with a wish or command, or adhering to laws and regulations."
+                                "definition": "The action or fact of complying with a wish or command, or adhering to laws and regulations.",
+                                "ipa": "/kəmˈplaɪ.əns/"
                             },
                             {
                                 "en": "Landfill",
                                 "es": "Vertedero / Basurero",
-                                "definition": "A place to dispose of refuse and other waste material by burying it and covering it over with soil."
+                                "definition": "A place to dispose of refuse and other waste material by burying it and covering it over with soil.",
+                                "ipa": "/ˈlænd.fɪl/"
                             }
                         ]
                     }
@@ -13175,7 +13769,7 @@ var LXP_COURSES = {
         "titleEN": "Healthcare Technology",
         "category": "science",
         "level": "A2-B1",
-        "status": "full",
+        "status": "blueprint",
         "totalModules": 5,
         "standard": "FDA 21 CFR Part 820 / ISO 13485 / IEC 60601 Medical Electrical",
         "conocer": "EC1290 (Inspección en Manufactura de Dispositivos Médicos)",
@@ -13537,17 +14131,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Lattice",
                                 "es": "Red cristalina / Estructura reticular",
-                                "definition": "A regular repeated three-dimensional arrangement of atoms, ions, or molecules in a metal or other crystalline solid."
+                                "definition": "A regular repeated three-dimensional arrangement of atoms, ions, or molecules in a metal or other crystalline solid.",
+                                "ipa": "/ˈlæt.ɪs/"
                             },
                             {
                                 "en": "Semiconductor",
                                 "es": "Semiconductor",
-                                "definition": "A solid substance that has a conductivity between that of an insulator and that of most metals."
+                                "definition": "A solid substance that has a conductivity between that of an insulator and that of most metals.",
+                                "ipa": "/ˌsɛm.i.kənˈdʌk.tər/"
                             },
                             {
                                 "en": "Chirality",
                                 "es": "Quiralidad",
-                                "definition": "A property of asymmetry important in several branches of science."
+                                "definition": "A property of asymmetry important in several branches of science.",
+                                "ipa": "/kaɪˈræl.ɪ.ti/"
                             }
                         ]
                     }
@@ -13569,17 +14166,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Resolution",
                                 "es": "Resolución",
-                                "definition": "The shortest distance between two points on a specimen that can still be distinguished by the observer or camera system as separate entities."
+                                "definition": "The shortest distance between two points on a specimen that can still be distinguished by the observer or camera system as separate entities.",
+                                "ipa": "/ˌrɛz.əˈluː.ʃən/"
                             },
                             {
                                 "en": "Vacuum",
                                 "es": "Vacío",
-                                "definition": "A space entirely devoid of matter."
+                                "definition": "A space entirely devoid of matter.",
+                                "ipa": "/ˈvæk.juːm/"
                             },
                             {
                                 "en": "Topography",
                                 "es": "Topografía",
-                                "definition": "The arrangement of the natural and artificial physical features of an area."
+                                "definition": "The arrangement of the natural and artificial physical features of an area.",
+                                "ipa": "/təˈpɒɡ.rə.fi/"
                             }
                         ]
                     }
@@ -13601,17 +14201,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Substrate",
                                 "es": "Sustrato",
-                                "definition": "The base material on which processing is conducted to produce electronic devices."
+                                "definition": "The base material on which processing is conducted to produce electronic devices.",
+                                "ipa": "/ˈsʌb.streɪt/"
                             },
                             {
                                 "en": "Plasma",
                                 "es": "Plasma",
-                                "definition": "An ionized gas consisting of positive ions and free electrons."
+                                "definition": "An ionized gas consisting of positive ions and free electrons.",
+                                "ipa": "/ˈplæz.mə/"
                             },
                             {
                                 "en": "Volatile",
                                 "es": "Volátil",
-                                "definition": "Easily evaporated at normal temperatures."
+                                "definition": "Easily evaporated at normal temperatures.",
+                                "ipa": "/ˈvɒl.ə.taɪl/"
                             }
                         ]
                     }
@@ -13633,17 +14236,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Alloy",
                                 "es": "Aleación",
-                                "definition": "A metal made by combining two or more metallic elements, especially to give greater strength or resistance to corrosion."
+                                "definition": "A metal made by combining two or more metallic elements, especially to give greater strength or resistance to corrosion.",
+                                "ipa": "/ˈæl.ɔɪ/"
                             },
                             {
                                 "en": "Polymer",
                                 "es": "Polímero",
-                                "definition": "A substance that has a molecular structure consisting chiefly or entirely of a large number of similar units bonded together, e.g., many synthetic organic materials used as plastics and resins."
+                                "definition": "A substance that has a molecular structure consisting chiefly or entirely of a large number of similar units bonded together, e.g., many synthetic organic materials used as plastics and resins.",
+                                "ipa": "/ˈpɒl.ɪ.mər/"
                             },
                             {
                                 "en": "Resistance",
                                 "es": "Resistencia (eléctrica)",
-                                "definition": "A measure of the difficulty to pass an electric current through a conductor."
+                                "definition": "A measure of the difficulty to pass an electric current through a conductor.",
+                                "ipa": "/rɪˈzɪs.təns/"
                             }
                         ]
                     }
@@ -13658,7 +14264,7 @@ var LXP_COURSES = {
         "titleEN": "Food Science & Technology",
         "category": "science",
         "level": "A2-B1",
-        "status": "full",
+        "status": "blueprint",
         "totalModules": 5,
         "standard": "FDA FSMA / HACCP / ISO 22000 Food Safety Management",
         "conocer": "EC0081 (Procesamiento y Conservación de Alimentos)",
@@ -15306,7 +15912,7 @@ var LXP_COURSES = {
         "titleEN": "Hospitality & Food Service English",
         "category": "career",
         "level": "A2-B1",
-        "status": "full",
+        "status": "blueprint",
         "totalModules": 5,
         "standard": "Forbes Travel Guide 5-Star / AHLA Standards",
         "conocer": "EC0309 (Servicios Hoteleros y Atención al Huésped)",
@@ -15358,7 +15964,7 @@ var LXP_COURSES = {
         "titleEN": "Business, Leadership & Management English",
         "category": "career",
         "level": "A2-B1",
-        "status": "full",
+        "status": "blueprint",
         "totalModules": 5,
         "standard": "ISO 30414 Human Resource Management / USMCA Labor Standards",
         "conocer": "EC0305 (Gestión de Recursos Humanos y Liderazgo)",
@@ -15715,17 +16321,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Dependency",
                                 "es": "Dependencia",
-                                "definition": "A logical relationship where one task relies on the completion or initiation of another."
+                                "definition": "A logical relationship where one task relies on the completion or initiation of another.",
+                                "ipa": "/dɪˈpɛn.dən.si/"
                             },
                             {
                                 "en": "Critical Path",
                                 "es": "Ruta Crítica",
-                                "definition": "The sequence of stages determining the minimum time needed for an operation."
+                                "definition": "The sequence of stages determining the minimum time needed for an operation.",
+                                "ipa": "/ˈkrɪt.ɪ.kəl pæθ/"
                             },
                             {
                                 "en": "Resource Leveling",
                                 "es": "Nivelación de Recursos",
-                                "definition": "A technique in project management that resolves resource allocation problems."
+                                "definition": "A technique in project management that resolves resource allocation problems.",
+                                "ipa": "/rɪˈsɔːrs ˈlɛv.əl.ɪŋ/"
                             }
                         ]
                     }
@@ -15747,17 +16356,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Severity",
                                 "es": "Severidad / Gravedad",
-                                "definition": "The fact or condition of being severe, serious, or strict."
+                                "definition": "The fact or condition of being severe, serious, or strict.",
+                                "ipa": "/sɪˈvɛr.ɪ.ti/"
                             },
                             {
                                 "en": "Mitigation",
                                 "es": "Mitigación",
-                                "definition": "The action of reducing the severity, seriousness, or painfulness of something."
+                                "definition": "The action of reducing the severity, seriousness, or painfulness of something.",
+                                "ipa": "/ˌmɪt.ɪˈɡeɪ.ʃən/"
                             },
                             {
                                 "en": "Detection",
                                 "es": "Detección",
-                                "definition": "The action or process of identifying the presence of something concealed."
+                                "definition": "The action or process of identifying the presence of something concealed.",
+                                "ipa": "/dɪˈtɛk.ʃən/"
                             }
                         ]
                     }
@@ -15779,17 +16391,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Stakeholder",
                                 "es": "Parte interesada / Stakeholder",
-                                "definition": "A person with an interest or concern in something, especially a business."
+                                "definition": "A person with an interest or concern in something, especially a business.",
+                                "ipa": "/ˈsteɪk.hoʊl.dər/"
                             },
                             {
                                 "en": "Compromise",
                                 "es": "Compromiso / Término medio",
-                                "definition": "An agreement reached by each side making concessions."
+                                "definition": "An agreement reached by each side making concessions.",
+                                "ipa": "/ˈkɒm.prə.maɪz/"
                             },
                             {
                                 "en": "Scope",
                                 "es": "Alcance",
-                                "definition": "The combined objectives and requirements necessary to complete a project."
+                                "definition": "The combined objectives and requirements necessary to complete a project.",
+                                "ipa": "/skoʊp/"
                             }
                         ]
                     }
@@ -15811,17 +16426,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Scope Creep",
                                 "es": "Desviación del alcance",
-                                "definition": "Changes, continuous or uncontrolled growth in a project's scope, at any point after the project begins."
+                                "definition": "Changes, continuous or uncontrolled growth in a project's scope, at any point after the project begins.",
+                                "ipa": "/skoʊp kriːp/"
                             },
                             {
                                 "en": "Deliverable",
                                 "es": "Entregable",
-                                "definition": "A thing able to be provided, especially as a product of a development process."
+                                "definition": "A thing able to be provided, especially as a product of a development process.",
+                                "ipa": "/dɪˈlɪv.ər.ə.bəl/"
                             },
                             {
                                 "en": "Milestone",
                                 "es": "Hito",
-                                "definition": "An action or event marking a significant change or stage in development."
+                                "definition": "An action or event marking a significant change or stage in development.",
+                                "ipa": "/ˈmaɪl.stoʊn/"
                             }
                         ]
                     }
@@ -16139,17 +16757,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Equity",
                                 "es": "Capital social / Acciones",
-                                "definition": "The value of the shares issued by a company."
+                                "definition": "The value of the shares issued by a company.",
+                                "ipa": "/ˈɛk.wɪ.ti/"
                             },
                             {
                                 "en": "Dilution",
                                 "es": "Dilución",
-                                "definition": "A reduction in the ownership percentage of a share of stock caused by the issuance of new shares."
+                                "definition": "A reduction in the ownership percentage of a share of stock caused by the issuance of new shares.",
+                                "ipa": "/daɪˈluː.ʃən/"
                             },
                             {
                                 "en": "Venture Capital",
                                 "es": "Capital de riesgo",
-                                "definition": "Capital invested in a project in which there is a substantial element of risk, typically a new or expanding business."
+                                "definition": "Capital invested in a project in which there is a substantial element of risk, typically a new or expanding business.",
+                                "ipa": "/ˈvɛn.tʃər ˈkæp.ɪ.təl/"
                             }
                         ]
                     }
@@ -16171,17 +16792,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Valuation",
                                 "es": "Valuación",
-                                "definition": "An estimation of something's worth, especially one carried out by a professional appraiser."
+                                "definition": "An estimation of something's worth, especially one carried out by a professional appraiser.",
+                                "ipa": "/ˌvæl.juˈeɪ.ʃən/"
                             },
                             {
                                 "en": "Vesting",
                                 "es": "Vesting (Adquisición de derechos)",
-                                "definition": "The process of earning the right to stock or stock options over time."
+                                "definition": "The process of earning the right to stock or stock options over time.",
+                                "ipa": "/ˈvɛs.tɪŋ/"
                             },
                             {
                                 "en": "Liquidation",
                                 "es": "Liquidación",
-                                "definition": "The process of bringing a business to an end and distributing its assets to claimants."
+                                "definition": "The process of bringing a business to an end and distributing its assets to claimants.",
+                                "ipa": "/ˌlɪk.wɪˈdeɪ.ʃən/"
                             }
                         ]
                     }
@@ -16203,17 +16827,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Minimum Viable Product",
                                 "es": "Producto Mínimo Viable (MVP)",
-                                "definition": "A version of a product with just enough features to be usable by early customers who can then provide feedback."
+                                "definition": "A version of a product with just enough features to be usable by early customers who can then provide feedback.",
+                                "ipa": "/ˈmɪn.ɪ.məm ˈvaɪ.ə.bəl ˈprɒd.ʌkt/"
                             },
                             {
                                 "en": "Pivot",
                                 "es": "Pivote",
-                                "definition": "A fundamental change in a business strategy based on direct market feedback."
+                                "definition": "A fundamental change in a business strategy based on direct market feedback.",
+                                "ipa": "/ˈpɪv.ət/"
                             },
                             {
                                 "en": "Hypothesis",
                                 "es": "Hipótesis",
-                                "definition": "A supposition or proposed explanation made on the basis of limited evidence as a starting point for further investigation."
+                                "definition": "A supposition or proposed explanation made on the basis of limited evidence as a starting point for further investigation.",
+                                "ipa": "/haɪˈpɒθ.ɪ.sɪs/"
                             }
                         ]
                     }
@@ -16235,17 +16862,20 @@ var LXP_COURSES = {
                             {
                                 "en": "Patent",
                                 "es": "Patente",
-                                "definition": "A government authority conferring a right or title for a set period, especially the sole right to exclude others from making or selling an invention."
+                                "definition": "A government authority conferring a right or title for a set period, especially the sole right to exclude others from making or selling an invention.",
+                                "ipa": "/ˈpæt.ənt/"
                             },
                             {
                                 "en": "Royalty",
                                 "es": "Regalía",
-                                "definition": "A sum paid to a patentee for the use of a patent or to an author or composer for each copy of a book sold or for each public performance."
+                                "definition": "A sum paid to a patentee for the use of a patent or to an author or composer for each copy of a book sold or for each public performance.",
+                                "ipa": "/ˈrɔɪ.əl.ti/"
                             },
                             {
                                 "en": "Reverse Engineering",
                                 "es": "Ingeniería inversa",
-                                "definition": "The reproduction of another manufacturer's product following detailed examination of its construction or composition."
+                                "definition": "The reproduction of another manufacturer's product following detailed examination of its construction or composition.",
+                                "ipa": "/rɪˈvɜːrs ˌɛn.dʒɪˈnɪər.ɪŋ/"
                             }
                         ]
                     }
@@ -16255,11 +16885,3 @@ var LXP_COURSES = {
         ]
     }
 };
-
-if (typeof window !== 'undefined') {
-    window.LXP_CATEGORIES = LXP_CATEGORIES;
-    window.LXP_COURSES = LXP_COURSES;
-}
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { LXP_CATEGORIES, LXP_COURSES };
-}
