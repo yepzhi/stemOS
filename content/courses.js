@@ -23080,7 +23080,7 @@ var LXP_COURSES = {
         "titleEN": "Food Science & Technology",
         "category": "science",
         "level": "A2-B1",
-        "status": "blueprint",
+        "status": "full",
         "totalModules": 5,
         "standard": "FDA FSMA / HACCP / ISO 22000 Food Safety Management",
         "conocer": "EC0081 (Procesamiento y Conservación de Alimentos)",
@@ -23092,37 +23092,1395 @@ var LXP_COURSES = {
             {
                 "id": "food-m1",
                 "title": "Food Microbiology & HACCP Critical Control Points",
-                "titleES": "Microbiología de Alimentos y Puntos Críticos HACCP",
-                "icon": "fa-solid fa-shield-virus",
-                "readings": []
+                "titleES": "Microbiología de Alimentos y Puntos Críticos de Control HACCP",
+                "icon": "fa-solid fa-shield-halved",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "food-m1-r1",
+                        "title": "Food Safety Microbiology: Pathogen Kinetics, HACCP Architecture & Environmental Monitoring",
+                        "duration": "15 min",
+                        "content": "\n# Food Safety Microbiology: Pathogen Kinetics, HACCP Architecture & Environmental Monitoring\n\nIn high-volume industrial food and beverage manufacturing, an undetected microbial pathogen in a packaged product does not simply cause consumer illness—it triggers catastrophic nationwide recalls, brand destruction, criminal liability under the US Food Safety Modernization Act (**FSMA**), and severe human tragedy. Modern industrial food plants processing meat, dairy, fresh-cut produce, and aseptic beverages operate with the clinical cleanliness and monitoring rigor of pharmaceutical cleanrooms.\n\nGuaranteeing food safety requires understanding the growth kinetics of foodborne pathogens (*Salmonella enterica*, *Listeria monocytogenes*, *Escherichia coli* O157:H7, and *Clostridium botulinum*), implementing the **7 Principles of HACCP (Hazard Analysis Critical Control Point)**, and enforcing proactive **Environmental Monitoring Programs (EMP)**.\n\n---\n\n## 1. Microbial Pathogen Kinetics & Risk Profiles\n\nFood microbiology categorizes biological threats according to cell structure, spore formation capability, and physiological growth limits:\n\n```\nKey Foodborne Pathogens Taxonomy:\n- Salmonella enterica:        Gram-negative, non-spore-forming rod. Cross-contamination in poultry/produce.\n- Listeria monocytogenes:     Gram-positive psychrotroph. Multiplies at refrigeration temps (down to -0.4°C).\n- Clostridium botulinum:      Gram-positive obligate anaerobic spore-former. Produces lethal neurotoxin.\n- Shiga toxin E. coli (STEC): Enterohemorrhagic rod. Causes severe hemolytic uremic syndrome (HUS).\n```\n\n### The Unique Danger of Listeria monocytogenes\nUnlike most mesophilic bacteria whose growth halts under $4.0^\\circ\\text{C}$, *Listeria monocytogenes* is a **psychrotroph** capable of slow metabolic multiplication inside industrial cold storage rooms ($0^\\circ\\text{C}\\text{--}4^\\circ\\text{C}$). Furthermore, *Listeria* forms resilient **biofilms**—complex multicellular matrices anchored to wet stainless steel drains, conveyor rollers, and slicing blades that resist standard quaternary ammonium sanitizers.\n\n### The Thermal Spore Defense of Clostridium botulinum\n*Clostridium botulinum* spores are ubiquitous in soil and raw agricultural products. In vegetative form, the bacteria produce **botulinum neurotoxin**, one of the most lethal biological substances known ($LD_{50} \\approx 1\\text{--}3\\ \\text{ng/kg}$). Because the spores survive boiling water ($100^\\circ\\text{C}$) under atmospheric pressure for hours, canning low-acid foods (pH $>4.60$) requires high-pressure steam autoclaves reaching at least **$121.1^\\circ\\text{C}$**.\n\n---\n\n## 2. The 7 Principles of HACCP (Codex Alimentarius & FSMA)\n\nOriginally engineered by the Pillsbury Company and NASA to ensure $100\\%$ contamination-free food for human spaceflight missions, **HACCP** is the mandatory global foundation of food quality systems (GFSI, SQF, BRCGS):\n\n```\nThe 7 HACCP Principles Lifecycle:\n[1. Hazard Analysis] ---> [2. Identify CCPs] ---> [3. Establish Critical Limits]\n                                                                |\n[7. Documentation]  <--- [6. Verification]  <--- [5. Corrective Actions] <-- [4. Monitoring]\n```\n\n1. **Conduct a Hazard Analysis**: Identify all potential biological (pathogens), chemical (cleaning chemicals, mycotoxins, undeclared allergens), and physical (metal shavings, glass shards) hazards across every processing step.\n2. **Determine Critical Control Points (CCPs)**: A step at which control can be applied and is essential to prevent, eliminate, or reduce a food safety hazard to an acceptable level. CCPs are determined using standard **Codex Decision Trees** (e.g., continuous in-line pasteurization heater or in-line metal detector).\n3. **Establish Critical Limits**: Measurable, scientifically validated maximum or minimum boundaries:\n   - *Example*: *\"Thermal pasteurizer hold tube product temperature must remain $\\ge 72.0^\\circ\\text{C}$ for a minimum residence time of $\\ge 15.0\\ \\text{seconds}$.\"*\n4. **Establish Monitoring Procedures**: Continuous data logging using calibrated RTD sensors, flow meters, or automated x-ray inspection rejection cameras.\n5. **Establish Corrective Actions**: Immediate containment protocols when a critical limit is breached:\n   - *Example*: Automated actuation of a **Flow Diversion Valve (FDV)** that instantly diverts under-processed juice back to the raw balance tank, quarantining any suspect downstream product.\n6. **Establish Verification Procedures**: Auditing activities verifying that the HACCP plan is operating effectively (e.g., daily thermometric calibration, ATP bioluminescence hygiene swabbing, and third-party microbiological challenge studies).\n7. **Establish Record-Keeping & Documentation**: Maintaining immutable digital records of all CCP monitoring logs, deviations, calibrations, and corrective action sign-offs.\n\n---\n\n## 3. Environmental Monitoring Programs (EMP) & Zone Sanitation\n\nTraditional food manufacturing inspected the finished product right before shipping. Modern quality systems recognize that finished product testing alone is statistically incapable of catching low-level, sporadic contamination. Plants enforce **Environmental Monitoring Programs (EMP)** structured around **Four Cleanliness Zones**:\n\n```\nIndustrial Cleanliness Zoning Architecture:\n[ Zone 1: Direct Product Contact ]     Conveyor belts, slicer blades, filler nozzles, hopper chutes.\n[ Zone 2: Non-Contact Adjacent ]       Equipment frames, motor housings, operator control buttons.\n[ Zone 3: Surrounding Facility ]       Cleanroom walls, floor drains, overhead catwalks, air handling vents.\n[ Zone 4: Remote Outer Areas ]         Warehouse corridors, employee locker rooms, loading docks.\n```\n\n### Pathogen Swabbing & Rapid ATP Bioluminescence\n- **ATP Swabbing**: Measures total organic matter via luciferin-luciferase bioluminescence within 15 seconds. An RLU (Relative Light Unit) reading $<30$ confirms physical cleaning before chemical sanitization is applied.\n- **Microbiological Sponge Swabbing**: Technicians swab Zone 1 and Zone 2 surfaces with neutralizer broth sponges, analyzing samples via **Polymerase Chain Reaction (PCR)** for *Listeria* species or *Salmonella*.\n- **Seek and Destroy Philosophy**: In a world-class plant, finding zero pathogen hits in Zone 3 or Zone 4 floor drains over a year is considered a warning sign of poor swabbing technique rather than perfect hygiene. Inspectors aggressively search for harboring harborage niches to eliminate biofilms before they can migrate to Zone 1 product contact surfaces.\n\n---\n\n## 4. Engineering Field Scenario: Managing an In-Line Metal Detector CCP Rejection\n\nAt an automated salsa and guacamole packaging plant in Uruapan, Michoacán, exporting retail jars to US supermarket chains:\n\n### The Critical Control Point Failure\nAt 14:20 during the afternoon shift, the multi-frequency in-line **Metal Detector (CCP-3)** on Packaging Line B actuated its pneumatic pusher arm, rejecting four consecutive glass jars of avocado dip into a locked reject bin. The packaging conveyor automatically locked out, halting the line.\n\n### Executing the Mandated HACCP Corrective Action Protocol\n1. **Immediate Lot Quarantine**: The quality supervisor immediately placed a red regulatory hold tag on the last 45 minutes of production (680 jars), isolating the pallets in the QA quarantine cage.\n2. **Challenge Test Verification**: The technician retrieved the certified testing wands embedded with calibrated metal test spheres:\n   - Ferrous: $1.5\\ \\text{mm}$\n   - Non-Ferrous: $2.0\\ \\text{mm}$\n   - Stainless Steel 316: $2.5\\ \\text{mm}$\n   Each wand was placed into a test jar and passed through the detector aperture. The detector successfully identified and rejected all three wands, confirming that the inspection instrument had not drifted out of calibration.\n3. **Physical Contaminant Root-Cause Analysis**:\n   - The four rejected jars were inspected using a high-resolution industrial cabinet x-ray scanner.\n   - The x-ray revealed a $3.2\\ \\text{mm}$ curved metallic sliver embedded in the dip of jar #2.\n   - Maintenance disassembled the upstream stainless steel high-shear emulsifier pump. A chipped impeller vane made of 316L stainless steel was discovered; cavitation had fractured a micro-fragment into the product stream.\n4. **Corrective & Preventive Action (CAPA)**:\n   - The pump impeller was replaced with a heavy-duty electropolished replacement.\n   - All 680 quarantined jars were run through the x-ray machine; zero additional metal inclusions were detected, and the lot was authorized for release.\n   - The preventive maintenance SOP was updated to include weekly ultrasonic thickness and dye-penetrant crack testing of the emulsifier blades. The CCP event log was signed off by the QA Director, satisfying FSMA audit requirements.\n\n---\n\n> **Key Takeaway**: Industrial food safety is an uncompromised scientific discipline. By mastering microbial growth limits, identifying CCP boundaries under HACCP, enforcing four-zone environmental swabbing, and executing rapid containment when critical limits are breached, food engineers guarantee public health and international market access.\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Auditing HACCP Critical Limits during an FDA Foreign Supplier Audit",
+                    "titleES": "Auditando Límites Críticos HACCP durante una Auditoría FDA de Proveedor Extranjero",
+                    "scenarioContext": "A Director of Food Safety in Guadalajara and a US FDA Import Compliance Specialist in Nogales review cold-chain data and pasteurization CCP logs for an exported fruit puree line.",
+                    "characters": [
+                        {
+                            "name": "Patricia Campbell",
+                            "role": "FDA Foreign Supplier Verification Auditor",
+                            "company": "US FDA Import Operations (Nogales Port of Entry)"
+                        },
+                        {
+                            "name": "Ing. Jorge Villaseñor",
+                            "role": "Director of Quality Assurance & HACCP Coordinator",
+                            "company": "AgroFrut Industrial (Guadalajara, Jalisco)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Patricia Campbell",
+                            "text": "Ingeniero Villaseñor, under the Foreign Supplier Verification Program of FSMA, we are reviewing your HACCP documentation for the aseptic mango puree exported through Arizona. I am looking at your thermal pasteurization logs for line one on Tuesday. At eleven-fifteen AM, your hold tube temperature dipped to seventy-one point two degrees Celsius.",
+                            "translation": "Ingeniero Villaseñor, bajo el Programa de Verificación de Proveedores Extranjeros de FSMA, estamos revisando su documentación HACCP para el puré de mango aséptico exportado a través de Arizona. Estoy viendo sus registros de pasteurización térmica para la línea uno el martes. A las 11:15 AM, la temperatura de su tubo de retención cayó a 71.2 grados Celsius.",
+                            "targetTerms": [
+                                "Foreign Supplier Verification Program",
+                                "HACCP documentation",
+                                "thermal pasteurization logs",
+                                "hold tube temperature"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Jorge Villaseñor",
+                            "text": "Good morning, Inspector Campbell. Our Critical Limit at Critical Control Point Two is established at a minimum of seventy-two point zero degrees Celsius with a twenty-second hold time to ensure a six-log reduction of Salmonella. When that temperature drop occurred, our automated Flow Diversion Valve actuated in zero point four seconds.",
+                            "translation": "Buenos días, Inspectora Campbell. Nuestro Límite Crítico en el Punto Crítico de Control Dos está establecido en un mínimo de 72.0 grados Celsius con un tiempo de retención de veinte segundos para asegurar una reducción de seis logaritmos de Salmonella. Cuando ocurrió esa caída de temperatura, nuestra Válvula de Desviación de Flujo automatizada actuó en 0.4 segundos.",
+                            "targetTerms": [
+                                "Critical Limit",
+                                "Critical Control Point Two",
+                                "six-log reduction",
+                                "Flow Diversion Valve"
+                            ]
+                        },
+                        {
+                            "speaker": "Patricia Campbell",
+                            "text": "Was any under-processed product allowed to enter the aseptic surge tank or reach the packaging filler heads during that valve transition?",
+                            "translation": "¿Se permitió que algún producto subprocesado entrara al tanque de compensación aséptica o llegara a los cabezales de llenado de empaque durante esa transición de válvula?",
+                            "targetTerms": [
+                                "under-processed product",
+                                "aseptic surge tank",
+                                "filler heads",
+                                "valve transition"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Jorge Villaseñor",
+                            "text": "Zero product escaped. The flow diversion line loops directly back to the raw product balance tank. Furthermore, our downstream aseptic filling line has an automatic interlock that paused carton filling until the pasteurizer completed three minutes of continuous in-spec temperature equilibrium.",
+                            "translation": "Cero producto escapó. La línea de desviación de flujo regresa directamente al tanque de balance de producto crudo. Además, nuestra línea de llenado aséptico aguas abajo tiene un interbloqueo automático que pausó el llenado de cajas hasta que el pasteurizador completó tres minutos de equilibrio de temperatura continuo dentro de especificación.",
+                            "targetTerms": [
+                                "raw product balance tank",
+                                "automatic interlock",
+                                "temperature equilibrium"
+                            ]
+                        },
+                        {
+                            "speaker": "Patricia Campbell",
+                            "text": "That is an engineered fail-safe. What about your environmental monitoring program for post-pasteurization packaging areas? Have you detected any Listeria genus in Zone Two or Zone Three over the past quarter?",
+                            "translation": "Ese es un mecanismo a prueba de fallas bien diseñado. ¿Qué hay de su programa de monitoreo ambiental para las áreas de empaque posteriores a la pasteurización? ¿Han detectado algún género de Listeria en Zona Dos o Zona Tres durante el último trimestre?",
+                            "targetTerms": [
+                                "engineered fail-safe",
+                                "environmental monitoring program",
+                                "post-pasteurization packaging",
+                                "Listeria genus"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Jorge Villaseñor",
+                            "text": "We take fifty-two environmental sponge swabs weekly. In week thirty-one, we detected a presumptive positive for Listeria innocua on a trench drain in Zone Three near the palletizer. We immediately executed our deep-sanitation protocol with peracetic acid foam, followed by three consecutive days of vector swabbing with negative results.",
+                            "translation": "Tomamos cincuenta y dos hisopos de esponja ambientales semanalmente. En la semana treinta y uno, detectamos un presuntivo positivo para Listeria innocua en un drenaje de trinchera en Zona Tres cerca del paletizador. Ejecutamos de inmediato nuestro protocolo de sanitización profunda con espuma de ácido peracético, seguido de tres días consecutivos de hisopado radial con resultados negativos.",
+                            "targetTerms": [
+                                "sponge swabs",
+                                "presumptive positive",
+                                "Listeria innocua",
+                                "peracetic acid foam",
+                                "vector swabbing"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "We clean the kitchen every afternoon.",
+                            "native": "We execute validated Zone Sanitation and verify zero organic residue via ATP bioluminescence swabbing.",
+                            "explanation": "In industrial food processing, generic 'cleaning' is replaced by validated sanitation standard operating procedures (SSOP) verified with quantifiable ATP limits."
+                        },
+                        {
+                            "school": "If food smells good, it is safe to eat.",
+                            "native": "The product achieved a validated six-log thermal reduction of vegetative pathogens under HACCP Critical Control Points.",
+                            "explanation": "Lethal foodborne pathogens like Salmonella, Listeria, and botulinum toxin produce no odor, taste, or visual spoilage; safety is assured strictly through validated thermal lethality."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Critical Control Point (CCP)",
+                        "ipa": "/ˈkrɪt.ɪ.kəl kənˈtroʊl ˌpɔɪnt/",
+                        "es": "Punto Crítico de Control (PCC / CCP)",
+                        "category": "Food Safety Systems",
+                        "definition": "A specific operational step in a food manufacturing process where control can be applied and is essential to prevent, eliminate, or reduce a biological, chemical, or physical hazard to safe levels.",
+                        "collocations": [
+                            "establish a CCP on the pasteurizer",
+                            "monitor CCP critical limits",
+                            "CCP deviation protocol",
+                            "audit CCP validation logs"
+                        ],
+                        "falseFriends": "A CCP is not a routine quality checkpoint like jar weight; it addresses critical public health food safety hazards.",
+                        "nativeUsage": "The metal detector is designated as CCP-4 because it represents the final defense against metal fragment ingestion before palletizing."
+                    },
+                    {
+                        "term": "Critical Limit",
+                        "ipa": "/ˈkrɪt.ɪ.kəl ˈlɪm.ɪt/",
+                        "es": "Límite Crítico",
+                        "category": "HACCP Architecture",
+                        "definition": "A maximum or minimum scientific threshold (such as temperature, time, pH, water activity, or chlorine concentration) to which a hazard must be controlled at a CCP to prevent food contamination.",
+                        "collocations": [
+                            "breach the critical limit",
+                            "validate critical limit boundaries",
+                            "set critical limit at 72°C",
+                            "critical limit deviation"
+                        ],
+                        "falseFriends": "Critical limits are rigid food safety boundaries; they are distinct from operational process tolerances used for recipe flavor.",
+                        "nativeUsage": "If the hold tube temperature drops below the 72.0°C critical limit, the flow diversion valve automatically triggers."
+                    },
+                    {
+                        "term": "Listeria monocytogenes",
+                        "ipa": "/lɪˈstɪər.i.ə ˌmɒn.oʊ.saɪˈtɒdʒ.ə.niːz/",
+                        "es": "Listeria monocytogenes",
+                        "category": "Food Microbiology",
+                        "definition": "A virulent Gram-positive foodborne pathogen capable of growing under refrigeration temperatures and forming persistent biofilms on damp industrial food processing equipment.",
+                        "collocations": [
+                            "test for Listeria monocytogenes",
+                            "psychrotrophic pathogen kinetics",
+                            "harbor in floor drain biofilms",
+                            "zero-tolerance pathogen policy"
+                        ],
+                        "falseFriends": "Listeria is an organism name, not an illness; the illness caused is called 'listeriosis'.",
+                        "nativeUsage": "The ready-to-eat salad packaging room operates under strict hygiene positive air pressure to prevent airborne Listeria contamination."
+                    },
+                    {
+                        "term": "Environmental Monitoring Program (EMP)",
+                        "ipa": "/ɪnˌvaɪ.rənˈmɛn.təl ˈmɒn.ɪ.tər.ɪŋ ˈproʊ.ɡræm/",
+                        "es": "Programa de Monitoreo Ambiental (PMA / EMP)",
+                        "category": "Plant Sanitation",
+                        "definition": "A systematic microbiological swabbing program that evaluates environmental cleanliness across four defined facility zones to detect and eliminate pathogen niches before they contaminate product.",
+                        "collocations": [
+                            "implement an aggressive EMP",
+                            "Zone 1 direct contact swabbing",
+                            "vector swabbing around drain positive",
+                            "sponge swab sample collection"
+                        ],
+                        "falseFriends": "In food plants, EMP monitors microbial pathogen cleanliness on machinery, not outdoor weather or industrial smokestack air emissions.",
+                        "nativeUsage": "Our EMP includes 120 weekly environmental swabs targeting Zone 2 slicer frames and Zone 3 wastewater trenches."
+                    },
+                    {
+                        "term": "Flow Diversion Valve (FDV)",
+                        "ipa": "/floʊ daɪˈvɜːr.ʒən ˌvælv/",
+                        "es": "Válvula de Desviación de Flujo",
+                        "category": "Thermal Processing",
+                        "definition": "An automated safety valve positioned at the outlet of a pasteurizer hold tube that automatically diverts under-heated liquid product back to the raw balance tank if temperature drops below critical limits.",
+                        "collocations": [
+                            "actuate the flow diversion valve",
+                            "fail-safe diversion response time",
+                            "divert sub-pasteurized milk",
+                            "FDV seat seal integrity"
+                        ],
+                        "falseFriends": "'Diversion' in fluid engineering means rerouting flow, not entertainment or distraction.",
+                        "nativeUsage": "The RTD sensor triggered the flow diversion valve within 200 milliseconds of detecting a drop to 71.5°C."
+                    },
+                    {
+                        "term": "ATP Bioluminescence Assay",
+                        "ipa": "/ˌeɪ.tiːˈpiː ˌbaɪ.oʊˌluː.mɪˈnɛs.əns ˈæs.eɪ/",
+                        "es": "Ensayo de Bioluminiscencia de ATP",
+                        "category": "Sanitation Metrology",
+                        "definition": "A rapid optical swab test utilizing firefly luciferase enzymes to measure cellular adenosine triphosphate (ATP), providing quantitative surface cleanliness results in Relative Light Units (RLU) within seconds.",
+                        "collocations": [
+                            "verify sanitation via ATP swabs",
+                            "RLU cleanliness threshold",
+                            "luciferase enzymatic reaction",
+                            "pre-operational ATP inspection"
+                        ],
+                        "falseFriends": "ATP testing measures organic residual soil, not living bacteria specifically; a low ATP score proves cleanliness, not sterility.",
+                        "nativeUsage": "Before commencing production, the sanitation supervisor swabbed the stainless steel hopper, recording an ATP reading of 12 RLU."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Determining Critical Control Points via the Codex Decision Tree",
+                        "botQuestion": "In a poultry processing plant in Querétaro, whole chicken carcasses pass through a chlorinated chilling water bath (Water temperature: 1.5°C; Free available chlorine: 50 ppm; Residence time: 45 minutes) designed to eliminate Salmonella and Campylobacter. Apply the Codex Decision Tree questions: 1) Is there a hazard at this step? 2) Are control measures in place? 3) Is this step specifically designed to eliminate or reduce the hazard to an acceptable level? Conclude whether the immersion chiller is a Critical Control Point (CCP) and define its Critical Limits.",
+                        "requiredKeywords": [
+                            "ccp",
+                            "critical control point",
+                            "critical limit",
+                            "chlorine",
+                            "temperature",
+                            "salmonella"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on HACCP analysis! 1) Yes, Salmonella and Campylobacter cross-contamination is a high biological hazard; 2) Yes, chilled water, chemical dosing, and residence time controls exist; 3) Yes, the immersion chiller is specifically engineered to reduce microbial populations to an acceptable level. Therefore, Question 3 confirms this step IS a Critical Control Point (CCP-1). Critical Limits must specify: Water temperature <= 4.0°C, Free available chlorine 50–100 ppm, and minimum carcass contact time >= 40 minutes.",
+                        "feedbackRetry": "Walk through the three decision tree questions: confirm the biological hazard (Salmonella), describe the control measures (chlorine and chilling), and state whether this step is specifically designed to eliminate the hazard. Conclude that it is a CCP with specific temperature and chlorine limits."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Executing Vector Swabbing following a Zone 3 Listeria Presumptive Positive",
+                        "botQuestion": "During weekly EMP testing, an environmental sponge swab from a Zone 3 floor drain located between the packaging room and the raw processing hallway tests 'presumptive positive' for Listeria species. Outline the immediate corrective actions, explain the principle of 'Vector Swabbing', and establish the re-testing criterion required to declare the niche eradicated.",
+                        "requiredKeywords": [
+                            "vector",
+                            "swab",
+                            "drain",
+                            "sanitation",
+                            "consecutive",
+                            "negative"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Outstanding food safety response! Corrective actions: 1) Quarantine the area and perform immediate mechanical scrub down and foaming with peracetic acid/quaternary ammonium sanitizers; 2) Vector Swabbing (Radial Swabbing): Take sponge swabs in a 360-degree starburst pattern (at least 4 to 8 swabs radiating 1 to 5 meters outwards onto floors, walls, forklift wheels, and adjacent equipment legs) to pinpoint the exact harborage source; 3) Re-testing: Execute intensive daily swabbing for three consecutive production days—the site cannot be declared eradicated until all vector swabs return 100% negative for Listeria.",
+                        "feedbackRetry": "Define the immediate chemical sanitation protocol, explain how 'Vector Swabbing' samples points radially outwards from the positive drain to trace the origin, and mention the standard requirement of 3 consecutive days of negative test results."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "Why is Listeria monocytogenes considered one of the most formidable bacterial threats in refrigerated food processing plants?",
+                        "options": [
+                            "It can only survive in temperatures above 80°C",
+                            "It is a psychrotrophic pathogen that can actively multiply at refrigeration temperatures (down to 0°C) and forms resilient biofilms on damp stainless steel",
+                            "It turns food a bright green color within ten seconds",
+                            "It is only found in dry desert sand"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Under the 7 Principles of HACCP, what is the definition of a Critical Limit?",
+                        "options": [
+                            "The maximum amount of money a company can spend on advertising",
+                            "A scientifically validated maximum or minimum threshold (such as temperature, time, or pH) that must be maintained at a CCP to prevent food contamination",
+                            "The number of workers allowed on the packaging floor at one time",
+                            "The legal weight of a shipping container"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "In an industrial Environmental Monitoring Program (EMP), what does 'Zone 1' represent?",
+                        "options": [
+                            "The parking lot outside the security gate",
+                            "Surfaces that come into direct physical contact with food products (e.g., conveyor belts, slicer blades, filling nozzles)",
+                            "The corporate executive offices",
+                            "The boiler room in the basement"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "What is the primary function of a Flow Diversion Valve (FDV) in a continuous milk or juice pasteurizer?",
+                        "options": [
+                            "To add sugar and artificial flavoring to the liquid",
+                            "To automatically reroute under-heated product back to the raw balance tank if temperature drops below the required critical limit, preventing contaminated product from reaching the filler",
+                            "To increase the speed of the packaging machine by 200%",
+                            "To pump wastewater into municipal sewers"
+                        ],
+                        "answer": 1
+                    }
+                ]
             },
             {
                 "id": "food-m2",
                 "title": "Thermal Preservation: Pasteurization, Retort Canning and Aseptic Filling",
-                "titleES": "Preservación Térmica: Pasteurización y Envasado Aséptico",
+                "titleES": "Preservación Térmica: Pasteurización, Retortas y Llenado Aséptico",
                 "icon": "fa-solid fa-temperature-high",
-                "readings": []
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "food-m2-r1",
+                        "title": "Thermal Kinetics: D-Value, Z-Value, F0 12D Botulinum Cook & Aseptic Systems",
+                        "duration": "15 min",
+                        "content": "\n# Thermal Kinetics: D-Value, Z-Value, F0 12D Botulinum Cook & Aseptic Systems\n\nThermal processing represents the most widespread and historically significant preservation method in human food civilization. From Nicolas Appert's original glass jar canning experiments for Napoleon’s army to modern continuous Ultra-High Temperature (UHT) aseptic beverage plants, the objective remains unvarying: applying sufficient thermal heat energy to destroy pathogenic and spoilage microorganisms and inactivate degrading enzymes, while preserving as much nutritional bioavailability, color, and organoleptic flavor as possible.\n\nDesigning industrial thermal preservation schedules requires mastering the mathematics of microbial death kinetics: the **Decimal Reduction Time ($D$-value)**, the **Thermal Resistance Constant ($Z$-value)**, the **Total Lethality Index ($F_0$)**, and the mandatory **$12D$ Botulinum Cook** in commercial steam retorts and aseptic carton fillers.\n\n---\n\n## 1. Microbial Death Kinetics: D-Value and Z-Value\n\nThermal destruction of microorganisms follows first-order chemical reaction kinetics. When subjected to a constant lethal temperature, a bacterial population decreases logarithmically over time:\n\n$$\\log_{10}(N) = \\log_{10}(N_0) - \\frac{t}{D}$$\n\nWhere $N_0$ is the initial microbial population, $N$ is surviving population after heating time $t$, and $D$ is the Decimal Reduction Time.\n\n### Decimal Reduction Time ($D$-value)\nThe time in minutes required at a specific constant temperature ($T$) to destroy $90\\%$ (one logarithmic cycle) of a specific target microbial population:\n\n$$D_T = \\frac{t}{\\log_{10}(N_0) - \\log_{10}(N)}$$\n\n*Example*: If a strain of *Salmonella enterica* in mango juice has a $D_{65^\\circ\\text{C}} = 0.40\\ \\text{minutes}$, heating the juice at $65^\\circ\\text{C}$ for $0.40\\ \\text{minutes}$ reduces the population from $1,000,000\\ (10^6)$ cells down to $100,000\\ (10^5)$ cells. Reducing it to $1\\ (10^0)$ cell requires $6 \\times D = 2.4\\ \\text{minutes}$ ($6D$ process).\n\n### Thermal Resistance Constant ($Z$-value)\nQuantifies the temperature dependency of the $D$-value. The $Z$-value represents the temperature increase (in degrees Celsius or Fahrenheit) required to reduce the $D$-value by a factor of 10 ($90\\%$ reduction in processing time):\n\n$$Z = \\frac{T_2 - T_1}{\\log_{10}(D_1) - \\log_{10}(D_2)}$$\n\nFor *Clostridium botulinum* spores, the universal regulatory reference values are:\n- Reference Temperature: $T_{\\text{ref}} = 121.1^\\circ\\text{C}\\ (250^\\circ\\text{F})$.\n- Reference $D$-value: $D_{121.1^\\circ\\text{C}} = 0.21\\ \\text{minutes}$.\n- Thermal $Z$-value: $Z = 10.0^\\circ\\text{C}\\ (18^\\circ\\text{F})$.\n\n---\n\n## 2. Total Lethality & The 12D Botulinum Cook ($F_0$)\n\nIn real-world food containers, temperature is never instantaneous; cans heat up slowly and cool down gradually. Total thermal lethality accumulated throughout the entire heating and cooling cycle is integrated into the **Lethality Index ($F_0$)**:\n\n$$F_0 = \\int_0^t 10^{\\frac{T(t) - 121.1}{Z}} \\, dt$$\n\nWhere $T(t)$ is the real-time core temperature at the slowest-heating point (the **cold spot**) of the container, measured using calibrated wireless thermocouple dataloggers.\n\n### The 12D Process for Low-Acid Canned Foods (LACF)\nUnder FDA 21 CFR Part 113, all shelf-stable low-acid foods (equilibrium $\\text{pH} > 4.60$ and water activity $A_w > 0.85$, such as canned meats, refried beans, and soups) must undergo a minimum **$12D$ thermal botulinum cook**:\n$$\\text{Minimum } F_0 = 12 \\times D_{121.1} = 12 \\times 0.21\\ \\text{min} = 2.52\\ \\text{minutes}$$\n\nIn industrial commercial practice, Process Authorities establish target **$F_0$ values between $4.0$ and $6.0\\ \\text{minutes}$** to build an engineering safety margin against high spore bioburden, variable fill weights, and steam distribution cold spots inside the retort.\n\n---\n\n## 3. Retort Canning vs. Continuous HTST & UHT Aseptic Processing\n\nDepending on product rheology and packaging format, thermal preservation is divided into two primary processing architectures:\n\n```\nThermal Processing Paradigms:\n[ Retort In-Container Sterilization ]   Product packaged raw in cans/pouches, then cooked inside autoclave.\n                                       High thermal exposure (121°C for 20-50 min). High flavor degradation.\n                                       \n[ UHT / Continuous Aseptic Filling ]   Liquid sterilized in seconds (140°C for 4 sec) in tube-in-tube exchangers.\n                                       Cooled, then pumped into sterile cartons inside sterile laminar chamber.\n```\n\n### 1. Industrial Retort Autoclaves (Batch & Continuous)\n- **Overpressure Water Immersion / Water Spray Retorts**: Designed for flexible retort pouches and polypropylene trays that would burst under internal pressure if not counterbalanced by external compressed air overpressure ($2.0\\text{--}3.5\\ \\text{bar}$).\n- **Rotary Retorts**: The autoclave cage rotates cans at $10\\text{--}25\\ \\text{RPM}$, inducing forced convection inside liquid products, slashing cold-spot heating time by up to $60\\%$.\n\n### 2. UHT & Aseptic Packaging (Tetra Pak / Combibloc)\n- **Direct Steam Injection (DSI) / Infusion**: Pure culinary steam is injected directly into the milk or plant beverage, flashing temperature to $145^\\circ\\text{C}$ in $0.1\\ \\text{seconds}$, followed by flash-vacuum chamber cooling to remove the condensed water vapor.\n- **Indirect Tubular Heat Exchangers**: Triple-tube concentric heat exchangers with product-to-product heat regeneration efficiency exceeding $85\\%$.\n- **Aseptic Barrier Cartons**: Pre-sterilized multi-layer composite packaging (Polyethylene / Paperboard / Polyethylene / Aluminum Foil / Polyethylene) sterilized in-line with vaporized hydrogen peroxide ($H_2O_2$) and hot sterile air before aseptic filling and ultrasonic hermetic sealing.\n\n---\n\n## 4. Engineering Field Scenario: Retort Temperature Deviation Containment\n\nAt a shelf-stable refried bean canning plant in Culiacán, Sinaloa, exporting 15-ounce steel cans to the southwestern US:\n\n### The Operational Deviation\nDuring Retort Batch #84 inside Steam Retort #3 (holding 4,200 cans of refried pinto beans), the main boiler facility experienced an electrical brownout at minute 18 of a 35-minute cook cycle:\n- Retort steam pressure dropped from $1.4\\ \\text{bar}$ to $0.6\\ \\text{bar}$.\n- Retort chamber temperature plunged from $121.5^\\circ\\text{C}$ down to $112.0^\\circ\\text{C}$ for 7 minutes before secondary auxiliary steam boilers restored pressure.\n\n### The Thermal Process Authority Intervention\nUnder 21 CFR 113.89, any temperature drop below the scheduled retort temperature is a mandatory **Scheduled Process Deviation**:\n1. **Immediate Retort Hold & Quarantine**: The retort operator extended the cook cycle by 12 minutes under manual steam override. The entire batch of 4,200 cans was segregated in the holding warehouse with physical red lockouts.\n2. **Cold-Spot Thermocouple Numerical Integration**: The plant’s certified Process Authority downloaded the wireless Ellab thermocouple temperature logs from the reference cold-spot can (located in the geometric center of Can #4 in the bottom retort basket):\n   - Conduction-heating refried beans heat via slow molecular diffusion, meaning the cold spot temperature dipped only to $114.2^\\circ\\text{C}$ due to thermal inertia.\n   - The Process Authority executed General Method numerical integration of the lethal rate curve ($L = 10^{(T - 121.1)/10}$):\n     $$F_0 = \\sum L_i \\cdot \\Delta t = 4.82\\ \\text{minutes}$$\n3. **Regulatory Disposition**: Because the integrated $F_0$ of $4.82\\ \\text{minutes}$ comfortably exceeded the regulatory minimum of $3.0\\ \\text{minutes}$ ($12D$ botulinum cook), the Process Authority formally signed off on a deviation release report, certifying that commercial sterility had been achieved without destroying product viscosity or safety.\n\n---\n\n> **Key Takeaway**: Thermal food engineering reconciles microbial lethality with nutritional preservation. By calculating $D$-values, $Z$-values, and integrating cold-spot $F_0$ curves to enforce the $12D$ botulinum cook, process authorities guarantee absolute shelf-stability in low-acid foods.\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Evaluating a Cold-Spot Thermocouple Curve for Low-Acid Retort Canning",
+                    "titleES": "Evaluando una Curva de Termopar de Punto Frío para Retortas de Alimentos de Baja Acidez",
+                    "scenarioContext": "A Certified Process Authority in Querétaro and a Retort Operations Director in Chicago review thermal penetration datalogger curves for a newly formulated shelf-stable black bean puree.",
+                    "characters": [
+                        {
+                            "name": "Warren Hastings",
+                            "role": "Director of Retort Operations",
+                            "company": "Heartland Foods (Chicago, IL)"
+                        },
+                        {
+                            "name": "Dra. Carmen Belmonte",
+                            "role": "Certified Thermal Process Authority",
+                            "company": "Centro Agroindustrial del Bajío (Querétaro, Qro)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Warren Hastings",
+                            "text": "Dra. Belmonte, our R&D group in Chicago reformulated the black bean puree by increasing the starch concentration to enhance creaminess. We just pulled the wireless thermocouple data from the thermal penetration test in our water-spray retort. The heating curve shows significant lag.",
+                            "translation": "Dra. Belmonte, nuestro grupo de I+D en Chicago reformuló el puré de frijol negro incrementando la concentración de almidón para mejorar la cremosidad. Acabamos de extraer los datos de termopares inalámbricos de la prueba de penetración térmica en nuestra retorta de aspersión de agua. La curva de calentamiento muestra un retraso significativo.",
+                            "targetTerms": [
+                                "reformulated the puree",
+                                "wireless thermocouple data",
+                                "thermal penetration test",
+                                "heating curve shows lag"
+                            ]
+                        },
+                        {
+                            "speaker": "Dra. Carmen Belmonte",
+                            "text": "That is precisely what we anticipated, Warren. Higher starch viscosity transitions the heat transfer mechanism from convective mixing to pure conduction. Looking at probe seven positioned at the geometric center of the pouch, the product required twenty-two minutes just to cross one hundred and ten degrees Celsius.",
+                            "translation": "Eso es precisamente lo que anticipábamos, Warren. La mayor viscosidad del almidón cambia el mecanismo de transferencia de calor de mezcla convectiva a pura conducción. Al ver la sonda siete colocada en el centro geométrico de la bolsa, el producto requirió veintidós minutos solo para cruzar los 110 grados Celsius.",
+                            "targetTerms": [
+                                "starch viscosity",
+                                "convective mixing",
+                                "pure conduction",
+                                "geometric center"
+                            ]
+                        },
+                        {
+                            "speaker": "Warren Hastings",
+                            "text": "What is our integrated F-zero value at the end of the forty-minute cook cycle? Did we achieve the minimum twelve-D botulinum lethality?",
+                            "translation": "¿Cuál es nuestro valor F-cero integrado al final del ciclo de cocción de cuarenta minutos? ¿Alcanzamos la letalidad mínima doce-D de botulinum?",
+                            "targetTerms": [
+                                "integrated F-zero value",
+                                "cook cycle",
+                                "twelve-D botulinum lethality"
+                            ]
+                        },
+                        {
+                            "speaker": "Dra. Carmen Belmonte",
+                            "text": "Integrating the lethality curve with a z-value of ten degrees Celsius yields an F-zero of only two point one minutes. That fails both our FDA scheduled process requirement of three point zero minutes and our internal corporate safety target of five point zero minutes.",
+                            "translation": "Integrar la curva de letalidad con un valor z de diez grados Celsius arroja un F-cero de solo 2.1 minutos. Eso reprueba tanto nuestro requerimiento de proceso programado de la FDA de 3.0 minutos como nuestro objetivo de seguridad corporativo interno de 5.0 minutos.",
+                            "targetTerms": [
+                                "z-value of ten degrees",
+                                "F-zero of only two point one",
+                                "fails both requirements",
+                                "corporate safety target"
+                            ]
+                        },
+                        {
+                            "speaker": "Warren Hastings",
+                            "text": "If we simply extend the static retort cycle time by ten minutes, we will scorch the bean paste against the pouch walls, creating severe dark discoloration and burnt off-flavors.",
+                            "translation": "Si simplemente extendemos el tiempo de ciclo de retorta estática por diez minutos, quemaremos la pasta de frijol contra las paredes de la bolsa, generando una severa decoloración oscura y sabores a quemado.",
+                            "targetTerms": [
+                                "extend the static retort cycle",
+                                "scorch the bean paste",
+                                "discoloration",
+                                "burnt off-flavors"
+                            ]
+                        },
+                        {
+                            "speaker": "Dra. Carmen Belmonte",
+                            "text": "Then we must introduce agitation. If we run this product in our continuous rotary retort at fifteen RPM, the internal headspace bubble will force continuous axial mixing through the viscous puree. That should triple our heat penetration rate and deliver an F-zero of six point zero in thirty minutes without thermal scorching.",
+                            "translation": "Entonces debemos introducir agitación. Si corremos este producto en nuestra retorta rotativa continua a quince RPM, la burbuja del espacio de cabeza forzará un mezclado axial continuo a través del puré viscoso. Eso debería triplicar nuestra tasa de penetración de calor y entregar un F-cero de 6.0 en treinta minutos sin quemado térmico.",
+                            "targetTerms": [
+                                "introduce agitation",
+                                "continuous rotary retort",
+                                "axial mixing",
+                                "without thermal scorching"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "We cooked the food until it was boiling hot.",
+                            "native": "We integrated cold-spot thermocouple curves to verify a minimum F-zero lethality of five point zero minutes.",
+                            "explanation": "Commercial canning requires mathematical verification of thermal lethality ($F_0$) at the container cold spot, not arbitrary subjective boiling."
+                        },
+                        {
+                            "school": "Pasteurized milk is sterilized milk.",
+                            "native": "Pasteurization destroys vegetative pathogens (requiring cold chain storage), whereas UHT delivers complete commercial sterility.",
+                            "explanation": "Pasteurization eliminates vegetative pathogens while leaving thermoresistant spores intact; UHT processing renders milk shelf-stable at room temperature."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "D-Value (Decimal Reduction Time)",
+                        "ipa": "/ˈdiː ˌvæl.juː/",
+                        "es": "Valor D (Tiempo de Reducción Decimal)",
+                        "category": "Thermal Kinetics",
+                        "definition": "The time in minutes required at a constant temperature to kill 90% (one logarithmic reduction) of a specific target microbial population.",
+                        "collocations": [
+                            "calculate the D-value at 121°C",
+                            "D-value of Clostridium botulinum",
+                            "one-log population reduction",
+                            "thermal resistance testing"
+                        ],
+                        "falseFriends": "The D-value is measured in units of time (minutes), not temperature or unitless ratios.",
+                        "nativeUsage": "The laboratory established that Salmonella in orange juice has a D-value of 0.35 minutes at 65 degrees Celsius."
+                    },
+                    {
+                        "term": "Z-Value",
+                        "ipa": "/ˈzɛd ˌvæl.juː / ˈziː ˌvæl.juː/",
+                        "es": "Valor Z (Constante de Resistencia Térmica)",
+                        "category": "Thermal Kinetics",
+                        "definition": "The change in temperature required to change the microbial D-value by a factor of 10 (one logarithmic cycle), quantifying the temperature sensitivity of the organism.",
+                        "collocations": [
+                            "assume a z-value of 10°C",
+                            "z-value temperature sensitivity",
+                            "calculate thermal lethal rate",
+                            "Bigelow model z-value"
+                        ],
+                        "falseFriends": "The Z-value is measured in temperature units (°C or °F), unlike the D-value which is measured in time.",
+                        "nativeUsage": "For low-acid thermal canning calculations, FDA regulations mandate a standardized z-value of 10.0°C (18°F) for botulinum spores."
+                    },
+                    {
+                        "term": "F0 Lethality Value",
+                        "ipa": "/ˌɛf ˈzɪə.roʊ ˈlɛθ.əl.ɪ.ti ˌvæl.juː/",
+                        "es": "Valor de Letalidad F0",
+                        "category": "Process Authority",
+                        "definition": "The equivalent time in minutes at 121.1°C (250°F) delivering the same total microbial lethality as the actual integrated time-temperature heating profile at the container cold spot.",
+                        "collocations": [
+                            "achieve an F0 of at least 3.0 minutes",
+                            "integrate cold-spot F0",
+                            "target commercial sterility F0",
+                            "F0 deviation review"
+                        ],
+                        "falseFriends": "F0 is an integrated equivalent time, not the total clock time the retort spends running.",
+                        "nativeUsage": "Although the can spent 40 minutes in the retort, the integrated F0 at the cold spot reached exactly 5.2 minutes."
+                    },
+                    {
+                        "term": "Retort Sterilization",
+                        "ipa": "/rɪˈtɔːrt ˌstɛr.əl.aɪˈzeɪ.ʃən/",
+                        "es": "Esterilización en Retorta (Autoclave Industrial)",
+                        "category": "Food Preservation",
+                        "definition": "An industrial pressure vessel using pressurized saturated steam, hot water immersion, or water spray with compressed air overpressure to commercially sterilize sealed cans or pouches.",
+                        "collocations": [
+                            "overpressure water-spray retort",
+                            "continuous rotary retort",
+                            "load crates into the retort",
+                            "retort scheduled process"
+                        ],
+                        "falseFriends": "A retort in food processing is an industrial autoclave; it does not mean an angry verbal answer.",
+                        "nativeUsage": "The flexible retort pouches were sterilized in an overpressure water immersion retort to prevent pouch seals from bursting."
+                    },
+                    {
+                        "term": "UHT (Ultra-High Temperature) Processing",
+                        "ipa": "/ˌjuː.eɪtʃˈtiː ˈprɒs.ɛs.ɪŋ/",
+                        "es": "Procesamiento UHT (Ultra Alta Temperatura)",
+                        "category": "Continuous Processing",
+                        "definition": "A continuous flow thermal treatment heating liquid foods to 135–150°C for 2–5 seconds, followed by rapid flash cooling and aseptic packaging to produce shelf-stable products.",
+                        "collocations": [
+                            "UHT continuous tubular system",
+                            "direct steam injection UHT",
+                            "shelf-stable UHT dairy milk",
+                            "aseptic tank buffering"
+                        ],
+                        "falseFriends": "UHT milk is commercially sterile and requires zero refrigeration before opening, unlike pasteurized HTST milk.",
+                        "nativeUsage": "The dairy cooperative installed a direct steam injection UHT line capable of processing 15,000 liters of milk per hour."
+                    },
+                    {
+                        "term": "Aseptic Packaging",
+                        "ipa": "/eɪˈsɛp.tɪk ˈpæk.ɪ.dʒɪŋ/",
+                        "es": "Envasado Aséptico",
+                        "category": "Packaging Technology",
+                        "definition": "The commercial filling of pre-sterilized and cooled food into pre-sterilized packaging containers inside a hermetically sealed, sterile laminar airflow enclosure.",
+                        "collocations": [
+                            "fill in an aseptic chamber",
+                            "hydrogen peroxide vapor sterilization",
+                            "multi-layer aseptic carton",
+                            "maintain aseptic seal hermeticity"
+                        ],
+                        "falseFriends": "Aseptic packaging sterilizes product and packaging separately before filling, unlike retort canning which cooks both together.",
+                        "nativeUsage": "The organic soymilk was packaged in multi-layer aseptic cartons with an ambient shelf-life of twelve months."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Calculating 12D Process Time from D-Values",
+                        "botQuestion": "A food microbiology lab determines that Clostridium sporogenes PA 3679 spores (a heat-resistant surrogate for Clostridium botulinum) in a canned meat stew have a D-value of D121.1 = 0.85 minutes. What is the minimum thermal holding time at 121.1°C required to achieve a 12D cook? If the initial spore load in the raw stew is 10^4 spores per can, what is the theoretical probability of a surviving spore in a finished can?",
+                        "requiredKeywords": [
+                            "10.2",
+                            "12d",
+                            "spores",
+                            "minutes",
+                            "probability",
+                            "surviving"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on thermal arithmetic! 1) Holding time = 12 * D121.1 = 12 * 0.85 minutes = 10.2 minutes of equivalent holding at 121.1°C; 2) Surviving population: Starting at N0 = 10^4 spores and subtracting 12 log cycles yields 10^(4 - 12) = 10^-8 spores per can. This equates to a probability of only 1 non-sterile can in every 100,000,000 processed cans, satisfying commercial sterility requirements.",
+                        "feedbackRetry": "Multiply the D-value (0.85 min) by 12 to find the total 12D processing time. Then subtract 12 from the starting log exponent (10^4) to determine the surviving spore concentration."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Evaluating Heat Transfer Mechanics in Liquid vs Solid Canned Foods",
+                        "botQuestion": "A cannery in Sinaloa packs both whole-kernel sweet corn in liquid brine and thick cream-style corn puree into identical 16-ounce tin cans. Explain why the cream-style corn requires almost triple the retort cooking time of the whole-kernel corn to achieve the same F0 lethality at the cold spot, referencing convective vs conductive heat transfer.",
+                        "requiredKeywords": [
+                            "convection",
+                            "conduction",
+                            "viscosity",
+                            "cold spot",
+                            "heat transfer",
+                            "brine"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Outstanding thermal physics analysis! Whole-kernel corn in low-viscosity liquid brine heats predominantly through natural Convection currents: heated brine becomes less dense and rises rapidly, driving turbulent fluid circulation that heats the can quickly. In contrast, cream-style corn is a thick, highly viscous starch paste that prevents convective fluid movement; heat can only penetrate through molecular Conduction, which is orders of magnitude slower. Therefore, the geometric cold spot takes significantly longer to reach sterilizing temperatures, requiring longer retort cycles.",
+                        "feedbackRetry": "Contrast the heat transfer mechanisms: low-viscosity brine allows rapid Convection (fluid circulating currents), while viscous starch puree restricts movement and relies on slow Conduction (heat diffusing slowly through solid matter)."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "In thermal food processing, what does the D-value represent?",
+                        "options": [
+                            "The diameter of the processing pipe",
+                            "The time in minutes at a given constant temperature required to destroy 90% (one log cycle) of a microbial population",
+                            "The maximum dilution ratio of chemical sanitizers",
+                            "The density of the liquid food"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "What is the mandatory minimum thermal process for low-acid canned foods (LACF) to destroy Clostridium botulinum spores?",
+                        "options": [
+                            "Heating in an open kettle at 80°C for 5 minutes",
+                            "A 12D thermal process delivering a minimum F0 lethality of at least 2.5 to 3.0 minutes",
+                            "Freezing the cans at -20°C for three weeks",
+                            "Washing the outer can surface with chlorine bleach"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "What is the primary operational difference between Retort Canning and Aseptic Packaging?",
+                        "options": [
+                            "Retort canning uses cardboard; aseptic packaging uses heavy glass",
+                            "Retort canning cooks product and packaging together inside an autoclave, whereas aseptic processing sterilizes food and packaging separately before filling in a sterile environment",
+                            "Aseptic packaging is only used for solid raw meats",
+                            "Retort canning eliminates all vitamins permanently"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Why is rotational agitation utilized in continuous rotary retorts for viscous foods?",
+                        "options": [
+                            "To make the cans look polished",
+                            "To force the internal headspace bubble through the liquid, inducing forced convective mixing and slashing thermal penetration time",
+                            "To cool the retort down with ambient wind",
+                            "To prevent operators from touching the cans"
+                        ],
+                        "answer": 1
+                    }
+                ]
             },
             {
                 "id": "food-m3",
                 "title": "Modified Atmosphere Packaging (MAP) & Barrier Polymers",
-                "titleES": "Empaque en Atmósfera Modificada (MAP) y Barreras",
-                "icon": "fa-solid fa-box",
-                "readings": []
+                "titleES": "Envasado en Atmósfera Modificada (MAP) y Polímeros de Barrera",
+                "icon": "fa-solid fa-box-tissue",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "food-m3-r1",
+                        "title": "Modified Atmosphere Packaging (MAP): Gas Tri-Blends, EVOH Barrier Films & Shelf-Life Extension",
+                        "duration": "15 min",
+                        "content": "\n# Modified Atmosphere Packaging (MAP): Gas Tri-Blends, EVOH Barrier Films & Shelf-Life Extension\n\nModern retail consumers demand fresh, preservative-free foods with extended shelf life—fresh-cut salads that remain crisp for two weeks, fresh red meat that retains its bright ruby-red color for days in display cases, and artisanal fresh pasta that resists mold spoilage without added chemical sorbates. Delivering this quality across continental supply chains requires **Modified Atmosphere Packaging (MAP)**, a sophisticated preservation technology that alters the internal gas composition surrounding the food inside high-barrier hermetically sealed polymer pouches.\n\nMastering MAP engineering requires understanding the biochemistry of the **Primary Protective Gas Tri-Blend ($CO_2, N_2, O_2$)**, the permeability physics of **Barrier Polymers (EVOH, PVDC, oriented polyamides)**, and the integration of **Active Packaging Scavengers**.\n\n---\n\n## 1. The Biochemistry of Modified Atmosphere Gas Tri-Blends\n\nUnlike vacuum packaging which collapses flexible pouches around delicate products, MAP displaces ambient atmospheric air ($78\\%\\ N_2, 21\\%\\ O_2, 0.04\\%\\ CO_2$) with tailored gas formulations engineered for specific physiological matrices:\n\n```\nMAP Industrial Gas Formulation Spectrum:\nTarget Food Matrix:          Gas Formulation (CO2 / N2 / O2):     Preservation Objective:\nFresh Red Beef / Lamb        70% O2 / 30% CO2 / 0% N2             Preserves oxymyoglobin red bloom while CO2 inhibits bacteria.\nFresh Bakery & Hard Cheeses  0% O2 / 30% CO2 / 70% N2             Complete O2 starvation halts mold; N2 prevents pouch crush.\nFresh-Cut Salads & Berries   3-5% O2 / 5-8% CO2 / Balance N2      Maintains minimal respiration; prevents anaerobic fermentation.\nRaw Poultry & Pork           0% O2 / 40% CO2 / 60% N2             CO2 halts Pseudomonas spoilage; avoids myoglobin oxidation.\n```\n\n### 1. Carbon Dioxide ($CO_2$): The Active Antimicrobial Shield\n$CO_2$ is the sole bacteriostatic and fungistatic component in standard MAP mixtures. When flushed into a pack, gaseous $CO_2$ dissolves directly into the aqueous and lipid phases of the food:\n\n$$\\text{CO}_2 + \\text{H}_2\\text{O} \\rightleftharpoons \\text{H}_2\\text{CO}_3 \\rightleftharpoons \\text{H}^+ + \\text{HCO}_3^-$$\n\nThe resulting carbonic acid lowers localized intracellular pH and dissolves directly into bacterial cell membranes, disrupting nutrient transport enzymes and cellular decarboxylation reactions. $CO_2$ aggressively inhibits common aerobic spoilage organisms (such as *Pseudomonas* species). \n- *The Volume Dissolution Trap*: Because $CO_2$ dissolves rapidly into moisture, packaging moist products with $>50\\%\\ CO_2$ creates an internal vacuum over 48 hours, causing package shrinkage or **pack collapse** unless buffered with inert filler gases.\n\n### 2. Nitrogen ($N_2$): The Inert Mechanical Cushion\nNitrogen is tasteless, odorless, and virtually insoluble in water and fat. It functions as an inert filler gas, displacing oxygen to prevent lipid oxidation and cushioning fragile products (such as potato chips or leafy greens) against mechanical crushing during shipping.\n\n### 3. Oxygen ($O_2$): The Selective Metabolic Regulator\nWhile oxygen is generally eliminated from food packaging to prevent oxidative rancidity and aerobic microbial growth, it is intentionally retained in two critical applications:\n- **Red Meat Color Dynamics**: Deoxymyoglobin (purple) requires high oxygen ($60\\text{--}80\\%\\ O_2$) to form **oxymyoglobin**, creating the bright cherry-red color expected by supermarket consumers.\n- **Fresh Produce Respiration (Equilibrium MAP - EMAP)**: Fresh-cut fruits and vegetables are living tissues that continue to respire post-harvest (consuming $O_2$ and exhaling $CO_2$). Completely starving produce of oxygen below $1\\text{--}2\\%\\ O_2$ triggers anaerobic fermentation, producing ethanol, acetaldehyde, and repulsive off-odors.\n\n---\n\n## 2. High-Barrier Polymers & Permeability Kinetics (OTR / WVTR)\n\nA modified gas atmosphere is worthless if the packaging material leaks gas across its molecular matrix. Barrier polymers are evaluated by two thermodynamic permeability benchmarks:\n\n### 1. Oxygen Transmission Rate (OTR)\nThe volume of oxygen gas passing through a square meter of film per 24 hours under standardized temperature and humidity conditions:\n\n$$\\text{OTR} = \\frac{\\text{cm}^3}{\\text{m}^2 \\cdot 24\\ \\text{h} \\cdot \\text{bar}} \\quad (\\text{at } 23^\\circ\\text{C}, 0\\%\\ \\text{RH per ASTM D3985})$$\n\n### 2. Water Vapor Transmission Rate (WVTR)\n$$\\text{WVTR} = \\frac{\\text{g}}{\\text{m}^2 \\cdot 24\\ \\text{h}} \\quad (\\text{at } 38^\\circ\\text{C}, 90\\%\\ \\text{RH per ASTM F1249})$$\n\n```\nMulti-Layer Co-Extruded Barrier Structure:\n[ Outer Print Layer: Polyethylene Terephthalate (PET) ]  Mechanical puncture resistance & gloss\n[ Core Tie-Layer: Modified Polyolefin Adhesive ]        Bonding incompatible polymers\n[ Central High-Barrier: Ethylene Vinyl Alcohol (EVOH) ]   Near-zero OTR (<0.5 cm3/m2/day)\n[ Inner Tie-Layer: Modified Polyolefin Adhesive ]        Bonding incompatible polymers\n[ Inner Sealant Layer: Polyethylene (LDPE / LLDPE) ]     Low-temperature hermetic heat sealing\n```\n\n### The Unique Physics of EVOH (Ethylene Vinyl Alcohol)\nEVOH delivers the lowest oxygen permeability of any commercial resin ($OTR < 0.2\\ \\text{cm}^3/\\text{m}^2\\cdot\\text{day}$). However, the hydroxyl ($-OH$) groups that make EVOH such a tight gas barrier are highly hydrophilic: in high-humidity environments ($>75\\%\\ \\text{RH}$), water molecules plasticize the EVOH polymer chains, causing its oxygen barrier to collapse by over $1,000\\%$. To protect it, packaging engineers sandwich EVOH between hydrophobic polyolefin layers (PE or PP) in 5-to-9-layer co-extruded films.\n\n---\n\n## 3. Active Packaging & Headspace Integrity Verification\n\nWhen passive barrier films alone cannot maintain target atmospheres, **Active Packaging** technologies interact chemically with the package environment:\n\n### Oxygen Scavengers (Ferrous Oxide Sachets)\nSachets containing powdered iron and sodium chloride catalysts react irreversibly with trapped headspace oxygen:\n\n$$4\\text{Fe} + 3\\text{O}_2 + 6\\text{H}_2\\text{O} \\rightarrow 4\\text{Fe(OH)}_3$$\n\nOxygen scavengers pull residual headspace $O_2$ down from $0.5\\%$ to **$<0.01\\%$ (less than 100 ppm)** within 24 hours, preventing mold growth on bakery goods and nuts without adding chemical additives.\n\n### Quality Control: Headspace Gas Chromatography\nBefore shipping palletized product, technicians test random sample packs using optical or electrochemical headspace gas analyzers (ASTM F2714):\n- A syringe needle is pushed through a self-adhesive septum on the package lid.\n- The instrument draws $10\\ \\text{mL}$ of headspace gas, displaying exact $%\\ O_2$ and $%\\ CO_2$ concentrations in seconds.\n- Packaging lines also incorporate **high-voltage leak detection (HVLD)** or in-line carbon dioxide sniffer chambers that detect defective micro-channel seals at 120 packs per minute.\n\n---\n\n## 4. Engineering Field Scenario: Mitigating Pack Collapse on Fresh Cheese in Jalisco\n\nAt an artisanal cheese packaging plant in Los Altos de Jalisco exporting fresh Panela and Oaxaca cheese to the US market:\n\n### The Packaging Failure\nThe plant transitioned from vacuum packing to MAP using a $60\\%\\ CO_2 / 40\\%\\ N_2$ gas flush to preserve cheese texture and prevent crushing the delicate curd matrix. However, 24 hours after palletizing, $100\\%$ of the retail pouches experienced severe **pack collapse**:\n- The flexible top lidding film contracted tightly around the cheese blocks, squeezing whey moisture out into the pouch and warping the retail cardboard display sleeves.\n\n### The Scientific Root-Cause Diagnosis\n1. **$CO_2$ Absorption Dynamics**: Fresh Panela cheese contains $52\\%$ moisture and $24\\%$ butterfat. The high concentration of carbon dioxide dissolved rapidly into the product's liquid and lipid phases, creating a severe partial vacuum inside the hermetically sealed pouch.\n2. **Headspace Volumetric Analysis**: The initial gas-to-product volume ratio ($G/P$) was only $0.8:1$. The total volume of dissolved $CO_2$ exceeded the volume of non-condensable nitrogen gas remaining in the headspace.\n\n### The Engineering Solution\n1. **Reformulating the Gas Tri-Blend**: Engineers modified the gas flush formulation from $60\\%\\ CO_2 / 40\\%\\ N_2$ to **$30\\%\\ CO_2 / 70\\%\\ N_2$**.\n   - $30\\%\\ CO_2$ was validated in microbiology challenge studies as completely sufficient to inhibit psychrotrophic molds and yeasts for 45 days.\n   - The $70\\%\\ N_2$ inert fraction provided an incompressible mechanical cushion, permanently preventing internal vacuum formation.\n2. **Adjusting the Gas-to-Product Ratio**: The thermoforming mold depth was adjusted to increase the $G/P$ headspace ratio to **$1.5:1$**, ensuring ample nitrogen buffer.\n3. **Outcome**: The revised packaging maintained perfect pillow-pack geometry throughout 60 days of refrigerated shelf life, with zero whey syneresis and complete consumer acceptance.\n\n---\n\n> **Key Takeaway**: Modified Atmosphere Packaging extends food freshness through precision atmospheric control. By tuning $CO_2/N_2/O_2$ ratios, deploying multi-layer EVOH barrier films, and preventing pack collapse, packaging engineers safeguard quality across continental supply chains.\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Optimizing Modified Atmosphere Ratios for Avocado Export",
+                    "titleES": "Optimizando Ratios de Atmósfera Modificada para Exportación de Aguacate",
+                    "scenarioContext": "A Packaging R&D Engineer in Uruapan, Michoacán, and an Import Produce Category Manager in Los Angeles optimize MAP gas mixtures to double the transit life of fresh-cut avocado halves.",
+                    "characters": [
+                        {
+                            "name": "Julian Mercado",
+                            "role": "Produce Category Sourcing Director",
+                            "company": "Pacific Fresh Wholesale (Los Angeles, CA)"
+                        },
+                        {
+                            "name": "Ing. Beatriz Albarrán",
+                            "role": "Packaging Materials & Post-Harvest Engineer",
+                            "company": "Michoacán AgroPacking (Uruapan, Michoacán)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Julian Mercado",
+                            "text": "Beatriz, our Southern California supermarket accounts want to retail fresh-cut ready-to-eat avocado halves. The current vacuum-skin packages crush the fruit flesh and cause enzymatic browning within forty-eight hours. Can MAP technology deliver twelve days of display life?",
+                            "translation": "Beatriz, nuestros clientes de supermercados en el sur de California quieren vender mitades de aguacate fresco listas para consumir. Los empaques de vacío actuales aplastan la pulpa de la fruta y causan pardeamiento enzimático en cuarenta y ocho horas. ¿Puede la tecnología MAP entregar doce días de vida en anaquel?",
+                            "targetTerms": [
+                                "ready-to-eat avocado halves",
+                                "vacuum-skin packages",
+                                "enzymatic browning",
+                                "display life"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Beatriz Albarrán",
+                            "text": "Yes, Julian. The primary failure mechanism is polyphenol oxidase oxidation triggered by ambient oxygen, combined with high post-harvest respiration. We have engineered a multi-layer micro-perforated Equilibrium MAP film incorporating an EVOH barrier and a tailored gas flush.",
+                            "translation": "Sí, Julian. El mecanismo de falla principal es la oxidación por polifenol oxidasa detonada por el oxígeno ambiental, combinada con alta respiración poscosecha. Hemos diseñado una película de Atmósfera Modificada en Equilibrio microperforada multicapa que incorpora una barrera de EVOH y una inyección de gas a la medida.",
+                            "targetTerms": [
+                                "polyphenol oxidase oxidation",
+                                "post-harvest respiration",
+                                "Equilibrium MAP film",
+                                "EVOH barrier"
+                            ]
+                        },
+                        {
+                            "speaker": "Julian Mercado",
+                            "text": "What gas mixture are you flushing into the headspace? If you eliminate oxygen completely, do we risk triggering anaerobic fermentation and off-odors?",
+                            "translation": "¿Qué mezcla de gas están inyectando en el espacio de cabeza? Si eliminan el oxígeno por completo, ¿arriesgamos detonar fermentación anaeróbica y malos olores?",
+                            "targetTerms": [
+                                "gas mixture",
+                                "flushing into the headspace",
+                                "anaerobic fermentation",
+                                "off-odors"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Beatriz Albarrán",
+                            "text": "Exactly. Zero percent oxygen causes the avocado flesh to ferment, producing off-flavors and ethanol. We flush the tray with four percent oxygen, twelve percent carbon dioxide, and eighty-four percent nitrogen. The four percent oxygen keeps respiration aerobic, while the twelve percent CO2 suppresses fungal decay.",
+                            "translation": "Exactamente. Cero por ciento de oxígeno causa que la pulpa del aguacate fermente, produciendo sabores extraños y etanol. Purgamos la bandeja con cuatro por ciento de oxígeno, doce por ciento de dióxido de carbono y ochenta y cuatro por ciento de nitrógeno. El cuatro por ciento de oxígeno mantiene la respiración aeróbica, mientras que el doce por ciento de CO2 suprime el deterioro fúngico.",
+                            "targetTerms": [
+                                "ferment",
+                                "four percent oxygen",
+                                "carbon dioxide",
+                                "suppresses fungal decay"
+                            ]
+                        },
+                        {
+                            "speaker": "Julian Mercado",
+                            "text": "How do you maintain that four percent oxygen equilibrium as the fruit continues to respire during the three-day truck transit to Los Angeles?",
+                            "translation": "¿Cómo mantienen ese equilibrio de cuatro por ciento de oxígeno mientras la fruta continúa respirando durante el tránsito en camión de tres días a Los Ángeles?",
+                            "targetTerms": [
+                                "maintain equilibrium",
+                                "continues to respire",
+                                "truck transit"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Beatriz Albarrán",
+                            "text": "We utilize laser micro-perforation on the top barrier film. We tune the film's Oxygen Transmission Rate to match the exact respiration rate of the avocado tissue at four degrees Celsius, establishing a permanent equilibrium atmosphere throughout transit and retail display.",
+                            "translation": "Utilizamos microperforación por láser en la película barrera superior. Calibramos la Tasa de Transmisión de Oxígeno de la película para que coincida con la tasa de respiración exacta del tejido de aguacate a cuatro grados Celsius, estableciendo una atmósfera de equilibrio permanente durante todo el tránsito y exhibición.",
+                            "targetTerms": [
+                                "laser micro-perforation",
+                                "Oxygen Transmission Rate",
+                                "respiration rate",
+                                "equilibrium atmosphere"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "We put the food in plastic bags with air removed.",
+                            "native": "We engineered an Equilibrium Modified Atmosphere Packaging system using multi-layer EVOH barrier films.",
+                            "explanation": "In modern food science, MAP is a precision biochemical preservation technique that balances respiration rates with targeted gas tri-blends, not generic vacuum bagging."
+                        },
+                        {
+                            "school": "Carbon dioxide gas in the package is just dead air.",
+                            "native": "Carbon dioxide dissolves into product moisture as carbonic acid, functioning as an active antimicrobial agent.",
+                            "explanation": "CO2 is biochemically active in food packaging, lowering microbial cell pH and directly halting bacterial enzyme activity."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Modified Atmosphere Packaging (MAP)",
+                        "ipa": "/ˈmɒd.ɪ.faɪd ˈæt.məs.fɪər ˈpæk.ɪ.dʒɪŋ/",
+                        "es": "Envasado en Atmósfera Modificada (EAM / MAP)",
+                        "category": "Packaging Science",
+                        "definition": "An industrial packaging technique replacing ambient air inside a package with a tailored protective gas blend (typically CO2, N2, and O2) to slow biochemical degradation and microbial growth.",
+                        "collocations": [
+                            "flush with MAP gas blend",
+                            "extend shelf life via MAP",
+                            "MAP thermoforming tray sealer",
+                            "equilibrium MAP for fresh produce"
+                        ],
+                        "falseFriends": "MAP alters the initial gas atmosphere; Controlled Atmosphere (CA) storage actively monitors and adjusts gases inside entire refrigerated warehouse rooms.",
+                        "nativeUsage": "By switching to Modified Atmosphere Packaging, the poultry processing plant extended fresh chicken breast shelf life from 6 to 16 days."
+                    },
+                    {
+                        "term": "Oxygen Transmission Rate (OTR)",
+                        "ipa": "/ˈɒk.sɪ.dʒən trænzˈmɪʃ.ən ˌreɪt/",
+                        "es": "Tasa de Transmisión de Oxígeno (TTO / OTR)",
+                        "category": "Polymer Physics",
+                        "definition": "The measurement of the amount of oxygen gas that passes through a barrier film over a specified surface area and time under controlled temperature and relative humidity.",
+                        "collocations": [
+                            "measure OTR per ASTM D3985",
+                            "high-barrier low-OTR film",
+                            "OTR degradation under humidity",
+                            "micro-perforated OTR tuning"
+                        ],
+                        "falseFriends": "OTR measures gas permeability through the solid polymer matrix; it is distinct from mechanical leaks through package seal channels.",
+                        "nativeUsage": "The co-extruded packaging film exhibited an ultra-low OTR of 0.15 cubic centimeters per square meter per day."
+                    },
+                    {
+                        "term": "EVOH (Ethylene Vinyl Alcohol)",
+                        "ipa": "/ˌiː.viː.oʊˈeɪtʃ / ˈɛv.ɒx/",
+                        "es": "EVOH (Copolímero de Etileno y Alcohol Vinílico)",
+                        "category": "Barrier Resins",
+                        "definition": "A high-performance semi-crystalline copolymer resin renowned for delivering exceptional gas barrier properties against oxygen and aromas, commonly co-extruded in multi-layer structures.",
+                        "collocations": [
+                            "co-extrude an EVOH barrier layer",
+                            "hydrophilic sensitivity of EVOH",
+                            "protect EVOH with outer polyolefins",
+                            "EVOH thermoformed tray"
+                        ],
+                        "falseFriends": "EVOH is vulnerable to moisture plasticization, requiring encapsulation between hydrophobic resins like PE or PP.",
+                        "nativeUsage": "The meat packaging film incorporated a 5-micron central core of EVOH to shield the steaks from atmospheric oxygen."
+                    },
+                    {
+                        "term": "Headspace Gas Analysis",
+                        "ipa": "/ˈhɛd.speɪs ˈɡæs əˌnæl.ə.sɪs/",
+                        "es": "Análisis de Gases del Espacio de Cabeza",
+                        "category": "Quality Inspection",
+                        "definition": "The analytical measurement of residual oxygen and carbon dioxide concentrations inside the gas pocket (headspace) of a sealed food package to verify MAP integrity.",
+                        "collocations": [
+                            "perform destructive headspace gas testing",
+                            "measure residual O2 in headspace",
+                            "electrochemical headspace sensor",
+                            "headspace sampling septum"
+                        ],
+                        "falseFriends": "Headspace refers specifically to the gas volume above the food inside a package, not human psychology.",
+                        "nativeUsage": "The QA inspector inserted a sampling probe through a foam septum to perform routine headspace gas analysis on line two."
+                    },
+                    {
+                        "term": "Pack Collapse (Atmospheric Shrinkage)",
+                        "ipa": "/ˈpæk kəˌlæps/",
+                        "es": "Colapso del Envase (Efecto Vacío Inducido)",
+                        "category": "Packaging Defects",
+                        "definition": "A packaging defect occurring when carbon dioxide dissolves rapidly into the moisture or fat of food, creating an internal partial vacuum that causes flexible films to crush inward.",
+                        "collocations": [
+                            "prevent pack collapse with nitrogen",
+                            "CO2 solubilization and pack collapse",
+                            "internal vacuum formation",
+                            "distorted retail tray geometry"
+                        ],
+                        "falseFriends": "Pack collapse is a chemical gas absorption phenomenon, not physical crushing caused by heavy warehouse stacking.",
+                        "nativeUsage": "Adding 50% nitrogen as an inert filler gas resolved the pack collapse defect on the refrigerated pork loin packages."
+                    },
+                    {
+                        "term": "Active Packaging (Oxygen Scavenger)",
+                        "ipa": "/ˈæk.tɪv ˈpæk.ɪ.dʒɪŋ/",
+                        "es": "Envasado Activo (Absorbente de Oxígeno)",
+                        "category": "Functional Packaging",
+                        "definition": "Packaging systems incorporating chemically active substances (such as iron-based scavengers or antimicrobial sachets) that actively absorb undesirable gases or release preservative compounds.",
+                        "collocations": [
+                            "insert an oxygen scavenger sachet",
+                            "active scavenging mechanism",
+                            "reduce residual O2 below 100 ppm",
+                            "active barrier technology"
+                        ],
+                        "falseFriends": "Active packaging interacts chemically with the food or atmosphere, unlike passive packaging which acts strictly as an inert barrier.",
+                        "nativeUsage": "The bakery packaged its gluten-free muffins with an active oxygen scavenger sachet, extending mold-free shelf life to ninety days."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Selecting Gas Tri-Blends to Prevent Enzymatic Browning vs Fermentation",
+                        "botQuestion": "A packaging engineer in Michoacán is tasked with selecting a MAP gas mixture for fresh-cut peeled jicama sticks. Ambient oxygen causes rapid brown discoloration via polyphenol oxidase, but completely removing oxygen (0% O2) triggers anaerobic fermentation and sour off-odors. Propose a balanced gas tri-blend (O2 / CO2 / N2 percentages) and explain the biological function of each gas component.",
+                        "requiredKeywords": [
+                            "oxygen",
+                            "carbon dioxide",
+                            "nitrogen",
+                            "respiration",
+                            "aerobic",
+                            "fermentation"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on post-harvest engineering! An optimal gas formulation for fresh-cut jicama: 3–5% O2, 6–10% CO2, and balance N2 (85–91%). Function of each: 1) Low Oxygen (3–5%): High enough to sustain minimal aerobic tissue respiration and prevent anaerobic alcoholic fermentation, but low enough to drastically slow down polyphenol oxidase browning; 2) Carbon Dioxide (6–10%): Dissolves into surface moisture to suppress bacterial and fungal growth; 3) Nitrogen: Inert carrier gas preventing pack collapse and mechanical bruising.",
+                        "feedbackRetry": "Balance the competing biochemical requirements: keep O2 low (around 3-5%) to delay browning while avoiding 0% O2 anaerobic fermentation. Add CO2 (around 5-10%) for antimicrobial protection, and balance with inert N2."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Diagnosing Moisture Vulnerability in EVOH Barrier Films",
+                        "botQuestion": "A snack manufacturing plant replaces PVDC packaging films with an unlaminated monolayer EVOH film to package salty fried plantain chips. When shipped through a humid coastal port (35°C, 95% RH), the plantain chips become stale, soft, and rancid within four days. Explain the molecular mechanism behind this barrier failure, and propose the standard co-extrusion solution used in flexible packaging.",
+                        "requiredKeywords": [
+                            "hydrophilic",
+                            "humidity",
+                            "evoh",
+                            "plasticize",
+                            "co-extrusion",
+                            "polyolefin"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Outstanding polymer physics diagnosis! EVOH's tight gas barrier depends on intermolecular hydrogen bonding between its hydroxyl (-OH) groups. However, EVOH is extremely hydrophilic: under high relative humidity (95% RH), water molecules penetrate the resin, plasticizing the polymer matrix and causing free volume to expand, which increases the Oxygen Transmission Rate (OTR) by orders of magnitude. The solution is multi-layer co-extrusion: encapsulating the EVOH barrier layer between hydrophobic polyolefin outer layers (such as LDPE, LLDPE, or PP) with tie-layer adhesives, shielding the EVOH core from atmospheric moisture.",
+                        "feedbackRetry": "Describe how moisture affects EVOH: the hydroxyl groups attract water, which plasticizes the chains and destroys the oxygen barrier. Explain how sandwiching EVOH between moisture-proof polyolefins (like PE or PP) protects it."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What is the primary antimicrobial mechanism of Carbon Dioxide (CO2) in Modified Atmosphere Packaging?",
+                        "options": [
+                            "It freezes the product instantly",
+                            "It dissolves into the product's water phase as carbonic acid, lowering intracellular pH and inhibiting bacterial metabolic enzymes",
+                            "It bleaches the food to make it look clean",
+                            "It acts as an explosive gas to destroy insects"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Why is an unlaminated monolayer of EVOH unsuitable for packaging high-moisture foods in humid climates?",
+                        "options": [
+                            "EVOH is radioactive",
+                            "EVOH is highly hydrophilic; moisture absorption plasticizes its polymer chains, causing its oxygen barrier to collapse",
+                            "EVOH dissolves in sunlight",
+                            "EVOH can only be produced in black color"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Why must fresh-cut respiring produce (such as pre-cut salads or broccoli florets) never be packaged in 0% Oxygen atmospheres?",
+                        "options": [
+                            "Oxygen makes salads taste bitter",
+                            "Completely eliminating oxygen triggers anaerobic respiration, causing the plant tissue to ferment and produce ethanol, off-odors, and tissue breakdown",
+                            "Produce requires 100% oxygen to stay green",
+                            "Plastic pouches cannot hold 0% oxygen"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "What causes 'Pack Collapse' in Modified Atmosphere Packaging of moist foods like fresh cheeses or meats?",
+                        "options": [
+                            "The delivery driver dropped the box",
+                            "High concentrations of carbon dioxide dissolve rapidly into the product's water and fat phases, creating an internal vacuum that crushes flexible packaging inward",
+                            "The nitrogen gas reacted with the plastic",
+                            "The temperature dropped below absolute zero"
+                        ],
+                        "answer": 1
+                    }
+                ]
             },
             {
                 "id": "food-m4",
                 "title": "Water Activity (Aw), pH Kinetics and Shelf-Life Modeling",
-                "titleES": "Actividad de Agua (Aw), Cinética de pH y Vida de Anaquel",
+                "titleES": "Actividad de Agua (Aw), Cinética de pH y Modelado de Vida de Anaquel",
                 "icon": "fa-solid fa-droplet",
-                "readings": []
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "food-m4-r1",
+                        "title": "Water Activity (Aw) Thermodynamics, Equilibrium pH & Hurdle Technology",
+                        "duration": "15 min",
+                        "content": "\n# Water Activity (Aw) Thermodynamics, Equilibrium pH & Hurdle Technology\n\nIn food preservation science, total moisture content is often dangerously deceptive. Honey containing $18\\%$ water is completely shelf-stable for decades at room temperature without preservatives, whereas beef jerky containing the exact same $18\\%$ moisture content will rot and support toxic mold growth within weeks unless its thermodynamic water binding is strictly controlled.\n\nWhat dictates microbial proliferation, chemical enzymatic browning, and lipid rancidity is not the total quantity of water in a food system, but rather the **energy state and availability of that water**—a fundamental physical parameter quantified as **Water Activity ($A_w$)**.\n\nCombining thermodynamic water activity control with **Equilibrium pH kinetics** and the multi-target preservation framework known as **Hurdle Technology** empowers food scientists to design shelf-stable, high-moisture foods without relying on severe thermal over-processing.\n\n---\n\n## 1. Thermodynamic Fundamentals: Water Activity ($A_w$) vs. Moisture Content\n\n**Water Activity ($A_w$)** is the ratio of the vapor pressure of water in a food matrix ($p$) to the vapor pressure of pure water ($p_0$) at the exact same temperature:\n\n$$A_w = \\frac{p}{p_0} = \\frac{\\text{ERH}}{100}$$\n\nWhere $\\text{ERH}$ is the **Equilibrium Relative Humidity** of the air surrounding the food inside a sealed headspace chamber. Pure distilled water has an $A_w = 1.000$, while bone-dry food has an $A_w = 0.000$.\n\n```\nMicrobial Growth Boundaries Across the Water Activity Spectrum:\nAw Range:      Target Organisms Inhibited:                         Commercial Food Examples:\n1.00 - 0.95    None. All pathogens flourish.                      Fresh meat, fresh milk, cut fruit.\n0.95 - 0.91    Gram-negative rods (Pseudomonas, E. coli halted).   Hard cheeses, cured ham, bread.\n0.91 - 0.86    Salmonella, Clostridium botulinum strictly halted. Salami, high-sugar jams, soy sauce.\n0.86 - 0.80    Staphylococcus aureus aerobic growth halted.       Soft fruit purees, flour, sweet jerky.\n0.80 - 0.65    Most xerophilic molds and yeasts inhibited.        Dried fruits, nuts, fruit powders.\n0.60           ABSOLUTE MICROBIAL GROWTH FLOOR.                   Honey, milk powder, chocolate, pasta.\n```\n\n### The Critical Pathogen Thresholds\n- **$A_w = 0.93$**: Universal inhibition boundary for *Clostridium botulinum* neurotoxin production in anaerobic environments.\n- **$A_w = 0.85$**: The federal regulatory boundary defined by FDA 21 CFR Part 113/114. Any food with $A_w > 0.85$ is classified as a moist, perishable medium requiring thermal sterilization or refrigeration. Below $A_w \\le 0.85$, pathogenic bacteria cannot multiply.\n- **$A_w = 0.60$**: The absolute biological limit below which no living microorganism (including specialized xerophilic molds like *Wallemia sebi* or osmophilic yeasts like *Zygosaccharomyces rouxii*) can proliferate due to cellular osmotic dehydration.\n\n---\n\n## 2. Equilibrium pH Kinetics: Low-Acid vs. Acidified Foods\n\nAlongside water activity, hydrogen ion concentration ($\text{pH} = -\\log_{10}[\\text{H}^+]$) dictates regulatory status and microbial survival:\n\n### The Critical Threshold: $\\text{pH} = 4.60$\nThe spores of *Clostridium botulinum* cannot germinate or produce lethal neurotoxin in foods with an **equilibrium $\\text{pH} \\le 4.60$**. This scientific dividing line creates two distinct legal categories under US FDA regulations:\n\n1. **Low-Acid Canned Foods (LACF - 21 CFR Part 113)**: Any food (other than alcoholic beverages) with an equilibrium $\\text{pH} > 4.60$ and $A_w > 0.85$ (e.g., canned corn, tuna, refried beans, vegetable soups). LACF products legally mandate commercial sterilization under high-pressure retort autoclaves ($F_0 \\ge 3.0\\ \\text{min}$ at $121.1^\\circ\\text{C}$).\n2. **Acidified Foods (21 CFR Part 114)**: Low-acid ingredients (such as cucumbers, artichokes, or hot peppers) to which acid or acid foods are added to achieve a finished **equilibrium $\\text{pH} \\le 4.60$** within 24 hours of packing. Because the acidic pH prevents botulinum germination, acidified foods can be safely preserved using mild boiling-water atmospheric pasteurization ($85\\text{--}95^\\circ\\text{C}$), preserving crisp texture.\n\n```\nBuffering Capacity & Equilibrium pH:\nAdding vinegar to fresh jalapeño peppers:\nInitial surface brine pH = 3.20  (Acidic)\nPepper core tissue pH   = 6.10  (Low-Acid)\n-------------------------------------------------------------\nAfter 24-48 Hours of Mass Diffusion:\nEquilibrium Finished pH = 4.15  <-- Must be <= 4.60 at equilibrium!\n```\n\n---\n\n## 3. Hurdle Technology (The Leistner Multi-Target Model)\n\nPioneered by German food scientist Lothar Leistner, **Hurdle Technology** synthesizes multiple mild preservation barriers that pathogens cannot simultaneously overcome:\n\n```\nHurdle Technology Mechanism:\n[ Microbial Population ]\n           |\n           v\n       [ Hurdle 1: Mild Heat (F) ]           --> Weakens vegetative cells\n           |\n           v\n       [ Hurdle 2: Chill Storage (t) ]        --> Slows metabolic repair\n           |\n           v\n       [ Hurdle 3: Reduced pH (Acid) ]        --> Disrupts transmembrane proton gradient\n           |\n           v\n       [ Hurdle 4: Lowered Aw (Humectants) ]  --> Induces cellular plasmolysis\n           |\n           v\n       [ Hurdle 5: Preservative / MAP (Eh) ] --> Inhibits residual enzymatic respiration\n           |\n           v\n[ ZERO MICROBIAL RECOVERY / COMMERCIAL STABILITY ]\n```\n\nBy intelligently stacking hurdles, each barrier can be kept mild. Instead of cooking a fruit puree into a nutrient-depleted, dark paste at $121^\\circ\\text{C}$, the food scientist adjusts pH to $4.2$ with citric acid, adds glycerol/sorbitol humectants to drop $A_w$ to $0.84$, flushes with $N_2$ gas, and applies mild pasteurization at $78^\\circ\\text{C}$, delivering a fresh, vibrant, shelf-stable product.\n\n---\n\n## 4. Engineering Field Scenario: Formulating a Shelf-Stable Chamoy Paste in Sinaloa\n\nAt a confectionery and agro-industrial fruit processing facility in Culiacán, Sinaloa, exporting traditional Mexican chamoy fruit paste to the US market:\n\n### The Product Reformulation Challenge\nThe initial artisan chamoy recipe incorporated apricot pulp, chili powder, and cane sugar. In early US distribution, jars placed on un-refrigerated warehouse shelves swelled, blew their metal lids, and developed surface yeast colonies (*Zygosaccharomyces*). Testing revealed:\n- Moisture Content: $34.5\\%$\n- Water Activity: $A_w = 0.89$\n- Product pH: $4.85$\n\nBecause $\\text{pH} > 4.60$ and $A_w > 0.85$, the product was legally classified as an unapproved Low-Acid Canned Food subject to immediate FDA border detention.\n\n### Applying Hurdle Technology Reformulation\nThe product development team applied thermodynamic reformulation:\n1. **pH Acidification (Hurdle 1)**: Formulators added encapsulated malic acid and citric acid in a $1:2$ ratio, shifting equilibrium pH down to **$\\text{pH} = 3.80$** (well below the $4.60$ botulinum threshold).\n2. **Water Activity Depression via Humectants (Hurdle 2)**:\n   - Increasing granular sucrose alone would cause sugar crystallization (graining) during storage.\n   - Engineers substituted a fraction of sucrose with **food-grade liquid vegetable glycerin (glycerol)** and high-fructose corn syrup ($HFCS\\ 55$). Glycerol has a low molecular weight ($92.1\\ \\text{g/mol}$) and high hygroscopicity, binding free water molecules through strong hydrogen bonding without affecting visual clarity.\n   - Chilled-mirror dew point hygrometer testing (Aqualab 4TE) verified the new water activity dropped to **$A_w = 0.82$** (below the $0.85$ pathogenic bacterial limit).\n3. **Mild Thermal Hot-Fill (Hurdle 3)**: The paste was hot-filled into glass jars at $85^\\circ\\text{C}$ with a 2-minute inversion to commercially sterilize the lid liner.\n4. **Accelerated Shelf-Life Testing (ASLT)**: Re-formulated samples incubated in environmental chambers at $37^\\circ\\text{C}$ and $75\\%\\ \\text{RH}$ for 12 weeks demonstrated zero yeast outgrowth, zero container swelling, and full regulatory compliance as an Acid Food.\n\n---\n\n> **Key Takeaway**: Food stability is governed by thermodynamics rather than gross moisture. By controlling water activity ($A_w \\le 0.85$), validating equilibrium $\\text{pH} \\le 4.60$, and combining synergistic hurdles, food engineers achieve shelf stability while maximizing sensory and nutritional quality.\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Reformulating a Fruit Puree for Water Activity and Acidification Compliance",
+                    "titleES": "Reformulando un Puré de Frutas para Cumplimiento de Actividad de Agua y Acidificación",
+                    "scenarioContext": "A Quality Director in Culiacán, Sinaloa, and a Food Formulations Specialist in Dallas reformulate an artisan mango-chili paste to meet FDA 21 CFR 114 acidified food requirements.",
+                    "characters": [
+                        {
+                            "name": "Dr. Marcus Thorne",
+                            "role": "Principal Food Formulation Scientist",
+                            "company": "Lone Star Specialty Foods (Dallas, TX)"
+                        },
+                        {
+                            "name": "Ing. Laura Zazueta",
+                            "role": "Director of Quality Assurance & Process Authority",
+                            "company": "Conservas del Pacífico (Culiacán, Sinaloa)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Dr. Marcus Thorne",
+                            "text": "Laura, our regulatory counsel reviewed the FDA submission for the imported mango-chili spread. Because the product formulation sits at an equilibrium pH of four point seven-two and a measured water activity of zero point eight-eight, the FDA flagged it as an unregistered Low-Acid Canned Food. We cannot ship this into the US without retort sterilization.",
+                            "translation": "Laura, nuestro asesor regulatorio revisó el trámite de la FDA para el untable de mango-chile importado. Debido a que la formulación del producto se encuentra en un pH de equilibrio de 4.72 y una actividad de agua medida de 0.88, la FDA lo señaló como un Alimento Enlatado de Baja Acidez no registrado. No podemos ingresar esto a EE.UU. sin esterilización en retorta.",
+                            "targetTerms": [
+                                "equilibrium pH",
+                                "measured water activity",
+                                "Low-Acid Canned Food",
+                                "retort sterilization"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Laura Zazueta",
+                            "text": "Running this delicate mango spread through an autoclave at one hundred and twenty-one degrees would burn the natural sugars, destroy the fresh aroma, and turn the yellow paste into a brown sludge. We must re-engineer the recipe using hurdle technology to qualify under Part one-fourteen as an Acidified Food.",
+                            "translation": "Correr este delicado untable de mango por una retorta a 121 grados quemaría los azúcares naturales, destruiría el aroma fresco y convertiría la pasta amarilla en un lodo café. Debemos rediseñar la receta usando tecnología de obstáculos para calificar bajo la Parte 114 como Alimento Acidificado.",
+                            "targetTerms": [
+                                "autoclave at one hundred and twenty-one",
+                                "hurdle technology",
+                                "qualify under Part one-fourteen",
+                                "Acidified Food"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. Marcus Thorne",
+                            "text": "How do you plan to bring the equilibrium pH below four point six without making the product unpalatably sour to American consumers?",
+                            "translation": "¿Cómo planeas llevar el pH de equilibrio por debajo de 4.6 sin hacer que el producto sea desagradablemente ácido para los consumidores estadounidenses?",
+                            "targetTerms": [
+                                "equilibrium pH below four point six",
+                                "unpalatably sour"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Laura Zazueta",
+                            "text": "We will introduce a buffered blend of citric acid and malic acid. Malic acid complements the natural stone-fruit flavor profile of mango, masking sharpness while driving the equilibrium pH down to three point nine-five. We will also add sodium citrate as an acid buffer to stabilize pH over shelf life.",
+                            "translation": "Introduciremos una mezcla amortiguada de ácido cítrico y ácido málico. El ácido málico complementa el perfil de sabor a fruta de hueso natural del mango, enmascarando la acidez punzante mientras lleva el pH de equilibrio a 3.95. También agregaremos citrato de sodio como amortiguador de ácido para estabilizar el pH durante la vida de anaquel.",
+                            "targetTerms": [
+                                "buffered blend",
+                                "malic acid",
+                                "equilibrium pH down to three point nine-five",
+                                "sodium citrate buffer"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. Marcus Thorne",
+                            "text": "That handles the acidification hurdle. What about water activity? At zero point eight-eight, we still face osmotolerant yeast spoilage if consumers leave the opened jar at room temperature.",
+                            "translation": "Eso maneja el obstáculo de acidificación. ¿Qué hay de la actividad de agua? En 0.88, todavía enfrentamos descomposición por levaduras osmotolerantes si los consumidores dejan el frasco abierto a temperatura ambiente.",
+                            "targetTerms": [
+                                "acidification hurdle",
+                                "water activity",
+                                "osmotolerant yeast spoilage"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Laura Zazueta",
+                            "text": "We are substituting twelve percent of the liquid water with vegetable glycerin and high-fructose corn syrup. The low molecular weight of glycerol strongly binds free water molecules, depressing our water activity from zero point eight-eight down to zero point eight-two. With hot-fill packaging at eighty-five degrees, the product is completely shelf-stable for eighteen months.",
+                            "translation": "Estamos sustituyendo el doce por ciento del agua líquida con glicerina vegetal y jarabe de maíz de alta fructosa. El bajo peso molecular del glicerol enlaza fuertemente las moléculas de agua libre, reduciendo nuestra actividad de agua de 0.88 a 0.82. Con envasado en caliente a ochenta y cinco grados, el producto es completamente estable en anaquel por dieciocho meses.",
+                            "targetTerms": [
+                                "vegetable glycerin",
+                                "binds free water molecules",
+                                "depressing our water activity",
+                                "hot-fill packaging"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "Moisture content and water activity are the same thing.",
+                            "native": "Moisture content measures total water mass, whereas water activity (Aw) measures the thermodynamic energy state available to microorganisms.",
+                            "explanation": "Two foods can have identical percentage moisture contents but drastically different water activities depending on how tightly water is bound by solutes."
+                        },
+                        {
+                            "school": "We added lemon juice, so the food is safe.",
+                            "native": "We measured an equilibrium pH of three point eight, legally satisfying FDA 21 CFR 114 acidified food requirements.",
+                            "explanation": "Food safety compliance requires verified, calibrated measurement of equilibrium pH throughout the entire product mass, not casual acid addition."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Water Activity (Aw)",
+                        "ipa": "/ˈwɔː.tər ækˈtɪv.ə.ti /ˌeɪˈdʌb.əl.juː/",
+                        "es": "Actividad de Agua (Aw)",
+                        "category": "Food Thermodynamics",
+                        "definition": "The ratio of the vapor pressure of water in a food system to the vapor pressure of pure water at the same temperature, quantifying the availability of water for microbial growth.",
+                        "collocations": [
+                            "measure water activity via dew point",
+                            "depress Aw with humectants",
+                            "Aw threshold of 0.85",
+                            "equilibrium relative humidity"
+                        ],
+                        "falseFriends": "Water activity is a unitless ratio between 0.00 and 1.00; it is distinct from moisture percentage (which is measured in grams of water per 100g).",
+                        "nativeUsage": "By lowering the water activity of the beef jerky to 0.78, the processor ensured that Salmonella and Staph aureus could not grow."
+                    },
+                    {
+                        "term": "Equilibrium pH",
+                        "ipa": "/ˌiː.kwəˈlɪb.ri.əm ˌpiːˈeɪtʃ/",
+                        "es": "pH de Equilibrio",
+                        "category": "Food Chemistry",
+                        "definition": "The uniform pH throughout a solid-liquid food mixture achieved after complete acid penetration and molecular diffusion across all particulate tissues.",
+                        "collocations": [
+                            "verify equilibrium pH below 4.60",
+                            "pH equilibrium testing protocol",
+                            "equilibrate over 24 hours",
+                            "calibrated glass electrode pH meter"
+                        ],
+                        "falseFriends": "Surface pH is not equilibrium pH; regulatory validation requires homogenizing the entire particulate sample to measure true equilibrium.",
+                        "nativeUsage": "The pickle processor blended whole cucumbers with brine to measure the final equilibrium pH of 4.15."
+                    },
+                    {
+                        "term": "Hurdle Technology",
+                        "ipa": "/ˈhɜːr.dəl tɛkˌnɒl.ə.dʒi/",
+                        "es": "Tecnología de Obstáculos (Barreras Múltiples)",
+                        "category": "Food Preservation",
+                        "definition": "The synergistic combination of multiple mild preservation factors (e.g., Aw, pH, temperature, redox potential, preservatives) to control microbial growth without thermal damage.",
+                        "collocations": [
+                            "apply hurdle technology",
+                            "synergistic preservation hurdles",
+                            "Leistner multi-target hurdle concept",
+                            "microbial metabolic exhaustion"
+                        ],
+                        "falseFriends": "'Hurdle' in food science refers to preservation barriers, not physical athletic track obstacles.",
+                        "nativeUsage": "Using hurdle technology allowed the dairy brand to produce a shelf-stable cheese spread by combining mild heat, pH 5.0, and Aw 0.92."
+                    },
+                    {
+                        "term": "Low-Acid Canned Food (LACF)",
+                        "ipa": "/loʊ ˈæs.ɪd kænd ˌfuːd/",
+                        "es": "Alimento Enlatado de Baja Acidez (LACF)",
+                        "category": "FDA Regulations",
+                        "definition": "Any food (other than alcoholic beverages) packaged in a hermetically sealed container with an equilibrium pH greater than 4.60 and a water activity greater than 0.85.",
+                        "collocations": [
+                            "file an FDA LACF scheduled process",
+                            "LACF 21 CFR Part 113 mandates",
+                            "retort sterilization of LACF",
+                            "Clostridium botulinum risk in LACF"
+                        ],
+                        "falseFriends": "Low-acid means high pH (pH > 4.60); it does not mean the food tastes bland or mild.",
+                        "nativeUsage": "Because canned green beans are a low-acid food, the cannery must operate under mandatory FDA LACF registration."
+                    },
+                    {
+                        "term": "Acidified Food",
+                        "ipa": "/əˈsɪd.ɪ.faɪd ˌfuːd/",
+                        "es": "Alimento Acidificado (21 CFR 114)",
+                        "category": "Food Regulations",
+                        "definition": "A low-acid food to which acid or acid foods are added to achieve an equilibrium pH of 4.60 or below and a water activity greater than 0.85.",
+                        "collocations": [
+                            "register an acidified food filing",
+                            "acidify with acetic or citric acid",
+                            "Part 114 acidified food guidelines",
+                            "monitor equilibrium pH batch records"
+                        ],
+                        "falseFriends": "Fermented foods (like naturally sour sauerkraut) are legally exempt from acidified food rules because acid is produced by bacteria, not added manually.",
+                        "nativeUsage": "The jarred roasted red peppers were classified as an acidified food because vinegar was added to reduce pH below 4.60."
+                    },
+                    {
+                        "term": "Humectant",
+                        "ipa": "/hjuːˈmɛk.tənt/",
+                        "es": "Humectante",
+                        "category": "Ingredient Technology",
+                        "definition": "A hygroscopic food ingredient (such as glycerol, sorbitol, propylene glycol, or sucrose) added to bind free water molecules, depressing water activity without eliminating moisture.",
+                        "collocations": [
+                            "add glycerol as a humectant",
+                            "humectant water-binding capacity",
+                            "depress Aw with sugar alcohols",
+                            "maintain soft texture via humectants"
+                        ],
+                        "falseFriends": "Humectants lower water activity while keeping products moist and soft to the bite; they do not dry the food out.",
+                        "nativeUsage": "The soft-baked cookie manufacturer added sorbitol as a humectant to keep the crumb tender while dropping Aw to 0.72."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Differentiating Low-Acid vs Acidified Food Regulatory Classifications",
+                        "botQuestion": "A food manufacturer in Guanajuato packs canned whole artichoke hearts in water and salt. The natural artichoke heart tissue has a pH of 5.8. The plant manager proposes two options: Option A: Retort the cans in steam autoclaves at 121°C for 30 minutes; Option B: Add citric acid to the brine so that the entire jar reaches an equilibrium pH of 4.10, followed by atmospheric pasteurization at 90°C. Classify Option A and Option B under FDA 21 CFR regulations and explain the processing difference.",
+                        "requiredKeywords": [
+                            "lacf",
+                            "acidified",
+                            "113",
+                            "114",
+                            "4.60",
+                            "retort"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on regulatory classification! Option A is a Low-Acid Canned Food (LACF) under 21 CFR Part 113 because equilibrium pH > 4.60 and Aw > 0.85; it legally requires high-pressure retort sterilization (F0 >= 3.0 min) to destroy C. botulinum spores. Option B is an Acidified Food under 21 CFR Part 114 because acid is added to lower equilibrium pH <= 4.60 (reaching 4.10); because botulinum spores cannot germinate below pH 4.60, mild atmospheric pasteurization at 90°C is sufficient to destroy vegetative pathogens and molds while preserving delicate artichoke texture.",
+                        "feedbackRetry": "Identify the two FDA categories: Option A maintains pH > 4.60 (LACF per 21 CFR 113 requiring retort autoclaves), while Option B adds acid to achieve equilibrium pH <= 4.60 (Acidified Food per 21 CFR 114 allowing mild 90°C pasteurization)."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Deploying Humectants to Prevent Osmophilic Yeast Spoilage",
+                        "botQuestion": "A fruit filling used in shelf-stable toaster pastries has a water activity of Aw = 0.88. The bakery discovers that although pathogenic bacteria cannot grow, osmophilic yeasts (Zygosaccharomyces rouxii) ferment the filling over a 60-day storage period, causing packages to swell. Why does Aw = 0.88 fail to stop these yeasts, and how can the food scientist lower Aw below 0.75 without causing sugar recrystallization?",
+                        "requiredKeywords": [
+                            "yeast",
+                            "osmophilic",
+                            "glycerol",
+                            "humectant",
+                            "crystallization",
+                            "sorbitol"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Brilliant food science troubleshooting! 1) Osmophilic yeasts are xerotolerant organisms capable of metabolic growth down to Aw = 0.65 (well below the bacterial 0.85 limit); at Aw = 0.88, they flourish. 2) If the scientist simply adds more granulated sucrose, the solution will exceed saturation limits and sugar crystals will precipitate out (graining defect). To depress Aw below 0.75 safely, the scientist should incorporate liquid polyol humectants like vegetable glycerin (glycerol) or sorbitol: their low molecular weight exerts high colligative osmotic pressure and strong hydrogen bonding, depressing water activity without crystallizing.",
+                        "feedbackRetry": "Explain that osmophilic yeasts survive down to Aw = 0.65, so Aw = 0.88 is insufficient. Describe how adding high-solubility humectants with low molecular weight (such as vegetable glycerin or sorbitol) depresses water activity without triggering sucrose crystallization."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What is the critical equilibrium pH threshold separating Low-Acid Canned Foods (LACF) from Acidified Foods under FDA regulations?",
+                        "options": [
+                            "pH 7.00",
+                            "pH 4.60",
+                            "pH 2.50",
+                            "pH 8.50"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Why can honey remain shelf-stable for centuries without refrigeration despite containing 18% water?",
+                        "options": [
+                            "Bees add toxic chemical preservatives",
+                            "Its extremely high concentration of sugars exerts high osmotic pressure, lowering its water activity (Aw < 0.60) below the biological limit for all microbial growth",
+                            "Honey contains no oxygen",
+                            "Honey is stored in complete darkness"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Under 21 CFR Part 114, how is an 'Acidified Food' defined?",
+                        "options": [
+                            "Food grown in acidic volcanic soil",
+                            "A low-acid food to which acid or acid foods are added to achieve a finished equilibrium pH of 4.60 or below and a water activity greater than 0.85",
+                            "Any food that has spoiled and turned sour",
+                            "Carbonated soda beverages only"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "How does the Hurdle Technology concept improve food quality compared to traditional heavy thermal processing?",
+                        "options": [
+                            "By replacing all food ingredients with artificial synthetic chemicals",
+                            "By intelligently combining multiple mild preservation barriers (e.g., Aw, pH, mild heat, chilling) that synergistically inhibit pathogens without destroying taste, color, or nutrients",
+                            "By requiring food to be boiled for 24 hours continuously",
+                            "By eliminating the need for sanitary packaging"
+                        ],
+                        "answer": 1
+                    }
+                ]
             },
             {
                 "id": "food-m5",
                 "title": "Functional Food Ingredients, Fermentation & Precision Agritech",
-                "titleES": "Alimentos Funcionales, Fermentación y Agrotecnología",
-                "icon": "fa-solid fa-seedling",
-                "readings": []
+                "titleES": "Ingredientes Funcionales, Fermentación y Agrotecnología de Precisión",
+                "icon": "fa-solid fa-wheat-awn",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "food-m5-r1",
+                        "title": "Bioprocessing & Agritech: Industrial Fermentation, NIR Spectroscopy & FSMA Traceability",
+                        "duration": "15 min",
+                        "content": "\n# Bioprocessing & Agritech: Industrial Fermentation, NIR Spectroscopy & FSMA Traceability\n\nThe modern agro-industrial sector is undergoing an unprecedented technological revolution. Consumer demand for gut-microbiome health, plant-based protein alternatives, and hyper-transparent supply chains has elevated food processing from traditional agricultural harvesting into advanced biological systems engineering. \n\nIn major agritech corridors across Mexico (the Bajío greenhouse belt, Sinaloa irrigated valleys, and Jalisco agave bioprocessing hubs) and the United States, industrial food operations deploy three cutting-edge technologies: **Industrial Submerged & Solid-State Fermentation**, in-line optical sorting and **Near-Infrared (NIR) Spectroscopy**, and digital end-to-end supply chain traceability under **FDA FSMA Rule 204**.\n\n---\n\n## 1. Industrial Precision Fermentation & Functional Ingredients\n\nFermentation has evolved from spontaneous artisanal preservation into genetically optimized, high-yield biomanufacturing:\n\n```\nIndustrial Bioprocessing Spectrum:\n1. Biomass Fermentation:      Cultivating microbial protein mass (e.g., Fusarium venenatum mycoprotein).\n2. Precision Fermentation:    Engineered yeasts/bacteria producing recombinant enzymes or dairy proteins.\n3. Submerged Liquid Culture:  Stirred-tank bioreactors for probiotics (Lactobacillus, Bifidobacterium).\n4. Solid-State Fermentation:  Substrate matrices for filamentous fungal enzymes and koji cultivation.\n```\n\n### Bioreactor Environmental Kinetics\nIn industrial submerged fermentation vessels ($10,000\\text{--}100,000\\ \\text{liters}$):\n- **Dissolved Oxygen ($dO_2$)**: Maintained via sparger aeration and variable-speed Rushton impellers. Critical oxygen mass transfer coefficient:\n  $$\\text{OTR} = k_L a \\cdot (C^* - C_L)$$\n  Where $k_L a$ is the volumetric oxygen mass transfer coefficient, $C^*$ is saturation dissolved oxygen concentration, and $C_L$ is actual dissolved oxygen in the broth.\n- **pH & Temperature Equilibrium**: Closed-loop dosing of sterile ammonia hydroxide ($NH_4OH$) or sulfuric acid ($H_2SO_4$) coupled with jacketed cooling coils to dissipate biological metabolic heat.\n\n### Functional Prebiotics & Bioactive Compounds\nBeyond living probiotics, plants extract and synthesize **Prebiotic Soluble Fibers**:\n- **Fructooligosaccharides (FOS) & Inulin**: Extracted from agave (*Agave tequilana*) and chicory roots. These $\\beta(2\\rightarrow 1)$ fructan polymers pass undigested through the human stomach and small intestine into the colon, where they are selectively fermented by beneficial bifidobacteria into immunomodulatory Short-Chain Fatty Acids (SCFAs: acetate, propionate, butyrate).\n- **High-Moisture Extrusion Cooking (HMEC)**: Twin-screw extruders operating at $140\\text{--}180^\\circ\\text{C}$ and $30\\text{--}50\\ \\text{bar}$ align soy, pea, and faba bean plant proteins along long-pitch cooling dies, re-creating the fibrous, striated texture of whole-muscle animal meat.\n\n---\n\n## 2. In-Line Agritech: Near-Infrared (NIR) Spectroscopy & Optical Sorting\n\nTraditional quality control relied on sampling a handful of tomatoes or grain bags, grinding them up in a lab, and waiting two hours for refractometer or moisture oven results. Modern precision agritech evaluates $100\\%$ of agricultural raw materials in real time:\n\n### Near-Infrared (NIR) Spectroscopy Principles\nOperating in the electromagnetic spectrum between $780\\ \\text{nm}$ and $2500\\ \\text{nm}$, NIR radiation interacts with fundamental molecular bonds:\n- Carbon-Hydrogen ($\\text{C-H}$): Lipids and fats.\n- Oxygen-Hydrogen ($\\text{O-H}$): Moisture and water activity.\n- Nitrogen-Hydrogen ($\\text{N-H}$): Protein content.\n\n```\nIn-Line Optical Inspection Layout:\nHigh-Speed Bulk Produce Conveyor (3 m/s) ---> [ Broad-Spectrum Halogen Illumination ]\n                                                    |\n                                                    v\n[ Pneumatic High-Speed Ejector Array ] <--- [ Multi-Spectral CCD + InGaAs NIR Sensor ]\nFires micro-air jets to blast out           Computes Brix, internal rot, and foreign material\ndefective fruit in under 5 milliseconds     via multivariate Partial Least Squares (PLS)\n```\n\nBy calibrating multivariate **Partial Least Squares (PLS) chemometric models**, an NIR spectrometer mounted above an apple or melon grading conveyor measures **Soluble Solids Content ($^\\circ\\text{Brix}$)**, internal browning defects, and titratable acidity in **under 10 milliseconds per fruit** without puncturing or destroying the skin.\n\n### High-Speed Optical Sorter Pneumatics\nOptical sorting channels utilize high-speed linear CCD cameras paired with pulsed LEDs:\n- In fresh berry packaging in Michoacán, cameras capture 40,000 frames per second.\n- Computer vision algorithms detect color hue, mold spots, and physical insect defects.\n- A high-density manifold of 128 micro-pneumatic air nozzles blasts defective berries out of the free-falling produce curtain in mid-air at throughputs exceeding **40 metric tons per hour**.\n\n---\n\n## 3. Digital Farm-to-Fork Traceability: FSMA Rule 204 Compliance\n\nUnder **Section 204 of the US Food Safety Modernization Act (FSMA Rule 204)**, the FDA established the Food Traceability List (FTL), mandating digital end-to-end event tracking for high-risk categories (fresh leafy greens, melons, berries, tomatoes, soft cheeses, and finfish).\n\n### The Architecture of FSMA 204: CTEs and KDEs\nTraceability is anchored on two foundational concepts:\n1. **Critical Tracking Events (CTEs)**: Key operational events in a product’s lifecycle:\n   - **Harvesting**: Field coordinates and crew ID.\n   - **Cooling / Initial Packing**: Post-harvest precooling and packing into master containers.\n   - **Receiving**: Inbound shipment verification.\n   - **Transformation**: Processing raw bulk tomatoes into jarred salsa.\n   - **Shipping**: Outbound dispatch to distribution centers.\n2. **Key Data Elements (KDEs)**: Mandatory digital data attributes linked to every CTE:\n   - **Traceability Lot Code (TLC)**: A unique alpha-numeric identifier generated at the initial packing or transformation step.\n   - GPS coordinates of growing fields, harvest dates, TLC source descriptions, and carrier bills of lading.\n\nUnder FSMA 204, when a foodborne outbreak occurs, every supply chain participant must be capable of providing this digital traceability spreadsheet to FDA investigators **within 24 hours of official request**.\n\n---\n\n## 4. Engineering Field Scenario: In-Line NIR Sugar Calibration for Agave Inulin\n\nAt an industrial prebiotic extraction facility in Tepatitlán, Jalisco:\n\n### The Operational Challenge\nThe plant extracts prebiotic inulin from raw agave piñas for export to North American nutraceutical brands. Incoming agave trucks displayed massive natural variation in inulin polymerization degree and sugar concentration ($18\\%\\text{--}32\\%\\ \\text{Total Sugars}$). The manual laboratory anthrone-sulfuric acid colorimetric assay took 90 minutes per truck, creating a line of idling tractor-trailers stretching onto the highway.\n\n### The Precision Engineering Solution\n1. **In-Line NIR Installation**: Engineers installed an industrial diffuse-reflectance NIR spectrometer (InGaAs detector array, $900\\text{--}1700\\ \\text{nm}$) above the primary shredded agave fiber conveyor belt.\n2. **Chemometric Model Calibration**:\n   - The quality team collected 350 calibration samples across five harvesting seasons.\n   - Reference HPLC chromatography data was correlated with raw NIR spectral absorption peaks (specifically the second overtone of $\\text{C-H}$ stretch at $1190\\ \\text{nm}$ and $\\text{O-H}$ combination bands at $1450\\ \\text{nm}$).\n   - A robust Partial Least Squares (PLS) regression model achieved a coefficient of determination of $R^2 = 0.982$ with a Root Mean Square Error of Cross-Validation (RMSECV) of $<0.45\\%$.\n3. **Automated Extraction Tuning**:\n   - The in-line NIR sensor transmits real-time inulin content readings every 500 milliseconds over industrial Ethernet/IP to the plant SCADA system.\n   - The SCADA system automatically modulates the continuous counter-current diffuser water flow rate and extraction temperature in real time, matching the exact inulin concentration of the incoming agave.\n4. **Results**:\n   - Truck intake analytical wait time dropped from **90 minutes down to zero (real-time grading)**.\n   - Extraction yield increased by $8.4\\%$, and consistent prebiotic fiber purity ($>92\\%$ inulin on dry basis) was locked into every export batch.\n\n---\n\n> **Key Takeaway**: Modern food bioprocessing merges biological precision with digital velocity. By deploying controlled submerged fermentation, in-line NIR spectroscopy, and FSMA 204 digital traceability ledgers, agro-industrial engineers deliver functional nutrition with total transparency.\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Commissioning an In-Line NIR Spectrometer for Agave Prebiotic Processing",
+                    "titleES": "Comisionando un Espectrómetro NIR en Línea para Procesamiento de Prebióticos de Agave",
+                    "scenarioContext": "A Senior Fermentation Bioprocess Engineer in Jalisco and an Agritech Systems Architect in San Francisco optimize in-line NIR chemometrics and bioreactor yields for functional inulin production.",
+                    "characters": [
+                        {
+                            "name": "Julian Vance",
+                            "role": "VP of Agritech Sensing & Automation",
+                            "company": "BioHarvest Technologies (San Francisco, CA)"
+                        },
+                        {
+                            "name": "Ing. Esteban Macías",
+                            "role": "Lead Bioprocess & Fermentation Engineer",
+                            "company": "AgaveBio Functional Ingredients (Arandas, Jalisco)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Julian Vance",
+                            "text": "Esteban, our San Francisco engineering team just reviewed the remote telemetry from the diffuse-reflectance NIR spectrometer installed over your raw agave shredder. The spectral baseline is exhibiting significant drift in the fourteen-hundred nanometer water absorption band.",
+                            "translation": "Esteban, nuestro equipo de ingeniería en San Francisco acaba de revisar la telemetría remota del espectrómetro NIR de reflectancia difusa instalado sobre su triturador de agave crudo. La línea base espectral está exhibiendo una desviación significativa en la banda de absorción de agua de 1400 nanómetros.",
+                            "targetTerms": [
+                                "diffuse-reflectance NIR spectrometer",
+                                "spectral baseline",
+                                "significant drift",
+                                "absorption band"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Esteban Macías",
+                            "text": "Good catch, Julian. We noticed that yesterday during peak afternoon ambient heat. The ambient temperature in the shredding bay reached thirty-six degrees Celsius, which induced thermal wavelength shift on the uncooled InGaAs sensor array. We just connected the thermoelectric Peltier cooling jacket to stabilize sensor temperature at exactly twenty degrees.",
+                            "translation": "Buena observación, Julian. Notamos eso ayer durante el calor ambiental pico de la tarde. La temperatura ambiental en la bahía de trituración alcanzó los 36 grados Celsius, lo que indujo un corrimiento térmico de longitud de onda en la matriz de sensores InGaAs no enfriada. Acabamos de conectar la camisa de enfriamiento termoeléctrico Peltier para estabilizar la temperatura del sensor en exactamente veinte grados.",
+                            "targetTerms": [
+                                "ambient temperature",
+                                "thermal wavelength shift",
+                                "InGaAs sensor array",
+                                "thermoelectric Peltier cooling"
+                            ]
+                        },
+                        {
+                            "speaker": "Julian Vance",
+                            "text": "That should eliminate the thermal spectral noise. How is your Partial Least Squares chemometric model tracking against your laboratory HPLC reference measurements for prebiotic inulin polymer chain lengths?",
+                            "translation": "Eso debería eliminar el ruido espectral térmico. ¿Cómo está rastreando su modelo quimiométrico de Mínimos Cuadrados Parciales frente a sus mediciones de referencia de HPLC de laboratorio para las longitudes de cadena del polímero de inulina prebiótica?",
+                            "targetTerms": [
+                                "spectral noise",
+                                "Partial Least Squares chemometric model",
+                                "HPLC reference measurements",
+                                "inulin polymer chain lengths"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Esteban Macías",
+                            "text": "After applying a second-derivative mathematical transformation and Standard Normal Variate scatter correction to the spectra, our R-squared correlation with HPLC reached zero point nine-eight. The in-line sensor now predicts degree of polymerization and total soluble fructans with an error under zero point four percent.",
+                            "translation": "Después de aplicar una transformación matemática de segunda derivada y corrección de dispersión por Variable Normal Estándar a los espectros, nuestra correlación R-cuadrada con HPLC alcanzó 0.98. El sensor en línea ahora predice el grado de polimerización y fructanos solubles totales con un error inferior al 0.4 por ciento.",
+                            "targetTerms": [
+                                "second-derivative transformation",
+                                "Standard Normal Variate scatter correction",
+                                "R-squared correlation",
+                                "degree of polymerization"
+                            ]
+                        },
+                        {
+                            "speaker": "Julian Vance",
+                            "text": "Outstanding accuracy. Are you feeding those real-time Brix and inulin signals directly into your downstream counter-current diffuser PLC?",
+                            "translation": "Precisión sobresaliente. ¿Están alimentando esas señales de Brix e inulina en tiempo real directamente en el PLC de su difusor de contracorriente aguas abajo?",
+                            "targetTerms": [
+                                "feeding real-time signals",
+                                "counter-current diffuser PLC"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Esteban Macías",
+                            "text": "Yes, the PLC automatically modulates the hot extraction water ratio and residence time to maintain an exact eight-to-one liquid-to-solid ratio. That stabilized our extraction yield at ninety-four percent while generating continuous Traceability Lot Code records satisfying FSMA Rule two-hundred-and-four.",
+                            "translation": "Sí, el PLC modula automáticamente la relación de agua de extracción caliente y el tiempo de residencia para mantener una proporción exacta de líquido a sólido de ocho a uno. Eso estabilizó nuestro rendimiento de extracción en noventa y cuatro por ciento mientras genera registros continuos de Código de Lote de Trazabilidad que cumplen con la Regla 204 de FSMA.",
+                            "targetTerms": [
+                                "liquid-to-solid ratio",
+                                "extraction yield",
+                                "Traceability Lot Code records",
+                                "FSMA Rule two-hundred-and-four"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "We test the fruit by tasting it.",
+                            "native": "We measure internal sugar Brix and acid ratios in real time using in-line Near-Infrared (NIR) Spectroscopy.",
+                            "explanation": "Modern precision agro-industry replaces subjective human tasting with calibrated diffuse-reflectance NIR optical chemometrics."
+                        },
+                        {
+                            "school": "We write the farm name on the wooden box.",
+                            "native": "We generate digital Key Data Elements (KDEs) linked to a unique Traceability Lot Code under FSMA Rule 204.",
+                            "explanation": "US FDA FSMA Rule 204 mandates machine-readable digital supply chain event tracking capable of full forward-and-backward trace within 24 hours."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Near-Infrared (NIR) Spectroscopy",
+                        "ipa": "/ˌnɪər ˈɪn.frə.rɛd spɛkˈtrɒs.kə.pi/",
+                        "es": "Espectroscopía del Infrarrojo Cercano (NIR)",
+                        "category": "Analytical Agritech",
+                        "definition": "A non-destructive optical analytical technique measuring electromagnetic absorption between 780–2500 nm to quantify chemical constituents (sugars, moisture, proteins) in milliseconds.",
+                        "collocations": [
+                            "deploy in-line NIR spectroscopy",
+                            "calibrate NIR chemometric models",
+                            "diffuse-reflectance NIR sensor",
+                            "non-destructive Brix grading"
+                        ],
+                        "falseFriends": "NIR measures vibrational molecular overtones; it is distinct from thermal infrared cameras that only measure surface temperature.",
+                        "nativeUsage": "The grain terminal utilized an in-line NIR spectrometer to measure wheat protein content at forty metric tons per hour."
+                    },
+                    {
+                        "term": "Precision Fermentation",
+                        "ipa": "/prɪˈsɪʒ.ən ˌfɜːr.mənˈteɪ.ʃən/",
+                        "es": "Fermentación de Precisión",
+                        "category": "Bioprocessing",
+                        "definition": "The deployment of genetically tailored microbial hosts (yeasts, fungi, bacteria) inside controlled bioreactors to produce specific functional proteins, enzymes, or bioactive compounds.",
+                        "collocations": [
+                            "produce enzymes via precision fermentation",
+                            "submerged fermentation bioreactor",
+                            "recombinant protein expression",
+                            "downstream bioseparation"
+                        ],
+                        "falseFriends": "Precision fermentation produces pure targeted functional molecules, unlike traditional bulk fermentation which ferments whole food substrates.",
+                        "nativeUsage": "The biotechnology startup utilized precision fermentation to produce animal-free dairy whey proteins indistinguishable from bovine whey."
+                    },
+                    {
+                        "term": "High-Moisture Extrusion (HMEC)",
+                        "ipa": "/haɪ ˈmɔɪs.tʃər ɪkˈstruː.ʒən/",
+                        "es": "Extrusión de Alta Humedad (HMEC)",
+                        "category": "Food Engineering",
+                        "definition": "A twin-screw thermal extrusion process operating at 40–70% moisture and elevated temperatures to shear and realign plant proteins into striated, whole-muscle meat textures.",
+                        "collocations": [
+                            "texturize soy protein via HMEC",
+                            "long cooling die extrusion",
+                            "align protein fibrillar structure",
+                            "twin-screw food extruder"
+                        ],
+                        "falseFriends": "HMEC produces wet, fibrous meat analogs; dry extrusion produces puffed breakfast cereals and dry pet kibble.",
+                        "nativeUsage": "The plant-based meat facility commissioned a high-moisture extrusion line to produce fibrous chicken-free cutlets from pea protein."
+                    },
+                    {
+                        "term": "Critical Tracking Events (CTEs)",
+                        "ipa": "/ˈkrɪt.ɪ.kəl ˈtræk.ɪŋ ɪˌvɛnts/",
+                        "es": "Eventos Críticos de Trazabilidad (CTE / FSMA 204)",
+                        "category": "Regulatory Traceability",
+                        "definition": "Mandatory supply chain milestone events defined under FDA FSMA Rule 204 (Harvesting, Cooling, Initial Packing, Receiving, Transformation, Shipping) requiring electronic record capture.",
+                        "collocations": [
+                            "document mandatory CTE milestones",
+                            "capture KDEs at each CTE",
+                            "FSMA 204 compliance audit",
+                            "traceability event logging"
+                        ],
+                        "falseFriends": "CTEs are specific supply chain milestone events under FSMA 204, distinct from HACCP Critical Control Points (CCPs).",
+                        "nativeUsage": "The packinghouse recorded the Initial Packing CTE, generating a unique Traceability Lot Code linked to the farm harvest coordinates."
+                    },
+                    {
+                        "term": "Key Data Elements (KDEs)",
+                        "ipa": "/kiː ˈdeɪ.tə ˈɛl.ə.mənts/",
+                        "es": "Elementos Clave de Datos (KDE / FSMA 204)",
+                        "category": "Regulatory Traceability",
+                        "definition": "The specific digital data attributes (e.g., date, time, location identifier, lot code, quantity, unit of measure) that must be recorded and linked to each Critical Tracking Event.",
+                        "collocations": [
+                            "transmit KDEs to trading partners",
+                            "store electronic KDE records",
+                            "provide KDEs to FDA within 24 hours",
+                            "KDE spreadsheet reconciliation"
+                        ],
+                        "falseFriends": "KDEs are structured regulatory data records, not informal paper delivery notes.",
+                        "nativeUsage": "During the mock recall, the produce distributor exported the complete KDE ledger for forty pallets of cantaloupes in under three hours."
+                    },
+                    {
+                        "term": "Chemometrics (Partial Least Squares)",
+                        "ipa": "/ˌkɛm.oʊˈmɛt.rɪks / ˈpɑːr.ʃəl liːst ˈskwɛərz/",
+                        "es": "Quimiometría (Mínimos Cuadrados Parciales - PLS)",
+                        "category": "Data Science",
+                        "definition": "The application of mathematical and statistical methods to chemical and spectral data, extracting quantitative concentrations from overlapping optical absorption spectra.",
+                        "collocations": [
+                            "build a PLS calibration model",
+                            "chemometric multivariate analysis",
+                            "spectral noise filtering",
+                            "validate RMSECV prediction error"
+                        ],
+                        "falseFriends": "Chemometrics is a branch of computational data science applied to chemistry, not a laboratory wet chemical reaction.",
+                        "nativeUsage": "The agritech software used multivariate chemometrics to translate raw NIR absorbance spectra into accurate protein and moisture percentages."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Understanding Molecular Bonds Measured in Food NIR Spectroscopy",
+                        "botQuestion": "An in-line NIR spectrometer is being commissioned over a continuous cheese processing line in Jalisco to measure Moisture Content, Milk Fat, and Protein. Identify the primary fundamental molecular chemical bonds (e.g., C-H, O-H, N-H) that correlate with each of these three food components in the NIR absorption spectrum (780–2500 nm).",
+                        "requiredKeywords": [
+                            "o-h",
+                            "c-h",
+                            "n-h",
+                            "moisture",
+                            "fat",
+                            "protein"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on spectroscopy physics! 1) Moisture Content correlates directly with Oxygen-Hydrogen (O-H) stretching vibrations (prominent absorption bands at ~1450 nm and ~1940 nm); 2) Milk Fat correlates with Carbon-Hydrogen (C-H) stretching overtones from fatty acid hydrocarbon chains (bands at ~1200 nm, 1720 nm, and 2300 nm); 3) Protein Content correlates with Nitrogen-Hydrogen (N-H) peptide bond vibrations from amino acid polymers (bands at ~1510 nm and 2050 nm).",
+                        "feedbackRetry": "Identify the atomic bonds for each constituent: water is H2O (O-H bonds), fats are hydrocarbons (C-H bonds), and proteins are made of amino acids containing amines/peptides (N-H bonds)."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Executing FSMA Rule 204 Outbreak Traceability within Statutory Deadlines",
+                        "botQuestion": "The US FDA contacts a fresh berry distributor in Jalisco regarding a multi-state Salmonella outbreak traced to exported blackberries. Under FSMA Rule 204, what is the maximum statutory time window your company has to produce the complete electronic traceability spreadsheet? What mandatory Key Data Elements (KDEs) must be provided for the 'Transformation / Packing' Critical Tracking Event (CTE)?",
+                        "requiredKeywords": [
+                            "24 hours",
+                            "traceability lot code",
+                            "tlc",
+                            "date",
+                            "harvest",
+                            "location"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Outstanding regulatory compliance execution! 1) Statutory Deadline: Under FSMA Rule 204, the electronic sortable spreadsheet must be provided to the FDA within exactly 24 hours of official request; 2) Mandatory KDEs for the Packing CTE include: Traceability Lot Code (TLC), TLC Source Identifier (FDA Food Facility Registration Number or GPS coordinates of the packing facility), Date of Initial Packing, Product Description, Quantity and Packaging Unit (e.g., 12 x 6-oz clamshells), and the linked Harvest CTE records (field location, harvest date, and harvest crew ID).",
+                        "feedbackRetry": "State the mandatory 24-hour deadline under FSMA 204. Then list the core KDEs: Traceability Lot Code (TLC), packing date, facility location identifier, product description, and harvest origin linkages."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "Under FDA FSMA Rule 204, within how many hours must a food company provide digital traceability records upon official regulatory request during an outbreak investigation?",
+                        "options": [
+                            "Within 24 hours",
+                            "Within 10 business days",
+                            "Within 30 calendar days",
+                            "At the end of the fiscal year"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "In precision agritech sorting lines, what physical mechanism allows Near-Infrared (NIR) Spectroscopy to grade fruit sweetness non-destructively?",
+                        "options": [
+                            "It uses X-rays to photograph the seeds",
+                            "It measures the optical absorption of light in the 780–2500 nm range, where C-H and O-H molecular vibrations correlate with sugar and moisture concentrations",
+                            "It weighs each fruit on a high-speed scale",
+                            "It injects chemical dyes through the skin"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "What is the primary technological difference between traditional dry extrusion and High-Moisture Extrusion Cooking (HMEC)?",
+                        "options": [
+                            "Dry extrusion is used for ice cream; HMEC is used for soup",
+                            "HMEC operates at high moisture (40–70%) with a long cooling die to shear and realign plant proteins into fibrous meat-like textures, whereas dry extrusion produces puffed cereals and snacks",
+                            "Dry extrusion requires liquid nitrogen cooling",
+                            "HMEC can only process whole beef muscle"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "What is a 'Traceability Lot Code' (TLC) under US FSMA Rule 204?",
+                        "options": [
+                            "The postal zip code of the retail grocery store",
+                            "A unique alphanumeric descriptor assigned to a specific batch of food at the initial packing or transformation stage that remains linked across all downstream distribution events",
+                            "The retail sale price barcode on the cash register",
+                            "The serial number of the delivery truck"
+                        ],
+                        "answer": 1
+                    }
+                ]
             }
         ]
     },
