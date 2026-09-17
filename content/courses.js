@@ -14412,7 +14412,7 @@ var LXP_COURSES = {
         "titleEN": "Industrial Engineering & Operations",
         "category": "engineering",
         "level": "A2-B1",
-        "status": "blueprint",
+        "status": "full",
         "totalModules": 5,
         "standard": "USMCA T-MEC / Six Sigma Black Belt / APICS CSCP",
         "conocer": "EC0301 (Operaciones de Comercio Exterior y Logística)",
@@ -14424,37 +14424,1396 @@ var LXP_COURSES = {
             {
                 "id": "io-m1",
                 "title": "USMCA/T-MEC Cross-Border Customs & Pedimentos",
-                "titleES": "Aduanas Transfronterizas T-MEC y Pedimentos en Inglés",
-                "icon": "fa-solid fa-file-contract",
-                "readings": []
+                "titleES": "Aduanas Transfronterizas T-MEC y Pedimentos de Importación",
+                "icon": "fa-solid fa-truck-ramp-box",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "io-m1-r1",
+                        "title": "Cross-Border Customs Architecture: USMCA Rules of Origin, IMMEX & Pedimento Execution",
+                        "duration": "15 min",
+                        "content": "\n# Cross-Border Customs Architecture: USMCA Rules of Origin, IMMEX & Pedimento Execution\n\nIn the era of North American nearshoring, manufacturing efficiency is inseparable from cross-border customs velocity. A high-volume Tier-1 automotive or electronics plant operating in Monterrey, Saltillo, or Ciudad Juárez depends on seamless transit across the United States–Mexico border, predominantly through major land ports like Laredo (World Trade Bridge / Colombia Solidarity), Otay Mesa, and Pharr. \n\nMoving raw materials, sub-assemblies, and finished goods across this frontier requires strict compliance with binational legal frameworks: the **United States-Mexico-Canada Agreement (USMCA / T-MEC)**, the Mexican **IMMEX program**, and the digital customs declaration known as the **Pedimento Aduanal**.\n\n---\n\n## 1. The Legal Framework: USMCA Rules of Origin & Tariff Elimination\n\nThe USMCA replaced NAFTA with significantly stricter compliance mandates designed to incentivize regional procurement of automotive components, steel, aluminum, and advanced electronics.\n\n### Preferential Tariff Treatment\nUnder USMCA, goods qualify for duty-free or preferential tariff entry only if they satisfy strict **Rules of Origin (RoO)** specified by Harmonized Tariff Schedule (HTS / Fracción Arancelaria) codes:\n1. **Wholly Obtained or Produced**: Goods grown, mined, or harvested entirely within North America (e.g., agricultural products, raw minerals).\n2. **Tariff Shift (Change in Tariff Classification)**: Non-originating components imported from Asia or Europe must undergo substantial transformation within Mexico, the US, or Canada, resulting in a shift in their HTS chapter, heading, or subheading (e.g., turning raw steel coils into automotive stampings).\n3. **Regional Value Content (RVC)**: Demands that a specified percentage of the product’s total value originate within the USMCA trade zone.\n\n### RVC Mathematical Formulations\nThe agreement establishes two primary methods for calculating RVC:\n\n#### Transaction Value Method (TVM):\n$$\\text{RVC} = \\frac{\\text{TV} - \\text{VNM}}{\\text{TV}} \\times 100$$\n\nWhere $\\text{TV}$ is the transaction value of the good (adjusted to FOB basis) and $\\text{VNM}$ is the value of non-originating materials used in production.\n\n#### Net Cost Method (NCM):\n$$\\text{RVC} = \\frac{\\text{NC} - \\text{VNM}}{\\text{NC}} \\times 100$$\n\nWhere $\\text{NC}$ represents the net cost of the product (excluding sales promotion, marketing, royalties, and non-allowable interest). For core automotive parts (engines, transmissions, EV battery packs), USMCA mandates an RVC threshold of up to **$75\\%$ under Net Cost**, along with requirements that $70\\%$ of corporate steel and aluminum purchases originate in North America.\n\n---\n\n## 2. The IMMEX Program & VAT Certification (Anexo 24 / 30)\n\nMexico’s **IMMEX (Manufacturing, Maquiladora and Export Services Industry)** program allows foreign and domestic manufacturers to temporarily import raw materials, machinery, and tooling without paying the general import duty (IGI) or the standard $16\\%$ Value Added Tax (IVA).\n\n### The Tax Credit Mechanism (IVA/IEPS Certification)\nUnder the Mexican Tax Administration Service (**SAT**), companies with IMMEX registration apply for **IVA/IEPS Certification (Levels A, AA, AAA)**. A certified company obtains a $100\\%$ fiscal credit on the $16\\%$ VAT due at customs entry. To maintain this privilege, the plant must prove that temporarily imported components are physically transformed and re-exported within statutory deadlines (typically 18 months).\n\n### Automated Inventory Control (Anexo 24 & Anexo 30)\n- **Anexo 24**: A legally mandated software system tracking real-time bills of materials (BOM), raw material receipts, scrap rates, and finished goods export shipments.\n- **Anexo 30**: SAT’s centralized digital balance control system (CCCyG). Every time an export pedimento clears customs, Anexo 30 credits the original temporary import pedimento, discharging the fiscal liability. Unaccounted-for materials are treated by SAT as illegal domestic diversions subject to severe retroactive penalties.\n\n---\n\n## 3. The Pedimento Aduanal: Structure & Data Integrity\n\nThe **Pedimento** is the legal fiscal affidavit generated by a licensed Mexican Customs Broker (**Agente Aduanal**) and submitted electronically to SAT’s automated customs portal (SAAI / VUCEM).\n\n### Key Pedimento Fields & Document Codes (Claves)\n- **Clave de Pedimento**: Identifies the customs regime:\n  - **A1**: Definite import or export of goods.\n  - **IN**: Temporary import of raw materials for transformation by an IMMEX company.\n  - **AF**: Temporary import of fixed assets (machinery, injection molds, robots) under IMMEX.\n  - **RT**: Return of transformed finished goods to foreign markets.\n  - **V1**: Virtual transfer of goods between two distinct IMMEX maquiladoras inside Mexico.\n- **Fracción Arancelaria (HTS 8-digit + 2-digit NICO)**: Establishes exact tariff rate, commercial description, and non-tariff regulatory compliance (NOM standards).\n- **Contribuciones (Taxes & Fees)**: Quantifies DTA (Derecho de Trámite Aduanero), PRV (Prevalidación fee), and applicable duties.\n- **DODA / PITA (Digital Tracking Barcodes)**: Replaced physical paper stamped pedimentos with QR/RFID digital cards scanned by automated gate readers at the international border.\n\n---\n\n## 4. Engineering Field Scenario: The Fast-Track Border Clearance at Laredo\n\nConsider a daily cross-border supply chain operation between a Tier-1 wiring harness plant in Saltillo, Coahuila, and an OEM assembly plant in Arlington, Texas:\n\n### The Inspection Protocol & C-TPAT / OEA Fast Lanes\n1. **Pre-Clearance Validation**: The Saltillo plant generates the commercial invoice, packing list, and electronic Anexo 24 export ledger. The Mexican customs broker files the **RT export pedimento**, while the US customs broker files the **US CBP Entry Summary (Form 7501)** via the Automated Commercial Environment (ACE).\n2. **Physical Loading & Tamper-Evident Seals**: The 53-foot dry van is loaded, and an **ISO 17712 certified high-security bolt seal** is clamped across the locking bars. The seal number is digitally logged on the electronic manifest.\n3. **C-TPAT / OEA FAST Lane Processing**: Because both the manufacturer and the cross-border drayage carrier are certified under **C-TPAT (Customs-Trade Partnership Against Terrorism)** and Mexico's **OEA**, the truck enters the dedicated FAST (Free and Secure Trade) lane at the Nuevo Laredo customs facility.\n4. **Automated Customs Selection (Semáforo Fiscal)**: The driver approaches the automated boom barrier and scans the PITA/DODA badge:\n   - **Green Light (Desaduanamiento Libre)**: The system verifies digital clearances in under 3 seconds; the barrier lifts immediately without human contact.\n   - **Red Light (Reconocimiento Aduanero)**: The truck is routed to the inspection bay for non-intrusive gamma-ray imaging (vacis) and physical seal verification by SAT inspectors.\n5. **Bridge Crossing & US CBP Release**: The tractor crosses the Rio Grande over the World Trade Bridge. The driver presents the CBP FAST card and barcode to the US border booth, where biometric facial recognition and automated radiation portals release the shipment into US commerce in under 90 seconds.\n\n---\n\n> **Key Takeaway**: Cross-border logistics mastery requires synchronizing USMCA Regional Value Content (RVC) calculations, IMMEX temporary import tracking (Anexo 24/30), and exact Pedimento documentation. Leveraging C-TPAT/OEA certifications and digital FAST clearance prevents border bottlenecks that threaten Just-in-Time assembly lines.\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Expediting a Bonded Trailer at the Laredo Border Crossing",
+                    "titleES": "Agilizando un Remolque en Tránsito Aduanal en el Cruce de Laredo",
+                    "scenarioContext": "A US Logistics Director in Dallas and a Mexican Customs Compliance Manager in Monterrey coordinate to resolve a pedimento validation hold on an urgent shipment of stamped engine brackets.",
+                    "characters": [
+                        {
+                            "name": "Robert Miller",
+                            "role": "Director of Supply Chain Logistics",
+                            "company": "Apex Powertrain Systems (Dallas, TX)"
+                        },
+                        {
+                            "name": "Sofía Villarreal",
+                            "role": "Customs Compliance & Trade Manager",
+                            "company": "Apex Precision Components (Monterrey, NL)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Robert Miller",
+                            "text": "Sofia, our Arlington assembly line is running on critical inventory for those engine mounting brackets. Dispatch shows trailer fifty-two is stuck on the Mexican side of the World Trade Bridge. What is the hold-up at customs?",
+                            "translation": "Sofía, nuestra línea de ensamblaje en Arlington está con inventario crítico de soportes de motor. El despacho muestra que el remolque 52 está detenido en el lado mexicano del Puente World Trade. ¿Cuál es la demora en aduanas?",
+                            "targetTerms": [
+                                "critical inventory",
+                                "stuck on the Mexican side",
+                                "customs hold-up"
+                            ]
+                        },
+                        {
+                            "speaker": "Sofía Villarreal",
+                            "text": "The delay was caused by a mismatch in the automated prevalidation system. Our customs broker flagged a discrepancy between the commercial invoice and the export pedimento regarding the eight-digit tariff classification.",
+                            "translation": "La demora fue causada por una discrepancia en el sistema automatizado de prevalidación. Nuestro agente aduanal detectó una inconsistencia entre la factura comercial y el pedimento de exportación respecto a la fracción arancelaria de ocho dígitos.",
+                            "targetTerms": [
+                                "prevalidation system",
+                                "customs broker",
+                                "export pedimento",
+                                "tariff classification"
+                            ]
+                        },
+                        {
+                            "speaker": "Robert Miller",
+                            "text": "Did the tariff shift affect our USMCA preferential origin claim? If US Customs rejects the certificate of origin, we could face standard Most-Favored-Nation duties and secondary inspection.",
+                            "translation": "¿Afectó el salto arancelario nuestra reclamación de origen preferencial T-MEC? Si la aduana de EE.UU. rechaza el certificado de origen, podríamos enfrentar aranceles de Nación Más Favorecida e inspección secundaria.",
+                            "targetTerms": [
+                                "tariff shift",
+                                "preferential origin claim",
+                                "certificate of origin",
+                                "Most-Favored-Nation duties"
+                            ]
+                        },
+                        {
+                            "speaker": "Sofía Villarreal",
+                            "text": "No, the Regional Value Content comfortably satisfies the seventy-five percent net cost rule. The issue was simply a clerical typo in the NICO commercial identifier on the RT pedimento. The broker has already submitted the electronic amendment.",
+                            "translation": "No, el Contenido de Valor Regional cumple holgadamente con la regla del setenta y cinco por ciento de costo neto. El problema fue un simple error tipográfico en el identificador comercial NICO en el pedimento RT. El agente aduanal ya envió la rectificación electrónica.",
+                            "targetTerms": [
+                                "Regional Value Content",
+                                "net cost rule",
+                                "clerical typo",
+                                "electronic amendment"
+                            ]
+                        },
+                        {
+                            "speaker": "Robert Miller",
+                            "text": "Outstanding. Once the amendment clears SAT prevalidation, will the driver still be able to utilize the dedicated C-TPAT FAST lane to bypass the general cargo queue?",
+                            "translation": "Excelente. Una vez que la rectificación pase la prevalidación del SAT, ¿podrá el chofer seguir utilizando el carril exclusivo C-TPAT FAST para esquivar la fila de carga general?",
+                            "targetTerms": [
+                                "clears SAT prevalidation",
+                                "C-TPAT FAST lane",
+                                "general cargo queue"
+                            ]
+                        },
+                        {
+                            "speaker": "Sofía Villarreal",
+                            "text": "Yes, both the drayage carrier and tractor are FAST certified with valid high-security bolt seals. We should receive the green light on the digital barcode scanner within fifteen minutes, putting the trailer across the Rio Grande before noon.",
+                            "translation": "Sí, tanto la empresa de transfer como el tractocamión están certificados en FAST con sellos de alta seguridad vigentes. Deberíamos recibir luz verde en el escáner de código de barras digital en quince minutos, cruzando el Río Bravo antes del mediodía.",
+                            "targetTerms": [
+                                "drayage carrier",
+                                "high-security bolt seals",
+                                "green light",
+                                "barcode scanner"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The paper is with the customs officer.",
+                            "native": "The export pedimento is undergoing automated electronic prevalidation.",
+                            "explanation": "In industrial trade, modern customs operations are completely digitized; professional engineers refer specifically to 'pedimento prevalidation' and 'customs brokerage' rather than generic papers."
+                        },
+                        {
+                            "school": "We pay no taxes because of free trade.",
+                            "native": "The shipment qualifies for preferential duty-free treatment under USMCA Rules of Origin.",
+                            "explanation": "Duty-free entry is never automatic; it requires strict legal qualification under specific Rules of Origin (RoO) and Regional Value Content (RVC) calculations."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Pedimento Aduanal",
+                        "ipa": "/pe.ðiˈmen.to a.ðwaˈnal/",
+                        "es": "Pedimento de importación/exportación",
+                        "category": "Customs & Compliance",
+                        "definition": "The official electronic fiscal declaration submitted to Mexican customs (SAT) validating legal entry, duty payment, and regulatory compliance of goods.",
+                        "collocations": [
+                            "clear an import pedimento",
+                            "rectify a pedimento error",
+                            "file an RT export pedimento",
+                            "pedimento validation code"
+                        ],
+                        "falseFriends": "Do not confuse 'pedimento' with 'petition' (a formal request to an authority). A pedimento is strictly a customs entry document.",
+                        "nativeUsage": "The auditor requested the original pedimento along with the Anexo 24 discharge balance."
+                    },
+                    {
+                        "term": "Regional Value Content (RVC)",
+                        "ipa": "/ˈriː.dʒən.əl ˈvæl.juː ˈkɒn.tent/",
+                        "es": "Contenido de Valor Regional (CVR)",
+                        "category": "Trade Agreements",
+                        "definition": "The statutory percentage of a manufactured product’s cost or value that must originate within the USMCA trade zone to qualify for duty-free entry.",
+                        "collocations": [
+                            "meet the RVC threshold",
+                            "calculate RVC via net cost",
+                            "RVC audit trail",
+                            "regional value requirement"
+                        ],
+                        "falseFriends": "Avoid translating literally as 'regional value content' without specifying whether the Net Cost or Transaction Value method applies.",
+                        "nativeUsage": "Under USMCA automotive rules, Tier-1 suppliers must document a minimum 75% RVC to avoid standard tariff penalties."
+                    },
+                    {
+                        "term": "Customs Broker",
+                        "ipa": "/ˈkʌs.təmz ˈbroʊ.kər/",
+                        "es": "Agente aduanal",
+                        "category": "Logistics Operations",
+                        "definition": "A licensed legal representative authorized by national customs authorities to classify merchandise, calculate duties, and submit official clearance entries.",
+                        "collocations": [
+                            "rely on a licensed customs broker",
+                            "brokerage clearance fee",
+                            "power of attorney for customs broker",
+                            "liaise with the broker"
+                        ],
+                        "falseFriends": "'Customs' (with an 's') means aduana, whereas 'custom' without an 's' means habit or tailor-made.",
+                        "nativeUsage": "Our Mexican customs broker verified the tariff classification before authorizing the drayage tractor to cross."
+                    },
+                    {
+                        "term": "Harmonized Tariff Schedule (HTS)",
+                        "ipa": "/ˈhɑːr.mə.naɪzd ˈtær.ɪf ˈskɛdʒ.uːl/",
+                        "es": "Sistema Arancelario Armonizado (Fracción Arancelaria)",
+                        "category": "Classification",
+                        "definition": "An internationally standardized 6-to-10-digit numerical code used worldwide to classify traded products and assess applicable import duties and trade rules.",
+                        "collocations": [
+                            "classify under HTS code",
+                            "determine the correct tariff heading",
+                            "tariff shift requirement",
+                            "10-digit HTS subheading"
+                        ],
+                        "falseFriends": "Do not confuse 'tariff' (arancel/impuesto) with 'rate' (tasa general).",
+                        "nativeUsage": "Changing the machining process resulted in a new HTS classification that altered our certificate of origin."
+                    },
+                    {
+                        "term": "IMMEX Program",
+                        "ipa": "/ˈɪm.ɛks ˈproʊ.ɡræm/",
+                        "es": "Programa IMMEX (Maquiladora)",
+                        "category": "Fiscal Regimes",
+                        "definition": "A Mexican federal initiative permitting manufacturers to import raw materials and production machinery temporarily without paying import duties or 16% VAT.",
+                        "collocations": [
+                            "hold an active IMMEX registry",
+                            "re-export within the IMMEX window",
+                            "IMMEX temporary importation",
+                            "maintain Anexo 24 compliance"
+                        ],
+                        "falseFriends": "IMMEX is an official acronym and should never be translated as 'import-export program'.",
+                        "nativeUsage": "To preserve our IMMEX tax benefits, we reconcile all raw aluminum inventory monthly in Anexo 30."
+                    },
+                    {
+                        "term": "C-TPAT Certification",
+                        "ipa": "/ˈsiː.tæp ˌsɜːr.tə.fɪˈkeɪ.ʃən/",
+                        "es": "Certificación C-TPAT (Seguridad en la Cadena de Suministro)",
+                        "category": "Supply Chain Security",
+                        "definition": "Customs-Trade Partnership Against Terrorism: A US CBP voluntary supply-chain security program offering expedited border clearance to verified trusted traders.",
+                        "collocations": [
+                            "maintain C-TPAT compliance",
+                            "access dedicated FAST lanes",
+                            "conduct C-TPAT supply chain audits",
+                            "tamper-evident bolt seals"
+                        ],
+                        "falseFriends": "C-TPAT relates specifically to cargo physical security and counter-contraband measures, not financial tax auditing.",
+                        "nativeUsage": "By requiring C-TPAT certification from our drayage partners, we cut average border wait times from four hours to under forty minutes."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Calculating Regional Value Content under USMCA",
+                        "botQuestion": "Your plant in Saltillo manufactures an electric steering actuator with a Net Cost of $120 USD. Due to global supply shortages, you source $36 USD worth of precision micro-bearings and electronic chips from Germany and Japan. The remaining materials and direct labor originate in Mexico and the US. Does this actuator qualify for duty-free entry under the USMCA 70% Net Cost RVC threshold? Show the calculation formula and explain your conclusion.",
+                        "requiredKeywords": [
+                            "net cost",
+                            "non-originating",
+                            "70%",
+                            "formula",
+                            "rvc"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on! Using the Net Cost formula: RVC = ((NC - VNM) / NC) * 100 = (($120 - $36) / $120) * 100 = ($84 / $120) * 100 = 70.0%. The component exactly hits the 70% threshold, qualifying it for duty-free USMCA treatment.",
+                        "feedbackRetry": "Review the USMCA Net Cost formula: RVC = ((NC - VNM) / NC) * 100. Subtract the non-originating materials ($36) from the net cost ($120), divide by the net cost, and multiply by 100 to check if it reaches 70%."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Resolving Border Discrepancies and Pedimento Rectification",
+                        "botQuestion": "A truck carrying 40 pallets of automotive sensors triggers a 'Red Light' (Reconocimiento Aduanero) at the Nuevo Laredo customs platform because the pallet count in the container physically exceeds the quantity declared on the IN pedimento by 2 pallets. What are the immediate legal risks under Mexican customs law, and what formal procedure must the customs broker execute to resolve it without facing equipment seizure?",
+                        "requiredKeywords": [
+                            "pedimento",
+                            "broker",
+                            "rectification",
+                            "seizure",
+                            "discrepancy",
+                            "sat"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Excellent analysis. Unmanifested merchandise risks PAMA (Procedimiento Administrativo en Materia Aduanera), resulting in asset seizure and hefty fines. The customs broker must file a formal electronic pedimento rectification (rectificación de pedimento) and settle any differential taxes and fines before releasing the goods.",
+                        "feedbackRetry": "Focus on Mexican customs enforcement: unmanifested surplus cargo triggers administrative proceedings (PAMA). Mention the role of the customs broker in executing a formal 'rectification' (rectificación de pedimento) and paying administrative adjustments."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "Under the USMCA Net Cost method, what is the formula for calculating Regional Value Content (RVC)?",
+                        "options": [
+                            "RVC = ((NC - VNM) / NC) * 100",
+                            "RVC = (VNM / NC) * 100",
+                            "RVC = ((TV - NC) / TV) * 100",
+                            "RVC = (NC / Total Assets) * 100"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is the primary operational benefit of the Mexican IMMEX program with IVA/IEPS Certification?",
+                        "options": [
+                            "It eliminates all labor union negotiations in manufacturing plants",
+                            "It grants a 100% fiscal credit on the 16% VAT for temporary raw material and machinery imports",
+                            "It permits trucks to cross the border without any customs documentation",
+                            "It allows companies to sell products in Mexico without paying income tax"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Which Pedimento key code (Clave) is used for the temporary importation of raw materials by an IMMEX company?",
+                        "options": [
+                            "A1",
+                            "AF",
+                            "IN",
+                            "RT"
+                        ],
+                        "answer": 2
+                    },
+                    {
+                        "q": "Why do automotive suppliers invest in C-TPAT and OEA security certifications?",
+                        "options": [
+                            "To obtain cheaper electrical utility rates from CFE",
+                            "To qualify for dedicated FAST lanes and expedited cross-border customs clearance",
+                            "To avoid paying corporate income taxes in the United States",
+                            "To bypass safety inspections required by OSHA"
+                        ],
+                        "answer": 1
+                    }
+                ]
             },
             {
                 "id": "io-m2",
                 "title": "Lean Manufacturing: 5S, Kanban and Value Stream Mapping (VSM)",
-                "titleES": "Manufactura Esbelta: 5S, Kanban y Mapeo de Flujo de Valor",
-                "icon": "fa-solid fa-arrow-progress",
-                "readings": []
+                "titleES": "Manufactura Esbelta: 5S, Kanban y Mapeo de la Cadena de Valor (VSM)",
+                "icon": "fa-solid fa-arrows-split-up-and-left",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "io-m2-r1",
+                        "title": "Lean Production Architecture: Value Stream Mapping, Takt Time & Pull Flow Dynamics",
+                        "duration": "15 min",
+                        "content": "\n# Lean Production Architecture: Value Stream Mapping, Takt Time & Pull Flow Dynamics\n\nThe Toyota Production System (TPS), formalized globally as **Lean Manufacturing**, transformed modern industrial engineering from a batch-and-queue mass production mindset into an agile, customer-driven operational philosophy. At its core, Lean seeks the relentless identification and elimination of **Muda (Waste)**—any activity that consumes resources, time, or floor space without adding tangible value from the perspective of the paying customer.\n\nIn world-class manufacturing plants across Querétaro, Guanajuato, and the US Midwest, operational excellence relies on three foundational engineering methodologies: **Value Stream Mapping (VSM)**, precision **Takt Time synchronization**, and closed-loop **Kanban pull systems**.\n\n---\n\n## 1. The Taxonomy of Waste (The 7+1 Mudas)\n\nTo eliminate operational friction, engineers systematically categorize non-value-added activities into eight defined wastes:\n1. **Overproduction**: Producing components ahead of schedule or in excess of customer demand. Recognized by Taiichi Ohno as the mother of all wastes because it conceals all underlying defects, balance issues, and machine breakdowns.\n2. **Waiting (Starvation / Blockage)**: Idle machine or operator time caused by upstream bottlenecks, delayed raw materials, or prolonged tool changeovers.\n3. **Transport**: Unnecessary mechanical conveying, forklift shuttling, or cross-bay transit of WIP (Work-in-Process).\n4. **Over-Processing**: Performing tighter machining tolerances, redundant visual inspections, or unnecessary finishing beyond customer specifications.\n5. **Inventory (Excess Stock)**: Capital tied up in raw materials, subassemblies, and buffer warehouses that generates carrying costs and risks obsolescence.\n6. **Motion**: Inefficient ergonomics, walking, bending, or reaching by technicians due to poor workstation layout.\n7. **Defects (Rework & Scrap)**: Producing non-conforming parts that consume raw materials, rework labor, and engineering bandwidth.\n8. **Underutilized Human Potential (The 8th Waste)**: Failing to engage operators’ frontline insights, creativity, and problem-solving skills in continuous improvement (**Kaizen**).\n\n---\n\n## 2. Value Stream Mapping (VSM): Current State to Future State\n\nA **Value Stream** encompasses all actions (both value-adding and non-value-adding) required to bring a product from initial raw material receipt to final customer delivery.\n\n```\nVSM Timeline Architecture:\nRaw Material Inbound ---> Stamping ---> Welding ---> Assembly ---> Finished Goods Outbound\nInventory (Days):         3.2 days      1.8 days     0.5 days      2.0 days\nCycle Time (Seconds):      45 sec        38 sec       52 sec\n-----------------------------------------------------------------------------------------\nProduction Lead Time (PLT) = 7.5 days | Value-Added Time (VAT) = 135 seconds\nProcess Cycle Efficiency (PCE) = VAT / PLT = 135 s / (7.5 * 28,800 s) = 0.0625%\n```\n\n### The VSM Diagnostic Sequence\n1. **Define the Product Family**: Group parts that share similar processing steps and downstream equipment.\n2. **Document the Current State**: Walk the physical line from shipping back to receiving (\"Go to Gemba\"). Record real operating data rather than idealized ERP standards:\n   - **Cycle Time (C/T)**: The time it takes an operator or machine to complete one full part cycle.\n   - **Changeover Time (C/O)**: Time elapsed between the last good piece of Product A and the first good piece of Product B (addressed via SMED - Single-Minute Exchange of Die).\n   - **Uptime / OEE**: Overall Equipment Effectiveness.\n   - **WIP Inventory Counts**: Physical counts between operations converted into days of supply.\n3. **Calculate Process Cycle Efficiency (PCE)**:\n   $$\\text{PCE} = \\frac{\\text{Total Value-Added Time (VAT)}}{\\text{Total Production Lead Time (PLT)}} \\times 100$$\n   In unoptimized traditional plants, PCE is typically **under $1\\%$**, meaning components spend $99\\%$ of their plant lifespan sitting idle in queues.\n4. **Design the Future State**: Introduce continuous one-piece flow, eliminate intermediate staging, establish pacemaker processes, and connect decoupled cells using pull supermarkets.\n\n---\n\n## 3. Pacing the Factory: Takt Time, Cycle Time & Line Balancing\n\nA lean factory does not run at maximum machine speed; it runs at the exact rhythm demanded by market consumption:\n\n### Takt Time Calculation\nDerived from the German word for baton rhythm (*Taktzeit*):\n\n$$\\text{Takt Time} = \\frac{\\text{Net Available Operating Time per Shift}}{\\text{Customer Demand per Shift}}$$\n\n*Example*:\n- Net Shift Time: 8 hours ($28,800\\ \\text{s}$) minus two 15-minute breaks and 10 minutes of daily 5S cleanup = $26,400\\ \\text{seconds}$.\n- Daily Customer Demand: 550 assemblies across 1 shift.\n$$\\text{Takt Time} = \\frac{26,400\\ \\text{s}}{550\\ \\text{units}} = 48.0\\ \\text{seconds/unit}$$\n\nEvery 48 seconds, exactly one completed assembly must roll off the packaging line. \n\n### Line Balancing & The Operator Loading Chart (Yamazumi)\nIf an individual workstation exhibits a Cycle Time of 56 seconds, it exceeds Takt Time, creating a permanent bottleneck that starves downstream stations. Conversely, an operation with a Cycle Time of 24 seconds causes operator idling or excessive buffer accumulation. Line balancing redistributes work elements across standardized work routines to keep every station operating at **$90\\text{--}95\\%$ of Takt Time**, building in an ergonomic buffer for minor variances.\n\n---\n\n## 4. Engineering Field Scenario: Implementing a Two-Bin Kanban Loop\n\nIn a high-precision metal stamping facility supplying automotive transmissions:\n\n### The Problem\nThe assembly cell frequently suffered line stoppages because operators ran out of internal O-rings, while the central warehouse held an excess inventory of 150,000 units gathering dust.\n\n### The Lean Solution: A Physical Two-Bin Kanban Loop\n1. **Bin Sizing Formulation**:\n   $$\\text{Kanban Quantity} = \\frac{D \\times L \\times (1 + S)}{C}$$\n   Where $D$ is daily demand (1,200 O-rings), $L$ is replenishment lead time (0.5 days), $S$ is safety factor ($10\\%$), and $C$ is bin capacity (300 units).\n   $$\\text{Number of Kanban Bins} = \\frac{1,200 \\times 0.5 \\times 1.10}{300} = 2.2 \\approx 3\\ \\text{bins}$$\n2. **Workstation Visual Factory Setup**:\n   - The cell operator has two labeled plastic bins of O-rings line-side on a gravity flow rack.\n   - The operator works exclusively from **Bin 1**.\n   - When Bin 1 is empty, the operator slides it to the top return rail and detaches the magnetic **Kanban Card** (specifying part number, bin size, supplier storage rack, and barcode).\n   - The operator immediately begins pulling parts from **Bin 2** without interruption.\n3. **The Water Beetle (Mizusumashi) Replenishment**:\n   - A dedicated material handler follows a strict 30-minute timed route (Milk-Run) picking up empty Kanban cards.\n   - The handler scans the card at the supermarket, retrieves exactly one pre-kitted 300-count bin, and returns it to the workstation rack before Bin 2 is depleted.\n4. **Poka-Yoke & Andon Integration**:\n   - A photoelectric light curtain verifies that the operator touches the O-ring bin during every assembly cycle. If the operator attempts to advance the part fixture without breaking the sensor beam, the fixture clamps lock automatically (**Poka-Yoke**), and an amber **Andon** light flashes to prompt correction before a defective seal can escape.\n\n---\n\n> **Key Takeaway**: Lean manufacturing replaces chaotic push production with visual, synchronized pull flow. By aligning workstation cycle times to customer Takt Time, mapping value streams, and sizing closed-loop Kanban loops, industrial engineers slash lead times and drive near-zero inventory overhead.\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Resolving a Line Bottleneck via Yamazumi Balancing",
+                    "titleES": "Resolviendo un Cuello de Botella de Línea mediante Balanceo Yamazumi",
+                    "scenarioContext": "A Continuous Improvement Lead in Guanajuato and a VP of Manufacturing in Detroit analyze line-balancing data after a customer demand surge threatens delivery schedules.",
+                    "characters": [
+                        {
+                            "name": "Jim Bradley",
+                            "role": "VP of Global Manufacturing Operations",
+                            "company": "AeroMotion Powertrain (Detroit, MI)"
+                        },
+                        {
+                            "name": "Mariana Morales",
+                            "role": "Continuous Improvement & Lean Champion",
+                            "company": "AeroMotion Silao Plant (Guanajuato, MX)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Jim Bradley",
+                            "text": "Mariana, our OEM customer just increased their weekly release schedule by twenty percent for the Gen-Four transaxle. If we cannot match their required takt time, we risk incurring expedited freight charges or shutting down their assembly plant.",
+                            "translation": "Mariana, nuestro cliente OEM acaba de incrementar su programa semanal de pedidos un veinte por ciento para el transeje Gen-Cuatro. Si no logramos igualar el takt time requerido, nos arriesgamos a pagar fletes aéreos urgentes o parar su planta de ensamblaje.",
+                            "targetTerms": [
+                                "release schedule",
+                                "takt time",
+                                "expedited freight charges",
+                                "shutting down"
+                            ]
+                        },
+                        {
+                            "speaker": "Mariana Morales",
+                            "text": "Under the new production schedule, our takt time drops from fifty-eight seconds down to forty-six seconds. We walked the gemba this morning, and station three—the planetary carrier press fit—has a measured cycle time of fifty-two seconds. It is a hard bottleneck.",
+                            "translation": "Bajo el nuevo programa de producción, nuestro takt time se reduce de cincuenta y ocho a cuarenta y seis segundos. Caminamos por el gemba esta mañana y la estación tres—el ajuste por prensa del portaplanetarios—tiene un cycle time medido de cincuenta y dos segundos. Es un cuello de botella crítico.",
+                            "targetTerms": [
+                                "takt time drops",
+                                "walked the gemba",
+                                "cycle time",
+                                "hard bottleneck"
+                            ]
+                        },
+                        {
+                            "speaker": "Jim Bradley",
+                            "text": "A six-second gap above takt time is unsustainable. Are we seeing operator waiting time or machine index delays? We cannot afford a capital expenditure on an additional hydraulic press right now.",
+                            "translation": "Una brecha de seis segundos por encima del takt time es insostenible. ¿Estamos viendo tiempo de espera del operador o retrasos de indexación de la máquina? No podemos costear la compra de una prensa hidráulica adicional en este momento.",
+                            "targetTerms": [
+                                "gap above takt time",
+                                "operator waiting time",
+                                "machine index delays",
+                                "capital expenditure"
+                            ]
+                        },
+                        {
+                            "speaker": "Mariana Morales",
+                            "text": "We performed a time-study and charted an operator Yamazumi diagram. Fourteen seconds of the station's cycle time are consumed by non-value-added manual deburring and secondary barcode scanning. We can offload those tasks upstream to station two, which currently runs at thirty-five seconds.",
+                            "translation": "Realizamos un estudio de tiempos y trazamos un diagrama Yamazumi de operadores. Catorce segundos del ciclo de la estación se consumen en rebabeo manual sin valor agregado y escaneo secundario de códigos de barras. Podemos transferir esas tareas aguas arriba a la estación dos, que actualmente opera a treinta y cinco segundos.",
+                            "targetTerms": [
+                                "time-study",
+                                "Yamazumi diagram",
+                                "non-value-added",
+                                "offload those tasks"
+                            ]
+                        },
+                        {
+                            "speaker": "Jim Bradley",
+                            "text": "That would balance station three down to thirty-eight seconds, providing an eight-second safety buffer below our forty-six second takt time. What about the changeover time during model changeovers?",
+                            "translation": "Eso balancearía la estación tres a treinta y ocho segundos, proporcionando un margen de seguridad de ocho segundos por debajo de nuestro takt time de cuarenta y seis segundos. ¿Qué hay del tiempo de cambio durante los cambios de modelo?",
+                            "targetTerms": [
+                                "balance station down",
+                                "safety buffer",
+                                "changeover time",
+                                "model changeovers"
+                            ]
+                        },
+                        {
+                            "speaker": "Mariana Morales",
+                            "text": "Our SMED team converted the die clamping bolts to hydraulic quick-release clamps and pre-stages all fixtures on rolling carts. We slashed changeover downtime from forty-two minutes to eight minutes, ensuring our single-piece pull flow remains uninterrupted.",
+                            "translation": "Nuestro equipo de SMED convirtió los pernos de sujeción de troquel a mordazas hidráulicas de liberación rápida y prepara todos los dispositivos en carros rodantes. Redujimos el paro por cambio de modelo de cuarenta y dos minutos a ocho minutos, asegurando que nuestro flujo continuo de una sola pieza no se interrumpa.",
+                            "targetTerms": [
+                                "SMED team",
+                                "quick-release clamps",
+                                "slashed changeover downtime",
+                                "single-piece pull flow"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "We need to make parts faster.",
+                            "native": "We need to synchronize our station cycle time to customer takt time.",
+                            "explanation": "In Lean engineering, producing faster than takt time creates overproduction waste; the goal is exact synchronization rather than uncontrolled speed."
+                        },
+                        {
+                            "school": "We put extra parts in the warehouse just in case.",
+                            "native": "We sized a two-bin Kanban pull supermarket to eliminate buffer overstock.",
+                            "explanation": "Professional lean facilities replace 'just-in-case' stockpiling with calculated Kanban replenishment loops."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Takt Time",
+                        "ipa": "/ˈtɑːkt ˌtaɪm/",
+                        "es": "Tiempo takt / Ritmo de demanda del cliente",
+                        "category": "Lean Metrics",
+                        "definition": "The precise rhythm at which a manufacturing facility must produce units to exactly satisfy customer demand without creating overproduction or shortages.",
+                        "collocations": [
+                            "pace production to takt time",
+                            "calculate takt time",
+                            "station cycle time exceeds takt",
+                            "takt time synchronization"
+                        ],
+                        "falseFriends": "Do not confuse takt time (customer demand rate) with cycle time (actual time taken to perform a process).",
+                        "nativeUsage": "When weekly demand surged to 3,000 units, the manufacturing engineer recomputed the line takt time to 32 seconds."
+                    },
+                    {
+                        "term": "Value Stream Mapping (VSM)",
+                        "ipa": "/ˈvæl.juː ˌstriːm ˈmæp.ɪŋ/",
+                        "es": "Mapeo de la Cadena de Valor",
+                        "category": "Lean Diagnostics",
+                        "definition": "A visual flowcharting technique documenting both information and material flows from supplier receipt to customer shipment, distinguishing value-added from waste.",
+                        "collocations": [
+                            "develop a current-state VSM",
+                            "design the future-state map",
+                            "identify bottlenecks on the VSM",
+                            "quantify process cycle efficiency"
+                        ],
+                        "falseFriends": "VSM is not an ordinary organizational workflow chart; it specifically maps manufacturing timeline data (C/T, C/O, WIP days).",
+                        "nativeUsage": "The VSM revealed that although machining took only four minutes, parts spent eleven days waiting in queue across buffer warehouses."
+                    },
+                    {
+                        "term": "Kanban Pull System",
+                        "ipa": "/ˈkɑːn.bɑːn ˌpʊl ˈsɪs.təm/",
+                        "es": "Sistema de jale Kanban",
+                        "category": "Material Control",
+                        "definition": "A visual scheduling mechanism (using cards, bins, or electronic signals) authorizing upstream production or material movement only when downstream inventory is consumed.",
+                        "collocations": [
+                            "implement a two-bin Kanban",
+                            "trigger a replenishment Kanban",
+                            "Kanban card authorization",
+                            "supermarket pull system"
+                        ],
+                        "falseFriends": "Kanban is a pull signal, not a batch work order or inventory storage location.",
+                        "nativeUsage": "When the assembly cell scans the empty bin's Kanban barcode, an automated tugger is dispatched to replenish the line."
+                    },
+                    {
+                        "term": "Poka-Yoke",
+                        "ipa": "/ˌpoʊ.kəˈjoʊ.keɪ/",
+                        "es": "Mecanismo a prueba de errores",
+                        "category": "Quality Engineering",
+                        "definition": "A mechanical, electrical, or sensory device built into a machine or fixture that physically prevents an operator from committing an assembly error or passing a defect.",
+                        "collocations": [
+                            "install a Poka-Yoke sensor",
+                            "foolproof fixture design",
+                            "Poka-Yoke interlock",
+                            "prevent incorrect part orientation"
+                        ],
+                        "falseFriends": "Poka-Yoke refers specifically to physical mistake-proofing, not to administrative checklists or worker warnings.",
+                        "nativeUsage": "We added an asymmetrical guide pin as a Poka-Yoke to make it physically impossible to load the gasket upside down."
+                    },
+                    {
+                        "term": "Single-Minute Exchange of Die (SMED)",
+                        "ipa": "/ˈsɪŋ.ɡəl ˌmɪn.ɪt ɪksˈtʃeɪndʒ əv ˈdaɪ/",
+                        "es": "Cambio rápido de troqueles (SMED)",
+                        "category": "Operational Agility",
+                        "definition": "A lean methodology developed by Shigeo Shingo to reduce machine tool setup and changeover times to single-digit minutes (under 10 minutes).",
+                        "collocations": [
+                            "execute a SMED workshop",
+                            "convert internal setup to external setup",
+                            "quick-disconnect hydraulic fittings",
+                            "slash changeover downtime"
+                        ],
+                        "falseFriends": "'Exchange of die' refers to tooling changeovers, not to the destruction or failure of equipment.",
+                        "nativeUsage": "By applying SMED techniques, the stamping department reduced press changeover times from 65 minutes down to 7 minutes."
+                    },
+                    {
+                        "term": "Andon Cord / Board",
+                        "ipa": "/ˈæn.dɒn ˌkɔːrd/",
+                        "es": "Sistema Andon (Alerta visual de paro de línea)",
+                        "category": "Visual Management",
+                        "definition": "A visual and audible notification system that highlights operational status, allowing operators to immediately signal abnormalities or halt production.",
+                        "collocations": [
+                            "pull the Andon cord",
+                            "Andon board escalation",
+                            "trigger an amber Andon warning",
+                            "halt the line via Andon"
+                        ],
+                        "falseFriends": "Andon is not a disciplinary alarm; it is an empowered quality escalation signal.",
+                        "nativeUsage": "The operator pulled the Andon cord the moment the torque wrench detected a cross-threaded bolt, halting the line before the chassis moved."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Calculating Takt Time and Identifying Station Imbalance",
+                        "botQuestion": "Your assembly plant operates a single 8-hour shift per day. After deducting two 15-minute scheduled rest breaks and 10 minutes of daily maintenance, the customer requires 440 transmission control modules per day. What is the exact Takt Time in seconds? If Station 4 requires 62 seconds of manual assembly, what operational consequence will occur if the line is not rebalanced?",
+                        "requiredKeywords": [
+                            "takt",
+                            "seconds",
+                            "bottleneck",
+                            "starve",
+                            "rebalance",
+                            "overtime"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on! Net available time is 480 min - 40 min = 440 minutes (26,400 seconds). Takt Time = 26,400 s / 440 units = 60.0 seconds. Because Station 4 takes 62 seconds (exceeding takt time by 2 seconds), it will become a permanent bottleneck, accumulating WIP upstream, starving downstream stations, and causing missed deliveries or mandatory overtime.",
+                        "feedbackRetry": "First calculate the net operating time in seconds: (8 hr * 60 min - 40 min breaks) * 60 seconds. Divide by customer demand (440 units) to find Takt Time. Then compare Station 4's 62-second cycle time against your result."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Applying SMED: Internal vs External Setup Activities",
+                        "botQuestion": "A CNC machining cell takes 50 minutes to perform a tool changeover between batches. During this downtime, the technician leaves the stopped machine to fetch specialized Allen wrenches, retrieve new carbide inserts from the tool crib, and verify part drawings. Categorize these activities as 'Internal' or 'External' setup, and propose a SMED improvement to reduce machine downtime.",
+                        "requiredKeywords": [
+                            "internal",
+                            "external",
+                            "smed",
+                            "crib",
+                            "downtime",
+                            "pre-stage"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Excellent Lean diagnosis! Fetching tools, searching for inserts, and reviewing drawings are all 'External Setup' elements because they can be performed while the previous batch is still running on the machine. Under SMED, all tools, fixtures, and inserts must be pre-staged in a dedicated setup cart prior to stopping the spindle, converting idle downtime into active cutting time.",
+                        "feedbackRetry": "Remember the core rule of SMED: 'Internal' activities can only be done when the machine is stopped. 'External' activities can be done while the machine is running. Explain how pre-staging tools and inserts before machine shutdown slashes downtime."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What is the primary difference between Takt Time and Cycle Time in a Lean production system?",
+                        "options": [
+                            "Takt Time is the rate of customer demand, while Cycle Time is the actual time required to complete a process",
+                            "Takt Time measures machine downtime, while Cycle Time measures operator breaks",
+                            "Takt Time is calculated in hours, while Cycle Time is strictly measured in days",
+                            "There is no difference; both terms represent the same manufacturing metric"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Which of the eight wastes (Mudas) is considered the most critical by Taiichi Ohno because it conceals all other factory problems?",
+                        "options": [
+                            "Motion",
+                            "Overproduction",
+                            "Transport",
+                            "Over-Processing"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "In a physical two-bin Kanban system, what action triggers the replenishment of parts?",
+                        "options": [
+                            "The shift supervisor conducts an annual inventory audit",
+                            "The first bin is emptied, and its attached Kanban card is sent to the warehouse or supermarket",
+                            "Both bins become completely empty and the assembly line shuts down",
+                            "An automated email is generated by human resources every Friday"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "What is the fundamental objective of the SMED (Single-Minute Exchange of Die) methodology?",
+                        "options": [
+                            "To increase the speed of cutting tools by 500%",
+                            "To convert internal setup steps into external ones and reduce changeover times to under 10 minutes",
+                            "To replace human operators with multi-axis robots",
+                            "To eliminate all physical inspections from the cleanroom"
+                        ],
+                        "answer": 1
+                    }
+                ]
             },
             {
                 "id": "io-m3",
                 "title": "Six Sigma DMAIC Methodology & Statistical Quality Control",
-                "titleES": "Metodología Six Sigma DMAIC y Control Estadístico",
-                "icon": "fa-solid fa-chart-simple",
-                "readings": []
+                "titleES": "Metodología Six Sigma DMAIC y Control Estadístico de la Calidad",
+                "icon": "fa-solid fa-chart-line",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "io-m3-r1",
+                        "title": "Six Sigma DMAIC Architecture: Statistical Process Control, Capability & Root Cause Containment",
+                        "duration": "15 min",
+                        "content": "\n# Six Sigma DMAIC Architecture: Statistical Process Control, Capability & Root Cause Containment\n\nModern industrial manufacturing operates under extreme precision tolerances where minor variations can lead to catastrophic field failures, warranty recalls, and multi-million dollar liability claims. In automotive engine blocks, aerospace turbine blades, and precision electronics, ensuring that $99\\%$ of products meet specifications is unacceptable—a $1\\%$ defect rate in a plant producing 1,000,000 components translates to 10,000 defective parts entering the market.\n\n**Six Sigma** provides the mathematical framework to drive defect rates down to **3.4 Defects Per Million Opportunities (DPMO)** by identifying and reducing process variation. Guided by the **DMAIC (Define, Measure, Analyze, Improve, Control)** methodology and **Statistical Process Control (SPC)**, engineers shift quality management from reactive inspection to predictive variance control.\n\n---\n\n## 1. The DMAIC Lifecycle Framework\n\nDMAIC represents an unvarying, data-driven 5-phase project roadmap for eliminating systemic manufacturing variation:\n\n```\nDMAIC Problem-Solving Flow:\n[Define]   ---> [Measure]   ---> [Analyze]   ---> [Improve]   ---> [Control]\nProblem Charter  Gage R&R         Root Cause (ANOVA) DOE Factorial    SPC Charts\nVOC / CTQ Specs  Baseline DPMO    Fishbone / 5 Whys  Action Plan      OCAP Protocols\n```\n\n1. **Define**: Establish the Project Charter, business case, and Customer Critical-to-Quality (**CTQ**) characteristics via the Voice of the Customer (VOC).\n2. **Measure**: Quantify current performance baseline. Critical step: Validate the measurement system itself via **Gage R&R** before collecting process data.\n3. **Analyze**: Isolate root causes ($\text{root causes } X_s$) of variation in output ($Y$) using statistical testing (ANOVA, Hypothesis Testing, Multi-Vari Charts) and structured cause-and-effect tools (Ishikawa Fishbone diagrams, Failure Modes and Effects Analysis - FMEA).\n4. **Improve**: Optimize process variables using **Design of Experiments (DOE)** to identify parameter interactions and establish mathematical transfer functions ($Y = f(X_1, X_2, dots, X_n)$).\n5. **Control**: Institutionalize sustainable gains using Statistical Process Control (SPC) charting, standardized work instructions, and automated Out-of-Control Action Plans (OCAP).\n\n---\n\n## 2. Measurement System Analysis (MSA): Gage Repeatability & Reproducibility (Gage R&R)\n\nBefore analyzing manufacturing data, engineers must verify that the measurement instrument and human appraisers are not introducing false variation:\n\n$$\\sigma_{\\text{total}}^2 = \\sigma_{\\text{product}}^2 + \\sigma_{\\text{measurement}}^2$$\n\nWhere $\\sigma_{\\text{measurement}}^2$ (Gage R&R) consists of:\n- **Repeatability (Equipment Variation - EV)**: Variation observed when one appraiser measures the same part multiple times using the same gage.\n- **Reproducibility (Appraiser Variation - AV)**: Variation observed when different appraisers measure the same part using the same gage.\n\n### Gage R&R Acceptance Criteria (%GRR)\n$$\\%\\text{GRR} = \\frac{\\sigma_{\\text{Gage R&R}}}{\\sigma_{\\text{Total}}} \\times 100$$\n- **$<10\\%$**: Acceptable measurement system.\n- **$10\\%\\text{--}30\\%$**: Marginally acceptable depending on application criticality and gage cost.\n- **$>30\\%$**: Unacceptable system; measurement error obscures true process variation. Must be redesigned before making engineering conclusions.\n\n---\n\n## 3. Process Capability Indices: $C_p$ vs. $C_{pk}$\n\nA process can be highly repeatable (low standard deviation $\\sigma$) while producing non-conforming parts if its mean ($mu$) is off-center relative to customer specification limits (Upper Specification Limit - USL, Lower Specification Limit - LSL).\n\n### Potential Capability ($C_p$)\nEvaluates the process spread relative to the tolerance width, assuming perfect centering:\n\n$$C_p = \\frac{\\text{USL} - \\text{LSL}}{6\\sigma}$$\n\n### Actual Process Capability ($C_{pk}$)\nAccounts for both process variation and mean shift (centering):\n\n$$C_{pk} = \\min\\left(\\frac{\\text{USL} - \\mu}{3\\sigma}, \\frac{\\mu - \\text{LSL}}{3\\sigma}\\right)$$\n\n```\nVisualizing Process Capability:\nLSL                                 USL\n |           Centered Process        |\n |                /\\                 |\n |               /  \\                |  Cp = 1.67, Cpk = 1.67 (World-Class)\n |--------------/----\\---------------|\n \nLSL                                 USL\n |                    Shifted Mean   |\n |                         /\\       |\n |                        /  \\      |  Cp = 1.67, Cpk = 0.85 (Failing! Scrap Risk!)\n |-----------------------/----\\------|\n```\n\n### Automotive Supplier Standards\n- **$C_{pk} < 1.0$**: Incapable process; defects are actively being produced.\n- **$C_{pk} = 1.33$**: Traditional 4-Sigma threshold (66 PPM defect rate).\n- **$C_{pk} \\ge 1.67$**: Automotive Tier-1 gold standard for safety-critical dimensions (PPAP requirement), providing robustness against thermal expansion and tool wear.\n\n---\n\n## 4. Engineering Field Scenario: Statistical Process Control (SPC) & OCAP Containment\n\nIn a precision CNC machining cell producing aluminum cylinder heads in Saltillo:\n\n### The Problem\nDuring the morning production shift, the valve seat bore diameter (Nominal: $32.000\\ \\text{mm} \\pm 0.015\\ \\text{mm}$) triggered a high-dimension alarm on the coordinate measuring machine (CMM).\n\n### Real-Time SPC Monitoring: X-bar and R Charts\nThe cell tracks subgroup samples ($n=5$ parts every 30 minutes) on an **X-bar (Average) and R (Range) Control Chart**. Control limits are calculated using statistical constants ($A_2, D_3, D_4$):\n\n$$\\text{UCL}_{\\bar{X}} = \\bar{\\bar{X}} + A_2 \\cdot \\bar{R}, \\quad \\text{LCL}_{\\bar{X}} = \\bar{\\bar{X}} - A_2 \\cdot \\bar{R}$$\n\n### Detecting an Out-of-Control Condition via Western Electric Rules\nThe CMM data revealed a **Trend Violation (Western Electric Rule 3)**: seven consecutive subgroup averages steadily increasing toward the Upper Control Limit ($\text{UCL} = 32.012\\ \\text{mm}$), even though no individual part had breached the absolute USL ($32.015\\ \\text{mm}$) yet.\n\n### Executing the Out-of-Control Action Plan (OCAP)\nInstead of waiting for actual non-conforming parts to be produced, the quality technician immediately executed the mandatory 4-step OCAP:\n1. **Immediate Machine Interlock**: The technician paused spindle rotation on CNC Cell #4.\n2. **Lot Quarantine**: The 60 cylinder heads produced since the last in-control subgroup sample were quarantined in red hold bins and tagged for $100\\%$ CMM dimensional verification.\n3. **Root Cause Physical Inspection**: The tooling engineer examined the boring bar insert under an optical microscope, discovering built-up edge (BUE) micro-welding on the carbide rake face caused by a clogged high-pressure coolant nozzle.\n4. **Corrective Action & Process Verification**: The coolant line was flushed, a fresh coated carbide insert was torqued in place, and three consecutive verification parts measured at $\\mu = 32.001\\ \\text{mm}$ with $C_{pk} = 1.82$ before the supervisor unlocked the spindle.\n\n---\n\n> **Key Takeaway**: Six Sigma replaces subjective troubleshooting with rigorous statistical physics. By validating measurement systems through Gage R&R, tracking $C_{pk}$ capability, and enforcing rapid OCAP containment when SPC trends drift, engineering teams guarantee predictable, near-zero-defect mass production.\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Root-Cause Investigation of a Cpk Drop on a CNC Boring Line",
+                    "titleES": "Investigación de Causa Raíz de una Caída de Cpk en una Línea de Barrenado CNC",
+                    "scenarioContext": "A Quality Director in Saltillo and a Senior Reliability Engineer in Cincinnati analyze a sudden decline in process capability on an automated automotive piston line.",
+                    "characters": [
+                        {
+                            "name": "David Vance",
+                            "role": "Senior Reliability Engineering Manager",
+                            "company": "Tri-State Powertrain (Cincinnati, OH)"
+                        },
+                        {
+                            "name": "Ing. Carlos Mendoza",
+                            "role": "Director of Quality Assurance",
+                            "company": "Motores del Norte (Saltillo, Coahuila)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "David Vance",
+                            "text": "Carlos, I am looking at our daily SPC dashboard for the Saltillo plant. The capability index on the wrist pin bore diameter plummeted from one point seven-two down to zero point nine-eight over the last two shifts. What caused the capability collapse?",
+                            "translation": "Carlos, estoy viendo nuestro panel diario de SPC para la planta de Saltillo. El índice de capacidad en el diámetro del barreno del perno de pistón se desplomó de 1.72 a 0.98 en los últimos dos turnos. ¿Qué causó el colapso de capacidad?",
+                            "targetTerms": [
+                                "SPC dashboard",
+                                "capability index",
+                                "plummeted",
+                                "capability collapse"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Carlos Mendoza",
+                            "text": "We noticed the downward trend at ten AM during routine X-bar charting. Our Cp remained strong at one point six-five, but our Cpk cratered due to a severe negative mean shift toward the Lower Specification Limit.",
+                            "translation": "Notamos la tendencia a la baja a las 10 AM durante el gráfico X-barra de rutina. Nuestro Cp se mantuvo fuerte en 1.65, pero nuestro Cpk se desplomó debido a un severo corrimiento de la media hacia el Límite de Especificación Inferior.",
+                            "targetTerms": [
+                                "downward trend",
+                                "X-bar charting",
+                                "Cp remained strong",
+                                "negative mean shift"
+                            ]
+                        },
+                        {
+                            "speaker": "David Vance",
+                            "text": "If Cp is steady but Cpk is failing, that indicates the process spread did not widen—the entire distribution shifted off-center. Did we first rule out measurement error with a Gage R and R check on the automated air gage?",
+                            "translation": "Si Cp es estable pero Cpk está fallando, eso indica que la dispersión del proceso no se amplió—toda la distribución se desplazó del centro. ¿Descartamos primero el error de medición con una prueba de Gage R&R en el calibrador de aire automatizado?",
+                            "targetTerms": [
+                                "process spread",
+                                "shifted off-center",
+                                "Gage R and R check",
+                                "air gage"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Carlos Mendoza",
+                            "text": "Yes, our metrology lab ran a ten-part, three-operator Gage R and R study. The measurement variation accounted for only six point two percent of total tolerance, so the gage is completely sound.",
+                            "translation": "Sí, nuestro laboratorio de metrología corrió un estudio Gage R&R de diez partes y tres operadores. La variación de medición representó solo el 6.2 por ciento de la tolerancia total, por lo que el calibrador es completamente confiable.",
+                            "targetTerms": [
+                                "Gage R and R study",
+                                "measurement variation",
+                                "total tolerance",
+                                "gage is completely sound"
+                            ]
+                        },
+                        {
+                            "speaker": "David Vance",
+                            "text": "Good. What did the Ishikawa fishbone analysis point to? Is the drift driven by thermal spindle elongation, cutting fluid degradation, or raw casting hardness variation?",
+                            "translation": "Bien. ¿Hacia dónde apuntó el análisis de espina de pescado de Ishikawa? ¿El corrimiento está impulsado por elongación térmica del husillo, degradación del fluido de corte o variación de dureza en la fundición cruda?",
+                            "targetTerms": [
+                                "Ishikawa fishbone analysis",
+                                "thermal spindle elongation",
+                                "cutting fluid degradation",
+                                "casting hardness variation"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Carlos Mendoza",
+                            "text": "We traced the assignable cause to the chilling unit on CNC four. The chiller compressor failed, allowing coolant temperature to climb from twenty to thirty-eight degrees Celsius. The thermal expansion of the reamer tool caused the bore undersize drift. We triggered the OCAP, repaired the chiller, and restored Cpk to one point eight.",
+                            "translation": "Rastreamos la causa asignable a la unidad de enfriamiento en el CNC cuatro. El compresor del enfriador falló, permitiendo que la temperatura del refrigerante subiera de veinte a treinta y ocho grados Celsius. La expansión térmica de la rima causó el diámetro bajo. Activamos el OCAP, reparamos el enfriador y restauramos el Cpk a 1.8.",
+                            "targetTerms": [
+                                "assignable cause",
+                                "thermal expansion",
+                                "triggered the OCAP",
+                                "restored Cpk"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The parts are good because they are inside the tolerance limits.",
+                            "native": "The process is stable and capable, demonstrating a Cpk of one point six-seven.",
+                            "explanation": "In modern Tier-1 manufacturing, simply meeting broad tolerance borders is insufficient; customers require statistical verification of process capability and centering."
+                        },
+                        {
+                            "school": "We will check the problem when parts break.",
+                            "native": "We initiated an Out-of-Control Action Plan (OCAP) based on run-rule trend violations.",
+                            "explanation": "SPC detects out-of-control statistical trends and triggers containment long before defective parts breach customer specification boundaries."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Process Capability Index (Cpk)",
+                        "ipa": "/ˈprɒs.ɛs ˌkeɪ.pəˈbɪl.ə.ti ˈɪn.dɛks /ˌsiː.piːˈkeɪ/",
+                        "es": "Índice de Capacidad del Proceso (Cpk)",
+                        "category": "Statistical Quality",
+                        "definition": "A statistical metric that evaluates both the dispersion and centering of a manufacturing process relative to customer specification limits (USL/LSL).",
+                        "collocations": [
+                            "demonstrate a Cpk above 1.67",
+                            "calculate process capability",
+                            "Cpk degradation over time",
+                            "PPAP capability submission"
+                        ],
+                        "falseFriends": "Do not confuse Cpk (which penalizes off-center means) with Cp (which measures spread only).",
+                        "nativeUsage": "The automotive OEM will not authorize volume production until the supplier proves a stable Cpk of at least 1.67."
+                    },
+                    {
+                        "term": "Gage R&R (Repeatability & Reproducibility)",
+                        "ipa": "/ˈɡeɪdʒ ɑːr ənd ɑːr/",
+                        "es": "Estudio Gage R&R (Repetibilidad y Reproducibilidad)",
+                        "category": "Metrology & MSA",
+                        "definition": "A statistical evaluation measuring how much of total observed process variation originates from the measurement tool (repeatability) and the human inspectors (reproducibility).",
+                        "collocations": [
+                            "run an ANOVA Gage R&R",
+                            "exceed the 10% Gage R&R limit",
+                            "evaluate measurement system error",
+                            "repeatability vs reproducibility"
+                        ],
+                        "falseFriends": "'Gage' in metrology refers to a precision measuring instrument, not to guessing or sizing broadly.",
+                        "nativeUsage": "Before retooling the grinding station, the quality engineer completed a Gage R&R to ensure the micrometers were capable."
+                    },
+                    {
+                        "term": "Statistical Process Control (SPC)",
+                        "ipa": "/stəˈtɪs.tɪ.kəl ˈprɒs.ɛs kənˈtroʊl/",
+                        "es": "Control Estadístico de Procesos (CEP / SPC)",
+                        "category": "Process Monitoring",
+                        "definition": "The deployment of statistical control charts (X-bar, R, p-charts) to distinguish common-cause natural variation from assignable-cause special variation in real time.",
+                        "collocations": [
+                            "deploy real-time SPC",
+                            "monitor X-bar and R charts",
+                            "breach Upper Control Limits",
+                            "SPC trend violation"
+                        ],
+                        "falseFriends": "Control limits on an SPC chart are calculated from process data ($pm 3sigma$), whereas specification limits (USL/LSL) are defined by the customer drawing.",
+                        "nativeUsage": "The automated assembly line logged SPC data points every ten seconds to detect tool wear before defects were generated."
+                    },
+                    {
+                        "term": "Out-of-Control Action Plan (OCAP)",
+                        "ipa": "/ˈaʊt əv kənˈtroʊl ˈæk.ʃən ˌplæn/",
+                        "es": "Plan de Acción para Procesos Fuera de Control (OCAP)",
+                        "category": "Quality Containment",
+                        "definition": "A standardized, pre-approved flowchart directing technicians on immediate containment, machine interlocks, and root-cause actions when an SPC chart triggers an alarm.",
+                        "collocations": [
+                            "trigger the mandatory OCAP",
+                            "execute containment protocol",
+                            "OCAP disposition of quarantine inventory",
+                            "sign off on OCAP closure"
+                        ],
+                        "falseFriends": "OCAP is an operational escalation protocol, not a routine maintenance schedule.",
+                        "nativeUsage": "Following the OCAP instructions, the technician quarantined 150 bracket housings and shut down Spindle B for inspection."
+                    },
+                    {
+                        "term": "Design of Experiments (DOE)",
+                        "ipa": "/dɪˈzaɪn əv ɪkˈspɛr.ə.mənts/",
+                        "es": "Diseño de Experimentos (DOE)",
+                        "category": "Process Optimization",
+                        "definition": "A systematic mathematical method for manipulating multiple input parameters ($X_s$) simultaneously to evaluate their interactions and impact on output quality ($Y$).",
+                        "collocations": [
+                            "conduct a full factorial DOE",
+                            "analyze parameter interactions",
+                            "derive the empirical transfer function",
+                            "DOE response surface methodology"
+                        ],
+                        "falseFriends": "'Experiment' in engineering refers to rigorous statistical matrix testing, not a casual or haphazard trial.",
+                        "nativeUsage": "The injection molding team ran a 16-run fractional factorial DOE to pinpoint the optimal combination of barrel temperature and pack pressure."
+                    },
+                    {
+                        "term": "Fishbone Diagram (Ishikawa / 5M+E)",
+                        "ipa": "/ˈfɪʃ.boʊn ˈdaɪ.ə.ɡræm/",
+                        "es": "Diagrama de Espina de Pescado (Ishikawa)",
+                        "category": "Root Cause Analysis",
+                        "definition": "A visual brainstorming tool structuring potential root causes into six standardized industrial categories: Man, Machine, Material, Method, Measurement, and Milieu (Environment).",
+                        "collocations": [
+                            "facilitate a fishbone brainstorming session",
+                            "populate the 6M categories",
+                            "trace root causes on Ishikawa",
+                            "pair fishbone with 5 Whys"
+                        ],
+                        "falseFriends": "A fishbone diagram organizes hypotheses; it does not replace empirical testing to prove the true root cause.",
+                        "nativeUsage": "During the 8D containment meeting, the team mapped the porosity defects on a fishbone diagram to isolate casting variables."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Interpreting Cp versus Cpk Discrepancies",
+                        "botQuestion": "Your supplier of aluminum die-cast housings reports a Cp of 1.75 and a Cpk of 0.82 on the critical seal groove depth. As the lead quality engineer, what does this mathematical difference tell you about the state of their manufacturing process? What immediate risk does it pose, and what corrective action should you demand from the supplier?",
+                        "requiredKeywords": [
+                            "spread",
+                            "centering",
+                            "mean",
+                            "specification",
+                            "scrap",
+                            "shift"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on! A high Cp (1.75) proves the process has very tight variation (small standard deviation) and is inherently capable. However, the low Cpk (0.82) proves the process mean is significantly off-center, drifting close to or beyond one of the specification limits. This poses an immediate risk of producing non-conforming scrap parts. You must demand an immediate tool offset adjustment to re-center the mean between USL and LSL.",
+                        "feedbackRetry": "Remember: Cp measures only process spread ((USL - LSL) / 6 sigma), while Cpk accounts for the process mean. Explain what it means when spread is small but the mean is shifted toward a specification boundary."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Evaluating Gage R&R Study Results",
+                        "botQuestion": "A Tier-1 supplier submits a PPAP package where the Gage R&R on a laser micrometer measuring valve stem diameter is calculated at 34.8% of total process tolerance. The supplier argues that the parts are within tolerance, so the gage should be approved. How do you respond based on AIAG MSA guidelines?",
+                        "requiredKeywords": [
+                            "unacceptable",
+                            "30%",
+                            "reject",
+                            "measurement error",
+                            "msa",
+                            "variation"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Outstanding quality governance. Under AIAG MSA standards, any Gage R&R exceeding 30% is mathematically unacceptable because the measurement system variation consumes too much of the total tolerance band, obscuring true process trends. You must reject the PPAP submission and require the supplier to fix or replace the measurement system before approving serial production.",
+                        "feedbackRetry": "Refer to the standard AIAG thresholds for Gage R&R: <10% is acceptable, 10-30% is marginal, and >30% is unacceptable. Explain why a 34.8% measurement error invalidates the reliability of the inspection data."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What does it indicate when a manufacturing process exhibits a high Cp (e.g., 1.80) but a low Cpk (e.g., 0.75)?",
+                        "options": [
+                            "The measurement instrument is broken",
+                            "The process has very low variation but is operating off-center relative to specification limits",
+                            "The operators are working too slowly",
+                            "The customer drawing has no tolerance limits"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "According to AIAG Measurement System Analysis (MSA) standards, what is the acceptable threshold for a Gage R&R study?",
+                        "options": [
+                            "Under 10% is acceptable; over 30% is unacceptable",
+                            "Under 50% is acceptable for all parts",
+                            "Gage R&R should always equal exactly 100%",
+                            "There are no percentage thresholds in modern metrology"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "On an SPC control chart, what is the critical difference between Control Limits and Specification Limits?",
+                        "options": [
+                            "Control limits are defined by the customer; specification limits are calculated from machine data",
+                            "Control limits reflect natural process variation (±3 sigma); specification limits are engineering tolerances defined by customer requirements",
+                            "Control limits are only used for scrap parts; specification limits are only used for prototypes",
+                            "Both limits are identical and interchangeable"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "What is the primary function of an Out-of-Control Action Plan (OCAP)?",
+                        "options": [
+                            "To negotiate union wage agreements during shift transitions",
+                            "To provide a standardized protocol for containment, investigation, and correction when an SPC alarm triggers",
+                            "To calculate annual corporate profit margins",
+                            "To order raw materials automatically from overseas suppliers"
+                        ],
+                        "answer": 1
+                    }
+                ]
             },
             {
                 "id": "io-m4",
                 "title": "Incoterms 2020 Operational Execution (FOB, DDP, EXW)",
-                "titleES": "Ejecución de Incoterms 2020 en Logística Internacional",
-                "icon": "fa-solid fa-truck-ramp-box",
-                "readings": []
+                "titleES": "Ejecución Operativa de Incoterms 2020 (FOB, DDP, EXW)",
+                "icon": "fa-solid fa-file-contract",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "io-m4-r1",
+                        "title": "Incoterms 2020 Operational Execution: Risk Allocation, Cost Transfer Points & Freight Contracts",
+                        "duration": "15 min",
+                        "content": "\n# Incoterms 2020 Operational Execution: Risk Allocation, Cost Transfer Points & Freight Contracts\n\nIn international cross-border manufacturing and multi-modal freight distribution, commercial misunderstandings regarding transport obligations can instantly generate catastrophic supply chain paralysis, legal litigation, and crippling financial losses. When cargo is damaged at sea, stranded at a customs terminal, or detained under maritime demurrage penalties, clear contractual boundaries dictate who pays and who bears legal responsibility.\n\nThe **International Commercial Terms (Incoterms 2020)**, published by the International Chamber of Commerce (ICC), serve as the universal contractual language governing global trade. They clearly divide eleven recognized operational rules into two distinct dimensions: the **Transfer of Risk** (where the seller’s responsibility for physical loss or damage shifts to the buyer) and the **Allocation of Costs** (who pays for packing, inland drayage, international freight, terminal handling, export clearance, and import duties).\n\n---\n\n## 1. The Core Taxonomy of Incoterms 2020\n\nThe eleven Incoterms are organized into four structural groups reflecting escalating seller liability:\n\n```\nSpectrum of Seller Obligation:\n[EXW - Ex Works]  --->  [FCA / FOB]  --->  [CPT / CIP / CIF]  --->  [DDP - Delivered Duty Paid]\nMinimum Seller Obligation                                            Maximum Seller Obligation\nBuyer handles everything                                             Seller handles everything\n```\n\n### Group E: Departure Rule\n- **EXW (Ex Works)**: The seller makes goods available at their own facility (factory or warehouse). The buyer assumes all costs and risks of loading goods onto the collecting vehicle, export clearance, international freight, and final delivery. \n*Industrial Caution*: EXW is often misused in international trade; sellers should generally avoid EXW if they must assist in loading or handling Mexican export pedimentos.\n\n### Group F: Main Carriage Unpaid by Seller\n- **FCA (Free Carrier - Any Transport Mode)**: The seller delivers goods, cleared for export, to a designated carrier or terminal named by the buyer. Highly recommended modern alternative to FOB for containerized multimodal cargo.\n- **FOB (Free on Board - Sea / Inland Waterway Only)**: The seller delivers goods cleared for export and loads them physically over the ship's rail onto the vessel nominated by the buyer at the named port of shipment (e.g., FOB Port of Manzanillo or FOB Port of Long Beach). Risk transfers the instant the container is safely secured on board.\n\n### Group C: Main Carriage Paid by Seller (Dual Transfer Point Rules)\nUnder all C-rules, there are two distinct critical points: **Cost** travels to the destination port, but **Risk** transfers at the origin loading port!\n- **CPT (Carriage Paid To) / CIP (Carriage and Insurance Paid To)**: Any transport mode. Seller pays freight to destination, but risk transfers when handed to the first carrier. CIP mandates maximum Institute Cargo Clauses (A) all-risk insurance coverage.\n- **CFR (Cost and Freight) / CIF (Cost, Insurance and Freight)**: Maritime transport only. Seller pays freight (and minimum Clause C insurance under CIF) to destination port, but cargo risk shifts to buyer the moment goods cross the ship's rail at origin.\n\n### Group D: Arrival Rules\n- **DAP (Delivered at Place)**: Seller delivers goods ready for unloading at the buyer’s specified destination, bearing all risks and transport costs except import customs clearance and import taxes.\n- **DPU (Delivered at Place Unloaded)**: The only Incoterm where the seller is legally responsible for physically unloading goods at the destination terminal.\n- **DDP (Delivered Duty Paid)**: Maximum seller obligation. The seller handles inland drayage, export clearance, international shipping, marine insurance, destination import clearance, payment of all import tariffs, VAT/IVA, and final offload coordinates.\n\n---\n\n## 2. Risk Transfer vs. Cost Allocation Matrix\n\nThe table below summarizes operational responsibilities across the most common industrial terms:\n\n| Incoterm 2020 | Export Clearance | Loading at Origin | International Freight | Transit Cargo Insurance | Import Clearance & Duties | Risk Transfer Point |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| **EXW** | Buyer | Buyer | Buyer | Buyer | Buyer | Seller’s factory floor |\n| **FCA** | Seller | Seller | Buyer | Buyer | Buyer | At named carrier terminal |\n| **FOB** | Seller | Seller | Buyer | Buyer | Buyer | On board vessel at origin port |\n| **CIF** | Seller | Seller | Seller | Seller (Clause C) | Buyer | On board vessel at origin port |\n| **DAP** | Seller | Seller | Seller | Negotiable | Buyer | On vehicle at destination |\n| **DDP** | Seller | Seller | Seller | Seller | Seller | At buyer’s receiving dock |\n\n---\n\n## 3. Demurrage, Detention & Marine Cargo Claims\n\nOperational failure to understand Incoterms frequently results in massive auxiliary port penalties:\n\n### Demurrage vs. Detention\n- **Demurrage**: Storage fees charged by the shipping line or port terminal when a loaded container remains inside the marine terminal yard beyond contracted \"free days\" (typically 4 to 7 days). Demurrage easily reaches **$200 to $450 USD per container per day**.\n- **Detention**: Per-diem equipment usage fees charged when an empty container is picked up for inland delivery or export packing and is not returned to the shipping line’s container depot within the agreed free time.\n\n### The Bill of Lading (B/L) & Financial Settlement\nThe **Bill of Lading** serves as:\n1. A receipt of cargo issued by the carrier.\n2. The legal contract of carriage defining freight terms.\n3. A document of title (negotiable B/L) required to claim goods from the carrier or negotiate payment under a bank **Letter of Credit (L/C)**.\n\n---\n\n## 4. Engineering Field Scenario: The EXW vs. DDP Machine Tooling Dispute\n\nA Tier-1 stamping facility in Querétaro negotiated the procurement of a 600-ton progressive mechanical stamping press valued at $1.8 million USD from a German machine tool builder in Stuttgart:\n\n### The Contractual Error\nThe purchasing department agreed to purchase the press under **EXW Stuttgart**. When a specialized heavy-haul flatbed truck arrived at the Stuttgart factory, the German manufacturer refused to lift the 45-ton press crown onto the trailer, stating that under ICC EXW rules, the seller has zero obligation to load goods or secure rigging. The transport carrier lacked specialized 50-ton overhead cranes, causing a 4-day line stoppage and emergency rigging rental fees of €28,000.\n\n### The Export Clearance Crisis\nFurthermore, under German foreign trade law, an unregistered Mexican buyer cannot legally file an export declaration (Ausfuhranmeldung) with German customs. The press sat impounded at Hamburg port accumulating demurrage.\n\n### The Solution: Renegotiating to FCA or DPU\nThe industrial engineering and legal teams stepped in and amended the master contract from EXW to **FCA Stuttgart (Seller’s Factory)**:\n- Under FCA Factory, the seller is legally obligated to load the heavy equipment onto the buyer's collecting transport using the factory’s certified gantry cranes.\n- The seller is responsible for executing official German export customs clearance.\n- Once loaded, transport risk transferred cleanly to the Mexican buyer’s multi-modal marine logistics provider.\nFor future complete turnkey installations, the plant transitioned to **DAP Querétaro Plant**, requiring the tool builder to deliver the press directly to the Mexican facility dock before final handover.\n\n---\n\n> **Key Takeaway**: Selecting the correct Incoterm 2020 rule dictates legal survival in cross-border supply chains. Engineers and procurement leaders must avoid EXW for heavy international industrial equipment, prefer FCA for containerized multi-modal shipments, and recognize that under C-terms, the point of cost transfer does not equal the point of risk transfer.\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Negotiating Shipping Terms for High-Tonnage Tooling",
+                    "titleES": "Negociando Términos de Envío para Herramental de Alto Tonelaje",
+                    "scenarioContext": "A Senior Procurement Manager in Guadalajara and a Global Logistics Director in Chicago resolve a contractual deadlock over FOB vs DDP terms for stamping dies sourced from Asia.",
+                    "characters": [
+                        {
+                            "name": "Marcus Vance",
+                            "role": "Global Logistics Director",
+                            "company": "MagnaForce Powertrain (Chicago, IL)"
+                        },
+                        {
+                            "name": "Lic. Andrea Salgado",
+                            "role": "Strategic Sourcing & Trade Lead",
+                            "company": "MagnaForce Bajío (Guadalajara, MX)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Marcus Vance",
+                            "text": "Andrea, the quotation for those four progressive stamping dies from the tooling vendor in Busan came in at two point two million dollars under DDP Guadalajara. Finance thinks the landed cost is too high and wants us to force the vendor into EXW Busan.",
+                            "translation": "Andrea, la cotización para esos cuatro troqueles progresivos de estampado del proveedor en Busan llegó a 2.2 millones de dólares bajo DDP Guadalajara. Finanzas cree que el costo total de importación es muy alto y quiere que obliguemos al proveedor a cotizar EXW Busan.",
+                            "targetTerms": [
+                                "landed cost",
+                                "DDP Guadalajara",
+                                "EXW Busan",
+                                "tooling vendor"
+                            ]
+                        },
+                        {
+                            "speaker": "Lic. Andrea Salgado",
+                            "text": "Marcus, buying heavy precision dies under EXW in South Korea would be an operational disaster. Under EXW, our team would be legally responsible for loading forty-ton dies at their plant, handling Korean export permits, and arranging marine transport. We have zero logistical presence in Busan.",
+                            "translation": "Marcus, comprar troqueles de precisión pesados bajo EXW en Corea del Sur sería un desastre operativo. Bajo EXW, nuestro equipo sería legalmente responsable de cargar troqueles de cuarenta toneladas en su planta, tramitar permisos de exportación coreanos y coordinar el transporte marítimo. Tenemos cero presencia logística en Busan.",
+                            "targetTerms": [
+                                "operational disaster",
+                                "legally responsible",
+                                "export permits",
+                                "logistical presence"
+                            ]
+                        },
+                        {
+                            "speaker": "Marcus Vance",
+                            "text": "You make a strong point. But on DDP terms, the vendor is building a massive contingency cushion into the shipping quote to protect themselves against Mexican customs clearance delays and port demurrage at Manzanillo.",
+                            "translation": "Tienes un punto muy válido. Pero en términos DDP, el proveedor está cargando un margen de contingencia enorme en la cotización de flete para protegerse de retrasos aduanales mexicanos y demoras portuarias en Manzanillo.",
+                            "targetTerms": [
+                                "contingency cushion",
+                                "customs clearance delays",
+                                "port demurrage"
+                            ]
+                        },
+                        {
+                            "speaker": "Lic. Andrea Salgado",
+                            "text": "Exactly. The ideal balance is FCA Busan or FOB Busan. The vendor handles Korean export clearance and loads the ocean crates onto the container vessel. From there, our corporate logistics forwarder takes over marine transit and customs entry into Mexico under our IMMEX registry.",
+                            "translation": "Exactamente. El equilibrio ideal es FCA Busan o FOB Busan. El proveedor gestiona el despacho de exportación coreano y carga las cajas marítimas en el buque portacontenedores. A partir de ahí, nuestro agente de carga corporativo asume el tránsito marítimo y la entrada aduanal a México bajo nuestro registro IMMEX.",
+                            "targetTerms": [
+                                "FCA Busan",
+                                "FOB Busan",
+                                "export clearance",
+                                "customs entry",
+                                "IMMEX registry"
+                            ]
+                        },
+                        {
+                            "speaker": "Marcus Vance",
+                            "text": "That saves us over one hundred and eighty thousand dollars in inflated vendor freight margins while retaining control of port clearance. Who carries the risk of transit damage during the transpacific ocean crossing?",
+                            "translation": "Eso nos ahorra más de ciento ochenta mil dólares en márgenes inflados de flete del proveedor mientras retenemos el control del despacho portuario. ¿Quién asume el riesgo de daño en tránsito durante el cruce transpacífico?",
+                            "targetTerms": [
+                                "inflated vendor freight margins",
+                                "retaining control",
+                                "risk of transit damage"
+                            ]
+                        },
+                        {
+                            "speaker": "Lic. Andrea Salgado",
+                            "text": "Under FOB, risk shifts to us the moment the dies pass the ship's rail in Busan. We will bind our corporate marine cargo policy under Institute Cargo Clauses A, ensuring complete all-risk coverage from port to our plant floor in Guadalajara.",
+                            "translation": "Bajo FOB, el riesgo se transfiere a nosotros en el momento en que los troqueles cruzan la borda del buque en Busan. Aseguraremos nuestra póliza de carga marítima corporativa bajo las Cláusulas de Carga del Instituto A, garantizando cobertura contra todo riesgo desde el puerto hasta nuestra planta en Guadalajara.",
+                            "targetTerms": [
+                                "risk shifts to us",
+                                "marine cargo policy",
+                                "Institute Cargo Clauses A",
+                                "all-risk coverage"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "We use DDP so we do not have to worry about anything.",
+                            "native": "DDP inflates vendor margins; negotiating FCA allows us to utilize our corporate freight volume and IMMEX tax credits.",
+                            "explanation": "While DDP sounds convenient, foreign vendors charge exorbitant risk premiums to cover unfamiliar foreign customs systems; sophisticated multinationals prefer FCA/FOB."
+                        },
+                        {
+                            "school": "Under CIF, the seller pays for all damage until delivery.",
+                            "native": "Under CIF, the seller pays freight costs to destination, but cargo risk shifts to the buyer at the origin loading port.",
+                            "explanation": "A frequent misunderstanding: Group C terms separate cost from risk. Risk transfers at the port of origin, even though the seller pays the ocean carrier."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Delivered Duty Paid (DDP)",
+                        "ipa": "/dɪˈlɪv.əd ˈdjuː.ti ˌpeɪd/",
+                        "es": "Entregado con Derechos Pagados (DDP)",
+                        "category": "Incoterms 2020",
+                        "definition": "An Incoterm placing maximum responsibility on the seller, who must pay all transport costs, export/import clearances, import duties, and taxes to the buyer's destination.",
+                        "collocations": [
+                            "quote under DDP terms",
+                            "maximum seller liability under DDP",
+                            "DDP landed cost calculation",
+                            "clear import customs under DDP"
+                        ],
+                        "falseFriends": "DDP requires the foreign seller to act as the legal importer of record, which is often legally restricted in countries like Mexico without a local tax ID (RFC).",
+                        "nativeUsage": "The procurement team rejected the DDP quote because our IMMEX certification allows us to import the machinery duty-free under our own registry."
+                    },
+                    {
+                        "term": "Free on Board (FOB)",
+                        "ipa": "/ˌfriː ɒn ˈbɔːrd/",
+                        "es": "Franco a Bordo (FOB)",
+                        "category": "Incoterms 2020",
+                        "definition": "A maritime Incoterm where the seller clears goods for export and places them on board the nominated vessel at the named port; risk transfers to the buyer at that instant.",
+                        "collocations": [
+                            "ship FOB Shanghai",
+                            "FOB loading port",
+                            "risk transfers over the ship's rail",
+                            "FOB ocean contract"
+                        ],
+                        "falseFriends": "FOB is legally restricted to sea and inland waterway transport only; for containerized truck or air cargo, the correct modern term is FCA.",
+                        "nativeUsage": "Once the container was hoisted onto the vessel at Manzanillo, the FOB terms transferred cargo risk entirely to the customer in Yokohama."
+                    },
+                    {
+                        "term": "Ex Works (EXW)",
+                        "ipa": "/ˌɛks ˈwɜːrks/",
+                        "es": "En Fábrica (EXW)",
+                        "category": "Incoterms 2020",
+                        "definition": "An Incoterm placing minimum responsibility on the seller, making goods available at their warehouse; the buyer assumes all loading, export, transport, and customs risks.",
+                        "collocations": [
+                            "procure under EXW terms",
+                            "buyer assumes loading risk under EXW",
+                            "avoid EXW for international freight",
+                            "EXW factory gate"
+                        ],
+                        "falseFriends": "Do not assume the seller will load your truck under EXW; legally, the seller has zero obligation to provide cranes or forklifts.",
+                        "nativeUsage": "Because our freight forwarder lacked an export license in Germany, converting the contract from EXW to FCA was mandatory."
+                    },
+                    {
+                        "term": "Demurrage & Detention",
+                        "ipa": "/dɪˈmʌr.ɪdʒ ənd dɪˈtɛn.ʃən/",
+                        "es": "Demoras y Detenciones Portuarias",
+                        "category": "Maritime Logistics",
+                        "definition": "Financial penalties assessed by shipping lines: demurrage when a container remains inside the port past free days; detention when an empty container is kept outside the port.",
+                        "collocations": [
+                            "accrue daily demurrage charges",
+                            "request ten free days of demurrage",
+                            "return empty box to avoid detention",
+                            "dispute terminal demurrage invoices"
+                        ],
+                        "falseFriends": "Demurrage applies strictly to terminal/port storage delays, not to ordinary truck driving delays on highways.",
+                        "nativeUsage": "The customs hold at the port lasted eight days, triggering over three thousand dollars in unexpected container demurrage fees."
+                    },
+                    {
+                        "term": "Bill of Lading (B/L)",
+                        "ipa": "/ˌbɪl əv ˈleɪ.dɪŋ/",
+                        "es": "Conocimiento de Embarque (B/L)",
+                        "category": "Trade Documentation",
+                        "definition": "A legally binding document issued by a freight carrier acknowledging receipt of cargo, detailing transport terms, and serving as a transferable document of title.",
+                        "collocations": [
+                            "issue an original Bill of Lading",
+                            "endorse a negotiable B/L",
+                            "telex release of ocean B/L",
+                            "clean on-board Bill of Lading"
+                        ],
+                        "falseFriends": "'Lading' is an archaic nautical term for loading/cargo; it does not mean 'landing' or 'unloading'.",
+                        "nativeUsage": "The bank will not release payment under the Letter of Credit until the supplier presents a clean on-board Bill of Lading."
+                    },
+                    {
+                        "term": "Free Carrier (FCA)",
+                        "ipa": "/ˌfriː ˈkær.i.ər/",
+                        "es": "Franco Porteador (FCA)",
+                        "category": "Incoterms 2020",
+                        "definition": "A flexible multi-modal Incoterm where the seller clears goods for export and delivers them to a specified carrier or terminal nominated by the buyer.",
+                        "collocations": [
+                            "deliver FCA airport terminal",
+                            "load onto buyer's truck under FCA",
+                            "recommend FCA over FOB for containers",
+                            "FCA named place of delivery"
+                        ],
+                        "falseFriends": "Under FCA (seller's facility), the seller IS responsible for loading onto the collecting vehicle, unlike EXW.",
+                        "nativeUsage": "The ICC strongly recommends FCA instead of FOB for modern containerized trade moving through intermodal rail ramps."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Differentiating Cost Allocation from Risk Transfer in Group C Incoterms",
+                        "botQuestion": "Your manufacturing plant in Monterrey purchases five containers of specialized resin from a chemical plant in Antwerp under CIF Veracruz (Incoterms 2020). During a severe storm in the mid-Atlantic, two containers break loose and fall overboard. The seller arranged and paid for the ocean shipping freight to Veracruz. Who bears the financial loss of the lost cargo: the Belgian seller or your Mexican company? Explain why based on Incoterms 2020 rules.",
+                        "requiredKeywords": [
+                            "risk",
+                            "cost",
+                            "board",
+                            "loading",
+                            "veracruz",
+                            "insurance"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on! Under CIF (and all Group C terms), cost and risk transfer at different points. The seller pays the freight cost to Veracruz, but the risk of loss transfers to the buyer the instant the containers are loaded on board the ship at the origin port (Antwerp). Therefore, your Mexican company bears the loss; however, because it is CIF, you will file an insurance claim against the marine cargo policy provided by the seller.",
+                        "feedbackRetry": "Remember that Group C Incoterms feature dual critical points: the seller pays freight costs to the destination port, but where does the physical risk transfer occur? Check when risk passes to the buyer during ocean loading."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Operational Pitfalls of EXW in International Machinery Procurement",
+                        "botQuestion": "A procurement agent signs an EXW contract to purchase a 30-ton CNC gantry mill from a manufacturer in Japan. When the local heavy-haul rigging contractor arrives to pick up the machine, the Japanese vendor refuses to load it onto the truck or prepare Japanese export customs declarations. Is the Japanese vendor legally justified under Incoterms 2020? What should the contract have specified instead?",
+                        "requiredKeywords": [
+                            "exw",
+                            "fca",
+                            "load",
+                            "export",
+                            "obligation",
+                            "justified"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Accurate contractual verdict. Under EXW (Incoterms 2020), the seller has zero obligation to load goods onto the collecting transport or execute export customs clearance; the Japanese vendor is completely legally justified. The contract should have specified FCA (Seller's Factory), which legally obligates the seller to load the equipment onto the vehicle and handle all domestic export clearance procedures.",
+                        "feedbackRetry": "Review the definition of EXW: does the seller have any duty to load goods or clear export customs? Explain why the vendor is within their rights and what term (such as FCA) should have been used instead."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "Under Incoterms 2020, what is the primary operational flaw of using EXW (Ex Works) for international equipment purchases?",
+                        "options": [
+                            "The seller is forced to pay all foreign import taxes",
+                            "The seller has zero obligation to load goods onto the transport or clear export customs, which creates severe logistical bottlenecks for foreign buyers",
+                            "The buyer is not allowed to insure the cargo",
+                            "It can only be used for air freight shipments"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Under CIF (Cost, Insurance and Freight), at what exact location does the risk of cargo damage transfer from seller to buyer?",
+                        "options": [
+                            "When the goods are unloaded at the buyer's destination warehouse",
+                            "When the goods are safely loaded on board the vessel at the port of origin",
+                            "When the shipping line receives payment from the bank",
+                            "When the customs broker stamps the import pedimento"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "What is 'Demurrage' in international container shipping?",
+                        "options": [
+                            "A discount granted for shipping environmentally friendly cargo",
+                            "A daily penalty fee charged when a container remains inside the port terminal beyond contracted free days",
+                            "The fee paid to clean ocean vessels after crossing the equator",
+                            "The insurance premium paid to protect against pirate attacks"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Why does the International Chamber of Commerce (ICC) recommend FCA instead of FOB for modern containerized shipments?",
+                        "options": [
+                            "FCA is only valid for railway freight",
+                            "In containerized shipping, the seller delivers goods to an inland container yard or terminal before loading on a vessel, making FCA’s risk transfer point more accurate than FOB's ship rail requirement",
+                            "FOB requires the buyer to pay all export tariffs",
+                            "FCA eliminates the need for an ocean Bill of Lading"
+                        ],
+                        "answer": 1
+                    }
+                ]
             },
             {
                 "id": "io-m5",
                 "title": "Warehouse Management Systems (WMS) & Milk-Run Scheduling",
-                "titleES": "Sistemas WMS y Rutas Milk-Run Just-in-Time",
+                "titleES": "Sistemas de Gestión de Almacenes (WMS) y Rutas de Recolección Milk-Run",
                 "icon": "fa-solid fa-warehouse",
-                "readings": []
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "io-m5-r1",
+                        "title": "Intralogistics Architecture: WMS Slotting, EDI Messaging & Milk-Run Transportation Dynamics",
+                        "duration": "15 min",
+                        "content": "\n# Intralogistics Architecture: WMS Slotting, EDI Messaging & Milk-Run Transportation Dynamics\n\nIn modern high-velocity supply chains, a warehouse is no longer a static holding pen for inventory; it functions as a high-speed material routing switchboard. As manufacturing embraces **Just-In-Time (JIT)** and **Just-In-Sequence (JIS)** principles, holding massive buffers of raw materials on the factory floor is an obsolete liability. Space on the production floor must be reserved for value-adding assembly cells, not static pallet racks.\n\nAchieving this agility requires orchestrating digital and physical intralogistics: deploying **Warehouse Management Systems (WMS)** integrated with enterprise ERP networks via **Electronic Data Interchange (EDI)**, optimizing dynamic **Slotting Algorithms**, and executing scheduled multi-stop cyclical collection routes known as **Milk-Runs**.\n\n---\n\n## 1. Enterprise WMS Architecture & EDI Integration\n\nA modern industrial plant synchronizes its ERP (e.g., SAP S/4HANA, Oracle NetSuite) with a dedicated WMS (e.g., Manhattan, Blue Yonder, SAP EWM) through standardized EDI protocols:\n\n```\nEDI Digital Communication Architecture:\nOEM Customer ERP                     Tier-1 Supplier WMS / MES\n      |                                           |\n      |--- EDI 850 (Purchase Order) ------------->|\n      |--- EDI 830 (Long-Term Forecast Plan) ---->|\n      |--- EDI 862 (Just-In-Time Daily Call-off)->|\n      |<-- EDI 856 (Advance Shipping Notice - ASN)| (Dispatched with Barcode License Plates)\n      |<-- EDI 810 (Commercial Electronic Invoice)|\n```\n\n### Key EDI Transaction Sets in Manufacturing Logistics\n- **EDI 850 / ORDERS**: Purchase Order authorization specifying delivery dates, part numbers, and contract pricing.\n- **EDI 862 / DELJIT**: Just-In-Time Shipping Schedule. Sent by automotive OEMs to call off specific hourly part releases based on live assembly sequence.\n- **EDI 856 / ASN (Advance Shipping Notice)**: Transmitted the exact instant a truck leaves the supplier's loading dock. The ASN contains the digital packing hierarchy: trailer number, carrier SCAC code, pallet barcode IDs (SSCC - Serial Shipping Container Codes), and individual lot numbers.\n- **Automated Receiving via ASN**: When the truck docks at the receiving facility, dock workers scan the 2D GS1-128 master barcode on each pallet. The WMS cross-references the scanned license plate against the pending EDI 856 file, automatically performing inventory receipt, checking tolerances, and updating inventory balances in under **3 seconds without manual data entry**.\n\n---\n\n## 2. Dynamic Slotting Algorithms & ABC Velocity Analysis\n\nWarehouse space efficiency and order picking travel time are governed by **Slotting Optimization**: determining the optimal physical storage location for every SKU based on velocity, physical dimensions, weight, and product affinity.\n\n### ABC Inventory Velocity Classification (Pareto Principle)\n- **Class A SKUs (Fast Movers)**: Top $15\\text{--}20\\%$ of active part numbers representing $70\\text{--}80\\%$ of total picking activity. Slotted at waist-to-shoulder height (\"Golden Zone\") along primary central aisles closest to the outbound shipping docks to minimize forklift travel distance.\n- **Class B SKUs (Medium Movers)**: Approximately $30\\%$ of SKUs accounting for $15\\text{--}20\\%$ of volume. Placed in intermediate rack tiers.\n- **Class C SKUs (Slow Movers)**: $50\\%$ of catalog items accounting for under $5\\%$ of daily picks. Slotted in upper rack levels or remote warehouse zones requiring specialized reach trucks.\n\n### Modern Picking Topologies\n1. **Zone Picking**: The warehouse is partitioned into distinct sectors; pickers retrieve SKUs only within their assigned zone (\"pick-and-pass\").\n2. **Wave Picking**: Grouping picking orders across common delivery time windows or milk-run departures.\n3. **Pick-to-Light / Voice Picking**: Digital LED displays mounted on rack faces illuminate exact pick quantities, eliminating paper pick lists and slashing picking errors by over $95\\%$.\n\n---\n\n## 3. Milk-Run Transportation Dynamics: Internal & External Logistics\n\nThe term **Milk-Run** originates from historic rural dairy routes where a single wagon collected empty bottles and dropped off fresh milk daily across multiple farms in a circular loop. In automotive clusters like Querétaro, Silao, and Puebla, Milk-Runs represent the pinnacle of lean transport.\n\n### External Milk-Runs (Cyclical Supplier Routing)\nInstead of five separate Tier-2 component suppliers hiring five separate half-empty 53-foot trailers to deliver parts to a Tier-1 stamping plant, a single dedicated logistics carrier executes a synchronized multi-stop route:\n\n```\nExternal Milk-Run Routing Loop:\n[Tier-1 Plant] ---> [Supplier A (Stamping)] ---> [Supplier B (Sensors)] ---> [Supplier C (Plastics)] ---> [Tier-1 Plant]\nPicks up empty       Loads 4 containers          Loads 6 containers          Loads 5 containers            Delivers full load\nreturnable totes     Swaps empty totes           Swaps empty totes           Swaps empty totes             on exact schedule\n```\n\n#### Operational Advantages:\n- Standardized, fixed-schedule delivery windows (e.g., exactly at 07:15, 11:15, 15:15).\n- High trailer volumetric fill rates ($>85\\%$).\n- Slashes line-side buffer stock from days down to a 4-hour operating reserve.\n- Facilitates the return of standard reusable packaging (collapsible plastic totes and dunnage), eliminating cardboard waste.\n\n### Internal Milk-Runs (The Mizusumashi Tugger Train)\nInside the plant, electric tugger trains tow multi-car flatbed carts running on fixed 30-minute cycles:\n- The tugger driver follows magnetic guide strips or painted floor aisles.\n- The driver delivers small, sequenced batches of parts directly to line-side gravity racks while picking up empty Kanban bins and scrap containers.\n\n---\n\n## 4. Engineering Field Scenario: Managing a Dock-Door Bottleneck via ASN & Cross-Docking\n\nAt an aerospace logistics hub in Querétaro supplying commercial aircraft wire harnesses and fuselage brackets:\n\n### The Crisis\nThe receiving yard experienced severe tractor gridlock. Twelve flatbeds were backed up along the access road, drivers were running out of allowable driving hours, and receiving supervisors were manually typing invoice data into the ERP, leading to line shortages inside the plant.\n\n### The Solution: Cross-Docking & Time-Slotted Dock Management\n1. **Enforcing Mandatory EDI 856 ASN Compliance**: The plant notified all suppliers that un-manifested deliveries lacking a pre-validated EDI 856 would be turned away.\n2. **Dock Scheduling Software Integration**: Suppliers must book delivery appointments through a web-based dock scheduling portal linked to the WMS. Deliveries are assigned to specific dock doors in rigid 30-minute windows.\n3. **Pure Cross-Docking Flow**:\n   - Instead of staging incoming pallets in high-bay warehouse racks, the WMS identifies that forty incoming wire spool containers are needed on Assembly Lines 2 and 4 within the next two hours.\n   - The pallets are unloaded from Dock 3, immediately scanned via RFID portal arches, and transported straight across the staging floor to the outbound internal tugger station at Dock 8 without ever being put away in long-term warehouse storage.\n4. **Results**:\n   - Inbound trailer dwell time dropped from **3.5 hours down to 28 minutes**.\n   - Floor inventory holding costs were reduced by $42\\%$, and dock congestion was completely eliminated.\n\n---\n\n> **Key Takeaway**: High-performance intralogistics replaces sprawling, static warehouses with synchronized dynamic flow. Leveraging EDI 856 ASN digital pre-clearance, ABC slotting optimization, cross-docking velocity, and cyclical milk-run transportation keeps manufacturing cells fed in exact sequence with minimal capital investment in buffer inventory.\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Optimizing a Regional Supplier Milk-Run in the Bajío Corridor",
+                    "titleES": "Optimizando una Ruta Milk-Run de Proveedores Regionales en el Corredor del Bajío",
+                    "scenarioContext": "A Regional Logistics Dispatcher in Querétaro and an Inbound Materials Manager in Silao adjust transport loops to eliminate dock congestion and stockouts.",
+                    "characters": [
+                        {
+                            "name": "Lic. Fernando Garza",
+                            "role": "Inbound Supply Chain Manager",
+                            "company": "Bajío Automotive Assembly (Silao, Guanajuato)"
+                        },
+                        {
+                            "name": "Ing. Daniela Orozco",
+                            "role": "Regional Logistics Operations Lead",
+                            "company": "Trans-Bajío Logistics Hub (Querétaro, Qro)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Lic. Fernando Garza",
+                            "text": "Daniela, our Silao assembly line is experiencing erratic material delivery. Yesterday we had three Tier-Two suppliers arrive at dock four simultaneously at four PM, causing a two-hour bottleneck, while this morning our injection molding line was nearly starved of plastic clips.",
+                            "translation": "Daniela, nuestra línea de ensamblaje en Silao está experimentando entregas de material erráticas. Ayer tuvimos tres proveedores Tier-Dos que llegaron al andén cuatro simultáneamente a las cuatro PM, causando un cuello de botella de dos horas, mientras que esta mañana nuestra línea de inyección de plástico estuvo a punto de parar por falta de clips.",
+                            "targetTerms": [
+                                "erratic material delivery",
+                                "dock bottleneck",
+                                "injection molding line",
+                                "starved of plastic clips"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Daniela Orozco",
+                            "text": "The issue is that those suppliers are still using direct Less-Than-Truckload carriers. We need to transition them into our centralized regional milk-run loop. We can consolidate pickups across Querétaro, Celaya, and Irapuato into two dedicated daily multi-stop circuits.",
+                            "translation": "El problema es que esos proveedores todavía están utilizando transportistas consolidados directos (LTL). Necesitamos transferirlos a nuestra ruta milk-run regional centralizada. Podemos consolidar recolecciones en Querétaro, Celaya e Irapuato en dos circuitos dedicados diarios con múltiples paradas.",
+                            "targetTerms": [
+                                "Less-Than-Truckload carriers",
+                                "centralized regional milk-run",
+                                "consolidate pickups",
+                                "multi-stop circuits"
+                            ]
+                        },
+                        {
+                            "speaker": "Lic. Fernando Garza",
+                            "text": "How will that affect our dock scheduling and receiving velocity? We cannot afford to have trailers unloading for more than forty minutes.",
+                            "translation": "¿Cómo afectará eso nuestra programación de andenes y la velocidad de recepción? No podemos permitirnos tener remolques descargando durante más de cuarenta minutos.",
+                            "targetTerms": [
+                                "dock scheduling",
+                                "receiving velocity",
+                                "unloading time"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Daniela Orozco",
+                            "text": "It will dramatically accelerate receiving. Every supplier on the milk-run will be mandated to transmit an EDI eight-fifty-six Advance Shipping Notice prior to truck departure. When the consolidated trailer docks, your operators simply scan the master license plate barcode on each pallet for instantaneous WMS receipt.",
+                            "translation": "Acelerará drásticamente la recepción. A cada proveedor en el milk-run se le exigirá transmitir un Aviso Anticipado de Embarque EDI 856 antes de la salida del camión. Cuando el remolque consolidado atraque, sus operadores simplemente escanearán el código de barras de placa maestra en cada tarima para una recepción instantánea en el WMS.",
+                            "targetTerms": [
+                                "EDI eight-fifty-six",
+                                "Advance Shipping Notice",
+                                "master license plate barcode",
+                                "WMS receipt"
+                            ]
+                        },
+                        {
+                            "speaker": "Lic. Fernando Garza",
+                            "text": "Excellent. That also solves our empty packaging problem. The milk-run truck can pick up collapsed returnable plastic totes on the return leg, eliminating our cardboard waste and tote storage shortages.",
+                            "translation": "Excelente. Eso también resuelve nuestro problema de empaque vacío. El camión del milk-run puede recolectar contenedores de plástico retornables colapsados en el viaje de regreso, eliminando nuestro desperdicio de cartón y la escasez de almacenamiento de contenedores.",
+                            "targetTerms": [
+                                "empty packaging problem",
+                                "returnable plastic totes",
+                                "cardboard waste",
+                                "tote storage shortages"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Daniela Orozco",
+                            "text": "Precisely. We will simulate the new route timing tomorrow morning, lock in two-hour transit windows, and connect the inbound schedule directly to your line-side Kanban replenishment system.",
+                            "translation": "Precisamente. Simularemos los tiempos de la nueva ruta mañana por la mañana, fijaremos ventanas de tránsito de dos horas y conectaremos el programa de entrada directamente con su sistema de reabastecimiento Kanban a pie de línea.",
+                            "targetTerms": [
+                                "simulate route timing",
+                                "transit windows",
+                                "line-side Kanban replenishment"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The truck comes when it is full.",
+                            "native": "The carrier operates on a fixed-schedule milk-run pickup window.",
+                            "explanation": "Modern lean logistics rejects waiting for full truckloads; parts move on precise cyclical schedules to maintain continuous line-side flow."
+                        },
+                        {
+                            "school": "We count every box by hand when the truck arrives.",
+                            "native": "We execute automated receiving by scanning the master pallet barcode against the EDI 856 ASN.",
+                            "explanation": "Automated warehouses use EDI Advance Shipping Notices (ASN) and GS1-128 barcode license plates for instantaneous digital receiving."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Advance Shipping Notice (ASN / EDI 856)",
+                        "ipa": "/ədˈvæns ˈʃɪp.ɪŋ ˌnoʊ.tɪs/",
+                        "es": "Aviso Anticipado de Embarque (ASN / EDI 856)",
+                        "category": "Digital Supply Chain",
+                        "definition": "An electronic data transmission sent by a supplier to a customer detailing the exact contents, packaging hierarchy, carrier details, and pallet barcodes of an inbound shipment before it arrives.",
+                        "collocations": [
+                            "transmit an EDI 856 ASN",
+                            "match physical receipt to ASN",
+                            "automated receiving via ASN",
+                            "ASN hierarchy validation"
+                        ],
+                        "falseFriends": "An ASN is not a shipping quote or order acknowledgment; it is a live dispatch notification linked to barcode license plates.",
+                        "nativeUsage": "Because the vendor failed to transmit the ASN prior to truck arrival, the pallets could not clear the automated receiving dock."
+                    },
+                    {
+                        "term": "Milk-Run Logistics",
+                        "ipa": "/ˈmɪlk ˌrʌn ləˈdʒɪs.tɪks/",
+                        "es": "Logística de Ruta Recolectora (Milk-Run)",
+                        "category": "Transport Optimization",
+                        "definition": "A recurring, cyclical transport route where a single vehicle visits multiple supplier facilities to pick up predetermined sub-batches and deliver returnable empty containers.",
+                        "collocations": [
+                            "schedule a regional milk-run",
+                            "milk-run replenishment loop",
+                            "optimize milk-run routing",
+                            "fixed-time pickup window"
+                        ],
+                        "falseFriends": "Milk-run has nothing to do with dairy products in industrial manufacturing; it refers strictly to multi-stop scheduled collection loops.",
+                        "nativeUsage": "Switching from individual LTL shipments to a daily milk-run slashed regional transport costs by 34%."
+                    },
+                    {
+                        "term": "Cross-Docking",
+                        "ipa": "/ˈkrɒs ˌdɒk.ɪŋ/",
+                        "es": "Cruce de Andén (Cross-Docking)",
+                        "category": "Warehouse Operations",
+                        "definition": "A logistics technique where inbound materials are unloaded directly from receiving docks and transferred to outbound trailers or assembly lines with little or no intermediate storage.",
+                        "collocations": [
+                            "implement cross-docking procedures",
+                            "cross-dock staging lane",
+                            "zero-inventory cross-docking",
+                            "rapid dock-to-dock transfer"
+                        ],
+                        "falseFriends": "Do not confuse cross-docking with long-term racking; goods spend hours, not days, on a cross-dock floor.",
+                        "nativeUsage": "The urgent sensor modules were cross-docked immediately upon receipt and loaded onto the plant tugger train within twenty minutes."
+                    },
+                    {
+                        "term": "Warehouse Management System (WMS)",
+                        "ipa": "/ˈwɛər.haʊs ˈmæn.ɪdʒ.mənt ˈsɪs.təm/",
+                        "es": "Sistema de Gestión de Almacenes (WMS)",
+                        "category": "Software Platforms",
+                        "definition": "An enterprise software application controlling daily warehouse operations, including inventory tracking, directed putaway, slotting optimization, picking waves, and shipping validation.",
+                        "collocations": [
+                            "deploy an enterprise WMS",
+                            "interface WMS with ERP",
+                            "directed picking via WMS",
+                            "real-time inventory visibility"
+                        ],
+                        "falseFriends": "WMS is an operational execution engine, whereas ERP handles broader financial accounting and high-level procurement planning.",
+                        "nativeUsage": "The WMS directed the forklift operator to the exact rack bin coordinate using automated RFID positioning."
+                    },
+                    {
+                        "term": "Slotting Optimization",
+                        "ipa": "/ˈslɒt.ɪŋ ˌɒp.tɪ.maɪˈzeɪ.ʃən/",
+                        "es": "Optimización de Ubicaciones (Slotting)",
+                        "category": "Intralogistics",
+                        "definition": "The algorithmic placement of inventory within a warehouse based on SKU pick frequency, physical ergonomics, size, weight, and product affinity to minimize operator travel distance.",
+                        "collocations": [
+                            "execute a seasonal slotting review",
+                            "Golden Zone slotting",
+                            "velocity-based slotting algorithm",
+                            "reduce picker travel distance"
+                        ],
+                        "falseFriends": "Slotting refers to inventory warehouse rack assignment, not to calendar scheduling or machining slots.",
+                        "nativeUsage": "By moving the fast-moving Class A brackets to Golden Zone slotting near dock doors, we reduced average pick travel time by twenty percent."
+                    },
+                    {
+                        "term": "Returnable Dunnage / Packaging",
+                        "ipa": "/rɪˈtɜːr.nə.bəl ˈdʌn.ɪdʒ/",
+                        "es": "Embalaje retornable / Material de estiba",
+                        "category": "Packaging Logistics",
+                        "definition": "Durable, reusable containers, specialized foam inserts, plastic totes, or steel racks designed to protect parts during transit and be returned to suppliers for repeated closed-loop use.",
+                        "collocations": [
+                            "manage returnable dunnage loops",
+                            "eliminate disposable cardboard",
+                            "standardized collapsible totes",
+                            "custom thermoformed dunnage"
+                        ],
+                        "falseFriends": "'Dunnage' refers to internal bracing and packing materials, not to waste or damage.",
+                        "nativeUsage": "Our OEM contract requires all stamped brackets to ship in returnable plastic dunnage to prevent scratching and eliminate disposal fees."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Calculating Velocity-Based Slotting (ABC Analysis)",
+                        "botQuestion": "A plant warehouse stores 500 different metal stamping part numbers. An audit reveals that 60 part numbers account for 78% of all daily forklift pick movements. In what warehouse zone should these 60 part numbers be slotted, and what physical ergonomic principle ('Golden Zone') should guide their vertical rack placement?",
+                        "requiredKeywords": [
+                            "class a",
+                            "golden zone",
+                            "aisle",
+                            "travel",
+                            "waist",
+                            "dock"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on! Under ABC analysis, these 60 part numbers represent Class A fast-movers (Pareto 80/20 rule). They should be slotted along the primary travel aisles closest to the outbound shipping docks to minimize travel distance. Vertically, they must be placed in the 'Golden Zone' (between waist and shoulder height) to allow rapid, ergonomic access without unnecessary bending, stretching, or high-mast forklift hoisting.",
+                        "feedbackRetry": "Identify the ABC classification for items representing ~80% of volume. Explain where they should be placed relative to shipping docks and describe the 'Golden Zone' ergonomic height (between waist and chest/shoulders)."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Evaluating Cross-Docking vs. Traditional Storage",
+                        "botQuestion": "Your plant receives daily shipments of high-volume wire harnesses from a supplier in Celaya. Currently, pallets are unloaded, transported to high-bay storage racks, entered into WMS inventory, and then picked 4 hours later to be moved to the assembly line. Propose an operational redesign utilizing Cross-Docking and EDI 856 to slash handling labor and floor transit time.",
+                        "requiredKeywords": [
+                            "cross-docking",
+                            "edi 856",
+                            "asn",
+                            "storage",
+                            "unloaded",
+                            "staging"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Outstanding supply chain design! By requiring the supplier to transmit an EDI 856 Advance Shipping Notice (ASN) with pallet barcodes, the WMS can identify impending line-side demand before the truck even arrives. Upon docking, the pallets bypass high-bay putaway entirely (pure Cross-Docking): they are scanned at the dock door and routed directly across the staging staging floor to the line-side tugger train, eliminating two forklift movements and 4 hours of idle storage time.",
+                        "feedbackRetry": "Explain how receiving the ASN before truck arrival allows the WMS to know that the parts are needed immediately on the line. Describe how cross-docking bypasses high-bay storage racks."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What is the primary operational purpose of an EDI 856 Advance Shipping Notice (ASN)?",
+                        "options": [
+                            "To negotiate union labor wages for truck drivers",
+                            "To provide the customer's WMS with detailed digital contents, pallet barcodes, and carrier data before the shipment physically arrives, enabling rapid automated receiving",
+                            "To request a return of defective products",
+                            "To apply for a government tax refund on diesel fuel"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "In an industrial warehouse, what is 'Golden Zone' slotting?",
+                        "options": [
+                            "Storing goods in a high-security vault locked with a biometric scanner",
+                            "Placing fast-moving (Class A) inventory at waist-to-shoulder height to optimize picking speed and reduce ergonomic strain",
+                            "Storing packaging materials on the roof of the warehouse",
+                            "Painting forklift parking spots with yellow reflective paint"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "What is the defining characteristic of a Milk-Run logistics route?",
+                        "options": [
+                            "Trucks only travel at midnight when traffic is light",
+                            "A single transport vehicle follows a recurring, fixed-schedule multi-stop circuit collecting sub-batches from multiple suppliers and exchanging returnable packaging",
+                            "It is only used for shipping perishable dairy products",
+                            "Suppliers pay the freight cost only if the truck arrives early"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "How does pure Cross-Docking improve supply chain velocity?",
+                        "options": [
+                            "By eliminating forklift equipment and requiring manual hand carrying",
+                            "By transferring incoming goods directly from receiving docks to outbound transport or assembly lines with little or no intermediate warehouse storage",
+                            "By tripling the amount of buffer inventory kept in high-bay racks",
+                            "By requiring all shipments to travel exclusively by maritime container ships"
+                        ],
+                        "answer": 1
+                    }
+                ]
             }
         ]
     },
@@ -19139,7 +20498,7 @@ var LXP_COURSES = {
         "titleEN": "Healthcare Technology",
         "category": "science",
         "level": "A2-B1",
-        "status": "blueprint",
+        "status": "full",
         "totalModules": 5,
         "standard": "FDA 21 CFR Part 820 / ISO 13485 / IEC 60601 Medical Electrical",
         "conocer": "EC1290 (Inspección en Manufactura de Dispositivos Médicos)",
@@ -19151,37 +20510,1395 @@ var LXP_COURSES = {
             {
                 "id": "health-m1",
                 "title": "ISO 13485 & FDA Medical Device Quality Assurance",
-                "titleES": "Aseguramiento de Calidad Médica ISO 13485 y FDA",
-                "icon": "fa-solid fa-stethoscope",
-                "readings": []
+                "titleES": "ISO 13485 y Aseguramiento de Calidad en Dispositivos Médicos FDA",
+                "icon": "fa-solid fa-notes-medical",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "health-m1-r1",
+                        "title": "Medical Device Quality Systems: FDA 21 CFR Part 820, ISO 13485 & Regulatory Pathways",
+                        "duration": "15 min",
+                        "content": "\n# Medical Device Quality Systems: FDA 21 CFR Part 820, ISO 13485 & Regulatory Pathways\n\nThe design, manufacturing, and commercialization of medical devices represent one of the most rigorously regulated engineering domains in the world. Unlike consumer electronics or automotive assemblies where product defects cause financial loss or customer dissatisfaction, a malfunctioning medical device—such as a coronary stent, hemodialysis machine, or surgical robotic end-effector—can result in catastrophic patient injury or loss of life.\n\nIn premier medical device manufacturing clusters across Northern Mexico (Tijuana, Mexicali, Ciudad Juárez) and the United States (San Diego, Minneapolis, Boston), quality assurance engineers navigate two harmonized legal frameworks: **FDA 21 CFR Part 820 (Quality System Regulation / QMSR)** and **ISO 13485:2016**.\n\n---\n\n## 1. Regulatory Device Classification & Market Clearance Pathways\n\nBefore a medical device can be manufactured or distributed in the United States, the Food and Drug Administration (**FDA**) categorizes it based on patient risk and the degree of regulatory control required to assure safety and effectiveness:\n\n```\nFDA Device Classification Spectrum:\n[Class I - Low Risk]      ---> [Class II - Moderate Risk]  ---> [Class III - High Risk]\nGeneral Controls Only          General + Special Controls        PMA Required\n510(k) Exempt (Most)           510(k) Clearance Mandatory        Clinical Trials Mandatory\n(e.g., scalpel, elastic band)  (e.g., catheter, infusion pump)   (e.g., pacemaker, heart valve)\n```\n\n### Class I: Low Risk (General Controls)\n- Subject only to General Controls: facility registration, device listing, Good Manufacturing Practices (GMP), proper labeling, and adverse event reporting (MDR).\n- *Examples*: Manual surgical instruments, examination gloves, tongue depressors, hospital bed accessories. Most Class I devices are exempt from premarket notification ($510(\\text{k})$).\n\n### Class II: Moderate Risk (General & Special Controls / 510(k))\n- Requires proving **Substantial Equivalence (SE)** to a legally marketed **Predicate Device** through a **510(k) Premarket Notification** submission.\n- Must satisfy Special Controls: performance standards, post-market surveillance, biocompatibility validation (ISO 10993), electrical safety (IEC 60601), and device-specific FDA guidance documents.\n- *Examples*: Diagnostic ultrasound transducers, intravascular catheters, motorized wheelchairs, bone screws.\n\n### Class III: High Risk (PMA - Premarket Approval)\n- Devices that support or sustain human life, are implanted substantially into the body, or present potential unreasonable risk of illness or injury.\n- Requires a formal **Premarket Approval (PMA)** application containing extensive laboratory bench testing, animal trials, and rigorous multi-center human **Clinical Investigations (IDE - Investigational Device Exemption)** proving clinical safety and efficacy.\n- *Examples*: Implantable cardiac defibrillators (ICDs), prosthetic heart valves, deep brain stimulators, drug-eluting vascular stents.\n\n---\n\n## 2. Quality System Frameworks: ISO 13485 vs. FDA 21 CFR Part 820 (QMSR)\n\nA medical device manufacturer cannot produce devices without an audited and certified Quality Management System (QMS):\n\n### ISO 13485:2016\nThe international consensus standard governing medical device quality management systems worldwide (Europe MDR, Health Canada, Japan PMDA, Australia TGA). It emphasizes risk management throughout product realization, cleanliness of products, sterile barrier controls, validation of automated processes, and traceability.\n\n### FDA 21 CFR Part 820 (Quality System Regulation - QSR)\nThe United States federal law mandating design controls, document control, purchasing controls, process validation, and complaint management for medical devices manufactured or sold in the US.\n- **The QMSR Harmonization**: The FDA's finalized **Quality Management System Regulation (QMSR)** explicitly incorporates ISO 13485:2016 by reference, harmonizing US federal audits with global regulatory inspections while retaining specific FDA statutory authorities (such as strict 15-day Medical Device Reporting for deaths or serious injuries under Part 803).\n\n### Medical Device Single Audit Program (MDSAP)\nAllows a single regulatory audit conducted by an authorized Auditing Organization (AO) to satisfy the QMS requirements of five major participating health authorities: US FDA, Health Canada, Brazil ANVISA, Australia TGA, and Japan MHLW/PMDA.\n\n---\n\n## 3. The Core Subsystems: CAPA, Non-Conformance & Document Control\n\nThe FDA inspects manufacturing facilities using the **QSIT (Quality System Inspection Technique)** approach, which audits four primary QMS subsystems:\n\n```\nQSIT Inspection Subsystem Matrix:\n1. Management Controls   ---> Sets policy, resources, and annual executive reviews.\n2. Design Controls       ---> Validates that device meets clinical user needs (21 CFR 820.30).\n3. Corrective/Preventive ---> Investigates complaints, scrap trends, and initiates CAPAs.\n4. Production/Process    ---> Controls cleanrooms, calibration, sterilization, and equipment validation.\n```\n\n### Corrective and Preventive Action (CAPA)\nThe CAPA subsystem is the primary target of FDA Form 483 warning letters:\n1. **Identification**: Capturing quality signals from customer complaints, non-conformance reports (NCR), audit findings, or out-of-spec scrap data.\n2. **Containment**: Immediately quarantining suspect lots to prevent distribution.\n3. **Root Cause Analysis (RCA)**: Deploying Ishikawa fishbone diagrams, Is/Is Not analysis, and 5 Whys to isolate true systemic failure mechanisms rather than attributing issues to \"operator error.\"\n4. **Corrective Action Implementation**: Modifying tooling, updating cleanroom SOPs, or re-programming automated vision inspection routines.\n5. **Verification of Effectiveness (VoE)**: Auditing the process across a defined post-implementation time window (e.g., 90 days or 50,000 units) to statistically confirm that the failure has not recurred.\n\n---\n\n## 4. Engineering Field Scenario: Managing an FDA Form 483 Inspection Observation\n\nAt a high-volume medical device cleanroom in Tijuana, Baja California, producing sterile IV infusion sets for US hospitals:\n\n### The Crisis: An FDA Form 483 Audit Finding\nDuring an unannounced FDA inspection, the lead investigator reviewed the complaint handling database and issued an official **FDA Form 483 inspection observation**:\n> *\"The manufacturer failed to establish and maintain adequate procedures for implementing Corrective and Preventive Action, in that complaint investigations regarding micro-cracks on the luer-lock connectors were closed without an adequate verification of effectiveness.\"*\n\n### The Engineering & Regulatory Action Plan\n1. **Immediate 15-Day Written Response**: Under FDA protocol, the Director of QA has exactly **15 business days** to submit a formal, comprehensive written response to the FDA District Office detailing immediate containment and corrective commitments.\n2. **Immediate Lot Containment & Health Hazard Evaluation (HHE)**: A cross-functional team evaluated the risk of micro-cracks (potential fluid leakage, air embolism, loss of sterility) using ISO 14971 risk matrices. Historical lots were quarantined, and an HHE concluded the occurrence rate was low with zero reported adverse patient events.\n3. **True Root Cause Investigation**: Engineers discovered that the ultrasonic horn welding the polycarbonate luer fitting was experiencing acoustic horn resonance degradation after 500,000 cycles, generating micro-fissures in the weld flange.\n4. **Systemic Corrective Action**:\n   - The preventative maintenance SOP was revised to mandate acoustic horn frequency spectrum analysis every 100,000 cycles.\n   - An in-line multi-camera vision inspection system was installed at the cleanroom assembly station to reject luer micro-cracks automatically with $100\\%$ optical coverage.\n5. **VoE Validation & Closure**: The QA team monitored 250,000 consecutive units over 60 days with zero micro-crack occurrences, submitted the final VoE report to the FDA, and successfully closed the observation without receiving a Warning Letter.\n\n---\n\n> **Key Takeaway**: Medical device quality engineering requires uncompromising regulatory rigor. Whether determining 510(k) predicate equivalence, maintaining ISO 13485/QMSR compliance, or closing high-stakes CAPAs, documentation integrity and verified patient safety are paramount.\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Addressing an FDA Cleanroom Audit Finding in Tijuana",
+                    "titleES": "Atendiendo un Hallazgo de Auditoría FDA en una Sala Limpia de Tijuana",
+                    "scenarioContext": "A Senior Regulatory Affairs Director in San Diego and a Cleanroom Quality Manager in Tijuana draft a formal response to an FDA Form 483 observation regarding catheter packaging seals.",
+                    "characters": [
+                        {
+                            "name": "Dr. Evelyn Reed",
+                            "role": "VP of Global Regulatory Affairs",
+                            "company": "VascularPrecision Devices (San Diego, CA)"
+                        },
+                        {
+                            "name": "Ing. Marco Estrada",
+                            "role": "Quality Assurance & Plant Compliance Manager",
+                            "company": "VascularPrecision Tijuana Facility (Baja California, MX)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Dr. Evelyn Reed",
+                            "text": "Marco, I just reviewed the FDA Form 483 issued at the conclusion of yesterday's inspection in Tijuana. The investigator cited an observation under Part eight-twenty point one-hundred regarding inadequate CAPA root-cause analysis on those heat-sealed Tyvek pouches.",
+                            "translation": "Marco, acabo de revisar el Formulario FDA 483 emitido al concluir la inspección de ayer en Tijuana. El inspector citó una observación bajo la Parte 820.100 respecto a un análisis de causa raíz de CAPA inadecuado en esas bolsas de Tyvek termoselladas.",
+                            "targetTerms": [
+                                "FDA Form 483",
+                                "Part eight-twenty",
+                                "inadequate CAPA",
+                                "heat-sealed Tyvek pouches"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Marco Estrada",
+                            "text": "Yes, Dr. Reed. The investigator reviewed CAPA twenty-four-zero-eight, which investigated seal-creep failures on our coronary balloon catheters. We concluded that the operator adjusted the sealer platen temperature incorrectly and retrained the technician, which the FDA rightly flagged as an insufficient root cause.",
+                            "translation": "Sí, Dra. Reed. El inspector revisó el CAPA 24-08, que investigó fallas de deslizamiento de sellado en nuestros catéteres de balón coronario. Concluimos que el operador ajustó incorrectamente la temperatura de la platina de sellado y reentrenamos al técnico, lo cual la FDA señaló con justa razón como una causa raíz insuficiente.",
+                            "targetTerms": [
+                                "seal-creep failures",
+                                "balloon catheters",
+                                "retrained the technician",
+                                "insufficient root cause"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. Evelyn Reed",
+                            "text": "The FDA consistently rejects 'operator retraining' as a standalone CAPA solution. We have exactly fifteen business days to submit our formal response to the FDA District Office. We must present an engineering root-cause analysis and a concrete Verification of Effectiveness protocol.",
+                            "translation": "La FDA rechaza sistemáticamente el 'reentrenamiento del operador' como solución única de CAPA. Tenemos exactamente quince días hábiles para enviar nuestra respuesta formal a la Oficina de Distrito de la FDA. Debemos presentar un análisis de causa raíz de ingeniería y un protocolo concreto de Verificación de Efectividad.",
+                            "targetTerms": [
+                                "operator retraining",
+                                "fifteen business days",
+                                "formal response",
+                                "Verification of Effectiveness"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Marco Estrada",
+                            "text": "Our tooling engineers disassembled the heat sealer this morning. We discovered that the thermal thermocouple embedded in the top platen was drifting by twelve degrees Celsius due to cable fatigue, masking the true temperature drop during continuous high-speed sealing.",
+                            "translation": "Nuestros ingenieros de herramental desensamblaron la selladora térmica esta mañana. Descubrimos que el termopar térmico incrustado en la platina superior tenía una desviación de doce grados Celsius debido a fatiga de cable, ocultando la caída real de temperatura durante el sellado continuo de alta velocidad.",
+                            "targetTerms": [
+                                "tooling engineers",
+                                "thermocouple embedded",
+                                "cable fatigue",
+                                "temperature drop"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. Evelyn Reed",
+                            "text": "That is a legitimate physical assignable cause. What corrective and preventive actions are we locking into our formal commitment letter?",
+                            "translation": "Esa es una causa asignable física legítima. ¿Qué acciones correctivas y preventivas estamos fijando en nuestra carta de compromiso formal?",
+                            "targetTerms": [
+                                "assignable cause",
+                                "corrective and preventive actions",
+                                "commitment letter"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Marco Estrada",
+                            "text": "We are upgrading all cleanroom pouch sealers to dual-calibrated digital RTD temperature sensors with automatic temperature interlocks. If platen temperature deviates by more than one point five degrees, the sealing cycle aborts automatically. We will validate fifty thousand pouches over sixty days to prove zero seal defects.",
+                            "translation": "Estamos actualizando todas las selladoras de bolsas de sala limpia a sensores de temperatura RTD digitales con calibración dual e interbloqueos automáticos de temperatura. Si la temperatura de la platina se desvía más de 1.5 grados, el ciclo de sellado se aborta automáticamente. Validaremos cincuenta mil bolsas durante sesenta días para demostrar cero defectos de sellado.",
+                            "targetTerms": [
+                                "RTD temperature sensors",
+                                "temperature interlocks",
+                                "cycle aborts automatically",
+                                "prove zero seal defects"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "We told the worker to be more careful next time.",
+                            "native": "We engineered an automated temperature interlock to mistake-proof the sealing process.",
+                            "explanation": "The FDA and ISO 13485 auditors will reject operator blame; regulatory compliance requires systemic engineering controls (Poka-Yoke) and process redesign."
+                        },
+                        {
+                            "school": "Our device is safe because we tested it in the lab.",
+                            "native": "Our device demonstrated substantial equivalence to the predicate device under 510(k) special controls.",
+                            "explanation": "Medical safety is a formal legal concept established through regulatory equivalence, ISO 10993 biocompatibility, and validated design controls."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "FDA 21 CFR Part 820",
+                        "ipa": "/ˌɛf.diːˈeɪ ˈtwɛn.ti wʌn ˌsiː.ɛfˈɑːr pɑːrt ˌeɪt ˈtwɛn.ti/",
+                        "es": "Regulación de Sistemas de Calidad de la FDA (21 CFR 820 / QMSR)",
+                        "category": "Medical Regulatory",
+                        "definition": "The United States federal law governing medical device quality management systems, detailing mandates for design controls, document management, purchasing, and CAPA.",
+                        "collocations": [
+                            "audit under Part 820",
+                            "Part 820 compliance inspection",
+                            "QMSR harmonization with ISO 13485",
+                            "design control mandates"
+                        ],
+                        "falseFriends": "21 CFR Part 820 is federal law, not a voluntary guideline like ISO standards; violations result in federal injunctions or seizures.",
+                        "nativeUsage": "The medical device startup overhauled its manufacturing line to achieve full compliance with FDA 21 CFR Part 820 before submitting its 510(k)."
+                    },
+                    {
+                        "term": "510(k) Premarket Notification",
+                        "ipa": "/ˌfaɪv ˌtɛn ˈkeɪ ˌpriːˈmɑːr.kɪt ˌnoʊ.tɪ.fɪˈkeɪ.ʃən/",
+                        "es": "Notificación Precomercial 510(k)",
+                        "category": "Market Clearance",
+                        "definition": "A regulatory submission made to the FDA demonstrating that a new Class II medical device is substantially equivalent to an already legally marketed predicate device.",
+                        "collocations": [
+                            "submit a 510(k) dossier",
+                            "demonstrate substantial equivalence",
+                            "identify an eligible predicate device",
+                            "obtain 510(k) clearance"
+                        ],
+                        "falseFriends": "The FDA 'clears' a 510(k) device; it does not 'approve' it. The term 'approved' is reserved strictly for high-risk Class III PMA devices.",
+                        "nativeUsage": "The regulatory team obtained 510(k) clearance for the disposable laparoscopic trocar in less than five months by proving substantial equivalence."
+                    },
+                    {
+                        "term": "ISO 13485:2016",
+                        "ipa": "/ˌaɪ.ɛsˈoʊ ˌwʌn ˌθriː ˌfɔːr ˌeɪt ˈfaɪv/",
+                        "es": "Norma ISO 13485:2016",
+                        "category": "Quality Standards",
+                        "definition": "The international quality management system standard specific to the design, manufacture, packaging, and servicing of medical devices.",
+                        "collocations": [
+                            "maintain ISO 13485 certification",
+                            "MDSAP multi-country audit",
+                            "risk-based approach under ISO 13485",
+                            "sterile barrier validation"
+                        ],
+                        "falseFriends": "Do not confuse ISO 13485 with generic ISO 9001; ISO 13485 eliminates customer satisfaction requirements in favor of patient safety and regulatory compliance.",
+                        "nativeUsage": "Our contract manufacturing plant in Mexicali successfully renewed its ISO 13485 certification with zero major non-conformances."
+                    },
+                    {
+                        "term": "Corrective and Preventive Action (CAPA)",
+                        "ipa": "/kəˈrɛk.tɪv ənd prɪˈvɛn.tɪv ˈæk.ʃən /ˌkeɪ.piːˈeɪ/",
+                        "es": "Acción Correctiva y Preventiva (CAPA)",
+                        "category": "Quality Systems",
+                        "definition": "A formal regulatory subsystem investigating systemic non-conformances, isolating true root causes, implementing engineering corrections, and verifying their long-term effectiveness.",
+                        "collocations": [
+                            "initiate a formal CAPA",
+                            "perform root-cause analysis",
+                            "verify CAPA effectiveness (VoE)",
+                            "close an audit CAPA"
+                        ],
+                        "falseFriends": "A CAPA is not a routine machine repair ticket; it addresses systemic product or quality system failures that could impact patient safety.",
+                        "nativeUsage": "The QA director presented the completed CAPA documentation proving that the catheter leak rate had dropped to zero after retooling."
+                    },
+                    {
+                        "term": "FDA Form 483",
+                        "ipa": "/ˌɛf.diːˈeɪ fɔːrm ˌfɔːr ˌeɪti ˈθriː/",
+                        "es": "Formulario FDA 483 (Observaciones de Inspección)",
+                        "category": "Regulatory Auditing",
+                        "definition": "An official document issued by FDA investigators at the conclusion of an inspection notifying facility management of objectionable conditions violating federal regulations.",
+                        "collocations": [
+                            "receive an FDA Form 483",
+                            "respond within 15 business days",
+                            "draft a 483 remediation plan",
+                            "avoid an escalation to Warning Letter"
+                        ],
+                        "falseFriends": "A Form 483 is an inspection observation list, not a final legal penalty or product recall; however, failure to respond adequately leads to Warning Letters.",
+                        "nativeUsage": "The plant manager mobilized a task force to answer the three observations listed on the FDA Form 483 before the 15-day deadline."
+                    },
+                    {
+                        "term": "Substantial Equivalence (SE)",
+                        "ipa": "/səbˈstæn.ʃəl ɪˈkwɪv.ə.ləns/",
+                        "es": "Equivalencia Sustancial",
+                        "category": "FDA Classification",
+                        "definition": "The regulatory benchmark under a 510(k) proving that a new device has the same intended use and technological characteristics as a legally marketed predicate device.",
+                        "collocations": [
+                            "prove substantial equivalence",
+                            "compare with predicate device",
+                            "equivalent safety and effectiveness",
+                            "510(k) equivalence rationale"
+                        ],
+                        "falseFriends": "'Substantial' does not mean identical; it means the differences do not raise new questions of safety and efficacy.",
+                        "nativeUsage": "Comparative bench testing confirmed substantial equivalence between our ceramic hip implant and the primary market predicate."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Determining Regulatory Pathway: 510(k) vs. PMA",
+                        "botQuestion": "A biomedical engineering startup in Tijuana is developing a novel bio-resorbable cardiovascular stent designed to be implanted into coronary arteries to prevent restenosis, gradually dissolving over 18 months. The regulatory affairs intern suggests filing a 510(k) Premarket Notification using a legacy bare-metal stent as the predicate device. As the Senior Regulatory Engineer, evaluate this recommendation and explain the correct regulatory pathway under FDA guidelines.",
+                        "requiredKeywords": [
+                            "class iii",
+                            "pma",
+                            "premarket approval",
+                            "clinical",
+                            "implanted",
+                            "risk"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on! The intern's advice is completely incorrect. A bio-resorbable cardiovascular stent is an implantable life-sustaining device with novel pharmacological/material mechanisms, classifying it strictly as an FDA Class III device. It cannot use a 510(k) because a dissolving stent introduces fundamental new questions of safety and degradation kinetics. The correct regulatory pathway is a formal Premarket Approval (PMA) supported by multi-center human clinical trials (IDE).",
+                        "feedbackRetry": "Review the risk tier of coronary implants: are bio-resorbable stents moderate risk (Class II) or high risk (Class III)? Explain why novel dissolving implants require Premarket Approval (PMA) and clinical trials rather than a simple 510(k) predicate comparison."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Formulating a Robust Response to an FDA 483 CAPA Observation",
+                        "botQuestion": "An FDA investigator issues a Form 483 observation stating that your plant closed three customer complaints regarding cracked dialyzer filter housings simply by 'retraining the cleanroom assembly technicians,' without conducting an engineering investigation into mold injection parameters or verifying effectiveness. Outline the three essential elements your formal response to the FDA must contain to prevent escalation to a Warning Letter.",
+                        "requiredKeywords": [
+                            "root cause",
+                            "containment",
+                            "verification",
+                            "effectiveness",
+                            "15 days",
+                            "engineering"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Outstanding regulatory strategy! Your response must: 1) Submit within the mandatory 15 business-day deadline; 2) Detail an immediate containment risk evaluation (quarantine of suspect lots, Health Hazard Evaluation); 3) Present an empirical engineering root-cause investigation (e.g., polymer melt temperature and injection pack pressure analysis rather than operator blaming); and 4) Establish a measurable Verification of Effectiveness (VoE) protocol monitoring scrap and complaints over a defined operational timeframe (e.g., 90 days).",
+                        "feedbackRetry": "Remember that the FDA rejects operator retraining as a sufficient corrective action. State the 15-day response timeline, describe how you will investigate physical injection molding parameters (root cause), and explain the Verification of Effectiveness (VoE) requirement."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "Under FDA regulations, what is the primary objective of a 510(k) Premarket Notification for a Class II medical device?",
+                        "options": [
+                            "To negotiate wholesale pricing with US health insurance companies",
+                            "To prove that the new device is substantially equivalent in safety and effectiveness to a legally marketed predicate device",
+                            "To bypass all cleanroom sterilization requirements",
+                            "To patent the device's electrical schematics in fifty countries"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "How does the FDA's new QMSR (Quality Management System Regulation) impact US medical device manufacturing?",
+                        "options": [
+                            "It eliminates all federal inspections of manufacturing plants",
+                            "It explicitly incorporates ISO 13485:2016 by reference into 21 CFR Part 820, harmonizing US requirements with global standards",
+                            "It bans all foreign manufacturing of medical devices in Mexico",
+                            "It makes medical devices exempt from risk management requirements"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "When an FDA investigator issues an FDA Form 483 at the close of a facility inspection, how many business days does management have to submit a formal written response?",
+                        "options": [
+                            "5 business days",
+                            "15 business days",
+                            "60 business days",
+                            "1 calendar year"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Why is 'operator retraining' generally rejected by FDA and ISO 13485 auditors as a standalone CAPA solution for recurring defects?",
+                        "options": [
+                            "Because technicians are not allowed to be trained in cleanrooms",
+                            "Because it blames human workers instead of investigating underlying physical tooling, material, or design root causes and mistake-proofing the process",
+                            "Because retraining operators costs too much money",
+                            "Because training records are kept off-site by human resources"
+                        ],
+                        "answer": 1
+                    }
+                ]
             },
             {
                 "id": "health-m2",
                 "title": "Biocompatibility Testing (ISO 10993) & Sterilization Validation",
-                "titleES": "Pruebas de Biocompatibilidad y Validación de Esterilización",
-                "icon": "fa-solid fa-shield-halved",
-                "readings": []
+                "titleES": "Pruebas de Biocompatibilidad (ISO 10993) y Validación de Esterilización",
+                "icon": "fa-solid fa-bacteria",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "health-m2-r1",
+                        "title": "Biocompatibility Evaluation (ISO 10993), Sterility Assurance Levels (SAL) & Barrier Packaging",
+                        "duration": "15 min",
+                        "content": "\n# Biocompatibility Evaluation (ISO 10993), Sterility Assurance Levels (SAL) & Barrier Packaging\n\nA medical device that contacts human tissue or bodily fluids must deliver its therapeutic or diagnostic function without causing toxic, inflammatory, mutagenic, or thrombotic damage to the patient. Evaluating biological safety requires navigating **ISO 10993 (Biological evaluation of medical devices)**, an extensive multi-part international standard governing risk assessment, chemical characterization, and in vitro/in vivo biological testing.\n\nSimultaneously, medical devices intended for invasive or surgical use must be rendered completely free from viable microorganisms through validated sterilization modalities—predominantly **Ethylene Oxide (EtO)** and **Gamma / E-beam Irradiation**—and protected until point-of-use inside a validated **Sterile Barrier System (ISO 11607)**.\n\n---\n\n## 1. The ISO 10993 Biological Risk Framework\n\nHistorically, biocompatibility was approached as a \"check-the-box\" animal testing regimen. Under the modern revision of **ISO 10993-1:2018**, biological safety is fundamentally a risk-management process starting with physical and chemical characterization (ISO 10993-18) before any biological testing is considered.\n\n### Device Categorization Matrix\nDevices are categorized based on two anatomical parameters:\n1. **Nature of Body Contact**:\n   - **Surface-Contacting Devices**: Skin (electrodes), mucosal membranes (endoscopes, urinary catheters), breached or compromised surfaces (wound dressings, burn gauze).\n   - **External Communicating Devices**: Blood path indirect (IV infusion tubing), tissue/bone/dentin (arthroscopic tools), circulating blood (hemodialysis circuits, vascular catheters).\n   - **Implant Devices**: Tissue/bone (bone screws, artificial joints), blood contact (coronary stents, prosthetic heart valves, vascular grafts).\n2. **Contact Duration**:\n   - **Limited ($A$)**: $\\le 24\\ \\text{hours}$.\n   - **Prolonged ($B$)**: $> 24\\ \\text{hours to } 30\\ \\text{days}$.\n   - **Permanent ($C$)**: $> 30\\ \\text{days}$.\n\n### The Core Biological Testing Endpoints\nDepending on category and duration, toxicologists evaluate specific biological endpoints:\n- **Cytotoxicity (ISO 10993-5)**: In vitro exposure of murine L929 fibroblasts to device extracts. Quantified via MTT colorimetric dye reduction or neutral red uptake. A cell viability reduction $>30\\%$ is classified as cytotoxic.\n- **Sensitization (ISO 10993-10)**: Evaluates allergic contact hypersensitivity via the Guinea Pig Maximization Test (GPMT) or murine Local Lymph Node Assay (LLNA).\n- **Irritation / Intracutaneous Reactivity (ISO 10993-23)**: Evaluates localized tissue erythema and edema following intracutaneous extract injection in rabbits.\n- **Hemocompatibility (ISO 10993-4)**: Mandatory for blood-contacting devices. Evaluates hemolysis (percentage of ruptured red blood cells releasing free hemoglobin, threshold $<5\\%$), thrombosis formation, platelet activation, and complement activation ($SC5b-9$).\n- **Systemic Toxicity (ISO 10993-11)**: Acute, subacute, and subchronic systemic evaluations for organ-level toxicity.\n- **Genotoxicity & Carcinogenicity (ISO 10993-3)**: Bacterial reverse mutation (Ames test) and in vitro mammalian chromosomal aberration tests.\n- **Implantation (ISO 10993-6)**: Histopathological evaluation of local tissue fibrous capsule thickness, foreign body giant cells, and inflammatory infiltrate at $4, 12,$ and $26\\ \\text{weeks}$.\n\n---\n\n## 2. Sterilization Modalities & Sterility Assurance Level (SAL)\n\nSterility is defined mathematically as the probability of a single viable microorganism occurring on a device after sterilization:\n\n$$\\text{Sterility Assurance Level (SAL)} = 10^{-6}$$\n\nAn $SAL$ of $10^{-6}$ indicates that there is no more than a one-in-a-million chance that an item is non-sterile.\n\n```\nSterilization Technologies Comparison:\nModality:          ISO Standard:     Mechanism:                    Key Challenges:\nEthylene Oxide     ISO 11135         Alkylation of DNA / protein   Toxic residuals (EO / ECH), long aeration\nGamma Irradiation  ISO 11137-1/2     Radiolytic DNA chain scission Polymer embrittlement, color yellowing\nMoist Heat Steam   ISO 17665         Thermal protein denaturation  Limited to heat/moisture-resistant metals\n```\n\n### Ethylene Oxide (EtO / EO) Sterilization (ISO 11135)\nThe primary method for heat-sensitive polymeric catheters and optical instruments. Devices are loaded into sealed vacuum retorts:\n1. **Pre-Conditioning**: Humidifying devices to $50\\text{--}70\\%\\ \\text{RH}$ at $45\\text{--}55^\\circ\\text{C}$ to soften bacterial spore coats.\n2. **Gas Injection & Exposure**: Charging EtO gas at precise partial pressure. Validated using the **Overkill Approach**: proving a $12\\text{-log}$ lethality reduction against resistant biological indicators (*Bacillus atrophaeus* $10^6$ spores) at half the routine gas exposure cycle time.\n3. **Aeration Cycle**: Heated dynamic air-washing in degassing cells for 24 to 72 hours. Critical regulatory threshold: residual Ethylene Oxide (EO) and Ethylene Chlorohydrin (ECH) must fall strictly below daily allowable patient intake limits defined in **ISO 10993-7** (e.g., $<4\\ \\text{mg/day}$ for prolonged devices).\n\n### Radiation Sterilization (ISO 11137)\nUtilizes Cobalt-60 gamma photon emitters or high-energy electron beams (E-beam):\n- Establishes the product's natural **Bioburden** (pre-sterilization microbial population).\n- Employs **Method 1, Method 2, or $VD_{\\text{max}}^{25}$** verification dosing to establish the minimum sterilizing dose (typically $25\\ \\text{kGy}$) required to deliver $SAL = 10^{-6}$ without inducing material chain scission or cross-linking degradation in polymers.\n\n---\n\n## 3. Sterile Barrier Systems: ISO 11607 Packaging Integrity\n\nA sterile device is useless if its packaging breaches during transit. **ISO 11607-1/2** mandates engineering validation of the **Sterile Barrier System (SBS)**:\n\n```\nSBS Packaging Construction:\n+-------------------------------------------------------------+\n| Tyvek® Breathable Membrane (Permits EtO gas transfer)        |\n+=============================================================+  <-- Continuous Heat Seal Flange\n| Thermoformed Polyethylene / PETG Rigid Tray                 |\n+-------------------------------------------------------------+\n```\n\n### Physical Packaging Validation Protocols\n- **Seal Tensile Strength (ASTM F88)**: Peeling the heat-sealed Tyvek flange on an Instron tensiometer to verify seal bonding force meets minimum peel specs ($>1.5\\ \\text{N/cm}$).\n- **Dye Penetration Integrity (ASTM F1929)**: Injecting toluidine blue dye along seal channels to visually detect micro-voids or capillary channels down to $50\\ \\mu\\text{m}$.\n- **Bubble Emission Leak Test (ASTM F2096)**: Submerging the pressurized pouch under water to inspect for steady bubble streams indicating micro-pinholes.\n- **Accelerated Aging (ASTM F1980)**: Validating 3-to-5-year sterile shelf-life claims using the Arrhenius reaction rate equation:\n  $$\\text{Accelerated Aging Time (AAT)} = \\frac{\\text{Desired Real Time}}{Q_{10}^{\\Delta T / 10}}$$\n  Where $Q_{10} = 2.0$ (reaction rate doubles for every $10^\\circ\\text{C}$ increase) and testing is conducted at elevated temperatures ($55^\\circ\\text{C}$) to simulate years of ambient warehouse aging in weeks.\n\n---\n\n## 4. Engineering Field Scenario: Resolving High EtO Gas Residuals in Baja California\n\nAt a contract medical device packaging and sterilization facility in Mexicali:\n\n### The Crisis\nA validation lot of 1,200 cardiovascular drug-delivery catheters packed in heat-sealed Tyvek-mylar pouches failed post-sterilization release testing. Gas chromatography (GC) headspace analysis revealed residual Ethylene Oxide levels of $14.2\\ \\mu\\text{g/g}$, exceeding the ISO 10993-7 allowable patient threshold of $5.0\\ \\mu\\text{g/g}$ for blood-contacting devices. The shipment of $450,000 worth of catheters was placed on regulatory quarantine.\n\n### The Root Cause Investigation\n1. **Material Sorption Analysis**: The engineering team examined the catheter's distal tip, which incorporated a thick soft-durometer thermoplastic polyurethane (TPU) jacket. TPU acts as an aggressive chemical sponge, adsorbing large volumes of EtO gas during dwell cycles.\n2. **Packaging Permeability Check**: The master corrugated shipping cartons were packed tightly with foam inserts, restricting airflow around individual Tyvek pouches during the aeration phase.\n\n### Engineering Corrective Actions\n1. **Aeration Cell Optimization**: The plant increased aeration chamber temperature from $40^\\circ\\text{C}$ to $50^\\circ\\text{C}$ and increased dynamic nitrogen deep-vacuum purge pulses from two to six cycles.\n2. **Packaging Re-Configuration**: The pallet staging pattern was redesigned with breathable slip-sheets and chimney stacking to maximize air velocity across the Tyvek permeable faces.\n3. **Re-Validation**: A fractional cycle study was executed. Gas chromatography confirmed EtO residuals dropped to $1.8\\ \\mu\\text{g/g}$ (well below the $5.0\\ \\mu\\text{g/g}$ ceiling) while maintaining complete biological indicator kill ($SAL = 10^{-6}$), allowing release of the product and updating the sterilization master validation file.\n\n---\n\n> **Key Takeaway**: Biocompatibility and sterility assurance represent the foundational biological barriers protecting patient lives. Validating ISO 10993 non-toxicity, maintaining $SAL = 10^{-6}$ sterilization cycles with low EtO residuals, and verifying ISO 11607 sterile barrier seal integrity are mandatory engineering disciplines in medical device manufacturing.\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Troubleshooting Ethylene Oxide Residuals and Aeration Cycles",
+                    "titleES": "Solucionando Residuos de Óxido de Etileno y Ciclos de Aireación",
+                    "scenarioContext": "A Senior Materials Scientist in Mexicali and a Sterilization Validation Manager in Minneapolis analyze out-of-spec EtO residual levels on a newly developed vascular delivery catheter.",
+                    "characters": [
+                        {
+                            "name": "Dr. Gregory Price",
+                            "role": "Manager of Sterilization Sciences",
+                            "company": "MedTech Global (Minneapolis, MN)"
+                        },
+                        {
+                            "name": "Ing. Lorena Beltrán",
+                            "role": "Biocompatibility & Sterilization Specialist",
+                            "company": "MedTech Precision Assembly (Mexicali, Baja California)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Dr. Gregory Price",
+                            "text": "Lorena, I just received the gas chromatography results from the Nelson Labs testing on our third sterilization validation run. The ethylene oxide residuals on the polyurethane handle assembly came in at eight point four parts per million, breaching our ISO ten-ninety-three dash seven ceiling of five PPM.",
+                            "translation": "Lorena, acabo de recibir los resultados de cromatografía de gases de Nelson Labs en nuestra tercera corrida de validación de esterilización. Los residuos de óxido de etileno en el ensamble de mango de poliuretano salieron en 8.4 partes por millón, superando nuestro límite de cinco PPM de ISO 10993-7.",
+                            "targetTerms": [
+                                "gas chromatography results",
+                                "sterilization validation run",
+                                "ethylene oxide residuals",
+                                "breaching our ceiling"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Lorena Beltrán",
+                            "text": "That is concerning, Dr. Price. The biological indicators confirmed complete twelve-log spore kill of Bacillus atrophaeus, so our sterility assurance level of ten to the minus six is intact. The failure is strictly chemical desorption kinetics during the post-exposure aeration phase.",
+                            "translation": "Es preocupante, Dr. Price. Los indicadores biológicos confirmaron la eliminación completa de doce logaritmos de esporas de Bacillus atrophaeus, por lo que nuestro nivel de aseguramiento de esterilidad de diez a la menos seis está intacto. La falla es estrictamente de cinética de desorción química durante la fase de aireación posterior a la exposición.",
+                            "targetTerms": [
+                                "biological indicators",
+                                "twelve-log spore kill",
+                                "sterility assurance level",
+                                "desorption kinetics"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. Gregory Price",
+                            "text": "Agreed. Polyurethane is notorious for gas absorption. How long was the lot held in the heated degassing cell, and what was the forced-air exchange rate?",
+                            "translation": "De acuerdo. El poliuretano es conocido por su absorción de gas. ¿Cuánto tiempo se retuvo el lote en la celda de desgasificación térmica y cuál fue la tasa de intercambio de aire forzado?",
+                            "targetTerms": [
+                                "gas absorption",
+                                "heated degassing cell",
+                                "forced-air exchange rate"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Lorena Beltrán",
+                            "text": "The lot underwent forty-eight hours of aeration at forty-five degrees Celsius. However, because we double-pouched the catheters in heavy Tyvek pouches inside dense chipboard cartons, the convection airflow across the breathable membrane was severely restricted.",
+                            "translation": "El lote se sometió a cuarenta y ocho horas de aireación a cuarenta y cinco grados Celsius. Sin embargo, debido a que empacamos los catéteres en doble bolsa de Tyvek grueso dentro de cajas de cartón prensado denso, el flujo de aire por convección a través de la membrana permeable estuvo severamente restringido.",
+                            "targetTerms": [
+                                "aeration at forty-five degrees",
+                                "double-pouched",
+                                "breathable membrane",
+                                "severely restricted"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. Gregory Price",
+                            "text": "If we increase the aeration cell temperature to fifty-two degrees and extend the residence time to seventy-two hours, will that degrade our polymer tensile strength or cause Tyvek seal creep?",
+                            "translation": "Si incrementamos la temperatura de la celda de aireación a cincuenta y dos grados y extendemos el tiempo de residencia a setenta y dos horas, ¿degradará eso la resistencia a la tracción del polímero o causará deslizamiento en el sello de Tyvek?",
+                            "targetTerms": [
+                                "aeration cell temperature",
+                                "residence time",
+                                "polymer tensile strength",
+                                "seal creep"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Lorena Beltrán",
+                            "text": "Our ASTM F-eighty-eight peel data indicates our seal strength has a three-hundred percent safety margin over baseline. I will run a pilot lot with five nitrogen vacuum flushes prior to extended aeration. That should rapidly pull the dissolved gas from the polymer matrix and drop residuals below two PPM.",
+                            "translation": "Nuestros datos de desprendimiento de ASTM F88 indican que nuestra fuerza de sellado tiene un margen de seguridad del trescientos por ciento sobre la línea base. Correré un lote piloto con cinco purgas de vacío con nitrógeno antes de la aireación extendida. Eso debería extraer rápidamente el gas disuelto de la matriz de polímero y reducir los residuos por debajo de dos PPM.",
+                            "targetTerms": [
+                                "ASTM F-eighty-eight peel data",
+                                "safety margin",
+                                "nitrogen vacuum flushes",
+                                "drop residuals"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The device is clean because it was boiled.",
+                            "native": "The device achieved a validated Sterility Assurance Level of ten to the minus six under ISO 11135.",
+                            "explanation": "Sterility in biomedical engineering is an exact statistical probability ($10^{-6}$), validated using resistant biological spore indicators rather than generic cleaning."
+                        },
+                        {
+                            "school": "The plastic does not poison the patient.",
+                            "native": "The material demonstrated zero cytotoxicity under ISO 10993-5 and met hemocompatibility criteria.",
+                            "explanation": "Biocompatibility encompasses specific standardized toxicology endpoints (cytotoxicity, hemocompatibility, sensitization) established through formal chemical and biological assays."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Sterility Assurance Level (SAL)",
+                        "ipa": "/stəˈrɪl.ə.ti əˈʃʊər.əns ˈlɛv.əl/",
+                        "es": "Nivel de Aseguramiento de la Esterilidad (SAL)",
+                        "category": "Sterilization Science",
+                        "definition": "The statistical probability of a single viable microorganism remaining on a medical device following a validated sterilization process, universally mandated as $10^{-6}$ for invasive devices.",
+                        "collocations": [
+                            "achieve an SAL of 10^-6",
+                            "overkill sterilization cycle",
+                            "biological indicator validation",
+                            "SAL terminal sterilization"
+                        ],
+                        "falseFriends": "'Assurance' is not a warranty or guarantee; it is a mathematical statistical confidence level.",
+                        "nativeUsage": "The autoclave cycle was engineered to deliver a Sterility Assurance Level of ten to the minus six against Geobacillus stearothermophilus spores."
+                    },
+                    {
+                        "term": "ISO 10993 Biocompatibility",
+                        "ipa": "/ˌaɪ.ɛsˈoʊ ˌwʌn ˌoʊ ˌnaɪn ˌnaɪn ˈθriː ˌbaɪ.oʊ.kəmˌpæt.əˈbɪl.ə.ti/",
+                        "es": "Biocompatibilidad según ISO 10993",
+                        "category": "Biomaterials Toxicology",
+                        "definition": "The international suite of standards defining the biological evaluation of medical devices across endpoints such as cytotoxicity, sensitization, irritation, and hemocompatibility.",
+                        "collocations": [
+                            "conduct ISO 10993 biological testing",
+                            "categorize by contact duration",
+                            "extractables and leachables characterization",
+                            "biocompatibility matrix"
+                        ],
+                        "falseFriends": "Biocompatibility is not a single test; it is an organized battery of biological risk assessments tailored to device contact type.",
+                        "nativeUsage": "Under ISO 10993 guidelines, the implantable catheter underwent 12-week subcutaneous implantation testing in animal models."
+                    },
+                    {
+                        "term": "Ethylene Oxide (EtO) Sterilization",
+                        "ipa": "/ˈɛθ.ə.liːn ˈɒk.saɪd ˌstɛr.əl.aɪˈzeɪ.ʃən/",
+                        "es": "Esterilización por Óxido de Etileno (EtO)",
+                        "category": "Sterilization Modalities",
+                        "definition": "A low-temperature gas sterilization process utilizing toxic ethylene oxide gas to alkylate microbial DNA, widely used for moisture- and heat-sensitive polymers.",
+                        "collocations": [
+                            "validate an EtO cycle per ISO 11135",
+                            "post-sterilization EtO aeration",
+                            "monitor EtO residual limits",
+                            "Bacillus atrophaeus biological indicator"
+                        ],
+                        "falseFriends": "EtO is a volatile, hazardous carcinogen requiring strict gas scrubbing and aeration, unlike inert autoclaving.",
+                        "nativeUsage": "Because the endoscopic camera lens would melt in steam, the device was sterilized using a validated Ethylene Oxide cycle."
+                    },
+                    {
+                        "term": "Sterile Barrier System (ISO 11607)",
+                        "ipa": "/ˈstɛr.əl ˈbær.i.ər ˈsɪs.təm/",
+                        "es": "Sistema de Barrera Estéril (ISO 11607)",
+                        "category": "Packaging Engineering",
+                        "definition": "The primary packaging enclosure (such as a heat-sealed Tyvek pouch or thermoformed blister) that prevents microbial ingress and maintains product sterility up to the operating field.",
+                        "collocations": [
+                            "validate the sterile barrier system",
+                            "perform dye penetration testing",
+                            "verify seal peel strength (ASTM F88)",
+                            "accelerated aging shelf-life study"
+                        ],
+                        "falseFriends": "The sterile barrier system is the primary envelope maintaining sterile containment; secondary cardboard cartons are protective shipping packaging.",
+                        "nativeUsage": "The ISO 11607 audit examined our automated Tyvek heat-sealing process parameters to ensure continuous hermetic seal integrity."
+                    },
+                    {
+                        "term": "Extractables & Leachables (E&L)",
+                        "ipa": "/ɪkˈstræk.tə.bəlz ənd ˈliː.tʃə.bəlz/",
+                        "es": "Sustancias Extraíbles y Lixiviables (E&L)",
+                        "category": "Chemical Characterization",
+                        "definition": "Chemical compounds that can be forced out of a medical polymer under aggressive laboratory solvents (extractables) or that migrate into clinical fluids under physiological conditions (leachables).",
+                        "collocations": [
+                            "perform GC-MS extractables testing",
+                            "quantify toxic leachables",
+                            "toxicological risk threshold (AET)",
+                            "leachables profile in blood"
+                        ],
+                        "falseFriends": "Extractables represent worst-case potential chemicals; leachables are the actual compounds that enter the patient's bloodstream.",
+                        "nativeUsage": "The toxicologist analyzed the LC-MS extractables report to ensure plasticizer leachables remained well below toxicological safety margins."
+                    },
+                    {
+                        "term": "Cytotoxicity Assay",
+                        "ipa": "/ˌsaɪ.toʊ.tɒkˈsɪs.ə.ti ˈæs.eɪ/",
+                        "es": "Ensayo de Citotoxicidad (ISO 10993-5)",
+                        "category": "In Vitro Testing",
+                        "definition": "A primary in vitro screening test measuring whether chemicals eluting from a medical material cause cellular death, membrane lysis, or inhibition of cell growth in cell cultures.",
+                        "collocations": [
+                            "perform an MTT cytotoxicity assay",
+                            "pass ISO 10993-5 criteria",
+                            "demonstrate >70% cell viability",
+                            "L929 fibroblast cell line"
+                        ],
+                        "falseFriends": "'Assay' means a formal quantitative chemical or biological measurement, not a written essay or trial attempt.",
+                        "nativeUsage": "The newly synthesized silicone rubber passed the MTT cytotoxicity assay with ninety-four percent cell viability."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Selecting ISO 10993 Biological Endpoints for an Implant",
+                        "botQuestion": "Your engineering team in Tijuana is designing a bio-compatible titanium and PEEK spinal fusion cage intended to be permanently implanted between lumbar vertebrae. Under ISO 10993-1:2018 guidelines, identify the Category and Contact Duration. Name at least four mandatory biological testing endpoints that must be evaluated in your biological safety assessment.",
+                        "requiredKeywords": [
+                            "implant",
+                            "permanent",
+                            "cytotoxicity",
+                            "sensitization",
+                            "implantation",
+                            "genotoxicity"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on! The device falls under Category: Implant Device, Contact: Tissue/Bone, Duration: Permanent (>30 days). Mandatory biological endpoints include: 1) Cytotoxicity (ISO 10993-5); 2) Sensitization (ISO 10993-10); 3) Irritation / Intracutaneous Reactivity (ISO 10993-23); 4) Material-mediated Pyrogenicity & Systemic Toxicity (ISO 10993-11); 5) Genotoxicity (ISO 10993-3); and 6) Implantation local tissue effects (ISO 10993-6).",
+                        "feedbackRetry": "Identify the anatomical category (Implant) and duration (>30 days = Permanent). Then list the core ISO 10993 tests required for permanent tissue implants (e.g., cytotoxicity, sensitization, genotoxicity, implantation)."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Calculating Accelerated Aging Parameters for Sterile Packaging",
+                        "botQuestion": "You must establish a 3-year (1,095 days) sterile packaging shelf-life claim for a sterile catheter sealed in a Tyvek pouch. Using the standard ASTM F1980 Arrhenius model with Q10 = 2.0, ambient room temperature TR = 22°C, and accelerated testing chamber temperature TAA = 52°C, calculate the Accelerated Aging Factor (AAF) and determine the exact number of days the pouches must remain in the 52°C chamber.",
+                        "requiredKeywords": [
+                            "aaf",
+                            "arrhenius",
+                            "q10",
+                            "days",
+                            "chamber",
+                            "temperature"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Brilliant biomedical math! Delta-T = 52°C - 22°C = 30°C. AAF = Q10^(Delta-T / 10) = 2.0^(30 / 10) = 2.0^3 = 8.0. Therefore, the aging process runs 8 times faster in the chamber. Accelerated Aging Days = 1,095 days / 8.0 = 136.9 days (rounded up to 137 days). After 137 days at 52°C, the pouches can be tested for seal strength and dye penetration to legally support a 3-year shelf-life claim.",
+                        "feedbackRetry": "Apply the Arrhenius acceleration formula: AAF = Q10^((TAA - TR)/10). Compute Delta-T (52 - 22 = 30), raise 2 to that exponent power (2^3 = 8), and divide the 1,095 real days by your calculated AAF."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What does an SAL of 10^-6 mathematically signify in medical device sterilization?",
+                        "options": [
+                            "99.9% of all bacteria have been washed away",
+                            "There is no more than a one-in-a-million probability of a viable microorganism being present on a sterilized device",
+                            "The sterilization cycle takes exactly 10 minutes and 6 seconds",
+                            "The package can only be opened six times"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Why is Ethylene Oxide (EtO) preferred over moist heat steam for sterilizing modern vascular catheters?",
+                        "options": [
+                            "EtO gas is completely non-toxic and can be inhaled safely",
+                            "Catheters contain delicate, low-melting-point polymers and electronics that would melt or warp under high-temperature steam autoclaving",
+                            "Steam autoclaving requires five weeks to complete",
+                            "EtO makes plastics transparent"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Under ISO 10993-5, what quantitative result in an MTT assay indicates that a material extract is cytotoxic?",
+                        "options": [
+                            "A reduction in cell viability of greater than 30%",
+                            "A cell growth increase of 500%",
+                            "The presence of oxygen bubbles in the vial",
+                            "The test taking longer than two hours"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is the primary objective of dye penetration testing (ASTM F1929) on a sterile barrier pouch?",
+                        "options": [
+                            "To dye the catheter a bright blue color for visibility during surgery",
+                            "To visually identify micro-channel leaks or voids across the heat-seal flange that could compromise sterile barrier integrity",
+                            "To measure the optical transparency of the plastic film",
+                            "To test whether the ink on the package barcode is waterproof"
+                        ],
+                        "answer": 1
+                    }
+                ]
             },
             {
                 "id": "health-m3",
                 "title": "Design Controls: DHF, DMR, DHR and Risk Management (ISO 14971)",
-                "titleES": "Controles de Diseño: DHF, DMR, DHR y Gestión de Riesgo",
+                "titleES": "Controles de Diseño: DHF, DMR, DHR y Gestión de Riesgos (ISO 14971)",
                 "icon": "fa-solid fa-folder-tree",
-                "readings": []
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "health-m3-r1",
+                        "title": "Medical Device Design Controls: DHF Waterfall, ISO 14971 Risk Management & DMR/DHR Architecture",
+                        "duration": "15 min",
+                        "content": "\n# Medical Device Design Controls: DHF Waterfall, ISO 14971 Risk Management & DMR/DHR Architecture\n\nIn commercial product design, modifying a CAD drawing, switching a resin supplier, or tweaking software code can often be executed with minimal administrative friction. In medical device engineering, however, undocumented design changes or informal prototyping are federal violations under **FDA 21 CFR 820.30 (Design Controls)**. A medical product’s technical documentation is legally as important as the physical device itself—in the eyes of the FDA and European notified bodies, **\"If it isn't documented, it never happened.\"**\n\nMastering medical engineering requires understanding the **Design Controls Waterfall**, maintaining the regulatory \"Holy Trinity\" of technical dossiers (**DHF, DMR, and DHR**), and applying the rigorous hazard-mitigation principles of **ISO 14971:2019 (Risk Management)**.\n\n---\n\n## 1. The Design Controls Waterfall Architecture\n\nThe FDA Design Controls framework governs product development through a structured, stage-gated verification and validation waterfall:\n\n```\nFDA Design Controls Waterfall:\n[User Needs] ========================================> [Design Validation]\n     |                                                          ^\n     v                                                          | (Did we build the RIGHT device?)\n[Design Inputs] ===================> [Design Verification]      |\n     |                                     ^                    |\n     v                                     | (Did we build the  |\n[Design Process]                           |  device RIGHT?)    |\n     |                                     |                    |\n     v                                     |                    |\n[Design Outputs] --------------------------+                    |\n     |                                                          |\n     v                                                          |\n[Medical Device] -----------------------------------------------+\n```\n\n### 1. User Needs\nHigh-level clinical, operational, and patient expectations expressed in qualitative human language (e.g., *\"The surgical stapler must be easy to grip with one hand and provide audible confirmation of staple formation in a noisy operating room\"*).\n\n### 2. Design Inputs\nThe translation of user needs into rigorous, unambiguous, and mathematically verifiable engineering specifications:\n- *Engineering Translation*: *\"The actuation handle squeeze force shall not exceed 35.0 N; the audible feedback mechanism shall generate a minimum sound pressure level of 65 dBA at a distance of 1.0 meter.\"*\n\n### 3. Design Outputs\nThe physical drawings, schematics, material specifications, assembly procedures, and source code generated by engineering that define the finished device. Design outputs must be traceable back to design inputs.\n\n### 4. Design Verification vs. Design Validation\nA critical distinction scrutinized in every regulatory audit:\n- **Design Verification**: Answers *\"Did we build the device right?\"* Confirms through objective bench testing, tensile measurements, electrical hipot tests, and dimensional inspections that Design Outputs satisfy Design Inputs.\n- **Design Validation**: Answers *\"Did we build the right device?\"* Evaluates through simulated clinical use, human factors usability trials (IEC 62366), and clinical investigations whether the finished device satisfies the original clinical User Needs under realistic operating conditions.\n\n---\n\n## 2. The Three Regulatory Dossiers: DHF, DMR, and DHR\n\nMedical device compliance hinges upon three distinct, tightly coupled documentation repositories:\n\n| Dossier | Regulatory Definition | Core Question Answered | Contents |\n| :--- | :--- | :--- | :--- |\n| **DHF (Design History File)** | 21 CFR 820.30(j) | *\"How was the device designed and verified?\"* | Design plans, user needs, input specs, verification/validation test reports, risk management files, design review minutes, traceability matrix. |\n| **DMR (Device Master Record)** | 21 CFR 820.181 | *\"How is the device manufactured?\"* | The complete \"recipe\": CAD drawings, BOM, cleanroom work instructions, packaging specs, sterilization parameters, QA acceptance criteria. |\n| **DHR (Device History Record)** | 21 CFR 820.184 | *\"What happened to this specific production lot?\"* | The individual birth certificate: traveler routing sheets, component lot numbers, operator sign-offs, inspection test logs, sterilization release certificate. |\n\n### The Traceability Matrix\nThe backbone of the DHF is the **Bi-Directional Traceability Matrix**. It maps every User Need $leftrightarrow$ Design Input $leftrightarrow$ Design Output $leftrightarrow$ Verification Test Protocol $leftrightarrow$ Validation Report $leftrightarrow$ ISO 14971 Risk ID. If a single requirement lacks documented verification, the DHF cannot be closed for commercial release.\n\n---\n\n## 3. ISO 14971:2019 Risk Management Lifecycle\n\nPatient risk cannot be eliminated; it must be systematically identified, quantified, and reduced to an acceptable level through the **ISO 14971:2019** lifecycle:\n\n```\nISO 14971 Risk Assessment Lifecycle:\n[Hazard Identification] ---> [Sequence of Events] ---> [Hazardous Situation] ---> [Harm]\n                                                                                   |\n[Post-Market Surveillance] <-- [Overall Risk-Benefit] <-- [Risk Controls (ALARP)] <-+\n```\n\n### The Anatomy of Risk\n- **Hazard**: Potential source of harm (e.g., *Stored high-voltage electrical energy in defibrillator capacitors*).\n- **Hazardous Situation**: Circumstance in which people or property are exposed to a hazard (e.g., *Defibrillator casing cracks, exposing live internal busbars to paramedic's hand*).\n- **Harm**: Physical injury or damage to human health (e.g., *Lethal electrical shock / cardiac arrest*).\n\n### Risk Estimation & The FMEA Hierarchy\nEngineers construct **Design FMEAs (dFMEA)** and **Process FMEAs (pFMEA)** evaluating failure modes:\n- **Severity ($S$)**: 1 (Negligible) to 5 (Catastrophic / Patient Death).\n- **Occurrence ($O$)**: 1 (Improbable) to 5 (Frequent).\n- **Detection ($D$)**: 1 (High detection certainty) to 5 (Undetectable).\n\n### The Hierarchy of Risk Control Options\nISO 14971 mandates that risk controls be implemented in an unbending priority order:\n1. **Inherently Safe Design by Nature**: Physically alter the design to eliminate the hazard entirely (e.g., reduce internal voltage from $120\\ \\text{V}$ to safe low-voltage $12\\ \\text{V DC}$).\n2. **Protective Measures in the Device**: Add automated sensors, physical barriers, or software interlocks (e.g., add optical interlocks that shut off laser emission if the fiber is disconnected).\n3. **Information for Safety (Warnings & Instructions)**: Place warning labels on the chassis and publish contraindications in the Instructions for Use (IFU). *Note: The FDA considers warnings the weakest form of risk reduction.*\n\n---\n\n## 4. Engineering Field Scenario: The DHF-to-DMR Tech Transfer Review\n\nAt a medical device manufacturing facility in Ciudad Juárez transferring a radiofrequency (RF) electrosurgical ablation pencil from an R&D incubator in San Jose:\n\n### The Pre-Transfer Design Review\nBefore serial production can begin in Mexico, the joint engineering team conducted the formal **Design Transfer Review (Phase Gate 5)**.\n\n### The Missing Verification Trace\nDuring the audit of the DHF Traceability Matrix, the QA lead flagged a critical disconnect:\n- **User Need #14**: *\"The surgical pencil shall not overheat during prolonged continuous tissue coagulation.\"*\n- **Design Input #32**: *\"Maximum handpiece grip surface temperature shall not exceed $43.0^\\circ\\text{C}$ during 10 minutes of continuous 60 W RF power delivery into simulated tissue.\"*\n- **The Gap**: The DHF contained early prototyping thermal bench notes from an engineer’s lab notebook, but lacked a formal, approved Verification Test Protocol with sample size justification, calibrated thermal imaging instrumentation, and signed engineering approvals.\n\n### The Engineering Resolution\n1. **Halting DMR Authorization**: The transfer team withheld approval of the Device Master Record (DMR) cleanroom assembly procedures.\n2. **Formal Protocol Execution**: The R&D team drafted a statistically powered verification protocol ($n=32$ handpieces from three distinct pre-production tool runs). The units were subjected to simulated tissue ablation inside an environmental chamber at maximum ambient hospital temperature ($25^\\circ\\text{C}$).\n3. **Statistical Verification**: Surface temperatures peaked at $39.4^\\circ\\text{C} \\pm 1.2^\\circ\\text{C}$, comfortably satisfying the $<43.0^\\circ\\text{C}$ threshold ($C_{pk} = 1.84$).\n4. **Closing the Loop**: The approved verification report was archived in the DHF, the risk mitigation line item in the dFMEA was re-scored to an acceptable risk level, the DMR was signed off, and commercial manufacturing in Ciudad Juárez commenced under full regulatory compliance.\n\n---\n\n> **Key Takeaway**: Design Controls transform medical invention into compliant industrial reality. By linking User Needs to Design Outputs through verifiable traceability, maintaining the integrity of DHF, DMR, and DHR records, and mitigating hazards per ISO 14971, engineers protect both patient lives and commercial regulatory standing.\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Resolving a Design Transfer Discrepancy between San Jose and Ciudad Juárez",
+                    "titleES": "Resolviendo una Discrepancia de Transferencia de Diseño entre San José y Ciudad Juárez",
+                    "scenarioContext": "A Principal R&D Engineer in San Jose and a Manufacturing Engineering Director in Ciudad Juárez reconcile an unverified specification in the Design History File before production sign-off.",
+                    "characters": [
+                        {
+                            "name": "Dr. Nathan Cole",
+                            "role": "Principal R&D Systems Engineer",
+                            "company": "AblationTechnologies (San Jose, CA)"
+                        },
+                        {
+                            "name": "Ing. Rebeca Morales",
+                            "role": "Director of New Product Introduction (NPI)",
+                            "company": "AblationTechnologies Juárez Plant (Chihuahua, MX)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Dr. Nathan Cole",
+                            "text": "Rebeca, our executive team wants to authorize the commercial production release for the Gen-Three RF ablation pencil this Friday. I understand your manufacturing team in Juárez has paused the Device Master Record approval. What is holding up the sign-off?",
+                            "translation": "Rebeca, nuestro equipo ejecutivo quiere autorizar la liberación de producción comercial para el lápiz de ablación por RF Gen-Tres este viernes. Entiendo que tu equipo de manufactura en Juárez detuvo la aprobación del Device Master Record. ¿Qué está frenando la firma?",
+                            "targetTerms": [
+                                "commercial production release",
+                                "paused the DMR approval",
+                                "holding up the sign-off"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Rebeca Morales",
+                            "text": "Nathan, during our design transfer audit yesterday, we ran a gap analysis on the DHF traceability matrix. Design Input forty-one mandates that the electrode tip retention force must withstand a minimum tensile pull of forty-five Newtons. We cannot find an approved Design Verification report in the DHF to back that up.",
+                            "translation": "Nathan, durante nuestra auditoría de transferencia de diseño ayer, corrimos un análisis de brechas en la matriz de trazabilidad del DHF. El Requerimiento de Entrada 41 exige que la fuerza de retención de la punta del electrodo debe soportar una tracción mínima de cuarenta y cinco Newtons. No encontramos un reporte aprobado de Verificación de Diseño en el DHF que respalde eso.",
+                            "targetTerms": [
+                                "design transfer audit",
+                                "traceability matrix",
+                                "retention force",
+                                "Design Verification report"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. Nathan Cole",
+                            "text": "We performed tensile testing during early prototyping in the lab back in March. The tips held up beyond sixty Newtons without slipping.",
+                            "translation": "Realizamos pruebas de tensión durante el prototipado inicial en el laboratorio en marzo. Las puntas resistieron más de sesenta Newtons sin deslizarse.",
+                            "targetTerms": [
+                                "tensile testing",
+                                "early prototyping",
+                                "held up beyond"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Rebeca Morales",
+                            "text": "Nathan, early feasibility notes in an engineering notebook do not satisfy FDA Part eight-twenty point thirty. The tests were run on 3D-printed prototypes, not on units produced under our validated DMR injection molding processes. If an electrode detaches inside a patient's thoracic cavity during surgery, that is a catastrophic failure mode.",
+                            "translation": "Nathan, las notas de factibilidad inicial en una libreta de ingeniería no cumplen con FDA Parte 820.30. Las pruebas se corrieron en prototipos impresos en 3D, no en unidades producidas bajo nuestros procesos validados de moldeo por inyección del DMR. Si un electrodo se desprende dentro de la cavidad torácica de un paciente durante la cirugía, es un modo de falla catastrófico.",
+                            "targetTerms": [
+                                "feasibility notes",
+                                "validated DMR processes",
+                                "thoracic cavity",
+                                "catastrophic failure mode"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. Nathan Cole",
+                            "text": "You are completely right. Our dFMEA classifies tip detachment as a Severity Five harm. Without statistically valid verification on production-equivalent units, our risk file is legally vulnerable.",
+                            "translation": "Tienes toda la razón. Nuestro dFMEA clasifica el desprendimiento de punta como daño de Severidad Cinco. Sin una verificación estadísticamente válida en unidades equivalentes a producción, nuestro expediente de riesgos es legalmente vulnerable.",
+                            "targetTerms": [
+                                "dFMEA classifies",
+                                "Severity Five harm",
+                                "statistically valid verification",
+                                "legally vulnerable"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Rebeca Morales",
+                            "text": "Exactly. We already molded thirty-two units on our cleanroom validation line. Our quality lab can execute the formal tensile pull protocol on an Instron tester tomorrow morning. Once the data confirms compliance, we will archive the report in the DHF, complete the traceability link, and sign the DMR release by Thursday.",
+                            "translation": "Exactamente. Ya moldeamos treinta y dos unidades en nuestra línea de validación de sala limpia. Nuestro laboratorio de calidad puede ejecutar el protocolo formal de tracción en un probador Instron mañana por la mañana. Una vez que los datos confirmen el cumplimiento, archivaremos el reporte en el DHF, completaremos el vínculo de trazabilidad y firmaremos la liberación del DMR el jueves.",
+                            "targetTerms": [
+                                "cleanroom validation line",
+                                "formal tensile pull protocol",
+                                "traceability link",
+                                "sign the DMR release"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "We tested the prototype in the office and it works.",
+                            "native": "We completed formal Design Verification on production-equivalent units per 21 CFR 820.30.",
+                            "explanation": "Feasibility prototyping does not constitute regulatory verification; testing must be executed against formal protocols using units manufactured under representative DMR conditions."
+                        },
+                        {
+                            "school": "The folder has all the engineering papers.",
+                            "native": "The Design History File (DHF) contains full bi-directional traceability from User Needs to Verification reports.",
+                            "explanation": "In medical audits, documents must be systematically cross-referenced in a structured DHF traceability matrix linking inputs, outputs, risks, and test reports."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Design History File (DHF)",
+                        "ipa": "/dɪˈzaɪn ˈhɪs.tər.i ˌfaɪl/",
+                        "es": "Expediente de Historia del Diseño (DHF)",
+                        "category": "Regulatory Documentation",
+                        "definition": "A formal regulatory dossier required by 21 CFR 820.30(j) demonstrating that the medical device was developed in accordance with approved design plans and design control procedures.",
+                        "collocations": [
+                            "compile the DHF",
+                            "audit the DHF traceability matrix",
+                            "close the DHF for commercial release",
+                            "archive verification protocols in the DHF"
+                        ],
+                        "falseFriends": "The DHF documents the history of how the design was developed; it is distinct from the DMR (which is the recipe for how to build it).",
+                        "nativeUsage": "The FDA investigator reviewed the DHF to verify that all clinical user needs had corresponding design verification test reports."
+                    },
+                    {
+                        "term": "Device Master Record (DMR)",
+                        "ipa": "/dɪˈvaɪs ˈmæs.tər ˌrɛk.ɔːrd/",
+                        "es": "Registro Maestro del Dispositivo (DMR)",
+                        "category": "Manufacturing Controls",
+                        "definition": "The comprehensive compilation of technical specifications, formulations, assembly drawings, cleanroom SOPs, packaging requirements, and QC acceptance criteria needed to manufacture a medical device.",
+                        "collocations": [
+                            "release the DMR for serial production",
+                            "DMR change control order",
+                            "verify drawing revisions in the DMR",
+                            "manufacturing recipe in the DMR"
+                        ],
+                        "falseFriends": "Do not confuse DMR with DHR; the DMR is the blank instruction manual/recipe, while the DHR is the record of an executed batch.",
+                        "nativeUsage": "Any change to the ultrasonic welding horn parameters requires a formal engineering change order to update the DMR."
+                    },
+                    {
+                        "term": "Device History Record (DHR)",
+                        "ipa": "/dɪˈvaɪs ˈhɪs.tər.i ˌrɛk.ɔːrd/",
+                        "es": "Registro Histórico del Dispositivo (DHR)",
+                        "category": "Quality Records",
+                        "definition": "The permanent quality record containing complete manufacturing history, lot numbers, technician sign-offs, inspection results, and sterilization certificates for a specific production batch.",
+                        "collocations": [
+                            "review the DHR prior to lot release",
+                            "archive DHR records",
+                            "trace serial number in the DHR",
+                            "DHR traveler routing sheet"
+                        ],
+                        "falseFriends": "The DHR is specific to one physical batch/serial number, functioning as its individual birth certificate.",
+                        "nativeUsage": "Before the sterile pallets could leave the warehouse, quality assurance reconciled the DHR and verified the EtO sterilization certificate."
+                    },
+                    {
+                        "term": "Design Verification vs. Validation",
+                        "ipa": "/dɪˈzaɪn ˌvɛr.ɪ.fɪˈkeɪ.ʃən ˈvɜː.səs ˌvæl.ɪˈdeɪ.ʃən/",
+                        "es": "Verificación vs. Validación del Diseño",
+                        "category": "Design Controls",
+                        "definition": "Verification proves that design outputs meet design inputs ('Did we build the device right?'); validation proves the finished device satisfies clinical user needs under actual or simulated use ('Did we build the right device?').",
+                        "collocations": [
+                            "differentiate verification from validation",
+                            "execute design verification testing",
+                            "conduct clinical usability validation",
+                            "design controls V&V matrix"
+                        ],
+                        "falseFriends": "Verification is objective technical bench testing; validation requires real or simulated clinical user evaluation.",
+                        "nativeUsage": "Benchtop burst testing satisfied design verification, but simulated human cadaver trials were required for design validation."
+                    },
+                    {
+                        "term": "ISO 14971 Risk Management",
+                        "ipa": "/ˌaɪ.ɛsˈoʊ ˌwʌn ˌfɔːr ˌnaɪn ˌsɛv.ən ˈwʌn/",
+                        "es": "Gestión de Riesgos según ISO 14971",
+                        "category": "Risk Governance",
+                        "definition": "The international standard defining the systematic process for identifying hazards, estimating risk severity and occurrence, implementing controls, and monitoring residual risk throughout a device's lifecycle.",
+                        "collocations": [
+                            "construct an ISO 14971 risk management file",
+                            "execute design FMEA",
+                            "reduce risk to ALARP levels",
+                            "benefit-risk determination"
+                        ],
+                        "falseFriends": "Risk management in medical devices focuses on patient safety and injury prevention, not on commercial financial investments.",
+                        "nativeUsage": "Following ISO 14971 guidelines, the biomedical team added a secondary mechanical interlock to mitigate the risk of unintended needle discharge."
+                    },
+                    {
+                        "term": "Traceability Matrix",
+                        "ipa": "/ˌtreɪ.səˈbɪl.ə.ti ˈmeɪ.trɪks/",
+                        "es": "Matriz de Trazabilidad",
+                        "category": "Quality Engineering",
+                        "definition": "A structured relational table mapping each clinical user need to its engineering design input, design output, risk mitigation, and corresponding verification/validation test report.",
+                        "collocations": [
+                            "populate the traceability matrix",
+                            "bi-directional traceability",
+                            "audit trail across matrix",
+                            "traceability gap analysis"
+                        ],
+                        "falseFriends": "A traceability matrix does not track physical warehouse inventory; it tracks regulatory design documentation linkages.",
+                        "nativeUsage": "The regulatory auditor flagged an incomplete traceability matrix where two software safety requirements had no linked verification test cases."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Translating Qualitative User Needs into Quantifiable Design Inputs",
+                        "botQuestion": "A surgeon focus group provides this user need for an orthopedic surgical drill: 'The drill must be lightweight so surgeon hands do not tire during long spinal fusion surgeries, and it must not get dangerously hot during bone reaming.' As the Lead Systems Engineer, formulate two distinct, measurable, and verifiable Design Inputs based on this feedback.",
+                        "requiredKeywords": [
+                            "mass",
+                            "grams",
+                            "temperature",
+                            "celsius",
+                            "measurable",
+                            "specification"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on engineering translation! Qualitative statements cannot be tested without measurable numbers. Optimal Design Inputs: 1) 'The total mass of the drill handpiece, including rechargeable battery pack, shall not exceed 850 grams (±25 g)'; 2) 'The maximum external housing surface temperature shall not exceed 42.0°C during 15 minutes of continuous reaming at maximum rated torque.' Both specifications establish clear units, testable thresholds, and pass/fail criteria.",
+                        "feedbackRetry": "Remember that Design Inputs must be objectively testable and measurable. Replace 'lightweight' with a specific mass limit in grams or kilograms, and replace 'dangerously hot' with an exact temperature threshold in degrees Celsius over a specified operating time."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Applying ISO 14971 Risk Control Hierarchy",
+                        "botQuestion": "In the dFMEA for an electrosurgical cutting generator, engineers identify a failure mode: an internal relay failure can cause the RF cutting tip to remain energized indefinitely after the surgeon releases the foot pedal (Severity: 5 - Fatal hemorrhage/electrocution). The junior engineer proposes adding a warning label on the generator casing: 'Caution: Release pedal immediately.' Explain why this proposal violates ISO 14971 risk reduction hierarchy, and propose a valid Category 1 or 2 engineering control.",
+                        "requiredKeywords": [
+                            "hierarchy",
+                            "warning",
+                            "inherently safe",
+                            "protective",
+                            "interlock",
+                            "redundant"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Outstanding safety analysis! Under ISO 14971, warning labels (Information for Safety) are the third and lowest-priority risk control; they cannot be used as the primary mitigation for high-severity catastrophic harms when engineering controls are feasible. The engineer must implement a Category 1 or Category 2 control: designing dual redundant micro-relays monitored by independent hardware watchdogs that automatically de-energize the RF output within 20 milliseconds if foot-pedal open-circuit voltage is detected.",
+                        "feedbackRetry": "Review the ISO 14971 three-tier hierarchy: 1) Inherently safe design, 2) Protective measures/interlocks, 3) Information for safety/warnings. Explain why a warning label is unacceptable for a fatal failure mode and describe an engineering control (such as redundant relays or a watchdog circuit)."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "In medical device design controls, what is the fundamental difference between Design Verification and Design Validation?",
+                        "options": [
+                            "Verification is done in software; validation is done in hardware",
+                            "Verification confirms that Design Outputs meet Design Inputs ('Did we build the device right?'); Validation confirms the device meets clinical User Needs ('Did we build the right device?')",
+                            "Verification is conducted by marketing; validation is conducted by finance",
+                            "There is no difference; both terms mean the exact same thing under 21 CFR 820"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Which regulatory document contains the complete 'manufacturing recipe' (drawings, BOM, work instructions, and inspection criteria) for a medical device?",
+                        "options": [
+                            "Design History File (DHF)",
+                            "Device Master Record (DMR)",
+                            "Device History Record (DHR)",
+                            "Commercial Invoice"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "What is a Device History Record (DHR)?",
+                        "options": [
+                            "A marketing brochure describing the history of the company",
+                            "The specific production batch quality record containing traveler sheets, lot numbers, inspection logs, and sterilization release certificates",
+                            "A patent application filed with the international trademark office",
+                            "A spreadsheet calculating annual manufacturing profits"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Under ISO 14971:2019, what is the mandatory top priority when selecting risk control measures?",
+                        "options": [
+                            "Placing warning stickers on the outer packaging",
+                            "Inherently safe design by nature (eliminating the hazard through physical or architectural redesign)",
+                            "Relying on surgeon training programs",
+                            "Purchasing commercial product liability insurance"
+                        ],
+                        "answer": 1
+                    }
+                ]
             },
             {
                 "id": "health-m4",
                 "title": "Medical Electrical Equipment Safety (IEC 60601)",
-                "titleES": "Seguridad de Equipos Eléctricos Médicos (IEC 60601)",
-                "icon": "fa-solid fa-bolt",
-                "readings": []
+                "titleES": "Seguridad en Equipos Electromédicos (Norma IEC 60601)",
+                "icon": "fa-solid fa-bolt-lightning",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "health-m4-r1",
+                        "title": "Electromedical Equipment Safety: IEC 60601-1 Classifications, Leakage Currents & Insulation Barriers",
+                        "duration": "15 min",
+                        "content": "\n# Electromedical Equipment Safety: IEC 60601-1 Classifications, Leakage Currents & Insulation Barriers\n\nMedical electrical equipment operates in close physical proximity to vulnerable patients whose natural physiological defenses are severely compromised. A patient under general anesthesia cannot pull away from an electrical shock; an infant in an incubator has thin, highly conductive skin; and a cardiac catheter directly bypasses the high-impedance barrier of the human stratum corneum ($1,000\\text{--}100,000\\ \\Omega$), providing a direct electrical bridge straight into the heart muscle.\n\nAt cardiac tissue level, an electrical alternating current (AC) as small as **$10\\text{--}50\\ \\mu\\text{A}$ (microamperes)**—a current so miniscule it cannot even be perceived by fingertip touch—can trigger lethal **micro-shock ventricular fibrillation**. \n\nTo guarantee basic safety and essential performance, electrical medical devices worldwide must conform to the **IEC 60601-1** standard series.\n\n---\n\n## 1. Electrical Safety Classes & Applied Parts Classification\n\nIEC 60601-1 establishes rigid electrical taxonomies based on equipment grounding, insulation barriers, and anatomical patient connection:\n\n```\nIEC 60601-1 Applied Part Hierarchy:\n[Type B - Body]             ---> [Type BF - Body Floating]     ---> [Type CF - Cardiac Floating]\nNo direct patient contact         Direct external skin contact       Direct internal cardiac contact\nGeneral medical monitors          ECG leads, ultrasound probes       Cardiac catheters, pacemakers\nPatient leakage: <100 µA          Patient leakage: <100 µA           Patient leakage: <10 µA (Strictest)\n```\n\n### Protection Classes (Chassis Grounding Architecture)\n- **Class I Equipment**: Relies on basic insulation combined with a protective earth ground conductor in the power cord. If basic insulation fails, fault current safely flows to ground, tripping the breaker.\n- **Class II Equipment**: Does not rely on protective earthing. Safety is achieved through **Double Insulation** (basic insulation + supplementary insulation) or **Reinforced Insulation**. Usually marked with the concentric double-square symbol.\n- **Internally Powered Equipment**: Operates entirely from internal chemical batteries with no mains connection during patient use.\n\n### Applied Parts Classifications\nThe **Applied Part** is defined as the physical part of the medical device that comes into deliberate physical contact with the patient during normal use:\n- **Type B (Body)**: Applied parts that are generally not conductive or are connected to earth ground, presenting low physiological risk. *Examples*: Phototherapy lights, MRI patient beds, medical monitors.\n- **Type BF (Body Floating)**: Electrically isolated from the earth ground and chassis. Applied parts that contact the patient’s skin or mucosal tissue externally or conductively. *Examples*: Electrocardiogram (ECG) monitor leads, diagnostic ultrasound transducers, blood pressure cuffs, incubators.\n- **Type CF (Cardiac Floating)**: The most critical classification. Applied parts intended for direct conductive connection to the patient’s **heart muscle** or vascular system. Must provide galvanic isolation with negligible capacitive coupling. *Examples*: Intracardiac electrophysiology mapping catheters, external cardiac pacemakers, defibrillator leads.\n\n---\n\n## 2. Leakage Current Thresholds & The Physics of Micro-Shock\n\nLeakage current is electrical current that flows from active electrical circuits through parasitic capacitance, insulation resistance, or air gaps into chassis ground or the patient’s body:\n\n### Allowable Leakage Current Limits under IEC 60601-1 (AC RMS)\n\n| Leakage Current Parameter | Normal Condition (NC) - Type B/BF | Single Fault Condition (SFC) - Type B/BF | Normal Condition (NC) - Type CF | Single Fault Condition (SFC) - Type CF |\n| :--- | :--- | :--- | :--- | :--- |\n| **Earth Leakage Current** | $500\\ \\mu\\text{A}$ ($5.0\\ \\text{mA}$ in US) | $1,000\\ \\mu\\text{A}$ ($10\\ \\text{mA}$) | $500\\ \\mu\\text{A}$ | $1,000\\ \\mu\\text{A}$ |\n| **Touch / Enclosure Leakage** | $100\\ \\mu\\text{A}$ | $500\\ \\mu\\text{A}$ | $100\\ \\mu\\text{A}$ | $500\\ \\mu\\text{A}$ |\n| **Patient Leakage Current** | $100\\ \\mu\\text{A}$ | $500\\ \\mu\\text{A}$ | **$10\\ \\mu\\text{A}$** | **$50\\ \\mu\\text{A}$** |\n| **Patient Auxiliary Current** | $100\\ \\mu\\text{A}$ | $500\\ \\mu\\text{A}$ | **$10\\ \\mu\\text{A}$** | **$50\\ \\mu\\text{A}$** |\n\nNotice the extreme strictness of Type CF: in Normal Condition, patient leakage current cannot exceed **$10\\ \\mu\\text{A}$**! Achieving this requires ultra-low-capacitance medical-grade isolation transformers ($<10\\ \\text{pF}$ inter-winding capacitance) and optical/magnetic digital isolation barriers.\n\n---\n\n## 3. Means of Protection (MOP): MOPP vs. MOOP Insulation Barriers\n\nIEC 60601-1 evaluates insulation barriers according to whom they protect:\n- **MOOP (Means of Operator Protection)**: Protects hospital staff from electric shock. Requires standard industrial creepage and clearance distances based on IEC 60950 / 62368.\n- **MOPP (Means of Patient Protection)**: Protects vulnerable patients. Demands significantly larger insulation barriers, higher dielectric withstand voltages, and twice the creepage distance.\n\n### MOPP Isolation Requirements (for 250 V AC Mains Working Voltage)\n- **$1 \\times \\text{MOPP}$**: Basic insulation barrier capable of withstanding $1,500\\ \\text{V AC}$ dielectric test for 60 seconds; minimum creepage distance of $4.0\\ \\text{mm}$.\n- **$2 \\times \\text{MOPP}$**: Double or reinforced insulation barrier capable of withstanding **$4,000\\ \\text{V AC}$ dielectric withstand** test; minimum creepage distance of **$8.0\\ \\text{mm}$** across PCB tracks and transformer bobbins.\n\n```\nPCB Isolation Barrier Layout:\nMains High-Voltage Domain (240 VAC)       Patient Floating Isolated Domain (Type CF)\n[ Live / Neutral Traces ]                  [ Isolated Sensor Traces ]\n             |                                          |\n             |<------- 8.0 mm Creepage Distance ------->|\n             |       (Slot routed through PCB)          |\n             |                                          |\n        +----+----+                                +----+----+\n        | Primary | === Medical Transformer =====> |Secondary|\n        +----+----+     (4,000 VAC Withstand)      +----+----+\n```\n\n### Creepage vs. Clearance\n- **Clearance**: The shortest physical distance through **line-of-sight air** between two conductive conductors. Prevents air ionization and dielectric flashover sparking.\n- **Creepage**: The shortest path along the **surface of an insulating material** (such as a fiberglass FR4 PCB). Tracks must be wide enough to prevent surface conductive tracking caused by dust, humidity, or chemical condensation.\n\n---\n\n## 4. Engineering Field Scenario: Mitigating Dielectric Flashover on an ECG Front-End\n\nAt a medical electronics design center in Guadalajara developing an 8-channel hospital patient vital signs monitor:\n\n### The Defibrillation-Proof Compliance Crisis\nUnder **IEC 60601-2-27**, patient monitoring applied parts must be **Defibrillation-Proof (marked with a paddle symbol alongside Type CF)**. When a crashing patient receives a $360\\ \\text{Joule}$ emergency defibrillator shock ($5,000\\ \\text{V}$ pulse across the chest), the ECG lead wires pick up this massive transient. The monitor must not only survive the pulse, but prevent hazardous energy from arching back into the patient or damaging the sensitive analog-to-digital converters.\n\n### The Lab Failure\nDuring type testing at an accredited NRTL laboratory, the prototype ECG board experienced catastrophic dielectric breakdown:\n- A high-voltage blue electrical arc jumped across an optocoupler on the PCB during the $5,000\\ \\text{V}$ defibrillator pulse test.\n- The analog front-end (AFE) multiplexer chip was instantly vaporized, violating the basic safety and essential performance mandates.\n\n### The Engineering Redesign\n1. **PCB Slot Milling**: Engineers routed a physical $2.0\\ \\text{mm}$ wide through-hole air slot directly beneath the optocouplers, converting the PCB surface creepage path into an open air-gap clearance, increasing dielectric breakdown threshold from $3,000\\ \\text{V}$ to $>6,500\\ \\text{V}$.\n2. **Defibrillation Protection Circuitry**:\n   - High-energy **Gas Discharge Tubes (GDT)** with sparkover ratings of $90\\ \\text{V}$ were placed directly at the patient connector inlet to shunt transient lightning-like surge currents to chassis ground.\n   - Fast-acting series current-limiting ceramic power resistors ($1.0\\ \\text{k}\\Omega, 2\\ \\text{W}$) paired with ultra-low-leakage silicon transient voltage suppression (TVS) diodes clamped the residual voltage reaching the AFE to under $12\\ \\text{V}$.\n3. **Re-Test & Verification**: The redesigned board absorbed five consecutive $5,000\\ \\text{V}$ defibrillator discharges across all lead pairs. The ECG trace recovered within 2.5 seconds (well within the 5.0-second limit), and patient leakage current measured at a remarkable **$4.2\\ \\mu\\text{A}$**, earning full IEC 60601-1/2-27 certification.\n\n---\n\n> **Key Takeaway**: Electromedical engineering demands uncompromising physical and electrical insulation rigor. By understanding the micro-shock vulnerability of Type CF applied parts, enforcing $2 \\times \\text{MOPP}$ creepage/clearance barriers ($8\\ \\text{mm} / 4,000\\ \\text{V AC}$), and implementing robust defibrillation protection, engineers ensure patient safety in critical healthcare environments.\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Diagnosing Patient Leakage Current Failures in an Ultrasound Console",
+                    "titleES": "Diagnosticando Fallas de Corriente de Fuga de Paciente en una Consola de Ultrasonido",
+                    "scenarioContext": "A Lead Electrical Safety Engineer in Guadalajara and a Medical Systems Compliance Officer in Boston analyze out-of-spec patient leakage currents on a Type BF diagnostic ultrasound probe.",
+                    "characters": [
+                        {
+                            "name": "Hannah Clarke",
+                            "role": "Principal Medical Safety Compliance Engineer",
+                            "company": "AcuWave Imaging (Boston, MA)"
+                        },
+                        {
+                            "name": "Ing. Rodrigo Téllez",
+                            "role": "Hardware Engineering Lead",
+                            "company": "AcuWave R&D Center (Guadalajara, Jalisco)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Hannah Clarke",
+                            "text": "Rodrigo, our safety test lab just completed the IEC sixty-six-zero-one testing on the new curved-array transducer. Under single fault condition with mains voltage on the applied part, patient leakage current spiked to two hundred and eighty microamperes. That breaches our one hundred microampere ceiling for Type BF equipment.",
+                            "translation": "Rodrigo, nuestro laboratorio de pruebas de seguridad acaba de completar las pruebas de IEC 60601 en el nuevo transductor de matriz curva. Bajo condición de primera falla con voltaje de red en la parte aplicable, la corriente de fuga de paciente se disparó a 280 microamperios. Eso supera nuestro límite de 100 microamperios para equipo Tipo BF.",
+                            "targetTerms": [
+                                "safety test lab",
+                                "IEC sixty-six-zero-one",
+                                "single fault condition",
+                                "patient leakage current"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Rodrigo Téllez",
+                            "text": "That is unexpected. Our DC isolation resistance across the transducer probe housing measured above fifty megohms. Where is that alternate current leakage path originating?",
+                            "translation": "Eso es inesperado. Nuestra resistencia de aislamiento de corriente directa a través de la carcasa de la sonda del transductor midió más de cincuenta megaohmios. ¿De dónde se origina esa trayectoria alterna de fuga de corriente?",
+                            "targetTerms": [
+                                "DC isolation resistance",
+                                "transducer probe housing",
+                                "alternate current leakage path"
+                            ]
+                        },
+                        {
+                            "speaker": "Hannah Clarke",
+                            "text": "Remember that the IEC leakage test uses a two-hundred-and-forty volt AC mains frequency signal. At sixty Hertz, DC resistance is irrelevant; capacitive coupling across the coaxial cable bundle dominates the impedance.",
+                            "translation": "Recuerda que la prueba de fuga de IEC utiliza una señal de frecuencia de red de 240 voltios de CA. A sesenta Hertz, la resistencia de CC es irrelevante; el acoplamiento capacitivo a través del haz de cable coaxial domina la impedancia.",
+                            "targetTerms": [
+                                "mains frequency signal",
+                                "DC resistance is irrelevant",
+                                "capacitive coupling",
+                                "dominates the impedance"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Rodrigo Téllez",
+                            "text": "Of course. The transducer harness bundles one hundred and twenty-eight micro-coaxial lines inside a single shielded sleeve over a length of two point two meters. The parasitic capacitance between the coaxial shields and the patient-contacting probe acoustic lens must be forming a low-impedance capacitive bridge.",
+                            "translation": "Por supuesto. El arnés del transductor agrupa 128 líneas microcoaxiales dentro de una sola funda blindada a lo largo de 2.2 metros. La capacitancia parásita entre los blindajes coaxiales y la lente acústica de la sonda en contacto con el paciente debe estar formando un puente capacitivo de baja impedancia.",
+                            "targetTerms": [
+                                "micro-coaxial lines",
+                                "parasitic capacitance",
+                                "acoustic lens",
+                                "capacitive bridge"
+                            ]
+                        },
+                        {
+                            "speaker": "Hannah Clarke",
+                            "text": "Exactly. How can we modify the hardware layout without compromising acoustic penetration and signal-to-noise ratio?",
+                            "translation": "Exactamente. ¿Cómo podemos modificar la distribución de hardware sin comprometer la penetración acústica y la relación señal-ruido?",
+                            "targetTerms": [
+                                "modify the hardware layout",
+                                "acoustic penetration",
+                                "signal-to-noise ratio"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Rodrigo Téllez",
+                            "text": "We can insert an internal Faraday foil shield between the piezo-crystal array and the RTV silicone lens, driving the shield with an active guard amplifier referenced to the isolated secondary ground. Furthermore, we will increase the creepage barrier on the PCB connector from four to eight millimeters to ensure full two-MOPP isolation. That will reduce patient leakage below forty microamps.",
+                            "translation": "Podemos insertar un blindaje interno de lámina de Faraday entre la matriz de cristales piezoeléctricos y la lente de silicón RTV, excitando el blindaje con un amplificador de guarda activo referenciado a la tierra secundaria aislada. Además, incrementaremos la barrera de fuga en el conector del PCB de cuatro a ocho milímetros para asegurar aislamiento total de dos MOPP. Eso reducirá la fuga de paciente por debajo de cuarenta microamperios.",
+                            "targetTerms": [
+                                "Faraday foil shield",
+                                "active guard amplifier",
+                                "creepage barrier",
+                                "two-MOPP isolation"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "The device is safe because the plastic case does not conduct electricity.",
+                            "native": "The equipment provides two Means of Patient Protection (2x MOPP) with eight millimeters of creepage distance.",
+                            "explanation": "In medical electrical certification, safety is not an assumption about plastic; it is quantified by formal MOPP dielectric breakdown thresholds and measured creepage distances."
+                        },
+                        {
+                            "school": "A small shock of fifty microamps is harmless.",
+                            "native": "An alternating current of fifty microamperes directly entering cardiac tissue can induce fatal ventricular fibrillation.",
+                            "explanation": "The phenomenon of micro-shock means that currents imperceptible on the skin are lethal when conducted directly to cardiac muscle, requiring strict Type CF limits."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "IEC 60601-1 Standard",
+                        "ipa": "/ˌaɪ.iːˈsiː ˌsɪks ˌoʊ ˌsɪks ˌoʊ ˈwʌn/",
+                        "es": "Norma de Seguridad Electromédica IEC 60601-1",
+                        "category": "Electrical Safety",
+                        "definition": "The globally recognized technical standard establishing basic safety and essential performance requirements for medical electrical equipment.",
+                        "collocations": [
+                            "comply with IEC 60601-1",
+                            "type testing per 60601",
+                            "collateral standards (60601-1-2 EMC)",
+                            "essential performance criteria"
+                        ],
+                        "falseFriends": "IEC 60601-1 is specific to medical electrical devices; consumer electronics follow generic IEC 62368 safety standards.",
+                        "nativeUsage": "The biomedical monitor underwent formal NRTL testing to prove compliance with the 4th edition of IEC 60601-1."
+                    },
+                    {
+                        "term": "Type CF Applied Part",
+                        "ipa": "/taɪp ˌsiːˈɛf əˈplaɪd ˌpɑːrt/",
+                        "es": "Parte Aplicable Tipo CF (Flotante Cardíaca)",
+                        "category": "Safety Classifications",
+                        "definition": "The strictest medical applied part classification, designating equipment intended for direct conductive contact with the patient's heart, requiring patient leakage current <10 µA.",
+                        "collocations": [
+                            "designate as Type CF",
+                            "Type CF cardiac catheter",
+                            "maintain <10 µA leakage current",
+                            "galvanic cardiac isolation"
+                        ],
+                        "falseFriends": "CF stands for 'Cardiac Floating' (isolated from ground), not 'Continuous Flow' or 'Cerebrospinal Fluid'.",
+                        "nativeUsage": "Because the intracardiac ablation probe contacts heart ventricles, it must be engineered to meet Type CF leakage limits."
+                    },
+                    {
+                        "term": "Means of Patient Protection (MOPP)",
+                        "ipa": "/miːnz əv ˈpeɪ.ʃənt prəˈtɛk.ʃən /ˌɛm.oʊ.piːˈpiː/",
+                        "es": "Medio de Protección del Paciente (MOPP)",
+                        "category": "Insulation Systems",
+                        "definition": "A specialized electrical insulation barrier, creepage distance, and air clearance designed specifically to protect vulnerable patients from hazardous mains voltages.",
+                        "collocations": [
+                            "satisfy 2x MOPP requirements",
+                            "4,000 VAC MOPP dielectric test",
+                            "8.0 mm creepage for 2x MOPP",
+                            "MOPP vs MOOP barriers"
+                        ],
+                        "falseFriends": "MOPP standards are twice as strict as MOOP (Means of Operator Protection) standards regarding breakdown voltage and spacing.",
+                        "nativeUsage": "The power supply was engineered with double isolation transformers to deliver two Means of Patient Protection."
+                    },
+                    {
+                        "term": "Patient Leakage Current",
+                        "ipa": "/ˈpeɪ.ʃənt ˈliː.kɪdʒ ˌkɜːr.ənt/",
+                        "es": "Corriente de Fuga de Paciente",
+                        "category": "Electrical Testing",
+                        "definition": "Electrical current flowing unintentionally from the applied parts through the patient’s body to ground, or flowing from external mains voltage on the patient into the applied part.",
+                        "collocations": [
+                            "measure patient leakage current",
+                            "single fault condition leakage",
+                            "micro-shock hazard threshold",
+                            "Type BF 100 µA limit"
+                        ],
+                        "falseFriends": "Leakage current is not a short circuit; it is stray capacitive or resistive current that flows even in a functioning device.",
+                        "nativeUsage": "The safety analyzer detected 140 microamps of patient leakage current under single-fault conditions, failing the Type BF test."
+                    },
+                    {
+                        "term": "Creepage & Clearance",
+                        "ipa": "/ˈkriː.pɪdʒ ənd ˈklɪər.əns/",
+                        "es": "Línea de Fuga (Creepage) y Distancia de Aislamiento en Aire (Clearance)",
+                        "category": "PCB Layout",
+                        "definition": "Clearance is the shortest path through air between two conductors; Creepage is the shortest distance along the surface of the solid insulating material.",
+                        "collocations": [
+                            "maintain 8 mm creepage across mains",
+                            "mill PCB slots to increase creepage",
+                            "clearance distance in air",
+                            "pollution degree 2 calculations"
+                        ],
+                        "falseFriends": "'Creepage' is surface tracking distance, not physical movement or metal deformation over time.",
+                        "nativeUsage": "The hardware engineer cut an air slot between the high-voltage primary and isolated secondary traces to ensure adequate creepage."
+                    },
+                    {
+                        "term": "Essential Performance",
+                        "ipa": "/ɪˈsɛn.ʃəl pərˈfɔːr.məns/",
+                        "es": "Rendimiento Esencial",
+                        "category": "Regulatory Safety",
+                        "definition": "Performance of a medical device whose loss or degradation beyond manufacturer-specified limits results in an unacceptable risk to the patient or operator.",
+                        "collocations": [
+                            "define essential performance criteria",
+                            "maintain essential performance during EMC",
+                            "loss of essential performance",
+                            "clinical risk determination"
+                        ],
+                        "falseFriends": "Essential performance is a formal regulatory concept under IEC 60601-1, not general marketing performance claims.",
+                        "nativeUsage": "During high-field RF immunity testing, the infusion pump maintained its essential performance by dispensing fluid within ±5% of target rate."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Calculating Creepage and Dielectric Isolation for 2x MOPP",
+                        "botQuestion": "Your team is designing a medical desktop power supply running on 240 V AC nominal mains voltage. The supply powers a patient monitor connected to Type CF ECG leads. Under IEC 60601-1 (250 V working voltage, Pollution Degree 2, Material Group III), what is the minimum required Creepage Distance across the isolation barrier on the PCB, and what AC test voltage must the transformer withstand during a 1-minute dielectric hipot test?",
+                        "requiredKeywords": [
+                            "8.0 mm",
+                            "4,000",
+                            "mopp",
+                            "creepage",
+                            "dielectric",
+                            "withstand"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on! Under IEC 60601-1 for a 250 V working voltage barrier providing 2x MOPP (Double/Reinforced Patient Protection): 1) The minimum Creepage Distance along the PCB surface is exactly 8.0 mm; 2) The dielectric withstand test requires the transformer insulation barrier to survive 4,000 V AC RMS for 60 seconds with zero dielectric flashover.",
+                        "feedbackRetry": "Review the IEC 60601-1 Table for 2x MOPP at 250 V working voltage: remember that 2x MOPP doubles basic insulation requirements, demanding 8.0 mm of creepage and a 4,000 V AC dielectric test."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Mitigating Capacitive Leakage in High-Frequency Surgical Systems",
+                        "botQuestion": "An electrophysiology recording console fails its Type CF patient leakage test: the leakage current measures 8.5 µA in Normal Condition (passing the 10 µA limit), but surges to 72 µA in Single Fault Condition (exceeding the 50 µA SFC limit). The circuit uses an isolated medical DC-DC converter. Explain how parasitic capacitance across the DC-DC barrier causes this failure at 60 Hz mains frequency, and propose a hardware solution.",
+                        "requiredKeywords": [
+                            "capacitance",
+                            "parasitic",
+                            "capacitive",
+                            "isolation",
+                            "barrier",
+                            "choke"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Brilliant electrical safety diagnosis! At 60 Hz mains frequency ($X_c = 1 / (2\\pi f C)$), even tiny parasitic inter-winding capacitance (e.g., 50–100 pF) across the DC-DC transformer couples substantial AC leakage current directly from primary ground onto the floating secondary patient leads during single fault condition (loss of earth ground). The hardware solution requires replacing the DC-DC converter with an ultra-low-capacitance medical-grade barrier (<10 pF) or incorporating an active common-mode rejection guard shield and high-frequency common-mode choke.",
+                        "feedbackRetry": "Recall that alternating current traverses capacitive barriers: $I = V / X_c = V \\times 2\\pi f C$. Explain how parasitic capacitance across the transformer windings creates a low-impedance bridge for 60 Hz leakage current, and suggest using a low-capacitance transformer (<10 pF)."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "Under IEC 60601-1, what is the maximum allowable patient leakage current for a Type CF applied part under Normal Condition?",
+                        "options": [
+                            "10 microamperes (µA)",
+                            "100 microamperes (µA)",
+                            "500 microamperes (µA)",
+                            "5 milliamperes (mA)"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What does the term '2x MOPP' mandate in medical power supply engineering?",
+                        "options": [
+                            "Two operators must be present in the room at all times",
+                            "Two Means of Patient Protection, requiring 8.0 mm of creepage distance and 4,000 V AC dielectric withstand capability",
+                            "The battery must be recharged twice every day",
+                            "The equipment must have two power cords"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Why is a Type CF classification mandated for intracardiac catheters while Type BF is acceptable for an arm blood pressure cuff?",
+                        "options": [
+                            "Type CF catheters are made out of pure gold",
+                            "An electrical current of only 10 to 50 microamps entering cardiac muscle directly can induce fatal ventricular fibrillation (micro-shock), whereas the skin provides high electrical resistance against external cuff contacts",
+                            "Type CF devices do not require any FDA clearance",
+                            "Blood pressure cuffs are only used on children"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "In printed circuit board design, what is 'Clearance' as defined by IEC 60601-1?",
+                        "options": [
+                            "The price discount granted by the electronics supplier",
+                            "The shortest distance through line-of-sight air between two conductive parts, preventing air ionization and sparking",
+                            "The thickness of the copper foil on the board",
+                            "The time required to clean the board in an ultrasonic bath"
+                        ],
+                        "answer": 1
+                    }
+                ]
             },
             {
                 "id": "health-m5",
                 "title": "Software as a Medical Device (SaMD) & Cybersecurity Protocols",
-                "titleES": "Software como Dispositivo Médico (SaMD) y Ciberseguridad",
-                "icon": "fa-solid fa-laptop-medical",
-                "readings": []
+                "titleES": "Software como Dispositivo Médico (SaMD) y Protocolos de Ciberseguridad",
+                "icon": "fa-solid fa-shield-virus",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "health-m5-r1",
+                        "title": "Software as a Medical Device (SaMD): IEC 62304 Lifecycle, FDA Cybersecurity & Threat Modeling",
+                        "duration": "15 min",
+                        "content": "\n# Software as a Medical Device (SaMD): IEC 62304 Lifecycle, FDA Cybersecurity & Threat Modeling\n\nSoftware has transformed modern healthcare from static physical hardware into intelligent, connected digital ecosystems. Complex machine learning algorithms detect oncological micro-calcifications on mammograms; mobile apps calculate real-time bolus insulin dosages based on continuous glucose monitoring (CGM); and cloud architectures stream telemetry from implanted pacemakers straight to hospital cardiology departments.\n\nHowever, software introduces unprecedented clinical vulnerabilities. An unhandled exception in an embedded infusion pump can stall medication delivery; a buffer overflow in telemetry stacks can allow malicious threat actors to hijack patient therapies; and outdated open-source libraries expose connected hospitals to crippling ransomware.\n\nMedical software engineering is governed by two complementary pillars: the **IEC 62304 lifecycle framework** and the **FDA Section 524B premarket cybersecurity mandates**.\n\n---\n\n## 1. SaMD vs. SiMD & The IMDRF Risk Categorization Framework\n\nThe International Medical Device Regulators Forum (**IMDRF**) divides healthcare software into two legal architectures:\n- **Software in a Medical Device (SiMD)**: Embedded firmware or software that drives, controls, or is part of a physical medical device hardware platform (e.g., firmware driving the motor controller of a patient ventilator).\n- **Software as a Medical Device (SaMD)**: Software intended to be used for medical purposes that performs these functions without being part of a hardware medical device (e.g., an AI-based diagnostic dermatology smartphone application analyzing skin lesion photos).\n\n### The IMDRF SaMD Risk Matrix\nRisk is evaluated along two intersecting dimensions:\n\n| State of Healthcare Situation | Treat or Diagnose | Drive Clinical Management | Inform Clinical Management |\n| :--- | :--- | :--- | :--- |\n| **Critical** (Life-threatening / irreversible) | **Category IV** (Highest Risk) | **Category III** | **Category II** |\n| **Serious** (Severe condition / timely action) | **Category III** | **Category II** | **Category I** |\n| **Non-Serious** (Slowly progressing / minor) | **Category II** | **Category I** | **Category I** (Lowest Risk) |\n\nA software application calculating chemotherapy dosages for critical oncology patients is classified as **Category IV**, requiring extensive clinical validation, rigorous cybersecurity safeguards, and a formal 510(k) or PMA premarket submission.\n\n---\n\n## 2. IEC 62304 Medical Device Software Lifecycle\n\n**IEC 62304** is the international consensus standard governing software development, risk management, and maintenance throughout the software lifecycle.\n\n```\nIEC 62304 Development Lifecycle Architecture:\n[Software Dev Plan] ---> [Software Requirements (SRS)] ---> [Software Architecture]\n                                                                  |\n[System Release]    <--- [System Integration Testing]  <--- [Unit Verification]\n```\n\n### Software Safety Classification (Rule-Based Hierarchy)\nBefore writing a single line of code, the software system and each architectural item must be assigned a **Software Safety Class** based on the severity of potential harm:\n- **Class A**: No injury or damage to health is possible.\n- **Class B**: Non-serious injury is possible.\n- **Class C**: Death or serious injury is possible.\n\n### Development Rigor by Safety Class\nWhile Class A software requires basic requirements and testing, **Class B and Class C software** legally mandate:\n1. Detailed software architectural design documenting interfaces and data flow.\n2. Formal software unit verification (unit testing with quantified code coverage, static code analysis).\n3. Software integration and integration testing.\n4. Rigorous verification of risk control measures implemented in software.\n5. Management of **SOUP (Software of Unknown Provenance)**: Third-party COTS, open-source libraries, or operating systems whose development process was not documented under IEC 62304.\n\n---\n\n## 3. FDA Premarket Cybersecurity & Section 524B Mandates\n\nUnder **Section 524B of the Federal Food, Drug, and Cosmetic Act (FD&C Act)**, the FDA holds statutory authority to refuse to accept any medical device submission that lacks comprehensive cybersecurity engineering.\n\n### Core Cybersecurity Deliverables for FDA Review\n1. **Software Bill of Materials (SBOM)**: A machine-readable inventory (in formats like CycloneDX or SPDX) listing all commercial, third-party, and open-source software components, libraries, and their transitive dependencies. Must identify software package names, exact version numbers, and known **CVE (Common Vulnerabilities and Exposures)** vulnerabilities.\n2. **Threat Modeling via the STRIDE Methodology**: Systematic identification of attack vectors across six architectural domains:\n   - **S (Spoofing)**: Impersonating an authorized clinician or device.\n   - **T (Tampering)**: Modifying firmware, dosage data, or telemetry packets in transit.\n   - **R (Repudiation)**: Denying having performed an administrative action due to lack of audit logs.\n   - **I (Information Disclosure)**: Eavesdropping on unencrypted patient Protected Health Information (PHI).\n   - **D (Denial of Service)**: Flooding communication ports to exhaust battery or prevent therapeutic alarm broadcasts.\n   - **E (Elevation of Privilege)**: Exploiting a stack buffer overflow to gain root execution access.\n3. **Cryptographic Hardening**:\n   - **Hardware Root of Trust & Secure Boot**: Cryptographic verification of bootloader and firmware digital signatures (e.g., RSA-3072 / ECDSA) before execution.\n   - **FIPS 140-3 Cryptography**: End-to-end encryption for all telemetry and storage using AES-256-GCM and TLS 1.3.\n4. **Post-Market Vigilance & Patching**: A documented plan for **Coordinated Vulnerability Disclosure (CVD)** and an authenticated **Over-The-Air (OTA)** secure patching mechanism capable of deploying critical security patches to fielded devices within statutory timelines.\n\n---\n\n## 4. Engineering Field Scenario: Remediating an Open-Source CVE on an Infusion Pump\n\nAt an embedded medical software engineering center in Monterrey developing firmware for an IoT hospital syringe infusion pump:\n\n### The Vulnerability Discovery\nThree weeks before the planned FDA 510(k) submission, the automated vulnerability scanner scanned the pump’s **SBOM (Software Bill of Materials)**. It flagged a critical vulnerability in the open-source lightweight TCP/IP network stack (lwIP v2.1.2) used for Wi-Fi telemetry:\n- **CVE-2022-3165**: A critical remote buffer overflow vulnerability with a **CVSS score of 9.8 (Critical)**.\n- *Attack Vector*: A malicious actor on the hospital Wi-Fi network could transmit a malformed packet, trigger memory corruption, execute arbitrary shellcode, and remotely override infusion flow rates.\n\n### The Engineering Remediation Plan\n1. **Threat Model Impact Assessment**: The cybersecurity lead updated the STRIDE threat model. Under IEC 62304, the affected software unit was classified as **Class C (potential patient death)**.\n2. **Patch Integration**: The firmware team patched the lwIP codebase to v2.1.3, re-compiled the firmware binary, and updated the CycloneDX SBOM to reflect the clean library hash.\n3. **Architectural Isolation (Defense in Depth)**:\n   - To ensure a software vulnerability in the Wi-Fi stack could never hijack motor actuation, engineers physically decoupled the network microcontroller from the primary motor controller MCU.\n   - All communication between the Wi-Fi processor and the motor processor was routed across an isolated, hardware-rate-limited UART interface running a cryptographically authenticated command protocol. Even if the network chip is fully compromised, it cannot issue a motor rate command without a signed doctor authorization token.\n4. **Verification & FDA Acceptance**: Static analysis (MISRA C:2012) and penetration testing confirmed zero exploitable vulnerabilities. The updated SBOM and penetration test report were submitted in the 510(k) cybersecurity dossier, passing FDA technical review with zero cybersecurity deficiencies.\n\n---\n\n> **Key Takeaway**: Software as a Medical Device demands dual vigilance: structural software quality governed by IEC 62304 (Class A/B/C rigor, unit testing, SOUP management) and proactive cryptographic defense-in-depth mandated by FDA Section 524B (SBOM transparency, STRIDE threat modeling, and cryptographically verified OTA patching).\n"
+                    }
+                ],
+                "dialogue": {
+                    "title": "Hardening an Connected Insulin Pump against Telemetry Tampering",
+                    "titleES": "Blindando una Bomba de Insulina Conectada contra Manipulación de Telemetría",
+                    "scenarioContext": "A Senior Embedded Firmware Engineer in Monterrey and a Medical Device Cybersecurity Architect in Austin resolve a critical vulnerability in an insulin pump's wireless telemetry stack.",
+                    "characters": [
+                        {
+                            "name": "Dr. Alicia Warren",
+                            "role": "Chief Medical Device Cybersecurity Architect",
+                            "company": "Panthera Health IoT (Austin, TX)"
+                        },
+                        {
+                            "name": "Ing. Alejandro Cavazos",
+                            "role": "Principal Embedded Firmware Engineer",
+                            "company": "Panthera Engineering Center (Monterrey, NL)"
+                        }
+                    ],
+                    "turns": [
+                        {
+                            "speaker": "Dr. Alicia Warren",
+                            "text": "Alejandro, our external penetration testing team just submitted their red-team audit report on the Gen-Two connected insulin pump. They managed to intercept the Bluetooth Low Energy telemetry stream and execute a replay attack that triggered an unauthorized three-unit insulin bolus.",
+                            "translation": "Alejandro, nuestro equipo externo de pruebas de penetración acaba de enviar su reporte de auditoría de equipo rojo sobre la bomba de insulina conectada Gen-Dos. Lograron interceptar el flujo de telemetría de Bluetooth Low Energy y ejecutar un ataque de repetición que activó un bolo no autorizado de tres unidades de insulina.",
+                            "targetTerms": [
+                                "penetration testing team",
+                                "red-team audit report",
+                                "Bluetooth Low Energy",
+                                "replay attack"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Alejandro Cavazos",
+                            "text": "That is a catastrophic vulnerability. A three-unit bolus in a pediatric patient can cause severe hypoglycemia or diabetic coma. That immediately escalates our STRIDE threat model to a critical Severity Five harm under ISO fourteen-ninety-seventy-one.",
+                            "translation": "Esa es una vulnerabilidad catastrófica. Un bolo de tres unidades en un paciente pediátrico puede causar hipoglucemia severa o coma diabético. Eso escala inmediatamente nuestro modelo de amenazas STRIDE a un daño crítico de Severidad Cinco bajo ISO 14971.",
+                            "targetTerms": [
+                                "catastrophic vulnerability",
+                                "hypoglycemia",
+                                "STRIDE threat model",
+                                "Severity Five harm"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. Alicia Warren",
+                            "text": "Under FDA Section five-twenty-four-B guidelines, the agency will reject our five-ten-k submission outright if this flaw exists in our premarket dossier. How did the threat actors bypass our session authentication?",
+                            "translation": "Bajo las directrices de la Sección 524B de la FDA, la agencia rechazará nuestro expediente 510(k) de inmediato si esta falla existe en nuestro informe precomercial. ¿Cómo eludieron los atacantes nuestra autenticación de sesión?",
+                            "targetTerms": [
+                                "Section five-twenty-four-B",
+                                "reject our five-ten-k",
+                                "threat actors",
+                                "session authentication"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Alejandro Cavazos",
+                            "text": "The Bluetooth stack utilized a static pre-shared key stored in flash memory without dynamic cryptographic nonces. To remediate this, I am rewriting the BLE communication layer to mandate AES-GCM two-hundred-and-fifty-six bit authenticated encryption with ephemeral Elliptic Curve Diffie-Hellman key exchange for every bolus transaction.",
+                            "translation": "La pila Bluetooth utilizaba una clave precompartida estática almacenada en memoria flash sin nonces criptográficos dinámicos. Para remediar esto, estoy reescribiendo la capa de comunicación BLE para exigir cifrado autenticado AES-GCM de 256 bits con intercambio de claves efímero de Curva Elíptica Diffie-Hellman para cada transacción de bolo.",
+                            "targetTerms": [
+                                "static pre-shared key",
+                                "cryptographic nonces",
+                                "AES-GCM two-hundred-and-fifty-six",
+                                "Elliptic Curve Diffie-Hellman"
+                            ]
+                        },
+                        {
+                            "speaker": "Dr. Alicia Warren",
+                            "text": "Excellent. That introduces cryptographic freshness and prevents any recorded packet from being replayed. What about firmware tampering and malicious Over-The-Air updates?",
+                            "translation": "Excelente. Eso introduce frescura criptográfica y previene que cualquier paquete grabado sea reproducido. ¿Qué hay de la manipulación de firmware y las actualizaciones inalámbricas maliciosas?",
+                            "targetTerms": [
+                                "cryptographic freshness",
+                                "firmware tampering",
+                                "Over-The-Air updates"
+                            ]
+                        },
+                        {
+                            "speaker": "Ing. Alejandro Cavazos",
+                            "text": "We are enabling hardware secure boot on the microcontroller. The bootloader will verify an RSA three-thousand-and-seventy-two digital signature against our private key burned into secure silicon fuses before flashing any OTA update. If the cryptographic signature fails, the pump rejects the payload and enters fail-safe mode.",
+                            "translation": "Estamos habilitando arranque seguro por hardware en el microcontrolador. El cargador de arranque verificará una firma digital RSA 3072 contra nuestra clave privada grabada en fusibles seguros de silicio antes de instalar cualquier actualización OTA. Si la firma criptográfica falla, la bomba rechaza la carga y entra en modo seguro.",
+                            "targetTerms": [
+                                "hardware secure boot",
+                                "digital signature",
+                                "silicon fuses",
+                                "fail-safe mode"
+                            ]
+                        }
+                    ],
+                    "contrastTips": [
+                        {
+                            "school": "We wrote the code and fixed the bugs.",
+                            "native": "We developed the medical device software in compliance with IEC 62304 Class C requirements.",
+                            "explanation": "In biomedical software, coding without documented architecture, traceability, SOUP management, and unit verification is unacceptable to regulatory authorities."
+                        },
+                        {
+                            "school": "The device has a password so it is secure.",
+                            "native": "We implemented defense-in-depth cybersecurity with hardware secure boot, AES-256-GCM encryption, and STRIDE threat modeling.",
+                            "explanation": "Modern FDA medical device cybersecurity mandates multi-layered cryptographic controls, SBOM transparency, and authenticated firmware verification."
+                        }
+                    ]
+                },
+                "lexiconMatrix": [
+                    {
+                        "term": "Software as a Medical Device (SaMD)",
+                        "ipa": "/ˈsɒft.wɛər æz ə ˈmɛd.ɪ.kəl dɪˈvaɪs /ˌɛs.eɪ.ɛmˈdiː/",
+                        "es": "Software como Dispositivo Médico (SaMD)",
+                        "category": "Digital Health",
+                        "definition": "Software intended to be used for one or more medical purposes (diagnosis, treatment, mitigation) that executes these functions without being part of a hardware medical device.",
+                        "collocations": [
+                            "categorize SaMD under IMDRF",
+                            "SaMD premarket clearance",
+                            "AI-driven SaMD algorithm",
+                            "clinical evaluation of SaMD"
+                        ],
+                        "falseFriends": "SaMD is standalone software; software embedded inside a hardware medical device is formally designated as SiMD (Software in a Medical Device).",
+                        "nativeUsage": "The FDA granted Breakthrough Device designation to the startup's cloud-based SaMD for automated stroke detection on CT scans."
+                    },
+                    {
+                        "term": "IEC 62304 Standard",
+                        "ipa": "/ˌaɪ.iːˈsiː ˌsɪks ˌtuː ˌθriː ˌoʊ ˈfɔːr/",
+                        "es": "Norma de Ciclo de Vida del Software Médico IEC 62304",
+                        "category": "Software Lifecycle",
+                        "definition": "The international benchmark standard defining lifecycle processes, architectural design, software safety classifications (A, B, C), and SOUP management for medical device software.",
+                        "collocations": [
+                            "achieve IEC 62304 compliance",
+                            "classify as Class C software",
+                            "software verification per 62304",
+                            "SOUP qualification records"
+                        ],
+                        "falseFriends": "IEC 62304 is a process lifecycle framework; it does not dictate specific programming languages or agile sprint frameworks.",
+                        "nativeUsage": "Because an unhandled fault in the infusion pump firmware could cause patient death, the entire codebase was audited under IEC 62304 Class C."
+                    },
+                    {
+                        "term": "Software Bill of Materials (SBOM)",
+                        "ipa": "/ˈsɒft.wɛər ˌbɪl əv məˈtɪər.i.əlz /ˌɛs.bɒm/",
+                        "es": "Lista de Materiales de Software (SBOM)",
+                        "category": "Cybersecurity Governance",
+                        "definition": "A formal, machine-readable inventory documenting all third-party, open-source, and proprietary software packages, dependencies, and version hashes within a medical device.",
+                        "collocations": [
+                            "generate a CycloneDX SBOM",
+                            "scan SBOM for known CVEs",
+                            "submit SBOM to FDA",
+                            "manage transitive dependencies in SBOM"
+                        ],
+                        "falseFriends": "An SBOM lists software libraries and components, unlike a traditional manufacturing BOM which lists physical metal and plastic parts.",
+                        "nativeUsage": "Under FDA Section 524B regulations, medical device manufacturers must supply an up-to-date SBOM to prove zero unpatched critical CVEs."
+                    },
+                    {
+                        "term": "STRIDE Threat Modeling",
+                        "ipa": "/straɪd ˈθrɛt ˌmɒd.əl.ɪŋ/",
+                        "es": "Modelado de Amenazas STRIDE",
+                        "category": "Security Architecture",
+                        "definition": "A systematic cybersecurity threat analysis model evaluating six attack vectors: Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, and Elevation of Privilege.",
+                        "collocations": [
+                            "conduct STRIDE threat modeling",
+                            "identify attack surfaces via STRIDE",
+                            "mitigate tampering threats",
+                            "STRIDE risk assessment report"
+                        ],
+                        "falseFriends": "STRIDE is a structured analytical methodology for finding vulnerabilities, not an automated penetration testing software tool.",
+                        "nativeUsage": "The engineering team used STRIDE threat modeling to identify a vulnerability where unauthorized Bluetooth packets could alter pump telemetry."
+                    },
+                    {
+                        "term": "Software of Unknown Provenance (SOUP)",
+                        "ipa": "/suːp /ˌɛs.oʊ.juːˈpiː/",
+                        "es": "Software de Procedencia Desconocida (SOUP / COTS)",
+                        "category": "Software Governance",
+                        "definition": "A software component that is already developed and generally available (such as commercial operating systems, third-party libraries, or open-source packages) not created under an IEC 62304 process.",
+                        "collocations": [
+                            "qualify a SOUP library",
+                            "document SOUP functional requirements",
+                            "evaluate SOUP anomaly lists",
+                            "SOUP cybersecurity monitoring"
+                        ],
+                        "falseFriends": "SOUP has nothing to do with food; it is an official regulatory acronym for unvetted third-party and open-source software code.",
+                        "nativeUsage": "Using FreeRTOS in the pacemaker programmer required full SOUP qualification, including documenting all known anomalies."
+                    },
+                    {
+                        "term": "Over-The-Air (OTA) Patching",
+                        "ipa": "/ˈoʊ.vər ðiː ˈɛər ˈpætʃ.ɪŋ/",
+                        "es": "Actualización Inalámbrica de Firmware (OTA)",
+                        "category": "Device Maintenance",
+                        "definition": "The wireless transmission and cryptographically authenticated installation of software updates or security patches directly to fielded medical devices without requiring physical factory recall.",
+                        "collocations": [
+                            "deploy a secure OTA patch",
+                            "cryptographically signed OTA update",
+                            "OTA rollback protection",
+                            "maintain post-market cybersecurity via OTA"
+                        ],
+                        "falseFriends": "OTA updates on medical devices must be strictly authenticated; unauthenticated OTA can turn into a lethal malware injection vector.",
+                        "nativeUsage": "The manufacturer pushed an emergency OTA security patch to 15,000 hospital infusion pumps within forty-eight hours of a critical zero-day exploit."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Assigning IEC 62304 Software Safety Classification",
+                        "botQuestion": "Your software startup in Monterrey is developing an AI-powered smartphone application that analyzes digital dermatoscopic images of skin lesions to detect malignant melanoma. If the algorithm generates a false negative result, a patient with aggressive melanoma will be told the lesion is benign, delaying biopsy and potentially resulting in metastatic death. What is the IEC 62304 Software Safety Class (A, B, or C) of this software system? Explain the engineering documentation consequences of this classification.",
+                        "requiredKeywords": [
+                            "class c",
+                            "death",
+                            "serious injury",
+                            "architecture",
+                            "unit testing",
+                            "verification"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on! Because a false negative can cause death or irreversible serious injury through delayed cancer treatment, this software is strictly classified as IEC 62304 Class C (Highest Safety Tier). Under Class C, the engineering team must legally produce: 1) Detailed software architectural design documenting all internal unit interfaces; 2) Documented software unit verification (unit tests with rigorous branch/statement code coverage); 3) Formal integration and regression testing; and 4) Detailed verification of all software risk control measures.",
+                        "feedbackRetry": "Review IEC 62304 safety classes: Class A (no injury), Class B (non-serious injury), Class C (death or serious injury). State why a missed melanoma diagnosis is Class C and describe the required documentation rigor."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Resolving a Critical Third-Party SOUP CVE before 510(k) Filing",
+                        "botQuestion": "Two weeks before submitting a 510(k) for a connected bedside patient monitor, your vulnerability scanner discovers a CVSS 9.8 Remote Code Execution vulnerability (CVE) in an open-source JSON parser library embedded in your firmware. The vendor has not released a patch. You cannot delay the submission. Propose a two-pronged engineering mitigation strategy satisfying FDA Section 524B cybersecurity requirements.",
+                        "requiredKeywords": [
+                            "mitigation",
+                            "replace",
+                            "defense in depth",
+                            "isolate",
+                            "sbom",
+                            "compensating"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Outstanding cybersecurity governance! A two-pronged strategy: 1) Architectural Isolation / Compensating Controls: Quarantine the unpatched JSON parser behind an authenticated hardware firewall or internal rate-limited gateway that validates message structure and cryptographically drops unauthenticated packets, eliminating the remote attack vector (Defense in Depth); 2) Library Replacement / In-House Patching: Strip the vulnerable SOUP library and replace it with a vetted, secure open-source alternative or manually back-port the fix, updating the machine-readable SBOM and verifying zero residual vulnerabilities through third-party penetration testing.",
+                        "feedbackRetry": "Under FDA Section 524B, you cannot submit with an unmitigated CVSS 9.8 vulnerability. Explain how you can either replace the vulnerable library or isolate it using compensating controls (e.g., input sanitization, firewalling, or dropping the parser into a sandboxed environment) while updating your SBOM."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "According to the IMDRF, what defines Software as a Medical Device (SaMD)?",
+                        "options": [
+                            "Software that is sold on a physical CD-ROM in retail stores",
+                            "Software intended to be used for medical purposes that performs these functions without being part of a hardware medical device",
+                            "Software used exclusively by hospital billing departments",
+                            "Firmware that controls the electric motor of an operating table"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "Under IEC 62304, when is a medical software system classified as Software Safety Class C?",
+                        "options": [
+                            "When it is written in the C++ programming language",
+                            "When a software failure or hazard can result in patient death or serious injury",
+                            "When the software costs more than one million dollars",
+                            "When it is designed only for Class I medical devices"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "What is the regulatory purpose of a Software Bill of Materials (SBOM) under FDA Section 524B?",
+                        "options": [
+                            "To calculate the total retail price of commercial software licenses",
+                            "To provide a machine-readable inventory of all software libraries, third-party code, and open-source SOUP dependencies to track known security vulnerabilities (CVEs)",
+                            "To list the home addresses of all software programmers",
+                            "To store patient medical records in the cloud"
+                        ],
+                        "answer": 1
+                    },
+                    {
+                        "q": "In the STRIDE cybersecurity threat modeling framework, what does the letter 'T' stand for?",
+                        "options": [
+                            "Telecommunications",
+                            "Tampering (malicious modification of software code, firmware, or transmitted clinical data)",
+                            "Timeout",
+                            "Testing"
+                        ],
+                        "answer": 1
+                    }
+                ]
             }
         ]
     },
