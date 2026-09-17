@@ -1,3 +1,6 @@
+// stemOS Learning Experience Platform - Course Catalog
+// Comprehensive Technical English (ESP) curriculum for high-tech engineering tracks.
+
 var LXP_COURSES = {
     "cybersecurity": {
         "id": "cybersecurity",
@@ -7849,89 +7852,9 @@ var LXP_COURSES = {
                 "readings": [
                     {
                         "id": "semi-m4-r1",
-                        "title": "The Clean Room Environment",
-                        "duration": "10 min",
-                        "content": "\n# The Clean Room Environment\n\nA semiconductor fabrication plant (fab) is home to the **cleanroom** (sala limpia) — one of the cleanest environments on Earth. In a cleanroom, the air is filtered constantly to control the concentration of airborne particles, temperature, humidity, and vibration.\n\n## Why Cleanrooms Are Crucial\n\nA modern transistor is thousands of times smaller than a grain of sand. A single microscopic dust particle, hair, or skin cell landing on a wafer can block light during photolithography, short-circuit metal lines, or cause a transistor to fail. \n\nThe industry measures cleanliness using classes:\n- **Class 100**: Less than 100 particles (larger than 0.5 microns) per cubic foot of air.\n- **Class 10**: Less than 10 particles per cubic foot.\n- **Class 1 (Fab Floor)**: Less than 1 particle per cubic foot. (For comparison, normal outdoor air contains about 35 million particles per cubic foot!).\n\n## The Gown Room and Gowning Protocol\n\nHumans are the biggest source of contamination in a fab. Skin flakes, hair, dust from clothes, and sweat are constantly shedding. To enter the cleanroom, workers must follow a strict **gowning protocol** in the **gown room** (sala de vestimenta):\n\n1. **Shoe Cleaning**: Workers pass through shoe scrubbers and put on shoe covers.\n2. **Hair & Face Coverings**: Wearing a hairnet and face mask.\n3. **Bunny Suit (Traje especial)**: A full-body, anti-static suit that covers the worker from head to toe.\n4. **Booties & Gloves**: Wearing specialized non-dusting boots and double-layer nitrile gloves.\n5. **Air Shower (Ducha de aire)**: Before walking through the cleanroom doors, workers stand in an air shower cabinet that blows high-velocity filtered air to strip away any remaining dust from the outside of their bunny suits.\n\nWorkers also use specialized **cleanroom paper** and non-shedding pens. Traditional pencils are banned because graphite flakes contaminate the air.\n",
-                        "vocabulary": [
-                            {
-                                "en": "Cleanroom",
-                                "es": "Sala limpia / Cuarto limpio",
-                                "definition": "A controlled room with extremely low levels of dust and pollutants",
-                                "ipa": "/ˈkliːn.ruːm/"
-                            },
-                            {
-                                "en": "Gown Room",
-                                "es": "Sala de vestimenta",
-                                "definition": "The locker area where workers put on protective suits",
-                                "ipa": "/ɡaʊn ruːm/"
-                            },
-                            {
-                                "en": "Bunny Suit",
-                                "es": "Traje de sala limpia / Traje protector",
-                                "definition": "The full-body suit worn to prevent human contamination",
-                                "ipa": "/ˈbʌn.i suːt/"
-                            },
-                            {
-                                "en": "Air Shower",
-                                "es": "Ducha de aire",
-                                "definition": "Chamber that blows air to remove particles from clothing before entry",
-                                "ipa": "/ɛr ˈʃaʊ.ər/"
-                            },
-                            {
-                                "en": "Contamination",
-                                "es": "Contaminación",
-                                "definition": "Unwanted particles that damage wafer circuits",
-                                "ipa": "/kənˌtæm.ɪˈneɪ.ʃən/"
-                            },
-                            {
-                                "en": "Gowning Protocol",
-                                "es": "Protocolo de vestimenta",
-                                "definition": "The strict sequence of steps to dress in cleanroom gear",
-                                "ipa": "/ˈɡaʊ.nɪŋ ˈproʊ.tə.kɒl/"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "Why are cleanrooms necessary in semiconductor fabrication?",
-                                "options": [
-                                    "To prevent workers from getting sick",
-                                    "Because a single dust particle can destroy microscopically small features",
-                                    "To save electrical energy",
-                                    "To protect wafers from daylight"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "Which area do workers use to put on bunny suits and prepare for cleanroom entry?",
-                                "options": [
-                                    "The control center",
-                                    "The gown room",
-                                    "The cafeteria",
-                                    "The chemical bath"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "What is the function of the air shower?",
-                                "options": [
-                                    "To wash bunny suits with soap and water",
-                                    "To blow high-velocity filtered air to remove dust particles from suits",
-                                    "To measure the humidity of the fab",
-                                    "To sterilize the silicon wafers"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "Compared to normal outdoor air, Class 1 cleanroom air is about:",
-                                "options": [
-                                    "10 times cleaner",
-                                    "1,000 times cleaner",
-                                    "35 million times cleaner",
-                                    "Exactly the same"
-                                ],
-                                "answer": 2
-                            }
-                        ]
+                        "title": "The Cleanroom Environment: ISO 14644 Standards, Airflow Kinetics & Contamination Control",
+                        "duration": "15 min",
+                        "content": "\n# The Cleanroom Environment: ISO 14644 Standards, Airflow Kinetics & Contamination Control\n\nModern semiconductor fabrication represents the most stringent contamination-controlled industrial process on Earth. A leading-edge transistor manufactured at a 3-nanometer (nm) node has gate dimensions measured in dozens of atoms. At this scale, a single airborne speck of human skin, dust, or clothing fiber measuring 0.5 micrometers (µm) behaves like a gigantic boulder crushing an entire highway system, bridging adjacent circuit lines, causing catastrophic dielectric breakdown, or blocking ultraviolet exposure patterns. \n\n---\n\n## 1. Classification & Particulate Physics: ISO 14644 vs. US FED STD 209E\n\nHistorically, cleanrooms were quantified under **US Federal Standard 209E** by the maximum allowable count of particles $\\ge 0.5\\ \\mu\\text{m}$ per cubic foot of air. In this legacy standard:\n- **Class 1**: $\\le 1$ particle $\\ge 0.5\\ \\mu\\text{m}$ per cubic foot.\n- **Class 10**: $\\le 10$ particles $\\ge 0.5\\ \\mu\\text{m}$ per cubic foot.\n- **Class 100**: $\\le 100$ particles $\\ge 0.5\\ \\mu\\text{m}$ per cubic foot.\n\nThe modern international benchmark is **ISO 14644-1**, which evaluates airborne particulate concentration per cubic meter ($C_n$) across particle diameters ($d$) from $0.1\\ \\mu\\text{m}$ to $5\\ \\mu\\text{m}$:\n\n$$C_n = 10^N \\cdot \\left(\\frac{0.1}{d}\\right)^{2.08}$$\n\nWhere $N$ represents the ISO classification index. \n- **ISO Class 1**: Permits no more than 10 particles $\\ge 0.1\\ \\mu\\text{m}$ per cubic meter, and virtually zero particles $\\ge 0.5\\ \\mu\\text{m}$.\n- **ISO Class 3 (equivalent to Class 1 US FS 209E)**: The operating standard for photolithography bays, allowing at most 1,000 particles $\\ge 0.1\\ \\mu\\text{m}$ and only 35 particles $\\ge 0.5\\ \\mu\\text{m}$ per $\\text{m}^3$.\n- In comparison, standard outdoor ambient air contains upwards of **35,000,000 particles $\\ge 0.5\\ \\mu\\text{m}$ per cubic meter** (equivalent to an unclassified or ISO Class 9 environment). A wafer fab cleanroom is over 100,000 times cleaner than an operating hospital surgery theater.\n\n---\n\n## 2. Air Handling Kinetics: Laminar Flow, Recirculation & Filtration Architecture\n\nMaintaining an ISO Class 1 to Class 3 environment requires constant vertical laminar air displacement. Turbulent air creates recirculation eddies where suspended particles get trapped and deposited onto wafer surfaces through electrostatic attraction.\n\n### Vertical Laminar Airflow (Unidirectional Displacement)\nClean air is introduced from the ceiling through full-coverage filter banks at uniform velocities between $0.35\\ \\text{m/s}$ and $0.45\\ \\text{m/s}$ ($70\\text{--}90\\ \\text{ft/min}$). The air sweeps vertically downward in parallel streamlines, carrying generated particulates away from the wafer plane into perforated raised access floor tiles. The air is then drawn into basement return air plenums, conditioned, and recirculated through ceiling plenums.\n\n### Filtration Hierarchy: HEPA vs. ULPA\n- **HEPA (High-Efficiency Particulate Air)**: Captures $99.97\\%$ of particles at the Most Penetrating Particle Size (MPPS, typically $0.3\\ \\mu\\text{m}$).\n- **ULPA (Ultra-Low Penetration Air)**: Utilizes borosilicate microfiber media to achieve $99.9995\\%$ capture efficiency at $0.12\\ \\mu\\text{m}$ MPPS through impaction, interception, and Brownian diffusion.\n- **Chemical Scrubbing (AMCs)**: Particulates are not the only threat. **Airborne Molecular Contamination (AMC)**—including volatile organic compounds (VOCs), condensable siloxanes, acid vapors (HCl, HF), and basic amines ($NH_3$)—is scrubbed using activated carbon and chemically impregnated deep-bed media to avoid wafer haze and threshold voltage drift.\n\n---\n\n## 3. Pressure Cascades, Electrostatic Discharge (ESD) & Microclimate Control\n\nCleanrooms operate under strict **positive differential pressure cascades** to prevent contaminated air from rushing in when personnel access airlocks.\n- The highest cleanliness core (Lithography / Bay) is pressurized to $+25\\text{--}+30\\ \\text{Pa}$ relative to ambient atmosphere.\n- Intermediate service chases operate at $+15\\text{--}+20\\ \\text{Pa}$.\n- Gowning airlocks operate at $+5\\text{--}+10\\ \\text{Pa}$.\n- When any interior door cracks open, clean air shoots outwards at velocities exceeding $1.5\\ \\text{m/s}$, physically preventing particulate ingress.\n\n### ESD Control\nTriboelectric charging is lethal to sub-micron gates. Insulating materials rubbing together can easily generate static potentials exceeding $5,000\\ \\text{V}$, whereas a gate oxide can rupture at under $10\\ \\text{V}$. Cleanrooms incorporate conductive carbon-loaded vinyl tile flooring ($10^4\\text{--}10^6\\ \\Omega$ point-to-point resistance), ionizing air blower bars at equipment load ports, and continuous personnel grounding strap monitors.\n\n---\n\n## 4. Engineering Field Scenario: The Gowning Protocol & SMIF/FOUP Automation\n\nHuman operators shed approximately 100,000 to 1,000,000 skin particulates, droplets, and micro-fibers every minute. Consequently, direct wafer-to-air exposure has been replaced by **mini-environments**:\n\n### FOUP (Front Opening Unified Pod)\nSilicon wafers travel across automated overhead hoist transport (OHT) systems inside sealed polycarbonate cassettes called **FOUPs** carrying 25 wafers under positive inert nitrogen ($N_2$) or ultra-purified dry air purge. The wafer never touches ambient cleanroom air; tools dock automatically via load-port door openers maintaining ISO Class 1 internally while the ballroom may operate at ISO Class 5 or 6.\n\n### The 7-Stage Gowning Rigor\nWhen technicians enter the cleanroom for preventive tool maintenance, they execute an unvarying 7-step sequence:\n1. **Shoe Cleaner & Sticky Mats**: Walking across mechanized shoe brushers and adhesive polymer sheets to strip coarse dust.\n2. **First-Stage Bouffant & Glove Set**: Donning hair cover and pre-gowning nitrile gloves before touching clean garments.\n3. **ESD Jumpsuit (Bunny Suit)**: Synthetic continuous-filament polyester interwoven with a grid of conductive carbon thread. Must not touch the floor during donning.\n4. **Booties & Ankle Snaps**: High-top cleanroom boots zipped over jumpsuit pant legs to prevent chimney effect shedding.\n5. **Full Hood & Safety Goggles**: Covering all exposed facial hair and skin; anti-fog sealed eyewear.\n6. **Final Powder-Free Nitrile Gloves**: Tucked over the elastic wristbands of the jumpsuit.\n7. **Air Shower Chamber**: 30 seconds inside high-velocity HEPA nozzle air-jets (velocities of $25\\ \\text{m/s}$) dislodging any clinging surface particles while the technician slowly rotates.\n\n---\n\n> **Key Takeaway**: Cleanrooms achieve defect-free wafer manufacturing through rigid physics: vertical laminar airflow, ULPA filtration, positive differential pressure cascading, electrostatic neutralization, and automated FOUP transport. The cleanroom is an active physical machine maintaining nanoscale environmental equilibrium.\n"
                     },
                     {
                         "id": "semi-m4-r2",
@@ -8035,89 +7958,9 @@ var LXP_COURSES = {
                 "readings": [
                     {
                         "id": "semi-m5-r1",
-                        "title": "Wafer Testing and Yield",
-                        "duration": "10 min",
-                        "content": "\n# Wafer Testing and Yield\n\nBefore a silicon wafer is cut into individual chips, every single circuit must be tested. This phase is critical because manufacturing chips is imperfect, and defects are inevitable.\n\n## Wafer Probe Testing\n\nA machine called a **wafer prober** uses a probe card with thousands of microscopic needles to touch the electrical pads on each chip (called a **die**). It runs rapid electrical tests to verify if the logic, memory, and voltage levels are correct.\n\n- **Sorting / Binning**: Chips that pass are marked as functional. In some cases, chips are classified into different \"bins\" based on their performance (e.g., speed, power consumption). A high-speed chip is sold as a premium processor, while a slower chip from the same wafer is sold at a lower price.\n- **Ink Dotting / Digital Mapping**: Traditionally, defective chips were marked with a drop of black ink. Today, a computer generates a digital \"wafer map\" that records the coordinates of all failed dies.\n\n## Yield: The Ultimate Metric\n\nIn semiconductor manufacturing, **yield** (rendimiento) is the most critical business metric. It represents the percentage of working chips produced compared to the maximum possible count.\n\n$$\text{Yield} = \frac{\text{Number of functional dies}}{\text{Total dies on wafer}} \times 100%$$\n\nIf a wafer contains 500 dies, and testing shows that 400 are functional, the yield is **80%**. A low yield (e.g., 20%) means the factory is wasting expensive materials and processing time, which can ruin a chip designer's profits.\n\n## Statistical Process Control (SPC)\n\nTo maintain high yields, fabs use **SPC (Statistical Process Control)**. Sensors monitor thousands of parameters (such as temperature, gas flow, and pressure) in real-time. If a sensor's readings shift away from the statistical average, SPC charts alert engineers immediately. This allows them to stop the machines and fix issues before entire batches of wafers are ruined.\n",
-                        "vocabulary": [
-                            {
-                                "en": "Probe Testing",
-                                "es": "Prueba con sonda / Testeo de obleas",
-                                "definition": "Electrical testing of chips while still on the wafer",
-                                "ipa": "/proʊb ˈtɛs.tɪŋ/"
-                            },
-                            {
-                                "en": "Die",
-                                "es": "Pastilla / Chip individual",
-                                "definition": "A single unpackaged square of silicon containing a circuit",
-                                "ipa": "/daɪ/"
-                            },
-                            {
-                                "en": "Yield",
-                                "es": "Rendimiento",
-                                "definition": "The ratio of working chips to the total chips produced",
-                                "ipa": "/jiːld/"
-                            },
-                            {
-                                "en": "Binning",
-                                "es": "Clasificación de chips",
-                                "definition": "Sorting chips into groups based on performance and speed",
-                                "ipa": "/ˈbɪn.ɪŋ/"
-                            },
-                            {
-                                "en": "Wafer Map",
-                                "es": "Mapa de oblea",
-                                "definition": "A digital grid recording the layout and status of each die",
-                                "ipa": "/ˈweɪ.fər mæp/"
-                            },
-                            {
-                                "en": "Statistical Process Control (SPC)",
-                                "es": "Control estadístico de procesos",
-                                "definition": "Using statistical methods to monitor and control a production process",
-                                "ipa": "/stəˈtɪs.tɪ.kəl ˈprɒs.ɛs kənˈtroʊl/"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "What does 'yield' measure in semiconductor manufacturing?",
-                                "options": [
-                                    "The weight of the silicon wafer",
-                                    "The speed of the chip processing",
-                                    "The percentage of functional working chips produced",
-                                    "The quantity of gas used in etching"
-                                ],
-                                "answer": 2
-                            },
-                            {
-                                "q": "What tool is used to run electrical tests on chips while they are still on the wafer?",
-                                "options": [
-                                    "A spin coater",
-                                    "A wafer prober",
-                                    "An ion implanter",
-                                    "An air shower"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "What is the primary purpose of 'binning'?",
-                                "options": [
-                                    "To throw failed chips in the trash",
-                                    "To sort working chips into price/performance categories",
-                                    "To pack wafers into shipping containers",
-                                    "To wash the wafer between layers"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "How is Statistical Process Control (SPC) used to maintain high yields?",
-                                "options": [
-                                    "By replacing human workers with robots",
-                                    "By monitoring fab parameters in real-time to alert engineers of shifts",
-                                    "By increasing the temperature of cleanrooms",
-                                    "By using cheaper raw silicon"
-                                ],
-                                "answer": 1
-                            }
-                        ]
+                        "title": "Wafer Testing, Electronic Die Sort (EDS) & Yield Engineering",
+                        "duration": "15 min",
+                        "content": "\n# Wafer Testing, Electronic Die Sort (EDS) & Yield Engineering\n\nIn semiconductor manufacturing, processing a single 300 mm wafer through over 1,500 individual deposition, photolithography, etch, and CMP steps takes between 10 to 16 weeks and costs thousands of dollars. Discovering that a die is electrically non-functional only after cutting it from the wafer, mounting it into a complex flip-chip package, and assembling it into a system represents immense economic waste. \n\n**Electronic Die Sort (EDS)**—commonly known as **Wafer Probing** or **Wafer Acceptance Testing (WAT)**—is the critical quality and financial checkpoint where every single integrated circuit die is tested while still integrated on the circular silicon wafer.\n\n---\n\n## 1. Automated Test Equipment (ATE) & Probe Card Electromechanics\n\nWafer probing requires interfacing sub-micron microelectronic circuits with automated digital and analog test instrumentation at microsecond speeds.\n\n### The Prober & Probe Card Interface\n1. **The Automatic Wafer Prober**: A vibration-isolated, temperature-controlled robotic chuck equipped with optical positioning cameras ($0.1\\ \\mu\\text{m}$ optical alignment accuracy). It steps from die to die across the 300 mm wafer with step-and-repeat precision.\n2. **The Probe Card**: A custom multi-layer printed circuit board (PCB) terminating in an ultra-dense array of micro-contacts:\n   - **Cantilever Probe Cards**: Traditional tungsten or rhenium-tungsten needles bent at precise angles. Limited pin counts and scrub damage restrict their use to legacy analog nodes.\n   - **Vertical MEMS Probe Cards**: Thousands of microscopic, spring-loaded micro-electro-mechanical beams fabricated directly via photolithography. Vertical probes exert uniform, controlled overdrive force ($1\\text{--}3\\ \\text{grams per contact}$) without scrubbing across the delicate aluminum or copper bond pads, allowing simultaneous testing of up to 64 dies in parallel (Multi-Site Probing).\n3. **ATE Tester Architecture**: High-speed digital test heads generating millions of functional clock vectors per second, measuring pin voltages, leakage currents ($I_{DDQ}$), clock frequency responses, and RF signal integrity across temperatures ranging from $-40^\\circ\\text{C}$ to $+125^\\circ\\text{C}$.\n\n---\n\n## 2. The Testing Hierarchy: From PCM to Functional BIST\n\nWafer-level test routines follow an engineered hierarchy to identify defects at the lowest possible test time:\n\n### Step A: Process Control Monitoring (PCM / WAT)\nBefore individual customer dies are tested, specialized test structures placed inside the wafer **scribe lines** (the streets between dies where the diamond dicing saw will later cut) are measured. WAT verifies fundamental transistor characteristics:\n- Threshold voltage ($V_{th}$) across NMOS and PMOS gates.\n- Sheet resistance ($R_s$) of polysilicon and metal interconnects.\n- Gate oxide breakdown voltage ($BV_{ox}$).\n- Contact chain resistance and via continuity.\nIf PCM parameters fall outside statistical process control (SPC) boundaries, the entire wafer lot is flagged for engineering review or scrapped immediately.\n\n### Step B: Opens, Shorts & DC Parametric Checks\nVerifying that electrostatic discharge (ESD) protection diodes, power buses ($V_{DD}$, $V_{SS}$), and I/O pins exhibit no physical bridges (shorts) or metal discontinuities (opens). Dies that draw excessive quiescent current ($I_{DDQ}$) are classified as gross failures in less than 1 millisecond.\n\n### Step C: Scan Chain & BIST (Built-In Self-Test)\nModern system-on-chip (SoC) dies contain billions of transistors and cannot be thoroughly validated using external pins alone. Designers embed **Design for Testability (DFT)** circuits:\n- **Scan Chains**: Flip-flops connected in shift-register configurations that load test vectors deep into internal logic blocks.\n- **Memory BIST (MBIST)**: Internal hardware state machines that execute marching pattern algorithms (e.g., March C-) across SRAM and cache blocks at native gigahertz frequencies to detect stuck-at faults, transition faults, and bit coupling errors.\n\n---\n\n## 3. Statistical Yield Modeling: Murphy, Seeds & Poisson Distributions\n\nDie yield ($Y$)—the ratio of functional, non-defective dies to the total number of candidate dies on a wafer—determines the profitability of a fab:\n\n$$\\text{Gross Dies per Wafer (DPW)} \\approx \\frac{\\pi \\cdot \\left(\\frac{D}{2}\\right)^2}{A} - \\frac{\\pi \\cdot D}{\\sqrt{2 \\cdot A}}$$\n\nWhere $D$ is wafer diameter ($300\\ \\text{mm}$) and $A$ is die area ($\text{mm}^2$).\n\n### Yield Formulations\nIn early manufacturing, simple **Poisson yield modeling** assumes random defect distribution:\n\n$$Y = e^{-D_0 \\cdot A}$$\n\nWhere $D_0$ is defect density (defects per $\\text{cm}^2$) and $A$ is active die area. However, because manufacturing defects cluster together near wafer edges or specific chemical injection zones, industry uses **Murphy’s Yield Model** or the **Negative Binomial Model**:\n\n$$Y = \\left(\\frac{1 - e^{-D_0 \\cdot A}}{D_0 \\cdot A}\\right)^2$$\n\nA larger die area exponentially increases vulnerability to defect encounters. For example, doubling die area drops yield by substantially more than half unless defect density is tightly suppressed.\n\n---\n\n## 4. Engineering Field Scenario: Inkless Binning, Redundancy Repair & FA Loop\n\nDuring wafer probe in high-volume manufacturing:\n1. **Electronic Wafer Map (Inkless Binning)**: Gone are the days of dropping physical black ink dots on defective chips. The ATE automatically records a virtual wafer map in SEMI standard formats (e.g., STDF / XML). Every die coordinate $(X, Y)$ is tagged with a Bin Number:\n   - **Bin 1**: Full performance pass (highest clock speed, lowest power).\n   - **Bin 2**: Commercial pass (lower frequency bin).\n   - **Bin 7**: Memory defect repairable.\n   - **Bin 8/9**: Unrecoverable silicon scrap.\n2. **Laser Fuse & eFuse Redundancy Repair**: When MBIST identifies defective memory columns in an SRAM cache, automated femtosecond laser systems or electrical programming pulses blow on-chip **eFuses**, disconnecting the defective memory bank and rerouting addressing logic to redundant, spare columns built into the silicon.\n3. **Failure Analysis (FA) Closed Loop**: Unyielded wafers are routed to FA labs where engineers deploy **Focused Ion Beam (FIB)** cross-sectioning and **Scanning Electron Microscopy (SEM)** inspection to identify physical root causes—such as particle inclusions, residual photoresist, or tungsten via voids—triggering immediate corrective action on the upstream deposition or etch tools.\n\n---\n\n> **Key Takeaway**: Wafer probe (EDS) is the statistical heartbeat of a semiconductor fab. By deploying high-speed MEMS probe cards, DFT/BIST architectures, electronic wafer binning, and laser fuse redundancy repair, yield engineers isolate defective silicon early and continuously drive down defect density ($D_0$).\n"
                     },
                     {
                         "id": "semi-m5-r2",
@@ -9432,113 +9275,9 @@ var LXP_COURSES = {
                 "readings": [
                     {
                         "id": "ev-m4-r1",
-                        "title": "EV Charging Levels and Connectors",
-                        "duration": "10 min",
-                        "content": "\n# EV Charging Levels and Connectors\n\nUnderstanding how EVs charge is critical for anyone working in the electromobility industry.\n\n## Charging Levels\n\n### Level 1 — Standard Household Outlet\n**Power**: 1.2-1.8 kW (120V AC). Adds ~5-8 km of range per hour. Extremely slow — rarely used as primary method.\n\n### Level 2 — Dedicated Home/Workplace Charger\n**Power**: 3.3-19.2 kW (240V AC). Adds ~25-50 km of range per hour. Most common method — charge overnight at home.\n\n### Level 3 — DC Fast Charging (DCFC)\n**Power**: 50-350+ kW (high-voltage DC). Adds 200-300 km in 20-30 minutes. Used for highway stops and commercial fleets. Stations cost $50,000-$150,000 each.\n\n## Connector Standards (2025-2026)\n\n### NACS / SAE J3400 — The New North American Standard\nOriginally Tesla's proprietary connector, now officially standardized as **SAE J3400**. As of 2026, NACS is the **unified standard** in North America:\n- Single, compact connector for both AC and DC charging\n- Supports up to **1,000V DC** and up to **1 MW** power\n- All major automakers adopting NACS\n\n### CCS1 — Being Phased Out\nPreviously the standard for non-Tesla vehicles. Being replaced by NACS.\n\n### CCS2 — European Standard\nRemains dominant in Europe (designed for three-phase AC).\n\n### CHAdeMO — Legacy Japanese Standard\nUsed by early Nissan Leaf. Being phased out globally.\n\n## Charging Curves and Battery Health\n\nCharging is not linear. The battery charges fastest at 10-20% and slows above 80%:\n- **10% → 80%**: Fastest (the \"sweet spot\")\n- **80% → 100%**: Much slower — BMS reduces power to protect cells\n\nThis is why manufacturers quote \"10-80% charging time.\"\n\n---\n\n> **Key Takeaway**: EV charging comes in three levels. NACS (SAE J3400) is becoming the unified North American standard. Charge to 80% for fastest results.\n",
-                        "vocabulary": [
-                            {
-                                "en": "Level 1 Charging",
-                                "es": "Carga Nivel 1",
-                                "definition": "Slow charging from standard household outlet (120V)",
-                                "ipa": "/ˈlɛv.əl wʌn ˈtʃɑːr.dʒɪŋ/"
-                            },
-                            {
-                                "en": "Level 2 Charging",
-                                "es": "Carga Nivel 2",
-                                "definition": "Medium charging from dedicated 240V charger",
-                                "ipa": "/ˈlɛv.əl tuː ˈtʃɑːr.dʒɪŋ/"
-                            },
-                            {
-                                "en": "DC Fast Charging (DCFC)",
-                                "es": "Carga Rápida DC",
-                                "definition": "High-power direct-current charging (50-350+ kW)",
-                                "ipa": "/ˌdiːˈsiː fæst ˈtʃɑːr.dʒɪŋ/"
-                            },
-                            {
-                                "en": "EVSE",
-                                "es": "Equipo de Suministro EV",
-                                "definition": "Wall-mounted charging unit with safety features",
-                                "ipa": "/ˌiː.viː.ɛsˈiː/"
-                            },
-                            {
-                                "en": "NACS / SAE J3400",
-                                "es": "NACS / SAE J3400",
-                                "definition": "North American Charging Standard — the new unified connector",
-                                "ipa": "/næks/"
-                            },
-                            {
-                                "en": "CCS",
-                                "es": "Sistema de Carga Combinada",
-                                "definition": "Legacy connector standard being phased out in NA",
-                                "ipa": "/ˌsiː.siːˈɛs/"
-                            },
-                            {
-                                "en": "Supercharger",
-                                "es": "Supercargador",
-                                "definition": "Tesla's DC fast charging network",
-                                "ipa": "/ˈsuː.pər.tʃɑːr.dʒər/"
-                            },
-                            {
-                                "en": "Charging Curve",
-                                "es": "Curva de Carga",
-                                "definition": "How charging speed varies with battery state of charge",
-                                "ipa": "/ˈtʃɑːr.dʒɪŋ kɜːrv/"
-                            },
-                            {
-                                "en": "State of Charge (SoC)",
-                                "es": "Estado de Carga",
-                                "definition": "Percentage of battery currently full",
-                                "ipa": "/steɪt əv tʃɑːrdʒ/"
-                            },
-                            {
-                                "en": "kW (Kilowatt)",
-                                "es": "kW (Kilovatio)",
-                                "definition": "Unit of power — how fast energy is delivered",
-                                "ipa": "/ˈkɪl.ə.wɒt/"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "Which charging level is fastest?",
-                                "options": [
-                                    "Level 1",
-                                    "Level 2",
-                                    "Level 3 (DC Fast Charging)",
-                                    "They are all the same"
-                                ],
-                                "answer": 2
-                            },
-                            {
-                                "q": "What is NACS (SAE J3400)?",
-                                "options": [
-                                    "A battery chemistry",
-                                    "A car brand",
-                                    "The new unified North American charging connector standard",
-                                    "A type of motor"
-                                ],
-                                "answer": 2
-                            },
-                            {
-                                "q": "Why do EV manufacturers quote '10-80% charging time'?",
-                                "options": [
-                                    "Because charging slows significantly above 80% to protect battery health",
-                                    "Because the car can't charge above 80%",
-                                    "Because the charger breaks at 80%",
-                                    "Because 80% is the maximum capacity"
-                                ],
-                                "answer": 0
-                            },
-                            {
-                                "q": "What does Level 2 charging require?",
-                                "options": [
-                                    "No special equipment",
-                                    "A hydrogen fuel cell",
-                                    "A dedicated 240V EVSE unit",
-                                    "A DC fast charger"
-                                ],
-                                "answer": 2
-                            }
-                        ]
+                        "title": "EV Charging Infrastructure: AC Levels, High-Power DC Fast Charging & Protocol Architecture",
+                        "duration": "15 min",
+                        "content": "\n# EV Charging Infrastructure: AC Levels, High-Power DC Fast Charging & Protocol Architecture\n\nThe transition to electromobility depends entirely on charging infrastructure reliability, energy transfer speeds, and seamless cross-network interoperability. Delivering dozens of kilowatt-hours of electrical energy into a traction battery within minutes requires complex coordination between municipal electrical grids, high-voltage power electronics, digital communication protocols, and active cooling safety systems.\n\n---\n\n## 1. Charging Classifications: Level 1, Level 2 AC & DC Fast Charging (HPC)\n\nElectric vehicle supply equipment (**EVSE**) is standardized into three primary charging tiers defined by voltage domain, current type, and power electronics placement:\n\n### Level 1 AC Charging (Domestic Trickle)\n- **Voltage & Current**: Single-phase $120\\ \\text{V AC}$, $12\\text{--}16\\ \\text{A}$ continuous load ($1.4\\text{--}1.9\\ \\text{kW}$).\n- **Architecture**: Utilizes standard household circuits (NEMA 5-15/5-20 in North America). The vehicle's internal **On-Board Charger (OBC)** converts AC to DC.\n- **Replenishment Rate**: Adds only $4\\text{--}8\\ \\text{km}$ of range per hour of charging. Primarily suited for emergency top-offs or plug-in hybrid electric vehicles (PHEVs).\n\n### Level 2 AC Charging (Commercial & Residential Workhorse)\n- **Voltage & Current**: Split-phase or three-phase $208\\text{--}240\\ \\text{V AC}$, $16\\text{--}80\\ \\text{A}$ ($3.3\\text{--}19.2\\ \\text{kW}$).\n- **Architecture**: Installed in garages, corporate campuses, and public lots. The OBC handles power factor correction (PFC) and rectification into DC battery voltage.\n- **Replenishment Rate**: Adds $30\\text{--}80\\ \\text{km}$ of range per hour, fully replenishing a $75\\ \\text{kWh}$ pack in $6\\text{--}10\\ \\text{hours}$.\n\n### DC Fast Charging (DCFC / HPC - High-Power Charging)\n- **Voltage & Current**: $400\\text{--}1000\\ \\text{V DC}$, up to $500\\ \\text{A}$ continuous ($50\\text{--}350+\\ \\text{kW}$).\n- **Architecture**: Bypasses the vehicle's internal On-Board Charger completely. Massive stationary utility-scale rectifiers convert three-phase grid AC directly into controlled high-voltage DC, feeding current straight into the vehicle's traction battery pack via heavy contactors.\n- **Replenishment Rate**: Recharges a modern $800\\ \\text{V}$ architecture battery from $10\\%$ to $80\\%$ State of Charge (SoC) in **15 to 22 minutes**.\n\n---\n\n## 2. Connector Topology & Industry Standardization: CCS, NACS (SAE J3400) & CHAdeMO\n\nThe physical and electrical interface between EVSE and vehicle inlet has undergone aggressive convergence:\n\n| Standard | Regions | Max AC Power | Max DC Power | Pins & Architecture |\n| :--- | :--- | :--- | :--- | :--- |\n| **CCS Combo 1 (SAE J1772-Combo)** | North America | $19.2\\ \\text{kW}$ | $350\\ \\text{kW}$ | Combined J1772 AC connector with two massive lower DC bus pins. |\n| **CCS Combo 2 (IEC 62196-3)** | Europe / LatAm | $22\\text{--}43\\ \\text{kW}$ (3-phase) | $350+\\ \\text{kW}$ | European Type 2 Mennekes base with two supplemental DC pins. |\n| **NACS (SAE J3400)** | Global / North America | $19.2\\ \\text{kW}$ (Split-phase) | $400+\\ \\text{kW}$ | Ultra-compact single connector sharing identical pins for both AC and DC. |\n| **CHAdeMO** | Japan (Legacy) | $N/A$ (DC only) | $50\\text{--}100\\ \\text{kW}$ | Dual-inlet requirement (separate J1772 AC inlet alongside CHAdeMO DC inlet). |\n| **GB/T** | China | $22\\ \\text{kW}$ | $250\\ \\text{kW}$ | Separate dedicated physical ports for AC and DC charging. |\n\nThe formal adoption of **SAE J3400 (NACS)** as the universal standard across Ford, GM, Rivian, Hyundai, and European OEMs marks a massive transition toward a lightweight, single-inlet interface supporting both AC charging and megawatt-tier DC fast charging.\n\n---\n\n## 3. Communication Protocols & Software Interoperability\n\nEV charging is fundamentally a digital transaction governed by multi-layered network protocols:\n\n### Basic Signaling: Control Pilot (CP) & Proximity Pilot (PP)\n- Defined in **SAE J1772 / IEC 61851**:\n  - **Proximity Pilot (PP)**: Uses resistor dividers to verify that the mechanical latch is engaged and signals the EVSE to immediately interrupt current if the user presses the release button (preventing lethal DC arcing during disconnect).\n  - **Control Pilot (CP)**: A $1\\ \\text{kHz}$, $\\pm 12\\ \\text{V}$ pulse-width modulated (PWM) analog square wave. The EVSE modulates duty cycle to broadcast maximum grid capacity (e.g., $16\\% = 10\\ \\text{A}$, $50\\% = 30\\ \\text{A}$), while the vehicle shifts the positive amplitude voltage ($12\\ \\text{V} \\rightarrow 9\\ \\text{V} \\rightarrow 6\\ \\text{V}$) using internal resistors to signal state (Vehicle Detected $\\rightarrow$ Ready to Charge $\\rightarrow$ Ventilation Required).\n\n### Digital High-Level Communication: ISO 15118 & Plug & Charge\nFor DC fast charging, analog PWM is insufficient. **ISO 15118** runs HomePlug Green PHY powerline communication (PLC) directly across the Control Pilot pin:\n- **Plug & Charge (PnC)**: Eliminates mobile apps and RFID credit cards. When plugged in, the vehicle and charger negotiate a public key infrastructure (PKI) TLS cryptographic handshake, exchanging automated billing contracts and vehicle VIN certificates in under 2 seconds.\n- **Smart Charging & V2G (Vehicle-to-Grid)**: Enables dynamic grid balancing, bidirectional power flow (V2L / V2H / V2G), and automated ramp-down during peak grid stress.\n\n### Backend Infrastructure: OCPP (Open Charge Point Protocol)\nEVSE charge points communicate with cloud network backends via **OCPP 1.6J / 2.0.1** running WebSockets over TLS, coordinating user authorization, remote diagnostics, billing settlement, and load shedding across entire charging plazas.\n\n---\n\n## 4. Engineering Field Scenario: Thermal Management in Liquid-Cooled HPC Dispensers\n\nPumping $500\\ \\text{A}$ through an electrical cable generates severe resistive dissipation according to Joule's Law:\n\n$$P_{\\text{loss}} = I^2 \\cdot R$$\n\nAt $500\\ \\text{A}$, even a tiny cable resistance of $0.012\\ \\Omega$ creates $3,000\\ \\text{Watts}$ of continuous thermal heat in the charging harness. Without thermal intervention, the copper conductors would exceed $100^\\circ\\text{C}$ within two minutes, destroying the insulation jacket and posing burn hazards to users.\n\nTo maintain ergonomic cable diameter and safety, **High-Power Chargers (HPC > 150 kW)** incorporate closed-loop liquid-cooling systems:\n- A glycol-water or dielectric fluorochemical coolant is pumped through miniature annular channels directly surrounding the copper bus wires right up into the connector contact pins.\n- Dual PT1000 temperature sensors monitor pin junctions continuously. If connector temperature exceeds $90^\\circ\\text{C}$, the EVSE automatically throttles current back to $200\\ \\text{A}$ to prevent thermal runaway of the charging interface.\n\n---\n\n> **Key Takeaway**: High-power EV charging combines multi-voltage power conversion with rigorous protocols: Control Pilot PWM safety interlocks, ISO 15118 Plug & Charge digital security, SAE J3400 hardware standardization, and closed-loop liquid-cooled cabling capable of safely transferring hundreds of kilowatts without overheating.\n"
                     }
                 ]
             },
@@ -9680,125 +9419,9 @@ var LXP_COURSES = {
                 "readings": [
                     {
                         "id": "ev-m6-r1",
-                        "title": "The Brain of the Battery: How BMS Works",
-                        "duration": "10 min",
-                        "content": "\n# The Brain of the Battery: How BMS Works\n\nA Battery Management System (BMS) is the electronic controller that monitors and manages every aspect of a battery pack. Without a BMS, lithium-ion batteries would be dangerous and unreliable.\n\n## Why BMS Is Critical\n\nLithium-ion batteries operate within narrow safety margins:\n- **Overcharging** (above ~4.2V per cell) → thermal runaway risk\n- **Over-discharging** (below ~2.5V) → permanent damage\n- **Overheating** (above ~60°C) → accelerated degradation\n- **Overcooling** (below -20°C) → lithium plating risk\n\n## Core Functions\n\n### 1. Cell Voltage Monitoring\nMeasures **every individual cell's** voltage. Can reduce power or disconnect battery via **contactors** if limits exceeded.\n\n### 2. Temperature Monitoring\nControls liquid cooling circuits, heating elements, and fans to maintain optimal temperature.\n\n### 3. State of Charge (SoC) Estimation\nThe battery's \"fuel gauge.\" Estimated using **coulomb counting** (tracking current flow), voltage-based estimation, and **Kalman filtering** (advanced algorithm).\n\n### 4. State of Health (SoH)\nTracks capacity loss over time. A new 77 kWh battery might hold only 65 kWh after 5 years. Used for warranty claims and used car valuations.\n\n### 5. Cell Balancing\n- **Passive balancing**: Excess energy dissipated as heat (simple, wastes energy)\n- **Active balancing**: Energy transferred between cells (efficient, expensive)\n\n### 6. Communication\nBMS communicates via **CAN bus** protocol with the vehicle control unit, motor inverter, charger, and dashboard.\n\n## BMS Architecture Types\n- **Centralized**: One controller, all cells wired to it (small packs)\n- **Distributed**: Small boards per module reporting to master (most EVs)\n- **Modular**: Each module has full BMS (buses, commercial vehicles)\n\n---\n\n> **Key Takeaway**: The BMS monitors voltage, temperature, charge state, and health of every cell. It is the most critical electronic system in an EV.\n",
-                        "vocabulary": [
-                            {
-                                "en": "BMS (Battery Management System)",
-                                "es": "Sistema de Gestión de Baterías",
-                                "definition": "Electronic controller monitoring all battery functions",
-                                "ipa": "/ˌbiː.ɛmˈɛs/"
-                            },
-                            {
-                                "en": "State of Charge (SoC)",
-                                "es": "Estado de Carga",
-                                "definition": "Percentage of battery energy remaining",
-                                "ipa": "/steɪt əv tʃɑːrdʒ/"
-                            },
-                            {
-                                "en": "State of Health (SoH)",
-                                "es": "Estado de Salud",
-                                "definition": "Remaining capacity vs. original capacity",
-                                "ipa": "/steɪt əv hɛlθ/"
-                            },
-                            {
-                                "en": "Cell Balancing",
-                                "es": "Balanceo de Celdas",
-                                "definition": "Equalizing energy across cells in a pack",
-                                "ipa": "/sɛl ˈbæl.ən.sɪŋ/"
-                            },
-                            {
-                                "en": "Contactor",
-                                "es": "Contactor",
-                                "definition": "High-voltage relay that connects/disconnects battery",
-                                "ipa": "/kɒnˈtæk.tər/"
-                            },
-                            {
-                                "en": "Coulomb Counting",
-                                "es": "Conteo de Coulombs",
-                                "definition": "Tracking current flow to estimate charge level",
-                                "ipa": "/ˈkuː.lɒm ˈkaʊn.tɪŋ/"
-                            },
-                            {
-                                "en": "Thermal Runaway",
-                                "es": "Fuga Térmica",
-                                "definition": "Uncontrolled temperature rise causing battery failure",
-                                "ipa": "/ˈθɜːr.məl ˈrʌn.ə.weɪ/"
-                            },
-                            {
-                                "en": "Lithium Plating",
-                                "es": "Deposición de Litio",
-                                "definition": "Metallic lithium forming on anode in cold conditions",
-                                "ipa": "/ˈlɪθ.i.əm ˈpleɪ.tɪŋ/"
-                            },
-                            {
-                                "en": "CAN Bus",
-                                "es": "Bus CAN",
-                                "definition": "Communication protocol between vehicle systems",
-                                "ipa": "/kæn bʌs/"
-                            },
-                            {
-                                "en": "Passive Balancing",
-                                "es": "Balanceo Pasivo",
-                                "definition": "Wasting excess energy as heat to equalize cells",
-                                "ipa": "/ˈpæs.ɪv ˈbæl.ən.sɪŋ/"
-                            },
-                            {
-                                "en": "Active Balancing",
-                                "es": "Balanceo Activo",
-                                "definition": "Transferring energy between cells to equalize them",
-                                "ipa": "/ˈæk.tɪv ˈbæl.ən.sɪŋ/"
-                            },
-                            {
-                                "en": "ISO 26262",
-                                "es": "ISO 26262",
-                                "definition": "Functional safety standard for automotive electronics",
-                                "ipa": "/ˌaɪ.ɛs.ˈoʊ/"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "What happens if a lithium-ion cell is overcharged?",
-                                "options": [
-                                    "It charges faster",
-                                    "It lasts longer",
-                                    "It can cause thermal runaway and fire",
-                                    "Nothing"
-                                ],
-                                "answer": 2
-                            },
-                            {
-                                "q": "What is State of Charge (SoC)?",
-                                "options": [
-                                    "The percentage of battery energy remaining",
-                                    "The total capacity of the battery",
-                                    "The temperature of the battery",
-                                    "The voltage of the motor"
-                                ],
-                                "answer": 0
-                            },
-                            {
-                                "q": "What is the difference between passive and active cell balancing?",
-                                "options": [
-                                    "They are the same",
-                                    "Passive wastes excess energy as heat; active transfers energy between cells",
-                                    "Passive is more expensive",
-                                    "Active uses no electricity"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "Which protocol does the BMS use to communicate with the vehicle?",
-                                "options": [
-                                    "Wi-Fi",
-                                    "Bluetooth",
-                                    "CAN Bus",
-                                    "USB"
-                                ],
-                                "answer": 2
-                            }
-                        ]
+                        "title": "Battery Management Systems (BMS): Hardware Topologies, State Estimation & Balancing Dynamics",
+                        "duration": "15 min",
+                        "content": "\n# Battery Management Systems (BMS): Hardware Topologies, State Estimation & Balancing Dynamics\n\nA modern electric vehicle traction battery pack contains thousands of individual lithium-ion cells wired into parallel groups (strings) and connected in series to deliver between $400\\ \\text{V}$ and $800\\ \\text{V}$ with energy capacities often exceeding $100\\ \\text{kWh}$. Operating this massive chemical reservoir safely under extreme current spikes, sub-zero ambient frosts, and scorching summer ambient heat demands real-time embedded surveillance and control. \n\nThe **Battery Management System (BMS)** represents the primary electronic brain and guardian of the traction battery pack, ensuring maximum energy delivery while rigidly containing the danger of fire and catastrophic degradation.\n\n---\n\n## 1. BMS Hardware Architecture: Centralized, Modular & Distributed Topologies\n\nDepending on vehicle pack geometry and cell layout, BMS hardware is architected into three main configurations:\n\n### 1. Centralized Architecture\nA single master controller contains all analog front-end (AFE) multiplexers, measurement channels, and processing units in one enclosure. Hundreds of individual sensor wires run from every cell group across the pack to the central board. While cheap, the sprawling wiring harness adds mass, manufacturing complexity, and vulnerability to electromagnetic interference (EMI).\n\n### 2. Modular (Master-Slave / CSC) Architecture\nThe industry standard in high-voltage automotive applications:\n- **Cell Supervisory Circuits (CSC) / Slave Modules**: Small, rugged PCBs mounted directly onto individual battery modules. Each CSC contains an **Analog Front End (AFE)** IC (e.g., ADI, TI, NXP) measuring cell voltages to $\\pm 1.5\\ \\text{mV}$ precision, reading local NTC thermistors, and controlling balancing switches.\n- **Isolated Daisy-Chain Communications**: Slaves communicate with the master controller via galvanically isolated differential SPI or CAN FD buses utilizing capacitive or transformer isolation capable of withstanding hundreds of volts of common-mode offsets.\n- **Battery Management Unit (BMU) / Master Controller**: High-performance dual-core microcontroller (often ISO 26262 ASIL-D qualified) that processes pack-level algorithms, controls main safety contactors, and interfaces with the Vehicle Control Unit (VCU).\n\n### 3. Wireless BMS (wBMS)\nPioneered by GM (Ultium) and Analog Devices, replacing physical communication wiring between cell modules and the master controller with low-power 2.4 GHz secure mesh networks. This slashes pack weight, eliminates harness assembly labor, and reduces potential galvanic failure points.\n\n---\n\n## 2. Real-Time State Estimation: SoC, SoH & SoP\n\nLithium-ion battery performance cannot be measured directly with simple gauges; critical parameters must be inferred through algorithmic state estimation:\n\n### State of Charge (SoC) Estimation\nSoC indicates remaining usable charge ($0\\%$ to $100\\%$). Two complementary techniques are fused:\n1. **Coulomb Counting (Current Integration)**:\n   $$\\text{SoC}(t) = \\text{SoC}(t_0) - \\frac{1}{C_n} \\int_{t_0}^t I(\\tau) \\cdot \\eta \\, d\\tau$$\n   *Challenge*: High-precision current shunt measurement drifts over time due to sensor bias and integration error.\n2. **Open Circuit Voltage (OCV) Mapping**: Battery resting voltage correlates directly with SoC. However, chemistry like LFP (Lithium Iron Phosphate) has an extremely flat voltage plateau between $20\\%$ and $80\\%$ SoC, where a $5\\ \\text{mV}$ change can represent a $30\\%$ SoC shift.\n3. **Kalman Filtering (EKF / UKF)**: The BMS executes an **Extended Kalman Filter** combining a dynamic equivalent circuit model (Thevenin ECM with RC pairs modeling electrochemical diffusion) with real-time voltage and current measurements to eliminate drift and achieve $<2\\%$ SoC tracking accuracy.\n\n### State of Health (SoH) & State of Power (SoP)\n- **State of Health (SoH)**: Quantifies pack capacity fade ($C_{\\text{actual}} / C_{\\text{nominal}}$) and internal resistance growth ($R_{\\text{internal}}$) caused by SEI layer growth, lithium plating, and mechanical micro-cracking. When SoH drops below $70\\text{--}80\\%$, the pack is decommissioned from automotive service for stationary second-life storage.\n- **State of Power (SoP)**: Dynamically calculates the maximum safe charge current ($I_{\\text{max,chg}}$) and discharge current ($I_{\\text{max,dis}}$) allowable for 2-second and 10-second pulses without exceeding cell voltage limits or inducing lithium dendrite deposition during aggressive acceleration or regenerative braking.\n\n---\n\n## 3. Cell Balancing Dynamics: Passive Bleeding vs. Active Redistribution\n\nBecause no two manufactured cells possess 100% identical capacity or internal resistance, series-connected cells inevitably drift apart over hundreds of charge-discharge cycles:\n\n```\nUnbalanced Series String during Charging:\nCell 1: [==== 3.90 V ====]\nCell 2: [====== 4.20 V ======] <-- Reaches Max Limit First! Shuts down charging!\nCell 3: [==== 3.85 V ====]\nTotal Usable Capacity is artificially truncated by the highest cell on charge\nand the lowest cell on discharge.\n```\n\n### Passive Cell Balancing\n- **Operating Principle**: When cells approach full charge, the AFE switches on small internal MOSFETs that divert charging current through surface-mount **bleed resistors** ($30\\text{--}100\\ \\Omega$), dissipating excess energy as heat ($50\\text{--}200\\ \\text{mA}$ balancing current) from the highest-voltage cells until all cells match.\n- **Pros & Cons**: Cheap, compact, and highly reliable, but generates localized heat and wastes energy.\n\n### Active Cell Balancing\n- **Operating Principle**: Uses switched-capacitor, inductive flyback, or DC-DC bidirectional converters to shuttle energy from higher-voltage cells into lower-voltage cells or back into the overall pack with $>85\\%$ electrical efficiency.\n- **Pros & Cons**: Extremely fast balancing and zero thermal energy loss, but incurs higher component count, circuit complexity, and BOM cost.\n\n---\n\n## 4. Engineering Field Scenario: High-Voltage Contactor Sequencing & Pyrofuse Actuation\n\nThe ultimate responsibility of the BMS is fail-safe galvanic isolation:\n\n### Contactor Sequencing & Pre-Charge Safety\nConnecting an uncharged traction inverter DC-link capacitor bank ($1,000\\text{--}2,000\\ \\mu\\text{F}$) directly to an $800\\ \\text{V}$ battery would cause an inrush current spike exceeding $2,000\\ \\text{Amperes}$, instantly welding mechanical contactor pads shut. The BMS prevents this via a rigid 3-step sequence:\n1. **Negative Contactor Engages**: Closes the ground-return line.\n2. **Pre-Charge Relay & Resistor Engage**: Directs current through a ceramic power resistor ($20\\text{--}50\\ \\Omega$), charging the inverter DC-link capacitors up to $95\\%$ of pack voltage in $150\\text{--}300\\ \\text{ms}$.\n3. **Positive Contactor Engages & Pre-Charge Opens**: Once the delta-voltage across the main contactor drops below $20\\ \\text{V}$, the main positive contactor snaps closed safely with zero arcing.\n\n### Pyrofuse Deployment\nIn catastrophic collision or short-circuit events exceeding $5,000\\ \\text{A}$ (beyond the breaking capacity of standard electromagnetic relays), the BMS fires a pyrotechnic disconnect switch (**Pyrofuse**). An explosive charge drives an insulated ceramic blade through a solid copper busbar in under **2 milliseconds**, physically severing high-voltage continuity before thermal runaway can propagate.\n\n---\n\n> **Key Takeaway**: The BMS orchestrates safe electromobility through modular AFE sensing, real-time Extended Kalman Filter state estimation, precision passive/active cell balancing, and high-speed pyrotechnic contactor protection designed to prevent thermal runaway and optimize battery life.\n"
                     }
                 ]
             },
@@ -10046,125 +9669,9 @@ var LXP_COURSES = {
                 "readings": [
                     {
                         "id": "ev-m9-r1",
-                        "title": "Working Safely with High-Voltage Systems",
-                        "duration": "10 min",
-                        "content": "\n# Working Safely with High-Voltage Systems\n\nElectric vehicles operate at **400-800 volts DC** — enough to cause **fatal electrocution**. Working on HV systems requires specialized training and strict safety protocols.\n\n## Understanding the Danger\n\nAt 400V with wet skin (10,000 ohms): Current = 400/10,000 = **40 mA** — in the lethal zone.\n\n| Current | Effect on Human Body |\n|---------|---------------------|\n| 1 mA | Slight tingling |\n| 10-20 mA | Can't let go (muscular contraction) |\n| 50-100 mA | **Ventricular fibrillation (potentially fatal)** |\n| 100+ mA | Cardiac arrest, severe burns |\n\n## The Color Code: Orange = High Voltage\n\nAll high-voltage cables, connectors, and components are marked with **bright orange** covers (ISO 6722). If you see orange cables, STOP and verify the system is de-energized.\n\n## De-Energization: Lockout/Tagout (LOTO)\n\n1. **Turn off** the vehicle, remove key\n2. **Disconnect 12V** auxiliary battery\n3. **Remove service disconnect plug** (breaks HV circuit)\n4. **Wait 5-10 minutes** for capacitors to discharge\n5. **Verify zero voltage** with Category III/IV rated multimeter\n6. **Apply lockout/tagout** — lock and warning tag on disconnect\n\n## Personal Protective Equipment (PPE)\n\n| PPE | Spec | Purpose |\n|-----|------|---------|\n| Insulated HV gloves | Class 0 (1,000V) | Hand protection |\n| Leather protectors | Over insulated gloves | Mechanical protection |\n| Safety glasses | Impact-rated | Eye protection |\n| Insulated tools | IEC 60900 (1,000V) | Prevent shorts |\n| Insulated floor mat | HV-rated rubber | Prevent ground path |\n\n## ISO 26262 and ASIL Levels\n\n**ISO 26262** defines ASIL levels A (lowest) to D (highest risk):\n- Battery disconnect: **ASIL D** (most critical)\n- Charging control: **ASIL C**\n- Dashboard warnings: **ASIL B**\n\n---\n\n> **Key Takeaway**: EV high-voltage systems (400-800V) are lethal. Orange = HV. Always follow LOTO procedures and wear rated PPE. ISO 26262 governs functional safety.\n",
-                        "vocabulary": [
-                            {
-                                "en": "High Voltage (HV)",
-                                "es": "Alto Voltaje (AV)",
-                                "definition": "Electrical systems above 60V DC or 30V AC",
-                                "ipa": "/haɪ ˈvoʊl.tɪdʒ/"
-                            },
-                            {
-                                "en": "Electrocution",
-                                "es": "Electrocución",
-                                "definition": "Injury or death from electric shock",
-                                "ipa": "/ɪˌlɛk.trəˈkjuː.ʃən/"
-                            },
-                            {
-                                "en": "Lockout/Tagout (LOTO)",
-                                "es": "Bloqueo/Etiquetado",
-                                "definition": "Procedure to ensure HV systems are safely de-energized",
-                                "ipa": "/ˈlɒk.aʊt ˈtæɡ.aʊt/"
-                            },
-                            {
-                                "en": "Service Disconnect",
-                                "es": "Desconexión de Servicio",
-                                "definition": "Physical plug that breaks the HV circuit",
-                                "ipa": "/ˈsɜːr.vɪs ˌdɪs.kəˈnɛkt/"
-                            },
-                            {
-                                "en": "Multimeter",
-                                "es": "Multímetro",
-                                "definition": "Instrument measuring voltage, current, resistance",
-                                "ipa": "/ˈmʌl.tɪˌmiː.tər/"
-                            },
-                            {
-                                "en": "PPE",
-                                "es": "EPP (Equipo de Protección Personal)",
-                                "definition": "Safety gear worn by workers",
-                                "ipa": "/ˌpiː.piːˈiː/"
-                            },
-                            {
-                                "en": "Arc Flash",
-                                "es": "Arco Eléctrico",
-                                "definition": "Explosion of energy from an electrical fault",
-                                "ipa": "/ɑːrk flæʃ/"
-                            },
-                            {
-                                "en": "ASIL",
-                                "es": "Nivel de Integridad de Seguridad Automotriz",
-                                "definition": "Risk classification under ISO 26262",
-                                "ipa": "/ˈeɪ.sɪl/"
-                            },
-                            {
-                                "en": "Contactor",
-                                "es": "Contactor",
-                                "definition": "High-voltage relay in the battery system",
-                                "ipa": "/kɒnˈtæk.tər/"
-                            },
-                            {
-                                "en": "Ventricular Fibrillation",
-                                "es": "Fibrilación Ventricular",
-                                "definition": "Lethal irregular heartbeat caused by electric shock",
-                                "ipa": "/vɛnˈtrɪk.jʊ.lər ˌfɪb.rɪˈleɪ.ʃən/"
-                            },
-                            {
-                                "en": "Rescue Sheet",
-                                "es": "Hoja de Rescate",
-                                "definition": "Document showing first responders safe cut zones",
-                                "ipa": "/ˈrɛs.kjuː ʃiːt/"
-                            },
-                            {
-                                "en": "Capacitor Discharge",
-                                "es": "Descarga de Capacitor",
-                                "definition": "Waiting for stored electrical charge to dissipate",
-                                "ipa": "/kəˈpæs.ɪ.tər ˈdɪs.tʃɑːrdʒ/"
-                            }
-                        ],
-                        "questions": [
-                            {
-                                "q": "What color identifies high-voltage cables in EVs?",
-                                "options": [
-                                    "Red",
-                                    "Blue",
-                                    "Orange",
-                                    "Green"
-                                ],
-                                "answer": 2
-                            },
-                            {
-                                "q": "What is the first step in de-energizing an EV?",
-                                "options": [
-                                    "Turn off the vehicle and remove the key",
-                                    "Cut the orange cables",
-                                    "Open the hood",
-                                    "Call the fire department"
-                                ],
-                                "answer": 0
-                            },
-                            {
-                                "q": "How much current is potentially lethal?",
-                                "options": [
-                                    "1,000 mA",
-                                    "50-100 mA can cause ventricular fibrillation",
-                                    "Only above 10 amps",
-                                    "Any amount is safe"
-                                ],
-                                "answer": 1
-                            },
-                            {
-                                "q": "What is ASIL D under ISO 26262?",
-                                "options": [
-                                    "The lowest safety level",
-                                    "The highest safety integrity level for the most critical systems",
-                                    "A battery chemistry",
-                                    "A type of insulated glove"
-                                ],
-                                "answer": 1
-                            }
-                        ]
+                        "title": "High-Voltage Safety Protocols: NFPA 70E, Interlocks, PPE & Zero-Energy Verification",
+                        "duration": "15 min",
+                        "content": "\n# High-Voltage Safety Protocols: NFPA 70E, Interlocks, PPE & Zero-Energy Verification\n\nWorking on conventional internal combustion vehicles exposes technicians to low-voltage $12\\ \\text{V DC}$ systems, where human skin resistance ($1,000\\text{--}100,000\\ \\Omega$) provides an absolute barrier against electrical shock. In contrast, modern electric vehicle powertrains operate at nominal potentials ranging between **$400\\ \\text{V}$ and 900\\ \\text{V DC}**, carrying potential short-circuit fault energies measured in hundreds of kilojoules. \n\nAt these voltage thresholds, human skin dielectric breakdown occurs instantly, and electrical current traversing the cardiac pathway at as little as **$50\\ \\text{milliamperes (mA)}$** is sufficient to cause irreversible ventricular fibrillation and fatal cardiac arrest. Consequently, automotive high-voltage engineering requires military-grade safety discipline, specialized personal protective equipment (PPE), and fail-safe hardware architectures.\n\n---\n\n## 1. High-Voltage Thresholds & Regulatory Frameworks: UNECE R100 & NFPA 70E\n\nIn the automotive engineering sector, voltage categories are formally classified under international regulations:\n\n### UNECE Regulation 100 / ISO 6469-3 (Voltage Class B)\nAny electrical component, harness, or bus operating at:\n- **$>60\\ \\text{V}$ and $\\le 1500\\ \\text{V DC}$**, or\n- **$>30\\ \\text{V}$ and $\\le 1000\\ \\text{V AC RMS}$** (15–45 Hz).\nAll Voltage Class B conductors must be permanently enclosed in vivid **safety-orange jackets or conduit** to provide immediate visual warning to service technicians and first responders.\n\n### NFPA 70E & OSHA Standards\nGovern the electrical safety standards for technician interaction:\n- **Shock Hazard Boundaries**: Establishing Limited Approach and Restricted Approach boundaries around exposed conductors.\n- **Arc-Flash Hazards**: A bolted short circuit across a $400\\text{--}800\\ \\text{V}$ lithium-ion pack produces an explosive plasma arc fireball vaporizing copper and aluminum conductors, generating sound pressure waves exceeding $140\\ \\text{dB}$ and radiant thermal energy capable of inflicting third-degree burns within milliseconds.\n\n---\n\n## 2. Personal Protective Equipment (PPE) & Dielectric Rating Rigor\n\nTechnicians servicing high-voltage traction batteries must never touch live or unverified terminals without certified safety gear:\n\n```\nDielectric Glove Classification (ASTM D120 / IEC 60903):\n- Class 00: Max Proof Test 2,500 V AC | Max Working Voltage: 500 V AC / 750 V DC\n- Class 0:  Max Proof Test 5,000 V AC | Max Working Voltage: 1,000 V AC / 1,500 V DC  <-- AUTOMOTIVE STANDARD\n```\n\n### The 3-Tier PPE Defense\n1. **Class 0 Insulating Rubber Gloves**: Rated to $1,000\\ \\text{V AC} / 1,500\\ \\text{V DC}$. Before every shift, technicians perform a manual **pneumatic roll test**—rolling the glove cuff toward the fingers to trap air and inspecting for micro-punctures or pinholes under immersion or sound.\n2. **Leather Protector Gloves**: Worn directly over the dielectric rubber gloves to shield the thin elastomer from cuts, abrasive burrs, metal chips, and puncture hazards.\n3. **Arc-Flash Face Shield & Flame-Resistant Clothing**: An NFPA 70E compliant arc-rated face shield ($8\\text{--}12\\ \\text{cal/cm}^2$ ATPV rating) paired with safety glasses, high-voltage safety footwear with dielectric composite toes and soles ($18\\ \\text{kV}$ dielectric resistance), and non-conductive, arc-rated long-sleeve cotton/aramid apparel.\n\n---\n\n## 3. High-Voltage Interlock Loop (HVIL) & Isolation Resistance Monitoring\n\nElectric vehicles incorporate hardware-level autonomous safety supervisory loops that protect personnel even if human error occurs:\n\n### High-Voltage Interlock Loop (HVIL)\nA continuous, low-voltage ($12\\ \\text{V}$ or $5\\ \\text{V}$) low-current physical pilot loop routed through every single high-voltage connector in the vehicle (inverter, onboard charger, DCFC inlet, A/C compressor, battery pack cover):\n- **Short-Pin Architecture**: In every high-voltage connector, the HVIL pins are manufactured shorter than the massive primary high-voltage power pins.\n- **Arc Prevention**: If a technician or mechanic attempts to unseat an orange high-voltage plug while current is flowing, the shorter HVIL pins break contact **milliseconds before** the main power pins physically disconnect.\n- **Instantaneous Shutdown**: The BMS or vehicle supervisor detects the broken HVIL circuit and opens the main high-voltage contactors within **$10\\text{--}20\\ \\text{milliseconds}$**, extinguishing power before an electrical arc can jump across the separating power terminals.\n\n### Continuous Isolation Resistance Monitoring\nThe vehicle body / chassis functions as the low-voltage reference ground ($0\\ \\text{V}$). The high-voltage positive ($HV+$) and negative ($HV-$) buses are strictly isolated and floating relative to chassis ground. \n- A dedicated **Isolation Monitoring Device (IMD)** inside the BMS continuously injects low-frequency AC test pulses between the HV bus and chassis.\n- Standard ISO 6469 requires at least **$500\\ \\Omega / \\text{Volt}$** of isolation resistance (e.g., $>400\\ \\text{k}\\Omega$ for an $800\\ \\text{V}$ vehicle). If coolant leaks into a pack or cable chaffing causes insulation resistance to drop below this critical limit, an instrument cluster fault triggers immediately and DC charging is permanently locked out.\n\n---\n\n## 4. Engineering Field Scenario: Lockout/Tagout (LOTO) & The 3-Step Zero-Energy Test\n\nBefore removing battery enclosure lids or touching inverter busbars, technicians must systematically de-energize the vehicle using the **3-Step Zero-Energy Verification Protocol**:\n\n### Step 1: Physical De-Energization & Manual Service Disconnect (MSD)\n1. Turn off the ignition switch and remove the key fob $>10\\ \\text{meters}$ from the vehicle bay to prevent wireless start sequences.\n2. Disconnect the auxiliary $12\\ \\text{V}$ battery negative terminal to kill logic power to the BMS contactors.\n3. Remove the **Manual Service Disconnect (MSD)** or High-Voltage Service Plug (often located under the rear seat or center console). The MSD mechanically splits the internal battery pack in half, physically reducing maximum internal terminal voltage below lethal thresholds while opening the HVIL loop.\n4. Apply a **Lockout/Tagout (LOTO)** padlock and tag to the MSD receptacle, with the key kept exclusively in the technician’s pocket.\n5. Wait **5 to 10 minutes** to allow bleed-down resistors to discharge internal inverter high-voltage DC-link capacitors below $50\\ \\text{V DC}$.\n\n### Step 2: Live-Dead-Live Zero-Energy Electrical Verification\nNever assume a circuit is dead because a switch is open. Technicians utilize a **CAT III (1,000 V) or CAT IV (600 V)** digital multimeter equipped with fused, insulated test probes:\n1. **Test on Known Live Source**: Probe a known operational voltage source (or calibration proving unit) to verify meter functionality.\n2. **Measure Target EV Terminals**: Measure between:\n   - $HV+$ to $HV-$ (must read $<5\\ \\text{V DC}$).\n   - $HV+$ to Chassis Ground (must read $0\\ \\text{V DC}$).\n   - $HV-$ to Chassis Ground (must read $0\\ \\text{V DC}$).\n3. **Re-Test on Known Live Source**: Immediately probe the known live source again to verify that the meter did not blow an internal fuse or experience battery failure during the test.\n\nOnly after successful completion of this strict **Live-Dead-Live** verification sequence is the system declared zero-energy and safe for mechanical disassembly.\n\n---\n\n> **Key Takeaway**: High-voltage EV safety relies on defense-in-depth: vivid orange harness identification, certified Class 0 PPE, fail-safe High-Voltage Interlock Loops (HVIL), continuous isolation monitoring, and strict adherence to LOTO and the 3-step Live-Dead-Live zero-energy verification protocol.\n"
                     }
                 ]
             },
