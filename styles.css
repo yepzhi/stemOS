@@ -4022,7 +4022,6 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
     filter: blur(14px);
     animation: softConstruct 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     animation-delay: var(--delay, 0.13s);
-    will-change: transform, opacity, filter;
 }
 
 .soft-word.supaste-serif-italic {
@@ -4039,7 +4038,6 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
     filter: blur(10px);
     animation: softConstruct 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     animation-delay: var(--delay, 0.26s);
-    will-change: transform, opacity, filter;
 }
 
 @keyframes softConstruct {
