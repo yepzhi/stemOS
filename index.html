@@ -15,8 +15,8 @@
         rel="stylesheet">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css?v=1.0.1">
-    <link rel="stylesheet" href="dev.css?v=4.0.0">
+    <link rel="stylesheet" href="styles.css?v=1.0.2">
+    <link rel="stylesheet" href="dev.css?v=4.0.1">
 
     <!-- Local Backdoor Initializer script to prevent screen flash -->
     <script>
@@ -951,6 +951,52 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(2, 132, 199, 0.45);
         }
+
+        /* ── SOFT APPEAR & CONSTRUCTION REVEAL (Supaste Editorial Physics) ── */
+        .soft-word {
+            display: inline-block;
+            margin-right: 0.22em;
+            opacity: 0;
+            transform: translateY(28px) scale(0.96);
+            filter: blur(14px);
+            animation: softConstruct 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: var(--delay, 0.13s);
+            will-change: transform, opacity, filter;
+        }
+
+        .soft-word.supaste-serif-italic {
+            margin-right: 0.2em;
+        }
+
+        .soft-word:last-child {
+            margin-right: 0;
+        }
+
+        .soft-element {
+            opacity: 0;
+            transform: translateY(22px);
+            filter: blur(10px);
+            animation: softConstruct 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: var(--delay, 0.26s);
+            will-change: transform, opacity, filter;
+        }
+
+        @keyframes softConstruct {
+            0% {
+                opacity: 0;
+                transform: translateY(28px) scale(0.96);
+                filter: blur(14px);
+            }
+            50% {
+                opacity: 0.8;
+                filter: blur(3px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0px);
+            }
+        }
     </style>
 </head>
 
@@ -1041,7 +1087,7 @@
                 <div class="supaste-hero-container">
 
                     <!-- Pill / Brand Header -->
-                    <div class="hero-brand-section">
+                    <div class="hero-brand-section soft-element" style="--delay: 0.05s;">
                         <div class="cs-dev-signal-pill"
                             style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.4); color:#ffffff; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 4px 16px rgba(13,43,153,0.2); font-size:0.75rem; font-weight:700; padding:5px 16px;">
                             <span class="cs-pulse-dot" style="background:#ffffff; box-shadow:0 0 10px #ffffff;"></span>
@@ -1064,19 +1110,25 @@
 
                     <!-- Editorial Headline in Pure White -->
                     <h1 class="supaste-hero-title">
-                        Mastering Technical English <br>
-                        for <span class="supaste-serif-italic">Advanced Industry &amp; Nearshoring</span>
+                        <span class="soft-word" style="--delay: 0.14s">Mastering</span>
+                        <span class="soft-word" style="--delay: 0.22s">Technical</span>
+                        <span class="soft-word" style="--delay: 0.30s">English</span> <br>
+                        <span class="soft-word" style="--delay: 0.38s">for</span>
+                        <span class="soft-word supaste-serif-italic" style="--delay: 0.48s">Advanced</span>
+                        <span class="soft-word supaste-serif-italic" style="--delay: 0.56s">Industry</span>
+                        <span class="soft-word supaste-serif-italic" style="--delay: 0.64s">&amp;</span>
+                        <span class="soft-word supaste-serif-italic" style="--delay: 0.72s">Nearshoring</span>
                     </h1>
 
                     <!-- Refined Subtitle in Crisp White -->
-                    <p class="supaste-hero-subtitle">
+                    <p class="supaste-hero-subtitle soft-element" style="--delay: 0.82s">
                         <strong>26 specialized industry tracks</strong> of English for Specific Purposes (ESP) &mdash;
                         engineered for semiconductor fabrication, aerospace avionics, industrial robotics, and advanced
                         manufacturing teams. Aligned with IEEE, SEMI, ISO, and OACI standards.
                     </p>
 
                     <!-- CTAs -->
-                    <div class="supaste-hero-actions">
+                    <div class="supaste-hero-actions soft-element" style="--delay: 0.95s">
                         <button type="button" onclick="openUnderDevModal('26 Modules')" class="supaste-btn-primary">
                             <span>26 Modules</span>
                             <i class="fa-solid fa-arrow-right btn-arrow"></i>
@@ -1093,7 +1145,7 @@
                     </div>
 
                     <!-- Key Metrics Strip -->
-                    <div class="supaste-metrics-strip">
+                    <div class="supaste-metrics-strip soft-element" style="--delay: 1.08s">
                         <div class="metric-pill">
                             <span class="metric-val">26</span>
                             <span class="metric-lbl">Tracks ESP</span>
@@ -1121,8 +1173,8 @@
                     </div>
 
                     <!-- Supaste macOS Stage Window Live Preview -->
-                    <div class="supaste-stage-window" id="hero-showcase-window"
-                        style="margin-top:14px; margin-bottom:10px;">
+                    <div class="supaste-stage-window soft-element" id="hero-showcase-window"
+                        style="--delay: 1.20s; margin-top:14px; margin-bottom:10px;">
                         <div class="window-titlebar">
                             <div class="traffic-lights">
                                 <span class="dot dot-close"></span>
