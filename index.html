@@ -1495,23 +1495,30 @@
                         </div>
                     </div>
 
-                    <!-- Category Filter Chips -->
-                    <div class="ed-category-filter-bar">
-                        <button class="ed-filter-chip active" data-cat="all">
-                            <i class="fa-solid fa-border-all"></i> All Units (<span id="count-cat-all">26</span>)
-                        </button>
-                        <button class="ed-filter-chip" data-cat="technology">
-                            <span class="cat-dot dot-tech"></span> Technology (6)
-                        </button>
-                        <button class="ed-filter-chip" data-cat="engineering">
-                            <span class="cat-dot dot-eng"></span> Engineering & Industry (8)
-                        </button>
-                        <button class="ed-filter-chip" data-cat="science">
-                            <span class="cat-dot dot-sci"></span> Science & Future Tech (6)
-                        </button>
-                        <button class="ed-filter-chip" data-cat="career">
-                            <span class="cat-dot dot-career"></span> Aviation & Career (6)
-                        </button>
+                    <!-- Live Search & Category Filter Toolbar -->
+                    <div class="ed-units-toolbar-row">
+                        <div class="ed-category-filter-bar">
+                            <button class="ed-filter-chip active" data-cat="all">
+                                <i class="fa-solid fa-border-all"></i> All Units (<span id="count-cat-all">26</span>)
+                            </button>
+                            <button class="ed-filter-chip" data-cat="technology">
+                                <span class="cat-dot dot-tech"></span> Technology (6)
+                            </button>
+                            <button class="ed-filter-chip" data-cat="engineering">
+                                <span class="cat-dot dot-eng"></span> Engineering & Industry (8)
+                            </button>
+                            <button class="ed-filter-chip" data-cat="science">
+                                <span class="cat-dot dot-sci"></span> Science & Future Tech (6)
+                            </button>
+                            <button class="ed-filter-chip" data-cat="career">
+                                <span class="cat-dot dot-career"></span> Aviation & Career (6)
+                            </button>
+                        </div>
+                        <div class="ed-search-wrapper">
+                            <i class="fa-solid fa-magnifying-glass ed-search-icon"></i>
+                            <input type="text" id="ed-units-search" class="ed-search-input" placeholder="Buscar por tema, estándar (IEEE, ISO, NIST)...">
+                            <button id="ed-units-search-clear" class="ed-search-clear" style="display: none;" title="Limpiar búsqueda"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
                     </div>
 
                     <!-- The 3-Column Responsive Grid of Unit Cards (Cuadros) -->
@@ -1595,14 +1602,25 @@
                     <div class="lxp-grid">
                         <!-- Skills Graph Visor -->
                         <div class="glass-panel graph-panel">
-                            <div class="panel-header">
-                                <h2 class="panel-title"><i class="fa-solid fa-network-wired text-indigo"
-                                        aria-hidden="true"></i> Mapa de Competencias Técnicas</h2>
-                                <div class="graph-legend">
-                                    <span class="legend-item"><span
-                                            class="legend-dot completed"></span>Completada</span>
-                                    <span class="legend-item"><span class="legend-dot active"></span>En Progreso</span>
-                                    <span class="legend-item"><span class="legend-dot locked"></span>Bloqueada</span>
+                            <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                                <div>
+                                    <h2 class="panel-title"><i class="fa-solid fa-network-wired text-indigo" aria-hidden="true"></i> Mapa de Competencias Técnicas</h2>
+                                    <p style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">Rutas de aprendizaje y constelación de habilidades industriales ESP.</p>
+                                </div>
+                                <div class="graph-header-controls" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                                    <div class="graph-view-switcher" style="display: inline-flex; background: #f1f5f9; padding: 3px; border-radius: 10px; border: 1px solid #cbd5e1;">
+                                        <button class="graph-toggle-btn active" id="btn-graph-trunk" type="button" style="border: none; background: #ffffff; color: #0f172a; font-size: 0.76rem; font-weight: 700; padding: 6px 12px; border-radius: 8px; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: all 0.2s;">
+                                            <i class="fa-solid fa-route text-indigo"></i> Ruta Troncal (7)
+                                        </button>
+                                        <button class="graph-toggle-btn" id="btn-graph-constellation" type="button" style="border: none; background: transparent; color: #64748b; font-size: 0.76rem; font-weight: 700; padding: 6px 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                                            <i class="fa-solid fa-circle-nodes text-cyan"></i> Constelación 26 Tracks
+                                        </button>
+                                    </div>
+                                    <div class="graph-legend">
+                                        <span class="legend-item"><span class="legend-dot completed"></span>Completada</span>
+                                        <span class="legend-item"><span class="legend-dot active"></span>En Progreso</span>
+                                        <span class="legend-item"><span class="legend-dot locked"></span>Bloqueada</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -1679,6 +1697,9 @@
                                         <text y="40" class="node-text">Feynman Capstone</text>
                                     </g>
                                 </svg>
+                                <svg class="skills-svg constellation-svg" viewBox="0 0 880 560" id="skills-graph-constellation-svg" style="display: none; width: 100%; height: 100%;">
+                                    <!-- 26 Tracks Constellation injected dynamically -->
+                                </svg>
                             </div>
                         </div>
 
@@ -1733,27 +1754,51 @@
                 <!-- ════ VIEW 4: FEYNMAN CHAT TUTOR ════ -->
                 <section class="ed-view" id="view-feynman-tutor" style="display: none;">
                     <div class="glass-panel tutor-panel" id="tutor-section"
-                        style="max-width: 900px; margin: 0 auto; width: 100%;">
+                        style="max-width: 960px; margin: 0 auto; width: 100%;">
                         <div class="panel-header">
                             <h2 class="panel-title"><i class="fa-solid fa-brain text-amber" aria-hidden="true"></i>
-                                Tutor Feynman <span class="engine-badge">Feynman Engine v1</span></h2>
+                                Tutor Feynman <span class="engine-badge">Feynman Engine v2 · Socratic Multi-Track</span></h2>
                             <div class="tutor-status" id="tutor-status-text">Tema: Esperando selección...</div>
                         </div>
+
+                        <!-- Socratic Track & Module Selection Bar -->
+                        <div class="tutor-controls-bar">
+                            <div class="tutor-selector-group">
+                                <label for="tutor-track-select"><i class="fa-solid fa-graduation-cap"></i> Especialidad / Unidad:</label>
+                                <select id="tutor-track-select" class="ed-select">
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
+                            <div class="tutor-selector-group">
+                                <label for="tutor-mod-select"><i class="fa-solid fa-layer-group"></i> Módulo / Reto:</label>
+                                <select id="tutor-mod-select" class="ed-select">
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
+                            <button id="btn-launch-socratic" class="btn btn-primary tutor-launch-btn">
+                                <i class="fa-solid fa-bolt" aria-hidden="true"></i> Iniciar Reto Socrático
+                            </button>
+                        </div>
+
+                        <!-- Active Challenge Metadata Pill -->
+                        <div class="tutor-challenge-meta" id="tutor-challenge-meta" style="display: none;">
+                            <span class="tutor-meta-badge" id="tutor-challenge-step-badge">Paso 1 de 2</span>
+                            <span class="tutor-meta-concept" id="tutor-challenge-concept">Concepto: Purdue Model</span>
+                            <span class="tutor-meta-xp" id="tutor-challenge-xp">+25 XP por paso</span>
+                        </div>
+
                         <div class="chat-area" id="chat-messages">
                             <div class="chat-message bot">
                                 <div class="avatar">F</div>
                                 <div class="message-bubble">
                                     <p>¡Hola, Alberto! Soy tu tutor <strong>Feynman</strong>.</p>
-                                    <p>Mi misión es ayudarte a comprender realmente los conceptos de inglés técnico y
-                                        STEM. Te haré preguntas socráticas para pulir tu entendimiento conceptual y
-                                        vocabulario industrial.</p>
-                                    <p class="tutor-prompt-tip">Selecciona una Unidad o Módulo para comenzar tu diálogo
-                                        evaluatorio.</p>
+                                    <p>Mi misión es ayudarte a dominar el inglés técnico y STEM con rigor conceptual. Te haré preguntas socráticas estructuradas basadas en escenarios industriales reales para pulir tu precisión técnica.</p>
+                                    <p class="tutor-prompt-tip">Selecciona una Especialidad y Módulo arriba, o haz clic en <strong>Iniciar Reto Socrático</strong> para comenzar.</p>
                                 </div>
                             </div>
                         </div>
                         <div class="chat-inputs">
-                            <input type="text" id="chat-input" placeholder="Escribe tu explicación aquí..." disabled>
+                            <input type="text" id="chat-input" placeholder="Escribe tu explicación técnica aquí..." disabled>
                             <button id="chat-send-btn" class="btn btn-primary" disabled><i
                                     class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
                         </div>
@@ -1762,58 +1807,55 @@
 
                 <!-- ════ VIEW 5: MICRO-CREDENTIALS BADGES ════ -->
                 <section class="ed-view" id="view-micro-badges" style="display: none;">
-                    <div class="glass-panel badge-panel" style="max-width: 1000px; margin: 0 auto; width: 100%;">
-                        <div class="panel-header">
-                            <h2 class="panel-title"><i class="fa-solid fa-award text-pink" aria-hidden="true"></i>
-                                Credenciales Verificables (Open Badges 3.0)</h2>
+                    <div class="glass-panel badge-panel" style="max-width: 1080px; margin: 0 auto; width: 100%;">
+                        <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                            <div>
+                                <h2 class="panel-title"><i class="fa-solid fa-award text-pink" aria-hidden="true"></i>
+                                    Credenciales Verificables (Open Badges 3.0)</h2>
+                                <p style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">
+                                    Insignias y constancias digitales criptográficamente verificables para los 26 tracks de inglés técnico y estándares de la industria.
+                                </p>
+                            </div>
+                            <div class="badge-filter-bar">
+                                <button class="badge-filter-btn active" data-badge-filter="all">Todas (26)</button>
+                                <button class="badge-filter-btn" data-badge-filter="unlocked">Aprobadas</button>
+                                <button class="badge-filter-btn" data-badge-filter="in-progress">En Curso</button>
+                            </div>
                         </div>
-                        <div class="badge-wall">
-                            <div class="badge-card unlocked">
-                                <div class="badge-glow"></div>
-                                <div class="badge-icon">
-                                    <i class="fa-solid fa-atom" aria-hidden="true"></i>
-                                </div>
-                                <span class="badge-title">Ciencia Nivel 1</span>
-                                <span class="badge-date">Aprobado Jun 2026</span>
-                                <span class="badge-id">ID: 8085-L1-SCI</span>
-                                <button class="btn btn-secondary btn-sm badge-cert-btn" data-cert="l1-sci">
-                                    <i class="fa-solid fa-eye" aria-hidden="true"></i> Ver Certificado
-                                </button>
-                            </div>
-                            <div class="badge-card unlocked">
-                                <div class="badge-glow"></div>
-                                <div class="badge-icon">
-                                    <i class="fa-solid fa-microchip" aria-hidden="true"></i>
-                                </div>
-                                <span class="badge-title">Semiconductores L1</span>
-                                <span class="badge-date">Aprobado Sep 2026</span>
-                                <span class="badge-id">ID: 8086-L1-SEMI</span>
-                                <button class="btn btn-secondary btn-sm badge-cert-btn" data-cert="l1-semi">
-                                    <i class="fa-solid fa-eye" aria-hidden="true"></i> Ver Certificado
-                                </button>
-                            </div>
-                            <div class="badge-card locked">
-                                <div class="badge-icon">
-                                    <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
-                                </div>
-                                <span class="badge-title">Ciberseguridad L2</span>
-                                <span class="badge-date">En Curso (80%)</span>
-                                <span class="badge-id">Pendiente</span>
-                            </div>
+                        <div class="badge-wall" id="dynamic-badge-wall">
+                            <!-- Injected dynamically for all 26 tracks -->
                         </div>
                     </div>
                 </section>
 
                 <!-- ════ VIEW 6: TECHNICAL GLOSSARY & PHRASES ════ -->
                 <section class="ed-view" id="view-glossary" style="display: none;">
-                    <div class="glass-panel" style="max-width: 1000px; margin: 0 auto; width: 100%; padding: 24px;">
-                        <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; color: #0f172a;"><i
-                                class="fa-solid fa-book-bookmark text-indigo"></i> Biblioteca de Términos y Fraseología
-                            Técnica</h2>
-                        <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 20px;">Glosario bilingüe de
-                            ingeniería, manufactura avanzada y estándares internacionales de nearshoring.</p>
+                    <div class="glass-panel" style="max-width: 1080px; margin: 0 auto; width: 100%; padding: 24px;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 16px;">
+                            <div>
+                                <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 4px; color: #0f172a;"><i
+                                        class="fa-solid fa-book-bookmark text-indigo"></i> Biblioteca de Fraseología Técnica & Native Idioms</h2>
+                                <p style="font-size: 0.88rem; color: #64748b;">Glosario bilingüe de ingeniería, manufactura avanzada y expresiones nativas de reuniones de trabajo (45 Native Phrases con audio nativo).</p>
+                            </div>
+                            <div class="glossary-search-wrapper">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="glossary-search-input" class="ed-search-input" placeholder="Buscar frase, traducción o ejemplo...">
+                            </div>
+                        </div>
+
+                        <!-- Category Filter Chips for Phrases -->
+                        <div class="glossary-cat-filter-bar" id="glossary-cat-filters">
+                            <button class="glossary-filter-chip active" data-phrase-cat="all">Todas (45)</button>
+                            <button class="glossary-filter-chip" data-phrase-cat="workplace">Agile & Standups</button>
+                            <button class="glossary-filter-chip" data-phrase-cat="meetings">Meetings & Strategy</button>
+                            <button class="glossary-filter-chip" data-phrase-cat="problem_solving">Problem Solving</button>
+                            <button class="glossary-filter-chip" data-phrase-cat="soft_skills">Soft Skills</button>
+                            <button class="glossary-filter-chip" data-phrase-cat="small_talk">Small Talk</button>
+                            <button class="glossary-filter-chip" data-phrase-cat="metrics">Metrics</button>
+                        </div>
+
                         <div id="quick-glossary-container"
-                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-top: 18px;">
                             <!-- Injected dynamically -->
                         </div>
                     </div>
@@ -1883,9 +1925,9 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-actions">
-                <button class="btn btn-secondary" id="btn-print-cert"><i class="fa-solid fa-print"
-                        aria-hidden="true"></i> Imprimir Constancia</button>
+            <div class="modal-actions" style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-secondary" id="btn-print-cert"><i class="fa-solid fa-print" aria-hidden="true"></i> Imprimir Constancia</button>
+                <button class="btn btn-primary" id="btn-export-badge-json"><i class="fa-solid fa-file-code" aria-hidden="true"></i> Descargar Credencial W3C (JSON-LD)</button>
             </div>
         </div>
     </dialog>
@@ -1962,6 +2004,7 @@
                         <p class="section-subtitle-accent">Completa la evaluación para validar tu comprensión y ganar
                             XP.</p>
                         <form id="academic-quiz-form" class="quiz-form" onsubmit="return false;">
+                            <div id="quiz-feedback-banner" style="display: none; margin-bottom: 16px;"></div>
                             <div class="quiz-questions-list" id="quiz-questions-area">
                                 <!-- Questions injected dynamically -->
                             </div>
@@ -2002,7 +2045,19 @@
     <script>window.NEOSYS_SITE_ID = 'stemos';</script>
     <script src="https://yepzhi.com/visitors/tracker.js" defer></script>
     <script src="content/courses.js" defer></script>
+    <script src="content/phrases_library.js" defer></script>
     <script src="app.js" defer></script>
+
+    <!-- Service Worker PWA Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('stemOS SW Registered:', reg.scope))
+                    .catch(err => console.warn('stemOS SW Registration failed:', err));
+            });
+        }
+    </script>
 
     <!-- Backdoor + Scroll Dots Controller -->
     <script>

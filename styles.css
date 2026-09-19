@@ -3215,3 +3215,801 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
 }
 
 
+/* ── Segmented Progress Bar ─────────────────────── */
+.ed-segmented-progress-wrapper {
+    flex: 1;
+    max-width: 600px;
+}
+
+.ed-segmented-bar {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+}
+
+/* ── Filter Chip Active State ─────────────────────── */
+.ed-filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 9999px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #64748b;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.22s ease;
+}
+
+.ed-filter-chip:hover {
+    border-color: #0284c7;
+    color: #0284c7;
+}
+
+.ed-filter-chip.active {
+    background: #0284c7;
+    color: #ffffff;
+    border-color: #0284c7;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+}
+
+.cat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot-tech { background: #0ea5e9; }
+.dot-eng { background: #f97316; }
+.dot-sci { background: #a855f7; }
+.dot-career { background: #22c55e; }
+
+/* ── Category Filter Bar ─────────────────────── */
+.ed-category-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+/* ── Units Header Row ─────────────────────── */
+.ed-units-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.ed-units-title-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ed-section-heading {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    font-family: 'Outfit', sans-serif;
+}
+
+.ed-units-subheading {
+    font-size: 0.82rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* ── Responsive Detail Module Cards ──────────── */
+@media (max-width: 640px) {
+    .ed-category-filter-bar {
+        gap: 6px;
+    }
+    .ed-filter-chip {
+        font-size: 0.74rem;
+        padding: 5px 12px;
+    }
+    .ed-unit-card-img-wrapper {
+        height: 140px;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   STEMOS LXP - PHASE 2: SEARCH, SOCRATIC TUTOR, BADGES & LEXICON MATRIX
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Live Search & Toolbar ─────────────────────── */
+.ed-units-toolbar-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.ed-units-toolbar-row .ed-category-filter-bar {
+    margin-bottom: 0;
+}
+
+.ed-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 280px;
+    max-width: 360px;
+    flex: 1;
+}
+
+.ed-search-icon {
+    position: absolute;
+    left: 14px;
+    color: #94a3b8;
+    font-size: 0.88rem;
+    pointer-events: none;
+}
+
+.ed-search-input {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    padding: 10px 36px 10px 38px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    color: #0f172a;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.ed-search-input:focus {
+    outline: none;
+    border-color: #0284c7;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15), 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.ed-search-clear {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.ed-search-clear:hover {
+    color: #0f172a;
+}
+
+/* ── Feynman Socratic Tutor Controls Bar ────────── */
+.tutor-controls-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    flex-wrap: wrap;
+}
+
+.tutor-selector-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 220px;
+}
+
+.tutor-selector-group label {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.ed-select {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 9px 12px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    color: #0f172a;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.ed-select:focus {
+    outline: none;
+    border-color: #0284c7;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+.tutor-launch-btn {
+    height: 42px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0 20px;
+}
+
+.tutor-challenge-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    background: #f0f9ff;
+    border-bottom: 1px solid #bae6fd;
+    font-size: 0.82rem;
+    flex-wrap: wrap;
+}
+
+.tutor-meta-badge {
+    background: #0284c7;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.tutor-meta-concept {
+    font-weight: 700;
+    color: #0369a1;
+    flex: 1;
+}
+
+.tutor-meta-xp {
+    background: #fef3c7;
+    color: #b45309;
+    font-weight: 800;
+    font-size: 0.74rem;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid #fde68a;
+}
+
+/* ── Open Badges 3.0 Wall ─────────────────────── */
+.badge-filter-bar {
+    display: flex;
+    gap: 8px;
+}
+
+.badge-filter-btn {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.badge-filter-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+
+.badge-filter-btn.active {
+    background: #0284c7;
+    border-color: #0284c7;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
+}
+
+.badge-wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.badge-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.badge-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.badge-card.unlocked {
+    border-color: #bae6fd;
+    background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
+}
+
+.badge-card.in-progress {
+    border-color: #fed7aa;
+    background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%);
+}
+
+.badge-card .badge-icon-box {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.badge-card.unlocked .badge-icon-box {
+    background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);
+    color: #ffffff;
+    box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
+}
+
+.badge-card.in-progress .badge-icon-box {
+    background: linear-gradient(135deg, #f97316 0%, #fbbf24 100%);
+    color: #ffffff;
+    box-shadow: 0 6px 18px rgba(249, 115, 22, 0.3);
+}
+
+.badge-card-category {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+}
+
+.badge-card-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 6px;
+    line-height: 1.3;
+}
+
+.badge-card-standard {
+    font-size: 0.74rem;
+    color: #64748b;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.badge-card-hash {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.68rem;
+    color: #94a3b8;
+    background: #f1f5f9;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    letter-spacing: 0.02em;
+}
+
+.badge-cert-action-btn {
+    width: 100%;
+    margin-top: auto;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 10px;
+}
+
+/* ── Lexicon Matrix & Audio TTS ────────────────── */
+.lexicon-matrix-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 18px;
+    margin-top: 14px;
+}
+
+.lexicon-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 20px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.lexicon-card:hover {
+    border-color: #0284c7;
+    box-shadow: 0 8px 24px rgba(2, 132, 199, 0.08);
+    transform: translateY(-2px);
+}
+
+.lexicon-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.lexicon-term-box {
+    flex: 1;
+}
+
+.lexicon-term-en {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.3;
+}
+
+.lexicon-term-ipa {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.78rem;
+    color: #0284c7;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.lexicon-term-es {
+    font-size: 0.82rem;
+    color: #64748b;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.vocab-audio-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    color: #0284c7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.vocab-audio-btn:hover {
+    background: #0284c7;
+    color: #ffffff;
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+}
+
+.lexicon-def {
+    font-size: 0.85rem;
+    color: #334155;
+    line-height: 1.55;
+    margin: 10px 0;
+}
+
+.lexicon-collocations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.colloc-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: #475569;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+.lexicon-native-box {
+    background: #f8fafc;
+    border-left: 3px solid #0284c7;
+    padding: 10px 12px;
+    border-radius: 0 8px 8px 0;
+    margin-top: auto;
+}
+
+.lexicon-native-title {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #0284c7;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.lexicon-native-text {
+    font-size: 0.8rem;
+    color: #1e293b;
+    font-style: italic;
+    line-height: 1.45;
+}
+
+.lexicon-false-friend {
+    background: #fffbeb;
+    border: 1px solid #fef3c7;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    color: #92400e;
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+/* ── Glossary Suite Styles ─────────────────────── */
+.glossary-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 260px;
+}
+
+.glossary-search-wrapper i {
+    position: absolute;
+    left: 14px;
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+.glossary-cat-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.glossary-filter-chip {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.glossary-filter-chip:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+
+.glossary-filter-chip.active {
+    background: #4f46e5;
+    border-color: #4f46e5;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+}
+
+.glossary-audio-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    color: #4f46e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+}
+
+.glossary-audio-btn:hover {
+    background: #4f46e5;
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+/* ── Socratic Quiz Grading & Rationale UI ────────────────── */
+.quiz-feedback-banner {
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    animation: fadeInSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.quiz-feedback-banner.success {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    color: #166534;
+}
+
+.quiz-feedback-banner.warning {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    color: #92400e;
+}
+
+.quiz-streak-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    color: #ffffff;
+    font-size: 0.76rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.35);
+    letter-spacing: 0.02em;
+    animation: pulseGlow 1.5s infinite alternate;
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(1); box-shadow: 0 2px 8px rgba(239, 68, 68, 0.35); }
+    100% { transform: scale(1.04); box-shadow: 0 4px 14px rgba(239, 68, 68, 0.55); }
+}
+
+@keyframes fadeInSlideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.quiz-rationale-box {
+    margin-top: 10px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    animation: fadeInSlideDown 0.25s ease-out;
+}
+
+.quiz-rationale-box.correct {
+    background: #f0fdf4;
+    border-left: 4px solid #22c55e;
+    color: #15803d;
+}
+
+.quiz-rationale-box.incorrect {
+    background: #fff7ed;
+    border-left: 4px solid #f97316;
+    color: #9a3412;
+}
+
+.quiz-rationale-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+}
+
+.quiz-rationale-box.correct .quiz-rationale-header {
+    color: #16a34a;
+}
+
+.quiz-rationale-box.incorrect .quiz-rationale-header {
+    color: #ea580c;
+}
+
+/* ── Multi-Cluster Skills Graph Constellation ────────────── */
+.graph-toggle-btn {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.graph-toggle-btn:hover {
+    color: #0f172a !important;
+}
+
+.graph-toggle-btn.active {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+}
+
+.constellation-svg {
+    user-select: none;
+    transition: opacity 0.3s ease;
+}
+
+.cluster-boundary {
+    fill: rgba(248, 250, 252, 0.65);
+    stroke: #e2e8f0;
+    stroke-width: 1.5;
+    stroke-dasharray: 4 4;
+    rx: 20;
+    ry: 20;
+    transition: all 0.3s ease;
+}
+
+.cluster-boundary:hover {
+    fill: rgba(241, 245, 249, 0.85);
+    stroke: #cbd5e1;
+}
+
+.cluster-label {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    fill: #64748b;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.constellation-line {
+    stroke: #e2e8f0;
+    stroke-width: 1.5;
+    transition: stroke 0.3s ease, stroke-width 0.3s ease;
+}
+
+.constellation-line.active {
+    stroke: #38bdf8;
+    stroke-width: 2;
+    stroke-dasharray: 4 2;
+    animation: dashPulse 2s linear infinite;
+}
+
+.constellation-line.completed {
+    stroke: #22c55e;
+    stroke-width: 2;
+}
+
+@keyframes dashPulse {
+    from { stroke-dashoffset: 24; }
+    to { stroke-dashoffset: 0; }
+}
+
+.node.constellation-node {
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.node.constellation-node:hover {
+    transform: scale(1.1);
+}
+
+.node.constellation-node .node-circle {
+    transition: all 0.2s ease;
+}
+
+.node.constellation-node:hover .node-circle {
+    filter: drop-shadow(0 4px 12px rgba(2, 132, 199, 0.35));
+}
+

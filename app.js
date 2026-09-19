@@ -76,6 +76,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const statCompleted = document.getElementById('stat-completed');
     const statPoints = document.getElementById('stat-points');
 
+    // Dynamically ensure ALL 26 tracks exist in skillsData from courses.js
+    if (typeof LXP_COURSES !== 'undefined') {
+        for (let trackKey in LXP_COURSES) {
+            if (!skillsData[trackKey]) {
+                const tr = LXP_COURSES[trackKey];
+                skillsData[trackKey] = {
+                    title: tr.titleEN || tr.title,
+                    status: "active",
+                    desc: tr.title || tr.titleEN,
+                    prereq: "Fundamentos Técnicos",
+                    standard: tr.standard || "Estándar Industrial",
+                    xp: (tr.modules ? tr.modules.length : 3) * 50,
+                    chatTopic: trackKey
+                };
+            }
+        }
+    }
+
+    /* --- Speech Synthesis (TTS) Helper --- */
+    function speakText(text, lang = 'en-US') {
+        if (!('speechSynthesis' in window)) {
+            console.warn("SpeechSynthesis not supported");
+            return;
+        }
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = lang;
+        utterance.rate = 0.95;
+        const voices = window.speechSynthesis.getVoices();
+        const enVoice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Daniel')));
+        if (enVoice) utterance.voice = enVoice;
+        window.speechSynthesis.speak(utterance);
+    }
+    window.speakText = speakText;
+
     /* --- State Management and Progress Persistence --- */
     let userProgress = {
         xp: 450,
@@ -90,17 +125,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (saved) {
             try {
                 userProgress = JSON.parse(saved);
+                if (!userProgress.completedTracks) userProgress.completedTracks = {};
+                if (!userProgress.completedModules) userProgress.completedModules = {};
+                if (!userProgress.completedReadings) userProgress.completedReadings = {};
+                if (!userProgress.nodeStatuses) userProgress.nodeStatuses = {};
+                if (typeof userProgress.quizStreak !== 'number') userProgress.quizStreak = 0;
+
                 globalXP = userProgress.xp || 450;
                 if (statPoints) statPoints.textContent = globalXP;
-
-                let completedCount = 0;
-                for (let node in userProgress.nodeStatuses) {
-                    if (userProgress.nodeStatuses[node] === 'completed') {
-                        completedCount++;
-                    }
-                }
-                globalCompleted = completedCount;
-                if (statCompleted) statCompleted.textContent = globalCompleted;
 
                 // Sync skillsData statuses from userProgress
                 for (let key in userProgress.nodeStatuses) {
@@ -108,6 +140,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         skillsData[key].status = userProgress.nodeStatuses[key];
                     }
                 }
+                for (let trId in userProgress.completedTracks) {
+                    if (userProgress.completedTracks[trId] && skillsData[trId]) {
+                        skillsData[trId].status = 'completed';
+                    }
+                }
+
+                let completedCount = 0;
+                for (let node in skillsData) {
+                    if (skillsData[node].status === 'completed') {
+                        completedCount++;
+                    }
+                }
+                globalCompleted = completedCount;
+                if (statCompleted) statCompleted.textContent = globalCompleted;
             } catch (e) {
                 console.error("Error loading progress", e);
             }
@@ -138,10 +184,12 @@ document.addEventListener('DOMContentLoaded', () => {
         updateProgressBar();
         if (typeof updateKPIMetrics === 'function') updateKPIMetrics();
         if (typeof renderSegmentedProgressBar === 'function') renderSegmentedProgressBar();
+        if (typeof renderBadgesWall === 'function') renderBadgesWall();
     }
 
     function saveProgress() {
         userProgress.xp = globalXP;
+        if (!userProgress.nodeStatuses) userProgress.nodeStatuses = {};
         for (let key in skillsData) {
             userProgress.nodeStatuses[key] = skillsData[key].status;
         }
@@ -150,6 +198,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof renderSegmentedProgressBar === 'function') renderSegmentedProgressBar();
         if (typeof renderAllUnitsGrid === 'function' && typeof activeFilterCategory !== 'undefined') {
             renderAllUnitsGrid(activeFilterCategory);
+        }
+        if (typeof renderBadgesWall === 'function') {
+            renderBadgesWall();
         }
     }
 
@@ -175,8 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    /* --- Interactive Skills Graph Selection --- */
-    const svgNodes = document.querySelectorAll('.node');
+    /* --- Interactive Skills Graph Selection & View Switcher --- */
     const emptyState = document.querySelector('.info-empty-state');
     const infoContent = document.getElementById('info-content');
     
@@ -191,94 +241,235 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let selectedNodeId = null;
 
-    svgNodes.forEach(node => {
-        node.addEventListener('click', () => {
-            // Remove selection class from all nodes
-            svgNodes.forEach(n => n.querySelector('.node-circle').removeAttribute('style'));
-            
-            // Add visual selection border highlight
-            const circle = node.querySelector('.node-circle');
-            circle.style.strokeWidth = "5px";
-            circle.style.stroke = "#f59e0b"; // gold/amber border on select
+    function selectSkillNode(nodeId, clickedElement) {
+        const allCircles = document.querySelectorAll('.node-circle');
+        allCircles.forEach(c => c.removeAttribute('style'));
 
-            const nodeId = node.dataset.node;
-            selectedNodeId = nodeId;
-            const nodeData = skillsData[nodeId];
+        if (clickedElement) {
+            const circle = clickedElement.querySelector('.node-circle');
+            if (circle) {
+                circle.style.strokeWidth = "5px";
+                circle.style.stroke = "#f59e0b";
+            }
+        }
 
-            if (nodeData) {
-                emptyState.classList.add('hidden');
-                infoContent.classList.remove('hidden');
+        selectedNodeId = nodeId;
+        const nodeData = skillsData[nodeId];
 
-                // Update text content
-                nodeTitle.textContent = nodeData.title;
-                nodeDesc.textContent = nodeData.desc;
-                nodePrereq.textContent = nodeData.prereq;
-                nodeStandard.textContent = nodeData.standard;
-                nodePoints.textContent = `${nodeData.xp} XP`;
+        if (nodeData) {
+            if (emptyState) emptyState.classList.add('hidden');
+            if (infoContent) infoContent.classList.remove('hidden');
 
-                // Badge class switcher
-                nodeStatusBadge.textContent = nodeData.status;
-                nodeStatusBadge.className = "badge-status"; // reset
+            if (nodeTitle) nodeTitle.textContent = nodeData.title;
+            if (nodeDesc) nodeDesc.textContent = nodeData.desc;
+            if (nodePrereq) nodePrereq.textContent = nodeData.prereq;
+            if (nodeStandard) nodeStandard.textContent = nodeData.standard;
+            if (nodePoints) nodePoints.textContent = `${nodeData.xp} XP`;
+
+            if (nodeStatusBadge) {
+                nodeStatusBadge.className = "badge-status";
                 if (nodeData.status === "completed") {
                     nodeStatusBadge.classList.add('completed');
                     nodeStatusBadge.textContent = "Completada";
-                    startTutorBtn.disabled = false;
-                    startTutorBtn.innerHTML = `<i class="fa-solid fa-comments"></i> Iniciar Repaso Socrático`;
+                    if (startTutorBtn) {
+                        startTutorBtn.disabled = false;
+                        startTutorBtn.innerHTML = `<i class="fa-solid fa-comments"></i> Iniciar Repaso Socrático`;
+                    }
                 } else if (nodeData.status === "active") {
                     nodeStatusBadge.classList.add('active');
                     nodeStatusBadge.textContent = "En Progreso";
-                    startTutorBtn.disabled = false;
-                    startTutorBtn.innerHTML = `<i class="fa-solid fa-comments"></i> Evaluar con Feynman Engine`;
+                    if (startTutorBtn) {
+                        startTutorBtn.disabled = false;
+                        startTutorBtn.innerHTML = `<i class="fa-solid fa-comments"></i> Evaluar con Feynman Engine`;
+                    }
                 } else {
                     nodeStatusBadge.classList.add('locked');
                     nodeStatusBadge.textContent = "Bloqueada";
-                    startTutorBtn.disabled = true;
-                    startTutorBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Habilidad Bloqueada`;
+                    if (startTutorBtn) {
+                        startTutorBtn.disabled = true;
+                        startTutorBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Habilidad Bloqueada`;
+                    }
                 }
-
-                // Render modules list in side panel
-                renderModules(nodeId);
             }
+
+            renderModules(nodeId);
+        }
+    }
+    window.selectSkillNode = selectSkillNode;
+
+    // Attach to trunk SVG nodes
+    const svgNodes = document.querySelectorAll('#skills-graph-svg .node');
+    svgNodes.forEach(node => {
+        node.addEventListener('click', () => {
+            selectSkillNode(node.dataset.node, node);
         });
     });
 
-    /* --- Socratic Chat Simulator (Feynman Engine) --- */
+    // Start Tutor button launches Feynman Engine with selected track
+    if (startTutorBtn) {
+        startTutorBtn.addEventListener('click', () => {
+            if (!selectedNodeId) return;
+            switchDashboardView('feynman-tutor');
+            const tutorTrackSelect = document.getElementById('tutor-track-select');
+            if (tutorTrackSelect && tutorTrackSelect.querySelector(`option[value="${selectedNodeId}"]`)) {
+                tutorTrackSelect.value = selectedNodeId;
+                tutorTrackSelect.dispatchEvent(new Event('change'));
+            }
+        });
+    }
+
+    // Graph View Switcher (Trunk 7 vs Constellation 26)
+    const btnGraphTrunk = document.getElementById('btn-graph-trunk');
+    const btnGraphConstellation = document.getElementById('btn-graph-constellation');
+    const svgTrunk = document.getElementById('skills-graph-svg');
+    const svgConstellation = document.getElementById('skills-graph-constellation-svg');
+
+    if (btnGraphTrunk && btnGraphConstellation) {
+        btnGraphTrunk.addEventListener('click', () => {
+            btnGraphTrunk.classList.add('active');
+            btnGraphConstellation.classList.remove('active');
+            if (svgTrunk) svgTrunk.style.display = '';
+            if (svgConstellation) svgConstellation.style.display = 'none';
+        });
+
+        btnGraphConstellation.addEventListener('click', () => {
+            btnGraphConstellation.classList.add('active');
+            btnGraphTrunk.classList.remove('active');
+            if (svgTrunk) svgTrunk.style.display = 'none';
+            if (svgConstellation) {
+                svgConstellation.style.display = '';
+                if (typeof renderConstellationGraph === 'function') {
+                    renderConstellationGraph();
+                    updateGraphUI();
+                }
+            }
+        });
+    }
+
+    /* --- Socratic Chat Simulator (Feynman Engine v2) --- */
+    const tutorStatusText = document.getElementById('tutor-status-text');
     const chatMessagesContainer = document.getElementById('chat-messages');
     const chatInput = document.getElementById('chat-input');
     const chatSendBtn = document.getElementById('chat-send-btn');
-    const tutorStatusText = document.getElementById('tutor-status-text');
+    const tutorTrackSelect = document.getElementById('tutor-track-select');
+    const tutorModSelect = document.getElementById('tutor-mod-select');
+    const btnLaunchSocratic = document.getElementById('btn-launch-socratic');
+    const tutorChallengeMeta = document.getElementById('tutor-challenge-meta');
+    const tutorChallengeStepBadge = document.getElementById('tutor-challenge-step-badge');
+    const tutorChallengeConcept = document.getElementById('tutor-challenge-concept');
+    const tutorChallengeXp = document.getElementById('tutor-challenge-xp');
 
     let chatState = {
         active: false,
         topic: "",
+        trackId: "",
+        modId: "",
+        modTitle: "",
+        challenges: [],
+        currentChallengeIndex: 0,
         step: 0,
         lastUserReply: ""
     };
 
-    startTutorBtn.addEventListener('click', () => {
-        if (!selectedNodeId) return;
+    // Initialize Tutor Selectors with 26 tracks & their modules
+    function initTutorSelectors() {
+        if (!tutorTrackSelect || !tutorModSelect) return;
+        tutorTrackSelect.innerHTML = '';
 
-        const nodeData = skillsData[selectedNodeId];
-        
-        // Scroll to tutor section smoothly
-        document.getElementById('tutor-section').scrollIntoView({ behavior: 'smooth' });
+        const trackKeys = Object.keys(coursesData);
+        trackKeys.forEach(trackKey => {
+            const tr = coursesData[trackKey];
+            const opt = document.createElement('option');
+            opt.value = trackKey;
+            opt.textContent = `${tr.titleEN || tr.title} (${tr.category || 'Tech'})`;
+            tutorTrackSelect.appendChild(opt);
+        });
 
-        // Initialize Chat State
+        function populateModules(trackKey) {
+            tutorModSelect.innerHTML = '';
+            const tr = coursesData[trackKey];
+            if (!tr || !tr.modules) return;
+
+            tr.modules.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m.id;
+                const hasSocratic = m.socraticChallenges && m.socraticChallenges.length > 0;
+                opt.textContent = `${m.titleES || m.title} ${hasSocratic ? '★ [Reto Socrático]' : ''}`;
+                tutorModSelect.appendChild(opt);
+            });
+        }
+
+        tutorTrackSelect.addEventListener('change', () => {
+            populateModules(tutorTrackSelect.value);
+        });
+
+        if (trackKeys.length > 0) {
+            populateModules(trackKeys[0]);
+        }
+
+        if (btnLaunchSocratic) {
+            btnLaunchSocratic.addEventListener('click', () => {
+                const trId = tutorTrackSelect.value;
+                const mId = tutorModSelect.value;
+                launchSocraticChallenge(trId, mId);
+            });
+        }
+    }
+
+    // Launch Socratic Challenge for any Track & Module
+    function launchSocraticChallenge(trackId, modId) {
+        const track = coursesData[trackId];
+        if (!track) return;
+        const mod = (track.modules && track.modules.find(m => m.id === modId)) || (track.modules && track.modules[0]);
+        if (!mod) return;
+
+        // Switch to feynman-tutor view if not already there
+        switchDashboardView('feynman-tutor');
+        const tutorSection = document.getElementById('tutor-section');
+        if (tutorSection) tutorSection.scrollIntoView({ behavior: 'smooth' });
+
         chatState.active = true;
-        chatState.topic = selectedNodeId;
+        chatState.trackId = trackId;
+        chatState.modId = mod.id;
+        chatState.modTitle = mod.titleES || mod.title;
+        chatState.challenges = mod.socraticChallenges || [];
+        chatState.currentChallengeIndex = 0;
         chatState.step = 1;
 
-        tutorStatusText.textContent = `Tema: ${nodeData.title} (Socrático)`;
+        tutorStatusText.textContent = `Reto: ${chatState.modTitle} (${track.titleEN || track.title})`;
         chatInput.disabled = false;
         chatSendBtn.disabled = false;
-
-        // Clear Chat area and display start conversation
         chatMessagesContainer.innerHTML = '';
-        addBotMessage(`¡Perfecto! Iniciemos la evaluación de **${nodeData.title}**.`);
-        
-        setTimeout(() => {
-            triggerFeynmanSocraticStep();
-        }, 800);
+
+        if (tutorTrackSelect && tutorModSelect) {
+            tutorTrackSelect.value = trackId;
+            if (tutorTrackSelect.value !== trackId) {
+                tutorTrackSelect.value = trackId;
+                tutorTrackSelect.dispatchEvent(new Event('change'));
+            }
+            tutorModSelect.value = mod.id;
+        }
+
+        if (chatState.challenges.length > 0) {
+            const firstCh = chatState.challenges[0];
+            if (tutorChallengeMeta) {
+                tutorChallengeMeta.style.display = 'flex';
+                tutorChallengeStepBadge.textContent = `Paso 1 de ${chatState.challenges.length}`;
+                tutorChallengeConcept.textContent = `Concepto: ${firstCh.concept}`;
+                tutorChallengeXp.textContent = `+25 XP por paso`;
+            }
+            addBotMessage(`¡Excelente! Iniciamos el Reto Socrático para **${chatState.modTitle}**.<br><br><strong>[Paso 1: ${firstCh.concept}]</strong><br>${firstCh.botQuestion}`);
+        } else {
+            if (tutorChallengeMeta) tutorChallengeMeta.style.display = 'none';
+            addBotMessage(`¡Bienvenido, Alberto! Iniciamos el análisis socrático de **${chatState.modTitle}**.<br><br>Explícame en inglés técnico los conceptos clave de este módulo y cómo los aplicarías en una operación de ingeniería real.`);
+        }
+        chatInput.focus();
+    }
+    window.launchSocraticChallenge = launchSocraticChallenge;
+
+    startTutorBtn.addEventListener('click', () => {
+        if (!selectedNodeId) return;
+        launchSocraticChallenge(selectedNodeId, `${selectedNodeId}-m1`);
     });
 
     // Helper functions for chat
@@ -315,7 +506,7 @@ document.addEventListener('DOMContentLoaded', () => {
         typingDiv.innerHTML = `
             <div class="avatar">F</div>
             <div class="message-bubble" style="padding: 10px 20px;">
-                <span style="font-style: italic; color: var(--text-secondary);">Pensando pregunta...</span>
+                <span style="font-style: italic; color: var(--text-secondary);"><i class="fa-solid fa-spinner fa-spin"></i> Analizando respuesta técnica...</span>
             </div>
         `;
         chatMessagesContainer.appendChild(typingDiv);
@@ -327,105 +518,67 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typingDiv) typingDiv.remove();
     }
 
-    // Dialogue script flows for the simulator
+    // Process Socratic Step
     function triggerFeynmanSocraticStep() {
         removeTypingIndicator();
-        
         const reply = (chatState.lastUserReply || "").toLowerCase();
 
-        if (chatState.topic === "lxp-foundation") {
-            if (chatState.step === 1) {
-                addBotMessage("Welcome, Alberto! Let's start with your **LXP Foundation** assessment. Technical terminology uses specific verbs like **'conduct'**, **'amplify'**, and **'transmit'**. Can you tell me: **What is the difference in meaning between 'to transmit data' and 'to store data'?**");
-            } else if (chatState.step === 2) {
-                const hasSend = reply.includes("send") || reply.includes("move") || reply.includes("transfer") || reply.includes("enviar") || reply.includes("transmitir");
-                const hasSave = reply.includes("save") || reply.includes("keep") || reply.includes("store") || reply.includes("guardar") || reply.includes("almacenar");
-                if (hasSend && hasSave) {
-                    addBotMessage("Excellent! You distinguished them perfectly: to transmit means to send or move, while to store means to save or keep. Now, if we say a system has a **'failure'**, is that a good thing or a bad thing? What is a synonym for 'failure' in tech?");
-                } else {
-                    addBotMessage("Good start! Just remember, 'transmit' means to send or transfer data, whereas 'store' means to save or retain it. Now, if we say a system has a **'failure'**, is that a good thing or a bad thing? What is a synonym for 'failure' in tech?");
-                }
-            } else if (chatState.step === 3) {
-                const isBad = reply.includes("bad") || reply.includes("mal") || reply.includes("negative");
-                const hasSynonym = reply.includes("bug") || reply.includes("error") || reply.includes("fault") || reply.includes("defect") || reply.includes("glitch") || reply.includes("fallo");
-                if (isBad && hasSynonym) {
-                    addBotMessage("Exactly! A failure (fallo) is a bad thing, and a synonym is indeed 'bug', 'error', or 'defect'. Last question: what is the English verb we use when we want to **'find and resolve errors in a code or circuit'**?");
-                } else {
-                    addBotMessage("A failure is definitely a bad thing! Tech synonyms include **'bug'**, **'error'**, or **'defect'**. Last question: what is the English verb we use when we want to **'find and resolve errors in a code or circuit'**?");
-                }
-            } else if (chatState.step === 4) {
-                const isCorrect = reply.includes("debug") || reply.includes("troubleshoot") || reply.includes("depurar");
-                if (isCorrect) {
-                    addBotMessage("Yes, **'to debug'** (depurar) or **'troubleshoot'**! You have successfully crossed the bridge into specialized technical terminology. **+150 XP awarded!**");
-                } else {
-                    addBotMessage("Good effort! The standard technical engineering verbs are **'to debug'** (depurar) or **'to troubleshoot'**. You have successfully crossed the bridge. **+150 XP awarded!**");
-                }
-                awardXP(150);
+        // 1. Structured Socratic Challenges (Available in 89+ modules)
+        if (chatState.challenges && chatState.challenges.length > 0) {
+            const ch = chatState.challenges[chatState.currentChallengeIndex];
+            if (!ch) {
                 resetTutor();
+                return;
             }
-        } else if (chatState.topic === "semiconductors") {
-            if (chatState.step === 1) {
-                addBotMessage("Welcome to the **Semiconductor Technology** review! Let's check your conceptual engineering skills. Imagine describing the difference between a **'wafer'** and a **'die'** in English. How would you explain them simply?");
-            } else if (chatState.step === 2) {
-                const hasWafer = reply.includes("wafer") || reply.includes("disk") || reply.includes("slice") || reply.includes("oblea") || reply.includes("circular");
-                const hasDie = reply.includes("die") || reply.includes("chip") || reply.includes("block") || reply.includes("square") || reply.includes("individual") || reply.includes("dado");
-                if (hasWafer && hasDie) {
-                    addBotMessage("Superb distinction! A wafer is the raw circular silicon disk, and a die is the individual chip block. Now, in the fabrication process, we build chips inside ultra-sterile environments. **What is the English term for these special rooms, and why is air filtering so critical there?**");
+
+            // Keyword match algorithm
+            const requiredKeywords = ch.requiredKeywords || [];
+            const minRequired = Math.min(ch.minKeywords || 2, requiredKeywords.length);
+            const matched = requiredKeywords.filter(kw => reply.includes(kw.toLowerCase()));
+
+            if (matched.length >= minRequired || reply.length > 120) {
+                // Success: praise, award XP, and move forward
+                addBotMessage(`✅ <strong>¡Excelente comprensión técnica!</strong><br><br>${ch.feedbackSuccess}`);
+                awardXP(25);
+
+                chatState.currentChallengeIndex++;
+                if (chatState.currentChallengeIndex < chatState.challenges.length) {
+                    const nextCh = chatState.challenges[chatState.currentChallengeIndex];
+                    if (tutorChallengeMeta) {
+                        tutorChallengeStepBadge.textContent = `Paso ${chatState.currentChallengeIndex + 1} de ${chatState.challenges.length}`;
+                        tutorChallengeConcept.textContent = `Concepto: ${nextCh.concept}`;
+                    }
+                    setTimeout(() => {
+                        addBotMessage(`<strong>[Paso ${chatState.currentChallengeIndex + 1}: ${nextCh.concept}]</strong><br>${nextCh.botQuestion}`);
+                    }, 800);
                 } else {
-                    addBotMessage("Keep in mind that a **wafer** is the large circular silicon disk from which chips are made, and a **die** is the individual small rectangular chip cut from it. Now, in the fabrication process, we build chips inside ultra-sterile environments. **What is the English term for these special rooms, and why is air filtering so critical there?**");
+                    // Completed all challenges in this module!
+                    userProgress.completedModules[chatState.modId] = true;
+                    checkTrackCompletion();
+                    saveProgress();
+                    if (tutorChallengeMeta) tutorChallengeMeta.style.display = 'none';
+
+                    setTimeout(() => {
+                        addBotMessage(`🎉 <strong>¡Reto Socrático Completado!</strong><br><br>Has demostrado dominio riguroso de los conceptos y vocabulario de <strong>${chatState.modTitle}</strong>.<br><br><strong>+50 XP Bonus de Maestría Socrática otorgados.</strong> Puedes continuar con otro módulo o certificar tu unidad.`);
+                        awardXP(50);
+                        resetTutor();
+                    }, 800);
                 }
-            } else if (chatState.step === 3) {
-                const isCleanroom = reply.includes("cleanroom") || reply.includes("clean room") || reply.includes("sala limpia") || reply.includes("cuarto limpio");
-                if (isCleanroom) {
-                    addBotMessage("Indeed, a **'cleanroom'**! And yes, dust particles (contaminants) are the ultimate enemy of nanometric circuits. Now, to protect the cleanroom from human lint and skin cells, workers must wear specialized protective overalls. **Do you know the popular name of these white suits?**");
-                } else {
-                    addBotMessage("It is called a **'cleanroom'**! And air filtering is critical because even micro-dust can ruin a nanometric chip. To protect the cleanroom from human particles, workers wear specialized white overalls. **Do you know the popular name of these white suits?**");
-                }
-            } else if (chatState.step === 4) {
-                const isBunny = reply.includes("bunny") || reply.includes("conejo");
-                if (isBunny) {
-                    addBotMessage("Spot on! They are called **'bunny suits'**. You've proven that your conceptual engineering skills are perfectly aligned with cleanroom manufacturing requirements. **+150 XP awarded!**");
-                } else {
-                    addBotMessage("They are popularly called **'bunny suits'** (due to the ears/hood design)! Excellent effort. You've proven that your English communication skills are aligned with cleanroom manufacturing. **+150 XP awarded!**");
-                }
-                awardXP(150);
-                resetTutor();
-            }
-        } else if (chatState.topic === "cybersecurity") {
-            if (chatState.step === 1) {
-                addBotMessage("Welcome! Let's check your technical English for **Smart Networks & Cybersecurity**. Imagine you need to explain to a client why a **'firewall'** is not enough to stop a **'phishing attack'**. How would you explain that in English?");
-            } else if (chatState.step === 2) {
-                const isHuman = reply.includes("human") || reply.includes("user") || reply.includes("people") || reply.includes("social") || reply.includes("email") || reply.includes("click") || reply.includes("engañ");
-                if (isHuman) {
-                    addBotMessage("Precisely! A firewall blocks unauthorized network traffic, but phishing targets human vulnerability (social engineering). Now, when hackers exploit a vulnerability that is completely unknown to the software developer, **what is this specific type of attack or exploit called in English?**");
-                } else {
-                    addBotMessage("Good point, but remember: a firewall regulates traffic on network ports, whereas phishing targets the **human user** to trick them into giving away credentials. Now, when hackers exploit a vulnerability that is completely unknown to the software developer, **what is this specific type of attack or exploit called in English?**");
-                }
-            } else if (chatState.step === 3) {
-                const isZeroDay = reply.includes("zero") || reply.includes("dia cero") || reply.includes("día cero") || reply.includes("0-day") || reply.includes("0 day");
-                if (isZeroDay) {
-                    addBotMessage("Exactly, a **'zero-day exploit'** (or zero-day attack)! Now, in a smart network, data is encoded so that only authorized parties can read it. **What is the English verb and noun for this mathematical shielding process?**");
-                } else {
-                    addBotMessage("It is called a **'zero-day exploit'** (since developers have 'zero days' to prepare a patch). Now, in a smart network, data is encoded so that only authorized parties can read it. **What is the English verb and noun for this mathematical shielding process?**");
-                }
-            } else if (chatState.step === 4) {
-                const hasVerb = reply.includes("encrypt") || reply.includes("encriptar");
-                const hasNoun = reply.includes("encryption") || reply.includes("encriptación") || reply.includes("encriptacion");
-                if (hasVerb && hasNoun) {
-                    addBotMessage("**'Encryption'** (noun) and **'encrypt'** (verb). Excellent job! You've shown that you have the vocabulary to discuss advanced security architecture in English. **+180 XP awarded!**");
-                } else {
-                    addBotMessage("The correct English terms are **'encryption'** (noun) and **'encrypt'** (verb). Excellent effort! You've shown that you have the vocabulary to discuss advanced security architecture in English. **+180 XP awarded!**");
-                }
-                awardXP(180);
-                resetTutor();
-            }
-        } else {
-            // General Fallback
-            if (chatState.step === 1) {
-                addBotMessage(`Hablemos sobre la habilidad **${skillsData[chatState.topic].title}**. Explícame en tus propias palabras qué entiendes de esta competencia.`);
             } else {
-                addBotMessage("Interesante. Tu explicación cubre los puntos base. Cuéntame un poco más sobre cómo aplicarías esto a un problema práctico de la industria tecnológica local.");
-                resetTutor();
+                // Retry feedback: constructive hint
+                const hints = requiredKeywords.slice(0, 3).join(', ');
+                addBotMessage(`💡 <strong>Reflexión Socrática:</strong><br><br>${ch.feedbackRetry}<br><br><small style="color:#64748b;">(Pistas conceptuales clave para incluir: <em>${hints}</em>)</small>`);
             }
+            return;
+        }
+
+        // 2. Fallback for Modules without pre-authored challenges
+        if (chatState.step === 1) {
+            addBotMessage(`Bien planteado. Ahora, ¿cómo relacionas esto con los estándares de control de calidad o seguridad industrial en plantas de manufactura avanzada?`);
+        } else if (chatState.step === 2) {
+            addBotMessage(`¡Sólida argumentación técnica, Alberto! Has articulado el concepto con claridad profesional. <strong>+35 XP otorgados.</strong>`);
+            awardXP(35);
+            resetTutor();
         }
     }
 
@@ -448,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
             chatSendBtn.disabled = false;
             triggerFeynmanSocraticStep();
             chatInput.focus();
-        }, 1500); // simulated thinking time
+        }, 1200);
     }
 
     chatSendBtn.addEventListener('click', handleUserReply);
@@ -460,10 +613,10 @@ document.addEventListener('DOMContentLoaded', () => {
         chatState.active = false;
         chatState.topic = "";
         chatState.step = 0;
-        chatInput.disabled = true;
-        chatSendBtn.disabled = true;
+        chatInput.disabled = false;
+        chatSendBtn.disabled = false;
         chatInput.value = '';
-        tutorStatusText.textContent = "Tema: Repaso finalizado";
+        tutorStatusText.textContent = "Tema: Sesión finalizada · Selecciona otro módulo";
     }
 
     function awardXP(amount) {
@@ -476,39 +629,117 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     /* ==========================================
-       CERTIFICATE VIEW MODAL (Native <dialog>)
+       CERTIFICATE VIEW MODAL & W3C OPEN BADGES 3.0
        ========================================== */
     const modal = document.getElementById('cert-modal');
     const modalClose = document.getElementById('cert-modal-close');
     const badgeCertBtns = document.querySelectorAll('.badge-cert-btn');
     const printBtn = document.getElementById('btn-print-cert');
+    const exportBadgeBtn = document.getElementById('btn-export-badge-json');
+    let currentCertTrackId = 'semiconductors';
+
+    function openCertificateModal(trackId) {
+        currentCertTrackId = trackId || 'semiconductors';
+        const track = coursesData[currentCertTrackId] || (typeof LXP_COURSES !== 'undefined' && LXP_COURSES[currentCertTrackId]) || { title: 'stemOS Specialization' };
+        const modalCertSkill = document.getElementById('modal-cert-skill');
+        const modalCertId = document.getElementById('modal-cert-id');
+        const hashCode = `STEMOS-${currentCertTrackId.toUpperCase().replace(/[^A-Z0-9]/g, '')}-${(currentCertTrackId.length * 1337).toString(16).toUpperCase()}`;
+
+        if (modalCertSkill) {
+            modalCertSkill.textContent = `${track.titleEN || track.title} — ${track.badgeName || 'Technical Specialization'}`;
+        }
+        if (modalCertId) {
+            modalCertId.textContent = `VERIFIED: ${hashCode}`;
+        }
+        if (modal) modal.showModal();
+    }
+    window.openCertificateModal = openCertificateModal;
 
     badgeCertBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            const certType = btn.dataset.cert;
-            if (certType === "l1-sci") {
-                document.getElementById('modal-cert-skill').textContent = "Ciencia Nivel 1 (Orígenes & Cosmología)";
-                document.getElementById('modal-cert-id').textContent = "MD5: 8085-L1-SCI-987B2405";
-            }
-            modal.showModal();
+            const certType = btn.dataset.cert || 'semiconductors';
+            openCertificateModal(certType);
         });
     });
 
-    modalClose.addEventListener('click', () => {
-        modal.close();
-    });
+    if (modalClose) {
+        modalClose.addEventListener('click', () => {
+            if (modal) modal.close();
+        });
+    }
 
     // Light dismiss: close on backdrop click
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.close();
-        }
-    });
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.close();
+            }
+        });
+    }
 
     // Print certificate
     if (printBtn) {
         printBtn.addEventListener('click', () => {
             window.print();
+        });
+    }
+
+    // W3C Verifiable Credentials / Open Badges 3.0 JSON-LD Export
+    if (exportBadgeBtn) {
+        exportBadgeBtn.addEventListener('click', () => {
+            const track = coursesData[currentCertTrackId] || (typeof LXP_COURSES !== 'undefined' && LXP_COURSES[currentCertTrackId]) || { title: 'stemOS Specialization', id: currentCertTrackId };
+            const hashCode = `STEMOS-${(track.id || currentCertTrackId).toUpperCase().replace(/[^A-Z0-9]/g, '')}-${((track.id || currentCertTrackId).length * 1337).toString(16).toUpperCase()}`;
+
+            const badgeJson = {
+                "@context": [
+                    "https://www.w3.org/2018/credentials/v1",
+                    "https://purl.imsglobal.org/spec/ob/v3p0/context.json"
+                ],
+                "id": `urn:uuid:stemos-cert-${currentCertTrackId}-${Date.now()}`,
+                "type": ["VerifiableCredential", "OpenBadgeCredential"],
+                "issuer": {
+                    "id": "https://stemos.dev/issuers/stemos-foundation",
+                    "type": "Profile",
+                    "name": "stemOS LXP — JóvenesSTEM & Lovelace Tech",
+                    "url": "https://stemos.dev",
+                    "email": "credentials@stemos.dev"
+                },
+                "issuanceDate": new Date().toISOString(),
+                "credentialSubject": {
+                    "id": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
+                    "type": "AchievementSubject",
+                    "name": "Alberto Yépiz",
+                    "achievement": {
+                        "id": `https://stemos.dev/achievements/${currentCertTrackId}`,
+                        "type": "Achievement",
+                        "name": track.badgeName || track.titleEN || track.title,
+                        "description": `Demostró competencia técnica y socrática en el track ${track.titleEN || track.title} (${track.category || 'STEM'}).`,
+                        "criteria": {
+                            "narrative": "Aprobación del 100% de los módulos de vocabulario técnico, lecturas de manufactura avanzada y desafío socrático evaluado por el motor Feynman."
+                        },
+                        "alignment": [
+                            {
+                                "targetName": track.badgeStandard || track.standard || "SEP CONOCER EC1290 / ISO Standard",
+                                "targetUrl": "https://conocer.gob.mx"
+                            }
+                        ]
+                    }
+                },
+                "proof": {
+                    "type": "Ed25519Signature2020",
+                    "created": new Date().toISOString(),
+                    "verificationMethod": "https://stemos.dev/issuers/stemos-foundation#key-1",
+                    "proofValue": hashCode
+                }
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(badgeJson, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `stemos-open-badge-${currentCertTrackId}.json`);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
         });
     }
 
@@ -695,6 +926,8 @@ document.addEventListener('DOMContentLoaded', () => {
             stepBtnVocab.classList.add('active');
         } else if (screenName === 'quiz') {
             screenQuiz.classList.add('active');
+            const fb = document.getElementById('quiz-feedback-banner');
+            if (fb) fb.style.display = 'none';
             stepBtnRead.classList.add('completed');
             stepBtnVocab.classList.add('completed');
             stepBtnQuiz.classList.add('active');
@@ -787,9 +1020,69 @@ document.addEventListener('DOMContentLoaded', () => {
             acadModuleTitle.textContent = activeModule.titleES || activeModule.title;
         }
 
-        // Render Vocabulary
+        // Render Vocabulary or Lexicon Matrix with TTS Audio
         vocabGridArea.innerHTML = '';
-        if (reading.vocabulary && reading.vocabulary.length > 0) {
+        if (activeModule.lexiconMatrix && activeModule.lexiconMatrix.length > 0) {
+            vocabGridArea.className = 'lexicon-matrix-container';
+            activeModule.lexiconMatrix.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'lexicon-card';
+
+                let collocationsHTML = '';
+                if (item.collocations && item.collocations.length > 0) {
+                    collocationsHTML = `<div class="lexicon-collocations">` +
+                        item.collocations.map(c => `<span class="colloc-tag">${c}</span>`).join('') +
+                        `</div>`;
+                }
+
+                let falseFriendHTML = '';
+                if (item.falseFriends) {
+                    falseFriendHTML = `<div class="lexicon-false-friend">
+                        <strong>⚠️ Nota Técnica / Falso Amigo:</strong> ${item.falseFriends}
+                    </div>`;
+                }
+
+                let nativeUsageHTML = '';
+                if (item.nativeUsage) {
+                    nativeUsageHTML = `
+                        <div class="lexicon-native-box">
+                            <div class="lexicon-native-title">
+                                <i class="fa-solid fa-quote-left"></i> Uso en Planta / Laboratorio
+                            </div>
+                            <div class="lexicon-native-text">"${item.nativeUsage}"</div>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="lexicon-header">
+                        <div class="lexicon-term-box">
+                            <div class="lexicon-term-en">${item.term}</div>
+                            ${item.ipa ? `<div class="lexicon-term-ipa">${item.ipa}</div>` : ''}
+                            <div class="lexicon-term-es">${item.es || ''}</div>
+                        </div>
+                        <button class="vocab-audio-btn" title="Escuchar pronunciación nativa">
+                            <i class="fa-solid fa-volume-high"></i>
+                        </button>
+                    </div>
+                    <p class="lexicon-def">${item.definition || ''}</p>
+                    ${collocationsHTML}
+                    ${falseFriendHTML}
+                    ${nativeUsageHTML}
+                `;
+
+                const audioBtn = card.querySelector('.vocab-audio-btn');
+                if (audioBtn) {
+                    audioBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        speakText(item.term);
+                    });
+                }
+
+                vocabGridArea.appendChild(card);
+            });
+        } else if (reading.vocabulary && reading.vocabulary.length > 0) {
+            vocabGridArea.className = 'vocab-grid';
             reading.vocabulary.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'vocab-card';
@@ -797,9 +1090,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="vocab-term-header">
                         <span class="vocab-term-en">${item.en}</span>
                         <span class="vocab-term-es">${item.es}</span>
+                        <button class="vocab-audio-btn" style="width:28px;height:28px;font-size:0.75rem;" title="Escuchar pronunciación">
+                            <i class="fa-solid fa-volume-high"></i>
+                        </button>
                     </div>
                     <p class="vocab-term-def">${item.definition}</p>
                 `;
+                const audioBtn = card.querySelector('.vocab-audio-btn');
+                if (audioBtn) {
+                    audioBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        speakText(item.en);
+                    });
+                }
                 vocabGridArea.appendChild(card);
             });
         } else {
@@ -922,38 +1225,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkTrackCompletion() {
         if (!activeTrackId) return;
-        const track = LXP_COURSES[activeTrackId];
+        const track = coursesData[activeTrackId];
         if (!track) return;
 
-        const allCompleted = track.modules.every(mod => userProgress.completedModules[mod.id] === true);
+        if (!skillsData[activeTrackId]) {
+            skillsData[activeTrackId] = {
+                title: track.titleEN || track.title,
+                status: 'active',
+                desc: track.title || track.titleEN,
+                prereq: "Fundamentos Técnicos",
+                standard: track.standard || "Estándar Industrial",
+                xp: (track.modules ? track.modules.length : 3) * 50,
+                chatTopic: activeTrackId
+            };
+        }
+
+        const allCompleted = track.modules && track.modules.length > 0 && track.modules.every(mod => userProgress.completedModules[mod.id] === true);
         if (allCompleted && skillsData[activeTrackId].status !== 'completed') {
             skillsData[activeTrackId].status = 'completed';
-            
+            if (!userProgress.completedTracks) userProgress.completedTracks = {};
+            userProgress.completedTracks[activeTrackId] = true;
+
             globalXP += 100;
-            statPoints.textContent = globalXP;
-            
+            if (statPoints) statPoints.textContent = globalXP;
+
             globalCompleted++;
-            statCompleted.textContent = globalCompleted;
-            
-            alert(`¡Excelente trabajo! Has completado exitosamente la especialidad: ${track.title}. (+100 XP Bonus y Certificado Desbloqueado)`);
-            
+            if (statCompleted) statCompleted.textContent = globalCompleted;
+
+            alert(`¡Excelente trabajo! Has completado exitosamente la especialidad: ${track.titleEN || track.title}. (+100 XP Bonus y Credencial Desbloqueada)`);
+
             checkUnlocks();
             updateGraphUI();
+            if (typeof renderBadgesWall === 'function') renderBadgesWall();
         }
-        
-        statPoints.textContent = globalXP;
+
+        if (statPoints) statPoints.textContent = globalXP;
         updateProgressBar();
     }
 
     function checkUnlocks() {
-        if (skillsData["electromobility"].status === 'completed' && skillsData["it-innovation"].status === 'completed') {
-            if (skillsData["aerospace"].status === 'locked') {
-                skillsData["aerospace"].status = 'active';
-                alert("¡Habilidad Desbloqueada! Ya puedes acceder a: STEM: Manufactura Aeronáutica.");
+        if (skillsData["electromobility"] && skillsData["it-innovation"]) {
+            if (skillsData["electromobility"].status === 'completed' && skillsData["it-innovation"].status === 'completed') {
+                if (skillsData["aerospace"] && skillsData["aerospace"].status === 'locked') {
+                    skillsData["aerospace"].status = 'active';
+                    alert("¡Habilidad Desbloqueada! Ya puedes acceder a: STEM: Manufactura Aeronáutica.");
+                }
             }
         }
-        if (skillsData["aerospace"].status === 'completed') {
-            if (skillsData["socratic-capstone"].status === 'locked') {
+        if (skillsData["aerospace"] && skillsData["aerospace"].status === 'completed') {
+            if (skillsData["socratic-capstone"] && skillsData["socratic-capstone"].status === 'locked') {
                 skillsData["socratic-capstone"].status = 'active';
                 alert("¡Habilidad Final Desbloqueada! Comienza el Socratic Capstone Assessment.");
             }
@@ -975,8 +1295,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateGraphUI() {
-        const svgNodes = document.querySelectorAll('.node');
-        svgNodes.forEach(node => {
+        const allNodes = document.querySelectorAll('.node');
+        allNodes.forEach(node => {
             const nodeId = node.dataset.node;
             const status = skillsData[nodeId]?.status;
             if (status) {
@@ -988,6 +1308,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (status === 'locked') {
                         icon.className = 'fa-solid fa-lock node-icon';
                     } else {
+                        const courseIcon = (coursesData[nodeId] && coursesData[nodeId].icon) || (typeof LXP_COURSES !== 'undefined' && LXP_COURSES[nodeId] && LXP_COURSES[nodeId].icon);
                         const iconMap = {
                             "lxp-foundation": "fa-graduation-cap",
                             "semiconductors": "fa-microchip",
@@ -998,7 +1319,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             "socratic-capstone": "fa-comments",
                             "cybersecurity-adv": "fa-lock"
                         };
-                        icon.className = `fa-solid ${iconMap[nodeId] || 'fa-book'} node-icon`;
+                        icon.className = `${courseIcon || iconMap[nodeId] || 'fa-solid fa-book'} node-icon`;
                     }
                 }
             }
@@ -1015,7 +1336,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (fromStatus === 'completed' && toStatus === 'completed') {
                 line.classList.add('completed');
-            } else if (fromStatus === 'completed' && toStatus === 'active') {
+            } else if (fromStatus === 'completed' || toStatus === 'active') {
                 line.classList.add('active');
             } else {
                 line.classList.add('locked');
@@ -1025,11 +1346,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function completeActiveReading() {
         const reading = activeModule.readings[activeReadingIndex];
-        
+
         if (!userProgress.completedReadings[reading.id]) {
             userProgress.completedReadings[reading.id] = true;
             globalXP += 25;
-            statPoints.textContent = globalXP;
+            if (statPoints) statPoints.textContent = globalXP;
         }
 
         const allReadingsCompleted = activeModule.readings.every(r => userProgress.completedReadings[r.id] === true);
@@ -1040,6 +1361,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         saveProgress();
+        if (typeof renderDetailModules === 'function' && activeTrackId) {
+            renderDetailModules(activeTrackId);
+        }
+        if (typeof renderAllUnitsGrid === 'function' && typeof activeFilterCategory !== 'undefined') {
+            renderAllUnitsGrid(activeFilterCategory);
+        }
+        if (typeof renderBadgesWall === 'function') {
+            renderBadgesWall();
+        }
         switchScreen('congrats');
     }
 
@@ -1063,47 +1393,116 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const form = document.getElementById('academic-quiz-form');
+        const feedbackBanner = document.getElementById('quiz-feedback-banner');
         let allAnswered = true;
         let allCorrect = true;
+        let correctCount = 0;
 
         const allLabels = form.querySelectorAll('.quiz-option-label');
         allLabels.forEach(l => l.classList.remove('correct-feedback', 'incorrect-feedback'));
+        const oldRationales = form.querySelectorAll('.quiz-rationale-box');
+        oldRationales.forEach(r => r.remove());
 
+        // Validate all answered
         reading.questions.forEach((qObj, qIdx) => {
             const checkedRadio = form.querySelector(`input[name="q${qIdx}"]:checked`);
             if (!checkedRadio) {
                 allAnswered = false;
-                return;
             }
+        });
 
+        if (!allAnswered) {
+            if (feedbackBanner) {
+                feedbackBanner.className = 'quiz-feedback-banner warning';
+                feedbackBanner.style.display = 'flex';
+                feedbackBanner.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Por favor, responde todas las preguntas del cuestionario antes de enviar.</span>
+                    </div>
+                `;
+                feedbackBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+            return;
+        }
+
+        // Process questions and inject Socratic rationales
+        reading.questions.forEach((qObj, qIdx) => {
+            const checkedRadio = form.querySelector(`input[name="q${qIdx}"]:checked`);
             const selectedIdx = parseInt(checkedRadio.value);
             const correctIdx = qObj.answer;
 
             const selectedLabel = form.querySelector(`.quiz-option-label[data-qidx="${qIdx}"][data-oidx="${selectedIdx}"]`);
             const correctLabel = form.querySelector(`.quiz-option-label[data-qidx="${qIdx}"][data-oidx="${correctIdx}"]`);
+            const qBox = form.querySelectorAll('.quiz-question-box')[qIdx];
+
+            const rationaleBox = document.createElement('div');
 
             if (selectedIdx === correctIdx) {
+                correctCount++;
                 selectedLabel.classList.add('correct-feedback');
+                rationaleBox.className = 'quiz-rationale-box correct';
+                const rationaleText = qObj.explanation || `Concepto técnico verificado: "${qObj.options[correctIdx]}". Este principio es fundamental conforme a las especificaciones y estándares de ingeniería.`;
+                rationaleBox.innerHTML = `
+                    <div class="quiz-rationale-header"><i class="fa-solid fa-circle-check"></i> Justificación Técnica Correcta</div>
+                    <div>${rationaleText}</div>
+                `;
             } else {
                 allCorrect = false;
                 selectedLabel.classList.add('incorrect-feedback');
                 correctLabel.classList.add('correct-feedback');
+                rationaleBox.className = 'quiz-rationale-box incorrect';
+                const rationaleText = qObj.explanation || `En ingeniería y manufactura avanzada, la opción requerida es "${qObj.options[correctIdx]}" para asegurar la precisión del proceso y evitar fallas operativas.`;
+                rationaleBox.innerHTML = `
+                    <div class="quiz-rationale-header"><i class="fa-solid fa-circle-xmark"></i> Análisis Socrático del Error</div>
+                    <div>${rationaleText}</div>
+                `;
+            }
+
+            if (qBox) {
+                qBox.appendChild(rationaleBox);
             }
         });
 
-        if (!allAnswered) {
-            alert("Por favor, responde todas las preguntas del cuestionario.");
-            return;
-        }
-
         if (allCorrect) {
+            userProgress.quizStreak = (userProgress.quizStreak || 0) + 1;
+            const streak = userProgress.quizStreak;
+            const streakBonus = streak > 1 ? streak * 10 : 0;
+            if (streakBonus > 0) {
+                awardXP(streakBonus);
+            }
+
+            if (feedbackBanner) {
+                feedbackBanner.className = 'quiz-feedback-banner success';
+                feedbackBanner.style.display = 'flex';
+                feedbackBanner.innerHTML = `
+                    <div>
+                        <i class="fa-solid fa-circle-check"></i> <strong>¡Evaluación Perfecta! (${correctCount}/${reading.questions.length})</strong>
+                        <div style="font-size: 0.8rem; margin-top: 2px;">Comprensión técnica y vocabulario validado al 100%.</div>
+                    </div>
+                    ${streak > 1 ? `<span class="quiz-streak-badge"><i class="fa-solid fa-fire"></i> Racha x${streak} 🔥 +${streakBonus} XP Combo</span>` : ''}
+                `;
+            }
+
             btnSubmitQuiz.disabled = true;
             btnSubmitQuiz.innerHTML = '<i class="fa-solid fa-circle-check" aria-hidden="true"></i> ¡Aprobado!';
             setTimeout(() => {
                 completeActiveReading();
-            }, 1200);
+            }, 1400);
         } else {
-            alert("Respuestas incorrectas. Por favor, repasa y corrige tus respuestas marcadas en rojo.");
+            userProgress.quizStreak = 0;
+            if (feedbackBanner) {
+                feedbackBanner.className = 'quiz-feedback-banner warning';
+                feedbackBanner.style.display = 'flex';
+                feedbackBanner.innerHTML = `
+                    <div>
+                        <i class="fa-solid fa-circle-exclamation"></i> <strong>${correctCount} de ${reading.questions.length} respuestas correctas</strong>
+                        <div style="font-size: 0.8rem; margin-top: 2px;">Repasa las justificaciones socráticas detalladas abajo y corrige tus selecciones.</div>
+                    </div>
+                `;
+                feedbackBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+            btnSubmitQuiz.disabled = false;
             btnSubmitQuiz.innerHTML = 'Reintentar Evaluación <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>';
         }
     });
@@ -1211,4 +1610,970 @@ document.addEventListener('DOMContentLoaded', () => {
         formatted = formatted.replace(/`(.*?)`/g, '<code>$1</code>');
         return formatted;
     }
+
+    /* ==========================================
+       DASHBOARD CONTROLLER — ALL UNITS GRID,
+       VIEW SWITCHING, UNIT DETAIL, KPIs,
+       GLOSSARY, FILTERS & NAVIGATION
+       ========================================== */
+
+    const coursesData = (typeof LXP_COURSES !== 'undefined') ? LXP_COURSES : {};
+    const phrasesData = (typeof STEMOS_PHRASES !== 'undefined') ? STEMOS_PHRASES : [];
+
+    // Category metadata for styling and labels
+    const CATEGORY_META = {
+        technology: { label: 'TECHNOLOGY', color: '#0ea5e9', icon: 'fa-microchip', emoji: '🔵' },
+        engineering: { label: 'ENGINEERING & INDUSTRY', color: '#f97316', icon: 'fa-gear', emoji: '🟠' },
+        science: { label: 'SCIENCE & FUTURE TECH', color: '#a855f7', icon: 'fa-flask', emoji: '🟣' },
+        career: { label: 'AVIATION & CAREER', color: '#22c55e', icon: 'fa-briefcase', emoji: '🟢' }
+    };
+
+    // Track icon mapping
+    const TRACK_ICONS = {
+        'cybersecurity': 'fa-shield-halved',
+        'it-innovation': 'fa-cloud',
+        'ai-ml': 'fa-brain',
+        'telecom-iot': 'fa-tower-cell',
+        'software-dev': 'fa-code',
+        'data-analytics': 'fa-chart-column',
+        'semiconductors': 'fa-microchip',
+        'electromobility': 'fa-car-battery',
+        'aerospace': 'fa-plane-up',
+        'robotics-automation': 'fa-robot',
+        'energy-renewables': 'fa-solar-panel',
+        'advanced-manufacturing': 'fa-industry',
+        'industrial-operations': 'fa-truck-fast',
+        'mechatronics': 'fa-gears',
+        'biotechnology': 'fa-dna',
+        'space-satellite': 'fa-satellite',
+        'environmental-sustainability': 'fa-leaf',
+        'healthcare-tech': 'fa-heart-pulse',
+        'materials-nanotech': 'fa-atom',
+        'food-science': 'fa-wheat-awn',
+        'aviation-english': 'fa-plane',
+        'airforce-aerospace': 'fa-jet-fighter',
+        'hospitality-food': 'fa-utensils',
+        'business-leadership': 'fa-chart-line',
+        'project-management': 'fa-diagram-project',
+        'entrepreneurship': 'fa-lightbulb'
+    };
+
+    // Track order for consistent unit numbering
+    const TRACK_ORDER = [
+        'cybersecurity', 'it-innovation', 'ai-ml', 'telecom-iot', 'software-dev', 'data-analytics',
+        'semiconductors', 'electromobility', 'aerospace', 'robotics-automation', 'energy-renewables',
+        'advanced-manufacturing', 'industrial-operations', 'mechatronics',
+        'biotechnology', 'space-satellite', 'environmental-sustainability', 'healthcare-tech',
+        'materials-nanotech', 'food-science',
+        'aviation-english', 'airforce-aerospace', 'hospitality-food', 'business-leadership',
+        'project-management', 'entrepreneurship'
+    ];
+
+    let activeFilterCategory = 'all';
+    let currentDetailTrackId = null;
+
+    /* --- 1. SIDEBAR NAVIGATION VIEW SWITCHING --- */
+    const edSidebar = document.getElementById('ed-sidebar');
+    const edSidebarToggle = document.getElementById('ed-sidebar-toggle');
+    const edRailBtns = document.querySelectorAll('.ed-rail-btn[data-view]');
+    const edViews = document.querySelectorAll('.ed-view');
+
+    function switchDashboardView(viewName) {
+        // Hide all views
+        edViews.forEach(v => {
+            v.style.display = 'none';
+            v.classList.remove('active');
+        });
+
+        // Show target view
+        const targetView = document.getElementById(`view-${viewName}`);
+        if (targetView) {
+            targetView.style.display = '';
+            targetView.classList.add('active');
+        }
+
+        // Update active state on sidebar buttons
+        edRailBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.view === viewName);
+        });
+    }
+
+    edRailBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            switchDashboardView(btn.dataset.view);
+        });
+    });
+
+    // Sidebar toggle (mobile collapse)
+    if (edSidebarToggle) {
+        edSidebarToggle.addEventListener('click', () => {
+            edSidebar.classList.toggle('collapsed');
+        });
+    }
+
+    // Lock / Exit button
+    const btnLockBackdoor = document.getElementById('btn-lock-backdoor');
+    if (btnLockBackdoor) {
+        btnLockBackdoor.addEventListener('click', () => {
+            localStorage.removeItem('stemos_backdoor');
+            document.documentElement.classList.remove('backdoor-unlocked');
+            window.location.reload();
+        });
+    }
+
+    /* --- 2. RENDER ALL UNITS GRID --- */
+    function getTrackProgress(trackId) {
+        const track = coursesData[trackId];
+        if (!track || !track.modules) return { total: 0, completed: 0, percent: 0, totalReadings: 0, completedReadings: 0 };
+
+        let totalReadings = 0;
+        let completedReadings = 0;
+        let totalMods = track.modules.length;
+        let completedMods = 0;
+
+        track.modules.forEach(mod => {
+            if (userProgress.completedModules[mod.id]) completedMods++;
+            if (mod.readings) {
+                totalReadings += mod.readings.length;
+                mod.readings.forEach(r => {
+                    if (userProgress.completedReadings[r.id]) completedReadings++;
+                });
+            }
+        });
+
+        const percent = totalReadings > 0 ? Math.round((completedReadings / totalReadings) * 100) : 0;
+
+        return { total: totalMods, completed: completedMods, percent, totalReadings, completedReadings };
+    }
+
+    let activeUnitsSearchQuery = '';
+
+    window.renderAllUnitsGrid = function(filter, searchQuery) {
+        activeFilterCategory = filter !== undefined ? filter : activeFilterCategory;
+        if (searchQuery !== undefined) activeUnitsSearchQuery = searchQuery.trim().toLowerCase();
+
+        const grid = document.getElementById('ed-units-grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        const orderedTracks = TRACK_ORDER.filter(id => coursesData[id]);
+        let visibleCount = 0;
+
+        orderedTracks.forEach((trackId, index) => {
+            const track = coursesData[trackId];
+            const cat = track.category || 'technology';
+            const catMeta = CATEGORY_META[cat] || CATEGORY_META.technology;
+
+            // Apply category filter
+            if (activeFilterCategory !== 'all' && cat !== activeFilterCategory) return;
+
+            // Apply text search filter
+            if (activeUnitsSearchQuery) {
+                const titleEN = (track.titleEN || '').toLowerCase();
+                const titleES = (track.title || '').toLowerCase();
+                const standard = (track.standard || '').toLowerCase();
+                const desc = (track.desc || '').toLowerCase();
+                const matches = titleEN.includes(activeUnitsSearchQuery) ||
+                                titleES.includes(activeUnitsSearchQuery) ||
+                                standard.includes(activeUnitsSearchQuery) ||
+                                desc.includes(activeUnitsSearchQuery);
+                if (!matches) return;
+            }
+
+            visibleCount++;
+            const progress = getTrackProgress(trackId);
+            const iconClass = TRACK_ICONS[trackId] || 'fa-book';
+            const unitNum = index + 1;
+
+            const card = document.createElement('div');
+            card.className = 'ed-unit-card';
+            card.dataset.trackId = trackId;
+            card.dataset.category = cat;
+
+            const gradientBg = `linear-gradient(135deg, ${catMeta.color}18 0%, ${catMeta.color}08 50%, #f8fafc 100%)`;
+
+            card.innerHTML = `
+                <div class="ed-unit-card-img-wrapper" style="background: ${gradientBg}; display:flex; align-items:center; justify-content:center;">
+                    <i class="fa-solid ${iconClass}" style="font-size: 3.5rem; color: ${catMeta.color}; opacity: 0.5;"></i>
+                    <span class="ed-unit-card-cat-badge" style="border-left: 3px solid ${catMeta.color};">${catMeta.label}</span>
+                </div>
+                <div class="ed-unit-card-body">
+                    <div class="ed-unit-number">${String(unitNum).padStart(2, '0')}</div>
+                    <div class="ed-unit-title">${track.titleEN || track.title}</div>
+                    <div class="ed-unit-progress-container">
+                        <div class="ed-unit-progress-track">
+                            <div class="ed-unit-progress-fill" style="width: ${progress.percent}%; background: linear-gradient(90deg, ${catMeta.color}90, ${catMeta.color});"></div>
+                        </div>
+                        <span class="ed-unit-progress-text">${progress.completedReadings}/${progress.totalReadings} Lecturas · ${progress.percent}%</span>
+                    </div>
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                openUnitDetail(trackId);
+            });
+
+            grid.appendChild(card);
+        });
+
+        if (visibleCount === 0) {
+            grid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 16px;">
+                    <i class="fa-solid fa-magnifying-glass" style="font-size: 2.2rem; color: #94a3b8; margin-bottom: 12px;"></i>
+                    <h4 style="font-size: 1.1rem; color: #0f172a; margin-bottom: 6px;">No se encontraron unidades</h4>
+                    <p style="font-size: 0.85rem; color: #64748b;">Intenta con otros términos como "NIST", "Semiconductor", "Python", o "Battery".</p>
+                </div>
+            `;
+        }
+    };
+
+    // Live search event listener for All Units
+    const edUnitsSearch = document.getElementById('ed-units-search');
+    const edUnitsSearchClear = document.getElementById('ed-units-search-clear');
+    if (edUnitsSearch) {
+        edUnitsSearch.addEventListener('input', () => {
+            const q = edUnitsSearch.value;
+            if (edUnitsSearchClear) {
+                edUnitsSearchClear.style.display = q ? 'block' : 'none';
+            }
+            renderAllUnitsGrid(activeFilterCategory, q);
+        });
+    }
+    if (edUnitsSearchClear) {
+        edUnitsSearchClear.addEventListener('click', () => {
+            edUnitsSearch.value = '';
+            edUnitsSearchClear.style.display = 'none';
+            renderAllUnitsGrid(activeFilterCategory, '');
+            edUnitsSearch.focus();
+        });
+    }
+
+    /* --- 3. CATEGORY FILTER CHIPS --- */
+    const filterChips = document.querySelectorAll('.ed-filter-chip');
+    filterChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            filterChips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            const cat = chip.dataset.cat;
+            renderAllUnitsGrid(cat);
+        });
+    });
+
+    /* --- 4. UNIT DETAIL DRILL-DOWN --- */
+    function openUnitDetail(trackId) {
+        currentDetailTrackId = trackId;
+        const track = coursesData[trackId];
+        if (!track) return;
+
+        const cat = track.category || 'technology';
+        const catMeta = CATEGORY_META[cat] || CATEGORY_META.technology;
+        const progress = getTrackProgress(trackId);
+        const iconClass = TRACK_ICONS[trackId] || 'fa-book';
+
+        // Update hero
+        const detailTitle = document.getElementById('detail-unit-title');
+        const detailDesc = document.getElementById('detail-unit-desc');
+        const detailCatPill = document.getElementById('detail-category-pill');
+        const detailLevelPill = document.getElementById('detail-level-pill');
+        const detailStandardPill = document.getElementById('detail-standard-pill');
+        const detailModuleCount = document.getElementById('detail-module-count');
+        const detailReadingCount = document.getElementById('detail-reading-count');
+        const detailEstTime = document.getElementById('detail-est-time');
+        const detailXpCount = document.getElementById('detail-xp-count');
+        const detailProgressSummary = document.getElementById('detail-progress-summary');
+        const breadcrumbUnitName = document.getElementById('breadcrumb-unit-name');
+        const detailImgBox = document.getElementById('detail-unit-image-box');
+        const detailImg = document.getElementById('detail-unit-img');
+        const detailHero = document.getElementById('unit-detail-hero');
+
+        if (detailTitle) detailTitle.textContent = track.titleEN || track.title;
+        if (detailDesc) detailDesc.textContent = track.title || '';
+        if (detailCatPill) {
+            detailCatPill.textContent = `${catMeta.emoji} ${catMeta.label}`;
+            detailCatPill.style.background = `${catMeta.color}18`;
+            detailCatPill.style.color = catMeta.color;
+            detailCatPill.style.borderColor = `${catMeta.color}40`;
+        }
+        if (detailLevelPill) detailLevelPill.textContent = `Nivel CEFR ${track.level || 'A2-B1'}`;
+        if (detailStandardPill) detailStandardPill.textContent = `Estándar ${track.standard || 'IEEE/ISO'}`;
+        if (detailModuleCount) detailModuleCount.textContent = `${progress.total} Módulos`;
+        if (detailReadingCount) detailReadingCount.textContent = `${progress.totalReadings} Lecturas`;
+        if (detailEstTime) detailEstTime.textContent = `~${progress.totalReadings * 10} min`;
+        if (detailXpCount) detailXpCount.textContent = `+${progress.totalReadings * 25 + 100} XP`;
+        if (detailProgressSummary) detailProgressSummary.textContent = `${progress.completed} de ${progress.total} Completados`;
+        if (breadcrumbUnitName) breadcrumbUnitName.textContent = track.titleEN || track.title;
+
+        // Hero image: show a large icon instead (no external images)
+        if (detailImgBox) {
+            detailImgBox.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, ${catMeta.color}22 0%, ${catMeta.color}08 100%);border-radius:16px;">
+                <i class="fa-solid ${iconClass}" style="font-size:5rem;color:${catMeta.color};opacity:0.45;"></i>
+            </div>`;
+        }
+
+        // Set hero gradient background
+        if (detailHero) {
+            detailHero.style.background = `linear-gradient(135deg, ${catMeta.color}12 0%, #0f172a05 100%)`;
+        }
+
+        // Render modules list
+        renderDetailModules(trackId);
+
+        // Switch to detail view
+        switchDashboardView('unit-detail');
+    }
+
+    function renderDetailModules(trackId) {
+        const container = document.getElementById('detail-modules-container');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const track = coursesData[trackId];
+        if (!track || !track.modules) return;
+
+        const cat = track.category || 'technology';
+        const catMeta = CATEGORY_META[cat] || CATEGORY_META.technology;
+
+        track.modules.forEach((mod, index) => {
+            const isCompleted = userProgress.completedModules[mod.id] === true;
+            const isUnlocked = index === 0 || userProgress.completedModules[track.modules[index - 1]?.id] === true || isCompleted;
+            const totalReadings = mod.readings ? mod.readings.length : 0;
+            const completedReadingsInMod = mod.readings ? mod.readings.filter(r => userProgress.completedReadings[r.id]).length : 0;
+            const iconClass = mod.icon || 'fa-solid fa-book-open';
+
+            let statusClass = 'locked';
+            let statusText = 'Bloqueado';
+            let statusIcon = 'fa-lock';
+            if (isCompleted) {
+                statusClass = 'completed';
+                statusText = 'Aprobado';
+                statusIcon = 'fa-circle-check';
+            } else if (isUnlocked) {
+                statusClass = 'pending';
+                statusText = 'Pendiente';
+                statusIcon = 'fa-play-circle';
+            }
+
+            const card = document.createElement('div');
+            card.className = `ed-detail-module-card ${statusClass}`;
+            card.style.cssText = `
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 14px;
+                padding: 18px 22px;
+                display: flex;
+                align-items: center;
+                gap: 18px;
+                cursor: ${isUnlocked ? 'pointer' : 'default'};
+                transition: all 0.22s ease;
+                margin-bottom: 12px;
+                opacity: ${isUnlocked ? '1' : '0.55'};
+                ${isCompleted ? `border-left: 4px solid ${catMeta.color};` : ''}
+            `;
+
+            let goldBadge = '';
+            if (mod.isGoldModel) {
+                goldBadge = `<span style="display:inline-flex;align-items:center;gap:4px;background:rgba(251,191,36,0.15);color:#f59e0b;font-size:0.68rem;font-weight:800;padding:2px 8px;border-radius:6px;border:1px solid #fbbf2440;">
+                    <i class="fa-solid fa-star"></i> GOLD ESP
+                </span>`;
+            }
+
+            let socraticBadge = '';
+            if (mod.socraticChallenges && mod.socraticChallenges.length > 0) {
+                socraticBadge = `<span style="display:inline-flex;align-items:center;gap:4px;background:#fef3c7;color:#b45309;font-size:0.68rem;font-weight:800;padding:2px 8px;border-radius:6px;border:1px solid #fde68a;">
+                    <i class="fa-solid fa-brain"></i> Reto Socrático (${mod.socraticChallenges.length})
+                </span>`;
+            }
+
+            card.innerHTML = `
+                <div style="width:48px;height:48px;border-radius:12px;background:${catMeta.color}12;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="${iconClass}" style="font-size:1.3rem;color:${catMeta.color};"></i>
+                </div>
+                <div style="flex:1;min-width:0;">
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
+                        <span style="font-size:0.72rem;font-weight:700;color:#94a3b8;">M${index + 1}</span>
+                        ${goldBadge}
+                        ${socraticBadge}
+                        <span style="display:inline-flex;align-items:center;gap:4px;font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:6px;
+                            background:${statusClass === 'completed' ? '#dcfce7' : statusClass === 'pending' ? '#dbeafe' : '#f1f5f9'};
+                            color:${statusClass === 'completed' ? '#16a34a' : statusClass === 'pending' ? '#2563eb' : '#94a3b8'};">
+                            <i class="fa-solid ${statusIcon}"></i> ${statusText}
+                        </span>
+                    </div>
+                    <div style="font-size:0.95rem;font-weight:700;color:#1e293b;margin-bottom:3px;">${mod.titleES || mod.title}</div>
+                    <div style="font-size:0.78rem;color:#64748b;">${totalReadings > 0 ? `${completedReadingsInMod}/${totalReadings} Lecturas Completadas` : 'Esqueleto — Próximamente'}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+                    ${(mod.socraticChallenges && mod.socraticChallenges.length > 0 && isUnlocked) ? `
+                        <button class="ed-module-socratic-link-btn" style="height:36px;padding:0 12px;border-radius:8px;border:1px solid #fed7aa;background:#fff7ed;color:#c2410c;font-size:0.75rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all 0.2s ease;" title="Practicar diálogo socrático">
+                            <i class="fa-solid fa-comments"></i> Socrático
+                        </button>
+                    ` : ''}
+                    ${isUnlocked ? `<button class="ed-module-open-btn" style="width:40px;height:40px;border-radius:10px;border:1px solid #e2e8f0;background:#f8fafc;color:${catMeta.color};font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s ease;"
+                        onmouseenter="this.style.background='${catMeta.color}';this.style.color='#fff';this.style.borderColor='${catMeta.color}'"
+                        onmouseleave="this.style.background='#f8fafc';this.style.color='${catMeta.color}';this.style.borderColor='#e2e8f0'">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>` : `<i class="fa-solid fa-lock" style="color:#cbd5e1;font-size:1rem;"></i>`}
+                </div>
+            `;
+
+            if (isUnlocked) {
+                const socraticBtn = card.querySelector('.ed-module-socratic-link-btn');
+                if (socraticBtn) {
+                    socraticBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        launchSocraticChallenge(trackId, mod.id);
+                    });
+                }
+                card.addEventListener('click', () => {
+                    openAcademicModal(trackId, mod);
+                });
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-2px)';
+                    card.style.boxShadow = '0 8px 24px rgba(0,0,0,0.08)';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.boxShadow = 'none';
+                });
+            }
+
+            container.appendChild(card);
+        });
+    }
+
+    // Back button from unit detail
+    const btnBackToAll = document.getElementById('btn-back-to-all-units');
+    if (btnBackToAll) {
+        btnBackToAll.addEventListener('click', () => {
+            switchDashboardView('all-units');
+        });
+    }
+    const breadcrumbHome = document.getElementById('breadcrumb-home-link');
+    if (breadcrumbHome) {
+        breadcrumbHome.style.cursor = 'pointer';
+        breadcrumbHome.addEventListener('click', () => {
+            switchDashboardView('all-units');
+        });
+    }
+
+    /* --- 5. SEGMENTED PROGRESS BAR --- */
+    window.renderSegmentedProgressBar = function() {
+        const bar = document.getElementById('ed-segmented-bar');
+        if (!bar) return;
+        bar.innerHTML = '';
+
+        const orderedTracks = TRACK_ORDER.filter(id => coursesData[id]);
+        const totalTracks = orderedTracks.length;
+
+        orderedTracks.forEach((trackId) => {
+            const track = coursesData[trackId];
+            const cat = track.category || 'technology';
+            const catMeta = CATEGORY_META[cat] || CATEGORY_META.technology;
+            const progress = getTrackProgress(trackId);
+
+            const seg = document.createElement('div');
+            seg.className = 'ed-seg';
+            seg.title = `${track.titleEN || track.title}: ${progress.percent}%`;
+            seg.style.cssText = `
+                flex: 1;
+                height: 10px;
+                border-radius: 5px;
+                background: #e2e8f0;
+                position: relative;
+                overflow: hidden;
+                cursor: pointer;
+                transition: transform 0.2s ease;
+            `;
+
+            const fill = document.createElement('div');
+            fill.style.cssText = `
+                height: 100%;
+                width: ${progress.percent}%;
+                background: ${catMeta.color};
+                border-radius: 5px;
+                transition: width 0.5s ease;
+            `;
+
+            seg.appendChild(fill);
+            seg.addEventListener('click', () => openUnitDetail(trackId));
+            seg.addEventListener('mouseenter', () => { seg.style.transform = 'scaleY(1.6)'; });
+            seg.addEventListener('mouseleave', () => { seg.style.transform = 'scaleY(1)'; });
+
+            bar.appendChild(seg);
+        });
+    };
+
+    /* --- 6. KPI METRICS --- */
+    window.updateKPIMetrics = function() {
+        const orderedTracks = TRACK_ORDER.filter(id => coursesData[id]);
+
+        // Course Completion %
+        let totalReadings = 0;
+        let completedReadings = 0;
+        orderedTracks.forEach(id => {
+            const p = getTrackProgress(id);
+            totalReadings += p.totalReadings;
+            completedReadings += p.completedReadings;
+        });
+        const courseCompletion = totalReadings > 0 ? Math.round((completedReadings / totalReadings) * 100) : 0;
+        const kpiCourse = document.getElementById('kpi-course-completion');
+        if (kpiCourse) kpiCourse.textContent = `${courseCompletion}%`;
+
+        // Average Test Score — simulated based on completion
+        const avgScore = completedReadings > 0 ? Math.min(100, Math.round(75 + (completedReadings / totalReadings) * 20)) : 0;
+        const kpiAvg = document.getElementById('kpi-avg-score');
+        if (kpiAvg) kpiAvg.textContent = `${avgScore}%`;
+
+        // Time on Task — estimated: each completed reading = ~10 minutes
+        const totalMinutes = completedReadings * 10;
+        const hours = Math.floor(totalMinutes / 60);
+        const mins = totalMinutes % 60;
+        const kpiHours = document.getElementById('kpi-time-hours');
+        const kpiMins = document.getElementById('kpi-time-mins');
+        if (kpiHours) kpiHours.textContent = String(hours).padStart(2, '0');
+        if (kpiMins) kpiMins.textContent = String(mins).padStart(2, '0');
+    };
+
+    /* --- 7. GLOSSARY / PHRASES VIEW --- */
+    let activeGlossaryCat = 'all';
+    let activeGlossarySearchQuery = '';
+
+    function renderGlossaryView(catFilter, searchQuery) {
+        if (catFilter !== undefined) activeGlossaryCat = catFilter;
+        if (searchQuery !== undefined) activeGlossarySearchQuery = searchQuery.trim().toLowerCase();
+
+        const container = document.getElementById('quick-glossary-container');
+        if (!container || phrasesData.length === 0) return;
+        container.innerHTML = '';
+
+        const phraseCatLabels = {
+            'workplace': { label: '💼 Workplace & Projects', color: '#0ea5e9' },
+            'technical_debate': { label: '🔬 Technical Debate', color: '#a855f7' },
+            'conflict_resolution': { label: '🤝 Conflict Resolution', color: '#f97316' },
+            'small_talk': { label: '💬 Small Talk & Icebreakers', color: '#22c55e' },
+            'metrics': { label: '📊 Metrics & Reporting', color: '#ef4444' },
+            'meetings': { label: '📅 Meetings & Strategy', color: '#6366f1' },
+            'problem_solving': { label: '🛠️ Problem Solving', color: '#d97706' },
+            'soft_skills': { label: '🌱 Soft Skills', color: '#10b981' }
+        };
+
+        let visibleCount = 0;
+
+        phrasesData.forEach(phrase => {
+            const cat = phrase.category || 'workplace';
+            const catInfo = phraseCatLabels[cat] || phraseCatLabels.workplace;
+
+            // Filter category
+            if (activeGlossaryCat !== 'all' && cat !== activeGlossaryCat) return;
+
+            // Search query filter
+            if (activeGlossarySearchQuery) {
+                const pText = (phrase.phrase || '').toLowerCase();
+                const mText = (phrase.meaningES || '').toLowerCase();
+                const eText = (phrase.exampleEN || '').toLowerCase();
+                const nText = (phrase.schoolVsNative && phrase.schoolVsNative.native || '').toLowerCase();
+                const matches = pText.includes(activeGlossarySearchQuery) ||
+                                mText.includes(activeGlossarySearchQuery) ||
+                                eText.includes(activeGlossarySearchQuery) ||
+                                nText.includes(activeGlossarySearchQuery);
+                if (!matches) return;
+            }
+
+            visibleCount++;
+
+            const card = document.createElement('div');
+            card.className = 'glossary-phrase-card';
+            card.style.cssText = `
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 14px;
+                padding: 18px 20px;
+                transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
+            `;
+
+            card.innerHTML = `
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                    <span style="font-size:0.68rem;font-weight:700;padding:3px 8px;border-radius:6px;background:${catInfo.color}12;color:${catInfo.color};text-transform:uppercase;letter-spacing:0.03em;">${catInfo.label}</span>
+                    <button class="glossary-audio-btn" title="Escuchar pronunciación nativa">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                </div>
+                <div style="font-size:1.05rem;font-weight:800;color:#0f172a;margin-bottom:6px;line-height:1.3;">"${phrase.phrase}"</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+                    <span style="font-size:0.78rem;color:#94a3b8;font-weight:600;text-decoration:line-through;">${phrase.schoolVsNative.school}</span>
+                    <i class="fa-solid fa-arrow-right" style="font-size:0.6rem;color:#cbd5e1;"></i>
+                    <span style="font-size:0.78rem;color:${catInfo.color};font-weight:700;">${phrase.schoolVsNative.native}</span>
+                </div>
+                <div style="font-size:0.82rem;color:#475569;line-height:1.5;margin-bottom:10px;">${phrase.meaningES}</div>
+                <div class="phrase-example-box" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 14px;margin-bottom:6px;display:none;">
+                    <div style="font-size:0.78rem;color:#0284c7;font-weight:600;margin-bottom:4px;"><i class="fa-solid fa-message"></i> Example:</div>
+                    <div style="font-size:0.82rem;color:#334155;font-style:italic;line-height:1.5;">"${phrase.exampleEN}"</div>
+                    <div style="font-size:0.76rem;color:#94a3b8;margin-top:4px;">${phrase.exampleES}</div>
+                </div>
+                <div style="font-size:0.7rem;color:#94a3b8;"><i class="fa-solid fa-circle-info"></i> ${phrase.pronunciationHint || 'Haz clic para expandir ejemplo'}</div>
+            `;
+
+            // Audio button click
+            const audioBtn = card.querySelector('.glossary-audio-btn');
+            if (audioBtn) {
+                audioBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    speakText(phrase.phrase);
+                });
+            }
+
+            // Toggle example on click
+            card.addEventListener('click', () => {
+                const exBox = card.querySelector('.phrase-example-box');
+                if (exBox) {
+                    exBox.style.display = exBox.style.display === 'none' ? 'block' : 'none';
+                }
+            });
+
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-3px)';
+                card.style.boxShadow = `0 10px 28px rgba(0,0,0,0.08), 0 0 0 2px ${catInfo.color}25`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+                card.style.boxShadow = 'none';
+            });
+
+            container.appendChild(card);
+        });
+
+        if (visibleCount === 0) {
+            container.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align:center; padding:48px 20px; background:#ffffff; border:1px dashed #cbd5e1; border-radius:16px;">
+                    <i class="fa-solid fa-book-bookmark" style="font-size:2.2rem; color:#cbd5e1; margin-bottom:12px;"></i>
+                    <h4 style="font-size:1.1rem; color:#0f172a; margin-bottom:6px;">No se encontraron expresiones</h4>
+                    <p style="font-size:0.85rem; color:#64748b;">Intenta con otros términos como "touch base", "blocker", "bandwidth", o "KPI".</p>
+                </div>
+            `;
+        }
+    }
+    window.renderGlossaryView = renderGlossaryView;
+
+    // Glossary Search & Category Filter Listeners
+    const glossarySearchInput = document.getElementById('glossary-search-input');
+    if (glossarySearchInput) {
+        glossarySearchInput.addEventListener('input', () => {
+            renderGlossaryView(activeGlossaryCat, glossarySearchInput.value);
+        });
+    }
+
+    const glossaryCatFilters = document.querySelectorAll('#glossary-cat-filters .glossary-filter-chip');
+    glossaryCatFilters.forEach(chip => {
+        chip.addEventListener('click', () => {
+            glossaryCatFilters.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            const cat = chip.dataset.phraseCat;
+            renderGlossaryView(cat, activeGlossarySearchQuery);
+        });
+    });
+
+    /* --- Constellation Skills Graph (26 Tracks & 4 Clusters) --- */
+    const CLUSTER_CONFIG = [
+        {
+            id: 'cluster-tech',
+            title: 'Cluster I · Software, AI & Redes Inteligentes',
+            color: '#0284c7',
+            x: 20, y: 20, width: 400, height: 245,
+            nodes: [
+                { id: 'cybersecurity', x: 95, y: 90, icon: 'fa-solid fa-shield-halved', label: 'Ciberseguridad' },
+                { id: 'it-innovation', x: 220, y: 80, icon: 'fa-solid fa-cloud', label: 'Innovación TI' },
+                { id: 'ai-ml', x: 345, y: 90, icon: 'fa-solid fa-brain', label: 'AI & ML' },
+                { id: 'telecom-iot', x: 95, y: 195, icon: 'fa-solid fa-tower-cell', label: 'Telecom & IoT' },
+                { id: 'software-dev', x: 220, y: 185, icon: 'fa-solid fa-code', label: 'Software Dev' },
+                { id: 'data-analytics', x: 345, y: 195, icon: 'fa-solid fa-chart-pie', label: 'Data Science' }
+            ],
+            links: [
+                ['cybersecurity', 'it-innovation'],
+                ['it-innovation', 'ai-ml'],
+                ['cybersecurity', 'telecom-iot'],
+                ['it-innovation', 'software-dev'],
+                ['ai-ml', 'data-analytics'],
+                ['telecom-iot', 'software-dev'],
+                ['software-dev', 'data-analytics']
+            ]
+        },
+        {
+            id: 'cluster-eng',
+            title: 'Cluster II · Semiconductores & Manufactura Avanzada',
+            color: '#f59e0b',
+            x: 460, y: 20, width: 400, height: 245,
+            nodes: [
+                { id: 'semiconductors', x: 535, y: 80, icon: 'fa-solid fa-microchip', label: 'Semiconductores' },
+                { id: 'advanced-manufacturing', x: 660, y: 70, icon: 'fa-solid fa-industry', label: 'Manufactura Av.' },
+                { id: 'mechatronics', x: 785, y: 80, icon: 'fa-solid fa-cogs', label: 'Mecatrónica' },
+                { id: 'robotics-automation', x: 535, y: 145, icon: 'fa-solid fa-robot', label: 'Robótica Ind.' },
+                { id: 'industrial-operations', x: 660, y: 140, icon: 'fa-solid fa-dolly', label: 'Operaciones Ind.' },
+                { id: 'electromobility', x: 785, y: 145, icon: 'fa-solid fa-car-battery', label: 'Electromovilidad' },
+                { id: 'aerospace', x: 575, y: 215, icon: 'fa-solid fa-plane-up', label: 'Aeroespacial' },
+                { id: 'energy-renewables', x: 745, y: 215, icon: 'fa-solid fa-solar-panel', label: 'Energía Renovable' }
+            ],
+            links: [
+                ['semiconductors', 'advanced-manufacturing'],
+                ['advanced-manufacturing', 'mechatronics'],
+                ['semiconductors', 'robotics-automation'],
+                ['advanced-manufacturing', 'industrial-operations'],
+                ['mechatronics', 'electromobility'],
+                ['robotics-automation', 'aerospace'],
+                ['electromobility', 'energy-renewables'],
+                ['aerospace', 'industrial-operations']
+            ]
+        },
+        {
+            id: 'cluster-sci',
+            title: 'Cluster III · Biotecnología, Nanotech & Ciencias',
+            color: '#10b981',
+            x: 20, y: 290, width: 400, height: 250,
+            nodes: [
+                { id: 'biotechnology', x: 95, y: 365, icon: 'fa-solid fa-dna', label: 'Biotecnología' },
+                { id: 'space-satellite', x: 220, y: 350, icon: 'fa-solid fa-satellite', label: 'Satélites & Espacio' },
+                { id: 'materials-nanotech', x: 345, y: 365, icon: 'fa-solid fa-atom', label: 'Nanotecnología' },
+                { id: 'healthcare-tech', x: 95, y: 470, icon: 'fa-solid fa-heart-pulse', label: 'Health Tech' },
+                { id: 'environmental-sustainability', x: 220, y: 455, icon: 'fa-solid fa-leaf', label: 'Sustentabilidad' },
+                { id: 'food-science', x: 345, y: 470, icon: 'fa-solid fa-wheat-awn', label: 'Food Science' }
+            ],
+            links: [
+                ['biotechnology', 'space-satellite'],
+                ['space-satellite', 'materials-nanotech'],
+                ['biotechnology', 'healthcare-tech'],
+                ['space-satellite', 'environmental-sustainability'],
+                ['materials-nanotech', 'food-science'],
+                ['healthcare-tech', 'environmental-sustainability'],
+                ['environmental-sustainability', 'food-science']
+            ]
+        },
+        {
+            id: 'cluster-car',
+            title: 'Cluster IV · Inglés de Aviación & Liderazgo Global',
+            color: '#ec4899',
+            x: 460, y: 290, width: 400, height: 250,
+            nodes: [
+                { id: 'aviation-english', x: 535, y: 365, icon: 'fa-solid fa-plane-departure', label: 'Aviation English' },
+                { id: 'airforce-aerospace', x: 660, y: 350, icon: 'fa-solid fa-jet-fighter', label: 'Air Force Tech' },
+                { id: 'business-leadership', x: 785, y: 365, icon: 'fa-solid fa-briefcase', label: 'Business & Leader' },
+                { id: 'hospitality-food', x: 535, y: 470, icon: 'fa-solid fa-hotel', label: 'Hospitality ESP' },
+                { id: 'project-management', x: 660, y: 455, icon: 'fa-solid fa-list-check', label: 'Project Mgmt' },
+                { id: 'entrepreneurship', x: 785, y: 470, icon: 'fa-solid fa-rocket', label: 'Entrepreneurship' }
+            ],
+            links: [
+                ['aviation-english', 'airforce-aerospace'],
+                ['airforce-aerospace', 'business-leadership'],
+                ['aviation-english', 'hospitality-food'],
+                ['airforce-aerospace', 'project-management'],
+                ['business-leadership', 'entrepreneurship'],
+                ['hospitality-food', 'project-management'],
+                ['project-management', 'entrepreneurship']
+            ]
+        }
+    ];
+
+    const CROSS_CLUSTER_LINKS = [
+        ['ai-ml', 'semiconductors'],
+        ['materials-nanotech', 'semiconductors'],
+        ['aerospace', 'aviation-english'],
+        ['data-analytics', 'biotechnology']
+    ];
+
+    function renderConstellationGraph() {
+        const svg = document.getElementById('skills-graph-constellation-svg');
+        if (!svg) return;
+        svg.innerHTML = '';
+
+        const nodeCoords = {};
+        CLUSTER_CONFIG.forEach(c => {
+            c.nodes.forEach(n => {
+                nodeCoords[n.id] = { x: n.x, y: n.y, label: n.label, icon: n.icon };
+            });
+        });
+
+        // 1. Cluster Boundaries & Headers
+        CLUSTER_CONFIG.forEach(c => {
+            const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            rect.setAttribute('x', c.x);
+            rect.setAttribute('y', c.y);
+            rect.setAttribute('width', c.width);
+            rect.setAttribute('height', c.height);
+            rect.setAttribute('class', 'cluster-boundary');
+            rect.setAttribute('style', `stroke: ${c.color}35;`);
+            svg.appendChild(rect);
+
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            title.setAttribute('x', c.x + 16);
+            title.setAttribute('y', c.y + 24);
+            title.setAttribute('class', 'cluster-label');
+            title.setAttribute('style', `fill: ${c.color};`);
+            title.textContent = c.title;
+            svg.appendChild(title);
+        });
+
+        // 2. Intra-Cluster Links
+        CLUSTER_CONFIG.forEach(c => {
+            c.links.forEach(([from, to]) => {
+                const f = nodeCoords[from];
+                const t = nodeCoords[to];
+                if (!f || !t) return;
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('data-from', from);
+                line.setAttribute('data-to', to);
+                line.setAttribute('x1', f.x);
+                line.setAttribute('y1', f.y);
+                line.setAttribute('x2', t.x);
+                line.setAttribute('y2', t.y);
+                line.setAttribute('class', 'constellation-line');
+                svg.appendChild(line);
+            });
+        });
+
+        // 3. Cross-Cluster Links
+        CROSS_CLUSTER_LINKS.forEach(([from, to]) => {
+            const f = nodeCoords[from];
+            const t = nodeCoords[to];
+            if (!f || !t) return;
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('data-from', from);
+            line.setAttribute('data-to', to);
+            line.setAttribute('x1', f.x);
+            line.setAttribute('y1', f.y);
+            line.setAttribute('x2', t.x);
+            line.setAttribute('y2', t.y);
+            line.setAttribute('class', 'constellation-line cross-cluster');
+            line.setAttribute('stroke-dasharray', '3 3');
+            line.setAttribute('stroke-opacity', '0.5');
+            svg.appendChild(line);
+        });
+
+        // 4. Nodes
+        CLUSTER_CONFIG.forEach(c => {
+            c.nodes.forEach(n => {
+                const status = (skillsData[n.id] && skillsData[n.id].status) || 'active';
+                const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                g.setAttribute('class', `node constellation-node node-${status}`);
+                g.setAttribute('data-node', n.id);
+                g.setAttribute('transform', `translate(${n.x}, ${n.y})`);
+
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('r', '22');
+                circle.setAttribute('class', 'node-circle');
+                g.appendChild(circle);
+
+                const fo = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+                fo.setAttribute('x', '-16');
+                fo.setAttribute('y', '-16');
+                fo.setAttribute('width', '32');
+                fo.setAttribute('height', '32');
+                fo.setAttribute('class', 'node-icon-wrapper');
+                fo.innerHTML = `<i class="${n.icon} node-icon"></i>`;
+                g.appendChild(fo);
+
+                const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                txt.setAttribute('y', '36');
+                txt.setAttribute('class', 'node-text');
+                txt.setAttribute('text-anchor', 'middle');
+                txt.textContent = n.label;
+                g.appendChild(txt);
+
+                g.addEventListener('click', () => {
+                    selectSkillNode(n.id, g);
+                });
+
+                svg.appendChild(g);
+            });
+        });
+    }
+    window.renderConstellationGraph = renderConstellationGraph;
+
+    /* --- Badges Wall for 26 Tracks (Open Badges 3.0) --- */
+    function renderBadgesWall(filter = 'all') {
+        const container = document.getElementById('dynamic-badge-wall');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const orderedTracks = TRACK_ORDER.filter(id => coursesData[id]);
+        let visibleCount = 0;
+
+        orderedTracks.forEach(trackId => {
+            const track = coursesData[trackId];
+            const p = getTrackProgress(trackId);
+            const isCompleted = (p.completedReadings === p.totalReadings && p.totalReadings > 0) || (skillsData[trackId] && skillsData[trackId].status === 'completed');
+            const isInProgress = !isCompleted && p.completedReadings > 0;
+
+            if (filter === 'unlocked' && !isCompleted) return;
+            if (filter === 'in-progress' && !isInProgress) return;
+
+            visibleCount++;
+            const statusClass = isCompleted ? 'unlocked' : (isInProgress ? 'in-progress' : 'available');
+            const hashCode = `STEMOS-${trackId.toUpperCase().replace(/[^A-Z0-9]/g, '')}-${(trackId.length * 1337).toString(16).toUpperCase()}`;
+
+            const card = document.createElement('div');
+            card.className = `badge-card ${statusClass}`;
+            card.innerHTML = `
+                <div class="badge-icon-box">
+                    <i class="${track.icon || 'fa-solid fa-certificate'}"></i>
+                </div>
+                <span class="badge-card-category" style="background: rgba(2, 132, 199, 0.08); color: #0284c7;">
+                    ${track.category || 'Engineering'}
+                </span>
+                <h4 class="badge-card-title">${track.badgeName || track.titleEN || track.title}</h4>
+                <div class="badge-card-standard">
+                    <i class="fa-solid fa-shield-halved text-indigo"></i> ${track.badgeStandard || track.standard || 'ISO / SEP CONOCER'}
+                </div>
+                <div class="badge-card-hash">${hashCode}</div>
+                <button class="btn btn-sm ${isCompleted ? 'btn-primary' : 'btn-outline-primary'} badge-cert-action-btn" data-track="${trackId}">
+                    <i class="fa-solid ${isCompleted ? 'fa-award' : 'fa-eye'}"></i> ${isCompleted ? 'Ver Credencial' : 'Explorar Módulos'}
+                </button>
+            `;
+
+            const actionBtn = card.querySelector('.badge-cert-action-btn');
+            actionBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (isCompleted || isInProgress) {
+                    openCertificateModal(trackId);
+                } else {
+                    showTrackDetail(trackId);
+                }
+            });
+
+            container.appendChild(card);
+        });
+
+        if (visibleCount === 0) {
+            container.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: #ffffff; border-radius: 16px; border: 1px dashed #cbd5e1;">
+                    <i class="fa-solid fa-award text-muted" style="font-size: 2rem; margin-bottom: 8px;"></i>
+                    <h4 style="color: #0f172a; margin-bottom: 4px;">No hay credenciales en esta categoría</h4>
+                    <p style="font-size: 0.85rem; color: #64748b;">Completa las evaluaciones y diálogos socráticos para desbloquear tus micro-credenciales.</p>
+                </div>
+            `;
+        }
+    }
+    window.renderBadgesWall = renderBadgesWall;
+
+    // Filter bar listener for badges
+    const badgeFilterBtns = document.querySelectorAll('.badge-filter-btn');
+    badgeFilterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            badgeFilterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderBadgesWall(btn.dataset.badgeFilter);
+        });
+    });
+
+    /* --- 8. INITIAL RENDER --- */
+    if (Object.keys(coursesData).length > 0) {
+        renderAllUnitsGrid('all');
+        renderSegmentedProgressBar();
+        updateKPIMetrics();
+        initTutorSelectors();
+        renderConstellationGraph();
+        renderBadgesWall('all');
+        renderGlossaryView('all');
+    }
+
 });

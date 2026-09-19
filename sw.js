@@ -3,19 +3,21 @@
  * Enables 100% complete offline caching for 50 modules, readings, native phrases, and assets.
  */
 
-const CACHE_NAME = 'stemos-dev-v2.0.9';
+const CACHE_NAME = 'stemos-lxp-v3.0.0';
 
 const ASSETS_TO_CACHE = [
   '/',
+  '/index.html',
+  '/styles.css',
+  '/app.js',
+  '/content/courses.js',
+  '/content/phrases_library.js',
   '/dev',
   '/dev/',
   '/dev.html',
   '/dev/index.html',
-  '/dev.css?v=2.0.9',
-  '/dev.js?v=2.0.9',
-  '/content/courses.js?v=2.0.9',
-  '/content/phrases_library.js?v=2.0.9',
-  '/content/LEVEL_UP_YOUR_ENGLISH.md',
+  '/dev.css',
+  '/dev.js',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@600;700;800;900&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
 ];
@@ -86,9 +88,9 @@ self.addEventListener('fetch', (event) => {
           if (cachedResponse) {
             return cachedResponse;
           }
-          // If HTML request failed, return cached dev.html or dev/index.html
+          // If HTML request failed, return cached index.html or dev.html
           if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
-            return caches.match('/dev.html') || caches.match('/dev/index.html');
+            return caches.match('/index.html') || caches.match('./index.html') || caches.match('/dev.html') || caches.match('/dev/index.html');
           }
         });
       })
