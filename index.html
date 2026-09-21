@@ -16,7 +16,7 @@
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css?v=1.0.2">
-    <link rel="stylesheet" href="dev.css?v=4.0.1">
+    <link rel="stylesheet" href="dev.css?v=4.0.2">
 
     <!-- Local Backdoor Initializer script to prevent screen flash -->
     <script>
@@ -1439,6 +1439,32 @@
             </div>
         </aside>
 
+        <!-- ── EXAM MODAL OVERLAY ── -->
+        <div class="cs-modal-overlay" id="exam-modal-overlay" style="z-index: 10000000; overflow-y: auto;">
+            <div class="cs-modal-card" style="max-width: 680px; text-align: left; padding: 2rem;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.5rem;">
+                    <div>
+                        <span class="cs-modal-tag" id="exam-track-tag">AEROSPACE</span>
+                        <h2 class="cs-modal-title" id="exam-track-title" style="margin-bottom:0.2rem;">Track Certification Exam</h2>
+                        <p class="cs-modal-text" style="margin-bottom:0; font-size:0.85rem;">CEFR B1 · 10 Questions · 80% passing grade required.</p>
+                    </div>
+                    <button id="btn-close-exam" style="background:none; border:none; color:#94a3b8; font-size:1.5rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                
+                <div id="exam-questions-container" style="max-height: 50vh; overflow-y:auto; padding-right:10px; margin-bottom:1.5rem;">
+                    <!-- Questions injected here -->
+                </div>
+
+                <div id="exam-results-box" style="display:none; text-align:center; padding:1.5rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; margin-bottom:1.5rem;">
+                    <div id="exam-score-display" style="font-size:2.5rem; font-weight:900; color:#0284c7; font-family:'Outfit',sans-serif; line-height:1;">90%</div>
+                    <div id="exam-feedback-msg" style="font-size:0.9rem; color:#475569; margin-top:0.5rem; font-weight:600;">PASSED! Open Badge Unlocked.</div>
+                </div>
+
+                <button class="cs-modal-btn" id="btn-submit-exam" style="width:100%;"><i class="fa-solid fa-check"></i> Submit Exam</button>
+                <button class="cs-modal-btn" id="btn-claim-badge" style="width:100%; display:none; background:linear-gradient(135deg, #10b981 0%, #059669 100%);"><i class="fa-solid fa-award"></i> Claim Open Badge</button>
+            </div>
+        </div>
+
         <!-- ── 2. Main Workspace Area ── -->
         <main class="ed-main-area">
             <!-- Top Floating Header Bar (JSweb Floating Glass Island Style) -->
@@ -1633,12 +1659,15 @@
 
                     <!-- Deployed Courses / Modules List Section -->
                     <div class="ed-deployed-modules-wrapper">
-                        <div class="ed-section-subheading-row">
-                            <h3 class="ed-section-subheading">
+                        <div class="ed-section-subheading-row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                            <h3 class="ed-section-subheading" style="margin: 0;">
                                 <i class="fa-solid fa-graduation-cap"></i> Cursos y Módulos de la Especialidad ESP
                             </h3>
-                            <span class="ed-modules-progress-badge" id="detail-progress-summary">2 de 6
-                                Completados</span>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <span class="ed-modules-progress-badge" id="detail-progress-summary">2 de 6
+                                    Completados</span>
+                                <button id="btn-take-exam" style="display: none; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; padding: 6px 14px; border-radius: 8px; color: white; font-size: 0.8rem; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);"><i class="fa-solid fa-award"></i> Take Certification Exam</button>
+                            </div>
                         </div>
 
                         <div class="ed-modules-list" id="detail-modules-container">

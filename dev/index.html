@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <link rel="stylesheet" href="/dev.css?v=4.0.0">
+  <link rel="stylesheet" href="/dev.css?v=4.0.2">
 </head>
 
 <body class="supaste-theme">
@@ -75,7 +75,7 @@
       <!-- CTA Buttons Row with Soft Fade -->
       <div class="supaste-hero-actions soft-element" style="--delay: 0.95s">
         <a href="#catalog-section" class="supaste-btn-primary">
-          <span>26 Modules</span>
+          <span>Explore 26 Tracks</span>
           <i class="fa-solid fa-arrow-right btn-arrow"></i>
         </a>
         <a href="#hero-showcase-window" class="supaste-btn-secondary" id="hero-view-demo-btn">
@@ -92,13 +92,18 @@
         </div>
         <span class="metric-dot">&bull;</span>
         <div class="metric-pill">
-          <span class="metric-val" id="stat-modules">104</span>
+          <span class="metric-val" id="stat-modules">146</span>
           <span class="metric-lbl">Modules</span>
         </div>
         <span class="metric-dot">&bull;</span>
         <div class="metric-pill">
-          <span class="metric-val" id="stat-readings">200+</span>
+          <span class="metric-val" id="stat-readings">157</span>
           <span class="metric-lbl">Readings</span>
+        </div>
+        <span class="metric-dot">&bull;</span>
+        <div class="metric-pill">
+          <span class="metric-val" id="stat-questions">628</span>
+          <span class="metric-lbl">MCQ Questions</span>
         </div>
         <span class="metric-dot">&bull;</span>
         <div class="metric-pill">
@@ -368,6 +373,96 @@
     </div>
   </div>
 
+  <!-- ── Track Certification Exam Modal Overlay (Dev Studio) ── -->
+  <div class="cs-modal-overlay" id="exam-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="exam-track-title">
+    <div class="cs-modal-card" style="padding: 28px; max-height: 90vh; display: flex; flex-direction: column;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.25rem; flex-shrink:0;">
+        <div>
+          <span class="cs-modal-tag" id="exam-track-tag">AEROSPACE</span>
+          <h2 class="cs-modal-title" id="exam-track-title" style="margin-bottom:0.25rem;">Track Certification Exam</h2>
+          <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">CEFR B1 &bull; 10 Questions randomly selected from track &bull; 80% passing grade required.</p>
+        </div>
+        <button id="btn-close-exam" class="drawer-close-btn" aria-label="Close Exam"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div id="exam-questions-container" style="flex:1; overflow-y:auto; padding-right:8px; margin-bottom:1.5rem;">
+        <!-- Dynamically injected questions -->
+      </div>
+
+      <div id="exam-results-box" style="display:none; text-align:center; padding:1.5rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; margin-bottom:1.5rem; flex-shrink:0;">
+        <div id="exam-score-display" style="font-size:2.8rem; font-weight:900; color:#0284c7; font-family:var(--font-head); line-height:1;">90%</div>
+        <div id="exam-feedback-msg" style="font-size:0.92rem; color:#475569; margin-top:0.5rem; font-weight:600;">PASSED! Open Badge Unlocked.</div>
+      </div>
+
+      <div style="flex-shrink:0;">
+        <button class="cs-modal-btn" id="btn-submit-exam" style="width:100%;"><i class="fa-solid fa-check"></i> Submit Exam & Verify</button>
+        <button class="cs-modal-btn" id="btn-claim-badge" style="width:100%; display:none; background:linear-gradient(135deg, #10b981 0%, #059669 100%);"><i class="fa-solid fa-award"></i> Claim CEFR B1 Open Badge</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Certificate & W3C Open Badge 3.0 Modal Overlay ── -->
+  <div id="cert-modal-overlay" class="cert-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-cert-title">
+    <div class="cert-modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <span class="cs-modal-tag" style="background:#ecfdf5; color:#059669; border-color:#a7f3d0;"><i class="fa-solid fa-award"></i> W3C Verified Credential</span>
+        <button id="btn-close-cert-modal" class="drawer-close-btn" aria-label="Close Certificate"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="certificate-canvas">
+        <div class="cert-border-outer">
+          <div class="cert-border-inner">
+            <span class="cert-org">stemOS Foundation &bull; High-Tech Engineering Division</span>
+            <h2 class="cert-main-title" id="modal-cert-title">CONSTANCIA DE COMPETENCIA TÉCNICA ESP</h2>
+            <div class="cert-body">
+              <p class="cert-body-text">Se otorga la presente acreditación oficial a:</p>
+              <h3 class="cert-recipient" id="modal-cert-recipient">Ingeniero stemOS</h3>
+              <p class="cert-body-text">Por haber acreditado con éxito la evaluación summativa de especialidad y demostrado dominio de comunicación técnica en:</p>
+              <h4 class="cert-skill-name" id="modal-cert-track-name">Semiconductor Manufacturing (Nearshoring ESP)</h4>
+              <p class="cert-body-text" id="modal-cert-standard-text">Alineado al marco de competencias laborales <strong>SEP CONOCER EC1290</strong> e <strong>IEEE Standards</strong> en nivel de competencia operativa CEFR B1.</p>
+            </div>
+            <div class="cert-footer">
+              <div class="cert-sign">
+                <div class="signature-line"></div>
+                <span class="signer">Comité Académico stemOS</span>
+                <span class="signer-title">Lovelace Tech & JóvenesSTEM Evaluators</span>
+              </div>
+              <div class="cert-verification">
+                <span class="verification-lbl">Sello Criptográfico W3C</span>
+                <span class="verification-code" id="modal-cert-hash">SHA256: 8F2A-STEM-2026-CERT</span>
+                <span class="verification-date" id="modal-cert-date">Septiembre 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <button class="cs-modal-btn" id="btn-download-badge-json" style="background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
+          <i class="fa-solid fa-file-code"></i> Descargar Credencial W3C (JSON-LD)
+        </button>
+        <button class="cs-modal-btn" id="btn-print-certificate" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1;">
+          <i class="fa-solid fa-print"></i> Imprimir Constancia
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Floating Vocabulary Popover Element ── -->
+  <div id="stemos-vocab-popover" style="display:none;">
+    <div class="popover-header-row">
+      <span class="popover-category-tag"><i class="fa-solid fa-book-bookmark"></i> Vocabulario Técnico</span>
+      <button class="popover-close-btn" id="btn-close-popover"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="popover-main-term">
+      <span class="popover-en-title" id="popover-term-en">Technical Term</span>
+      <button class="popover-audio-btn" id="popover-audio-btn" title="Escuchar pronunciación"><i class="fa-solid fa-volume-high"></i></button>
+    </div>
+    <div class="popover-es-subtitle" id="popover-term-es">Término en Español</div>
+    <div class="popover-ipa-tag" id="popover-term-ipa">[/ˈtɛk.nɪ.kəl/]</div>
+    <p class="popover-body-def" id="popover-term-def">Technical definition and operational plant context.</p>
+  </div>
+
   <!-- ── Footer (Supaste Editorial Style) ── -->
   <footer class="supaste-footer">
     <div class="supaste-footer-inner">
@@ -416,7 +511,7 @@
   <!-- Load stemOS courses database, phrases library, and dev controller with cache buster -->
   <script src="/content/courses.js?v=4.0.0"></script>
   <script src="/content/phrases_library.js?v=4.0.0"></script>
-  <script src="/dev.js?v=4.0.0"></script>
+  <script src="/dev.js?v=4.0.2"></script>
 
 </body>
 

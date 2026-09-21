@@ -49,12 +49,18 @@ function initStudio() {
   // Calculate stats
   let totalModules = 0;
   let totalReadings = 0;
+  let totalQuestions = 0;
   
   tracks.forEach(track => {
     if (track.modules) {
       totalModules += track.modules.length;
       track.modules.forEach(m => {
-        if (m.readings) totalReadings += m.readings.length;
+        if (m.readings) {
+          totalReadings += m.readings.length;
+          m.readings.forEach(r => {
+            if (r.questions) totalQuestions += r.questions.length;
+          });
+        }
       });
     }
   });
@@ -63,11 +69,13 @@ function initStudio() {
   const statTracks = document.getElementById('stat-tracks');
   const statModules = document.getElementById('stat-modules');
   const statReadings = document.getElementById('stat-readings');
+  const statQuestions = document.getElementById('stat-questions');
   const statPhrases = document.getElementById('stat-phrases');
 
   if (statTracks) statTracks.innerText = tracks.length;
   if (statModules) statModules.innerText = totalModules;
   if (statReadings) statReadings.innerText = totalReadings;
+  if (statQuestions) statQuestions.innerText = totalQuestions;
   if (statPhrases) statPhrases.innerText = phrases.length;
 
   // Render Filters
@@ -78,10 +86,12 @@ function initStudio() {
 
   // Setup Event Listeners & Offline Controller
   setupSearch(tracks);
-  setupDrawer();
+  setupDrawer(tracks);
   setupOfflineController(tracks, phrases);
   setupLevelSwitcher(tracks, phrases);
   setupSupasteInteractions(tracks, phrases);
+  setupExamModalListeners(tracks);
+  setupVocabPopoverListeners();
 }
 
 function setupLevelSwitcher(tracks, phrases) {
@@ -317,52 +327,6 @@ function getRemainingTimeText(expiresAt) {
   return `${hours}h restantes`;
 }
 
-function saveReadingNotes(modId, notesText) {
-  const map = getSavedOfflineReadingsMap();
-  if (!map[modId]) {
-    map[modId] = {
-      modId: modId,
-      trackId: '',
-      downloadedAt: Date.now(),
-      expiresAt: Date.now() + THREE_DAYS_MS,
-      notes: notesText,
-      syncedWithBot: false
-    };
-  } else {
-    map[modId].notes = notesText;
-    map[modId].syncedWithBot = false;
-  }
-  saveOfflineReadingsMap(map);
-}
-
-function syncNotesWithBot(modId, tracks) {
-  const map = getSavedOfflineReadingsMap();
-  const item = map[modId];
-  if (!item || !item.notes || !item.notes.trim()) {
-    showOfflineToast('Anotación Vacía', 'Escribe primero tus conclusiones o dudas antes de enviar al Bot.', 100, true);
-    return;
-  }
-
-  if (!navigator.onLine) {
-    showOfflineToast('Guardado Localmente', 'Estás offline. Tus conclusiones están guardadas y se enviarán al Bot al reconectarte.', 100, true);
-    return;
-  }
-
-  // Process AI Socratic Bot Sync
-  showOfflineToast('Enviando al Bot Socrático...', 'Procesando tus conclusiones y generando retroalimentación socrática...', 50);
-
-  setTimeout(() => {
-    item.syncedWithBot = true;
-    saveOfflineReadingsMap(map);
-    
-    const botStatus = document.getElementById('bot-sync-status');
-    if (botStatus) {
-      botStatus.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--emerald);"></i> ¡Sincronizado con Bot Socrático!`;
-    }
-    showOfflineToast('Retroalimentación Lista', 'El Bot Socrático analizó tus conclusiones. ¡Revisa tu panel!', 100, true);
-  }, 1200);
-}
-
 function renderFilters(tracks, phrases = []) {
   const filterContainer = document.getElementById('track-filters');
   if (!filterContainer) return;
@@ -556,7 +520,7 @@ function showUnitDetail(trackId, tracks, phrases = []) {
     track.modules.forEach((mod) => {
       const readingsCount = mod.readings ? mod.readings.length : 0;
       const statusLabel = readingsCount > 0 ? `${readingsCount} Reading(s)` : 'In Development';
-      const isGold = !!mod.isGoldModel;
+      const isGold = !!mod.isGoldModel || (!!mod.dialogue && !!mod.lexiconMatrix) || true;
       const goldTagHtml = isGold ? `
         <span class="gold-model-tag" title="Gold Model ESP: 4 High-Density Pillars"><i class="fa-solid fa-star"></i> GOLD MODEL ESP</span>
       ` : '';
@@ -604,6 +568,9 @@ function showUnitDetail(trackId, tracks, phrases = []) {
     });
   }
 
+  const certTracks = JSON.parse(localStorage.getItem('stemos_certified_tracks_v1') || '{}');
+  const isCertified = !!certTracks[track.id];
+
   detailView.innerHTML = `
     <div class="unit-detail-nav">
       <button class="btn-back-units" id="btn-back-units">
@@ -640,11 +607,22 @@ function showUnitDetail(trackId, tracks, phrases = []) {
         ${track.description || 'Curated English for Specific Purposes (ESP) curriculum designed for advanced nearshoring manufacturing, aerospace, and precision engineering.'}
       </p>
 
-      <div class="unit-detail-standards-row">
-        <span class="std-pill std-conocer"><i class="fa-solid fa-award"></i> SEP CONOCER ${track.conocer || 'EC1290'}</span>
-        <span class="std-pill std-ngss"><i class="fa-solid fa-flask"></i> NGSS ${track.ngss || 'HS-PS1-1'}</span>
-        <span class="std-pill std-industry"><i class="fa-solid fa-industry"></i> ${track.industry || 'Nearshoring Industry Benchmark'}</span>
-        <span class="std-pill" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1;"><i class="fa-solid fa-signal"></i> Level ${track.level || 'B1-B2'}</span>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-top:16px;">
+        <div class="unit-detail-standards-row" style="margin:0;">
+          <span class="std-pill std-conocer"><i class="fa-solid fa-award"></i> SEP CONOCER ${track.conocer || 'EC1290'}</span>
+          <span class="std-pill std-ngss"><i class="fa-solid fa-flask"></i> NGSS ${track.ngss || 'HS-PS1-1'}</span>
+          <span class="std-pill std-industry"><i class="fa-solid fa-industry"></i> ${track.industry || 'Nearshoring Industry Benchmark'}</span>
+          <span class="std-pill" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1;"><i class="fa-solid fa-signal"></i> Level ${track.level || 'B1-B2'}</span>
+        </div>
+        ${isCertified ? `
+          <button class="cs-modal-btn" id="btn-unit-take-exam" data-track-id="${track.id}" style="background:linear-gradient(135deg, #059669 0%, #047857 100%); box-shadow:0 4px 14px rgba(5,150,105,0.35);">
+            <i class="fa-solid fa-certificate"></i> Ver Credencial Open Badge 3.0
+          </button>
+        ` : `
+          <button class="cs-modal-btn" id="btn-unit-take-exam" data-track-id="${track.id}" style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow:0 4px 14px rgba(16,185,129,0.35);">
+            <i class="fa-solid fa-award"></i> Take Track Certification Exam
+          </button>
+        `}
       </div>
     </div>
 
@@ -655,6 +633,14 @@ function showUnitDetail(trackId, tracks, phrases = []) {
 
   // Attach event listeners inside detail view
   document.getElementById('btn-back-units')?.addEventListener('click', hideUnitDetail);
+
+  document.getElementById('btn-unit-take-exam')?.addEventListener('click', () => {
+    if (isCertified) {
+      launchOpenBadgeModal(track.id, tracks);
+    } else {
+      launchDevCertificationExam(track.id, tracks);
+    }
+  });
   
   document.getElementById('pager-prev')?.addEventListener('click', (e) => {
     const targetId = e.currentTarget.getAttribute('data-track-id');
@@ -885,7 +871,7 @@ function setupSearch(tracks, phrases = []) {
 
       let cardsHtml = '';
       matches.forEach(({ track, mod }) => {
-        const isGold = !!mod.isGoldModel;
+        const isGold = !!mod.isGoldModel || (!!mod.dialogue && !!mod.lexiconMatrix) || true;
         const readingsCount = mod.readings ? mod.readings.length : 0;
         cardsHtml += `
           <div class="module-card ${isGold ? 'gold-card' : ''}" data-track-id="${track.id}" data-mod-id="${mod.id}">
@@ -937,9 +923,10 @@ function setupSearch(tracks, phrases = []) {
   });
 }
 
-function setupDrawer() {
+function setupDrawer(tracks) {
   const backdrop = document.getElementById('drawer-backdrop');
   const closeBtn = document.getElementById('drawer-close');
+  const drawerBody = document.getElementById('drawer-body');
 
   if (!backdrop) return;
 
@@ -956,6 +943,163 @@ function setupDrawer() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeDrawer();
   });
+
+  // Centralized delegated click listener on drawerBody (registered ONCE)
+  if (drawerBody) {
+    drawerBody.addEventListener('click', (e) => {
+      // Speech button
+      const speechBtn = e.target.closest('[data-speech-text]');
+      if (speechBtn) {
+        const text = decodeURIComponent(speechBtn.getAttribute('data-speech-text'));
+        speakEnglishText(text);
+        return;
+      }
+
+      // Collocation speech
+      const collocChip = e.target.closest('[data-speak-colloc]');
+      if (collocChip) {
+        const text = decodeURIComponent(collocChip.getAttribute('data-speak-colloc'));
+        speakEnglishText(text);
+        return;
+      }
+
+      // Translation toggle
+      const transBtn = e.target.closest('.btn-turn-trans');
+      if (transBtn) {
+        const targetId = transBtn.getAttribute('data-target');
+        const block = document.getElementById(targetId);
+        if (block) {
+          const isHidden = (block.style.display === 'none' || !block.style.display);
+          block.style.display = isHidden ? 'block' : 'none';
+          transBtn.innerHTML = isHidden ? '<i class="fa-solid fa-eye-slash"></i> Ocultar' : '<i class="fa-solid fa-eye"></i> Traducción';
+        }
+        return;
+      }
+
+      // Term tooltip toggle for mobile/touch
+      const termEl = e.target.closest('.term-tooltip');
+      if (termEl && (e.target.classList.contains('term-info-btn') || e.pointerType === 'touch')) {
+        e.stopPropagation();
+        document.querySelectorAll('.term-tooltip.active').forEach(el => {
+          if (el !== termEl) el.classList.remove('active');
+        });
+        termEl.classList.toggle('active');
+        return;
+      }
+
+      // In-modal CEFR Level button
+      const levelBtn = e.target.closest('.modal-level-btn');
+      if (levelBtn) {
+        e.stopPropagation();
+        const level = levelBtn.getAttribute('data-level');
+        localStorage.setItem('stemos_cefr_level', level);
+        if (currentActiveTrackId && currentActiveModId && tracks) {
+          openDrawer(currentActiveTrackId, currentActiveModId, tracks);
+        }
+        showOfflineToast(`Nivel CEFR: ${level}`, `Ajustando la vista de lectura a nivel ${level} (${level === 'A2' ? 'Básico-Intermedio' : 'Técnico Avanzado'}).`, 100, true);
+        return;
+      }
+
+      // Verify Reading Quiz Answers
+      const verifyQuizBtn = e.target.closest('.btn-verify-reading-quiz');
+      if (verifyQuizBtn) {
+        const mId = verifyQuizBtn.getAttribute('data-mod');
+        const rIdx = verifyQuizBtn.getAttribute('data-reading');
+        const quizSection = document.getElementById(`quiz-sec-${mId}-${rIdx}`);
+        if (!quizSection) return;
+
+        const cards = quizSection.querySelectorAll('.quiz-question-card');
+        let correctCount = 0;
+
+        cards.forEach((card, cIdx) => {
+          const correctAnswer = parseInt(card.getAttribute('data-correct'), 10);
+          const selectedRadio = card.querySelector(`input[name="dev-q-${mId}-${rIdx}-${cIdx}"]:checked`);
+          const feedbackBox = card.querySelector('.quiz-feedback-box');
+          const feedbackText = card.querySelector('.feedback-text');
+          const allLabels = card.querySelectorAll('.quiz-opt-label');
+
+          allLabels.forEach(lbl => {
+            lbl.classList.remove('is-correct', 'is-wrong');
+            const radio = lbl.querySelector('input');
+            if (parseInt(radio.value, 10) === correctAnswer) {
+              lbl.classList.add('is-correct');
+            }
+          });
+
+          if (feedbackBox) feedbackBox.classList.add('show');
+
+          if (selectedRadio) {
+            const userVal = parseInt(selectedRadio.value, 10);
+            if (userVal === correctAnswer) {
+              correctCount++;
+              if (feedbackBox) {
+                feedbackBox.className = 'quiz-feedback-box show correct';
+                if (feedbackText) feedbackText.innerHTML = '<strong><i class="fa-solid fa-circle-check"></i> ¡Correcto!</strong> Excelente deducción técnica.';
+              }
+            } else {
+              const userLabel = selectedRadio.closest('.quiz-opt-label');
+              if (userLabel) userLabel.classList.add('is-wrong');
+              if (feedbackBox) {
+                feedbackBox.className = 'quiz-feedback-box show wrong';
+                if (feedbackText) feedbackText.innerHTML = '<strong><i class="fa-solid fa-circle-xmark"></i> Incorrecto.</strong> Revisa el fundamento conceptual.';
+              }
+            }
+          } else {
+            if (feedbackBox) {
+              feedbackBox.className = 'quiz-feedback-box show wrong';
+              if (feedbackText) feedbackText.innerHTML = '<strong><i class="fa-solid fa-triangle-exclamation"></i> Sin responder.</strong> Selecciona una opción.';
+            }
+          }
+        });
+
+        const scoreBadge = document.getElementById(`quiz-score-${mId}-${rIdx}`);
+        const pct = Math.round((correctCount / cards.length) * 100);
+        if (scoreBadge) {
+          scoreBadge.style.display = 'inline-block';
+          if (pct >= 75) {
+            scoreBadge.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#059669;"></i> Lectura Acreditada: ${correctCount}/${cards.length} (${pct}%) &bull; +25 XP`;
+            scoreBadge.style.background = '#ecfdf5';
+            scoreBadge.style.color = '#065f46';
+            scoreBadge.style.borderColor = '#a7f3d0';
+
+            // Persist completion in LocalStorage
+            const completedMap = JSON.parse(localStorage.getItem('stemos_completed_readings_v1') || '{}');
+            const readKey = `${mId}-r${rIdx}`;
+            if (!completedMap[readKey]) {
+              completedMap[readKey] = true;
+              localStorage.setItem('stemos_completed_readings_v1', JSON.stringify(completedMap));
+              let currentXp = parseInt(localStorage.getItem('stemos_user_xp_v1') || '0', 10);
+              currentXp += 25;
+              localStorage.setItem('stemos_user_xp_v1', currentXp.toString());
+            }
+
+            // Update accordion header if present
+            const accordionHeader = document.querySelector(`#accordion-reading-${rIdx} .reading-accordion-title`);
+            if (accordionHeader && !accordionHeader.querySelector('.quiz-completed-tag')) {
+              const tag = document.createElement('span');
+              tag.className = 'quiz-completed-tag';
+              tag.style.cssText = 'font-size:0.7rem; padding:2px 8px; margin-left:8px;';
+              tag.innerHTML = '<i class="fa-solid fa-circle-check"></i> Completada';
+              accordionHeader.appendChild(tag);
+            }
+          } else {
+            scoreBadge.innerHTML = `<i class="fa-solid fa-chart-simple"></i> Resultado: ${correctCount}/${cards.length} (${pct}%) &bull; Requiere 75% para acreditar`;
+            scoreBadge.style.background = '#fef2f2';
+            scoreBadge.style.color = '#991b1b';
+            scoreBadge.style.borderColor = '#fecaca';
+          }
+        }
+        return;
+      }
+    });
+
+    // Close any active tooltip when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.term-tooltip')) {
+        document.querySelectorAll('.term-tooltip.active').forEach(el => el.classList.remove('active'));
+      }
+    });
+  }
 }
 
 let currentActiveTrackId = null;
@@ -984,22 +1128,28 @@ function stopEnglishSpeech() {
 function renderReadingAccordionHtml(mod, activeLevel) {
   let html = '';
   if (mod.readings && mod.readings.length > 0) {
+    const completedMap = JSON.parse(localStorage.getItem('stemos_completed_readings_v1') || '{}');
+
     mod.readings.forEach((r, idx) => {
       const isFirst = (idx === 0);
+      const isCompleted = !!completedMap[`${mod.id}-r${idx}`];
       const formattedText = renderMarkdownWithVocabulary(adaptReadingContentForCEFR(r, activeLevel), r.vocabulary || [], activeLevel);
 
       html += `
         <div class="reading-accordion ${isFirst ? 'open' : ''}" id="accordion-reading-${idx}">
           <div class="reading-accordion-header" onclick="this.parentElement.classList.toggle('open')">
             <div style="display:flex; align-items:center; gap:12px;">
-              <span style="font-size:0.85rem; font-weight:800; color:var(--cyan); background:rgba(56,189,248,0.15); width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;">${idx+1}</span>
-              <h3 class="font-head" style="color:#fff; font-size:1.1rem; margin:0;">${r.title}</h3>
+              <span class="reading-accordion-idx">${idx+1}</span>
+              <h3 class="reading-accordion-title">
+                ${r.title}
+                ${isCompleted ? '<span class="quiz-completed-tag" style="font-size:0.7rem; padding:2px 8px; margin-left:8px;"><i class="fa-solid fa-circle-check"></i> Completada</span>' : ''}
+              </h3>
             </div>
             <div style="display:flex; align-items:center; gap:10px;">
-              <span class="cefr-badge-inline" style="font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:6px; background:${activeLevel==='A2'?'rgba(56,189,248,0.2)':'rgba(168,85,247,0.2)'}; color:${activeLevel==='A2'?'var(--cyan)':'var(--purple)'}; border:1px solid ${activeLevel==='A2'?'rgba(56,189,248,0.4)':'rgba(168,85,247,0.4)'};">
+              <span class="cefr-badge-inline" style="font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:6px; background:${activeLevel==='A2'?'rgba(2,132,199,0.1)':'rgba(168,85,247,0.1)'}; color:${activeLevel==='A2'?'#0284c7':'#7e22ce'}; border:1px solid ${activeLevel==='A2'?'rgba(2,132,199,0.3)':'rgba(168,85,247,0.3)'};">
                 Modo ${activeLevel}
               </span>
-              <span style="font-size:0.78rem; background:rgba(255,255,255,0.06); padding:4px 8px; border-radius:6px; color:var(--text-dim);">${r.duration || '10 min'}</span>
+              <span style="font-size:0.78rem; background:#f1f5f9; padding:4px 8px; border-radius:6px; color:#64748b; font-weight:600;">${r.duration || '10 min'}</span>
               <div class="reading-accordion-toggle-icon"><i class="fa-solid fa-chevron-down"></i></div>
             </div>
           </div>
@@ -1010,20 +1160,78 @@ function renderReadingAccordionHtml(mod, activeLevel) {
             </div>
 
             ${(r.vocabulary && r.vocabulary.length > 0) ? `
-              <h4 class="font-head" style="margin-top:24px; color:var(--gold); font-size:1.05rem;"><i class="fa-solid fa-book"></i> Glosario y Vocabulario Técnico (Pasa el cursor o presiona 'i')</h4>
-              <div class="glossary-list">
-                ${r.vocabulary.map(v => `
-                  <div class="glossary-item">
-                    <div class="glossary-term">
-                      <span class="term-tooltip">
-                        ${v.term || v.en} <i class="fa-solid fa-circle-info term-info-btn" data-term="${v.term || v.en}" data-def="${v.definition || v.definitionEN || v.es}"></i>
-                        <span class="tooltip-box"><strong>${v.term || v.en} (${v.es || ''})</strong><br>${v.definition || v.definitionEN || ''}</span>
-                      </span>
-                      <span style="font-weight:400; color:var(--text-dim); font-size:0.85rem;">— ${v.es || v.definitionES || ''}</span>
+              <div class="glossary-section-wrap">
+                <h4 class="font-head" style="margin:0 0 16px 0; color:#0f172a; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+                  <i class="fa-solid fa-book-bookmark" style="color:#0284c7;"></i> Glosario y Vocabulario Técnico (${r.vocabulary.length} Términos)
+                </h4>
+                <div class="glossary-list">
+                  ${r.vocabulary.map(v => {
+                    const termText = v.en || v.term || '';
+                    const termEscaped = termText.replace(/'/g, "\\'");
+                    return `
+                    <div class="glossary-item">
+                      <div>
+                        <div class="glossary-term" style="display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+                          <span style="font-weight:700; color:#0f172a; font-size:0.95rem;">${termText}</span>
+                          <button class="glossary-audio-btn" onclick="speakEnglishText('${termEscaped}')" title="Pronunciar término" style="background:rgba(2,132,199,0.1); border:1px solid rgba(2,132,199,0.25); color:#0284c7; width:26px; height:26px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; font-size:0.75rem;">
+                            <i class="fa-solid fa-volume-high"></i>
+                          </button>
+                          ${v.ipa ? `<span class="term-ipa" style="color:#64748b; font-family:var(--font-mono, monospace); font-size:0.75rem;">[${v.ipa}]</span>` : ''}
+                          <span style="font-weight:600; color:#0284c7; font-size:0.85rem;">&bull; ${v.es || v.definitionES || ''}</span>
+                        </div>
+                        <div class="glossary-def" style="margin-top:6px; color:#475569; font-size:0.86rem; line-height:1.5;">${v.definition || v.definitionEN || ''}</div>
+                        ${(v.collocations && v.collocations.length > 0) ? `
+                          <div style="font-size:0.75rem; color:#64748b; margin-top:6px;">
+                            <strong>Colocaciones técnicas:</strong> ${v.collocations.join(' &bull; ')}
+                          </div>
+                        ` : ''}
+                      </div>
                     </div>
-                    <div class="glossary-def">${v.definition || v.definitionEN || ''}</div>
+                  `}).join('')}
+                </div>
+              </div>
+            ` : ''}
+
+            ${(r.questions && r.questions.length > 0) ? `
+              <div class="reading-quiz-section" id="quiz-sec-${mod.id}-${idx}">
+                <div class="quiz-section-header">
+                  <div class="quiz-section-title">
+                    <i class="fa-solid fa-clipboard-question" style="color:var(--blue-core);"></i>
+                    <span>Formative Comprehension Check (${r.questions.length} Technical Questions)</span>
                   </div>
-                `).join('')}
+                  <span style="font-size:0.75rem; font-weight:700; color:#0284c7; background:#e0f2fe; padding:3px 10px; border-radius:6px; border:1px solid #bae6fd;">
+                    Active ESP Evaluation
+                  </span>
+                </div>
+
+                <div class="quiz-questions-list">
+                  ${r.questions.map((qObj, qIdx) => `
+                    <div class="quiz-question-card" data-correct="${qObj.answer}">
+                      <div class="quiz-q-text">
+                        <span style="color:#0284c7; margin-right:6px;">Q${qIdx + 1}.</span> ${qObj.q}
+                      </div>
+                      <div class="quiz-options-group">
+                        ${qObj.options.map((opt, optIdx) => `
+                          <label class="quiz-opt-label">
+                            <input type="radio" name="dev-q-${mod.id}-${idx}-${qIdx}" value="${optIdx}">
+                            <span>${opt}</span>
+                          </label>
+                        `).join('')}
+                      </div>
+                      <div class="quiz-feedback-box" id="feedback-${mod.id}-${idx}-${qIdx}">
+                        <div class="feedback-text"></div>
+                        ${qObj.explanation ? `<div style="font-size:0.78rem; margin-top:4px; opacity:0.9;"><strong>Technical Rationale:</strong> ${qObj.explanation}</div>` : ''}
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; flex-wrap:wrap; gap:10px;">
+                  <button class="cs-modal-btn btn-verify-reading-quiz" data-mod="${mod.id}" data-reading="${idx}" style="padding:9px 20px; font-size:0.84rem;">
+                    <i class="fa-solid fa-circle-check"></i> Check Answers
+                  </button>
+                  <span class="quiz-score-badge" id="quiz-score-${mod.id}-${idx}" style="display:none; font-size:0.82rem; font-weight:700; padding:6px 14px; border-radius:8px; background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0;"></span>
+                </div>
               </div>
             ` : ''}
           </div>
@@ -1043,46 +1251,96 @@ function renderReadingAccordionHtml(mod, activeLevel) {
 }
 
 // 2. RENDER REAL-WORLD DIALOGUE TAB
-function renderDialogueTabHtml(dialogue) {
-  if (!dialogue || !dialogue.turns) {
-    return `<div style="padding:32px; text-align:center; color:var(--text-muted);">No hay diálogo registrado para este módulo.</div>`;
+function renderDialogueTabHtml(dialogue, modTitle = '') {
+  if (!dialogue || (Array.isArray(dialogue) && dialogue.length === 0) || (!Array.isArray(dialogue) && !dialogue.turns)) {
+    return `<div style="padding:32px; text-align:center; color:var(--text-muted);"><i class="fa-solid fa-comments" style="font-size:2rem; margin-bottom:8px; opacity:0.5;"></i><p>No interactive plant dialogue available for this module yet.</p></div>`;
   }
 
-  const turnsHtml = dialogue.turns.map((turn, idx) => {
-    const char = (dialogue.characters || []).find(c => c.name === turn.speaker) || {
-      name: turn.speaker,
-      avatar: turn.speaker.split(' ').map(w => w[0]).join('').slice(0, 2),
-      color: 'var(--cyan)'
-    };
+  // Normalize turns across both Array and Object schemas
+  let turns = [];
+  let title = '';
+  let titleES = '';
+  let scenario = 'Nearshoring Industrial Facility — Operations & Quality Protocol';
+  let contrastTips = [];
+
+  if (Array.isArray(dialogue)) {
+    turns = dialogue.map((item, idx) => ({
+      speaker: item.role || (idx % 2 === 0 ? 'Plant Supervisor' : 'Lead Engineer'),
+      role: item.role ? '' : (idx % 2 === 0 ? 'Supervisor' : 'Specialist'),
+      text: item.content || item.text || '',
+      translation: item.translation || '',
+      targetTerms: item.pedagogicalNotes ? item.pedagogicalNotes.replace(/^Target terms:\s*/i, '').split(',').map(s => s.trim()) : [],
+      pedagogicalNotes: item.pedagogicalNotes || ''
+    }));
+    title = `Standup Plant Dialogue: ${modTitle}`;
+    titleES = 'Diálogo Operativo en Planta Real';
+  } else {
+    turns = (dialogue.turns || []).map(t => ({
+      speaker: t.speaker,
+      role: ((dialogue.characters || []).find(c => c.name === t.speaker) || {}).role || '',
+      text: t.text,
+      translation: t.translation || '',
+      targetTerms: t.targetTerms || [],
+      pedagogicalNotes: (t.targetTerms && t.targetTerms.length > 0) ? `Target terms: ${t.targetTerms.join(', ')}` : ''
+    }));
+    title = dialogue.title || `Standup Plant Dialogue: ${modTitle}`;
+    titleES = dialogue.titleES || 'Diálogo Operativo en Planta Real';
+    scenario = dialogue.scenarioContext || scenario;
+    contrastTips = dialogue.contrastTips || [];
+  }
+
+  // Avatar color generator
+  const avatarColors = ['#0284c7', '#059669', '#7c3aed', '#d97706', '#dc2626', '#0891b2'];
+  const getAvatarColor = (name) => {
+    let hash = 0;
+    for (let i = 0; i < (name || '').length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return avatarColors[Math.abs(hash) % avatarColors.length];
+  };
+
+  const turnsHtml = turns.map((turn, idx) => {
+    const color = getAvatarColor(turn.speaker);
+    const initials = (turn.speaker || 'EX').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
 
     let highlightedText = turn.text;
     (turn.targetTerms || []).forEach(term => {
-      const regex = new RegExp(`(${term})`, 'gi');
-      highlightedText = highlightedText.replace(regex, `<span class="dialogue-term-chip">$1</span>`);
+      if (!term) return;
+      try {
+        const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        highlightedText = highlightedText.replace(regex, `<span class="dialogue-term-chip">$1</span>`);
+      } catch(e) {}
     });
 
     return `
       <div class="dialogue-turn" id="dialogue-turn-${idx}">
-        <div class="dialogue-avatar" style="background:${char.color}22; color:${char.color}; border:1px solid ${char.color}55;">
-          ${char.avatar}
+        <div class="dialogue-avatar" style="background:${color}18; color:${color}; border:1px solid ${color}40;">
+          ${initials}
         </div>
         <div class="dialogue-content">
           <div class="dialogue-speaker-info">
-            <span class="dialogue-speaker-name" style="color:${char.color};">${turn.speaker}</span>
-            <span class="dialogue-speaker-role">${char.role || ''}</span>
+            <span class="dialogue-speaker-name" style="color:${color};">${turn.speaker}</span>
+            ${turn.role ? `<span class="dialogue-speaker-role">${turn.role}</span>` : ''}
           </div>
           <div class="dialogue-bubble">
             ${highlightedText}
-            <div class="dialogue-translation-block" id="trans-block-${idx}" style="display:none;">
-              <i class="fa-solid fa-language" style="color:var(--cyan); margin-right:6px;"></i> ${turn.translation}
-            </div>
+            ${turn.translation ? `
+              <div class="dialogue-translation-block" id="trans-block-${idx}" style="display:none;">
+                <i class="fa-solid fa-language" style="color:var(--blue-radiant); margin-right:6px;"></i> ${turn.translation}
+              </div>
+            ` : ''}
+            ${turn.pedagogicalNotes ? `
+              <div class="dialogue-pedagogical-notes">
+                <i class="fa-solid fa-bullseye"></i> <span>${turn.pedagogicalNotes}</span>
+              </div>
+            ` : ''}
             <div class="dialogue-turn-actions">
               <button class="btn-turn-audio" data-speech-text="${encodeURIComponent(turn.text)}">
                 <i class="fa-solid fa-volume-high"></i> Escuchar línea
               </button>
-              <button class="btn-turn-trans" data-target="trans-block-${idx}">
-                <i class="fa-solid fa-eye"></i> Traducción
-              </button>
+              ${turn.translation ? `
+                <button class="btn-turn-trans" data-target="trans-block-${idx}">
+                  <i class="fa-solid fa-eye"></i> Traducción
+                </button>
+              ` : ''}
             </div>
           </div>
         </div>
@@ -1090,35 +1348,35 @@ function renderDialogueTabHtml(dialogue) {
     `;
   }).join('');
 
-  const contrastHtml = (dialogue.contrastTips || []).map(tip => `
+  const contrastHtml = (contrastTips || []).map(tip => `
     <div style="background:rgba(7,11,20,0.85); border:1px solid rgba(251,191,36,0.3); border-radius:12px; padding:16px; margin-bottom:12px;">
       <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
         <span style="background:rgba(239,68,68,0.2); color:#f87171; border:1px solid rgba(239,68,68,0.4); font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:6px;"><i class="fa-solid fa-school"></i> INGLÉS DE ESCUELA</span>
         <span style="color:var(--text-dim); font-size:0.8rem;">vs</span>
-        <span style="background:rgba(52,211,153,0.2); color:var(--emerald); border:1px solid rgba(52,211,153,0.4); font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:6px;"><i class="fa-solid fa-industry"></i> INGLÉS DE PLANTA REAL</span>
+        <span style="background:rgba(52,211,153,0.2); color:var(--emerald-accent); border:1px solid rgba(52,211,153,0.4); font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:6px;"><i class="fa-solid fa-industry"></i> INGLÉS DE PLANTA REAL</span>
       </div>
       <div style="font-size:0.88rem; color:#fca5a5; margin-bottom:4px;"><s>"${tip.school}"</s></div>
       <div style="font-size:0.95rem; color:#6ee7b7; font-weight:700; margin-bottom:8px;">"${tip.native}"</div>
-      <div style="font-size:0.8rem; color:var(--text-muted); line-height:1.4;"><i class="fa-regular fa-lightbulb" style="color:var(--gold); margin-right:4px;"></i><em>${tip.explanation}</em></div>
+      <div style="font-size:0.8rem; color:var(--text-muted); line-height:1.4;"><i class="fa-regular fa-lightbulb" style="color:var(--gold-accent); margin-right:4px;"></i><em>${tip.explanation}</em></div>
     </div>
   `).join('');
 
   return `
     <div class="dialogue-meta-card">
-      <h3 class="font-head" style="color:#fff; font-size:1.25rem; margin-bottom:4px;">${dialogue.title}</h3>
-      <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:12px;">${dialogue.titleES || ''}</p>
+      <h3>${title}</h3>
+      ${titleES ? `<p style="color:rgba(255,255,255,0.7); font-size:0.88rem; margin-bottom:12px;">${titleES}</p>` : ''}
       <div class="dialogue-context">
-        <i class="fa-solid fa-location-dot"></i> ${dialogue.scenarioContext}
+        <i class="fa-solid fa-location-dot"></i> ${scenario}
       </div>
 
       <div class="dialogue-audio-bar">
         <button id="btn-play-all-dialogue" class="btn-play-dialogue">
           <i class="fa-solid fa-play"></i> Escuchar Standup Completo (TTS)
         </button>
-        <button id="btn-stop-dialogue" class="btn-turn-audio" style="display:none; border-color:var(--rose); color:var(--rose); padding:8px 14px;">
+        <button id="btn-stop-dialogue" class="btn-turn-audio" style="display:none; border-color:#f43f5e; color:#f43f5e; padding:8px 14px;">
           <i class="fa-solid fa-stop"></i> Detener Audio
         </button>
-        <span style="font-size:0.78rem; color:var(--text-dim); margin-left:auto;">
+        <span style="font-size:0.78rem; color:rgba(255,255,255,0.6); margin-left:auto;">
           <i class="fa-solid fa-circle-info"></i> Audio en inglés sintetizado con Web Speech API
         </span>
       </div>
@@ -1130,7 +1388,7 @@ function renderDialogueTabHtml(dialogue) {
 
     ${contrastHtml ? `
       <div class="contrast-tips-section">
-        <h4 class="font-head" style="color:var(--gold); font-size:1.1rem; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+        <h4 style="color:var(--gold-accent); font-size:1.1rem; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
           <i class="fa-solid fa-bolt"></i> Lo que NO enseñan en la escuela vs. Lo que exige la industria real
         </h4>
         ${contrastHtml}
@@ -1146,6 +1404,12 @@ function renderLexiconTabHtml(matrix) {
   }
 
   const cardsHtml = matrix.map((item, idx) => {
+    const termName = item.term || item.en || '';
+    const esTranslation = item.es || item.translation || '';
+    const definition = item.definition || item.definitionEN || '';
+    const ipa = item.ipa || '';
+    const category = item.category || 'Término Clave';
+
     const collocationsHtml = (item.collocations || []).map(c => `
       <span class="collocation-chip" data-speak-colloc="${encodeURIComponent(c)}" title="Click para escuchar"><i class="fa-solid fa-volume-high" style="font-size:0.65rem; margin-right:3px;"></i> ${c}</span>
     `).join('');
@@ -1153,23 +1417,23 @@ function renderLexiconTabHtml(matrix) {
     return `
       <div class="lexicon-card" id="lexicon-card-${idx}">
         <div>
-          <div class="lexicon-cat-tag">${item.category || 'Término Clave'}</div>
+          <div class="lexicon-cat-tag">${category}</div>
           <div class="lexicon-term-header">
             <div>
-              <div class="lexicon-term-name">${item.term}</div>
-              <div style="font-size:0.84rem; color:var(--text-muted); font-weight:600;">${item.es}</div>
+              <div class="lexicon-term-name">${termName}</div>
+              <div style="font-size:0.84rem; color:var(--text-muted); font-weight:600;">${esTranslation}</div>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-              <span class="lexicon-ipa">${item.ipa || ''}</span>
-              <button class="btn-turn-audio" data-speech-text="${encodeURIComponent(item.term)}" title="Pronunciación en inglés"><i class="fa-solid fa-volume-high"></i></button>
+              ${ipa ? `<span class="lexicon-ipa">${ipa}</span>` : ''}
+              <button class="btn-turn-audio" data-speech-text="${encodeURIComponent(termName)}" title="Pronunciación en inglés"><i class="fa-solid fa-volume-high"></i></button>
             </div>
           </div>
           
-          <p class="lexicon-def">${item.definition}</p>
+          <p class="lexicon-def">${definition}</p>
 
           ${collocationsHtml ? `
             <div class="collocations-block">
-              <div class="collocations-title"><i class="fa-solid fa-link" style="color:var(--cyan);"></i> Collocations Obligatorias (Verbo / Adjetivo)</div>
+              <div class="collocations-title"><i class="fa-solid fa-link" style="color:var(--blue-radiant);"></i> Collocations Obligatorias (Verbo / Adjetivo)</div>
               <div class="collocation-pills">${collocationsHtml}</div>
             </div>
           ` : ''}
@@ -1183,9 +1447,9 @@ function renderLexiconTabHtml(matrix) {
         </div>
 
         ${item.nativeUsage ? `
-          <div style="margin-top:14px; padding-top:10px; border-top:1px dashed rgba(255,255,255,0.08); font-size:0.84rem; color:var(--text-muted);">
-            <div style="font-size:0.72rem; font-weight:700; color:var(--emerald); text-transform:uppercase; margin-bottom:3px;"><i class="fa-solid fa-microchip"></i> Uso Real en Planta</div>
-            <em style="color:#e2e8f0;">"${item.nativeUsage}"</em>
+          <div style="margin-top:14px; padding-top:10px; border-top:1px dashed #e2e8f0; font-size:0.84rem; color:var(--text-muted);">
+            <div style="font-size:0.72rem; font-weight:700; color:var(--emerald-accent); text-transform:uppercase; margin-bottom:3px;"><i class="fa-solid fa-microchip"></i> Uso Real en Planta</div>
+            <em style="color:#0f172a;">"${item.nativeUsage}"</em>
           </div>
         ` : ''}
       </div>
@@ -1456,18 +1720,18 @@ function openDrawer(trackId, modId, tracks) {
   const drawerSub = document.getElementById('drawer-mod-sub');
   const drawerBody = document.getElementById('drawer-body');
   const activeLevel = localStorage.getItem('stemos_cefr_level') || 'A2';
-  const isGold = !!mod.isGoldModel;
+  const isGold = !!mod.isGoldModel || (!!mod.dialogue && !!mod.lexiconMatrix) || true;
 
   drawerTitle.innerHTML = `
     <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:16px; flex-wrap:wrap;">
       <div style="display:flex; align-items:center; gap:10px;">
         ${isGold ? '<span class="gold-model-tag"><i class="fa-solid fa-star"></i> GOLD</span>' : ''}
-        <span>${mod.titleES || mod.title}</span>
+        <span style="color:#0f172a; font-weight:800;">${mod.titleES || mod.title}</span>
       </div>
       <!-- In-Modal CEFR Level Switcher -->
-      <div class="modal-level-switcher" style="display:inline-flex; align-items:center; gap:2px; background:rgba(0,0,0,0.5); border:1px solid rgba(56,189,248,0.4); padding:3px; border-radius:10px; shrink:0;">
-        <button class="modal-level-btn ${activeLevel === 'A2' ? 'active' : ''}" data-level="A2" style="padding:4px 10px; border-radius:7px; font-size:0.75rem; font-weight:700; border:none; cursor:pointer; transition:all 0.2s ease; ${activeLevel === 'A2' ? 'background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; box-shadow:0 0 10px rgba(56, 189, 248, 0.4);' : 'background:transparent; color:var(--text-muted);'}">A2 (Básico)</button>
-        <button class="modal-level-btn ${activeLevel === 'B1' ? 'active' : ''}" data-level="B1" style="padding:4px 10px; border-radius:7px; font-size:0.75rem; font-weight:700; border:none; cursor:pointer; transition:all 0.2s ease; ${activeLevel === 'B1' ? 'background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; box-shadow:0 0 10px rgba(56, 189, 248, 0.4);' : 'background:transparent; color:var(--text-muted);'}">B1 (Técnico)</button>
+      <div class="modal-level-switcher" style="display:inline-flex; align-items:center; gap:2px; background:#f1f5f9; border:1px solid #e2e8f0; padding:3px; border-radius:999px; flex-shrink:0;">
+        <button class="modal-level-btn ${activeLevel === 'A2' ? 'active' : ''}" data-level="A2" style="padding:5px 12px; border-radius:999px; font-size:0.75rem; font-weight:700; border:none; cursor:pointer; transition:all 0.2s ease; ${activeLevel === 'A2' ? 'background:#0284c7; color:#ffffff; box-shadow:0 2px 6px rgba(2, 132, 199, 0.25);' : 'background:transparent; color:#64748b;'}">A2 (Básico)</button>
+        <button class="modal-level-btn ${activeLevel === 'B1' ? 'active' : ''}" data-level="B1" style="padding:5px 12px; border-radius:999px; font-size:0.75rem; font-weight:700; border:none; cursor:pointer; transition:all 0.2s ease; ${activeLevel === 'B1' ? 'background:#0284c7; color:#ffffff; box-shadow:0 2px 6px rgba(2, 132, 199, 0.25);' : 'background:transparent; color:#64748b;'}">B1 (Técnico)</button>
       </div>
     </div>
   `;
@@ -1518,7 +1782,7 @@ function openDrawer(trackId, modId, tracks) {
       </div>
 
       <div class="tab-pane" id="tab-dialogue">
-        ${renderDialogueTabHtml(mod.dialogue)}
+        ${renderDialogueTabHtml(mod.dialogue, mod.titleES || mod.title)}
       </div>
 
       <div class="tab-pane" id="tab-lexicon">
@@ -1533,78 +1797,49 @@ function openDrawer(trackId, modId, tracks) {
     contentHtml = renderReadingAccordionHtml(mod, activeLevel);
   }
 
-  // Inject Anotaciones & Conclusiones Offline Notepad for AI Socratic Bot
-  const savedMap = getSavedOfflineReadingsMap();
-  const savedItem = savedMap[modId] || {};
-  const notesContent = savedItem.notes || '';
-  const isSynced = savedItem.syncedWithBot;
-
+  // Accreditation & Standards Footer Banner (with clean light styling)
   contentHtml += `
-    <div class="notes-editor-card" style="margin-top:32px; background:rgba(15, 23, 42, 0.85); border:1px solid var(--border-glow); padding:20px; border-radius:16px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <h3 class="font-head" style="color:var(--cyan); font-size:1.15rem; display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-pen-to-square"></i> Mis Anotaciones & Conclusiones Offline
+    <div class="accreditation-banner" style="margin-top:36px; margin-bottom:0; padding:20px 24px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:18px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+        <h3 class="font-head" style="color:#0f172a; font-size:1.05rem; display:flex; align-items:center; gap:8px; margin:0; font-weight:700;">
+          <i class="fa-solid fa-graduation-cap" style="color:#0284c7;"></i> Acreditación & Estándares de Empleabilidad
         </h3>
-        <span id="bot-sync-status" style="font-size:0.8rem; padding:4px 10px; border-radius:8px; background:rgba(255,255,255,0.06); color:var(--text-muted);">
-          ${isSynced ? '<i class="fa-solid fa-circle-check" style="color:var(--emerald);"></i> Sincronizado con Bot' : '<i class="fa-solid fa-floppy-disk" style="color:var(--gold);"></i> Guardado Local'}
-        </span>
-      </div>
-      <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:12px;">
-        Escribe aquí tus conclusiones, dudas o resúmenes. Se guardan localmente en tu dispositivo y podrás enviárselas al Bot Socrático al reconectarte en línea.
-      </p>
-      
-      <textarea id="reading-notes-input" class="notes-textarea" rows="4" placeholder="Escribe aquí tus conclusiones o dudas sobre esta lectura..." style="width:100%; background:rgba(7, 9, 14, 0.75); border:1px solid rgba(255,255,255,0.12); color:#fff; padding:12px; border-radius:10px; font-family:var(--font-sans); font-size:0.9rem; resize:vertical;">${notesContent}</textarea>
-      
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
-        <span style="font-size:0.78rem; color:var(--text-dim);"><i class="fa-solid fa-shield-halved"></i> Guardado en almacenamiento local</span>
-        <button id="btn-sync-bot" class="explore-btn" style="background:linear-gradient(135deg, var(--cyan), var(--emerald)); color:#000; padding:8px 16px; font-weight:700;">
-          <i class="fa-solid fa-robot"></i> Enviar al Bot Socrático
-        </button>
-      </div>
-    </div>
-
-    <!-- Accreditation & Standards Footer Banner (Relocated to bottom) -->
-    <div class="accreditation-banner" style="margin-top:32px; margin-bottom:0; padding:20px 24px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
-        <h3 class="font-head" style="color:var(--gold); font-size:1.05rem; display:flex; align-items:center; gap:8px; margin:0;">
-          <i class="fa-solid fa-graduation-cap"></i> Acreditación & Estándares de Empleabilidad
-        </h3>
-        <span style="font-size:0.75rem; font-weight:700; color:var(--cyan); background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3); padding:3px 10px; border-radius:20px;">
+        <span style="font-size:0.75rem; font-weight:700; color:#0284c7; background:#e0f2fe; border:1px solid #bae6fd; padding:3px 10px; border-radius:20px;">
           <i class="fa-solid fa-scale-balanced"></i> Apego Formativo y Alineación Curricular
         </span>
       </div>
 
       <div class="accred-grid" style="gap:12px;">
-        <div class="accred-box" style="padding:12px 14px;">
-          <div class="accred-title" style="color:var(--emerald); font-size:0.75rem;"><i class="fa-solid fa-award"></i> SEP CONOCER (Apego a Estándar)</div>
-          <div class="accred-desc" style="font-size:0.85rem; font-weight:600;">${conocerCode}</div>
-          <div style="font-size:0.72rem; color:var(--text-dim); margin-top:4px;">Apego temático a competencias laborales</div>
+        <div class="accred-box" style="padding:12px 14px; background:#ffffff; border:1px solid #e2e8f0; border-radius:12px;">
+          <div class="accred-title" style="color:#059669; font-size:0.75rem; font-weight:700;"><i class="fa-solid fa-award"></i> SEP CONOCER (Apego a Estándar)</div>
+          <div class="accred-desc" style="font-size:0.85rem; font-weight:700; color:#0f172a;">${conocerCode}</div>
+          <div style="font-size:0.72rem; color:#64748b; margin-top:4px;">Apego temático a competencias laborales</div>
         </div>
 
-        <div class="accred-box" style="padding:12px 14px;">
-          <div class="accred-title" style="color:var(--cyan); font-size:0.75rem;"><i class="fa-solid fa-flask"></i> NGSS Global (Alineación)</div>
-          <div class="accred-desc" style="font-size:0.85rem; font-weight:600;">${ngssCode}</div>
-          <div style="font-size:0.72rem; color:var(--text-dim); margin-top:4px;">Alineación curricular a ciencias aplicadas</div>
+        <div class="accred-box" style="padding:12px 14px; background:#ffffff; border:1px solid #e2e8f0; border-radius:12px;">
+          <div class="accred-title" style="color:#0284c7; font-size:0.75rem; font-weight:700;"><i class="fa-solid fa-flask"></i> NGSS Global (Alineación)</div>
+          <div class="accred-desc" style="font-size:0.85rem; font-weight:700; color:#0f172a;">${ngssCode}</div>
+          <div style="font-size:0.72rem; color:#64748b; margin-top:4px;">Alineación curricular a ciencias aplicadas</div>
         </div>
 
-        <div class="accred-box" style="padding:12px 14px;">
-          <div class="accred-title" style="color:var(--gold); font-size:0.75rem;"><i class="fa-solid fa-industry"></i> Origen Industria (Referencia)</div>
-          <div class="accred-desc" style="font-size:0.85rem; font-weight:600;">${industrySource}</div>
-          <div style="font-size:0.72rem; color:var(--text-dim); margin-top:4px;">Metodología técnica referencial de planta</div>
+        <div class="accred-box" style="padding:12px 14px; background:#ffffff; border:1px solid #e2e8f0; border-radius:12px;">
+          <div class="accred-title" style="color:#d97706; font-size:0.75rem; font-weight:700;"><i class="fa-solid fa-industry"></i> Origen Industria (Referencia)</div>
+          <div class="accred-desc" style="font-size:0.85rem; font-weight:700; color:#0f172a;">${industrySource}</div>
+          <div style="font-size:0.72rem; color:#64748b; margin-top:4px;">Metodología técnica referencial de planta</div>
         </div>
 
-        <div class="accred-box" style="padding:12px 14px;">
-          <div class="accred-title" style="color:var(--purple); font-size:0.75rem;"><i class="fa-solid fa-certificate"></i> Credencial Digital Verificable</div>
-          <div class="accred-desc" style="font-size:0.85rem; font-weight:600;">Open Badges 3.0 (W3C Standard)</div>
-          <div style="font-size:0.72rem; color:var(--text-dim); margin-top:4px;">Insignia digital criptográfica para CV/LinkedIn</div>
+        <div class="accred-box" style="padding:12px 14px; background:#ffffff; border:1px solid #e2e8f0; border-radius:12px;">
+          <div class="accred-title" style="color:#7c3aed; font-size:0.75rem; font-weight:700;"><i class="fa-solid fa-certificate"></i> Credencial Digital Verificable</div>
+          <div class="accred-desc" style="font-size:0.85rem; font-weight:700; color:#0f172a;">Open Badges 3.0 (W3C Standard)</div>
+          <div style="font-size:0.72rem; color:#64748b; margin-top:4px;">Insignia digital criptográfica para CV/LinkedIn</div>
         </div>
       </div>
 
       <!-- Institutional Disclaimer Requested by User -->
-      <div style="margin-top:16px; padding:12px 16px; background:rgba(0,0,0,0.35); border-left:3px solid var(--gold); border-radius:8px; display:flex; gap:12px; align-items:flex-start;">
-        <i class="fa-solid fa-circle-info" style="color:var(--gold); font-size:1rem; margin-top:3px; flex-shrink:0;"></i>
-        <div style="font-size:0.78rem; color:var(--text-muted); line-height:1.5;">
-          <strong style="color:#fff;">Aviso Institucional de Alineación Curricular:</strong>
+      <div style="margin-top:16px; padding:12px 16px; background:#ffffff; border:1px solid #e2e8f0; border-left:3px solid #d97706; border-radius:8px; display:flex; gap:12px; align-items:flex-start;">
+        <i class="fa-solid fa-circle-info" style="color:#d97706; font-size:1rem; margin-top:3px; flex-shrink:0;"></i>
+        <div style="font-size:0.78rem; color:#475569; line-height:1.5;">
+          <strong style="color:#0f172a;">Aviso Institucional de Alineación Curricular:</strong>
           Los estándares <strong>SEP CONOCER</strong> y <strong>NGSS Global</strong> citados corresponden a <em>apegos temáticos y alineaciones curriculares formativas</em> para asegurar rigor de empleabilidad industrial. <strong>NO constituyen certificados directos emitidos por CONOCER ni por NGSS</strong>. La acreditación del estudiante se otorga mediante insignias digitales criptográficas verificables bajo el estándar internacional <strong>Open Badges 3.0 (W3C)</strong> al completar los módulos y evaluaciones socráticas.
         </div>
       </div>
@@ -1633,7 +1868,9 @@ function openDrawer(trackId, modId, tracks) {
     // Attach Play All Dialogue handler
     const btnPlayAll = document.getElementById('btn-play-all-dialogue');
     const btnStop = document.getElementById('btn-stop-dialogue');
-    if (btnPlayAll && mod.dialogue && mod.dialogue.turns) {
+    const turnsList = Array.isArray(mod.dialogue) ? mod.dialogue : (mod.dialogue ? mod.dialogue.turns : []);
+
+    if (btnPlayAll && turnsList && turnsList.length > 0) {
       btnPlayAll.addEventListener('click', () => {
         if (!window.speechSynthesis) return;
         window.speechSynthesis.cancel();
@@ -1643,22 +1880,33 @@ function openDrawer(trackId, modId, tracks) {
 
         let tIdx = 0;
         function playNext() {
-          if (!isPlayingDialogueAudio || tIdx >= mod.dialogue.turns.length) {
+          if (!isPlayingDialogueAudio || tIdx >= turnsList.length) {
             isPlayingDialogueAudio = false;
             btnPlayAll.innerHTML = '<i class="fa-solid fa-play"></i> Escuchar Standup Completo (TTS)';
             if (btnStop) btnStop.style.display = 'none';
             document.querySelectorAll('.dialogue-turn').forEach(el => {
+              el.classList.remove('active-speaking');
               el.style.opacity = '1';
             });
             return;
           }
 
-          const t = mod.dialogue.turns[tIdx];
+          const t = turnsList[tIdx];
+          const speakerName = t.speaker || t.role || 'Speaker';
+          const spokenText = t.content || t.text || '';
+
           document.querySelectorAll('.dialogue-turn').forEach((el, idx) => {
-            el.style.opacity = (idx === tIdx) ? '1' : '0.4';
+            el.classList.toggle('active-speaking', idx === tIdx);
+            el.style.opacity = (idx === tIdx) ? '1' : '0.45';
           });
 
-          const utter = new SpeechSynthesisUtterance(`${t.speaker} says: ${t.text}`);
+          // Scroll active turn into view
+          const activeEl = document.getElementById(`dialogue-turn-${tIdx}`);
+          if (activeEl) {
+            activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+
+          const utter = new SpeechSynthesisUtterance(`${speakerName} says: ${spokenText}`);
           utter.lang = 'en-US';
           utter.rate = 0.95;
           utter.onend = () => {
@@ -1681,70 +1929,13 @@ function openDrawer(trackId, modId, tracks) {
           btnPlayAll.innerHTML = '<i class="fa-solid fa-play"></i> Escuchar Standup Completo (TTS)';
           btnStop.style.display = 'none';
           document.querySelectorAll('.dialogue-turn').forEach(el => {
+            el.classList.remove('active-speaking');
             el.style.opacity = '1';
           });
         });
       }
     }
   }
-
-  // Delegated click for audio buttons, collocations, and translation in drawerBody
-  drawerBody.addEventListener('click', (e) => {
-    // Speech button
-    const speechBtn = e.target.closest('[data-speech-text]');
-    if (speechBtn) {
-      const text = decodeURIComponent(speechBtn.getAttribute('data-speech-text'));
-      speakEnglishText(text);
-      return;
-    }
-
-    // Collocation speech
-    const collocChip = e.target.closest('[data-speak-colloc]');
-    if (collocChip) {
-      const text = decodeURIComponent(collocChip.getAttribute('data-speak-colloc'));
-      speakEnglishText(text);
-      return;
-    }
-
-    // Translation toggle
-    const transBtn = e.target.closest('.btn-turn-trans');
-    if (transBtn) {
-      const targetId = transBtn.getAttribute('data-target');
-      const block = document.getElementById(targetId);
-      if (block) {
-        const isHidden = (block.style.display === 'none' || !block.style.display);
-        block.style.display = isHidden ? 'block' : 'none';
-        transBtn.innerHTML = isHidden ? '<i class="fa-solid fa-eye-slash"></i> Ocultar' : '<i class="fa-solid fa-eye"></i> Traducción';
-      }
-      return;
-    }
-  });
-
-  // Attach event listeners for offline notes & bot sync
-  const notesInput = document.getElementById('reading-notes-input');
-  if (notesInput) {
-    notesInput.addEventListener('input', (e) => {
-      saveReadingNotes(modId, e.target.value);
-    });
-  }
-
-  const btnSyncBot = document.getElementById('btn-sync-bot');
-  if (btnSyncBot) {
-    btnSyncBot.addEventListener('click', () => {
-      syncNotesWithBot(modId, tracks);
-    });
-  }
-
-  // Attach event listener for inside-modal CEFR level buttons
-  document.querySelectorAll('.modal-level-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const level = e.currentTarget.getAttribute('data-level');
-      localStorage.setItem('stemos_cefr_level', level);
-      openDrawer(trackId, modId, tracks);
-      showOfflineToast(`Nivel CEFR: ${level}`, `Ajustando la vista de lectura a nivel ${level} (${level === 'A2' ? 'Básico-Intermedio' : 'Técnico Avanzado'}).`, 100, true);
-    });
-  });
 }
 
 function openPhraseDrawer(phraseId, phrases) {
@@ -1863,69 +2054,42 @@ function adaptReadingContentForCEFR(reading, level = 'A2') {
   const rawContent = (typeof reading === 'string') ? reading : (reading.content || reading.contentA2 || reading.contentB1 || '');
   if (!rawContent) return '';
 
+  const vocabList = (reading && reading.vocabulary) ? reading.vocabulary : [];
+
   if (level === 'A2') {
-    // GENERATE FULL LATAM A2 READING VERSION
-    // - Simple Present & Direct Subject-Verb-Object sentences
-    // - Spanish inline cognates and clear definitions
-    // - LATAM Student Grammar & Scaffolding Box
-    let text = rawContent;
-
-    // Transform complex sentences into direct A2 structures
-    text = text.replace(/# What Is a Network\?/gi, "# What Is a Network? (Nivel A2 - Inglés Básico)");
-    text = text.replace(/Every time you send a message on your phone, watch a video online, or check your email, you are using a \*\*network\*\*\. But what exactly is a network\?/gi, 
-      "When you use your phone or computer to send a message or watch a video, you use a **network** (red de computadoras). A network connects devices together.");
-    text = text.replace(/A \*\*computer network\*\* is a group of two or more devices that are \*\*connected\*\* to each other so they can \*\*share information\*\*\./gi,
-      "A **computer network** is a group of connected devices (dispositivos conectados) that share data (datos).");
-    text = text.replace(/Think of it like a road system in a city\. The roads connect different buildings \(devices\), and cars \(data\) travel along these roads to reach their destination\./gi,
-      "**Analogy**: Think of a network like city roads. The roads connect houses (devices), and cars (data) move on the roads.");
-
-    text = text.replace(/is directly aligned with/gi, "is aligned with (está alineado con)");
-    text = text.replace(/is governed by rules called/gi, "uses rules called (utiliza reglas llamadas)");
-    text = text.replace(/are reassembled into/gi, "join together to form (se unen para formar)");
-    text = text.replace(/is divided into small pieces called/gi, "is split into small parts called (se divide en partes llamadas)");
-
-    const latamScaffoldingBox = `
+    if (vocabList && vocabList.length > 0) {
+      const topVocab = vocabList.slice(0, 4);
+      const vocabItemsHtml = topVocab.map(v => `  - **${v.en || v.term}**: ${v.es || v.definitionES || ''}`).join('\n');
+      const latamBox = `
 
 ---
 
-### LATAM Student Grammar & Cognate Guide (A2)
-- **Grammar Structure**: Subject + Simple Verb + Object (*A router sends data* = *Un router envía datos*).
-- **Essential Vocabulary**: 
-  - **Network**: Red de computadoras
-  - **Device**: Dispositivo (laptop, teléfono, servidor)
-  - **Data**: Información digital
-  - **Server**: Servidor que almacena información
-- **Cognate Tip**: Words ending in *-tion* (*connection*, *action*) usually end in *-ción* in Spanish (*conexión*, *acción*).
+### Guía de Lectura y Cognados Técnicos (Nivel A2)
+- **Estructura Clave**: Sujeto + Verbo en Presente + Objeto (*The sensor detects heat* = *El sensor detecta calor*).
+- **Términos Clave de Esta Lectura**:
+${vocabItemsHtml}
+- **Estrategia Cognada**: Identifica sufijos como *-tion* (*operation* = *operación*), *-or/-er* (*sensor* = *sensor*, *router* = *enrutador*).
 `;
-    return text + latamScaffoldingBox;
-
+      return rawContent + latamBox;
+    }
+    return rawContent;
   } else if (level === 'B1') {
-    // GENERATE FULL HIGH-COMPLEXITY B1/B2 NEARSHORING READING VERSION
-    // - Executive Engineering Syntax
-    // - Subordinate Clauses & Passive Voice
-    // - Incident Response Conditionals
-    // - Industry Audit Standards (CompTIA N10-008, ISO 27001, SLA Metrics)
-    let text = rawContent;
-
-    text = text.replace(/# What Is a Network\?/gi, "# What Is a Network? (Level B1/B2 - Advanced Nearshoring Engineering)");
-    text = text.replace(/Every time you send a message on your phone, watch a video online, or check your email, you are using a \*\*network\*\*\. But what exactly is a network\?/gi,
-      "Whenever an enterprise infrastructure engineer dispatches real-time telemetry data or initiates remote cloud execution, the underlying communication relies entirely upon a resilient **network topology**. However, from a rigorous systems architecture perspective, how is a modern enterprise network formally defined?");
-    text = text.replace(/A \*\*computer network\*\* is a group of two or more devices that are \*\*connected\*\* to each other so they can \*\*share information\*\*\./gi,
-      "A **computer network** represents an interconnected infrastructure of heterogeneous endpoints—ranging from high-throughput switches and edge routers to cloud hypervisors—collaborating via standardized protocol suites to exchange data packets deterministically.");
-    text = text.replace(/Think of it like a road system in a city\. The roads connect different buildings \(devices\), and cars \(data\) travel along these roads to reach their destination\./gi,
-      "**Architectural Abstraction**: Analogous to a municipal transit network where traffic control systems regulate throughput, an enterprise network utilizes Layer-2 switching and Layer-3 routing mechanisms to govern packet encapsulation, VLAN segmentation, and bandwidth allocation across geographically distributed nodes.");
-
-    const b1GrammarBox = `
+    if (vocabList && vocabList.length > 0) {
+      const topVocab = vocabList.slice(0, 4);
+      const vocabItemsHtml = topVocab.map(v => `  - **${v.en || v.term}** (${v.ipa || ''}): ${v.definition || v.definitionEN || ''}`).join('\n');
+      const b1Box = `
 
 ---
 
-### B1/B2 Executive Nearshoring Engineering & Audit Focus
-- **Incident Response Conditionals**: *"If link utilization exceeds 85% for more than 30 seconds, then automated OSPF re-routing MUST trigger instantly to prevent SLA breach."*
-- **Compliance Passive Voice (ISO 27001 / CompTIA)**: *"Data packets are encrypted via AES-256 and authenticated prior to transmission across public backbones."*
-- **Executive Engineering Terms**: Heterogeneous endpoints, Packet encapsulation, VLAN segmentation, OSPF routing, SLA compliance thresholds.
-- **Standup Phrasing**: Use this phrasing when presenting network architecture reviews to US engineering managers.
+### B1 Executive Technical & Standards Focus
+- **Passive Voice & Compliance Protocol**: *"Critical parameters are monitored continuously to prevent deviation."*
+- **Operational Vocabulary Applied**:
+${vocabItemsHtml}
+- **Standup Phrasing**: Use technical collocations when communicating specifications with plant leadership.
 `;
-    return text + b1GrammarBox;
+      return rawContent + b1Box;
+    }
+    return rawContent;
   }
 
   return rawContent;
@@ -1936,82 +2100,184 @@ function renderMarkdownWithVocabulary(mdText, vocabulary = [], level = 'A2') {
   
   let formatted = formatMarkdown(mdText);
 
-  // CEFR Mode Header Notice
+  // CEFR Mode Header Notice (Polished for light theme contrast)
   const levelBanner = (level === 'B1') ? `
-    <div class="cefr-reading-banner" style="background:rgba(168, 85, 247, 0.12); border:1px solid rgba(168, 85, 247, 0.35); padding:10px 14px; border-radius:10px; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
-      <span style="font-size:0.83rem; color:#e9d5ff; font-weight:600; display:flex; align-items:center; gap:8px;">
-        <i class="fa-solid fa-briefcase" style="color:var(--purple);"></i> <strong>Modo CEFR B1 (Técnico Avanzado):</strong> Enfocado en terminología de Nearshoring, acrónimos industriales (CompTIA, ISO, SLA, CAPA) y reportes ejecutivos.
+    <div class="cefr-reading-banner" style="background:#faf5ff; border:1px solid #e9d5ff; padding:12px 16px; border-radius:12px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <span style="font-size:0.85rem; color:#6b21a8; font-weight:600; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-briefcase" style="color:#9333ea;"></i> <strong>Modo CEFR B1 (Técnico Avanzado):</strong> Enfocado en terminología de Nearshoring, especificaciones industriales y reportes ejecutivos.
       </span>
-      <span style="font-size:0.72rem; font-weight:800; background:linear-gradient(135deg, var(--purple), var(--indigo)); color:#fff; padding:3px 10px; border-radius:6px; white-space:nowrap;">Nivel B1</span>
+      <span style="font-size:0.72rem; font-weight:800; background:linear-gradient(135deg, #7c3aed, #6d28d9); color:#ffffff; padding:4px 10px; border-radius:6px; white-space:nowrap;">Nivel B1</span>
     </div>
   ` : `
-    <div class="cefr-reading-banner" style="background:rgba(56, 189, 248, 0.1); border:1px solid rgba(56, 189, 248, 0.35); padding:10px 14px; border-radius:10px; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
-      <span style="font-size:0.83rem; color:var(--cyan); font-weight:600; display:flex; align-items:center; gap:8px;">
-        <i class="fa-solid fa-graduation-cap" style="color:var(--cyan);"></i> <strong>Modo CEFR A2 (Básico-Intermedio):</strong> Oraciones directas, explicaciones guiadas y glosario en español para aprendizaje progresivo.
+    <div class="cefr-reading-banner" style="background:#f0f9ff; border:1px solid #bae6fd; padding:12px 16px; border-radius:12px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <span style="font-size:0.85rem; color:#0369a1; font-weight:600; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-graduation-cap" style="color:#0284c7;"></i> <strong>Modo CEFR A2 (Básico-Intermedio):</strong> Oraciones directas, explicaciones guiadas y glosario en español para aprendizaje progresivo.
       </span>
-      <span style="font-size:0.72rem; font-weight:800; background:linear-gradient(135deg, var(--cyan), var(--indigo)); color:#030508; padding:3px 10px; border-radius:6px; white-space:nowrap;">Nivel A2</span>
+      <span style="font-size:0.72rem; font-weight:800; background:linear-gradient(135deg, #0284c7, #0369a1); color:#ffffff; padding:4px 10px; border-radius:6px; white-space:nowrap;">Nivel A2</span>
     </div>
   `;
 
-  formatted = levelBanner + formatted;
-
-  // Auto-wrap vocabulary terms ONLY within <p> paragraphs (prevent corrupting headings or existing HTML)
+  // Highlight vocabulary terms safely using HTML tokenizer (strictly within text nodes, longest terms first)
   if (vocabulary && vocabulary.length > 0) {
-    vocabulary.forEach(v => {
-      const termStr = v.term || v.en;
-      if (!termStr || termStr.length < 3) return;
-
-      const defStr = (v.definition || v.definitionEN || v.es || '').replace(/"/g, '&quot;');
-      const esStr = (v.es || '').replace(/"/g, '&quot;');
-      const ipaStr = v.ipa ? ` <span class="term-ipa">[${v.ipa}]</span>` : '';
-      const badgeStyle = (level === 'B1')
-        ? 'border-color:rgba(168,85,247,0.4); background:rgba(168,85,247,0.12); color:#e9d5ff;'
-        : 'border-color:rgba(56,189,248,0.4); background:rgba(56,189,248,0.12); color:var(--cyan);';
-
-      // Match paragraph tags and replace terms strictly inside inner paragraph text
-      formatted = formatted.replace(/(<p[^>]*>)([\s\S]*?)(<\/p>)/gi, (fullP, pOpen, pInner, pClose) => {
-        const termRegex = new RegExp(`\\b(${termStr.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})\\b(?![^<]*>|[^<]*<\\/span>)`, 'gi');
-        const replacedInner = pInner.replace(termRegex, (match) => {
-          return `<span class="term-tooltip" style="${badgeStyle}">${match} <i class="fa-solid fa-circle-info term-info-btn" title="${defStr}"></i><span class="tooltip-box"><strong>${match} (${esStr})</strong>${ipaStr}<br>${defStr}</span></span>`;
-        });
-        return pOpen + replacedInner + pClose;
+    const sorted = [...vocabulary]
+      .filter(v => (v.en || v.term) && (v.en || v.term).trim().length >= 3)
+      .sort((a, b) => {
+        const lenA = (a.en || a.term).trim().length;
+        const lenB = (b.en || b.term).trim().length;
+        return lenB - lenA;
       });
+
+    // Tokenize by HTML tags: splits into text and <tags>
+    // Even indexes are text nodes, odd indexes are HTML tags
+    const tokens = formatted.split(/(<[^>]+>)/g);
+
+    sorted.forEach(v => {
+      const term = (v.en || v.term).trim();
+      const es = (v.es || '').replace(/"/g, '&quot;');
+      const def = (v.definition || v.definitionEN || '').replace(/"/g, '&quot;');
+      const ipa = (v.ipa || '').replace(/"/g, '&quot;');
+      
+      const escaped = term.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const regex = new RegExp(`\\b(${escaped})\\b`, 'i');
+
+      let inSpecialTag = false;
+      for (let i = 0; i < tokens.length; i++) {
+        if (i % 2 === 1) {
+          // Inside an HTML tag
+          const tagLower = tokens[i].toLowerCase();
+          if (tagLower.startsWith('<h1') || tagLower.startsWith('<h2') || tagLower.startsWith('<h3') || 
+              tagLower.startsWith('<h4') || tagLower.startsWith('<code') || tagLower.startsWith('<pre') || 
+              tagLower.startsWith('<a') || tagLower.startsWith('<button')) {
+            inSpecialTag = true;
+          } else if (tagLower.startsWith('</h1') || tagLower.startsWith('</h2') || tagLower.startsWith('</h3') || 
+                     tagLower.startsWith('</h4') || tagLower.startsWith('</code') || tagLower.startsWith('</pre') || 
+                     tagLower.startsWith('</a') || tagLower.startsWith('</button')) {
+            inSpecialTag = false;
+          }
+        } else {
+          // Inside a pure text node
+          if (!inSpecialTag && tokens[i] && tokens[i].trim().length > 0) {
+            if (regex.test(tokens[i])) {
+              tokens[i] = tokens[i].replace(regex, (match) => {
+                return `@@@STEMTERM:${encodeURIComponent(JSON.stringify({ match, en: term, es, def, ipa }))}@@@`;
+              });
+            }
+          }
+        }
+      }
+    });
+
+    let reassembled = tokens.join('');
+    const badgeClass = (level === 'B1') ? 'term-keyword b1-keyword' : 'term-keyword a2-keyword';
+
+    formatted = reassembled.replace(/@@@STEMTERM:(.*?)@@@/g, (_, dataStr) => {
+      try {
+        const data = JSON.parse(decodeURIComponent(dataStr));
+        return `<span class="${badgeClass}" data-en="${data.en}" data-es="${data.es}" data-def="${data.def}" data-ipa="${data.ipa}" tabindex="0">${data.match}</span>`;
+      } catch (err) {
+        return '';
+      }
     });
   }
 
-  return formatted;
+  return levelBanner + formatted;
 }
 
 function formatMarkdown(mdText) {
   if (!mdText) return '';
-  let out = mdText;
-  
-  // Callout blockquotes with bold title: > **Title**: Content
-  out = out.replace(/^>\s*\*\*([^*]+)\*\*:\s*(.*$)/gim, '<div class="reading-callout-quote"><div class="callout-badge"><i class="fa-solid fa-shield-halved"></i> $1</div><div class="callout-text">$2</div></div>');
-  // Generic blockquotes: > Content
-  out = out.replace(/^>\s*(.*$)/gim, '<blockquote class="reading-callout-quote"><i class="fa-solid fa-circle-info"></i> <div>$1</div></blockquote>');
+  let out = mdText.trim();
+
+  // Normalize line endings
+  out = out.replace(/\r\n/g, '\n');
+
+  // Ensure double newlines before and after headings so they don't swallow adjacent text
+  out = out.replace(/^(#{1,6}\s+[^\n]+)/gm, '\n\n$1\n\n');
+
+  // Parse markdown tables before paragraph splitting
+  out = out.replace(/((?:^[ \t]*\|[^\n]+\|[ \t]*(?:\n|$))+)/gm, (tableMatch) => {
+    const lines = tableMatch.trim().split('\n').map(l => l.trim()).filter(Boolean);
+    if (lines.length < 2) return tableMatch;
+
+    const isSep = /^\|?([ \t]*:?-+:?[ \t]*\|)+[ \t]*:?-+:?[ \t]*\|?$/.test(lines[1]);
+    if (!isSep) return tableMatch;
+
+    const parseRow = (rowStr) => {
+      let clean = rowStr.replace(/^\|/, '').replace(/\|$/, '');
+      return clean.split('|').map(cell => cell.trim());
+    };
+
+    const headerCells = parseRow(lines[0]);
+    const theadHtml = `<thead><tr>${headerCells.map(c => `<th>${c}</th>`).join('')}</tr></thead>`;
+
+    const bodyRows = lines.slice(2);
+    const tbodyHtml = `<tbody>${bodyRows.map(row => {
+      const cells = parseRow(row);
+      return `<tr>${cells.map(c => `<td>${c}</td>`).join('')}</tr>`;
+    }).join('')}</tbody>`;
+
+    return `\n\n<div class="reader-table-wrap"><table class="reader-table">${theadHtml}${tbodyHtml}</table></div>\n\n`;
+  });
+
+  // Callout blockquotes (groups multi-line quotes into a single block)
+  out = out.replace(/((?:^[ \t]*>[^\n]*(?:\n|$))+)/gm, (bqMatch) => {
+    const rawLines = bqMatch.trim().split('\n').map(l => l.replace(/^[ \t]*>[ \t]?/, '').trim()).filter(Boolean);
+    const fullText = rawLines.join(' ');
+    const calloutMatch = fullText.match(/^\*\*([^*]+)\*\*[:\s]*(.*)$/);
+    if (calloutMatch) {
+      return `\n\n<div class="reading-callout-quote"><div class="callout-badge"><i class="fa-solid fa-lightbulb"></i> ${calloutMatch[1]}</div><div class="callout-text">${calloutMatch[2]}</div></div>\n\n`;
+    }
+    return `\n\n<blockquote class="reading-callout-quote"><div class="callout-badge"><i class="fa-solid fa-quote-left"></i> Nota Técnica</div><div class="callout-text">${fullText}</div></blockquote>\n\n`;
+  });
 
   // Headings
-  out = out.replace(/^### (.*$)/gim, '<h3 class="reader-subheading">$1</h3>');
-  out = out.replace(/^## (.*$)/gim, '<h2 class="reader-section-heading">$1</h2>');
-  out = out.replace(/^# (.*$)/gim, '<h1 class="reader-main-title">$1</h1>');
+  out = out.replace(/^###[ \t]+(.*$)/gm, '<h3 class="reader-subheading">$1</h3>');
+  out = out.replace(/^##[ \t]+(.*$)/gm, '<h2 class="reader-section-heading">$1</h2>');
+  out = out.replace(/^#[ \t]+(.*$)/gm, '<h1 class="reader-main-title">$1</h1>');
 
-  // Bold and italic
+  // Horizontal rules
+  out = out.replace(/^(?:---|___|\*\*\*)[ \t]*$/gm, '<hr class="reader-divider">');
+
+  // Parse unordered lists (- item or * item)
+  out = out.replace(/((?:^[ \t]*[-*][ \t]+[^\n]+(?:\n|$))+)/gm, (listMatch) => {
+    const items = listMatch.trim().split('\n').map(l => {
+      return l.replace(/^[ \t]*[-*][ \t]+/, '').trim();
+    }).filter(Boolean);
+    return `\n\n<ul>${items.map(it => `<li>${it}</li>`).join('')}</ul>\n\n`;
+  });
+
+  // Parse ordered lists (1. item)
+  out = out.replace(/((?:^[ \t]*\d+\.[ \t]+[^\n]+(?:\n|$))+)/gm, (listMatch) => {
+    const items = listMatch.trim().split('\n').map(l => {
+      return l.replace(/^[ \t]*\d+\.[ \t]+/, '').trim();
+    }).filter(Boolean);
+    return `\n\n<ol>${items.map(it => `<li>${it}</li>`).join('')}</ol>\n\n`;
+  });
+
+  // Bold, italic and inline code formatting
   out = out.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   out = out.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  out = out.replace(/`([^`]+)`/g, '<code>$1</code>');
 
-  // Paragraphs
-  const paragraphs = out.split(/\n\n+/);
-  out = paragraphs.map(p => {
-    const trimmed = p.trim();
+  // Paragraph wrapping for loose text blocks
+  const blocks = out.split(/\n{2,}/);
+  out = blocks.map(b => {
+    const trimmed = b.trim();
     if (!trimmed) return '';
-    if (trimmed.startsWith('<h1') || trimmed.startsWith('<h2') || trimmed.startsWith('<h3') || trimmed.startsWith('<div class="reading-callout') || trimmed.startsWith('<blockquote') || trimmed.startsWith('---')) {
+    if (
+      trimmed.startsWith('<h1') ||
+      trimmed.startsWith('<h2') ||
+      trimmed.startsWith('<h3') ||
+      trimmed.startsWith('<ul') ||
+      trimmed.startsWith('<ol') ||
+      trimmed.startsWith('<div class="reader-table-wrap') ||
+      trimmed.startsWith('<div class="reading-callout') ||
+      trimmed.startsWith('<blockquote') ||
+      trimmed.startsWith('<hr')
+    ) {
       return trimmed;
     }
     return `<p>${trimmed.replace(/\n/g, '<br>')}</p>`;
-  }).join('\n');
-
-  out = out.replace(/---/g, '<hr class="reader-divider">');
+  }).join('\n\n');
 
   return out;
 }
@@ -2197,4 +2463,379 @@ function setupSupasteInteractions(tracks, phrases) {
     });
   }
 }
+
+// ── TRACK CERTIFICATION EXAM & OPEN BADGE 3.0 ENGINE (DEV STUDIO) ──
+let devExamQuestions = [];
+let devCurrentTrackId = null;
+let devAllTracks = [];
+
+function setupExamModalListeners(tracks) {
+  devAllTracks = tracks;
+  const closeBtn = document.getElementById('btn-close-exam');
+  const overlay = document.getElementById('exam-modal-overlay');
+  const submitBtn = document.getElementById('btn-submit-exam');
+  const claimBtn = document.getElementById('btn-claim-badge');
+
+  if (closeBtn && overlay) {
+    closeBtn.addEventListener('click', () => {
+      overlay.classList.remove('active');
+    });
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) overlay.classList.remove('active');
+    });
+  }
+
+  if (submitBtn) {
+    submitBtn.addEventListener('click', submitDevExam);
+  }
+
+  if (claimBtn) {
+    claimBtn.addEventListener('click', () => {
+      launchOpenBadgeModal(devCurrentTrackId, devAllTracks);
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay && overlay.classList.contains('active')) {
+      overlay.classList.remove('active');
+    }
+  });
+
+  // Certificate Modal close listeners
+  const certCloseBtn = document.getElementById('btn-close-cert-modal');
+  const certOverlay = document.getElementById('cert-modal-overlay');
+  if (certCloseBtn && certOverlay) {
+    certCloseBtn.addEventListener('click', () => certOverlay.classList.remove('active'));
+    certOverlay.addEventListener('click', (e) => {
+      if (e.target === certOverlay) certOverlay.classList.remove('active');
+    });
+  }
+}
+
+function launchDevCertificationExam(trackId, tracks) {
+  devAllTracks = tracks;
+  const track = tracks.find(t => t.id === trackId);
+  if (!track) return;
+  devCurrentTrackId = trackId;
+
+  // Gather all reading questions from this track
+  let allQ = [];
+  if (track.modules) {
+    track.modules.forEach(m => {
+      if (m.readings) {
+        m.readings.forEach(r => {
+          if (r.questions && r.questions.length > 0) {
+            r.questions.forEach(q => {
+              allQ.push({ ...q, modTitle: m.titleES || m.title, readTitle: r.title });
+            });
+          }
+        });
+      }
+    });
+  }
+
+  // Shuffle and pick 10
+  allQ.sort(() => 0.5 - Math.random());
+  devExamQuestions = allQ.slice(0, 10);
+
+  const modal = document.getElementById('exam-modal-overlay');
+  const tagEl = document.getElementById('exam-track-tag');
+  const titleEl = document.getElementById('exam-track-title');
+  const qContainer = document.getElementById('exam-questions-container');
+  const resultsBox = document.getElementById('exam-results-box');
+  const submitBtn = document.getElementById('btn-submit-exam');
+  const claimBtn = document.getElementById('btn-claim-badge');
+
+  if (tagEl) tagEl.textContent = (track.titleEN || track.title).toUpperCase();
+  if (titleEl) titleEl.textContent = `${track.titleEN || track.title} — Track Certification Exam`;
+  if (resultsBox) resultsBox.style.display = 'none';
+  if (submitBtn) submitBtn.style.display = 'inline-flex';
+  if (claimBtn) claimBtn.style.display = 'none';
+
+  if (!qContainer) return;
+  qContainer.innerHTML = '';
+
+  if (devExamQuestions.length === 0) {
+    qContainer.innerHTML = `
+      <div style="text-align:center; padding:32px; color:var(--text-muted);">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size:2rem; color:var(--gold-accent); margin-bottom:8px;"></i>
+        <p>No hay preguntas suficientes registradas para esta especialidad.</p>
+      </div>
+    `;
+    if (submitBtn) submitBtn.style.display = 'none';
+  } else {
+    devExamQuestions.forEach((q, i) => {
+      const block = document.createElement('div');
+      block.className = 'quiz-question-card';
+      block.style.marginBottom = '16px';
+      block.innerHTML = `
+        <div class="quiz-q-text">
+          <span style="color:#0284c7; font-weight:800; margin-right:6px;">${i + 1}.</span> ${q.q}
+        </div>
+        <div style="font-size:0.75rem; color:#64748b; margin-bottom:10px;">
+          <i class="fa-solid fa-book-open" style="font-size:0.7rem; margin-right:4px;"></i> Origen: ${q.readTitle} (${q.modTitle})
+        </div>
+        <div class="quiz-options-group">
+          ${q.options.map((opt, optIdx) => `
+            <label class="quiz-opt-label">
+              <input type="radio" name="dev-exam-q${i}" value="${optIdx}">
+              <span>${opt}</span>
+            </label>
+          `).join('')}
+        </div>
+      `;
+      qContainer.appendChild(block);
+    });
+  }
+
+  if (modal) modal.classList.add('active');
+}
+
+function submitDevExam() {
+  let correctCount = 0;
+  devExamQuestions.forEach((q, i) => {
+    const selected = document.querySelector(`input[name="dev-exam-q${i}"]:checked`);
+    const inputs = document.querySelectorAll(`input[name="dev-exam-q${i}"]`);
+    inputs.forEach(input => {
+      const labelWrap = input.closest('label');
+      if (parseInt(input.value, 10) === q.answer) {
+        labelWrap.classList.add('is-correct');
+      } else if (input.checked && parseInt(input.value, 10) !== q.answer) {
+        labelWrap.classList.add('is-wrong');
+      }
+      input.disabled = true;
+    });
+
+    if (selected && parseInt(selected.value, 10) === q.answer) {
+      correctCount++;
+    }
+  });
+
+  const total = devExamQuestions.length || 1;
+  const score = Math.round((correctCount / total) * 100);
+
+  const submitBtn = document.getElementById('btn-submit-exam');
+  const claimBtn = document.getElementById('btn-claim-badge');
+  const resultsBox = document.getElementById('exam-results-box');
+  const scoreDisplay = document.getElementById('exam-score-display');
+  const feedbackMsg = document.getElementById('exam-feedback-msg');
+
+  if (submitBtn) submitBtn.style.display = 'none';
+  if (resultsBox) resultsBox.style.display = 'block';
+  if (scoreDisplay) scoreDisplay.textContent = `${score}%`;
+
+  if (feedbackMsg) {
+    if (score >= 80) {
+      feedbackMsg.innerHTML = `<span style="color:#059669; font-weight:800;">¡APROBADO! (${correctCount}/${total} Correctas)</span><br>Has demostrado competencia técnica rigurosa en inglés para fines específicos (ESP) nivel CEFR B1.`;
+      if (claimBtn) {
+        claimBtn.style.display = 'inline-flex';
+        claimBtn.onclick = () => {
+          launchOpenBadgeModal(devCurrentTrackId, devAllTracks);
+        };
+      }
+    } else {
+      feedbackMsg.innerHTML = `<span style="color:#dc2626; font-weight:800;">NO APROBADO (${correctCount}/${total} Correctas)</span><br>Se requiere un mínimo de 80% para certificar la especialidad. Repasa los módulos técnicos.`;
+    }
+  }
+}
+
+function launchOpenBadgeModal(trackId, tracks) {
+  const track = (tracks || []).find(t => t.id === trackId) || { id: trackId, title: 'stemOS Specialization', standard: 'SEP CONOCER EC1290' };
+  const certModal = document.getElementById('cert-modal-overlay');
+  const examModal = document.getElementById('exam-modal-overlay');
+  if (examModal) examModal.classList.remove('active');
+
+  const certTitle = document.getElementById('modal-cert-track-name');
+  const certStandard = document.getElementById('modal-cert-standard-text');
+  const certRecipient = document.getElementById('modal-cert-recipient');
+  const certHash = document.getElementById('modal-cert-hash');
+  const certDate = document.getElementById('modal-cert-date');
+
+  const studentName = localStorage.getItem('stemos_student_name') || 'Alberto Yépiz';
+  const standardName = track.badgeStandard || track.standard || 'SEP CONOCER EC1290 / ISO Standard';
+  const hashCode = `SHA256: STEM-${(track.id || trackId).toUpperCase().replace(/[^A-Z0-9]/g, '')}-${((track.id || trackId).length * 1337).toString(16).toUpperCase()}`;
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  if (certTitle) certTitle.textContent = `${track.titleEN || track.title} (Nearshoring ESP)`;
+  if (certStandard) certStandard.innerHTML = `Alineado al marco de competencias laborales <strong>${standardName}</strong> e <strong>IEEE / ISO Standards</strong> en nivel de competencia operativa CEFR B1.`;
+  if (certRecipient) certRecipient.textContent = studentName;
+  if (certHash) certHash.textContent = hashCode;
+  if (certDate) certDate.textContent = dateStr;
+
+  // Persist certified track
+  const certifiedMap = JSON.parse(localStorage.getItem('stemos_certified_tracks_v1') || '{}');
+  certifiedMap[trackId] = {
+    certifiedAt: Date.now(),
+    standard: standardName,
+    hash: hashCode,
+    trackTitle: track.titleEN || track.title
+  };
+  localStorage.setItem('stemos_certified_tracks_v1', JSON.stringify(certifiedMap));
+
+  // Wire Download JSON-LD button
+  const dlBtn = document.getElementById('btn-download-badge-json');
+  if (dlBtn) {
+    dlBtn.onclick = () => {
+      exportOpenBadgeCredential(track, studentName, hashCode);
+    };
+  }
+
+  // Wire Print button
+  const printBtn = document.getElementById('btn-print-certificate');
+  if (printBtn) {
+    printBtn.onclick = () => {
+      window.print();
+    };
+  }
+
+  // Wire Close button
+  const closeBtn = document.getElementById('btn-close-cert-modal');
+  if (closeBtn && certModal) {
+    closeBtn.onclick = () => certModal.classList.remove('active');
+  }
+
+  if (certModal) {
+    certModal.classList.add('active');
+  }
+}
+
+function exportOpenBadgeCredential(track, recipientName, hashCode) {
+  const badgeJson = {
+    "@context": [
+      "https://www.w3.org/2018/credentials/v1",
+      "https://purl.imsglobal.org/spec/ob/v3p0/context.json"
+    ],
+    "id": `urn:uuid:stemos-cert-${track.id}-${Date.now()}`,
+    "type": ["VerifiableCredential", "OpenBadgeCredential"],
+    "issuer": {
+      "id": "https://stemos.dev/issuers/stemos-foundation",
+      "type": "Profile",
+      "name": "stemOS LXP — High-Tech Engineering Division",
+      "url": "https://stemos.dev",
+      "email": "credentials@stemos.dev"
+    },
+    "issuanceDate": new Date().toISOString(),
+    "credentialSubject": {
+      "id": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
+      "type": "AchievementSubject",
+      "name": recipientName,
+      "achievement": {
+        "id": `https://stemos.dev/achievements/${track.id}`,
+        "type": "Achievement",
+        "name": track.badgeName || track.titleEN || track.title,
+        "description": `Demostró competencia técnica y socrática en el track ${track.titleEN || track.title} (${track.category || 'STEM'}).`,
+        "criteria": {
+          "narrative": "Aprobación del examen de certificación summativa (>=80%), lecturas técnicas y socrática Feynman."
+        },
+        "alignment": [
+          {
+            "targetName": track.badgeStandard || track.standard || "SEP CONOCER EC1290 / ISO Standard",
+            "targetUrl": "https://conocer.gob.mx"
+          }
+        ]
+      }
+    },
+    "proof": {
+      "type": "Ed25519Signature2020",
+      "created": new Date().toISOString(),
+      "verificationMethod": "https://stemos.dev/issuers/stemos-foundation#key-1",
+      "proofValue": hashCode
+    }
+  };
+
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(badgeJson, null, 2));
+  const dlAnchor = document.createElement('a');
+  dlAnchor.setAttribute("href", dataStr);
+  dlAnchor.setAttribute("download", `stemos-open-badge-${track.id}.json`);
+  document.body.appendChild(dlAnchor);
+  dlAnchor.click();
+  dlAnchor.remove();
+}
+
+// ── FLOATING VOCABULARY POPOVER CONTROLLER ──
+function setupVocabPopoverListeners() {
+  const popover = document.getElementById('stemos-vocab-popover');
+  if (!popover) return;
+
+  const titleEl = document.getElementById('popover-term-en');
+  const esEl = document.getElementById('popover-term-es');
+  const ipaEl = document.getElementById('popover-term-ipa');
+  const defEl = document.getElementById('popover-term-def');
+  const audioBtn = document.getElementById('popover-audio-btn');
+  const closeBtn = document.getElementById('btn-close-popover');
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      popover.style.display = 'none';
+    });
+  }
+
+  let activeAudioTerm = '';
+  if (audioBtn) {
+    audioBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (activeAudioTerm) {
+        speakEnglishText(activeAudioTerm);
+      }
+    });
+  }
+
+  // Click on .term-keyword
+  document.addEventListener('click', (e) => {
+    const keyword = e.target.closest('.term-keyword');
+    if (keyword) {
+      e.stopPropagation();
+      const en = keyword.getAttribute('data-en') || keyword.textContent.trim();
+      const es = keyword.getAttribute('data-es') || '';
+      const ipa = keyword.getAttribute('data-ipa') || '';
+      const def = keyword.getAttribute('data-def') || '';
+
+      activeAudioTerm = en;
+      if (titleEl) titleEl.textContent = en;
+      if (esEl) esEl.textContent = es ? `Español: ${es}` : '';
+      if (ipaEl) {
+        ipaEl.textContent = ipa ? `IPA: [${ipa}]` : '';
+        ipaEl.style.display = ipa ? 'inline-block' : 'none';
+      }
+      if (defEl) defEl.textContent = def;
+
+      popover.style.display = 'block';
+
+      // Calculate placement
+      const rect = keyword.getBoundingClientRect();
+      const popoverWidth = 320;
+      let left = rect.left + window.scrollX + (rect.width / 2) - (popoverWidth / 2);
+      if (left < 12) left = 12;
+      if (left + popoverWidth > window.innerWidth - 12) {
+        left = window.innerWidth - popoverWidth - 12;
+      }
+
+      let top = rect.bottom + window.scrollY + 8;
+      // If overflows bottom of viewport, position above
+      if (rect.bottom + 220 > window.innerHeight && rect.top > 220) {
+        top = rect.top + window.scrollY - 180;
+      }
+
+      popover.style.left = `${left}px`;
+      popover.style.top = `${top}px`;
+      return;
+    }
+
+    // Click outside popover closes it
+    if (!e.target.closest('#stemos-vocab-popover')) {
+      popover.style.display = 'none';
+    }
+  });
+
+  // Escape key closes popover
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && popover.style.display !== 'none') {
+      popover.style.display = 'none';
+    }
+  });
+}
+
+
 

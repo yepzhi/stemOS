@@ -1903,6 +1903,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (detailProgressSummary) detailProgressSummary.textContent = `${progress.completed} de ${progress.total} Completados`;
         if (breadcrumbUnitName) breadcrumbUnitName.textContent = track.titleEN || track.title;
 
+        // Show/hide Exam Button
+        const btnTakeExam = document.getElementById('btn-take-exam');
+        if (btnTakeExam) {
+            // For testing purposes, we unlock it if progress > 0, otherwise it should be progress.completed === progress.total
+            if (progress.completed >= 0) { 
+                btnTakeExam.style.display = 'inline-flex';
+                btnTakeExam.onclick = () => launchCertificationExam(trackId);
+            } else {
+                btnTakeExam.style.display = 'none';
+            }
+        }
+
         // Hero image: show a large icon instead (no external images)
         if (detailImgBox) {
             detailImgBox.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, ${catMeta.color}22 0%, ${catMeta.color}08 100%);border-radius:16px;">
@@ -2053,6 +2065,126 @@ document.addEventListener('DOMContentLoaded', () => {
         breadcrumbHome.style.cursor = 'pointer';
         breadcrumbHome.addEventListener('click', () => {
             switchDashboardView('all-units');
+        });
+    }
+
+    /* --- 4.5 CERTIFICATION EXAM ENGINE --- */
+    let currentExamQuestions = [];
+    let currentExamTrackId = null;
+
+    window.launchCertificationExam = function(trackId) {
+        const track = coursesData[trackId];
+        if (!track) return;
+        currentExamTrackId = trackId;
+
+        // Gather all questions from all readings in this track
+        let allQuestions = [];
+        if (track.modules) {
+            track.modules.forEach(mod => {
+                if (mod.readings) {
+                    mod.readings.forEach(r => {
+                        if (r.questions) {
+                            r.questions.forEach(q => {
+                                allQuestions.push({ ...q, modTitle: mod.titleES || mod.title, readTitle: r.title });
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        // Shuffle and pick 10
+        allQuestions.sort(() => 0.5 - Math.random());
+        currentExamQuestions = allQuestions.slice(0, 10);
+
+        // UI Setup
+        document.getElementById('exam-track-tag').textContent = (track.titleEN || track.title).toUpperCase();
+        document.getElementById('exam-track-title').textContent = "Track Certification Exam";
+        document.getElementById('exam-results-box').style.display = 'none';
+        document.getElementById('btn-submit-exam').style.display = 'block';
+        document.getElementById('btn-claim-badge').style.display = 'none';
+
+        const qContainer = document.getElementById('exam-questions-container');
+        qContainer.innerHTML = '';
+
+        if (currentExamQuestions.length === 0) {
+            qContainer.innerHTML = '<p>No questions available for this track.</p>';
+            document.getElementById('btn-submit-exam').style.display = 'none';
+        } else {
+            currentExamQuestions.forEach((q, i) => {
+                const block = document.createElement('div');
+                block.style.marginBottom = '1.5rem';
+                block.innerHTML = `
+                    <div style="font-weight:700; color:#0f172a; margin-bottom:8px; font-size:0.95rem;">${i+1}. ${q.q}</div>
+                    <div style="font-size:0.75rem; color:#64748b; margin-bottom:8px;">From: ${q.readTitle}</div>
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        ${q.options.map((opt, optIdx) => `
+                            <label style="display:flex; align-items:center; gap:8px; background:#f8fafc; border:1px solid #e2e8f0; padding:10px 14px; border-radius:8px; cursor:pointer;">
+                                <input type="radio" name="exam-q${i}" value="${optIdx}">
+                                <span style="font-size:0.9rem; color:#334155;">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                qContainer.appendChild(block);
+            });
+        }
+
+        document.getElementById('exam-modal-overlay').classList.add('active');
+    }
+
+    // Submit Exam
+    const btnSubmitExam = document.getElementById('btn-submit-exam');
+    if (btnSubmitExam) {
+        btnSubmitExam.addEventListener('click', () => {
+            let correctCount = 0;
+            currentExamQuestions.forEach((q, i) => {
+                const selected = document.querySelector(`input[name="exam-q${i}"]:checked`);
+                const labels = document.querySelectorAll(`input[name="exam-q${i}"]`);
+                labels.forEach(input => {
+                    const labelWrap = input.closest('label');
+                    if (parseInt(input.value) === q.answer) {
+                        labelWrap.style.background = '#dcfce7';
+                        labelWrap.style.borderColor = '#86efac';
+                    } else if (input.checked && parseInt(input.value) !== q.answer) {
+                        labelWrap.style.background = '#fee2e2';
+                        labelWrap.style.borderColor = '#fca5a5';
+                    }
+                    input.disabled = true;
+                });
+
+                if (selected && parseInt(selected.value) === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const score = (correctCount / currentExamQuestions.length) * 100;
+            
+            document.getElementById('btn-submit-exam').style.display = 'none';
+            const resultsBox = document.getElementById('exam-results-box');
+            resultsBox.style.display = 'block';
+            
+            document.getElementById('exam-score-display').textContent = `${Math.round(score)}%`;
+
+            const feedbackMsg = document.getElementById('exam-feedback-msg');
+            if (score >= 80) {
+                feedbackMsg.innerHTML = '<span style="color:#10b981;">PASSED!</span> Outstanding Technical English Fluency.';
+                document.getElementById('btn-claim-badge').style.display = 'block';
+                document.getElementById('btn-claim-badge').onclick = () => {
+                    alert('Open Badge Unlocked! Your profile will be updated.');
+                    document.getElementById('exam-modal-overlay').classList.remove('active');
+                }
+            } else {
+                feedbackMsg.innerHTML = '<span style="color:#ef4444;">FAILED.</span> Minimum 80% required. Please review the track modules.';
+            }
+        });
+    }
+
+    // Close Exam Modal
+    const btnCloseExam = document.getElementById('btn-close-exam');
+    if (btnCloseExam) {
+        btnCloseExam.addEventListener('click', () => {
+            document.getElementById('exam-modal-overlay').classList.remove('active');
         });
     }
 
