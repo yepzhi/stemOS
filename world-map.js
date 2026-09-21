@@ -139,9 +139,9 @@
             // 3D Sphere state
             this.radius = 240;
             this.pitch = 0.25; // X rotation in radians
-            this.yaw = 0.4;    // Y rotation in radians
+            this.yaw = 0.35;    // Y rotation in radians
             this.targetPitch = 0.25;
-            this.targetYaw = 0.4;
+            this.targetYaw = 0.35;
             this.zoom = 1.0;
             this.targetZoom = 1.0;
             this.minZoom = 0.65;
@@ -209,32 +209,40 @@
         buildDOM() {
             this.container.innerHTML = `
                 <div class="world-experience-wrap" id="world-experience-wrap">
+                    <!-- Dynamic Colorful Tech Auroras Background -->
+                    <div class="world-aurora-bg" aria-hidden="true">
+                        <div class="world-aurora-blob aurora-blob-1"></div>
+                        <div class="world-aurora-blob aurora-blob-2"></div>
+                        <div class="world-aurora-blob aurora-blob-3"></div>
+                        <div class="world-aurora-blob aurora-blob-4"></div>
+                    </div>
+
                     <!-- Top HUD -->
                     <div class="world-hud-top">
                         <div class="world-title-badge">
                             <div class="world-brand-icon"><i class="fa-solid fa-earth-americas"></i></div>
                             <div class="world-title-text">
-                                <span class="world-title-main">Mundo stemOS <span style="font-size:0.7rem;font-weight:800;color:#38bdf8;background:rgba(56,189,248,0.15);padding:2px 8px;border-radius:6px;border:1px solid rgba(56,189,248,0.3);">3D ESP</span></span>
-                                <span class="world-title-sub">Gira el globo, haz zoom o entra al camino gamificado</span>
+                                <span class="world-title-main">Mundo stemOS <span style="font-size:0.7rem;font-weight:800;color:#0284c7;background:rgba(2,132,199,0.12);padding:2px 8px;border-radius:6px;border:1px solid rgba(2,132,199,0.3);">3D ESP</span></span>
+                                <span class="world-title-sub">Ruta secuencial gamificada de 26 mundos &bull; Modo Tech White</span>
                             </div>
                         </div>
 
                         <!-- Realm Filters -->
                         <div class="world-realm-filters">
                             <button class="realm-filter-btn active" data-cat="all">
-                                <i class="fa-solid fa-globe"></i> Todos (26)
+                                <i class="fa-solid fa-route"></i> Todos (26)
                             </button>
                             <button class="realm-filter-btn" data-cat="technology">
-                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#0ea5e9;"></span> Tecnología
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#0284c7;"></span> Tecnología
                             </button>
                             <button class="realm-filter-btn" data-cat="engineering">
-                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#f97316;"></span> Ingeniería
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#ea580c;"></span> Ingeniería
                             </button>
                             <button class="realm-filter-btn" data-cat="science">
-                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#a855f7;"></span> Ciencias
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#9333ea;"></span> Ciencias
                             </button>
                             <button class="realm-filter-btn" data-cat="career">
-                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;"></span> Aviación
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#16a34a;"></span> Aviación
                             </button>
                         </div>
 
@@ -243,7 +251,7 @@
                             <button class="world-tool-btn ${!this.sound.muted ? 'active' : ''}" id="wm-btn-sound" title="Sonidos / Audio FX">
                                 <i class="fa-solid ${!this.sound.muted ? 'fa-volume-high' : 'fa-volume-xmark'}"></i>
                             </button>
-                            <button class="world-tool-btn" id="wm-btn-reset-cam" title="Centrar Globo">
+                            <button class="world-tool-btn" id="wm-btn-reset-cam" title="Centrar en Inicio (Paso 1)">
                                 <i class="fa-solid fa-crosshairs"></i>
                             </button>
                         </div>
@@ -292,7 +300,7 @@
 
                             <div class="path-track-info">
                                 <div class="path-track-badges">
-                                    <span class="path-cat-badge" id="path-cat-badge">🔵 TECNOLOGÍA</span>
+                                    <span class="path-cat-badge" id="path-cat-badge">TECNOLOGÍA</span>
                                     <span class="path-standard-badge" id="path-standard-badge">CEFR B1 &bull; AS9100</span>
                                 </div>
                                 <h2 class="path-track-title" id="path-track-title">Manufactura Aeronáutica</h2>
@@ -432,72 +440,100 @@
 
         buildSphereNodes() {
             this.nodes = [];
-            const realmGroups = {
-                technology: [],
-                engineering: [],
-                science: [],
-                career: []
-            };
 
+            // Canonical 26-course sequential learning route (Super Mario / Duolingo Expedition)
+            const CURRICULUM_SEQUENCE = [
+                'cybersecurity',
+                'it-innovation',
+                'ai-ml',
+                'telecom-iot',
+                'software-dev',
+                'data-analytics',
+                'semiconductors',
+                'electromobility',
+                'aerospace',
+                'robotics-automation',
+                'energy-renewables',
+                'advanced-manufacturing',
+                'industrial-operations',
+                'mechatronics',
+                'biotechnology',
+                'space-satellite',
+                'environmental-sustainability',
+                'healthcare-tech',
+                'materials-nanotech',
+                'food-science',
+                'aviation-english',
+                'airforce-aerospace',
+                'hospitality-food',
+                'business-leadership',
+                'project-management',
+                'entrepreneurship'
+            ];
+
+            // Build ordered list from courses
+            const orderedTracks = [];
+            const addedSet = new Set();
+
+            CURRICULUM_SEQUENCE.forEach(id => {
+                if (this.courses[id]) {
+                    orderedTracks.push({ id, ...this.courses[id] });
+                    addedSet.add(id);
+                }
+            });
+
+            // Append any extra tracks that may exist in catalog
             for (let trKey in this.courses) {
-                const tr = this.courses[trKey];
-                const cat = tr.category || 'technology';
-                if (realmGroups[cat]) {
-                    realmGroups[cat].push({ id: trKey, ...tr });
-                } else {
-                    realmGroups.technology.push({ id: trKey, ...tr });
+                if (!addedSet.has(trKey)) {
+                    orderedTracks.push({ id: trKey, ...this.courses[trKey] });
+                    addedSet.add(trKey);
                 }
             }
 
-            // Map each realm to a quadrant of the sphere (longitude yaw range and latitude pitch range)
-            const realmQuadrants = {
-                technology:  { startLon: 15 * Math.PI / 180,  endLon: 80 * Math.PI / 180,  minLat: -0.65, maxLat: 0.65 },
-                engineering: { startLon: 105 * Math.PI / 180, endLon: 170 * Math.PI / 180, minLat: -0.7,  maxLat: 0.7 },
-                science:     { startLon: 195 * Math.PI / 180, endLon: 260 * Math.PI / 180, minLat: -0.65, maxLat: 0.65 },
-                career:      { startLon: 285 * Math.PI / 180, endLon: 350 * Math.PI / 180, minLat: -0.7,  maxLat: 0.7 }
-            };
+            const total = orderedTracks.length;
+            if (total === 0) return;
 
-            for (let cat in realmGroups) {
-                const list = realmGroups[cat];
-                const quad = realmQuadrants[cat];
-                const count = list.length;
-                if (count === 0) continue;
+            orderedTracks.forEach((track, idx) => {
+                const cat = track.category || 'technology';
+                const stepNumber = idx + 1;
+                const isStart = (idx === 0);
+                const isFinish = (idx === total - 1);
 
-                list.forEach((track, idx) => {
-                    // Spread tracks inside quadrant
-                    const lonFrac = count > 1 ? idx / (count - 1) : 0.5;
-                    const lon = quad.startLon + lonFrac * (quad.endLon - quad.startLon);
+                // Smooth spherical spiral progression around the 3D globe:
+                // Traversing ~2.2 full revolutions from North (+0.65 rad) down to South (-0.65 rad)
+                const frac = total > 1 ? idx / (total - 1) : 0.5;
+                const lon = 0.35 + frac * (4.4 * Math.PI);
+                let lat = 0.65 - frac * 1.30 + (Math.sin(idx * 1.35) * 0.08);
+                lat = Math.max(-1.15, Math.min(1.15, lat));
 
-                    // Alternating latitude for zigzag constellation look
-                    const latFrac = (idx % 2 === 0 ? 0.3 : 0.7) + (Math.sin(idx * 1.7) * 0.2);
-                    const lat = quad.minLat + latFrac * (quad.maxLat - quad.minLat);
+                // Spherical to Cartesian coordinates on unit sphere (Radius = 1)
+                const x = Math.cos(lat) * Math.sin(lon);
+                const y = Math.sin(lat);
+                const z = Math.cos(lat) * Math.cos(lon);
 
-                    // Spherical to Cartesian coordinates (Radius = 1 on unit sphere)
-                    const x = Math.cos(lat) * Math.sin(lon);
-                    const y = Math.sin(lat);
-                    const z = Math.cos(lat) * Math.cos(lon);
-
-                    this.nodes.push({
-                        id: track.id,
-                        title: track.titleEN || track.title,
-                        titleES: track.title,
-                        category: cat,
-                        standard: track.standard || 'IEEE/ISO',
-                        modules: track.modules || [],
-                        icon: DEFAULT_TRACK_ICONS[track.id] || 'fa-book-open',
-                        // Unit sphere position
-                        ux: x,
-                        uy: y,
-                        uz: z,
-                        // Projected 2D screen coordinates
-                        sx: 0,
-                        sy: 0,
-                        sz: 0,
-                        screenRadius: 18,
-                        visible: true
-                    });
+                this.nodes.push({
+                    id: track.id,
+                    stepNumber: stepNumber,
+                    isStart: isStart,
+                    isFinish: isFinish,
+                    title: track.titleEN || track.title,
+                    titleES: track.title,
+                    category: cat,
+                    standard: track.standard || 'IEEE/ISO',
+                    modules: track.modules || [],
+                    icon: DEFAULT_TRACK_ICONS[track.id] || 'fa-book-open',
+                    // Unit sphere position
+                    ux: x,
+                    uy: y,
+                    uz: z,
+                    // Projected 2D screen coordinates
+                    sx: 0,
+                    sy: 0,
+                    sz: 0,
+                    screenRadius: 18,
+                    visible: true
                 });
-            }
+            });
         }
 
         getUserProgress() {
@@ -560,7 +596,7 @@
                 this.vy = dy * 0.005;
 
                 this.targetYaw += this.vx;
-                this.targetPitch -= this.vy;
+                this.targetPitch += this.vy; // Natural scroll: dragging up moves globe up
 
                 // Clamp pitch to avoid gimbal flip
                 this.targetPitch = Math.max(-1.3, Math.min(1.3, this.targetPitch));
@@ -676,7 +712,7 @@
             });
             if (btnReset) btnReset.addEventListener('click', () => {
                 this.targetPitch = 0.25;
-                this.targetYaw = 0.4;
+                this.targetYaw = 0.35;
                 this.targetZoom = 1.0;
                 this.autoRotate = true;
                 this.sound.playBlip(800, 0.06);
@@ -685,7 +721,7 @@
                 const muted = this.sound.toggleMute();
                 btnSound.classList.toggle('active', !muted);
                 btnSound.innerHTML = `<i class="fa-solid ${!muted ? 'fa-volume-high' : 'fa-volume-xmark'}"></i>`;
-                this.showToast(!muted ? '🔊 Audio FX activado' : '🔇 Audio FX silenciado');
+                this.showToast(!muted ? 'Audio FX activado' : 'Audio FX silenciado');
                 if (!muted) this.sound.playBlip(750, 0.08);
             });
 
@@ -707,18 +743,18 @@
             this.activeFilter = cat;
             this.sound.playBlip(650, 0.06);
 
-            // Rotate smoothly to center that realm
-            const targetAngles = {
-                all: { yaw: 0.4, pitch: 0.25 },
-                technology: { yaw: 0.8, pitch: 0.1 },
-                engineering: { yaw: 2.4, pitch: 0.15 },
-                science: { yaw: 3.9, pitch: 0.1 },
-                career: { yaw: 5.5, pitch: 0.2 }
-            };
-
-            const target = targetAngles[cat] || targetAngles.all;
-            this.targetYaw = target.yaw;
-            this.targetPitch = target.pitch;
+            // Rotate smoothly to center that realm's starting node along the sequential route
+            if (cat === 'all') {
+                this.targetYaw = 0.35;
+                this.targetPitch = 0.25;
+            } else {
+                const targetNode = this.nodes.find(n => n.category === cat);
+                if (targetNode) {
+                    this.targetYaw = -Math.atan2(targetNode.ux, targetNode.uz);
+                    this.targetPitch = Math.atan2(targetNode.uy, Math.hypot(targetNode.ux, targetNode.uz));
+                    this.targetPitch = Math.max(-0.8, Math.min(0.8, this.targetPitch));
+                }
+            }
             this.targetZoom = 1.15;
             this.autoRotate = false;
         }
@@ -811,7 +847,7 @@
             // Inertia decay
             if (!this.isDragging) {
                 this.targetYaw += this.vx;
-                this.targetPitch -= this.vy;
+                this.targetPitch += this.vy; // Natural scroll inertia
                 this.targetPitch = Math.max(-1.3, Math.min(1.3, this.targetPitch));
                 this.vx *= 0.92;
                 this.vy *= 0.92;
@@ -831,14 +867,14 @@
             ctx.scale(dpr, dpr);
             ctx.clearRect(0, 0, width, height);
 
-            // 1. Draw Starfield
+            // 1. Draw Starfield (Micro-quantum particles for White Mode)
             this.drawStarfield(ctx, width, height, cx, cy);
 
-            // 2. Draw 3D Globe Core Background
+            // 2. Draw 3D Globe Core (Pearl White Sphere & Aurora Halo)
             const curRadius = this.radius * this.zoom;
             this.drawGlobeAtmosphere(ctx, cx, cy, curRadius);
 
-            // 3. Draw Latitude & Longitude Coordinate Grid
+            // 3. Draw Latitude & Longitude Coordinate Grid (Holographic Slate/Cyan)
             this.draw3DGridLines(ctx, cx, cy, curRadius);
 
             // 4. Project all Nodes in 3D
@@ -869,21 +905,20 @@
                 node.screenRadius = Math.max(12, 18 * scale);
             });
 
-            // 5. Draw Constellation Connectors
-            this.drawConstellationBeams(ctx);
+            // 5. Draw Sequential Curriculum Expedition Path (Step 1 -> 2 -> ... -> 26)
+            this.drawSequentialCurriculumPath(ctx, cx, cy, curRadius);
 
-            // 6. Draw Back-facing Nodes (Depth fog)
+            // 6. Draw Back-facing Nodes (Translucent depth cues)
             this.nodes.forEach(node => {
                 if (node.sz <= 0) {
                     this.drawNode(ctx, node, false);
                 }
             });
 
-            // 7. Draw Globe Front Rim Glow (Fresnel effect)
+            // 7. Draw Globe Front Rim Glow
             this.drawGlobeRimGlow(ctx, cx, cy, curRadius);
 
-            // 8. Draw Front-facing Nodes (Crisp & Interactive)
-            // Sort front nodes by depth (painter's algorithm)
+            // 8. Draw Front-facing Nodes (White Tech Pucks & Step Numbers)
             const frontNodes = this.nodes.filter(n => n.sz > 0).sort((a, b) => a.sz - b.sz);
             frontNodes.forEach(node => {
                 this.drawNode(ctx, node, true);
@@ -894,45 +929,57 @@
 
         drawStarfield(ctx, width, height, cx, cy) {
             const time = Date.now() * 0.001;
-            this.stars.forEach(star => {
-                const alpha = star.baseAlpha + Math.sin(time * star.twinkleSpeed * 50 + star.phase) * 0.25;
+            const colors = [
+                'rgba(14, 165, 233, ',  // sky cyan
+                'rgba(168, 85, 247, ',  // violet
+                'rgba(52, 211, 153, ',  // emerald
+                'rgba(245, 158, 11, '   // amber
+            ];
+
+            this.stars.forEach((star, idx) => {
+                const alpha = Math.max(0.1, Math.min(0.65, star.baseAlpha + Math.sin(time * star.twinkleSpeed * 40 + star.phase) * 0.25));
                 const x = cx + star.x * (width * 0.55) + Math.sin(this.yaw * 0.2) * 20 * star.z;
                 const y = cy + star.y * (height * 0.55) + Math.sin(this.pitch * 0.2) * 20 * star.z;
+                const colPrefix = colors[idx % colors.length];
 
-                ctx.fillStyle = `rgba(224, 242, 254, ${Math.max(0, Math.min(1, alpha))})`;
+                ctx.fillStyle = `${colPrefix}${alpha * 0.45})`;
                 ctx.beginPath();
-                ctx.arc(x, y, star.size, 0, Math.PI * 2);
+                ctx.arc(x, y, star.size * 0.9, 0, Math.PI * 2);
                 ctx.fill();
             });
         }
 
         drawGlobeAtmosphere(ctx, cx, cy, radius) {
-            // Inner Core
+            ctx.save();
+
+            // 1. Pearl White Spherical Core with subtle technological gradient
             const grad = ctx.createRadialGradient(
-                cx - radius * 0.25, cy - radius * 0.25, radius * 0.1,
+                cx - radius * 0.25, cy - radius * 0.25, radius * 0.05,
                 cx, cy, radius
             );
-            grad.addColorStop(0, '#0c2252');
-            grad.addColorStop(0.5, '#071638');
-            grad.addColorStop(0.85, '#040b1c');
-            grad.addColorStop(1, '#020614');
+            grad.addColorStop(0, '#ffffff');
+            grad.addColorStop(0.45, '#f8fafc');
+            grad.addColorStop(0.80, '#f1f5f9');
+            grad.addColorStop(0.95, '#e2e8f0');
+            grad.addColorStop(1.0, '#cbd5e1');
 
-            ctx.save();
             ctx.beginPath();
             ctx.arc(cx, cy, radius, 0, Math.PI * 2);
             ctx.fillStyle = grad;
             ctx.fill();
 
-            // Outer Atmospheric Glow
-            const outerGlow = ctx.createRadialGradient(cx, cy, radius * 0.95, cx, cy, radius * 1.22);
-            outerGlow.addColorStop(0, 'rgba(56, 189, 248, 0.25)');
-            outerGlow.addColorStop(0.5, 'rgba(14, 165, 233, 0.08)');
-            outerGlow.addColorStop(1, 'rgba(14, 165, 233, 0)');
+            // 2. Tech Aurora Outer Halo
+            const outerGlow = ctx.createRadialGradient(cx, cy, radius * 0.96, cx, cy, radius * 1.25);
+            outerGlow.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
+            outerGlow.addColorStop(0.45, 'rgba(168, 85, 247, 0.14)');
+            outerGlow.addColorStop(0.8, 'rgba(52, 211, 153, 0.06)');
+            outerGlow.addColorStop(1, 'rgba(56, 189, 248, 0)');
 
             ctx.beginPath();
-            ctx.arc(cx, cy, radius * 1.22, 0, Math.PI * 2);
+            ctx.arc(cx, cy, radius * 1.25, 0, Math.PI * 2);
             ctx.fillStyle = outerGlow;
             ctx.fill();
+
             ctx.restore();
         }
 
@@ -973,7 +1020,8 @@
                     const py = cy - y2 * radius;
 
                     if (z2 > 0) {
-                        ctx.strokeStyle = lat === 0 ? 'rgba(56, 189, 248, 0.25)' : 'rgba(125, 211, 252, 0.12)';
+                        ctx.strokeStyle = lat === 0 ? 'rgba(14, 165, 233, 0.38)' : 'rgba(148, 163, 184, 0.28)';
+                        ctx.lineWidth = lat === 0 ? 1.4 : 0.9;
                         if (!started) {
                             ctx.moveTo(px, py);
                             started = true;
@@ -993,6 +1041,7 @@
                 const lon = (m / meridians) * Math.PI * 2;
                 const segments = 32;
                 ctx.beginPath();
+                ctx.lineWidth = 0.9;
                 let started = false;
 
                 for (let i = 0; i <= segments; i++) {
@@ -1013,7 +1062,7 @@
                     const py = cy - y2 * radius;
 
                     if (z2 > 0) {
-                        ctx.strokeStyle = 'rgba(125, 211, 252, 0.10)';
+                        ctx.strokeStyle = 'rgba(148, 163, 184, 0.20)';
                         if (!started) {
                             ctx.moveTo(px, py);
                             started = true;
@@ -1030,36 +1079,173 @@
             ctx.restore();
         }
 
-        drawConstellationBeams(ctx) {
+        drawSequentialCurriculumPath(ctx, cx, cy, curRadius) {
+            if (this.nodes.length < 2) return;
+
+            const cosPitch = Math.cos(this.pitch);
+            const sinPitch = Math.sin(this.pitch);
+            const cosYaw = Math.cos(this.yaw);
+            const sinYaw = Math.sin(this.yaw);
+            const camDist = 2.4;
+
+            const prog = this.getUserProgress();
+            const time = Date.now() * 0.001;
+
             ctx.save();
-            ctx.lineWidth = 1.5;
 
-            // Connect neighboring nodes inside same category
-            for (let i = 0; i < this.nodes.length; i++) {
-                for (let j = i + 1; j < this.nodes.length; j++) {
-                    const n1 = this.nodes[i];
-                    const n2 = this.nodes[j];
+            // Project a unit sphere vector into screen coordinates and depth
+            const projectVec = (ux, uy, uz) => {
+                const x1 = ux * cosYaw + uz * sinYaw;
+                const y1 = uy;
+                const z1 = -ux * sinYaw + uz * cosYaw;
 
-                    if (n1.category === n2.category) {
-                        // Check angular distance on sphere
-                        const dot = n1.ux * n2.ux + n1.uy * n2.uy + n1.uz * n2.uz;
-                        if (dot > 0.72) { // Neighbors
-                            const avgZ = (n1.sz + n2.sz) / 2;
-                            if (avgZ > -0.2) {
-                                const catMeta = REALM_META[n1.category] || REALM_META.technology;
-                                const alpha = avgZ > 0 ? 0.35 : 0.08;
+                const x2 = x1;
+                const y2 = y1 * cosPitch - z1 * sinPitch;
+                const z2 = y1 * sinPitch + z1 * cosPitch;
 
-                                ctx.beginPath();
-                                ctx.strokeStyle = catMeta.color;
-                                ctx.globalAlpha = alpha;
-                                ctx.moveTo(n1.sx, n1.sy);
-                                ctx.lineTo(n2.sx, n2.sy);
-                                ctx.stroke();
-                            }
+                const scale = (camDist / (camDist - z2 * 0.45)) * this.zoom;
+                return {
+                    x: cx + x2 * this.radius * scale,
+                    y: cy - y2 * this.radius * scale,
+                    z: z2
+                };
+            };
+
+            // 1. Draw all consecutive path segments (from Step 1 to Step N)
+            for (let i = 0; i < this.nodes.length - 1; i++) {
+                const nA = this.nodes[i];
+                const nB = this.nodes[i + 1];
+
+                const isCompletedA = prog.completedTracks && prog.completedTracks[nA.id];
+                const isFilterDim = (this.activeFilter !== 'all' && nA.category !== this.activeFilter && nB.category !== this.activeFilter);
+
+                // Spherical arc sampling (10 points between nA and nB)
+                const arcSteps = 10;
+                const arcPoints = [];
+
+                for (let s = 0; s <= arcSteps; s++) {
+                    const frac = s / arcSteps;
+                    // Spherical linear interpolation / normalized lerp
+                    const ux = (1 - frac) * nA.ux + frac * nB.ux;
+                    const uy = (1 - frac) * nA.uy + frac * nB.uy;
+                    const uz = (1 - frac) * nA.uz + frac * nB.uz;
+                    const len = Math.hypot(ux, uy, uz) || 1;
+                    const p = projectVec(ux / len, uy / len, uz / len);
+                    arcPoints.push(p);
+                }
+
+                // Draw Back Arc (when behind the globe)
+                ctx.save();
+                ctx.setLineDash([4, 6]);
+                ctx.lineWidth = 1.5 * this.zoom;
+                ctx.strokeStyle = isFilterDim ? 'rgba(203, 213, 225, 0.15)' : 'rgba(148, 163, 184, 0.25)';
+                ctx.beginPath();
+                let backStarted = false;
+                for (let k = 0; k < arcPoints.length; k++) {
+                    const pt = arcPoints[k];
+                    if (pt.z <= 0) {
+                        if (!backStarted) {
+                            ctx.moveTo(pt.x, pt.y);
+                            backStarted = true;
+                        } else {
+                            ctx.lineTo(pt.x, pt.y);
                         }
+                    } else {
+                        backStarted = false;
                     }
                 }
+                ctx.stroke();
+                ctx.restore();
+
+                // Draw Front Arc (luminous glowing path line)
+                ctx.save();
+                ctx.setLineDash([]);
+                let frontStarted = false;
+
+                // Pass 1: Outer soft neon aura
+                ctx.beginPath();
+                for (let k = 0; k < arcPoints.length; k++) {
+                    const pt = arcPoints[k];
+                    if (pt.z > -0.05) {
+                        if (!frontStarted) {
+                            ctx.moveTo(pt.x, pt.y);
+                            frontStarted = true;
+                        } else {
+                            ctx.lineTo(pt.x, pt.y);
+                        }
+                    } else {
+                        frontStarted = false;
+                    }
+                }
+                ctx.lineWidth = Math.max(5, 7.5 * this.zoom);
+                ctx.strokeStyle = isCompletedA 
+                    ? (isFilterDim ? 'rgba(52, 211, 153, 0.12)' : 'rgba(52, 211, 153, 0.30)')
+                    : (isFilterDim ? 'rgba(14, 165, 233, 0.10)' : 'rgba(14, 165, 233, 0.28)');
+                ctx.stroke();
+
+                // Pass 2: Core solid tech line
+                ctx.lineWidth = Math.max(2.2, 3.2 * this.zoom);
+                ctx.strokeStyle = isCompletedA
+                    ? (isFilterDim ? 'rgba(16, 185, 129, 0.35)' : '#10b981')
+                    : (isFilterDim ? 'rgba(2, 132, 199, 0.30)' : '#0284c7');
+                ctx.stroke();
+
+                // Pass 3: Directional Flow Indicator (Arrow chevrons along path)
+                const midIdx = Math.floor(arcSteps / 2);
+                const pMid = arcPoints[midIdx];
+                const pNext = arcPoints[midIdx + 1];
+                if (pMid.z > 0.1 && pNext && !isFilterDim) {
+                    const angle = Math.atan2(pNext.y - pMid.y, pNext.x - pMid.x);
+                    const arrowLen = 6 * this.zoom;
+                    ctx.save();
+                    ctx.translate(pMid.x, pMid.y);
+                    ctx.rotate(angle);
+                    ctx.beginPath();
+                    ctx.moveTo(-arrowLen, -arrowLen * 0.6);
+                    ctx.lineTo(0, 0);
+                    ctx.lineTo(-arrowLen, arrowLen * 0.6);
+                    ctx.strokeStyle = isCompletedA ? '#059669' : '#0284c7';
+                    ctx.lineWidth = 2 * this.zoom;
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                ctx.restore();
             }
+
+            // 2. Animated Energy Comet Pulse traversing along the path (Step 1 -> Step N)
+            const totalSegments = this.nodes.length - 1;
+            const cometPos = (time * 0.9 * totalSegments * 0.35) % totalSegments;
+            const segIndex = Math.floor(cometPos);
+            const segFrac = cometPos - segIndex;
+
+            if (segIndex >= 0 && segIndex < totalSegments) {
+                const nA = this.nodes[segIndex];
+                const nB = this.nodes[segIndex + 1];
+                const ux = (1 - segFrac) * nA.ux + segFrac * nB.ux;
+                const uy = (1 - segFrac) * nA.uy + segFrac * nB.uy;
+                const uz = (1 - segFrac) * nA.uz + segFrac * nB.uz;
+                const len = Math.hypot(ux, uy, uz) || 1;
+                const cPt = projectVec(ux / len, uy / len, uz / len);
+
+                if (cPt.z > 0.05) {
+                    // Pulsing luminous energy orb
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(cPt.x, cPt.y, 11 * this.zoom, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(56, 189, 248, 0.45)';
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.arc(cPt.x, cPt.y, 5 * this.zoom, 0, Math.PI * 2);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.shadowColor = '#0284c7';
+                    ctx.shadowBlur = 10;
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+
             ctx.restore();
         }
 
@@ -1067,8 +1253,8 @@
             ctx.save();
             ctx.beginPath();
             ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
-            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'rgba(14, 165, 233, 0.45)';
+            ctx.lineWidth = 1.8;
             ctx.stroke();
             ctx.restore();
         }
@@ -1081,7 +1267,7 @@
             ctx.save();
 
             if (!isFront) {
-                // Back-facing node: semi-transparent, depth fog
+                // Back-facing node: semi-transparent, subtle depth fog
                 ctx.globalAlpha = isFilterDim ? 0.04 : 0.22;
                 ctx.beginPath();
                 ctx.arc(node.sx, node.sy, node.screenRadius * 0.65, 0, Math.PI * 2);
@@ -1091,67 +1277,141 @@
                 return;
             }
 
-            // Front-facing node
+            // Front-facing node (White Tech Mode Puck)
             ctx.globalAlpha = isFilterDim ? 0.25 : 1;
 
-            // Hover / Active pulse halo
+            // Hover Halo
             if (isHovered) {
                 ctx.beginPath();
-                ctx.arc(node.sx, node.sy, node.screenRadius * 1.5, 0, Math.PI * 2);
+                ctx.arc(node.sx, node.sy, node.screenRadius * 1.6, 0, Math.PI * 2);
                 ctx.fillStyle = catMeta.glow;
                 ctx.fill();
             }
 
-            // Outer ring
+            // Step 1 START Beacon: Pulsing radar rings
+            if (node.isStart && !isFilterDim) {
+                const pulse = (Date.now() * 0.0025) % 1;
+                ctx.beginPath();
+                ctx.arc(node.sx, node.sy, node.screenRadius + pulse * 18 * this.zoom, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(2, 132, 199, ${(1 - pulse) * 0.8})`;
+                ctx.lineWidth = 2.2;
+                ctx.stroke();
+            }
+
+            // Outer drop shadow on white sphere
+            ctx.save();
+            ctx.shadowColor = 'rgba(15, 23, 42, 0.14)';
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetY = 3;
+
+            // Disc Background: Crisp White Puck
             ctx.beginPath();
             ctx.arc(node.sx, node.sy, node.screenRadius, 0, Math.PI * 2);
-            ctx.fillStyle = '#0f172a';
+            ctx.fillStyle = '#ffffff';
             ctx.fill();
-            ctx.lineWidth = isHovered ? 3.5 : 2.2;
-            ctx.strokeStyle = isHovered ? '#ffffff' : catMeta.color;
+            ctx.restore();
+
+            // Disc Border: Realm Colored Ring
+            ctx.beginPath();
+            ctx.arc(node.sx, node.sy, node.screenRadius, 0, Math.PI * 2);
+            ctx.lineWidth = isHovered ? 3.8 : 2.8;
+            ctx.strokeStyle = isHovered ? '#0284c7' : catMeta.color;
             ctx.stroke();
 
-            // Core circle
-            ctx.beginPath();
-            ctx.arc(node.sx, node.sy, node.screenRadius * 0.72, 0, Math.PI * 2);
+            // Inner Step Number inside Puck
+            ctx.font = `800 ${Math.max(10, Math.round(node.screenRadius * 0.88))}px Outfit, 'Plus Jakarta Sans', sans-serif`;
             ctx.fillStyle = catMeta.color;
-            ctx.fill();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(node.stepNumber || '', node.sx, node.sy + 0.5);
 
             // Progress status check
             const prog = this.getUserProgress();
             const isCompleted = prog.completedTracks && prog.completedTracks[node.id];
 
             if (isCompleted) {
-                // Gold star crown on node
-                ctx.fillStyle = '#fbbf24';
+                // Completed indicator green badge
+                ctx.fillStyle = '#10b981';
                 ctx.beginPath();
-                ctx.arc(node.sx + node.screenRadius * 0.7, node.sy - node.screenRadius * 0.7, 5, 0, Math.PI * 2);
+                ctx.arc(node.sx + node.screenRadius * 0.72, node.sy - node.screenRadius * 0.72, 6, 0, Math.PI * 2);
                 ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            }
+
+            // Step 1 START Flag / Badge Pill
+            if (node.isStart && node.sz > 0.15 && !isFilterDim) {
+                const badgeText = 'INICIO 1';
+                ctx.font = '800 9.5px Outfit, sans-serif';
+                const m = ctx.measureText(badgeText);
+                const bW = m.width + 12;
+                const bH = 16;
+                const bX = node.sx - bW / 2;
+                const bY = node.sy - node.screenRadius - 18;
+
+                ctx.fillStyle = '#0284c7';
+                ctx.beginPath();
+                ctx.roundRect(bX, bY, bW, bH, 8);
+                ctx.fill();
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(badgeText, node.sx, bY + bH / 2);
+            }
+
+            // Step 26 META Flag / Badge Pill
+            if (node.isFinish && node.sz > 0.15 && !isFilterDim) {
+                const badgeText = 'META 26';
+                ctx.font = '800 9.5px Outfit, sans-serif';
+                const m = ctx.measureText(badgeText);
+                const bW = m.width + 12;
+                const bH = 16;
+                const bX = node.sx - bW / 2;
+                const bY = node.sy - node.screenRadius - 18;
+
+                ctx.fillStyle = '#d97706';
+                ctx.beginPath();
+                ctx.roundRect(bX, bY, bW, bH, 8);
+                ctx.fill();
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(badgeText, node.sx, bY + bH / 2);
             }
 
             // Node Title Pill (Floating text badge below node)
-            if (node.sz > 0.25 && !isFilterDim) {
-                const labelText = node.title.length > 20 ? node.title.substring(0, 18) + '…' : node.title;
-                ctx.font = '600 11px Outfit, Inter, sans-serif';
+            if (node.sz > 0.22 && !isFilterDim) {
+                const cleanTitle = node.title.length > 20 ? node.title.substring(0, 18) + '…' : node.title;
+                const labelText = `${node.stepNumber}. ${cleanTitle}`;
+                ctx.font = '700 11px Outfit, Inter, sans-serif';
                 const textMetrics = ctx.measureText(labelText);
-                const padX = 7;
+                const padX = 8;
                 const pillW = textMetrics.width + padX * 2;
-                const pillH = 18;
+                const pillH = 19;
                 const pillX = node.sx - pillW / 2;
                 const pillY = node.sy + node.screenRadius + 4;
 
-                // Pill background
-                ctx.fillStyle = isHovered ? 'rgba(15, 23, 42, 0.95)' : 'rgba(15, 23, 42, 0.8)';
+                // Pill background in White Mode
+                ctx.save();
+                ctx.shadowColor = 'rgba(15, 23, 42, 0.08)';
+                ctx.shadowBlur = 8;
+                ctx.shadowOffsetY = 2;
+                ctx.fillStyle = isHovered ? '#ffffff' : 'rgba(255, 255, 255, 0.94)';
                 ctx.beginPath();
-                ctx.roundRect(pillX, pillY, pillW, pillH, 5);
+                ctx.roundRect(pillX, pillY, pillW, pillH, 6);
                 ctx.fill();
+                ctx.restore();
+
                 ctx.lineWidth = 1;
-                ctx.strokeStyle = isHovered ? catMeta.color : 'rgba(148, 163, 184, 0.25)';
+                ctx.strokeStyle = isHovered ? catMeta.color : 'rgba(203, 213, 225, 0.9)';
                 ctx.stroke();
 
-                // Text
-                ctx.fillStyle = isHovered ? '#ffffff' : '#e2e8f0';
-                ctx.fillText(labelText, pillX + padX, pillY + 13);
+                // Pill Text
+                ctx.fillStyle = '#0f172a';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(labelText, node.sx, pillY + pillH / 2);
             }
 
             ctx.restore();
@@ -1246,11 +1506,11 @@
                 const stepEl = document.createElement('div');
                 stepEl.className = `path-level-step ${alignClass} ${isCompleted ? 'completed' : isActive ? 'active-node' : isUnlocked ? 'unlocked' : 'locked'}`;
 
-                let statusPill = `<span class="plc-status-pill" style="background:#0284c722;color:#38bdf8;">En Curso</span>`;
+                let statusPill = `<span class="plc-status-pill" style="background:#0284c722;color:#0284c7;">En Curso</span>`;
                 if (isCompleted) {
-                    statusPill = `<span class="plc-status-pill" style="background:#05966922;color:#34d399;">Aprobado &bull; ⭐⭐⭐</span>`;
+                    statusPill = `<span class="plc-status-pill" style="background:#05966922;color:#059669;"><i class="fa-solid fa-check-double"></i> Aprobado</span>`;
                 } else if (!isUnlocked) {
-                    statusPill = `<span class="plc-status-pill" style="background:rgba(255,255,255,0.06);color:#94a3b8;"><i class="fa-solid fa-lock"></i> Bloqueado</span>`;
+                    statusPill = `<span class="plc-status-pill" style="background:rgba(15,23,42,0.06);color:#64748b;"><i class="fa-solid fa-lock"></i> Bloqueado</span>`;
                 }
 
                 // Mascot HTML if this is the active node
@@ -1307,8 +1567,8 @@
                     const mascot = document.createElement('div');
                     mascot.className = 'path-player-mascot';
                     mascot.innerHTML = `
-                        <div class="mascot-speech-tag" style="background:#fbbf24;color:#0f172a;">¡CAMPEÓN! ⭐</div>
-                        <div class="mascot-avatar-wrap" style="border-color:#fbbf24;background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                        <div class="mascot-speech-tag" style="background:#0284c7;color:#ffffff;">¡CAMPEÓN! <i class="fa-solid fa-trophy"></i></div>
+                        <div class="mascot-avatar-wrap" style="border-color:#0284c7;background:linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);">
                             <i class="fa-solid fa-trophy"></i>
                         </div>
                         <div class="mascot-shadow"></div>
@@ -1378,14 +1638,14 @@
 
             const statusEl = document.getElementById('wmd-stat-status');
             if (isCompleted) {
-                statusEl.textContent = 'Aprobado ⭐';
-                statusEl.style.color = '#34d399';
+                statusEl.innerHTML = '<i class="fa-solid fa-check"></i> Aprobado';
+                statusEl.style.color = '#10b981';
             } else if (isUnlocked) {
-                statusEl.textContent = 'Disponible';
-                statusEl.style.color = '#38bdf8';
+                statusEl.innerHTML = '<i class="fa-solid fa-play"></i> Disponible';
+                statusEl.style.color = '#0284c7';
             } else {
-                statusEl.textContent = 'Bloqueado 🔒';
-                statusEl.style.color = '#94a3b8';
+                statusEl.innerHTML = '<i class="fa-solid fa-lock"></i> Bloqueado';
+                statusEl.style.color = '#64748b';
             }
 
             // Readings breakdown list
@@ -1398,18 +1658,18 @@
                     item.className = 'wmd-reading-item';
                     item.innerHTML = `
                         <div class="wmd-r-title">
-                            <span style="color:#94a3b8;font-size:0.75rem;margin-right:6px;">R${rIdx + 1}</span>
+                            <span style="color:#64748b;font-size:0.75rem;margin-right:6px;">R${rIdx + 1}</span>
                             ${r.title}
                         </div>
                         <div class="wmd-r-meta">
                             <span><i class="fa-solid fa-clock"></i> ${r.duration || '8 min'}</span>
-                            <i class="fa-solid ${isRCompleted ? 'fa-circle-check' : 'fa-circle'}" style="color:${isRCompleted ? '#10b981' : 'rgba(255,255,255,0.2)'};margin-left:8px;"></i>
+                            <i class="fa-solid ${isRCompleted ? 'fa-circle-check' : 'fa-circle'}" style="color:${isRCompleted ? '#10b981' : 'rgba(203,213,225,0.7)'};margin-left:8px;"></i>
                         </div>
                     `;
                     readingsList.appendChild(item);
                 });
             } else {
-                readingsList.innerHTML = `<div style="color:#94a3b8;font-size:0.8rem;padding:8px;">Contenido programático en desarrollo.</div>`;
+                readingsList.innerHTML = `<div style="color:#64748b;font-size:0.8rem;padding:8px;">Contenido programático en desarrollo.</div>`;
             }
 
             // Buttons
@@ -1485,7 +1745,7 @@
             if (!wasCompleted) {
                 prog.xp = (prog.xp || 450) + 150;
                 this.sound.playVictory();
-                this.showToast('¡Módulo Conquistado! ⭐ +150 XP');
+                this.showToast('¡Módulo Conquistado! +150 XP');
             } else {
                 prog.xp = Math.max(0, (prog.xp || 450) - 150);
                 this.showToast('Progreso actualizado.');
@@ -1507,7 +1767,11 @@
             const toast = this.els.toast;
             const text = document.getElementById('world-toast-text');
             if (!toast || !text) return;
-            text.textContent = message;
+            // Strict regex stripping all emoji ranges and variation selectors to enforce clean UI
+            text.textContent = (message || '')
+                .replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE00}-\u{FE0F}]/gu, '')
+                .replace(/\s+/g, ' ')
+                .trim();
             toast.classList.add('show');
             setTimeout(() => {
                 toast.classList.remove('show');
