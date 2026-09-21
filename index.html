@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css?v=1.0.3">
     <link rel="stylesheet" href="dev.css?v=4.0.3">
+    <link rel="stylesheet" href="world-map.css?v=1.0.0">
 
     <!-- Local Backdoor Initializer script to prevent screen flash -->
     <script>
@@ -1127,14 +1128,18 @@
 
                     <!-- CTAs -->
                     <div class="supaste-hero-actions soft-element" style="--delay: 0.95s">
-                        <button type="button" onclick="openUnderDevModal('26 Modules')" class="supaste-btn-primary">
-                            <span>26 Modules</span>
+                        <button type="button" id="cs-btn-enter-world" class="supaste-btn-primary" style="background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); box-shadow: 0 4px 20px rgba(56, 189, 248, 0.5);">
+                            <i class="fa-solid fa-earth-americas"></i>
+                            <span>Mundo stemOS 3D</span>
                             <i class="fa-solid fa-arrow-right btn-arrow"></i>
+                        </button>
+                        <button type="button" onclick="openUnderDevModal('26 Modules')" class="supaste-btn-secondary">
+                            <span>26 Módulos ESP</span>
                         </button>
                         <button type="button" onclick="openUnderDevModal('Interactive Demo')"
                             class="supaste-btn-secondary">
                             <i class="fa-solid fa-laptop-code"></i>
-                            <span>Interactive Demo</span>
+                            <span>Demo Interactiva</span>
                         </button>
                         <a href="https://jovenesstem.com" class="supaste-btn-secondary" target="_blank" rel="noopener">
                             <i class="fa-solid fa-seedling"></i>
@@ -1407,6 +1412,11 @@
                     <i class="fa-solid fa-house"></i>
                     <span class="ed-rail-tooltip">All Units (Catálogo)</span>
                 </button>
+                <button class="ed-rail-btn" data-view="world-map" id="nav-btn-world"
+                    title="Mundo stemOS 3D & Camino Gamificado">
+                    <i class="fa-solid fa-earth-americas"></i>
+                    <span class="ed-rail-tooltip">Mundo stemOS (3D & Gamificado)</span>
+                </button>
                 <button class="ed-rail-btn" data-view="skills-graph" id="nav-btn-graph" title="Grafo de Competencias">
                     <i class="fa-solid fa-network-wired"></i>
                     <span class="ed-rail-tooltip">Skills Graph</span>
@@ -1555,6 +1565,13 @@
 
             <!-- ── 3. Content Views Container ── -->
             <div class="ed-views-container">
+
+                <!-- ════ VIEW 0: MUNDO STEMOS 3D & CAMINO GAMIFICADO ════ -->
+                <section class="ed-view" id="view-world-map" style="display: none;">
+                    <div id="world-map-container" style="width: 100%; min-height: 80vh;">
+                        <!-- Injected dynamically by world-map.js -->
+                    </div>
+                </section>
 
                 <!-- ════ VIEW 1: ALL UNITS (The requested grid of Unit cards!) ════ -->
                 <section class="ed-view active" id="view-all-units">
@@ -2126,6 +2143,7 @@
     <script src="content/courses.js" defer></script>
     <script src="content/phrases_library.js" defer></script>
     <script src="app.js" defer></script>
+    <script src="world-map.js" defer></script>
 
     <!-- Service Worker PWA Registration -->
     <script>
@@ -2149,6 +2167,24 @@
                     e.preventDefault();
                     document.documentElement.classList.add('backdoor-unlocked');
                     localStorage.setItem('stemos_backdoor', 'true');
+                });
+            }
+
+            // ── Direct Enter via 3D World Button on Coming Soon ────────
+            const csBtnWorld = document.getElementById('cs-btn-enter-world');
+            if (csBtnWorld) {
+                csBtnWorld.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.documentElement.classList.add('backdoor-unlocked');
+                    localStorage.setItem('stemos_backdoor', 'true');
+                    if (typeof switchDashboardView === 'function') {
+                        switchDashboardView('world-map');
+                    } else {
+                        setTimeout(() => {
+                            const btnW = document.getElementById('nav-btn-world');
+                            if (btnW) btnW.click();
+                        }, 100);
+                    }
                 });
             }
 

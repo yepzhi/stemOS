@@ -1,0 +1,1527 @@
+/**
+ * ==========================================================================
+ * stemOS LXP - 3D World Globe & Gamified Level Path (Super Mario / Duolingo)
+ * Pure Vanilla JavaScript & HTML5 Canvas, zero external libraries.
+ * Fast, lightweight, hardware-accelerated, touch & gesture friendly.
+ * ==========================================================================
+ */
+
+(function (window, document) {
+    'use strict';
+
+    // Track icon fallback mapping
+    const DEFAULT_TRACK_ICONS = {
+        'cybersecurity': 'fa-shield-halved',
+        'it-innovation': 'fa-cloud',
+        'ai-ml': 'fa-brain',
+        'telecom-iot': 'fa-tower-cell',
+        'software-dev': 'fa-code',
+        'data-analytics': 'fa-chart-column',
+        'semiconductors': 'fa-microchip',
+        'electromobility': 'fa-car-battery',
+        'aerospace': 'fa-plane-up',
+        'robotics-automation': 'fa-robot',
+        'energy-renewables': 'fa-solar-panel',
+        'advanced-manufacturing': 'fa-industry',
+        'industrial-operations': 'fa-truck-fast',
+        'mechatronics': 'fa-gears',
+        'biotechnology': 'fa-dna',
+        'space-satellite': 'fa-satellite',
+        'environmental-sustainability': 'fa-leaf',
+        'healthcare-tech': 'fa-heart-pulse',
+        'materials-nanotech': 'fa-atom',
+        'food-science': 'fa-wheat-awn',
+        'aviation-english': 'fa-plane',
+        'airforce-aerospace': 'fa-jet-fighter',
+        'hospitality-food': 'fa-utensils',
+        'business-leadership': 'fa-chart-line',
+        'project-management': 'fa-diagram-project',
+        'entrepreneurship': 'fa-lightbulb'
+    };
+
+    const REALM_META = {
+        technology: { label: 'Tecnología & Redes', color: '#0ea5e9', glow: 'rgba(14, 165, 233, 0.5)', icon: 'fa-microchip' },
+        engineering: { label: 'Ingeniería & Industria', color: '#f97316', glow: 'rgba(249, 115, 22, 0.5)', icon: 'fa-gear' },
+        science: { label: 'Ciencias & Futuro', color: '#a855f7', glow: 'rgba(168, 85, 247, 0.5)', icon: 'fa-flask' },
+        career: { label: 'Aviación & Carrera', color: '#22c55e', glow: 'rgba(34, 197, 94, 0.5)', icon: 'fa-plane' }
+    };
+
+    // Synthesized Sound Effects (Web Audio API - Zero external assets)
+    class SoundFX {
+        constructor() {
+            this.ctx = null;
+            this.muted = localStorage.getItem('stemos_sound_muted') === 'true';
+        }
+
+        init() {
+            if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                this.ctx = new AudioCtx();
+            }
+            if (this.ctx && this.ctx.state === 'suspended') {
+                this.ctx.resume();
+            }
+        }
+
+        toggleMute() {
+            this.muted = !this.muted;
+            localStorage.setItem('stemos_sound_muted', this.muted ? 'true' : 'false');
+            return this.muted;
+        }
+
+        playBlip(freq = 587, duration = 0.08) {
+            if (this.muted) return;
+            try {
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        playWarp() {
+            if (this.muted) return;
+            try {
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(220, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.35);
+                gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.38);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.4);
+            } catch (e) {}
+        }
+
+        playVictory() {
+            if (this.muted) return;
+            try {
+                this.init();
+                if (!this.ctx) return;
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                notes.forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    const startTime = this.ctx.currentTime + idx * 0.09;
+                    osc.frequency.setValueAtTime(freq, startTime);
+                    gain.gain.setValueAtTime(0.16, startTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.22);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(startTime);
+                    osc.stop(startTime + 0.24);
+                });
+            } catch (e) {}
+        }
+    }
+
+    class StemOSWorldMapEngine {
+        constructor() {
+            this.container = null;
+            this.canvas = null;
+            this.ctx = null;
+            this.sound = new SoundFX();
+
+            // 3D Sphere state
+            this.radius = 240;
+            this.pitch = 0.25; // X rotation in radians
+            this.yaw = 0.4;    // Y rotation in radians
+            this.targetPitch = 0.25;
+            this.targetYaw = 0.4;
+            this.zoom = 1.0;
+            this.targetZoom = 1.0;
+            this.minZoom = 0.65;
+            this.maxZoom = 2.4;
+
+            // Physics / Inertia
+            this.vx = 0;
+            this.vy = 0;
+            this.autoRotate = true;
+            this.isDragging = false;
+            this.lastPointerX = 0;
+            this.lastPointerY = 0;
+            this.pinchDist = null;
+
+            // Data & Nodes
+            this.courses = {};
+            this.nodes = [];
+            this.stars = [];
+            this.hoveredNode = null;
+            this.selectedTrackId = null;
+            this.activeFilter = 'all';
+
+            // Active callbacks
+            this.launchModuleCallback = null;
+            this.launchSocraticCallback = null;
+
+            // DOM Elements
+            this.els = {};
+            this.animFrameId = null;
+        }
+
+        init(containerId = 'world-map-container', options = {}) {
+            this.container = typeof containerId === 'string' ? document.getElementById(containerId) : containerId;
+            if (!this.container) {
+                console.warn(`[stemOS World Map] Container #${containerId} not found.`);
+                return;
+            }
+
+            if (options.onLaunchModule) this.launchModuleCallback = options.onLaunchModule;
+            if (options.onLaunchSocratic) this.launchSocraticCallback = options.onLaunchSocratic;
+
+            // Fetch course data from global LXP_COURSES
+            if (typeof LXP_COURSES !== 'undefined') {
+                this.courses = LXP_COURSES;
+            }
+
+            this.buildDOM();
+            this.setupStars(140);
+            this.buildSphereNodes();
+            this.bindEvents();
+            this.startLoop();
+
+            // Initial resize
+            this.handleResize();
+            window.addEventListener('resize', () => this.handleResize());
+
+            // Check URL params for direct track opening
+            const urlParams = new URLSearchParams(window.location.search);
+            const directTrack = urlParams.get('world') || urlParams.get('track');
+            if (directTrack && this.courses[directTrack]) {
+                setTimeout(() => this.openWorldPath(directTrack), 300);
+            }
+        }
+
+        buildDOM() {
+            this.container.innerHTML = `
+                <div class="world-experience-wrap" id="world-experience-wrap">
+                    <!-- Top HUD -->
+                    <div class="world-hud-top">
+                        <div class="world-title-badge">
+                            <div class="world-brand-icon"><i class="fa-solid fa-earth-americas"></i></div>
+                            <div class="world-title-text">
+                                <span class="world-title-main">Mundo stemOS <span style="font-size:0.7rem;font-weight:800;color:#38bdf8;background:rgba(56,189,248,0.15);padding:2px 8px;border-radius:6px;border:1px solid rgba(56,189,248,0.3);">3D ESP</span></span>
+                                <span class="world-title-sub">Gira el globo, haz zoom o entra al camino gamificado</span>
+                            </div>
+                        </div>
+
+                        <!-- Realm Filters -->
+                        <div class="world-realm-filters">
+                            <button class="realm-filter-btn active" data-cat="all">
+                                <i class="fa-solid fa-globe"></i> Todos (26)
+                            </button>
+                            <button class="realm-filter-btn" data-cat="technology">
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#0ea5e9;"></span> Tecnología
+                            </button>
+                            <button class="realm-filter-btn" data-cat="engineering">
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#f97316;"></span> Ingeniería
+                            </button>
+                            <button class="realm-filter-btn" data-cat="science">
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#a855f7;"></span> Ciencias
+                            </button>
+                            <button class="realm-filter-btn" data-cat="career">
+                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;"></span> Aviación
+                            </button>
+                        </div>
+
+                        <!-- Tools -->
+                        <div class="world-hud-tools">
+                            <button class="world-tool-btn ${!this.sound.muted ? 'active' : ''}" id="wm-btn-sound" title="Sonidos / Audio FX">
+                                <i class="fa-solid ${!this.sound.muted ? 'fa-volume-high' : 'fa-volume-xmark'}"></i>
+                            </button>
+                            <button class="world-tool-btn" id="wm-btn-reset-cam" title="Centrar Globo">
+                                <i class="fa-solid fa-crosshairs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3D Canvas Viewport -->
+                    <div class="world-globe-viewport" id="world-globe-viewport">
+                        <canvas id="world-globe-canvas"></canvas>
+                    </div>
+
+                    <!-- Floating Zoom Controls -->
+                    <div class="world-floating-controls">
+                        <button class="world-ctrl-btn" id="wm-btn-zoom-in" title="Acercar (Zoom In)"><i class="fa-solid fa-plus"></i></button>
+                        <button class="world-ctrl-btn" id="wm-btn-zoom-out" title="Alejar (Zoom Out)"><i class="fa-solid fa-minus"></i></button>
+                        <button class="world-ctrl-btn active" id="wm-btn-autorotate" title="Pausar/Reanudar Giro"><i class="fa-solid fa-arrows-rotate"></i></button>
+                    </div>
+
+                    <!-- Gesture Hint -->
+                    <div class="world-gesture-hint" id="world-gesture-hint">
+                        <i class="fa-solid fa-hand-pointer"></i>
+                        <span>Arrastra para girar 360° &bull; Rueda o Pellizca para Zoom &bull; Clic para entrar</span>
+                    </div>
+
+                    <!-- Holographic Tooltip -->
+                    <div class="world-hover-tooltip" id="world-hover-tooltip">
+                        <div class="wtt-cat-tag" id="wtt-cat-tag">INGENIERÍA</div>
+                        <div class="wtt-title" id="wtt-title">Manufactura Aeronáutica</div>
+                        <div class="wtt-meta-row">
+                            <span id="wtt-modules-count"><i class="fa-solid fa-cubes"></i> 9 Módulos</span>
+                            <span id="wtt-stars-count"><i class="fa-solid fa-star" style="color:#fbbf24;"></i> 2 Ganadas</span>
+                        </div>
+                        <div class="wtt-cta">
+                            <span>Explorar Camino &bull; Duolingo/Mario</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Level Path View (Super Mario & Duolingo Winding Trail) -->
+                    <div class="world-level-path-view" id="world-level-path-view">
+                        <!-- Top Bar in Path -->
+                        <div class="path-header-card">
+                            <button class="path-back-btn" id="path-btn-back">
+                                <i class="fa-solid fa-arrow-left"></i>
+                                <span>Volver al Globo 3D</span>
+                            </button>
+
+                            <div class="path-track-info">
+                                <div class="path-track-badges">
+                                    <span class="path-cat-badge" id="path-cat-badge">🔵 TECNOLOGÍA</span>
+                                    <span class="path-standard-badge" id="path-standard-badge">CEFR B1 &bull; AS9100</span>
+                                </div>
+                                <h2 class="path-track-title" id="path-track-title">Manufactura Aeronáutica</h2>
+                            </div>
+
+                            <div class="path-track-stats-row">
+                                <div class="path-stat-pill" id="path-stat-progress">
+                                    <i class="fa-solid fa-award"></i>
+                                    <span id="path-stat-progress-text">3/9 Módulos</span>
+                                </div>
+                                <select class="path-track-select" id="path-track-select" aria-label="Cambiar de Mundo">
+                                    <!-- Options injected dynamically -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Winding Trail SVG & Stepping Stones -->
+                        <div class="path-winding-trail-wrap" id="path-winding-trail-wrap">
+                            <svg class="path-svg-trail" id="path-svg-trail" preserveAspectRatio="none">
+                                <path class="path-svg-line-bg" id="path-svg-line-bg" d=""></path>
+                                <path class="path-svg-line-glow" id="path-svg-line-glow" d=""></path>
+                            </svg>
+                            <div class="path-nodes-layer" id="path-nodes-layer">
+                                <!-- Stepping stone nodes injected here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Module Inspection Bottom Drawer -->
+                    <div class="wmd-backdrop" id="wmd-backdrop"></div>
+                    <div class="world-module-drawer" id="world-module-drawer">
+                        <div class="wmd-handle"></div>
+                        <div class="wmd-header">
+                            <div class="wmd-title-box">
+                                <div class="wmd-tag-row">
+                                    <span class="path-cat-badge" id="wmd-cat-tag">TECNOLOGÍA</span>
+                                    <span class="path-standard-badge" id="wmd-mod-code">MÓDULO 1</span>
+                                    <span class="path-standard-badge" id="wmd-level-tag">CEFR A2-B1</span>
+                                </div>
+                                <h3 class="wmd-title" id="wmd-title">OT/ICS Zero-Trust Architecture</h3>
+                                <div class="wmd-subtitle" id="wmd-subtitle">Arquitectura Zero-Trust en OT/ICS y Redes Aisladas</div>
+                            </div>
+                            <button class="wmd-close-btn" id="wmd-btn-close"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+
+                        <div class="wmd-stats-grid">
+                            <div class="wmd-stat-box">
+                                <span class="wmd-stat-lbl">Lecturas ESP</span>
+                                <span class="wmd-stat-val" id="wmd-stat-readings">2 Lecturas</span>
+                            </div>
+                            <div class="wmd-stat-box">
+                                <span class="wmd-stat-lbl">Tiempo Estimado</span>
+                                <span class="wmd-stat-val" id="wmd-stat-time">~18 min</span>
+                            </div>
+                            <div class="wmd-stat-box">
+                                <span class="wmd-stat-lbl">Recompensa</span>
+                                <span class="wmd-stat-val" id="wmd-stat-xp" style="color:#fbbf24;">+150 XP</span>
+                            </div>
+                            <div class="wmd-stat-box">
+                                <span class="wmd-stat-lbl">Estado</span>
+                                <span class="wmd-stat-val" id="wmd-stat-status" style="color:#38bdf8;">En Curso</span>
+                            </div>
+                        </div>
+
+                        <div class="wmd-readings-list" id="wmd-readings-list">
+                            <!-- Readings injected here -->
+                        </div>
+
+                        <div class="wmd-actions-row">
+                            <button class="wmd-btn-primary" id="wmd-btn-launch-primary">
+                                <i class="fa-solid fa-rocket"></i>
+                                <span>Iniciar Módulo Directo</span>
+                            </button>
+                            <button class="wmd-btn-secondary" id="wmd-btn-launch-socratic" style="display:none;">
+                                <i class="fa-solid fa-brain"></i>
+                                <span>Reto Socrático</span>
+                            </button>
+                            <button class="wmd-btn-secondary" id="wmd-btn-toggle-complete">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span id="wmd-toggle-complete-text">Marcar Completado</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Toast Notification -->
+                    <div class="world-toast" id="world-toast">
+                        <i class="fa-solid fa-sparkles" style="color:#fbbf24;"></i>
+                        <span id="world-toast-text">¡Módulo Desbloqueado!</span>
+                    </div>
+                </div>
+            `;
+
+            // Cache DOM references
+            this.els.wrap = document.getElementById('world-experience-wrap');
+            this.els.canvas = document.getElementById('world-globe-canvas');
+            this.els.viewport = document.getElementById('world-globe-viewport');
+            this.els.tooltip = document.getElementById('world-hover-tooltip');
+            this.els.pathView = document.getElementById('world-level-path-view');
+            this.els.drawer = document.getElementById('world-module-drawer');
+            this.els.backdrop = document.getElementById('wmd-backdrop');
+            this.els.toast = document.getElementById('world-toast');
+
+            this.canvas = this.els.canvas;
+            this.ctx = this.canvas.getContext('2d');
+
+            // Populate Track Select Dropdown
+            const trackSelect = document.getElementById('path-track-select');
+            if (trackSelect) {
+                trackSelect.innerHTML = '';
+                for (let trKey in this.courses) {
+                    const tr = this.courses[trKey];
+                    const opt = document.createElement('option');
+                    opt.value = trKey;
+                    opt.textContent = `${tr.titleEN || tr.title} (${tr.modules ? tr.modules.length : 0} M)`;
+                    trackSelect.appendChild(opt);
+                }
+                trackSelect.addEventListener('change', (e) => {
+                    this.openWorldPath(e.target.value);
+                });
+            }
+        }
+
+        setupStars(count = 140) {
+            this.stars = [];
+            for (let i = 0; i < count; i++) {
+                this.stars.push({
+                    x: (Math.random() - 0.5) * 2,
+                    y: (Math.random() - 0.5) * 2,
+                    z: Math.random() * 0.8 + 0.2,
+                    size: Math.random() * 1.8 + 0.6,
+                    baseAlpha: Math.random() * 0.7 + 0.3,
+                    twinkleSpeed: Math.random() * 0.04 + 0.01,
+                    phase: Math.random() * Math.PI * 2
+                });
+            }
+        }
+
+        buildSphereNodes() {
+            this.nodes = [];
+            const realmGroups = {
+                technology: [],
+                engineering: [],
+                science: [],
+                career: []
+            };
+
+            for (let trKey in this.courses) {
+                const tr = this.courses[trKey];
+                const cat = tr.category || 'technology';
+                if (realmGroups[cat]) {
+                    realmGroups[cat].push({ id: trKey, ...tr });
+                } else {
+                    realmGroups.technology.push({ id: trKey, ...tr });
+                }
+            }
+
+            // Map each realm to a quadrant of the sphere (longitude yaw range and latitude pitch range)
+            const realmQuadrants = {
+                technology:  { startLon: 15 * Math.PI / 180,  endLon: 80 * Math.PI / 180,  minLat: -0.65, maxLat: 0.65 },
+                engineering: { startLon: 105 * Math.PI / 180, endLon: 170 * Math.PI / 180, minLat: -0.7,  maxLat: 0.7 },
+                science:     { startLon: 195 * Math.PI / 180, endLon: 260 * Math.PI / 180, minLat: -0.65, maxLat: 0.65 },
+                career:      { startLon: 285 * Math.PI / 180, endLon: 350 * Math.PI / 180, minLat: -0.7,  maxLat: 0.7 }
+            };
+
+            for (let cat in realmGroups) {
+                const list = realmGroups[cat];
+                const quad = realmQuadrants[cat];
+                const count = list.length;
+                if (count === 0) continue;
+
+                list.forEach((track, idx) => {
+                    // Spread tracks inside quadrant
+                    const lonFrac = count > 1 ? idx / (count - 1) : 0.5;
+                    const lon = quad.startLon + lonFrac * (quad.endLon - quad.startLon);
+
+                    // Alternating latitude for zigzag constellation look
+                    const latFrac = (idx % 2 === 0 ? 0.3 : 0.7) + (Math.sin(idx * 1.7) * 0.2);
+                    const lat = quad.minLat + latFrac * (quad.maxLat - quad.minLat);
+
+                    // Spherical to Cartesian coordinates (Radius = 1 on unit sphere)
+                    const x = Math.cos(lat) * Math.sin(lon);
+                    const y = Math.sin(lat);
+                    const z = Math.cos(lat) * Math.cos(lon);
+
+                    this.nodes.push({
+                        id: track.id,
+                        title: track.titleEN || track.title,
+                        titleES: track.title,
+                        category: cat,
+                        standard: track.standard || 'IEEE/ISO',
+                        modules: track.modules || [],
+                        icon: DEFAULT_TRACK_ICONS[track.id] || 'fa-book-open',
+                        // Unit sphere position
+                        ux: x,
+                        uy: y,
+                        uz: z,
+                        // Projected 2D screen coordinates
+                        sx: 0,
+                        sy: 0,
+                        sz: 0,
+                        screenRadius: 18,
+                        visible: true
+                    });
+                });
+            }
+        }
+
+        getUserProgress() {
+            let prog = {
+                completedReadings: {},
+                completedModules: {},
+                completedTracks: {}
+            };
+            try {
+                const saved = localStorage.getItem('stemos_user_progress');
+                if (saved) {
+                    prog = JSON.parse(saved);
+                }
+            } catch (e) {}
+            return prog;
+        }
+
+        handleResize() {
+            if (!this.canvas || !this.els.viewport) return;
+            const rect = this.els.viewport.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            const w = rect.width;
+            const h = rect.height;
+
+            this.canvas.width = Math.round(w * dpr);
+            this.canvas.height = Math.round(h * dpr);
+            this.canvas.style.width = `${w}px`;
+            this.canvas.style.height = `${h}px`;
+
+            // Adjust base sphere radius based on viewport
+            this.radius = Math.min(w, h) * 0.38;
+            if (w < 600) this.radius = Math.min(w, h) * 0.42;
+        }
+
+        bindEvents() {
+            const vp = this.els.viewport;
+            if (!vp) return;
+
+            // Touch / Mouse Down
+            const onDown = (clientX, clientY) => {
+                this.isDragging = true;
+                this.autoRotate = false;
+                this.lastPointerX = clientX;
+                this.lastPointerY = clientY;
+                vp.classList.add('dragging');
+            };
+
+            // Touch / Mouse Move
+            const onMove = (clientX, clientY) => {
+                if (!this.isDragging) {
+                    // Check hover
+                    this.checkHover(clientX, clientY);
+                    return;
+                }
+
+                const dx = clientX - this.lastPointerX;
+                const dy = clientY - this.lastPointerY;
+
+                this.vx = dx * 0.005;
+                this.vy = dy * 0.005;
+
+                this.targetYaw += this.vx;
+                this.targetPitch -= this.vy;
+
+                // Clamp pitch to avoid gimbal flip
+                this.targetPitch = Math.max(-1.3, Math.min(1.3, this.targetPitch));
+
+                this.lastPointerX = clientX;
+                this.lastPointerY = clientY;
+            };
+
+            // Touch / Mouse Up
+            const onUp = (clientX, clientY, isClick) => {
+                if (this.isDragging) {
+                    this.isDragging = false;
+                    vp.classList.remove('dragging');
+                }
+                if (isClick && this.hoveredNode) {
+                    this.sound.playWarp();
+                    this.openWorldPath(this.hoveredNode.id);
+                }
+            };
+
+            // Pointer / Mouse events
+            let startClickX = 0, startClickY = 0;
+            vp.addEventListener('mousedown', (e) => {
+                startClickX = e.clientX;
+                startClickY = e.clientY;
+                onDown(e.clientX, e.clientY);
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                onMove(e.clientX, e.clientY);
+            });
+
+            window.addEventListener('mouseup', (e) => {
+                const dist = Math.hypot(e.clientX - startClickX, e.clientY - startClickY);
+                const isClick = dist < 6;
+                onUp(e.clientX, e.clientY, isClick);
+            });
+
+            // Wheel for zoom
+            vp.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? -0.1 : 0.1;
+                this.targetZoom = Math.max(this.minZoom, Math.min(this.maxZoom, this.targetZoom + delta));
+            }, { passive: false });
+
+            // Touch support
+            vp.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    startClickX = e.touches[0].clientX;
+                    startClickY = e.touches[0].clientY;
+                    onDown(e.touches[0].clientX, e.touches[0].clientY);
+                } else if (e.touches.length === 2) {
+                    this.pinchDist = Math.hypot(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                }
+            }, { passive: true });
+
+            vp.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 1) {
+                    onMove(e.touches[0].clientX, e.touches[0].clientY);
+                } else if (e.touches.length === 2 && this.pinchDist) {
+                    const newDist = Math.hypot(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                    const diff = (newDist - this.pinchDist) * 0.005;
+                    this.targetZoom = Math.max(this.minZoom, Math.min(this.maxZoom, this.targetZoom + diff));
+                    this.pinchDist = newDist;
+                }
+            }, { passive: true });
+
+            vp.addEventListener('touchend', (e) => {
+                if (e.touches.length === 0) {
+                    const lastTouch = e.changedTouches[0];
+                    const dist = Math.hypot(lastTouch.clientX - startClickX, lastTouch.clientY - startClickY);
+                    const isClick = dist < 12;
+                    this.pinchDist = null;
+                    onUp(lastTouch.clientX, lastTouch.clientY, isClick);
+                }
+            }, { passive: true });
+
+            // Realm Filter Chips
+            const filterBtns = this.container.querySelectorAll('.realm-filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    this.setRealmFilter(btn.dataset.cat);
+                });
+            });
+
+            // HUD Controls
+            const btnZoomIn = document.getElementById('wm-btn-zoom-in');
+            const btnZoomOut = document.getElementById('wm-btn-zoom-out');
+            const btnAuto = document.getElementById('wm-btn-autorotate');
+            const btnReset = document.getElementById('wm-btn-reset-cam');
+            const btnSound = document.getElementById('wm-btn-sound');
+
+            if (btnZoomIn) btnZoomIn.addEventListener('click', () => {
+                this.targetZoom = Math.min(this.maxZoom, this.targetZoom + 0.25);
+                this.sound.playBlip(700, 0.05);
+            });
+            if (btnZoomOut) btnZoomOut.addEventListener('click', () => {
+                this.targetZoom = Math.max(this.minZoom, this.targetZoom - 0.25);
+                this.sound.playBlip(500, 0.05);
+            });
+            if (btnAuto) btnAuto.addEventListener('click', () => {
+                this.autoRotate = !this.autoRotate;
+                btnAuto.classList.toggle('active', this.autoRotate);
+                this.sound.playBlip(600, 0.05);
+            });
+            if (btnReset) btnReset.addEventListener('click', () => {
+                this.targetPitch = 0.25;
+                this.targetYaw = 0.4;
+                this.targetZoom = 1.0;
+                this.autoRotate = true;
+                this.sound.playBlip(800, 0.06);
+            });
+            if (btnSound) btnSound.addEventListener('click', () => {
+                const muted = this.sound.toggleMute();
+                btnSound.classList.toggle('active', !muted);
+                btnSound.innerHTML = `<i class="fa-solid ${!muted ? 'fa-volume-high' : 'fa-volume-xmark'}"></i>`;
+                this.showToast(!muted ? '🔊 Audio FX activado' : '🔇 Audio FX silenciado');
+                if (!muted) this.sound.playBlip(750, 0.08);
+            });
+
+            // Level Path Back Button
+            const btnBack = document.getElementById('path-btn-back');
+            if (btnBack) {
+                btnBack.addEventListener('click', () => {
+                    this.closeWorldPath();
+                });
+            }
+
+            // Module Drawer Close & Backdrop
+            const btnCloseDrawer = document.getElementById('wmd-btn-close');
+            if (btnCloseDrawer) btnCloseDrawer.addEventListener('click', () => this.closeDrawer());
+            if (this.els.backdrop) this.els.backdrop.addEventListener('click', () => this.closeDrawer());
+        }
+
+        setRealmFilter(cat) {
+            this.activeFilter = cat;
+            this.sound.playBlip(650, 0.06);
+
+            // Rotate smoothly to center that realm
+            const targetAngles = {
+                all: { yaw: 0.4, pitch: 0.25 },
+                technology: { yaw: 0.8, pitch: 0.1 },
+                engineering: { yaw: 2.4, pitch: 0.15 },
+                science: { yaw: 3.9, pitch: 0.1 },
+                career: { yaw: 5.5, pitch: 0.2 }
+            };
+
+            const target = targetAngles[cat] || targetAngles.all;
+            this.targetYaw = target.yaw;
+            this.targetPitch = target.pitch;
+            this.targetZoom = 1.15;
+            this.autoRotate = false;
+        }
+
+        checkHover(clientX, clientY) {
+            if (!this.canvas || this.isDragging) return;
+            const rect = this.canvas.getBoundingClientRect();
+            const mouseX = clientX - rect.left;
+            const mouseY = clientY - rect.top;
+
+            let closest = null;
+            let minDist = 34; // hit radius
+
+            for (let i = 0; i < this.nodes.length; i++) {
+                const node = this.nodes[i];
+                if (!node.visible || node.sz <= 0) continue; // Only front-facing nodes
+                if (this.activeFilter !== 'all' && node.category !== this.activeFilter) continue;
+
+                const dist = Math.hypot(mouseX - node.sx, mouseY - node.sy);
+                if (dist < minDist) {
+                    minDist = dist;
+                    closest = node;
+                }
+            }
+
+            if (closest !== this.hoveredNode) {
+                this.hoveredNode = closest;
+                if (this.hoveredNode) {
+                    this.sound.playBlip(880, 0.03);
+                    this.showTooltip(this.hoveredNode, rect);
+                } else {
+                    this.hideTooltip();
+                }
+            }
+        }
+
+        showTooltip(node, canvasRect) {
+            const tip = this.els.tooltip;
+            if (!tip) return;
+
+            const catMeta = REALM_META[node.category] || REALM_META.technology;
+            const prog = this.getUserProgress();
+            const trackMods = node.modules || [];
+            let completedCount = 0;
+            trackMods.forEach(m => {
+                if (prog.completedModules && prog.completedModules[m.id]) completedCount++;
+            });
+
+            document.getElementById('wtt-cat-tag').textContent = catMeta.label;
+            document.getElementById('wtt-cat-tag').style.background = `${catMeta.color}22`;
+            document.getElementById('wtt-cat-tag').style.color = catMeta.color;
+            document.getElementById('wtt-cat-tag').style.border = `1px solid ${catMeta.color}55`;
+
+            document.getElementById('wtt-title').textContent = node.title;
+            document.getElementById('wtt-modules-count').innerHTML = `<i class="fa-solid fa-cubes"></i> ${trackMods.length} Módulos`;
+            document.getElementById('wtt-stars-count').innerHTML = `<i class="fa-solid fa-star" style="color:#fbbf24;"></i> ${completedCount} / ${trackMods.length} Aprobados`;
+
+            tip.style.left = `${node.sx}px`;
+            tip.style.top = `${node.sy}px`;
+            tip.classList.add('visible');
+        }
+
+        hideTooltip() {
+            if (this.els.tooltip) {
+                this.els.tooltip.classList.remove('visible');
+            }
+        }
+
+        /* ─── 3D PROJECTION & RENDERING LOOP ───────────────────────── */
+        startLoop() {
+            const render = () => {
+                this.updatePhysics();
+                this.draw();
+                this.animFrameId = requestAnimationFrame(render);
+            };
+            this.animFrameId = requestAnimationFrame(render);
+        }
+
+        updatePhysics() {
+            // Smooth yaw and pitch damping
+            this.yaw += (this.targetYaw - this.yaw) * 0.12;
+            this.pitch += (this.targetPitch - this.pitch) * 0.12;
+            this.zoom += (this.targetZoom - this.zoom) * 0.15;
+
+            // Auto-rotate if enabled
+            if (this.autoRotate && !this.isDragging) {
+                this.targetYaw += 0.0028;
+            }
+
+            // Inertia decay
+            if (!this.isDragging) {
+                this.targetYaw += this.vx;
+                this.targetPitch -= this.vy;
+                this.targetPitch = Math.max(-1.3, Math.min(1.3, this.targetPitch));
+                this.vx *= 0.92;
+                this.vy *= 0.92;
+            }
+        }
+
+        draw() {
+            if (!this.ctx || !this.canvas) return;
+            const ctx = this.ctx;
+            const dpr = window.devicePixelRatio || 1;
+            const width = this.canvas.width / dpr;
+            const height = this.canvas.height / dpr;
+            const cx = width / 2;
+            const cy = height / 2;
+
+            ctx.save();
+            ctx.scale(dpr, dpr);
+            ctx.clearRect(0, 0, width, height);
+
+            // 1. Draw Starfield
+            this.drawStarfield(ctx, width, height, cx, cy);
+
+            // 2. Draw 3D Globe Core Background
+            const curRadius = this.radius * this.zoom;
+            this.drawGlobeAtmosphere(ctx, cx, cy, curRadius);
+
+            // 3. Draw Latitude & Longitude Coordinate Grid
+            this.draw3DGridLines(ctx, cx, cy, curRadius);
+
+            // 4. Project all Nodes in 3D
+            const cosPitch = Math.cos(this.pitch);
+            const sinPitch = Math.sin(this.pitch);
+            const cosYaw = Math.cos(this.yaw);
+            const sinYaw = Math.sin(this.yaw);
+
+            this.nodes.forEach(node => {
+                // Apply 3D Rotation Matrix:
+                // First rotate around Y axis (Yaw)
+                const x1 = node.ux * cosYaw + node.uz * sinYaw;
+                const y1 = node.uy;
+                const z1 = -node.ux * sinYaw + node.uz * cosYaw;
+
+                // Then rotate around X axis (Pitch)
+                const x2 = x1;
+                const y2 = y1 * cosPitch - z1 * sinPitch;
+                const z2 = y1 * sinPitch + z1 * cosPitch;
+
+                // Perspective projection
+                const camDistance = 2.4;
+                const scale = (camDistance / (camDistance - z2 * 0.45)) * this.zoom;
+
+                node.sx = cx + x2 * this.radius * scale;
+                node.sy = cy - y2 * this.radius * scale;
+                node.sz = z2; // depth
+                node.screenRadius = Math.max(12, 18 * scale);
+            });
+
+            // 5. Draw Constellation Connectors
+            this.drawConstellationBeams(ctx);
+
+            // 6. Draw Back-facing Nodes (Depth fog)
+            this.nodes.forEach(node => {
+                if (node.sz <= 0) {
+                    this.drawNode(ctx, node, false);
+                }
+            });
+
+            // 7. Draw Globe Front Rim Glow (Fresnel effect)
+            this.drawGlobeRimGlow(ctx, cx, cy, curRadius);
+
+            // 8. Draw Front-facing Nodes (Crisp & Interactive)
+            // Sort front nodes by depth (painter's algorithm)
+            const frontNodes = this.nodes.filter(n => n.sz > 0).sort((a, b) => a.sz - b.sz);
+            frontNodes.forEach(node => {
+                this.drawNode(ctx, node, true);
+            });
+
+            ctx.restore();
+        }
+
+        drawStarfield(ctx, width, height, cx, cy) {
+            const time = Date.now() * 0.001;
+            this.stars.forEach(star => {
+                const alpha = star.baseAlpha + Math.sin(time * star.twinkleSpeed * 50 + star.phase) * 0.25;
+                const x = cx + star.x * (width * 0.55) + Math.sin(this.yaw * 0.2) * 20 * star.z;
+                const y = cy + star.y * (height * 0.55) + Math.sin(this.pitch * 0.2) * 20 * star.z;
+
+                ctx.fillStyle = `rgba(224, 242, 254, ${Math.max(0, Math.min(1, alpha))})`;
+                ctx.beginPath();
+                ctx.arc(x, y, star.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        drawGlobeAtmosphere(ctx, cx, cy, radius) {
+            // Inner Core
+            const grad = ctx.createRadialGradient(
+                cx - radius * 0.25, cy - radius * 0.25, radius * 0.1,
+                cx, cy, radius
+            );
+            grad.addColorStop(0, '#0c2252');
+            grad.addColorStop(0.5, '#071638');
+            grad.addColorStop(0.85, '#040b1c');
+            grad.addColorStop(1, '#020614');
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            // Outer Atmospheric Glow
+            const outerGlow = ctx.createRadialGradient(cx, cy, radius * 0.95, cx, cy, radius * 1.22);
+            outerGlow.addColorStop(0, 'rgba(56, 189, 248, 0.25)');
+            outerGlow.addColorStop(0.5, 'rgba(14, 165, 233, 0.08)');
+            outerGlow.addColorStop(1, 'rgba(14, 165, 233, 0)');
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius * 1.22, 0, Math.PI * 2);
+            ctx.fillStyle = outerGlow;
+            ctx.fill();
+            ctx.restore();
+        }
+
+        draw3DGridLines(ctx, cx, cy, radius) {
+            ctx.save();
+            ctx.lineWidth = 1;
+
+            const cosPitch = Math.cos(this.pitch);
+            const sinPitch = Math.sin(this.pitch);
+            const cosYaw = Math.cos(this.yaw);
+            const sinYaw = Math.sin(this.yaw);
+
+            // Parallels (Latitudes)
+            const latitudes = [-0.9, -0.6, -0.3, 0, 0.3, 0.6, 0.9];
+            latitudes.forEach(lat => {
+                const yUnit = Math.sin(lat);
+                const rUnit = Math.cos(lat);
+                const segments = 48;
+
+                ctx.beginPath();
+                let started = false;
+
+                for (let i = 0; i <= segments; i++) {
+                    const lon = (i / segments) * Math.PI * 2;
+                    const ux = rUnit * Math.sin(lon);
+                    const uy = yUnit;
+                    const uz = rUnit * Math.cos(lon);
+
+                    const x1 = ux * cosYaw + uz * sinYaw;
+                    const y1 = uy;
+                    const z1 = -ux * sinYaw + uz * cosYaw;
+
+                    const x2 = x1;
+                    const y2 = y1 * cosPitch - z1 * sinPitch;
+                    const z2 = y1 * sinPitch + z1 * cosPitch;
+
+                    const px = cx + x2 * radius;
+                    const py = cy - y2 * radius;
+
+                    if (z2 > 0) {
+                        ctx.strokeStyle = lat === 0 ? 'rgba(56, 189, 248, 0.25)' : 'rgba(125, 211, 252, 0.12)';
+                        if (!started) {
+                            ctx.moveTo(px, py);
+                            started = true;
+                        } else {
+                            ctx.lineTo(px, py);
+                        }
+                    } else {
+                        started = false;
+                    }
+                }
+                ctx.stroke();
+            });
+
+            // Meridians (Longitudes)
+            const meridians = 12;
+            for (let m = 0; m < meridians; m++) {
+                const lon = (m / meridians) * Math.PI * 2;
+                const segments = 32;
+                ctx.beginPath();
+                let started = false;
+
+                for (let i = 0; i <= segments; i++) {
+                    const lat = -Math.PI / 2 + (i / segments) * Math.PI;
+                    const ux = Math.cos(lat) * Math.sin(lon);
+                    const uy = Math.sin(lat);
+                    const uz = Math.cos(lat) * Math.cos(lon);
+
+                    const x1 = ux * cosYaw + uz * sinYaw;
+                    const y1 = uy;
+                    const z1 = -ux * sinYaw + uz * cosYaw;
+
+                    const x2 = x1;
+                    const y2 = y1 * cosPitch - z1 * sinPitch;
+                    const z2 = y1 * sinPitch + z1 * cosPitch;
+
+                    const px = cx + x2 * radius;
+                    const py = cy - y2 * radius;
+
+                    if (z2 > 0) {
+                        ctx.strokeStyle = 'rgba(125, 211, 252, 0.10)';
+                        if (!started) {
+                            ctx.moveTo(px, py);
+                            started = true;
+                        } else {
+                            ctx.lineTo(px, py);
+                        }
+                    } else {
+                        started = false;
+                    }
+                }
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        drawConstellationBeams(ctx) {
+            ctx.save();
+            ctx.lineWidth = 1.5;
+
+            // Connect neighboring nodes inside same category
+            for (let i = 0; i < this.nodes.length; i++) {
+                for (let j = i + 1; j < this.nodes.length; j++) {
+                    const n1 = this.nodes[i];
+                    const n2 = this.nodes[j];
+
+                    if (n1.category === n2.category) {
+                        // Check angular distance on sphere
+                        const dot = n1.ux * n2.ux + n1.uy * n2.uy + n1.uz * n2.uz;
+                        if (dot > 0.72) { // Neighbors
+                            const avgZ = (n1.sz + n2.sz) / 2;
+                            if (avgZ > -0.2) {
+                                const catMeta = REALM_META[n1.category] || REALM_META.technology;
+                                const alpha = avgZ > 0 ? 0.35 : 0.08;
+
+                                ctx.beginPath();
+                                ctx.strokeStyle = catMeta.color;
+                                ctx.globalAlpha = alpha;
+                                ctx.moveTo(n1.sx, n1.sy);
+                                ctx.lineTo(n2.sx, n2.sy);
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                }
+            }
+            ctx.restore();
+        }
+
+        drawGlobeRimGlow(ctx, cx, cy, radius) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        drawNode(ctx, node, isFront) {
+            const catMeta = REALM_META[node.category] || REALM_META.technology;
+            const isHovered = this.hoveredNode === node;
+            const isFilterDim = this.activeFilter !== 'all' && node.category !== this.activeFilter;
+
+            ctx.save();
+
+            if (!isFront) {
+                // Back-facing node: semi-transparent, depth fog
+                ctx.globalAlpha = isFilterDim ? 0.04 : 0.22;
+                ctx.beginPath();
+                ctx.arc(node.sx, node.sy, node.screenRadius * 0.65, 0, Math.PI * 2);
+                ctx.fillStyle = catMeta.color;
+                ctx.fill();
+                ctx.restore();
+                return;
+            }
+
+            // Front-facing node
+            ctx.globalAlpha = isFilterDim ? 0.25 : 1;
+
+            // Hover / Active pulse halo
+            if (isHovered) {
+                ctx.beginPath();
+                ctx.arc(node.sx, node.sy, node.screenRadius * 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = catMeta.glow;
+                ctx.fill();
+            }
+
+            // Outer ring
+            ctx.beginPath();
+            ctx.arc(node.sx, node.sy, node.screenRadius, 0, Math.PI * 2);
+            ctx.fillStyle = '#0f172a';
+            ctx.fill();
+            ctx.lineWidth = isHovered ? 3.5 : 2.2;
+            ctx.strokeStyle = isHovered ? '#ffffff' : catMeta.color;
+            ctx.stroke();
+
+            // Core circle
+            ctx.beginPath();
+            ctx.arc(node.sx, node.sy, node.screenRadius * 0.72, 0, Math.PI * 2);
+            ctx.fillStyle = catMeta.color;
+            ctx.fill();
+
+            // Progress status check
+            const prog = this.getUserProgress();
+            const isCompleted = prog.completedTracks && prog.completedTracks[node.id];
+
+            if (isCompleted) {
+                // Gold star crown on node
+                ctx.fillStyle = '#fbbf24';
+                ctx.beginPath();
+                ctx.arc(node.sx + node.screenRadius * 0.7, node.sy - node.screenRadius * 0.7, 5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Node Title Pill (Floating text badge below node)
+            if (node.sz > 0.25 && !isFilterDim) {
+                const labelText = node.title.length > 20 ? node.title.substring(0, 18) + '…' : node.title;
+                ctx.font = '600 11px Outfit, Inter, sans-serif';
+                const textMetrics = ctx.measureText(labelText);
+                const padX = 7;
+                const pillW = textMetrics.width + padX * 2;
+                const pillH = 18;
+                const pillX = node.sx - pillW / 2;
+                const pillY = node.sy + node.screenRadius + 4;
+
+                // Pill background
+                ctx.fillStyle = isHovered ? 'rgba(15, 23, 42, 0.95)' : 'rgba(15, 23, 42, 0.8)';
+                ctx.beginPath();
+                ctx.roundRect(pillX, pillY, pillW, pillH, 5);
+                ctx.fill();
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = isHovered ? catMeta.color : 'rgba(148, 163, 184, 0.25)';
+                ctx.stroke();
+
+                // Text
+                ctx.fillStyle = isHovered ? '#ffffff' : '#e2e8f0';
+                ctx.fillText(labelText, pillX + padX, pillY + 13);
+            }
+
+            ctx.restore();
+        }
+
+        /* ==========================================================================
+           LEVEL PATH VIEW (SUPER MARIO BROS & DUOLINGO WINDING PATH)
+           ========================================================================== */
+        openWorldPath(trackId) {
+            const track = this.courses[trackId];
+            if (!track) return;
+            this.selectedTrackId = trackId;
+
+            this.hideTooltip();
+            const catMeta = REALM_META[track.category] || REALM_META.technology;
+            const prog = this.getUserProgress();
+
+            // 1. Update Header Card
+            const catBadge = document.getElementById('path-cat-badge');
+            const stdBadge = document.getElementById('path-standard-badge');
+            const titleEl = document.getElementById('path-track-title');
+            const statProg = document.getElementById('path-stat-progress-text');
+            const selectEl = document.getElementById('path-track-select');
+
+            if (catBadge) {
+                catBadge.textContent = catMeta.label.toUpperCase();
+                catBadge.style.background = `${catMeta.color}22`;
+                catBadge.style.color = catMeta.color;
+                catBadge.style.border = `1px solid ${catMeta.color}55`;
+            }
+            if (stdBadge) stdBadge.textContent = `Nivel ${track.level || 'A2-B1'} &bull; ${track.standard || 'IEEE/ISO'}`;
+            if (titleEl) titleEl.textContent = track.titleEN || track.title;
+            if (selectEl) selectEl.value = trackId;
+
+            // Compute Progress
+            const modules = track.modules || [];
+            let completedCount = 0;
+            modules.forEach(m => {
+                if (prog.completedModules && prog.completedModules[m.id]) completedCount++;
+            });
+
+            if (statProg) {
+                statProg.textContent = `${completedCount}/${modules.length} Módulos Conquistados (${Math.round((completedCount / (modules.length || 1)) * 100)}%)`;
+            }
+
+            // 2. Render Winding Path Steps
+            this.renderWindingPath(track, prog);
+
+            // 3. Open Path View with animation
+            if (this.els.pathView) {
+                this.els.pathView.classList.add('active');
+                this.els.pathView.scrollTop = 0;
+            }
+        }
+
+        closeWorldPath() {
+            if (this.els.pathView) {
+                this.els.pathView.classList.remove('active');
+            }
+            this.selectedTrackId = null;
+            this.sound.playBlip(550, 0.05);
+        }
+
+        renderWindingPath(track, prog) {
+            const container = document.getElementById('path-nodes-layer');
+            const svgTrail = document.getElementById('path-svg-trail');
+            const bgPath = document.getElementById('path-svg-line-bg');
+            const glowPath = document.getElementById('path-svg-line-glow');
+            if (!container) return;
+
+            container.innerHTML = '';
+            const modules = track.modules || [];
+            if (modules.length === 0) {
+                container.innerHTML = `<div style="text-align:center;padding:40px;color:#94a3b8;">No hay módulos registrados en este mundo.</div>`;
+                return;
+            }
+
+            const alignments = ['align-left', 'align-center', 'align-right', 'align-center'];
+            let activeNodeFound = false;
+
+            modules.forEach((mod, idx) => {
+                const isCompleted = prog.completedModules && prog.completedModules[mod.id] === true;
+                const isPrevCompleted = idx === 0 || (prog.completedModules && prog.completedModules[modules[idx - 1].id] === true);
+                const isUnlocked = isCompleted || isPrevCompleted;
+                const isActive = isUnlocked && !isCompleted && !activeNodeFound;
+                if (isActive) activeNodeFound = true;
+
+                const alignClass = alignments[idx % alignments.length];
+                const iconClass = mod.icon || 'fa-solid fa-microchip';
+                const totalReadings = mod.readings ? mod.readings.length : 0;
+
+                const stepEl = document.createElement('div');
+                stepEl.className = `path-level-step ${alignClass} ${isCompleted ? 'completed' : isActive ? 'active-node' : isUnlocked ? 'unlocked' : 'locked'}`;
+
+                let statusPill = `<span class="plc-status-pill" style="background:#0284c722;color:#38bdf8;">En Curso</span>`;
+                if (isCompleted) {
+                    statusPill = `<span class="plc-status-pill" style="background:#05966922;color:#34d399;">Aprobado &bull; ⭐⭐⭐</span>`;
+                } else if (!isUnlocked) {
+                    statusPill = `<span class="plc-status-pill" style="background:rgba(255,255,255,0.06);color:#94a3b8;"><i class="fa-solid fa-lock"></i> Bloqueado</span>`;
+                }
+
+                // Mascot HTML if this is the active node
+                const mascotHtml = isActive ? `
+                    <div class="path-player-mascot">
+                        <div class="mascot-speech-tag">¡ESTÁS AQUÍ!</div>
+                        <div class="mascot-avatar-wrap">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="mascot-shadow"></div>
+                    </div>
+                ` : '';
+
+                // Star crown if completed
+                const starCrownHtml = isCompleted ? `
+                    <div class="path-star-crown">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                ` : '';
+
+                stepEl.innerHTML = `
+                    <div class="path-node-disc" data-mod-id="${mod.id}" title="${mod.title}">
+                        ${mascotHtml}
+                        ${starCrownHtml}
+                        <span class="node-m-num">M${idx + 1}</span>
+                        <i class="${isUnlocked ? iconClass : 'fa-solid fa-lock'} node-m-icon"></i>
+                    </div>
+
+                    <div class="path-level-card">
+                        ${statusPill}
+                        <div class="plc-title">${mod.titleES || mod.title}</div>
+                        <div class="plc-meta"><i class="fa-solid fa-book-open"></i> ${totalReadings} Lecturas &bull; ~${totalReadings * 8 + 5} min</div>
+                    </div>
+                `;
+
+                // Click event on stepping stone disc
+                const disc = stepEl.querySelector('.path-node-disc');
+                if (disc) {
+                    disc.addEventListener('click', () => {
+                        this.sound.playBlip(750, 0.06);
+                        this.openModuleDrawer(track.id, mod, idx, isUnlocked, isCompleted);
+                    });
+                }
+
+                container.appendChild(stepEl);
+            });
+
+            // If all are completed, place mascot on the final node!
+            if (!activeNodeFound && modules.length > 0) {
+                const lastStep = container.querySelector('.path-level-step:last-child .path-node-disc');
+                if (lastStep) {
+                    const mascot = document.createElement('div');
+                    mascot.className = 'path-player-mascot';
+                    mascot.innerHTML = `
+                        <div class="mascot-speech-tag" style="background:#fbbf24;color:#0f172a;">¡CAMPEÓN! ⭐</div>
+                        <div class="mascot-avatar-wrap" style="border-color:#fbbf24;background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <div class="mascot-shadow"></div>
+                    `;
+                    lastStep.appendChild(mascot);
+                }
+            }
+
+            // Draw SVG Bezier Curve Trail connecting discs
+            setTimeout(() => this.drawSvgCurveTrail(), 60);
+        }
+
+        drawSvgCurveTrail() {
+            const wrap = document.getElementById('path-winding-trail-wrap');
+            const bgPath = document.getElementById('path-svg-line-bg');
+            const glowPath = document.getElementById('path-svg-line-glow');
+            if (!wrap || !bgPath || !glowPath) return;
+
+            const discs = wrap.querySelectorAll('.path-node-disc');
+            if (discs.length < 2) return;
+
+            const wrapRect = wrap.getBoundingClientRect();
+            const points = [];
+
+            discs.forEach(disc => {
+                const rect = disc.getBoundingClientRect();
+                const x = (rect.left + rect.width / 2) - wrapRect.left;
+                const y = (rect.top + rect.height / 2) - wrapRect.top;
+                points.push({ x, y });
+            });
+
+            // Build smooth cubic bezier curve SVG path
+            let d = `M ${points[0].x} ${points[0].y}`;
+            for (let i = 0; i < points.length - 1; i++) {
+                const p0 = points[i];
+                const p1 = points[i + 1];
+                const midY = (p0.y + p1.y) / 2;
+                d += ` C ${p0.x} ${midY}, ${p1.x} ${midY}, ${p1.x} ${p1.y}`;
+            }
+
+            bgPath.setAttribute('d', d);
+            glowPath.setAttribute('d', d);
+        }
+
+        /* ─── MODULE INSPECTION DRAWER ─────────────────────────────────── */
+        openModuleDrawer(trackId, mod, modIndex, isUnlocked, isCompleted) {
+            const track = this.courses[trackId];
+            if (!track) return;
+
+            const catMeta = REALM_META[track.category] || REALM_META.technology;
+            const readings = mod.readings || [];
+            const prog = this.getUserProgress();
+
+            document.getElementById('wmd-cat-tag').textContent = catMeta.label.toUpperCase();
+            document.getElementById('wmd-cat-tag').style.background = `${catMeta.color}22`;
+            document.getElementById('wmd-cat-tag').style.color = catMeta.color;
+
+            document.getElementById('wmd-mod-code').textContent = `MÓDULO ${modIndex + 1}`;
+            document.getElementById('wmd-level-tag').textContent = `Nivel ${track.level || 'A2-B1'}`;
+
+            document.getElementById('wmd-title').textContent = mod.title;
+            document.getElementById('wmd-subtitle').textContent = mod.titleES || mod.title;
+
+            document.getElementById('wmd-stat-readings').textContent = `${readings.length} Lecturas`;
+            document.getElementById('wmd-stat-time').textContent = `~${readings.length * 8 + 5} min`;
+            document.getElementById('wmd-stat-xp').textContent = `+${readings.length * 50 + 50} XP`;
+
+            const statusEl = document.getElementById('wmd-stat-status');
+            if (isCompleted) {
+                statusEl.textContent = 'Aprobado ⭐';
+                statusEl.style.color = '#34d399';
+            } else if (isUnlocked) {
+                statusEl.textContent = 'Disponible';
+                statusEl.style.color = '#38bdf8';
+            } else {
+                statusEl.textContent = 'Bloqueado 🔒';
+                statusEl.style.color = '#94a3b8';
+            }
+
+            // Readings breakdown list
+            const readingsList = document.getElementById('wmd-readings-list');
+            readingsList.innerHTML = '';
+            if (readings.length > 0) {
+                readings.forEach((r, rIdx) => {
+                    const isRCompleted = prog.completedReadings && prog.completedReadings[r.id];
+                    const item = document.createElement('div');
+                    item.className = 'wmd-reading-item';
+                    item.innerHTML = `
+                        <div class="wmd-r-title">
+                            <span style="color:#94a3b8;font-size:0.75rem;margin-right:6px;">R${rIdx + 1}</span>
+                            ${r.title}
+                        </div>
+                        <div class="wmd-r-meta">
+                            <span><i class="fa-solid fa-clock"></i> ${r.duration || '8 min'}</span>
+                            <i class="fa-solid ${isRCompleted ? 'fa-circle-check' : 'fa-circle'}" style="color:${isRCompleted ? '#10b981' : 'rgba(255,255,255,0.2)'};margin-left:8px;"></i>
+                        </div>
+                    `;
+                    readingsList.appendChild(item);
+                });
+            } else {
+                readingsList.innerHTML = `<div style="color:#94a3b8;font-size:0.8rem;padding:8px;">Contenido programático en desarrollo.</div>`;
+            }
+
+            // Buttons
+            const btnPrimary = document.getElementById('wmd-btn-launch-primary');
+            const btnSocratic = document.getElementById('wmd-btn-launch-socratic');
+            const btnToggle = document.getElementById('wmd-btn-toggle-complete');
+            const toggleText = document.getElementById('wmd-toggle-complete-text');
+
+            // Launch Primary action
+            btnPrimary.onclick = () => {
+                this.closeDrawer();
+                this.sound.playWarp();
+                if (this.launchModuleCallback) {
+                    this.launchModuleCallback(trackId, mod);
+                } else if (typeof window.openAcademicModal === 'function') {
+                    window.openAcademicModal(trackId, mod);
+                } else if (typeof window.openDrawer === 'function') {
+                    window.openDrawer(trackId, mod.id, this.courses);
+                }
+            };
+
+            // Socratic Dialogue action
+            if (mod.socraticChallenges && mod.socraticChallenges.length > 0) {
+                btnSocratic.style.display = 'inline-flex';
+                btnSocratic.onclick = () => {
+                    this.closeDrawer();
+                    this.sound.playWarp();
+                    if (this.launchSocraticCallback) {
+                        this.launchSocraticCallback(trackId, mod.id);
+                    } else if (typeof window.launchSocraticChallenge === 'function') {
+                        window.launchSocraticChallenge(trackId, mod.id);
+                    }
+                };
+            } else {
+                btnSocratic.style.display = 'none';
+            }
+
+            // Toggle completed status (gamification test)
+            if (toggleText) {
+                toggleText.textContent = isCompleted ? 'Desmarcar Aprobado' : 'Marcar Aprobado (+150 XP)';
+            }
+            btnToggle.onclick = () => {
+                this.toggleModuleCompletion(trackId, mod.id);
+            };
+
+            // Show drawer
+            this.els.drawer.classList.add('open');
+            this.els.backdrop.classList.add('open');
+        }
+
+        closeDrawer() {
+            if (this.els.drawer) this.els.drawer.classList.remove('open');
+            if (this.els.backdrop) this.els.backdrop.classList.remove('open');
+        }
+
+        toggleModuleCompletion(trackId, modId) {
+            let prog = this.getUserProgress();
+            if (!prog.completedModules) prog.completedModules = {};
+            if (!prog.completedReadings) prog.completedReadings = {};
+
+            const wasCompleted = prog.completedModules[modId] === true;
+            prog.completedModules[modId] = !wasCompleted;
+
+            // Mark readings as well
+            const track = this.courses[trackId];
+            const mod = track?.modules?.find(m => m.id === modId);
+            if (mod && mod.readings) {
+                mod.readings.forEach(r => {
+                    prog.completedReadings[r.id] = !wasCompleted;
+                });
+            }
+
+            if (!wasCompleted) {
+                prog.xp = (prog.xp || 450) + 150;
+                this.sound.playVictory();
+                this.showToast('¡Módulo Conquistado! ⭐ +150 XP');
+            } else {
+                prog.xp = Math.max(0, (prog.xp || 450) - 150);
+                this.showToast('Progreso actualizado.');
+            }
+
+            localStorage.setItem('stemos_user_progress', JSON.stringify(prog));
+
+            // Refresh level path UI
+            this.openWorldPath(trackId);
+            this.closeDrawer();
+
+            // Notify stemOS dashboard if functions exist
+            if (typeof window.loadProgress === 'function') window.loadProgress();
+            if (typeof window.renderSegmentedProgressBar === 'function') window.renderSegmentedProgressBar();
+            if (typeof window.updateKPIMetrics === 'function') window.updateKPIMetrics();
+        }
+
+        showToast(message) {
+            const toast = this.els.toast;
+            const text = document.getElementById('world-toast-text');
+            if (!toast || !text) return;
+            text.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3200);
+        }
+
+        syncProgress() {
+            if (this.selectedTrackId) {
+                this.openWorldPath(this.selectedTrackId);
+            }
+        }
+    }
+
+    // Export to global scope
+    window.StemOSWorldMap = new StemOSWorldMapEngine();
+
+})(window, document);

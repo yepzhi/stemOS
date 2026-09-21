@@ -202,6 +202,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof renderBadgesWall === 'function') {
             renderBadgesWall();
         }
+        if (window.StemOSWorldMap && typeof window.StemOSWorldMap.syncProgress === 'function') {
+            window.StemOSWorldMap.syncProgress();
+        }
     }
 
     // Load progress and update UI
@@ -906,6 +909,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCurrentReading();
         academicModal.showModal();
     }
+    window.openAcademicModal = openAcademicModal;
 
     function switchScreen(screenName) {
         screenReading.classList.remove('active');
@@ -1696,7 +1700,24 @@ document.addEventListener('DOMContentLoaded', () => {
         edRailBtns.forEach(btn => {
             btn.classList.toggle('active', btn.dataset.view === viewName);
         });
+
+        // 3D World Globe & Gamified Level Path Initializer
+        if (viewName === 'world-map') {
+            if (window.StemOSWorldMap) {
+                if (!window.StemOSWorldMap.initialized) {
+                    window.StemOSWorldMap.init('world-map-container', {
+                        onLaunchModule: (trackId, mod) => openAcademicModal(trackId, mod),
+                        onLaunchSocratic: (trackId, modId) => launchSocraticChallenge(trackId, modId)
+                    });
+                    window.StemOSWorldMap.initialized = true;
+                } else {
+                    window.StemOSWorldMap.handleResize();
+                    window.StemOSWorldMap.syncProgress();
+                }
+            }
+        }
     }
+    window.switchDashboardView = switchDashboardView;
 
     edRailBtns.forEach(btn => {
         btn.addEventListener('click', () => {

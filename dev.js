@@ -126,6 +126,7 @@ function initStudio() {
   setupSupasteInteractions(tracks, phrases);
   setupExamModalListeners(tracks);
   setupVocabPopoverListeners();
+  setupDevWorldModal(coursesData);
 }
 
 function setupLevelSwitcher(tracks, phrases) {
@@ -2898,6 +2899,55 @@ function setupVocabPopoverListeners() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && popover.style.display !== 'none') {
       popover.style.display = 'none';
+    }
+  });
+}
+
+// ── 3D WORLD GLOBE & GAMIFIED LEVEL PATH INTEGRATION ──
+function setupDevWorldModal(coursesData) {
+  const overlay = document.getElementById('dev-world-modal-overlay');
+  const closeBtn = document.getElementById('btn-close-dev-world');
+  const navBtn = document.getElementById('nav-btn-open-world');
+  const heroBtn = document.getElementById('hero-open-world-btn');
+  if (!overlay) return;
+
+  function openWorldModal() {
+    overlay.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    if (window.StemOSWorldMap) {
+      if (!window.StemOSWorldMap.devInitialized) {
+        window.StemOSWorldMap.init('dev-world-map-container', {
+          onLaunchModule: (trackId, mod) => {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+            openDrawer(trackId, mod.id, coursesData);
+          },
+          onLaunchSocratic: (trackId, modId) => {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+            openDrawer(trackId, modId, coursesData);
+          }
+        });
+        window.StemOSWorldMap.devInitialized = true;
+      } else {
+        window.StemOSWorldMap.handleResize();
+        window.StemOSWorldMap.syncProgress();
+      }
+    }
+  }
+
+  function closeWorldModal() {
+    overlay.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  if (navBtn) navBtn.addEventListener('click', (e) => { e.preventDefault(); openWorldModal(); });
+  if (heroBtn) heroBtn.addEventListener('click', (e) => { e.preventDefault(); openWorldModal(); });
+  if (closeBtn) closeBtn.addEventListener('click', closeWorldModal);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.style.display !== 'none') {
+      closeWorldModal();
     }
   });
 }

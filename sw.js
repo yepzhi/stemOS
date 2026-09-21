@@ -10,6 +10,8 @@ const ASSETS_TO_CACHE = [
   '/index.html',
   '/styles.css',
   '/app.js',
+  '/world-map.css',
+  '/world-map.js',
   '/content/courses.js',
   '/content/phrases_library.js',
   '/dev',
