@@ -1,3 +1,37 @@
+
+// ── FORMATIVE COMPREHENSION CHECK: BLUR & LOCK READING CONTENT ──
+window.toggleFormativeComprehensionCheck = function(modId, rIdx, forceState) {
+  const container = document.getElementById(`reading-lockable-${modId}-${rIdx}`);
+  const quizBody = document.getElementById(`quiz-body-${modId}-${rIdx}`);
+  const quizBtn = document.getElementById(`quiz-btn-${modId}-${rIdx}`);
+  const quizSec = document.getElementById(`quiz-sec-${modId}-${rIdx}`);
+  if (!container || !quizBody) return;
+
+  const isCurrentlyOpen = quizBody.style.display !== "none";
+  const shouldOpen = (forceState !== undefined) ? forceState : !isCurrentlyOpen;
+
+  if (shouldOpen) {
+    container.classList.add("is-blurred-locked");
+    quizBody.style.display = "block";
+    if (quizSec) quizSec.classList.add("eval-active");
+    if (quizBtn) {
+      quizBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> <span>Active Evaluation (Reading Blurred)</span>';
+      quizBtn.classList.add("active-eval");
+    }
+    setTimeout(() => {
+      quizSec?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
+  } else {
+    container.classList.remove("is-blurred-locked");
+    quizBody.style.display = "none";
+    if (quizSec) quizSec.classList.remove("eval-active");
+    if (quizBtn) {
+      quizBtn.innerHTML = '<i class="fa-solid fa-lock"></i> <span>Open Comprehension Check</span>';
+      quizBtn.classList.remove("active-eval");
+    }
+  }
+};
+
 // Register Service Worker for Offline PWA Support
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -1056,6 +1090,15 @@ function setupDrawer(tracks) {
         const pct = Math.round((correctCount / cards.length) * 100);
         if (scoreBadge) {
           scoreBadge.style.display = 'inline-block';
+          // Unblur reading content once verified
+          const lockContainer = document.getElementById(`reading-lockable-${mId}-${rIdx}`);
+          if (lockContainer) lockContainer.classList.remove("is-blurred-locked");
+          const quizBtn = document.getElementById(`quiz-btn-${mId}-${rIdx}`);
+          if (quizBtn) {
+            quizBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>Completed (${pct}%)</span>`;
+            quizBtn.classList.remove("active-eval");
+          }
+
           if (pct >= 75) {
             scoreBadge.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#059669;"></i> Lectura Acreditada: ${correctCount}/${cards.length} (${pct}%) &bull; +25 XP`;
             scoreBadge.style.background = '#ecfdf5';
@@ -1154,10 +1197,26 @@ function renderReadingAccordionHtml(mod, activeLevel) {
             </div>
           </div>
 
-          <div class="reading-accordion-body">
-            <div class="reader-content">
-              ${formattedText}
-            </div>
+          <div class="reading-accordion-body" id="accordion-body-${mod.id}-${idx}">
+            <div class="reading-lockable-container" id="reading-lockable-${mod.id}-${idx}">
+              <div class="reading-eval-shield" id="eval-shield-${mod.id}-${idx}">
+                <div class="eval-shield-card">
+                  <div class="shield-lock-icon">
+                    <i class="fa-solid fa-eye-slash"></i>
+                  </div>
+                  <h4 class="shield-lock-title">Reading Content Locked &amp; Blurred</h4>
+                  <p class="shield-lock-desc">
+                    Reading text and vocabulary are blurred during the <strong>Formative Comprehension Check</strong> to verify active recall without referencing the text.
+                  </p>
+                  <button type="button" class="shield-return-btn" onclick="toggleFormativeComprehensionCheck('${mod.id}', ${idx}, false)">
+                    <i class="fa-solid fa-arrow-left"></i> Pause Evaluation &amp; Return to Reading
+                  </button>
+                </div>
+              </div>
+
+              <div class="reader-content">
+                ${formattedText}
+              </div>
 
             ${(r.vocabulary && r.vocabulary.length > 0) ? `
               <div class="glossary-section-wrap">
@@ -1192,19 +1251,24 @@ function renderReadingAccordionHtml(mod, activeLevel) {
               </div>
             ` : ''}
 
+            </div><!-- /reading-lockable-container -->
+
             ${(r.questions && r.questions.length > 0) ? `
               <div class="reading-quiz-section" id="quiz-sec-${mod.id}-${idx}">
-                <div class="quiz-section-header">
+                <div class="quiz-section-header" onclick="toggleFormativeComprehensionCheck('${mod.id}', ${idx})">
                   <div class="quiz-section-title">
                     <i class="fa-solid fa-clipboard-question" style="color:var(--blue-core);"></i>
                     <span>Formative Comprehension Check (${r.questions.length} Technical Questions)</span>
                   </div>
-                  <span style="font-size:0.75rem; font-weight:700; color:#0284c7; background:#e0f2fe; padding:3px 10px; border-radius:6px; border:1px solid #bae6fd;">
-                    Active ESP Evaluation
-                  </span>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <button type="button" class="quiz-toggle-trigger-btn" id="quiz-btn-${mod.id}-${idx}">
+                      <i class="fa-solid fa-lock"></i> <span>Open Comprehension Check</span>
+                    </button>
+                  </div>
                 </div>
 
-                <div class="quiz-questions-list">
+                <div class="quiz-body-collapsible" id="quiz-body-${mod.id}-${idx}" style="display:none;">
+                  <div class="quiz-questions-list">
                   ${r.questions.map((qObj, qIdx) => `
                     <div class="quiz-question-card" data-correct="${qObj.answer}">
                       <div class="quiz-q-text">
@@ -1232,7 +1296,8 @@ function renderReadingAccordionHtml(mod, activeLevel) {
                   </button>
                   <span class="quiz-score-badge" id="quiz-score-${mod.id}-${idx}" style="display:none; font-size:0.82rem; font-weight:700; padding:6px 14px; border-radius:8px; background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0;"></span>
                 </div>
-              </div>
+              </div><!-- /quiz-body-collapsible -->
+            </div>
             ` : ''}
           </div>
         </div>
