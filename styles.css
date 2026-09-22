@@ -4202,3 +4202,127 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
   cursor: pointer;
   user-select: none;
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   STEMOS LXP - MODERN WEB GUIDANCE & DEFERRED RENDERING (CWV & INP)
+   ══════════════════════════════════════════════════════════════════════════ */
+.ed-module-item-card,
+.glossary-phrase-card,
+.ed-unit-card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto none auto 180px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   STEMOS LXP - MOBILE-FIRST TOUCH ERGONOMICS & SAFE AREA INSETS (WCAG 2.5.5)
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Prevent horizontal scroll drift across small viewports */
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw;
+  }
+
+  /* Safe Area Insets for modern iOS and Android navigation bars */
+  .ed-views-container,
+  .main-content,
+  #view-glossary .glass-panel,
+  #view-units-detail {
+    padding-bottom: max(24px, env(safe-area-inset-bottom)) !important;
+  }
+
+  /* Touch targets >= 44px to 48px */
+  .ed-filter-chip,
+  .glossary-filter-chip,
+  .track-filter-chip,
+  .tab-btn {
+    min-height: 44px !important;
+    padding: 10px 16px !important;
+    font-size: 0.85rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    touch-action: manipulation;
+  }
+
+  .glossary-cat-filter-bar,
+  .ed-category-filter-bar {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+    gap: 8px;
+  }
+
+  .glossary-audio-btn {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .btn-submit-quiz,
+  .quiz-toggle-trigger-btn,
+  .shield-return-btn {
+    min-height: 48px !important;
+    padding: 12px 20px !important;
+    font-size: 0.95rem !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .quiz-option-label {
+    min-height: 48px !important;
+    padding: 14px 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    font-size: 0.9rem !important;
+  }
+
+  .quiz-option-radio {
+    width: 20px !important;
+    height: 20px !important;
+    margin-right: 12px !important;
+  }
+
+  .ed-search-wrapper,
+  .glossary-search-wrapper {
+    min-width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .ed-search-input {
+    min-height: 48px !important;
+    font-size: 0.95rem !important;
+  }
+
+  .ed-reading-drawer {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-bottom: max(32px, env(safe-area-inset-bottom)) !important;
+  }
+
+  .drawer-close-btn {
+    min-width: 48px !important;
+    min-height: 48px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.2rem !important;
+  }
+}
+
+/* Keyboard Navigation & Accessible Focus States */
+:focus-visible {
+  outline: 2px solid #0284c7;
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid #0284c7;
+  outline-offset: 2px;
+}
+

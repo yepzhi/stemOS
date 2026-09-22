@@ -2729,4 +2729,39 @@ document.addEventListener('DOMContentLoaded', () => {
         renderGlossaryView('all');
     }
 
+    /* --- 9. KEYBOARD ACCESSIBILITY (WCAG A11Y) --- */
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            // 1. Academic reader & quiz modal
+            const academicModal = document.getElementById('academic-modal');
+            if (academicModal && academicModal.open) {
+                academicModal.close();
+            }
+            // 2. Certificate modal
+            const certModal = document.getElementById('cert-modal');
+            if (certModal && certModal.open) {
+                certModal.close();
+            }
+            // 3. Exam modal overlay
+            const examOverlay = document.getElementById('exam-modal-overlay');
+            if (examOverlay && examOverlay.classList.contains('active')) {
+                examOverlay.classList.remove('active');
+            }
+            // 4. Under dev modal
+            const devModal = document.getElementById('under-dev-modal');
+            if (devModal && devModal.classList.contains('active')) {
+                devModal.classList.remove('active');
+            }
+            // 5. World Map Drawer
+            if (window.stemWorld && typeof window.stemWorld.closeDrawer === 'function') {
+                window.stemWorld.closeDrawer();
+            }
+            // 6. Dev Studio Drawer
+            if (typeof window.closeDrawer === 'function') {
+                window.closeDrawer();
+            }
+        }
+    });
+
 });
+

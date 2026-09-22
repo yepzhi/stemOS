@@ -212,84 +212,132 @@ var LXP_COURSES = {
                                 "es": "Red de Área Local",
                                 "definition": "A network covering a small area like an office or home",
                                 "ipa": "/læn/",
-                                "collocations": ["deploy a segmented LAN", "LAN traffic analysis", "enterprise LAN architecture"]
+                                "collocations": [
+                                    "deploy a segmented LAN",
+                                    "LAN traffic analysis",
+                                    "enterprise LAN architecture"
+                                ]
                             },
                             {
                                 "en": "WAN (Wide Area Network)",
                                 "es": "Red de Área Amplia",
                                 "definition": "A network covering a large geographic area",
                                 "ipa": "/wæn/",
-                                "collocations": ["establish a WAN link", "WAN latency optimization", "MPLS-based WAN"]
+                                "collocations": [
+                                    "establish a WAN link",
+                                    "WAN latency optimization",
+                                    "MPLS-based WAN"
+                                ]
                             },
                             {
                                 "en": "MAN (Metropolitan Area Network)",
                                 "es": "Red de Área Metropolitana",
                                 "definition": "A network covering a city or metropolitan area",
                                 "ipa": "/mæn/",
-                                "collocations": ["MAN fiber backbone", "municipal MAN infrastructure", "carrier-grade MAN"]
+                                "collocations": [
+                                    "MAN fiber backbone",
+                                    "municipal MAN infrastructure",
+                                    "carrier-grade MAN"
+                                ]
                             },
                             {
                                 "en": "PAN (Personal Area Network)",
                                 "es": "Red de Área Personal",
                                 "definition": "A very small network for one person's devices",
                                 "ipa": "/pæn/",
-                                "collocations": ["Bluetooth PAN connection", "PAN device pairing", "wireless PAN range"]
+                                "collocations": [
+                                    "Bluetooth PAN connection",
+                                    "PAN device pairing",
+                                    "wireless PAN range"
+                                ]
                             },
                             {
                                 "en": "VPN (Virtual Private Network)",
                                 "es": "Red Privada Virtual",
                                 "definition": "A secure, encrypted connection over the internet",
                                 "ipa": "/ˌviː.piːˈɛn/",
-                                "collocations": ["connect via VPN tunnel", "site-to-site VPN", "VPN encryption overhead"]
+                                "collocations": [
+                                    "connect via VPN tunnel",
+                                    "site-to-site VPN",
+                                    "VPN encryption overhead"
+                                ]
                             },
                             {
                                 "en": "Topology",
                                 "es": "Topología",
                                 "definition": "The physical or logical arrangement of devices in a network",
                                 "ipa": "/təˈpɒl.ə.dʒi/",
-                                "collocations": ["star topology deployment", "mesh topology resilience", "hybrid network topology"]
+                                "collocations": [
+                                    "star topology deployment",
+                                    "mesh topology resilience",
+                                    "hybrid network topology"
+                                ]
                             },
                             {
                                 "en": "Bandwidth",
                                 "es": "Ancho de banda",
                                 "definition": "The maximum amount of data a network can transfer",
                                 "ipa": "/ˈbænd.wɪdθ/",
-                                "collocations": ["bandwidth allocation policy", "aggregate bandwidth capacity", "bandwidth throttling"]
+                                "collocations": [
+                                    "bandwidth allocation policy",
+                                    "aggregate bandwidth capacity",
+                                    "bandwidth throttling"
+                                ]
                             },
                             {
                                 "en": "Mbps / Gbps",
                                 "es": "Mbps / Gbps",
                                 "definition": "Megabits/Gigabits per second — units of data transfer speed",
                                 "ipa": "/ˈmɛɡ.ə.bɪts pər ˈsɛk.ənd/",
-                                "collocations": ["sustained 10 Gbps throughput", "100 Mbps uplink", "peak Gbps transfer rate"]
+                                "collocations": [
+                                    "sustained 10 Gbps throughput",
+                                    "100 Mbps uplink",
+                                    "peak Gbps transfer rate"
+                                ]
                             },
                             {
                                 "en": "Ethernet",
                                 "es": "Ethernet",
                                 "definition": "A wired networking technology using cables",
                                 "ipa": "/ˈiː.θər.nɛt/",
-                                "collocations": ["Gigabit Ethernet port", "Ethernet frame encapsulation", "Cat6 Ethernet cabling"]
+                                "collocations": [
+                                    "Gigabit Ethernet port",
+                                    "Ethernet frame encapsulation",
+                                    "Cat6 Ethernet cabling"
+                                ]
                             },
                             {
                                 "en": "Bluetooth",
                                 "es": "Bluetooth",
                                 "definition": "A wireless technology for short-range connections",
                                 "ipa": "/ˈbluː.tuːθ/",
-                                "collocations": ["Bluetooth Low Energy (BLE)", "pair via Bluetooth", "Bluetooth mesh network"]
+                                "collocations": [
+                                    "Bluetooth Low Energy (BLE)",
+                                    "pair via Bluetooth",
+                                    "Bluetooth mesh network"
+                                ]
                             },
                             {
                                 "en": "Encrypted",
                                 "es": "Cifrado / Encriptado",
                                 "definition": "Data that is coded so only authorized people can read it",
                                 "ipa": "/ɪnˈkrɪp.tɪd/",
-                                "collocations": ["end-to-end encrypted channel", "encrypted payload", "AES-256 encrypted traffic"]
+                                "collocations": [
+                                    "end-to-end encrypted channel",
+                                    "encrypted payload",
+                                    "AES-256 encrypted traffic"
+                                ]
                             },
                             {
                                 "en": "Nearshoring",
                                 "es": "Nearshoring",
                                 "definition": "Outsourcing business operations to a nearby country",
                                 "ipa": "/ˈnɪr.ʃɔːr.ɪŋ/",
-                                "collocations": ["nearshoring manufacturing hub", "nearshoring talent pipeline", "U.S.-Mexico nearshoring corridor"]
+                                "collocations": [
+                                    "nearshoring manufacturing hub",
+                                    "nearshoring talent pipeline",
+                                    "U.S.-Mexico nearshoring corridor"
+                                ]
                             }
                         ],
                         "questions": [
@@ -591,77 +639,121 @@ var LXP_COURSES = {
                                 "es": "Modelo OSI",
                                 "definition": "A 7-layer framework for understanding network communication",
                                 "ipa": "/ˌoʊ.ɛs.ˈaɪ ˈmɒd.əl/",
-                                "collocations": ["OSI reference model layers", "map protocol to OSI layer", "OSI stack troubleshooting"]
+                                "collocations": [
+                                    "OSI reference model layers",
+                                    "map protocol to OSI layer",
+                                    "OSI stack troubleshooting"
+                                ]
                             },
                             {
                                 "en": "Frame",
                                 "es": "Trama",
                                 "definition": "A unit of data at the Data Link layer",
                                 "ipa": "/freɪm/",
-                                "collocations": ["Ethernet frame header", "frame check sequence (FCS)", "frame encapsulation"]
+                                "collocations": [
+                                    "Ethernet frame header",
+                                    "frame check sequence (FCS)",
+                                    "frame encapsulation"
+                                ]
                             },
                             {
                                 "en": "MAC Address",
                                 "es": "Dirección MAC",
                                 "definition": "A unique hardware identifier for network devices",
                                 "ipa": "/mæk əˈdrɛs/",
-                                "collocations": ["MAC address filtering", "spoof a MAC address", "MAC address table lookup"]
+                                "collocations": [
+                                    "MAC address filtering",
+                                    "spoof a MAC address",
+                                    "MAC address table lookup"
+                                ]
                             },
                             {
                                 "en": "Routing",
                                 "es": "Enrutamiento",
                                 "definition": "The process of finding the best path for data",
                                 "ipa": "/ˈruː.tɪŋ/",
-                                "collocations": ["dynamic routing protocol", "routing table entry", "inter-VLAN routing"]
+                                "collocations": [
+                                    "dynamic routing protocol",
+                                    "routing table entry",
+                                    "inter-VLAN routing"
+                                ]
                             },
                             {
                                 "en": "TCP",
                                 "es": "TCP",
                                 "definition": "Reliable protocol that ensures all data arrives correctly",
                                 "ipa": "/ˌtiː.siːˈpiː/",
-                                "collocations": ["TCP three-way handshake", "TCP retransmission timeout", "TCP session establishment"]
+                                "collocations": [
+                                    "TCP three-way handshake",
+                                    "TCP retransmission timeout",
+                                    "TCP session establishment"
+                                ]
                             },
                             {
                                 "en": "UDP",
                                 "es": "UDP",
                                 "definition": "Fast protocol that doesn't guarantee delivery",
                                 "ipa": "/ˌjuː.diːˈpiː/",
-                                "collocations": ["UDP datagram delivery", "low-latency UDP stream", "UDP port scan"]
+                                "collocations": [
+                                    "UDP datagram delivery",
+                                    "low-latency UDP stream",
+                                    "UDP port scan"
+                                ]
                             },
                             {
                                 "en": "Session",
                                 "es": "Sesión",
                                 "definition": "A connection between two communicating devices",
                                 "ipa": "/ˈsɛʃ.ən/",
-                                "collocations": ["session persistence", "session timeout policy", "terminate idle sessions"]
+                                "collocations": [
+                                    "session persistence",
+                                    "session timeout policy",
+                                    "terminate idle sessions"
+                                ]
                             },
                             {
                                 "en": "Encryption",
                                 "es": "Cifrado",
                                 "definition": "The process of converting data into unreadable code for security",
                                 "ipa": "/ɪnˈkrɪp.ʃən/",
-                                "collocations": ["symmetric encryption key", "encryption at rest", "TLS encryption handshake"]
+                                "collocations": [
+                                    "symmetric encryption key",
+                                    "encryption at rest",
+                                    "TLS encryption handshake"
+                                ]
                             },
                             {
                                 "en": "HTTP / HTTPS",
                                 "es": "HTTP / HTTPS",
                                 "definition": "Protocol for web pages. S = Secure (encrypted)",
                                 "ipa": "/ˌeɪtʃ.tiː.tiːˈpiː/",
-                                "collocations": ["HTTPS certificate validation", "HTTP request header", "enforce HTTPS redirect"]
+                                "collocations": [
+                                    "HTTPS certificate validation",
+                                    "HTTP request header",
+                                    "enforce HTTPS redirect"
+                                ]
                             },
                             {
                                 "en": "Fiber Optic",
                                 "es": "Fibra Óptica",
                                 "definition": "Cable that transmits data as light pulses, very fast",
                                 "ipa": "/ˈfaɪ.bər ˈɒp.tɪk/",
-                                "collocations": ["single-mode fiber optic cable", "fiber optic splice", "fiber optic transceiver module"]
+                                "collocations": [
+                                    "single-mode fiber optic cable",
+                                    "fiber optic splice",
+                                    "fiber optic transceiver module"
+                                ]
                             },
                             {
                                 "en": "Spoofing",
                                 "es": "Suplantación",
                                 "definition": "Faking an identity (IP, MAC, email) to deceive",
                                 "ipa": "/ˈspuː.fɪŋ/",
-                                "collocations": ["IP spoofing attack", "ARP spoofing mitigation", "DNS spoofing detection"]
+                                "collocations": [
+                                    "IP spoofing attack",
+                                    "ARP spoofing mitigation",
+                                    "DNS spoofing detection"
+                                ]
                             }
                         ],
                         "questions": [
@@ -718,84 +810,132 @@ var LXP_COURSES = {
                                 "es": "Dirección IP",
                                 "definition": "A unique number identifying a device on a network",
                                 "ipa": "/ˌaɪˈpiː əˈdrɛs/",
-                                "collocations": ["static IP address assignment", "IP address conflict resolution", "reserved IP address range"]
+                                "collocations": [
+                                    "static IP address assignment",
+                                    "IP address conflict resolution",
+                                    "reserved IP address range"
+                                ]
                             },
                             {
                                 "en": "IPv4",
                                 "es": "IPv4",
                                 "definition": "Internet Protocol version 4, uses 32-bit addresses (e.g., 192.168.1.1)",
                                 "ipa": "/ˌaɪ.piːˈviː.fɔːr/",
-                                "collocations": ["IPv4 address exhaustion", "IPv4 subnet mask", "IPv4 header checksum"]
+                                "collocations": [
+                                    "IPv4 address exhaustion",
+                                    "IPv4 subnet mask",
+                                    "IPv4 header checksum"
+                                ]
                             },
                             {
                                 "en": "IPv6",
                                 "es": "IPv6",
                                 "definition": "Internet Protocol version 6, uses 128-bit addresses for more devices",
                                 "ipa": "/ˌaɪ.piːˈviː.sɪks/",
-                                "collocations": ["IPv6 global unicast address", "IPv6 neighbor discovery", "dual-stack IPv4/IPv6"]
+                                "collocations": [
+                                    "IPv6 global unicast address",
+                                    "IPv6 neighbor discovery",
+                                    "dual-stack IPv4/IPv6"
+                                ]
                             },
                             {
                                 "en": "DNS",
                                 "es": "Sistema de Nombres de Dominio",
                                 "definition": "System that translates domain names to IP addresses",
                                 "ipa": "/ˌdiː.ɛnˈɛs/",
-                                "collocations": ["DNS resolution query", "DNS cache poisoning", "authoritative DNS server"]
+                                "collocations": [
+                                    "DNS resolution query",
+                                    "DNS cache poisoning",
+                                    "authoritative DNS server"
+                                ]
                             },
                             {
                                 "en": "Domain Name",
                                 "es": "Nombre de Dominio",
                                 "definition": "A human-readable website address (e.g., google.com)",
                                 "ipa": "/doʊˈmeɪn neɪm/",
-                                "collocations": ["register a domain name", "domain name resolution", "fully qualified domain name (FQDN)"]
+                                "collocations": [
+                                    "register a domain name",
+                                    "domain name resolution",
+                                    "fully qualified domain name (FQDN)"
+                                ]
                             },
                             {
                                 "en": "NAT",
                                 "es": "Traducción de Direcciones de Red",
                                 "definition": "Technology that translates private IPs to public IPs",
                                 "ipa": "/næt/",
-                                "collocations": ["NAT translation table", "port address translation (PAT)", "NAT traversal"]
+                                "collocations": [
+                                    "NAT translation table",
+                                    "port address translation (PAT)",
+                                    "NAT traversal"
+                                ]
                             },
                             {
                                 "en": "ISP",
                                 "es": "Proveedor de Servicios de Internet",
                                 "definition": "Company that provides internet access",
                                 "ipa": "/ˌaɪ.ɛsˈpiː/",
-                                "collocations": ["ISP peering agreement", "upstream ISP link", "ISP bandwidth allocation"]
+                                "collocations": [
+                                    "ISP peering agreement",
+                                    "upstream ISP link",
+                                    "ISP bandwidth allocation"
+                                ]
                             },
                             {
                                 "en": "Cache",
                                 "es": "Caché",
                                 "definition": "Stored data for quick future access",
                                 "ipa": "/kæʃ/",
-                                "collocations": ["DNS cache flush", "cache hit ratio", "browser cache invalidation"]
+                                "collocations": [
+                                    "DNS cache flush",
+                                    "cache hit ratio",
+                                    "browser cache invalidation"
+                                ]
                             },
                             {
                                 "en": "DHCP",
                                 "es": "DHCP",
                                 "definition": "Protocol that automatically assigns IP addresses to devices",
                                 "ipa": "/ˌdiː.eɪtʃ.siːˈpiː/",
-                                "collocations": ["DHCP lease renewal", "DHCP scope configuration", "DHCP reservation"]
+                                "collocations": [
+                                    "DHCP lease renewal",
+                                    "DHCP scope configuration",
+                                    "DHCP reservation"
+                                ]
                             },
                             {
                                 "en": "DNSSEC",
                                 "es": "DNSSEC",
                                 "definition": "Security extension for DNS to prevent spoofing",
                                 "ipa": "/ˌdiː.ɛn.ɛs.ˈsɛk/",
-                                "collocations": ["DNSSEC signature validation", "deploy DNSSEC chain of trust", "DNSSEC key rollover"]
+                                "collocations": [
+                                    "DNSSEC signature validation",
+                                    "deploy DNSSEC chain of trust",
+                                    "DNSSEC key rollover"
+                                ]
                             },
                             {
                                 "en": "Static IP",
                                 "es": "IP Estática",
                                 "definition": "A fixed, permanent IP address",
                                 "ipa": "/ˈstæt.ɪk ˌaɪˈpiː/",
-                                "collocations": ["assign a static IP", "static IP reservation", "static IP vs. dynamic assignment"]
+                                "collocations": [
+                                    "assign a static IP",
+                                    "static IP reservation",
+                                    "static IP vs. dynamic assignment"
+                                ]
                             },
                             {
                                 "en": "Dynamic IP",
                                 "es": "IP Dinámica",
                                 "definition": "A temporary IP address assigned by DHCP",
                                 "ipa": "/daɪˈnæm.ɪk ˌaɪˈpiː/",
-                                "collocations": ["dynamic IP lease duration", "dynamic IP address pool", "DHCP-assigned dynamic IP"]
+                                "collocations": [
+                                    "dynamic IP lease duration",
+                                    "dynamic IP address pool",
+                                    "DHCP-assigned dynamic IP"
+                                ]
                             }
                         ],
                         "questions": [
@@ -1042,84 +1182,132 @@ var LXP_COURSES = {
                                 "es": "Ciberseguridad",
                                 "definition": "The practice of protecting systems, networks, and data from attacks",
                                 "ipa": "/ˈsaɪ.bər.sɪˌkjʊr.ɪ.ti/",
-                                "collocations": ["enterprise cybersecurity posture", "cybersecurity incident response", "cybersecurity risk assessment"]
+                                "collocations": [
+                                    "enterprise cybersecurity posture",
+                                    "cybersecurity incident response",
+                                    "cybersecurity risk assessment"
+                                ]
                             },
                             {
                                 "en": "CIA Triad",
                                 "es": "Tríada CID",
                                 "definition": "Confidentiality, Integrity, Availability — the three pillars of security",
                                 "ipa": "/ˌsiː.aɪˈeɪ ˈtraɪ.æd/",
-                                "collocations": ["uphold the CIA triad", "CIA triad risk mapping", "balance CIA triad priorities"]
+                                "collocations": [
+                                    "uphold the CIA triad",
+                                    "CIA triad risk mapping",
+                                    "balance CIA triad priorities"
+                                ]
                             },
                             {
                                 "en": "Confidentiality",
                                 "es": "Confidencialidad",
                                 "definition": "Ensuring data is only accessible to authorized people",
                                 "ipa": "/ˌkɒn.fɪ.dɛn.ʃiˈæl.ɪ.ti/",
-                                "collocations": ["confidentiality breach", "maintain data confidentiality", "confidentiality classification level"]
+                                "collocations": [
+                                    "confidentiality breach",
+                                    "maintain data confidentiality",
+                                    "confidentiality classification level"
+                                ]
                             },
                             {
                                 "en": "Integrity",
                                 "es": "Integridad",
                                 "definition": "Ensuring data is accurate and unmodified",
                                 "ipa": "/ɪnˈtɛɡ.rɪ.ti/",
-                                "collocations": ["data integrity verification", "integrity check failure", "file integrity monitoring (FIM)"]
+                                "collocations": [
+                                    "data integrity verification",
+                                    "integrity check failure",
+                                    "file integrity monitoring (FIM)"
+                                ]
                             },
                             {
                                 "en": "Availability",
                                 "es": "Disponibilidad",
                                 "definition": "Ensuring systems and data are accessible when needed",
                                 "ipa": "/əˌveɪ.ləˈbɪl.ɪ.ti/",
-                                "collocations": ["high availability cluster", "availability SLA guarantee", "availability zone failover"]
+                                "collocations": [
+                                    "high availability cluster",
+                                    "availability SLA guarantee",
+                                    "availability zone failover"
+                                ]
                             },
                             {
                                 "en": "Data Breach",
                                 "es": "Filtración de Datos",
                                 "definition": "Unauthorized access to sensitive data",
                                 "ipa": "/ˈdeɪ.tə briːtʃ/",
-                                "collocations": ["data breach notification", "contain a data breach", "data breach forensic analysis"]
+                                "collocations": [
+                                    "data breach notification",
+                                    "contain a data breach",
+                                    "data breach forensic analysis"
+                                ]
                             },
                             {
                                 "en": "Authentication",
                                 "es": "Autenticación",
                                 "definition": "Verifying the identity of a user or device",
                                 "ipa": "/ɔːˌθɛn.tɪˈkeɪ.ʃən/",
-                                "collocations": ["multi-factor authentication (MFA)", "authentication token expiry", "certificate-based authentication"]
+                                "collocations": [
+                                    "multi-factor authentication (MFA)",
+                                    "authentication token expiry",
+                                    "certificate-based authentication"
+                                ]
                             },
                             {
                                 "en": "Access Control",
                                 "es": "Control de Acceso",
                                 "definition": "Rules determining who can access what resources",
                                 "ipa": "/ˈæk.sɛs kənˈtroʊl/",
-                                "collocations": ["role-based access control (RBAC)", "access control list (ACL)", "granular access control policy"]
+                                "collocations": [
+                                    "role-based access control (RBAC)",
+                                    "access control list (ACL)",
+                                    "granular access control policy"
+                                ]
                             },
                             {
                                 "en": "Redundancy",
                                 "es": "Redundancia",
                                 "definition": "Backup systems ready to take over if the primary fails",
                                 "ipa": "/rɪˈdʌn.dən.si/",
-                                "collocations": ["hardware redundancy failover", "geographic redundancy", "N+1 redundancy configuration"]
+                                "collocations": [
+                                    "hardware redundancy failover",
+                                    "geographic redundancy",
+                                    "N+1 redundancy configuration"
+                                ]
                             },
                             {
                                 "en": "DDoS",
                                 "es": "DDoS",
                                 "definition": "Distributed Denial of Service — overwhelming a server with traffic",
                                 "ipa": "/ˌdiː.diː.oʊˈɛs/",
-                                "collocations": ["DDoS mitigation service", "volumetric DDoS attack", "DDoS traffic scrubbing"]
+                                "collocations": [
+                                    "DDoS mitigation service",
+                                    "volumetric DDoS attack",
+                                    "DDoS traffic scrubbing"
+                                ]
                             },
                             {
                                 "en": "Hash Function",
                                 "es": "Función Hash",
                                 "definition": "Mathematical calculation that creates a unique fingerprint of data",
                                 "ipa": "/hæʃ ˈfʌŋk.ʃən/",
-                                "collocations": ["cryptographic hash function", "hash collision resistance", "SHA-256 hash digest"]
+                                "collocations": [
+                                    "cryptographic hash function",
+                                    "hash collision resistance",
+                                    "SHA-256 hash digest"
+                                ]
                             },
                             {
                                 "en": "Compliance",
                                 "es": "Cumplimiento",
                                 "definition": "Following legal and regulatory requirements",
                                 "ipa": "/kəmˈplaɪ.əns/",
-                                "collocations": ["regulatory compliance audit", "compliance gap analysis", "maintain SOC 2 compliance"]
+                                "collocations": [
+                                    "regulatory compliance audit",
+                                    "compliance gap analysis",
+                                    "maintain SOC 2 compliance"
+                                ]
                             }
                         ],
                         "questions": [
@@ -1176,84 +1364,132 @@ var LXP_COURSES = {
                                 "es": "Software Malicioso",
                                 "definition": "Software designed to harm or exploit computer systems",
                                 "ipa": "/ˈmæl.wɛr/",
-                                "collocations": ["malware signature detection", "zero-day malware variant", "malware sandbox analysis"]
+                                "collocations": [
+                                    "malware signature detection",
+                                    "zero-day malware variant",
+                                    "malware sandbox analysis"
+                                ]
                             },
                             {
                                 "en": "Virus",
                                 "es": "Virus",
                                 "definition": "Malware that attaches to files and spreads when opened",
                                 "ipa": "/ˈvaɪ.rəs/",
-                                "collocations": ["polymorphic virus detection", "virus definition update", "boot sector virus infection"]
+                                "collocations": [
+                                    "polymorphic virus detection",
+                                    "virus definition update",
+                                    "boot sector virus infection"
+                                ]
                             },
                             {
                                 "en": "Worm",
                                 "es": "Gusano",
                                 "definition": "Self-replicating malware that spreads across networks automatically",
                                 "ipa": "/wɜːrm/",
-                                "collocations": ["self-propagating network worm", "worm payload execution", "contain worm lateral spread"]
+                                "collocations": [
+                                    "self-propagating network worm",
+                                    "worm payload execution",
+                                    "contain worm lateral spread"
+                                ]
                             },
                             {
                                 "en": "Trojan",
                                 "es": "Troyano",
                                 "definition": "Malware disguised as legitimate software",
                                 "ipa": "/ˈtroʊ.dʒən/",
-                                "collocations": ["Trojan dropper payload", "remote access Trojan (RAT)", "detect Trojan persistence mechanism"]
+                                "collocations": [
+                                    "Trojan dropper payload",
+                                    "remote access Trojan (RAT)",
+                                    "detect Trojan persistence mechanism"
+                                ]
                             },
                             {
                                 "en": "Phishing",
                                 "es": "Phishing / Suplantación",
                                 "definition": "Tricking users into revealing passwords by impersonating trusted entities",
                                 "ipa": "/ˈfɪʃ.ɪŋ/",
-                                "collocations": ["spear phishing campaign", "phishing email indicator", "anti-phishing awareness training"]
+                                "collocations": [
+                                    "spear phishing campaign",
+                                    "phishing email indicator",
+                                    "anti-phishing awareness training"
+                                ]
                             },
                             {
                                 "en": "Social Engineering",
                                 "es": "Ingeniería Social",
                                 "definition": "Manipulating people psychologically to obtain information",
                                 "ipa": "/ˈsoʊ.ʃəl ˌɛn.dʒɪˈnɪr.ɪŋ/",
-                                "collocations": ["social engineering attack vector", "social engineering pretexting", "resist social engineering tactics"]
+                                "collocations": [
+                                    "social engineering attack vector",
+                                    "social engineering pretexting",
+                                    "resist social engineering tactics"
+                                ]
                             },
                             {
                                 "en": "Ransomware",
                                 "es": "Ransomware / Secuestro de datos",
                                 "definition": "Malware that encrypts files and demands payment",
                                 "ipa": "/ˈræn.sʌm.wɛr/",
-                                "collocations": ["ransomware encryption payload", "ransomware ransom demand", "ransomware recovery plan"]
+                                "collocations": [
+                                    "ransomware encryption payload",
+                                    "ransomware ransom demand",
+                                    "ransomware recovery plan"
+                                ]
                             },
                             {
                                 "en": "Credentials",
                                 "es": "Credenciales",
                                 "definition": "Username and password used to access a system",
                                 "ipa": "/krɪˈdɛn.ʃəlz/",
-                                "collocations": ["stolen credential dump", "credential rotation policy", "credential stuffing attack"]
+                                "collocations": [
+                                    "stolen credential dump",
+                                    "credential rotation policy",
+                                    "credential stuffing attack"
+                                ]
                             },
                             {
                                 "en": "Spear Phishing",
                                 "es": "Phishing Dirigido",
                                 "definition": "Phishing targeted at a specific individual",
                                 "ipa": "/spɪr ˈfɪʃ.ɪŋ/",
-                                "collocations": ["targeted spear phishing email", "spear phishing reconnaissance", "executive spear phishing (whaling)"]
+                                "collocations": [
+                                    "targeted spear phishing email",
+                                    "spear phishing reconnaissance",
+                                    "executive spear phishing (whaling)"
+                                ]
                             },
                             {
                                 "en": "Endpoint",
                                 "es": "Punto Final / Endpoint",
                                 "definition": "Any device connected to a network (computer, phone)",
                                 "ipa": "/ˈɛnd.pɔɪnt/",
-                                "collocations": ["endpoint detection and response (EDR)", "endpoint security agent", "managed endpoint protection"]
+                                "collocations": [
+                                    "endpoint detection and response (EDR)",
+                                    "endpoint security agent",
+                                    "managed endpoint protection"
+                                ]
                             },
                             {
                                 "en": "Patch",
                                 "es": "Parche",
                                 "definition": "A software update that fixes security vulnerabilities",
                                 "ipa": "/pætʃ/",
-                                "collocations": ["critical security patch", "patch management cycle", "zero-day patch deployment"]
+                                "collocations": [
+                                    "critical security patch",
+                                    "patch management cycle",
+                                    "zero-day patch deployment"
+                                ]
                             },
                             {
                                 "en": "Backup",
                                 "es": "Respaldo / Copia de seguridad",
                                 "definition": "A copy of data stored separately for recovery",
                                 "ipa": "/ˈbæk.ʌp/",
-                                "collocations": ["offsite backup replication", "incremental backup schedule", "backup recovery point objective (RPO)"]
+                                "collocations": [
+                                    "offsite backup replication",
+                                    "incremental backup schedule",
+                                    "backup recovery point objective (RPO)"
+                                ]
                             }
                         ],
                         "questions": [
@@ -1500,84 +1736,132 @@ var LXP_COURSES = {
                                 "es": "Cortafuegos / Firewall",
                                 "definition": "A device that monitors and filters network traffic",
                                 "ipa": "/ˈfaɪ.ər.wɔːl/",
-                                "collocations": ["next-generation firewall (NGFW)", "firewall rule set", "stateful firewall inspection"]
+                                "collocations": [
+                                    "next-generation firewall (NGFW)",
+                                    "firewall rule set",
+                                    "stateful firewall inspection"
+                                ]
                             },
                             {
                                 "en": "IDS",
                                 "es": "Sistema de Detección de Intrusos",
                                 "definition": "System that detects and alerts about suspicious activity",
                                 "ipa": "/ˌaɪ.diːˈɛs/",
-                                "collocations": ["network-based IDS deployment", "IDS signature database", "IDS alert triage"]
+                                "collocations": [
+                                    "network-based IDS deployment",
+                                    "IDS signature database",
+                                    "IDS alert triage"
+                                ]
                             },
                             {
                                 "en": "IPS",
                                 "es": "Sistema de Prevención de Intrusos",
                                 "definition": "System that detects AND blocks suspicious activity",
                                 "ipa": "/ˌaɪ.piːˈɛs/",
-                                "collocations": ["inline IPS prevention", "IPS false positive tuning", "deploy IPS at network perimeter"]
+                                "collocations": [
+                                    "inline IPS prevention",
+                                    "IPS false positive tuning",
+                                    "deploy IPS at network perimeter"
+                                ]
                             },
                             {
                                 "en": "Encryption",
                                 "es": "Cifrado",
                                 "definition": "Converting data into unreadable code using a key",
                                 "ipa": "/ɪnˈkrɪp.ʃən/",
-                                "collocations": ["symmetric encryption key", "encryption at rest", "TLS encryption handshake"]
+                                "collocations": [
+                                    "symmetric encryption key",
+                                    "encryption at rest",
+                                    "TLS encryption handshake"
+                                ]
                             },
                             {
                                 "en": "Plaintext",
                                 "es": "Texto Plano",
                                 "definition": "Readable, unencrypted data",
                                 "ipa": "/ˈpleɪn.tɛkst/",
-                                "collocations": ["plaintext credential exposure", "transmit data in plaintext", "convert plaintext to ciphertext"]
+                                "collocations": [
+                                    "plaintext credential exposure",
+                                    "transmit data in plaintext",
+                                    "convert plaintext to ciphertext"
+                                ]
                             },
                             {
                                 "en": "Ciphertext",
                                 "es": "Texto Cifrado",
                                 "definition": "Encrypted, unreadable data",
                                 "ipa": "/ˈsaɪ.fər.tɛkst/",
-                                "collocations": ["ciphertext decryption key", "ciphertext block chaining", "intercepted ciphertext analysis"]
+                                "collocations": [
+                                    "ciphertext decryption key",
+                                    "ciphertext block chaining",
+                                    "intercepted ciphertext analysis"
+                                ]
                             },
                             {
                                 "en": "Public Key",
                                 "es": "Clave Pública",
                                 "definition": "Key shared openly, used to encrypt data",
                                 "ipa": "/ˈpʌb.lɪk kiː/",
-                                "collocations": ["public key infrastructure (PKI)", "public key exchange", "distribute public key certificate"]
+                                "collocations": [
+                                    "public key infrastructure (PKI)",
+                                    "public key exchange",
+                                    "distribute public key certificate"
+                                ]
                             },
                             {
                                 "en": "Private Key",
                                 "es": "Clave Privada",
                                 "definition": "Secret key used to decrypt data",
                                 "ipa": "/ˈpraɪ.vɪt kiː/",
-                                "collocations": ["private key safeguarding", "private key signing operation", "hardware-stored private key"]
+                                "collocations": [
+                                    "private key safeguarding",
+                                    "private key signing operation",
+                                    "hardware-stored private key"
+                                ]
                             },
                             {
                                 "en": "AES",
                                 "es": "AES",
                                 "definition": "Advanced Encryption Standard — a symmetric algorithm",
                                 "ipa": "/ˌeɪ.iːˈɛs/",
-                                "collocations": ["AES-256 encryption standard", "AES cipher block mode", "AES key schedule"]
+                                "collocations": [
+                                    "AES-256 encryption standard",
+                                    "AES cipher block mode",
+                                    "AES key schedule"
+                                ]
                             },
                             {
                                 "en": "TLS/SSL",
                                 "es": "TLS/SSL",
                                 "definition": "Protocols that encrypt web traffic (HTTPS)",
                                 "ipa": "/ˌtiː.ɛl.ˈɛs/",
-                                "collocations": ["TLS certificate pinning", "TLS 1.3 handshake", "SSL/TLS termination proxy"]
+                                "collocations": [
+                                    "TLS certificate pinning",
+                                    "TLS 1.3 handshake",
+                                    "SSL/TLS termination proxy"
+                                ]
                             },
                             {
                                 "en": "False Positive",
                                 "es": "Falso Positivo",
                                 "definition": "A security alert triggered by non-malicious activity",
                                 "ipa": "/fɔːls ˈpɒz.ɪ.tɪv/",
-                                "collocations": ["reduce false positive rate", "false positive alert fatigue", "tune to minimize false positives"]
+                                "collocations": [
+                                    "reduce false positive rate",
+                                    "false positive alert fatigue",
+                                    "tune to minimize false positives"
+                                ]
                             },
                             {
                                 "en": "Defense in Depth",
                                 "es": "Defensa en Profundidad",
                                 "definition": "Using multiple layers of security",
                                 "ipa": "/dɪˈfɛns ɪn dɛpθ/",
-                                "collocations": ["layered defense in depth strategy", "defense in depth security controls", "implement defense in depth architecture"]
+                                "collocations": [
+                                    "layered defense in depth strategy",
+                                    "defense in depth security controls",
+                                    "implement defense in depth architecture"
+                                ]
                             }
                         ],
                         "questions": [
@@ -1620,6 +1904,104 @@ var LXP_COURSES = {
                                     "The website is a government site"
                                 ],
                                 "answer": 1
+                            }
+                        ]
+                    },
+                    {
+                        "id": "cyber-m4-r2",
+                        "title": "Applied Lab: SIEM Telemetry, Suricata NIDS & Automated Incident Triage",
+                        "duration": "15 min",
+                        "content": "\n> **Laboratory Benchmark & Operational Standard**: Aligned with **NIST SP 800-61 Rev. 2 (Computer Security Incident Handling Guide)** and **MITRE ATT&CK Enterprise Matrix**. Prepares SOC Tier 2 analysts and plant cybersecurity engineers to configure Network Intrusion Detection Systems (NIDS) and correlate telemetry in Security Information and Event Management (SIEM) pipelines.\n\n# Applied Laboratory: SIEM Telemetry, Suricata NIDS & Automated Incident Triage\n\nIn critical operational technology (OT) and nearshoring industrial environments, passive network monitoring is essential because active port scanning can inadvertently fault sensitive Programmable Logic Controllers (PLCs). This lab focuses on passive packet capture, signature-based NIDS alerting, and automated SIEM correlation.\n\n## 1. Network Tap Architecture & SPAN Port Mirroring\nTo inspect operational traffic without inserting inline latency or introducing a single point of failure (SPOF):\n1. **Hardware Network TAPs (Test Access Points)**: Optical or copper TAPs physically split the physical layer signal, transmitting an exact duplicate of full-duplex traffic to an out-of-band monitoring appliance.\n2. **Switch Port Analyzer (SPAN / Mirroring)**: Managed industrial switches duplicate traffic from internal VLANs to a designated promiscuous interface. Caution is required to avoid SPAN buffer oversubscription during bursty traffic events.\n\n## 2. Suricata NIDS Rule Construction for Industrial Protocols\nSuricata analyzes network packets against defined rule sets to detect malicious payloads, protocol anomalies, and unauthorized Modbus/CIP function codes. A representative industrial defense rule:\n```suricata\nalert tcp $EXTERNAL_NET any -> $HOME_NET 502 (msg:\"OT-SECURITY: Unauthorized Modbus Coil Write Attempt\"; flow:to_server,established; content:\"|00 00 00 00 00 06|\"; offset:0; content:\"|05|\"; offset:7; depth:1; classtype:policy-violation; sid:1000852; rev:1;)\n```\nThis rule triggers when an external host issues Modbus Function Code 05 (`Force Single Coil`) targeting actuators on port 502, flagging potential physical tampering before setpoints are modified.\n\n## 3. SIEM Ingestion & Elastic/Splunk Correlation Pipeline\n1. **Log Normalization**: Raw PCAP metadata, Syslog, and Zeek connection records are mapped to the **Elastic Common Schema (ECS)** or Splunk Common Information Model (CIM).\n2. **Correlation Logic**: An alert triggers when an unrecognized MAC address initiates an ARP request, followed within 60 seconds by TCP SYN packets across multiple industrial ports (MITRE ATT&CK T1046 - Network Service Discovery).\n3. **Automated Triage (SOAR Playbook)**: The Security Orchestration, Automation, and Response (SOAR) engine creates a high-priority ticket, isolates the infected jump box via 802.1X VLAN steering, and notifies the on-call industrial controls lead.\n\n---\n> **Key Takeaway**: Defending smart manufacturing requires continuous telemetry correlation across **physical taps, Suricata signature inspection, and normalized SIEM workflows**. Rapid incident triage mitigates downtime and prevents cyber-physical damage.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Network Tap",
+                                "es": "Punto de Acceso de Red (TAP de Hardware)",
+                                "definition": "Dedicated hardware device providing access to data flowing across a computer network without modifying the original data stream.",
+                                "ipa": "/ˈnɛt.wɜːrk tæp/",
+                                "collocations": [
+                                    "passive optical tap",
+                                    "SPAN port mirroring",
+                                    "fail-safe bypass TAP"
+                                ]
+                            },
+                            {
+                                "en": "Intrusion Detection System (IDS)",
+                                "es": "Sistema de Detección de Intrusiones (IDS)",
+                                "definition": "Software or hardware appliance monitoring network traffic for malicious activity or policy violations, producing telemetry alerts.",
+                                "ipa": "/ɪnˈtruː.ʒən dɪˈtɛk.ʃən ˈsɪs.təm/",
+                                "collocations": [
+                                    "signature-based NIDS",
+                                    "anomaly detection threshold",
+                                    "deploy Suricata sensors"
+                                ]
+                            },
+                            {
+                                "en": "Log Normalization",
+                                "es": "Normalización de Registros",
+                                "definition": "Process of transforming heterogeneous log events from varied sources into a consistent, standardized data schema for cross-correlation.",
+                                "ipa": "/lɔːɡ ˌnɔːr.mə.ləˈzeɪ.ʃən/",
+                                "collocations": [
+                                    "Elastic Common Schema (ECS)",
+                                    "normalize telemetry streams",
+                                    "CIM field mapping"
+                                ]
+                            },
+                            {
+                                "en": "Incident Triage",
+                                "es": "Clasificación y Triaje de Incidentes",
+                                "definition": "Systematic process of prioritizing cybersecurity alerts based on severity, blast radius, and potential operational impact on production.",
+                                "ipa": "/ˈɪn.sɪ.dənt ˈtriː.ɑːʒ/",
+                                "collocations": [
+                                    "automated triage playbook",
+                                    "isolate compromised endpoint",
+                                    "rapid containment triage"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "Why are hardware network TAPs preferred over active inline scanners in operational technology (OT) plant networks?",
+                                "options": [
+                                    "Because active network scanners cost less and require no cabling",
+                                    "Because active port scanning can overload fragile legacy PLCs and introduce latency, whereas passive TAPs provide zero-risk out-of-band monitoring",
+                                    "Because hardware TAPs encrypt all corporate email automatically",
+                                    "Because TAPs eliminate the need for firewalls completely"
+                                ],
+                                "answer": 1,
+                                "explanation": "Legacy industrial PLCs often utilize lightweight TCP/IP stacks that can freeze or trigger emergency shutdowns when subjected to aggressive port scanning. Passive hardware TAPs physically mirror packet streams without injecting any packets or introducing single points of failure."
+                            },
+                            {
+                                "q": "In the Suricata rule example, what does inspecting Function Code 05 over port 502 specifically aim to detect?",
+                                "options": [
+                                    "A DNS resolution query from a workstation",
+                                    "An unauthenticated Modbus attempt to force/write a physical relay or coil on machinery",
+                                    "A routine firmware download via HTTPS",
+                                    "A Wi-Fi connection handshake"
+                                ],
+                                "answer": 1,
+                                "explanation": "Port 502 is the standard port for Modbus TCP. Function Code 05 corresponds to \"Force Single Coil,\" which commands a physical binary output (such as opening a valve or turning on a motor). Alerting on unauthorized writes prevents unauthorized physical disruption."
+                            },
+                            {
+                                "q": "What is the primary benefit of mapping heterogeneous security logs to a standard schema like ECS or CIM in a SIEM?",
+                                "options": [
+                                    "It reduces the font size of the dashboard display",
+                                    "It allows cross-source correlation rules to query diverse logs (firewalls, endpoints, NIDS) using uniform field names like source.ip and user.name",
+                                    "It deletes old log files to save hard drive space",
+                                    "It automatically fixes broken network cables"
+                                ],
+                                "answer": 1,
+                                "explanation": "Log normalization ensures that regardless of whether a log originates from Suricata, a Cisco switch, or a Windows server, key entities are indexed identically, enabling seamless real-time correlation and automated threat hunting."
+                            },
+                            {
+                                "q": "What action should an automated SOAR playbook execute first upon confirming a critical malware beacon from an industrial jump box?",
+                                "options": [
+                                    "Format all hard drives in the entire factory immediately",
+                                    "Execute network microsegmentation isolation (e.g. via 802.1X quarantine VLAN) while preserving memory for forensic triage",
+                                    "Post a public message on social media",
+                                    "Ignore the alert until the weekly review meeting"
+                                ],
+                                "answer": 1,
+                                "explanation": "Under NIST SP 800-61 containment protocols, isolating the infected system from the network stops lateral movement and command-and-control communication while leaving volatile RAM intact for digital forensics analysis."
                             }
                         ]
                     }
@@ -1824,77 +2206,121 @@ var LXP_COURSES = {
                                 "es": "Ataque de Fuerza Bruta",
                                 "definition": "Trying every possible password combination",
                                 "ipa": "/bruːt fɔːrs əˈtæk/",
-                                "collocations": ["mitigate brute force attack", "brute force login attempt", "brute force password cracking"]
+                                "collocations": [
+                                    "mitigate brute force attack",
+                                    "brute force login attempt",
+                                    "brute force password cracking"
+                                ]
                             },
                             {
                                 "en": "Dictionary Attack",
                                 "es": "Ataque de Diccionario",
                                 "definition": "Using a list of common words to guess passwords",
                                 "ipa": "/ˈdɪk.ʃən.ɛr.i əˈtæk/",
-                                "collocations": ["dictionary attack wordlist", "resist dictionary attack patterns", "dictionary attack vs. brute force"]
+                                "collocations": [
+                                    "dictionary attack wordlist",
+                                    "resist dictionary attack patterns",
+                                    "dictionary attack vs. brute force"
+                                ]
                             },
                             {
                                 "en": "Credential Stuffing",
                                 "es": "Relleno de Credenciales",
                                 "definition": "Using stolen passwords from one site on other sites",
                                 "ipa": "/krɪˈdɛn.ʃəl ˈstʌf.ɪŋ/",
-                                "collocations": ["credential stuffing botnet", "prevent credential stuffing", "credential stuffing detection engine"]
+                                "collocations": [
+                                    "credential stuffing botnet",
+                                    "prevent credential stuffing",
+                                    "credential stuffing detection engine"
+                                ]
                             },
                             {
                                 "en": "Passphrase",
                                 "es": "Frase de Contraseña",
                                 "definition": "A long password made of multiple random words",
                                 "ipa": "/ˈpæs.freɪz/",
-                                "collocations": ["strong passphrase generation", "passphrase entropy calculation", "use a memorable passphrase"]
+                                "collocations": [
+                                    "strong passphrase generation",
+                                    "passphrase entropy calculation",
+                                    "use a memorable passphrase"
+                                ]
                             },
                             {
                                 "en": "Password Manager",
                                 "es": "Gestor de Contraseñas",
                                 "definition": "Software that generates and stores strong passwords",
                                 "ipa": "/ˈpæs.wɜːrd ˈmæn.ɪ.dʒər/",
-                                "collocations": ["enterprise password manager", "password manager vault", "auto-fill via password manager"]
+                                "collocations": [
+                                    "enterprise password manager",
+                                    "password manager vault",
+                                    "auto-fill via password manager"
+                                ]
                             },
                             {
                                 "en": "MFA",
                                 "es": "Autenticación Multifactor",
                                 "definition": "Requiring two or more forms of ID to access an account",
                                 "ipa": "/ˌɛm.ɛfˈeɪ/",
-                                "collocations": ["enforce MFA enrollment", "MFA authentication factor", "bypass MFA with phishing proxy"]
+                                "collocations": [
+                                    "enforce MFA enrollment",
+                                    "MFA authentication factor",
+                                    "bypass MFA with phishing proxy"
+                                ]
                             },
                             {
                                 "en": "TOTP",
                                 "es": "TOTP",
                                 "definition": "Time-based One-Time Password — code that changes every 30 seconds",
                                 "ipa": "/ˈtiː.oʊ.tiː.piː/",
-                                "collocations": ["TOTP code expiration window", "TOTP authenticator app", "hardware TOTP token"]
+                                "collocations": [
+                                    "TOTP code expiration window",
+                                    "TOTP authenticator app",
+                                    "hardware TOTP token"
+                                ]
                             },
                             {
                                 "en": "Biometrics",
                                 "es": "Biometría",
                                 "definition": "Using physical characteristics (fingerprint, face) for identification",
                                 "ipa": "/ˌbaɪ.oʊˈmɛt.rɪks/",
-                                "collocations": ["biometric fingerprint scanner", "biometric authentication accuracy", "biometric liveness detection"]
+                                "collocations": [
+                                    "biometric fingerprint scanner",
+                                    "biometric authentication accuracy",
+                                    "biometric liveness detection"
+                                ]
                             },
                             {
                                 "en": "Zero Trust",
                                 "es": "Confianza Cero",
                                 "definition": "Security model where nothing is automatically trusted",
                                 "ipa": "/ˈzɪr.oʊ trʌst/",
-                                "collocations": ["zero trust network architecture", "zero trust identity verification", "adopt zero trust principles"]
+                                "collocations": [
+                                    "zero trust network architecture",
+                                    "zero trust identity verification",
+                                    "adopt zero trust principles"
+                                ]
                             },
                             {
                                 "en": "Least Privilege",
                                 "es": "Privilegio Mínimo",
                                 "definition": "Giving users only the access they need, nothing more",
                                 "ipa": "/liːst ˈprɪv.əl.ɪdʒ/",
-                                "collocations": ["enforce least privilege access", "least privilege principle violation", "audit least privilege compliance"]
+                                "collocations": [
+                                    "enforce least privilege access",
+                                    "least privilege principle violation",
+                                    "audit least privilege compliance"
+                                ]
                             },
                             {
                                 "en": "Vault",
                                 "es": "Bóveda",
                                 "definition": "Encrypted storage for sensitive data like passwords",
                                 "ipa": "/vɔːlt/",
-                                "collocations": ["secrets vault management", "HashiCorp Vault integration", "vault access audit trail"]
+                                "collocations": [
+                                    "secrets vault management",
+                                    "HashiCorp Vault integration",
+                                    "vault access audit trail"
+                                ]
                             }
                         ],
                         "questions": [
@@ -2141,77 +2567,121 @@ var LXP_COURSES = {
                                 "es": "Centro de Operaciones de Seguridad",
                                 "definition": "A team/facility that monitors security 24/7",
                                 "ipa": "/sɒk/",
-                                "collocations": ["SOC analyst tier rotation", "24/7 SOC monitoring", "SOC incident escalation"]
+                                "collocations": [
+                                    "SOC analyst tier rotation",
+                                    "24/7 SOC monitoring",
+                                    "SOC incident escalation"
+                                ]
                             },
                             {
                                 "en": "SIEM",
                                 "es": "SIEM",
                                 "definition": "Software that collects and analyzes security logs from all systems",
                                 "ipa": "/sɪm/",
-                                "collocations": ["SIEM log correlation", "SIEM alert dashboard", "integrate SIEM with threat feeds"]
+                                "collocations": [
+                                    "SIEM log correlation",
+                                    "SIEM alert dashboard",
+                                    "integrate SIEM with threat feeds"
+                                ]
                             },
                             {
                                 "en": "Penetration Testing",
                                 "es": "Pruebas de Penetración",
                                 "definition": "Legally hacking systems to find vulnerabilities",
                                 "ipa": "/ˌpɛn.ɪˈtreɪ.ʃən ˈtɛs.tɪŋ/",
-                                "collocations": ["authorized penetration testing engagement", "penetration testing report", "penetration testing scope"]
+                                "collocations": [
+                                    "authorized penetration testing engagement",
+                                    "penetration testing report",
+                                    "penetration testing scope"
+                                ]
                             },
                             {
                                 "en": "Vulnerability",
                                 "es": "Vulnerabilidad",
                                 "definition": "A weakness in a system that can be exploited",
                                 "ipa": "/ˌvʌl.nər.əˈbɪl.ɪ.ti/",
-                                "collocations": ["critical vulnerability disclosure", "vulnerability remediation timeline", "vulnerability scanner results"]
+                                "collocations": [
+                                    "critical vulnerability disclosure",
+                                    "vulnerability remediation timeline",
+                                    "vulnerability scanner results"
+                                ]
                             },
                             {
                                 "en": "Ethical Hacker",
                                 "es": "Hacker Ético",
                                 "definition": "A security professional who hacks with permission to find weaknesses",
                                 "ipa": "/ˈɛθ.ɪ.kəl ˈhæk.ər/",
-                                "collocations": ["certified ethical hacker (CEH)", "ethical hacker bug bounty", "ethical hacker methodology"]
+                                "collocations": [
+                                    "certified ethical hacker (CEH)",
+                                    "ethical hacker bug bounty",
+                                    "ethical hacker methodology"
+                                ]
                             },
                             {
                                 "en": "Incident Response",
                                 "es": "Respuesta a Incidentes",
                                 "definition": "The process of handling a cyber attack",
                                 "ipa": "/ˈɪn.sɪ.dənt rɪˈspɒns/",
-                                "collocations": ["incident response playbook", "incident response team activation", "incident response timeline"]
+                                "collocations": [
+                                    "incident response playbook",
+                                    "incident response team activation",
+                                    "incident response timeline"
+                                ]
                             },
                             {
                                 "en": "CISO",
                                 "es": "Director de Seguridad de la Información",
                                 "definition": "Chief Information Security Officer — top security executive",
                                 "ipa": "/ˈsiː.soʊ/",
-                                "collocations": ["report to the CISO", "CISO risk briefing", "CISO cybersecurity strategy"]
+                                "collocations": [
+                                    "report to the CISO",
+                                    "CISO risk briefing",
+                                    "CISO cybersecurity strategy"
+                                ]
                             },
                             {
                                 "en": "Certification",
                                 "es": "Certificación",
                                 "definition": "Official proof of professional knowledge and skills",
                                 "ipa": "/ˌsɜːr.tɪ.fɪˈkeɪ.ʃən/",
-                                "collocations": ["industry certification renewal", "professional certification exam", "vendor-neutral certification"]
+                                "collocations": [
+                                    "industry certification renewal",
+                                    "professional certification exam",
+                                    "vendor-neutral certification"
+                                ]
                             },
                             {
                                 "en": "Compliance",
                                 "es": "Cumplimiento Normativo",
                                 "definition": "Following laws and regulations (SOC 2, HIPAA, GDPR)",
                                 "ipa": "/kəmˈplaɪ.əns/",
-                                "collocations": ["regulatory compliance audit", "compliance gap analysis", "maintain SOC 2 compliance"]
+                                "collocations": [
+                                    "regulatory compliance audit",
+                                    "compliance gap analysis",
+                                    "maintain SOC 2 compliance"
+                                ]
                             },
                             {
                                 "en": "CVE",
                                 "es": "CVE",
                                 "definition": "Common Vulnerabilities and Exposures — public database of known security flaws",
                                 "ipa": "/ˌsiː.viːˈiː/",
-                                "collocations": ["CVE vulnerability identifier", "assign a CVE number", "CVE severity scoring (CVSS)"]
+                                "collocations": [
+                                    "CVE vulnerability identifier",
+                                    "assign a CVE number",
+                                    "CVE severity scoring (CVSS)"
+                                ]
                             },
                             {
                                 "en": "Remediate",
                                 "es": "Remediar",
                                 "definition": "To fix a security problem",
                                 "ipa": "/rɪˈmiː.di.eɪt/",
-                                "collocations": ["remediate critical findings", "remediate within SLA", "remediation priority ranking"]
+                                "collocations": [
+                                    "remediate critical findings",
+                                    "remediate within SLA",
+                                    "remediation priority ranking"
+                                ]
                             }
                         ],
                         "questions": [
@@ -2443,8 +2913,7 @@ var LXP_COURSES = {
                     }
                 ]
             }
-        ],
-        "category": "technology"
+        ]
     },
     "it-innovation": {
         "id": "it-innovation",
@@ -2481,84 +2950,132 @@ var LXP_COURSES = {
                                 "es": "Tecnologías de la Información (TI)",
                                 "definition": "Use of computers and systems to manage information",
                                 "ipa": "/ˌɪn.fərˈmeɪ.ʃən tɛkˈnɒl.ə.dʒi/",
-                                "collocations": ["IT infrastructure management", "IT service desk", "IT governance framework"]
+                                "collocations": [
+                                    "IT infrastructure management",
+                                    "IT service desk",
+                                    "IT governance framework"
+                                ]
                             },
                             {
                                 "en": "Hardware",
                                 "es": "Hardware",
                                 "definition": "Physical computer equipment and devices",
                                 "ipa": "/ˈhɑːrd.wɛr/",
-                                "collocations": ["hardware lifecycle management", "hardware asset inventory", "hardware compatibility matrix"]
+                                "collocations": [
+                                    "hardware lifecycle management",
+                                    "hardware asset inventory",
+                                    "hardware compatibility matrix"
+                                ]
                             },
                             {
                                 "en": "Software",
                                 "es": "Software",
                                 "definition": "Programs and applications running on hardware",
                                 "ipa": "/ˈsɒf.wɛr/",
-                                "collocations": ["software license compliance", "software deployment pipeline", "software patch management"]
+                                "collocations": [
+                                    "software license compliance",
+                                    "software deployment pipeline",
+                                    "software patch management"
+                                ]
                             },
                             {
                                 "en": "Cloud Computing",
                                 "es": "Computación en la Nube",
                                 "definition": "Using remote servers via internet instead of local machines",
                                 "ipa": "/klaʊd kəmˈpjuː.tɪŋ/",
-                                "collocations": ["migrate to cloud computing", "hybrid cloud computing model", "cloud computing cost optimization"]
+                                "collocations": [
+                                    "migrate to cloud computing",
+                                    "hybrid cloud computing model",
+                                    "cloud computing cost optimization"
+                                ]
                             },
                             {
                                 "en": "On-Premises",
                                 "es": "En Sitio / Local",
                                 "definition": "IT infrastructure physically located at the organization",
                                 "ipa": "/ɒn ˈprɛm.ɪ.sɪz/",
-                                "collocations": ["on-premises data center", "on-premises to cloud migration", "maintain on-premises infrastructure"]
+                                "collocations": [
+                                    "on-premises data center",
+                                    "on-premises to cloud migration",
+                                    "maintain on-premises infrastructure"
+                                ]
                             },
                             {
                                 "en": "Server",
                                 "es": "Servidor",
                                 "definition": "A computer that provides services to other computers",
                                 "ipa": "/ˈsɜːr.vər/",
-                                "collocations": ["rack-mounted server deployment", "server uptime guarantee", "virtual server provisioning"]
+                                "collocations": [
+                                    "rack-mounted server deployment",
+                                    "server uptime guarantee",
+                                    "virtual server provisioning"
+                                ]
                             },
                             {
                                 "en": "VPN",
                                 "es": "Red Privada Virtual",
                                 "definition": "Encrypted tunnel for secure internet access",
                                 "ipa": "/ˌviː.piːˈɛn/",
-                                "collocations": ["site-to-site VPN tunnel", "VPN encryption protocol", "connect via VPN gateway"]
+                                "collocations": [
+                                    "site-to-site VPN tunnel",
+                                    "VPN encryption protocol",
+                                    "connect via VPN gateway"
+                                ]
                             },
                             {
                                 "en": "Data Center",
                                 "es": "Centro de Datos",
                                 "definition": "A facility housing many servers and networking equipment",
                                 "ipa": "/ˈdeɪ.tə ˈsɛn.tər/",
-                                "collocations": ["data center cooling efficiency", "colocation data center", "Tier 4 data center certification"]
+                                "collocations": [
+                                    "data center cooling efficiency",
+                                    "colocation data center",
+                                    "Tier 4 data center certification"
+                                ]
                             },
                             {
                                 "en": "Operating System",
                                 "es": "Sistema Operativo",
                                 "definition": "Core software managing hardware (Windows, Linux, macOS)",
                                 "ipa": "/ˈɒp.ər.eɪ.tɪŋ ˈsɪs.təm/",
-                                "collocations": ["operating system kernel", "operating system hardening", "operating system patch cycle"]
+                                "collocations": [
+                                    "operating system kernel",
+                                    "operating system hardening",
+                                    "operating system patch cycle"
+                                ]
                             },
                             {
                                 "en": "Scalability",
                                 "es": "Escalabilidad",
                                 "definition": "Ability to grow or shrink resources as needed",
                                 "ipa": "/ˌskeɪ.ləˈbɪl.ɪ.ti/",
-                                "collocations": ["horizontal scalability architecture", "auto-scaling policy trigger", "scalability stress test"]
+                                "collocations": [
+                                    "horizontal scalability architecture",
+                                    "auto-scaling policy trigger",
+                                    "scalability stress test"
+                                ]
                             },
                             {
                                 "en": "Capital Expense (CapEx)",
                                 "es": "Gasto de Capital",
                                 "definition": "Large upfront investment in physical assets",
                                 "ipa": "/ˈkæp.ɪ.təl ɪkˈspɛns/",
-                                "collocations": ["CapEx hardware procurement", "shift CapEx to OpEx", "CapEx depreciation schedule"]
+                                "collocations": [
+                                    "CapEx hardware procurement",
+                                    "shift CapEx to OpEx",
+                                    "CapEx depreciation schedule"
+                                ]
                             },
                             {
                                 "en": "Pay-as-you-go",
                                 "es": "Pago por Uso",
                                 "definition": "Paying only for resources consumed",
                                 "ipa": "/ˈpeɪ.æz.juːˈɡoʊ/",
-                                "collocations": ["pay-as-you-go pricing model", "pay-as-you-go resource billing", "pay-as-you-go consumption tier"]
+                                "collocations": [
+                                    "pay-as-you-go pricing model",
+                                    "pay-as-you-go resource billing",
+                                    "pay-as-you-go consumption tier"
+                                ]
                             }
                         ],
                         "questions": [
@@ -2805,70 +3322,110 @@ var LXP_COURSES = {
                                 "es": "Infraestructura como Servicio",
                                 "definition": "Renting virtual servers, storage, and networking",
                                 "ipa": "/ˈaɪ.æs/",
-                                "collocations": ["provision IaaS compute instances", "IaaS virtual network", "IaaS cost-per-hour billing"]
+                                "collocations": [
+                                    "provision IaaS compute instances",
+                                    "IaaS virtual network",
+                                    "IaaS cost-per-hour billing"
+                                ]
                             },
                             {
                                 "en": "PaaS (Platform as a Service)",
                                 "es": "Plataforma como Servicio",
                                 "definition": "Ready-to-use platform for deploying applications",
                                 "ipa": "/pæs/",
-                                "collocations": ["deploy on PaaS runtime", "PaaS managed database", "PaaS auto-scaling container"]
+                                "collocations": [
+                                    "deploy on PaaS runtime",
+                                    "PaaS managed database",
+                                    "PaaS auto-scaling container"
+                                ]
                             },
                             {
                                 "en": "SaaS (Software as a Service)",
                                 "es": "Software como Servicio",
                                 "definition": "Complete application accessible via browser",
                                 "ipa": "/sæs/",
-                                "collocations": ["SaaS subscription renewal", "SaaS multi-tenant architecture", "SaaS uptime SLA"]
+                                "collocations": [
+                                    "SaaS subscription renewal",
+                                    "SaaS multi-tenant architecture",
+                                    "SaaS uptime SLA"
+                                ]
                             },
                             {
                                 "en": "Virtual Machine (VM)",
                                 "es": "Máquina Virtual",
                                 "definition": "Software emulation of a physical computer",
                                 "ipa": "/ˈvɜːr.tʃu.əl məˈʃiːn/",
-                                "collocations": ["spin up a virtual machine", "virtual machine snapshot", "virtual machine migration"]
+                                "collocations": [
+                                    "spin up a virtual machine",
+                                    "virtual machine snapshot",
+                                    "virtual machine migration"
+                                ]
                             },
                             {
                                 "en": "Shared Responsibility Model",
                                 "es": "Modelo de Responsabilidad Compartida",
                                 "definition": "Security duties split between provider and customer",
                                 "ipa": "/ʃɛrd rɪˌspɒn.sɪˈbɪl.ɪ.ti ˈmɒd.əl/",
-                                "collocations": ["shared responsibility security boundary", "shared responsibility cloud compliance", "shared responsibility matrix"]
+                                "collocations": [
+                                    "shared responsibility security boundary",
+                                    "shared responsibility cloud compliance",
+                                    "shared responsibility matrix"
+                                ]
                             },
                             {
                                 "en": "IAM (Identity and Access Management)",
                                 "es": "Gestión de Identidad y Acceso",
                                 "definition": "Controlling who can access which resources",
                                 "ipa": "/ˌaɪ.eɪˈɛm/",
-                                "collocations": ["IAM role-based policy", "IAM service account key", "IAM least-privilege assignment"]
+                                "collocations": [
+                                    "IAM role-based policy",
+                                    "IAM service account key",
+                                    "IAM least-privilege assignment"
+                                ]
                             },
                             {
                                 "en": "Hypervisor",
                                 "es": "Hipervisor",
                                 "definition": "Software creating and managing virtual machines",
                                 "ipa": "/ˈhaɪ.pər.vaɪ.zər/",
-                                "collocations": ["Type 1 bare-metal hypervisor", "hypervisor resource allocation", "hypervisor live migration"]
+                                "collocations": [
+                                    "Type 1 bare-metal hypervisor",
+                                    "hypervisor resource allocation",
+                                    "hypervisor live migration"
+                                ]
                             },
                             {
                                 "en": "Well-Architected Framework",
                                 "es": "Marco de Buena Arquitectura",
                                 "definition": "Best practices for cloud architecture design",
                                 "ipa": "/wɛl ˈɑːr.kɪ.tɛk.tɪd ˈfreɪm.wɜːrk/",
-                                "collocations": ["Well-Architected review pillar", "Well-Architected cost optimization", "Well-Architected security lens"]
+                                "collocations": [
+                                    "Well-Architected review pillar",
+                                    "Well-Architected cost optimization",
+                                    "Well-Architected security lens"
+                                ]
                             },
                             {
                                 "en": "Data Encryption",
                                 "es": "Cifrado de Datos",
                                 "definition": "Converting data to unreadable format for security",
                                 "ipa": "/ˈdeɪ.tə ɪnˈkrɪp.ʃən/",
-                                "collocations": ["data encryption at rest", "data encryption in transit", "data encryption key management"]
+                                "collocations": [
+                                    "data encryption at rest",
+                                    "data encryption in transit",
+                                    "data encryption key management"
+                                ]
                             },
                             {
                                 "en": "Elasticity",
                                 "es": "Elasticidad",
                                 "definition": "Ability to automatically scale resources up or down",
                                 "ipa": "/ˌɪ.læsˈtɪs.ɪ.ti/",
-                                "collocations": ["cloud elasticity autoscaler", "demand-driven elasticity", "elasticity vs. scalability"]
+                                "collocations": [
+                                    "cloud elasticity autoscaler",
+                                    "demand-driven elasticity",
+                                    "elasticity vs. scalability"
+                                ]
                             }
                         ],
                         "questions": [
@@ -3116,84 +3673,132 @@ var LXP_COURSES = {
                                 "es": "Ciclo de Vida del Desarrollo de Software",
                                 "definition": "Structured process for building software",
                                 "ipa": "/ˌɛs.diː.ɛlˈsiː/",
-                                "collocations": ["SDLC phase gate review", "SDLC methodology selection", "SDLC compliance documentation"]
+                                "collocations": [
+                                    "SDLC phase gate review",
+                                    "SDLC methodology selection",
+                                    "SDLC compliance documentation"
+                                ]
                             },
                             {
                                 "en": "Requirements",
                                 "es": "Requisitos / Requerimientos",
                                 "definition": "What the software must do (functional and non-functional)",
                                 "ipa": "/rɪˈkwaɪr.mənts/",
-                                "collocations": ["requirements gathering session", "functional requirements specification", "requirements traceability matrix"]
+                                "collocations": [
+                                    "requirements gathering session",
+                                    "functional requirements specification",
+                                    "requirements traceability matrix"
+                                ]
                             },
                             {
                                 "en": "Architecture",
                                 "es": "Arquitectura",
                                 "definition": "High-level structure and design of a system",
                                 "ipa": "/ˈɑːr.kɪ.tɛk.tʃər/",
-                                "collocations": ["microservices architecture pattern", "architecture decision record (ADR)", "event-driven architecture"]
+                                "collocations": [
+                                    "microservices architecture pattern",
+                                    "architecture decision record (ADR)",
+                                    "event-driven architecture"
+                                ]
                             },
                             {
                                 "en": "API (Application Programming Interface)",
                                 "es": "Interfaz de Programación de Aplicaciones",
                                 "definition": "Set of rules for software to communicate",
                                 "ipa": "/ˌeɪ.piːˈaɪ/",
-                                "collocations": ["RESTful API endpoint", "API rate limiting", "API versioning strategy"]
+                                "collocations": [
+                                    "RESTful API endpoint",
+                                    "API rate limiting",
+                                    "API versioning strategy"
+                                ]
                             },
                             {
                                 "en": "Agile",
                                 "es": "Ágil",
                                 "definition": "Iterative methodology with short sprints",
                                 "ipa": "/ˈædʒ.aɪl/",
-                                "collocations": ["Agile development methodology", "Agile retrospective action items", "Agile cross-functional team"]
+                                "collocations": [
+                                    "Agile development methodology",
+                                    "Agile retrospective action items",
+                                    "Agile cross-functional team"
+                                ]
                             },
                             {
                                 "en": "Waterfall",
                                 "es": "Cascada",
                                 "definition": "Linear, sequential development methodology",
                                 "ipa": "/ˈwɔː.tər.fɔːl/",
-                                "collocations": ["Waterfall sequential phases", "Waterfall documentation-heavy", "Waterfall project timeline"]
+                                "collocations": [
+                                    "Waterfall sequential phases",
+                                    "Waterfall documentation-heavy",
+                                    "Waterfall project timeline"
+                                ]
                             },
                             {
                                 "en": "Sprint",
                                 "es": "Sprint",
                                 "definition": "A fixed work cycle (1-4 weeks) in Agile",
                                 "ipa": "/sprɪnt/",
-                                "collocations": ["two-week sprint cadence", "sprint planning ceremony", "sprint velocity tracking"]
+                                "collocations": [
+                                    "two-week sprint cadence",
+                                    "sprint planning ceremony",
+                                    "sprint velocity tracking"
+                                ]
                             },
                             {
                                 "en": "Scrum",
                                 "es": "Scrum",
                                 "definition": "Most popular Agile framework with sprints and standups",
                                 "ipa": "/skrʌm/",
-                                "collocations": ["Scrum daily standup", "Scrum master facilitation", "Scrum product backlog refinement"]
+                                "collocations": [
+                                    "Scrum daily standup",
+                                    "Scrum master facilitation",
+                                    "Scrum product backlog refinement"
+                                ]
                             },
                             {
                                 "en": "Unit Test",
                                 "es": "Prueba Unitaria",
                                 "definition": "Test for a single function or component",
                                 "ipa": "/ˈjuː.nɪt tɛst/",
-                                "collocations": ["unit test coverage threshold", "write a unit test case", "unit test mock dependency"]
+                                "collocations": [
+                                    "unit test coverage threshold",
+                                    "write a unit test case",
+                                    "unit test mock dependency"
+                                ]
                             },
                             {
                                 "en": "Deployment",
                                 "es": "Despliegue",
                                 "definition": "Releasing software to production",
                                 "ipa": "/dɪˈplɔɪ.mənt/",
-                                "collocations": ["blue-green deployment strategy", "deployment rollback procedure", "automated deployment pipeline"]
+                                "collocations": [
+                                    "blue-green deployment strategy",
+                                    "deployment rollback procedure",
+                                    "automated deployment pipeline"
+                                ]
                             },
                             {
                                 "en": "Stakeholder",
                                 "es": "Parte Interesada",
                                 "definition": "Anyone with interest in the project (users, managers)",
                                 "ipa": "/ˈsteɪk.hoʊl.dər/",
-                                "collocations": ["stakeholder approval sign-off", "stakeholder requirements workshop", "stakeholder communication plan"]
+                                "collocations": [
+                                    "stakeholder approval sign-off",
+                                    "stakeholder requirements workshop",
+                                    "stakeholder communication plan"
+                                ]
                             },
                             {
                                 "en": "Retrospective",
                                 "es": "Retrospectiva",
                                 "definition": "Meeting to reflect on what went well and what to improve",
                                 "ipa": "/ˌrɛt.roʊˈspɛk.tɪv/",
-                                "collocations": ["sprint retrospective findings", "retrospective action item tracking", "blameless retrospective culture"]
+                                "collocations": [
+                                    "sprint retrospective findings",
+                                    "retrospective action item tracking",
+                                    "blameless retrospective culture"
+                                ]
                             }
                         ],
                         "questions": [
@@ -3440,84 +4045,132 @@ var LXP_COURSES = {
                                 "es": "Base de Datos",
                                 "definition": "Organized collection of structured data",
                                 "ipa": "/ˈdeɪ.tə.beɪs/",
-                                "collocations": ["relational database engine", "database migration script", "database replication lag"]
+                                "collocations": [
+                                    "relational database engine",
+                                    "database migration script",
+                                    "database replication lag"
+                                ]
                             },
                             {
                                 "en": "SQL",
                                 "es": "SQL (Lenguaje de Consulta Estructurado)",
                                 "definition": "Language for managing relational databases",
                                 "ipa": "/ˌɛs.kjuːˈɛl/",
-                                "collocations": ["SQL join query", "SQL index optimization", "SQL transaction isolation level"]
+                                "collocations": [
+                                    "SQL join query",
+                                    "SQL index optimization",
+                                    "SQL transaction isolation level"
+                                ]
                             },
                             {
                                 "en": "Schema",
                                 "es": "Esquema",
                                 "definition": "The defined structure of a database (tables, columns, types)",
                                 "ipa": "/ˈskiː.mə/",
-                                "collocations": ["schema migration version", "enforce schema validation", "schema-on-write constraint"]
+                                "collocations": [
+                                    "schema migration version",
+                                    "enforce schema validation",
+                                    "schema-on-write constraint"
+                                ]
                             },
                             {
                                 "en": "NoSQL",
                                 "es": "NoSQL",
                                 "definition": "Non-relational database types (document, key-value, graph)",
                                 "ipa": "/ˌnoʊˈsiː.kwəl/",
-                                "collocations": ["NoSQL document store", "NoSQL horizontal partitioning", "NoSQL eventual consistency"]
+                                "collocations": [
+                                    "NoSQL document store",
+                                    "NoSQL horizontal partitioning",
+                                    "NoSQL eventual consistency"
+                                ]
                             },
                             {
                                 "en": "ACID",
                                 "es": "ACID",
                                 "definition": "Properties ensuring reliable database transactions",
                                 "ipa": "/ˈæs.ɪd/",
-                                "collocations": ["ACID transaction guarantee", "ACID compliance requirement", "ACID vs. BASE model"]
+                                "collocations": [
+                                    "ACID transaction guarantee",
+                                    "ACID compliance requirement",
+                                    "ACID vs. BASE model"
+                                ]
                             },
                             {
                                 "en": "Document Database",
                                 "es": "Base de Datos Documental",
                                 "definition": "NoSQL database storing JSON-like documents",
                                 "ipa": "/ˈdɒk.jʊ.mənt ˈdeɪ.tə.beɪs/",
-                                "collocations": ["document database nested query", "document database JSON schema", "MongoDB document database"]
+                                "collocations": [
+                                    "document database nested query",
+                                    "document database JSON schema",
+                                    "MongoDB document database"
+                                ]
                             },
                             {
                                 "en": "Key-Value Store",
                                 "es": "Almacén Clave-Valor",
                                 "definition": "Simplest NoSQL model — lookup by key",
                                 "ipa": "/kiː ˈvæl.juː stɔːr/",
-                                "collocations": ["in-memory key-value store", "key-value store cache layer", "Redis key-value store"]
+                                "collocations": [
+                                    "in-memory key-value store",
+                                    "key-value store cache layer",
+                                    "Redis key-value store"
+                                ]
                             },
                             {
                                 "en": "Graph Database",
                                 "es": "Base de Datos de Grafos",
                                 "definition": "Database optimized for relationship traversal",
                                 "ipa": "/ɡræf ˈdeɪ.tə.beɪs/",
-                                "collocations": ["graph database relationship traversal", "Neo4j graph database", "graph database social network"]
+                                "collocations": [
+                                    "graph database relationship traversal",
+                                    "Neo4j graph database",
+                                    "graph database social network"
+                                ]
                             },
                             {
                                 "en": "Query",
                                 "es": "Consulta",
                                 "definition": "A request to retrieve or modify data",
                                 "ipa": "/ˈkwɪr.i/",
-                                "collocations": ["query execution plan", "parameterized query injection prevention", "query optimizer statistics"]
+                                "collocations": [
+                                    "query execution plan",
+                                    "parameterized query injection prevention",
+                                    "query optimizer statistics"
+                                ]
                             },
                             {
                                 "en": "Horizontal Scaling",
                                 "es": "Escalamiento Horizontal",
                                 "definition": "Adding more servers to handle load",
                                 "ipa": "/ˌhɒr.ɪˈzɒn.təl ˈskeɪ.lɪŋ/",
-                                "collocations": ["horizontal scaling shard key", "horizontal scaling read replicas", "horizontal scaling vs. vertical scaling"]
+                                "collocations": [
+                                    "horizontal scaling shard key",
+                                    "horizontal scaling read replicas",
+                                    "horizontal scaling vs. vertical scaling"
+                                ]
                             },
                             {
                                 "en": "Polyglot Persistence",
                                 "es": "Persistencia Políglota",
                                 "definition": "Using multiple database types in one application",
                                 "ipa": "/ˈpɒl.i.ɡlɒt pərˈsɪs.təns/",
-                                "collocations": ["polyglot persistence strategy", "polyglot persistence data flow", "adopt polyglot persistence"]
+                                "collocations": [
+                                    "polyglot persistence strategy",
+                                    "polyglot persistence data flow",
+                                    "adopt polyglot persistence"
+                                ]
                             },
                             {
                                 "en": "Caching",
                                 "es": "Caché / Almacenamiento en Caché",
                                 "definition": "Storing frequently accessed data in fast memory",
                                 "ipa": "/ˈkæʃ.ɪŋ/",
-                                "collocations": ["distributed caching layer", "caching eviction policy", "cache-aside caching pattern"]
+                                "collocations": [
+                                    "distributed caching layer",
+                                    "caching eviction policy",
+                                    "cache-aside caching pattern"
+                                ]
                             }
                         ],
                         "questions": [
@@ -3764,84 +4417,132 @@ var LXP_COURSES = {
                                 "es": "DevOps",
                                 "definition": "Culture and practices unifying Development and Operations",
                                 "ipa": "/ˈdɛv.ɒps/",
-                                "collocations": ["DevOps culture adoption", "DevOps toolchain integration", "DevOps continuous feedback loop"]
+                                "collocations": [
+                                    "DevOps culture adoption",
+                                    "DevOps toolchain integration",
+                                    "DevOps continuous feedback loop"
+                                ]
                             },
                             {
                                 "en": "CI (Continuous Integration)",
                                 "es": "Integración Continua",
                                 "definition": "Automatically building and testing code on every push",
                                 "ipa": "/ˌsiːˈaɪ/",
-                                "collocations": ["CI build pipeline trigger", "CI automated test suite", "CI merge conflict resolution"]
+                                "collocations": [
+                                    "CI build pipeline trigger",
+                                    "CI automated test suite",
+                                    "CI merge conflict resolution"
+                                ]
                             },
                             {
                                 "en": "CD (Continuous Delivery/Deployment)",
                                 "es": "Entrega/Despliegue Continuo",
                                 "definition": "Automatically preparing or deploying code to production",
                                 "ipa": "/ˌsiːˈdiː/",
-                                "collocations": ["CD release candidate promotion", "CD canary deployment", "CD rollback automation"]
+                                "collocations": [
+                                    "CD release candidate promotion",
+                                    "CD canary deployment",
+                                    "CD rollback automation"
+                                ]
                             },
                             {
                                 "en": "Pipeline",
                                 "es": "Pipeline / Tubería",
                                 "definition": "Automated sequence of build, test, deploy stages",
                                 "ipa": "/ˈpaɪp.laɪn/",
-                                "collocations": ["CI/CD pipeline stage", "pipeline artifact repository", "pipeline failure notification"]
+                                "collocations": [
+                                    "CI/CD pipeline stage",
+                                    "pipeline artifact repository",
+                                    "pipeline failure notification"
+                                ]
                             },
                             {
                                 "en": "Infrastructure as Code (IaC)",
                                 "es": "Infraestructura como Código",
                                 "definition": "Defining servers and networks in code files",
                                 "ipa": "/ˈɪn.frə.strʌk.tʃər æz koʊd/",
-                                "collocations": ["IaC declarative template", "IaC drift detection", "IaC version-controlled module"]
+                                "collocations": [
+                                    "IaC declarative template",
+                                    "IaC drift detection",
+                                    "IaC version-controlled module"
+                                ]
                             },
                             {
                                 "en": "Version Control",
                                 "es": "Control de Versiones",
                                 "definition": "Tracking changes to code over time (Git)",
                                 "ipa": "/ˈvɜːr.ʒən kənˈtroʊl/",
-                                "collocations": ["version control branching strategy", "version control merge request", "distributed version control system"]
+                                "collocations": [
+                                    "version control branching strategy",
+                                    "version control merge request",
+                                    "distributed version control system"
+                                ]
                             },
                             {
                                 "en": "Repository",
                                 "es": "Repositorio",
                                 "definition": "A storage location for code and its history",
                                 "ipa": "/rɪˈpɒz.ɪ.tɔːr.i/",
-                                "collocations": ["Git repository clone", "monorepo repository structure", "repository access control"]
+                                "collocations": [
+                                    "Git repository clone",
+                                    "monorepo repository structure",
+                                    "repository access control"
+                                ]
                             },
                             {
                                 "en": "Build",
                                 "es": "Compilación / Build",
                                 "definition": "Converting source code into runnable software",
                                 "ipa": "/bɪld/",
-                                "collocations": ["build artifact publishing", "build cache optimization", "build failure root cause"]
+                                "collocations": [
+                                    "build artifact publishing",
+                                    "build cache optimization",
+                                    "build failure root cause"
+                                ]
                             },
                             {
                                 "en": "Staging Environment",
                                 "es": "Entorno de Pruebas",
                                 "definition": "Pre-production environment for final testing",
                                 "ipa": "/ˈsteɪ.dʒɪŋ ɪnˈvaɪ.rən.mənt/",
-                                "collocations": ["staging environment parity", "deploy to staging environment", "staging environment smoke test"]
+                                "collocations": [
+                                    "staging environment parity",
+                                    "deploy to staging environment",
+                                    "staging environment smoke test"
+                                ]
                             },
                             {
                                 "en": "DORA Metrics",
                                 "es": "Métricas DORA",
                                 "definition": "Industry-standard DevOps performance measurements",
                                 "ipa": "/ˈdɔːr.ə ˈmɛt.rɪks/",
-                                "collocations": ["DORA metrics dashboard", "DORA deployment frequency", "DORA change failure rate"]
+                                "collocations": [
+                                    "DORA metrics dashboard",
+                                    "DORA deployment frequency",
+                                    "DORA change failure rate"
+                                ]
                             },
                             {
                                 "en": "Terraform",
                                 "es": "Terraform",
                                 "definition": "Popular Infrastructure as Code tool by HashiCorp",
                                 "ipa": "/ˈtɛr.ə.fɔːrm/",
-                                "collocations": ["Terraform state management", "Terraform module registry", "Terraform plan/apply workflow"]
+                                "collocations": [
+                                    "Terraform state management",
+                                    "Terraform module registry",
+                                    "Terraform plan/apply workflow"
+                                ]
                             },
                             {
                                 "en": "Deployment Frequency",
                                 "es": "Frecuencia de Despliegue",
                                 "definition": "How often new code reaches production",
                                 "ipa": "/dɪˈplɔɪ.mənt ˈfriː.kwən.si/",
-                                "collocations": ["increase deployment frequency", "deployment frequency metric", "daily deployment frequency target"]
+                                "collocations": [
+                                    "increase deployment frequency",
+                                    "deployment frequency metric",
+                                    "daily deployment frequency target"
+                                ]
                             }
                         ],
                         "questions": [
@@ -4090,84 +4791,132 @@ var LXP_COURSES = {
                                 "es": "Contenedor",
                                 "definition": "Lightweight, portable package with everything an app needs",
                                 "ipa": "/kənˈteɪ.nər/",
-                                "collocations": ["container runtime engine", "container image layer", "container resource limit"]
+                                "collocations": [
+                                    "container runtime engine",
+                                    "container image layer",
+                                    "container resource limit"
+                                ]
                             },
                             {
                                 "en": "Docker",
                                 "es": "Docker",
                                 "definition": "Platform for building and running containers",
                                 "ipa": "/ˈdɒk.ər/",
-                                "collocations": ["Docker container orchestration", "Docker Compose multi-service", "Docker Hub registry push"]
+                                "collocations": [
+                                    "Docker container orchestration",
+                                    "Docker Compose multi-service",
+                                    "Docker Hub registry push"
+                                ]
                             },
                             {
                                 "en": "Image",
                                 "es": "Imagen",
                                 "definition": "Read-only template used to create containers",
                                 "ipa": "/ˈɪm.ɪdʒ/",
-                                "collocations": ["container image build", "image tag version", "image vulnerability scan"]
+                                "collocations": [
+                                    "container image build",
+                                    "image tag version",
+                                    "image vulnerability scan"
+                                ]
                             },
                             {
                                 "en": "Dockerfile",
                                 "es": "Dockerfile",
                                 "definition": "Recipe file with instructions to build an image",
                                 "ipa": "/ˈdɒk.ər.faɪl/",
-                                "collocations": ["multi-stage Dockerfile build", "Dockerfile layer caching", "optimize Dockerfile size"]
+                                "collocations": [
+                                    "multi-stage Dockerfile build",
+                                    "Dockerfile layer caching",
+                                    "optimize Dockerfile size"
+                                ]
                             },
                             {
                                 "en": "Kubernetes (K8s)",
                                 "es": "Kubernetes (K8s)",
                                 "definition": "Container orchestration platform",
                                 "ipa": "/ˌkuː.bərˈnɛt.iːz/",
-                                "collocations": ["Kubernetes cluster autoscaler", "Kubernetes namespace isolation", "Kubernetes Helm chart"]
+                                "collocations": [
+                                    "Kubernetes cluster autoscaler",
+                                    "Kubernetes namespace isolation",
+                                    "Kubernetes Helm chart"
+                                ]
                             },
                             {
                                 "en": "Pod",
                                 "es": "Pod",
                                 "definition": "Smallest deployable unit in Kubernetes",
                                 "ipa": "/pɒd/",
-                                "collocations": ["Kubernetes pod lifecycle", "multi-container pod sidecar", "pod resource request/limit"]
+                                "collocations": [
+                                    "Kubernetes pod lifecycle",
+                                    "multi-container pod sidecar",
+                                    "pod resource request/limit"
+                                ]
                             },
                             {
                                 "en": "Cluster",
                                 "es": "Clúster",
                                 "definition": "Group of machines managed together",
                                 "ipa": "/ˈklʌs.tər/",
-                                "collocations": ["production cluster node pool", "cluster high availability", "cluster upgrade rolling strategy"]
+                                "collocations": [
+                                    "production cluster node pool",
+                                    "cluster high availability",
+                                    "cluster upgrade rolling strategy"
+                                ]
                             },
                             {
                                 "en": "Orchestration",
                                 "es": "Orquestación",
                                 "definition": "Automated management of multiple containers",
                                 "ipa": "/ˌɔːr.kɪˈstreɪ.ʃən/",
-                                "collocations": ["container orchestration platform", "orchestration service mesh", "orchestration health check probe"]
+                                "collocations": [
+                                    "container orchestration platform",
+                                    "orchestration service mesh",
+                                    "orchestration health check probe"
+                                ]
                             },
                             {
                                 "en": "Load Balancing",
                                 "es": "Balanceo de Carga",
                                 "definition": "Distributing traffic across multiple servers",
                                 "ipa": "/loʊd ˈbæl.ən.sɪŋ/",
-                                "collocations": ["layer 7 load balancing", "load balancing round-robin", "load balancing health endpoint"]
+                                "collocations": [
+                                    "layer 7 load balancing",
+                                    "load balancing round-robin",
+                                    "load balancing health endpoint"
+                                ]
                             },
                             {
                                 "en": "Rolling Update",
                                 "es": "Actualización Gradual",
                                 "definition": "Deploying new versions without downtime",
                                 "ipa": "/ˈroʊ.lɪŋ ˈʌp.deɪt/",
-                                "collocations": ["rolling update zero downtime", "rolling update revision history", "rolling update max unavailable"]
+                                "collocations": [
+                                    "rolling update zero downtime",
+                                    "rolling update revision history",
+                                    "rolling update max unavailable"
+                                ]
                             },
                             {
                                 "en": "GitOps",
                                 "es": "GitOps",
                                 "definition": "Using Git as single source of truth for infrastructure",
                                 "ipa": "/ˈɡɪt.ɒps/",
-                                "collocations": ["GitOps pull-based deployment", "GitOps reconciliation loop", "ArgoCD GitOps workflow"]
+                                "collocations": [
+                                    "GitOps pull-based deployment",
+                                    "GitOps reconciliation loop",
+                                    "ArgoCD GitOps workflow"
+                                ]
                             },
                             {
                                 "en": "Self-healing",
                                 "es": "Auto-reparación",
                                 "definition": "Automatically restarting failed containers",
                                 "ipa": "/sɛlf ˈhiː.lɪŋ/",
-                                "collocations": ["self-healing pod restart", "self-healing liveness probe", "self-healing node replacement"]
+                                "collocations": [
+                                    "self-healing pod restart",
+                                    "self-healing liveness probe",
+                                    "self-healing node replacement"
+                                ]
                             }
                         ],
                         "questions": [
@@ -4414,84 +5163,132 @@ var LXP_COURSES = {
                                 "es": "Confianza Cero",
                                 "definition": "Security model: never trust, always verify",
                                 "ipa": "/ˈzɪr.oʊ trʌst/",
-                                "collocations": ["zero trust network architecture", "zero trust identity verification", "adopt zero trust principles"]
+                                "collocations": [
+                                    "zero trust network architecture",
+                                    "zero trust identity verification",
+                                    "adopt zero trust principles"
+                                ]
                             },
                             {
                                 "en": "Defense in Depth",
                                 "es": "Defensa en Profundidad",
                                 "definition": "Multiple layers of security controls",
                                 "ipa": "/dɪˈfɛns ɪn dɛpθ/",
-                                "collocations": ["layered defense in depth strategy", "defense in depth security controls", "implement defense in depth architecture"]
+                                "collocations": [
+                                    "layered defense in depth strategy",
+                                    "defense in depth security controls",
+                                    "implement defense in depth architecture"
+                                ]
                             },
                             {
                                 "en": "MFA (Multi-Factor Authentication)",
                                 "es": "Autenticación Multifactor",
                                 "definition": "Requiring multiple verification methods",
                                 "ipa": "/ˌɛm.ɛfˈeɪ/",
-                                "collocations": ["enforce MFA on all accounts", "MFA hardware token", "MFA push notification approval"]
+                                "collocations": [
+                                    "enforce MFA on all accounts",
+                                    "MFA hardware token",
+                                    "MFA push notification approval"
+                                ]
                             },
                             {
                                 "en": "Firewall",
                                 "es": "Cortafuegos / Firewall",
                                 "definition": "Network security device filtering traffic",
                                 "ipa": "/ˈfaɪ.ər.wɔːl/",
-                                "collocations": ["next-generation firewall (NGFW)", "firewall rule set", "stateful firewall inspection"]
+                                "collocations": [
+                                    "next-generation firewall (NGFW)",
+                                    "firewall rule set",
+                                    "stateful firewall inspection"
+                                ]
                             },
                             {
                                 "en": "Encryption",
                                 "es": "Cifrado / Encriptación",
                                 "definition": "Converting data to unreadable format",
                                 "ipa": "/ɪnˈkrɪp.ʃən/",
-                                "collocations": ["symmetric encryption key", "encryption at rest", "TLS encryption handshake"]
+                                "collocations": [
+                                    "symmetric encryption key",
+                                    "encryption at rest",
+                                    "TLS encryption handshake"
+                                ]
                             },
                             {
                                 "en": "Least Privilege",
                                 "es": "Privilegio Mínimo",
                                 "definition": "Giving users only necessary permissions",
                                 "ipa": "/liːst ˈprɪv.əl.ɪdʒ/",
-                                "collocations": ["enforce least privilege access", "least privilege principle violation", "audit least privilege compliance"]
+                                "collocations": [
+                                    "enforce least privilege access",
+                                    "least privilege principle violation",
+                                    "audit least privilege compliance"
+                                ]
                             },
                             {
                                 "en": "Misconfiguration",
                                 "es": "Mala Configuración",
                                 "definition": "Incorrectly set security settings",
                                 "ipa": "/ˌmɪs.kənˌfɪɡ.jʊˈreɪ.ʃən/",
-                                "collocations": ["cloud misconfiguration exposure", "detect storage misconfiguration", "misconfiguration remediation playbook"]
+                                "collocations": [
+                                    "cloud misconfiguration exposure",
+                                    "detect storage misconfiguration",
+                                    "misconfiguration remediation playbook"
+                                ]
                             },
                             {
                                 "en": "Ransomware",
                                 "es": "Ransomware / Secuestro de Datos",
                                 "definition": "Malware that encrypts data and demands payment",
                                 "ipa": "/ˈræn.sʌm.wɛr/",
-                                "collocations": ["ransomware encryption payload", "ransomware ransom demand", "ransomware recovery plan"]
+                                "collocations": [
+                                    "ransomware encryption payload",
+                                    "ransomware ransom demand",
+                                    "ransomware recovery plan"
+                                ]
                             },
                             {
                                 "en": "Phishing",
                                 "es": "Phishing / Suplantación",
                                 "definition": "Fake emails tricking users into revealing credentials",
                                 "ipa": "/ˈfɪʃ.ɪŋ/",
-                                "collocations": ["spear phishing campaign", "phishing email indicator", "anti-phishing awareness training"]
+                                "collocations": [
+                                    "spear phishing campaign",
+                                    "phishing email indicator",
+                                    "anti-phishing awareness training"
+                                ]
                             },
                             {
                                 "en": "SIEM",
                                 "es": "SIEM",
                                 "definition": "Security Information and Event Management system",
                                 "ipa": "/sɪm/",
-                                "collocations": ["SIEM log correlation", "SIEM alert dashboard", "integrate SIEM with threat feeds"]
+                                "collocations": [
+                                    "SIEM log correlation",
+                                    "SIEM alert dashboard",
+                                    "integrate SIEM with threat feeds"
+                                ]
                             },
                             {
                                 "en": "OWASP Top 10",
                                 "es": "OWASP Top 10",
                                 "definition": "The 10 most critical web application security risks",
                                 "ipa": "/ˈoʊ.wɒsp/",
-                                "collocations": ["OWASP Top 10 vulnerability scan", "mitigate OWASP Top 10 risks", "OWASP Top 10 security training"]
+                                "collocations": [
+                                    "OWASP Top 10 vulnerability scan",
+                                    "mitigate OWASP Top 10 risks",
+                                    "OWASP Top 10 security training"
+                                ]
                             },
                             {
                                 "en": "SSO (Single Sign-On)",
                                 "es": "Inicio de Sesión Único",
                                 "definition": "One login grants access to multiple systems",
                                 "ipa": "/ˌɛs.ɛsˈoʊ/",
-                                "collocations": ["SSO federated identity", "SSO SAML assertion", "enterprise SSO integration"]
+                                "collocations": [
+                                    "SSO federated identity",
+                                    "SSO SAML assertion",
+                                    "enterprise SSO integration"
+                                ]
                             }
                         ],
                         "questions": [
@@ -4738,84 +5535,132 @@ var LXP_COURSES = {
                                 "es": "Inteligencia Artificial (IA)",
                                 "definition": "Systems performing tasks requiring human-like intelligence",
                                 "ipa": "/ˌɑːr.tɪˈfɪʃ.əl ɪnˈtɛl.ɪ.dʒəns/",
-                                "collocations": ["narrow AI task automation", "AI-powered anomaly detection", "enterprise AI adoption roadmap"]
+                                "collocations": [
+                                    "narrow AI task automation",
+                                    "AI-powered anomaly detection",
+                                    "enterprise AI adoption roadmap"
+                                ]
                             },
                             {
                                 "en": "Machine Learning (ML)",
                                 "es": "Aprendizaje Automático",
                                 "definition": "Systems that learn patterns from data",
                                 "ipa": "/məˈʃiːn ˈlɜːr.nɪŋ/",
-                                "collocations": ["ML model training pipeline", "ML feature engineering", "supervised ML classification"]
+                                "collocations": [
+                                    "ML model training pipeline",
+                                    "ML feature engineering",
+                                    "supervised ML classification"
+                                ]
                             },
                             {
                                 "en": "Deep Learning",
                                 "es": "Aprendizaje Profundo",
                                 "definition": "ML using multi-layer neural networks",
                                 "ipa": "/diːp ˈlɜːr.nɪŋ/",
-                                "collocations": ["deep learning GPU acceleration", "deep learning convolutional layer", "deep learning inference latency"]
+                                "collocations": [
+                                    "deep learning GPU acceleration",
+                                    "deep learning convolutional layer",
+                                    "deep learning inference latency"
+                                ]
                             },
                             {
                                 "en": "LLM (Large Language Model)",
                                 "es": "Modelo de Lenguaje Grande",
                                 "definition": "AI trained on massive text to generate human-like responses",
                                 "ipa": "/ˌɛl.ɛlˈɛm/",
-                                "collocations": ["LLM context window size", "LLM fine-tuning dataset", "LLM hallucination mitigation"]
+                                "collocations": [
+                                    "LLM context window size",
+                                    "LLM fine-tuning dataset",
+                                    "LLM hallucination mitigation"
+                                ]
                             },
                             {
                                 "en": "Neural Network",
                                 "es": "Red Neuronal",
                                 "definition": "Computing system inspired by biological brain structure",
                                 "ipa": "/ˈnjʊr.əl ˈnɛt.wɜːrk/",
-                                "collocations": ["neural network hidden layer", "neural network backpropagation", "recurrent neural network (RNN)"]
+                                "collocations": [
+                                    "neural network hidden layer",
+                                    "neural network backpropagation",
+                                    "recurrent neural network (RNN)"
+                                ]
                             },
                             {
                                 "en": "Transformer",
                                 "es": "Transformer",
                                 "definition": "Neural network architecture using self-attention",
                                 "ipa": "/trænsˈfɔːr.mər/",
-                                "collocations": ["transformer attention mechanism", "transformer encoder-decoder", "pre-trained transformer model"]
+                                "collocations": [
+                                    "transformer attention mechanism",
+                                    "transformer encoder-decoder",
+                                    "pre-trained transformer model"
+                                ]
                             },
                             {
                                 "en": "Self-Attention",
                                 "es": "Auto-Atención",
                                 "definition": "Mechanism allowing model to weigh relationships between all words",
                                 "ipa": "/sɛlf əˈtɛn.ʃən/",
-                                "collocations": ["self-attention query/key/value", "multi-head self-attention", "self-attention weight matrix"]
+                                "collocations": [
+                                    "self-attention query/key/value",
+                                    "multi-head self-attention",
+                                    "self-attention weight matrix"
+                                ]
                             },
                             {
                                 "en": "RAG",
                                 "es": "Generación Aumentada por Recuperación",
                                 "definition": "Connecting LLMs to external data sources",
                                 "ipa": "/ræɡ/",
-                                "collocations": ["RAG retrieval pipeline", "RAG knowledge base grounding", "implement RAG architecture"]
+                                "collocations": [
+                                    "RAG retrieval pipeline",
+                                    "RAG knowledge base grounding",
+                                    "implement RAG architecture"
+                                ]
                             },
                             {
                                 "en": "Prompt Engineering",
                                 "es": "Ingeniería de Prompts",
                                 "definition": "Crafting effective instructions for AI models",
                                 "ipa": "/prɒmpt ˌɛn.dʒɪˈnɪr.ɪŋ/",
-                                "collocations": ["prompt engineering chain-of-thought", "prompt engineering few-shot", "prompt engineering system instruction"]
+                                "collocations": [
+                                    "prompt engineering chain-of-thought",
+                                    "prompt engineering few-shot",
+                                    "prompt engineering system instruction"
+                                ]
                             },
                             {
                                 "en": "Fine-tuning",
                                 "es": "Ajuste Fino",
                                 "definition": "Adapting a pre-trained model for a specific task",
                                 "ipa": "/ˈfaɪn ˌtjuː.nɪŋ/",
-                                "collocations": ["LoRA fine-tuning adapter", "supervised fine-tuning (SFT)", "fine-tuning learning rate schedule"]
+                                "collocations": [
+                                    "LoRA fine-tuning adapter",
+                                    "supervised fine-tuning (SFT)",
+                                    "fine-tuning learning rate schedule"
+                                ]
                             },
                             {
                                 "en": "Supervised Learning",
                                 "es": "Aprendizaje Supervisado",
                                 "definition": "Training with labeled input-output pairs",
                                 "ipa": "/ˈsuː.pər.vaɪzd ˈlɜːr.nɪŋ/",
-                                "collocations": ["supervised learning labeled dataset", "supervised learning loss function", "supervised learning train/test split"]
+                                "collocations": [
+                                    "supervised learning labeled dataset",
+                                    "supervised learning loss function",
+                                    "supervised learning train/test split"
+                                ]
                             },
                             {
                                 "en": "Agentic AI",
                                 "es": "IA Agéntica",
                                 "definition": "AI systems that plan, act, and use tools autonomously",
                                 "ipa": "/eɪˈdʒɛn.tɪk ˌeɪˈaɪ/",
-                                "collocations": ["agentic AI tool calling", "agentic AI multi-step reasoning", "agentic AI autonomous workflow"]
+                                "collocations": [
+                                    "agentic AI tool calling",
+                                    "agentic AI multi-step reasoning",
+                                    "agentic AI autonomous workflow"
+                                ]
                             }
                         ],
                         "questions": [
@@ -5062,84 +5907,132 @@ var LXP_COURSES = {
                                 "es": "Pipeline de Datos",
                                 "definition": "Automated workflow moving data from source to destination",
                                 "ipa": "/ˈdeɪ.tə ˈpaɪp.laɪn/",
-                                "collocations": ["data pipeline orchestration", "data pipeline monitoring alert", "end-to-end data pipeline"]
+                                "collocations": [
+                                    "data pipeline orchestration",
+                                    "data pipeline monitoring alert",
+                                    "end-to-end data pipeline"
+                                ]
                             },
                             {
                                 "en": "ETL (Extract, Transform, Load)",
                                 "es": "ETL (Extraer, Transformar, Cargar)",
                                 "definition": "Traditional data processing pattern",
                                 "ipa": "/ˌiː.tiːˈɛl/",
-                                "collocations": ["ETL batch job schedule", "ETL data quality check", "ETL staging area"]
+                                "collocations": [
+                                    "ETL batch job schedule",
+                                    "ETL data quality check",
+                                    "ETL staging area"
+                                ]
                             },
                             {
                                 "en": "ELT (Extract, Load, Transform)",
                                 "es": "ELT (Extraer, Cargar, Transformar)",
                                 "definition": "Modern pattern — load raw, transform in warehouse",
                                 "ipa": "/ˌiː.ɛlˈtiː/",
-                                "collocations": ["ELT cloud-native transform", "ELT raw data lake", "ELT vs. ETL comparison"]
+                                "collocations": [
+                                    "ELT cloud-native transform",
+                                    "ELT raw data lake",
+                                    "ELT vs. ETL comparison"
+                                ]
                             },
                             {
                                 "en": "Data Warehouse",
                                 "es": "Almacén de Datos",
                                 "definition": "Storage optimized for structured data and queries",
                                 "ipa": "/ˈdeɪ.tə ˈwɛr.haʊs/",
-                                "collocations": ["data warehouse star schema", "data warehouse query performance", "cloud data warehouse migration"]
+                                "collocations": [
+                                    "data warehouse star schema",
+                                    "data warehouse query performance",
+                                    "cloud data warehouse migration"
+                                ]
                             },
                             {
                                 "en": "Data Lake",
                                 "es": "Lago de Datos",
                                 "definition": "Storage for raw data in any format",
                                 "ipa": "/ˈdeɪ.tə leɪk/",
-                                "collocations": ["data lake raw zone", "data lake governance policy", "data lake storage tier"]
+                                "collocations": [
+                                    "data lake raw zone",
+                                    "data lake governance policy",
+                                    "data lake storage tier"
+                                ]
                             },
                             {
                                 "en": "Data Lakehouse",
                                 "es": "Lakehouse de Datos",
                                 "definition": "Hybrid combining warehouse and lake features",
                                 "ipa": "/ˈdeɪ.tə ˈleɪk.haʊs/",
-                                "collocations": ["data lakehouse open table format", "data lakehouse unified analytics", "Delta Lake lakehouse architecture"]
+                                "collocations": [
+                                    "data lakehouse open table format",
+                                    "data lakehouse unified analytics",
+                                    "Delta Lake lakehouse architecture"
+                                ]
                             },
                             {
                                 "en": "Batch Processing",
                                 "es": "Procesamiento por Lotes",
                                 "definition": "Processing large data volumes on a schedule",
                                 "ipa": "/bætʃ ˈprɒs.ɛs.ɪŋ/",
-                                "collocations": ["nightly batch processing job", "batch processing ETL window", "batch processing vs. streaming"]
+                                "collocations": [
+                                    "nightly batch processing job",
+                                    "batch processing ETL window",
+                                    "batch processing vs. streaming"
+                                ]
                             },
                             {
                                 "en": "Stream Processing",
                                 "es": "Procesamiento en Tiempo Real",
                                 "definition": "Processing data events as they arrive",
                                 "ipa": "/striːm ˈprɒs.ɛs.ɪŋ/",
-                                "collocations": ["real-time stream processing", "stream processing event window", "stream processing exactly-once semantics"]
+                                "collocations": [
+                                    "real-time stream processing",
+                                    "stream processing event window",
+                                    "stream processing exactly-once semantics"
+                                ]
                             },
                             {
                                 "en": "Apache Kafka",
                                 "es": "Apache Kafka",
                                 "definition": "Platform for real-time data streaming",
                                 "ipa": "/əˈpætʃ.i ˈkæf.kə/",
-                                "collocations": ["Apache Kafka topic partition", "Kafka consumer group offset", "Kafka producer acknowledgment"]
+                                "collocations": [
+                                    "Apache Kafka topic partition",
+                                    "Kafka consumer group offset",
+                                    "Kafka producer acknowledgment"
+                                ]
                             },
                             {
                                 "en": "Big Data",
                                 "es": "Big Data / Macrodatos",
                                 "definition": "Extremely large datasets requiring special tools",
                                 "ipa": "/bɪɡ ˈdeɪ.tə/",
-                                "collocations": ["big data distributed computing", "big data Hadoop ecosystem", "big data volume/velocity/variety"]
+                                "collocations": [
+                                    "big data distributed computing",
+                                    "big data Hadoop ecosystem",
+                                    "big data volume/velocity/variety"
+                                ]
                             },
                             {
                                 "en": "Schema-on-Read",
                                 "es": "Esquema en Lectura",
                                 "definition": "Structure applied when reading data (data lake approach)",
                                 "ipa": "/ˈskiː.mə ɒn riːd/",
-                                "collocations": ["schema-on-read flexibility", "schema-on-read data lake", "schema-on-read vs. schema-on-write"]
+                                "collocations": [
+                                    "schema-on-read flexibility",
+                                    "schema-on-read data lake",
+                                    "schema-on-read vs. schema-on-write"
+                                ]
                             },
                             {
                                 "en": "Orchestration",
                                 "es": "Orquestación",
                                 "definition": "Coordinating and scheduling pipeline workflows",
                                 "ipa": "/ˌɔːr.kɪˈstreɪ.ʃən/",
-                                "collocations": ["container orchestration platform", "orchestration service mesh", "orchestration health check probe"]
+                                "collocations": [
+                                    "container orchestration platform",
+                                    "orchestration service mesh",
+                                    "orchestration health check probe"
+                                ]
                             }
                         ],
                         "questions": [
@@ -5386,84 +6279,132 @@ var LXP_COURSES = {
                                 "es": "Industria 4.0",
                                 "definition": "Fourth industrial revolution — digital transformation of manufacturing",
                                 "ipa": "/ˈɪn.dəs.tri fɔːr pɔɪnt ˈoʊ/",
-                                "collocations": ["Industry 4.0 digital transformation", "Industry 4.0 smart factory", "Industry 4.0 maturity model"]
+                                "collocations": [
+                                    "Industry 4.0 digital transformation",
+                                    "Industry 4.0 smart factory",
+                                    "Industry 4.0 maturity model"
+                                ]
                             },
                             {
                                 "en": "IIoT (Industrial Internet of Things)",
                                 "es": "Internet Industrial de las Cosas",
                                 "definition": "Network of sensors and devices in factories",
                                 "ipa": "/ˌaɪ.aɪ.oʊˈtiː/",
-                                "collocations": ["IIoT sensor data ingestion", "IIoT edge gateway", "IIoT predictive analytics"]
+                                "collocations": [
+                                    "IIoT sensor data ingestion",
+                                    "IIoT edge gateway",
+                                    "IIoT predictive analytics"
+                                ]
                             },
                             {
                                 "en": "Digital Twin",
                                 "es": "Gemelo Digital",
                                 "definition": "Virtual replica of a physical system",
                                 "ipa": "/ˈdɪdʒ.ɪ.təl twɪn/",
-                                "collocations": ["digital twin simulation model", "digital twin real-time sync", "digital twin process optimization"]
+                                "collocations": [
+                                    "digital twin simulation model",
+                                    "digital twin real-time sync",
+                                    "digital twin process optimization"
+                                ]
                             },
                             {
                                 "en": "Edge Computing",
                                 "es": "Computación en el Borde",
                                 "definition": "Processing data locally near sensors (low latency)",
                                 "ipa": "/ɛdʒ kəmˈpjuː.tɪŋ/",
-                                "collocations": ["edge computing latency reduction", "edge computing inference node", "edge computing fog layer"]
+                                "collocations": [
+                                    "edge computing latency reduction",
+                                    "edge computing inference node",
+                                    "edge computing fog layer"
+                                ]
                             },
                             {
                                 "en": "Cobot (Collaborative Robot)",
                                 "es": "Robot Colaborativo",
                                 "definition": "Robot designed to work safely alongside humans",
                                 "ipa": "/ˈkoʊ.bɒt/",
-                                "collocations": ["cobot human-robot collaboration", "cobot safety zone", "cobot payload capacity"]
+                                "collocations": [
+                                    "cobot human-robot collaboration",
+                                    "cobot safety zone",
+                                    "cobot payload capacity"
+                                ]
                             },
                             {
                                 "en": "PLC (Programmable Logic Controller)",
                                 "es": "Controlador Lógico Programable",
                                 "definition": "Industrial computer controlling machines",
                                 "ipa": "/ˌpiː.ɛlˈsiː/",
-                                "collocations": ["PLC ladder logic program", "PLC I/O module", "PLC scan cycle time"]
+                                "collocations": [
+                                    "PLC ladder logic program",
+                                    "PLC I/O module",
+                                    "PLC scan cycle time"
+                                ]
                             },
                             {
                                 "en": "SCADA",
                                 "es": "SCADA",
                                 "definition": "Supervisory Control and Data Acquisition system",
                                 "ipa": "/ˈskeɪ.dɑː/",
-                                "collocations": ["SCADA supervisory dashboard", "SCADA alarm management", "SCADA historian database"]
+                                "collocations": [
+                                    "SCADA supervisory dashboard",
+                                    "SCADA alarm management",
+                                    "SCADA historian database"
+                                ]
                             },
                             {
                                 "en": "MES (Manufacturing Execution System)",
                                 "es": "Sistema de Ejecución de Manufactura",
                                 "definition": "Software tracking production in real-time",
                                 "ipa": "/mɛs/",
-                                "collocations": ["MES production scheduling", "MES real-time tracking", "MES quality data collection"]
+                                "collocations": [
+                                    "MES production scheduling",
+                                    "MES real-time tracking",
+                                    "MES quality data collection"
+                                ]
                             },
                             {
                                 "en": "Predictive Maintenance",
                                 "es": "Mantenimiento Predictivo",
                                 "definition": "Using data to predict equipment failure before it happens",
                                 "ipa": "/prɪˈdɪk.tɪv ˈmeɪn.tən.əns/",
-                                "collocations": ["predictive maintenance vibration analysis", "predictive maintenance failure threshold", "predictive maintenance cost savings"]
+                                "collocations": [
+                                    "predictive maintenance vibration analysis",
+                                    "predictive maintenance failure threshold",
+                                    "predictive maintenance cost savings"
+                                ]
                             },
                             {
                                 "en": "Additive Manufacturing",
                                 "es": "Manufactura Aditiva",
                                 "definition": "3D printing — building parts layer by layer",
                                 "ipa": "/ˈæd.ɪ.tɪv ˌmæn.jʊˈfæk.tʃər.ɪŋ/",
-                                "collocations": ["additive manufacturing layer deposition", "metal additive manufacturing", "additive manufacturing design freedom"]
+                                "collocations": [
+                                    "additive manufacturing layer deposition",
+                                    "metal additive manufacturing",
+                                    "additive manufacturing design freedom"
+                                ]
                             },
                             {
                                 "en": "OT Security",
                                 "es": "Seguridad OT",
                                 "definition": "Cybersecurity for operational technology (factory systems)",
                                 "ipa": "/ˌoʊˈtiː sɪˈkjʊr.ɪ.ti/",
-                                "collocations": ["OT security network segmentation", "OT security vulnerability scan", "IT/OT security convergence"]
+                                "collocations": [
+                                    "OT security network segmentation",
+                                    "OT security vulnerability scan",
+                                    "IT/OT security convergence"
+                                ]
                             },
                             {
                                 "en": "Smartshoring",
                                 "es": "Smartshoring",
                                 "definition": "Nearshoring combined with advanced digital infrastructure",
                                 "ipa": "/ˈsmɑːrt.ʃɔːr.ɪŋ/",
-                                "collocations": ["smartshoring digital workflow", "smartshoring automation hub", "smartshoring nearshore advantage"]
+                                "collocations": [
+                                    "smartshoring digital workflow",
+                                    "smartshoring automation hub",
+                                    "smartshoring nearshore advantage"
+                                ]
                             }
                         ],
                         "questions": [
@@ -5896,6 +6837,104 @@ var LXP_COURSES = {
                                     "To translate English text into binary code"
                                 ],
                                 "answer": 1
+                            }
+                        ]
+                    },
+                    {
+                        "id": "aiml-m1-r2",
+                        "title": "Applied Lab: Production Inference Benchmarking, Quantization & Latency-Accuracy Tradeoffs",
+                        "duration": "14 min",
+                        "content": "\n> **Industry Benchmark & Architecture Standard**: Aligned with **MLPerf Inference Standards** and **NVIDIA TensorRT / ONNX Runtime** engineering guidelines. Guides AI engineers through optimizing foundation models for low-latency edge deployment in automated manufacturing and robotics.\n\n# Applied Laboratory: Production Inference Benchmarking, Quantization & Latency-Accuracy Tradeoffs\n\nDeploying deep neural networks in real-time industrial robotics, computer vision quality control, and edge gateways requires optimizing between memory footprint, computational throughput, and numerical precision.\n\n## 1. Key Performance Indicators: TTFT, Throughput & Memory Bandwidth\nWhen deploying AI models for defect classification or natural language instructions:\n1. **Time to First Token (TTFT)**: Measures prompt evaluation latency. In automated inspection, prompt processing corresponds to the time required to preprocess high-resolution sensor frames.\n2. **Inter-Token Latency (ITL)** / **Inference Time per Sample**: The duration needed to generate consecutive output tokens or bounding-box coordinates.\n3. **Memory Bandwidth Bottlenecks**: Modern large models are predominantly memory-bandwidth bound rather than compute-bound (FLOP bound). Moving weights from High Bandwidth Memory (HBM) to compute registers consumes up to 80% of inference energy.\n\n## 2. Model Compression: Post-Training Quantization (PTQ) vs. QAT\nFloating-point 32-bit (FP32) tensors offer high dynamic range but demand massive memory and compute resources:\n- **FP16 / BF16 (Half-Precision)**: Halves memory usage from 4 bytes to 2 bytes per parameter with negligible accuracy loss across most transformer layers.\n- **INT8 Quantization**: Maps continuous weights and activations to 8-bit signed integers (`[-128, 127]`) using scale factors and zero-point offsets:\n  $$q = \\text{clamp}\\left(\\text{round}\\left(\\frac{x}{S}\\right) + Z, -128, 127\\right)$$\n- **AWQ (Activation-aware Weight Quantization)**: Preserves salient weight channels that correspond to high-magnitude activations, allowing 4-bit (INT4) weight compression without perplexity degradation.\n\n## 3. KV Cache Management & PagedAttention\nIn autoregressive inference, caching previous Key and Value projection matrices avoids recalculating attention over past tokens:\n1. **Memory Growth**: Without optimization, KV cache size scales linearly with sequence length and batch size:\n   $$\\text{Memory}_{KV} = 2 \\times b \\times s \\times l \\times h \\times d \\times \\text{bytes}$$\n2. **PagedAttention**: Partitions the continuous KV cache into non-contiguous virtual memory blocks (analogous to virtual memory OS paging), eliminating memory fragmentation and enabling up to a 4x increase in concurrent batch throughput.\n\n---\n> **Key Takeaway**: High-performance AI engineering requires balancing **precision quantization (INT8/FP4)** with **efficient memory paging (PagedAttention, TensorRT)** to meet millisecond-level SLAs in industrial automation.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Post-Training Quantization (PTQ)",
+                                "es": "Cuantización Posterior al Entrenamiento (PTQ)",
+                                "definition": "Technique that reduces model precision (e.g. FP32 to INT8) after training has concluded without requiring full retraining from scratch.",
+                                "ipa": "/poʊst ˈtreɪnɪŋ ˌkwɑːntɪzaɪˈzeɪʃən/",
+                                "collocations": [
+                                    "PTQ calibration dataset",
+                                    "INT8 quantization error",
+                                    "zero-shot PTQ"
+                                ]
+                            },
+                            {
+                                "en": "Time to First Token (TTFT)",
+                                "es": "Tiempo hasta el Primer Token (TTFT)",
+                                "definition": "Latency metric capturing the time elapsed from user request dispatch to the generation of the first model response token.",
+                                "ipa": "/taɪm tuː fɜːrst ˈtoʊkən/",
+                                "collocations": [
+                                    "reduce TTFT latency",
+                                    "prefill phase benchmarking",
+                                    "sub-100ms TTFT SLA"
+                                ]
+                            },
+                            {
+                                "en": "KV Cache",
+                                "es": "Caché de Claves y Valores (KV Cache)",
+                                "definition": "Memory buffer storing intermediate key and value tensor states in attention mechanisms to prevent redundant matrix re-computations.",
+                                "ipa": "/keɪ viː kæʃ/",
+                                "collocations": [
+                                    "PagedAttention memory layout",
+                                    "KV cache compression",
+                                    "dynamically allocated KV blocks"
+                                ]
+                            },
+                            {
+                                "en": "Memory Bandwidth",
+                                "es": "Ancho de Banda de Memoria",
+                                "definition": "Rate at which data can be read from or stored into system memory by the GPU or AI acceleration silicon.",
+                                "ipa": "/ˈmɛm.ər.i ˈbænd.wɪdtθ/",
+                                "collocations": [
+                                    "HBM3e memory bandwidth",
+                                    "bandwidth-bound kernels",
+                                    "saturate memory bus"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "Why does INT8 quantization dramatically accelerate AI inference throughput on modern GPUs and edge NPUs?",
+                                "options": [
+                                    "Because INT8 deletes half of the model layers completely",
+                                    "Because 8-bit integers require 4x less memory bandwidth than FP32 and can leverage high-throughput tensor core matrix multiplication (DP4A/Tensor Cores)",
+                                    "Because INT8 allows the model to run without electrical power",
+                                    "Because integers generate more colorful images"
+                                ],
+                                "answer": 1,
+                                "explanation": "Reducing precision from 32-bit floating point to 8-bit integers cuts memory traffic by 75%, alleviating memory bandwidth saturation and allowing dedicated INT8 systolic tensor hardware to execute higher operations per clock cycle."
+                            },
+                            {
+                                "q": "What is the primary operational objective of PagedAttention in serving frameworks like vLLM?",
+                                "options": [
+                                    "To format model responses into printable PDF pages",
+                                    "To eliminate internal memory fragmentation by allocating KV cache tensors into virtual memory blocks, maximizing concurrent batch capacity",
+                                    "To speed up CPU clock speed via overclocking",
+                                    "To encrypt internet search queries"
+                                ],
+                                "answer": 1,
+                                "explanation": "PagedAttention applies operating system virtual memory paging concepts to LLM KV caches. Rather than allocating contiguous pre-allocated buffers, it dynamically allocates small blocks, reducing wasted memory and enabling substantially higher batch sizes."
+                            },
+                            {
+                                "q": "Which phase of transformer inference is typically memory-bandwidth bound rather than compute bound?",
+                                "options": [
+                                    "The initial prompt prefill phase where thousands of tokens are processed simultaneously",
+                                    "The token generation (decoding) phase where single tokens are generated sequentially while reloading all model weights each step",
+                                    "The physical packaging of the GPU in cardboard",
+                                    "The downloading of the dataset over Ethernet"
+                                ],
+                                "answer": 1,
+                                "explanation": "During autoregressive token decoding (batch size 1), all model weights must be loaded from GPU High-Bandwidth Memory (HBM) into SRAM/registers just to process a single token, causing the memory bus to saturate before compute units reach full utilization."
+                            },
+                            {
+                                "q": "How does Activation-aware Weight Quantization (AWQ) protect model accuracy during 4-bit compression?",
+                                "options": [
+                                    "By doubling the learning rate during backward propagation",
+                                    "By identifying the top 1% salient weight channels that correlate with large activation magnitudes and maintaining them at higher precision or scaling them up",
+                                    "By converting the entire model into text files",
+                                    "By only running the model on weekends"
+                                ],
+                                "answer": 1,
+                                "explanation": "AWQ discovered that not all weights are equally important; protecting the small fraction (0.5% to 1%) of weights associated with high-magnitude activation channels prevents distortion during 4-bit compression without requiring retraining."
                             }
                         ]
                     }
@@ -12082,91 +13121,143 @@ var LXP_COURSES = {
                                 "es": "Dopaje",
                                 "definition": "Adding impurity atoms to silicon to control its conductivity",
                                 "ipa": "/ˈdoʊ.pɪŋ/",
-                                "collocations": ["doping concentration profile", "ion implantation doping", "p-type doping process"]
+                                "collocations": [
+                                    "doping concentration profile",
+                                    "ion implantation doping",
+                                    "p-type doping process"
+                                ]
                             },
                             {
                                 "en": "N-Type",
                                 "es": "Tipo N",
                                 "definition": "Silicon doped with atoms that provide extra electrons",
                                 "ipa": "/ˈɛn taɪp/",
-                                "collocations": ["N-type silicon wafer", "N-type dopant concentration", "N-type majority carrier"]
+                                "collocations": [
+                                    "N-type silicon wafer",
+                                    "N-type dopant concentration",
+                                    "N-type majority carrier"
+                                ]
                             },
                             {
                                 "en": "P-Type",
                                 "es": "Tipo P",
                                 "definition": "Silicon doped with atoms that create holes",
                                 "ipa": "/ˈpiː taɪp/",
-                                "collocations": ["P-type acceptor atom", "P-type hole conduction", "P-type boron implant"]
+                                "collocations": [
+                                    "P-type acceptor atom",
+                                    "P-type hole conduction",
+                                    "P-type boron implant"
+                                ]
                             },
                             {
                                 "en": "Electron",
                                 "es": "Electrón",
                                 "definition": "A negatively charged subatomic particle",
                                 "ipa": "/ɪˈlɛk.trɒn/",
-                                "collocations": ["free electron mobility", "electron drift velocity", "valence electron excitation"]
+                                "collocations": [
+                                    "free electron mobility",
+                                    "electron drift velocity",
+                                    "valence electron excitation"
+                                ]
                             },
                             {
                                 "en": "Hole",
                                 "es": "Hueco / Laguna",
                                 "definition": "An empty space where an electron could be — acts as positive charge",
                                 "ipa": "/hoʊl/",
-                                "collocations": ["electron-hole pair generation", "hole mobility measurement", "hole concentration gradient"]
+                                "collocations": [
+                                    "electron-hole pair generation",
+                                    "hole mobility measurement",
+                                    "hole concentration gradient"
+                                ]
                             },
                             {
                                 "en": "Covalent Bond",
                                 "es": "Enlace Covalente",
                                 "definition": "A chemical bond formed by sharing electrons",
                                 "ipa": "/koʊˈveɪ.lənt bɒnd/",
-                                "collocations": ["covalent bond sharing pair", "covalent bond crystal lattice", "break covalent bond energy"]
+                                "collocations": [
+                                    "covalent bond sharing pair",
+                                    "covalent bond crystal lattice",
+                                    "break covalent bond energy"
+                                ]
                             },
                             {
                                 "en": "Donor",
                                 "es": "Donador",
                                 "definition": "An atom (like phosphorus) that donates an extra electron",
                                 "ipa": "/ˈdoʊ.nər/",
-                                "collocations": ["donor atom ionization", "donor impurity concentration", "phosphorus donor level"]
+                                "collocations": [
+                                    "donor atom ionization",
+                                    "donor impurity concentration",
+                                    "phosphorus donor level"
+                                ]
                             },
                             {
                                 "en": "Acceptor",
                                 "es": "Aceptor",
                                 "definition": "An atom (like boron) that accepts electrons",
                                 "ipa": "/əkˈsɛp.tər/",
-                                "collocations": ["acceptor energy level", "boron acceptor impurity", "acceptor hole generation"]
+                                "collocations": [
+                                    "acceptor energy level",
+                                    "boron acceptor impurity",
+                                    "acceptor hole generation"
+                                ]
                             },
                             {
                                 "en": "P-N Junction",
                                 "es": "Unión P-N",
                                 "definition": "The boundary between P-Type and N-Type silicon",
                                 "ipa": "/ˌpiːˈɛn ˈdʒʌŋk.ʃən/",
-                                "collocations": ["P-N junction diode", "P-N junction barrier voltage", "forward-biased P-N junction"]
+                                "collocations": [
+                                    "P-N junction diode",
+                                    "P-N junction barrier voltage",
+                                    "forward-biased P-N junction"
+                                ]
                             },
                             {
                                 "en": "Depletion Zone",
                                 "es": "Zona de Agotamiento",
                                 "definition": "The region at a P-N junction with no free carriers",
                                 "ipa": "/dɪˈpliː.ʃən zoʊn/",
-                                "collocations": ["depletion zone width", "depletion zone electric field", "depletion zone charge separation"]
+                                "collocations": [
+                                    "depletion zone width",
+                                    "depletion zone electric field",
+                                    "depletion zone charge separation"
+                                ]
                             },
                             {
                                 "en": "Forward Bias",
                                 "es": "Polarización Directa",
                                 "definition": "Voltage applied to make a diode conduct",
                                 "ipa": "/ˈfɔːr.wərd ˈbaɪ.əs/",
-                                "collocations": ["forward bias voltage drop", "forward bias current flow", "forward bias threshold"]
+                                "collocations": [
+                                    "forward bias voltage drop",
+                                    "forward bias current flow",
+                                    "forward bias threshold"
+                                ]
                             },
                             {
                                 "en": "Ion Implantation",
                                 "es": "Implantación de Iones",
                                 "definition": "Shooting dopant atoms into silicon at high speed",
                                 "ipa": "/ˈaɪ.ɒn ˌɪm.plænˈteɪ.ʃən/",
-                                "collocations": ["ion implantation dose control", "ion implantation energy profile", "ion implantation anneal step"]
+                                "collocations": [
+                                    "ion implantation dose control",
+                                    "ion implantation energy profile",
+                                    "ion implantation anneal step"
+                                ]
                             },
                             {
                                 "en": "Fab (Fabrication Plant)",
                                 "es": "Fábrica / Planta de Fabricación",
                                 "definition": "A factory where semiconductor chips are manufactured",
                                 "ipa": "/fæb/",
-                                "collocations": ["fab cleanroom protocol", "300mm fab capacity", "fab equipment downtime"]
+                                "collocations": [
+                                    "fab cleanroom protocol",
+                                    "300mm fab capacity",
+                                    "fab equipment downtime"
+                                ]
                             }
                         ],
                         "questions": [
@@ -12510,84 +13601,132 @@ var LXP_COURSES = {
                                 "es": "Transistor",
                                 "definition": "An electronic switch/amplifier — the building block of all chips",
                                 "ipa": "/trænˈzɪs.tər/",
-                                "collocations": ["transistor gate length", "transistor switching speed", "FinFET transistor architecture"]
+                                "collocations": [
+                                    "transistor gate length",
+                                    "transistor switching speed",
+                                    "FinFET transistor architecture"
+                                ]
                             },
                             {
                                 "en": "MOSFET",
                                 "es": "MOSFET",
                                 "definition": "Metal-Oxide-Semiconductor Field-Effect Transistor — the most common type",
                                 "ipa": "/ˈmɒs.fɛt/",
-                                "collocations": ["MOSFET gate oxide", "MOSFET threshold voltage", "power MOSFET on-resistance"]
+                                "collocations": [
+                                    "MOSFET gate oxide",
+                                    "MOSFET threshold voltage",
+                                    "power MOSFET on-resistance"
+                                ]
                             },
                             {
                                 "en": "Gate",
                                 "es": "Compuerta",
                                 "definition": "The terminal that controls ON/OFF state in a transistor",
                                 "ipa": "/ɡeɪt/",
-                                "collocations": ["gate dielectric thickness", "gate voltage swing", "high-k gate stack"]
+                                "collocations": [
+                                    "gate dielectric thickness",
+                                    "gate voltage swing",
+                                    "high-k gate stack"
+                                ]
                             },
                             {
                                 "en": "Source",
                                 "es": "Fuente",
                                 "definition": "Where current enters a transistor",
                                 "ipa": "/sɔːrs/",
-                                "collocations": ["MOSFET source terminal", "source contact implant", "source-drain channel"]
+                                "collocations": [
+                                    "MOSFET source terminal",
+                                    "source contact implant",
+                                    "source-drain channel"
+                                ]
                             },
                             {
                                 "en": "Drain",
                                 "es": "Drenaje",
                                 "definition": "Where current exits a transistor",
                                 "ipa": "/dreɪn/",
-                                "collocations": ["drain current saturation", "drain voltage bias", "drain-induced barrier lowering"]
+                                "collocations": [
+                                    "drain current saturation",
+                                    "drain voltage bias",
+                                    "drain-induced barrier lowering"
+                                ]
                             },
                             {
                                 "en": "Channel",
                                 "es": "Canal",
                                 "definition": "The conductive path between source and drain",
                                 "ipa": "/ˈtʃæn.əl/",
-                                "collocations": ["channel length modulation", "channel doping profile", "short-channel effect"]
+                                "collocations": [
+                                    "channel length modulation",
+                                    "channel doping profile",
+                                    "short-channel effect"
+                                ]
                             },
                             {
                                 "en": "CMOS",
                                 "es": "CMOS",
                                 "definition": "Complementary MOS — technology using both NMOS and PMOS",
                                 "ipa": "/ˈsiː.mɒs/",
-                                "collocations": ["CMOS logic gate", "CMOS process technology", "CMOS power consumption"]
+                                "collocations": [
+                                    "CMOS logic gate",
+                                    "CMOS process technology",
+                                    "CMOS power consumption"
+                                ]
                             },
                             {
                                 "en": "Moore's Law",
                                 "es": "Ley de Moore",
                                 "definition": "Transistor count doubles roughly every two years",
                                 "ipa": "/mʊrz lɔː/",
-                                "collocations": ["Moore's Law scaling trend", "beyond Moore's Law limits", "Moore's Law transistor density"]
+                                "collocations": [
+                                    "Moore's Law scaling trend",
+                                    "beyond Moore's Law limits",
+                                    "Moore's Law transistor density"
+                                ]
                             },
                             {
                                 "en": "Process Node",
                                 "es": "Nodo de Proceso",
                                 "definition": "The size of smallest features on a chip (measured in nm)",
                                 "ipa": "/ˈprɒs.ɛs noʊd/",
-                                "collocations": ["advanced process node shrink", "7nm process node", "process node transistor count"]
+                                "collocations": [
+                                    "advanced process node shrink",
+                                    "7nm process node",
+                                    "process node transistor count"
+                                ]
                             },
                             {
                                 "en": "FinFET",
                                 "es": "FinFET",
                                 "definition": "3D transistor with a vertical fin for better gate control",
                                 "ipa": "/ˈfɪn.fɛt/",
-                                "collocations": ["FinFET tri-gate structure", "FinFET leakage reduction", "FinFET vs. planar transistor"]
+                                "collocations": [
+                                    "FinFET tri-gate structure",
+                                    "FinFET leakage reduction",
+                                    "FinFET vs. planar transistor"
+                                ]
                             },
                             {
                                 "en": "GAA",
                                 "es": "GAA (Compuerta Envolvente)",
                                 "definition": "Gate-All-Around — next-gen transistor with gate on all sides",
                                 "ipa": "/ˌdʒiː.eɪˈeɪ/",
-                                "collocations": ["GAA nanosheet transistor", "GAA all-around gate control", "GAA process integration"]
+                                "collocations": [
+                                    "GAA nanosheet transistor",
+                                    "GAA all-around gate control",
+                                    "GAA process integration"
+                                ]
                             },
                             {
                                 "en": "Leakage Current",
                                 "es": "Corriente de Fuga",
                                 "definition": "Unwanted current flow when a transistor should be OFF",
                                 "ipa": "/ˈliː.kɪdʒ ˈkʌr.ənt/",
-                                "collocations": ["gate leakage current", "subthreshold leakage current", "reduce standby leakage current"]
+                                "collocations": [
+                                    "gate leakage current",
+                                    "subthreshold leakage current",
+                                    "reduce standby leakage current"
+                                ]
                             }
                         ],
                         "questions": [
@@ -12630,6 +13769,104 @@ var LXP_COURSES = {
                                     "10 years"
                                 ],
                                 "answer": 2
+                            }
+                        ]
+                    },
+                    {
+                        "id": "semi-m2-r2",
+                        "title": "Applied Lab: FinFET to Gate-All-Around (GAA) Nanosheet Architecture & Quantum Tunneling",
+                        "duration": "15 min",
+                        "content": "\n> **Semiconductor Device Physics Standard**: Aligned with **IEEE International Roadmap for Devices and Systems (IRDS)**. Prepares semiconductor device and process integration engineers to understand sub-3nm transistor scaling, gate electrostatic control, and quantum mechanical leakage mechanisms.\n\n# Applied Laboratory: FinFET to Gate-All-Around (GAA) Nanosheet Architecture & Quantum Tunneling\n\nFor over a decade, 3D FinFET (Fin Field-Effect Transistor) architectures powered semiconductor advancement by wrapping the gate electrode around three sides of a vertical silicon fin. However, as physical gate lengths scaled below 12 nanometers (corresponding to commercial 3nm and 2nm nodes), short-channel effects, drain-induced barrier lowering (DIBL), and subthreshold leakage necessitated transitioning to **Gate-All-Around (GAA) Nanosheet** field-effect transistors.\n\n## 1. Physical Limitations of FinFET at the 3nm Node\n1. **Drain-Induced Barrier Lowering (DIBL)**: As the gate length shortens, the drain's electric field penetrates the channel, lowering the source-channel potential barrier and preventing the transistor from turning completely off.\n2. **Fin Depletion & Aspect Ratio Limits**: Tall, thin fins suffer from mechanical bending during wet etching and chemical mechanical planarization (CMP). Furthermore, electrostatic control through only three surfaces fails to fully suppress leakage currents through the un-gated fin bottom.\n3. **Subthreshold Swing ($SS$) Degradation**: At room temperature, thermodynamic physics dictates a theoretical minimum subthreshold swing of:\n   $$SS = \\left(\\frac{k_B T}{q}\\right) \\ln(10) \\left(1 + \\frac{C_{dep}}{C_{ox}}\\right) \\approx 60\\,\\text{mV/decade}$$\n   FinFETs at ultra-short nodes exhibit degraded $SS > 75\\,\\text{mV/decade}$, driving up static power dissipation.\n\n## 2. Gate-All-Around (GAA) Nanosheet (MBCFET) Innovation\nIn GAA nanosheet transistors (termed Multi-Bridge-Channel FET or MBCFET by Samsung and RibbonFET by Intel):\n- **4-Sided Electrostatic Surrounding**: Multiple horizontally stacked silicon nanosheet channels are completely surrounded on all four sides by the high-k metal gate (HKMG) stack.\n- **Variable Channel Width ($W_{eff}$)**: Unlike FinFETs where channel width is quantized by integer numbers of fins, nanosheet lithography allows designers to continuously tune sheet width (e.g., from 15nm to 50nm) to optimize speed versus dynamic capacitance.\n- **Inner Spacer Formation**: Atomic layer deposition (ALD) introduces low-k dielectric inner spacers between nanosheet levels, dramatically reducing parasitic gate-to-source and gate-to-drain capacitance.\n\n## 3. Quantum Tunneling & Parasitic Interconnect Scaling\nAs gate oxide thicknesses drop below 1.5 nanometers:\n1. **Quantum Direct Tunneling**: Electrons possess non-zero probability of tunneling directly through the potential barrier of the gate dielectric into the channel, causing exponential gate leakage current ($J_g$).\n2. **Backside Power Delivery Network (BSPDN)**: At sub-2nm nodes, signal and power wiring on the front side of the wafer causes severe $IR$ drop and RC delays. Moving power supply lines ($V_{dd}$ and $V_{ss}$) to the backside of the wafer with Through-Silicon Vias (TSVs) reduces resistance losses by 20% and frees up front-side metal routing tracks.\n\n---\n> **Key Takeaway**: Leading-edge silicon manufacturing overcomes nanoscale physical limits through **GAA nanosheet architecture, atomic layer deposition of inner spacers, and Backside Power Delivery Networks (BSPDN)**.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Gate-All-Around (GAA) Transistor",
+                                "es": "Transistor con Compuerta Envolvente (GAA)",
+                                "definition": "Advanced transistor architecture where the gate electrode surrounds stacked horizontal nanosheet conductive channels on all four sides.",
+                                "ipa": "/ɡeɪt ɔːl əˈraʊnd trænˈzɪs.tər/",
+                                "collocations": [
+                                    "stacked nanosheet GAA architecture",
+                                    "four-sided electrostatic gate control",
+                                    "sub-2nm GAA transition"
+                                ]
+                            },
+                            {
+                                "en": "Drain-Induced Barrier Lowering (DIBL)",
+                                "es": "Disminución de Barrera Inducida por Drenaje (DIBL)",
+                                "definition": "Short-channel effect in field-effect transistors where high drain voltages reduce the source-to-channel potential barrier.",
+                                "ipa": "/dreɪn ɪnˈduːst ˈbær.i.ər ˈloʊ.ər.ɪŋ/",
+                                "collocations": [
+                                    "minimize DIBL leakage",
+                                    "short-channel DIBL metric",
+                                    "DIBL suppression via GAA"
+                                ]
+                            },
+                            {
+                                "en": "Backside Power Delivery Network (BSPDN)",
+                                "es": "Red de Distribución de Energía por la Cara Posterior (BSPDN)",
+                                "definition": "Manufacturing architecture separating power routing to the backside of the silicon wafer to eliminate front-side IR drop.",
+                                "ipa": "/ˈbæk.saɪd ˈpaʊ.ər dɪˈlɪv.ər.i ˈnɛt.wɜːrk/",
+                                "collocations": [
+                                    "implement BSPDN power rails",
+                                    "through-silicon via (TSV) power taps",
+                                    "BSPDN resistance reduction"
+                                ]
+                            },
+                            {
+                                "en": "Subthreshold Swing (SS)",
+                                "es": "Pendiente Subumbral (SS)",
+                                "definition": "Metric indicating the gate voltage increase required to increase drain current by one order of magnitude below the threshold voltage.",
+                                "ipa": "/sʌbˈθrɛʃ.hoʊld swɪŋ/",
+                                "collocations": [
+                                    "steep subthreshold swing",
+                                    "60 mV/decade theoretical limit",
+                                    "subthreshold leakage minimization"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "Why does the Gate-All-Around (GAA) nanosheet architecture provide superior electrostatic control compared to FinFET at sub-3nm nodes?",
+                                "options": [
+                                    "Because GAA transistors are made from plastic rather than silicon",
+                                    "Because the high-k metal gate surrounds the horizontal channel sheets on all four sides, completely eliminating un-gated leakage paths",
+                                    "Because GAA transistors operate at absolute zero temperature",
+                                    "Because GAA transistors do not require source or drain electrodes"
+                                ],
+                                "answer": 1,
+                                "explanation": "FinFET gates cover the fin on three sides, leaving the bottom of the fin susceptible to leakage when scaled to sub-12nm gate lengths. GAA surrounds the nanosheets on all four surfaces, providing total electrostatic pinch-off and suppressing short-channel effects."
+                            },
+                            {
+                                "q": "What is the theoretical physical lower limit for Subthreshold Swing (SS) in conventional silicon field-effect transistors at room temperature (300K)?",
+                                "options": [
+                                    "0 mV/decade",
+                                    "Approximately 60 mV/decade, determined by the Boltzmann thermal distribution of electrons (kT/q * ln(10))",
+                                    "1,000 mV/decade",
+                                    "There is no limit; any voltage works"
+                                ],
+                                "answer": 1,
+                                "explanation": "Due to the thermal Boltzmann distribution of carriers over a potential energy barrier, a classical MOSFET requires at least 60 millivolts of gate potential at 300 Kelvin to alter channel current by a factor of 10. Transistors approaching 60 mV/decade turn on and off with maximum efficiency."
+                            },
+                            {
+                                "q": "What primary engineering problem is solved by moving power rails to the backside of the wafer via Backside Power Delivery (BSPDN)?",
+                                "options": [
+                                    "It makes the wafer transparent",
+                                    "It separates high-current power lines from dense signal lines, mitigating severe IR voltage drop and freeing front-side metal layers for signal routing",
+                                    "It allows chips to run without heat sinks",
+                                    "It reduces the cost of cardboard packaging"
+                                ],
+                                "answer": 1,
+                                "explanation": "At advanced nodes, power and signal routing compete for narrow front-side copper interconnects, creating immense parasitic resistance and IR voltage drops. Placing thick power rails on the polished backside connects directly to transistors via TSVs, dramatically improving power integrity."
+                            },
+                            {
+                                "q": "What role do low-k inner spacers play between the stacked nanosheet channels in GAA transistors?",
+                                "options": [
+                                    "They allow the transistor to glow with light",
+                                    "They isolate the gate metal from source/drain contact regions, drastically reducing parasitic capacitance and preventing leakage",
+                                    "They act as tiny cooling fans inside the chip",
+                                    "They store digital photos permanently"
+                                ],
+                                "answer": 1,
+                                "explanation": "Inner spacers are dielectric barriers placed between nanosheet levels adjacent to source/drain epilayers. They prevent the gate metal from overlapping the source/drain, drastically reducing parasitic capacitive coupling that would otherwise degrade high-frequency switching performance."
                             }
                         ]
                     }
@@ -12835,42 +14072,66 @@ var LXP_COURSES = {
                                 "es": "Fotorresistencia / Resina fotosensible",
                                 "definition": "A light-sensitive chemical polymer coated on the wafer",
                                 "ipa": "/ˈfoʊ.toʊ.rɪ.zɪst/",
-                                "collocations": ["spin-coat photoresist layer", "photoresist exposure dose", "photoresist development time"]
+                                "collocations": [
+                                    "spin-coat photoresist layer",
+                                    "photoresist exposure dose",
+                                    "photoresist development time"
+                                ]
                             },
                             {
                                 "en": "Photomask",
                                 "es": "Fotomáscara / Retícula",
                                 "definition": "A glass plate with metal patterns used to block UV light",
                                 "ipa": "/ˈfoʊ.toʊ.mæsk/",
-                                "collocations": ["photomask defect inspection", "photomask pattern accuracy", "photomask reticle set"]
+                                "collocations": [
+                                    "photomask defect inspection",
+                                    "photomask pattern accuracy",
+                                    "photomask reticle set"
+                                ]
                             },
                             {
                                 "en": "UV Exposure",
                                 "es": "Exposición ultravioleta",
                                 "definition": "Shining UV light through a mask onto a photoresist",
                                 "ipa": "/ˌjuːˈviː ɪkˈspoʊ.ʒər/",
-                                "collocations": ["deep UV exposure wavelength", "UV exposure dose control", "UV exposure stepper tool"]
+                                "collocations": [
+                                    "deep UV exposure wavelength",
+                                    "UV exposure dose control",
+                                    "UV exposure stepper tool"
+                                ]
                             },
                             {
                                 "en": "Development",
                                 "es": "Revelado",
                                 "definition": "Rinsing the wafer in chemical developer to reveal the pattern",
                                 "ipa": "/dɪˈvɛl.əp.mənt/",
-                                "collocations": ["photoresist development step", "development solution temperature", "development time control"]
+                                "collocations": [
+                                    "photoresist development step",
+                                    "development solution temperature",
+                                    "development time control"
+                                ]
                             },
                             {
                                 "en": "Spin Coating",
                                 "es": "Recubrimiento por centrifugado",
                                 "definition": "Method to apply liquid photoresist uniformly by spinning the wafer",
                                 "ipa": "/spɪn ˈkoʊ.tɪŋ/",
-                                "collocations": ["spin coating uniformity", "spin coating thickness control", "photoresist spin coating RPM"]
+                                "collocations": [
+                                    "spin coating uniformity",
+                                    "spin coating thickness control",
+                                    "photoresist spin coating RPM"
+                                ]
                             },
                             {
                                 "en": "Overlay Accuracy",
                                 "es": "Precisión de superposición",
                                 "definition": "How precisely layers of a chip align on top of each other",
                                 "ipa": "/ˈoʊ.vər.leɪ ˈæk.jʊr.ə.si/",
-                                "collocations": ["overlay accuracy measurement", "sub-nanometer overlay accuracy", "overlay accuracy registration mark"]
+                                "collocations": [
+                                    "overlay accuracy measurement",
+                                    "sub-nanometer overlay accuracy",
+                                    "overlay accuracy registration mark"
+                                ]
                             }
                         ],
                         "questions": [
@@ -12927,42 +14188,66 @@ var LXP_COURSES = {
                                 "es": "Litografía ultravioleta extrema",
                                 "definition": "Next-gen lithography using 13.5nm wavelength light",
                                 "ipa": "/ˌiː.juːˈviː lɪˈθɒɡ.rə.fi/",
-                                "collocations": ["EUV lithography source power", "EUV lithography pellicle", "EUV lithography throughput"]
+                                "collocations": [
+                                    "EUV lithography source power",
+                                    "EUV lithography pellicle",
+                                    "EUV lithography throughput"
+                                ]
                             },
                             {
                                 "en": "Wavelength",
                                 "es": "Longitud de onda",
                                 "definition": "The distance between successive crests of a wave of light",
                                 "ipa": "/ˈweɪv.lɛŋθ/",
-                                "collocations": ["13.5nm EUV wavelength", "exposure wavelength selection", "shorter wavelength resolution"]
+                                "collocations": [
+                                    "13.5nm EUV wavelength",
+                                    "exposure wavelength selection",
+                                    "shorter wavelength resolution"
+                                ]
                             },
                             {
                                 "en": "Vacuum",
                                 "es": "Vacío",
                                 "definition": "A space entirely devoid of matter/air",
                                 "ipa": "/ˈvæk.juːm/",
-                                "collocations": ["ultra-high vacuum chamber", "vacuum deposition process", "maintain vacuum integrity"]
+                                "collocations": [
+                                    "ultra-high vacuum chamber",
+                                    "vacuum deposition process",
+                                    "maintain vacuum integrity"
+                                ]
                             },
                             {
                                 "en": "Reflective Mirror",
                                 "es": "Espejo reflector",
                                 "definition": "Ultra-smooth mirror used to redirect light instead of lenses",
                                 "ipa": "/rɪˈflɛk.tɪv ˈmɪr.ər/",
-                                "collocations": ["multilayer reflective mirror", "reflective mirror coating", "EUV reflective mirror optics"]
+                                "collocations": [
+                                    "multilayer reflective mirror",
+                                    "reflective mirror coating",
+                                    "EUV reflective mirror optics"
+                                ]
                             },
                             {
                                 "en": "Tin",
                                 "es": "Estaño",
                                 "definition": "Metal melted and vaporized by laser to produce EUV light",
                                 "ipa": "/tɪn/",
-                                "collocations": ["tin droplet plasma source", "liquid tin target", "tin debris mitigation"]
+                                "collocations": [
+                                    "tin droplet plasma source",
+                                    "liquid tin target",
+                                    "tin debris mitigation"
+                                ]
                             },
                             {
                                 "en": "High-NA EUV",
                                 "es": "EUV de alta apertura numérica",
                                 "definition": "Advanced EUV systems using larger angles to print smaller sizes",
                                 "ipa": "/haɪ ˌɛn.ˈeɪ ˌiː.juːˈviː/",
-                                "collocations": ["High-NA EUV numerical aperture", "High-NA EUV resolution gain", "High-NA EUV insertion timeline"]
+                                "collocations": [
+                                    "High-NA EUV numerical aperture",
+                                    "High-NA EUV resolution gain",
+                                    "High-NA EUV insertion timeline"
+                                ]
                             }
                         ],
                         "questions": [
@@ -13347,49 +14632,77 @@ var LXP_COURSES = {
                                 "es": "Grabado en húmedo (químico)",
                                 "definition": "Removing material using liquid chemicals",
                                 "ipa": "/wɛt ˈɛtʃ.ɪŋ/",
-                                "collocations": ["buffered wet etching solution", "isotropic wet etching profile", "wet etching selectivity ratio"]
+                                "collocations": [
+                                    "buffered wet etching solution",
+                                    "isotropic wet etching profile",
+                                    "wet etching selectivity ratio"
+                                ]
                             },
                             {
                                 "en": "Dry Etching",
                                 "es": "Grabado en seco (por plasma)",
                                 "definition": "Removing material using reactive gases and plasma ions",
                                 "ipa": "/draɪ ˈɛtʃ.ɪŋ/",
-                                "collocations": ["reactive ion dry etching", "dry etching anisotropic profile", "dry etching plasma chamber"]
+                                "collocations": [
+                                    "reactive ion dry etching",
+                                    "dry etching anisotropic profile",
+                                    "dry etching plasma chamber"
+                                ]
                             },
                             {
                                 "en": "Isotropic",
                                 "es": "Isotrópico",
                                 "definition": "Etching that occurs in all directions at the same rate",
                                 "ipa": "/ˌaɪ.soʊˈtrɒp.ɪk/",
-                                "collocations": ["isotropic etch undercut", "isotropic etch wet chemistry", "isotropic material removal"]
+                                "collocations": [
+                                    "isotropic etch undercut",
+                                    "isotropic etch wet chemistry",
+                                    "isotropic material removal"
+                                ]
                             },
                             {
                                 "en": "Anisotropic",
                                 "es": "Anisotrópico",
                                 "definition": "Etching that occurs in one preferred direction (typically vertical)",
                                 "ipa": "/ˌæn.aɪ.soʊˈtrɒp.ɪk/",
-                                "collocations": ["anisotropic plasma etch", "anisotropic directional profile", "anisotropic silicon etch"]
+                                "collocations": [
+                                    "anisotropic plasma etch",
+                                    "anisotropic directional profile",
+                                    "anisotropic silicon etch"
+                                ]
                             },
                             {
                                 "en": "Chemical Vapor Deposition (CVD)",
                                 "es": "Deposición química de vapor",
                                 "definition": "Depositing materials through chemical reactions of gases",
                                 "ipa": "/ˈkɛm.ɪ.kəl ˈveɪ.pər ˌdɛp.əˈzɪʃ.ən/",
-                                "collocations": ["plasma-enhanced CVD (PECVD)", "low-pressure CVD (LPCVD)", "CVD thin film uniformity"]
+                                "collocations": [
+                                    "plasma-enhanced CVD (PECVD)",
+                                    "low-pressure CVD (LPCVD)",
+                                    "CVD thin film uniformity"
+                                ]
                             },
                             {
                                 "en": "Physical Vapor Deposition (PVD)",
                                 "es": "Deposición física de vapor",
                                 "definition": "Coating wafer with metal by physically knocking atoms off a target",
                                 "ipa": "/ˈfɪz.ɪ.kəl ˈveɪ.pər ˌdɛp.əˈzɪʃ.ən/",
-                                "collocations": ["PVD sputtering target", "PVD metal layer deposition", "PVD chamber vacuum"]
+                                "collocations": [
+                                    "PVD sputtering target",
+                                    "PVD metal layer deposition",
+                                    "PVD chamber vacuum"
+                                ]
                             },
                             {
                                 "en": "Atomic Layer Deposition (ALD)",
                                 "es": "Deposición por capa atómica",
                                 "definition": "Adding films one atomic layer at a time for maximum control",
                                 "ipa": "/əˈtɒm.ɪk ˈleɪ.ər ˌdɛp.əˈzɪʃ.ən/",
-                                "collocations": ["ALD self-limiting reaction", "ALD conformal coating", "ALD precursor pulse cycle"]
+                                "collocations": [
+                                    "ALD self-limiting reaction",
+                                    "ALD conformal coating",
+                                    "ALD precursor pulse cycle"
+                                ]
                             }
                         ],
                         "questions": [
@@ -13776,42 +15089,66 @@ var LXP_COURSES = {
                                 "es": "Empaquetado de chips / Encapsulado",
                                 "definition": "Enclosing a silicon die in a protective container",
                                 "ipa": "/tʃɪp ˈpæk.ɪ.dʒɪŋ/",
-                                "collocations": ["chip packaging thermal interface", "chip packaging wire bond", "advanced chip packaging technique"]
+                                "collocations": [
+                                    "chip packaging thermal interface",
+                                    "chip packaging wire bond",
+                                    "advanced chip packaging technique"
+                                ]
                             },
                             {
                                 "en": "Wire Bonding",
                                 "es": "Conexión de micro-alambres",
                                 "definition": "Connecting die to package leads using ultra-thin metal wires",
                                 "ipa": "/waɪr ˈbɒn.dɪŋ/",
-                                "collocations": ["gold wire bonding loop", "wire bonding pull test", "thermosonic wire bonding"]
+                                "collocations": [
+                                    "gold wire bonding loop",
+                                    "wire bonding pull test",
+                                    "thermosonic wire bonding"
+                                ]
                             },
                             {
                                 "en": "Solder Ball",
                                 "es": "Bola de soldadura",
                                 "definition": "Tiny sphere of solder used to connect BGA packages to PCBs",
                                 "ipa": "/ˈsɒd.ər bɔːl/",
-                                "collocations": ["solder ball attachment", "solder ball reflow profile", "solder ball pitch spacing"]
+                                "collocations": [
+                                    "solder ball attachment",
+                                    "solder ball reflow profile",
+                                    "solder ball pitch spacing"
+                                ]
                             },
                             {
                                 "en": "BGA (Ball Grid Array)",
                                 "es": "Matriz de rejilla de bolas",
                                 "definition": "Package style using a grid of solder balls on the bottom",
                                 "ipa": "/ˌbiː.dʒiːˈeɪ/",
-                                "collocations": ["BGA solder ball pitch", "BGA reflow profile", "BGA X-ray inspection"]
+                                "collocations": [
+                                    "BGA solder ball pitch",
+                                    "BGA reflow profile",
+                                    "BGA X-ray inspection"
+                                ]
                             },
                             {
                                 "en": "Heat Dissipation",
                                 "es": "Disipación de calor",
                                 "definition": "The process of transfering thermal energy away from the chip",
                                 "ipa": "/hiːt ˌdɪs.ɪˈpeɪ.ʃən/",
-                                "collocations": ["brake heat dissipation rate", "heat dissipation cooling fin", "thermal heat dissipation path"]
+                                "collocations": [
+                                    "brake heat dissipation rate",
+                                    "heat dissipation cooling fin",
+                                    "thermal heat dissipation path"
+                                ]
                             },
                             {
                                 "en": "Substrate",
                                 "es": "Sustrato",
                                 "definition": "The base material that holds the die and wiring in the package",
                                 "ipa": "/ˈsʌb.streɪt/",
-                                "collocations": ["organic substrate laminate", "substrate via drilling", "silicon interposer substrate"]
+                                "collocations": [
+                                    "organic substrate laminate",
+                                    "substrate via drilling",
+                                    "silicon interposer substrate"
+                                ]
                             }
                         ],
                         "questions": [
@@ -13868,56 +15205,88 @@ var LXP_COURSES = {
                                 "es": "Empaquetado avanzado",
                                 "definition": "High-density packaging integrating multiple dies, 2.5D/3D structures, or HBM",
                                 "ipa": "/ədˈvænst ˈpæk.ɪ.dʒɪŋ/",
-                                "collocations": ["advanced packaging 2.5D interposer", "advanced packaging chiplet integration", "advanced packaging CoWoS"]
+                                "collocations": [
+                                    "advanced packaging 2.5D interposer",
+                                    "advanced packaging chiplet integration",
+                                    "advanced packaging CoWoS"
+                                ]
                             },
                             {
                                 "en": "fcBGA (Flip-Chip Ball Grid Array)",
                                 "es": "fcBGA",
                                 "definition": "High-density package using solder bumps and a ball grid array substrate",
                                 "ipa": "/ˌɛf.siːˌbiː.dʒiːˈeɪ/",
-                                "collocations": ["fcBGA substrate routing", "fcBGA solder bump pitch", "fcBGA thermal solution"]
+                                "collocations": [
+                                    "fcBGA substrate routing",
+                                    "fcBGA solder bump pitch",
+                                    "fcBGA thermal solution"
+                                ]
                             },
                             {
                                 "en": "HBM (High Bandwidth Memory)",
                                 "es": "Memoria de alto ancho de banda",
                                 "definition": "3D-stacked DRAM offering ultra-fast memory access for AI chips",
                                 "ipa": "/ˌeɪtʃ.biːˈɛm/",
-                                "collocations": ["HBM memory stack", "HBM bandwidth capacity", "HBM TSV interconnect"]
+                                "collocations": [
+                                    "HBM memory stack",
+                                    "HBM bandwidth capacity",
+                                    "HBM TSV interconnect"
+                                ]
                             },
                             {
                                 "en": "Chiplet",
                                 "es": "Chiplet / Die especializado",
                                 "definition": "Small modular silicon die combined with others in a single package",
                                 "ipa": "/ˈtʃɪp.lɪt/",
-                                "collocations": ["chiplet disaggregation architecture", "chiplet interconnect bridge", "heterogeneous chiplet integration"]
+                                "collocations": [
+                                    "chiplet disaggregation architecture",
+                                    "chiplet interconnect bridge",
+                                    "heterogeneous chiplet integration"
+                                ]
                             },
                             {
                                 "en": "Silicon Photonics",
                                 "es": "Fotónica de silicio",
                                 "definition": "Using light/optics instead of electricity to transfer data on silicon",
                                 "ipa": "/ˈsɪl.ɪ.kən foʊˈtɒn.ɪks/",
-                                "collocations": ["silicon photonics transceiver", "silicon photonics waveguide", "silicon photonics data center"]
+                                "collocations": [
+                                    "silicon photonics transceiver",
+                                    "silicon photonics waveguide",
+                                    "silicon photonics data center"
+                                ]
                             },
                             {
                                 "en": "CPO (Co-Packaged Optics)",
                                 "es": "Óptica empaquetada conjuntamente",
                                 "definition": "Integrating optical interfaces directly onto the semiconductor package",
                                 "ipa": "/ˌsiː.piːˈoʊ/",
-                                "collocations": ["CPO bandwidth density", "CPO optical engine", "CPO switch integration"]
+                                "collocations": [
+                                    "CPO bandwidth density",
+                                    "CPO optical engine",
+                                    "CPO switch integration"
+                                ]
                             },
                             {
                                 "en": "OSAT",
                                 "es": "OSAT",
                                 "definition": "Outsourced Semiconductor Assembly and Test company",
                                 "ipa": "/ˈoʊ.sæt/",
-                                "collocations": ["OSAT assembly partner", "OSAT test services", "OSAT facility capacity"]
+                                "collocations": [
+                                    "OSAT assembly partner",
+                                    "OSAT test services",
+                                    "OSAT facility capacity"
+                                ]
                             },
                             {
                                 "en": "Power Packaging",
                                 "es": "Empaquetado de potencia",
                                 "definition": "Packaging designed for high-current voltage regulation and thermal efficiency",
                                 "ipa": "/ˈpaʊ.ər ˈpæk.ɪ.dʒɪŋ/",
-                                "collocations": ["power packaging SiC module", "power packaging thermal management", "power packaging high-voltage rating"]
+                                "collocations": [
+                                    "power packaging SiC module",
+                                    "power packaging thermal management",
+                                    "power packaging high-voltage rating"
+                                ]
                             }
                         ],
                         "questions": [
@@ -14165,42 +15534,66 @@ var LXP_COURSES = {
                                 "es": "Cadena de suministro",
                                 "definition": "The sequence of processes involved in the production and distribution of a commodity",
                                 "ipa": "/səˈplaɪ tʃeɪn/",
-                                "collocations": ["EV supply chain resilience", "critical mineral supply chain", "nearshoring supply chain strategy"]
+                                "collocations": [
+                                    "EV supply chain resilience",
+                                    "critical mineral supply chain",
+                                    "nearshoring supply chain strategy"
+                                ]
                             },
                             {
                                 "en": "Foundry",
                                 "es": "Fundidora de semiconductores",
                                 "definition": "A factory that manufactures chips for other design companies",
                                 "ipa": "/ˈfaʊn.dri/",
-                                "collocations": ["foundry process technology", "foundry wafer starts", "foundry capacity allocation"]
+                                "collocations": [
+                                    "foundry process technology",
+                                    "foundry wafer starts",
+                                    "foundry capacity allocation"
+                                ]
                             },
                             {
                                 "en": "Fabless",
                                 "es": "Sin fábrica",
                                 "definition": "A business model where a company designs chips but outsources fabrication",
                                 "ipa": "/ˈfæb.lɪs/",
-                                "collocations": ["fabless chip design company", "fabless-foundry business model", "fabless IP portfolio"]
+                                "collocations": [
+                                    "fabless chip design company",
+                                    "fabless-foundry business model",
+                                    "fabless IP portfolio"
+                                ]
                             },
                             {
                                 "en": "IDM",
                                 "es": "Fabricante de dispositivos integrados",
                                 "definition": "A company that designs, manufactures, and sells its own chips",
                                 "ipa": "/ˌaɪ.diːˈɛm/",
-                                "collocations": ["IDM vertical integration", "IDM in-house fabrication", "IDM product portfolio"]
+                                "collocations": [
+                                    "IDM vertical integration",
+                                    "IDM in-house fabrication",
+                                    "IDM product portfolio"
+                                ]
                             },
                             {
                                 "en": "Nearshoring",
                                 "es": "Nearshoring / Relocalización cercana",
                                 "definition": "Moving manufacturing operations close to the primary market",
                                 "ipa": "/ˈnɪr.ʃɔːr.ɪŋ/",
-                                "collocations": ["nearshoring manufacturing hub", "nearshoring talent pipeline", "U.S.-Mexico nearshoring corridor"]
+                                "collocations": [
+                                    "nearshoring manufacturing hub",
+                                    "nearshoring talent pipeline",
+                                    "U.S.-Mexico nearshoring corridor"
+                                ]
                             },
                             {
                                 "en": "CHIPS Act",
                                 "es": "Ley de Chips (EE. UU.)",
                                 "definition": "US federal law funding domestic semiconductor manufacturing and research",
                                 "ipa": "/tʃɪps ækt/",
-                                "collocations": ["CHIPS Act federal incentive", "CHIPS Act domestic manufacturing", "CHIPS Act funding allocation"]
+                                "collocations": [
+                                    "CHIPS Act federal incentive",
+                                    "CHIPS Act domestic manufacturing",
+                                    "CHIPS Act funding allocation"
+                                ]
                             }
                         ],
                         "questions": [
@@ -14257,42 +15650,66 @@ var LXP_COURSES = {
                                 "es": "Especialista en manufactura",
                                 "definition": "Role monitoring fab runs, handling wafers, and managing automated systems",
                                 "ipa": "/ˌmæn.jʊˈfæk.tʃər.ɪŋ ˈspɛʃ.əl.ɪst/",
-                                "collocations": ["manufacturing specialist shift rotation", "manufacturing specialist SOP compliance", "semiconductor manufacturing specialist"]
+                                "collocations": [
+                                    "manufacturing specialist shift rotation",
+                                    "manufacturing specialist SOP compliance",
+                                    "semiconductor manufacturing specialist"
+                                ]
                             },
                             {
                                 "en": "Equipment Technician",
                                 "es": "Técnico de equipo",
                                 "definition": "Technician responsible for maintaining and repairing fab machinery",
                                 "ipa": "/ɪˈkwɪp.mənt tɛkˈnɪʃ.ən/",
-                                "collocations": ["equipment technician maintenance log", "equipment technician troubleshooting", "fab equipment technician certification"]
+                                "collocations": [
+                                    "equipment technician maintenance log",
+                                    "equipment technician troubleshooting",
+                                    "fab equipment technician certification"
+                                ]
                             },
                             {
                                 "en": "Process Engineer",
                                 "es": "Ingeniero de procesos",
                                 "definition": "Engineer optimizing chemical and physical manufacturing stages to improve yield",
                                 "ipa": "/ˈprɒs.ɛs ˌɛn.dʒɪˈnɪr/",
-                                "collocations": ["process engineer yield improvement", "process engineer recipe optimization", "process engineer DOE design"]
+                                "collocations": [
+                                    "process engineer yield improvement",
+                                    "process engineer recipe optimization",
+                                    "process engineer DOE design"
+                                ]
                             },
                             {
                                 "en": "Quality Control",
                                 "es": "Control de calidad",
                                 "definition": "Monitoring and maintaining product standards using metrics like SPC",
                                 "ipa": "/ˈkwɒl.ɪ.ti kənˈtroʊl/",
-                                "collocations": ["quality control inspection criteria", "quality control SPC monitoring", "quality control acceptance sampling"]
+                                "collocations": [
+                                    "quality control inspection criteria",
+                                    "quality control SPC monitoring",
+                                    "quality control acceptance sampling"
+                                ]
                             },
                             {
                                 "en": "SOP",
                                 "es": "Procedimiento operativo estándar",
                                 "definition": "Standard Operating Procedure — detailed instructions for operations",
                                 "ipa": "/ˌɛs.oʊˈpiː/",
-                                "collocations": ["follow SOP procedure", "SOP revision control", "write a new SOP document"]
+                                "collocations": [
+                                    "follow SOP procedure",
+                                    "SOP revision control",
+                                    "write a new SOP document"
+                                ]
                             },
                             {
                                 "en": "Technical English",
                                 "es": "Inglés técnico",
                                 "definition": "English vocabulary and phrasing used for specific fields like engineering",
                                 "ipa": "/ˈtɛk.nɪ.kəl ˈɪŋ.ɡlɪʃ/",
-                                "collocations": ["technical English proficiency", "technical English communication skills", "technical English ESP training"]
+                                "collocations": [
+                                    "technical English proficiency",
+                                    "technical English communication skills",
+                                    "technical English ESP training"
+                                ]
                             }
                         ],
                         "questions": [
@@ -14743,70 +16160,110 @@ var LXP_COURSES = {
                                 "es": "Motor de Combustión Interna",
                                 "definition": "Engine that burns fuel (gasoline/diesel)",
                                 "ipa": "/ɪnˈtɜːr.nəl kəmˈbʌs.tʃən ˈɛn.dʒɪn/",
-                                "collocations": ["ICE phase-out timeline", "ICE vs. EV efficiency", "ICE emissions standard"]
+                                "collocations": [
+                                    "ICE phase-out timeline",
+                                    "ICE vs. EV efficiency",
+                                    "ICE emissions standard"
+                                ]
                             },
                             {
                                 "en": "Mass Production",
                                 "es": "Producción en Masa",
                                 "definition": "Manufacturing large quantities at low cost",
                                 "ipa": "/mæs prəˈdʌk.ʃən/",
-                                "collocations": ["mass production ramp-up", "mass production line rate", "mass production cost reduction"]
+                                "collocations": [
+                                    "mass production ramp-up",
+                                    "mass production line rate",
+                                    "mass production cost reduction"
+                                ]
                             },
                             {
                                 "en": "Lithium-Ion Battery",
                                 "es": "Batería de Iones de Litio",
                                 "definition": "The most common rechargeable battery type in EVs",
                                 "ipa": "/ˈlɪθ.i.əm ˈaɪ.ɒn ˈbæt.ər.i/",
-                                "collocations": ["lithium-ion battery cell chemistry", "lithium-ion battery cycle life", "lithium-ion battery thermal runaway"]
+                                "collocations": [
+                                    "lithium-ion battery cell chemistry",
+                                    "lithium-ion battery cycle life",
+                                    "lithium-ion battery thermal runaway"
+                                ]
                             },
                             {
                                 "en": "Solid-State Battery",
                                 "es": "Batería de Estado Sólido",
                                 "definition": "Next-gen battery replacing liquid electrolyte with solid",
                                 "ipa": "/ˈsɒl.ɪd steɪt ˈbæt.ər.i/",
-                                "collocations": ["solid-state battery electrolyte", "solid-state battery energy density", "solid-state battery prototype"]
+                                "collocations": [
+                                    "solid-state battery electrolyte",
+                                    "solid-state battery energy density",
+                                    "solid-state battery prototype"
+                                ]
                             },
                             {
                                 "en": "Energy Density",
                                 "es": "Densidad Energética",
                                 "definition": "Amount of energy stored per unit of weight or volume",
                                 "ipa": "/ˈɛn.ər.dʒi ˈdɛn.sɪ.ti/",
-                                "collocations": ["volumetric energy density improvement", "gravimetric energy density comparison", "high energy density cell design"]
+                                "collocations": [
+                                    "volumetric energy density improvement",
+                                    "gravimetric energy density comparison",
+                                    "high energy density cell design"
+                                ]
                             },
                             {
                                 "en": "Vehicle-to-Grid (V2G)",
                                 "es": "Vehículo a Red (V2G)",
                                 "definition": "Technology allowing EVs to send electricity back to the grid",
                                 "ipa": "/ˈviː.ɪ.kəl tuː ɡrɪd/",
-                                "collocations": ["V2G bidirectional charger", "V2G grid peak shaving", "V2G energy arbitrage"]
+                                "collocations": [
+                                    "V2G bidirectional charger",
+                                    "V2G grid peak shaving",
+                                    "V2G energy arbitrage"
+                                ]
                             },
                             {
                                 "en": "Autonomous Driving",
                                 "es": "Conducción Autónoma",
                                 "definition": "Self-driving vehicle technology",
                                 "ipa": "/ɔːˈtɒn.ə.məs ˈdraɪ.vɪŋ/",
-                                "collocations": ["Level 4 autonomous driving", "autonomous driving sensor suite", "autonomous driving software stack"]
+                                "collocations": [
+                                    "Level 4 autonomous driving",
+                                    "autonomous driving sensor suite",
+                                    "autonomous driving software stack"
+                                ]
                             },
                             {
                                 "en": "Range",
                                 "es": "Autonomía",
                                 "definition": "How far a vehicle can travel on a single charge",
                                 "ipa": "/reɪndʒ/",
-                                "collocations": ["EPA range certification", "range anxiety mitigation", "real-world range estimate"]
+                                "collocations": [
+                                    "EPA range certification",
+                                    "range anxiety mitigation",
+                                    "real-world range estimate"
+                                ]
                             },
                             {
                                 "en": "Electrolyte",
                                 "es": "Electrolito",
                                 "definition": "The medium that carries ions between battery electrodes",
                                 "ipa": "/ɪˈlɛk.trə.laɪt/",
-                                "collocations": ["solid-state electrolyte membrane", "liquid electrolyte conductivity", "electrolyte decomposition voltage"]
+                                "collocations": [
+                                    "solid-state electrolyte membrane",
+                                    "liquid electrolyte conductivity",
+                                    "electrolyte decomposition voltage"
+                                ]
                             },
                             {
                                 "en": "Powertrain",
                                 "es": "Tren Motriz",
                                 "definition": "All components that generate and deliver power to wheels",
                                 "ipa": "/ˈpaʊ.ər.treɪn/",
-                                "collocations": ["electric powertrain integration", "powertrain thermal management", "powertrain control unit (PCU)"]
+                                "collocations": [
+                                    "electric powertrain integration",
+                                    "powertrain thermal management",
+                                    "powertrain control unit (PCU)"
+                                ]
                             }
                         ],
                         "questions": [
@@ -15109,84 +16566,132 @@ var LXP_COURSES = {
                                 "es": "Cátodo",
                                 "definition": "Positive electrode of a battery cell",
                                 "ipa": "/ˈkæθ.oʊd/",
-                                "collocations": ["NMC cathode formulation", "cathode material degradation", "LFP cathode chemistry"]
+                                "collocations": [
+                                    "NMC cathode formulation",
+                                    "cathode material degradation",
+                                    "LFP cathode chemistry"
+                                ]
                             },
                             {
                                 "en": "Anode",
                                 "es": "Ánodo",
                                 "definition": "Negative electrode (usually graphite)",
                                 "ipa": "/ˈæn.oʊd/",
-                                "collocations": ["graphite anode material", "silicon anode capacity", "anode active material coating"]
+                                "collocations": [
+                                    "graphite anode material",
+                                    "silicon anode capacity",
+                                    "anode active material coating"
+                                ]
                             },
                             {
                                 "en": "Electrolyte",
                                 "es": "Electrolito",
                                 "definition": "Liquid/solid medium that conducts ions",
                                 "ipa": "/ɪˈlɛk.trə.laɪt/",
-                                "collocations": ["solid-state electrolyte membrane", "liquid electrolyte conductivity", "electrolyte decomposition voltage"]
+                                "collocations": [
+                                    "solid-state electrolyte membrane",
+                                    "liquid electrolyte conductivity",
+                                    "electrolyte decomposition voltage"
+                                ]
                             },
                             {
                                 "en": "Separator",
                                 "es": "Separador",
                                 "definition": "Thin membrane preventing electrodes from touching",
                                 "ipa": "/ˈsɛp.ə.reɪ.tər/",
-                                "collocations": ["polyethylene separator film", "ceramic-coated separator", "separator shutdown temperature"]
+                                "collocations": [
+                                    "polyethylene separator film",
+                                    "ceramic-coated separator",
+                                    "separator shutdown temperature"
+                                ]
                             },
                             {
                                 "en": "Intercalation",
                                 "es": "Intercalación",
                                 "definition": "Insertion of lithium ions between graphite layers",
                                 "ipa": "/ɪnˌtɜːr.kəˈleɪ.ʃən/",
-                                "collocations": ["lithium intercalation mechanism", "intercalation host material", "reversible intercalation process"]
+                                "collocations": [
+                                    "lithium intercalation mechanism",
+                                    "intercalation host material",
+                                    "reversible intercalation process"
+                                ]
                             },
                             {
                                 "en": "LFP (Lithium Iron Phosphate)",
                                 "es": "Fosfato de Hierro y Litio",
                                 "definition": "Safe, affordable battery chemistry",
                                 "ipa": "/ˌɛl.ɛfˈpiː/",
-                                "collocations": ["LFP cathode chemistry", "LFP thermal stability", "LFP cycle life advantage"]
+                                "collocations": [
+                                    "LFP cathode chemistry",
+                                    "LFP thermal stability",
+                                    "LFP cycle life advantage"
+                                ]
                             },
                             {
                                 "en": "NMC (Nickel Manganese Cobalt)",
                                 "es": "Níquel Manganeso Cobalto",
                                 "definition": "High-energy-density battery chemistry",
                                 "ipa": "/ˌɛn.ɛmˈsiː/",
-                                "collocations": ["NMC 811 cathode ratio", "NMC energy density advantage", "NMC cobalt content reduction"]
+                                "collocations": [
+                                    "NMC 811 cathode ratio",
+                                    "NMC energy density advantage",
+                                    "NMC cobalt content reduction"
+                                ]
                             },
                             {
                                 "en": "Thermal Runaway",
                                 "es": "Fuga Térmica",
                                 "definition": "Dangerous chain reaction causing a battery fire",
                                 "ipa": "/ˈθɜːr.məl ˈrʌn.ə.weɪ/",
-                                "collocations": ["thermal runaway propagation", "thermal runaway prevention barrier", "detect thermal runaway onset"]
+                                "collocations": [
+                                    "thermal runaway propagation",
+                                    "thermal runaway prevention barrier",
+                                    "detect thermal runaway onset"
+                                ]
                             },
                             {
                                 "en": "Cycle Life",
                                 "es": "Vida de Ciclo",
                                 "definition": "Number of charge-discharge cycles before degradation",
                                 "ipa": "/ˈsaɪ.kəl laɪf/",
-                                "collocations": ["extend battery cycle life", "cycle life degradation curve", "cycle life warranty specification"]
+                                "collocations": [
+                                    "extend battery cycle life",
+                                    "cycle life degradation curve",
+                                    "cycle life warranty specification"
+                                ]
                             },
                             {
                                 "en": "Short Circuit",
                                 "es": "Cortocircuito",
                                 "definition": "Unintended direct connection between electrodes",
                                 "ipa": "/ʃɔːrt ˈsɜːr.kɪt/",
-                                "collocations": ["internal short circuit risk", "short circuit protection fuse", "thermal runaway short circuit"]
+                                "collocations": [
+                                    "internal short circuit risk",
+                                    "short circuit protection fuse",
+                                    "thermal runaway short circuit"
+                                ]
                             },
                             {
                                 "en": "Module",
                                 "es": "Módulo",
                                 "definition": "Group of battery cells wired together",
                                 "ipa": "/ˈmɒdʒ.uːl/",
-                                "collocations": ["battery module assembly", "module voltage monitoring", "module-to-pack integration"]
+                                "collocations": [
+                                    "battery module assembly",
+                                    "module voltage monitoring",
+                                    "module-to-pack integration"
+                                ]
                             },
                             {
                                 "en": "Battery Pack",
                                 "es": "Paquete de Baterías",
                                 "definition": "Complete assembly of modules in a vehicle",
                                 "ipa": "/ˈbæt.ər.i pæk/",
-                                "collocations": ["battery pack assembly line", "battery pack cooling circuit", "battery pack voltage rating"]
+                                "collocations": [
+                                    "battery pack assembly line",
+                                    "battery pack cooling circuit",
+                                    "battery pack voltage rating"
+                                ]
                             }
                         ],
                         "questions": [
@@ -15243,70 +16748,110 @@ var LXP_COURSES = {
                                 "es": "Celda Cilíndrica",
                                 "definition": "Round battery cell (like a large AA battery)",
                                 "ipa": "/sɪˈlɪn.drɪ.kəl sɛl/",
-                                "collocations": ["cylindrical cell 18650 format", "cylindrical cell winding mandrel", "cylindrical cell mass production"]
+                                "collocations": [
+                                    "cylindrical cell 18650 format",
+                                    "cylindrical cell winding mandrel",
+                                    "cylindrical cell mass production"
+                                ]
                             },
                             {
                                 "en": "Prismatic Cell",
                                 "es": "Celda Prismática",
                                 "definition": "Rectangular metal-cased battery cell",
                                 "ipa": "/prɪzˈmæt.ɪk sɛl/",
-                                "collocations": ["prismatic cell aluminum housing", "prismatic cell CTP integration", "prismatic cell swelling pressure"]
+                                "collocations": [
+                                    "prismatic cell aluminum housing",
+                                    "prismatic cell CTP integration",
+                                    "prismatic cell swelling pressure"
+                                ]
                             },
                             {
                                 "en": "Pouch Cell",
                                 "es": "Celda de Bolsa / Pouch",
                                 "definition": "Flat, flexible battery cell in aluminum film",
                                 "ipa": "/paʊtʃ sɛl/",
-                                "collocations": ["pouch cell laminate casing", "pouch cell stacking process", "pouch cell energy density"]
+                                "collocations": [
+                                    "pouch cell laminate casing",
+                                    "pouch cell stacking process",
+                                    "pouch cell energy density"
+                                ]
                             },
                             {
                                 "en": "4680 Cell",
                                 "es": "Celda 4680",
                                 "definition": "Tesla's large-format cylindrical cell (46mm × 80mm)",
                                 "ipa": "/ˈfɔːr.sɪks.eɪ.ti sɛl/",
-                                "collocations": ["4680 cell tabless design", "4680 cell structural battery", "4680 cell production yield"]
+                                "collocations": [
+                                    "4680 cell tabless design",
+                                    "4680 cell structural battery",
+                                    "4680 cell production yield"
+                                ]
                             },
                             {
                                 "en": "Tabless Electrode",
                                 "es": "Electrodo sin Pestaña",
                                 "definition": "Electrode design reducing internal resistance",
                                 "ipa": "/ˈtæb.lɪs ɪˈlɛk.troʊd/",
-                                "collocations": ["tabless electrode current path", "tabless electrode heat distribution", "tabless electrode foil design"]
+                                "collocations": [
+                                    "tabless electrode current path",
+                                    "tabless electrode heat distribution",
+                                    "tabless electrode foil design"
+                                ]
                             },
                             {
                                 "en": "Cell-to-Pack (CTP)",
                                 "es": "Celda a Paquete",
                                 "definition": "Eliminating modules to place cells directly in pack",
                                 "ipa": "/sɛl tuː pæk/",
-                                "collocations": ["CTP structural battery", "CTP volumetric efficiency", "CTP assembly process"]
+                                "collocations": [
+                                    "CTP structural battery",
+                                    "CTP volumetric efficiency",
+                                    "CTP assembly process"
+                                ]
                             },
                             {
                                 "en": "Cell-to-Chassis (CTC)",
                                 "es": "Celda a Chasis",
                                 "definition": "Integrating battery directly into vehicle structure",
                                 "ipa": "/sɛl tuː ˈtʃæs.i/",
-                                "collocations": ["CTC structural integration", "CTC battery floor design", "CTC weight reduction"]
+                                "collocations": [
+                                    "CTC structural integration",
+                                    "CTC battery floor design",
+                                    "CTC weight reduction"
+                                ]
                             },
                             {
                                 "en": "Swelling",
                                 "es": "Hinchamiento",
                                 "definition": "Expansion of cells due to internal gas or pressure",
                                 "ipa": "/ˈswɛl.ɪŋ/",
-                                "collocations": ["cell swelling pressure monitor", "swelling during charge cycle", "manage pouch cell swelling"]
+                                "collocations": [
+                                    "cell swelling pressure monitor",
+                                    "swelling during charge cycle",
+                                    "manage pouch cell swelling"
+                                ]
                             },
                             {
                                 "en": "Packing Efficiency",
                                 "es": "Eficiencia de Empaque",
                                 "definition": "How well cells fit together without wasted space",
                                 "ipa": "/ˈpæk.ɪŋ ɪˈfɪʃ.ən.si/",
-                                "collocations": ["module packing efficiency ratio", "improve packing efficiency", "packing efficiency volumetric gain"]
+                                "collocations": [
+                                    "module packing efficiency ratio",
+                                    "improve packing efficiency",
+                                    "packing efficiency volumetric gain"
+                                ]
                             },
                             {
                                 "en": "Dry Battery Electrode",
                                 "es": "Electrodo Seco",
                                 "definition": "Manufacturing process eliminating liquid solvents",
                                 "ipa": "/draɪ ˈbæt.ər.i ɪˈlɛk.troʊd/",
-                                "collocations": ["dry electrode coating process", "dry electrode solvent-free", "dry electrode Tesla patent"]
+                                "collocations": [
+                                    "dry electrode coating process",
+                                    "dry electrode solvent-free",
+                                    "dry electrode Tesla patent"
+                                ]
                             }
                         ],
                         "questions": [
@@ -15554,84 +17099,132 @@ var LXP_COURSES = {
                                 "es": "Estátor",
                                 "definition": "The stationary part of an electric motor",
                                 "ipa": "/ˈsteɪ.tər/",
-                                "collocations": ["stator winding configuration", "stator core lamination", "stator copper loss"]
+                                "collocations": [
+                                    "stator winding configuration",
+                                    "stator core lamination",
+                                    "stator copper loss"
+                                ]
                             },
                             {
                                 "en": "Rotor",
                                 "es": "Rotor",
                                 "definition": "The rotating part of an electric motor",
                                 "ipa": "/ˈroʊ.tər/",
-                                "collocations": ["rotor magnet arrangement", "rotor speed sensor", "interior permanent magnet rotor"]
+                                "collocations": [
+                                    "rotor magnet arrangement",
+                                    "rotor speed sensor",
+                                    "interior permanent magnet rotor"
+                                ]
                             },
                             {
                                 "en": "Torque",
                                 "es": "Par Motor / Torque",
                                 "definition": "Rotational force applied to wheels",
                                 "ipa": "/tɔːrk/",
-                                "collocations": ["instant torque delivery", "peak torque specification", "torque ripple suppression"]
+                                "collocations": [
+                                    "instant torque delivery",
+                                    "peak torque specification",
+                                    "torque ripple suppression"
+                                ]
                             },
                             {
                                 "en": "PMSM",
                                 "es": "Motor Síncrono de Imanes Permanentes",
                                 "definition": "High-efficiency motor using rare earth magnets",
                                 "ipa": "/ˌpiː.ɛm.ɛsˈɛm/",
-                                "collocations": ["PMSM permanent magnet motor", "PMSM torque density", "PMSM field weakening control"]
+                                "collocations": [
+                                    "PMSM permanent magnet motor",
+                                    "PMSM torque density",
+                                    "PMSM field weakening control"
+                                ]
                             },
                             {
                                 "en": "Induction Motor",
                                 "es": "Motor de Inducción",
                                 "definition": "Motor where rotor current is induced by stator field",
                                 "ipa": "/ɪnˈdʌk.ʃən ˈmoʊ.tər/",
-                                "collocations": ["AC induction motor rotor cage", "induction motor slip frequency", "induction motor field orientation"]
+                                "collocations": [
+                                    "AC induction motor rotor cage",
+                                    "induction motor slip frequency",
+                                    "induction motor field orientation"
+                                ]
                             },
                             {
                                 "en": "Rare Earth Elements",
                                 "es": "Elementos de Tierras Raras",
                                 "definition": "Minerals like neodymium used in permanent magnets",
                                 "ipa": "/rɛr ɜːrθ ˈɛl.ɪ.mənts/",
-                                "collocations": ["rare earth magnet neodymium", "rare earth supply chain risk", "rare earth mining sustainability"]
+                                "collocations": [
+                                    "rare earth magnet neodymium",
+                                    "rare earth supply chain risk",
+                                    "rare earth mining sustainability"
+                                ]
                             },
                             {
                                 "en": "Lorentz Force",
                                 "es": "Fuerza de Lorentz",
                                 "definition": "Force on a current-carrying wire in a magnetic field",
                                 "ipa": "/ˈlɒr.ənts fɔːrs/",
-                                "collocations": ["Lorentz force current conductor", "Lorentz force motor principle", "Lorentz force vector calculation"]
+                                "collocations": [
+                                    "Lorentz force current conductor",
+                                    "Lorentz force motor principle",
+                                    "Lorentz force vector calculation"
+                                ]
                             },
                             {
                                 "en": "Reduction Gear",
                                 "es": "Engranaje Reductor",
                                 "definition": "Single-speed gearbox in EVs",
                                 "ipa": "/rɪˈdʌk.ʃən ɡɪr/",
-                                "collocations": ["single-speed reduction gear", "reduction gear ratio optimization", "planetary reduction gear assembly"]
+                                "collocations": [
+                                    "single-speed reduction gear",
+                                    "reduction gear ratio optimization",
+                                    "planetary reduction gear assembly"
+                                ]
                             },
                             {
                                 "en": "Torque Vectoring",
                                 "es": "Vectorización de Torque",
                                 "definition": "Sending different power to each wheel",
                                 "ipa": "/tɔːrk ˈvɛk.tər.ɪŋ/",
-                                "collocations": ["torque vectoring dual motor", "torque vectoring cornering control", "active torque vectoring system"]
+                                "collocations": [
+                                    "torque vectoring dual motor",
+                                    "torque vectoring cornering control",
+                                    "active torque vectoring system"
+                                ]
                             },
                             {
                                 "en": "All-Wheel Drive (AWD)",
                                 "es": "Tracción en las Cuatro Ruedas",
                                 "definition": "Power delivered to all four wheels",
                                 "ipa": "/ˌɔːl wiːl ˈdraɪv/",
-                                "collocations": ["dual-motor AWD configuration", "AWD traction control", "AWD power distribution"]
+                                "collocations": [
+                                    "dual-motor AWD configuration",
+                                    "AWD traction control",
+                                    "AWD power distribution"
+                                ]
                             },
                             {
                                 "en": "RPM",
                                 "es": "RPM (Revoluciones Por Minuto)",
                                 "definition": "Speed of motor rotation",
                                 "ipa": "/ˌɑːr.piːˈɛm/",
-                                "collocations": ["rated RPM operating range", "RPM speed sensor feedback", "maximum RPM limit"]
+                                "collocations": [
+                                    "rated RPM operating range",
+                                    "RPM speed sensor feedback",
+                                    "maximum RPM limit"
+                                ]
                             },
                             {
                                 "en": "Efficiency",
                                 "es": "Eficiencia",
                                 "definition": "Ratio of useful output to total input energy",
                                 "ipa": "/ɪˈfɪʃ.ən.si/",
-                                "collocations": ["powertrain efficiency optimization", "round-trip energy efficiency", "motor efficiency curve"]
+                                "collocations": [
+                                    "powertrain efficiency optimization",
+                                    "round-trip energy efficiency",
+                                    "motor efficiency curve"
+                                ]
                             }
                         ],
                         "questions": [
@@ -16206,84 +17799,132 @@ var LXP_COURSES = {
                                 "es": "Gigafábrica",
                                 "definition": "Massive factory dedicated to battery production",
                                 "ipa": "/ˈɡɪɡ.ə.fæk.tər.i/",
-                                "collocations": ["gigafactory production ramp", "gigafactory battery output", "gigafactory site selection"]
+                                "collocations": [
+                                    "gigafactory production ramp",
+                                    "gigafactory battery output",
+                                    "gigafactory site selection"
+                                ]
                             },
                             {
                                 "en": "Electrode",
                                 "es": "Electrodo",
                                 "definition": "Cathode or anode component of a battery cell",
                                 "ipa": "/ɪˈlɛk.troʊd/",
-                                "collocations": ["electrode active material coating", "electrode current collector foil", "electrode drying oven"]
+                                "collocations": [
+                                    "electrode active material coating",
+                                    "electrode current collector foil",
+                                    "electrode drying oven"
+                                ]
                             },
                             {
                                 "en": "Calendering",
                                 "es": "Calandrado",
                                 "definition": "Compressing electrode coating to precise thickness",
                                 "ipa": "/ˈkæl.ən.dər.ɪŋ/",
-                                "collocations": ["electrode calendering pressure", "calendering roll gap control", "post-calendering thickness uniformity"]
+                                "collocations": [
+                                    "electrode calendering pressure",
+                                    "calendering roll gap control",
+                                    "post-calendering thickness uniformity"
+                                ]
                             },
                             {
                                 "en": "Formation",
                                 "es": "Formación",
                                 "definition": "First charge/discharge cycle to activate a battery cell",
                                 "ipa": "/fɔːrˈmeɪ.ʃən/",
-                                "collocations": ["cell formation charge protocol", "formation SEI layer growth", "formation cycling capacity check"]
+                                "collocations": [
+                                    "cell formation charge protocol",
+                                    "formation SEI layer growth",
+                                    "formation cycling capacity check"
+                                ]
                             },
                             {
                                 "en": "Bus Bar",
                                 "es": "Barra Colectora",
                                 "definition": "Thick copper connector linking battery cells",
                                 "ipa": "/bʌs bɑːr/",
-                                "collocations": ["bus bar laser welding", "bus bar current distribution", "copper bus bar connection"]
+                                "collocations": [
+                                    "bus bar laser welding",
+                                    "bus bar current distribution",
+                                    "copper bus bar connection"
+                                ]
                             },
                             {
                                 "en": "E-Axle",
                                 "es": "Eje Eléctrico",
                                 "definition": "Integrated unit: motor + inverter + reduction gear",
                                 "ipa": "/ˈiː.æk.səl/",
-                                "collocations": ["integrated e-axle unit", "e-axle motor-inverter-gear", "e-axle thermal management"]
+                                "collocations": [
+                                    "integrated e-axle unit",
+                                    "e-axle motor-inverter-gear",
+                                    "e-axle thermal management"
+                                ]
                             },
                             {
                                 "en": "Body-in-White",
                                 "es": "Carrocería en Blanco",
                                 "definition": "Welded car body before painting",
                                 "ipa": "/ˌbɒd.i.ɪn.ˈwaɪt/",
-                                "collocations": ["body-in-white stamping press", "body-in-white spot welding", "body-in-white dimensional inspection"]
+                                "collocations": [
+                                    "body-in-white stamping press",
+                                    "body-in-white spot welding",
+                                    "body-in-white dimensional inspection"
+                                ]
                             },
                             {
                                 "en": "Marriage (assembly)",
                                 "es": "Matrimonio (ensamble)",
                                 "definition": "Joining battery pack to vehicle body",
                                 "ipa": "/ˈmær.ɪdʒ/",
-                                "collocations": ["battery-body marriage station", "marriage process alignment jig", "final marriage torque spec"]
+                                "collocations": [
+                                    "battery-body marriage station",
+                                    "marriage process alignment jig",
+                                    "final marriage torque spec"
+                                ]
                             },
                             {
                                 "en": "ADAS",
                                 "es": "ADAS (Asistencia Avanzada)",
                                 "definition": "Advanced Driver Assistance Systems",
                                 "ipa": "/ˈeɪ.dæs/",
-                                "collocations": ["ADAS sensor calibration", "ADAS lane-keeping assist", "ADAS emergency braking system"]
+                                "collocations": [
+                                    "ADAS sensor calibration",
+                                    "ADAS lane-keeping assist",
+                                    "ADAS emergency braking system"
+                                ]
                             },
                             {
                                 "en": "Dyno Testing",
                                 "es": "Prueba en Dinamómetro",
                                 "definition": "Testing vehicle performance on rollers",
                                 "ipa": "/ˈdaɪ.noʊ ˈtɛs.tɪŋ/",
-                                "collocations": ["chassis dyno testing cycle", "dyno testing performance validation", "motor dyno testing torque curve"]
+                                "collocations": [
+                                    "chassis dyno testing cycle",
+                                    "dyno testing performance validation",
+                                    "motor dyno testing torque curve"
+                                ]
                             },
                             {
                                 "en": "Laser Welding",
                                 "es": "Soldadura Láser",
                                 "definition": "High-precision joining using focused light",
                                 "ipa": "/ˈleɪ.zər ˈwɛl.dɪŋ/",
-                                "collocations": ["laser welding seam joint", "laser welding penetration depth", "fiber laser welding speed"]
+                                "collocations": [
+                                    "laser welding seam joint",
+                                    "laser welding penetration depth",
+                                    "fiber laser welding speed"
+                                ]
                             },
                             {
                                 "en": "Slurry",
                                 "es": "Pasta / Suspensión",
                                 "definition": "Wet mixture of active materials applied to metal foil",
                                 "ipa": "/ˈslʌr.i/",
-                                "collocations": ["electrode slurry mixing", "slurry viscosity control", "cathode slurry formulation"]
+                                "collocations": [
+                                    "electrode slurry mixing",
+                                    "slurry viscosity control",
+                                    "cathode slurry formulation"
+                                ]
                             }
                         ],
                         "questions": [
@@ -16858,70 +18499,110 @@ var LXP_COURSES = {
                                 "es": "Frenado Regenerativo",
                                 "definition": "Recovery of kinetic energy as electricity during braking",
                                 "ipa": "/rɪˈdʒɛn.ər.ə.tɪv ˈbreɪ.kɪŋ/",
-                                "collocations": ["regenerative braking energy recovery", "regenerative braking deceleration rate", "one-pedal regenerative braking"]
+                                "collocations": [
+                                    "regenerative braking energy recovery",
+                                    "regenerative braking deceleration rate",
+                                    "one-pedal regenerative braking"
+                                ]
                             },
                             {
                                 "en": "Electromagnetic Induction",
                                 "es": "Inducción Electromagnética",
                                 "definition": "Generating electricity by moving a conductor through a magnetic field",
                                 "ipa": "/ɪˌlɛk.troʊ.mæɡˈnɛt.ɪk ɪnˈdʌk.ʃən/",
-                                "collocations": ["electromagnetic induction generator principle", "Faraday electromagnetic induction law", "electromagnetic induction coil"]
+                                "collocations": [
+                                    "electromagnetic induction generator principle",
+                                    "Faraday electromagnetic induction law",
+                                    "electromagnetic induction coil"
+                                ]
                             },
                             {
                                 "en": "One-Pedal Driving",
                                 "es": "Conducción de un Solo Pedal",
                                 "definition": "Driving mode where lifting the accelerator causes strong deceleration",
                                 "ipa": "/wʌn ˈpɛd.əl ˈdraɪ.vɪŋ/",
-                                "collocations": ["one-pedal driving deceleration", "enable one-pedal driving mode", "one-pedal driving user preference"]
+                                "collocations": [
+                                    "one-pedal driving deceleration",
+                                    "enable one-pedal driving mode",
+                                    "one-pedal driving user preference"
+                                ]
                             },
                             {
                                 "en": "Blended Braking",
                                 "es": "Frenado Combinado",
                                 "definition": "Combining regenerative and friction braking seamlessly",
                                 "ipa": "/ˈblɛn.dɪd ˈbreɪ.kɪŋ/",
-                                "collocations": ["blended braking regenerative-friction", "blended braking algorithm tuning", "seamless blended braking transition"]
+                                "collocations": [
+                                    "blended braking regenerative-friction",
+                                    "blended braking algorithm tuning",
+                                    "seamless blended braking transition"
+                                ]
                             },
                             {
                                 "en": "Kinetic Energy",
                                 "es": "Energía Cinética",
                                 "definition": "Energy of a moving object",
                                 "ipa": "/kɪˈnɛt.ɪk ˈɛn.ər.dʒi/",
-                                "collocations": ["kinetic energy recovery system", "kinetic energy conversion", "kinetic energy braking force"]
+                                "collocations": [
+                                    "kinetic energy recovery system",
+                                    "kinetic energy conversion",
+                                    "kinetic energy braking force"
+                                ]
                             },
                             {
                                 "en": "Generator Mode",
                                 "es": "Modo Generador",
                                 "definition": "Motor operating in reverse to produce electricity",
                                 "ipa": "/ˈdʒɛn.ə.reɪ.tər moʊd/",
-                                "collocations": ["motor generator mode switching", "generator mode energy recovery", "generator mode back-EMF"]
+                                "collocations": [
+                                    "motor generator mode switching",
+                                    "generator mode energy recovery",
+                                    "generator mode back-EMF"
+                                ]
                             },
                             {
                                 "en": "Friction Braking",
                                 "es": "Frenado por Fricción",
                                 "definition": "Traditional brakes using pads pressing against rotors",
                                 "ipa": "/ˈfrɪk.ʃən ˈbreɪ.kɪŋ/",
-                                "collocations": ["conventional friction braking force", "friction braking heat generation", "reduce friction braking wear"]
+                                "collocations": [
+                                    "conventional friction braking force",
+                                    "friction braking heat generation",
+                                    "reduce friction braking wear"
+                                ]
                             },
                             {
                                 "en": "Regen Limit",
                                 "es": "Límite de Regeneración",
                                 "definition": "When the battery cannot accept regenerative energy",
                                 "ipa": "/ˈriː.dʒɛn ˈlɪm.ɪt/",
-                                "collocations": ["regen limit battery full SOC", "regen limit cold temperature", "regen limit power ceiling"]
+                                "collocations": [
+                                    "regen limit battery full SOC",
+                                    "regen limit cold temperature",
+                                    "regen limit power ceiling"
+                                ]
                             },
                             {
                                 "en": "Faraday's Law",
                                 "es": "Ley de Faraday",
                                 "definition": "Physical law governing electromagnetic induction",
                                 "ipa": "/ˈfær.ə.deɪz lɔː/",
-                                "collocations": ["Faraday's Law induced voltage", "Faraday's Law magnetic flux change", "Faraday's Law coil turns"]
+                                "collocations": [
+                                    "Faraday's Law induced voltage",
+                                    "Faraday's Law magnetic flux change",
+                                    "Faraday's Law coil turns"
+                                ]
                             },
                             {
                                 "en": "Brake Pad",
                                 "es": "Pastilla de Freno",
                                 "definition": "Component that presses against the rotor to create friction",
                                 "ipa": "/breɪk pæd/",
-                                "collocations": ["brake pad wear reduction", "brake pad copper-free compound", "brake pad replacement interval"]
+                                "collocations": [
+                                    "brake pad wear reduction",
+                                    "brake pad copper-free compound",
+                                    "brake pad replacement interval"
+                                ]
                             }
                         ],
                         "questions": [
@@ -17169,70 +18850,110 @@ var LXP_COURSES = {
                                 "es": "Gestión Térmica",
                                 "definition": "Controlling temperature of EV components",
                                 "ipa": "/ˈθɜːr.məl ˈmæn.ɪdʒ.mənt/",
-                                "collocations": ["thermal management heat spreader", "thermal management TIM paste", "thermal management junction temperature"]
+                                "collocations": [
+                                    "thermal management heat spreader",
+                                    "thermal management TIM paste",
+                                    "thermal management junction temperature"
+                                ]
                             },
                             {
                                 "en": "Coolant",
                                 "es": "Refrigerante",
                                 "definition": "Liquid (water-glycol) circulating to absorb heat",
                                 "ipa": "/ˈkuː.lənt/",
-                                "collocations": ["through-spindle coolant delivery", "minimum quantity coolant (MQL)", "coolant filtration system"]
+                                "collocations": [
+                                    "through-spindle coolant delivery",
+                                    "minimum quantity coolant (MQL)",
+                                    "coolant filtration system"
+                                ]
                             },
                             {
                                 "en": "Radiator",
                                 "es": "Radiador",
                                 "definition": "Heat exchanger that dissipates heat to the air",
                                 "ipa": "/ˈreɪ.di.eɪ.tər/",
-                                "collocations": ["EV radiator coolant loop", "radiator heat exchanger", "auxiliary radiator motor cooling"]
+                                "collocations": [
+                                    "EV radiator coolant loop",
+                                    "radiator heat exchanger",
+                                    "auxiliary radiator motor cooling"
+                                ]
                             },
                             {
                                 "en": "Chiller",
                                 "es": "Enfriador",
                                 "definition": "Refrigeration unit that cools liquid below ambient temperature",
                                 "ipa": "/ˈtʃɪl.ər/",
-                                "collocations": ["battery chiller plate", "refrigerant chiller circuit", "chiller cooling capacity kW"]
+                                "collocations": [
+                                    "battery chiller plate",
+                                    "refrigerant chiller circuit",
+                                    "chiller cooling capacity kW"
+                                ]
                             },
                             {
                                 "en": "Heat Pump",
                                 "es": "Bomba de Calor",
                                 "definition": "Efficient device extracting heat from air for heating",
                                 "ipa": "/hiːt pʌmp/",
-                                "collocations": ["heat pump cabin heating", "heat pump COP efficiency", "CO2 heat pump system"]
+                                "collocations": [
+                                    "heat pump cabin heating",
+                                    "heat pump COP efficiency",
+                                    "CO2 heat pump system"
+                                ]
                             },
                             {
                                 "en": "Battery Preconditioning",
                                 "es": "Preacondicionamiento de Batería",
                                 "definition": "Warming battery before fast charging",
                                 "ipa": "/ˈbæt.ər.i ˌpriː.kənˈdɪʃ.ən.ɪŋ/",
-                                "collocations": ["battery preconditioning fast charge", "battery preconditioning temperature target", "scheduled battery preconditioning"]
+                                "collocations": [
+                                    "battery preconditioning fast charge",
+                                    "battery preconditioning temperature target",
+                                    "scheduled battery preconditioning"
+                                ]
                             },
                             {
                                 "en": "Dielectric Fluid",
                                 "es": "Fluido Dieléctrico",
                                 "definition": "Non-conductive liquid used in immersion cooling",
                                 "ipa": "/ˌdaɪ.ɪˈlɛk.trɪk ˈfluː.ɪd/",
-                                "collocations": ["immersion dielectric fluid cooling", "dielectric fluid thermal conductivity", "dielectric fluid compatibility test"]
+                                "collocations": [
+                                    "immersion dielectric fluid cooling",
+                                    "dielectric fluid thermal conductivity",
+                                    "dielectric fluid compatibility test"
+                                ]
                             },
                             {
                                 "en": "Lithium Plating",
                                 "es": "Deposición de Litio",
                                 "definition": "Dangerous metallic lithium forming on anode in cold",
                                 "ipa": "/ˈlɪθ.i.əm ˈpleɪ.tɪŋ/",
-                                "collocations": ["lithium plating low temperature", "detect lithium plating onset", "lithium plating degradation mode"]
+                                "collocations": [
+                                    "lithium plating low temperature",
+                                    "detect lithium plating onset",
+                                    "lithium plating degradation mode"
+                                ]
                             },
                             {
                                 "en": "Thermal Runaway",
                                 "es": "Fuga Térmica",
                                 "definition": "Uncontrolled temperature chain reaction",
                                 "ipa": "/ˈθɜːr.məl ˈrʌn.ə.weɪ/",
-                                "collocations": ["thermal runaway propagation", "thermal runaway prevention barrier", "detect thermal runaway onset"]
+                                "collocations": [
+                                    "thermal runaway propagation",
+                                    "thermal runaway prevention barrier",
+                                    "detect thermal runaway onset"
+                                ]
                             },
                             {
                                 "en": "Degradation",
                                 "es": "Degradación",
                                 "definition": "Gradual loss of battery capacity over time",
                                 "ipa": "/ˌdɛɡ.rəˈdeɪ.ʃən/",
-                                "collocations": ["capacity degradation curve", "calendar degradation aging", "cycling degradation mechanism"]
+                                "collocations": [
+                                    "capacity degradation curve",
+                                    "calendar degradation aging",
+                                    "cycling degradation mechanism"
+                                ]
                             }
                         ],
                         "questions": [
@@ -17809,70 +19530,110 @@ var LXP_COURSES = {
                                 "es": "T-MEC",
                                 "definition": "US-Mexico-Canada trade agreement (successor to NAFTA)",
                                 "ipa": "/ˌjuː.ɛs.ɛmˈsiː.eɪ/",
-                                "collocations": ["USMCA rules of origin", "USMCA regional content requirement", "USMCA automotive chapter"]
+                                "collocations": [
+                                    "USMCA rules of origin",
+                                    "USMCA regional content requirement",
+                                    "USMCA automotive chapter"
+                                ]
                             },
                             {
                                 "en": "Tier 1 Supplier",
                                 "es": "Proveedor Nivel 1",
                                 "definition": "Company that supplies directly to automakers",
                                 "ipa": "/tɪr wʌn səˈplaɪ.ər/",
-                                "collocations": ["Tier 1 supplier contract", "Tier 1 supplier PPAP submission", "Tier 1 supplier quality audit"]
+                                "collocations": [
+                                    "Tier 1 supplier contract",
+                                    "Tier 1 supplier PPAP submission",
+                                    "Tier 1 supplier quality audit"
+                                ]
                             },
                             {
                                 "en": "IATF 16949",
                                 "es": "IATF 16949",
                                 "definition": "Automotive quality management standard",
                                 "ipa": "/ˌaɪ.eɪ.tiːˈɛf/",
-                                "collocations": ["IATF 16949 certification audit", "IATF 16949 quality system", "IATF 16949 process approach"]
+                                "collocations": [
+                                    "IATF 16949 certification audit",
+                                    "IATF 16949 quality system",
+                                    "IATF 16949 process approach"
+                                ]
                             },
                             {
                                 "en": "NOM",
                                 "es": "NOM (Norma Oficial Mexicana)",
                                 "definition": "Mexican official technical standard",
                                 "ipa": "/nɒm/",
-                                "collocations": ["NOM Mexican safety standard", "NOM compliance certification", "NOM vehicle regulation"]
+                                "collocations": [
+                                    "NOM Mexican safety standard",
+                                    "NOM compliance certification",
+                                    "NOM vehicle regulation"
+                                ]
                             },
                             {
                                 "en": "Firmware",
                                 "es": "Firmware",
                                 "definition": "Low-level software controlling electronic hardware",
                                 "ipa": "/ˈfɜːrm.wɛr/",
-                                "collocations": ["firmware over-the-air update", "firmware version control", "BMS firmware validation"]
+                                "collocations": [
+                                    "firmware over-the-air update",
+                                    "firmware version control",
+                                    "BMS firmware validation"
+                                ]
                             },
                             {
                                 "en": "SPC",
                                 "es": "Control Estadístico de Procesos",
                                 "definition": "Using statistics to monitor manufacturing quality",
                                 "ipa": "/ˌɛs.piːˈsiː/",
-                                "collocations": ["SPC control chart monitoring", "SPC process capability index", "real-time SPC data collection"]
+                                "collocations": [
+                                    "SPC control chart monitoring",
+                                    "SPC process capability index",
+                                    "real-time SPC data collection"
+                                ]
                             },
                             {
                                 "en": "SOP",
                                 "es": "Procedimiento Operativo Estándar",
                                 "definition": "Step-by-step work instruction",
                                 "ipa": "/ˌɛs.oʊˈpiː/",
-                                "collocations": ["follow SOP procedure", "SOP revision control", "write a new SOP document"]
+                                "collocations": [
+                                    "follow SOP procedure",
+                                    "SOP revision control",
+                                    "write a new SOP document"
+                                ]
                             },
                             {
                                 "en": "Charging Infrastructure",
                                 "es": "Infraestructura de Carga",
                                 "definition": "Network of EV charging stations",
                                 "ipa": "/ˈtʃɑːr.dʒɪŋ ˈɪn.frə.strʌk.tʃər/",
-                                "collocations": ["public charging infrastructure rollout", "charging infrastructure investment", "DC fast charging infrastructure"]
+                                "collocations": [
+                                    "public charging infrastructure rollout",
+                                    "charging infrastructure investment",
+                                    "DC fast charging infrastructure"
+                                ]
                             },
                             {
                                 "en": "Regional Content",
                                 "es": "Contenido Regional",
                                 "definition": "Percentage of vehicle parts made in USMCA region",
                                 "ipa": "/ˈriː.dʒən.əl ˈkɒn.tɛnt/",
-                                "collocations": ["USMCA regional content threshold", "regional content calculation method", "regional content compliance audit"]
+                                "collocations": [
+                                    "USMCA regional content threshold",
+                                    "regional content calculation method",
+                                    "regional content compliance audit"
+                                ]
                             },
                             {
                                 "en": "Duty-Free",
                                 "es": "Libre de Aranceles",
                                 "definition": "Exempt from import taxes",
                                 "ipa": "/ˈdjuː.ti friː/",
-                                "collocations": ["duty-free USMCA export", "duty-free tariff classification", "qualify for duty-free treatment"]
+                                "collocations": [
+                                    "duty-free USMCA export",
+                                    "duty-free tariff classification",
+                                    "qualify for duty-free treatment"
+                                ]
                             }
                         ],
                         "questions": [
@@ -18311,6 +20072,104 @@ var LXP_COURSES = {
                                 "answer": 1
                             }
                         ]
+                    },
+                    {
+                        "id": "aero-m1-r2",
+                        "title": "Applied Lab: AS9100 Rev D Quality Protocols, Ultrasonic NDT & Composite Layup Inspection",
+                        "duration": "15 min",
+                        "content": "\n> **Aerospace Compliance Standard**: Aligned with **AS9100 Rev D (Quality Management Systems - Requirements for Aviation, Space and Defense Organizations)** and **ASTM E2580 (Standard Practice for Ultrasonic Testing of Flat Panel Composites)**. Prepares aerospace structures engineers to implement rigorous quality inspection protocols.\n\n# Applied Laboratory: AS9100 Rev D Quality Protocols, Ultrasonic NDT & Composite Layup Inspection\n\nCommercial and defense aircraft manufacturing utilizes carbon-fiber-reinforced polymers (CFRP) to maximize specific strength and fatigue resistance. Because composite materials are formed simultaneously with the structural part during autoclave cure cycles, quality control must encompass raw prepreg storage, automated fiber placement (AFP), and non-destructive testing (NDT).\n\n## 1. AS9100 Rev D Quality Gates in Composite Fabrication\nAS9100 establishes stringent traceability and risk management imperatives:\n1. **Foreign Object Debris (FOD) Prevention (Clause 8.1.4)**: Cleanroom layup zones require positive air pressure, strict tooling inventories, and anti-static poly-film peels to prevent particulate entrapment between plies.\n2. **First Article Inspection (FAI - AS9102)**: Complete dimensional and mechanical verification of the initial manufacturing run before authorizing serialized production.\n3. **Prepreg Out-Time Tracking**: Thermoset epoxy prepregs have a shelf life at -18°C and a strictly monitored cumulative \"out-time\" at room temperature (e.g., maximum 240 hours) to prevent premature resin polymerization prior to consolidation.\n\n## 2. Non-Destructive Testing (NDT) Modalities for Laminates\nUnlike metal alloys that exhibit isotropic grain structures, composites are anisotropic, making visual inspection insufficient to detect internal flaws:\n- **Phased Array Ultrasonic Testing (PAUT)**: Multi-element transducer probes emit phased sound waves that penetrate laminate plies. Time-of-flight and amplitude analysis reveal delaminations, resin-rich pockets, and porosity.\n- **Pulse-Echo C-Scan**: Translates ultrasonic return echoes into a 2D planar map of the part. Attenuation spikes highlight unbonded areas between consecutive carbon plies.\n- **X-ray Computed Tomography (CT)**: High-resolution volumetric 3D reconstruction resolving micro-void percentages and fiber waviness (wrinkling) in high-stress wing spar radii.\n\n## 3. Autoclave Cure Kinetics & Void Fraction Control\nConsolidation under high pressure and temperature drives out volatile gases and bonds plies:\n- **Vacuum Debulking**: Periodic vacuum bagging cycles during layup remove entrapped air pockets between ply consolidation steps.\n- **Hydrostatic Autoclave Pressure**: Applying 6 to 7 bars of nitrogen gas pressure during the resin flow phase compresses micro-voids into solution, guaranteeing a total void content below 1.0% per aerospace structural certification standards.\n\n---\n> **Key Takeaway**: Aerospace manufacturing excellence demands integrating **AS9100 traceability, autoclave cure process kinetics, and Phased Array Ultrasonic Testing (PAUT)** to certify zero-defect composite primary flight structures.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Foreign Object Debris (FOD)",
+                                "es": "Desechos de Objetos Extraños (FOD)",
+                                "definition": "Any substance, debris, or foreign matter that could cause damage to aircraft systems, engines, or composite structures.",
+                                "ipa": "/ˈfɔːr.ən ˈɑːb.dʒɛkt ˈdɛb.riː/",
+                                "collocations": [
+                                    "strict FOD containment zone",
+                                    "FOD prevention protocol",
+                                    "cleanroom FOD audit"
+                                ]
+                            },
+                            {
+                                "en": "Non-Destructive Testing (NDT)",
+                                "es": "Ensayos No Destructivos (NDT)",
+                                "definition": "Analysis techniques used to evaluate the structural integrity and properties of materials without causing permanent physical damage.",
+                                "ipa": "/nɑːn dɪˈstrʌk.tɪv ˈtɛs.tɪŋ/",
+                                "collocations": [
+                                    "phased array ultrasonic NDT",
+                                    "certify Level II NDT inspector",
+                                    "pulse-echo C-scan inspection"
+                                ]
+                            },
+                            {
+                                "en": "Prepreg Out-Time",
+                                "es": "Tiempo Fuera de Refrigeración de Preimpregnados",
+                                "definition": "Accumulated time that resin-impregnated fiber material spends outside controlled sub-zero freezer storage before autoclave curing.",
+                                "ipa": "/ˈpriːprɛɡ aʊt taɪm/",
+                                "collocations": [
+                                    "track prepreg out-time",
+                                    "resin gelation threshold",
+                                    "sub-zero freezer log"
+                                ]
+                            },
+                            {
+                                "en": "Delamination",
+                                "es": "Delaminación de Compuestos",
+                                "definition": "Structural failure mode where adjacent reinforcing plies within a laminated composite separate along their interface.",
+                                "ipa": "/diːˌlæm.əˈneɪ.ʃən/",
+                                "collocations": [
+                                    "interlaminar delamination",
+                                    "sub-surface impact delamination",
+                                    "ultrasonic delamination mapping"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "Why must composite prepregs have their cumulative \"out-time\" strictly tracked prior to autoclave curing?",
+                                "options": [
+                                    "Because prepregs absorb sunlight and change color",
+                                    "Because the reactive epoxy resin slowly cures at room temperature; exceeding allowable out-time prevents proper resin flow and ply consolidation during cure",
+                                    "Because prepregs grow heavier when exposed to air",
+                                    "Because prepregs evaporate completely within 24 hours"
+                                ],
+                                "answer": 1,
+                                "explanation": "Thermoset prepregs undergo slow chemical polymerization at ambient temperatures. If out-time limits are breached, resin viscosity increases, preventing adequate wetting, flow, and consolidation during the autoclave cycle, resulting in unbonded dry plies and structural rejection."
+                            },
+                            {
+                                "q": "Which NDT technique utilizes multi-element transducers to produce real-time cross-sectional imagery of composite delaminations?",
+                                "options": [
+                                    "Visual inspection with a magnifying glass",
+                                    "Phased Array Ultrasonic Testing (PAUT)",
+                                    "Hammer tap testing with an iron hammer",
+                                    "Weighing the component on an industrial scale"
+                                ],
+                                "answer": 1,
+                                "explanation": "Phased Array Ultrasonic Testing (PAUT) coordinates multiple piezo-electric transducer elements with precise electronic delays, sweeping acoustic beams across the laminate to create high-resolution sectional and volumetric scans of internal interfaces."
+                            },
+                            {
+                                "q": "Under AS9100 Rev D, what is the mandatory purpose of a First Article Inspection (FAI) per AS9102?",
+                                "options": [
+                                    "To celebrate the opening of a new factory with a press conference",
+                                    "To provide verified, documented evidence that all engineering design and specification requirements are fully understood, accounted for, and produced correctly by the manufacturing process",
+                                    "To estimate shipping tax for international orders",
+                                    "To train new security guards on campus"
+                                ],
+                                "answer": 1,
+                                "explanation": "AS9102 First Article Inspection requires exhaustive 100% verification of all drawing dimensions, material certifications, special process validations, and tooling tolerances on initial parts before mass production begins."
+                            },
+                            {
+                                "q": "What is the acceptable threshold for total structural void content in certified primary aerospace composite laminates?",
+                                "options": [
+                                    "Typically under 1.0% to 1.5% to prevent stress concentration and shear failure",
+                                    "Around 25% to make the airplane lighter",
+                                    "Between 40% and 50% for maximum flexibility",
+                                    "Void content is not measured in aerospace"
+                                ],
+                                "answer": 0,
+                                "explanation": "Aerospace structural design codes require void content strictly below 1.0% to 1.5%. Micro-voids act as critical stress risers that drastically reduce interlaminar shear strength and compressive fatigue endurance."
+                            }
+                        ]
                     }
                 ],
                 "isGoldModel": true,
@@ -18566,84 +20425,132 @@ var LXP_COURSES = {
                                 "es": "Material Compuesto",
                                 "definition": "Material made from two or more different materials",
                                 "ipa": "/kəmˈpɒz.ɪt/",
-                                "collocations": ["composite laminate ply", "composite repair procedure", "composite manufacturing autoclave"]
+                                "collocations": [
+                                    "composite laminate ply",
+                                    "composite repair procedure",
+                                    "composite manufacturing autoclave"
+                                ]
                             },
                             {
                                 "en": "CFRP",
                                 "es": "Polímero Reforzado con Fibra de Carbono",
                                 "definition": "Carbon fiber + epoxy resin — stronger than steel, lighter",
                                 "ipa": "/ˌsiː.ɛf.ɑːrˈpiː/",
-                                "collocations": ["CFRP layup autoclave cure", "CFRP damage tolerance design", "CFRP repair patch"]
+                                "collocations": [
+                                    "CFRP layup autoclave cure",
+                                    "CFRP damage tolerance design",
+                                    "CFRP repair patch"
+                                ]
                             },
                             {
                                 "en": "Alloy",
                                 "es": "Aleación",
                                 "definition": "A metal made by combining two or more elements",
                                 "ipa": "/ˈæl.ɔɪ/",
-                                "collocations": ["aluminum alloy 7075-T6", "titanium alloy forging", "nickel-based superalloy"]
+                                "collocations": [
+                                    "aluminum alloy 7075-T6",
+                                    "titanium alloy forging",
+                                    "nickel-based superalloy"
+                                ]
                             },
                             {
                                 "en": "Titanium",
                                 "es": "Titanio",
                                 "definition": "Strong, light, corrosion-resistant metal",
                                 "ipa": "/taɪˈteɪ.ni.əm/",
-                                "collocations": ["titanium machining parameters", "titanium diffusion bonding", "Grade 5 titanium (Ti-6Al-4V)"]
+                                "collocations": [
+                                    "titanium machining parameters",
+                                    "titanium diffusion bonding",
+                                    "Grade 5 titanium (Ti-6Al-4V)"
+                                ]
                             },
                             {
                                 "en": "Superalloy",
                                 "es": "Superaleación",
                                 "definition": "High-performance alloy resisting extreme temperatures",
                                 "ipa": "/ˈsuː.pər.æl.ɔɪ/",
-                                "collocations": ["nickel superalloy turbine blade", "single-crystal superalloy casting", "superalloy creep resistance"]
+                                "collocations": [
+                                    "nickel superalloy turbine blade",
+                                    "single-crystal superalloy casting",
+                                    "superalloy creep resistance"
+                                ]
                             },
                             {
                                 "en": "Fatigue Resistance",
                                 "es": "Resistencia a la Fatiga",
                                 "definition": "Ability to withstand repeated stress without cracking",
                                 "ipa": "/fəˈtiːɡ rɪˈzɪs.təns/",
-                                "collocations": ["high fatigue resistance alloy", "fatigue resistance test coupon", "improve fatigue resistance life"]
+                                "collocations": [
+                                    "high fatigue resistance alloy",
+                                    "fatigue resistance test coupon",
+                                    "improve fatigue resistance life"
+                                ]
                             },
                             {
                                 "en": "Autoclave",
                                 "es": "Autoclave",
                                 "definition": "Pressurized oven for curing composite materials",
                                 "ipa": "/ˈɔː.toʊ.kleɪv/",
-                                "collocations": ["autoclave curing cycle", "autoclave pressure temperature profile", "out-of-autoclave (OOA) process"]
+                                "collocations": [
+                                    "autoclave curing cycle",
+                                    "autoclave pressure temperature profile",
+                                    "out-of-autoclave (OOA) process"
+                                ]
                             },
                             {
                                 "en": "Single Crystal",
                                 "es": "Monocristal / Cristal Único",
                                 "definition": "Material grown as one continuous crystal structure",
                                 "ipa": "/ˈsɪŋ.ɡəl ˈkrɪs.təl/",
-                                "collocations": ["single crystal turbine blade", "single crystal growth Bridgman", "single crystal creep advantage"]
+                                "collocations": [
+                                    "single crystal turbine blade",
+                                    "single crystal growth Bridgman",
+                                    "single crystal creep advantage"
+                                ]
                             },
                             {
                                 "en": "Strength-to-Weight Ratio",
                                 "es": "Relación Resistencia-Peso",
                                 "definition": "How strong a material is relative to its weight",
                                 "ipa": "/strɛŋθ tuː weɪt ˈreɪ.ʃi.oʊ/",
-                                "collocations": ["superior strength-to-weight ratio", "strength-to-weight ratio comparison", "optimize strength-to-weight ratio"]
+                                "collocations": [
+                                    "superior strength-to-weight ratio",
+                                    "strength-to-weight ratio comparison",
+                                    "optimize strength-to-weight ratio"
+                                ]
                             },
                             {
                                 "en": "Corrosion Resistance",
                                 "es": "Resistencia a la Corrosión",
                                 "definition": "Ability to resist chemical degradation",
                                 "ipa": "/kəˈroʊ.ʒən rɪˈzɪs.təns/",
-                                "collocations": ["excellent corrosion resistance coating", "corrosion resistance salt spray test", "corrosion resistance surface treatment"]
+                                "collocations": [
+                                    "excellent corrosion resistance coating",
+                                    "corrosion resistance salt spray test",
+                                    "corrosion resistance surface treatment"
+                                ]
                             },
                             {
                                 "en": "Epoxy Resin",
                                 "es": "Resina Epóxica",
                                 "definition": "Strong adhesive binding composite fibers together",
                                 "ipa": "/ɪˈpɒk.si ˈrɛz.ɪn/",
-                                "collocations": ["epoxy resin matrix system", "epoxy resin infusion process", "epoxy resin cure temperature"]
+                                "collocations": [
+                                    "epoxy resin matrix system",
+                                    "epoxy resin infusion process",
+                                    "epoxy resin cure temperature"
+                                ]
                             },
                             {
                                 "en": "CMC",
                                 "es": "Compuesto de Matriz Cerámica",
                                 "definition": "Ceramic reinforced with fibers for extreme heat",
                                 "ipa": "/ˌsiː.ɛmˈsiː/",
-                                "collocations": ["CMC ceramic matrix composite", "CMC turbine shroud", "CMC high temperature capability"]
+                                "collocations": [
+                                    "CMC ceramic matrix composite",
+                                    "CMC turbine shroud",
+                                    "CMC high temperature capability"
+                                ]
                             }
                         ],
                         "questions": [
@@ -18891,84 +20798,132 @@ var LXP_COURSES = {
                                 "es": "Control Numérico Computarizado",
                                 "definition": "Computer-controlled precision machining",
                                 "ipa": "/ˌsiː.ɛnˈsiː/",
-                                "collocations": ["CNC machining center", "CNC G-code program", "CNC tool path simulation"]
+                                "collocations": [
+                                    "CNC machining center",
+                                    "CNC G-code program",
+                                    "CNC tool path simulation"
+                                ]
                             },
                             {
                                 "en": "5-Axis Machining",
                                 "es": "Maquinado de 5 Ejes",
                                 "definition": "CNC with 5 degrees of movement for complex parts",
                                 "ipa": "/faɪv ˈæk.sɪs məˈʃiː.nɪŋ/",
-                                "collocations": ["5-axis machining complex geometry", "5-axis machining tool path", "5-axis simultaneous interpolation"]
+                                "collocations": [
+                                    "5-axis machining complex geometry",
+                                    "5-axis machining tool path",
+                                    "5-axis simultaneous interpolation"
+                                ]
                             },
                             {
                                 "en": "CAD (Computer-Aided Design)",
                                 "es": "Diseño Asistido por Computadora",
                                 "definition": "Software for creating 3D part designs",
                                 "ipa": "/kæd/",
-                                "collocations": ["CAD 3D solid model", "CAD drawing revision control", "CAD-to-CAM file transfer"]
+                                "collocations": [
+                                    "CAD 3D solid model",
+                                    "CAD drawing revision control",
+                                    "CAD-to-CAM file transfer"
+                                ]
                             },
                             {
                                 "en": "G-code",
                                 "es": "Código G",
                                 "definition": "Programming language that controls CNC machines",
                                 "ipa": "/ˈdʒiː.koʊd/",
-                                "collocations": ["G-code toolpath program", "G-code post-processor output", "edit G-code manually"]
+                                "collocations": [
+                                    "G-code toolpath program",
+                                    "G-code post-processor output",
+                                    "edit G-code manually"
+                                ]
                             },
                             {
                                 "en": "CMM",
                                 "es": "Máquina de Medición por Coordenadas",
                                 "definition": "Precision measurement device for 3D verification",
                                 "ipa": "/ˌsiː.ɛmˈɛm/",
-                                "collocations": ["CMM coordinate measurement", "CMM touch probe inspection", "CMM dimensional verification"]
+                                "collocations": [
+                                    "CMM coordinate measurement",
+                                    "CMM touch probe inspection",
+                                    "CMM dimensional verification"
+                                ]
                             },
                             {
                                 "en": "Milling",
                                 "es": "Fresado",
                                 "definition": "Removing material with a rotating cutting tool",
                                 "ipa": "/ˈmɪl.ɪŋ/",
-                                "collocations": ["CNC milling face cut", "milling feed rate optimization", "5-axis milling compound surface"]
+                                "collocations": [
+                                    "CNC milling face cut",
+                                    "milling feed rate optimization",
+                                    "5-axis milling compound surface"
+                                ]
                             },
                             {
                                 "en": "Turning",
                                 "es": "Torneado",
                                 "definition": "Machining cylindrical parts on a lathe",
                                 "ipa": "/ˈtɜːr.nɪŋ/",
-                                "collocations": ["CNC turning center lathe", "turning spindle speed control", "turning tool nose radius"]
+                                "collocations": [
+                                    "CNC turning center lathe",
+                                    "turning spindle speed control",
+                                    "turning tool nose radius"
+                                ]
                             },
                             {
                                 "en": "EDM",
                                 "es": "Electroerosión",
                                 "definition": "Cutting hard materials using electrical sparks",
                                 "ipa": "/ˌiː.diːˈɛm/",
-                                "collocations": ["wire EDM precision cut", "sinker EDM cavity machining", "EDM spark erosion process"]
+                                "collocations": [
+                                    "wire EDM precision cut",
+                                    "sinker EDM cavity machining",
+                                    "EDM spark erosion process"
+                                ]
                             },
                             {
                                 "en": "Delamination",
                                 "es": "Delaminación",
                                 "definition": "Layers of composite material separating",
                                 "ipa": "/ˌdiː.læm.ɪˈneɪ.ʃən/",
-                                "collocations": ["composite delamination failure", "delamination ultrasonic detection", "delamination impact damage"]
+                                "collocations": [
+                                    "composite delamination failure",
+                                    "delamination ultrasonic detection",
+                                    "delamination impact damage"
+                                ]
                             },
                             {
                                 "en": "Surface Roughness (Ra)",
                                 "es": "Rugosidad Superficial",
                                 "definition": "Measure of surface smoothness",
                                 "ipa": "/ˈsɜːr.fɪs ˈrʌf.nəs/",
-                                "collocations": ["surface roughness Ra measurement", "low surface roughness finish", "surface roughness specification limit"]
+                                "collocations": [
+                                    "surface roughness Ra measurement",
+                                    "low surface roughness finish",
+                                    "surface roughness specification limit"
+                                ]
                             },
                             {
                                 "en": "Carbide Tooling",
                                 "es": "Herramienta de Carburo",
                                 "definition": "Very hard cutting tools for tough materials",
                                 "ipa": "/ˈkɑːr.baɪd ˈtuː.lɪŋ/",
-                                "collocations": ["tungsten carbide tooling insert", "carbide tooling wear rate", "coated carbide tooling grade"]
+                                "collocations": [
+                                    "tungsten carbide tooling insert",
+                                    "carbide tooling wear rate",
+                                    "coated carbide tooling grade"
+                                ]
                             },
                             {
                                 "en": "Tolerance",
                                 "es": "Tolerancia",
                                 "definition": "Acceptable deviation from specified dimension",
                                 "ipa": "/ˈtɒl.ər.əns/",
-                                "collocations": ["tight tolerance ±0.001 inch", "tolerance stack-up analysis", "geometric tolerance GD&T"]
+                                "collocations": [
+                                    "tight tolerance ±0.001 inch",
+                                    "tolerance stack-up analysis",
+                                    "geometric tolerance GD&T"
+                                ]
                             }
                         ],
                         "questions": [
@@ -19215,84 +21170,132 @@ var LXP_COURSES = {
                                 "es": "Aviónica",
                                 "definition": "Electronic systems used in aircraft",
                                 "ipa": "/ˌeɪ.viˈɒn.ɪks/",
-                                "collocations": ["avionics bay installation", "avionics system integration", "avionics LRU replacement"]
+                                "collocations": [
+                                    "avionics bay installation",
+                                    "avionics system integration",
+                                    "avionics LRU replacement"
+                                ]
                             },
                             {
                                 "en": "FMS (Flight Management System)",
                                 "es": "Sistema de Gestión de Vuelo",
                                 "definition": "Computer managing flight routes and navigation",
                                 "ipa": "/ˌɛf.ɛmˈɛs/",
-                                "collocations": ["FMS waypoint navigation", "FMS performance calculation", "FMS database update cycle"]
+                                "collocations": [
+                                    "FMS waypoint navigation",
+                                    "FMS performance calculation",
+                                    "FMS database update cycle"
+                                ]
                             },
                             {
                                 "en": "Glass Cockpit",
                                 "es": "Cabina de Cristal",
                                 "definition": "Digital display-based cockpit (replacing analog gauges)",
                                 "ipa": "/ɡlæs ˈkɒk.pɪt/",
-                                "collocations": ["glass cockpit PFD display", "glass cockpit MFD configuration", "glass cockpit retrofit"]
+                                "collocations": [
+                                    "glass cockpit PFD display",
+                                    "glass cockpit MFD configuration",
+                                    "glass cockpit retrofit"
+                                ]
                             },
                             {
                                 "en": "Wire Harness",
                                 "es": "Arnés de Cableado",
                                 "definition": "Organized bundle of wires connecting aircraft systems",
                                 "ipa": "/waɪr ˈhɑːr.nɪs/",
-                                "collocations": ["wire harness routing layout", "wire harness continuity test", "wire harness assembly fixture"]
+                                "collocations": [
+                                    "wire harness routing layout",
+                                    "wire harness continuity test",
+                                    "wire harness assembly fixture"
+                                ]
                             },
                             {
                                 "en": "Connector",
                                 "es": "Conector",
                                 "definition": "Component joining two wires or circuits",
                                 "ipa": "/kəˈnɛk.tər/",
-                                "collocations": ["aerospace-grade connector pin", "connector environmental seal", "high-density connector backshell"]
+                                "collocations": [
+                                    "aerospace-grade connector pin",
+                                    "connector environmental seal",
+                                    "high-density connector backshell"
+                                ]
                             },
                             {
                                 "en": "Autopilot",
                                 "es": "Piloto Automático",
                                 "definition": "System that flies the aircraft without manual input",
                                 "ipa": "/ˈɔː.toʊ.paɪ.lət/",
-                                "collocations": ["autopilot altitude hold mode", "autopilot lateral navigation", "disengage autopilot override"]
+                                "collocations": [
+                                    "autopilot altitude hold mode",
+                                    "autopilot lateral navigation",
+                                    "disengage autopilot override"
+                                ]
                             },
                             {
                                 "en": "IPC/WHMA-A-620",
                                 "es": "IPC/WHMA-A-620",
                                 "definition": "Industry standard for wire harness quality",
                                 "ipa": "/ˌaɪ.piːˈsiː/",
-                                "collocations": ["IPC/WHMA-A-620 workmanship standard", "A-620 crimp inspection criteria", "A-620 certification training"]
+                                "collocations": [
+                                    "IPC/WHMA-A-620 workmanship standard",
+                                    "A-620 crimp inspection criteria",
+                                    "A-620 certification training"
+                                ]
                             },
                             {
                                 "en": "Circuit Breaker",
                                 "es": "Interruptor de Circuito",
                                 "definition": "Safety device that cuts power during overload",
                                 "ipa": "/ˈsɜːr.kɪt ˈbreɪ.kər/",
-                                "collocations": ["aircraft circuit breaker panel", "circuit breaker trip threshold", "circuit breaker reset procedure"]
+                                "collocations": [
+                                    "aircraft circuit breaker panel",
+                                    "circuit breaker trip threshold",
+                                    "circuit breaker reset procedure"
+                                ]
                             },
                             {
                                 "en": "MEA (More Electric Aircraft)",
                                 "es": "Aeronave Más Eléctrica",
                                 "definition": "Aircraft replacing hydraulics with electric systems",
                                 "ipa": "/ˌɛm.iːˈeɪ/",
-                                "collocations": ["MEA electric actuation", "MEA power distribution architecture", "MEA hydraulic-to-electric conversion"]
+                                "collocations": [
+                                    "MEA electric actuation",
+                                    "MEA power distribution architecture",
+                                    "MEA hydraulic-to-electric conversion"
+                                ]
                             },
                             {
                                 "en": "Actuator",
                                 "es": "Actuador",
                                 "definition": "Device converting energy into physical movement",
                                 "ipa": "/ˈæk.tʃu.eɪ.tər/",
-                                "collocations": ["flight control actuator", "electrohydrostatic actuator (EHA)", "linear actuator servo motor"]
+                                "collocations": [
+                                    "flight control actuator",
+                                    "electrohydrostatic actuator (EHA)",
+                                    "linear actuator servo motor"
+                                ]
                             },
                             {
                                 "en": "Crimp",
                                 "es": "Crimpar / Engarzar",
                                 "definition": "Joining wire to a connector by compression",
                                 "ipa": "/krɪmp/",
-                                "collocations": ["crimp terminal pull test", "crimp barrel inspection", "controlled crimp tool calibration"]
+                                "collocations": [
+                                    "crimp terminal pull test",
+                                    "crimp barrel inspection",
+                                    "controlled crimp tool calibration"
+                                ]
                             },
                             {
                                 "en": "TCAS",
                                 "es": "Sistema de Alerta Anticolisión",
                                 "definition": "System preventing mid-air collisions",
                                 "ipa": "/ˈtiː.kæs/",
-                                "collocations": ["TCAS resolution advisory (RA)", "TCAS traffic advisory (TA)", "TCAS II collision avoidance"]
+                                "collocations": [
+                                    "TCAS resolution advisory (RA)",
+                                    "TCAS traffic advisory (TA)",
+                                    "TCAS II collision avoidance"
+                                ]
                             }
                         ],
                         "questions": [
@@ -19539,84 +21542,132 @@ var LXP_COURSES = {
                                 "es": "Turbofán",
                                 "definition": "Most common jet engine type — fan + gas turbine",
                                 "ipa": "/ˈtɜːr.boʊ.fæn/",
-                                "collocations": ["high-bypass turbofan engine", "turbofan thrust rating", "turbofan fuel consumption"]
+                                "collocations": [
+                                    "high-bypass turbofan engine",
+                                    "turbofan thrust rating",
+                                    "turbofan fuel consumption"
+                                ]
                             },
                             {
                                 "en": "Compressor",
                                 "es": "Compresor",
                                 "definition": "Engine section that compresses incoming air",
                                 "ipa": "/kəmˈprɛs.ər/",
-                                "collocations": ["axial compressor stage count", "compressor pressure ratio", "compressor surge margin"]
+                                "collocations": [
+                                    "axial compressor stage count",
+                                    "compressor pressure ratio",
+                                    "compressor surge margin"
+                                ]
                             },
                             {
                                 "en": "Combustion Chamber",
                                 "es": "Cámara de Combustión",
                                 "definition": "Where fuel and air mix and ignite",
                                 "ipa": "/kəmˈbʌs.tʃən ˈtʃeɪm.bər/",
-                                "collocations": ["annular combustion chamber design", "combustion chamber flame stability", "combustion chamber liner cooling"]
+                                "collocations": [
+                                    "annular combustion chamber design",
+                                    "combustion chamber flame stability",
+                                    "combustion chamber liner cooling"
+                                ]
                             },
                             {
                                 "en": "Turbine Blade",
                                 "es": "Álabe / Aspa de Turbina",
                                 "definition": "High-temperature rotating blade extracting energy from hot gases",
                                 "ipa": "/ˈtɜːr.baɪn bleɪd/",
-                                "collocations": ["turbine blade cooling hole", "turbine blade directional solidification", "turbine blade tip clearance"]
+                                "collocations": [
+                                    "turbine blade cooling hole",
+                                    "turbine blade directional solidification",
+                                    "turbine blade tip clearance"
+                                ]
                             },
                             {
                                 "en": "Single-Crystal Casting",
                                 "es": "Fundición Monocristalina",
                                 "definition": "Growing a blade as one crystal for maximum strength",
                                 "ipa": "/ˈsɪŋ.ɡəl ˈkrɪs.təl ˈkæs.tɪŋ/",
-                                "collocations": ["single-crystal casting Bridgman furnace", "single-crystal casting grain selector", "single-crystal casting yield rate"]
+                                "collocations": [
+                                    "single-crystal casting Bridgman furnace",
+                                    "single-crystal casting grain selector",
+                                    "single-crystal casting yield rate"
+                                ]
                             },
                             {
                                 "en": "Investment Casting",
                                 "es": "Fundición a la Cera Perdida",
                                 "definition": "Lost-wax casting process for complex shapes",
                                 "ipa": "/ɪnˈvɛst.mənt ˈkæs.tɪŋ/",
-                                "collocations": ["investment casting wax pattern", "investment casting ceramic shell", "investment casting dimensional tolerance"]
+                                "collocations": [
+                                    "investment casting wax pattern",
+                                    "investment casting ceramic shell",
+                                    "investment casting dimensional tolerance"
+                                ]
                             },
                             {
                                 "en": "Thermal Barrier Coating (TBC)",
                                 "es": "Recubrimiento de Barrera Térmica",
                                 "definition": "Ceramic layer insulating metal from extreme heat",
                                 "ipa": "/ˈθɜːr.məl ˈbær.i.ər ˈkoʊ.tɪŋ/",
-                                "collocations": ["TBC yttria-stabilized zirconia", "TBC bond coat adhesion", "TBC spallation failure"]
+                                "collocations": [
+                                    "TBC yttria-stabilized zirconia",
+                                    "TBC bond coat adhesion",
+                                    "TBC spallation failure"
+                                ]
                             },
                             {
                                 "en": "Bypass Ratio",
                                 "es": "Relación de Derivación",
                                 "definition": "Ratio of air bypassing vs entering the core",
                                 "ipa": "/ˈbaɪ.pæs ˈreɪ.ʃi.oʊ/",
-                                "collocations": ["high bypass ratio efficiency", "bypass ratio fan diameter", "ultra-high bypass ratio engine"]
+                                "collocations": [
+                                    "high bypass ratio efficiency",
+                                    "bypass ratio fan diameter",
+                                    "ultra-high bypass ratio engine"
+                                ]
                             },
                             {
                                 "en": "Creep Resistance",
                                 "es": "Resistencia al Flujo Plástico",
                                 "definition": "Ability to resist deformation under sustained heat and stress",
                                 "ipa": "/kriːp rɪˈzɪs.təns/",
-                                "collocations": ["high-temperature creep resistance", "creep resistance stress-rupture test", "nickel alloy creep resistance"]
+                                "collocations": [
+                                    "high-temperature creep resistance",
+                                    "creep resistance stress-rupture test",
+                                    "nickel alloy creep resistance"
+                                ]
                             },
                             {
                                 "en": "Grain Boundary",
                                 "es": "Límite de Grano",
                                 "definition": "Interface between crystal grains — a weak point at high temperature",
                                 "ipa": "/ɡreɪn ˈbaʊn.dri/",
-                                "collocations": ["grain boundary strengthening", "eliminate grain boundary (single crystal)", "grain boundary diffusion creep"]
+                                "collocations": [
+                                    "grain boundary strengthening",
+                                    "eliminate grain boundary (single crystal)",
+                                    "grain boundary diffusion creep"
+                                ]
                             },
                             {
                                 "en": "RPM",
                                 "es": "RPM (Revoluciones Por Minuto)",
                                 "definition": "Rotational speed of engine components",
                                 "ipa": "/ˌɑːr.piːˈɛm/",
-                                "collocations": ["rated RPM operating range", "RPM speed sensor feedback", "maximum RPM limit"]
+                                "collocations": [
+                                    "rated RPM operating range",
+                                    "RPM speed sensor feedback",
+                                    "maximum RPM limit"
+                                ]
                             },
                             {
                                 "en": "Thrust",
                                 "es": "Empuje",
                                 "definition": "Forward force generated by the engine",
                                 "ipa": "/θrʌst/",
-                                "collocations": ["static thrust output", "thrust-to-weight ratio", "reverse thrust deployment"]
+                                "collocations": [
+                                    "static thrust output",
+                                    "thrust-to-weight ratio",
+                                    "reverse thrust deployment"
+                                ]
                             }
                         ],
                         "questions": [
@@ -19865,84 +21916,132 @@ var LXP_COURSES = {
                                 "es": "Pruebas No Destructivas",
                                 "definition": "Inspection methods that don't damage the part",
                                 "ipa": "/ˌɛn.diːˈtiː/",
-                                "collocations": ["NDT inspection interval", "NDT technician certification", "NDT method selection"]
+                                "collocations": [
+                                    "NDT inspection interval",
+                                    "NDT technician certification",
+                                    "NDT method selection"
+                                ]
                             },
                             {
                                 "en": "Ultrasonic Testing (UT)",
                                 "es": "Prueba Ultrasónica",
                                 "definition": "Using sound waves to detect internal flaws",
                                 "ipa": "/ˌʌl.trə.ˈsɒn.ɪk ˈtɛs.tɪŋ/",
-                                "collocations": ["ultrasonic testing probe frequency", "ultrasonic testing A-scan display", "ultrasonic testing couplant gel"]
+                                "collocations": [
+                                    "ultrasonic testing probe frequency",
+                                    "ultrasonic testing A-scan display",
+                                    "ultrasonic testing couplant gel"
+                                ]
                             },
                             {
                                 "en": "Radiographic Testing (RT)",
                                 "es": "Prueba Radiográfica",
                                 "definition": "Using X-rays to image internal structure",
                                 "ipa": "/ˌreɪ.di.oʊˈɡræf.ɪk ˈtɛs.tɪŋ/",
-                                "collocations": ["radiographic testing X-ray source", "radiographic testing film density", "radiographic testing exposure time"]
+                                "collocations": [
+                                    "radiographic testing X-ray source",
+                                    "radiographic testing film density",
+                                    "radiographic testing exposure time"
+                                ]
                             },
                             {
                                 "en": "Eddy Current Testing (ET)",
                                 "es": "Prueba de Corrientes Inducidas",
                                 "definition": "Electromagnetic method for surface/near-surface cracks",
                                 "ipa": "/ˈɛd.i ˈkʌr.ənt ˈtɛs.tɪŋ/",
-                                "collocations": ["eddy current testing crack detection", "eddy current testing probe frequency", "eddy current testing conductivity measurement"]
+                                "collocations": [
+                                    "eddy current testing crack detection",
+                                    "eddy current testing probe frequency",
+                                    "eddy current testing conductivity measurement"
+                                ]
                             },
                             {
                                 "en": "Liquid Penetrant (PT)",
                                 "es": "Líquidos Penetrantes",
                                 "definition": "Dye seeps into surface cracks to reveal them",
                                 "ipa": "/ˈlɪk.wɪd ˈpɛn.ɪ.trənt/",
-                                "collocations": ["liquid penetrant dwell time", "fluorescent liquid penetrant method", "liquid penetrant developer step"]
+                                "collocations": [
+                                    "liquid penetrant dwell time",
+                                    "fluorescent liquid penetrant method",
+                                    "liquid penetrant developer step"
+                                ]
                             },
                             {
                                 "en": "Phased Array",
                                 "es": "Arreglo de Fase",
                                 "definition": "Advanced ultrasonic technique with multiple elements",
                                 "ipa": "/feɪzd əˈreɪ/",
-                                "collocations": ["phased array ultrasonic inspection", "phased array sector scan", "phased array focal law"]
+                                "collocations": [
+                                    "phased array ultrasonic inspection",
+                                    "phased array sector scan",
+                                    "phased array focal law"
+                                ]
                             },
                             {
                                 "en": "ASNT",
                                 "es": "ASNT",
                                 "definition": "American Society for Nondestructive Testing",
                                 "ipa": "/ˌeɪ.ɛs.ɛnˈtiː/",
-                                "collocations": ["ASNT Level II certification", "ASNT NDT personnel qualification", "ASNT SNT-TC-1A standard"]
+                                "collocations": [
+                                    "ASNT Level II certification",
+                                    "ASNT NDT personnel qualification",
+                                    "ASNT SNT-TC-1A standard"
+                                ]
                             },
                             {
                                 "en": "NAS 410",
                                 "es": "NAS 410",
                                 "definition": "Aerospace NDT personnel certification standard",
                                 "ipa": "/næs/",
-                                "collocations": ["NAS 410 qualification standard", "NAS 410 certification level", "NAS 410 practical examination"]
+                                "collocations": [
+                                    "NAS 410 qualification standard",
+                                    "NAS 410 certification level",
+                                    "NAS 410 practical examination"
+                                ]
                             },
                             {
                                 "en": "Transducer",
                                 "es": "Transductor",
                                 "definition": "Device converting electrical signals to sound waves",
                                 "ipa": "/trænzˈdjuː.sər/",
-                                "collocations": ["ultrasonic transducer frequency", "piezoelectric transducer element", "contact transducer coupling"]
+                                "collocations": [
+                                    "ultrasonic transducer frequency",
+                                    "piezoelectric transducer element",
+                                    "contact transducer coupling"
+                                ]
                             },
                             {
                                 "en": "Porosity",
                                 "es": "Porosidad",
                                 "definition": "Small holes or voids in a material",
                                 "ipa": "/pɔːˈrɒs.ɪ.ti/",
-                                "collocations": ["casting porosity detection", "porosity void measurement", "reduce weld porosity defect"]
+                                "collocations": [
+                                    "casting porosity detection",
+                                    "porosity void measurement",
+                                    "reduce weld porosity defect"
+                                ]
                             },
                             {
                                 "en": "Borescope",
                                 "es": "Boroscopio",
                                 "definition": "Camera on flexible tube for internal inspection",
                                 "ipa": "/ˈbɔːr.skoʊp/",
-                                "collocations": ["video borescope inspection", "borescope engine interior check", "flexible borescope access port"]
+                                "collocations": [
+                                    "video borescope inspection",
+                                    "borescope engine interior check",
+                                    "flexible borescope access port"
+                                ]
                             },
                             {
                                 "en": "Discontinuity",
                                 "es": "Discontinuidad",
                                 "definition": "Any interruption in the normal structure of a material",
                                 "ipa": "/ˌdɪs.kɒn.tɪˈnjuː.ɪ.ti/",
-                                "collocations": ["subsurface discontinuity indication", "discontinuity characterization report", "reject discontinuity acceptance criteria"]
+                                "collocations": [
+                                    "subsurface discontinuity indication",
+                                    "discontinuity characterization report",
+                                    "reject discontinuity acceptance criteria"
+                                ]
                             }
                         ],
                         "questions": [
@@ -20190,84 +22289,132 @@ var LXP_COURSES = {
                                 "es": "Línea de Ensamble Final",
                                 "definition": "Where all major aircraft sections are joined together",
                                 "ipa": "/ˈfaɪ.nəl əˈsɛm.bli laɪn/",
-                                "collocations": ["FAL aircraft integration", "FAL station cycle time", "FAL lean manufacturing flow"]
+                                "collocations": [
+                                    "FAL aircraft integration",
+                                    "FAL station cycle time",
+                                    "FAL lean manufacturing flow"
+                                ]
                             },
                             {
                                 "en": "Rivet",
                                 "es": "Remache",
                                 "definition": "Metal fastener joining two sheets permanently",
                                 "ipa": "/ˈrɪv.ɪt/",
-                                "collocations": ["rivet pattern spacing", "flush rivet installation", "automated riveting machine"]
+                                "collocations": [
+                                    "rivet pattern spacing",
+                                    "flush rivet installation",
+                                    "automated riveting machine"
+                                ]
                             },
                             {
                                 "en": "Fuselage",
                                 "es": "Fuselaje",
                                 "definition": "Main body tube of the aircraft",
                                 "ipa": "/ˈfjuː.zəl.ɑːʒ/",
-                                "collocations": ["fuselage barrel section", "fuselage skin panel", "wide-body fuselage diameter"]
+                                "collocations": [
+                                    "fuselage barrel section",
+                                    "fuselage skin panel",
+                                    "wide-body fuselage diameter"
+                                ]
                             },
                             {
                                 "en": "Empennage",
                                 "es": "Empenaje / Cola",
                                 "definition": "Tail section (horizontal + vertical stabilizer)",
                                 "ipa": "/ˌɛm.pɪˈnɑːʒ/",
-                                "collocations": ["empennage horizontal stabilizer", "empennage vertical fin", "empennage control surface"]
+                                "collocations": [
+                                    "empennage horizontal stabilizer",
+                                    "empennage vertical fin",
+                                    "empennage control surface"
+                                ]
                             },
                             {
                                 "en": "Stringer",
                                 "es": "Larguerillo",
                                 "definition": "Longitudinal structural member reinforcing the skin",
                                 "ipa": "/ˈstrɪŋ.ər/",
-                                "collocations": ["fuselage stringer reinforcement", "stringer-skin bond joint", "z-section stringer profile"]
+                                "collocations": [
+                                    "fuselage stringer reinforcement",
+                                    "stringer-skin bond joint",
+                                    "z-section stringer profile"
+                                ]
                             },
                             {
                                 "en": "Bulkhead",
                                 "es": "Mamparo",
                                 "definition": "Vertical partition dividing the fuselage into sections",
                                 "ipa": "/ˈbʊlk.hɛd/",
-                                "collocations": ["pressure bulkhead sealing", "bulkhead structural frame", "aft pressure bulkhead dome"]
+                                "collocations": [
+                                    "pressure bulkhead sealing",
+                                    "bulkhead structural frame",
+                                    "aft pressure bulkhead dome"
+                                ]
                             },
                             {
                                 "en": "Pylon",
                                 "es": "Pilón",
                                 "definition": "Structure connecting engine to wing",
                                 "ipa": "/ˈpaɪ.lɒn/",
-                                "collocations": ["engine pylon mount", "pylon structural load path", "pylon fairing aerodynamic"]
+                                "collocations": [
+                                    "engine pylon mount",
+                                    "pylon structural load path",
+                                    "pylon fairing aerodynamic"
+                                ]
                             },
                             {
                                 "en": "Friction Stir Welding",
                                 "es": "Soldadura por Fricción",
                                 "definition": "Solid-state welding using a rotating tool",
                                 "ipa": "/ˈfrɪk.ʃən stɜːr ˈwɛl.dɪŋ/",
-                                "collocations": ["friction stir welding aluminum joint", "friction stir welding tool rotation", "friction stir welding defect-free zone"]
+                                "collocations": [
+                                    "friction stir welding aluminum joint",
+                                    "friction stir welding tool rotation",
+                                    "friction stir welding defect-free zone"
+                                ]
                             },
                             {
                                 "en": "Adhesive Bonding",
                                 "es": "Unión Adhesiva",
                                 "definition": "Joining parts with structural glue",
                                 "ipa": "/ədˈhiː.sɪv ˈbɒn.dɪŋ/",
-                                "collocations": ["structural adhesive bonding cure", "adhesive bonding surface preparation", "adhesive bonding lap shear test"]
+                                "collocations": [
+                                    "structural adhesive bonding cure",
+                                    "adhesive bonding surface preparation",
+                                    "adhesive bonding lap shear test"
+                                ]
                             },
                             {
                                 "en": "Laser Tracker",
                                 "es": "Rastreador Láser",
                                 "definition": "Precision measurement device for large assemblies",
                                 "ipa": "/ˈleɪ.zər ˈtræk.ər/",
-                                "collocations": ["laser tracker 3D measurement", "laser tracker tooling alignment", "portable laser tracker calibration"]
+                                "collocations": [
+                                    "laser tracker 3D measurement",
+                                    "laser tracker tooling alignment",
+                                    "portable laser tracker calibration"
+                                ]
                             },
                             {
                                 "en": "Hi-Lok Fastener",
                                 "es": "Sujetador Hi-Lok",
                                 "definition": "High-strength aerospace fastener",
                                 "ipa": "/haɪ lɒk ˈfæs.ən.ər/",
-                                "collocations": ["Hi-Lok fastener collar installation", "Hi-Lok fastener torque specification", "Hi-Lok fastener hole preparation"]
+                                "collocations": [
+                                    "Hi-Lok fastener collar installation",
+                                    "Hi-Lok fastener torque specification",
+                                    "Hi-Lok fastener hole preparation"
+                                ]
                             },
                             {
                                 "en": "IFE (In-Flight Entertainment)",
                                 "es": "Entretenimiento a Bordo",
                                 "definition": "Passenger entertainment system",
                                 "ipa": "/ˌaɪ.ɛfˈiː/",
-                                "collocations": ["IFE system integration", "IFE seatback display", "IFE cabin connectivity"]
+                                "collocations": [
+                                    "IFE system integration",
+                                    "IFE seatback display",
+                                    "IFE cabin connectivity"
+                                ]
                             }
                         ],
                         "questions": [
@@ -20516,84 +22663,132 @@ var LXP_COURSES = {
                                 "es": "AS9100D",
                                 "definition": "International aerospace quality management standard",
                                 "ipa": "/ˌeɪ.ɛs.naɪn.wʌn.hʌn.drəd.ˈdiː/",
-                                "collocations": ["AS9100D certification audit", "AS9100D quality clause", "AS9100D registrar assessment"]
+                                "collocations": [
+                                    "AS9100D certification audit",
+                                    "AS9100D quality clause",
+                                    "AS9100D registrar assessment"
+                                ]
                             },
                             {
                                 "en": "NADCAP",
                                 "es": "NADCAP",
                                 "definition": "Special process accreditation for aerospace",
                                 "ipa": "/ˈnæd.kæp/",
-                                "collocations": ["NADCAP special process audit", "NADCAP accreditation renewal", "NADCAP merit status"]
+                                "collocations": [
+                                    "NADCAP special process audit",
+                                    "NADCAP accreditation renewal",
+                                    "NADCAP merit status"
+                                ]
                             },
                             {
                                 "en": "First Article Inspection (FAI)",
                                 "es": "Inspección del Primer Artículo",
                                 "definition": "Complete verification of the first part produced",
                                 "ipa": "/fɜːrst ˈɑːr.tɪ.kəl ɪnˈspɛk.ʃən/",
-                                "collocations": ["FAI AS9102 form", "FAI dimensional report", "FAI production approval"]
+                                "collocations": [
+                                    "FAI AS9102 form",
+                                    "FAI dimensional report",
+                                    "FAI production approval"
+                                ]
                             },
                             {
                                 "en": "FMEA",
                                 "es": "Análisis de Modo y Efecto de Falla",
                                 "definition": "Systematic analysis of potential failure modes",
                                 "ipa": "/ˌɛf.ɛm.iːˈeɪ/",
-                                "collocations": ["FMEA risk priority number", "FMEA severity/occurrence/detection", "conduct FMEA workshop"]
+                                "collocations": [
+                                    "FMEA risk priority number",
+                                    "FMEA severity/occurrence/detection",
+                                    "conduct FMEA workshop"
+                                ]
                             },
                             {
                                 "en": "Traceability",
                                 "es": "Trazabilidad",
                                 "definition": "Tracking every part back to raw materials and processes",
                                 "ipa": "/ˌtreɪ.sə.ˈbɪl.ɪ.ti/",
-                                "collocations": ["material traceability certificate", "lot traceability record", "end-to-end traceability chain"]
+                                "collocations": [
+                                    "material traceability certificate",
+                                    "lot traceability record",
+                                    "end-to-end traceability chain"
+                                ]
                             },
                             {
                                 "en": "Non-Conformance (NC)",
                                 "es": "No Conformidad",
                                 "definition": "A part or process that doesn't meet requirements",
                                 "ipa": "/ˌnɒn.kənˈfɔːr.məns/",
-                                "collocations": ["NC report disposition", "NC root cause investigation", "NC corrective action closure"]
+                                "collocations": [
+                                    "NC report disposition",
+                                    "NC root cause investigation",
+                                    "NC corrective action closure"
+                                ]
                             },
                             {
                                 "en": "Configuration Management",
                                 "es": "Gestión de Configuración",
                                 "definition": "Tracking all changes to product design and documentation",
                                 "ipa": "/kənˌfɪɡ.jʊˈreɪ.ʃən ˈmæn.ɪdʒ.mənt/",
-                                "collocations": ["configuration management baseline", "configuration management change control", "configuration management audit"]
+                                "collocations": [
+                                    "configuration management baseline",
+                                    "configuration management change control",
+                                    "configuration management audit"
+                                ]
                             },
                             {
                                 "en": "Flow-Down",
                                 "es": "Flujo de Requisitos",
                                 "definition": "Passing quality requirements to all suppliers in the chain",
                                 "ipa": "/ˈfloʊ.daʊn/",
-                                "collocations": ["flow-down requirement clause", "customer flow-down specification", "quality flow-down to supplier"]
+                                "collocations": [
+                                    "flow-down requirement clause",
+                                    "customer flow-down specification",
+                                    "quality flow-down to supplier"
+                                ]
                             },
                             {
                                 "en": "Counterfeit Part",
                                 "es": "Parte Falsificada",
                                 "definition": "Unapproved or fraudulent component",
                                 "ipa": "/ˈkaʊn.tər.fɪt pɑːrt/",
-                                "collocations": ["counterfeit part detection", "counterfeit part prevention program", "counterfeit part AS6081 standard"]
+                                "collocations": [
+                                    "counterfeit part detection",
+                                    "counterfeit part prevention program",
+                                    "counterfeit part AS6081 standard"
+                                ]
                             },
                             {
                                 "en": "Special Process",
                                 "es": "Proceso Especial",
                                 "definition": "Process whose quality can't be fully verified by inspection alone",
                                 "ipa": "/ˈspɛʃ.əl ˈprɒs.ɛs/",
-                                "collocations": ["special process approval NADCAP", "special process heat treatment", "special process NDT qualification"]
+                                "collocations": [
+                                    "special process approval NADCAP",
+                                    "special process heat treatment",
+                                    "special process NDT qualification"
+                                ]
                             },
                             {
                                 "en": "Heat Lot",
                                 "es": "Lote de Fundición",
                                 "definition": "A batch of metal from the same melting/processing",
                                 "ipa": "/hiːt lɒt/",
-                                "collocations": ["heat lot traceability record", "heat lot material certification", "heat lot chemical analysis"]
+                                "collocations": [
+                                    "heat lot traceability record",
+                                    "heat lot material certification",
+                                    "heat lot chemical analysis"
+                                ]
                             },
                             {
                                 "en": "Stop-Ship",
                                 "es": "Detención de Envío",
                                 "definition": "Immediate halt to shipping any product",
                                 "ipa": "/stɒp ʃɪp/",
-                                "collocations": ["stop-ship quality hold", "issue stop-ship directive", "stop-ship root cause containment"]
+                                "collocations": [
+                                    "stop-ship quality hold",
+                                    "issue stop-ship directive",
+                                    "stop-ship root cause containment"
+                                ]
                             }
                         ],
                         "questions": [
@@ -20842,84 +23037,132 @@ var LXP_COURSES = {
                                 "es": "Clúster Aeroespacial",
                                 "definition": "Geographic concentration of aerospace companies",
                                 "ipa": "/ˈɛr.oʊ.speɪs ˈklʌs.tər/",
-                                "collocations": ["Querétaro aerospace cluster", "aerospace cluster OEM presence", "aerospace cluster workforce training"]
+                                "collocations": [
+                                    "Querétaro aerospace cluster",
+                                    "aerospace cluster OEM presence",
+                                    "aerospace cluster workforce training"
+                                ]
                             },
                             {
                                 "en": "MRO",
                                 "es": "MRO (Mantenimiento, Reparación, Revisión)",
                                 "definition": "Maintenance, Repair, and Overhaul of aircraft",
                                 "ipa": "/ˌɛm.ɑːrˈoʊ/",
-                                "collocations": ["MRO heavy maintenance check", "MRO turnaround time", "MRO part repair capability"]
+                                "collocations": [
+                                    "MRO heavy maintenance check",
+                                    "MRO turnaround time",
+                                    "MRO part repair capability"
+                                ]
                             },
                             {
                                 "en": "A&P License",
                                 "es": "Licencia A&P",
                                 "definition": "Airframe and Powerplant mechanic certification",
                                 "ipa": "/ˌeɪ.ən ˈpiː ˈlaɪ.səns/",
-                                "collocations": ["A&P license FAA certification", "earn an A&P license", "A&P license practical exam"]
+                                "collocations": [
+                                    "A&P license FAA certification",
+                                    "earn an A&P license",
+                                    "A&P license practical exam"
+                                ]
                             },
                             {
                                 "en": "UNAQ",
                                 "es": "UNAQ",
                                 "definition": "Universidad Nacional Aeronáutica de Querétaro",
                                 "ipa": "/ˈjuː.næk/",
-                                "collocations": ["UNAQ aeronautical university", "UNAQ training program", "UNAQ industry partnership"]
+                                "collocations": [
+                                    "UNAQ aeronautical university",
+                                    "UNAQ training program",
+                                    "UNAQ industry partnership"
+                                ]
                             },
                             {
                                 "en": "Binational Megaregion",
                                 "es": "Megaregión Binacional",
                                 "definition": "Cross-border industrial zone (e.g., Sonora-Arizona)",
                                 "ipa": "/ˌbaɪˈnæʃ.ən.əl ˈmɛɡ.ə.riː.dʒən/",
-                                "collocations": ["binational megaregion industrial corridor", "U.S.-Mexico binational megaregion", "binational megaregion supply chain"]
+                                "collocations": [
+                                    "binational megaregion industrial corridor",
+                                    "U.S.-Mexico binational megaregion",
+                                    "binational megaregion supply chain"
+                                ]
                             },
                             {
                                 "en": "NCR (Non-Conformance Report)",
                                 "es": "Reporte de No Conformidad",
                                 "definition": "Document recording a quality deviation",
                                 "ipa": "/ˌɛn.siːˈɑːr/",
-                                "collocations": ["NCR corrective action report", "issue an NCR finding", "NCR disposition authority"]
+                                "collocations": [
+                                    "NCR corrective action report",
+                                    "issue an NCR finding",
+                                    "NCR disposition authority"
+                                ]
                             },
                             {
                                 "en": "SOP (Standard Operating Procedure)",
                                 "es": "Procedimiento Operativo Estándar",
                                 "definition": "Step-by-step work instruction",
                                 "ipa": "/ˌɛs.oʊˈpiː/",
-                                "collocations": ["follow SOP work instruction", "SOP revision approval", "SOP compliance audit"]
+                                "collocations": [
+                                    "follow SOP work instruction",
+                                    "SOP revision approval",
+                                    "SOP compliance audit"
+                                ]
                             },
                             {
                                 "en": "Fixture",
                                 "es": "Dispositivo / Fixture",
                                 "definition": "Tool that holds a part in position during manufacturing",
                                 "ipa": "/ˈfɪks.tʃər/",
-                                "collocations": ["assembly fixture alignment", "custom fixture tooling", "fixture dimensional accuracy"]
+                                "collocations": [
+                                    "assembly fixture alignment",
+                                    "custom fixture tooling",
+                                    "fixture dimensional accuracy"
+                                ]
                             },
                             {
                                 "en": "Stress Analysis",
                                 "es": "Análisis de Esfuerzos",
                                 "definition": "Engineering analysis of forces on a structure",
                                 "ipa": "/strɛs əˈnæl.ɪ.sɪs/",
-                                "collocations": ["FEA stress analysis report", "stress analysis safety factor", "static stress analysis model"]
+                                "collocations": [
+                                    "FEA stress analysis report",
+                                    "stress analysis safety factor",
+                                    "static stress analysis model"
+                                ]
                             },
                             {
                                 "en": "Lay-up",
                                 "es": "Laminado",
                                 "definition": "Process of placing composite fiber sheets in a mold",
                                 "ipa": "/ˈleɪ.ʌp/",
-                                "collocations": ["composite lay-up sequence", "manual lay-up process", "automated tape lay-up (ATL)"]
+                                "collocations": [
+                                    "composite lay-up sequence",
+                                    "manual lay-up process",
+                                    "automated tape lay-up (ATL)"
+                                ]
                             },
                             {
                                 "en": "Work Instruction",
                                 "es": "Instrucción de Trabajo",
                                 "definition": "Detailed guide for performing a specific task",
                                 "ipa": "/wɜːrk ɪnˈstrʌk.ʃən/",
-                                "collocations": ["work instruction step-by-step", "follow work instruction precisely", "work instruction revision control"]
+                                "collocations": [
+                                    "work instruction step-by-step",
+                                    "follow work instruction precisely",
+                                    "work instruction revision control"
+                                ]
                             },
                             {
                                 "en": "Nearshoring",
                                 "es": "Nearshoring",
                                 "definition": "Relocating manufacturing closer to the end market",
                                 "ipa": "/ˈnɪr.ʃɔːr.ɪŋ/",
-                                "collocations": ["nearshoring manufacturing hub", "nearshoring talent pipeline", "U.S.-Mexico nearshoring corridor"]
+                                "collocations": [
+                                    "nearshoring manufacturing hub",
+                                    "nearshoring talent pipeline",
+                                    "U.S.-Mexico nearshoring corridor"
+                                ]
                             }
                         ],
                         "questions": [
@@ -29015,6 +31258,104 @@ var LXP_COURSES = {
                                     "Production continues normally while the SOP is updated"
                                 ],
                                 "answer": 1
+                            }
+                        ]
+                    },
+                    {
+                        "id": "biotech-m1-r2",
+                        "title": "Applied Lab: Bioreactor Scale-Up, Oxygen Mass Transfer (kLa) & In-Line Raman PAT",
+                        "duration": "15 min",
+                        "content": "\n> **Biopharmaceutical Manufacturing Standard**: Aligned with **FDA 21 CFR Part 11**, **ICH Q8 (Pharmaceutical Development)**, and **cGMP (Current Good Manufacturing Practice)**. Equips bioprocess engineers to optimize stirred-tank bioreactor parameters during technology transfer from bench-scale to 2,000-liter production vessels.\n\n# Applied Laboratory: Bioreactor Scale-Up, Oxygen Mass Transfer (kLa) & In-Line Raman PAT\n\nScaling recombinant protein and monoclonal antibody (mAb) expression from 5-liter laboratory benchtop vessels to commercial 2,000-liter single-use bioreactors (SUB) is a major engineering milestone. As vessel geometry expands, maintaining uniform physical and chemical micro-environments is critical to prevent shear-induced cell lysis while satisfying oxygen uptake rates.\n\n## 1. Dimensional Similitude & Geometric Scale-Up Criteria\nWhen scaling agitated bioreactors, engineers evaluate conflicting physical constraints:\n1. **Constant Volumetric Power Input ($P/V$)**: Maintains turbulent energy dissipation rate but can increase impeller tip speed, creating high hydrodynamic shear stress that damages fragile mammalian CHO (Chinese Hamster Ovary) cell membranes.\n2. **Constant Impeller Tip Speed ($v_{tip} = \\pi N D$)**: Protects shear-sensitive cell lines but reduces bulk mixing times, resulting in spatial pH and nutrient gradients.\n3. **Oxygen Mass Transfer Coefficient ($k_L a$)**: Governs the rate at which gaseous oxygen dissolves into liquid fermentation broth:\n   $$\\text{OTR} = k_L a (C^* - C_L)$$\n   Where $C^*$ is the equilibrium oxygen saturation concentration and $C_L$ is the actual dissolved oxygen (DO) concentration.\n\n## 2. Process Analytical Technology (PAT) & Real-Time Raman Spectroscopy\nModern biomanufacturing replaces manual off-line sampling with continuous in-line optical instrumentation:\n- **In-Line Raman Spectroscopy**: Immersion laser probes emit monochromatic light into the broth. Inelastic Raman scattering spectra reveal real-time concentrations of glucose, lactate, glutamate, and viable cell density (VCD) without consuming broth volume or risking microbial contamination.\n- **Off-Gas Mass Spectrometry**: Real-time analysis of oxygen consumption ($OUR$) and carbon dioxide evolution ($CER$) provides the Respiratory Quotient ($RQ$), indicating metabolic shifts from oxidative phosphorylation to lactic fermentation.\n\n## 3. Clean-in-Place (CIP) & Sterilization-in-Place (SIP) Validation\nTo satisfy cGMP sterility mandates in stainless steel multi-use systems:\n1. **CIP Regimen**: High-pressure spray balls circulate 0.5N sodium hydroxide (NaOH) at 65°C to saponify lipids and degrade residual cell debris, followed by water-for-injection (WFI) flushes.\n2. **SIP Thermal Lethality**: Saturated clean steam at 121°C is held for a validated duration to ensure a minimum sterility assurance level (SAL) of $10^{-6}$, monitored by calibrated RTDs placed at hydraulic low points.\n\n---\n> **Key Takeaway**: Bioprocess scale-up synthesizes **fluid dynamics (Reynolds numbers, shear stress), gas mass transfer ($k_L a$), and in-line optical PAT** to maintain high cellular viability and product titer in compliance with cGMP regulations.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Volumetric Mass Transfer Coefficient (kLa)",
+                                "es": "Coeficiente Volumétrico de Transferencia de Masa (kLa)",
+                                "definition": "Parameter characterizing the rate at which gas species (such as oxygen) dissolve across the gas-liquid interface into liquid broth.",
+                                "ipa": "/ˌvɑːljəˈmɛtrɪk mæs ˈtrænsfər koʊəˈfɪʃənt/",
+                                "collocations": [
+                                    "measure kLa via dynamic method",
+                                    "maximize kLa with micro-spargers",
+                                    "constant kLa scale-up criterion"
+                                ]
+                            },
+                            {
+                                "en": "Process Analytical Technology (PAT)",
+                                "es": "Tecnología Analítica de Procesos (PAT)",
+                                "definition": "System for designing, analyzing, and controlling manufacturing through timely measurements of critical quality and performance attributes.",
+                                "ipa": "/ˈprɑː.sɛs ˌæn.əˈlɪt.ɪ.kəl tɛkˈnɑː.lə.dʒi/",
+                                "collocations": [
+                                    "implement in-line PAT sensors",
+                                    "Raman spectroscopy PAT probe",
+                                    "closed-loop PAT feedback control"
+                                ]
+                            },
+                            {
+                                "en": "Chinese Hamster Ovary (CHO) Cells",
+                                "es": "Células de Ovario de Hámster Chino (Células CHO)",
+                                "definition": "Epithelial cell line derived from Cricetulus griseus, widely utilized in industrial biomanufacturing to express humanized therapeutic proteins.",
+                                "ipa": "/ˌtʃaɪˈniːz ˈhæmstər ˈoʊvəri sɛlz/",
+                                "collocations": [
+                                    "high-density CHO fed-batch culture",
+                                    "CHO cell viability threshold",
+                                    "recombinant mAb expression in CHO"
+                                ]
+                            },
+                            {
+                                "en": "Sterilization-in-Place (SIP)",
+                                "es": "Esterilización en Sitio (SIP)",
+                                "definition": "Automated thermal method of sterilizing process equipment using clean steam without dismantling components.",
+                                "ipa": "/ˌstɛr.əl.əˈzeɪ.ʃən ɪn pleɪs/",
+                                "collocations": [
+                                    "validate SIP cycle lethality",
+                                    "clean steam SIP manifold",
+                                    "sterile barrier validation"
+                                ]
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "Why is oxygen mass transfer (kLa) one of the most critical engineering constraints during bioreactor scale-up?",
+                                "options": [
+                                    "Because oxygen is poisonous to all mammalian cells",
+                                    "Because oxygen has very low solubility in aqueous broth, yet high-density cell cultures require high oxygen uptake rates to sustain cellular respiration",
+                                    "Because oxygen makes the bioreactor heavier as it fills",
+                                    "Because oxygen extinguishes the bioreactor heater"
+                                ],
+                                "answer": 1,
+                                "explanation": "Gaseous oxygen has very low solubility in water (approximately 7-8 mg/L at 37°C). Because high-density cultures consume oxygen rapidly, the transport rate across the bubble interface (governed by kLa) must equal or exceed the cell culture oxygen uptake rate (OUR) to avoid hypoxic apoptosis."
+                            },
+                            {
+                                "q": "What distinct advantage does in-line Raman spectroscopy provide over traditional manual off-line sampling in biomanufacturing?",
+                                "options": [
+                                    "It replaces the need for electricity in the facility",
+                                    "It enables continuous real-time measurement of multiple metabolites (glucose, lactate) without breaching vessel sterility or removing culture volume",
+                                    "It changes the color of the final medication automatically",
+                                    "It speeds up cell division by 500%"
+                                ],
+                                "answer": 1,
+                                "explanation": "Traditional offline sampling requires removing aliquots from the bioreactor every 12 to 24 hours, introducing contamination risks and providing only delayed data. In-line Raman PAT delivers continuous, non-destructive optical molecular fingerprints in real time."
+                            },
+                            {
+                                "q": "When scaling up a bioreactor with shear-sensitive mammalian cells, what risk arises from keeping volumetric power input (P/V) constant?",
+                                "options": [
+                                    "The vessel turns into solid ice",
+                                    "Impeller tip speeds increase substantially in larger vessels, potentially exceeding shear thresholds and rupturing fragile cell membranes",
+                                    "The cells stop absorbing carbohydrates",
+                                    "The steam boiler pressure drops to zero"
+                                ],
+                                "answer": 1,
+                                "explanation": "At constant P/V, larger diameter impellers rotate with significantly higher peripheral tip speeds. High shear forces in the impeller discharge stream can lyse mammalian cells (which lack rigid plant or bacterial cell walls)."
+                            },
+                            {
+                                "q": "What is the required Sterility Assurance Level (SAL) validated during bioprocess Sterilization-in-Place (SIP) thermal cycles?",
+                                "options": [
+                                    "50% probability of surviving organisms",
+                                    "1 in 1,000,000 (10^-6) probability of a single viable non-sterile unit surviving",
+                                    "Zero percent, which is mathematically impossible",
+                                    "10% surviving organisms"
+                                ],
+                                "answer": 1,
+                                "explanation": "Under cGMP standards for parenteral pharmaceuticals, an effective thermal sterilization cycle must achieve a Sterility Assurance Level of 10^-6, meaning the theoretical probability of a surviving microorganism is less than one in a million."
                             }
                         ]
                     }
@@ -47986,3 +50327,7 @@ var LXP_COURSES = {
         ]
     }
 };
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = LXP_COURSES;
+}
