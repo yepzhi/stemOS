@@ -857,72 +857,296 @@
     color: var(--wm-text-secondary);
 }
 
-/* ─── THE MASCOT / PLAYER TOKEN (MARIO / CYBER ROVER) ──────────── */
+/* ─── stemBOT ROBOTIC MASCOT (MARIO OVERWORLD COMPANION) ───────── */
 .path-player-mascot {
     position: absolute;
-    top: -48px;
+    top: -66px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 10;
+    z-index: 15;
     display: flex;
     flex-direction: column;
     align-items: center;
-    pointer-events: none;
-    animation: wmMascotBob 1.6s ease-in-out infinite alternate;
+    pointer-events: auto;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes wmMascotBob {
-    0% { transform: translateX(-50%) translateY(0); }
-    100% { transform: translateX(-50%) translateY(-8px); }
+.path-player-mascot:hover .stembot-body {
+    transform: scale(1.08);
 }
 
-.mascot-avatar-wrap {
-    width: 44px;
-    height: 44px;
+/* Hovering / Floating Animation */
+.stembot-body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: stemBotHover 2.2s ease-in-out infinite alternate;
+    transition: transform 0.25s ease;
+}
+
+@keyframes stemBotHover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+
+/* Character SVG Vector */
+.stembot-svg {
+    filter: drop-shadow(0 8px 16px rgba(2, 132, 199, 0.35));
+    transition: all 0.25s ease;
+    overflow: visible;
+}
+
+/* Blinking Eyes */
+.stembot-eye {
+    transform-origin: center;
+    animation: stemBotBlink 3.8s infinite ease-in-out;
+}
+
+@keyframes stemBotBlink {
+    0%, 94%, 100% { transform: scaleY(1); }
+    96%, 98% { transform: scaleY(0.12); }
+}
+
+/* Pulsing Antenna Beacon */
+.stembot-beacon {
+    transform-origin: 32px 5px;
+    animation: stemBotBeaconPulse 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes stemBotBeaconPulse {
+    0% { filter: drop-shadow(0 0 2px #00f5d4); opacity: 0.85; }
+    100% { filter: drop-shadow(0 0 10px #00f5d4); opacity: 1; transform: scale(1.2); }
+}
+
+/* Articulated Waving Arm */
+.stembot-arm-right {
+    transform-origin: 50px 30px;
+    transition: transform 0.3s ease;
+}
+
+.path-player-mascot:hover .stembot-arm-right,
+.stembot-waving .stembot-arm-right {
+    animation: stemBotWaveHand 0.65s ease-in-out infinite alternate;
+}
+
+@keyframes stemBotWaveHand {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-38deg) translateY(-2px); }
+}
+
+/* Anti-Gravity Jet Flame */
+.stembot-flame {
+    transform-origin: 32px 51px;
+    animation: stemBotFlameFlicker 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes stemBotFlameFlicker {
+    0% { transform: scaleY(0.85) scaleX(0.95); opacity: 0.8; }
+    100% { transform: scaleY(1.2) scaleX(1.08); opacity: 1; filter: drop-shadow(0 4px 8px #00f5d4); }
+}
+
+/* Dynamic Ground Drop Shadow */
+.stembot-shadow {
+    width: 28px;
+    height: 7px;
+    background: radial-gradient(ellipse at center, rgba(15, 23, 42, 0.28) 0%, rgba(15, 23, 42, 0) 72%);
     border-radius: 50%;
-    background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-    border: 3px solid #ffffff;
-    box-shadow: 0 6px 16px rgba(2, 132, 199, 0.4), 0 0 20px rgba(56, 189, 248, 0.3);
+    margin-top: -2px;
+    animation: stemBotShadowPulse 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes stemBotShadowPulse {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(0.65); opacity: 0.35; }
+}
+
+/* ─── STEMBOT SPEECH BUBBLE ─────────────────────────────────────── */
+.stembot-speech-bubble {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.92);
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 0.68rem;
+    font-weight: 800;
+    line-height: 1.35;
+    padding: 6px 12px;
+    border-radius: 14px;
+    white-space: nowrap;
+    max-width: 230px;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(2, 132, 199, 0.25);
+    border: 1.5px solid #e0f2fe;
+    opacity: 0;
+    pointer-events: auto;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.stembot-speech-bubble.visible {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+.stembot-speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px 6px 0;
+    border-style: solid;
+    border-color: #ffffff transparent;
+}
+
+.stembot-bubble-bot-tag {
+    background: linear-gradient(135deg, #0284c7, #00f5d4);
+    color: #ffffff;
+    font-size: 0.55rem;
+    font-weight: 900;
+    padding: 1px 5px;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+}
+
+/* ─── STEMBOT HOP & ADVANCE ANIMATION ──────────────────────────── */
+.stembot-hopping {
+    animation: stemBotHopMove 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+}
+
+@keyframes stemBotHopMove {
+    0% { transform: translateX(-50%) translateY(0) scale(1); }
+    20% { transform: translateX(-50%) translateY(6px) scale(1.15, 0.85); }
+    50% { transform: translateX(-50%) translateY(-38px) scale(0.9, 1.15); }
+    75% { transform: translateX(-50%) translateY(-14px) scale(1.05, 0.95); }
+    88% { transform: translateX(-50%) translateY(3px) scale(1.1, 0.9); }
+    100% { transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+/* Victory Celebration Spin */
+.stembot-celebrating .stembot-svg {
+    animation: stemBotSpinCelebrate 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes stemBotSpinCelebrate {
+    0% { transform: rotate(0deg) scale(1); }
+    40% { transform: rotate(-15deg) translateY(-25px) scale(1.25); }
+    70% { transform: rotate(375deg) translateY(-15px) scale(1.15); }
+    100% { transform: rotate(360deg) translateY(0) scale(1); }
+}
+
+/* Celebratory Sparkle Particles */
+.stembot-sparkles-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    pointer-events: none;
+    z-index: 12;
+}
+
+.stembot-sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #00f5d4;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00f5d4, 0 0 20px #0284c7;
+    animation: stemBotSparkleFly 0.8s ease-out forwards;
+}
+
+@keyframes stemBotSparkleFly {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--sparkle-dx, 20px), var(--sparkle-dy, -25px)) scale(0); opacity: 0; }
+}
+
+/* ─── 3D WORLD GLOBE HUD COMPANION (stemBOT WIDGET) ─────────────── */
+.stembot-hud-widget {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1.5px solid var(--wm-border-glow);
+    padding: 8px 14px 8px 10px;
+    border-radius: 100px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12), 0 0 20px rgba(2, 132, 199, 0.15);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+}
+
+.stembot-hud-widget:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 14px 36px rgba(15, 23, 42, 0.18), 0 0 24px rgba(2, 132, 199, 0.25);
+    border-color: #0284c7;
+}
+
+.stembot-hud-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0284c7 0%, #00f5d4 100%);
+    padding: 2px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.25rem;
-    color: #ffffff;
-    position: relative;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
 }
 
-.mascot-shadow {
-    width: 24px;
-    height: 6px;
-    background: rgba(15, 23, 42, 0.15);
-    border-radius: 50%;
-    margin-top: 4px;
-    filter: blur(2px);
+.stembot-hud-avatar svg {
+    width: 32px;
+    height: 36px;
 }
 
-.mascot-speech-tag {
-    position: absolute;
-    top: -24px;
-    background: #ffffff;
+.stembot-hud-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.stembot-hud-title {
+    font-size: 0.76rem;
+    font-weight: 900;
     color: #0f172a;
-    font-size: 0.62rem;
-    font-weight: 800;
-    padding: 2px 8px;
-    border-radius: 10px;
-    white-space: nowrap;
-    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
-    border: 1px solid var(--wm-border);
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
-.mascot-speech-tag::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 4px 4px 0;
-    border-style: solid;
-    border-color: #ffffff transparent;
+.stembot-hud-subtitle {
+    font-size: 0.68rem;
+    color: var(--wm-text-secondary);
+    font-weight: 600;
+    max-width: 170px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 640px) {
+    .stembot-hud-widget {
+        bottom: 16px;
+        right: 14px;
+        padding: 6px 10px 6px 8px;
+    }
+    .stembot-hud-subtitle {
+        max-width: 120px;
+    }
 }
 
 /* ─── MODULE INSPECTION DRAWER / MODAL ─────────────────────────── */

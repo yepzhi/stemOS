@@ -1,9 +1,9 @@
 /**
- * stemOS Dev Content Studio — PWA Service Worker (v1.5.0 Collapsible Accordions & Hover Tooltips)
- * Enables 100% complete offline caching for 50 modules, readings, native phrases, and assets.
+ * stemOS Dev Content Studio — PWA Service Worker (v3.1.0 stemBOT Companion & 3D World)
+ * Enables 100% complete offline caching for 26 tracks, 146 modules, audio synthesis, and mascot assets.
  */
 
-const CACHE_NAME = 'stemos-lxp-v3.0.0';
+const CACHE_NAME = 'stemos-lxp-v3.1.0-stembot';
 
 const ASSETS_TO_CACHE = [
   '/',

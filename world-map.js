@@ -46,6 +46,19 @@
         career: { label: 'Aviación & Carrera', color: '#22c55e', glow: 'rgba(34, 197, 94, 0.5)', icon: 'fa-plane' }
     };
 
+    // stemBOT Dialogue & STEM Guidance Phrases
+    const STEMBOT_PHRASES = [
+        "¡Hola! ¿Listo para conquistar este reto?",
+        "¡Bip bup! Cada módulo suma XP a tu perfil STEM.",
+        "¡Tu cerebro de ingeniero está en máxima potencia!",
+        "¡Recuerda: la ciencia se aprende experimentando!",
+        "¡Un paso más cerca de tu certificación aeroespacial!",
+        "¡Impresionante avance! Sigue con este ritmo.",
+        "¡Haz clic para iniciar tu próxima misión!",
+        "¡Los grandes científicos nunca se rinden!",
+        "¡Sistemas listos! Modo aprendizaje al 100%."
+    ];
+
     // Synthesized Sound Effects (Web Audio API - Zero external assets)
     class SoundFX {
         constructor() {
@@ -127,6 +140,102 @@
                 });
             } catch (e) {}
         }
+
+        playRobotGreet() {
+            if (this.muted) return;
+            try {
+                this.init();
+                if (!this.ctx) return;
+                const notes = [523.25, 659.25, 783.99, 987.77, 1046.50]; // C5, E5, G5, B5, C6
+                notes.forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    const startTime = this.ctx.currentTime + idx * 0.055;
+                    osc.frequency.setValueAtTime(freq, startTime);
+                    gain.gain.setValueAtTime(0.12, startTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.16);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(startTime);
+                    osc.stop(startTime + 0.18);
+                });
+            } catch (e) {}
+        }
+
+        playRobotChirp() {
+            if (this.muted) return;
+            try {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                // Playful double-tone chirp
+                [0, 0.08].forEach((delay, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    const t = now + delay;
+                    const startF = idx === 0 ? 660 : 980;
+                    const endF = idx === 0 ? 1200 : 1560;
+                    osc.frequency.setValueAtTime(startF, t);
+                    osc.frequency.exponentialRampToValueAtTime(endF, t + 0.065);
+                    gain.gain.setValueAtTime(0.12, t);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.07);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(t);
+                    osc.stop(t + 0.075);
+                });
+            } catch (e) {}
+        }
+
+        playRobotHop() {
+            if (this.muted) return;
+            try {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(260, now);
+                osc.frequency.exponentialRampToValueAtTime(680, now + 0.15);
+                gain.gain.setValueAtTime(0.18, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.23);
+            } catch (e) {}
+        }
+
+        playRobotCelebrate() {
+            if (this.muted) return;
+            try {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const fanfare = [
+                    { f: 523.25, d: 0.08, t: 0 },
+                    { f: 659.25, d: 0.08, t: 0.08 },
+                    { f: 783.99, d: 0.08, t: 0.16 },
+                    { f: 1046.50, d: 0.28, t: 0.24 }
+                ];
+                fanfare.forEach(note => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    const startTime = now + note.t;
+                    osc.frequency.setValueAtTime(note.f, startTime);
+                    gain.gain.setValueAtTime(0.15, startTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, startTime + note.d);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(startTime);
+                    osc.stop(startTime + note.d + 0.02);
+                });
+            } catch (e) {}
+        }
     }
 
     class StemOSWorldMapEngine {
@@ -171,6 +280,7 @@
             // DOM Elements
             this.els = {};
             this.animFrameId = null;
+            this.botPhraseIdx = 0;
         }
 
         init(containerId = 'world-map-container', options = {}) {
@@ -286,6 +396,32 @@
                         <div class="wtt-cta">
                             <span>Explorar Camino &bull; Duolingo/Mario</span>
                             <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- stemBOT 3D Globe Companion HUD Widget -->
+                    <div class="stembot-hud-widget" id="stembot-globe-hud" role="button" tabindex="0" title="Copiloto stemBOT - Clic para escuchar un tip">
+                        <div class="stembot-hud-avatar">
+                            <svg viewBox="0 0 64 64" width="28" height="28" fill="none">
+                                <line x1="32" y1="14" x2="32" y2="7" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+                                <circle cx="32" cy="5" r="4" fill="#00f5d4"/>
+                                <rect x="14" y="14" width="36" height="24" rx="9" fill="#ffffff" stroke="#38bdf8" stroke-width="1.8"/>
+                                <rect x="18" y="18" width="28" height="15" rx="5" fill="#0f172a"/>
+                                <ellipse cx="26" cy="25" rx="3" ry="3.5" fill="#00f5d4"/>
+                                <ellipse cx="38" cy="25" rx="3" ry="3.5" fill="#00f5d4"/>
+                                <rect x="28" y="37" width="8" height="3" rx="1" fill="#64748b"/>
+                                <path d="M 20 40 L 44 40 L 42 49 L 22 49 Z" fill="#ffffff"/>
+                                <circle cx="32" cy="44.5" r="2.5" fill="#0284c7"/>
+                            </svg>
+                        </div>
+                        <div class="stembot-hud-info">
+                            <div class="stembot-hud-title">
+                                <span class="stembot-bubble-bot-tag" style="font-size:0.58rem;padding:2px 6px;"><i class="fa-solid fa-bolt"></i> COPILOTO</span>
+                                stemBOT
+                            </div>
+                            <div class="stembot-hud-subtitle" id="stembot-hud-phrase">
+                                ¡Gira el mundo o elige tu próxima aventura!
+                            </div>
                         </div>
                     </div>
 
@@ -724,6 +860,20 @@
                 this.showToast(!muted ? 'Audio FX activado' : 'Audio FX silenciado');
                 if (!muted) this.sound.playBlip(750, 0.08);
             });
+
+            // stemBOT 3D Globe HUD Companion
+            const botHud = document.getElementById('stembot-globe-hud');
+            if (botHud) {
+                botHud.addEventListener('click', () => {
+                    this.triggerStemBotHudTip();
+                });
+                botHud.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.triggerStemBotHudTip();
+                    }
+                });
+            }
 
             // Level Path Back Button
             const btnBack = document.getElementById('path-btn-back');
@@ -1465,6 +1615,9 @@
                 this.els.pathView.classList.add('active');
                 this.els.pathView.scrollTop = 0;
             }
+
+            // Greet user with stemBOT musical chime
+            this.sound.playRobotGreet();
         }
 
         closeWorldPath() {
@@ -1513,16 +1666,8 @@
                     statusPill = `<span class="plc-status-pill" style="background:rgba(15,23,42,0.06);color:#64748b;"><i class="fa-solid fa-lock"></i> Bloqueado</span>`;
                 }
 
-                // Mascot HTML if this is the active node
-                const mascotHtml = isActive ? `
-                    <div class="path-player-mascot">
-                        <div class="mascot-speech-tag">¡ESTÁS AQUÍ!</div>
-                        <div class="mascot-avatar-wrap">
-                            <i class="fa-solid fa-robot"></i>
-                        </div>
-                        <div class="mascot-shadow"></div>
-                    </div>
-                ` : '';
+                // stemBOT Mascot HTML if this is the active node
+                const mascotHtml = isActive ? this.createStemBotHtml({ isChampion: false }) : '';
 
                 // Star crown if completed
                 const starCrownHtml = isCompleted ? `
@@ -1560,21 +1705,28 @@
                 container.appendChild(stepEl);
             });
 
-            // If all are completed, place mascot on the final node!
+            // If all are completed, place mascot on the final node in champion mode!
             if (!activeNodeFound && modules.length > 0) {
                 const lastStep = container.querySelector('.path-level-step:last-child .path-node-disc');
                 if (lastStep) {
-                    const mascot = document.createElement('div');
-                    mascot.className = 'path-player-mascot';
-                    mascot.innerHTML = `
-                        <div class="mascot-speech-tag" style="background:#0284c7;color:#ffffff;">¡CAMPEÓN! <i class="fa-solid fa-trophy"></i></div>
-                        <div class="mascot-avatar-wrap" style="border-color:#0284c7;background:linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);">
-                            <i class="fa-solid fa-trophy"></i>
-                        </div>
-                        <div class="mascot-shadow"></div>
-                    `;
-                    lastStep.appendChild(mascot);
+                    lastStep.insertAdjacentHTML('afterbegin', this.createStemBotHtml({ isChampion: true }));
                 }
+            }
+
+            // Attach interactive click & hover handlers to stemBOT
+            const stemBotMascot = container.querySelector('#path-stembot-mascot');
+            if (stemBotMascot) {
+                stemBotMascot.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.onStemBotClicked(stemBotMascot);
+                });
+                stemBotMascot.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.onStemBotClicked(stemBotMascot);
+                    }
+                });
             }
 
             // Draw SVG Bezier Curve Trail connecting discs
@@ -1611,6 +1763,187 @@
 
             bgPath.setAttribute('d', d);
             glowPath.setAttribute('d', d);
+        }
+
+        /* ─── stemBOT ROBOTIC MASCOT COMPANION ENGINE ─────────────────── */
+        createStemBotHtml(options = {}) {
+            const isChampion = options.isChampion || false;
+            const tagText = isChampion ? '¡CAMPEÓN!' : 'stemBOT';
+            const tagIcon = isChampion ? '<i class="fa-solid fa-trophy"></i>' : '<i class="fa-solid fa-bolt"></i>';
+            const initialSpeech = options.speech || (isChampion 
+                ? "¡Mundo dominado al 100%! ¡Eres una leyenda!" 
+                : STEMBOT_PHRASES[Math.floor(Math.random() * STEMBOT_PHRASES.length)]);
+
+            return `
+                <div class="path-player-mascot ${isChampion ? 'champion' : ''}" id="path-stembot-mascot" role="button" aria-label="Mascota stemBOT: Copiloto de aprendizaje" tabindex="0">
+                    <div class="stembot-speech-bubble visible" id="stembot-bubble">
+                        <span class="stembot-bubble-bot-tag">${tagIcon} ${tagText}</span>
+                        <span class="stembot-bubble-text">${initialSpeech}</span>
+                    </div>
+                    <div class="stembot-body">
+                        <svg class="stembot-svg" width="60" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="sbHeadGrad" x1="14" y1="14" x2="50" y2="38" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#ffffff"/>
+                                    <stop offset="100%" stop-color="#dbeafe"/>
+                                </linearGradient>
+                                <linearGradient id="sbBodyGrad" x1="18" y1="39" x2="46" y2="51" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#f8fafc"/>
+                                    <stop offset="100%" stop-color="#e2e8f0"/>
+                                </linearGradient>
+                                <linearGradient id="sbFlameGrad" x1="32" y1="53" x2="32" y2="63" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#00f5d4"/>
+                                    <stop offset="60%" stop-color="#0284c7"/>
+                                    <stop offset="100%" stop-color="rgba(2, 132, 199, 0)"/>
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Antenna Rod & Beacon -->
+                            <line x1="32" y1="14" x2="32" y2="7" stroke="#64748b" stroke-width="2.5" stroke-linecap="round"/>
+                            <circle class="stembot-beacon" cx="32" cy="5" r="4.5" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
+
+                            <!-- Outer Head / Helmet -->
+                            <rect x="14" y="14" width="36" height="24" rx="9" fill="url(#sbHeadGrad)" stroke="#38bdf8" stroke-width="1.8"/>
+
+                            <!-- Side Ear Bolts -->
+                            <rect x="10" y="21" width="4" height="8" rx="2" fill="#0284c7"/>
+                            <rect x="50" y="21" width="4" height="8" rx="2" fill="#0284c7"/>
+
+                            <!-- Visor Display -->
+                            <rect x="18" y="18" width="28" height="15" rx="5" fill="#0f172a"/>
+                            <!-- Visor Glass Glare -->
+                            <path d="M 20 19 L 26 19 L 22 32 L 18 32 Z" fill="rgba(255, 255, 255, 0.16)"/>
+
+                            <!-- LED Expressive Eyes -->
+                            <ellipse class="stembot-eye" cx="26" cy="25" rx="3.2" ry="4" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
+                            <circle cx="27.2" cy="23.5" r="1" fill="#ffffff"/>
+                            <ellipse class="stembot-eye" cx="38" cy="25" rx="3.2" ry="4" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
+                            <circle cx="39.2" cy="23.5" r="1" fill="#ffffff"/>
+
+                            <!-- Neck Joint -->
+                            <rect x="28" y="37" width="8" height="3" rx="1.5" fill="#64748b"/>
+
+                            <!-- Torso Body -->
+                            <path d="M 18 41 Q 18 39 21 39 L 43 39 Q 46 39 46 41 L 44 49 Q 44 51 41 51 L 23 51 Q 20 51 20 49 Z" fill="url(#sbBodyGrad)" stroke="#38bdf8" stroke-width="1.5"/>
+
+                            <!-- Chest Reactor Core -->
+                            <circle cx="32" cy="45" r="3.5" fill="#0284c7"/>
+                            <circle cx="32" cy="45" r="2" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
+
+                            <!-- Left Arm (Floating Rest) -->
+                            <path d="M 18 42 Q 12 45 14 50" stroke="#0284c7" stroke-width="3" stroke-linecap="round" fill="none"/>
+                            <circle cx="14" cy="50" r="2.5" fill="#38bdf8"/>
+
+                            <!-- Right Arm (Waving Hand!) -->
+                            <g class="stembot-arm-right">
+                                <path d="M 46 42 Q 52 38 52 32" stroke="#0284c7" stroke-width="3" stroke-linecap="round" fill="none"/>
+                                <circle cx="52" cy="31" r="3" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
+                            </g>
+
+                            <!-- Anti-Gravity Nozzle & Plasma Jet -->
+                            <polygon points="27,51 37,51 35,55 29,55" fill="#475569"/>
+                            <polygon class="stembot-flame" points="29,54 35,54 32,63" fill="url(#sbFlameGrad)"/>
+                        </svg>
+                    </div>
+                    <div class="stembot-shadow"></div>
+                </div>
+            `;
+        }
+
+        triggerStemBotHudTip() {
+            this.sound.playRobotChirp();
+            const hud = document.getElementById('stembot-globe-hud');
+            const phraseEl = document.getElementById('stembot-hud-phrase');
+            if (hud) {
+                hud.style.transform = 'translateY(-4px) scale(1.06)';
+                setTimeout(() => {
+                    hud.style.transform = '';
+                }, 220);
+            }
+            if (phraseEl) {
+                this.botPhraseIdx = ((this.botPhraseIdx || 0) + 1) % STEMBOT_PHRASES.length;
+                phraseEl.textContent = STEMBOT_PHRASES[this.botPhraseIdx];
+            }
+        }
+
+        onStemBotClicked(mascotEl) {
+            if (!mascotEl) return;
+            this.sound.playRobotChirp();
+
+            // Trigger enthusiastic arm wave
+            mascotEl.classList.add('stembot-waving');
+            setTimeout(() => mascotEl.classList.remove('stembot-waving'), 1300);
+
+            // Burst colorful sparkles
+            this.createSparkleBurst(mascotEl);
+
+            // Cycle speech bubble encouragement
+            const bubbleText = mascotEl.querySelector('.stembot-bubble-text');
+            const bubble = mascotEl.querySelector('.stembot-speech-bubble');
+            if (bubbleText) {
+                this.botPhraseIdx = ((this.botPhraseIdx || 0) + 1) % STEMBOT_PHRASES.length;
+                bubbleText.textContent = STEMBOT_PHRASES[this.botPhraseIdx];
+                if (bubble) {
+                    bubble.classList.remove('visible');
+                    void bubble.offsetWidth; // force DOM reflow
+                    bubble.classList.add('visible');
+                }
+            }
+        }
+
+        createSparkleBurst(container) {
+            if (!container) return;
+            let sparklesWrap = container.querySelector('.stembot-sparkles-wrap');
+            if (!sparklesWrap) {
+                sparklesWrap = document.createElement('div');
+                sparklesWrap.className = 'stembot-sparkles-wrap';
+                container.appendChild(sparklesWrap);
+            }
+            sparklesWrap.innerHTML = '';
+            const colors = ['#00f5d4', '#38bdf8', '#fbbf24', '#a855f7', '#34d399'];
+            for (let i = 0; i < 8; i++) {
+                const angle = (i / 8) * Math.PI * 2 + (Math.random() * 0.4 - 0.2);
+                const dist = 28 + Math.random() * 22;
+                const dx = Math.cos(angle) * dist;
+                const dy = Math.sin(angle) * dist;
+                const sparkle = document.createElement('div');
+                sparkle.className = 'stembot-sparkle';
+                sparkle.style.setProperty('--sparkle-dx', `${dx}px`);
+                sparkle.style.setProperty('--sparkle-dy', `${dy}px`);
+                sparkle.style.background = colors[i % colors.length];
+                sparklesWrap.appendChild(sparkle);
+            }
+            setTimeout(() => {
+                if (sparklesWrap && sparklesWrap.parentNode) {
+                    sparklesWrap.innerHTML = '';
+                }
+            }, 850);
+        }
+
+        playStemBotAdvance(fromDisc, toDisc) {
+            if (!fromDisc || !toDisc) return;
+            const mascot = fromDisc.querySelector('.path-player-mascot');
+            if (!mascot) return;
+
+            this.sound.playRobotHop();
+            mascot.classList.add('stembot-hopping');
+
+            setTimeout(() => {
+                mascot.classList.remove('stembot-hopping');
+                toDisc.appendChild(mascot);
+                mascot.classList.add('stembot-celebrating');
+                this.sound.playRobotCelebrate();
+                this.createSparkleBurst(mascot);
+
+                const bubbleText = mascot.querySelector('.stembot-bubble-text');
+                if (bubbleText) {
+                    bubbleText.textContent = "¡Nivel desbloqueado! ¡Excelente trabajo!";
+                }
+
+                setTimeout(() => {
+                    mascot.classList.remove('stembot-celebrating');
+                }, 1000);
+            }, 800);
         }
 
         /* ─── MODULE INSPECTION DRAWER ─────────────────────────────────── */
@@ -1745,6 +2078,7 @@
             if (!wasCompleted) {
                 prog.xp = (prog.xp || 450) + 150;
                 this.sound.playVictory();
+                this.sound.playRobotCelebrate();
                 this.showToast('¡Módulo Conquistado! +150 XP');
             } else {
                 prog.xp = Math.max(0, (prog.xp || 450) - 150);

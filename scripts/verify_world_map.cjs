@@ -129,6 +129,51 @@ if (!swContent.includes("'/world-map.css'") || !swContent.includes("'/world-map.
 }
 console.log('[PASS] sw.js caches /world-map.css and /world-map.js for 100% offline PWA reliability!');
 
+// 8. Verify stemBOT Animated Mascot & Sound Synthesis System
+const wmJs = fs.readFileSync(path.join(__dirname, '..', 'world-map.js'), 'utf8');
+const wmCss = fs.readFileSync(path.join(__dirname, '..', 'world-map.css'), 'utf8');
+
+const expectedBotJs = [
+    'STEMBOT_PHRASES',
+    'playRobotGreet',
+    'playRobotChirp',
+    'playRobotHop',
+    'playRobotCelebrate',
+    'createStemBotHtml',
+    'onStemBotClicked',
+    'createSparkleBurst',
+    'playStemBotAdvance',
+    'triggerStemBotHudTip'
+];
+
+expectedBotJs.forEach(fn => {
+    if (!wmJs.includes(fn)) {
+        console.error(`[FAIL] world-map.js missing stemBOT feature: ${fn}`);
+        process.exit(1);
+    }
+});
+console.log(`[PASS] stemBOT JS verified: all ${expectedBotJs.length} audio & interaction methods present!`);
+
+const expectedBotCss = [
+    'stemBotHover',
+    'stemBotBlink',
+    'stemBotBeaconPulse',
+    'stemBotWaveHand',
+    'stemBotFlameFlicker',
+    '.stembot-speech-bubble',
+    '.stembot-bubble-bot-tag',
+    '.stembot-hud-widget',
+    '.stembot-sparkle'
+];
+
+expectedBotCss.forEach(cls => {
+    if (!wmCss.includes(cls)) {
+        console.error(`[FAIL] world-map.css missing stemBOT animation/selector: ${cls}`);
+        process.exit(1);
+    }
+});
+console.log(`[PASS] stemBOT CSS verified: all ${expectedBotCss.length} vector animation keyframes & styles active!`);
+
 console.log('====================================================');
-console.log('🎉 ALL TESTS PASSED! stemOS 3D World is Rock Solid!');
+console.log('🎉 ALL TESTS PASSED! stemOS 3D World & stemBOT Rock Solid!');
 console.log('====================================================');
