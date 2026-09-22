@@ -1,9 +1,9 @@
 /**
- * stemOS Dev Content Studio — PWA Service Worker (v3.2.0 Academic Expansion & Mobile Ergonomics)
- * Enables 100% complete offline caching for 26 tracks, 162 readings, 115 native idioms, and mascot assets.
+ * stemOS Dev Content Studio — PWA Service Worker (v3.3.0 Academic Expansion & 100% Track Mastery)
+ * Enables 100% complete offline caching for 26 tracks, 183 readings, 135 native idioms, and mascot assets.
  */
 
-const CACHE_NAME = 'stemos-lxp-v3.2.0-academic';
+const CACHE_NAME = 'stemos-lxp-v3.3.0-academic';
 
 const ASSETS_TO_CACHE = [
   '/',

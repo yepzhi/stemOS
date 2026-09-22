@@ -53,13 +53,18 @@ let totalQuestions = 0;
 let totalVocab = 0;
 let totalCollocations = 0;
 let invalidQuestions = 0;
+let tracksWithAppliedLabs = 0;
 
 trackKeys.forEach(tKey => {
   const track = courses[tKey];
+  let trackHasAppliedLab = false;
   (track.modules || []).forEach(m => {
     totalModules++;
     (m.readings || []).forEach(r => {
       totalReadings++;
+      if (r.id.endsWith('-r2') || (r.title && r.title.toLowerCase().includes('applied lab'))) {
+        trackHasAppliedLab = true;
+      }
       (r.vocabulary || []).forEach(v => {
         totalVocab++;
         if (v.collocations && Array.isArray(v.collocations)) {
@@ -74,20 +79,22 @@ trackKeys.forEach(tKey => {
       });
     });
   });
+  if (trackHasAppliedLab) tracksWithAppliedLabs++;
 });
 
+assert(tracksWithAppliedLabs === 26, 'Applied Lab coverage across tracks', `${tracksWithAppliedLabs}/26 tracks equipped with Applied Labs`);
 assert(totalModules >= 146, 'Total modules count', `${totalModules} modules`);
-assert(totalReadings >= 170, 'Total academic readings', `${totalReadings} readings`);
-assert(totalQuestions >= 680, 'Formative evaluation questions', `${totalQuestions} questions`);
+assert(totalReadings >= 183, 'Total academic readings', `${totalReadings} readings`);
+assert(totalQuestions >= 732, 'Formative evaluation questions', `${totalQuestions} questions`);
 assert(invalidQuestions === 0, 'Question schema validity', `${invalidQuestions} invalid`);
-assert(totalVocab >= 1380, 'Specialized technical vocabulary terms', `${totalVocab} terms`);
-assert(totalCollocations >= 4150, 'Technical collocations mapped', `${totalCollocations} collocations`);
+assert(totalVocab >= 1430, 'Specialized technical vocabulary terms', `${totalVocab} terms`);
+assert(totalCollocations >= 4300, 'Technical collocations mapped', `${totalCollocations} collocations`);
 
 // ── 3. NATIVE PHRASES LIBRARY AUDIT ─────────────────────────
 console.log('\n--- 3. Native Idioms & Professional Phrases Library ---');
 const phrases = require('../content/phrases_library.js');
 assert(Array.isArray(phrases), 'Phrases library loaded as array');
-assert(phrases.length >= 100, 'Total phrases count', `${phrases.length} phrases`);
+assert(phrases.length >= 135, 'Total phrases count', `${phrases.length} phrases`);
 
 const requiredCategories = [
   'workplace',
@@ -148,7 +155,7 @@ assert(appJS.includes('vocab-colloc-badge'), 'Interactive collocation buttons re
 assert(appJS.includes('Expresión Profesional Recomendada'), 'Socratic Tutor recommends contextual phrases on mastery');
 
 const swJS = fs.readFileSync(path.join(__dirname, '..', 'sw.js'), 'utf8');
-assert(swJS.includes('stemos-lxp-v3.2.0-academic'), 'PWA Service Worker cache bumped to v3.2.0-academic');
+assert(swJS.includes('stemos-lxp-v3.3.0-academic'), 'PWA Service Worker cache bumped to v3.3.0-academic');
 
 // ── SUMMARY REPORT ──────────────────────────────────────────
 console.log('\n====================================================');
