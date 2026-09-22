@@ -77,11 +77,11 @@ trackKeys.forEach(tKey => {
 });
 
 assert(totalModules >= 146, 'Total modules count', `${totalModules} modules`);
-assert(totalReadings >= 165, 'Total academic readings', `${totalReadings} readings`);
-assert(totalQuestions >= 660, 'Formative evaluation questions', `${totalQuestions} questions`);
+assert(totalReadings >= 170, 'Total academic readings', `${totalReadings} readings`);
+assert(totalQuestions >= 680, 'Formative evaluation questions', `${totalQuestions} questions`);
 assert(invalidQuestions === 0, 'Question schema validity', `${invalidQuestions} invalid`);
-assert(totalVocab >= 1350, 'Specialized technical vocabulary terms', `${totalVocab} terms`);
-assert(totalCollocations >= 4100, 'Technical collocations mapped', `${totalCollocations} collocations`);
+assert(totalVocab >= 1380, 'Specialized technical vocabulary terms', `${totalVocab} terms`);
+assert(totalCollocations >= 4150, 'Technical collocations mapped', `${totalCollocations} collocations`);
 
 // ── 3. NATIVE PHRASES LIBRARY AUDIT ─────────────────────────
 console.log('\n--- 3. Native Idioms & Professional Phrases Library ---');
