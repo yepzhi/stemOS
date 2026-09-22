@@ -1723,6 +1723,24 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
     line-height: 1.5;
 }
 
+.vocab-colloc-badge:hover {
+    background: #e0f2fe !important;
+    border-color: #7dd3fc !important;
+    color: #0284c7 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.15);
+}
+
+.vocab-colloc-badge:active {
+    transform: scale(0.97);
+}
+
+.vocab-audio-btn:hover {
+    background: rgba(2, 132, 199, 0.2) !important;
+    transform: scale(1.05);
+}
+
+
 /* Quiz Styling */
 .quiz-questions-list {
     display: flex;

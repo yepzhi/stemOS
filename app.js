@@ -562,7 +562,42 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (tutorChallengeMeta) tutorChallengeMeta.style.display = 'none';
 
                     setTimeout(() => {
-                        addBotMessage(`🎉 <strong>¡Reto Socrático Completado!</strong><br><br>Has demostrado dominio riguroso de los conceptos y vocabulario de <strong>${chatState.modTitle}</strong>.<br><br><strong>+50 XP Bonus de Maestría Socrática otorgados.</strong> Puedes continuar con otro módulo o certificar tu unidad.`);
+                        let phraseRecommendation = '';
+                        if (phrasesData && phrasesData.length > 0) {
+                            const trackCategoryMap = {
+                                'cybersecurity': 'problem_solving',
+                                'semiconductors': 'technical_debate',
+                                'aerospace': 'metrics',
+                                'biotechnology': 'problem_solving',
+                                'ai-ml': 'technical_debate',
+                                'electromobility': 'metrics',
+                                'robotics-automation': 'problem_solving',
+                                'energy-renewables': 'metrics',
+                                'telecom-iot': 'workplace',
+                                'software-dev': 'technical_debate',
+                                'project-management': 'meetings',
+                                'business-leadership': 'soft_skills'
+                            };
+                            const targetCat = trackCategoryMap[chatState.trackId] || 'workplace';
+                            const matching = phrasesData.filter(p => p.category === targetCat);
+                            const chosen = (matching.length > 0)
+                                ? matching[Math.floor(Math.random() * matching.length)]
+                                : phrasesData[0];
+                            if (chosen) {
+                                phraseRecommendation = `
+                                    <div style="margin-top:14px; padding:12px 14px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; text-align:left;">
+                                        <div style="font-size:0.72rem; font-weight:700; color:#15803d; text-transform:uppercase; margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+                                            <i class="fa-solid fa-lightbulb"></i> Expresión Profesional Recomendada:
+                                        </div>
+                                        <div style="font-size:0.95rem; font-weight:800; color:#0f172a; margin-bottom:3px;">"${chosen.phrase}"</div>
+                                        <div style="font-size:0.8rem; color:#475569; margin-bottom:4px;">${chosen.meaningES}</div>
+                                        <div style="font-size:0.76rem; color:#16a34a; font-style:italic;">"${chosen.exampleEN}"</div>
+                                    </div>
+                                `;
+                            }
+                        }
+
+                        addBotMessage(`🎉 <strong>¡Reto Socrático Completado!</strong><br><br>Has demostrado dominio riguroso de los conceptos y vocabulario de <strong>${chatState.modTitle}</strong>.<br><br><strong>+50 XP Bonus de Maestría Socrática otorgados.</strong>${phraseRecommendation}<br>Puedes continuar con otro módulo o certificar tu unidad.`);
                         awardXP(50);
                         resetTutor();
                     }, 800);
@@ -1090,16 +1125,46 @@ document.addEventListener('DOMContentLoaded', () => {
             reading.vocabulary.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'vocab-card';
+
+                const ipaHTML = item.ipa ? `<span class="vocab-term-ipa" style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#0284c7;background:rgba(2,132,199,0.08);padding:1px 6px;border-radius:4px;font-weight:500;">${item.ipa}</span>` : '';
+
+                let collocationsHTML = '';
+                if (item.collocations && item.collocations.length > 0) {
+                    collocationsHTML = `
+                        <div class="vocab-collocations-wrap" style="margin-top:10px;padding-top:8px;border-top:1px dashed #e2e8f0;">
+                            <div style="font-size:0.7rem;font-weight:700;color:#0284c7;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:5px;display:flex;align-items:center;gap:4px;">
+                                <i class="fa-solid fa-link" style="font-size:0.65rem;"></i> Technical Collocations:
+                            </div>
+                            <div style="display:flex;flex-wrap:wrap;gap:5px;">
+                                ${item.collocations.map((c, cIdx) => `
+                                    <button type="button" class="vocab-colloc-badge" data-colloc="${c.replace(/"/g, '&quot;')}" title="Escuchar colocación nativa" style="font-size:0.74rem;background:#f0f9ff;color:#0369a1;border:1px solid #bae6fd;padding:3px 8px;border-radius:6px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:all 0.15s ease;">
+                                        <i class="fa-solid fa-volume-low" style="font-size:0.6rem;opacity:0.7;"></i>
+                                        <span>${c}</span>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
                 card.innerHTML = `
-                    <div class="vocab-term-header">
-                        <span class="vocab-term-en">${item.en}</span>
-                        <span class="vocab-term-es">${item.es}</span>
-                        <button class="vocab-audio-btn" style="width:28px;height:28px;font-size:0.75rem;" title="Escuchar pronunciación">
+                    <div class="vocab-term-header" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;border-bottom:1px solid #e2e8f0;padding-bottom:8px;margin-bottom:8px;">
+                        <div style="display:flex;flex-direction:column;gap:3px;">
+                            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                                <span class="vocab-term-en" style="font-size:1.05rem;font-weight:800;color:#0f172a;">${item.en}</span>
+                                ${ipaHTML}
+                            </div>
+                            <span class="vocab-term-es" style="font-size:0.82rem;color:#0284c7;font-weight:600;">${item.es}</span>
+                        </div>
+                        <button class="vocab-audio-btn" aria-label="Pronunciar término en inglés" title="Escuchar pronunciación nativa" style="min-width:38px;min-height:38px;width:38px;height:38px;border-radius:8px;background:rgba(2,132,199,0.1);color:#0284c7;border:1px solid rgba(2,132,199,0.2);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all 0.2s ease;">
                             <i class="fa-solid fa-volume-high"></i>
                         </button>
                     </div>
-                    <p class="vocab-term-def">${item.definition}</p>
+                    <p class="vocab-term-def" style="font-size:0.84rem;color:#334155;line-height:1.5;margin:0;">${item.definition}</p>
+                    ${collocationsHTML}
                 `;
+
+                // Main term audio button
                 const audioBtn = card.querySelector('.vocab-audio-btn');
                 if (audioBtn) {
                     audioBtn.addEventListener('click', (e) => {
@@ -1107,6 +1172,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         speakText(item.en);
                     });
                 }
+
+                // Individual collocation audio buttons
+                card.querySelectorAll('.vocab-colloc-badge').forEach(collocBtn => {
+                    collocBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const phrase = collocBtn.dataset.colloc;
+                        if (phrase) speakText(phrase);
+                    });
+                });
+
                 vocabGridArea.appendChild(card);
             });
         } else {

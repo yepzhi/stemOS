@@ -77,11 +77,11 @@ trackKeys.forEach(tKey => {
 });
 
 assert(totalModules >= 146, 'Total modules count', `${totalModules} modules`);
-assert(totalReadings >= 160, 'Total academic readings', `${totalReadings} readings`);
-assert(totalQuestions >= 640, 'Formative evaluation questions', `${totalQuestions} questions`);
+assert(totalReadings >= 165, 'Total academic readings', `${totalReadings} readings`);
+assert(totalQuestions >= 660, 'Formative evaluation questions', `${totalQuestions} questions`);
 assert(invalidQuestions === 0, 'Question schema validity', `${invalidQuestions} invalid`);
-assert(totalVocab >= 1300, 'Specialized technical vocabulary terms', `${totalVocab} terms`);
-assert(totalCollocations >= 4000, 'Technical collocations mapped', `${totalCollocations} collocations`);
+assert(totalVocab >= 1350, 'Specialized technical vocabulary terms', `${totalVocab} terms`);
+assert(totalCollocations >= 4100, 'Technical collocations mapped', `${totalCollocations} collocations`);
 
 // ── 3. NATIVE PHRASES LIBRARY AUDIT ─────────────────────────
 console.log('\n--- 3. Native Idioms & Professional Phrases Library ---');
@@ -140,10 +140,12 @@ assert(styles.includes('min-height: 44px') || styles.includes('min-height: 48px'
 assert(styles.includes('env(safe-area-inset-bottom)'), 'iOS/Android home bar safe-area-inset-bottom supported');
 assert(styles.includes('overflow-x: hidden'), 'Zero horizontal drift (overflow-x: hidden) enforced on mobile');
 
-// ── 6. KEYBOARD NAVIGATION & ACCESSIBILITY ──────────────────
-console.log('\n--- 6. Keyboard Accessibility & PWA Service Worker ---');
+// ── 6. KEYBOARD NAVIGATION & PEDAGOGICAL INTEGRATIONS ────────
+console.log('\n--- 6. Keyboard Accessibility & Socratic Integrations ---');
 const appJS = fs.readFileSync(path.join(__dirname, '..', 'app.js'), 'utf8');
 assert(appJS.includes("e.key === 'Escape'"), 'Global Escape key handler closes modals & drawers');
+assert(appJS.includes('vocab-colloc-badge'), 'Interactive collocation buttons rendered in reading vocabulary');
+assert(appJS.includes('Expresión Profesional Recomendada'), 'Socratic Tutor recommends contextual phrases on mastery');
 
 const swJS = fs.readFileSync(path.join(__dirname, '..', 'sw.js'), 'utf8');
 assert(swJS.includes('stemos-lxp-v3.2.0-academic'), 'PWA Service Worker cache bumped to v3.2.0-academic');
