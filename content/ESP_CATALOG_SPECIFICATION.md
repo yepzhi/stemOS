@@ -74,12 +74,13 @@ $$\text{Technology} \longrightarrow \text{Engineering} \longrightarrow \text{Aer
 
 ---
 
-## 3. Matriz Curricular Detallada de los 26 Tracks
+## 3. Matriz Curricular Detallada de los 27 Tracks
 
-### CATEGORÍA 1: TECHNOLOGY (6 Tracks)
+### CATEGORÍA 1: TECHNOLOGY (7 Tracks)
 
 | Track ID | Nombre en Inglés | Nombre en Español | Estándar / Certificación | Nivel CEFR | Estado |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| `web-dev-agentic` | **Web Development with Agentic AI** | Desarrollo Web con IA Agéntica | W3C Standards / ISO 25010 / Google Antigravity | A2-B1 | **Full (8 módulos + Applied Lab)** |
 | `cybersecurity` | **Smart Networks & Cybersecurity** | Redes Inteligentes y Ciberseguridad | CompTIA Network+ / CONOCER EC1290 | A2-B1 | **Full (9 lecturas)** |
 | `it-innovation` | **IT & Digital Innovation** | TI & Innovación Digital | AWS Cloud Practitioner / ISO 27001 | A2-B1 | **Full (10 lecturas)** |
 | `ai-ml` | **AI & Machine Learning** | IA y Aprendizaje Automático | NVIDIA Generative AI / IEEE 7000 | A2-B1 | **Full (Fase 2)** |

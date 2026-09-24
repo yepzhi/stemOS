@@ -50,8 +50,8 @@ const courses = ctx.LXP_COURSES;
 const trackKeys = Object.keys(courses);
 
 console.log(`[DATA] Total Tracks in Catalog: ${trackKeys.length}`);
-if (trackKeys.length !== 26) {
-    console.error(`[FAIL] Expected 26 tracks, found ${trackKeys.length}`);
+if (trackKeys.length !== 27) {
+    console.error(`[FAIL] Expected 27 tracks, found ${trackKeys.length}`);
     process.exit(1);
 }
 

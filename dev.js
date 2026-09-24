@@ -439,6 +439,7 @@ function getTrackIcon(id) {
     case 'business-leadership': case 'no_stem_hr_compliance': return 'fa-solid fa-briefcase';
     case 'project-management': return 'fa-solid fa-list-check';
     case 'entrepreneurship': return 'fa-solid fa-rocket';
+    case 'web-dev-agentic': return 'fa-solid fa-code';
     default: return 'fa-solid fa-graduation-cap';
   }
 }

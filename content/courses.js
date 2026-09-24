@@ -52383,9 +52383,1191 @@ var LXP_COURSES = {
                 "quiz": []
             }
         ]
+    },
+
+        "web-dev-agentic": {
+        "id": "web-dev-agentic",
+        "title": "Desarrollo Web con IA Agéntica",
+        "titleEN": "Web Development with Agentic AI",
+        "level": "Beginner → Intermediate",
+        "category": "technology",
+        "description": "Aprende a programar tu primera web app desde cero usando Google Antigravity IDE como co-piloto de IA. Cubre HTML semántico, CSS moderno, JavaScript, APIs REST, Firebase y deployment real en la nube con GitHub Pages o Cloudflare Pages.",
+        "status": "full",
+        "totalModules": 8,
+        "standard": "W3C Standards · ISO/IEC 25010 · Google Antigravity Platform",
+        "badge": "Web Developer with Agentic AI",
+        "icon": "fa-solid fa-code",
+        "color": "#6c63ff",
+        "modules": [
+            {
+                "id": "wda-m1",
+                "title": "How the Web Works",
+                "titleES": "Cómo Funciona la Web — Arquitectura del Internet",
+                "icon": "fa-solid fa-globe",
+                "readings": [
+                    {
+                        "id": "wda-m1-r1",
+                        "title": "How the Web Works — La Arquitectura del Internet",
+                        "duration": "10 min",
+                        "content": "\n> **Industry Alignment**: Alineado con **W3C Architecture of the World Wide Web** y protocolos **HTTP/1.1, HTTP/2, DNS** estándar IETF. Prepara al desarrollador para entender la infraestructura sobre la que opera todo software web moderno.\n\n# How the Web Works — La Arquitectura del Internet\n\nCada vez que escribes una URL como `https://stemOS.io` en tu navegador, desencadenas una secuencia de eventos técnicos en milisegundos. Para programar aplicaciones web profesionales, debes entender esta cadena a la perfección.\n\n## 1. La Arquitectura Cliente-Servidor\n\nLa web opera bajo un modelo **client-server** (cliente-servidor). El **client** (cliente) es tu navegador — Chrome, Firefox, Safari. El **server** (servidor) es una computadora remota que almacena los archivos de la aplicación. Toda la comunicación entre ellos ocurre mediante el protocolo **HTTP (HyperText Transfer Protocol)**.\n\nEl ciclo básico es:\n1. Tu navegador (client) envía un **HTTP request** (solicitud) al servidor\n2. El servidor procesa la solicitud y envía un **HTTP response** (respuesta)\n3. El navegador recibe la respuesta y **renders** (renderiza) el contenido visualmente\n\n## 2. DNS: El Directorio del Internet\n\nAntes de que tu navegador pueda enviar ese request, necesita la dirección IP del servidor. Aquí entra el **DNS (Domain Name System)** — el directorio telefónico del internet: traduce un nombre como `stemOS.io` a una dirección IP como `104.21.45.67`.\n\n## 3. Los Tres Pilares del Frontend\n\nTodo lo que ves en una página web está construido con exactamente tres tecnologías:\n- **HTML (HyperText Markup Language)**: Define la *estructura* y el *contenido*\n- **CSS (Cascading Style Sheets)**: Define el *aspecto visual* y el *diseño*  \n- **JavaScript**: Define el *comportamiento* e *interactividad*\n\n## 4. Google Antigravity IDE: Tu Entorno de Desarrollo\n\n**Google Antigravity IDE** es un entorno de desarrollo integrado construido sobre VS Code que integra un **agentic AI** directamente en tu flujo de trabajo. A diferencia de un simple autocompletado, el agente puede:\n- Leer y escribir archivos de tu proyecto\n- Ejecutar comandos en la terminal\n- Buscar documentación actualizada en la web\n- Planear soluciones complejas antes de ejecutarlas\n\nEn este track usarás Antigravity como tu **co-pilot** de desarrollo desde el primer día.\n\n---\n> **Key Takeaway**: Toda aplicación web es una conversación continua entre un **client** (navegador) y un **server** (computadora remota) usando el protocolo **HTTP**. HTML, CSS y JavaScript son los tres lenguajes que el navegador entiende nativamente.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Client-Server Architecture",
+                                "es": "Arquitectura Cliente-Servidor",
+                                "definition": "Computing model where client devices request resources from centralized server systems over a network.",
+                                "ipa": "/ˈklaɪ.ənt ˈsɜː.vər/",
+                                "collocations": [
+                                    "client-side rendering",
+                                    "server-side logic",
+                                    "request-response cycle"
+                                ]
+                            },
+                            {
+                                "en": "HTTP (HyperText Transfer Protocol)",
+                                "es": "Protocolo de Transferencia de Hipertexto",
+                                "definition": "Application-layer protocol defining how messages are formatted and transmitted between web clients and servers.",
+                                "ipa": "/ˌeɪtʃ.tiː.tiːˈpiː/",
+                                "collocations": [
+                                    "HTTP request",
+                                    "HTTP response",
+                                    "HTTP status code"
+                                ]
+                            },
+                            {
+                                "en": "DNS (Domain Name System)",
+                                "es": "Sistema de Nombres de Dominio",
+                                "definition": "Hierarchical distributed naming system translating human-readable domain names into IP addresses.",
+                                "ipa": "/ˌdiː.ɛnˈɛs/",
+                                "collocations": [
+                                    "DNS lookup",
+                                    "DNS resolution",
+                                    "DNS propagation"
+                                ]
+                            },
+                            {
+                                "en": "Rendering Engine",
+                                "es": "Motor de Renderizado",
+                                "definition": "Browser component that parses HTML/CSS and paints pixels on screen to display web content.",
+                                "ipa": "/ˈrɛn.dər.ɪŋ ˈɛn.dʒɪn/",
+                                "collocations": [
+                                    "browser rendering",
+                                    "render the DOM",
+                                    "rendering pipeline"
+                                ]
+                            },
+                            {
+                                "en": "Frontend / Backend",
+                                "es": "Interfaz de Usuario / Servidor",
+                                "definition": "Frontend: the visual layer users interact with in the browser. Backend: server-side logic, databases, and APIs.",
+                                "ipa": "/ˈfrʌnt.ɛnd/",
+                                "collocations": [
+                                    "frontend developer",
+                                    "backend API",
+                                    "full-stack engineer"
+                                ]
+                            }
+                        ],
+                        "socraticoSteps": [
+                            {
+                                "step": 1,
+                                "concept": "HTTP Request-Response Cycle",
+                                "botQuestion": "When a user types 'https://stemOS.io' and presses Enter, describe in order the exact sequence of events that happens before the page appears on screen. Focus on DNS, HTTP, and the browser's rendering process.",
+                                "requiredKeywords": [
+                                    "dns",
+                                    "ip",
+                                    "request",
+                                    "response",
+                                    "render",
+                                    "html",
+                                    "css"
+                                ],
+                                "minKeywords": 4,
+                                "feedbackSuccess": "Excelente análisis del ciclo completo. Dominaste el flujo DNS → HTTP request → HTTP response → browser rendering. Esta es la base de todo desarrollo web profesional.",
+                                "feedbackRetry": "¿Qué hace el DNS antes del HTTP request? ¿Qué contiene la respuesta del servidor? ¿Qué hace el navegador con ese contenido?"
+                            }
+                        ],
+                        "quiz": [
+                            {
+                                "q": "What does DNS stand for and what is its primary function?",
+                                "options": [
+                                    "Domain Name System — translates domain names to IP addresses",
+                                    "Data Network Standard — encrypts web traffic",
+                                    "Digital Network Service — speeds up page loading",
+                                    "Domain Naming Standard — registers website names"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Which THREE technologies form the foundation of every web frontend?",
+                                "options": [
+                                    "HTML, CSS, and JavaScript",
+                                    "Python, SQL, and JavaScript",
+                                    "HTML, PHP, and CSS",
+                                    "React, Node.js, and MongoDB"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "In the client-server model, what is the role of the 'client'?",
+                                "options": [
+                                    "The web browser that sends requests and displays responses",
+                                    "The database storing user information",
+                                    "The server-side code processing business logic",
+                                    "The CDN delivering static assets"
+                                ],
+                                "answer": 0
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What does DNS stand for and what is its primary function?",
+                                "options": [
+                                    "Domain Name System — translates domain names to IP addresses",
+                                    "Data Network Standard — encrypts web traffic",
+                                    "Digital Network Service — speeds up page loading",
+                                    "Domain Naming Standard — registers website names"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Which THREE technologies form the foundation of every web frontend?",
+                                "options": [
+                                    "HTML, CSS, and JavaScript",
+                                    "Python, SQL, and JavaScript",
+                                    "HTML, PHP, and CSS",
+                                    "React, Node.js, and MongoDB"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "In the client-server model, what is the role of the 'client'?",
+                                "options": [
+                                    "The web browser that sends requests and displays responses",
+                                    "The database storing user information",
+                                    "The server-side code processing business logic",
+                                    "The CDN delivering static assets"
+                                ],
+                                "answer": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "wda-m2",
+                "title": "HTML — Structure & Semantic Markup",
+                "titleES": "HTML — Estructura y Marcado Semántico",
+                "icon": "fa-brands fa-html5",
+                "readings": [
+                    {
+                        "id": "wda-m2-r1",
+                        "title": "HTML — Structure & Semantic Markup",
+                        "duration": "12 min",
+                        "content": "\n> **Industry Alignment**: Alineado con **W3C HTML Living Standard** y criterios de **WCAG 2.2 (Web Content Accessibility Guidelines)**. El código HTML semántico es el fundamento de sitios accesibles, indexables por motores de búsqueda y mantenibles a largo plazo.\n\n# HTML — Structure & Semantic Markup\n\n**HTML (HyperText Markup Language)** es el lenguaje que define la *estructura* de una página web. No es un lenguaje de programación — es un lenguaje de **markup** (marcado): usa **tags** (etiquetas) para describir el contenido.\n\n## 1. Anatomía de un Elemento HTML\n\n```html\n<p class=\"description\">Bienvenido a stemOS.</p>\n```\n\n- `<p>` es el **opening tag** (etiqueta de apertura)\n- `</p>` es el **closing tag** (etiqueta de cierre)\n- `class=\"description\"` es un **attribute** (atributo)\n- `Bienvenido a stemOS.` es el **content** (contenido)\n\n## 2. Estructura Base de un Documento HTML5\n\n```html\n<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Mi Primera Web App</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <header>\n    <nav>...</nav>\n  </header>\n  <main>\n    <section>\n      <h1>Bienvenido</h1>\n      <p>Esta es mi primera app web.</p>\n    </section>\n  </main>\n  <footer>...</footer>\n  <script src=\"app.js\"></script>\n</body>\n</html>\n```\n\n## 3. HTML5 Semántico\n\nEl HTML semántico usa tags que *describen el significado* del contenido:\n\n- `<header>` — Encabezado de la página o sección\n- `<nav>` — Navegación principal\n- `<main>` — Contenido principal (solo uno por página)\n- `<section>` — Sección temática de contenido\n- `<article>` — Contenido independiente (blog post, tarjeta)\n- `<aside>` — Contenido secundario (sidebar)\n- `<footer>` — Pie de página\n\n## 4. Forms: Capturando Input del Usuario\n\n```html\n<form id=\"login-form\">\n  <label for=\"email\">Email</label>\n  <input type=\"email\" id=\"email\" name=\"email\" required>\n  \n  <label for=\"password\">Password</label>\n  <input type=\"password\" id=\"password\" name=\"password\" required>\n  \n  <button type=\"submit\">Sign In</button>\n</form>\n```\n\n## 5. Antigravity en Acción: Generando HTML\n\nCon `⌘+I` (macOS) o `Ctrl+I` (Windows/Linux) en Antigravity IDE, puedes invocar el **Inline Command**:\n\n- Selecciona un área vacía y escribe: *\"Generate a responsive navigation bar with logo and 4 links using semantic HTML\"*\n- Antigravity genera el HTML completo, semántico y accesible\n- Revisa el **diff** propuesto y acepta con `Tab`\n\n---\n> **Key Takeaway**: El HTML semántico comunica el *propósito* de cada bloque de contenido a navegadores, lectores de pantalla y motores de búsqueda. Usar `<header>`, `<main>`, `<section>` en lugar de `<div>` genéricos es una práctica profesional obligatoria.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Semantic HTML",
+                                "es": "HTML Semántico",
+                                "definition": "HTML written using tags that communicate the meaning and role of content, not just its visual presentation.",
+                                "ipa": "/sɪˈmæn.tɪk/",
+                                "collocations": [
+                                    "semantic markup",
+                                    "semantic elements",
+                                    "semantic structure"
+                                ]
+                            },
+                            {
+                                "en": "DOM (Document Object Model)",
+                                "es": "Modelo de Objeto del Documento",
+                                "definition": "Tree-structured in-memory representation of an HTML document that JavaScript can read and manipulate.",
+                                "ipa": "/diː.oʊˈɛm/",
+                                "collocations": [
+                                    "DOM manipulation",
+                                    "DOM tree",
+                                    "query the DOM"
+                                ]
+                            },
+                            {
+                                "en": "Attribute",
+                                "es": "Atributo HTML",
+                                "definition": "Additional information added inside an HTML opening tag to configure element behavior (e.g., id, class, href, src).",
+                                "ipa": "/ˈæt.rɪ.bjuːt/",
+                                "collocations": [
+                                    "HTML attribute",
+                                    "required attribute",
+                                    "data attribute"
+                                ]
+                            },
+                            {
+                                "en": "Accessibility (a11y)",
+                                "es": "Accesibilidad Web",
+                                "definition": "Design and development practice ensuring web content is usable by people with visual, motor, or cognitive disabilities.",
+                                "ipa": "/ækˌsɛs.əˈbɪl.ɪ.ti/",
+                                "collocations": [
+                                    "WCAG compliance",
+                                    "screen reader",
+                                    "accessible markup"
+                                ]
+                            }
+                        ],
+                        "socraticoSteps": [
+                            {
+                                "step": 1,
+                                "concept": "Semantic HTML vs. Generic Divs",
+                                "botQuestion": "You are building a blog website. You need to mark up: a site logo + main navigation, the main article content, a list of related posts on the right, and the site footer. A junior developer suggests using <div> for everything. Which semantic HTML5 elements would you use for each section and why?",
+                                "requiredKeywords": [
+                                    "header",
+                                    "nav",
+                                    "main",
+                                    "article",
+                                    "aside",
+                                    "footer",
+                                    "semantic"
+                                ],
+                                "minKeywords": 4,
+                                "feedbackSuccess": "¡Perfecto! Aplicaste correctamente los elementos semánticos de HTML5. El uso de <header>, <nav>, <main>, <article>, <aside> y <footer> en lugar de <div> genéricos hace tu código legible para humanos, motores de búsqueda y tecnologías de asistencia.",
+                                "feedbackRetry": "¿Qué etiqueta usarías para el logo + navegación? ¿Para el contenido principal? ¿Para los posts relacionados al lado? ¿Para el pie de página?"
+                            }
+                        ],
+                        "quiz": [
+                            {
+                                "q": "Which HTML element should be used for the MAIN navigation menu of a website?",
+                                "options": [
+                                    "<nav>",
+                                    "<menu>",
+                                    "<div class='nav'>",
+                                    "<ul id='navigation'>"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "How many <main> elements should a properly structured HTML page have?",
+                                "options": [
+                                    "Exactly one",
+                                    "One per section",
+                                    "As many as needed",
+                                    "Two — one for mobile, one for desktop"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "What is the purpose of the 'required' attribute on an <input> element?",
+                                "options": [
+                                    "Prevents form submission if the field is empty",
+                                    "Makes the field read-only",
+                                    "Hides the field from screen readers",
+                                    "Adds a red border to the field"
+                                ],
+                                "answer": 0
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "Which HTML element should be used for the MAIN navigation menu of a website?",
+                                "options": [
+                                    "<nav>",
+                                    "<menu>",
+                                    "<div class='nav'>",
+                                    "<ul id='navigation'>"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "How many <main> elements should a properly structured HTML page have?",
+                                "options": [
+                                    "Exactly one",
+                                    "One per section",
+                                    "As many as needed",
+                                    "Two — one for mobile, one for desktop"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "What is the purpose of the 'required' attribute on an <input> element?",
+                                "options": [
+                                    "Prevents form submission if the field is empty",
+                                    "Makes the field read-only",
+                                    "Hides the field from screen readers",
+                                    "Adds a red border to the field"
+                                ],
+                                "answer": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "wda-m3",
+                "title": "CSS — Styling & Modern Design Systems",
+                "titleES": "CSS — Estilos y Sistemas de Diseño Modernos",
+                "icon": "fa-brands fa-css3-alt",
+                "readings": [
+                    {
+                        "id": "wda-m3-r1",
+                        "title": "CSS — Styling & Modern Design Systems",
+                        "duration": "14 min",
+                        "content": "\n> **Industry Alignment**: Alineado con **W3C CSS Specifications Level 3 y 4**. CSS moderno con Custom Properties, Flexbox y Grid es el estándar de la industria en 2026 para interfaces web profesionales.\n\n# CSS — Styling & Modern Design Systems\n\n**CSS (Cascading Style Sheets)** controla el aspecto visual de tu página. La palabra 'cascading' (en cascada) describe cómo los estilos se aplican en un orden de prioridad específico.\n\n## 1. CSS Custom Properties (Variables CSS)\n\nLas **CSS Custom Properties** (variables CSS) son la base de un sistema de diseño profesional:\n\n```css\n:root {\n  /* Design tokens */\n  --color-primary: #6c63ff;\n  --color-accent: #00d4aa;\n  --color-surface: rgba(255, 255, 255, 0.05);\n  --font-sans: 'Inter', sans-serif;\n  --radius-card: 16px;\n  --spacing-lg: 2rem;\n}\n\n.card {\n  background: var(--color-surface);\n  border-radius: var(--radius-card);\n  font-family: var(--font-sans);\n}\n```\n\n## 2. Flexbox: Layout Unidimensional\n\n**Flexbox** organiza elementos en una sola dimensión (fila o columna):\n\n```css\n.navbar {\n  display: flex;\n  justify-content: space-between; /* Distribuye horizontalmente */\n  align-items: center;            /* Centra verticalmente */\n  gap: 1rem;\n}\n\n.card-actions {\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n```\n\n## 3. CSS Grid: Layout Bidimensional\n\n**CSS Grid** organiza elementos en dos dimensiones (filas Y columnas):\n\n```css\n.course-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));\n  gap: 1.5rem;\n}\n\n.dashboard {\n  display: grid;\n  grid-template-areas:\n    'sidebar main main'\n    'sidebar footer footer';\n  grid-template-columns: 240px 1fr 1fr;\n}\n```\n\n## 4. Glassmorphism: El Estilo de stemOS\n\n**Glassmorphism** crea superficies translúcidas con efecto de cristal esmerilado:\n\n```css\n.glass-card {\n  background: rgba(255, 255, 255, 0.08);\n  backdrop-filter: blur(20px);\n  -webkit-backdrop-filter: blur(20px);\n  border: 1px solid rgba(255, 255, 255, 0.12);\n  border-radius: 16px;\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);\n}\n```\n\n## 5. Responsive Design con Media Queries\n\n```css\n/* Mobile first: estilos base para móvil */\n.grid { grid-template-columns: 1fr; }\n\n/* Tablet y arriba */\n@media (min-width: 768px) {\n  .grid { grid-template-columns: repeat(2, 1fr); }\n}\n\n/* Desktop */\n@media (min-width: 1200px) {\n  .grid { grid-template-columns: repeat(3, 1fr); }\n}\n```\n\n## 6. Micro-Animations con CSS\n\n```css\n.btn {\n  transition: all 0.2s ease;\n}\n\n.btn:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 12px 24px rgba(108, 99, 255, 0.3);\n}\n\n@keyframes fadeInUp {\n  from { opacity: 0; transform: translateY(20px); }\n  to   { opacity: 1; transform: translateY(0); }\n}\n\n.card { animation: fadeInUp 0.4s ease forwards; }\n```\n\n---\n> **Key Takeaway**: Un sistema de diseño profesional comienza con **CSS Custom Properties** como tokens de diseño. **Flexbox** y **Grid** son complementarios: Flexbox para componentes unidimensionales, Grid para layouts de página completos.\n",
+                        "vocabulary": [
+                            {
+                                "en": "CSS Custom Property (Variable)",
+                                "es": "Variable CSS / Propiedad Personalizada",
+                                "definition": "CSS feature allowing reusable values stored under a custom name, enabling systematic design tokens.",
+                                "ipa": "/ˈkʌs.təm ˈprɒp.ə.ti/",
+                                "collocations": [
+                                    "CSS variable",
+                                    "custom property",
+                                    "design token"
+                                ]
+                            },
+                            {
+                                "en": "Flexbox",
+                                "es": "Modelo de Caja Flexible",
+                                "definition": "One-dimensional CSS layout model for distributing space and aligning items in a row or column.",
+                                "ipa": "/ˈflɛks.bɒks/",
+                                "collocations": [
+                                    "flex container",
+                                    "flex item",
+                                    "justify-content"
+                                ]
+                            },
+                            {
+                                "en": "CSS Grid",
+                                "es": "Cuadrícula CSS",
+                                "definition": "Two-dimensional CSS layout system enabling precise placement of elements in both rows and columns.",
+                                "ipa": "/siː.ɛs.ɛs ɡrɪd/",
+                                "collocations": [
+                                    "grid layout",
+                                    "grid template columns",
+                                    "grid area"
+                                ]
+                            },
+                            {
+                                "en": "Responsive Design",
+                                "es": "Diseño Responsivo",
+                                "definition": "Web design approach making layouts adapt fluidly to different screen sizes using fluid grids and media queries.",
+                                "ipa": "/rɪˈspɒn.sɪv dɪˈzaɪn/",
+                                "collocations": [
+                                    "media query",
+                                    "breakpoint",
+                                    "mobile-first"
+                                ]
+                            },
+                            {
+                                "en": "Glassmorphism",
+                                "es": "Glassmorphism (Efecto Cristal)",
+                                "definition": "UI design trend creating frosted-glass translucent surfaces using backdrop-filter blur and semi-transparent backgrounds.",
+                                "ipa": "/ˈɡlɑːs.mɔːr.fɪ.zəm/",
+                                "collocations": [
+                                    "backdrop-filter blur",
+                                    "frosted glass effect",
+                                    "translucent card"
+                                ]
+                            }
+                        ],
+                        "socraticoSteps": [
+                            {
+                                "step": 1,
+                                "concept": "Flexbox vs. CSS Grid",
+                                "botQuestion": "You have two layout challenges: (A) A navigation bar with a logo on the left and navigation links on the right. (B) A page dashboard with a fixed sidebar on the left, a content area in the center, and a widget panel on the right. Which CSS layout tool — Flexbox or Grid — would you use for each, and why?",
+                                "requiredKeywords": [
+                                    "flexbox",
+                                    "grid",
+                                    "one-dimensional",
+                                    "two-dimensional",
+                                    "row",
+                                    "column"
+                                ],
+                                "minKeywords": 3,
+                                "feedbackSuccess": "¡Correcto! Flexbox es ideal para la barra de navegación (distribución unidimensional en fila). CSS Grid es la elección correcta para el dashboard complejo (layout bidimensional con sidebar, área principal y panel). Ambas herramientas son complementarias.",
+                                "feedbackRetry": "¿Cuántas dimensiones maneja Flexbox? ¿Y CSS Grid? ¿Qué dimensiones necesita cada layout?"
+                            }
+                        ],
+                        "quiz": [
+                            {
+                                "q": "Which CSS property creates the frosted-glass blur effect in Glassmorphism?",
+                                "options": [
+                                    "backdrop-filter: blur()",
+                                    "filter: blur()",
+                                    "opacity: 0.5",
+                                    "box-shadow: blur"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "What CSS property stores a reusable design value like a color or spacing?",
+                                "options": [
+                                    "CSS Custom Property (--variable-name)",
+                                    "CSS class variable",
+                                    "@variable declaration",
+                                    "$variable (SASS syntax)"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Which approach does 'mobile-first' responsive design use?",
+                                "options": [
+                                    "Write base styles for mobile, then use min-width media queries for larger screens",
+                                    "Write base styles for desktop, then use max-width media queries for smaller screens",
+                                    "Create separate CSS files for each device type",
+                                    "Use JavaScript to detect screen size and load different CSS"
+                                ],
+                                "answer": 0
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "Which CSS property creates the frosted-glass blur effect in Glassmorphism?",
+                                "options": [
+                                    "backdrop-filter: blur()",
+                                    "filter: blur()",
+                                    "opacity: 0.5",
+                                    "box-shadow: blur"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "What CSS property stores a reusable design value like a color or spacing?",
+                                "options": [
+                                    "CSS Custom Property (--variable-name)",
+                                    "CSS class variable",
+                                    "@variable declaration",
+                                    "$variable (SASS syntax)"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Which approach does 'mobile-first' responsive design use?",
+                                "options": [
+                                    "Write base styles for mobile, then use min-width media queries for larger screens",
+                                    "Write base styles for desktop, then use max-width media queries for smaller screens",
+                                    "Create separate CSS files for each device type",
+                                    "Use JavaScript to detect screen size and load different CSS"
+                                ],
+                                "answer": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "wda-m4",
+                "title": "JavaScript — Logic, Events & the DOM",
+                "titleES": "JavaScript — Lógica, Eventos y el DOM",
+                "icon": "fa-brands fa-js",
+                "readings": [
+                    {
+                        "id": "wda-m4-r1",
+                        "title": "JavaScript — Logic, Events & the DOM",
+                        "duration": "16 min",
+                        "content": "\n> **Industry Alignment**: Alineado con **ECMAScript 2024** y las APIs del navegador definidas por el **WHATWG**. JavaScript es el único lenguaje de programación nativo del navegador y el más utilizado en el mundo según Stack Overflow Developer Survey 2024 (12 años consecutivos).\n\n# JavaScript — Logic, Events & the DOM\n\n**JavaScript** es el lenguaje que da *vida* a tu página web. Si HTML es el esqueleto y CSS la piel, JavaScript es el sistema nervioso.\n\n## 1. Variables y Tipos de Datos\n\n```javascript\n// const: valor que no cambia (preferido por defecto)\nconst courseName = \"Web Development with Agentic AI\";\nconst totalModules = 8;\nconst isPublished = true;\n\n// let: valor que puede cambiar\nlet currentModule = 1;\ncurrentModule = 2; // válido\n\n// Arrays: listas ordenadas de valores\nconst technologies = [\"HTML\", \"CSS\", \"JavaScript\", \"Firebase\"];\nconsole.log(technologies[0]); // \"HTML\"\n\n// Objects: agrupaciones de datos relacionados\nconst student = {\n  name: \"María López\",\n  level: \"beginner\",\n  completedModules: 3,\n  isActive: true\n};\nconsole.log(student.name); // \"María López\"\n```\n\n## 2. Funciones y Arrow Functions\n\n```javascript\n// Función tradicional\nfunction greet(name) {\n  return `¡Hola, ${name}! Bienvenido a stemOS.`;\n}\n\n// Arrow function (estilo moderno)\nconst greet = (name) => `¡Hola, ${name}! Bienvenido a stemOS.`;\n\n// Función async/await para operaciones asíncronas\nconst loadCourses = async () => {\n  const data = await fetch('/api/courses');\n  return data.json();\n};\n```\n\n## 3. El DOM: Document Object Model\n\n```javascript\n// Seleccionar elementos\nconst title = document.querySelector(\"h1\");\nconst cards = document.querySelectorAll(\".card\");\nconst form = document.getElementById(\"login-form\");\n\n// Modificar contenido\ntitle.textContent = \"¡Bienvenido a stemOS!\";\ntitle.innerHTML = \"<span>stemOS</span> LXP\";\n\n// Modificar estilos y clases\ntitle.classList.add(\"active\");\ntitle.classList.remove(\"hidden\");\ntitle.classList.toggle(\"highlight\");\n\n// Crear y agregar elementos dinámicamente\nconst newCard = document.createElement(\"div\");\nnewCard.className = \"card\";\nnewCard.textContent = \"Nuevo módulo\";\ndocument.querySelector(\".grid\").appendChild(newCard);\n```\n\n## 4. Event Listeners: Respondiendo a Acciones del Usuario\n\n```javascript\n// Click en un botón\nconst btn = document.querySelector(\"#start-btn\");\nbtn.addEventListener(\"click\", () => {\n  console.log(\"¡El alumno comenzó el módulo!\");\n  btn.textContent = \"En progreso...\";\n  btn.disabled = true;\n});\n\n// Submit de un formulario\nconst form = document.querySelector(\"#login-form\");\nform.addEventListener(\"submit\", (event) => {\n  event.preventDefault(); // Evita recargar la página\n  const email = document.querySelector(\"#email\").value;\n  const password = document.querySelector(\"#password\").value;\n  loginUser(email, password);\n});\n\n// Input en tiempo real\nconst searchInput = document.querySelector(\"#search\");\nsearchInput.addEventListener(\"input\", (e) => {\n  filterCourses(e.target.value);\n});\n```\n\n## 5. Fetch API: Consumiendo Datos Externos\n\n```javascript\n// GET: obtener datos de un servidor\nasync function getCourses() {\n  try {\n    const response = await fetch(\"https://api.stemos.io/courses\");\n    if (!response.ok) throw new Error(`HTTP error: ${response.status}`);\n    const data = await response.json();\n    return data;\n  } catch (error) {\n    console.error(\"Error fetching courses:\", error);\n  }\n}\n\n// POST: enviar datos al servidor\nasync function enrollStudent(courseId, studentData) {\n  const response = await fetch(`https://api.stemos.io/enroll/${courseId}`, {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify(studentData)\n  });\n  return response.json();\n}\n```\n\n---\n> **Key Takeaway**: JavaScript opera sobre el **DOM** como su modelo de datos. Los **event listeners** conectan las acciones del usuario con tu lógica. La **Fetch API** con `async/await` es el patrón moderno para comunicarse con servidores y APIs externas.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Variable (let / const)",
+                                "es": "Variable",
+                                "definition": "Named storage location in memory. 'const' stores immutable references; 'let' stores mutable values.",
+                                "ipa": "/ˈvær.i.ə.bəl/",
+                                "collocations": [
+                                    "declare a variable",
+                                    "const reference",
+                                    "let reassignment"
+                                ]
+                            },
+                            {
+                                "en": "Event Listener",
+                                "es": "Escuchador de Eventos",
+                                "definition": "Function registered to execute automatically when a specific user interaction or browser event is triggered.",
+                                "ipa": "/ɪˈvɛnt ˈlɪs.ən.ər/",
+                                "collocations": [
+                                    "add event listener",
+                                    "click event",
+                                    "event handler"
+                                ]
+                            },
+                            {
+                                "en": "Asynchronous / async-await",
+                                "es": "Asíncrono",
+                                "definition": "Programming pattern allowing code to execute non-blocking operations without freezing the browser's main thread.",
+                                "ipa": "/eɪˈsɪŋ.krə.nəs/",
+                                "collocations": [
+                                    "async function",
+                                    "await a Promise",
+                                    "non-blocking I/O"
+                                ]
+                            },
+                            {
+                                "en": "Fetch API",
+                                "es": "API de Fetch (Recuperación de Datos)",
+                                "definition": "Modern browser API for making HTTP requests and consuming JSON data from external servers and REST APIs.",
+                                "ipa": "/fɛtʃ ˈeɪ.piː.aɪ/",
+                                "collocations": [
+                                    "fetch request",
+                                    "JSON response",
+                                    "await fetch"
+                                ]
+                            }
+                        ],
+                        "socraticoSteps": [
+                            {
+                                "step": 1,
+                                "concept": "DOM Manipulation and Event-Driven Programming",
+                                "botQuestion": "You need to build a 'Dark Mode' toggle button for stemOS. When clicked, the button should add a class 'dark' to the <body> element, change the button's text from 'Dark Mode' to 'Light Mode', and save the user's preference to localStorage. Write the JavaScript logic for this feature.",
+                                "requiredKeywords": [
+                                    "queryselector",
+                                    "addeventlistener",
+                                    "classlist",
+                                    "localstorage",
+                                    "toggle",
+                                    "textcontent"
+                                ],
+                                "minKeywords": 4,
+                                "feedbackSuccess": "¡Excelente implementación! Usaste querySelector para seleccionar el DOM, addEventListener para capturar el click, classList.toggle para alternar la clase, textContent para actualizar el label, y localStorage para persistir la preferencia del usuario. Esta es programación orientada a eventos de nivel profesional.",
+                                "feedbackRetry": "¿Cómo seleccionas el botón del DOM? ¿Qué evento escuchas? ¿Qué método de classList alterna una clase? ¿Dónde guardas la preferencia del usuario entre sesiones?"
+                            }
+                        ],
+                        "quiz": [
+                            {
+                                "q": "Which JavaScript keyword should you use for a value that will NEVER be reassigned?",
+                                "options": [
+                                    "const",
+                                    "let",
+                                    "var",
+                                    "fixed"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "What does event.preventDefault() do in a form submit listener?",
+                                "options": [
+                                    "Stops the browser from reloading the page on form submission",
+                                    "Prevents the form fields from being edited",
+                                    "Clears all form input values",
+                                    "Disables the submit button"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Which Fetch API pattern is the modern standard for handling asynchronous HTTP requests?",
+                                "options": [
+                                    "async/await with try/catch",
+                                    "XMLHttpRequest callbacks",
+                                    "jQuery $.ajax()",
+                                    "setTimeout chaining"
+                                ],
+                                "answer": 0
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "Which JavaScript keyword should you use for a value that will NEVER be reassigned?",
+                                "options": [
+                                    "const",
+                                    "let",
+                                    "var",
+                                    "fixed"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "What does event.preventDefault() do in a form submit listener?",
+                                "options": [
+                                    "Stops the browser from reloading the page on form submission",
+                                    "Prevents the form fields from being edited",
+                                    "Clears all form input values",
+                                    "Disables the submit button"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Which Fetch API pattern is the modern standard for handling asynchronous HTTP requests?",
+                                "options": [
+                                    "async/await with try/catch",
+                                    "XMLHttpRequest callbacks",
+                                    "jQuery $.ajax()",
+                                    "setTimeout chaining"
+                                ],
+                                "answer": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "wda-m5",
+                "title": "Agentic Development",
+                "titleES": "Desarrollo Agéntico — Programar con un Co-piloto de IA",
+                "icon": "fa-solid fa-robot",
+                "readings": [
+                    {
+                        "id": "wda-m5-r1",
+                        "title": "Agentic Development — Programar con un Co-piloto de IA",
+                        "duration": "13 min",
+                        "content": "\n> **Industry Alignment**: Alineado con los principios de **AI-Assisted Software Engineering** y la plataforma **Google Antigravity**. La programación asistida por IA es la habilidad de productividad más demandada del mercado técnico en 2026, con adopción en el 78% de las empresas de software según GitHub Octoverse 2025.\n\n# Agentic Development — Programar con un Co-piloto de IA\n\n## 1. ¿Qué es un Agente de IA?\n\nUn **agent** (agente) de IA no es un chatbot. Un chatbot responde preguntas. Un agente *actúa*:\n- 📁 Lee y escribe archivos de tu proyecto\n- 💻 Ejecuta comandos en la terminal\n- 🌐 Busca documentación actualizada en la web\n- 🗓️ Planea soluciones complejas antes de ejecutarlas\n- 🔄 Itera hasta que el problema esté resuelto\n\n**Google Antigravity** es un IDE agéntico construido sobre VS Code que integra estas capacidades directamente en tu flujo de código.\n\n## 2. Las Tres Modalidades de Antigravity\n\n### A. Tab Autocomplete (Pasivo)\nEl agente sugiere código mientras escribes, anticipando tu intención. Acepta con `Tab`, cancela con `Esc`.\n\n```javascript\n// Escribes:\nfunction calculateProgress(\n\n// Antigravity sugiere automáticamente:\nfunction calculateProgress(completedModules, totalModules) {\n  return Math.round((completedModules / totalModules) * 100);\n}\n```\n\n### B. Inline Command — `⌘+I` / `Ctrl+I` (Instructivo)\nSelecciona un bloque de código y dale una instrucción:\n- *\"Refactor this to use async/await instead of callbacks\"*\n- *\"Add TypeScript types to this function\"*\n- *\"Write unit tests for this function\"*\n- *\"Translate all comments to English\"*\n\n### C. Agent Mode — Sidebar Chat (Colaborativo)\nEl modo más poderoso. Abre el sidebar, activa **Agent Mode** y el agente tiene acceso completo a tu proyecto:\n\nEjemplo de interacción real:\n```\nTú:     \"Create a dark mode toggle button that:\n         - Adds class 'dark' to <body> on click\n         - Saves preference in localStorage\n         - Updates button label between 'Dark Mode' and 'Light Mode'\"\n\nAgente: [Lee tu index.html y styles.css]\n        [Propone cambios en 3 archivos]\n        [Genera el JavaScript, actualiza el HTML, agrega CSS]\n        \"Done! I added the toggle button to your navbar...\"\n```\n\n## 3. Prompt Engineering: Cómo Hablarle al Agente\n\nLa calidad de los resultados depende de la calidad de tus **prompts**:\n\n```\n❌ Prompt vago:\n\"Hazme un formulario\"\n\n✅ Prompt preciso:\n\"Create a registration form with fields for name, email, and password.\nAdd client-side validation: email format check, password minimum 8 characters.\nStyle it with CSS glassmorphism using our existing CSS variables (--color-surface, --radius-card).\nOn submit, call registerUser(email, password) and show a loading state on the button.\"\n```\n\n**Anatomía de un buen prompt:**\n1. **Qué**: La funcionalidad específica que necesitas\n2. **Contexto**: Qué archivos, variables o estilos ya existen\n3. **Restricciones**: Qué no debe cambiar\n4. **Criterio de éxito**: Cómo sabrás que está correcto\n\n## 4. El Ciclo de Desarrollo Agéntico\n\n```\n1. PROMPT    → Describes el requerimiento con precisión\n2. PLAN      → El agente propone un plan (Planning Mode)\n3. REVIEW    → Revisas y apruebas el plan\n4. EXECUTE   → El agente ejecuta los cambios\n5. DIFF      → Revisas el diff de archivos modificados\n6. ITERATE   → Refinás con instrucciones de seguimiento\n```\n\n## 5. Cuándo NO Usar el Agente\n\nEl agente es un co-piloto, no un piloto automático. Siempre debes:\n- **Entender** el código que acepta — no aceptes código que no comprendes\n- **Revisar** cada diff antes de aprobar cambios\n- **Verificar** que la solución funciona como esperas\n- **Aprender** de cada interacción — el objetivo es crecer, no depender\n\n---\n> **Key Takeaway**: El desarrollador agéntico usa IA para **multiplicar su productividad**, no para reemplazar su comprensión. La habilidad más valiosa no es saber programar de memoria — es saber **qué pedir, cómo pedirlo, y cómo evaluar** lo que el agente produce.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Agentic AI",
+                                "es": "IA Agéntica",
+                                "definition": "AI system that can autonomously plan, execute multi-step actions, and use tools to complete complex goals.",
+                                "ipa": "/eɪˈdʒɛn.tɪk/",
+                                "collocations": [
+                                    "agentic workflow",
+                                    "autonomous agent",
+                                    "multi-step execution"
+                                ]
+                            },
+                            {
+                                "en": "Prompt Engineering",
+                                "es": "Ingeniería de Prompts",
+                                "definition": "Discipline of designing clear, precise instructions for AI systems to obtain accurate and useful outputs.",
+                                "ipa": "/prɒmpt ˌɛn.dʒɪˈnɪər.ɪŋ/",
+                                "collocations": [
+                                    "well-crafted prompt",
+                                    "prompt context",
+                                    "chain-of-thought prompting"
+                                ]
+                            },
+                            {
+                                "en": "Planning Mode",
+                                "es": "Modo de Planificación",
+                                "definition": "Antigravity IDE feature that displays the agent's step-by-step plan for approval before making any file changes.",
+                                "ipa": "/ˈplæn.ɪŋ moʊd/",
+                                "collocations": [
+                                    "review the plan",
+                                    "approve execution",
+                                    "plan before coding"
+                                ]
+                            },
+                            {
+                                "en": "Diff (Code Diff)",
+                                "es": "Diferencial de Código",
+                                "definition": "Visual representation showing exactly which lines were added, modified, or removed in a proposed code change.",
+                                "ipa": "/dɪf/",
+                                "collocations": [
+                                    "review the diff",
+                                    "accept changes",
+                                    "reject the diff"
+                                ]
+                            }
+                        ],
+                        "socraticoSteps": [
+                            {
+                                "step": 1,
+                                "concept": "Effective Prompt Engineering",
+                                "botQuestion": "A student asks Antigravity: 'Add a search bar'. The agent adds a basic HTML input but doesn't connect it to any filtering logic. The student is frustrated. What went wrong with the prompt, and how would you rewrite it to get a fully functional search bar that filters a list of courses displayed on the page?",
+                                "requiredKeywords": [
+                                    "context",
+                                    "specific",
+                                    "filter",
+                                    "event",
+                                    "input",
+                                    "function",
+                                    "requirement"
+                                ],
+                                "minKeywords": 4,
+                                "feedbackSuccess": "¡Análisis correcto! El prompt original falló porque no especificó: qué elementos filtrar, qué evento escuchar (input), qué propiedad de los datos comparar, ni cómo mostrar/ocultar los resultados. Un prompt de calidad profesional incluye contexto del proyecto, comportamiento esperado y criterios de éxito.",
+                                "feedbackRetry": "¿Qué información le faltó al prompt? ¿Sobre qué elementos debe actuar la búsqueda? ¿Qué evento de JavaScript activa el filtrado? ¿Qué información necesita el agente para conectar el input con los datos?"
+                            }
+                        ],
+                        "quiz": [
+                            {
+                                "q": "What is the key difference between a chatbot and an agentic AI like Antigravity?",
+                                "options": [
+                                    "An agent can take actions: read/write files, run commands, and iterate autonomously",
+                                    "A chatbot is faster and more accurate than an agent",
+                                    "An agent only answers questions while a chatbot executes code",
+                                    "There is no difference — they are the same technology"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "What should a developer ALWAYS do before accepting code changes proposed by Antigravity?",
+                                "options": [
+                                    "Review the diff and understand what the agent changed and why",
+                                    "Accept all changes immediately to save time",
+                                    "Run the code without reviewing — agents don't make mistakes",
+                                    "Ask the agent to explain every line in detail before proceeding"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Which Antigravity shortcut opens the Inline Command for targeted code editing?",
+                                "options": [
+                                    "⌘+I (macOS) / Ctrl+I (Windows/Linux)",
+                                    "⌘+P / Ctrl+P",
+                                    "⌘+Shift+A / Ctrl+Shift+A",
+                                    "Tab key"
+                                ],
+                                "answer": 0
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What is the key difference between a chatbot and an agentic AI like Antigravity?",
+                                "options": [
+                                    "An agent can take actions: read/write files, run commands, and iterate autonomously",
+                                    "A chatbot is faster and more accurate than an agent",
+                                    "An agent only answers questions while a chatbot executes code",
+                                    "There is no difference — they are the same technology"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "What should a developer ALWAYS do before accepting code changes proposed by Antigravity?",
+                                "options": [
+                                    "Review the diff and understand what the agent changed and why",
+                                    "Accept all changes immediately to save time",
+                                    "Run the code without reviewing — agents don't make mistakes",
+                                    "Ask the agent to explain every line in detail before proceeding"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Which Antigravity shortcut opens the Inline Command for targeted code editing?",
+                                "options": [
+                                    "⌘+I (macOS) / Ctrl+I (Windows/Linux)",
+                                    "⌘+P / Ctrl+P",
+                                    "⌘+Shift+A / Ctrl+Shift+A",
+                                    "Tab key"
+                                ],
+                                "answer": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "wda-m6",
+                "title": "APIs & Firebase — Connecting to the Cloud",
+                "titleES": "APIs y Firebase — Conectando tu App a la Nube",
+                "icon": "fa-solid fa-database",
+                "readings": [
+                    {
+                        "id": "wda-m6-r1",
+                        "title": "APIs & Firebase — Connecting to the Cloud",
+                        "duration": "15 min",
+                        "content": "\n> **Industry Alignment**: Alineado con **Firebase SDK v10 (modular)**, principios de **REST API Design** (Richardson Maturity Model) y estándares de seguridad **OWASP Top 10**. Firebase es adoptado por más de 3 millones de aplicaciones activas globalmente.\n\n# APIs & Firebase — Connecting to the Cloud\n\n## 1. ¿Qué es una API?\n\nUna **API (Application Programming Interface)** es un contrato que define cómo dos sistemas de software se comunican. Una **REST API** usa HTTP para exponer datos y operaciones como **endpoints** (puntos de acceso) con URLs:\n\n```\nGET    /api/courses          → Obtener lista de cursos\nGET    /api/courses/wda-m1   → Obtener módulo específico\nPOST   /api/progress         → Guardar progreso del alumno\nPUT    /api/profile/123      → Actualizar perfil de usuario\nDELETE /api/sessions/456     → Cerrar sesión\n```\n\n## 2. Firebase: Backend as a Service\n\n**Firebase** provee servicios de **backend** listos para usar sin programar un servidor propio:\n\n| Servicio | Función |\n|---|---|\n| **Firestore** | Base de datos NoSQL en tiempo real |\n| **Authentication** | Login con email, Google, GitHub |\n| **Hosting** | Deploy con CDN global |\n| **Storage** | Archivos, imágenes y videos |\n\n## 3. Configuración de Firebase\n\n```javascript\n// firebase-config.js\nimport { initializeApp } from \"firebase/app\";\nimport { getFirestore } from \"firebase/firestore\";\nimport { getAuth } from \"firebase/auth\";\n\nconst firebaseConfig = {\n  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,\n  authDomain: \"tu-app.firebaseapp.com\",\n  projectId: \"tu-app\",\n  storageBucket: \"tu-app.appspot.com\"\n};\n\nconst app = initializeApp(firebaseConfig);\nexport const db = getFirestore(app);\nexport const auth = getAuth(app);\n```\n\n## 4. Firestore: Leer y Escribir Datos\n\n```javascript\nimport { collection, addDoc, getDocs, query, where, onSnapshot } from \"firebase/firestore\";\nimport { db } from \"./firebase-config.js\";\n\n// Escribir un documento\nasync function saveProgress(userId, moduleId) {\n  await addDoc(collection(db, \"progress\"), {\n    userId,\n    moduleId,\n    completedAt: new Date(),\n    score: 95\n  });\n}\n\n// Leer con filtro\nasync function getUserProgress(userId) {\n  const q = query(\n    collection(db, \"progress\"),\n    where(\"userId\", \"==\", userId)\n  );\n  const snapshot = await getDocs(q);\n  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));\n}\n\n// Escuchar cambios en tiempo real\nonSnapshot(collection(db, \"leaderboard\"), (snapshot) => {\n  const ranking = snapshot.docs.map(doc => doc.data());\n  renderLeaderboard(ranking);\n});\n```\n\n## 5. Firebase Auth: Login de Usuarios\n\n```javascript\nimport { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from \"firebase/auth\";\nimport { auth } from \"./firebase-config.js\";\n\n// Registrar usuario\nasync function register(email, password) {\n  const credential = await createUserWithEmailAndPassword(auth, email, password);\n  return credential.user;\n}\n\n// Iniciar sesión\nasync function login(email, password) {\n  const credential = await signInWithEmailAndPassword(auth, email, password);\n  return credential.user;\n}\n\n// Observer: detectar si el usuario está autenticado\nonAuthStateChanged(auth, (user) => {\n  if (user) {\n    console.log(\"Usuario activo:\", user.email);\n    showDashboard();\n  } else {\n    showLoginPage();\n  }\n});\n```\n\n## 6. Seguridad: Variables de Entorno\n\n```javascript\n// ❌ NUNCA — expone tu clave en el repositorio público\nconst apiKey = \"AIzaSy_mi_clave_real_secreta\";\n\n// ✅ Correcto — cargado desde variable de entorno\nconst apiKey = import.meta.env.VITE_FIREBASE_API_KEY;\n\n// En Cloudflare Pages: Settings → Environment Variables\n// VITE_FIREBASE_API_KEY = tu_clave_aqui\n```\n\n---\n> **Key Takeaway**: Firebase elimina la necesidad de programar un servidor propio para proyectos de escala media. **Firestore** reemplaza una base de datos SQL con una API de tiempo real. **Firebase Auth** maneja el login seguro en minutos. Las claves secretas NUNCA van en el código — siempre en **environment variables**.\n",
+                        "vocabulary": [
+                            {
+                                "en": "REST API",
+                                "es": "API REST",
+                                "definition": "Web service architecture using HTTP verbs (GET, POST, PUT, DELETE) to expose data through URL-based endpoints.",
+                                "ipa": "/rɛst ˌeɪ.piːˈaɪ/",
+                                "collocations": [
+                                    "REST endpoint",
+                                    "API response",
+                                    "consume an API"
+                                ]
+                            },
+                            {
+                                "en": "Firestore",
+                                "es": "Firestore (Base de Datos NoSQL)",
+                                "definition": "Google Firebase's scalable NoSQL document database offering real-time synchronization and offline support.",
+                                "ipa": "/ˈfaɪər.stɔːr/",
+                                "collocations": [
+                                    "Firestore collection",
+                                    "Firestore document",
+                                    "real-time listener"
+                                ]
+                            },
+                            {
+                                "en": "Authentication",
+                                "es": "Autenticación",
+                                "definition": "Process of verifying the identity of a user or system before granting access to protected resources.",
+                                "ipa": "/ɔːˌθɛn.tɪˈkeɪ.ʃən/",
+                                "collocations": [
+                                    "user authentication",
+                                    "auth token",
+                                    "sign-in flow"
+                                ]
+                            },
+                            {
+                                "en": "Environment Variable",
+                                "es": "Variable de Entorno",
+                                "definition": "Configuration value stored outside source code to keep secrets like API keys secure from version control exposure.",
+                                "ipa": "/ɪnˈvaɪ.rən.mənt ˈvær.i.ə.bəl/",
+                                "collocations": [
+                                    ".env file",
+                                    "environment secrets",
+                                    "API key security"
+                                ]
+                            }
+                        ],
+                        "socraticoSteps": [
+                            {
+                                "step": 1,
+                                "concept": "Firebase Security — API Key Exposure",
+                                "botQuestion": "A student pushes their web app to a public GitHub repository. Their firebase-config.js file contains: const apiKey = 'AIzaSy_real_key_here'. A security auditor flags this as critical. Why is this dangerous even though Firebase API keys are technically not 'secret' like database passwords? What should the student do instead?",
+                                "requiredKeywords": [
+                                    "environment",
+                                    "variable",
+                                    "public",
+                                    "repository",
+                                    "expose",
+                                    "env",
+                                    "secret"
+                                ],
+                                "minKeywords": 3,
+                                "feedbackSuccess": "¡Análisis de seguridad correcto! Aunque la API key de Firebase no es técnicamente un password, exponer tu API key en un repositorio público permite que actores maliciosos hagan llamadas a tu proyecto de Firebase, consuman tu cuota, manipulen datos si las Security Rules de Firestore son permisivas, o incurran costos en tu cuenta. La solución es usar variables de entorno (.env) y agregar el archivo .env al .gitignore.",
+                                "feedbackRetry": "¿Qué puede hacer alguien que encuentre esa API key en GitHub? ¿Cómo se almacenan correctamente las claves en un proyecto web? ¿Qué archivo del proyecto previene que ciertos archivos se suban a Git?"
+                            }
+                        ],
+                        "quiz": [
+                            {
+                                "q": "Which Firebase service provides user login functionality (email + Google)?",
+                                "options": [
+                                    "Firebase Authentication",
+                                    "Firebase Firestore",
+                                    "Firebase Storage",
+                                    "Firebase Hosting"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Where should Firebase API keys be stored to keep them secure?",
+                                "options": [
+                                    "In environment variables (.env file, not committed to Git)",
+                                    "Directly in firebase-config.js for easy access",
+                                    "In the README.md documentation",
+                                    "In localStorage in the browser"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Which Firestore method listens for real-time data changes without manual polling?",
+                                "options": [
+                                    "onSnapshot()",
+                                    "getDocs()",
+                                    "getDoc()",
+                                    "query()"
+                                ],
+                                "answer": 0
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "Which Firebase service provides user login functionality (email + Google)?",
+                                "options": [
+                                    "Firebase Authentication",
+                                    "Firebase Firestore",
+                                    "Firebase Storage",
+                                    "Firebase Hosting"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Where should Firebase API keys be stored to keep them secure?",
+                                "options": [
+                                    "In environment variables (.env file, not committed to Git)",
+                                    "Directly in firebase-config.js for easy access",
+                                    "In the README.md documentation",
+                                    "In localStorage in the browser"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Which Firestore method listens for real-time data changes without manual polling?",
+                                "options": [
+                                    "onSnapshot()",
+                                    "getDocs()",
+                                    "getDoc()",
+                                    "query()"
+                                ],
+                                "answer": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "wda-m7",
+                "title": "Deployment — Publishing Your App",
+                "titleES": "Deployment — Publicando tu App en la Web",
+                "icon": "fa-solid fa-rocket",
+                "readings": [
+                    {
+                        "id": "wda-m7-r1",
+                        "title": "Deployment — Publishing Your App to the Web",
+                        "duration": "11 min",
+                        "content": "\n> **Industry Alignment**: Alineado con prácticas de **CI/CD (Continuous Integration / Continuous Deployment)**, control de versiones **Git SCM** y estándares de **CDN (Content Delivery Network)** para distribución global. El 94% de los equipos de desarrollo profesional usa Git como sistema de control de versiones.\n\n# Deployment — Publishing Your App to the Web\n\n## 1. Control de Versiones con Git\n\n**Git** es el sistema de **version control** estándar de la industria. Guarda el historial completo de cambios de tu proyecto:\n\n```bash\n# Configuración inicial (solo una vez)\ngit config --global user.name \"Tu Nombre\"\ngit config --global user.email \"tu@email.com\"\n\n# Flujo diario\ngit init                              # Inicializar repositorio\ngit add .                             # Agregar todos los cambios\ngit commit -m \"feat: add login form\" # Guardar checkpoint\ngit push origin main                  # Subir a GitHub\n```\n\n## 2. Conventional Commits\n\nEstandar de la industria para mensajes de commit legibles:\n\n```bash\ngit commit -m \"feat: add user authentication with Firebase\"\ngit commit -m \"fix: resolve CSS layout break on mobile\"\ngit commit -m \"style: update color palette to match brand\"\ngit commit -m \"docs: add setup instructions to README\"\ngit commit -m \"chore: upgrade Firebase SDK to v10.8\"\n```\n\n## 3. GitHub Pages: Hosting Gratuito\n\n```bash\n# 1. Crear repositorio en GitHub.com\n# 2. Conectar repositorio local\ngit remote add origin https://github.com/tu-usuario/mi-app.git\ngit push -u origin main\n\n# 3. En GitHub: Settings → Pages → Source: Deploy from branch → main\n# URL: https://tu-usuario.github.io/mi-app\n```\n\n## 4. Cloudflare Pages: CDN Global Gratuito\n\n```bash\n# Opción A: Conectar GitHub (recomendado)\n# cloudflare.com → Pages → Connect to Git → Seleccionar repositorio\n# Cada push a main = deploy automático\n\n# Opción B: CLI con Wrangler\nnpm install -g wrangler\nwrangler login\nwrangler pages deploy ./ --project-name mi-app\n# URL: https://mi-app.pages.dev\n```\n\n## 5. Variables de Entorno en Producción\n\n```\nCloudflare Pages:\n  Settings → Environment Variables → Production\n  VITE_FIREBASE_API_KEY = tu_clave_real\n\nGitHub Pages (con GitHub Actions):\n  Settings → Secrets → Actions\n  VITE_FIREBASE_API_KEY = tu_clave_real\n```\n\n## 6. Antigravity en Acción: Deploy Automático\n\nEn Agent Mode, simplemente describe lo que necesitas:\n\n```\nTú: \"Commit all changes with a conventional commit message summarizing\n     what we built today, then push to main and confirm the deploy URL.\"\n\nAgente: [Revisa git status]\n        [git add . && git commit -m 'feat: add course tracker with Firebase']\n        [git push origin main]\n        \"Done! Pushed to main. GitHub Pages will deploy in ~2 minutes.\n         Your site will be live at: https://tu-usuario.github.io/mi-app\"\n```\n\n---\n> **Key Takeaway**: **Git** es tu máquina del tiempo — nunca más perderás código. **GitHub Pages** y **Cloudflare Pages** son gratuitos para proyectos estáticos y están en CDNs globales. Cada `git push` puede ser un **deploy automático** si configuras la integración continua.\n",
+                        "vocabulary": [
+                            {
+                                "en": "Version Control (Git)",
+                                "es": "Control de Versiones",
+                                "definition": "System recording changes to files over time, enabling teams to revert to previous states and collaborate without conflicts.",
+                                "ipa": "/ˈvɜː.ʒən kənˈtroʊl/",
+                                "collocations": [
+                                    "git commit",
+                                    "version history",
+                                    "branch and merge"
+                                ]
+                            },
+                            {
+                                "en": "Deployment",
+                                "es": "Despliegue",
+                                "definition": "Process of releasing a software application to a production environment where real users can access it.",
+                                "ipa": "/dɪˈplɔɪ.mənt/",
+                                "collocations": [
+                                    "deploy to production",
+                                    "deployment pipeline",
+                                    "zero-downtime deploy"
+                                ]
+                            },
+                            {
+                                "en": "CDN (Content Delivery Network)",
+                                "es": "Red de Distribución de Contenido",
+                                "definition": "Globally distributed network of servers caching and delivering web assets from locations physically closer to users.",
+                                "ipa": "/ˌsiː.diːˈɛn/",
+                                "collocations": [
+                                    "CDN edge node",
+                                    "cache invalidation",
+                                    "global CDN"
+                                ]
+                            },
+                            {
+                                "en": "CI/CD",
+                                "es": "Integración y Despliegue Continuos",
+                                "definition": "Software practice automating code building, testing, and deployment whenever changes are pushed to a repository.",
+                                "ipa": "/ˌsiː.aɪ.ˌsiː.ˈdiː/",
+                                "collocations": [
+                                    "CI/CD pipeline",
+                                    "automated deployment",
+                                    "continuous delivery"
+                                ]
+                            }
+                        ],
+                        "socraticoSteps": [
+                            {
+                                "step": 1,
+                                "concept": "Git Workflow and CI/CD",
+                                "botQuestion": "A student pushes directly to their main branch every time they make a change. On Monday, they push a broken update that takes down their live site. A senior developer suggests 'always use feature branches and pull requests'. Explain the problem with pushing directly to main, and describe a safer Git workflow for a solo developer deploying to production.",
+                                "requiredKeywords": [
+                                    "branch",
+                                    "main",
+                                    "pull request",
+                                    "review",
+                                    "merge",
+                                    "staging",
+                                    "test"
+                                ],
+                                "minKeywords": 4,
+                                "feedbackSuccess": "¡Excelente comprensión del flujo de trabajo profesional! Pushear directamente a main es peligroso porque cada push desencadena un deploy inmediato a producción. Un flujo seguro incluso para un desarrollador solo: crear una rama `feature/nombre` para cada cambio, testear localmente, hacer push de la rama, crear un Pull Request, verificar el preview deploy, y solo entonces hacer merge a main.",
+                                "feedbackRetry": "¿Qué pasa automáticamente cuando haces push a main con CI/CD activo? ¿Cómo puedes trabajar en cambios sin afectar la versión en producción? ¿Qué es un Pull Request?"
+                            }
+                        ],
+                        "quiz": [
+                            {
+                                "q": "Which git command saves your staged changes with a message into the repository history?",
+                                "options": [
+                                    "git commit -m 'message'",
+                                    "git push origin main",
+                                    "git add .",
+                                    "git save --message"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "What is the correct Conventional Commits prefix for adding a new feature?",
+                                "options": [
+                                    "feat:",
+                                    "new:",
+                                    "add:",
+                                    "feature:"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "What does a CDN primarily improve about your web application?",
+                                "options": [
+                                    "Load speed by serving assets from servers physically closer to users",
+                                    "Security by encrypting all database connections",
+                                    "Code quality by running automated tests",
+                                    "SEO ranking by submitting your sitemap to Google"
+                                ],
+                                "answer": 0
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "Which git command saves your staged changes with a message into the repository history?",
+                                "options": [
+                                    "git commit -m 'message'",
+                                    "git push origin main",
+                                    "git add .",
+                                    "git save --message"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "What is the correct Conventional Commits prefix for adding a new feature?",
+                                "options": [
+                                    "feat:",
+                                    "new:",
+                                    "add:",
+                                    "feature:"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "What does a CDN primarily improve about your web application?",
+                                "options": [
+                                    "Load speed by serving assets from servers physically closer to users",
+                                    "Security by encrypting all database connections",
+                                    "Code quality by running automated tests",
+                                    "SEO ranking by submitting your sitemap to Google"
+                                ],
+                                "answer": 0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "wda-m8",
+                "title": "Final Project — Build & Launch Your Web App",
+                "titleES": "Proyecto Final — Construye y Lanza tu Web App",
+                "icon": "fa-solid fa-trophy",
+                "readings": [
+                    {
+                        "id": "wda-m8-r1",
+                        "title": "Applied Lab & Capstone: Build & Launch Your Web App",
+                        "duration": "10 min",
+                        "content": "\n> **Milestone Final del Track**: Integra las 7 competencias anteriores en un proyecto personal real. Este módulo guía al alumno desde la definición del MVP hasta el lanzamiento público y la obtención de la micro-credencial.\n\n# Final Project — Build & Launch Your Web App\n\n## 1. Define tu MVP\n\nUn **MVP (Minimum Viable Product)** es la versión más simple de tu idea que entrega valor real. Elige ONE de estas ideas o propón la tuya propia:\n\n| Idea | Stack Recomendado | Dificultad |\n|---|---|---|\n| **Portfolio personal** | HTML + CSS + JS | ⭐ Básico |\n| **Tracker de hábitos** | JS + Firebase Firestore | ⭐⭐ Intermedio |\n| **Mini-blog técnico** | HTML + CSS + JS | ⭐⭐ Intermedio |\n| **Catálogo de recursos STEM** | JS + Firebase + Auth | ⭐⭐⭐ Avanzado |\n| **Dashboard con datos de API pública** | JS + Fetch API | ⭐⭐⭐ Avanzado |\n\n## 2. Proceso de Construcción con Antigravity\n\n```\nDía 1 — SETUP & STRUCTURE\n  [ ] git init + primer commit\n  [ ] index.html con estructura HTML semántica\n  [ ] styles.css con design system (variables CSS)\n  [ ] Antigravity Agent Mode: \"Set up my project structure\"\n\nDía 2 — CORE FEATURES\n  [ ] JavaScript principal: lógica de la app\n  [ ] Conectar Firebase (si aplica)\n  [ ] Antigravity: \"Implement [feature] using our existing CSS variables\"\n\nDía 3 — POLISH & DEPLOY\n  [ ] Responsive design verificado en móvil\n  [ ] Checklist de calidad completo\n  [ ] git push + deploy a GitHub Pages / Cloudflare\n  [ ] URL pública funcionando\n```\n\n## 3. Checklist de Calidad\n\n```\nHTML y Accesibilidad\n☐ Una sola <h1> por página\n☐ Todas las imágenes tienen alt descriptivo\n☐ Forms tienen <label> asociados con for/id\n☐ El site tiene <title> único y descriptivo\n\nCSS y Diseño\n☐ CSS Custom Properties para colores y tipografía\n☐ Responsive: probado en 320px, 768px y 1440px\n☐ No hay texto con contraste insuficiente\n☐ Las animaciones respetan prefers-reduced-motion\n\nJavaScript\n☐ Cero errores en la consola del navegador\n☐ Los forms tienen validación en el cliente\n☐ Los estados de loading/error están implementados\n☐ No hay API keys expuestas en el código\n\nDeployment\n☐ Sitio publicado con URL pública\n☐ Repositorio GitHub limpio con historial de commits\n☐ README.md explica qué es el proyecto y cómo usarlo\n☐ El sitio carga en menos de 3 segundos\n```\n\n## 4. Presentación de tu Proyecto\n\nAl presentar responde estas 5 preguntas:\n\n1. **Problem Statement**: ¿Qué problema resuelve tu app?\n2. **Tech Stack**: ¿Qué tecnologías usaste y por qué?\n3. **Agentic Workflow**: ¿Cómo usaste Antigravity? Da un ejemplo concreto.\n4. **Challenge**: ¿Cuál fue el problema más difícil? ¿Cómo lo resolviste?\n5. **Next Steps**: ¿Qué agregarías en la v2?\n\n---\n> **¡Felicidades!** Al completar este módulo obtienes la micro-credencial **\"Web Developer with Agentic AI\"** — un reconocimiento verificable de que eres capaz de construir y publicar aplicaciones web reales usando las herramientas de desarrollo más avanzadas de 2026.\n",
+                        "vocabulary": [
+                            {
+                                "en": "MVP (Minimum Viable Product)",
+                                "es": "Producto Mínimo Viable",
+                                "definition": "Earliest version of a product with just enough features to be usable by real users and validate a core assumption.",
+                                "ipa": "/ˌɛm.viːˈpiː/",
+                                "collocations": [
+                                    "define the MVP",
+                                    "ship the MVP",
+                                    "iterate beyond MVP"
+                                ]
+                            },
+                            {
+                                "en": "Launch",
+                                "es": "Lanzamiento",
+                                "definition": "The act of making a software product publicly available and accessible to its intended users.",
+                                "ipa": "/lɔːntʃ/",
+                                "collocations": [
+                                    "product launch",
+                                    "launch date",
+                                    "soft launch"
+                                ]
+                            },
+                            {
+                                "en": "Tech Stack",
+                                "es": "Stack Tecnológico",
+                                "definition": "Combination of programming languages, frameworks, databases, and tools used to build a specific application.",
+                                "ipa": "/tɛk stæk/",
+                                "collocations": [
+                                    "full-stack",
+                                    "frontend stack",
+                                    "choose a stack"
+                                ]
+                            },
+                            {
+                                "en": "README",
+                                "es": "Archivo README",
+                                "definition": "Markdown document in a repository root explaining what a project does, how to install it, and how to use it.",
+                                "ipa": "/ˈriːd.miː/",
+                                "collocations": [
+                                    "README.md",
+                                    "project documentation",
+                                    "setup instructions"
+                                ]
+                            }
+                        ],
+                        "socraticoSteps": [
+                            {
+                                "step": 1,
+                                "concept": "MVP Scope Definition",
+                                "botQuestion": "A student wants to build a 'complete social network like Instagram with stories, reels, direct messages, live video, and an AI recommendation algorithm' as their final project. They have 3 days. As their technical mentor, how would you guide them to define a realistic MVP? What features would you include in v1.0 and what would you defer to v2?",
+                                "requiredKeywords": [
+                                    "mvp",
+                                    "scope",
+                                    "core",
+                                    "feature",
+                                    "defer",
+                                    "priority",
+                                    "basic",
+                                    "essential"
+                                ],
+                                "minKeywords": 4,
+                                "feedbackSuccess": "¡Excelente razonamiento de producto! Un MVP de Instagram realista en 3 días podría ser: subir una imagen con título y descripción, verla en un feed cronológico, y dar like. Todo lo demás (stories, reels, DMs, video en vivo, algoritmo de recomendación) es v2, v3, v4. El principio del MVP es: ¿cuál es la cosa más pequeña que valida la idea central?",
+                                "feedbackRetry": "¿Qué hace Instagram en su núcleo más básico? ¿Qué funcionalidades son esenciales para que la app sea reconocible y útil? ¿Cuáles son nice-to-have pero no críticas para v1?"
+                            }
+                        ],
+                        "quiz": [
+                            {
+                                "q": "What is the primary purpose of an MVP (Minimum Viable Product)?",
+                                "options": [
+                                    "Deliver the core value proposition with minimal scope to validate the idea quickly",
+                                    "Build the most complete version possible before launch",
+                                    "Create a prototype that will never be shown to real users",
+                                    "Minimize development costs by removing all features"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Which file in a GitHub repository explains what the project does and how to use it?",
+                                "options": [
+                                    "README.md",
+                                    "package.json",
+                                    "index.html",
+                                    ".gitignore"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Before launching your web app, you discover a Firebase API key is hardcoded in your public JS file. What is the FIRST action to take?",
+                                "options": [
+                                    "Rotate the API key in Firebase Console, move it to an environment variable, then redeploy",
+                                    "Delete the repository and start over",
+                                    "Add a comment saying 'do not share this key'",
+                                    "Make the repository private"
+                                ],
+                                "answer": 0
+                            }
+                        ],
+                        "questions": [
+                            {
+                                "q": "What is the primary purpose of an MVP (Minimum Viable Product)?",
+                                "options": [
+                                    "Deliver the core value proposition with minimal scope to validate the idea quickly",
+                                    "Build the most complete version possible before launch",
+                                    "Create a prototype that will never be shown to real users",
+                                    "Minimize development costs by removing all features"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Which file in a GitHub repository explains what the project does and how to use it?",
+                                "options": [
+                                    "README.md",
+                                    "package.json",
+                                    "index.html",
+                                    ".gitignore"
+                                ],
+                                "answer": 0
+                            },
+                            {
+                                "q": "Before launching your web app, you discover a Firebase API key is hardcoded in your public JS file. What is the FIRST action to take?",
+                                "options": [
+                                    "Rotate the API key in Firebase Console, move it to an environment variable, then redeploy",
+                                    "Delete the repository and start over",
+                                    "Add a comment saying 'do not share this key'",
+                                    "Make the repository private"
+                                ],
+                                "answer": 0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
     }
 };
 
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
     module.exports = LXP_COURSES;
 }

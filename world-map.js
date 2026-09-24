@@ -36,7 +36,8 @@
         'hospitality-food': 'fa-utensils',
         'business-leadership': 'fa-chart-line',
         'project-management': 'fa-diagram-project',
-        'entrepreneurship': 'fa-lightbulb'
+        'entrepreneurship': 'fa-lightbulb',
+        'web-dev-agentic': 'fa-solid fa-code'
     };
 
     const REALM_META = {
@@ -577,8 +578,9 @@
         buildSphereNodes() {
             this.nodes = [];
 
-            // Canonical 26-course sequential learning route (Super Mario / Duolingo Expedition)
+            // Canonical 27-course sequential learning route (Super Mario / Duolingo Expedition)
             const CURRICULUM_SEQUENCE = [
+                'web-dev-agentic',
                 'cybersecurity',
                 'it-innovation',
                 'ai-ml',

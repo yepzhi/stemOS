@@ -576,7 +576,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                 'telecom-iot': 'workplace',
                                 'software-dev': 'technical_debate',
                                 'project-management': 'meetings',
-                                'business-leadership': 'soft_skills'
+                                'business-leadership': 'soft_skills',
+                                'web-dev-agentic': 'technical_debate'
                             };
                             const targetCat = trackCategoryMap[chatState.trackId] || 'workplace';
                             const matching = phrasesData.filter(p => p.category === targetCat);
@@ -1734,11 +1735,13 @@ document.addEventListener('DOMContentLoaded', () => {
         'hospitality-food': 'fa-utensils',
         'business-leadership': 'fa-chart-line',
         'project-management': 'fa-diagram-project',
-        'entrepreneurship': 'fa-lightbulb'
+        'entrepreneurship': 'fa-lightbulb',
+        'web-dev-agentic': 'fa-solid fa-code'
     };
 
     // Track order for consistent unit numbering
     const TRACK_ORDER = [
+        'web-dev-agentic',
         'cybersecurity', 'it-innovation', 'ai-ml', 'telecom-iot', 'software-dev', 'data-analytics',
         'semiconductors', 'electromobility', 'aerospace', 'robotics-automation', 'energy-renewables',
         'advanced-manufacturing', 'industrial-operations', 'mechatronics',
@@ -2503,7 +2506,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    /* --- Constellation Skills Graph (26 Tracks & 4 Clusters) --- */
+    /* --- Constellation Skills Graph (27 Tracks & 4 Clusters) --- */
     const CLUSTER_CONFIG = [
         {
             id: 'cluster-tech',
@@ -2511,12 +2514,13 @@ document.addEventListener('DOMContentLoaded', () => {
             color: '#0284c7',
             x: 20, y: 20, width: 400, height: 245,
             nodes: [
-                { id: 'cybersecurity', x: 95, y: 90, icon: 'fa-solid fa-shield-halved', label: 'Ciberseguridad' },
-                { id: 'it-innovation', x: 220, y: 80, icon: 'fa-solid fa-cloud', label: 'Innovación TI' },
-                { id: 'ai-ml', x: 345, y: 90, icon: 'fa-solid fa-brain', label: 'AI & ML' },
-                { id: 'telecom-iot', x: 95, y: 195, icon: 'fa-solid fa-tower-cell', label: 'Telecom & IoT' },
-                { id: 'software-dev', x: 220, y: 185, icon: 'fa-solid fa-code', label: 'Software Dev' },
-                { id: 'data-analytics', x: 345, y: 195, icon: 'fa-solid fa-chart-pie', label: 'Data Science' }
+                { id: 'cybersecurity', x: 95, y: 75, icon: 'fa-solid fa-shield-halved', label: 'Ciberseguridad' },
+                { id: 'it-innovation', x: 220, y: 65, icon: 'fa-solid fa-cloud', label: 'Innovación TI' },
+                { id: 'ai-ml', x: 345, y: 75, icon: 'fa-solid fa-brain', label: 'AI & ML' },
+                { id: 'telecom-iot', x: 95, y: 145, icon: 'fa-solid fa-tower-cell', label: 'Telecom & IoT' },
+                { id: 'software-dev', x: 220, y: 140, icon: 'fa-solid fa-code', label: 'Software Dev' },
+                { id: 'data-analytics', x: 345, y: 145, icon: 'fa-solid fa-chart-pie', label: 'Data Science' },
+                { id: 'web-dev-agentic', x: 220, y: 215, icon: 'fa-solid fa-code', label: 'Web Dev & AI' }
             ],
             links: [
                 ['cybersecurity', 'it-innovation'],
@@ -2525,7 +2529,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 ['it-innovation', 'software-dev'],
                 ['ai-ml', 'data-analytics'],
                 ['telecom-iot', 'software-dev'],
-                ['software-dev', 'data-analytics']
+                ['software-dev', 'data-analytics'],
+                ['software-dev', 'web-dev-agentic'],
+                ['it-innovation', 'web-dev-agentic']
             ]
         },
         {
