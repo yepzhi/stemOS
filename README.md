@@ -1,5 +1,7 @@
 # stemOS LXP: Next-Generation Learning Experience Platform
 
+> 📌 **Plan de Desarrollo & Roadmap de Mejora 2026**: Consulta [`PLAN_DE_DESARROLLO.md`](./PLAN_DE_DESARROLLO.md) para el roadmap estratégico, diagnóstico de producto, eje dual (Industria ✖ Habilidad) y fases de ejecución activas.
+
 **stemOS** es una plataforma de aprendizaje (LXP) nativa para América Latina, orientada al desarrollo de competencias STEM y alineada con la demanda de nearshoring industrial en el norte de México.
 
 ## Pilares de Diseño y Funciones Clave
