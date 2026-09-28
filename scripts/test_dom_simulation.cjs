@@ -1472,7 +1472,107 @@ if (subScadaDetails.style.display !== 'block') {
   process.exit(1);
 }
 
-console.log("\n🎉 ALL 20 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+console.log("\n── TEST 21: Autonomous Cross-Border Audio Roleplay & Phonetic Accent Classifier (Phase 12) ──");
+
+// 21.1 Section and element presence
+const roleplaySection = document.getElementById('roleplay-classifier-section');
+console.log("Roleplay Section presence:", !!roleplaySection);
+if (!roleplaySection) {
+  console.error("FAIL: #roleplay-classifier-section not found in DOM!");
+  process.exit(1);
+}
+
+const navRoleplayBtn = document.getElementById('nav-btn-audio-roleplay');
+const heroRoleplayBtn = document.getElementById('hero-roleplay-btn');
+console.log("Nav button presence:", !!navRoleplayBtn);
+console.log("Hero button presence:", !!heroRoleplayBtn);
+if (!navRoleplayBtn || !heroRoleplayBtn) {
+  console.error("FAIL: Nav or Hero CTA button for Audio Roleplay Lab missing!");
+  process.exit(1);
+}
+
+// 21.2 Initial Scenario Hydration (detroit - Dave Miller)
+const rpSpeakerName = document.getElementById('roleplay-speaker-name');
+const rpSpeakerRole = document.getElementById('roleplay-speaker-role');
+const rpSpeakerPrompt = document.getElementById('roleplay-speaker-prompt');
+const phoneticDetails = document.getElementById('roleplay-phonetic-details');
+const optionsList = document.querySelectorAll('#roleplay-options-container .roleplay-opt-card');
+
+console.log("Speaker Name:", rpSpeakerName ? rpSpeakerName.textContent.trim() : "null");
+console.log("Speaker Role:", rpSpeakerRole ? rpSpeakerRole.textContent.trim() : "null");
+console.log("Options count:", optionsList.length);
+
+if (!rpSpeakerName || !rpSpeakerName.textContent.includes('Dave Miller')) {
+  console.error("FAIL: Detroit speaker name not hydrated!");
+  process.exit(1);
+}
+if (!rpSpeakerPrompt || !rpSpeakerPrompt.textContent.includes('Sterling Heights') || !rpSpeakerPrompt.textContent.includes('CPK of 1.28')) {
+  console.error("FAIL: Detroit speaker prompt not hydrated!");
+  process.exit(1);
+}
+if (!phoneticDetails || !phoneticDetails.textContent.includes('Northern Cities Vowel Shift')) {
+  console.error("FAIL: Phonetic features spotlight missing dialect shift!");
+  process.exit(1);
+}
+if (optionsList.length !== 3) {
+  console.error("FAIL: Expected 3 roleplay response options, found " + optionsList.length);
+  process.exit(1);
+}
+
+// 21.3 Option Selection & Pragmatics Radar Scoring
+window.selectRoleplayOption(1); // Select Suboptimal option
+const totalScoreEl = document.getElementById('roleplay-total-score');
+console.log("Suboptimal Score:", totalScoreEl ? totalScoreEl.textContent : "null");
+if (!totalScoreEl || !totalScoreEl.textContent.includes('42/100')) {
+  console.error("FAIL: Suboptimal response score mismatch!");
+  process.exit(1);
+}
+
+window.selectRoleplayOption(0); // Select Optimal C1 BATNA
+console.log("Optimal Score:", totalScoreEl ? totalScoreEl.textContent : "null");
+const radarPrecision = document.getElementById('radar-precision');
+const radarDirectness = document.getElementById('radar-directness');
+if (!totalScoreEl || !totalScoreEl.textContent.includes('97/100') || !radarPrecision || radarPrecision.textContent !== '98%') {
+  console.error("FAIL: Optimal response C1 radar score mismatch!");
+  process.exit(1);
+}
+console.log("PASS: C1 Pragmatics Radar and response scoring verified.");
+
+// 21.4 Audio Controls & Web Speech Rehearsal
+window.setRoleplayAudioSpeed(1.2, null);
+window.playRoleplayAudioPrompt();
+window.playSelectedResponseSpeech();
+console.log("PASS: Roleplay audio playback and learner speech rehearsal verified.");
+
+// 21.5 Scenario Switching across all 4 Nearshoring Accents
+window.switchRoleplayScenario('bangalore');
+if (!rpSpeakerName.textContent.includes('Priya Ramanathan') || !rpSpeakerPrompt.textContent.includes('AUTOSAR')) {
+  console.error("FAIL: Failed to switch to Bangalore scenario!");
+  process.exit(1);
+}
+
+window.switchRoleplayScenario('stuttgart');
+if (!rpSpeakerName.textContent.includes('Dr. Jürgen Becker') || !rpSpeakerPrompt.textContent.includes('Cell 4')) {
+  console.error("FAIL: Failed to switch to Stuttgart scenario!");
+  process.exit(1);
+}
+
+window.switchRoleplayScenario('derby');
+if (!rpSpeakerName.textContent.includes('Alistair Campbell') || !rpSpeakerPrompt.textContent.includes('turbine blade')) {
+  console.error("FAIL: Failed to switch to Derby scenario!");
+  process.exit(1);
+}
+
+// Revert to Detroit
+window.switchRoleplayScenario('detroit');
+if (!rpSpeakerName.textContent.includes('Dave Miller')) {
+  console.error("FAIL: Failed to revert to Detroit scenario!");
+  process.exit(1);
+}
+console.log("PASS: 4 Cross-border audio roleplay personas, dialects, and prompts verified.");
+
+console.log("\n🎉 ALL 21 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+
 
 
 

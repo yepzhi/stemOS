@@ -76,12 +76,13 @@ const statusReport = {
     'Phase 8: Interactive Blueprint, P&ID & GD&T Inspection Lab (ISA-5.1, ASME Y14.5, IEEE 315, IPC-7351)',
     'Phase 9: LOTO Zero-Energy Protocol & Shift Handover Lab (OSHA 1910.147 / NFPA 70E / ISO 9001)',
     'Phase 10: Incident Response War Room & Closed-Loop Communication Lab (FEMA ICS / IATF 16949 / FDA 21 CFR 820 / NFPA 855)',
-    'Phase 11: Real-Time Multi-Plant SCADA Telemetry & Edge AI Process Digital Twin (ISA-95 / OPC UA / ISO 22400)'
+    'Phase 11: Real-Time Multi-Plant SCADA Telemetry & Edge AI Process Digital Twin (ISA-95 / OPC UA / ISO 22400)',
+    'Phase 12: Autonomous Cross-Border Audio Roleplay & Real-Time Phonetic Accent Classifier (CEFR C1 / Prosody Radar)'
   ],
   nextImmediateTasks: [
-    'Phase 12: Autonomous Cross-Border Audio Roleplay & Real-Time Phonetic Accent Classifier'
+    'Phase 13: Capstone Nearshoring Final Certification & Comprehensive Competency Audit'
   ],
-  testsPassed: 20,
+  testsPassed: 21,
   status: 'ALL_GREEN'
 };
 

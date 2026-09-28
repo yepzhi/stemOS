@@ -53,6 +53,7 @@
         <a href="#loto-handover-section" class="nav-link" id="nav-btn-loto-lab"><i class="fa-solid fa-lock" style="color:#ef4444; margin-right:4px;"></i> LOTO &amp; Shift Handover</a>
         <a href="#incident-war-room-section" class="nav-link" id="nav-btn-warroom"><i class="fa-solid fa-headset" style="color:#f43f5e; margin-right:4px;"></i> Incident War Room</a>
         <a href="#scada-digitaltwin-section" class="nav-link" id="nav-btn-scada"><i class="fa-solid fa-gauge-high" style="color:#06b6d4; margin-right:4px;"></i> SCADA &amp; Digital Twin</a>
+        <a href="#roleplay-classifier-section" class="nav-link" id="nav-btn-audio-roleplay"><i class="fa-solid fa-headphones-simple" style="color:#ec4899; margin-right:4px;"></i> Audio Roleplay Lab</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-certificates" onclick="openCertificateModal()"><i class="fa-solid fa-award" style="color:#eab308; margin-right:4px;"></i> Certificates &amp; QR</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-cloud-sync" onclick="openCloudSyncModal()"><i class="fa-solid fa-cloud-arrow-up" style="color:#06b6d4; margin-right:4px;"></i> <span id="nav-cloud-status">Cloud Sync</span></a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-stembot" onclick="toggleStemBotCopilot(true)"><i class="fa-solid fa-robot" style="color:#0ea5e9; margin-right:4px;"></i> STEMBot Copilot</a>
@@ -134,6 +135,10 @@
         <a href="#scada-digitaltwin-section" class="supaste-btn-secondary" id="hero-scada-btn" style="border-color: rgba(6, 182, 212, 0.4); background: rgba(6, 182, 212, 0.12);">
           <i class="fa-solid fa-gauge-high" style="color:#06b6d4;"></i>
           <span>SCADA &amp; Digital Twin</span>
+        </a>
+        <a href="#roleplay-classifier-section" class="supaste-btn-secondary" id="hero-roleplay-btn" style="border-color: rgba(236, 72, 153, 0.4); background: rgba(236, 72, 153, 0.12);">
+          <i class="fa-solid fa-headphones-simple" style="color:#ec4899;"></i>
+          <span>Audio Roleplay Lab</span>
         </a>
         <a href="#hero-showcase-window" class="supaste-btn-secondary" id="hero-view-demo-btn">
           <i class="fa-solid fa-laptop-code"></i>
@@ -2865,6 +2870,142 @@
               <!-- Dynamically populated -->
             </div>
             <div class="scada-quiz-feedback" id="scada-quiz-feedback" style="display:none;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Phase 12: Autonomous Cross-Border Audio Roleplay & Phonetic Accent Classifier ── -->
+  <section class="roleplay-classifier-section" id="roleplay-classifier-section">
+    <div class="roleplay-container">
+      <!-- Section Header -->
+      <div class="roleplay-header-wrap">
+        <div class="roleplay-badge">
+          <i class="fa-solid fa-microphone-lines"></i> EXECUTIVE C1 ESP &bull; NATIVE SPEECH PROSODY &amp; PRAGMATIC RADAR
+        </div>
+        <h2 class="roleplay-title">Cross-Border Audio Roleplay &amp; Phonetic Accent Classifier</h2>
+        <p class="roleplay-desc">
+          High-fidelity spoken roleplay simulation with global engineering counterparts. Train against real-world native accents (US Midwest, Indian Subcontinent, German Industrial, British Aerospace), decode phonetic shifts and idiomatic traps in real time, and practice C1 technical pushback.
+        </p>
+      </div>
+
+      <!-- Scenario Selector Bar -->
+      <div class="roleplay-scenario-bar">
+        <button class="roleplay-chip active" id="chip-roleplay-detroit" onclick="switchRoleplayScenario('detroit')">
+          <i class="fa-solid fa-car-side"></i> 1. Detroit OEM Tooling Review (Dave Miller)
+        </button>
+        <button class="roleplay-chip" id="chip-roleplay-bangalore" onclick="switchRoleplayScenario('bangalore')">
+          <i class="fa-solid fa-microchip"></i> 2. Bangalore AUTOSAR Firmware Sprint (Priya Ramanathan)
+        </button>
+        <button class="roleplay-chip" id="chip-roleplay-stuttgart" onclick="switchRoleplayScenario('stuttgart')">
+          <i class="fa-solid fa-robot"></i> 3. Stuttgart Robotics Kinematics Audit (Dr. Jürgen Becker)
+        </button>
+        <button class="roleplay-chip" id="chip-roleplay-derby" onclick="switchRoleplayScenario('derby')">
+          <i class="fa-solid fa-plane-up"></i> 4. Derby Aerospace NDT Sign-Off (Alistair Campbell)
+        </button>
+      </div>
+
+      <!-- Workbench Grid -->
+      <div class="roleplay-workbench-grid">
+        <!-- Left Column: Speaker Persona, Audio Dialogue Thread & Phonetic Breakdown -->
+        <div class="roleplay-card-panel">
+          <!-- Persona Card -->
+          <div class="roleplay-speaker-card">
+            <div class="roleplay-speaker-avatar" id="roleplay-speaker-avatar">
+              <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <div class="roleplay-speaker-info">
+              <div class="roleplay-speaker-name" id="roleplay-speaker-name">
+                Dave Miller <span id="roleplay-speaker-flag">🇺🇸</span>
+              </div>
+              <div class="roleplay-speaker-role" id="roleplay-speaker-role">
+                Vehicle Launch Director &bull; Detroit Assembly OEM
+              </div>
+            </div>
+            <span class="roleplay-accent-badge" id="roleplay-speaker-dialect">US Midwest / Vowel Shift</span>
+          </div>
+
+          <!-- Conversational Dialogue Box -->
+          <div class="roleplay-dialogue-box">
+            <div class="roleplay-bubble-speaker">
+              <div class="roleplay-bubble-title">
+                <i class="fa-solid fa-volume-high"></i> Spoken Turn (Counterpart):
+              </div>
+              <div class="roleplay-bubble-text" id="roleplay-speaker-prompt">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- Audio Controls -->
+            <div class="roleplay-audio-ctrls">
+              <button class="btn-loto-action" onclick="playRoleplayAudioPrompt()">
+                <i class="fa-solid fa-play"></i> Listen Counterpart Audio
+              </button>
+              <div class="roleplay-speed-group">
+                <button class="roleplay-speed-btn" onclick="setRoleplayAudioSpeed(0.85, this)">0.85x</button>
+                <button class="roleplay-speed-btn active" onclick="setRoleplayAudioSpeed(1.0, this)">1.0x</button>
+                <button class="roleplay-speed-btn" onclick="setRoleplayAudioSpeed(1.2, this)">1.2x</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phonetic & Pragmatic Dialect Features Spotlight -->
+          <div class="roleplay-phonetic-card">
+            <div class="roleplay-phonetic-head">
+              <i class="fa-solid fa-ear-listen"></i> Acoustic &amp; Pragmatic Dialect Classifier:
+            </div>
+            <div class="roleplay-phonetic-features" id="roleplay-phonetic-details">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: User Spoken Response Practicum & Real-Time C1 Radar -->
+        <div class="roleplay-response-card">
+          <div class="roleplay-section-title">
+            <i class="fa-solid fa-comments"></i> Select Your C1 Technical Response Strategy:
+          </div>
+
+          <div class="roleplay-options-list" id="roleplay-options-container">
+            <!-- Dynamically populated response options (Optimal BATNA, Aggressive, Capitulation) -->
+          </div>
+
+          <!-- Practice Audio Record / Speech Simulation Button -->
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <button class="btn-loto-action" style="background:rgba(236,72,153,0.25); border-color:#ec4899; color:#f472b6;" onclick="playSelectedResponseSpeech()">
+              <i class="fa-solid fa-microphone"></i> Rehearse Spoken Response (TTS)
+            </button>
+            <span style="font-size:0.7rem; color:#94a3b8;" id="roleplay-eval-status">Select option to score</span>
+          </div>
+
+          <!-- Pragmatic Scorecard & C1 Competency Radar -->
+          <div class="roleplay-scorecard">
+            <div style="font-size:0.76rem; font-weight:700; color:#a5b4fc; margin-bottom:10px; display:flex; justify-content:space-between;">
+              <span><i class="fa-solid fa-chart-radar"></i> C1 Pragmatics Radar Evaluation</span>
+              <span id="roleplay-total-score" style="color:#34d399; font-family:'JetBrains Mono',monospace;">SCORE: 96/100</span>
+            </div>
+            <div class="roleplay-radar-grid">
+              <div class="roleplay-radar-item">
+                <div class="roleplay-radar-lbl">Directness Index</div>
+                <div class="roleplay-radar-val" id="radar-directness">94%</div>
+              </div>
+              <div class="roleplay-radar-item">
+                <div class="roleplay-radar-lbl">Hedging Control</div>
+                <div class="roleplay-radar-val" id="radar-hedging">96%</div>
+              </div>
+              <div class="roleplay-radar-item">
+                <div class="roleplay-radar-lbl">Technical Precision</div>
+                <div class="roleplay-radar-val" id="radar-precision">98%</div>
+              </div>
+              <div class="roleplay-radar-item">
+                <div class="roleplay-radar-lbl">Cultural Alignment</div>
+                <div class="roleplay-radar-val" id="radar-culture">95%</div>
+              </div>
+            </div>
+            <div class="roleplay-feedback-text" id="roleplay-feedback-text">
+              <!-- Dynamically populated feedback -->
+            </div>
           </div>
         </div>
       </div>

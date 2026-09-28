@@ -341,6 +341,7 @@ function initStudio() {
   setupLotoAndShiftHandoverLab(tracks);
   setupIncidentWarRoomLab(tracks);
   setupScadaDigitalTwinLab(tracks);
+  setupCrossBorderAudioRoleplayLab(tracks);
 }
 
 function setupLevelSwitcher(tracks, phrases) {
@@ -9670,6 +9671,323 @@ SCADA Operator Authorization: VERIFIED (ISO 22400 OEE & OPC-UA)`;
   // Initial Plant Hydration
   window.switchScadaPlant('saltillo');
 }
+
+/* ==========================================================================
+   PHASE 12: AUTONOMOUS CROSS-BORDER AUDIO ROLEPLAY & PHONETIC ACCENT CLASSIFIER
+   ========================================================================== */
+function setupCrossBorderAudioRoleplayLab(tracks) {
+  const ROLEPLAY_SCENARIOS = {
+    detroit: {
+      key: 'detroit',
+      speaker: 'Dave Miller',
+      flag: '🇺🇸',
+      role: 'Vehicle Launch Director • Detroit Assembly OEM',
+      dialect: 'US Midwest / Northern Cities Vowel Shift',
+      avatarIcon: 'fa-solid fa-car-side',
+      langCode: 'en-US',
+      pitch: 1.0,
+      rate: 1.05,
+      prompt: "Look, we're four hours away from first-shift production in Sterling Heights. Your CMM report on the B-pillar stamping shows a CPK of 1.28, which is well below the 1.67 mandate. If we don't have certified dimensional capability before noon, I'm pulling the plug on the launch and billing your plant for the line-stop. What is your immediate recovery protocol?",
+      phonetic: [
+        "• Northern Cities Vowel Shift: Fronted, raised /æ/ in 'stamping', 'plant', 'mandate'.",
+        "• Alveolar Flap: Fast voiced tap [ɾ] on 'getting', 'capability', 'immediate'.",
+        "• Idiom Alert: 'Pulling the plug' = abrupt unilateral cancellation of supplier authorization.",
+        "• Pragmatic Directness: High urgency, low tolerance for polite preambles or excuses."
+      ],
+      options: [
+        {
+          type: 'optimal',
+          badge: 'OPTIMAL C1 BATNA',
+          badgeClass: 'optimal',
+          title: 'Data-Driven Technical BATNA (Recommended C1)',
+          quote: "\"Dave, we understand the critical urgency for Sterling Heights. Our tooling team is already on the progressive die performing a 0.15mm shim adjustment on the lower binder ring. We are running a 30-piece capability verification right now and will deliver certified CMM coordinates verifying CPK of 1.71 by 11:30 EST, well before your noon cutoff. You will not face line disruption.\"",
+          radar: { directness: '96%', hedging: '98%', precision: '98%', culture: '96%', score: '97/100' },
+          feedback: "Outstanding C1 performance! You acknowledged urgency without groveling, stated precise tooling mechanics (0.15mm shim), set an aggressive checkpoint 30 minutes ahead of his deadline, and guaranteed zero line disruption."
+        },
+        {
+          type: 'suboptimal',
+          badge: 'SUBOPTIMAL HEDGING',
+          badgeClass: 'suboptimal',
+          title: 'Overly Apologetic & Defensive Hedging',
+          quote: "\"We are so sorry Dave, we had a lot of unexpected machine vibrations last night. Maybe if you could give us a few extra hours until 3 PM we could try to see what's wrong with the die? We will do our very best.\"",
+          radar: { directness: '40%', hedging: '35%', precision: '45%', culture: '50%', score: '42/100' },
+          feedback: "Weak executive presence. Phrases like 'we are so sorry', 'maybe', and 'try to see' destroy Detroit's confidence in your plant, inviting immediate corporate escalation."
+        },
+        {
+          type: 'hazard',
+          badge: 'HAZARDOUS ESCALATION',
+          badgeClass: 'hazard',
+          title: 'Aggressive Contractual Pushback',
+          quote: "\"Our raw steel coil supplier sent us out-of-spec tensile yield material, so this tolerance deviation is not our fault. You cannot bill us for line downtime when the steel mill is the one responsible.\"",
+          radar: { directness: '70%', hedging: '60%', precision: '50%', culture: '20%', score: '45/100' },
+          feedback: "Disastrous customer relationship management. Blaming sub-tier suppliers in front of the OEM Launch Director during an active crisis guarantees de-sourcing."
+        }
+      ]
+    },
+
+    bangalore: {
+      key: 'bangalore',
+      speaker: 'Priya Ramanathan',
+      flag: '🇮🇳',
+      role: 'Principal Embedded Systems Architect • Bangalore',
+      dialect: 'South Asian English (Indian Subcontinent)',
+      avatarIcon: 'fa-solid fa-microchip',
+      langCode: 'en-IN',
+      pitch: 1.1,
+      rate: 1.05,
+      prompt: "Hi team, regarding the AUTOSAR classic memory stack on the microcontroller, kindly prepone the sprint review to 4 PM. We observed that the CAN FD transceiver is throwing sporadic bus-off errors during bus-load peaks. Please do the needful and revert back with the trace logs once the SPI bus analyzer is connected.",
+      phonetic: [
+        "• Retroflex Consonants: Retroflex curvature [ʈ, ɖ] in 'transceiver', 'needful', 'trace'.",
+        "• Syllable-Timed Cadence: Relatively equal duration across unstressed syllables.",
+        "• Corporate Collocations: 'Prepone' = advance meeting; 'Do the needful' = execute standard remediation protocol; 'Revert back' = reply with data."
+      ],
+      options: [
+        {
+          type: 'optimal',
+          badge: 'OPTIMAL C1 BATNA',
+          badgeClass: 'optimal',
+          title: 'Precise Hardware-Software Verification (Recommended C1)',
+          quote: "\"Thank you Priya. We have rescheduled the sprint review to 4:00 PM. Our firmware team has connected the Saleae logic analyzer to the SPI bus. We identified a priority inversion on the CAN FD interrupt vector during DMA buffer flush. We are applying a spinlock mutex patch and will upload the comparative oscilloscope trace to the Jira ticket in 25 minutes.\"",
+          radar: { directness: '95%', hedging: '96%', precision: '99%', culture: '98%', score: '98/100' },
+          feedback: "Flawless collaboration! You accommodated the rescheduled review, decoded 'do the needful' with concrete technical root cause (priority inversion on DMA), and committed to timely trace uploads."
+        },
+        {
+          type: 'suboptimal',
+          badge: 'SUBOPTIMAL DIALECT CONFUSION',
+          badgeClass: 'suboptimal',
+          title: 'Confused Dialect Query',
+          quote: "\"What do you mean by prepone? In our dictionary prepone is not a word. Also what needful do you want us to do? Please clarify because we are confused.\"",
+          radar: { directness: '50%', hedging: '60%', precision: '30%', culture: '35%', score: '44/100' },
+          feedback: "Pedantic and culturally tone-deaf. Questioning common Indian English idioms halts technical progress during a critical firmware freeze."
+        },
+        {
+          type: 'hazard',
+          badge: 'HAZARDOUS DEFENSE',
+          badgeClass: 'hazard',
+          title: 'Dismissive Hardware Denial',
+          quote: "\"The CAN FD transceiver works fine on our bench. Your Bangalore software stack must have a memory leak. We won't test anything on the SPI bus until you fix your code.\"",
+          radar: { directness: '65%', hedging: '40%', precision: '35%', culture: '20%', score: '38/100' },
+          feedback: "Destructive finger-pointing. Blaming remote firmware teams without attaching hardware traces breaks cross-border agile collaboration."
+        }
+      ]
+    },
+
+    stuttgart: {
+      key: 'stuttgart',
+      speaker: 'Dr. Jürgen Becker',
+      flag: '🇩🇪',
+      role: 'Director of Robotics & Automation • Stuttgart',
+      dialect: 'German Industrial English (Automotive HQ)',
+      avatarIcon: 'fa-solid fa-robot',
+      langCode: 'de-DE',
+      pitch: 0.95,
+      rate: 0.95,
+      prompt: "Guten Tag. The actual cycle time of the 6-axis welding robot in Cell 4 is currently 42 seconds, which is totally unacceptable against the specification of 36 seconds. We must control the servo acceleration parameters immediately. The kinematics cannot be compromised by sloppy trajectory programming. I expect an exact root cause protocol today.",
+      phonetic: [
+        "• Fricative Shift /w/ to /v/: 'welding' sounds like 'velding', 'we' sounds like 've'.",
+        "• False Friends: 'Actual' = currently / present (aktuell); 'Control' = inspect / audit (kontrollieren).",
+        "• Directness: Zero polite hedging, immediate focus on technical non-conformance."
+      ],
+      options: [
+        {
+          type: 'optimal',
+          badge: 'OPTIMAL C1 BATNA',
+          badgeClass: 'optimal',
+          title: 'Kinematic Root Cause Analysis (Recommended C1)',
+          quote: "\"Good morning Dr. Becker. We have audited the kinematics in Cell 4. The 6-second variance is isolated to the safety zone deceleration on the torch changeover axis J5. We are optimizing the Bézier spline trajectory in KUKA WorkVisual, reducing axis travel by 140mm without exceeding rated motor torque. We will upload the comparative time-motion trace and revised cycle protocol by 16:00 CET.\"",
+          radar: { directness: '98%', hedging: '97%', precision: '99%', culture: '97%', score: '98/100' },
+          feedback: "Exemplary German engineering communication! Pure mathematical facts, specific kinematic parameters (axis J5 Bézier spline), and a firm delivery time for the analytical protocol."
+        },
+        {
+          type: 'suboptimal',
+          badge: 'SUBOPTIMAL SUBJECTIVITY',
+          badgeClass: 'suboptimal',
+          title: 'Subjective Reassurance',
+          quote: "\"Good day Dr. Becker. Don't worry, 42 seconds is still pretty fast and the welds look very strong. We will ask the operators to push the start button faster to make up the time.\"",
+          radar: { directness: '40%', hedging: '30%', precision: '20%', culture: '20%', score: '28/100' },
+          feedback: "Completely unacceptable in German industrial culture. Subjective opinions ('welds look strong') and operator speedup suggestions demonstrate lack of engineering rigor."
+        },
+        {
+          type: 'hazard',
+          badge: 'HAZARDOUS MISUNDERSTANDING',
+          badgeClass: 'hazard',
+          title: 'False Friend Misinterpretation',
+          quote: "\"You say the cycle time is actual, but our actual time is different from your actual time. And you cannot control our machines from Stuttgart, we have plant sovereignty.\"",
+          radar: { directness: '50%', hedging: '40%', precision: '30%', culture: '15%', score: '32/100' },
+          feedback: "Fails on vocabulary and politics. Misunderstanding 'actual' and 'control' turns a routine technical deviation into an inter-facility governance dispute."
+        }
+      ]
+    },
+
+    derby: {
+      key: 'derby',
+      speaker: 'Alistair Campbell',
+      flag: '🇬🇧',
+      role: 'Chief Propulsion Inspector • Derby, UK',
+      dialect: 'British Aerospace English (RP / Midlands)',
+      avatarIcon: 'fa-solid fa-plane-up',
+      langCode: 'en-GB',
+      pitch: 1.0,
+      rate: 1.0,
+      prompt: "Right, I've had a look at the ultrasonic non-destructive testing results on the turbine blade root forgings. I have a slight reservation regarding the surface finish Ra values on batch 408. It's not quite what we’d hoped for, to be frank. Shall we table this matter right away and get the metallurgical team sorted before we sign off on the release?",
+      phonetic: [
+        "• Non-Rhoticity: Dropped post-vocalic /r/ in 'forgings', 'matter', 'surface'.",
+        "• Dialect Trap: 'Table this matter' in British English means discuss immediately right now (the exact opposite of US English which means postpone!).",
+        "• British Understatement: 'Slight reservation' / 'Not quite what we hoped for' = critical aerospace non-conformance."
+      ],
+      options: [
+        {
+          type: 'optimal',
+          badge: 'OPTIMAL C1 BATNA',
+          badgeClass: 'optimal',
+          title: 'Immediate Aerospace Containment (Recommended C1)',
+          quote: "\"Thank you Alistair. We share your concern on batch 408. Let us bring this to the table immediately. Our lead metallurgist is pulling the profilometer calibration records right now. We have placed an immediate quarantine hold on all 120 forgings. We propose a 100% white-light interferometry scan to verify Ra roughness tolerances before signing off.\"",
+          radar: { directness: '97%', hedging: '98%', precision: '98%', culture: '99%', score: '98/100' },
+          feedback: "Masterclass in British aerospace diplomacy! You recognized that 'table this' means discuss NOW, decoded 'slight reservation' as a hard stop, quarantined the batch, and proposed high-precision interferometry."
+        },
+        {
+          type: 'suboptimal',
+          badge: 'SUBOPTIMAL DIALECT TRAP',
+          badgeClass: 'suboptimal',
+          title: 'Postponement Blunder (Dialect Trap)',
+          quote: "\"Yes Alistair, let's table this matter as you suggest and postpone the discussion until next month since you only have a slight reservation.\"",
+          radar: { directness: '30%', hedging: '40%', precision: '40%', culture: '20%', score: '32/100' },
+          feedback: "Catastrophic dialect error! You fell into the American 'to table' trap (postpone), ignoring the urgent safety hazard while Campbell wanted to discuss it immediately on the call."
+        },
+        {
+          type: 'hazard',
+          badge: 'HAZARDOUS MINIMIZATION',
+          badgeClass: 'hazard',
+          title: 'Dismissive Literalism',
+          quote: "\"If it's only a slight reservation, it's not a big deal. The turbine blades are smooth enough. Let's just sign the release certificate now so we don't delay shipment.\"",
+          radar: { directness: '60%', hedging: '20%', precision: '25%', culture: '10%', score: '28/100' },
+          feedback: "Critical aviation safety hazard. Taking British understatements literally and pushing to release suspect rotating aero turbine components violates EASA/FAA airworthiness regulations."
+        }
+      ]
+    }
+  };
+
+  let currentScenarioKey = 'detroit';
+  let selectedOptionIndex = 0;
+  let currentAudioSpeed = 1.0;
+
+  window.switchRoleplayScenario = function(scenarioKey) {
+    if (!ROLEPLAY_SCENARIOS[scenarioKey]) return;
+    currentScenarioKey = scenarioKey;
+    selectedOptionIndex = 0;
+    const scen = ROLEPLAY_SCENARIOS[scenarioKey];
+
+    // Update chips
+    document.querySelectorAll('.roleplay-chip').forEach(btn => {
+      btn.classList.toggle('active', btn.id === `chip-roleplay-${scenarioKey}`);
+    });
+
+    // Update Persona
+    const nameEl = document.getElementById('roleplay-speaker-name');
+    const roleEl = document.getElementById('roleplay-speaker-role');
+    const dialectEl = document.getElementById('roleplay-speaker-dialect');
+    const avatarEl = document.getElementById('roleplay-speaker-avatar');
+    if (nameEl) nameEl.innerHTML = `${scen.speaker} <span id="roleplay-speaker-flag">${scen.flag}</span>`;
+    if (roleEl) roleEl.textContent = scen.role;
+    if (dialectEl) dialectEl.textContent = scen.dialect;
+    if (avatarEl) avatarEl.innerHTML = `<i class="${scen.avatarIcon}"></i>`;
+
+    // Update Prompt text
+    const promptEl = document.getElementById('roleplay-speaker-prompt');
+    if (promptEl) promptEl.textContent = `"${scen.prompt}"`;
+
+    // Update Phonetic features
+    const phoneticEl = document.getElementById('roleplay-phonetic-details');
+    if (phoneticEl) phoneticEl.innerHTML = scen.phonetic.join('<br>');
+
+    // Render Options
+    renderRoleplayOptions();
+
+    // Select Option 0 by default
+    selectRoleplayOption(0);
+  };
+
+  function renderRoleplayOptions() {
+    const scen = ROLEPLAY_SCENARIOS[currentScenarioKey];
+    const container = document.getElementById('roleplay-options-container');
+    if (!scen || !container) return;
+
+    container.innerHTML = scen.options.map((opt, idx) => `
+      <div class="roleplay-opt-card ${idx === selectedOptionIndex ? 'selected' : ''}" onclick="selectRoleplayOption(${idx})">
+        <div class="roleplay-opt-header">
+          <span style="font-size:0.78rem; font-weight:700; color:#f8fafc;">${opt.title}</span>
+          <span class="roleplay-opt-badge ${opt.badgeClass}">${opt.badge}</span>
+        </div>
+        <div class="roleplay-opt-quote">${opt.quote}</div>
+      </div>
+    `).join('');
+  }
+
+  window.selectRoleplayOption = function(idx) {
+    selectedOptionIndex = idx;
+    renderRoleplayOptions();
+
+    const scen = ROLEPLAY_SCENARIOS[currentScenarioKey];
+    if (!scen || !scen.options[idx]) return;
+    const opt = scen.options[idx];
+
+    // Update Radar & Scorecard
+    const totalEl = document.getElementById('roleplay-total-score');
+    const directnessEl = document.getElementById('radar-directness');
+    const hedgingEl = document.getElementById('radar-hedging');
+    const precisionEl = document.getElementById('radar-precision');
+    const cultureEl = document.getElementById('radar-culture');
+    const feedbackEl = document.getElementById('roleplay-feedback-text');
+    const statusEl = document.getElementById('roleplay-eval-status');
+
+    if (totalEl) totalEl.textContent = `SCORE: ${opt.radar.score}`;
+    if (directnessEl) directnessEl.textContent = opt.radar.directness;
+    if (hedgingEl) hedgingEl.textContent = opt.radar.hedging;
+    if (precisionEl) precisionEl.textContent = opt.radar.precision;
+    if (cultureEl) cultureEl.textContent = opt.radar.culture;
+    if (feedbackEl) feedbackEl.textContent = opt.feedback;
+    if (statusEl) statusEl.textContent = `Selected: ${opt.badge}`;
+  };
+
+  window.setRoleplayAudioSpeed = function(speed, btnEl) {
+    currentAudioSpeed = speed;
+    document.querySelectorAll('.roleplay-speed-btn').forEach(b => b.classList.remove('active'));
+    if (btnEl) btnEl.classList.add('active');
+  };
+
+  window.playRoleplayAudioPrompt = function() {
+    const scen = ROLEPLAY_SCENARIOS[currentScenarioKey];
+    if (!scen) return;
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(scen.prompt);
+      utterance.lang = scen.langCode;
+      utterance.rate = scen.rate * currentAudioSpeed;
+      utterance.pitch = scen.pitch;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  window.playSelectedResponseSpeech = function() {
+    const scen = ROLEPLAY_SCENARIOS[currentScenarioKey];
+    if (!scen || !scen.options[selectedOptionIndex]) return;
+    const opt = scen.options[selectedOptionIndex];
+    const text = opt.quote.replace(/^"/, '').replace(/"$/, '');
+
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  // Initial Scenario Hydration
+  window.switchRoleplayScenario('detroit');
+}
+
 
 
 

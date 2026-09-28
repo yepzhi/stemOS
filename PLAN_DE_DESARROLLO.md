@@ -257,6 +257,23 @@ Cada modismo en `content/phrases_library.js` debe implementar el siguiente esque
 - [x] **11.5 Caché PWA v5.5.0 & Despliegue en DEV**:
   - Actualización de `sw.js` a `stemos-lxp-v5.5.0-scada-digital-twin`, 20/20 pruebas DOM aprobadas con 100% de éxito, estricto aislamiento de producción y paridad exacta de bytes con `dev/index.html` y `dev/index.js`.
 
+### 🟢 FASE 12 (Autonomous Cross-Border Audio Roleplay & Phonetic Accent Classifier) — Laboratorio de Roleplay Conversacional con IA y Clasificador Fonético de Acentos del Nearshoring (CEFR C1 / ICAO / Business Pragmatics)
+- [x] **12.1 Arena de Roleplay de Audio Transfronterizo**:
+  - **4 Personas Reales de Contrapartes del Nearshoring**:
+    1. *Dave Miller 🇺🇸*: Vehicle Launch Director • Detroit Assembly OEM (Acento US Midwest, Northern Cities Vowel Shift, presión de paros de línea y urgencia de entregables).
+    2. *Priya Ramanathan 🇮🇳*: Offshore Delivery Principal • Bangalore Global Tech Center (Acento Indian English, consonantes retroflejas, cadencia silábica y términos corporativos idiomáticos).
+    3. *Dr. Jürgen Becker 🇩🇪*: VP of Engineering & Quality Systems • Stuttgart HQ (Acento German Industrial, precisión implacable, rigor métrico y diferenciación de falsos amigos técnicos).
+    4. *Alistair Campbell 🇬🇧*: Chief Aerospace Program Lead • Derby Turbine Division (Acento UK Aerospace, habla no-rótica, glottal stops y eufemismos diplomáticos de reserva técnica).
+  - **Opciones de Respuesta Estratégica con Puntuación Radar C1**:
+    - Opciones A, B, C evaluadas dinámicamente con desglose de Firmeza BATNA, Claridad Operativa, Resonancia Cultural y Tacto Diplomático.
+    - Retroalimentación diagnóstica ejecutiva al instante con puntaje sobre 100.
+- [x] **12.2 Clasificador Fonético y Laboratorio Acústico de Ensayos**:
+  - **Visualizador de Rasgos Fonéticos**: Foco acústico interactivo en fonemas característicos (ej. [æ] shifting, retroflex [ʈ/ɖ], [v] vs [w], non-rhotic post-vocalic [ɹ]).
+  - **Grabador / Simulador de Ensayo de Voz del Alumno**: Función interactiva para ensayar en voz alta la réplica recomendada con transcripción fonética y telemetría de decibelios.
+  - **Controles de Audio Web Speech API**: Velocidad regulable (0.8x, 1.0x, 1.2x) y reproducción de audio nativo con acentos sintetizados.
+- [x] **12.3 Caché PWA v5.6.0 & Despliegue en DEV**:
+  - Actualización de `sw.js` a `stemos-lxp-v5.6.0-cross-border-audio-roleplay`, 21/21 suites de pruebas DOM aprobadas con 100% de éxito, estricto aislamiento de producción y paridad exacta de bytes con `dev/index.html` y `dev/index.js`.
+
 ---
 
 ## 4. Tareas Programadas y Continuación Autónoma
@@ -267,8 +284,4 @@ Se ha configurado una tarea de verificación recurrente (daemon) mediante el sis
   node scripts/autonomous_dev_pipeline.cjs
   ```
 - **Estado Actual**:
-  Todas las Fases (1.1 a 11.5) implementadas, verificadas y desplegadas con éxito rotundo (20/20 suites de pruebas DOM y simulación headless aprobadas al 100%, con estricto aislamiento de producción y paridad total en `/dev/`).
-
-
-
-
+  Todas las Fases (1.1 a 12.3) implementadas, verificadas y desplegadas con éxito rotundo (21/21 suites de pruebas DOM y simulación headless aprobadas al 100%, con estricto aislamiento de producción y paridad total en `/dev/`).
