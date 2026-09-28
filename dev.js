@@ -340,6 +340,7 @@ function initStudio() {
   setupBlueprintAndPidLab(tracks);
   setupLotoAndShiftHandoverLab(tracks);
   setupIncidentWarRoomLab(tracks);
+  setupScadaDigitalTwinLab(tracks);
 }
 
 function setupLevelSwitcher(tracks, phrases) {
@@ -9216,6 +9217,460 @@ Incident Commander Authorization: SIGNED & ACTIVE`;
   window.switchWarRoomScenario('automotive_linedown');
   hydrateClosedLoopDrill();
 }
+
+/* ==========================================================================
+   PHASE 11: REAL-TIME MULTI-PLANT SCADA TELEMETRY & EDGE AI DIGITAL TWIN
+   ========================================================================== */
+function setupScadaDigitalTwinLab(tracks) {
+  const SCADA_PLANTS_DATA = {
+    saltillo: {
+      key: 'saltillo',
+      title: 'Saltillo Powertrain & High-Pressure Die Casting (HPDC)',
+      tag: 'IATF 16949 • NORMAL',
+      status: 'OPC UA GATEWAY ACTIVE • Saltillo Casting & CNC Line 4 • Scan Rate: 50ms',
+      kpis: [
+        { label: 'Overall OEE', val: '86.4', unit: '%', target: 'Target > 85%', pct: 86.4 },
+        { label: 'Melt Temp', val: '685.2', unit: '°C', target: 'Target 680-690°C', pct: 75 },
+        { label: 'Fast-Shot Press', val: '1,250', unit: 'bar', target: 'Target 1,200-1,300 bar', pct: 80 },
+        { label: 'Cycle Time', val: '38.2', unit: 's', target: 'Target < 40.0s', pct: 70 }
+      ],
+      historian: [
+        '• OPC-Tag: SLW_HPDC_04.Melt_TC_01 | Sampling: 50ms | Protocol: OPC UA over TSN',
+        '• USL (Upper Spec Limit): 695.0°C | Nominal: 685.0°C | LSL (Lower Spec Limit): 675.0°C',
+        '• Current Sigma: 4.8σ | 30-Day Scrap PPM: 340 (IATF Zero-Defect Target: < 500 PPM)',
+        '• Nitrogen Degassing Flow: 18.4 L/min | Vacuum Level: 45 mbar before shot'
+      ],
+      sliders: [
+        { id: 'meltTemp', label: 'Melt Furnace Temperature', min: 650, max: 730, val: 685, unit: '°C', nominal: 685, step: 1 },
+        { id: 'injPress', label: 'Fast-Shot Injection Pressure', min: 1000, max: 1500, val: 1250, unit: 'bar', nominal: 1250, step: 10 }
+      ],
+      intercom: 'SCADA Control to Saltillo Cell 4: Aluminum melt temperature holding steady at 685 degrees Celsius with injection pressure at 1,250 bar. Quality gate verified 100% sound.',
+      quiz: {
+        question: 'In high-pressure die casting, if the melt temperature drops below 665°C while injection pressure remains at 1,250 bar, what defect mechanism is predicted by SPC?',
+        options: [
+          'Cold shuts, misruns, and surface laminate porosity due to premature alloy solidification before cavity filling',
+          'Excessive molten metal splash and high flash',
+          'Die soldering and extreme thermal fatigue cracking',
+          'Hydrogen outgassing and blistering'
+        ],
+        answer: 0,
+        explanation: 'Temperatures below the liquidus window cause premature chilling of the molten alloy stream, producing cold shuts and laminar porosity defects.'
+      }
+    },
+
+    tijuana: {
+      key: 'tijuana',
+      title: 'Tijuana Class 10,000 MedTech Cleanroom Extrusion',
+      tag: 'FDA 21 CFR 820 • STERILE',
+      status: 'SCADA ACTIVE • Extrusion Line #2 & EtO Chamber 3 • Scan: 100ms',
+      kpis: [
+        { label: 'Overall OEE', val: '92.1', unit: '%', target: 'Target > 90%', pct: 92.1 },
+        { label: 'Extruder Temp', val: '215.4', unit: '°C', target: 'Target 215.0 ± 2°C', pct: 85 },
+        { label: 'Line Speed', val: '18.5', unit: 'm/min', target: 'Target 18.0-19.0 m/min', pct: 75 },
+        { label: 'Cleanroom RH', val: '44.2', unit: '% RH', target: 'Target 40-50% RH', pct: 60 }
+      ],
+      historian: [
+        '• OPC-Tag: TIJ_EXT_02.Melt_Pressure_Bar | Transducer: Dynisco PT462E | ISO 13485',
+        '• Catheter Outer Diameter (OD): 1.85mm ± 0.02mm (Laser Micrometer Zumbach ODAC)',
+        '• Particle Count: Class 10,000 (ISO Class 7) verified at 420 particles/ft³ (< 10,000)',
+        '• Ethylene Oxide Aeration Chamber: 42.0°C | Chamber Pressure: -12.4 kPa'
+      ],
+      sliders: [
+        { id: 'barrelTemp', label: 'Extruder Barrel Zone 4', min: 190, max: 240, val: 215, unit: '°C', nominal: 215, step: 0.5 },
+        { id: 'pullerSpeed', label: 'Caterpillar Puller Line Speed', min: 12, max: 25, val: 18.5, unit: 'm/min', nominal: 18.5, step: 0.5 }
+      ],
+      intercom: 'Tijuana Cleanroom QA to Line 2: Extruder temperature calibrated at 215.4 degrees Celsius. Laser micrometer confirms outer diameter within 1.85 millimeter spec.',
+      quiz: {
+        question: 'Under FDA 21 CFR 820 medical device manufacturing, what does a Cpk of 1.74 on a critical-to-quality (CTQ) catheter dimension signify?',
+        options: [
+          'The process is statistically capable and centered, producing fewer than 1 non-conforming part per million',
+          'The line must be stopped immediately for re-validation',
+          'The tolerance limits are too wide and should be halved',
+          'The extrusion tooling is worn out'
+        ],
+        answer: 0,
+        explanation: 'A Cpk of 1.74 exceeds the 1.67 Six Sigma automotive and medical device capability benchmark, indicating high process capability and virtually zero defect generation.'
+      }
+    },
+
+    guadalajara: {
+      key: 'guadalajara',
+      title: 'Guadalajara 3nm Advanced Silicon Test & Packaging',
+      tag: 'SEMI / IEEE • LOW-VMIN',
+      status: 'ATE BUS ONLINE • Advantest V93000 Wafer Prober 6 • Scan: 10ms',
+      kpis: [
+        { label: 'Overall OEE', val: '88.7', unit: '%', target: 'Target > 85%', pct: 88.7 },
+        { label: 'ATE Vmin', val: '0.748', unit: 'V', target: 'Target 0.750V ± 15mV', pct: 78 },
+        { label: 'Wafer Sort Yield', val: '94.6', unit: '%', target: 'Target > 92.0%', pct: 94.6 },
+        { label: 'Arm Accel', val: '4.2', unit: 'G', target: 'Target < 4.5G', pct: 65 }
+      ],
+      historian: [
+        '• OPC-Tag: GDL_ATE_06.Shmoo_Vmin_Core | SECS/GEM Interface | IEEE 1149.1 JTAG',
+        '• Probe Card Needle Contact Resistance: 0.18Ω (Limit: < 0.35Ω)',
+        '• Met One Airborne Particle Counter: ISO Class 4 Cleanroom (9 particles/m³)',
+        '• Shmoo Voltage Scan Range: 0.650V - 0.850V | Pattern Depth: 256M vectors'
+      ],
+      sliders: [
+        { id: 'supplyV', label: 'Core Supply Voltage Vmin', min: 0.65, max: 0.85, val: 0.75, unit: 'V', nominal: 0.75, step: 0.01 },
+        { id: 'probeFreq', label: 'ATE Clock Pattern Frequency', min: 1.0, max: 3.5, val: 2.4, unit: 'GHz', nominal: 2.4, step: 0.1 }
+      ],
+      intercom: 'Guadalajara Metrology to Test Floor: ATE probe tester 6 operating at 0.748 volts nominal. Yield running at 94.6 percent with zero ESD ground alerts.',
+      quiz: {
+        question: 'On a semiconductor automated test equipment (ATE) Shmoo plot, what does a cliff-edge shift in the Vmin voltage pass/fail boundary usually indicate?',
+        options: [
+          'A localized timing race condition or setup/hold time violation in the clock-distribution network',
+          'The wafer was manufactured upside down',
+          'The operator touched the probe card with bare hands',
+          'The silicon crystal has turned into polycrystalline quartz'
+        ],
+        answer: 0,
+        explanation: 'A sudden cliff-edge in Shmoo voltage/frequency plots is the hallmark signature of an internal setup or hold timing race condition across scan flip-flops.'
+      }
+    },
+
+    queretaro: {
+      key: 'queretaro',
+      title: 'Querétaro 40MW Hyperscale Data Center & Power Substation',
+      tag: 'IEEE 1547 / CFE • 99.999% SLA',
+      status: 'SCADA POWER BUS • Feeder B Active Harmonic Filter 3.8% • Scan: 20ms',
+      kpis: [
+        { label: 'Overall PUE', val: '1.18', unit: '', target: 'Target < 1.25', pct: 85 },
+        { label: 'THD Feeder B', val: '3.8', unit: '%', target: 'Target < 5.0% CFE', pct: 60 },
+        { label: 'Chilled Water', val: '12.2', unit: '°C', target: 'Target 11.5-13.0°C', pct: 72 },
+        { label: 'Genset Online', val: '18/18', unit: '', target: 'Target 18/18 Ready', pct: 100 }
+      ],
+      historian: [
+        '• OPC-Tag: QRO_SUB_115.THD_Feeder_B | Protocol: IEC 61850 MMS / DNP3 over IP',
+        '• Código de Red 2.0 Compliance: Point of Common Coupling (PCC) THD < 5.0% certified',
+        '• Campus Critical IT Load: 34.2 MW / 40.0 MW (85.5% capacity utilization)',
+        '• Transformer SEL-751 Protective Relays: All Trips Inactive | Line Voltage: 114.8 kV'
+      ],
+      sliders: [
+        { id: 'loadShare', label: 'Substation Feeder B Server Load', min: 10, max: 30, val: 18, unit: 'MW', nominal: 18, step: 1 },
+        { id: 'chwTemp', label: 'Chilled Water Supply Temperature', min: 8, max: 18, val: 12.2, unit: '°C', nominal: 12.2, step: 0.2 }
+      ],
+      intercom: 'Querétaro Facilities Dispatch: Substation Feeder B harmonic distortion is running at 3.8 percent with PUE holding at 1.18. All eighteen backup generators green.',
+      quiz: {
+        question: 'Under CENACE Código de Red 2.0 for Mexican industrial electrical substations, what is the maximum permissible Total Harmonic Distortion (THD) at the Point of Common Coupling (PCC)?',
+        options: [
+          '5.0% Maximum THD',
+          '15.0% Maximum THD',
+          '25.0% Maximum THD',
+          '0.0% (Zero harmonics allowed)'
+        ],
+        answer: 0,
+        explanation: 'CENACE Código de Red 2.0 Chapter 3 establishes a strict 5.0% Total Harmonic Distortion (THD) limit at the Point of Common Coupling for medium and high-voltage grid connections.'
+      }
+    }
+  };
+
+  let currentPlantKey = 'saltillo';
+  let plantParamState = {
+    saltillo: { meltTemp: 685, injPress: 1250 },
+    tijuana: { barrelTemp: 215, pullerSpeed: 18.5 },
+    guadalajara: { supplyV: 0.75, probeFreq: 2.4 },
+    queretaro: { loadShare: 18, chwTemp: 12.2 }
+  };
+
+  window.switchScadaSubpanel = function(mode) {
+    const btnScada = document.getElementById('btn-tab-scada');
+    const btnTwin = document.getElementById('btn-tab-digitaltwin');
+    const subScada = document.getElementById('subpanel-scada-details');
+    const subTwin = document.getElementById('subpanel-twin-controls');
+
+    if (!btnScada || !btnTwin || !subScada || !subTwin) return;
+
+    if (mode === 'scada') {
+      btnScada.classList.add('active');
+      btnTwin.classList.remove('active');
+      subScada.style.display = 'block';
+      subTwin.style.display = 'none';
+    } else {
+      btnTwin.classList.add('active');
+      btnScada.classList.remove('active');
+      subTwin.style.display = 'block';
+      subScada.style.display = 'none';
+    }
+  };
+
+  window.switchScadaPlant = function(plantKey) {
+    if (!SCADA_PLANTS_DATA[plantKey]) return;
+    currentPlantKey = plantKey;
+    const plant = SCADA_PLANTS_DATA[plantKey];
+
+    // Update chips
+    document.querySelectorAll('.scada-plant-chip').forEach(btn => {
+      btn.classList.toggle('active', btn.id === `chip-plant-${plantKey}`);
+    });
+
+    // Update Header Status
+    const headlineEl = document.getElementById('scada-status-headline');
+    if (headlineEl) headlineEl.textContent = plant.status;
+
+    // Update Plant Title & Tag
+    const titleEl = document.getElementById('scada-current-plant-title');
+    const tagEl = document.getElementById('scada-current-plant-tag');
+    if (titleEl) titleEl.textContent = plant.title;
+    if (tagEl) tagEl.textContent = plant.tag;
+
+    // Render KPIs
+    const kpisContainer = document.getElementById('scada-telemetry-kpis');
+    if (kpisContainer) {
+      kpisContainer.innerHTML = plant.kpis.map(k => `
+        <div class="scada-kpi-card">
+          <span class="scada-kpi-lbl">${k.label}</span>
+          <div>
+            <span class="scada-kpi-val">${k.val}</span>
+            <span class="scada-kpi-unit">${k.unit}</span>
+          </div>
+          <span class="scada-kpi-target">${k.target}</span>
+          <div class="scada-gauge-bar">
+            <div class="scada-gauge-fill" style="width: ${k.pct}%"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render Historian Specs
+    const historianEl = document.getElementById('scada-historian-specs');
+    if (historianEl) {
+      historianEl.innerHTML = plant.historian.join('<br>');
+    }
+
+    // Render Sliders in Digital Twin
+    renderTwinSliders();
+
+    // Render Intercom text
+    const intercomEl = document.getElementById('scada-intercom-text');
+    if (intercomEl) intercomEl.textContent = `"${plant.intercom}"`;
+
+    // Render Quiz
+    renderScadaQuiz();
+
+    // Recompute Physics & Update Memo
+    recalculateDigitalTwin();
+  };
+
+  function renderTwinSliders() {
+    const plant = SCADA_PLANTS_DATA[currentPlantKey];
+    const container = document.getElementById('twin-sliders-container');
+    if (!plant || !container) return;
+
+    const currentVals = plantParamState[currentPlantKey] || {};
+
+    container.innerHTML = plant.sliders.map(s => {
+      const val = currentVals[s.id] !== undefined ? currentVals[s.id] : s.val;
+      return `
+        <div class="twin-slider-group">
+          <div class="twin-slider-lbl-row">
+            <span>${s.label}:</span>
+            <span class="twin-slider-val" id="val-${s.id}">${val} ${s.unit}</span>
+          </div>
+          <input type="range" class="twin-range-input" min="${s.min}" max="${s.max}" step="${s.step}" value="${val}"
+            oninput="updateTwinParameter('${currentPlantKey}', '${s.id}', this.value)" />
+        </div>
+      `;
+    }).join('');
+  }
+
+  window.updateTwinParameter = function(plantKey, paramKey, rawVal) {
+    const val = parseFloat(rawVal);
+    if (!plantParamState[plantKey]) plantParamState[plantKey] = {};
+    plantParamState[plantKey][paramKey] = val;
+
+    const plant = SCADA_PLANTS_DATA[plantKey];
+    const sliderDef = plant ? plant.sliders.find(s => s.id === paramKey) : null;
+    const valEl = document.getElementById(`val-${paramKey}`);
+    if (valEl && sliderDef) {
+      valEl.textContent = `${val} ${sliderDef.unit}`;
+    }
+
+    recalculateDigitalTwin();
+  };
+
+  function recalculateDigitalTwin() {
+    const plant = SCADA_PLANTS_DATA[currentPlantKey];
+    if (!plant) return;
+
+    const state = plantParamState[currentPlantKey] || {};
+    let maxDeltaPercent = 0;
+
+    plant.sliders.forEach(s => {
+      const cur = state[s.id] !== undefined ? state[s.id] : s.nominal;
+      const delta = Math.abs(cur - s.nominal) / (s.max - s.min);
+      if (delta > maxDeltaPercent) maxDeltaPercent = delta;
+    });
+
+    // Physics calculations
+    const cpk = Math.max(0.65, +(1.74 - (maxDeltaPercent * 2.1)).toFixed(2));
+    const riskPct = Math.min(96, +(2.1 + (maxDeltaPercent * 160)).toFixed(1));
+    const mtbf = Math.max(12, Math.round(420 * (1 - Math.min(0.95, maxDeltaPercent * 1.8))));
+
+    const cardEl = document.getElementById('twin-ai-card');
+    const badgeEl = document.getElementById('twin-ai-badge');
+    const textEl = document.getElementById('twin-ai-text');
+    const cpkEl = document.getElementById('twin-ai-cpk');
+    const riskEl = document.getElementById('twin-ai-risk');
+    const mtbfEl = document.getElementById('twin-ai-mtbf');
+
+    if (cpkEl) cpkEl.textContent = cpk;
+    if (riskEl) riskEl.textContent = `${riskPct}%`;
+    if (mtbfEl) mtbfEl.textContent = `${mtbf} hrs`;
+
+    if (cardEl && badgeEl && textEl) {
+      cardEl.classList.remove('warning-state', 'critical-state');
+      badgeEl.classList.remove('warn', 'crit');
+
+      if (maxDeltaPercent > 0.35) {
+        cardEl.classList.add('critical-state');
+        badgeEl.classList.add('crit');
+        badgeEl.textContent = 'ANOMALY EXCURSION DETECTED';
+        textEl.innerHTML = `⚠️ <strong>CRITICAL EDGE AI ALERT:</strong> Process variance (+${Math.round(maxDeltaPercent * 100)}% shift from nominal) violates statistical tolerance. Projected scrap escalation and machine downtime within 45 minutes. Immediate closed-loop recalibration required.`;
+      } else if (maxDeltaPercent > 0.15) {
+        cardEl.classList.add('warning-state');
+        badgeEl.classList.add('warn');
+        badgeEl.textContent = 'DRIFT WARNING (EDGE ALERT)';
+        textEl.innerHTML = `⚠️ <strong>EDGE AI DRIFT ALERT:</strong> Minor parameter drift (+${Math.round(maxDeltaPercent * 100)}% shift). Process Cpk compressed to ${cpk}. Recommend preventive setpoint adjustment at next shift change.`;
+      } else {
+        badgeEl.textContent = 'NOMINAL STABILITY';
+        textEl.textContent = `Thermal, hydraulic, and electrical harmonics within normal Gaussian bounds (Cp = 1.82, Cpk = ${cpk}). Predicted tool fatigue: 0.04% per 1,000 cycles.`;
+      }
+    }
+
+    updateScadaShiftLog(cpk, riskPct, mtbf);
+  }
+
+  function updateScadaShiftLog(cpk, riskPct, mtbf) {
+    const previewEl = document.getElementById('scada-shift-log-preview');
+    if (!previewEl) return;
+
+    const plant = SCADA_PLANTS_DATA[currentPlantKey];
+    if (!plant) return;
+
+    const now = new Date();
+    const dateStr = now.toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
+
+    const memo = 
+`# SCADA OPERATIONS & EDGE AI DIGITAL TWIN TELEMETRY LOG
+FACILITY : ${plant.title}
+STANDARD : ${plant.tag}
+TIMESTAMP: ${dateStr}
+PROTOCOL : OPC UA / TSN (Time-Sensitive Networking)
+
+1. LIVE PROCESS KPI READINGS
+--------------------------------------------------------------------------------
+${plant.kpis.map(k => `• ${k.label.padEnd(20)}: ${k.val} ${k.unit} (${k.target})`).join('\n')}
+
+2. EDGE AI PROCESS DIGITAL TWIN INFERENCING
+--------------------------------------------------------------------------------
+• Statistical Process Cpk : ${cpk} (Six Sigma Target: ≥ 1.67)
+• Anomaly / Scrap Risk    : ${riskPct}%
+• Predicted MTBF Health   : ${mtbf} operational hours
+• Anomaly Status          : ${riskPct > 50 ? 'CRITICAL EXCURSION' : (riskPct > 20 ? 'PREVENTIVE DRIFT' : 'NOMINAL GAUSSIAN STABILITY')}
+
+3. HISTORIAN SCADA TELEMETRY TRACE
+--------------------------------------------------------------------------------
+${plant.historian.join('\n')}
+
+4. ACTIVE DISPATCH INTERCOM BROADCAST
+--------------------------------------------------------------------------------
+${plant.intercom}
+
+SCADA Operator Authorization: VERIFIED (ISO 22400 OEE & OPC-UA)`;
+
+    previewEl.textContent = memo;
+  }
+
+  window.copyScadaShiftLog = function(btnEl) {
+    const previewEl = document.getElementById('scada-shift-log-preview');
+    if (!previewEl) return;
+    const text = previewEl.textContent.trim();
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+    if (btnEl) {
+      const origHtml = btnEl.innerHTML;
+      btnEl.innerHTML = '<i class="fa-solid fa-check"></i> SCADA Log Copied!';
+      btnEl.style.background = 'rgba(6, 182, 212, 0.3)';
+      btnEl.style.borderColor = '#06b6d4';
+      btnEl.style.color = '#38bdf8';
+      setTimeout(() => {
+        btnEl.innerHTML = origHtml;
+        btnEl.style.background = '';
+        btnEl.style.borderColor = '';
+        btnEl.style.color = '';
+      }, 2000);
+    }
+  };
+
+  function renderScadaQuiz() {
+    const plant = SCADA_PLANTS_DATA[currentPlantKey];
+    const qEl = document.getElementById('scada-quiz-question');
+    const optsEl = document.getElementById('scada-quiz-options');
+    const feedbackEl = document.getElementById('scada-quiz-feedback');
+    if (!plant || !qEl || !optsEl) return;
+
+    qEl.textContent = plant.quiz.question;
+    optsEl.innerHTML = plant.quiz.options.map((opt, idx) => `
+      <button class="scada-quiz-btn" onclick="submitScadaQuiz(${idx})">
+        ${String.fromCharCode(65 + idx)}. ${opt}
+      </button>
+    `).join('');
+
+    if (feedbackEl) {
+      feedbackEl.style.display = 'none';
+      feedbackEl.innerHTML = '';
+    }
+  }
+
+  window.submitScadaQuiz = function(selectedIdx) {
+    const plant = SCADA_PLANTS_DATA[currentPlantKey];
+    if (!plant) return;
+    const btns = document.querySelectorAll('.scada-quiz-btn');
+    const feedbackEl = document.getElementById('scada-quiz-feedback');
+    if (!feedbackEl) return;
+
+    btns.forEach((btn, idx) => {
+      btn.classList.remove('correct', 'wrong');
+      if (idx === plant.quiz.answer) {
+        btn.classList.add('correct');
+      } else if (idx === selectedIdx) {
+        btn.classList.add('wrong');
+      }
+    });
+
+    feedbackEl.style.display = 'block';
+    if (selectedIdx === plant.quiz.answer) {
+      feedbackEl.style.background = 'rgba(16, 185, 129, 0.15)';
+      feedbackEl.style.border = '1px solid #10b981';
+      feedbackEl.style.color = '#34d399';
+      feedbackEl.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Correct!</strong> ${plant.quiz.explanation}`;
+    } else {
+      feedbackEl.style.background = 'rgba(239, 68, 68, 0.15)';
+      feedbackEl.style.border = '1px solid #ef4444';
+      feedbackEl.style.color = '#f87171';
+      feedbackEl.innerHTML = `<strong><i class="fa-solid fa-circle-xmark"></i> Incorrect.</strong> Correct answer: <em>${plant.quiz.options[plant.quiz.answer]}</em>. ${plant.quiz.explanation}`;
+    }
+  };
+
+  window.playScadaDispatchSpeech = function() {
+    const el = document.getElementById('scada-intercom-text');
+    if (!el) return;
+    const text = el.textContent.trim().replace(/^"/, '').replace(/"$/, '');
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.95;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  // Initial Plant Hydration
+  window.switchScadaPlant('saltillo');
+}
+
 
 
 

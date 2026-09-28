@@ -1,9 +1,9 @@
 /**
- * stemOS Dev Content Studio — PWA Service Worker (v5.4.0 Incident Response War Room & Closed-Loop Lab)
- * Enables 100% complete offline caching for 34 tracks, 266 readings, 162 idioms, STEMBot Copilot, Auditable Certificates, Cloud Sync, Blueprint Lab, LOTO Zero-Energy Lab, and Incident Response War Room.
+ * stemOS Dev Content Studio — PWA Service Worker (v5.5.0 Real-Time SCADA & Edge AI Digital Twin Lab)
+ * Enables 100% complete offline caching for 34 tracks, 266 readings, 162 idioms, STEMBot Copilot, Auditable Certificates, Cloud Sync, Blueprint Lab, LOTO Zero-Energy Lab, Incident War Room, and SCADA Digital Twin Lab.
  */
 
-const CACHE_NAME = 'stemos-lxp-v5.4.0-incident-war-room';
+const CACHE_NAME = 'stemos-lxp-v5.5.0-scada-digital-twin';
 
 const ASSETS_TO_CACHE = [
   '/',

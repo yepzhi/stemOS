@@ -52,6 +52,7 @@
         <a href="#blueprint-reading-section" class="nav-link" id="nav-btn-blueprint-lab"><i class="fa-solid fa-compass-drafting" style="color:#38bdf8; margin-right:4px;"></i> Blueprint &amp; P&amp;ID</a>
         <a href="#loto-handover-section" class="nav-link" id="nav-btn-loto-lab"><i class="fa-solid fa-lock" style="color:#ef4444; margin-right:4px;"></i> LOTO &amp; Shift Handover</a>
         <a href="#incident-war-room-section" class="nav-link" id="nav-btn-warroom"><i class="fa-solid fa-headset" style="color:#f43f5e; margin-right:4px;"></i> Incident War Room</a>
+        <a href="#scada-digitaltwin-section" class="nav-link" id="nav-btn-scada"><i class="fa-solid fa-gauge-high" style="color:#06b6d4; margin-right:4px;"></i> SCADA &amp; Digital Twin</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-certificates" onclick="openCertificateModal()"><i class="fa-solid fa-award" style="color:#eab308; margin-right:4px;"></i> Certificates &amp; QR</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-cloud-sync" onclick="openCloudSyncModal()"><i class="fa-solid fa-cloud-arrow-up" style="color:#06b6d4; margin-right:4px;"></i> <span id="nav-cloud-status">Cloud Sync</span></a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-stembot" onclick="toggleStemBotCopilot(true)"><i class="fa-solid fa-robot" style="color:#0ea5e9; margin-right:4px;"></i> STEMBot Copilot</a>
@@ -129,6 +130,10 @@
         <a href="#incident-war-room-section" class="supaste-btn-secondary" id="hero-warroom-btn" style="border-color: rgba(244, 63, 94, 0.4); background: rgba(244, 63, 94, 0.12);">
           <i class="fa-solid fa-headset" style="color:#f43f5e;"></i>
           <span>Crisis War Room Lab</span>
+        </a>
+        <a href="#scada-digitaltwin-section" class="supaste-btn-secondary" id="hero-scada-btn" style="border-color: rgba(6, 182, 212, 0.4); background: rgba(6, 182, 212, 0.12);">
+          <i class="fa-solid fa-gauge-high" style="color:#06b6d4;"></i>
+          <span>SCADA &amp; Digital Twin</span>
         </a>
         <a href="#hero-showcase-window" class="supaste-btn-secondary" id="hero-view-demo-btn">
           <i class="fa-solid fa-laptop-code"></i>
@@ -2691,6 +2696,176 @@
             <!-- Dynamically rendered readback choices -->
           </div>
           <div class="warroom-quiz-feedback" id="closedloop-drill-feedback" style="display:none; margin-top:8px;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Phase 11: Real-Time Multi-Plant SCADA Telemetry & Edge AI Process Digital Twin ── -->
+  <section class="scada-digitaltwin-section" id="scada-digitaltwin-section">
+    <div class="scada-container">
+      <!-- Section Header -->
+      <div class="scada-header-wrap">
+        <div class="scada-badge">
+          <i class="fa-solid fa-network-wired"></i> INDUSTRY 4.0 &bull; ISA-95 / OPC UA / IEEE 802.3cg / ISO 22400 OEE
+        </div>
+        <h2 class="scada-title">Real-Time Multi-Plant SCADA Telemetry &amp; Edge AI Digital Twin Lab</h2>
+        <p class="scada-desc">
+          Live industrial telematics across 4 high-consequence nearshoring plants (Saltillo, Tijuana, Guadalajara, Querétaro). Real-time process parameter manipulation, physics-driven Edge AI anomaly prediction, acoustic SCADA intercom callouts, and multi-plant OEE benchmarking.
+        </p>
+
+        <!-- Mode Switcher Tabs -->
+        <div class="scada-mode-tabs">
+          <button class="scada-tab-btn active" id="btn-tab-scada" onclick="switchScadaSubpanel('scada')">
+            <i class="fa-solid fa-chart-simple"></i> Plant Floor SCADA Telemetry
+          </button>
+          <button class="scada-tab-btn" id="btn-tab-digitaltwin" onclick="switchScadaSubpanel('digitaltwin')">
+            <i class="fa-solid fa-microchip"></i> Edge AI Process Digital Twin
+          </button>
+        </div>
+      </div>
+
+      <!-- Live SCADA Status Bar -->
+      <div class="scada-status-strip">
+        <div class="scada-status-left">
+          <div class="scada-live-dot"></div>
+          <div class="scada-status-headline" id="scada-status-headline">
+            OPC UA GATEWAY ACTIVE &bull; Saltillo Casting &amp; CNC Line 4 &bull; Scan Rate: 50ms
+          </div>
+        </div>
+        <div class="scada-status-metrics">
+          <div class="scada-metric-pill">
+            <span class="scada-metric-lbl">Overall OEE</span>
+            <span class="scada-metric-val" id="scada-fleet-oee">88.4%</span>
+          </div>
+          <div class="scada-metric-pill">
+            <span class="scada-metric-lbl">Active Telemetry Streams</span>
+            <span class="scada-metric-val" id="scada-streams-count">4 Plants / 32 Tags</span>
+          </div>
+          <div class="scada-metric-pill">
+            <span class="scada-metric-lbl">Edge AI Anomaly Risk</span>
+            <span class="scada-metric-val" id="scada-fleet-risk" style="color:#10b981;">LOW (6.2%)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plant Selector Chips -->
+      <div class="scada-plant-bar">
+        <button class="scada-plant-chip active" id="chip-plant-saltillo" onclick="switchScadaPlant('saltillo')">
+          <i class="fa-solid fa-industry"></i> 1. Saltillo Powertrain &amp; Die Casting
+        </button>
+        <button class="scada-plant-chip" id="chip-plant-tijuana" onclick="switchScadaPlant('tijuana')">
+          <i class="fa-solid fa-flask-vial"></i> 2. Tijuana MedTech Cleanroom Extrusion
+        </button>
+        <button class="scada-plant-chip" id="chip-plant-guadalajara" onclick="switchScadaPlant('guadalajara')">
+          <i class="fa-solid fa-microchip"></i> 3. Guadalajara 3nm Advanced Packaging
+        </button>
+        <button class="scada-plant-chip" id="chip-plant-queretaro" onclick="switchScadaPlant('queretaro')">
+          <i class="fa-solid fa-bolt"></i> 4. Querétaro 40MW Hyperscale Data Center
+        </button>
+      </div>
+
+      <!-- Workbench Grid -->
+      <div class="scada-workbench-grid">
+        <!-- Left Column: SCADA Telemetry KPIs & Digital Twin Interactive Simulation -->
+        <div class="scada-card-panel">
+          <div class="scada-panel-header">
+            <h3 class="scada-plant-title" id="scada-current-plant-title">
+              Saltillo Powertrain &amp; High-Pressure Die Casting (HPDC)
+            </h3>
+            <span class="scada-plant-tag" id="scada-current-plant-tag">IATF 16949 &bull; NORMAL</span>
+          </div>
+
+          <!-- 4 Core Telemetry KPI Cards -->
+          <div class="scada-telemetry-grid" id="scada-telemetry-kpis">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Subpanel 1 Specific: Process Overview & Secondary Sensors -->
+          <div id="subpanel-scada-details">
+            <div style="font-size:0.75rem; color:#94a3b8; margin-bottom:10px;">
+              <i class="fa-solid fa-circle-nodes"></i> <strong>Historian SCADA Trendline &amp; Statistical Tolerances:</strong>
+            </div>
+            <div id="scada-historian-specs" style="background:#020617; border:1px solid rgba(6,182,212,0.2); border-radius:8px; padding:12px; font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:#cbd5e1; line-height:1.6; margin-bottom:14px;">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Subpanel 2 Specific: Digital Twin Interactive Parameter Controls -->
+          <div id="subpanel-twin-controls" style="display:none;">
+            <div class="twin-controls-box">
+              <div class="twin-controls-title">
+                <i class="fa-solid fa-sliders"></i> Edge AI Digital Twin Physics Parameter Injection (Manipulate Process)
+              </div>
+              <div id="twin-sliders-container">
+                <!-- Dynamically populated sliders -->
+              </div>
+            </div>
+
+            <!-- Edge AI Predictive Maintenance Card -->
+            <div class="twin-ai-prediction-card" id="twin-ai-card">
+              <div class="twin-ai-header">
+                <span style="font-size:0.78rem; font-weight:700; color:#cbd5e1;">
+                  <i class="fa-solid fa-brain"></i> Edge AI Inferencing Model:
+                </span>
+                <span class="twin-ai-badge" id="twin-ai-badge">NOMINAL STABILITY</span>
+              </div>
+              <p class="twin-ai-text" id="twin-ai-text">
+                Thermal &amp; hydraulic harmonics within normal Gaussian bounds (Cp = 1.82, Cpk = 1.74). Predicted tool fatigue: 0.04% per 1,000 cycles.
+              </p>
+              <div class="twin-ai-stats">
+                <div class="twin-stat-item">Process Cpk: <strong id="twin-ai-cpk">1.74</strong></div>
+                <div class="twin-stat-item">Failure Risk: <strong id="twin-ai-risk">2.1%</strong></div>
+                <div class="twin-stat-item">MTBF Projection: <strong id="twin-ai-mtbf">420 hrs</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shopfloor Acoustic Intercom / SCADA Radio Callout -->
+          <div class="scada-intercom-box">
+            <div class="scada-intercom-head">
+              <span class="scada-intercom-badge">
+                <i class="fa-solid fa-walkie-talkie"></i> SCADA Dispatch Verbal Broadcast (Plant Intercom)
+              </span>
+              <button class="btn-loto-action" onclick="playScadaDispatchSpeech()">
+                <i class="fa-solid fa-volume-high"></i> Listen Dispatch
+              </button>
+            </div>
+            <div class="scada-intercom-text" id="scada-intercom-text">
+              "SCADA Control to Saltillo Cell 4: Aluminum melt temperature holding steady at 685 degrees Celsius with injection pressure at 1,250 bar. Quality gate verified 100% sound."
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Shift Telemetry Markdown Log & SPC Quiz -->
+        <div class="scada-memo-panel">
+          <div class="scada-memo-box">
+            <div class="scada-memo-header">
+              <span class="scada-memo-title">
+                <i class="fa-solid fa-file-waveform"></i> SCADA Telemetry &amp; Digital Twin Shift Log
+              </span>
+              <button class="btn-loto-action" onclick="copyScadaShiftLog(this)">
+                <i class="fa-solid fa-copy"></i> Copy SCADA Log
+              </button>
+            </div>
+            <pre class="scada-memo-pre" id="scada-shift-log-preview"></pre>
+          </div>
+
+          <!-- SPC & SCADA Operations Competency Quiz -->
+          <div class="scada-quiz-card">
+            <div class="scada-panel-header" style="padding-bottom:8px; margin-bottom:6px;">
+              <span class="scada-memo-title" style="color:#a5b4fc;">
+                <i class="fa-solid fa-graduation-cap"></i> Statistical Process Control (SPC) &amp; SCADA Quiz
+              </span>
+            </div>
+            <div class="scada-quiz-q" id="scada-quiz-question">
+              <!-- Dynamically populated -->
+            </div>
+            <div class="scada-quiz-opts" id="scada-quiz-options">
+              <!-- Dynamically populated -->
+            </div>
+            <div class="scada-quiz-feedback" id="scada-quiz-feedback" style="display:none;"></div>
+          </div>
         </div>
       </div>
     </div>

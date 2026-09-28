@@ -1329,7 +1329,151 @@ if (subWarroom.style.display !== 'block') {
   process.exit(1);
 }
 
-console.log("\n🎉 ALL 19 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+console.log("\n── TEST 20: Real-Time Multi-Plant SCADA Telemetry & Edge AI Digital Twin Lab (Phase 11) ──");
+
+// 20.1 Section and element presence
+const scadaSection = document.getElementById('scada-digitaltwin-section');
+console.log("SCADA Section presence:", !!scadaSection);
+if (!scadaSection) {
+  console.error("FAIL: #scada-digitaltwin-section not found in DOM!");
+  process.exit(1);
+}
+
+const navScadaBtn = document.getElementById('nav-btn-scada');
+const heroScadaBtn = document.getElementById('hero-scada-btn');
+console.log("Nav button presence:", !!navScadaBtn);
+console.log("Hero button presence:", !!heroScadaBtn);
+if (!navScadaBtn || !heroScadaBtn) {
+  console.error("FAIL: Nav or Hero CTA button for SCADA Lab missing!");
+  process.exit(1);
+}
+
+// 20.2 Initial Plant Hydration (saltillo)
+const scadaTitle = document.getElementById('scada-current-plant-title');
+const scadaHeadline = document.getElementById('scada-status-headline');
+const kpiCards = document.querySelectorAll('#scada-telemetry-kpis .scada-kpi-card');
+
+console.log("SCADA Target Plant Title:", scadaTitle ? scadaTitle.textContent.trim() : "null");
+console.log("SCADA KPIs count:", kpiCards.length);
+console.log("SCADA Headline:", scadaHeadline ? scadaHeadline.textContent.trim() : "null");
+
+if (!scadaTitle || !scadaTitle.textContent.includes('Saltillo Powertrain')) {
+  console.error("FAIL: Saltillo plant title not hydrated!");
+  process.exit(1);
+}
+if (kpiCards.length !== 4) {
+  console.error("FAIL: Expected 4 SCADA KPI cards, found " + kpiCards.length);
+  process.exit(1);
+}
+
+// 20.3 Mode Switching to Digital Twin & Physics Manipulation
+window.switchScadaSubpanel('digitaltwin');
+const subScadaDetails = document.getElementById('subpanel-scada-details');
+const subTwinControls = document.getElementById('subpanel-twin-controls');
+console.log("Subpanel twin controls display:", subTwinControls ? subTwinControls.style.display : "null");
+console.log("Subpanel scada details display:", subScadaDetails ? subScadaDetails.style.display : "null");
+
+if (!subTwinControls || subTwinControls.style.display !== 'block' || subScadaDetails.style.display !== 'none') {
+  console.error("FAIL: Digital Twin subpanel display toggle failed!");
+  process.exit(1);
+}
+
+// Check initial Cpk and nominal state
+const cpkEl = document.getElementById('twin-ai-cpk');
+const badgeEl = document.getElementById('twin-ai-badge');
+console.log("Initial Cpk:", cpkEl ? cpkEl.textContent : "null");
+console.log("Initial Badge:", badgeEl ? badgeEl.textContent : "null");
+if (!cpkEl || !badgeEl || !badgeEl.textContent.includes('NOMINAL STABILITY')) {
+  console.error("FAIL: Initial Digital Twin state not nominal!");
+  process.exit(1);
+}
+
+// Inject parameter excursion: melt temperature 725°C (+40°C above nominal)
+window.updateTwinParameter('saltillo', 'meltTemp', 725);
+console.log("Excursion Cpk:", cpkEl.textContent);
+console.log("Excursion Badge:", badgeEl.textContent);
+
+const twinCard = document.getElementById('twin-ai-card');
+if (!twinCard || !twinCard.classList.contains('critical-state') || !badgeEl.textContent.includes('ANOMALY EXCURSION')) {
+  console.error("FAIL: Digital Twin physics model did not trigger critical anomaly state!");
+  process.exit(1);
+}
+
+// Revert to nominal setpoint: 685°C
+window.updateTwinParameter('saltillo', 'meltTemp', 685);
+console.log("Restored Badge:", badgeEl.textContent);
+if (!badgeEl.textContent.includes('NOMINAL STABILITY')) {
+  console.error("FAIL: Digital Twin failed to restore nominal stability!");
+  process.exit(1);
+}
+console.log("PASS: Digital Twin physics engine and Edge AI anomaly detection verified.");
+
+// 20.4 SCADA Shift Log Generation & Copy
+const scadaShiftLog = document.getElementById('scada-shift-log-preview');
+console.log("SCADA Shift Log content length:", scadaShiftLog ? scadaShiftLog.textContent.length : 0);
+if (!scadaShiftLog || !scadaShiftLog.textContent.includes('SCADA OPERATIONS & EDGE AI DIGITAL TWIN TELEMETRY LOG') || !scadaShiftLog.textContent.includes('Saltillo Powertrain')) {
+  console.error("FAIL: SCADA shift log not generated properly!");
+  process.exit(1);
+}
+
+const scadaCopyBtn = document.querySelector('.scada-memo-header .btn-loto-action');
+window.copyScadaShiftLog(scadaCopyBtn);
+console.log("SCADA Copy Button state:", scadaCopyBtn ? scadaCopyBtn.textContent : "null");
+if (!scadaCopyBtn || !scadaCopyBtn.textContent.includes('Copied')) {
+  console.error("FAIL: SCADA shift log copy button did not trigger Copied state!");
+  process.exit(1);
+}
+
+// 20.5 Multi-Plant Switching across all 4 Facilities
+window.switchScadaPlant('tijuana');
+if (!scadaTitle.textContent.includes('Tijuana Class 10,000 MedTech')) {
+  console.error("FAIL: Failed to switch to Tijuana cleanroom plant!");
+  process.exit(1);
+}
+
+window.switchScadaPlant('guadalajara');
+if (!scadaTitle.textContent.includes('Guadalajara 3nm Advanced Silicon')) {
+  console.error("FAIL: Failed to switch to Guadalajara semiconductor plant!");
+  process.exit(1);
+}
+
+window.switchScadaPlant('queretaro');
+if (!scadaTitle.textContent.includes('Querétaro 40MW Hyperscale Data Center')) {
+  console.error("FAIL: Failed to switch to Querétaro data center plant!");
+  process.exit(1);
+}
+console.log("PASS: 4 Cross-border plant SCADA streams and historian specs hydrated.");
+
+// 20.6 SCADA Intercom Audio Broadcast
+window.playScadaDispatchSpeech();
+console.log("PASS: SCADA verbal intercom dispatch speech invocation verified.");
+
+// 20.7 SPC Competency Quiz
+const scadaQuizOptions = document.querySelectorAll('.scada-quiz-btn');
+console.log("SCADA Quiz options count:", scadaQuizOptions.length);
+if (scadaQuizOptions.length !== 4) {
+  console.error("FAIL: Expected 4 SCADA quiz options, found " + scadaQuizOptions.length);
+  process.exit(1);
+}
+
+window.submitScadaQuiz(0); // Option 0 is correct
+const scadaQuizFeedback = document.getElementById('scada-quiz-feedback');
+console.log("SCADA Quiz Feedback:", scadaQuizFeedback ? scadaQuizFeedback.textContent : "null");
+if (!scadaQuizFeedback || !scadaQuizFeedback.textContent.includes('Correct!')) {
+  console.error("FAIL: SCADA Quiz submission did not display correct feedback!");
+  process.exit(1);
+}
+console.log("PASS: Statistical Process Control & SCADA operations quiz verified.");
+
+// Switch back to SCADA Telemetry subpanel
+window.switchScadaSubpanel('scada');
+if (subScadaDetails.style.display !== 'block') {
+  console.error("FAIL: Failed to switch back to SCADA subpanel!");
+  process.exit(1);
+}
+
+console.log("\n🎉 ALL 20 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+
 
 
 
