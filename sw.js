@@ -1,9 +1,9 @@
 /**
- * stemOS Dev Content Studio — PWA Service Worker (v5.0.0 Nearshoring Enterprise Copilot)
- * Enables 100% complete offline caching for 34 tracks, 266 readings, 162 native idioms, STEMBot Copilot, and labs.
+ * stemOS Dev Content Studio — PWA Service Worker (v5.1.0 Certificates & Cloud Sync)
+ * Enables 100% complete offline caching for 34 tracks, 266 readings, 162 idioms, STEMBot Copilot, Auditable Certificates, and Cloud Sync.
  */
 
-const CACHE_NAME = 'stemos-lxp-v5.0.0-nearshoring-enterprise-copilot';
+const CACHE_NAME = 'stemos-lxp-v5.1.0-certificates-and-cloud-sync';
 
 const ASSETS_TO_CACHE = [
   '/',

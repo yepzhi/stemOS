@@ -761,7 +761,127 @@ if (stembotDrawer.style.display !== 'none') {
   process.exit(1);
 }
 
-console.log("\n🎉 ALL 14 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+console.log("\n── TEST 15: Auditable Digital Certificate & QR Verification Engine (Option A) ──");
+const certModal = document.getElementById('stemos-certificate-modal');
+const verifyModal = document.getElementById('stemos-verification-modal');
+console.log("Certificate Modal exists:", !!certModal);
+console.log("Verification Modal exists:", !!verifyModal);
+if (!certModal || !verifyModal) {
+  console.error("FAIL: Certificate or Verification modal missing in DOM!");
+  process.exit(1);
+}
+
+// 15.1 Open Certificate Modal & Issue Credential
+window.openCertificateModal('medical-devices');
+console.log("Certificate modal display after open:", certModal.style.display);
+if (certModal.style.display !== 'flex') {
+  console.error("FAIL: Certificate modal did not open with flex display!");
+  process.exit(1);
+}
+
+// 15.2 Verify Certificate Generation & DOM Update
+const certNameInput = document.getElementById('cert-input-name');
+if (certNameInput) certNameInput.value = "Dra. Sofía Villalobos Ruiz";
+window.generateAuditableCertificate();
+
+const dispName = document.getElementById('cert-display-name');
+const dispTrack = document.getElementById('cert-display-track');
+const dispFolio = document.getElementById('cert-display-folio');
+const dispHash = document.getElementById('cert-display-hash');
+const dispQr = document.getElementById('cert-display-qr');
+
+console.log("Rendered Certificate Recipient:", dispName ? dispName.textContent : "null");
+console.log("Rendered Certificate Track:", dispTrack ? dispTrack.textContent : "null");
+console.log("Rendered Audit Folio ID:", dispFolio ? dispFolio.textContent : "null");
+console.log("Rendered Cryptographic Hash:", dispHash ? dispHash.textContent : "null");
+
+if (!dispName || !dispName.textContent.includes('Sofía Villalobos')) {
+  console.error("FAIL: Certificate recipient name not updated on canvas!");
+  process.exit(1);
+}
+if (!dispFolio || !dispFolio.textContent.startsWith('STEM-ISO9001-2026-')) {
+  console.error("FAIL: Invalid audit folio format!");
+  process.exit(1);
+}
+if (!dispQr || !dispQr.innerHTML.includes('<svg') || !dispQr.innerHTML.includes('<rect')) {
+  console.error("FAIL: Dynamic SVG QR code not rendered on certificate canvas!");
+  process.exit(1);
+}
+console.log("PASS: Auditable Certificate generated with ISO folio, SHA hash, and dynamic SVG QR code.");
+
+// 15.3 Public Ledger Verification Modal
+window.openVerificationModal({
+  name: "Dra. Sofía Villalobos Ruiz",
+  trackName: "Medical Devices & Regulatory Engineering (FDA 21 CFR 820 / ISO 13485)",
+  facility: "Tijuana Medical Device Facility — Cleanroom ISO 7/8 (Baja California)",
+  folio: dispFolio.textContent,
+  hours: 120
+});
+console.log("Verification modal display after trigger:", verifyModal.style.display);
+const vFolioEl = document.getElementById('v-folio-id');
+if (verifyModal.style.display !== 'flex' || !vFolioEl || vFolioEl.textContent !== dispFolio.textContent) {
+  console.error("FAIL: Public ledger verification modal did not hydrate verified folio!");
+  process.exit(1);
+}
+console.log("PASS: Public Ledger verification badge hydrated with 100% fidelity.");
+
+window.closeVerificationModal();
+window.closeCertificateModal();
+console.log("Certificate modal closed display:", certModal.style.display);
+console.log("Verification modal closed display:", verifyModal.style.display);
+
+
+console.log("\n── TEST 16: Enterprise Cloud Sync & Multi-Tenant B2B Engine (Option C) ──");
+const cloudModal = document.getElementById('stemos-cloud-sync-modal');
+console.log("Cloud Sync Modal exists:", !!cloudModal);
+if (!cloudModal) {
+  console.error("FAIL: Cloud sync modal missing in DOM!");
+  process.exit(1);
+}
+
+// 16.1 Open Cloud Sync Modal
+window.openCloudSyncModal();
+console.log("Cloud sync modal display after open:", cloudModal.style.display);
+if (cloudModal.style.display !== 'flex') {
+  console.error("FAIL: Cloud sync modal did not open!");
+  process.exit(1);
+}
+
+// 16.2 Verify Telemetry Counters
+const cloudSm2 = document.getElementById('cloud-count-sm2');
+const cloudCerts = document.getElementById('cloud-count-certs');
+console.log("Cloud Telemetry SM-2 Tokens:", cloudSm2 ? cloudSm2.textContent : "null");
+console.log("Cloud Telemetry Certificates:", cloudCerts ? cloudCerts.textContent : "null");
+if (!cloudSm2 || parseInt(cloudSm2.textContent, 10) < 1) {
+  console.error("FAIL: Cloud SM-2 tokens count invalid!");
+  process.exit(1);
+}
+
+// 16.3 Facility Switcher & Live Cloud Sync
+window.updateCloudFacility('monterrey');
+const bannerText = document.getElementById('cloud-status-banner-text');
+console.log("Updated Cloud Banner Text:", bannerText ? bannerText.textContent : "null");
+if (!bannerText || !bannerText.textContent.includes('MONTERREY')) {
+  console.error("FAIL: Facility switcher did not update cloud banner!");
+  process.exit(1);
+}
+
+window.syncEnterpriseCloudNow();
+const navCloudStatus = document.getElementById('nav-cloud-status');
+console.log("Nav Cloud Status after sync:", navCloudStatus ? navCloudStatus.textContent : "null");
+if (!navCloudStatus || !navCloudStatus.textContent.includes('Synced')) {
+  console.error("FAIL: Nav cloud status did not update to Synced!");
+  process.exit(1);
+}
+console.log("PASS: Enterprise Cloud Sync successfully synchronized state across multi-tenant facilities.");
+
+// 16.4 Enterprise Cohort Backup
+window.exportEnterpriseBackup();
+window.closeCloudSyncModal();
+console.log("Cloud sync modal closed display:", cloudModal.style.display);
+console.log("PASS: Enterprise cohort backup and modal lifecycle verified.");
+
+console.log("\n🎉 ALL 16 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
 
 
 

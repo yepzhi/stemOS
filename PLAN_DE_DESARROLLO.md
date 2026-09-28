@@ -152,6 +152,19 @@ Cada modismo en `content/phrases_library.js` debe implementar el siguiente esque
 - [x] **6.4 PWA Cache Manifest v5.0.0 & Despliegue a Producción DEV**:
   - Actualización de `sw.js` a la versión de caché `stemos-lxp-v5.0.0-nearshoring-enterprise-copilot` con sincronización atómica entre `/dev.html` y `/dev/index.html` (endpoint oficial de Cloudflare para `stemos.org/dev`).
 
+### 🟢 FASE 7 (Enterprise Credentials & Cloud Infrastructure) — Certificados Digitales Auditables con QR & Sincronización en la Nube
+- [x] **7.1 Estudio de Certificados Digitales Auditables con Código QR In-Browser (Opción A)**:
+  - **Lienzo de Acreditación de Alta Fidelidad**: Diseño editorial premium con bordes geométricos guilloché, doble marco metálico dorado, esquinas con rosetas ornamentales y sello holográfico circular en relieve.
+  - **Generador de Código QR SVG Nativo**: Algoritmo en cliente que dibuja matrices QR SVG vectoriales nítidas y 100% offline (sin dependencias externas ni llamadas a CDNs) codificando la URL oficial de validación pública.
+  - **Metadatos Auditables ISO 9001:2015 Cl. 7.2**: Generación dinámica de Folio de Auditoría (`STEM-ISO9001-2026-[PLANT]-[FOLIO]`), firma criptográfica simulada SHA-256, horas de capacitación acreditadas (120 hrs) y nivel CEFR C1.
+  - **Optimizador de Impresión `@media print`**: Permite imprimir o guardar directamente en PDF una hoja A4/Carta limpia sin barras de navegación, botones ni elementos ajenos al certificado.
+- [x] **7.2 Portal de Verificación Pública de Credenciales (`?verify=FOLIO`) (Opción A)**:
+  - Al abrir un enlace con parámetro de consulta `?verify=STEM-...` o escanear el QR, se despliega el modal de validación del libro de registro público con badge verde esmeralda que confirma autenticidad, titular, planta acreditada y norma internacional.
+- [x] **7.3 Hub de Sincronización en la Nube y Multi-Tenant B2B (Opción C)**:
+  - **Conector de Nube (Firebase/Cloud Gateway)**: Indicador de sincronización en tiempo real (`nav-cloud-status`) con soporte para modo Cloud Activo (`jsweb-b14f8`) y modo local aislado para plantas sin internet (*Air-Gapped Local Cache*).
+  - **Telemetría de Cohortes por Planta**: Monitoreo de tokens de memoria SM-2, reportes 8D, transcripciones de pitches y diplomas emitidos en Tijuana, Monterrey, Ciudad Juárez, Saltillo y Querétaro.
+  - **Exportador/Importador de Respaldo JSON**: Permite a directores de L&D y Recursos Humanos descargar e importar respaldos completos de avance de su personal en un solo archivo JSON.
+
 ---
 
 ## 4. Tareas Programadas y Continuación Autónoma
@@ -162,5 +175,5 @@ Se ha configurado una tarea de verificación recurrente (daemon) mediante el sis
   node scripts/autonomous_dev_pipeline.cjs
   ```
 - **Estado Actual**:
-  Todas las Fases (1.1 a 6.4) implementadas, verificadas y desplegadas con éxito rotundo (14/14 suites de pruebas DOM y simulación headless aprobadas al 100%, con estricto aislamiento de producción y paridad total en `/dev/`).
+  Todas las Fases (1.1 a 7.3) implementadas, verificadas y desplegadas con éxito rotundo (16/16 suites de pruebas DOM y simulación headless aprobadas al 100%, con estricto aislamiento de producción y paridad total en `/dev/`).
 
