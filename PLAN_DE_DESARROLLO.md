@@ -165,6 +165,25 @@ Cada modismo en `content/phrases_library.js` debe implementar el siguiente esque
   - **Telemetría de Cohortes por Planta**: Monitoreo de tokens de memoria SM-2, reportes 8D, transcripciones de pitches y diplomas emitidos en Tijuana, Monterrey, Ciudad Juárez, Saltillo y Querétaro.
   - **Exportador/Importador de Respaldo JSON**: Permite a directores de L&D y Recursos Humanos descargar e importar respaldos completos de avance de su personal en un solo archivo JSON.
 
+### 🟢 FASE 8 (Visual Engineering Jargon & Diagram Inspection) — Laboratorio Interactivo de Lectura de Planos, P&ID y GD&T
+- [x] **8.1 Workbench Interactivo de Planos Vectoriales SVG**:
+  - Lienzo técnico de alta resolución estilo blueprint industrial oscuro con cuadrícula milimétrica, cotas, simbología normalizada y controles de zoom/reset.
+  - **4 Planos de Ingeniería Crítica Nearshoring**:
+    1. *Biomédica (ANSI/ISA-5.1 & ISO 11135)*: Lazo P&ID de Esterilización con Gas EtO, Vaporizador y Torre de Lavado Cáustico (`DWG-MED-0492`).
+    2. *Automotriz (ASME Y14.5-2018 & ISO 1101)*: Monoblock de Motor Inline-4 con marcos de control de posición verdadera ($\bigoplus 0.05$ Ⓜ), perpendicularidad ($\bot 0.02$) y datums [A], [B], [C] (`DWG-AUTO-7721`).
+    3. *Energía y Subestaciones (IEEE 315 & ANSI/IEEE C37.2)*: Diagrama Unifilar de Subestación de 115kV/13.8kV con interruptor SF6 52-1, transformador delta-estrella de 40MVA, relevador de potencia inversa 32R y filtro activo AHF-01 (`DWG-PWR-9904`).
+    4. *Hardware y Edge AI (IPC-7351B & IPC-2221B Class 3)*: Stackup y ruteo de tarjeta aceleradora de IA de 12 capas con BGA-1156, pares diferenciales PCIe Gen 5 de 100$\Omega$, anillo de desacoplo y vías térmicas de cobre tipo VII (`DWG-EE-4180`).
+- [x] **8.2 Hotspots Dinámicos & Panel Inspector de Especificaciones**:
+  - Marcadores interactivos luminosos (`.blueprint-pin`) que al hacer clic despliegan tag de instrumentación, subsistema, estándar regulatorio, rango/setpoint y significado en plano.
+- [x] **8.3 Guía de Articulación Verbal para Auditorías con OEMs de EE.UU.**:
+  - Cita exacta en inglés técnico de nivel C1 con la cadencia y terminología precisa para guiar a un auditor de FDA, OEM de Detroit o CFE/CENACE sin vacilaciones.
+- [x] **8.4 Formulador de Redlines y Órdenes de Cambio de Ingeniería (ECO Studio)**:
+  - Generador de declaraciones ECO (`ECO-2026-XXXX`) formateadas para actualizar planos, agregar redundancia o relajar tolerancias, con botón de copiado rápido al portapapeles.
+- [x] **8.5 Cuestionarios de Competencia Simbólica**:
+  - Preguntas interactivas sobre nomenclatura ISA, GD&T, numeración ANSI y normas IPC con validación instantánea y explicaciones técnicas detalladas.
+- [x] **8.6 Caché PWA v5.2.0 & Despliegue en DEV**:
+  - Actualización de `sw.js` a `stemos-lxp-v5.2.0-blueprint-pid-inspection-lab`, validación de 17 pruebas DOM headless y sincronización exacta con `dev/index.html`.
+
 ---
 
 ## 4. Tareas Programadas y Continuación Autónoma
@@ -175,5 +194,6 @@ Se ha configurado una tarea de verificación recurrente (daemon) mediante el sis
   node scripts/autonomous_dev_pipeline.cjs
   ```
 - **Estado Actual**:
-  Todas las Fases (1.1 a 7.3) implementadas, verificadas y desplegadas con éxito rotundo (16/16 suites de pruebas DOM y simulación headless aprobadas al 100%, con estricto aislamiento de producción y paridad total en `/dev/`).
+  Todas las Fases (1.1 a 8.6) implementadas, verificadas y desplegadas con éxito rotundo (17/17 suites de pruebas DOM y simulación headless aprobadas al 100%, con estricto aislamiento de producción y paridad total en `/dev/`).
+
 

@@ -49,6 +49,7 @@
         <a href="#sm2-review-section" class="nav-link" id="nav-btn-sm2"><i class="fa-solid fa-brain" style="color:#f59e0b; margin-right:4px;"></i> SM-2 Deck (<span id="nav-sm2-due-count">10</span>)</a>
         <a href="#negotiation-pitch-section" class="nav-link" id="nav-btn-pitch-lab"><i class="fa-solid fa-microphone-lines" style="color:#ec4899; margin-right:4px;"></i> Pitch &amp; Negotiation</a>
         <a href="#corporate-ld-section" class="nav-link" id="nav-btn-corporate-ld"><i class="fa-solid fa-chart-line" style="color:#38bdf8; margin-right:4px;"></i> Enterprise L&amp;D</a>
+        <a href="#blueprint-reading-section" class="nav-link" id="nav-btn-blueprint-lab"><i class="fa-solid fa-compass-drafting" style="color:#38bdf8; margin-right:4px;"></i> Blueprint &amp; P&amp;ID</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-certificates" onclick="openCertificateModal()"><i class="fa-solid fa-award" style="color:#eab308; margin-right:4px;"></i> Certificates &amp; QR</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-cloud-sync" onclick="openCloudSyncModal()"><i class="fa-solid fa-cloud-arrow-up" style="color:#06b6d4; margin-right:4px;"></i> <span id="nav-cloud-status">Cloud Sync</span></a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-stembot" onclick="toggleStemBotCopilot(true)"><i class="fa-solid fa-robot" style="color:#0ea5e9; margin-right:4px;"></i> STEMBot Copilot</a>
@@ -114,6 +115,10 @@
         <a href="javascript:void(0)" class="supaste-btn-secondary" id="hero-cloud-sync-btn" onclick="openCloudSyncModal()" style="border-color: rgba(6, 182, 212, 0.4); background: rgba(6, 182, 212, 0.12);">
           <i class="fa-solid fa-cloud-arrow-up" style="color:#06b6d4;"></i>
           <span>Enterprise Cloud Sync</span>
+        </a>
+        <a href="#blueprint-reading-section" class="supaste-btn-secondary" id="hero-blueprint-btn" style="border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.12);">
+          <i class="fa-solid fa-compass-drafting" style="color:#38bdf8;"></i>
+          <span>Blueprint &amp; P&amp;ID Lab</span>
         </a>
         <a href="#hero-showcase-window" class="supaste-btn-secondary" id="hero-view-demo-btn">
           <i class="fa-solid fa-laptop-code"></i>
@@ -2178,6 +2183,121 @@
 
       </div>
 
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       PHASE 8: INTERACTIVE BLUEPRINT, P&ID & GD&T INSPECTION LAB
+       ========================================================================== -->
+  <section class="blueprint-lab-section" id="blueprint-reading-section">
+    <div class="blueprint-lab-container">
+      <!-- Section Header -->
+      <div class="blueprint-header-wrap">
+        <div class="blueprint-badge"><i class="fa-solid fa-compass-drafting"></i> Visual Engineering Jargon (ISA-5.1 &bull; ASME Y14.5 &bull; IEEE 315)</div>
+        <h2 class="blueprint-title">Interactive Blueprint, P&amp;ID &amp; GD&amp;T Reading Lab</h2>
+        <p class="blueprint-desc">
+          Engineers at Mexican nearshoring plants must verbally navigate cross-border auditors, OEMs, and US engineering leads through complex technical prints. Select an industrial schematic below to inspect critical symbols, articulate failure modes, and formulate Engineering Change Orders (ECOs).
+        </p>
+      </div>
+
+      <!-- Diagram Selector Tabs -->
+      <div class="blueprint-nav-tabs">
+        <button type="button" class="bp-tab-btn active" id="bp-tab-medtech_pid" onclick="switchBlueprintDiagram('medtech_pid')">
+          <i class="fa-solid fa-flask-vial"></i> Biomedical EtO Sterilization (P&amp;ID ISA-5.1)
+        </button>
+        <button type="button" class="bp-tab-btn" id="bp-tab-automotive_gdt" onclick="switchBlueprintDiagram('automotive_gdt')">
+          <i class="fa-solid fa-ruler-combined"></i> Automotive Engine Block (GD&amp;T ASME Y14.5)
+        </button>
+        <button type="button" class="bp-tab-btn" id="bp-tab-energy_sld" onclick="switchBlueprintDiagram('energy_sld')">
+          <i class="fa-solid fa-bolt"></i> 115kV Substation Tie (Single-Line IEEE 315)
+        </button>
+        <button type="button" class="bp-tab-btn" id="bp-tab-pcba_layout" onclick="switchBlueprintDiagram('pcba_layout')">
+          <i class="fa-solid fa-microchip"></i> Edge AI High-Speed PCBA (IPC-7351)
+        </button>
+      </div>
+
+      <!-- Main Interactive Workbench Layout -->
+      <div class="blueprint-workbench-grid">
+        <!-- Left: Interactive Vector Blueprint Canvas -->
+        <div class="blueprint-canvas-col">
+          <div class="blueprint-drawing-frame">
+            <div class="blueprint-frame-topbar">
+              <span class="bp-dwg-title" id="bp-current-dwg-title">DWG-MED-0492: EtO Gas Delivery &amp; Exhaust Scrubber Loop</span>
+              <span class="bp-dwg-scale" id="bp-current-dwg-standard">STANDARD: ANSI/ISA-5.1-2009</span>
+            </div>
+
+            <div class="blueprint-svg-viewport" id="blueprint-svg-viewport">
+              <!-- Dynamic Vector Technical Blueprint rendered here with interactive hotspot pins -->
+            </div>
+
+            <div class="blueprint-frame-bottombar">
+              <span class="bp-hint-text"><i class="fa-solid fa-hand-pointer"></i> Click any glowing inspection pin on the schematic to inspect technical callouts &amp; failure modes</span>
+              <div class="bp-zoom-controls">
+                <button type="button" class="btn-bp-ctrl" onclick="resetBlueprintZoom()"><i class="fa-solid fa-arrows-rotate"></i> Reset View</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Detail Inspector & Redline Studio Panel -->
+        <div class="blueprint-inspector-col">
+          <div class="blueprint-inspector-card">
+            <!-- Header with tag & category -->
+            <div class="bp-inspector-header">
+              <span class="bp-hotspot-tag" id="bp-inspect-tag">PSV-204</span>
+              <div class="bp-tag-info">
+                <h4 class="bp-component-name" id="bp-inspect-name">Pressure Safety Relief Valve (Direct Spring Loaded)</h4>
+                <span class="bp-system-sub" id="bp-inspect-system">Sterilization Chamber Vaporizer Subsystem</span>
+              </div>
+            </div>
+
+            <!-- Technical Specification Table -->
+            <div class="bp-spec-box">
+              <div class="bp-spec-row">
+                <span class="bp-spec-k">Engineering Standard:</span>
+                <span class="bp-spec-v" id="bp-inspect-std">ASME Section VIII Div 1 &bull; API 520</span>
+              </div>
+              <div class="bp-spec-row">
+                <span class="bp-spec-k">Design Setpoint / Range:</span>
+                <span class="bp-spec-v" id="bp-inspect-range">Set at 4.5 bar gauge (65.2 psig)</span>
+              </div>
+              <div class="bp-spec-row">
+                <span class="bp-spec-k">P&amp;ID Symbol Meaning:</span>
+                <span class="bp-spec-v" id="bp-inspect-meaning">Pressure safety relief device venting overpressure to thermal oxidizer scrubber</span>
+              </div>
+            </div>
+
+            <!-- Verbalization Guide Box -->
+            <div class="bp-verbalization-box">
+              <div class="bp-verb-title"><i class="fa-solid fa-volume-high" style="color:#0ea5e9;"></i> How to Articulate this Component to US Auditors</div>
+              <p class="bp-verb-quote" id="bp-inspect-quote">
+                "Loop PSV-204 is an ASME-stamped spring-loaded pressure relief valve calibrated at 4.5 bar gauge. During annual chamber PMs, our metrology team executes pop-test bench calibration with zero allowable seat leakage before reseating."
+              </p>
+            </div>
+
+            <!-- Anomaly & ECO Redline Formulator -->
+            <div class="bp-redline-box">
+              <div class="bp-redline-header">
+                <span class="bp-redline-title"><i class="fa-solid fa-pen-clip" style="color:#fbbf24;"></i> Engineering Change Order (ECO) Redline Statement</span>
+                <button type="button" class="btn-copy-redline" onclick="copyRedlineStatement(this)"><i class="fa-regular fa-copy"></i> Copy ECO</button>
+              </div>
+              <p class="bp-redline-text" id="bp-inspect-redline">
+                "ECO-2026-0881: Redline P&ID DWG-MED-0492 sheet 2. Replace single rupture disc upstream of PSV-204 with a monitored tel-tale pressure gauge assembly per ISO 11135 §7.4 to detect micro-corrosion pinholes prior to catastrophic relief."
+              </p>
+            </div>
+
+            <!-- Symbol Competence Quiz -->
+            <div class="bp-quiz-box" id="bp-quiz-container">
+              <div class="bp-quiz-question" id="bp-quiz-question">In ANSI/ISA-5.1 symbol conventions, what does the letter 'S' represent when placed as the first modifier in 'PSV'?</div>
+              <div class="bp-quiz-options" id="bp-quiz-options">
+                <!-- Dynamically injected options -->
+              </div>
+              <div class="bp-quiz-feedback" id="bp-quiz-feedback" style="display:none;"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 

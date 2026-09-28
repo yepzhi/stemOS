@@ -135,6 +135,7 @@ function initStudio() {
   setupExecutiveLeadershipAndMultiAccentLab();
   setupStemBotSocraticCopilot();
   setupCertificatesAndCloudSync(tracks);
+  setupBlueprintAndPidLab(tracks);
 }
 
 function setupLevelSwitcher(tracks, phrases) {
@@ -7236,3 +7237,838 @@ function setupCertificatesAndCloudSync(tracks) {
     renderQrSvg(`https://stemos.org/dev/?verify=STEM-ISO9001-2026-TJ-84920`, initialQrBox);
   }
 }
+
+/* ==========================================================================
+   PHASE 8: INTERACTIVE BLUEPRINT, P&ID & GD&T READING LAB
+   ========================================================================== */
+function setupBlueprintAndPidLab(tracks) {
+  const BLUEPRINT_SCHEMATICS = {
+    medtech_pid: {
+      title: "DWG-MED-0492: EtO Gas Delivery & Exhaust Scrubber Loop",
+      standard: "STANDARD: ANSI/ISA-5.1-2009 • ISO 11135:2014",
+      svg: `<svg viewBox="0 0 800 480" class="blueprint-svg-canvas" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="grid-med" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(56, 189, 248, 0.08)" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="#050e1d" />
+  <rect width="100%" height="100%" fill="url(#grid-med)" />
+
+  <!-- Chamber Vessel -->
+  <rect x="220" y="140" width="220" height="200" rx="20" fill="rgba(2, 132, 199, 0.12)" stroke="#38bdf8" stroke-width="2.5" />
+  <rect x="230" y="150" width="200" height="180" rx="14" fill="none" stroke="rgba(56, 189, 248, 0.3)" stroke-dasharray="4,4" />
+  <text x="330" y="235" fill="#e0f2fe" font-size="13" font-weight="bold" font-family="'JetBrains Mono', monospace" text-anchor="middle">ETO STERILIZER</text>
+  <text x="330" y="255" fill="#38bdf8" font-size="11" font-family="'JetBrains Mono', monospace" text-anchor="middle">CHAMBER V-200 (60 m³)</text>
+  <text x="330" y="275" fill="#94a3b8" font-size="10" font-family="'JetBrains Mono', monospace" text-anchor="middle">DESIGN: 5.0 BAR / 65°C</text>
+
+  <!-- Process Piping Lines -->
+  <!-- N2 / Steam feed line top-right -->
+  <path d="M 680 180 L 440 180" fill="none" stroke="#38bdf8" stroke-width="2.5" />
+  <polygon points="560,175 572,180 560,185" fill="#38bdf8" />
+  <text x="670" y="170" fill="#94a3b8" font-size="9" font-family="'JetBrains Mono', monospace">CLEAN STEAM / N2</text>
+
+  <!-- Steam Valve TCV-301 -->
+  <polygon points="630,170 650,180 630,190" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5" />
+  <polygon points="670,170 650,180 670,190" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5" />
+  <line x1="650" y1="170" x2="650" y2="150" stroke="#38bdf8" stroke-width="1.5" />
+  <path d="M 635 150 Q 650 140 665 150 Z" fill="rgba(56, 189, 248, 0.4)" stroke="#38bdf8" stroke-width="1.5" />
+  <circle cx="650" cy="115" r="16" fill="#06162d" stroke="#38bdf8" stroke-width="1.5" />
+  <text x="650" y="119" fill="#38bdf8" font-size="8.5" font-family="'JetBrains Mono', monospace" font-weight="bold" text-anchor="middle">TCV</text>
+
+  <!-- Safety Relief PSV-204 top-left -->
+  <path d="M 260 140 L 260 90 L 140 90 L 140 50" fill="none" stroke="#f59e0b" stroke-width="2.5" />
+  <polygon points="252,90 268,90 260,80" fill="#b45309" stroke="#f59e0b" stroke-width="1.5" />
+  <polygon points="260,80 252,70 268,70" fill="#b45309" stroke="#f59e0b" stroke-width="1.5" />
+  <line x1="260" y1="70" x2="260" y2="55" stroke="#f59e0b" stroke-width="1.5" />
+  <rect x="250" y="45" width="20" height="10" fill="#b45309" stroke="#f59e0b" stroke-width="1.5" />
+  <circle cx="210" cy="80" r="16" fill="#06162d" stroke="#f59e0b" stroke-width="1.5" />
+  <text x="210" y="84" fill="#fbbf24" font-size="8.5" font-family="'JetBrains Mono', monospace" font-weight="bold" text-anchor="middle">PSV</text>
+  <text x="140" y="40" fill="#f59e0b" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">TO FLARE / SCRUBBER</text>
+
+  <!-- Differential Pressure Transmitter PT-108 -->
+  <path d="M 380 140 L 380 90" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3,3" />
+  <circle cx="380" cy="75" r="18" fill="#06162d" stroke="#38bdf8" stroke-width="1.5" />
+  <line x1="362" y1="75" x2="398" y2="75" stroke="#38bdf8" stroke-width="1" />
+  <text x="380" y="71" fill="#e0f2fe" font-size="9" font-family="'JetBrains Mono', monospace" font-weight="bold" text-anchor="middle">PT</text>
+  <text x="380" y="85" fill="#38bdf8" font-size="7.5" font-family="'JetBrains Mono', monospace" text-anchor="middle">108</text>
+  <text x="380" y="48" fill="#94a3b8" font-size="8.5" font-family="'JetBrains Mono', monospace" text-anchor="middle">HART 4-20mA (SIL-2)</text>
+
+  <!-- Vacuum Evacuation line bottom -->
+  <path d="M 330 340 L 330 400 L 520 400" fill="none" stroke="#38bdf8" stroke-width="2.5" />
+  <polygon points="400,395 412,400 400,405" fill="#38bdf8" />
+
+  <!-- Liquid Ring Vacuum Pump P-102 -->
+  <circle cx="560" cy="400" r="28" fill="#0369a1" stroke="#38bdf8" stroke-width="2" />
+  <polygon points="545,390 575,400 545,410" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.5" />
+  <text x="560" y="445" fill="#e0f2fe" font-size="10" font-family="'JetBrains Mono', monospace" font-weight="bold" text-anchor="middle">P-102A/B</text>
+  <text x="560" y="458" fill="#94a3b8" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle">VACUUM SKID</text>
+
+  <!-- Discharge to Scrubber -->
+  <path d="M 588 400 L 680 400 L 680 320" fill="none" stroke="#10b981" stroke-width="2" />
+  <rect x="650" y="240" width="60" height="80" rx="8" fill="rgba(16, 185, 129, 0.15)" stroke="#10b981" stroke-width="2" />
+  <text x="680" y="275" fill="#34d399" font-size="9" font-weight="bold" font-family="'JetBrains Mono', monospace" text-anchor="middle">ACID</text>
+  <text x="680" y="290" fill="#34d399" font-size="9" font-weight="bold" font-family="'JetBrains Mono', monospace" text-anchor="middle">SCRUBBER</text>
+</svg>`,
+      hotspots: {
+        psv204: {
+          x: 28,
+          y: 20,
+          tag: "PSV-204",
+          name: "Pressure Safety Relief Valve (Direct Spring Loaded)",
+          system: "Sterilization Chamber Vaporizer Subsystem",
+          standard: "ASME Section VIII Div 1 • API 520",
+          range: "Set at 4.5 bar gauge (65.2 psig)",
+          meaning: "Pressure safety relief device venting overpressure to thermal oxidizer scrubber",
+          quote: "Loop PSV-204 is an ASME-stamped spring-loaded pressure relief valve calibrated at 4.5 bar gauge. During annual chamber PMs, our metrology team executes pop-test bench calibration with zero allowable seat leakage before reseating.",
+          redline: "ECO-2026-0881: Redline P&ID DWG-MED-0492 sheet 2. Replace single rupture disc upstream of PSV-204 with a monitored tell-tale pressure gauge assembly per ISO 11135 §7.4 to detect micro-corrosion pinholes prior to catastrophic relief.",
+          quiz: {
+            question: "In ANSI/ISA-5.1 symbol conventions, what does the letter 'S' represent when placed as the first modifier in 'PSV'?",
+            options: [
+              "Solenoid Actuator",
+              "Safety / Relief Function",
+              "Secondary Pressure Sensor",
+              "Static Head Compensator"
+            ],
+            answer: 1,
+            explanation: "In ISA-5.1 tag convention, 'P' = Pressure, 'S' = Safety modifier, and 'V' = Valve, designating a Pressure Safety Valve."
+          }
+        },
+        pt108: {
+          x: 48,
+          y: 16,
+          tag: "PT-108",
+          name: "Differential Pressure Transmitter (HART / 4-20mA SIL-2)",
+          system: "Chamber Deep-Vacuum & Humidification Monitor",
+          standard: "ANSI/ISA-5.1 • IEC 61508 SIL-2",
+          range: "0 to 1000 mbar absolute (±0.05% FS accuracy)",
+          meaning: "Transmits analog 4-20mA current loop to SCADA PLC for chamber vacuum leak testing",
+          quote: "Transmitter PT-108 measures vacuum decay during our 15-minute leak hold phase. If delta-P exceeds 1.5 millibar per minute, the PLC triggers an automatic cycle abort and initiates inert nitrogen flush.",
+          redline: "ECO-2026-0882: Upgrade transmitter PT-108 to dual redundant HART transmitters with 2-out-of-3 voting logic to satisfy FDA 21 CFR Part 820 medical device integrity requirements.",
+          quiz: {
+            question: "In ISA-5.1 instrument loops, what does a dashed line connecting an instrument bubble to a PLC indicate?",
+            options: [
+              "Pneumatic air signal (3-15 psi)",
+              "Electrical analog (4-20 mA) or digital bus signal",
+              "Hydraulic pilot supply line",
+              "Capillary tubing filled with silicone oil"
+            ],
+            answer: 1,
+            explanation: "Dashed lines represent electrical or electronic signal transmission (4-20 mA current loop, discrete 24VDC, or digital fieldbus)."
+          }
+        },
+        p102: {
+          x: 70,
+          y: 78,
+          tag: "P-102A/B",
+          name: "Liquid Ring Vacuum Pump Skid (Dual Redundant Lead-Lag)",
+          system: "EtO Evacuation & Acid Scrubber Feed",
+          standard: "API 681 • ATEX Zone 1 / Class I Div 1",
+          range: "450 m³/hr displacement @ 35 mbar suction",
+          meaning: "Evacuates ethylene oxide vapors post-cycle into caustic recirculation scrubber",
+          quote: "Skid P-102A operates in lead-lag duty with pump 102B. Both units are equipped with double mechanical seals and barrier fluid pressure alarms to eliminate fugitive EtO emissions.",
+          redline: "ECO-2026-0883: Add RTD Pt100 thermal sensors on P-102 seal quench reservoir to interlock pump shutdown if seal fluid temperature climbs above 45°C.",
+          quiz: {
+            question: "What does a double parallel line through a process pipe symbol signify in P&ID diagrams?",
+            options: [
+              "Steam traced or heat jacketed piping",
+              "Flexible hose connection",
+              "Expansion joint bellows",
+              "Spectacle blind in open position"
+            ],
+            answer: 0,
+            explanation: "Parallel auxiliary lines or hatching alongside process lines represent steam, electric, or glycol heat tracing."
+          }
+        },
+        tcv301: {
+          x: 82,
+          y: 28,
+          tag: "TCV-301",
+          name: "Pneumatic Diaphragm Steam Control Valve (Fail-Closed)",
+          system: "Chamber Vaporizer Temperature Control",
+          standard: "ISA-75.01 • ANSI FCI 70-2 Class VI",
+          range: "0-100% modulating travel (3-15 psi actuator)",
+          meaning: "Regulates clean steam injection to maintain tight 54°C ± 2°C chamber sterilization profile",
+          quote: "TCV-301 is calibrated for equal percentage flow characteristics. In the event of plant instrument air loss, its internal spring drives the plug into the seat, guaranteeing fail-closed safety.",
+          redline: "ECO-2026-0884: Install smart electro-pneumatic positioner with partial-stroke test capability on TCV-301 to ensure zero valve stiction during long sterilizing dwell holds.",
+          quiz: {
+            question: "What does an arrow pointing downwards towards the valve seat within a diaphragm valve actuator indicate?",
+            options: [
+              "Fail Open (Air to Close)",
+              "Fail Closed (Air to Open)",
+              "Fail in Last Position (Drift)",
+              "Manual Handwheel Override"
+            ],
+            answer: 1,
+            explanation: "An arrow pointing towards the seat inside the actuator shows spring closing force: Air-to-Open, Fail-Closed (FC)."
+          }
+        }
+      }
+    },
+
+    automotive_gdt: {
+      title: "DWG-AUTO-7721: Inline-4 Engine Cylinder Block Deck & Main Bore",
+      standard: "STANDARD: ASME Y14.5-2018 • ISO 1101:2017",
+      svg: `<svg viewBox="0 0 800 480" class="blueprint-svg-canvas" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="grid-auto" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(56, 189, 248, 0.08)" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="#040d1a" />
+  <rect width="100%" height="100%" fill="url(#grid-auto)" />
+
+  <!-- Engine Block Outer Profile -->
+  <path d="M 80 120 L 720 120 L 700 380 L 100 380 Z" fill="rgba(15, 23, 42, 0.8)" stroke="#38bdf8" stroke-width="2.5" />
+
+  <!-- Top Deck Surface Line (Datum A) -->
+  <line x1="60" y1="120" x2="740" y2="120" stroke="#0ea5e9" stroke-width="3" />
+  <text x="400" y="105" fill="#38bdf8" font-size="11" font-weight="bold" font-family="'JetBrains Mono', monospace" text-anchor="middle">CYLINDER HEAD MATING DECK SURFACE</text>
+
+  <!-- Datum A Flag -->
+  <polygon points="120,120 130,100 110,100" fill="#38bdf8" />
+  <line x1="120" y1="100" x2="120" y2="80" stroke="#38bdf8" stroke-width="1.5" />
+  <rect x="105" y="60" width="30" height="20" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5" />
+  <text x="120" y="75" fill="#ffffff" font-size="12" font-weight="bold" font-family="'JetBrains Mono', monospace" text-anchor="middle">A</text>
+
+  <!-- Perpendicularity Feature Control Frame -->
+  <g transform="translate(420, 60)">
+    <rect width="160" height="26" fill="#06162d" stroke="#38bdf8" stroke-width="1.5" />
+    <line x1="32" y1="0" x2="32" y2="26" stroke="#38bdf8" stroke-width="1" />
+    <line x1="105" y1="0" x2="105" y2="26" stroke="#38bdf8" stroke-width="1" />
+    <text x="16" y="18" fill="#38bdf8" font-size="14" font-weight="bold" text-anchor="middle">⟂</text>
+    <text x="68" y="17" fill="#f8fafc" font-size="11" font-family="'JetBrains Mono', monospace" text-anchor="middle">0.02</text>
+    <text x="132" y="17" fill="#38bdf8" font-size="12" font-weight="bold" font-family="'JetBrains Mono', monospace" text-anchor="middle">A</text>
+    <path d="M 80 26 L 80 60 L 50 60" fill="none" stroke="#38bdf8" stroke-width="1.5" />
+  </g>
+
+  <!-- 4 Cylinders -->
+  <circle cx="180" cy="240" r="50" fill="rgba(2, 132, 199, 0.2)" stroke="#38bdf8" stroke-width="2" />
+  <line x1="180" y1="175" x2="180" y2="305" stroke="#38bdf8" stroke-dasharray="3,3" stroke-width="1" />
+  <line x1="115" y1="240" x2="245" y2="240" stroke="#38bdf8" stroke-dasharray="3,3" stroke-width="1" />
+  <text x="180" y="244" fill="#94a3b8" font-size="10" font-family="'JetBrains Mono', monospace" text-anchor="middle">CYL 1</text>
+
+  <circle cx="320" cy="240" r="50" fill="rgba(2, 132, 199, 0.2)" stroke="#38bdf8" stroke-width="2" />
+  <line x1="320" y1="175" x2="320" y2="305" stroke="#38bdf8" stroke-dasharray="3,3" stroke-width="1" />
+  <line x1="255" y1="240" x2="385" y2="240" stroke="#38bdf8" stroke-dasharray="3,3" stroke-width="1" />
+  <text x="320" y="244" fill="#94a3b8" font-size="10" font-family="'JetBrains Mono', monospace" text-anchor="middle">CYL 2</text>
+
+  <circle cx="460" cy="240" r="50" fill="rgba(2, 132, 199, 0.2)" stroke="#38bdf8" stroke-width="2" />
+  <line x1="460" y1="175" x2="460" y2="305" stroke="#38bdf8" stroke-dasharray="3,3" stroke-width="1" />
+  <line x1="395" y1="240" x2="525" y2="240" stroke="#38bdf8" stroke-dasharray="3,3" stroke-width="1" />
+  <text x="460" y="244" fill="#94a3b8" font-size="10" font-family="'JetBrains Mono', monospace" text-anchor="middle">CYL 3</text>
+
+  <circle cx="600" cy="240" r="50" fill="rgba(2, 132, 199, 0.2)" stroke="#38bdf8" stroke-width="2" />
+  <line x1="600" y1="175" x2="600" y2="305" stroke="#38bdf8" stroke-dasharray="3,3" stroke-width="1" />
+  <line x1="535" y1="240" x2="665" y2="240" stroke="#38bdf8" stroke-dasharray="3,3" stroke-width="1" />
+  <text x="600" y="244" fill="#94a3b8" font-size="10" font-family="'JetBrains Mono', monospace" text-anchor="middle">CYL 4</text>
+
+  <!-- True Position Feature Control Frame on Cyl 2 -->
+  <g transform="translate(210, 310)">
+    <rect width="210" height="26" fill="#06162d" stroke="#f59e0b" stroke-width="1.5" />
+    <line x1="30" y1="0" x2="30" y2="26" stroke="#f59e0b" stroke-width="1" />
+    <line x1="110" y1="0" x2="110" y2="26" stroke="#f59e0b" stroke-width="1" />
+    <line x1="140" y1="0" x2="140" y2="26" stroke="#f59e0b" stroke-width="1" />
+    <line x1="175" y1="0" x2="175" y2="26" stroke="#f59e0b" stroke-width="1" />
+    <text x="15" y="18" fill="#fbbf24" font-size="14" font-weight="bold" text-anchor="middle">⌖</text>
+    <text x="70" y="17" fill="#f8fafc" font-size="11" font-family="'JetBrains Mono', monospace" text-anchor="middle">⌀0.05 Ⓜ</text>
+    <text x="125" y="17" fill="#38bdf8" font-size="11" font-weight="bold" font-family="'JetBrains Mono', monospace" text-anchor="middle">A</text>
+    <text x="157" y="17" fill="#38bdf8" font-size="11" font-weight="bold" font-family="'JetBrains Mono', monospace" text-anchor="middle">B Ⓜ</text>
+    <text x="192" y="17" fill="#38bdf8" font-size="11" font-weight="bold" font-family="'JetBrains Mono', monospace" text-anchor="middle">C Ⓜ</text>
+    <path d="M 30 0 L 30 -25 L 80 -45" fill="none" stroke="#f59e0b" stroke-width="1.5" />
+  </g>
+
+  <!-- Water Jacket Profile Trace -->
+  <path d="M 120 170 Q 180 150 240 170 Q 320 150 400 170 Q 480 150 560 170 Q 640 150 670 180 L 670 310 Q 560 330 460 310 Q 320 330 200 310 Z" fill="none" stroke="rgba(16, 185, 129, 0.4)" stroke-dasharray="5,5" stroke-width="2" />
+  <text x="580" y="360" fill="#34d399" font-size="10" font-family="'JetBrains Mono', monospace">WATER JACKET CAVITY</text>
+
+  <!-- Oil Pan Rail Datum A targets at bottom -->
+  <rect x="80" y="380" width="620" height="24" fill="#0f172a" stroke="#64748b" stroke-width="1.5" />
+  <circle cx="160" cy="392" r="6" fill="#f59e0b" />
+  <text x="160" y="420" fill="#fbbf24" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">[A1]</text>
+  <circle cx="400" cy="392" r="6" fill="#f59e0b" />
+  <text x="400" y="420" fill="#fbbf24" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">[A2]</text>
+  <circle cx="640" cy="392" r="6" fill="#f59e0b" />
+  <text x="640" y="420" fill="#fbbf24" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">[A3]</text>
+</svg>`,
+      hotspots: {
+        pos_bore: {
+          x: 38,
+          y: 65,
+          tag: "POS-BORE-1/4",
+          name: "Cylinder Bore True Position Control Frame",
+          system: "Deck Surface to Crankcase Alignment Subsystem",
+          standard: "ASME Y14.5-2018 §10.2",
+          range: "⌖ ⌀ 0.05 Ⓜ | A | B Ⓜ | C Ⓜ",
+          meaning: "Controls axial location and orientation of cylinder bore centerline at Maximum Material Condition (MMC) relative to primary Datum A (deck), secondary Datum B (crankshaft journal centerline), and tertiary Datum C (flywheel dowel pin).",
+          quote: "The cylinder bore true position callout specifies a cylindrical tolerance zone of 50 microns at MMC referenced to primary datum plane A, secondary datum axis B, and tertiary datum C. If the bore diameter departs from MMC toward LMC, we gain bonus tolerance for machining tool wear.",
+          redline: "ECO-2026-0914: Relax bore true position callout from ⌀0.05Ⓜ to ⌀0.075Ⓜ at LMC on non-thrust face to reduce scrap rate during CNC rough boring without compromising piston skirt clearance.",
+          quiz: {
+            question: "In ASME Y14.5 GD&T, what is the meaning of the encircled 'M' modifier in a feature control frame?",
+            options: [
+              "Minimum Material Condition (LMC)",
+              "Maximum Material Condition (MMC)",
+              "Material Modification Constant",
+              "Midplane Tolerance Zone"
+            ],
+            answer: 1,
+            explanation: "Encircled 'M' denotes Maximum Material Condition, allowing bonus tolerance as the feature size departs from its maximum material limit."
+          }
+        },
+        perp_deck: {
+          x: 62,
+          y: 16,
+          tag: "PERP-DECK-A",
+          name: "Cylinder Head Mating Deck Perpendicularity & Flatness",
+          system: "Block Deck Face to Cylinder Bore Axis",
+          standard: "ASME Y14.5-2018 §9.3 & §8.4",
+          range: "⟂ 0.02 | A & ⏥ 0.015 Overall",
+          meaning: "Ensures the top deck surface is perpendicular to cylinder bore axis within 20 microns and maintains overall flatness within 15 microns to prevent head gasket combustion blow-by.",
+          quote: "We verify deck surface flatness and perpendicularity to Datum A via automated CMM scanning with 120 probe points. This tight 15-micron envelope guarantees uniform clamping pressure across all multi-layer steel (MLS) head gasket fire rings.",
+          redline: "ECO-2026-0915: Revise deck surface finish requirement from Ra 0.8 µm to Rz 3.2 µm with 3D profilometry scanning to prevent micro-leak paths under 250-bar peak cylinder pressure.",
+          quiz: {
+            question: "Does a Flatness tolerance (⏥) ever reference datum features in its feature control frame?",
+            options: [
+              "Yes, always requires a primary datum",
+              "No, form tolerances never reference datums",
+              "Only when specified with MMC modifier",
+              "Only on secondary mating surfaces"
+            ],
+            answer: 1,
+            explanation: "Form tolerances (flatness, straightness, circularity, cylindricity) are standalone geometric controls and NEVER reference datums."
+          }
+        },
+        prof_jacket: {
+          x: 75,
+          y: 72,
+          tag: "PROF-JACKET",
+          name: "Coolant Water Jacket Cavity Profile of a Surface",
+          system: "Casting Core & Thermal Management Matrix",
+          standard: "ASME Y14.5-2018 §11.2",
+          range: "⌓ 0.40 Ⓤ 0.10 | A | B | C",
+          meaning: "Unilateral surface profile control defining cast wall thickness distribution to eliminate hot spots and prevent thin-wall rupture during induction hardening.",
+          quote: "The water jacket cast cavity uses an unequal bilateral profile tolerance of 0.4 mm with 0.1 mm allowing metal addition. This ensures consistent wall thickness between the intake exhaust runners and cylinder liners during lost-foam sand casting.",
+          redline: "ECO-2026-0916: Add ultrasonic wall thickness verification checkpoint at Station 40 CMM to flag sand-core shift before finish-machining the oil gallery passages.",
+          quiz: {
+            question: "What does the symbol Ⓤ indicate inside an ASME Y14.5 profile feature control frame?",
+            options: [
+              "Uniform distribution tolerance",
+              "Unequally disposed bilateral tolerance",
+              "Unilateral outward material condition",
+              "Unchecked rough casting surface"
+            ],
+            answer: 1,
+            explanation: "The Ⓤ modifier indicates an unequally disposed profile tolerance, where the number following defines the portion of the tolerance zone adding material."
+          }
+        },
+        datum_a: {
+          x: 20,
+          y: 82,
+          tag: "DATUM-[A]",
+          name: "Primary Datum Target Simulator (Oil Pan Rail)",
+          system: "Manufacturing & Metrology Reference Plane",
+          standard: "ASME Y14.5-2018 §7.3",
+          range: "3 Target Points (A1, A2, A3) coplanar within 0.008 mm",
+          meaning: "Establishes the fundamental 3-point kinematic constraint plane that immobilizes pitch and roll degrees of freedom for all downstream machining operations.",
+          quote: "Datum A is simulated using three spherical carbide locators on the oil pan rail fixture. Restricting these three degrees of freedom guarantees repeatable datum transfer from high-speed broaching to multi-axis CNC drilling.",
+          redline: "ECO-2026-0917: Standardize datum target locator diameters across both Saltillo and Ramos Arizpe machining lines to eliminate inter-facility CMM correlation bias.",
+          quiz: {
+            question: "According to the 3-2-1 locating principle, how many degrees of freedom does the primary datum plane [A] arrest?",
+            options: [
+              "1 translation, 1 rotation (2 total)",
+              "1 translation, 2 rotations (3 total)",
+              "2 translations, 1 rotation (3 total)",
+              "All 6 spatial degrees of freedom"
+            ],
+            answer: 1,
+            explanation: "A primary datum plane eliminates 3 degrees of freedom: 1 translational movement (perpendicular to plane) and 2 rotational movements (pitch and roll)."
+          }
+        }
+      }
+    },
+
+    energy_sld: {
+      title: "DWG-PWR-9904: 115kV/13.8kV Nearshoring Substation & Backup Generation Tie",
+      standard: "STANDARD: IEEE 315 / IEEE C37.2 (ANSI Device Numbers)",
+      svg: `<svg viewBox="0 0 800 480" class="blueprint-svg-canvas" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="grid-pwr" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(56, 189, 248, 0.08)" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="#050b16" />
+  <rect width="100%" height="100%" fill="url(#grid-pwr)" />
+
+  <!-- 115 kV Incoming Grid Utility Bus -->
+  <line x1="80" y1="70" x2="720" y2="70" stroke="#f59e0b" stroke-width="4" />
+  <text x="400" y="55" fill="#fbbf24" font-size="12" font-weight="bold" font-family="'JetBrains Mono', monospace" text-anchor="middle">115 kV UTILITY INCOMING TRANSMISSION BUS (CFE / ISO)</text>
+
+  <!-- Incoming Drop Line -->
+  <line x1="220" y1="70" x2="220" y2="110" stroke="#f59e0b" stroke-width="2.5" />
+  <circle cx="220" cy="110" r="4" fill="#f59e0b" />
+  <line x1="220" y1="110" x2="235" y2="135" stroke="#f59e0b" stroke-width="2" />
+  <circle cx="220" cy="140" r="4" fill="#f59e0b" />
+  <text x="248" y="125" fill="#94a3b8" font-size="9" font-family="'JetBrains Mono', monospace">89-1 DS</text>
+
+  <!-- SF6 Circuit Breaker 52-1 (CB-101) -->
+  <line x1="220" y1="140" x2="220" y2="160" stroke="#38bdf8" stroke-width="2.5" />
+  <rect x="202" y="160" width="36" height="36" fill="#06162d" stroke="#38bdf8" stroke-width="2" />
+  <line x1="202" y1="160" x2="238" y2="196" stroke="#38bdf8" stroke-width="1.5" />
+  <text x="248" y="175" fill="#38bdf8" font-size="10" font-weight="bold" font-family="'JetBrains Mono', monospace">52-1 (CB-101)</text>
+  <text x="248" y="190" fill="#94a3b8" font-size="8.5" font-family="'JetBrains Mono', monospace">115kV SF6 40kA</text>
+
+  <!-- Line to Transformer -->
+  <line x1="220" y1="196" x2="220" y2="230" stroke="#38bdf8" stroke-width="2.5" />
+  <line x1="220" y1="230" x2="400" y2="230" stroke="#38bdf8" stroke-width="2.5" />
+  <line x1="400" y1="230" x2="400" y2="250" stroke="#38bdf8" stroke-width="2.5" />
+
+  <!-- 40 MVA Transformer TR-01 -->
+  <circle cx="400" cy="270" r="26" fill="rgba(2, 132, 199, 0.15)" stroke="#38bdf8" stroke-width="2" />
+  <circle cx="400" cy="305" r="26" fill="rgba(16, 185, 129, 0.15)" stroke="#10b981" stroke-width="2" />
+  <polygon points="392,265 408,265 400,277" fill="none" stroke="#38bdf8" stroke-width="1.5" />
+  <path d="M 400 305 L 400 318 M 392 300 L 400 305 L 408 300" fill="none" stroke="#10b981" stroke-width="1.5" />
+  <text x="440" y="280" fill="#f8fafc" font-size="11" font-weight="bold" font-family="'JetBrains Mono', monospace">TR-01 (40 MVA)</text>
+  <text x="440" y="295" fill="#94a3b8" font-size="8.5" font-family="'JetBrains Mono', monospace">115kV Δ / 13.8kV Y-GND</text>
+  <text x="440" y="310" fill="#94a3b8" font-size="8.5" font-family="'JetBrains Mono', monospace">Z = 8.5% • ONAN/ONAF</text>
+
+  <!-- 13.8 kV Plant Distribution Bus -->
+  <line x1="400" y1="331" x2="400" y2="370" stroke="#10b981" stroke-width="2.5" />
+  <line x1="80" y1="370" x2="720" y2="370" stroke="#10b981" stroke-width="4" />
+  <text x="400" y="392" fill="#34d399" font-size="12" font-weight="bold" font-family="'JetBrains Mono', monospace" text-anchor="middle">13.8 kV MAIN PLANT SWITCHGEAR BUSBAR (SWG-100)</text>
+
+  <!-- Branch Left: Co-Gen / Backup with Relay 32R -->
+  <line x1="200" y1="370" x2="200" y2="410" stroke="#38bdf8" stroke-width="2" />
+  <rect x="185" y="410" width="30" height="30" fill="#06162d" stroke="#38bdf8" stroke-width="1.5" />
+  <circle cx="200" cy="425" r="8" fill="none" stroke="#38bdf8" stroke-width="1" />
+  <text x="200" y="428" fill="#38bdf8" font-size="8" font-weight="bold" text-anchor="middle">G</text>
+  <text x="140" y="428" fill="#94a3b8" font-size="8.5" font-family="'JetBrains Mono', monospace">GEN 5MW</text>
+  <circle cx="250" cy="390" r="16" fill="#06162d" stroke="#f59e0b" stroke-width="1.5" />
+  <text x="250" y="394" fill="#fbbf24" font-size="8.5" font-family="'JetBrains Mono', monospace" font-weight="bold" text-anchor="middle">32R</text>
+
+  <!-- Branch Right: Active Harmonic Filter AHF-01 -->
+  <line x1="620" y1="370" x2="620" y2="410" stroke="#10b981" stroke-width="2" />
+  <rect x="600" y="410" width="40" height="34" fill="#06162d" stroke="#10b981" stroke-width="1.5" />
+  <path d="M 606 422 Q 612 414 620 422 Q 628 430 634 422" fill="none" stroke="#34d399" stroke-width="1.5" />
+  <text x="620" y="458" fill="#34d399" font-size="9" font-family="'JetBrains Mono', monospace" font-weight="bold" text-anchor="middle">AHF-01</text>
+  <text x="620" y="470" fill="#94a3b8" font-size="7.5" font-family="'JetBrains Mono', monospace" text-anchor="middle">±300A PWM</text>
+</svg>`,
+      hotspots: {
+        cb101: {
+          x: 27,
+          y: 38,
+          tag: "CB-101 (52-1)",
+          name: "115kV SF6 Gas Insulated Outdoor Circuit Breaker",
+          system: "Primary Substation Incoming Feed Interrupter",
+          standard: "IEEE C37.04 • IEC 62271-100",
+          range: "Rated 123 kV, 2000A Continuous, 40 kA Symmetrical Interrupting",
+          meaning: "Primary high-voltage circuit breaker capable of interrupting severe phase-to-phase and phase-to-ground fault currents under SF6 dielectric arc quenching.",
+          quote: "Breaker 52-1 is an outdoor dead-tank SF6 unit with dual trip coils and spring-hydraulic operating mechanism. We log SF6 density monitoring telemetry directly into our SCADA to ensure arc quench integrity.",
+          redline: "ECO-2026-1045: Install synchronized point-on-wave closing controller on 52-1 to minimize magnetizing inrush current transients when energizing the 40 MVA transformer.",
+          quiz: {
+            question: "In IEEE / ANSI C37.2 device standards, what protection function is designated by Device Number 50/51?",
+            options: [
+              "Overfrequency and Underfrequency Relay",
+              "Instantaneous and Time-Delay Overcurrent Relay",
+              "Differential Current Protection",
+              "Undervoltage Protection Relay"
+            ],
+            answer: 1,
+            explanation: "ANSI 50 is Instantaneous Overcurrent, and ANSI 51 is AC Time Overcurrent; combined 50/51 provides dual-stage overcurrent protection."
+          }
+        },
+        tr1: {
+          x: 52,
+          y: 58,
+          tag: "TR-01 (40MVA)",
+          name: "Delta-Wye Step-Down Substation Power Transformer (ONAN/ONAF)",
+          system: "Main Plant Step-Down Transformation (115kV to 13.8kV)",
+          standard: "IEEE C57.12.00 • NEMA TR 1",
+          range: "30/40 MVA ONAN/ONAF, 115 kV Delta to 13.8 kV Grounded Wye, Z = 8.5%",
+          meaning: "Transforms transmission level voltage down to medium voltage distribution bus; neutral is low-resistance grounded through a 100A neutral grounding resistor (NGR).",
+          quote: "Transformer TR-01 features delta primary winding to trap third harmonics, while the 13.8kV grounded-wye secondary provides a stable neutral reference. The low-resistance neutral grounding resistor limits ground fault currents to 100 amperes.",
+          redline: "ECO-2026-1046: Retrofit transformer TR-01 with online dissolved gas analysis (DGA) monitor for real-time tracking of hydrogen and acetylene micro-ppm gas generation.",
+          quiz: {
+            question: "What does the device prefix '87' denote in IEEE protective relaying schematics?",
+            options: [
+              "Ground Fault Interrupter",
+              "Differential Protection Relay",
+              "Automatic Recloser",
+              "Lockout Relay"
+            ],
+            answer: 1,
+            explanation: "Device 87 designates a Differential Relay (e.g. 87T for transformer differential, 87B for bus differential), comparing incoming vs outgoing current vectors."
+          }
+        },
+        relay32r: {
+          x: 32,
+          y: 82,
+          tag: "RELAY-32R",
+          name: "Directional Reverse Power Protection Relay (ANSI 32R)",
+          system: "Emergency Generator Co-Gen Intertie Bus",
+          standard: "IEEE C37.2 • IEEE C37.91",
+          range: "Pickup threshold 2.0% reverse kW, 200 ms time delay",
+          meaning: "Prevents plant backup gas turbines or diesel generators from motoring or exporting power into the 115kV utility grid upon grid blackout.",
+          quote: "Relay 32R monitors active power vector direction across the 13.8kV tie breaker. If reverse real power exceeds 2% rated capacity for 200 milliseconds, it trips breaker 52-GEN to prevent generator motoring and turbine rotor thermal stress.",
+          redline: "ECO-2026-1044: Retune ANSI 32R pickup sensitivity from 2.0% to 1.2% following installation of high-efficiency gas turbine co-generation package per CFE grid intertie code.",
+          quiz: {
+            question: "Why is the secondary winding of an industrial step-down transformer typically wired in Grounded-Wye configuration?",
+            options: [
+              "To cancel fundamental load voltage drops",
+              "To provide a neutral reference and enable single-phase 120/277V phase-to-neutral loads",
+              "To block all transient lightning impulses",
+              "To double the continuous kVA capacity"
+            ],
+            answer: 1,
+            explanation: "Grounded-Wye provides a stable system neutral point, allows phase-to-neutral loading, and facilitates selective ground fault tripping."
+          }
+        },
+        ahf: {
+          x: 78,
+          y: 86,
+          tag: "AHF-01",
+          name: "Active Harmonic Filter & Dynamic Power Factor Compensator",
+          system: "13.8kV Plant Variable Frequency Drive (VFD) Bus",
+          standard: "IEEE 519-2022 • IEC 61000-3-6",
+          range: "±300 A compensation, harmonic mitigation up to 50th order, target PF > 0.98",
+          meaning: "Injects anti-phase harmonic currents via IGBT PWM inverter to cancel non-linear harmonic distortion generated by 6-pulse CNC and VFD drives.",
+          quote: "Active filter AHF-01 compensates for the 5th and 7th harmonic current spikes produced by our 80 robotic welding cells. It maintains total harmonic distortion of current (THDi) below 4.2%, fully conforming to IEEE 519 guidelines.",
+          redline: "ECO-2026-1047: Add fast-acting transient surge suppression capacitors (TVSS) at AHF-01 bus connection to clamp switching transients during chiller startup.",
+          quiz: {
+            question: "According to IEEE 519-2022, what is the maximum Total Demand Distortion (TDD) allowed at the Point of Common Coupling (PCC) for stiff industrial grids (Isc/IL > 1000)?",
+            options: [
+              "1.5%",
+              "5.0%",
+              "15.0%",
+              "25.0%"
+            ],
+            answer: 2,
+            explanation: "For high short-circuit ratios (Isc/IL > 1000), IEEE 519 permits up to 15.0% TDD, whereas stiffer limits (e.g. 5.0%) apply to standard distribution feeders."
+          }
+        }
+      }
+    },
+
+    pcba_layout: {
+      title: "DWG-EE-4180: 12-Layer Edge AI Accelerator SOM Layout & Stackup",
+      standard: "STANDARD: IPC-7351B • IPC-2221B Class 3 (High Reliability)",
+      svg: `<svg viewBox="0 0 800 480" class="blueprint-svg-canvas" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="grid-pcb" width="16" height="16" patternUnits="userSpaceOnUse">
+      <path d="M 16 0 L 0 0 0 16" fill="none" stroke="rgba(16, 185, 129, 0.08)" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="#03100c" />
+  <rect width="100%" height="100%" fill="url(#grid-pcb)" />
+
+  <!-- PCB Board Outline -->
+  <rect x="70" y="40" width="660" height="400" rx="16" fill="rgba(6, 78, 59, 0.25)" stroke="#10b981" stroke-width="2.5" />
+
+  <!-- Mounting holes in corners -->
+  <circle cx="105" cy="75" r="14" fill="#03100c" stroke="#10b981" stroke-width="2" />
+  <circle cx="695" cy="75" r="14" fill="#03100c" stroke="#10b981" stroke-width="2" />
+  <circle cx="105" cy="405" r="14" fill="#03100c" stroke="#10b981" stroke-width="2" />
+  <circle cx="695" cy="405" r="14" fill="#03100c" stroke="#10b981" stroke-width="2" />
+
+  <!-- Center U1 BGA-1156 Outline -->
+  <rect x="290" y="150" width="220" height="220" rx="6" fill="#062e24" stroke="#34d399" stroke-width="2" />
+  <rect x="310" y="170" width="180" height="180" rx="4" fill="none" stroke="rgba(52, 211, 153, 0.4)" stroke-dasharray="3,3" />
+
+  <!-- Ball Grid Matrix Dots -->
+  <g fill="#34d399" opacity="0.6">
+    <circle cx="330" cy="190" r="2.5"/><circle cx="350" cy="190" r="2.5"/><circle cx="370" cy="190" r="2.5"/><circle cx="390" cy="190" r="2.5"/><circle cx="410" cy="190" r="2.5"/><circle cx="430" cy="190" r="2.5"/><circle cx="450" cy="190" r="2.5"/><circle cx="470" cy="190" r="2.5"/>
+    <circle cx="330" cy="210" r="2.5"/><circle cx="350" cy="210" r="2.5"/><circle cx="370" cy="210" r="2.5"/><circle cx="390" cy="210" r="2.5"/><circle cx="410" cy="210" r="2.5"/><circle cx="430" cy="210" r="2.5"/><circle cx="450" cy="210" r="2.5"/><circle cx="470" cy="210" r="2.5"/>
+    <circle cx="330" cy="230" r="2.5"/><circle cx="350" cy="230" r="2.5"/><circle cx="450" cy="230" r="2.5"/><circle cx="470" cy="230" r="2.5"/>
+    <circle cx="330" cy="290" r="2.5"/><circle cx="350" cy="290" r="2.5"/><circle cx="450" cy="290" r="2.5"/><circle cx="470" cy="290" r="2.5"/>
+    <circle cx="330" cy="310" r="2.5"/><circle cx="350" cy="310" r="2.5"/><circle cx="370" cy="310" r="2.5"/><circle cx="390" cy="310" r="2.5"/><circle cx="410" cy="310" r="2.5"/><circle cx="430" cy="310" r="2.5"/><circle cx="450" cy="310" r="2.5"/><circle cx="470" cy="310" r="2.5"/>
+    <circle cx="330" cy="330" r="2.5"/><circle cx="350" cy="330" r="2.5"/><circle cx="370" cy="330" r="2.5"/><circle cx="390" cy="330" r="2.5"/><circle cx="410" cy="330" r="2.5"/><circle cx="430" cy="330" r="2.5"/><circle cx="450" cy="330" r="2.5"/><circle cx="470" cy="330" r="2.5"/>
+  </g>
+
+  <!-- U1 Die Heat Spreader & Text -->
+  <rect x="365" y="235" width="70" height="50" rx="4" fill="#047857" stroke="#6ee7b7" stroke-width="1.5" />
+  <text x="400" y="258" fill="#ffffff" font-size="10" font-weight="bold" font-family="'JetBrains Mono', monospace" text-anchor="middle">EDGE AI</text>
+  <text x="400" y="272" fill="#a7f3d0" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle">NPU CORE</text>
+  <text x="400" y="388" fill="#34d399" font-size="11" font-weight="bold" font-family="'JetBrains Mono', monospace" text-anchor="middle">U1: BGA-1156 (0.8mm PITCH)</text>
+
+  <!-- Differential Clock Trace Pair (DIFF-CLK-01) with trombone delay matching -->
+  <path d="M 120 180 L 190 180 Q 200 180 200 190 L 200 210 Q 200 220 210 220 L 230 220 Q 240 220 240 210 L 240 180 Q 240 170 250 170 L 290 170" fill="none" stroke="#38bdf8" stroke-width="2" />
+  <path d="M 120 186 L 186 186 Q 194 186 194 194 L 194 214 Q 194 226 210 226 L 230 226 Q 246 226 246 214 L 246 186 Q 246 176 254 176 L 290 176" fill="none" stroke="#38bdf8" stroke-width="2" />
+  <text x="140" y="165" fill="#38bdf8" font-size="9" font-family="'JetBrains Mono', monospace" font-weight="bold">DIFF-CLK (100Ω)</text>
+
+  <!-- Decoupling Capacitor Ring -->
+  <rect x="525" y="160" width="16" height="8" fill="#f59e0b" stroke="#fbbf24" stroke-width="1" />
+  <rect x="525" y="175" width="16" height="8" fill="#f59e0b" stroke="#fbbf24" stroke-width="1" />
+  <rect x="525" y="190" width="16" height="8" fill="#f59e0b" stroke="#fbbf24" stroke-width="1" />
+  <rect x="525" y="205" width="16" height="8" fill="#f59e0b" stroke="#fbbf24" stroke-width="1" />
+  <text x="555" y="190" fill="#fbbf24" font-size="9" font-family="'JetBrains Mono', monospace">0201 / 0402</text>
+  <text x="555" y="202" fill="#fbbf24" font-size="9" font-family="'JetBrains Mono', monospace">DECOUPLING RING</text>
+
+  <!-- Thermal Via Array at bottom right -->
+  <rect x="525" y="290" width="120" height="70" rx="4" fill="rgba(245, 158, 11, 0.1)" stroke="#f59e0b" stroke-dasharray="3,3" stroke-width="1.5" />
+  <g fill="#f59e0b">
+    <circle cx="545" cy="310" r="3.5"/><circle cx="565" cy="310" r="3.5"/><circle cx="585" cy="310" r="3.5"/><circle cx="605" cy="310" r="3.5"/><circle cx="625" cy="310" r="3.5"/>
+    <circle cx="545" cy="325" r="3.5"/><circle cx="565" cy="325" r="3.5"/><circle cx="585" cy="325" r="3.5"/><circle cx="605" cy="325" r="3.5"/><circle cx="625" cy="325" r="3.5"/>
+    <circle cx="545" cy="340" r="3.5"/><circle cx="565" cy="340" r="3.5"/><circle cx="585" cy="340" r="3.5"/><circle cx="605" cy="340" r="3.5"/><circle cx="625" cy="340" r="3.5"/>
+  </g>
+  <text x="585" y="375" fill="#f59e0b" font-size="9" font-family="'JetBrains Mono', monospace" text-anchor="middle">COPPER THERMAL VIAS (TYPE VII)</text>
+</svg>`,
+      hotspots: {
+        u1_bga: {
+          x: 50,
+          y: 53,
+          tag: "U1 (BGA-1156)",
+          name: "SoC Neural Processing Unit (0.8mm Ball Pitch, 34x34 Grid)",
+          system: "Edge AI Deep Inference Core Processor",
+          standard: "IPC-7351B BGA80P34X34 • JEDEC MO-275",
+          range: "35W TDP, Core VDD 0.75V @ 42A, Transceiver VDD 1.8V",
+          meaning: "High-density ball grid array processor requiring micro-via-in-pad (VIPPO) technology and non-conductive epoxy via filling to break out 1156 interconnect balls.",
+          quote: "The U1 BGA package utilizes 0.8 mm pitch solder balls with via-in-pad plated over (VIPPO) technology. During SMT reflow, we monitor vacuum solder atmosphere to keep voiding in critical ground balls below 8% per IPC-A-610 Class 3.",
+          redline: "ECO-2026-1188: Specify ENIG (Electroless Nickel Immersion Gold) with immersion silver alternative surface finish to prevent 'black pad' embrittlement on U1 corner anchor balls.",
+          quiz: {
+            question: "In IPC-A-610 Class 3 electronic assemblies, what is the maximum allowable solder voiding percentage in BGA solder balls?",
+            options: [
+              "5% of ball area",
+              "15% (or 25% for Class 2)",
+              "35% of total ball volume",
+              "Zero voids permitted"
+            ],
+            answer: 1,
+            explanation: "IPC-A-610 permits maximum 15% solder voiding for Class 3 high-reliability assemblies (up to 25% for Class 2)."
+          }
+        },
+        diff_clk: {
+          x: 25,
+          y: 38,
+          tag: "DIFF-CLK-01",
+          name: "PCIe Gen 5 Differential Clock Trace Pair (100Ω Impedance)",
+          system: "High-Speed Clock & Serial Transceiver Interconnect",
+          standard: "IPC-2141A • PCI-SIG PCIe 5.0 Specification",
+          range: "100Ω ± 7% differential impedance, skew matched within 0.12 mm (5 mils)",
+          meaning: "Controlled impedance microstrip traces routed on Layer 1 over unbroken Layer 2 GND plane, skew-matched with trombone tuning bends.",
+          quote: "Trace pair DIFF-CLK-01 carries the 32 GT/s reference clock. Both legs are routed tightly coupled over solid reference ground with length matching within 5 mils to minimize clock phase jitter.",
+          redline: "ECO-2026-1189: Re-route DIFF-CLK-01 around Layer 2 GND plane anti-pad slot to maintain unbroken image plane and avoid edge-radiated EMI emission spikes at 16 GHz.",
+          quiz: {
+            question: "What occurs when a high-speed differential signal trace crosses over a split or gap in its reference ground plane?",
+            options: [
+              "Signal propagation velocity doubles",
+              "Current return path is disrupted, causing severe impedance discontinuity and EMI radiation",
+              "Common-mode rejection ratio improves",
+              "Trace capacitance drops to zero with no side effects"
+            ],
+            answer: 1,
+            explanation: "A reference plane split forces return currents to take a detour loop, creating high loop inductance, signal degradation, and severe EMI emissions."
+          }
+        },
+        decoupling: {
+          x: 74,
+          y: 38,
+          tag: "C104-RING",
+          name: "Ultra-Low-ESR Decoupling Capacitor Ring (0201 & 0402 X7R)",
+          system: "Core Power Distribution Network (PDN) Impedance Flattening",
+          standard: "IPC-2221B • IEEE 1156",
+          range: "Target PDN impedance < 1.8 mΩ from DC up to 200 MHz",
+          meaning: "High-frequency ceramic decoupling capacitors placed on bottom layer directly beneath BGA power balls to deliver instantaneous transient current surges.",
+          quote: "Capacitor ring C104 consists of forty-eight 0201 100-nanofarad capacitors mounted directly on the backside beneath the BGA cavity. This ultra-low loop inductance configuration suppresses high di/dt switching noise on the 0.75V core rail.",
+          redline: "ECO-2026-1190: Replace 0402 capacitors with reverse-geometry 0204 low-inductance chip capacitors (LW reverse) to push the self-resonant frequency above 350 MHz.",
+          quiz: {
+            question: "Why are decoupling capacitors positioned as close as possible to IC power pins on high-speed PCBs?",
+            options: [
+              "To prevent board thermal expansion",
+              "To minimize parasitic loop inductance between capacitor and IC die",
+              "To reduce soldering rework labor costs",
+              "To ensure high DC resistance"
+            ],
+            answer: 1,
+            explanation: "Minimizing loop inductance is crucial: parasitic inductance limits how quickly capacitors can supply sudden current surges."
+          }
+        },
+        thermal_vias: {
+          x: 75,
+          y: 72,
+          tag: "TH-VIA-ARRAY",
+          name: "Copper-Filled Thermal Via Heat Slug Array",
+          system: "Power Dissipation & Thermal Interface Subsystem",
+          standard: "IPC-4761 Type VII (Via Plated & Filled with Conductive Epoxy)",
+          range: "0.3 mm drill, 0.6 mm pitch array, thermal resistance reduction > 45%",
+          meaning: "Dense array of copper-plated vias transporting heat directly from top-side IC thermal pad down to internal 2-oz copper ground planes and bottom heatsink.",
+          quote: "The thermal via matrix beneath the power management IC utilizes IPC-4761 Type VII copper-filled vias. This drops junction-to-board thermal resistance to 1.8 degrees Celsius per watt, preventing thermal throttling during sustained AI workloads.",
+          redline: "ECO-2026-1191: Increase internal GND plane copper weight from 1-oz to 2-oz on layers 4 and 9 to accelerate lateral heat spreading across the enclosure chassis.",
+          quiz: {
+            question: "According to IPC-4761, what is a Type VII via?",
+            options: [
+              "Tented via covered with dry film only",
+              "Via plugged with non-conductive epoxy and plated flat with copper (VIPPO)",
+              "Open unplugged through-hole via",
+              "Blind laser microvia penetrating only one dielectric layer"
+            ],
+            answer: 1,
+            explanation: "IPC-4761 Type VII designates a via that is filled, planarized, and capped with copper plating, providing a solderable flat surface for BGA pads."
+          }
+        }
+      }
+    }
+  };
+
+  window.currentBlueprintKey = 'medtech_pid';
+  window.currentBlueprintHotspotKey = 'psv204';
+
+  window.switchBlueprintDiagram = function(key) {
+    if (!BLUEPRINT_SCHEMATICS[key]) return;
+    window.currentBlueprintKey = key;
+
+    // Update active tab buttons
+    document.querySelectorAll('.bp-tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    const activeTab = document.getElementById(`bp-tab-${key}`);
+    if (activeTab) activeTab.classList.add('active');
+
+    const data = BLUEPRINT_SCHEMATICS[key];
+
+    // Update Topbar
+    const titleEl = document.getElementById('bp-current-dwg-title');
+    const stdEl = document.getElementById('bp-current-dwg-standard');
+    if (titleEl) titleEl.textContent = data.title;
+    if (stdEl) stdEl.innerHTML = data.standard;
+
+    // Render SVG and pins into viewport
+    const viewport = document.getElementById('blueprint-svg-viewport');
+    if (viewport) {
+      let pinsHtml = '';
+      Object.keys(data.hotspots).forEach(hsKey => {
+        const hs = data.hotspots[hsKey];
+        pinsHtml += `
+          <div class="blueprint-pin" style="left: ${hs.x}%; top: ${hs.y}%;" onclick="selectBlueprintHotspot('${hsKey}')" id="bp-pin-${hsKey}">
+            <div class="bp-pin-pulse"></div>
+            <span class="bp-pin-label">${hs.tag}</span>
+          </div>
+        `;
+      });
+      viewport.innerHTML = data.svg + pinsHtml;
+    }
+
+    // Auto-select first hotspot
+    const firstHsKey = Object.keys(data.hotspots)[0];
+    window.selectBlueprintHotspot(firstHsKey);
+  };
+
+  window.selectBlueprintHotspot = function(hsKey) {
+    const data = BLUEPRINT_SCHEMATICS[window.currentBlueprintKey];
+    if (!data || !data.hotspots[hsKey]) return;
+    window.currentBlueprintHotspotKey = hsKey;
+    const hs = data.hotspots[hsKey];
+
+    // Update active pin visual state
+    document.querySelectorAll('.blueprint-pin').forEach(pin => {
+      pin.classList.remove('active');
+    });
+    const activePin = document.getElementById(`bp-pin-${hsKey}`);
+    if (activePin) activePin.classList.add('active');
+
+    // Update Detail Inspector
+    const tagEl = document.getElementById('bp-inspect-tag');
+    const nameEl = document.getElementById('bp-inspect-name');
+    const sysEl = document.getElementById('bp-inspect-system');
+    const stdEl = document.getElementById('bp-inspect-std');
+    const rangeEl = document.getElementById('bp-inspect-range');
+    const meaningEl = document.getElementById('bp-inspect-meaning');
+    const quoteEl = document.getElementById('bp-inspect-quote');
+    const redlineEl = document.getElementById('bp-inspect-redline');
+
+    if (tagEl) tagEl.textContent = hs.tag;
+    if (nameEl) nameEl.textContent = hs.name;
+    if (sysEl) sysEl.textContent = hs.system;
+    if (stdEl) stdEl.innerHTML = hs.standard;
+    if (rangeEl) rangeEl.textContent = hs.range;
+    if (meaningEl) meaningEl.textContent = hs.meaning;
+    if (quoteEl) quoteEl.textContent = `"${hs.quote}"`;
+    if (redlineEl) redlineEl.textContent = hs.redline;
+
+    // Hydrate Quiz
+    const quizQEl = document.getElementById('bp-quiz-question');
+    const quizOptsEl = document.getElementById('bp-quiz-options');
+    const quizFeedbackEl = document.getElementById('bp-quiz-feedback');
+
+    if (quizQEl && hs.quiz) quizQEl.textContent = hs.quiz.question;
+    if (quizOptsEl && hs.quiz) {
+      quizOptsEl.innerHTML = hs.quiz.options.map((opt, idx) => `
+        <button type="button" class="bp-quiz-opt-btn" onclick="submitBlueprintQuiz(${idx})">
+          <span style="font-weight:700; color:#38bdf8; margin-right:6px;">${String.fromCharCode(65 + idx)}.</span> ${opt}
+        </button>
+      `).join('');
+    }
+    if (quizFeedbackEl) {
+      quizFeedbackEl.style.display = 'none';
+      quizFeedbackEl.innerHTML = '';
+    }
+  };
+
+  window.submitBlueprintQuiz = function(selectedIdx) {
+    const data = BLUEPRINT_SCHEMATICS[window.currentBlueprintKey];
+    if (!data) return;
+    const hs = data.hotspots[window.currentBlueprintHotspotKey];
+    if (!hs || !hs.quiz) return;
+
+    const optButtons = document.querySelectorAll('.bp-quiz-opt-btn');
+    const feedbackEl = document.getElementById('bp-quiz-feedback');
+    if (!feedbackEl) return;
+
+    optButtons.forEach((btn, idx) => {
+      btn.disabled = true;
+      if (idx === hs.quiz.answer) {
+        btn.classList.add('correct');
+      } else if (idx === selectedIdx) {
+        btn.classList.add('wrong');
+      }
+    });
+
+    feedbackEl.style.display = 'block';
+    if (selectedIdx === hs.quiz.answer) {
+      feedbackEl.style.background = 'rgba(16, 185, 129, 0.15)';
+      feedbackEl.style.border = '1px solid #10b981';
+      feedbackEl.style.color = '#34d399';
+      feedbackEl.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Correct!</strong> ${hs.quiz.explanation}`;
+    } else {
+      feedbackEl.style.background = 'rgba(239, 68, 68, 0.15)';
+      feedbackEl.style.border = '1px solid #ef4444';
+      feedbackEl.style.color = '#f87171';
+      feedbackEl.innerHTML = `<strong><i class="fa-solid fa-circle-xmark"></i> Incorrect.</strong> Correct answer: <em>${hs.quiz.options[hs.quiz.answer]}</em>. ${hs.quiz.explanation}`;
+    }
+  };
+
+  window.copyRedlineStatement = function(btnEl) {
+    const textEl = document.getElementById('bp-inspect-redline');
+    if (!textEl) return;
+    const text = textEl.textContent.trim();
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+    if (btnEl) {
+      const origHtml = btnEl.innerHTML;
+      btnEl.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+      btnEl.style.background = 'rgba(16, 185, 129, 0.3)';
+      btnEl.style.borderColor = '#10b981';
+      btnEl.style.color = '#34d399';
+      setTimeout(() => {
+        btnEl.innerHTML = origHtml;
+        btnEl.style.background = '';
+        btnEl.style.borderColor = '';
+        btnEl.style.color = '';
+      }, 2000);
+    }
+  };
+
+  window.resetBlueprintZoom = function() {
+    const viewport = document.getElementById('blueprint-svg-viewport');
+    if (viewport) {
+      const svgEl = viewport.querySelector('.blueprint-svg-canvas');
+      if (svgEl) {
+        svgEl.style.transform = 'scale(1)';
+        svgEl.style.transition = 'transform 0.3s ease';
+      }
+    }
+  };
+
+  // Initial diagram hydration
+  window.switchBlueprintDiagram('medtech_pid');
+}
+

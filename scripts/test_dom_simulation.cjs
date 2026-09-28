@@ -881,7 +881,127 @@ window.closeCloudSyncModal();
 console.log("Cloud sync modal closed display:", cloudModal.style.display);
 console.log("PASS: Enterprise cohort backup and modal lifecycle verified.");
 
-console.log("\n🎉 ALL 16 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+console.log("\n── TEST 17: Interactive Blueprint, P&ID & GD&T Inspection Lab (Phase 8) ──");
+const bpSection = document.getElementById('blueprint-reading-section');
+console.log("Blueprint section exists in DOM:", !!bpSection);
+if (!bpSection) {
+  console.error("FAIL: Blueprint reading section #blueprint-reading-section missing in DOM!");
+  process.exit(1);
+}
+
+// 17.1 Initial Diagram Hydration (medtech_pid)
+const dwgTitle = document.getElementById('bp-current-dwg-title');
+const dwgStd = document.getElementById('bp-current-dwg-standard');
+const viewport = document.getElementById('blueprint-svg-viewport');
+const initialPins = viewport.querySelectorAll('.blueprint-pin');
+
+console.log("Initial Blueprint Title:", dwgTitle ? dwgTitle.textContent : "null");
+console.log("Initial Blueprint Standard:", dwgStd ? dwgStd.textContent : "null");
+console.log("Initial Hotspot Pins count:", initialPins.length);
+
+if (!dwgTitle || !dwgTitle.textContent.includes('DWG-MED-0492')) {
+  console.error("FAIL: Default blueprint title did not hydrate to DWG-MED-0492!");
+  process.exit(1);
+}
+if (initialPins.length !== 4) {
+  console.error("FAIL: Expected 4 hotspot pins in medtech_pid diagram, found " + initialPins.length);
+  process.exit(1);
+}
+
+// 17.2 Switch to Automotive GD&T Schematic
+window.switchBlueprintDiagram('automotive_gdt');
+const autoTitle = document.getElementById('bp-current-dwg-title');
+const autoPins = viewport.querySelectorAll('.blueprint-pin');
+console.log("Switched to Automotive GD&T Title:", autoTitle ? autoTitle.textContent : "null");
+console.log("Automotive Hotspot Pins count:", autoPins.length);
+
+if (!autoTitle || !autoTitle.textContent.includes('DWG-AUTO-7721')) {
+  console.error("FAIL: Switched blueprint title did not update to DWG-AUTO-7721!");
+  process.exit(1);
+}
+
+// 17.3 Select Hotspot (pos_bore) and Verify Detail Inspector & Redline ECO
+window.selectBlueprintHotspot('pos_bore');
+const bpTag = document.getElementById('bp-inspect-tag');
+const bpName = document.getElementById('bp-inspect-name');
+const bpRange = document.getElementById('bp-inspect-range');
+const bpQuote = document.getElementById('bp-inspect-quote');
+const bpRedline = document.getElementById('bp-inspect-redline');
+
+console.log("Selected Hotspot Tag:", bpTag ? bpTag.textContent : "null");
+console.log("Selected Hotspot Range/Callout:", bpRange ? bpRange.textContent : "null");
+
+if (!bpTag || bpTag.textContent !== 'POS-BORE-1/4') {
+  console.error("FAIL: Detail inspector tag did not update to POS-BORE-1/4!");
+  process.exit(1);
+}
+if (!bpRange || !bpRange.textContent.includes('0.05')) {
+  console.error("FAIL: Detail inspector range does not contain true position tolerance!");
+  process.exit(1);
+}
+if (!bpRedline || !bpRedline.textContent.includes('ECO-2026-0914')) {
+  console.error("FAIL: Redline statement does not contain ECO-2026-0914!");
+  process.exit(1);
+}
+console.log("PASS: Blueprint Hotspot Detail Inspector and ECO Redline Formulator hydrated accurately.");
+
+// 17.4 Submit Quiz Question for pos_bore
+const bpQuizOptions = document.querySelectorAll('.bp-quiz-opt-btn');
+console.log("Quiz Options rendered:", bpQuizOptions.length);
+if (bpQuizOptions.length !== 4) {
+  console.error("FAIL: Expected 4 quiz options, found " + bpQuizOptions.length);
+  process.exit(1);
+}
+
+// Submit correct option (index 1: MMC)
+window.submitBlueprintQuiz(1);
+const feedbackEl = document.getElementById('bp-quiz-feedback');
+console.log("Quiz Feedback visible:", feedbackEl.style.display);
+console.log("Quiz Feedback text:", feedbackEl.textContent);
+
+if (feedbackEl.style.display !== 'block' || !feedbackEl.textContent.includes('Correct')) {
+  console.error("FAIL: Quiz submission did not display correct feedback!");
+  process.exit(1);
+}
+if (!bpQuizOptions[1].classList.contains('correct')) {
+  console.error("FAIL: Correct quiz button does not have .correct class!");
+  process.exit(1);
+}
+console.log("PASS: Symbol Competence Quiz correctly validates answer and provides instant feedback.");
+
+// 17.5 Copy Redline Statement
+const copyBtn = document.querySelector('.btn-copy-redline');
+window.copyRedlineStatement(copyBtn);
+console.log("Copy Redline Button text after click:", copyBtn ? copyBtn.textContent : "null");
+if (!copyBtn || !copyBtn.textContent.includes('Copied')) {
+  console.error("FAIL: Copy Redline button did not display copied state!");
+  process.exit(1);
+}
+console.log("PASS: ECO Redline statement copy engine verified.");
+
+// 17.6 Switch to 115kV Substation SLD & High-Speed PCBA
+window.switchBlueprintDiagram('energy_sld');
+const sldTitle = document.getElementById('bp-current-dwg-title');
+console.log("Energy Substation Title:", sldTitle ? sldTitle.textContent : "null");
+if (!sldTitle || !sldTitle.textContent.includes('DWG-PWR-9904')) {
+  console.error("FAIL: Failed to switch to Energy Substation diagram!");
+  process.exit(1);
+}
+
+window.switchBlueprintDiagram('pcba_layout');
+const pcbaTitle = document.getElementById('bp-current-dwg-title');
+console.log("PCBA Layout Title:", pcbaTitle ? pcbaTitle.textContent : "null");
+if (!pcbaTitle || !pcbaTitle.textContent.includes('DWG-EE-4180')) {
+  console.error("FAIL: Failed to switch to PCBA Layout diagram!");
+  process.exit(1);
+}
+
+// 17.7 Reset Zoom
+window.resetBlueprintZoom();
+console.log("PASS: Blueprint zoom reset executed safely.");
+
+console.log("\n🎉 ALL 17 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+
 
 
 
