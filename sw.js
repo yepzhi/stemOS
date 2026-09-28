@@ -1,9 +1,9 @@
 /**
- * stemOS Dev Content Studio — PWA Service Worker (v3.4.0 Web Dev with Agentic AI Track Expansion)
- * Enables 100% complete offline caching for 27 tracks, 191 readings, 135 native idioms, and mascot assets.
+ * stemOS Dev Content Studio — PWA Service Worker (v5.0.0 Nearshoring Enterprise Copilot)
+ * Enables 100% complete offline caching for 34 tracks, 266 readings, 162 native idioms, STEMBot Copilot, and labs.
  */
 
-const CACHE_NAME = 'stemos-lxp-v3.4.0-webdev-agentic';
+const CACHE_NAME = 'stemos-lxp-v5.0.0-nearshoring-enterprise-copilot';
 
 const ASSETS_TO_CACHE = [
   '/',

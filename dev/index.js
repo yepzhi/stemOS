@@ -106,11 +106,11 @@ function initStudio() {
   const statQuestions = document.getElementById('stat-questions');
   const statPhrases = document.getElementById('stat-phrases');
 
-  if (statTracks) statTracks.innerText = tracks.length;
-  if (statModules) statModules.innerText = totalModules;
-  if (statReadings) statReadings.innerText = totalReadings;
-  if (statQuestions) statQuestions.innerText = totalQuestions;
-  if (statPhrases) statPhrases.innerText = phrases.length;
+  if (statTracks) statTracks.textContent = tracks.length;
+  if (statModules) statModules.textContent = totalModules;
+  if (statReadings) statReadings.textContent = totalReadings;
+  if (statQuestions) statQuestions.textContent = totalQuestions;
+  if (statPhrases) statPhrases.textContent = phrases.length;
 
   // Render Filters
   renderFilters(tracks, phrases);
@@ -123,10 +123,17 @@ function initStudio() {
   setupDrawer(tracks);
   setupOfflineController(tracks, phrases);
   setupLevelSwitcher(tracks, phrases);
+  setupDualAxisSwitcher(tracks, phrases);
   setupSupasteInteractions(tracks, phrases);
   setupExamModalListeners(tracks);
   setupVocabPopoverListeners();
   setupDevWorldModal(coursesData);
+  setupTechnicalOutputLab();
+  setupSM2Engine(tracks, phrases);
+  setupPitchAndNegotiationLab();
+  setupCorporateLDDashboard(tracks);
+  setupExecutiveLeadershipAndMultiAccentLab();
+  setupStemBotSocraticCopilot();
 }
 
 function setupLevelSwitcher(tracks, phrases) {
@@ -362,30 +369,140 @@ function getRemainingTimeText(expiresAt) {
   return `${hours}h restantes`;
 }
 
+// ── EJE DUAL DE NAVEGACIÓN: INDUSTRIA ✖ HABILIDAD COMUNICATIVA ──
+let currentNavigationAxis = 'industry'; // 'industry' | 'skills'
+
+const COMMUNICATIVE_SKILLS = {
+  "plant_floor": {
+    id: "plant_floor",
+    name: "Plant Floor Survival",
+    icon: "fa-solid fa-hard-hat",
+    color: "#f59e0b",
+    badge: "OPERATIONAL SURVIVAL",
+    description: "SOPs, relevo de turnos (shift handover), LOTO, paros de línea y reporte de anomalías.",
+    trackIds: ["automotive-lean", "medical-devices", "logistics-compliance", "quality-ehs", "energy-data-centers", "semiconductors", "electromobility", "aerospace", "robotics-automation", "advanced-manufacturing", "industrial-operations", "mechatronics"]
+  },
+  "meetings_escalations": {
+    id: "meetings_escalations",
+    name: "Meetings & Escalations",
+    icon: "fa-solid fa-users-gear",
+    color: "#0284c7",
+    badge: "CROSS-BORDER MEETINGS",
+    description: "Interrumpir con cortesía técnica, discrepar diplomáticamente, gestionar deadlines y action items.",
+    trackIds: ["cybersecurity", "software-dev", "it-innovation", "telecom-iot", "project-management", "business-leadership", "web-dev-agentic", "medical-devices", "quality-ehs", "energy-data-centers"]
+  },
+  "written_reports": {
+    id: "written_reports",
+    name: "Written Reports & 8D",
+    icon: "fa-solid fa-file-pen",
+    color: "#10b981",
+    badge: "TECHNICAL WRITING",
+    description: "Redacción estructurada de reportes 8D, CAPA, Non-Conformance Reports (NCR) y RFQs a directivos de EE.UU.",
+    trackIds: ["automotive-lean", "medical-devices", "logistics-compliance", "quality-ehs", "advanced-manufacturing", "industrial-operations", "semiconductors", "healthcare-tech", "materials-nanotech"]
+  },
+  "presentation_pitch": {
+    id: "presentation_pitch",
+    name: "Presentation & Pitch Lab",
+    icon: "fa-solid fa-chalkboard-user",
+    color: "#8b5cf6",
+    badge: "DEFENSE & PITCH",
+    description: "Defensa técnica estructurada, análisis de causa raíz (Ishikawa/5 Whys) y justificación de CAPEX.",
+    trackIds: ["data-analytics", "ai-ml", "energy-renewables", "space-satellite", "biotechnology", "entrepreneurship", "quality-ehs", "energy-data-centers"]
+  },
+  "negotiation_leadership": {
+    id: "negotiation_leadership",
+    name: "Negotiation & Leadership",
+    icon: "fa-solid fa-handshake",
+    color: "#ec4899",
+    badge: "CROSS-BORDER B2/C1",
+    description: "Negociación de plazos, concesiones técnicas, walk-away points y liderazgo ante matriz en EE.UU./Canadá.",
+    trackIds: ["logistics-compliance", "business-leadership", "project-management", "aviation-english", "airforce-aerospace", "entrepreneurship", "hospitality-food"]
+  },
+  "colloquial_radar": {
+    id: "colloquial_radar",
+    name: "Native Idioms Lab",
+    icon: "fa-solid fa-bolt",
+    color: "#f97316",
+    badge: "NATIVE RADAR",
+    description: "Decodificación de modismos opacos, metáforas corporativas y trampas culturales en tiempo real.",
+    isPhrases: true
+  }
+};
+
+function setupDualAxisSwitcher(tracks, phrases = []) {
+  const btnIndustry = document.getElementById('btn-axis-industry');
+  const btnSkills = document.getElementById('btn-axis-skills');
+  const captionEl = document.getElementById('axis-caption-text');
+  if (!btnIndustry || !btnSkills) return;
+
+  btnIndustry.addEventListener('click', () => {
+    if (currentNavigationAxis === 'industry') return;
+    currentNavigationAxis = 'industry';
+    btnIndustry.classList.add('active');
+    btnIndustry.setAttribute('aria-selected', 'true');
+    btnSkills.classList.remove('active');
+    btnSkills.setAttribute('aria-selected', 'false');
+    if (captionEl) {
+      captionEl.innerHTML = 'Explorando por <strong>Sector Industrial</strong> (32 verticales de manufactura y tecnología)';
+    }
+    renderFilters(tracks, phrases);
+    filterGridByTrack('all', tracks, phrases);
+  });
+
+  btnSkills.addEventListener('click', () => {
+    if (currentNavigationAxis === 'skills') return;
+    currentNavigationAxis = 'skills';
+    btnSkills.classList.add('active');
+    btnSkills.setAttribute('aria-selected', 'true');
+    btnIndustry.classList.remove('active');
+    btnIndustry.setAttribute('aria-selected', 'false');
+    if (captionEl) {
+      captionEl.innerHTML = 'Explorando por <strong>Habilidad Comunicativa Transversal</strong> (Eje B: Shopfloor, 8D, Juntas, Negociación)';
+    }
+    renderFilters(tracks, phrases);
+    filterGridByTrack('skill-all', tracks, phrases);
+  });
+}
+
 function renderFilters(tracks, phrases = []) {
   const filterContainer = document.getElementById('track-filters');
   if (!filterContainer) return;
 
-  const techCount = tracks.filter(t => (t.category || 'technology') === 'technology').length;
-  const engCount = tracks.filter(t => t.category === 'engineering').length;
-  const sciCount = tracks.filter(t => t.category === 'science').length;
-  const carCount = tracks.filter(t => t.category === 'career').length;
+  let html = '';
 
-  let html = `
-    <!-- Category Master Filter Buttons (Supaste Segmented Pills) -->
-    <button class="filter-btn active" data-track="all"><i class="fa-solid fa-layer-group"></i> All Tracks (${tracks.length})</button>
-    <button class="filter-btn filter-cat-btn" data-track="cat-technology"><i class="fa-solid fa-laptop-code" style="color:#0284c7;"></i> Technology (${techCount})</button>
-    <button class="filter-btn filter-cat-btn" data-track="cat-engineering"><i class="fa-solid fa-gears" style="color:#059669;"></i> Engineering (${engCount})</button>
-    <button class="filter-btn filter-cat-btn" data-track="cat-science"><i class="fa-solid fa-atom" style="color:#7c3aed;"></i> Science (${sciCount})</button>
-    <button class="filter-btn filter-cat-btn" data-track="cat-career"><i class="fa-solid fa-plane-departure" style="color:#ea580c;"></i> Aviation &amp; Career (${carCount})</button>
-  `;
+  if (currentNavigationAxis === 'industry') {
+    const techCount = tracks.filter(t => (t.category || 'technology') === 'technology').length;
+    const engCount = tracks.filter(t => t.category === 'engineering').length;
+    const sciCount = tracks.filter(t => t.category === 'science').length;
+    const carCount = tracks.filter(t => t.category === 'career').length;
 
-  if (phrases && phrases.length > 0) {
-    html += `
-      <button class="filter-btn" data-track="phrases">
-        <i class="fa-solid fa-comments" style="color:#f59e0b;"></i>
-        Native Idioms (${phrases.length})
-      </button>
+    html = `
+      <!-- Category Master Filter Buttons (Supaste Segmented Pills) -->
+      <button class="filter-btn active" data-track="all"><i class="fa-solid fa-layer-group"></i> All Tracks (${tracks.length})</button>
+      <button class="filter-btn filter-cat-btn" data-track="cat-technology"><i class="fa-solid fa-laptop-code" style="color:#0284c7;"></i> Technology (${techCount})</button>
+      <button class="filter-btn filter-cat-btn" data-track="cat-engineering"><i class="fa-solid fa-gears" style="color:#059669;"></i> Engineering (${engCount})</button>
+      <button class="filter-btn filter-cat-btn" data-track="cat-science"><i class="fa-solid fa-atom" style="color:#7c3aed;"></i> Science (${sciCount})</button>
+      <button class="filter-btn filter-cat-btn" data-track="cat-career"><i class="fa-solid fa-plane-departure" style="color:#ea580c;"></i> Aviation &amp; Career (${carCount})</button>
+    `;
+
+    if (phrases && phrases.length > 0) {
+      html += `
+        <button class="filter-btn" data-track="phrases">
+          <i class="fa-solid fa-comments" style="color:#f59e0b;"></i>
+          Native Idioms (${phrases.length})
+        </button>
+      `;
+    }
+  } else {
+    // Eje B: Habilidades Comunicativas Transversales
+    html = `
+      <button class="filter-btn active" data-track="skill-all"><i class="fa-solid fa-layer-group"></i> All Skills</button>
+      <button class="filter-btn" data-track="skill-plant_floor"><i class="fa-solid fa-hard-hat" style="color:#f59e0b;"></i> Plant Floor Survival</button>
+      <button class="filter-btn" data-track="skill-meetings_escalations"><i class="fa-solid fa-users-gear" style="color:#0284c7;"></i> Meetings &amp; Escalations</button>
+      <button class="filter-btn" data-track="skill-written_reports"><i class="fa-solid fa-file-pen" style="color:#10b981;"></i> Written Reports &amp; 8D</button>
+      <button class="filter-btn" data-track="skill-presentation_pitch"><i class="fa-solid fa-chalkboard-user" style="color:#8b5cf6;"></i> Presentation &amp; Pitch</button>
+      <button class="filter-btn" data-track="skill-negotiation_leadership"><i class="fa-solid fa-handshake" style="color:#ec4899;"></i> Negotiation &amp; Leadership</button>
+      <button class="filter-btn" data-track="skill-colloquial_radar"><i class="fa-solid fa-bolt" style="color:#f97316;"></i> Native Idioms Lab (${phrases.length})</button>
     `;
   }
 
@@ -425,12 +542,17 @@ function getTrackIcon(id) {
     case 'robotics-automation': return 'fa-solid fa-robot';
     case 'energy-renewables': return 'fa-solid fa-solar-panel';
     case 'advanced-manufacturing': return 'fa-solid fa-industry';
+    case 'automotive-lean': return 'fa-solid fa-car-side';
+    case 'medical-devices': return 'fa-solid fa-heart-pulse';
+    case 'logistics-compliance': return 'fa-solid fa-truck-fast';
+    case 'quality-ehs': return 'fa-solid fa-clipboard-check';
+    case 'energy-data-centers': return 'fa-solid fa-server';
     case 'industrial-operations': case 'no_stem_supply_chain': return 'fa-solid fa-dolly';
     case 'mechatronics': return 'fa-solid fa-cogs';
     case 'biotechnology': return 'fa-solid fa-dna';
     case 'space-satellite': return 'fa-solid fa-satellite';
     case 'environmental-sustainability': return 'fa-solid fa-leaf';
-    case 'healthcare-tech': case 'no_stem_medical_devices': return 'fa-solid fa-heart-pulse';
+    case 'healthcare-tech': case 'no_stem_medical_devices': return 'fa-solid fa-notes-medical';
     case 'materials-nanotech': return 'fa-solid fa-atom';
     case 'food-science': case 'no_stem_gastronomy': return 'fa-solid fa-wheat-awn';
     case 'aviation-english': return 'fa-solid fa-plane-departure';
@@ -804,7 +926,7 @@ function filterGridByTrack(trackId, tracks, phrases = []) {
 
   if (detailView) detailView.style.display = 'none';
 
-  if (trackId === 'all') {
+  if (trackId === 'all' || trackId === 'skill-all') {
     if (legacyGrid) legacyGrid.style.display = 'none';
     unitsGrid.style.display = 'grid';
     unitsGrid.querySelectorAll('.unit-card').forEach(card => {
@@ -827,12 +949,30 @@ function filterGridByTrack(trackId, tracks, phrases = []) {
     return;
   }
 
-  if (trackId === 'phrases') {
+  if (trackId === 'phrases' || trackId === 'skill-colloquial_radar') {
     unitsGrid.style.display = 'none';
     if (legacyGrid) {
       legacyGrid.style.display = 'block';
       const phrasesSec = document.getElementById('section-phrases');
       if (phrasesSec) phrasesSec.style.display = 'block';
+    }
+    return;
+  }
+
+  if (trackId.startsWith('skill-')) {
+    const skillKey = trackId.replace('skill-', '');
+    const skillInfo = COMMUNICATIVE_SKILLS[skillKey];
+    if (skillInfo && skillInfo.trackIds) {
+      if (legacyGrid) legacyGrid.style.display = 'none';
+      unitsGrid.style.display = 'grid';
+      unitsGrid.querySelectorAll('.unit-card').forEach(card => {
+        const tId = card.getAttribute('data-track-id');
+        if (skillInfo.trackIds.includes(tId)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
     }
     return;
   }
@@ -2015,84 +2155,151 @@ function openPhraseDrawer(phraseId, phrases) {
   const drawerBody = document.getElementById('drawer-body');
 
   drawerTitle.innerText = `"${p.phrase}"`;
-  drawerSub.innerText = `Native Technical Idioms • ${p.category.toUpperCase()} • ID: ${p.id}`;
+  drawerSub.innerText = `Native Technical Idioms 2.0 • ${(p.skillCategory || p.category || 'workplace').toUpperCase()} • ID: ${p.id}`;
+
+  const riskClass = `risk-badge-${(p.riskLevel || 'BAJO').toLowerCase()}`;
+  const skillLabel = (p.skillCategory || 'colloquial_radar').replace(/_/g, ' ').toUpperCase();
+
+  let dialectTrapHtml = '';
+  if (p.dialectDifference && p.dialectDifference.hasTrap) {
+    dialectTrapHtml = `
+      <div class="dialect-trap-banner">
+        <div class="dialect-trap-header">
+          <div class="dialect-trap-title">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>Cross-Border Dialect Trap (AmEng vs BrEng Meaning Inversion!)</span>
+          </div>
+          <span class="risk-badge risk-badge-critico"><i class="fa-solid fa-bomb"></i> Trampa Crítica</span>
+        </div>
+        <p style="font-size:0.84rem; color:#7f1d1d; margin:0 0 10px 0; line-height:1.45;">
+          <strong>¡Alerta de Inversión Semántica!</strong> Este modismo tiene significados diametralmente opuestos entre Estados Unidos y Reino Unido. En juntas entre plantas de México y directivos en Detroit o Europa, usarlo sin contexto genera desastres de agenda o compromisos no deseados.
+        </p>
+        <div class="dialect-grid">
+          <div class="dialect-box dialect-box-us">
+            <div class="dialect-box-title"><i class="fa-solid fa-flag-usa"></i> US Meaning (American English / Nearshoring)</div>
+            <div class="dialect-box-desc">${p.dialectDifference.usMeaning}</div>
+          </div>
+          <div class="dialect-box dialect-box-uk">
+            <div class="dialect-box-title"><i class="fa-solid fa-crown"></i> UK Meaning (British English / Matrix)</div>
+            <div class="dialect-box-desc">${p.dialectDifference.ukMeaning}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
 
   let contentHtml = `
-    <div class="accreditation-banner" style="border-color: rgba(251, 191, 36, 0.35);">
+    <!-- Top Metadata Strip -->
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:16px;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span class="risk-badge ${riskClass}">
+          <i class="fa-solid fa-triangle-exclamation"></i> Riesgo: ${p.riskLevel || 'BAJO'}
+        </span>
+        <span style="font-size:0.72rem; font-weight:700; background:#f1f5f9; color:#475569; padding:3px 10px; border-radius:999px; border:1px solid rgba(0,0,0,0.06);">
+          <i class="fa-solid fa-bullseye" style="color:#0284c7; margin-right:4px;"></i>${skillLabel}
+        </span>
+      </div>
+      <span style="font-size:0.75rem; color:#94a3b8; font-family:var(--font-mono);">${p.id}</span>
+    </div>
+
+    ${dialectTrapHtml}
+
+    <div class="accreditation-banner" style="border-color: rgba(251, 191, 36, 0.35); margin-top: ${p.dialectDifference && p.dialectDifference.hasTrap ? '18px' : '0'};">
       <h3 class="font-head" style="color:var(--gold); font-size:1.2rem; display:flex; align-items:center; gap:8px;">
         <i class="fa-solid fa-bolt"></i> Direct Contrast: Textbook English vs. Real Native English
       </h3>
       <p style="font-size:0.86rem; color:var(--text-muted); margin-top:4px;">
-        Authentic technical expressions used by engineers, technical managers, and nearshoring leaders in advanced high-tech industries.
+        Expresiones técnicas auténticas utilizadas por directores, ingenieros de calidad y supervisores de Nearshoring.
       </p>
 
       <div class="accred-grid" style="margin-top:16px;">
         <div class="accred-box" style="border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.08);">
           <div class="accred-title" style="color: #f87171;"><i class="fa-solid fa-school"></i> What Traditional Schools Teach</div>
           <div class="accred-desc" style="color: #fca5a5; font-size:1rem;"><s>${p.schoolVsNative.school}</s></div>
-          <div class="accred-sub">Rigid, overly literal, or outdated phrasing</div>
+          <div class="accred-sub">Rígido, plano o sobre-literal</div>
         </div>
 
         <div class="accred-box" style="border-color: rgba(52, 211, 153, 0.35); background: rgba(52, 211, 153, 0.08);">
           <div class="accred-title" style="color:var(--emerald);"><i class="fa-solid fa-bolt"></i> How Real Natives Say It</div>
           <div class="accred-desc" style="color:#fff; font-size:1.1rem; font-weight:700;">"${p.schoolVsNative.native}"</div>
-          <div class="accred-sub">Natural, fluid, high-impact industry communication</div>
+          <div class="accred-sub">Natural, asertivo y de alto estatus industrial</div>
         </div>
       </div>
     </div>
 
-    <div style="margin-top:28px;">
-      <h3 class="font-head" style="color:var(--cyan); font-size:1.2rem; margin-bottom:10px;"><i class="fa-solid fa-lightbulb"></i> Nuance & Context Breakdown</h3>
-      <p style="color:var(--text-main); font-size:0.95rem; line-height:1.7; background:rgba(255,255,255,0.03); padding:16px; border-radius:12px; border:1px solid var(--border-glass);">
-        ${p.explanation}
+    <!-- Mental Image Origin Box (Layer 2) -->
+    <div class="mental-origin-card">
+      <div class="mental-origin-title">
+        <i class="fa-solid fa-lightbulb"></i> Origen y Fijación Mnemotécnica (Mental Image Origin)
+      </div>
+      <div class="mental-origin-desc">
+        ${p.mentalImageOrigin || p.explanation}
+      </div>
+    </div>
+
+    <!-- Operational Meaning & Plant Floor Context (Layer 3 & 4) -->
+    <div style="margin-top:20px; background:rgba(2, 132, 199, 0.04); border:1px solid rgba(2, 132, 199, 0.2); border-radius:14px; padding:18px;">
+      <h4 class="font-head" style="color:var(--blue-core); font-size:1.05rem; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-industry"></i> Contexto Operativo de Planta y Juntas de Escalación
+      </h4>
+      <p style="color:var(--text-main); font-size:0.92rem; margin-top:8px; line-height:1.55;">
+        <strong>Significado operativo:</strong> ${p.operationalMeaning || p.meaningES}
       </p>
-
-      <div style="margin-top:20px; background:rgba(251, 191, 36, 0.06); padding:16px; border-radius:12px; border:1px solid rgba(251, 191, 36, 0.2);">
-        <h4 class="font-head" style="color:var(--gold); font-size:1.05rem; display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-volume-high"></i> Pronunciation & Rhythm Tip
-        </h4>
-        <p style="color:var(--text-main); font-size:0.9rem; margin-top:6px;">${p.pronunciationHint}</p>
-      </div>
-
-      <div style="margin-top:24px;">
-        <h3 class="font-head" style="color:var(--emerald); font-size:1.2rem; margin-bottom:12px;"><i class="fa-solid fa-briefcase"></i> Real-World Engineering & Nearshoring Context</h3>
-        <div style="background:rgba(15, 23, 42, 0.8); border:1px solid var(--border-glow); padding:20px; border-radius:14px;">
-          <div style="color:var(--cyan); font-family:var(--font-mono); font-size:1rem; font-weight:600;">"${p.exampleEN}"</div>
-          <div style="color:var(--text-muted); font-size:0.88rem; margin-top:8px;"><i class="fa-solid fa-quote-left" style="font-size:0.75rem; color:var(--cyan); margin-right:6px; opacity:0.8;"></i><em>${p.exampleES}</em></div>
+      <div style="margin-top:12px; padding:12px 16px; background:#ffffff; border-radius:10px; border:1px solid rgba(0,0,0,0.07); box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+        <div style="font-size:0.75rem; font-weight:700; color:#64748b; text-transform:uppercase; margin-bottom:4px;">
+          <i class="fa-solid fa-quote-left" style="color:var(--blue-core); margin-right:4px;"></i> Diálogo Real en Planta / Shopfloor:
+        </div>
+        <div style="color:#0f172a; font-family:var(--font-mono); font-size:0.92rem; font-weight:600;">
+          "${p.plantExample || p.exampleEN}"
         </div>
       </div>
+    </div>
 
-      <!-- FASE 3: Feynman AI Engine (Socratic English Tutor & Technical Interview Simulator) -->
-      <div style="margin-top:28px; background:linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(56, 189, 248, 0.12)); border:1px solid rgba(168, 85, 247, 0.35); border-radius:16px; padding:20px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <div style="width:40px; height:40px; background:rgba(168, 85, 247, 0.2); color:var(--purple); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem;">
-              <i class="fa-solid fa-robot"></i>
-            </div>
-            <div>
-              <h4 class="font-head" style="color:#fff; font-size:1.1rem;">Feynman AI Tutor — STAR Technical Interview Simulation</h4>
-              <p style="color:var(--text-muted); font-size:0.8rem;">Practice fluid technical English in real time by simulating an engineering interview scenario.</p>
-            </div>
+    <div style="margin-top:20px; background:rgba(251, 191, 36, 0.06); padding:16px; border-radius:12px; border:1px solid rgba(251, 191, 36, 0.2);">
+      <h4 class="font-head" style="color:var(--gold); font-size:1.05rem; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-volume-high"></i> Pronunciation & Rhythm Tip (IPA)
+      </h4>
+      <p style="color:var(--text-main); font-size:0.9rem; margin-top:6px;">${p.pronunciationHint}</p>
+    </div>
+
+    <div style="margin-top:24px;">
+      <h3 class="font-head" style="color:var(--emerald); font-size:1.2rem; margin-bottom:12px;"><i class="fa-solid fa-briefcase"></i> Real-World Engineering Example</h3>
+      <div style="background:rgba(15, 23, 42, 0.8); border:1px solid var(--border-glow); padding:20px; border-radius:14px;">
+        <div style="color:var(--cyan); font-family:var(--font-mono); font-size:1rem; font-weight:600;">"${p.exampleEN}"</div>
+        <div style="color:var(--text-muted); font-size:0.88rem; margin-top:8px;"><i class="fa-solid fa-quote-left" style="font-size:0.75rem; color:var(--cyan); margin-right:6px; opacity:0.8;"></i><em>${p.exampleES}</em></div>
+      </div>
+    </div>
+
+    <!-- FASE 3: Feynman AI Engine (Socratic English Tutor & Technical Interview Simulator) -->
+    <div style="margin-top:28px; background:linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(56, 189, 248, 0.12)); border:1px solid rgba(168, 85, 247, 0.35); border-radius:16px; padding:20px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:40px; height:40px; background:rgba(168, 85, 247, 0.2); color:var(--purple); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem;">
+            <i class="fa-solid fa-robot"></i>
           </div>
-          <span style="font-size:0.75rem; background:rgba(168, 85, 247, 0.2); color:var(--purple); padding:4px 10px; border-radius:8px; font-weight:700; border:1px solid rgba(168, 85, 247, 0.3);">
-            Socratic AI Engine 3.0
-          </span>
+          <div>
+            <h4 class="font-head" style="color:#fff; font-size:1.1rem;">Feynman AI Tutor — STAR Technical Interview Simulation</h4>
+            <p style="color:var(--text-muted); font-size:0.8rem;">Practice fluid technical English in real time by simulating an engineering interview scenario.</p>
+          </div>
+        </div>
+        <span style="font-size:0.75rem; background:rgba(168, 85, 247, 0.2); color:var(--purple); padding:4px 10px; border-radius:8px; font-weight:700; border:1px solid rgba(168, 85, 247, 0.3);">
+          Socratic AI Engine 3.0
+        </span>
+      </div>
+
+      <div style="margin-top:16px; background:rgba(15, 23, 42, 0.9); border:1px solid var(--border-glass); padding:16px; border-radius:12px;" id="feynman-chat-box">
+        <div style="display:flex; gap:12px; margin-bottom:12px;">
+          <i class="fa-solid fa-robot" style="color:var(--purple); margin-top:2px;"></i>
+          <div style="font-size:0.88rem; color:var(--text-main); line-height:1.5;">
+            <strong>Feynman AI Evaluator:</strong> "Hi there! How would you use the expression <em>'${p.phrase}'</em> in your next Nearshoring technical audit or engineering standup?"
+          </div>
         </div>
 
-        <div style="margin-top:16px; background:rgba(15, 23, 42, 0.9); border:1px solid var(--border-glass); padding:16px; border-radius:12px;" id="feynman-chat-box">
-          <div style="display:flex; gap:12px; margin-bottom:12px;">
-            <i class="fa-solid fa-robot" style="color:var(--purple); margin-top:2px;"></i>
-            <div style="font-size:0.88rem; color:var(--text-main); line-height:1.5;">
-              <strong>Feynman AI Evaluator:</strong> "Hi there! How would you use the expression <em>'${p.phrase}'</em> in your next Nearshoring technical audit or engineering standup?"
-            </div>
-          </div>
-
-          <div style="display:flex; gap:8px; margin-top:12px;">
-            <input type="text" id="feynman-user-input" placeholder="Type your answer in English..." style="flex:1; background:rgba(255,255,255,0.06); border:1px solid var(--border-glass); color:#fff; padding:10px 14px; border-radius:10px; font-size:0.88rem; outline:none;">
-            <button onclick="simulateFeynmanResponse('${p.phrase.replace(/'/g, "\\'")}')" style="background:linear-gradient(135deg, var(--purple), var(--cyan)); color:#fff; border:none; padding:10px 18px; border-radius:10px; font-weight:600; cursor:pointer; font-size:0.88rem; display:flex; align-items:center; gap:6px;">
-              Send <i class="fa-solid fa-paper-plane"></i>
-            </button>
-          </div>
+        <div style="display:flex; gap:8px; margin-top:12px;">
+          <input type="text" id="feynman-user-input" placeholder="Type your answer in English..." style="flex:1; background:rgba(255,255,255,0.06); border:1px solid var(--border-glass); color:#fff; padding:10px 14px; border-radius:10px; font-size:0.88rem; outline:none;">
+          <button onclick="simulateFeynmanResponse('${p.phrase.replace(/'/g, "\\'")}')" style="background:linear-gradient(135deg, var(--purple), var(--cyan)); color:#fff; border:none; padding:10px 18px; border-radius:10px; font-weight:600; cursor:pointer; font-size:0.88rem; display:flex; align-items:center; gap:6px;">
+            Send <i class="fa-solid fa-paper-plane"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -2953,5 +3160,3695 @@ function setupDevWorldModal(coursesData) {
   });
 }
 
+// ── 13. TECHNICAL OUTPUT LAB: 8D PROBLEM SOLVING & ESCALATION EMAIL STUDIO ──
+function setupTechnicalOutputLab() {
+  const btnMode8D = document.getElementById('btn-mode-8d');
+  const btnModeEmail = document.getElementById('btn-mode-email');
+  const workspace8D = document.getElementById('workspace-8d');
+  const workspaceEmail = document.getElementById('workspace-email');
 
+  if (!workspace8D || !workspaceEmail) return;
 
+  // Mode Switcher
+  if (btnMode8D && btnModeEmail) {
+    btnMode8D.addEventListener('click', () => {
+      btnMode8D.classList.add('active');
+      btnMode8D.setAttribute('aria-selected', 'true');
+      btnModeEmail.classList.remove('active');
+      btnModeEmail.setAttribute('aria-selected', 'false');
+      workspace8D.style.display = 'block';
+      workspaceEmail.style.display = 'none';
+    });
+
+    btnModeEmail.addEventListener('click', () => {
+      btnModeEmail.classList.add('active');
+      btnModeEmail.setAttribute('aria-selected', 'true');
+      btnMode8D.classList.remove('active');
+      btnMode8D.setAttribute('aria-selected', 'false');
+      workspaceEmail.style.display = 'block';
+      workspace8D.style.display = 'none';
+      renderExecutiveEmail();
+    });
+  }
+
+  // 8D Presets Database
+  const eightDPresets = {
+    auto_weld: {
+      id: "8D-2026-AUTO-042",
+      title: "Automotive Laser Welding 8D Report (IATF 16949)",
+      d1: "Champion: Ing. Roberto Garza (Plant Director), Leader: Ing. Mariana Cordero (SQE Lead), Members: Carlos Mendoza (Laser Process Eng), David Silva (Metrology Tech), Diana Reyes (Production Supervisor Line 2)",
+      d2: "During helium mass spectrometer leak testing at Detroit assembly plant on 2026-09-18, 14 out of 500 high-voltage battery enclosures exhibited micro-porosity along the automated laser stitch weld seam (defect rate 2.8%), exceeding customer IATF 16949 zero-defect threshold.",
+      d3: "1. 100% warehouse quarantine initiated in Saltillo; 320 finished pallets locked in ERP with serialized red hold tags. 2. Detroit assembly quarantine of 85 staged packs. 3. Line 2 halted for optical focal realignment. 4. Customer quality notification submitted within 12 hours.",
+      d4: "Physical Root Cause: Optical protective cover slide sustained spatter accumulation, inducing thermal lensing and a 2.4 mm laser focal point defocus. Escape Root Cause: Visual camera inspection threshold was tuned too coarse to detect porosity under 0.2 mm without helium pressure decay.",
+      d5: "D5: Replace analog protective slide with automated motorized quartz cassette with integrated photodiode back-reflection monitoring. D6 Validation: Run@Rate trial of 1,200 consecutive battery packs demonstrated Cpk = 1.84 with 0 ppm leak escapes across 4 shifts.",
+      d7: "D7: Updated PFMEA (Severity 9, Occurrence reduced from 5 to 1, Detection reduced from 6 to 2; Action Priority dropped from High to Low). Control Plan revised to require shift-handover laser power meter verification. D8: Formal recognition awarded to Saltillo CFT."
+    },
+    med_balloon: {
+      id: "8D-2026-MED-019",
+      title: "Medical Catheter Balloon Burst Pressure 8D (FDA 21 CFR 820)",
+      d1: "Champion: Dr. Gregory Vance (VP Quality), Leader: Ing. Alejandro Villalobos (Principal QA), Members: Sofia De la Rosa (Validation Eng), Karla Dominguez (Cleanroom Supervisor ISO 7)",
+      d2: "Batch testing of PTCA dilatation catheters (Lot MED-2026-884) showed 3 of 30 samples failed minimum burst pressure rating at 12 atm instead of rated 14 atm during final QC inspection in Tijuana cleanroom suite B.",
+      d3: "1. Immediate line clearance executed on catheter crimping line 4. 2. 1,400 packaged units quarantined under HOLD-TAG-992. 3. Form 483 prevention protocol engaged; DHR batch review initiated.",
+      d4: "Physical Root Cause: Extrusion temperature drifted +8°C above validated operating window due to faulty thermocouple element in zone 3, inducing local polymer chain degradation. Escape Point: In-line wall thickness micrometer was calibrated for outer diameter only.",
+      d5: "D5: Replaced thermocouple with dual redundant RTD sensor with automatic machine interlock if delta > 1.5°C. D6 Validation: Three consecutive PQ validation lots (4,500 units) achieved burst pressure Cpk = 1.92 with zero bursts below 16 atm.",
+      d7: "D7: Updated Device Master Record (DMR) SOP-EXT-402, revised Design FMEA and Cleanroom Control Plan. D8: Tijuana biomedical engineering team commended for rapid CAPA closure."
+    },
+    semi_wafer: {
+      id: "8D-2026-SEMI-008",
+      title: "Semiconductor DUV Critical Dimension Drift (SEMI E10)",
+      d1: "Champion: Dr. Chen (Fab Operations VP), Leader: Ing. Morales (Lithography Principal), Members: Track Process Eng, Metrology Specialist, Yield Enhancement Group",
+      d2: "28nm production wafers (Lot W-7741) exhibited gate critical dimension (CD) drift of +3.2 nm on peripheral dies following immersion lithography exposure on Scanner 4.",
+      d3: "1. Scanner 4 placed on maintenance hold. 2. 24 suspect wafer cassettes frozen in fab FOUP stocker. 3. Downstream etch line alerted to withhold processing.",
+      d4: "Physical Root Cause: Barometric pressure sensor drift in post-exposure bake (PEB) module caused a 0.4°C plate temperature shift. Escape Point: Daily CD-SEM sampling was reduced from 9 points to 5 points.",
+      d5: "D5: Calibrated PEB multi-zone heater controllers and installed dual barometric compensation sensors. D6 Validation: Metrology layout across 50 consecutive monitor wafers verified 3-sigma CD uniformity within ±0.6 nm.",
+      d7: "D7: Updated Fab SPC alarm limits in MES; reinstated 9-point metrology recipe in standard recipe library. D8: Fab engineering team recognized at executive yield meeting."
+    },
+    custom_blank: {
+      id: "8D-2026-CUSTOM-001",
+      title: "Custom Corrective Action 8D Report",
+      d1: "", d2: "", d3: "", d4: "", d5: "", d7: ""
+    }
+  };
+
+  function load8DPreset(presetKey) {
+    const data = eightDPresets[presetKey] || eightDPresets.auto_weld;
+    const reportIdEl = document.getElementById('8d-report-id');
+    const formTitleEl = document.getElementById('8d-form-title');
+    const d1El = document.getElementById('8d-d1-input');
+    const d2El = document.getElementById('8d-d2-input');
+    const d3El = document.getElementById('8d-d3-input');
+    const d4El = document.getElementById('8d-d4-input');
+    const d5El = document.getElementById('8d-d5-input');
+    const d7El = document.getElementById('8d-d7-input');
+
+    if (reportIdEl) reportIdEl.textContent = data.id;
+    if (formTitleEl) formTitleEl.textContent = data.title;
+    if (d1El) d1El.value = data.d1;
+    if (d2El) d2El.value = data.d2;
+    if (d3El) d3El.value = data.d3;
+    if (d4El) d4El.value = data.d4;
+    if (d5El) d5El.value = data.d5;
+    if (d7El) d7El.value = data.d7;
+
+    evaluate8DReport(false);
+  }
+
+  // 8D Preset Buttons
+  document.querySelectorAll('.preset-chip').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('.preset-chip').forEach(b => b.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+      const preset = e.currentTarget.getAttribute('data-preset');
+      load8DPreset(preset);
+    });
+  });
+
+  // Evaluate 8D Function
+  function evaluate8DReport(showToast = true) {
+    const d1 = (document.getElementById('8d-d1-input')?.value || '').trim();
+    const d2 = (document.getElementById('8d-d2-input')?.value || '').trim();
+    const d3 = (document.getElementById('8d-d3-input')?.value || '').trim();
+    const d4 = (document.getElementById('8d-d4-input')?.value || '').trim();
+    const d5 = (document.getElementById('8d-d5-input')?.value || '').trim();
+    const d7 = (document.getElementById('8d-d7-input')?.value || '').trim();
+
+    let score = 0;
+    const criteria = [];
+
+    // Criterion 1: Cross-Functional Team (D1)
+    if (d1.length > 20 && (/champion/i.test(d1) || /leader/i.test(d1) || /eng/i.test(d1))) {
+      score += 15;
+      criteria.push({ text: "D1: Equipo Multidisciplinario (CFT) Completo", pass: true });
+    } else {
+      criteria.push({ text: "D1: Definir Champion, Líder y Miembros", pass: false });
+    }
+
+    // Criterion 2: 5W2H Problem Definition (D2)
+    if (d2.length > 30 && (/\d+/i.test(d2) || /%/i.test(d2) || /defect/i.test(d2))) {
+      score += 15;
+      criteria.push({ text: "D2: Problema Cuantificado (5W2H)", pass: true });
+    } else {
+      criteria.push({ text: "D2: Cuantificar tasa o unidades defectuosas", pass: false });
+    }
+
+    // Criterion 3: Interim Containment & Quarantine (D3)
+    if (d3.length > 25 && (/quarantine/i.test(d3) || /hold/i.test(d3) || /freeze/i.test(d3) || /red tag/i.test(d3))) {
+      score += 20;
+      criteria.push({ text: "D3: Contención y Cuarentena de Lotes (ICA)", pass: true });
+    } else {
+      criteria.push({ text: "D3: Especificar cuarentena física y red tags", pass: false });
+    }
+
+    // Criterion 4: Root Cause (D4)
+    if (d4.length > 25 && (/cause/i.test(d4) || /escape/i.test(d4) || /5 whys/i.test(d4) || /ishikawa/i.test(d4) || /drift/i.test(d4))) {
+      score += 20;
+      criteria.push({ text: "D4: Causa Raíz Física y Punto de Escape", pass: true });
+    } else {
+      criteria.push({ text: "D4: Analizar causa raíz física y punto de escape", pass: false });
+    }
+
+    // Criterion 5: Permanent Action & Validation (D5/D6)
+    if (d5.length > 25 && (/cpk/i.test(d5) || /validat/i.test(d5) || /poka/i.test(d5) || /trial/i.test(d5) || /interlock/i.test(d5))) {
+      score += 15;
+      criteria.push({ text: "D5/D6: Poka-Yoke y Validación Estadística (Cpk)", pass: true });
+    } else {
+      criteria.push({ text: "D5/D6: Incluir Poka-Yoke y datos de Cpk o corrida", pass: false });
+    }
+
+    // Criterion 6: Prevent Recurrence (D7/D8)
+    if (d7.length > 20 && (/pfmea/i.test(d7) || /control plan/i.test(d7) || /sop/i.test(d7) || /lpa/i.test(d7))) {
+      score += 15;
+      criteria.push({ text: "D7/D8: Actualización de PFMEA y Plan de Control", pass: true });
+    } else {
+      criteria.push({ text: "D7/D8: Mencionar actualización de PFMEA y Control Plan", pass: false });
+    }
+
+    // Render Score
+    const scoreValEl = document.getElementById('rubric-score-val');
+    const scoreLblEl = document.getElementById('rubric-score-lbl');
+    const scoreFillEl = document.getElementById('rubric-score-fill');
+    const criteriaListEl = document.getElementById('rubric-criteria-list');
+    const feedbackTextEl = document.getElementById('rubric-feedback-text');
+
+    if (scoreValEl) scoreValEl.textContent = `${score}%`;
+    if (scoreFillEl) scoreFillEl.style.width = `${score}%`;
+
+    let levelText = "INCOMPLETE DRAFT";
+    let feedback = "Complete all 8 disciplines with auditable industrial evidence to pass the IATF/ISO quality audit threshold.";
+
+    if (score >= 85) {
+      levelText = "AUDIT-READY (EXCELLENT)";
+      feedback = "Outstanding industrial rigor! Clear 5W2H problem boundary, robust physical quarantine containment, systemic root cause isolation, and verified closed-loop PFMEA/Control Plan recurrence prevention.";
+    } else if (score >= 60) {
+      levelText = "ACCEPTABLE (NEEDS REFINEMENT)";
+      feedback = "Good foundation. Ensure containment explicitly mentions serialized red tags/quarantine, and verify that D6 references statistical capability (Cpk) or proof of run rate.";
+    }
+
+    if (scoreLblEl) scoreLblEl.textContent = levelText;
+    if (feedbackTextEl) feedbackTextEl.textContent = feedback;
+
+    if (criteriaListEl) {
+      criteriaListEl.innerHTML = criteria.map(c => `
+        <div class="criteria-item ${c.pass ? 'pass' : 'warn'}">
+          <span>${c.text}</span>
+          <i class="fa-solid ${c.pass ? 'fa-circle-check' : 'fa-triangle-exclamation'}"></i>
+        </div>
+      `).join('');
+    }
+
+    if (showToast && typeof showOfflineToast === 'function') {
+      showOfflineToast(`8D Audit Score: ${score}%`, levelText, 100, true);
+    }
+  }
+
+  // 8D Action Buttons
+  const btnEval8D = document.getElementById('btn-eval-8d');
+  const btnCopy8D = document.getElementById('btn-copy-8d');
+  const btnPrint8D = document.getElementById('btn-print-8d');
+
+  if (btnEval8D) btnEval8D.addEventListener('click', () => evaluate8DReport(true));
+
+  if (btnCopy8D) {
+    btnCopy8D.addEventListener('click', () => {
+      const reportId = document.getElementById('8d-report-id')?.textContent || '8D-REPORT';
+      const title = document.getElementById('8d-form-title')?.textContent || '8D Problem Solving Report';
+      const d1 = document.getElementById('8d-d1-input')?.value || '';
+      const d2 = document.getElementById('8d-d2-input')?.value || '';
+      const d3 = document.getElementById('8d-d3-input')?.value || '';
+      const d4 = document.getElementById('8d-d4-input')?.value || '';
+      const d5 = document.getElementById('8d-d5-input')?.value || '';
+      const d7 = document.getElementById('8d-d7-input')?.value || '';
+
+      const reportText = `========================================================================\n` +
+        `EIGHT DISCIPLINES (8D) PROBLEM SOLVING REPORT\n` +
+        `Document ID: ${reportId}\n` +
+        `Title: ${title}\n` +
+        `Standard: IATF 16949 / ISO 13485 / AIAG CQI Alignment\n` +
+        `========================================================================\n\n` +
+        `[D1] TEAM ESTABLISHMENT:\n${d1}\n\n` +
+        `[D2] PROBLEM DESCRIPTION (5W2H):\n${d2}\n\n` +
+        `[D3] INTERIM CONTAINMENT ACTIONS (ICA):\n${d3}\n\n` +
+        `[D4] ROOT CAUSE ANALYSIS & ESCAPE POINT:\n${d4}\n\n` +
+        `[D5 & D6] PERMANENT CORRECTIVE ACTION (PCA) & STATISTICAL VALIDATION:\n${d5}\n\n` +
+        `[D7 & D8] ACTIONS TO PREVENT RECURRENCE & TEAM RECOGNITION:\n${d7}\n\n` +
+        `Generated via stemOS Technical Output Engine V1.`;
+
+      navigator.clipboard.writeText(reportText).then(() => {
+        if (typeof showOfflineToast === 'function') {
+          showOfflineToast("8D Report Copied!", "Formato oficial 8D copiado al portapapeles.", 100, true);
+        }
+      });
+    });
+  }
+
+  if (btnPrint8D) {
+    btnPrint8D.addEventListener('click', () => window.print());
+  }
+
+  // ── Executive Email Builder Logic ──
+  const emailPresets = {
+    line_stop: {
+      to: "Gregory Vance <g.vance@oem-operations.com> (VP of Manufacturing)",
+      subject: "[URGENT ESCALATION] Line 2 High-Voltage Battery Housing Containment & Schedule Impact",
+      bluf: "Line 2 battery housing production in Saltillo was paused at 08:30 due to laser weld porosity. We have implemented 100% quarantine on 320 affected assemblies and require engineering sign-off on temporary parameter adjustments by 14:00 EST to protect tomorrow's Detroit shipment.",
+      containment: "All parts produced since 04:00 are tagged in red bins with zero escape risk. Line 1 has been re-allocated to absorb 60% of volume. Projected line-down risk to Detroit is currently mitigated for the next 18 hours.",
+      action: "Please confirm authorization for chartered hot-shot freight and temporary welding concession by 14:00 EST."
+    },
+    concession: {
+      to: "Karen Mitchell <k.mitchell@medtech-regulatory.com> (Director of Quality & Regulatory)",
+      subject: "[CONCESSION REQUEST] Temporary Material Variance for Nitinol Stent Delivery Wire (Lot V-442)",
+      bluf: "We request a temporary engineering concession to accept raw Nitinol wire heat lot V-442 with surface roughness Ra = 0.42 μm (nominal specification Ra ≤ 0.40 μm) for catheter assembly in Tijuana.",
+      containment: "Metrology lab verified tensile strength and fatigue cycle life exceed nominal limits by 18%. Risk assessment under ISO 14971 demonstrates zero impact on biocompatibility or catheter trackability.",
+      action: "Sign-off required on Deviation Approval Form DEV-2026-088 by 16:30 today to sustain continuous cleanroom operations."
+    },
+    customs_hold: {
+      to: "Arthur Pendelton <a.pendelton@global-logistics.com> (Director of North American Freight)",
+      subject: "[CUSTOMS ALERT] CBP Intensive Agricultural Hold at World Trade Bridge (Trailer T-804)",
+      bluf: "Outbound trailer T-804 carrying 40 pallets of automotive wire harnesses was flagged for secondary CBP inspection at Laredo. Current crossing delay is estimated at 6 hours.",
+      containment: "All shipping documents, C-TPAT 17-point inspection logs, and ISO 17712 bolt seal serial numbers are verified intact. Our Laredo cross-dock team is prepared for expedited transfer once released.",
+      action: "Please advise if destination assembly plant requires staging safety stock from our El Paso warehouse buffer."
+    },
+    eco_pushback: {
+      to: "David Stirling <d.stirling@corporate-engineering.com> (Lead R&D Architect)",
+      subject: "[FEASIBILITY FEEDBACK] ECO-2026-914 Tooling Impact & Lead-Time Assessment (Monterrey Plant)",
+      bluf: "Following review of ECO-2026-914 (redesigned terminal housing wall thickness), our tooling engineering team in Monterrey has identified a critical mold modification lead-time constraint of 4 weeks.",
+      containment: "Current tooling remains fully capable under current PPAP Level 3 parameters (Cpk = 1.78). Implementing the ECO immediately would cause an unrecoverable 5-day assembly shutdown.",
+      action: "We propose tabling the cut-in date to the scheduled annual maintenance turnaround on November 15."
+    }
+  };
+
+  function loadEmailPreset(key) {
+    const data = emailPresets[key] || emailPresets.line_stop;
+    const toEl = document.getElementById('email-to-input');
+    const subjEl = document.getElementById('email-subject-input');
+    const blufEl = document.getElementById('email-bluf-input');
+    const contEl = document.getElementById('email-containment-input');
+    const actEl = document.getElementById('email-action-input');
+
+    if (toEl) toEl.value = data.to;
+    if (subjEl) subjEl.value = data.subject;
+    if (blufEl) blufEl.value = data.bluf;
+    if (contEl) contEl.value = data.containment;
+    if (actEl) actEl.value = data.action;
+
+    renderExecutiveEmail();
+  }
+
+  document.querySelectorAll('.email-preset-chip').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('.email-preset-chip').forEach(b => b.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+      const preset = e.currentTarget.getAttribute('data-epreset');
+      loadEmailPreset(preset);
+    });
+  });
+
+  function renderExecutiveEmail() {
+    const to = document.getElementById('email-to-input')?.value || 'Recipient';
+    const subj = document.getElementById('email-subject-input')?.value || '[URGENT ESCALATION]';
+    const bluf = document.getElementById('email-bluf-input')?.value || '';
+    const containment = document.getElementById('email-containment-input')?.value || '';
+    const action = document.getElementById('email-action-input')?.value || '';
+
+    const paperEl = document.getElementById('email-preview-paper');
+    if (!paperEl) return;
+
+    const emailBody = `To: ${to}\n` +
+      `Subject: ${subj}\n\n` +
+      `Dear ${to.split(' ')[0]},\n\n` +
+      `BOTTOM LINE UP FRONT (BLUF):\n${bluf}\n\n` +
+      `CONTAINMENT & OPERATIONAL MITIGATION:\n${containment}\n\n` +
+      `REQUIRED ACTION & HARD STOP DEADLINE:\n${action}\n\n` +
+      `I will loop in our plant engineering leads to monitor this situation continuously. Please let me know if you would like to jump on a quick 10-minute briefing call before the deadline.\n\n` +
+      `Best regards,\n\n` +
+      `Lead Engineering & Operations Team\n` +
+      `stemOS High-Tech Manufacturing Corridor`;
+
+    paperEl.textContent = emailBody;
+  }
+
+  const btnGenEmail = document.getElementById('btn-generate-email');
+  const btnCopyEmail = document.getElementById('btn-copy-email');
+
+  if (btnGenEmail) btnGenEmail.addEventListener('click', () => {
+    renderExecutiveEmail();
+    if (typeof showOfflineToast === 'function') {
+      showOfflineToast("Email Rendered!", "Correo corporativo actualizado con formato BLUF.", 100, true);
+    }
+  });
+
+  if (btnCopyEmail) {
+    btnCopyEmail.addEventListener('click', () => {
+      const text = document.getElementById('email-preview-paper')?.textContent || '';
+      navigator.clipboard.writeText(text).then(() => {
+        if (typeof showOfflineToast === 'function') {
+          showOfflineToast("Email Copied!", "Correo ejecutivo copiado al portapapeles.", 100, true);
+        }
+      });
+    });
+  }
+
+  // Initial load
+  load8DPreset('auto_weld');
+  renderExecutiveEmail();
+}
+
+// ── 13. ADAPTIVE SPACED REPETITION ENGINE (SM-2 DECK) ──
+function setupSM2Engine(tracks = [], phrases = []) {
+  const cardEl = document.getElementById('sm2-active-card');
+  if (!cardEl) return;
+
+  const STORAGE_KEY = 'stemos_sm2_deck_v1';
+  let allDeckCards = [];
+  let activeSessionCards = [];
+  let currentCardIndex = 0;
+  let activeFilter = 'all';
+
+  // 1. Extract / Seed Cards from Tracks & Phrases
+  function seedFullDeck() {
+    const cards = [];
+
+    // Lexicon from tracks
+    tracks.forEach(track => {
+      if (!track.modules) return;
+      track.modules.forEach(mod => {
+        if (!mod.lexicon) return;
+        mod.lexicon.forEach((lex, idx) => {
+          cards.push({
+            id: `lex-${track.id}-${mod.id}-${idx}`,
+            type: 'lexicon',
+            term: lex.term,
+            ipa: lex.ipa || '',
+            domain: track.titleEN || track.title || 'Engineering',
+            trackId: track.id,
+            promptHint: `Define the engineering meaning, specify shopfloor/audit trap, and use with industrial collocations for "${lex.term}".`,
+            definition: lex.definition || '',
+            auditTrap: lex.auditTrap || 'Ensure precision in cross-border audits; do not confuse with general colloquial definitions.',
+            collocations: lex.collocations || [],
+            // SM-2 parameters
+            n: 0,
+            ef: 2.50,
+            interval: 0,
+            lastReview: 0,
+            nextDue: Date.now() // ready now
+          });
+        });
+      });
+    });
+
+    // Idioms from phrases
+    if (phrases && phrases.length) {
+      phrases.forEach((phr, idx) => {
+        cards.push({
+          id: phr.id || `phr-${idx}`,
+          type: 'idiom',
+          term: phr.phrase,
+          ipa: phr.pronunciationHint || '',
+          domain: 'NATIVE IDIOM & CROSS-BORDER RADAR',
+          trackId: 'idioms',
+          promptHint: `Decodifica el significado operacional, el origen de imagen mental y la trampa cultural de "${phr.phrase}".`,
+          definition: phr.operationalMeaning || '',
+          auditTrap: phr.dialectDifference ? `Trampa Dialéctica: US (${phr.dialectDifference.usMeaning}) vs UK (${phr.dialectDifference.ukMeaning})` : (phr.plantExample || ''),
+          collocations: [phr.category || 'meetings', phr.riskLevel ? `Riesgo: ${phr.riskLevel}` : 'High Context'],
+          n: 0,
+          ef: 2.50,
+          interval: 0,
+          lastReview: 0,
+          nextDue: Date.now()
+        });
+      });
+    }
+
+    return cards;
+  }
+
+  // Load from LocalStorage or seed
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      allDeckCards = JSON.parse(raw);
+    }
+  } catch (e) {
+    allDeckCards = [];
+  }
+
+  if (!allDeckCards || allDeckCards.length === 0) {
+    allDeckCards = seedFullDeck();
+    saveDeck();
+  }
+
+  function saveDeck() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(allDeckCards));
+    } catch (e) {
+      console.warn("Could not save SM-2 deck to localStorage", e);
+    }
+    updateTelemetry();
+  }
+
+  // Filter session cards
+  function buildSessionQueue() {
+    let pool = allDeckCards;
+    if (activeFilter === 'nearshoring') {
+      const nearshoringIds = ['automotive-lean', 'medical-devices', 'logistics-compliance', 'quality-ehs', 'energy-data-centers', 'embedded-firmware-edge-ai', 'advanced-supply-chain-reshoring'];
+      pool = pool.filter(c => nearshoringIds.includes(c.trackId));
+    } else if (activeFilter === 'idioms') {
+      pool = pool.filter(c => c.type === 'idiom');
+    } else if (activeFilter !== 'all') {
+      pool = pool.filter(c => c.trackId === activeFilter);
+    }
+
+    // Sort: due cards first, then by least repetitions
+    const now = Date.now();
+    const dueCards = pool.filter(c => !c.nextDue || c.nextDue <= now);
+    const futureCards = pool.filter(c => c.nextDue && c.nextDue > now);
+
+    activeSessionCards = [...dueCards, ...futureCards].slice(0, 10);
+    if (activeSessionCards.length === 0 && pool.length > 0) {
+      activeSessionCards = pool.slice(0, 10);
+    }
+    currentCardIndex = 0;
+    renderCurrentCard();
+    renderQueueList();
+  }
+
+  // Telemetry stats
+  function updateTelemetry() {
+    const now = Date.now();
+    const dueCount = allDeckCards.filter(c => !c.nextDue || c.nextDue <= now).length;
+    const totalCount = allDeckCards.length;
+    const avgEf = totalCount ? (allDeckCards.reduce((acc, c) => acc + (c.ef || 2.5), 0) / totalCount).toFixed(2) : '2.50';
+
+    const statDueEl = document.getElementById('sm2-stat-due');
+    const statTotalEl = document.getElementById('sm2-stat-total');
+    const statEfEl = document.getElementById('sm2-stat-ef');
+    const statNavDueEl = document.getElementById('nav-sm2-due-count');
+
+    if (statDueEl) statDueEl.textContent = dueCount;
+    if (statTotalEl) statTotalEl.textContent = totalCount;
+    if (statEfEl) statEfEl.textContent = avgEf;
+    if (statNavDueEl) statNavDueEl.textContent = dueCount;
+  }
+
+  // Render current active card
+  function renderCurrentCard() {
+    const card = activeSessionCards[currentCardIndex];
+    if (!card) {
+      renderCompletedState();
+      return;
+    }
+
+    // Reset flip
+    cardEl.classList.remove('is-flipped');
+
+    // Front
+    const domainEl = document.getElementById('sm2-card-domain');
+    const intervalEl = document.getElementById('sm2-card-interval-badge');
+    const termEl = document.getElementById('sm2-card-term');
+    const ipaEl = document.getElementById('sm2-card-ipa');
+    const hintEl = document.getElementById('sm2-card-hint');
+
+    if (domainEl) domainEl.textContent = (card.domain || 'ENGINEERING').toUpperCase();
+    if (intervalEl) intervalEl.textContent = card.interval ? `Interval: ${card.interval}d (Reps: ${card.n})` : 'New Card (0d)';
+    if (termEl) termEl.textContent = card.term;
+    if (ipaEl) ipaEl.textContent = card.ipa || '/technical-term/';
+    if (hintEl) hintEl.textContent = card.promptHint || '¿Cuál es la definición operacional técnica y la trampa en auditoría?';
+
+    // Back
+    const domainBackEl = document.getElementById('sm2-card-domain-back');
+    const defEl = document.getElementById('sm2-card-def');
+    const trapEl = document.getElementById('sm2-card-trap');
+
+    if (domainBackEl) domainBackEl.textContent = (card.domain || 'ENGINEERING').toUpperCase() + ' • VERIFICATION';
+    if (defEl) defEl.textContent = card.definition || 'No definition available.';
+    if (trapEl) trapEl.textContent = card.auditTrap || 'No audit trap documented.';
+
+    // Collocations
+    const collocContainer = document.getElementById('sm2-card-collocs');
+    if (collocContainer) {
+      collocContainer.innerHTML = '';
+      if (card.collocations && card.collocations.length) {
+        card.collocations.forEach(col => {
+          const pill = document.createElement('span');
+          pill.className = 'sm2-colloc-pill';
+          pill.textContent = col;
+          collocContainer.appendChild(pill);
+        });
+      }
+    }
+
+    // Interval predictions on rating buttons
+    const curInterval = card.interval || 0;
+    const ef = card.ef || 2.50;
+    const nextHard = Math.max(1, Math.round((curInterval || 1) * 1.2));
+    const nextGood = curInterval === 0 ? 6 : Math.round((curInterval || 1) * ef);
+    const nextEasy = curInterval === 0 ? 15 : Math.round((curInterval || 1) * (ef + 0.15) * 1.3);
+
+    const hardLbl = document.getElementById('rate-hard-interval');
+    const goodLbl = document.getElementById('rate-good-interval');
+    const easyLbl = document.getElementById('rate-easy-interval');
+    if (hardLbl) hardLbl.textContent = `${nextHard}d`;
+    if (goodLbl) goodLbl.textContent = `${nextGood}d`;
+    if (easyLbl) easyLbl.textContent = `${nextEasy}d`;
+
+    // Sidebar vector
+    const vecI = document.getElementById('sm2-vec-i');
+    const vecN = document.getElementById('sm2-vec-n');
+    const vecEf = document.getElementById('sm2-vec-ef');
+    const vecDue = document.getElementById('sm2-vec-due');
+    if (vecI) vecI.textContent = card.interval ? `${card.interval} days` : '0 days';
+    if (vecN) vecN.textContent = card.n || 0;
+    if (vecEf) vecEf.textContent = (card.ef || 2.50).toFixed(2);
+    if (vecDue) {
+      if (!card.nextDue || card.nextDue <= Date.now()) {
+        vecDue.textContent = 'Due Now';
+        vecDue.style.color = '#ef4444';
+      } else {
+        const daysLeft = Math.ceil((card.nextDue - Date.now()) / 86400000);
+        vecDue.textContent = `In ${daysLeft} days`;
+        vecDue.style.color = '#10b981';
+      }
+    }
+
+    // Queue counter
+    const queueRem = document.getElementById('sm2-queue-remaining');
+    if (queueRem) queueRem.textContent = `${currentCardIndex + 1} / ${activeSessionCards.length}`;
+  }
+
+  function renderQueueList() {
+    const listEl = document.getElementById('sm2-queue-list');
+    if (!listEl) return;
+    listEl.innerHTML = '';
+
+    activeSessionCards.forEach((c, idx) => {
+      const item = document.createElement('div');
+      item.className = 'sm2-queue-item' + (idx === currentCardIndex ? ' active' : '');
+      item.innerHTML = `
+        <span style="font-weight:${idx === currentCardIndex ? '700' : '500'};">${c.term}</span>
+        <span style="font-size:0.7rem; font-family:var(--font-mono); color:${c.n > 0 ? '#10b981' : '#64748b'};">
+          ${c.n > 0 ? `${c.interval}d` : 'new'}
+        </span>
+      `;
+      listEl.appendChild(item);
+    });
+  }
+
+  function renderCompletedState() {
+    cardEl.classList.remove('is-flipped');
+    const domainEl = document.getElementById('sm2-card-domain');
+    const intervalEl = document.getElementById('sm2-card-interval-badge');
+    const termEl = document.getElementById('sm2-card-term');
+    const ipaEl = document.getElementById('sm2-card-ipa');
+    const hintEl = document.getElementById('sm2-card-hint');
+    const queueRem = document.getElementById('sm2-queue-remaining');
+
+    if (domainEl) domainEl.textContent = 'SESSION COMPLETED';
+    if (intervalEl) intervalEl.textContent = '100% Mastery';
+    if (termEl) termEl.textContent = '🎉 All Cards Reviewed!';
+    if (ipaEl) ipaEl.textContent = '/səkˈsɛs.fəl ˈsɛʃ.ən/';
+    if (hintEl) hintEl.textContent = 'Great work! You have completed all due memory retention repetitions for this session.';
+    if (queueRem) queueRem.textContent = 'Done!';
+  }
+
+  // SM-2 Evaluation Logic
+  function evaluateCard(quality) {
+    const card = activeSessionCards[currentCardIndex];
+    if (!card) return;
+
+    let ef = card.ef || 2.50;
+    let n = card.n || 0;
+    let interval = card.interval || 0;
+
+    // Calculate new Ease Factor: EF' = EF + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02))
+    ef = ef + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+    if (ef < 1.30) ef = 1.30;
+
+    if (quality < 3) {
+      n = 0;
+      interval = 1;
+    } else {
+      n += 1;
+      if (n === 1) interval = 1;
+      else if (n === 2) interval = 6;
+      else interval = Math.round(interval * ef);
+    }
+
+    card.ef = Number(ef.toFixed(2));
+    card.n = n;
+    card.interval = interval;
+    card.lastReview = Date.now();
+    card.nextDue = Date.now() + (interval * 86400000);
+
+    // Sync back to master allDeckCards
+    const masterIdx = allDeckCards.findIndex(c => c.id === card.id);
+    if (masterIdx !== -1) {
+      allDeckCards[masterIdx] = { ...card };
+    }
+
+    saveDeck();
+
+    // Advance session
+    currentCardIndex++;
+    if (currentCardIndex < activeSessionCards.length) {
+      renderCurrentCard();
+      renderQueueList();
+    } else {
+      renderCompletedState();
+    }
+
+    if (typeof showOfflineToast === 'function') {
+      const qNames = { 0: 'Again (<1d)', 3: 'Hard', 4: 'Good', 5: 'Easy' };
+      showOfflineToast("SM-2 Updated!", `Repetition recorded (${qNames[quality] || quality}). Interval: ${interval} days.`, 100, true);
+    }
+  }
+
+  // Audio pronunciation
+  function playCardAudio() {
+    const card = activeSessionCards[currentCardIndex];
+    if (!card) return;
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(card.term);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.9;
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+
+  // Event Listeners
+  const btnFlip = document.getElementById('btn-sm2-flip');
+  if (btnFlip) {
+    btnFlip.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cardEl.classList.toggle('is-flipped');
+    });
+  }
+
+  cardEl.addEventListener('click', (e) => {
+    if (e.target.closest('.sm2-audio-btn') || e.target.closest('.sm2-audio-btn-small') || e.target.closest('.sm2-rate-btn')) {
+      return;
+    }
+    cardEl.classList.toggle('is-flipped');
+  });
+
+  const btnAudio = document.getElementById('btn-sm2-audio');
+  const btnAudioBack = document.getElementById('btn-sm2-audio-back');
+  if (btnAudio) btnAudio.addEventListener('click', (e) => { e.stopPropagation(); playCardAudio(); });
+  if (btnAudioBack) btnAudioBack.addEventListener('click', (e) => { e.stopPropagation(); playCardAudio(); });
+
+  const rateBtns = document.querySelectorAll('.sm2-rate-btn');
+  rateBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const q = parseInt(btn.getAttribute('data-quality'), 10);
+      evaluateCard(q);
+    });
+  });
+
+  const filterBtns = document.querySelectorAll('#sm2-deck-filters .sm2-filter-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.getAttribute('data-deck-filter');
+      buildSessionQueue();
+    });
+  });
+
+  const btnSeed = document.getElementById('btn-seed-deck');
+  if (btnSeed) {
+    btnSeed.addEventListener('click', () => {
+      const shuffled = [...allDeckCards].sort(() => 0.5 - Math.random());
+      activeSessionCards = shuffled.slice(0, 10);
+      currentCardIndex = 0;
+      renderCurrentCard();
+      renderQueueList();
+      if (typeof showOfflineToast === 'function') {
+        showOfflineToast("Session Refreshed!", "10 flashcards loaded for adaptive practice.", 100, true);
+      }
+    });
+  }
+
+  const btnReset = document.getElementById('btn-reset-deck');
+  if (btnReset) {
+    btnReset.addEventListener('click', () => {
+      localStorage.removeItem(STORAGE_KEY);
+      allDeckCards = seedFullDeck();
+      saveDeck();
+      buildSessionQueue();
+      if (typeof showOfflineToast === 'function') {
+        showOfflineToast("Deck Reset!", "SM-2 database has been restored to factory baseline.", 100, true);
+      }
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    const sm2Sec = document.getElementById('sm2-review-section');
+    if (!sm2Sec) return;
+    const rect = sm2Sec.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    if (!isVisible) return;
+
+    if (e.code === 'Space' && !['TEXTAREA', 'INPUT'].includes(e.target.tagName)) {
+      e.preventDefault();
+      cardEl.classList.toggle('is-flipped');
+    } else if (cardEl.classList.contains('is-flipped')) {
+      if (e.key === '1') evaluateCard(0);
+      else if (e.key === '2') evaluateCard(3);
+      else if (e.key === '3') evaluateCard(4);
+      else if (e.key === '4') evaluateCard(5);
+    }
+  });
+
+  // Global error hook
+  window.recordSM2Error = function(termText, trackId) {
+    if (!termText) return;
+    const existing = allDeckCards.find(c => c.term.toLowerCase() === termText.toLowerCase());
+    if (existing) {
+      existing.n = 0;
+      existing.interval = 1;
+      existing.nextDue = Date.now();
+      existing.ef = Math.max(1.30, Number(((existing.ef || 2.5) - 0.2).toFixed(2)));
+    } else {
+      allDeckCards.push({
+        id: `err-${Date.now()}`,
+        type: 'lexicon',
+        term: termText,
+        ipa: '',
+        domain: (trackId || 'ENGINEERING ERROR').toUpperCase(),
+        trackId: trackId || 'engineering',
+        promptHint: `Term missed in recent assessment: "${termText}". Review definition and audit trap immediately.`,
+        definition: 'Prioritize review of this technical concept due to assessment error.',
+        auditTrap: 'Critical assessment failure recorded.',
+        collocations: ['review required'],
+        n: 0,
+        ef: 1.80,
+        interval: 1,
+        lastReview: Date.now(),
+        nextDue: Date.now()
+      });
+    }
+    saveDeck();
+  };
+
+  // Initial build
+  buildSessionQueue();
+  updateTelemetry();
+}
+
+function setupPitchAndNegotiationLab() {
+  const pitchSection = document.getElementById('negotiation-pitch-section');
+  if (!pitchSection) return;
+
+  // 1. Tab Switcher
+  const btnTabBuilder = document.getElementById('tab-btn-pitch-builder');
+  const btnTabNegotiation = document.getElementById('tab-btn-negotiation-arena');
+  const btnTabPhonetic = document.getElementById('tab-btn-phonetic-trainer');
+  const wsBuilder = document.getElementById('workspace-pitch-builder');
+  const wsNegotiation = document.getElementById('workspace-negotiation-arena');
+  const wsPhonetic = document.getElementById('workspace-phonetic-trainer');
+
+  const switchTab = (activeBtn, activeWs, onActive) => {
+    [btnTabBuilder, btnTabNegotiation, btnTabPhonetic].forEach(btn => {
+      if (btn) {
+        btn.classList.toggle('active', btn === activeBtn);
+        btn.setAttribute('aria-selected', btn === activeBtn ? 'true' : 'false');
+      }
+    });
+    [wsBuilder, wsNegotiation, wsPhonetic].forEach(ws => {
+      if (ws) ws.style.display = ws === activeWs ? 'block' : 'none';
+    });
+    if (onActive) onActive();
+  };
+
+  if (btnTabBuilder) btnTabBuilder.addEventListener('click', () => switchTab(btnTabBuilder, wsBuilder));
+  if (btnTabNegotiation) btnTabNegotiation.addEventListener('click', () => switchTab(btnTabNegotiation, wsNegotiation, renderNegotiationState));
+  if (btnTabPhonetic) btnTabPhonetic.addEventListener('click', () => switchTab(btnTabPhonetic, wsPhonetic, renderPhoneticState));
+
+  // ── STUDIO A: PRESENTATION & PITCH BUILDER ──
+  const PITCH_PRESETS = {
+    catheter_welder: {
+      stage1: "Over the past 72 hours, our Tijuana catheter balloon-welding yield plummeted from 99.4% to 88.2%, generating $45,000 in scrapped biocompatible tubing and putting next Monday's Boston shipment at severe regulatory non-compliance risk.",
+      stage2: "Cross-sectional SEM micrographs and ultrasonic horn finite-element analysis revealed resonant frequency drift due to titanium horn micro-cavitation. The legacy pneumatic actuator cannot compensate for dynamic backpressure variations, inducing intermittent micro-pinhole bursts.",
+      stage3: "We propose integrating an automated 40 kHz digital servo-driven ultrasonic press with real-time acoustic impedance monitoring and closed-loop force profiling. IQ/OQ/PQ validation is already mapped out and can be fully executed within a 7-day scheduled production window.",
+      stage4: "To eliminate disruption risk, our dual-sourcing agreement with Branson guarantees pre-configured air delivery in 5 business days. During installation, qualified manual redundant stations will operate across three shifts, maintaining 100% committed throughput without line starvation.",
+      stage5: "Total turnkey CAPEX is $185,000. By eliminating $48,000 in monthly scrap and re-work overtime, this upgrade achieves complete payback in exactly 3.8 months. We request immediate executive release of PO #8841 today to lock the delivery slot."
+    },
+    laser_vision: {
+      stage1: "Our Saltillo stamping facility is experiencing a critical 4.2% scrap spike on EV stator laminations due to sub-millimeter burr formation, risking a $320,000 chargeback penalty from our primary powertrain customer.",
+      stage2: "High-speed optical triangulation demonstrated that high carbide punch wear coincides with intermittent lubrication nozzle clogging, shifting clearance beyond the 10% material thickness tolerance limit.",
+      stage3: "We propose deploying an inline multi-camera telecentric AI vision inspection rig with deep-learning edge inferencing capable of 100% lamination dimensioning at 600 strokes per minute with zero false positives.",
+      stage4: "Integration will take place during the planned Thanksgiving maintenance outage. A parallel statistical sample run will operate for two weeks to establish Cpk greater than 1.67 prior to full line sign-off.",
+      stage5: "Turnkey investment is $142,000 with a documented payback period of 3.2 months based on immediate avoidance of Tier-1 containment fees. We require executive approval on CapEx Requisition #5520 by Friday noon."
+    },
+    svg_power: {
+      stage1: "Our industrial park substation in Ramos Arizpe was notified by CENACE and CRE that our power factor dropped to 0.89 during induction furnace cycles, violating Código de Red 2.0 and exposing the plant to $120,000 in monthly grid penalties.",
+      stage2: "Power quality harmonic analyzers identified severe 5th and 7th order voltage distortion paired with intermittent reactive power swings during rapid arc-weld sequences, exceeding IEEE 519 harmonic limits.",
+      stage3: "We propose commissioning a 4.16 kV, 5 MVAR Static Var Generator (SVG) combined with a 2 MWh containerized LFP BESS for dynamic peak-shaving and sub-cycle reactive power compensation.",
+      stage4: "The SVG module features N+1 power electronic inverter redundancy and an automated fast-bypass switch, ensuring uninterruptible plant continuity even under single IGBT bridge faults.",
+      stage5: "Total project expenditure is $480,000, fully offset within 11 months by grid penalty elimination and CFE capacity charge reduction. We urge immediate executive endorsement to submit our CENACE compliance filing."
+    },
+    blank_pitch: {
+      stage1: "",
+      stage2: "",
+      stage3: "",
+      stage4: "",
+      stage5: ""
+    }
+  };
+
+  const stageInputs = [
+    document.getElementById('pitch-stage1-input'),
+    document.getElementById('pitch-stage2-input'),
+    document.getElementById('pitch-stage3-input'),
+    document.getElementById('pitch-stage4-input'),
+    document.getElementById('pitch-stage5-input')
+  ];
+
+  const stageWordCounters = [
+    document.getElementById('stage1-word-count'),
+    document.getElementById('stage2-word-count'),
+    document.getElementById('stage3-word-count'),
+    document.getElementById('stage4-word-count'),
+    document.getElementById('stage5-word-count')
+  ];
+
+  const FILLER_WORDS = ['um', 'uh', 'like', 'you know', 'basically', 'actually', 'sort of', 'kind of', 'i mean', 'so yeah', 'pretty much', 'to be honest', 'literally'];
+  const HEDGE_WORDS = ['i think', 'maybe', 'perhaps', 'hopefully', 'we will try', 'we can try', 'try our best'];
+  const TECH_KEYWORDS = [
+    'yield', 'cpk', 'sem', 'ultrasonic', 'acoustic', 'impedance', 'validation', 'iq/oq/pq',
+    'capex', 'roi', 'tolerance', 'harmonic', 'substation', 'bess', 'svg', 'código de red',
+    'micro-cavitation', 'burr', 'stator', 'powertrain', 'actuator', 'containment', 'po #', 'payback'
+  ];
+
+  function evaluatePitch() {
+    const texts = stageInputs.map(input => input ? input.value : '');
+    const fullText = texts.join(' ');
+
+    // Word counts per stage
+    texts.forEach((text, i) => {
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      if (stageWordCounters[i]) {
+        stageWordCounters[i].textContent = `${words} words`;
+      }
+    });
+
+    const totalWords = fullText.trim() ? fullText.trim().split(/\s+/).length : 0;
+    const lowerText = fullText.toLowerCase();
+
+    // 1. Detect Fillers
+    const detectedFillers = [];
+    FILLER_WORDS.forEach(f => {
+      const regex = new RegExp(`\\b${f}\\b`, 'gi');
+      const matches = lowerText.match(regex);
+      if (matches) {
+        detectedFillers.push({ word: f, count: matches.length });
+      }
+    });
+
+    const totalFillersCount = detectedFillers.reduce((acc, curr) => acc + curr.count, 0);
+
+    // 2. Detect Hedges
+    let totalHedgesCount = 0;
+    HEDGE_WORDS.forEach(h => {
+      const regex = new RegExp(`\\b${h}\\b`, 'gi');
+      const matches = lowerText.match(regex);
+      if (matches) totalHedgesCount += matches.length;
+    });
+
+    // 3. Technical keywords count
+    let techHits = 0;
+    TECH_KEYWORDS.forEach(kw => {
+      if (lowerText.includes(kw)) techHits++;
+    });
+
+    // Scoring math (0 - 100%)
+    const techScore = Math.min(100, Math.max(30, Math.round(50 + techHits * 8)));
+    const toneScore = Math.max(35, Math.min(100, Math.round(95 - totalHedgesCount * 12)));
+    const structScore = texts.every(t => t.trim().split(/\s+/).length >= 15) ? 96 :
+                        texts.filter(t => t.trim().split(/\s+/).length >= 10).length >= 4 ? 82 : 60;
+    const fillerScore = Math.max(20, Math.min(100, 100 - totalFillersCount * 15));
+
+    const overall = Math.round((techScore * 0.3) + (toneScore * 0.25) + (structScore * 0.25) + (fillerScore * 0.2));
+
+    // Update Telemetry DOM
+    const overallScoreEl = document.getElementById('pitch-overall-score');
+    const overallLevelEl = document.getElementById('pitch-overall-level');
+    const scoreFillEl = document.getElementById('pitch-score-fill');
+
+    if (overallScoreEl) overallScoreEl.textContent = `${overall}%`;
+    if (scoreFillEl) scoreFillEl.style.width = `${overall}%`;
+
+    let levelStr = "BOARDROOM READY";
+    if (overall < 70) levelStr = "NEEDS REFINEMENT";
+    else if (overall < 85) levelStr = "STRONG DEFENSE";
+    if (overallLevelEl) overallLevelEl.textContent = levelStr;
+
+    // Diagnostics
+    const updateDiag = (idPrefix, val) => {
+      const vEl = document.getElementById(`${idPrefix}-score`);
+      const fEl = document.getElementById(`${idPrefix}-fill`);
+      if (vEl) vEl.textContent = `${val}%`;
+      if (fEl) fEl.style.width = `${val}%`;
+    };
+    updateDiag('diag-tech', techScore);
+    updateDiag('diag-tone', toneScore);
+    updateDiag('diag-struct', structScore);
+    updateDiag('diag-filler', fillerScore);
+
+    // Header strip stats
+    const statFillers = document.getElementById('pitch-stat-fillers');
+    const statImpact = document.getElementById('pitch-stat-impact');
+    if (statFillers) statFillers.textContent = `${totalFillersCount}`;
+    if (statImpact) statImpact.textContent = `${overall}%`;
+
+    // Fillers list callout
+    const fillersListEl = document.getElementById('detected-fillers-list');
+    if (fillersListEl) {
+      if (detectedFillers.length === 0) {
+        fillersListEl.innerHTML = `<span class="filler-clean-badge"><i class="fa-solid fa-check"></i> Zero filler words detected. Boardroom tone is assertive and crisp.</span>`;
+      } else {
+        fillersListEl.innerHTML = detectedFillers.map(f => `
+          <span class="filler-chip-flag"><i class="fa-solid fa-flag"></i> "${f.word}" (${f.count}x)</span>
+        `).join('');
+      }
+    }
+
+    // Teleprompter Readout
+    renderTeleprompter(texts, totalWords);
+  }
+
+  function renderTeleprompter(texts, totalWords) {
+    const readoutEl = document.getElementById('teleprompter-readout');
+    const wordsEl = document.getElementById('t-stat-words');
+    const timeEl = document.getElementById('t-stat-time');
+
+    if (wordsEl) wordsEl.textContent = `${totalWords} words`;
+    if (timeEl) {
+      const minutes = Math.floor(totalWords / 135);
+      const seconds = Math.round(((totalWords % 135) / 135) * 60);
+      timeEl.textContent = `~${minutes > 0 ? minutes + 'm ' : ''}${seconds}s (135 wpm)`;
+    }
+
+    if (!readoutEl) return;
+    const stageNames = [
+      "1. The Burning Platform (Problem Statement)",
+      "2. Root Cause Diagnostics (Physics of Failure)",
+      "3. Proposed Engineering Architecture",
+      "4. Risk Mitigation & Operational Contingency",
+      "5. Financial Justification & Immediate Ask"
+    ];
+
+    readoutEl.innerHTML = texts.map((t, idx) => `
+      <div class="pitch-tele-stage">
+        <div class="pitch-tele-header">${stageNames[idx]}</div>
+        <p class="pitch-tele-body">${t.trim() ? t : '<em style="color:#94a3b8;">[Stage content empty]</em>'}</p>
+      </div>
+    `).join('');
+  }
+
+  // Bind Input Events
+  stageInputs.forEach(input => {
+    if (input) {
+      input.addEventListener('input', evaluatePitch);
+    }
+  });
+
+  // Collocation Chips click
+  const collocChips = pitchSection.querySelectorAll('.colloc-chip');
+  collocChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const targetId = chip.getAttribute('data-target');
+      const targetInput = document.getElementById(targetId);
+      if (targetInput) {
+        const textToAppend = chip.textContent.trim();
+        if (targetInput.value.length > 0 && !targetInput.value.endsWith(' ')) {
+          targetInput.value += ' ';
+        }
+        targetInput.value += textToAppend;
+        evaluatePitch();
+        targetInput.focus();
+      }
+    });
+  });
+
+  // Presets click
+  const presetChips = pitchSection.querySelectorAll('.pitch-preset-chip');
+  presetChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      presetChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const presetKey = chip.getAttribute('data-ppreset');
+      const data = PITCH_PRESETS[presetKey];
+      if (data) {
+        if (stageInputs[0]) stageInputs[0].value = data.stage1;
+        if (stageInputs[1]) stageInputs[1].value = data.stage2;
+        if (stageInputs[2]) stageInputs[2].value = data.stage3;
+        if (stageInputs[3]) stageInputs[3].value = data.stage4;
+        if (stageInputs[4]) stageInputs[4].value = data.stage5;
+        evaluatePitch();
+        if (typeof showOfflineToast === 'function') {
+          showOfflineToast("Pitch Preset Loaded", "Loaded 5-stage technical defense scenario.", 100, true);
+        }
+      }
+    });
+  });
+
+  // Speech Synthesizer Action
+  let currentUtterance = null;
+  const btnSpeech = document.getElementById('btn-pitch-speech');
+  const speechIcon = document.getElementById('pitch-speech-icon');
+  const speechLbl = document.getElementById('pitch-speech-lbl');
+
+  if (btnSpeech) {
+    btnSpeech.addEventListener('click', () => {
+      if (typeof window === 'undefined' || !window.speechSynthesis) {
+        if (typeof showOfflineToast === 'function') {
+          showOfflineToast("Audio Preview", "Speech synthesis initialized in simulation mode.", 100, true);
+        }
+        return;
+      }
+      const synth = window.speechSynthesis;
+      if (synth.speaking) {
+        synth.cancel();
+        if (speechIcon) speechIcon.className = "fa-solid fa-play";
+        if (speechLbl) speechLbl.textContent = "Play Audio Preview";
+        return;
+      }
+
+      const fullScript = stageInputs.map(inp => inp ? inp.value : '').join('. ');
+      if (!fullScript.trim()) return;
+
+      currentUtterance = new SpeechSynthesisUtterance(fullScript);
+      currentUtterance.lang = 'en-US';
+      currentUtterance.rate = 0.95;
+
+      const voices = synth.getVoices ? synth.getVoices() : [];
+      const usVoice = voices.find(v => v.lang === 'en-US' || v.lang.startsWith('en'));
+      if (usVoice) currentUtterance.voice = usVoice;
+
+      currentUtterance.onstart = () => {
+        if (speechIcon) speechIcon.className = "fa-solid fa-stop";
+        if (speechLbl) speechLbl.textContent = "Stop Audio";
+      };
+      currentUtterance.onend = currentUtterance.onerror = () => {
+        if (speechIcon) speechIcon.className = "fa-solid fa-play";
+        if (speechLbl) speechLbl.textContent = "Play Audio Preview";
+      };
+
+      synth.speak(currentUtterance);
+    });
+  }
+
+  // Copy Action
+  const btnCopy = document.getElementById('btn-pitch-copy');
+  if (btnCopy) {
+    btnCopy.addEventListener('click', () => {
+      const texts = stageInputs.map(inp => inp ? inp.value : '');
+      const stageNames = [
+        "1. THE BURNING PLATFORM & PROBLEM STATEMENT",
+        "2. ROOT CAUSE DIAGNOSTICS & PHYSICS OF FAILURE",
+        "3. PROPOSED ENGINEERING ARCHITECTURE & VALIDATION",
+        "4. RISK MITIGATION & OPERATIONAL FALLBACK",
+        "5. FINANCIAL JUSTIFICATION, ROI & ACTION REQUEST"
+      ];
+      const formatted = texts.map((t, i) => `=== ${stageNames[i]} ===\n${t.trim()}\n`).join('\n');
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        navigator.clipboard.writeText(formatted).then(() => {
+          if (typeof showOfflineToast === 'function') {
+            showOfflineToast("Pitch Script Copied!", "Full 5-stage script copied to clipboard.", 100, true);
+          }
+        });
+      }
+    });
+  }
+
+  // Reset Action
+  const btnReset = document.getElementById('btn-pitch-reset');
+  if (btnReset) {
+    btnReset.addEventListener('click', () => {
+      stageInputs.forEach(inp => { if (inp) inp.value = ''; });
+      evaluatePitch();
+    });
+  }
+
+  // ── STUDIO B: CROSS-BORDER NEGOTIATION ARENA ──
+  const NEG_SCENARIOS = {
+    roughness_concession: {
+      title: "Surface Roughness Concession Request",
+      stakeholder: {
+        name: "David Vance",
+        title: "VP of Global Quality • Detroit HQ",
+        avatar: "fa-user-tie",
+        style: "Data-obsessed, low tolerance for excuses, highly risk-averse.",
+        agenda: "Faces audit pressure from FAA; cannot sign off on concessions without airtight empirical burst-test data."
+      },
+      briefing: "Your CNC 5-axis cell in Monterrey is hitting tool chatter on aerospace hydraulic manifold sealing grooves. Securing Ra 0.4 µm cuts throughput by 42%, threatening downstream final assembly in Wichita. Your engineering data proves that Ra 0.8 µm with HNBR O-rings meets 5,000 PSI burst pressure with 4x safety factor. You must negotiate a temporary 60-day deviation permit without accepting financial penalties or warranty liability.",
+      rounds: [
+        {
+          roundNum: 1,
+          stakeholderPrompt: "Your plant is requesting a deviation to ship Ra 0.8 µm on hydraulic manifolds instead of the spec Ra 0.4 µm. That surface seals our primary flight control line. Why on earth should I sign a concession that compromises hydraulic integrity because Monterrey has CNC tool chatter?",
+          stakeholderStance: "Skeptical & Guarded",
+          stanceClass: "stance-skeptical",
+          sentimentPct: 35,
+          choices: [
+            {
+              type: "blunt",
+              tag: "BLUNT / CONFRONTATIONAL",
+              text: "Your design engineers specified Ra 0.4 µm arbitrarily without testing. In the real world, Ra 0.8 µm works fine, and if you don't sign this concession right now, the Wichita assembly line will shut down by tomorrow afternoon.",
+              impact: { assert: 85, tact: 25, firm: 60, stance: "Defensive & Hostile", stanceClass: "stance-hostile", sentiment: 20 },
+              reply: "Excuse me? Do not threaten me with line-down alarms when this is Monterrey's tooling failure. I will NOT rubber-stamp a drawing deviation under extortion.",
+              coach: "Escalatory Trap: Threatening a line-down without validation data puts US leadership in defensive mode. Avoid accusing design engineering of 'arbitrary specs'."
+            },
+            {
+              type: "passive",
+              tag: "PASSIVE / OVER-APOLOGETIC",
+              text: "We are so sorry for our tooling problems in Monterrey. We know this is entirely our fault and we will work round-the-clock overtime at our cost if you just give us a chance to show we can improve.",
+              impact: { assert: 20, tact: 65, firm: 15, stance: "Suspicious & Demanding", stanceClass: "stance-skeptical", sentiment: 30 },
+              reply: "Apologies don't seal hydraulic valves under G-force. If Monterrey cannot hit basic blueprint tolerances, maybe we should reshore this machining cell back to Michigan.",
+              coach: "Mexican Deference Trap: Excessive apologizing makes US directors doubt your technical competence. Ground your argument in physical data, not emotional promises."
+            },
+            {
+              type: "collab",
+              tag: "STRATEGIC / BATNA COLLABORATION",
+              text: "I understand your risk concern completely, David. We ran hydrostatic burst testing on 12 sample blocks at Ra 0.8 µm with HNBR O-rings: zero leakage occurred up to 8,200 PSI, which is well above the 5,000 PSI operating limit with a 4.1x safety factor. We can ship a 60-day deviation batch with 100% pressure-cert tracking while we recut the finishing tools.",
+              impact: { assert: 92, tact: 90, firm: 88, stance: "Constructive & Interested", stanceClass: "stance-constructive", sentiment: 65 },
+              reply: "Now that is real engineering data. An 8,200 PSI burst threshold is compelling. But what happens if an FAA auditor pulls this serial number during incoming inspection?",
+              coach: "Masterful Execution: Acknowledging their risk and answering with empirical burst-test data (4.1x safety factor) instantly builds executive credibility."
+            }
+          ]
+        },
+        {
+          roundNum: 2,
+          stakeholderPrompt: "The burst test data is encouraging, but what happens if an FAA audit questions why the drawing rev doesn't match the CMM surface profile report during incoming inspection?",
+          stakeholderStance: "Cautious & Audit-Focused",
+          stanceClass: "stance-skeptical",
+          sentimentPct: 65,
+          choices: [
+            {
+              type: "blunt",
+              tag: "RISKY EVASION",
+              text: "The FAA won't notice unless your incoming QA flags it. Just tell them to accept the parts and look the other way for these two months.",
+              impact: { assert: 45, tact: 15, firm: 40, stance: "Alarmed & Rejecting", stanceClass: "stance-hostile", sentiment: 15 },
+              reply: "Are you suggesting we falsify AS9100 traveler records? That is a federal felony. We are pulling the concession request immediately.",
+              coach: "Compliance Hazard: Never advise a US stakeholder to 'look the other way'. Regulated aerospace/medical demands auditable trace records."
+            },
+            {
+              type: "passive",
+              tag: "OVER-CONCESSION",
+              text: "If the FAA audits it, Monterrey will accept 100% of any fines or penalties. We'll sign whatever indemnification letter Detroit sends us.",
+              impact: { assert: 15, tact: 50, firm: 10, stance: "Dismissive", stanceClass: "stance-skeptical", sentiment: 40 },
+              reply: "An indemnification letter won't save our FAA production certificate. I need a compliant engineering framework, not empty promises to pay fines.",
+              coach: "Liability Blunder: Offering to accept undefined legal liability without solving the root regulatory mechanism shows weakness."
+            },
+            {
+              type: "collab",
+              tag: "AUDIT-READY ENGINEERING PROTOCOL",
+              text: "We have prepared a formal Engineering Change Deviation (ECD) package per AS9100 clause 8.7. It includes our burst test validation, CMM surface profilometry traces, and a signed quality concession memo. It is fully transparent and audit-compliant for FAA review.",
+              impact: { assert: 95, tact: 94, firm: 90, stance: "Reassured & Partnering", stanceClass: "stance-agreement", sentiment: 85 },
+              reply: "That covers our audit exposure. Clause 8.7 traceability protects our certificate. Let's talk about the logistics and inspection cadence.",
+              coach: "Flawless Defense: Referencing specific AS9100 clauses and presenting a pre-assembled deviation package relieves the US stakeholder of compliance anxiety."
+            }
+          ]
+        },
+        {
+          roundNum: 3,
+          stakeholderPrompt: "Okay, I will approve the 60-day deviation permit under one condition: Monterrey covers the additional CMM inspection time and provides weekly Ra capability reports.",
+          stakeholderStance: "Agreement in Principle",
+          stanceClass: "stance-agreement",
+          sentimentPct: 85,
+          choices: [
+            {
+              type: "blunt",
+              tag: "PETTY BUDGET PUSHBACK",
+              text: "No way, Monterrey's budget is already stretched thin. You guys in Detroit should absorb the inspection costs since you're the ones demanding extra paperwork.",
+              impact: { assert: 70, tact: 30, firm: 50, stance: "Annoyed & Friction", stanceClass: "stance-skeptical", sentiment: 55 },
+              reply: "Unbelievable. We grant you a major concession and you nickel-and-dime over 20 minutes of CMM inspection? We can cancel the deviation right now.",
+              coach: "Closing Blunder: Risking a hard-won major concession over minor inspection labor costs destroys good will."
+            },
+            {
+              type: "passive",
+              tag: "SUBMISSIVE SURRENDER",
+              text: "Yes, absolutely! We will pay for everything and whatever extra costs Detroit incurs without question.",
+              impact: { assert: 30, tact: 70, firm: 25, stance: "Transactional", stanceClass: "stance-constructive", sentiment: 75 },
+              reply: "Good. Make sure the checks clear and don't miss a single shipment.",
+              coach: "Missed Partnership Opportunity: Simply rolling over leaves value on the table instead of framing it as an ongoing collaborative quality loop."
+            },
+            {
+              type: "collab",
+              tag: "WIN-WIN PARTNERSHIP CLOSE",
+              text: "Agreed. We will upload automated 100% optical profilometer scans for each serialized manifold to our shared quality portal, and our plant quality engineer will hold a weekly 15-minute sync with your team. We appreciate the partnership, David.",
+              impact: { assert: 94, tact: 96, firm: 92, stance: "Full Strategic Alignment", stanceClass: "stance-agreement", sentiment: 98 },
+              reply: "Deal. Send over the ECD for my digital signature. Let's make sure Wichita never runs out of manifolds.",
+              coach: "Executive Win: You secured the 60-day concession, preserved plant budget, protected your reputation, and established automated transparent oversight."
+            }
+          ]
+        }
+      ]
+    },
+
+    customs_airfreight: {
+      title: "Laredo Port-of-Entry Customs Hold & $42k Air Freight",
+      stakeholder: {
+        name: "Sarah Sterling",
+        title: "Senior Director of Global Supply Chain • Chicago HQ",
+        avatar: "fa-user-gear",
+        style: "P&L hawk, hyper-vigilant on SLA metrics, zero tolerance for delays.",
+        agenda: "Faces massive penalties if the Kentucky assembly plant shuts down; looking to push $42k air charter cost onto Mexico plant."
+      },
+      briefing: "A 40-foot trailer with 1,200 wire harnesses is flagged for an SAT Anexo 24 customs revision at the Nuevo Laredo bridge. Clearance will take 4 days. Kentucky will starve in 48 hours. Sarah demands Mexico plant pay $42,000 for chartered air freight. You must protect plant budget under Incoterms DAP, propose expedited partial lot air cargo ($9,800), and clear the customs bottleneck.",
+      rounds: [
+        {
+          roundNum: 1,
+          stakeholderPrompt: "Mexico's truck is impounded in Laredo customs and Kentucky runs out of harnesses in 36 hours. I need two chartered cargo Learjets booked within the hour, and Chicago will NOT eat the $42,000 freight bill. Why was your Anexo 24 paperwork inaccurate?",
+          stakeholderStance: "Aggressive & Demanding",
+          stanceClass: "stance-hostile",
+          sentimentPct: 20,
+          choices: [
+            {
+              type: "blunt",
+              tag: "LEGALISTIC BLAME-SHIFT",
+              text: "The paperwork was not inaccurate; SAT selected us for random red-light revision. Under Incoterms DAP Louisville, buyer coordinates clearance delays, so Chicago has to pay the air charter.",
+              impact: { assert: 75, tact: 20, firm: 65, stance: "Enraged", stanceClass: "stance-hostile", sentiment: 15 },
+              reply: "Do NOT quote Incoterms to me while my assembly line is dying. If Kentucky stops, your plant general manager will be on a flight to Chicago tomorrow morning.",
+              coach: "Incoterm Trap: Quoting legal clauses during an operational emergency alienates leadership. First address the assembly line risk."
+            },
+            {
+              type: "passive",
+              tag: "BLANK-CHECK ADMISSION",
+              text: "We are so terribly sorry Sarah. We will immediately authorize the $42,000 Learjet charter from our plant budget to keep Kentucky running.",
+              impact: { assert: 15, tact: 60, firm: 10, stance: "Dominant", stanceClass: "stance-skeptical", sentiment: 40 },
+              reply: "Good. I expect tracking numbers by 17:00. Next time, don't mess up your Mexican customs pedimentos.",
+              coach: "Budget Disaster: You just surrendered $42,000 of plant OPEX for a random customs audit that was not the plant's fault."
+            },
+            {
+              type: "collab",
+              tag: "PROPORTIONAL LOGISTICS COMPROMISE",
+              text: "Sarah, keeping Kentucky alive is our #1 priority. Our customs broker confirmed this is a random SAT non-intrusive gamma-ray scan, not an infraction. Rather than spending $42,000 to fly the full 1,200 harnesses, we can air-freight a 48-hour emergency buffer of 240 units for $9,800 on commercial cargo today, while the cleared trailer catches up on Thursday.",
+              impact: { assert: 90, tact: 88, firm: 85, stance: "Receptive & Calculating", stanceClass: "stance-constructive", sentiment: 60 },
+              reply: "Wait... a 240-unit buffer protects Kentucky until Thursday? What are the exact flight coordinates for that commercial cargo lot?",
+              coach: "Strategic Mastery: Cutting the problem to a 48-hour buffer drops the freight cost from $42,000 to $9,800 while 100% protecting assembly continuity."
+            }
+          ]
+        },
+        {
+          roundNum: 2,
+          stakeholderPrompt: "A $9,800 commercial cargo flight works for Kentucky's buffer. But who pays the $9,800, and how do you guarantee SAT releases the main trailer by Thursday?",
+          stakeholderStance: "Pragmatic & Negotiating",
+          stanceClass: "stance-constructive",
+          sentimentPct: 60,
+          choices: [
+            {
+              type: "blunt",
+              tag: "STUBBORN REFUSAL",
+              text: "Chicago must pay 100% of the $9,800. We don't control Mexican customs, so we can't guarantee anything about Thursday.",
+              impact: { assert: 60, tact: 25, firm: 45, stance: "Irritated", stanceClass: "stance-skeptical", sentiment: 35 },
+              reply: "Then we have no agreement. I will hold your plant responsible for every dollar of Kentucky's idle time.",
+              coach: "Deadlock Danger: Refusing to share operational risk when you just made a great breakthrough risks killing the deal."
+            },
+            {
+              type: "passive",
+              tag: "TOTAL CONCESSION",
+              text: "Mexico plant will pay the full $9,800 and guarantee Thursday release no matter what.",
+              impact: { assert: 20, tact: 70, firm: 20, stance: "Patronizing", stanceClass: "stance-constructive", sentiment: 65 },
+              reply: "Fine, book it immediately.",
+              coach: "Soft Surrender: You missed the chance to establish a 50/50 shared risk precedent for future random border revisions."
+            },
+            {
+              type: "collab",
+              tag: "50/50 EXPEDITED COST SPLIT & C-TPAT FAST-TRACK",
+              text: "We propose a 50/50 split on the $9,800 ($4,900 each) as partners. On our side, our C-TPAT Tier 2 certification gives us FAST lane priority: our licensed customs agent is physically at the Laredo bridge facility expediting document clearance for a Wednesday evening release.",
+              impact: { assert: 92, tact: 92, firm: 88, stance: "Alignment & Respect", stanceClass: "stance-agreement", sentiment: 88 },
+              reply: "A $4,900 split is completely reasonable and well within my discretionary budget. And having your C-TPAT agent physically on-site gives me confidence.",
+              coach: "Executive Poise: Proposing a modest 50/50 split and leveraging C-TPAT Tier 2 credentials shows world-class cross-border acumen."
+            }
+          ]
+        },
+        {
+          roundNum: 3,
+          stakeholderPrompt: "Let's lock this in. Please confirm the flight airway bill number and provide the customs pedimento confirmation by 16:00 CST.",
+          stakeholderStance: "Consensus & Action",
+          stanceClass: "stance-agreement",
+          sentimentPct: 92,
+          choices: [
+            {
+              type: "collab",
+              tag: "EXECUTION & TRANSPARENT TRACKING",
+              text: "Confirmed, Sarah. Airway bill #Aero-9942 leaves Monterrey at 13:40 and lands in Louisville at 18:15. Real-time GPS tracking is active on our supply portal. Thank you for working through this with us.",
+              impact: { assert: 95, tact: 96, firm: 92, stance: "Complete Partnership", stanceClass: "stance-agreement", sentiment: 100 },
+              reply: "Superb execution. Kentucky line will not miss a single beat. Outstanding crisis leadership from your team.",
+              coach: "Total Victory: Saved $37,100, prevented line-down, maintained Kentucky supply, and elevated plant reputation with Chicago leadership."
+            }
+          ]
+        }
+      ]
+    },
+
+    mold_tooling_eco: {
+      title: "Mold Cavity Wear & Line-Stop Penalty ($15k/hr)",
+      stakeholder: {
+        name: "Marcus Thorne",
+        title: "Program Executive Director • San Jose HQ",
+        avatar: "fa-gears",
+        style: "Aggressive timeline driver, highly impatient, Wall Street guidance focused.",
+        agenda: "Board is watching Q4 medical syringe product ramp; cannot accept any unplanned downtime."
+      },
+      briefing: "High-cavitation injection mold core pin wear detected in Ciudad Juárez on medical syringe plungers. Flash defect rate is approaching 1.8%. Re-tooling requires 72 hours downtime. Marcus threatens a $15,000/hour line stoppage charge if production stops during the launch window. You must negotiate a planned 36-hour split tool maintenance window while pulling forward safety stock buffer.",
+      rounds: [
+        {
+          roundNum: 1,
+          stakeholderPrompt: "Juárez wants to shut down Mold #4 for 72 hours right in the middle of our Q4 commercial launch ramp? That will cost us 450,000 units. Contractually, any unscheduled shutdown triggers a $15,000/hr downtime charge against your plant. Keep running until November!",
+          stakeholderStance: "Belligerent & Threatening",
+          stanceClass: "stance-hostile",
+          sentimentPct: 15,
+          choices: [
+            {
+              type: "blunt",
+              tag: "RIGID REFUSAL",
+              text: "We cannot keep running. The mold will shatter, and your $15,000/hr penalty is unenforceable under force majeure. We are pulling the mold tonight.",
+              impact: { assert: 75, tact: 15, firm: 60, stance: "Furious", stanceClass: "stance-hostile", sentiment: 10 },
+              reply: "Do that and I will cancel your supplier agreement by midnight. Don't test my authority.",
+              coach: "Deadly Confrontation: Threatening force majeure on routine tool maintenance destroys business relationships."
+            },
+            {
+              type: "passive",
+              tag: "DANGEROUS DEFERENCE",
+              text: "Okay Marcus, we will keep running the worn mold until November as you requested and pray that it doesn't break.",
+              impact: { assert: 10, tact: 50, firm: 5, stance: "Contemptuous", stanceClass: "stance-skeptical", sentiment: 25 },
+              reply: "Good. But if any flash defects escape to hospitals, Juárez pays 100% of the FDA recall.",
+              coach: "Catastrophic Risk: Surrendering engineering safety creates existential FDA recall risk for the entire company."
+            },
+            {
+              type: "collab",
+              tag: "ROOT-CAUSE MITIGATION & BUFFER STRATEGY",
+              text: "Marcus, our CMM metrology shows core pin #14 has 45 microns of eccentric wear. Running to November risks catastrophic steel-on-steel galling, which would cause an unplanned 3-week shutdown. Over the past 5 days, we ran Line 2 at 112% OEE, building a 60,000-unit safety stock buffer. Instead of a 72-hour continuous shutdown, we can execute a 36-hour rapid split-tool refurbishment over the weekend, resulting in zero net shortfall to customer orders.",
+              impact: { assert: 92, tact: 89, firm: 88, stance: "Intrigued & De-escalating", stanceClass: "stance-constructive", sentiment: 65 },
+              reply: "Wait... you already banked 60,000 units of safety stock? And you can compress the maintenance to 36 hours over the weekend?",
+              coach: "Brilliant Strategy: Presenting pre-banked safety buffer and halving the maintenance window directly neutralizes the stakeholder's fear."
+            }
+          ]
+        },
+        {
+          roundNum: 2,
+          stakeholderPrompt: "If you can execute the tool maintenance in 36 hours between Saturday 06:00 and Sunday 18:00 without missing a single order, I will waive the downtime penalty. What guarantees do I have that tool steel EDM won't overrun into Monday morning?",
+          stakeholderStance: "Demanding Concrete Proof",
+          stanceClass: "stance-constructive",
+          sentimentPct: 70,
+          choices: [
+            {
+              type: "collab",
+              tag: "DEDICATED TOOLMAKER SHIFTS & CONTINGENCY",
+              text: "We have pre-machined replacement beryllium-copper core inserts and booked two Master Moldmakers on dedicated 12-hour shifts. The EDM sequence is dry-run tested, and our spare cavity inserts are already staged on the bench. If cavity #14 takes longer, we can install a qualified blanking plug and restart with 31 cavities at 97% capacity on Monday 06:00.",
+              impact: { assert: 96, tact: 94, firm: 92, stance: "Full Confidence", stanceClass: "stance-agreement", sentiment: 92 },
+              reply: "Having pre-machined inserts and a qualified blanking plug contingency is first-class engineering foresight. You have my full executive sign-off.",
+              coach: "Executive Reassurance: Having a fallback (blanking plug) proves to US executives that their supply chain is in expert hands."
+            }
+          ]
+        },
+        {
+          roundNum: 3,
+          stakeholderPrompt: "Thank you for the proactive solution. Send the formal sign-off sheet to San Jose and keep my cell on your speed dial over the weekend.",
+          stakeholderStance: "Complete Agreement",
+          stanceClass: "stance-agreement",
+          sentimentPct: 98,
+          choices: [
+            {
+              type: "collab",
+              tag: "PARTNERSHIP CONFIRMATION",
+              text: "Will do, Marcus. We will send an SMS update every 6 hours during the tooling rebuild. Have a great weekend and rest assured Q4 volume is protected.",
+              impact: { assert: 94, tact: 96, firm: 90, stance: "Total Partnership", stanceClass: "stance-agreement", sentiment: 100 },
+              reply: "Outstanding job, Juárez. You protected our launch.",
+              coach: "Flawless Resolution: You preserved machine integrity, averted $540k in downtime penalties, and earned executive trust."
+            }
+          ]
+        }
+      ]
+    }
+  };
+
+  let activeScenarioKey = 'roughness_concession';
+  let activeRoundIndex = 0;
+  let chatHistory = [];
+  let currentRadar = { assert: 75, tact: 80, firm: 70 };
+
+  function renderNegotiationState() {
+    const sc = NEG_SCENARIOS[activeScenarioKey];
+    if (!sc) return;
+
+    // Header & Briefing
+    const titleEl = document.getElementById('neg-scenario-title');
+    const briefingEl = document.getElementById('neg-briefing-text');
+    const roundIndEl = document.getElementById('neg-round-indicator');
+    const dealStatusEl = document.getElementById('neg-deal-status');
+
+    if (titleEl) titleEl.textContent = sc.title;
+    if (briefingEl) briefingEl.textContent = sc.briefing;
+
+    const roundData = sc.rounds[activeRoundIndex] || sc.rounds[sc.rounds.length - 1];
+    const isCompleted = activeRoundIndex >= sc.rounds.length;
+
+    if (roundIndEl) {
+      roundIndEl.textContent = isCompleted ? "NEGOTIATION CONCLUDED" : `ROUND ${activeRoundIndex + 1} OF ${sc.rounds.length}`;
+    }
+    if (dealStatusEl) {
+      dealStatusEl.innerHTML = isCompleted ?
+        `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Agreement Finalized` :
+        `<i class="fa-solid fa-handshake"></i> Active Negotiation`;
+    }
+
+    // Stakeholder Profile Dossier
+    const shName = document.getElementById('stakeholder-name');
+    const shTitle = document.getElementById('stakeholder-title');
+    const shStyle = document.getElementById('stakeholder-style');
+    const shAgenda = document.getElementById('stakeholder-agenda');
+    const shAvatar = document.getElementById('stakeholder-avatar-icon');
+    const shStance = document.getElementById('stakeholder-stance-text');
+    const shSentFill = document.getElementById('stakeholder-sentiment-fill');
+
+    if (shName) shName.textContent = sc.stakeholder.name;
+    if (shTitle) shTitle.textContent = sc.stakeholder.title;
+    if (shStyle) shStyle.textContent = sc.stakeholder.style;
+    if (shAgenda) shAgenda.textContent = sc.stakeholder.agenda;
+    if (shAvatar) shAvatar.innerHTML = `<i class="fa-solid ${sc.stakeholder.avatar}"></i>`;
+
+    const currentStance = roundData.stakeholderStance || "Neutral";
+    const currentSent = roundData.sentimentPct || 50;
+
+    if (shStance) {
+      shStance.textContent = currentStance;
+      shStance.className = roundData.stanceClass || 'stance-skeptical';
+    }
+    if (shSentFill) {
+      shSentFill.style.width = `${currentSent}%`;
+      shSentFill.style.background = currentSent > 75 ? '#10b981' : currentSent > 45 ? '#f59e0b' : '#ef4444';
+    }
+
+    // Radar Telemetry
+    const updateRadarItem = (prefix, val) => {
+      const vEl = document.getElementById(`meter-${prefix}-val`);
+      const bEl = document.getElementById(`meter-${prefix}-fill`);
+      if (vEl) vEl.textContent = `${val}%`;
+      if (bEl) bEl.style.width = `${val}%`;
+    };
+    updateRadarItem('assert', currentRadar.assert);
+    updateRadarItem('tact', currentRadar.tact);
+    updateRadarItem('firm', currentRadar.firm);
+
+    // Chat Stream Rendering
+    renderChatStream(sc, roundData, isCompleted);
+
+    // Choices Rendering
+    renderChoices(sc, roundData, isCompleted);
+  }
+
+  function renderChatStream(sc, roundData, isCompleted) {
+    const chatStream = document.getElementById('neg-chat-stream');
+    if (!chatStream) return;
+
+    // If chatHistory is empty, seed with initial stakeholder statement
+    if (chatHistory.length === 0 && sc.rounds.length > 0) {
+      chatHistory.push({
+        sender: 'stakeholder',
+        name: sc.stakeholder.name,
+        stance: sc.rounds[0].stakeholderStance,
+        stanceClass: sc.rounds[0].stanceClass,
+        text: sc.rounds[0].stakeholderPrompt
+      });
+    }
+
+    chatStream.innerHTML = chatHistory.map(msg => `
+      <div class="neg-msg ${msg.sender}">
+        <div class="neg-msg-header">
+          <span class="neg-speaker-lbl">${msg.name}</span>
+          ${msg.stance ? `<span class="neg-stance-badge ${msg.stanceClass || ''}">${msg.stance}</span>` : ''}
+          ${msg.tacticalTag ? `<span class="neg-tactical-tag">${msg.tacticalTag}</span>` : ''}
+        </div>
+        <div class="neg-bubble">${msg.text}</div>
+      </div>
+    `).join('');
+
+    chatStream.scrollTop = chatStream.scrollHeight;
+  }
+
+  function renderChoices(sc, roundData, isCompleted) {
+    const choicesList = document.getElementById('neg-choices-list');
+    const customToggle = document.getElementById('btn-toggle-custom-reply');
+    const customBox = document.getElementById('neg-custom-box');
+    if (!choicesList) return;
+
+    if (isCompleted) {
+      choicesList.innerHTML = `
+        <div style="text-align:center; padding:16px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px;">
+          <h4 style="margin:0 0 6px 0; color:#166534;"><i class="fa-solid fa-circle-check"></i> Negotiation Successfully Concluded</h4>
+          <p style="margin:0; font-size:0.82rem; color:#15803d;">You successfully navigated all 3 rounds with high technical assertiveness and diplomatic tact.</p>
+          <button type="button" class="btn-submit-custom" id="btn-restart-negotiation" style="margin-top:12px;">
+            <i class="fa-solid fa-rotate-left"></i> Restart This Scenario
+          </button>
+        </div>
+      `;
+      const btnRestart = document.getElementById('btn-restart-negotiation');
+      if (btnRestart) {
+        btnRestart.addEventListener('click', () => {
+          activeRoundIndex = 0;
+          chatHistory = [];
+          currentRadar = { assert: 75, tact: 80, firm: 70 };
+          renderNegotiationState();
+        });
+      }
+      if (customToggle) customToggle.style.display = 'none';
+      if (customBox) customBox.style.display = 'none';
+      return;
+    }
+
+    if (customToggle) customToggle.style.display = 'inline-flex';
+
+    choicesList.innerHTML = roundData.choices.map((ch, idx) => `
+      <button type="button" class="neg-choice-btn" data-choice-idx="${idx}">
+        <span class="choice-tag ${ch.type}">${ch.tag}</span>
+        <span class="choice-body">${ch.text}</span>
+      </button>
+    `).join('');
+
+    const choiceBtns = choicesList.querySelectorAll('.neg-choice-btn');
+    choiceBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cIdx = parseInt(btn.getAttribute('data-choice-idx'), 10);
+        executeChoice(roundData.choices[cIdx]);
+      });
+    });
+  }
+
+  function executeChoice(choice) {
+    if (!choice) return;
+    const sc = NEG_SCENARIOS[activeScenarioKey];
+
+    // Append Player Choice to Chat
+    chatHistory.push({
+      sender: 'user',
+      name: 'You (Plant Engineering Lead)',
+      tacticalTag: choice.tag,
+      text: choice.text
+    });
+
+    // Update Radar
+    if (choice.impact) {
+      currentRadar.assert = Math.round((currentRadar.assert + choice.impact.assert) / 2);
+      currentRadar.tact = Math.round((currentRadar.tact + choice.impact.tact) / 2);
+      currentRadar.firm = Math.round((currentRadar.firm + choice.impact.firm) / 2);
+    }
+
+    // Coach Feedback
+    const coachEl = document.getElementById('neg-coach-text');
+    if (coachEl && choice.coach) {
+      coachEl.textContent = choice.coach;
+    }
+
+    // Stakeholder Response
+    if (choice.reply) {
+      setTimeout(() => {
+        chatHistory.push({
+          sender: 'stakeholder',
+          name: sc.stakeholder.name,
+          stance: choice.impact ? choice.impact.stance : "Neutral",
+          stanceClass: choice.impact ? choice.impact.stanceClass : "stance-skeptical",
+          text: choice.reply
+        });
+        activeRoundIndex++;
+        renderNegotiationState();
+      }, 400);
+    } else {
+      activeRoundIndex++;
+      renderNegotiationState();
+    }
+
+    renderNegotiationState();
+  }
+
+  // Custom Reply logic
+  const btnToggleCustom = document.getElementById('btn-toggle-custom-reply');
+  const customBox = document.getElementById('neg-custom-box');
+  const customTextarea = document.getElementById('neg-custom-textarea');
+  const btnSubmitCustom = document.getElementById('btn-submit-custom-reply');
+
+  if (btnToggleCustom && customBox) {
+    btnToggleCustom.addEventListener('click', () => {
+      const isHidden = customBox.style.display === 'none';
+      customBox.style.display = isHidden ? 'flex' : 'none';
+    });
+  }
+
+  if (btnSubmitCustom && customTextarea) {
+    btnSubmitCustom.addEventListener('click', () => {
+      const val = customTextarea.value.trim();
+      if (!val) return;
+
+      const lower = val.toLowerCase();
+      // Assess custom reply heuristic
+      const hasData = /burst|test|psi|safety|data|mm|micron|cpk|oee|buffer|c-tpat/i.test(lower);
+      const isPolite = /understand|partner|collaborat|appreciate|agree|compromise/i.test(lower);
+      const hasFirmness = /guarantee|ensure|protect|batna|plan|protocol/i.test(lower);
+
+      const assertScore = hasData ? 90 : 60;
+      const tactScore = isPolite ? 90 : 55;
+      const firmScore = hasFirmness ? 88 : 65;
+
+      const customChoiceObj = {
+        type: 'collab',
+        tag: 'CUSTOM STRATEGIC PROPOSAL',
+        text: val,
+        impact: {
+          assert: assertScore,
+          tact: tactScore,
+          firm: firmScore,
+          stance: (assertScore > 75 && tactScore > 75) ? "Impressed & Constructive" : "Skeptical & Guarded",
+          stanceClass: (assertScore > 75 && tactScore > 75) ? "stance-agreement" : "stance-skeptical",
+          sentiment: Math.round((assertScore + tactScore) / 2)
+        },
+        reply: (assertScore > 75 && tactScore > 75) ?
+          "Your data-backed proposal addresses my core operational concerns. Let's move forward on this basis." :
+          "I hear your point, but you need to give me firmer empirical validation before I commit to this deviation.",
+        coach: hasData ?
+          "Strong inclusion of technical data anchor points. This preserves credibility with US corporate stakeholders." :
+          "Your reply lacked concrete quantitative anchors (PSI, Cpk, safety factor). US leadership values numbers over rhetoric."
+      };
+
+      customTextarea.value = '';
+      if (customBox) customBox.style.display = 'none';
+      executeChoice(customChoiceObj);
+    });
+  }
+
+  // Scenario chips click
+  const scenarioChips = pitchSection.querySelectorAll('.neg-scenario-chip');
+  scenarioChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      scenarioChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeScenarioKey = chip.getAttribute('data-nscenario');
+      activeRoundIndex = 0;
+      chatHistory = [];
+      currentRadar = { assert: 75, tact: 80, firm: 70 };
+      renderNegotiationState();
+      if (typeof showOfflineToast === 'function') {
+        showOfflineToast("Negotiation Scenario Loaded", NEG_SCENARIOS[activeScenarioKey].title, 100, true);
+      }
+    });
+  });
+
+  // ── STUDIO C: PHONETIC & SYLLABLE STRESS TRAINER ──
+  const PHONETIC_TERMS = {
+    capacitor: {
+      word: "capacitor",
+      domain: "SEMICONDUCTORS & HARDWARE",
+      ipa: "/kəˈpæs.ɪ.tər/",
+      syllables: [
+        { text: "ca", ipa: "kə", tag: "reduced", energy: 20 },
+        { text: "PAC", ipa: "pæs", tag: "primary stress", stressed: true, energy: 95 },
+        { text: "i", ipa: "ɪ", tag: "weak", energy: 25 },
+        { text: "tor", ipa: "t̬ər", tag: "flapped t", energy: 30 }
+      ],
+      trap: "Spanish speakers tend to pronounce the initial 'ca' with a clear vowel [ka], shifting stress backward. In American English, the initial syllable is completely unstressed and reduced to a neutral schwa /kə/, while 'PAC' (/pæs/) receives 85% of acoustic energy with extended vowel duration and a flapped 't' /t̬/.",
+      matchScore: 96,
+      levelLabel: "NEAR-NATIVE CADENCE",
+      feedback: "Primary stress on syllable 2 (PAC) verified with correct schwa reduction.",
+      checkStress: "Primary stress hit on syllable #2 (/pæs/)",
+      checkSchwa: "Clean schwa /kə/ without Spanish clear [a] trap",
+      checkConsonant: "Natural American alveolar flap [ɾ] before final rhotic vowel"
+    },
+    anisotropic: {
+      word: "anisotropic",
+      domain: "MATERIALS & NANOTECH",
+      ipa: "/ˌæn.aɪ.səˈtrɑː.pɪk/",
+      syllables: [
+        { text: "an", ipa: "æn", tag: "secondary", energy: 45 },
+        { text: "i", ipa: "aɪ", tag: "weak", energy: 30 },
+        { text: "so", ipa: "sə", tag: "reduced", energy: 20 },
+        { text: "TROP", ipa: "trɑː", tag: "primary stress", stressed: true, energy: 98 },
+        { text: "ic", ipa: "pɪk", tag: "weak stop", energy: 25 }
+      ],
+      trap: "Spanish speakers put stress on the 'o' [an-i-SO-tro-pic]. In US English, stress falls firmly on TROP (/trɑː/). The preceding 'so' is reduced to a soft schwa /sə/.",
+      matchScore: 94,
+      levelLabel: "BOARDROOM CADENCE",
+      feedback: "Stress correctly anchored to penultimate TROP; clear contrast against Spanish cognate rhythm.",
+      checkStress: "Primary stress hit on syllable #4 (/trɑː/)",
+      checkSchwa: "Secondary stress on 'an' and neutral schwa on 'so'",
+      checkConsonant: "Clean unreleased final velar stop /k/"
+    },
+    redundancy: {
+      word: "redundancy",
+      domain: "MISSION-CRITICAL SYSTEMS",
+      ipa: "/rɪˈdʌn.dən.si/",
+      syllables: [
+        { text: "re", ipa: "rɪ", tag: "weak", energy: 25 },
+        { text: "DUN", ipa: "dʌn", tag: "primary stress", stressed: true, energy: 92 },
+        { text: "dan", ipa: "dən", tag: "reduced", energy: 20 },
+        { text: "cy", ipa: "si", tag: "tense", energy: 35 }
+      ],
+      trap: "Engineers often place equal weight across all syllables. Syllable #2 (DUN) must carry the dominant pitch inflection and volume, while 'dan' is reduced to a whisper /dən/.",
+      matchScore: 97,
+      levelLabel: "EXCELLENT CADENCE",
+      feedback: "Sharp pitch drop after DUN; avoids the flat Spanish syllable-timed rhythm.",
+      checkStress: "Primary stress hit on syllable #2 (/dʌn/)",
+      checkSchwa: "Weak vowel reduction /dən/ on third syllable",
+      checkConsonant: "Clear final unvoiced alveolar fricative [si]"
+    },
+    photolithography: {
+      word: "photolithography",
+      domain: "SEMICONDUCTOR FABRICATION",
+      ipa: "/ˌfoʊ.toʊ.lɪˈθɑː.ɡrə.fi/",
+      syllables: [
+        { text: "pho", ipa: "foʊ", tag: "secondary", energy: 40 },
+        { text: "to", ipa: "toʊ", tag: "weak", energy: 25 },
+        { text: "li", ipa: "lɪ", tag: "weak", energy: 20 },
+        { text: "THOG", ipa: "θɑː", tag: "primary stress", stressed: true, energy: 100 },
+        { text: "ra", ipa: "ɡrə", tag: "reduced", energy: 20 },
+        { text: "phy", ipa: "fi", tag: "weak", energy: 30 }
+      ],
+      trap: "Stress shifts fundamentally from the root 'photo' (PHO-to) to the fourth syllable THOG (/θɑː/). Spanish speakers tend to say pho-to-GRA-phy by analogy.",
+      matchScore: 93,
+      levelLabel: "BOARDROOM READY",
+      feedback: "Correct stress shift to THOG; voiceless dental fricative /θ/ executed cleanly.",
+      checkStress: "Primary stress hit on syllable #4 (/θɑː/)",
+      checkSchwa: "Unvoiced dental fricative /θ/ with reduced /rə/",
+      checkConsonant: "Smooth diphthong transition /foʊ.toʊ/"
+    },
+    piezoelectric: {
+      word: "piezoelectric",
+      domain: "SENSORS & MECHATRONICS",
+      ipa: "/piˌeɪ.zoʊ.ɪˈlɛk.trɪk/",
+      syllables: [
+        { text: "pie", ipa: "pi", tag: "weak", energy: 25 },
+        { text: "zo", ipa: "eɪ.zoʊ", tag: "secondary", energy: 45 },
+        { text: "e", ipa: "ɪ", tag: "weak", energy: 20 },
+        { text: "LEC", ipa: "lɛk", tag: "primary stress", stressed: true, energy: 96 },
+        { text: "tric", ipa: "trɪk", tag: "weak cluster", energy: 30 }
+      ],
+      trap: "Spanish speakers merge the first two vowels into a diphthong [pje-so]. In English, 'pi-e-zo' consists of distinct vowel targets before the primary accent on LEC.",
+      matchScore: 95,
+      levelLabel: "EXCELLENT PRECISION",
+      feedback: "Syllable boundary respected prior to primary stress on LEC.",
+      checkStress: "Primary stress hit on syllable #4 (/lɛk/)",
+      checkSchwa: "Clean multi-stage vowel separation /pi.eɪ.zoʊ/",
+      checkConsonant: "Crisp post-alveolar cluster [trɪk]"
+    },
+    cavitation: {
+      word: "cavitation",
+      domain: "HYDRAULICS & FLUID DYNAMICS",
+      ipa: "/ˌkæv.ɪˈteɪ.ʃən/",
+      syllables: [
+        { text: "ca", ipa: "kæv", tag: "secondary", energy: 40 },
+        { text: "vi", ipa: "ɪ", tag: "weak", energy: 20 },
+        { text: "TA", ipa: "teɪ", tag: "primary stress", stressed: true, energy: 98 },
+        { text: "tion", ipa: "ʃən", tag: "reduced", energy: 25 }
+      ],
+      trap: "The suffix -tion forces the preceding syllable TA to receive primary stress with a long tense diphthong /eɪ/. The final -tion must be reduced to a neutral schwa /ʃən/.",
+      matchScore: 98,
+      levelLabel: "NATIVE FLUENCY",
+      feedback: "Long /eɪ/ diphthong in TA followed by immediate neutral schwa drop.",
+      checkStress: "Primary stress hit on syllable #3 (/teɪ/)",
+      checkSchwa: "Unstressed final -tion /ʃən/",
+      checkConsonant: "Voiced labiodental [v] contact"
+    },
+    attenuation: {
+      word: "attenuation",
+      domain: "RF, OPTICS & SIGNAL INTEGRITY",
+      ipa: "/əˌtɛn.juˈeɪ.ʃən/",
+      syllables: [
+        { text: "at", ipa: "ə", tag: "reduced", energy: 20 },
+        { text: "ten", ipa: "tɛn", tag: "secondary", energy: 45 },
+        { text: "u", ipa: "ju", tag: "glide", energy: 30 },
+        { text: "A", ipa: "eɪ", tag: "primary stress", stressed: true, energy: 98 },
+        { text: "tion", ipa: "ʃən", tag: "reduced", energy: 25 }
+      ],
+      trap: "Initial 'at' is never pronounced [at]; it is reduced to /ə/. Primary stress is on 'A' (/eɪ/), not on 'ten'.",
+      matchScore: 95,
+      levelLabel: "NEAR-NATIVE CADENCE",
+      feedback: "Initial schwa /ə/ preserved; primary stress on A.",
+      checkStress: "Primary stress hit on syllable #4 (/eɪ/)",
+      checkSchwa: "Initial schwa /ə/ verified",
+      checkConsonant: "Clean palatal glide [ju]"
+    },
+    substantiate: {
+      word: "substantiate",
+      domain: "QUALITY AUDITS & VALIDATION",
+      ipa: "/səbˈstæn.ʃi.eɪt/",
+      syllables: [
+        { text: "sub", ipa: "səb", tag: "reduced", energy: 25 },
+        { text: "STAN", ipa: "stæn", tag: "primary stress", stressed: true, energy: 95 },
+        { text: "ti", ipa: "ʃi", tag: "palatal", energy: 30 },
+        { text: "ate", ipa: "eɪt", tag: "secondary", energy: 45 }
+      ],
+      trap: "Spanish speakers emphasize 'sub' [SUB-stan-ti-ate]. In US English, STAN receives dominant force with /æ/ (as in cat), while 'sub' is reduced to /səb/.",
+      matchScore: 94,
+      levelLabel: "STRONG PRECISION",
+      feedback: "High acoustic intensity on STAN with correct vowel /æ/.",
+      checkStress: "Primary stress hit on syllable #2 (/stæn/)",
+      checkSchwa: "Reduced prefix /səb/ without vowel elongation",
+      checkConsonant: "Palatalized [ʃi.eɪt] closure"
+    },
+    concession: {
+      word: "concession",
+      domain: "CROSS-BORDER COMMERCIAL CONTRACTS",
+      ipa: "/kənˈsɛʃ.ən/",
+      syllables: [
+        { text: "con", ipa: "kən", tag: "reduced", energy: 20 },
+        { text: "CES", ipa: "sɛʃ", tag: "primary stress", stressed: true, energy: 96 },
+        { text: "sion", ipa: "ən", tag: "reduced", energy: 20 }
+      ],
+      trap: "Prefix 'con' is /kən/ with a weak schwa, never a clear Spanish [kon]. The primary stress on CES (/sɛʃ/) requires crisp articulation without trailing off.",
+      matchScore: 97,
+      levelLabel: "EXCELLENT CADENCE",
+      feedback: "Accurate contrast between reduced /kən/ and dominant stressed CES.",
+      checkStress: "Primary stress hit on syllable #2 (/sɛʃ/)",
+      checkSchwa: "Proper reduction of /kən/ prefix",
+      checkConsonant: "Clean voiceless postalveolar fricative [ʃ]"
+    }
+  };
+
+  let activePhoneticKey = 'capacitor';
+  let masteredTermsCount = 9;
+
+  function renderPhoneticState() {
+    const termData = PHONETIC_TERMS[activePhoneticKey];
+    if (!termData) return;
+
+    // Header & Info
+    const wordTitleEl = document.getElementById('phonetic-word-title');
+    const domainEl = document.getElementById('phonetic-domain');
+    const ipaEl = document.getElementById('phonetic-ipa-display');
+    const trapEl = document.getElementById('phonetic-trap-text');
+
+    if (wordTitleEl) wordTitleEl.textContent = termData.word;
+    if (domainEl) domainEl.textContent = termData.domain;
+    if (ipaEl) ipaEl.textContent = termData.ipa;
+    if (trapEl) trapEl.textContent = termData.trap;
+
+    // Syllables Track
+    const syllablesTrack = document.getElementById('syllables-track');
+    if (syllablesTrack) {
+      syllablesTrack.innerHTML = termData.syllables.map(s => `
+        <div class="syllable-block ${s.stressed ? 'stressed' : ''}">
+          <span class="syllable-text">${s.text}</span>
+          <span class="syllable-tag">${s.tag}</span>
+          <span class="syllable-ipa" style="font-family:var(--font-mono); font-size:0.68rem; color:#64748b;">/${s.ipa}/</span>
+          <div class="syllable-energy-bar">
+            <div class="syllable-energy-fill" style="width: ${s.energy}%;"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Telemetry Scorecard
+    const scoreVal = document.getElementById('acoustic-score-val');
+    const scoreCircle = document.getElementById('acoustic-score-circle');
+    const levelLbl = document.getElementById('acoustic-level-lbl');
+    const feedbackSub = document.getElementById('acoustic-feedback-sub');
+
+    if (scoreVal) scoreVal.textContent = `${termData.matchScore}%`;
+    if (levelLbl) levelLbl.textContent = termData.levelLabel;
+    if (feedbackSub) feedbackSub.textContent = termData.feedback;
+
+    const subStress = document.getElementById('c-sub-stress');
+    const subSchwa = document.getElementById('c-sub-schwa');
+    const subConsonant = document.getElementById('c-sub-consonant');
+
+    if (subStress) subStress.textContent = termData.checkStress;
+    if (subSchwa) subSchwa.textContent = termData.checkSchwa;
+    if (subConsonant) subConsonant.textContent = termData.checkConsonant;
+
+    // Mastery Progress
+    const countPill = document.getElementById('mastery-count-pill');
+    const barFill = document.getElementById('mastery-bar-fill');
+    if (countPill) countPill.textContent = `${masteredTermsCount} / 12 Mastered`;
+    if (barFill) barFill.style.width = `${Math.round((masteredTermsCount / 12) * 100)}%`;
+  }
+
+  // Audio Playback
+  function playTermAudio(rate = 1.0) {
+    const termData = PHONETIC_TERMS[activePhoneticKey];
+    if (!termData) return;
+
+    if (typeof window === 'undefined' || !window.speechSynthesis) {
+      if (typeof showOfflineToast === 'function') {
+        showOfflineToast("Pronunciation Audio", `Phonetic audio for "${termData.word}" at ${rate}x speed.`, 100, true);
+      }
+      return;
+    }
+
+    const synth = window.speechSynthesis;
+    if (synth.speaking) synth.cancel();
+
+    const u = new SpeechSynthesisUtterance(termData.word);
+    u.lang = 'en-US';
+    u.rate = rate;
+
+    const voices = synth.getVoices ? synth.getVoices() : [];
+    const usVoice = voices.find(v => v.lang === 'en-US' || v.lang.startsWith('en'));
+    if (usVoice) u.voice = usVoice;
+
+    synth.speak(u);
+  }
+
+  const btnPlayNormal = document.getElementById('btn-phonetic-play-normal');
+  const btnPlaySlow = document.getElementById('btn-phonetic-play-slow');
+  if (btnPlayNormal) btnPlayNormal.addEventListener('click', () => playTermAudio(1.0));
+  if (btnPlaySlow) btnPlaySlow.addEventListener('click', () => playTermAudio(0.75));
+
+  // Mic Recording Test
+  const btnMic = document.getElementById('btn-phonetic-record');
+  const micLabel = document.getElementById('phonetic-mic-label');
+  const micStatus = document.getElementById('phonetic-mic-status');
+  let isRecording = false;
+
+  if (btnMic) {
+    btnMic.addEventListener('click', () => {
+      if (!isRecording) {
+        isRecording = true;
+        btnMic.classList.add('recording');
+        if (micLabel) micLabel.textContent = "Listening... Speak the term clearly";
+        if (micStatus) micStatus.textContent = `Say "${PHONETIC_TERMS[activePhoneticKey].word}" emphasizing the primary stressed syllable...`;
+
+        setTimeout(() => {
+          isRecording = false;
+          btnMic.classList.remove('recording');
+          if (micLabel) micLabel.textContent = "Test My Pronunciation (Hold to Speak)";
+          if (micStatus) {
+            micStatus.innerHTML = `<span style="color:#047857; font-weight:700;"><i class="fa-solid fa-check"></i> Acoustic stress detected on target syllable! Match accuracy: ${PHONETIC_TERMS[activePhoneticKey].matchScore}%.</span>`;
+          }
+          if (typeof showOfflineToast === 'function') {
+            showOfflineToast("Acoustic Evaluation", `Phonetic match: ${PHONETIC_TERMS[activePhoneticKey].matchScore}% (${PHONETIC_TERMS[activePhoneticKey].levelLabel})`, 100, true);
+          }
+        }, 1800);
+      }
+    });
+  }
+
+  // Term Selection Chips
+  const termChips = pitchSection.querySelectorAll('.phonetic-term-chip');
+  termChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      termChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activePhoneticKey = chip.getAttribute('data-pterm');
+      renderPhoneticState();
+    });
+  });
+
+  // Initial executions
+  evaluatePitch();
+  renderNegotiationState();
+  renderPhoneticState();
+}
+
+/* ============================================================
+   SECTION 15 CONTROLLER: CORPORATE L&D & WORKFORCE COMPETENCE
+   ISO 9001:2015 Clause 7.2 Audit Suite, Heatmap & SCORM Exporter
+   ============================================================ */
+
+function setupCorporateLDDashboard(tracks) {
+  const ldSection = document.getElementById('corporate-ld-section');
+  if (!ldSection) return;
+
+  const PLANT_DATA = {
+    all: {
+      name: "Enterprise Consolidated (All 4 Manufacturing Clusters)",
+      cohort: "1,240",
+      cohortDelta: "+18.4% MoM",
+      cohortDesc: "Engineers & cross-border technicians in active training",
+      hours: "14,820",
+      hoursDelta: "11.95 hrs/eng",
+      hoursDesc: "Logged via ESP readings, interactive labs, & SM-2 recall",
+      cefrUplift: "+1.8",
+      cefrDelta: "82% to B2/C1",
+      cefrDesc: "Transition rate from A2/B1 to B2 Technical Executive",
+      isoScore: "96.4%",
+      isoDelta: "0 Non-Conformances",
+      isoDesc: "Fully documented competency records with auditor verification",
+      badge: "4 Manufacturing Clusters • 1,240 Engineers",
+      benchmarks: [
+        { id: "tijuana", name: "Tijuana Medical Device Cluster", tag: "ISO 13485 / FDA", cohort: 320, hours: "3,940 hrs", examAvg: "92.4%", pitchAvg: "89%", status: "Audit-Ready", statusClass: "ready" },
+        { id: "saltillo", name: "Saltillo Automotive Powertrain", tag: "IATF 16949 / APQP", cohort: 410, hours: "5,120 hrs", examAvg: "91.2%", pitchAvg: "86%", status: "Audit-Ready", statusClass: "ready" },
+        { id: "monterrey", name: "Monterrey Aerospace & CNC Machining", tag: "AS9100D / ITAR", cohort: 280, hours: "3,450 hrs", examAvg: "94.0%", pitchAvg: "91%", status: "Compliant", statusClass: "compliant" },
+        { id: "guadalajara", name: "Guadalajara SMT Electronics & Edge AI", tag: "IPC-A-610 / IEEE", cohort: 230, hours: "2,310 hrs", examAvg: "93.1%", pitchAvg: "88%", status: "Compliant", statusClass: "compliant" }
+      ],
+      heatmap: [
+        { dept: "Tooling & Mold Design (CNC, EDM, CMM)", a2: 12, b1: 44, b2: 38, c1: 6, status: "Compliant" },
+        { dept: "Quality Assurance & Metrology (8D, PPAP)", a2: 4, b1: 28, b2: 54, c1: 14, status: "Dominant B2" },
+        { dept: "Production & Line Supervision (SMT, Cells)", a2: 18, b1: 52, b2: 24, c1: 6, status: "In Progression" },
+        { dept: "Supply Chain & International Logistics", a2: 6, b1: 32, b2: 48, c1: 14, status: "Dominant B2" },
+        { dept: "Embedded Systems, AUTOSAR & Edge AI", a2: 2, b1: 18, b2: 56, c1: 24, status: "Audit-Ready" }
+      ]
+    },
+    tijuana: {
+      name: "Tijuana Medical Device Cluster",
+      cohort: "320",
+      cohortDelta: "+14.2% MoM",
+      cohortDesc: "Biomedical engineers, cleanroom operators & validation leads",
+      hours: "3,940",
+      hoursDelta: "12.31 hrs/eng",
+      hoursDesc: "Logged across FDA 21 CFR 820 & ISO 13485 tracks",
+      cefrUplift: "+1.9",
+      cefrDelta: "86% to B2/C1",
+      cefrDesc: "FDA audit readiness & regulatory submission defense",
+      isoScore: "98.1%",
+      isoDelta: "0 Non-Conformances",
+      isoDesc: "Pre-audit verification completed by North American QA Board",
+      badge: "Tijuana Campus • FDA 21 CFR 820 Certified",
+      benchmarks: [
+        { id: "tijuana", name: "Tijuana Medical Device Cluster", tag: "ISO 13485 / FDA", cohort: 320, hours: "3,940 hrs", examAvg: "92.4%", pitchAvg: "89%", status: "Audit-Ready", statusClass: "ready" }
+      ],
+      heatmap: [
+        { dept: "Cleanroom Validation (ISO 7-8 / EtO)", a2: 5, b1: 25, b2: 55, c1: 15, status: "Audit-Ready" },
+        { dept: "Quality Assurance & FDA 21 CFR 820", a2: 2, b1: 20, b2: 60, c1: 18, status: "Dominant B2" },
+        { dept: "Catheter & Ultrasonic Welder Assembly", a2: 14, b1: 46, b2: 34, c1: 6, status: "Compliant" },
+        { dept: "Cold Chain Logistics & GDP Packaging", a2: 8, b1: 32, b2: 48, c1: 12, status: "Compliant" }
+      ]
+    },
+    saltillo: {
+      name: "Saltillo Automotive Powertrain Cluster",
+      cohort: "410",
+      cohortDelta: "+21.5% MoM",
+      cohortDesc: "Powertrain, stamping, welding & APQP launch engineers",
+      hours: "5,120",
+      hoursDelta: "12.48 hrs/eng",
+      hoursDesc: "Logged across IATF 16949, 8D Problem Solving & Six Sigma",
+      cefrUplift: "+1.7",
+      cefrDelta: "79% to B2/C1",
+      cefrDesc: "Cross-border engineering standups with Detroit matrix",
+      isoScore: "95.8%",
+      isoDelta: "0 Non-Conformances",
+      isoDesc: "Zero open non-conformances across Tier-1 OEM audits",
+      badge: "Saltillo Campus • IATF 16949 / VDA 6.3 Certified",
+      benchmarks: [
+        { id: "saltillo", name: "Saltillo Automotive Powertrain", tag: "IATF 16949 / APQP", cohort: 410, hours: "5,120 hrs", examAvg: "91.2%", pitchAvg: "86%", status: "Audit-Ready", statusClass: "ready" }
+      ],
+      heatmap: [
+        { dept: "Powertrain Stamping & Die Tooling", a2: 15, b1: 48, b2: 32, c1: 5, status: "Compliant" },
+        { dept: "IATF 16949 APQP Core Tools & PPAP", a2: 4, b1: 26, b2: 56, c1: 14, status: "Dominant B2" },
+        { dept: "Chassis Welding & Robotic Cells", a2: 16, b1: 50, b2: 28, c1: 6, status: "In Progression" },
+        { dept: "Laredo Cross-Border Freight & SCM", a2: 6, b1: 34, b2: 46, c1: 14, status: "Dominant B2" }
+      ]
+    },
+    monterrey: {
+      name: "Monterrey Aerospace & CNC Machining Cluster",
+      cohort: "280",
+      cohortDelta: "+19.0% MoM",
+      cohortDesc: "Avionics, 5-axis CNC machining & AS9100D quality engineers",
+      hours: "3,450",
+      hoursDelta: "12.32 hrs/eng",
+      hoursDesc: "Logged across AS9100D, FAI, and Energy & Data Centers",
+      cefrUplift: "+2.1",
+      cefrDelta: "89% to B2/C1",
+      cefrDesc: "Direct customer liaison with Boeing, Airbus & Tier-1 primes",
+      isoScore: "97.2%",
+      isoDelta: "0 Non-Conformances",
+      isoDesc: "ITAR security & NADCAP special processes fully documented",
+      badge: "Monterrey Aerospace Park • AS9100D Certified",
+      benchmarks: [
+        { id: "monterrey", name: "Monterrey Aerospace & CNC Machining", tag: "AS9100D / ITAR", cohort: 280, hours: "3,450 hrs", examAvg: "94.0%", pitchAvg: "91%", status: "Compliant", statusClass: "compliant" }
+      ],
+      heatmap: [
+        { dept: "5-Axis CNC Milling & Turbine Blades", a2: 8, b1: 36, b2: 44, c1: 12, status: "Audit-Ready" },
+        { dept: "AS9100D Quality & First Article FAI", a2: 3, b1: 18, b2: 62, c1: 17, status: "Dominant B2" },
+        { dept: "Aerospace Composites & NDT Testing", a2: 6, b1: 28, b2: 52, c1: 14, status: "Dominant B2" },
+        { dept: "ITAR & International Export Compliance", a2: 2, b1: 14, b2: 58, c1: 26, status: "Audit-Ready" }
+      ]
+    },
+    guadalajara: {
+      name: "Guadalajara SMT Electronics & Edge AI Cluster",
+      cohort: "230",
+      cohortDelta: "+16.8% MoM",
+      cohortDesc: "Embedded firmware, TinyML, AUTOSAR & SMT test leads",
+      hours: "2,310",
+      hoursDelta: "10.04 hrs/eng",
+      hoursDesc: "Logged across Embedded Firmware, SMT & Cybersecurity",
+      cefrUplift: "+1.9",
+      cefrDelta: "84% to B2/C1",
+      cefrDesc: "Software architectural defense & Silicon Valley liaison",
+      isoScore: "94.5%",
+      isoDelta: "0 Non-Conformances",
+      isoDesc: "IPC-A-610 Class 3 & ISO 26262 ASIL-D evidence logged",
+      badge: "Silicon Valley of Mexico • IPC-A-610 Certified",
+      benchmarks: [
+        { id: "guadalajara", name: "Guadalajara SMT Electronics & Edge AI", tag: "IPC-A-610 / IEEE", cohort: 230, hours: "2,310 hrs", examAvg: "93.1%", pitchAvg: "88%", status: "Compliant", statusClass: "compliant" }
+      ],
+      heatmap: [
+        { dept: "Surface Mount Technology (SMT) Lines", a2: 12, b1: 42, b2: 38, c1: 8, status: "Compliant" },
+        { dept: "Embedded Firmware & AUTOSAR Stack", a2: 2, b1: 16, b2: 58, c1: 24, status: "Audit-Ready" },
+        { dept: "TinyML, Edge AI & Neural Accelerators", a2: 1, b1: 12, b2: 52, c1: 35, status: "Dominant C1" },
+        { dept: "Hardware-in-the-Loop (HIL) dSPACE Lab", a2: 4, b1: 22, b2: 56, c1: 18, status: "Dominant B2" }
+      ]
+    }
+  };
+
+  let activePlantKey = 'all';
+
+  // DOM Elements
+  const plantSelector = document.getElementById('ld-plant-selector');
+  const kpiCohortVal = document.getElementById('kpi-cohort-val');
+  const kpiCohortDelta = document.getElementById('kpi-cohort-delta');
+  const kpiCohortDesc = document.getElementById('kpi-cohort-desc');
+
+  const kpiHoursVal = document.getElementById('kpi-hours-val');
+  const kpiHoursDelta = document.getElementById('kpi-hours-delta');
+  const kpiHoursDesc = document.getElementById('kpi-hours-desc');
+
+  const kpiCefrVal = document.getElementById('kpi-cefr-val');
+  const kpiCefrDelta = document.getElementById('kpi-cefr-delta');
+  const kpiCefrDesc = document.getElementById('kpi-cefr-desc');
+
+  const kpiIsoVal = document.getElementById('kpi-iso-val');
+  const kpiIsoDelta = document.getElementById('kpi-iso-delta');
+  const kpiIsoDesc = document.getElementById('kpi-iso-desc');
+
+  const plantActiveBadge = document.getElementById('plant-active-badge');
+  const benchmarkTbody = document.getElementById('plant-benchmark-tbody');
+  const heatmapTbody = document.getElementById('skills-heatmap-tbody');
+
+  // Render function
+  function renderPlantDashboard() {
+    const data = PLANT_DATA[activePlantKey] || PLANT_DATA.all;
+
+    // Update KPIs
+    if (kpiCohortVal) kpiCohortVal.textContent = data.cohort;
+    if (kpiCohortDelta) kpiCohortDelta.textContent = data.cohortDelta;
+    if (kpiCohortDesc) kpiCohortDesc.textContent = data.cohortDesc;
+
+    if (kpiHoursVal) kpiHoursVal.innerHTML = `${data.hours} <small style="font-size:0.6em; font-weight:500;">hrs</small>`;
+    if (kpiHoursDelta) kpiHoursDelta.textContent = data.hoursDelta;
+    if (kpiHoursDesc) kpiHoursDesc.textContent = data.hoursDesc;
+
+    if (kpiCefrVal) kpiCefrVal.innerHTML = `${data.cefrUplift} <small style="font-size:0.6em; font-weight:500;">Bands</small>`;
+    if (kpiCefrDelta) kpiCefrDelta.textContent = data.cefrDelta;
+    if (kpiCefrDesc) kpiCefrDesc.textContent = data.cefrDesc;
+
+    if (kpiIsoVal) kpiIsoVal.textContent = data.isoScore;
+    if (kpiIsoDelta) kpiIsoDelta.textContent = data.isoDelta;
+    if (kpiIsoDesc) kpiIsoDesc.textContent = data.isoDesc;
+
+    if (plantActiveBadge) plantActiveBadge.textContent = data.badge;
+
+    // Render Benchmarks Table
+    if (benchmarkTbody) {
+      benchmarkTbody.innerHTML = '';
+      data.benchmarks.forEach(b => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <div class="plant-name-col">
+              <span>${b.name}</span>
+              <span class="plant-tag">${b.tag}</span>
+            </div>
+          </td>
+          <td><strong style="color:#0f172a;">${b.cohort}</strong> eng</td>
+          <td><strong style="color:#0284c7;">${b.hours}</strong></td>
+          <td>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span>${b.examAvg}</span>
+              <div style="width:40px; height:5px; background:#e2e8f0; border-radius:999px; overflow:hidden;">
+                <div style="width:${b.examAvg}; height:100%; background:#10b981;"></div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span style="font-weight:700; color:#ec4899;"><i class="fa-solid fa-microphone-lines"></i> ${b.pitchAvg}</span>
+          </td>
+          <td>
+            <span class="audit-status-pill ${b.statusClass}">
+              <i class="fa-solid fa-circle-check"></i> ${b.status}
+            </span>
+          </td>
+        `;
+        benchmarkTbody.appendChild(tr);
+      });
+    }
+
+    // Render Heatmap Table
+    if (heatmapTbody) {
+      heatmapTbody.innerHTML = '';
+      data.heatmap.forEach(h => {
+        const getCellClass = (pct) => {
+          if (pct >= 50) return 'high';
+          if (pct >= 25) return 'mid';
+          return 'low';
+        };
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="text-align:left; font-family:var(--font-sans); font-weight:600; color:#1e293b;">${h.dept}</td>
+          <td><span class="heatmap-cell ${getCellClass(h.a2)}">${h.a2}%</span></td>
+          <td><span class="heatmap-cell ${getCellClass(h.b1)}">${h.b1}%</span></td>
+          <td><span class="heatmap-cell ${getCellClass(h.b2)}">${h.b2}%</span></td>
+          <td><span class="heatmap-cell ${getCellClass(h.c1)}">${h.c1}%</span></td>
+          <td>
+            <span class="plant-tag" style="background:rgba(16,185,129,0.12); color:#047857; font-weight:700;">
+              ${h.status}
+            </span>
+          </td>
+        `;
+        heatmapTbody.appendChild(tr);
+      });
+    }
+  }
+
+  // Plant selector click events
+  if (plantSelector) {
+    const chips = plantSelector.querySelectorAll('.ld-plant-chip');
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        activePlantKey = chip.getAttribute('data-plant') || 'all';
+        renderPlantDashboard();
+      });
+    });
+  }
+
+  // Initial dashboard render
+  renderPlantDashboard();
+
+  // ── ISO 9001 Clause 7.2 CSV Exporter ──
+  const btnExportCsv = document.getElementById('btn-export-audit-csv');
+  const csvFeedback = document.getElementById('csv-export-feedback');
+  const csvFeedbackText = document.getElementById('csv-feedback-text');
+
+  if (btnExportCsv) {
+    btnExportCsv.addEventListener('click', () => {
+      const records = [
+        ["EMP-MX-8401", "Eduardo Villarreal", "Tijuana Medical Device", "Cleanroom Validation", "medical-devices", "B1.1", "B2.2", "94%", "91%", "VERIFIED_COMPLIANT", "2026-09-18", "ISO 13485 / FDA 21 CFR 820"],
+        ["EMP-MX-8402", "Valeria Rios", "Guadalajara Electronics", "Embedded Firmware", "embedded-firmware-edge-ai", "B1.2", "C1.1", "96%", "94%", "VERIFIED_COMPLIANT", "2026-09-20", "ISO 26262 ASIL-D / MISRA-C"],
+        ["EMP-MX-8403", "Carlos Mendoza", "Saltillo Powertrain", "Quality Engineering", "automotive-lean", "A2.2", "B2.1", "91%", "88%", "VERIFIED_COMPLIANT", "2026-09-15", "IATF 16949 Clause 8.4"],
+        ["EMP-MX-8404", "Mariana Alatorre", "Guadalajara Electronics", "Edge AI & TinyML", "embedded-firmware-edge-ai", "B2.1", "C1.2", "98%", "95%", "VERIFIED_COMPLIANT", "2026-09-22", "IEEE / TinyML Benchmark"],
+        ["EMP-MX-8405", "Rodrigo Morales", "Saltillo Powertrain", "Supply Chain & Trade", "advanced-supply-chain-reshoring", "B1.1", "B2.2", "93%", "89%", "VERIFIED_COMPLIANT", "2026-09-14", "USMCA Chapter 4 / C-TPAT"],
+        ["EMP-MX-8406", "Ana Sofía Garza", "Monterrey Aerospace", "Avionics & Systems", "energy-data-centers", "B1.2", "B2.3", "95%", "92%", "VERIFIED_COMPLIANT", "2026-09-19", "Uptime Institute Tier Standard"],
+        ["EMP-MX-8407", "Fernando Ortiz", "Guadalajara Electronics", "Secure Bootloaders", "embedded-firmware-edge-ai", "B2.1", "C1.1", "97%", "93%", "VERIFIED_COMPLIANT", "2026-09-21", "NIST SP 800-193 / ISO 21434"],
+        ["EMP-MX-8408", "Daniela Cárdenas", "Guadalajara Electronics", "International Logistics", "advanced-supply-chain-reshoring", "B1.1", "B2.2", "92%", "90%", "VERIFIED_COMPLIANT", "2026-09-16", "Incoterms 2020 / CBP Fast"],
+        ["EMP-MX-8409", "Hector Zambrano", "Saltillo Powertrain", "HIL Automation & Testing", "embedded-firmware-edge-ai", "B1.2", "B2.2", "94%", "87%", "VERIFIED_COMPLIANT", "2026-09-17", "dSPACE / ASAM HIL Standard"],
+        ["EMP-MX-8410", "Esteban Palacios", "Tijuana Medical Device", "Cold Chain Logistics", "advanced-supply-chain-reshoring", "B1.1", "B2.1", "90%", "88%", "VERIFIED_COMPLIANT", "2026-09-15", "EU GDP / FDA 21 CFR 211"],
+        ["EMP-MX-8411", "Guillermo Lozano", "Saltillo Powertrain", "Plant Quality Direction", "quality-ehs", "B2.1", "C1.1", "96%", "93%", "VERIFIED_COMPLIANT", "2026-09-12", "VDA 6.3 / ISO 9001:2015"],
+        ["EMP-MX-8412", "Alejandro Treviño", "Monterrey Aerospace", "Cross-Dock Operations", "advanced-supply-chain-reshoring", "B1.1", "B2.1", "91%", "86%", "VERIFIED_COMPLIANT", "2026-09-19", "C-TPAT Tier III / FAST Lane"],
+        ["EMP-MX-8413", "Lucia Navarro", "Tijuana Medical Device", "Ultrasonic Welder Cell", "medical-devices", "A2.2", "B1.3", "88%", "85%", "VERIFIED_COMPLIANT", "2026-09-11", "ISO 13485 Clause 7.5"],
+        ["EMP-MX-8414", "Mauricio Fuentes", "Monterrey Aerospace", "5-Axis CNC Milling", "airforce-aerospace", "B1.1", "B2.2", "93%", "89%", "VERIFIED_COMPLIANT", "2026-09-18", "AS9100D Clause 7.2"]
+      ];
+
+      const headers = [
+        "Employee ID",
+        "Employee Full Name",
+        "Plant Cluster Facility",
+        "Functional Department",
+        "stemOS Track ID",
+        "CEFR Pre-Assessment",
+        "CEFR Post-Assessment",
+        "Certification Exam Score",
+        "Oral Pitch & Negotiation Score",
+        "ISO 9001:2015 Cl 7.2 Status",
+        "Audit Verification Date",
+        "Auditor Standard Benchmark"
+      ];
+
+      let csv = headers.map(h => `"${h}"`).join(",") + "\r\n";
+      records.forEach(r => {
+        csv += r.map(field => `"${field}"`).join(",") + "\r\n";
+      });
+
+      // Trigger download
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.setAttribute("download", `ISO_9001_Clause_7_2_Competence_Audit_Report_${activePlantKey}.csv`);
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      if (csvFeedback) {
+        csvFeedback.style.display = 'block';
+        if (csvFeedbackText) {
+          csvFeedbackText.textContent = `Generated & Downloaded ISO_9001_Clause_7_2_Competence_Audit_Report_${activePlantKey}.csv (${records.length} Verified Records)`;
+        }
+      }
+
+      if (typeof showOfflineToast === 'function') {
+        showOfflineToast("Audit Export Complete", `ISO 9001 Clause 7.2 CSV downloaded for ${PLANT_DATA[activePlantKey].name}`, 100, true);
+      }
+    });
+  }
+
+  // ── ISO 9001 Clause 7.2 Printable Executive Audit Dossier Modal ──
+  const btnPreviewDossier = document.getElementById('btn-preview-audit-dossier');
+  const auditModal = document.getElementById('audit-dossier-modal');
+  const btnCloseAuditModal = document.getElementById('btn-close-audit-modal');
+  const btnDossierCloseBottom = document.getElementById('btn-dossier-close-bottom');
+  const btnPrintDossier = document.getElementById('btn-print-audit-dossier');
+  const auditDossierContent = document.getElementById('audit-dossier-content');
+
+  function renderAuditDossier() {
+    const data = PLANT_DATA[activePlantKey] || PLANT_DATA.all;
+    if (!auditDossierContent) return;
+
+    auditDossierContent.innerHTML = `
+      <div class="audit-dossier-print-wrap">
+        <div class="audit-dossier-header-block">
+          <div>
+            <h3 style="margin:0 0 4px; font-size:1.15rem; color:#0f172a; font-family:var(--font-head);">
+              ${data.name} &bull; Quality Management System (QMS)
+            </h3>
+            <p style="margin:0; font-size:0.8rem; color:#64748b;">
+              Audit Scope: Competency Verification (ISO 9001:2015 &sect; 7.2, IATF 16949:2016 &sect; 7.2, AS9100D &sect; 7.2)
+            </p>
+          </div>
+          <div class="audit-dossier-seal">
+            <span>ISO 9001</span>
+            <span style="font-size:0.55rem; color:#10b981;">VERIFIED</span>
+            <span style="font-size:0.5rem;">2026</span>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin-bottom:16px;">
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px; text-align:center;">
+            <div style="font-size:0.72rem; color:#64748b; font-weight:700;">AUDITED COHORT</div>
+            <div style="font-size:1.2rem; font-weight:800; color:#0f172a;">${data.cohort}</div>
+          </div>
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px; text-align:center;">
+            <div style="font-size:0.72rem; color:#64748b; font-weight:700;">TRAINING HOURS</div>
+            <div style="font-size:1.2rem; font-weight:800; color:#0284c7;">${data.hours} hrs</div>
+          </div>
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px; text-align:center;">
+            <div style="font-size:0.72rem; color:#64748b; font-weight:700;">CEFR UPLIFT</div>
+            <div style="font-size:1.2rem; font-weight:800; color:#f59e0b;">${data.cefrUplift} Bands</div>
+          </div>
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px; text-align:center;">
+            <div style="font-size:0.72rem; color:#64748b; font-weight:700;">COMPLIANCE RATE</div>
+            <div style="font-size:1.2rem; font-weight:800; color:#10b981;">${data.isoScore}</div>
+          </div>
+        </div>
+
+        <h4 style="margin:16px 0 8px; font-size:0.92rem; color:#0f172a; font-family:var(--font-head);">
+          1. Competence Assessment Matrix &amp; Objective Evidence
+        </h4>
+        <p style="font-size:0.82rem; color:#475569; margin-bottom:12px;">
+          Pursuant to ISO 9001:2015 Clause 7.2, the organization has identified that engineers communicating technical specifications, drawings, FMEAs, and 8D reports with overseas clients require CEFR B2/C1 English competence. The stemOS platform has provided documented training hours, rigorous socratic evaluations, and certified examinations:
+        </p>
+
+        <table class="audit-dossier-table">
+          <thead>
+            <tr>
+              <th>Functional Department</th>
+              <th>Pre-Training CEFR</th>
+              <th>Current CEFR</th>
+              <th>Avg Certification Grade</th>
+              <th>ISO 7.2 Disposition</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data.heatmap.map(h => `
+              <tr>
+                <td><strong>${h.dept}</strong></td>
+                <td>A2 (Basic)</td>
+                <td><strong style="color:#0284c7;">B2 (Dominant ${h.b2}%)</strong></td>
+                <td><strong style="color:#10b981;">93.4%</strong></td>
+                <td><span style="color:#047857; font-weight:700;">&check; ${h.status}</span></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+
+        <h4 style="margin:20px 0 8px; font-size:0.92rem; color:#0f172a; font-family:var(--font-head);">
+          2. External Auditor Formal Sign-Off &amp; Digital Attestation
+        </h4>
+        <div class="audit-signoff-block">
+          <div>
+            <div class="signoff-line"></div>
+            <span class="signoff-title">Corporate Quality &amp; Compliance Director</span>
+            <div style="font-size:0.75rem; color:#64748b; margin-top:2px;">stamp: QMS-AUDIT-VERIFIED-2026 &bull; Monterrey / Saltillo / Tijuana / GDL</div>
+          </div>
+          <div>
+            <div class="signoff-line"></div>
+            <span class="signoff-title">Lead External Registrar Auditor (ISO / IATF)</span>
+            <div style="font-size:0.75rem; color:#64748b; margin-top:2px;">Digital Certificate Hash: <code>7f8a9e2c4b1d...</code></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  if (btnPreviewDossier && auditModal) {
+    btnPreviewDossier.addEventListener('click', () => {
+      renderAuditDossier();
+      auditModal.classList.add('active');
+    });
+  }
+
+  if (btnCloseAuditModal && auditModal) {
+    btnCloseAuditModal.addEventListener('click', () => auditModal.classList.remove('active'));
+  }
+  if (btnDossierCloseBottom && auditModal) {
+    btnDossierCloseBottom.addEventListener('click', () => auditModal.classList.remove('active'));
+  }
+  if (btnPrintDossier) {
+    btnPrintDossier.addEventListener('click', () => window.print());
+  }
+
+  // ── SCORM 1.2 / 2004 LMS Export Utility (Fase 4.2) ──
+  const scormSlider = document.getElementById('scorm-mastery-score');
+  const scormSliderVal = document.getElementById('scorm-mastery-val');
+  const btnGenerateScorm = document.getElementById('btn-generate-scorm-zip');
+  const scormTrackSelect = document.getElementById('scorm-track-select');
+  const scormSpecSelect = document.getElementById('scorm-spec-select');
+  const scormFeedback = document.getElementById('scorm-export-feedback');
+  const scormFeedbackText = document.getElementById('scorm-feedback-text');
+
+  if (scormSlider && scormSliderVal) {
+    scormSlider.addEventListener('input', () => {
+      scormSliderVal.textContent = `${scormSlider.value}%`;
+    });
+  }
+
+  if (btnGenerateScorm) {
+    btnGenerateScorm.addEventListener('click', () => {
+      const selectedTrack = scormTrackSelect ? scormTrackSelect.value : 'all';
+      const selectedSpec = scormSpecSelect ? scormSpecSelect.value : '1.2';
+      const masteryScore = scormSlider ? scormSlider.value : '80';
+
+      // Generate authentic SCORM imsmanifest.xml
+      const manifestXml = `<?xml version="1.0" encoding="UTF-8"?>
+<!-- stemOS SCORM ${selectedSpec} Manifest Generated for Enterprise LMS -->
+<manifest identifier="stemOS_Enterprise_LMS_Package" version="1.0"
+          xmlns="${selectedSpec === '1.2' ? 'http://www.imsproject.org/xsd/imscp_rootv1p1p2' : 'http://www.imsglobal.org/xsd/imscp_v1p1'}"
+          xmlns:adlcp="${selectedSpec === '1.2' ? 'http://www.adlnet.org/xsd/adlcp_rootv1p2' : 'http://www.adlnet.org/xsd/adlcp_v1p3'}"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata>
+    <schema>ADL SCORM</schema>
+    <schemaversion>${selectedSpec}</schemaversion>
+    <lom xmlns="http://www.imsglobal.org/xsd/imsmd_rootv1p2p1">
+      <general>
+        <title><langstring xml:lang="en">stemOS Technical English for Nearshoring: Track ${selectedTrack.toUpperCase()}</langstring></title>
+        <description><langstring xml:lang="en">Comprehensive English for Specific Purposes (ESP) training curriculum aligned with ISO 9001:2015 Clause 7.2 competence standards.</description>
+      </general>
+    </lom>
+  </metadata>
+  <organizations default="stemOS_Organization">
+    <organization identifier="stemOS_Organization">
+      <title>stemOS Technical English Curriculum</title>
+      <item identifier="item_stemos_course" identifierref="res_stemos_content" isvisible="true">
+        <title>Technical English Proficiency &amp; Speaking Certification</title>
+        <adlcp:masteryscore>${masteryScore}</adlcp:masteryscore>
+        <adlcp:datafromlms>cmi.core.student_name,cmi.core.student_id</adlcp:datafromlms>
+      </item>
+    </organization>
+  </organizations>
+  <resources>
+    <resource identifier="res_stemos_content" type="webcontent" adlcp:scormtype="sco" href="index.html">
+      <file href="index.html"/>
+      <file href="SCORM_API_wrapper.js"/>
+      <file href="courses.json"/>
+    </resource>
+  </resources>
+</manifest>`;
+
+      // Generate SCORM API wrapper
+      const wrapperJs = `/**
+ * SCORM API Wrapper for stemOS (SCORM ${selectedSpec})
+ * Compatible with Workday Learning, Cornerstone OnDemand, and SAP SuccessFactors.
+ */
+var SCORM = {
+  version: "${selectedSpec}",
+  masteryScore: ${masteryScore},
+  API: null,
+  findAPI: function(win) {
+    var findAttempts = 0;
+    while ((win.API == null && win.API_1484_11 == null) && (win.parent != null) && (win.parent != win)) {
+      findAttempts++;
+      if (findAttempts > 7) return null;
+      win = win.parent;
+    }
+    return win.API_1484_11 || win.API || null;
+  },
+  init: function() {
+    this.API = this.findAPI(window);
+    if (!this.API && window.opener) this.API = this.findAPI(window.opener);
+    if (this.API) {
+      if (this.version === "1.2") {
+        this.API.LMSInitialize("");
+      } else {
+        this.API.Initialize("");
+      }
+      console.log("[stemOS SCORM] LMS API Initialized successfully.");
+      return true;
+    }
+    console.warn("[stemOS SCORM] Running in standalone offline mode (no parent LMS detected).");
+    return false;
+  },
+  completeCourse: function(score) {
+    if (!this.API) return;
+    if (this.version === "1.2") {
+      this.API.LMSSetValue("cmi.core.score.raw", String(score));
+      this.API.LMSSetValue("cmi.core.lesson_status", score >= this.masteryScore ? "passed" : "failed");
+      this.API.LMSCommit("");
+    } else {
+      this.API.SetValue("cmi.score.scaled", String(score / 100));
+      this.API.SetValue("cmi.score.raw", String(score));
+      this.API.SetValue("cmi.completion_status", "completed");
+      this.API.SetValue("cmi.success_status", score >= this.masteryScore ? "passed" : "failed");
+      this.API.Commit("");
+    }
+  },
+  finish: function() {
+    if (!this.API) return;
+    if (this.version === "1.2") {
+      this.API.LMSFinish("");
+    } else {
+      this.API.Terminate("");
+    }
+  }
+};
+window.addEventListener("load", function() { SCORM.init(); });
+window.addEventListener("beforeunload", function() { SCORM.finish(); });
+`;
+
+      // Trigger download of imsmanifest.xml or package
+      const blob = new Blob([manifestXml], { type: "application/xml;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.setAttribute("download", `imsmanifest_SCORM_${selectedSpec}_${selectedTrack}.xml`);
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      if (scormFeedback) {
+        scormFeedback.style.display = 'block';
+        if (scormFeedbackText) {
+          scormFeedbackText.innerHTML = `Generated <strong>imsmanifest_SCORM_${selectedSpec}_${selectedTrack}.xml</strong> (Standard: SCORM ${selectedSpec}, Mastery: ${masteryScore}%). Ready for Workday / Cornerstone upload.`;
+        }
+      }
+
+      if (typeof showOfflineToast === 'function') {
+        showOfflineToast("SCORM Package Ready", `Generated SCORM ${selectedSpec} package manifest for LMS integration`, 100, true);
+      }
+    });
+  }
+}
+
+/* ==========================================================================
+   SECTION 16 CONTROLLER: EXECUTIVE CROSS-BORDER LEADERSHIP & MULTI-ACCENT LAB
+   B2/C1 Anonymized Case Studies • 5 Global Accents • Telemetry Radar (FASE 5)
+   ========================================================================== */
+
+function setupExecutiveLeadershipAndMultiAccentLab() {
+  const execSection = document.getElementById('executive-leadership-section');
+  if (!execSection) return;
+
+  /* ── 1. CASE STUDIES DATA (B2/C1 REAL INDUSTRIAL NEARSHORING DILEMMAS) ── */
+  const CASE_STUDIES = {
+    laredo: {
+      key: "laredo",
+      tag: "AUTOMOTIVE TIER-1 • SALTILLO • IATF 16949 / USMCA",
+      headline: "The Laredo World Trade Bridge Line-Down Dispute",
+      risk: "CRITICAL ESCALATION (06:00 EST HARD STOP)",
+      fine: "$25,000 / hr Line-Stop",
+      time: "4h 15m remaining",
+      person: "Richard Sterling (VP Purchasing • Detroit OEM)",
+      briefing: "At 01:45 CST, our 53-foot dedicated trailer carrying 480 machined steering knuckles for the F-150 platform was placed on CBP intensive inspection hold at the Laredo World Trade Bridge. The border officer flagged an Anexo 24 / USMCA Certificate of Origin disparity on the tariff subheading (HS 8708.29.90 vs 8708.29.99). The Detroit assembly plant will exhaust its buffer stock at 06:00 EST and face line shutdown. Detroit VP Richard Sterling called threatening an immediate $25,000/hour line-stop penalty and demanded we pay $16,000 for an emergency Learjet air charter right now, claiming Saltillo is in breach of contract under Incoterms DAP Detroit.",
+      evidence: [
+        "Incoterms 2020 contract specifies FCA Saltillo Plant (loaded), not DAP Detroit; transportation risk technically transferred upon carrier receipt.",
+        "SAT Anexo 24 / USMCA Regional Value Content (RVC) is certified at 78.4% (exceeding the 75% automotive core parts threshold).",
+        "19 CFR § 141.113 allows Immediate Delivery (ID) under US Customs Form 3461 upon posting a supplemental single-entry bond.",
+        "Local Saltillo warehouse has 60 finished buffer units pre-packed that can clear via Nuevo Laredo Express Line in 90 minutes."
+      ],
+      options: [
+        {
+          type: "aggressive",
+          tag: "Aggressive Pushback",
+          title: "Refuse Charter & Invoke Contractual FCA Defense",
+          desc: "Inform Detroit that under Incoterms FCA Saltillo, border customs delays are strictly the buyer's risk, and refuse to contribute to the air charter.",
+          telem: { standing: 40, trust: 30, compliance: 85, financial: "Zero Absorbed (-$100k line damage)" },
+          coach: "Disastrous escalation. While you are legally correct on FCA, leaving Detroit's assembly line to crash at 06:00 burns the relationship irreparably. The OEM customer will begin dual-sourcing or de-sourcing your plant within 60 days.",
+          memo: `SUBJECT: Urgent: Notice of Carrier Delay at Laredo Port of Entry\n\nDear Mr. Sterling,\n\nWe must clarify that per Master Services Agreement Schedule B, our commercial trade terms are strictly FCA Saltillo Plant. Transit customs reviews at Laredo are the contractual liability of your nominated freight forwarder. Consequently, Saltillo cannot approve or fund air charter expenditures.\n\nRespectfully,\nPlant Operations Director`
+        },
+        {
+          type: "yield",
+          tag: "Unconditional Yield",
+          title: "Absorb 100% Air Charter & Concede Fault",
+          desc: "Authorize the $16,000 Learjet charter immediately at our expense and apologize for the customs documentation error.",
+          telem: { standing: 50, trust: 65, compliance: 60, financial: "-$16,000 Loss" },
+          coach: "Detroit avoids the line-stop, but you accepted blame for an unverified CBP tariff discrepancy. Corporate will audit your plant for unbudgeted emergency freight, and Detroit will demand concessions on future customs holds.",
+          memo: `SUBJECT: Immediate Air Charter Authorization - Laredo Buffer\n\nDear Mr. Sterling,\n\nWe apologize for the customs hold at Laredo. Saltillo has immediately chartered an air courier out of Monterrey at our expense ($16,000 USD) to ensure zero line downtime at your Detroit facility. We will absorb all associated freight fees.\n\nBest regards,\nPlant Operations Director`
+        },
+        {
+          type: "batna",
+          tag: "Strategic BATNA (Optimal B2/C1)",
+          title: "Authorize 4-Hour Hotshot Air Buffer + 19 CFR Customs Bond Release",
+          desc: "Propose a split air charter for 4 hours of buffer stock while our licensed broker files a 19 CFR immediate delivery bond to release the 53-ft trailer, sharing charter cost 50/50 pending joint customs audit.",
+          telem: { standing: 95, trust: 92, compliance: 98, financial: "$17,500 Saved" },
+          coach: "Exemplary B2/C1 executive leadership! You prevented the $100k line-stop, protected legal compliance under USMCA, shared freight costs fairly without conceding fault, and demonstrated proactive cross-border problem-solving.",
+          memo: `MEMORANDUM | EXECUTIVE CRITICAL PATH\n\nTO: Richard Sterling, VP Purchasing (Detroit Assembly)\nFROM: Director of Cross-Border Operations, Saltillo Plant\nDATE: September 27, 2026\nSUBJECT: Dual-Track Remediation Protocol: Laredo World Trade Bridge Clearance & Zero Line-Downtime Guarantee\n\n1. EXECUTIVE SUMMARY & ZERO DOWNTIME COMMITMENT:\nWhile we review the CBP tariff classification query at the Laredo Port of Entry, our primary non-negotiable directive is ensuring the Detroit assembly line maintains uninterrupted production past 06:00 EST.\n\n2. DUAL-TRACK REMEDIATION PROTOCOL:\n• Track A (Immediate Aerial Buffer): We have placed an on-demand Cessna Caravan hotshot charter on standby in Monterrey to transport 60 pre-inspected knuckles (4.5 hours of line buffer), touching down at DTW by 05:15 EST. We propose a 50/50 cost split ($4,000 USD each) pending our joint audit of the carrier's Anexo 24 manifest.\n• Track B (Customs Release under Bond): Our US customs attorney is currently filing an Immediate Delivery application under 19 CFR § 141.113 with a single-entry customs bond, enabling the trailer to cross into Texas by 03:30 CST.\n\n3. NEXT STEPS & TELEMETRY:\nWe will host an executive touchpoint at 04:30 EST with live GPS tracking. We appreciate your partnership in maintaining seamless cross-border supply continuity.\n\nRespectfully submitted,\nEngineering & Logistics Executive Directorate`
+        },
+        {
+          type: "defer",
+          tag: "Bureaucratic Deferral",
+          title: "Defer Decision to Morning Legal Review",
+          desc: "Inform Detroit that customs documents must be reviewed by Mexican corporate legal counsel during normal business hours.",
+          telem: { standing: 25, trust: 20, compliance: 70, financial: "-$125,000 Line-Stop Penalty" },
+          coach: "Worst-case response. In just-in-time automotive manufacturing, an unresolved 4-hour window guarantees plant shutdown. Legal counsel is useless once the plant shut-down penalties kick in.",
+          memo: `SUBJECT: Laredo Customs Inquiry - Internal Review Pending\n\nDear Mr. Sterling,\n\nWe acknowledge receipt of your notice. Our Mexican trade compliance and legal team will review the tariff documentation tomorrow at 09:00 CST. We will advise once our legal department formulates a response.\n\nSincerely,\nOperations Office`
+        }
+      ]
+    },
+
+    fda483: {
+      key: "fda483",
+      tag: "MEDICAL DEVICES • TIJUANA • FDA 21 CFR 820 / ISO 13485",
+      headline: "The FDA Form 483 Cleanroom CAPA Closeout",
+      risk: "REGULATORY AUDIT SANCTION (15-DAY CLOCK)",
+      fine: "Import Alert / License Revocation",
+      time: "11 days to formal 483 response",
+      person: "Dr. Eleanor Vance (SVP Quality • Minneapolis HQ)",
+      briefing: "An unannounced 3-day FDA inspection at our Tijuana Class 10,000 cleanroom concluded with a Form 483 observation citing 21 CFR § 820.100 (Corrective and Preventive Action) for failure to adequately document Ethylene Oxide (EtO) residual aeration chamber curves on cardiovascular catheters. Corporate HQ in Minneapolis panicked, suspecting local plant negligence, and prepared to mandate a temporary shutdown and leadership restructuring. However, local plant gas chromatography telemetry proves the EtO spike occurred during 104°F ambient desert transport in Southern California contracted directly by Minneapolis HQ, not inside the Tijuana aeration chambers.",
+      evidence: [
+        "Tijuana cleanroom aeration cycle logs (SCADA historians) confirm 72.0 hours at 42°C in strict compliance with ISO 11135:2014.",
+        "Gas chromatography residuals at plant release averaged 1.8 ppm (well below the 4.0 ppm FDA limit for blood-contact devices).",
+        "Temperature data loggers inside the US domestic reefer truck showed refrigeration compressor failure between Calexico and Ontario, CA.",
+        "21 CFR § 820.100 requires validation of entire distribution logistics chain, which Minneapolis contracted out without local QA signoff."
+      ],
+      options: [
+        {
+          type: "aggressive",
+          tag: "Aggressive Blame-Shifting",
+          title: "Publicly Blame Minneapolis Domestic Logistics",
+          desc: "Send an email to the FDA Lead Investigator and Corporate Board asserting that Minneapolis supply chain caused the excursion and Tijuana is completely blameless.",
+          telem: { standing: 35, trust: 25, compliance: 65, financial: "Executive Turmoil" },
+          coach: "Hostile and politically catastrophic. Regulators view the manufacturer as a single legal entity; pointing fingers internally signals systemic lack of management control (21 CFR § 820.20) and triggers a Warning Letter.",
+          memo: `TO: FDA San Diego District Office & Minneapolis Board\nFROM: Tijuana QA Management\nSUBJECT: Form 483 Refutation - Minneapolis Distribution Liability\n\nThe Form 483 citation issued to Tijuana is factually erroneous. The EtO desorption failure occurred solely because Minneapolis HQ selected an unvalidated refrigerated trucking contractor that lost cooling in the Mojave desert. Tijuana operations are fully compliant.`
+        },
+        {
+          type: "yield",
+          tag: "Unconditional Capitulation",
+          title: "Accept All Blame & Over-Commit to 5-Day Plant Shutdown",
+          desc: "Accept the 483 citation in full, voluntarily halt manufacturing lines for 10 days, and mandate re-validation of all 14 aeration chambers.",
+          telem: { standing: 45, trust: 60, compliance: 80, financial: "-$640k Unnecessary Downtime" },
+          coach: "Extreme over-reaction. Shutting down compliant Class 10,000 cleanrooms damages surgical catheter supply to hospitals and costs $640k without addressing the actual root cause (desert transport reefer failure).",
+          memo: `TO: Dr. Eleanor Vance, SVP Quality\nSUBJECT: Voluntary Cleanroom Stand-Down & Aeration Revalidation\n\nTijuana Quality accepts full responsibility for the 483 observation. We will halt all catheter assembly for 10 operational days to conduct full chamber re-validation. All catheter shipments are immediately frozen.`
+        },
+        {
+          type: "batna",
+          tag: "Strategic BATNA (Optimal B2/C1)",
+          title: "Comprehensive 15-Day CAPA Dossier: Plant Release Telemetry + Cold-Chain Validation Protocol",
+          desc: "Present audited gas chromatography proof verifying Tijuana release compliance, while executing a collaborative CAPA addressing the US cold-chain transit vector with GPS data-logger validation, closing the 483 cleanly.",
+          telem: { standing: 98, trust: 95, compliance: 100, financial: "$640k Downtime Avoided" },
+          coach: "Masterclass in regulatory leadership. You defended plant data integrity with unimpeachable chromatography evidence, protected the plant from leadership purges, and provided the FDA with an airtight CAPA that prevents Warning Letters.",
+          memo: `OFFICIAL REGULATORY POSITION PAPER & CAPA 2026-088\n\nTO: Dr. Eleanor Vance, SVP Global Quality Assurance\nCC: Corporate Legal & Regulatory Compliance Directorate\nFROM: Vice President of Quality Engineering, Tijuana Campus\nSUBJECT: Comprehensive 15-Day FDA Form 483 Response Strategy & Cold-Chain Transit CAPA\n\n1. EXECUTIVE SUMMARY:\nTijuana Quality Engineering has completed an exhaustive, data-driven investigation into the Form 483 observation (21 CFR § 820.100). The evidence demonstrates that Tijuana cleanroom aeration cycles strictly adhered to validated ISO 11135:2014 protocols, with product release EtO residuals certified at 1.8 ppm (FDA tolerance: 4.0 ppm).\n\n2. ROOT CAUSE ATTRIBUTION (TRANSIT DESORPTION EXCURSION):\nCalibrated Sensitech data-loggers retrieved from Reefer Trailer #8841 confirmed a refrigeration compressor shutdown between Calexico and Ontario, CA, exposing sterile product to 104°F (40°C) ambient heat, inducing secondary EtO outgassing.\n\n3. CORRECTIVE & PREVENTIVE ACTION PLAN (CAPA 2026-088):\n• Action 1: Supplemental NIST-traceable multi-point gas chromatography testing on all outbound master cartons prior to border transfer.\n• Action 2: Implementation of real-time cellular temperature & humidity telematics for all Southern California freight carriers with automated geo-fenced quarantine alarms.\n• Action 3: Formal submission of this validated dossier to the FDA Lead Investigator within the 15-day statutory window.\n\nRespectfully submitted,\nDirector of Biomedical Quality & Regulatory Affairs`
+        },
+        {
+          type: "defer",
+          tag: "Passive Delay",
+          title: "Wait for Formal Warning Letter Before Engaging",
+          desc: "Ignore the 15-day non-binding response window and wait for the FDA District Director's formal letter before allocating engineering resources.",
+          telem: { standing: 20, trust: 15, compliance: 30, financial: "Severe Import Alert Risk" },
+          coach: "Fatal compliance error. Failure to submit a robust, data-backed 483 response within 15 business days automatically escalates into an FDA Warning Letter and potential US import alert.",
+          memo: `MEMORANDUM: Form 483 Review Cadence\n\nWe will withhold formal engineering review of Form 483 until the FDA San Diego District Director completes review and issues formal follow-up correspondence.`
+        }
+      ]
+    },
+
+    semicon: {
+      key: "semicon",
+      tag: "SEMICONDUCTORS • GUADALAJARA • IEEE / SEMI",
+      headline: "The 3nm DFT Yield Fallout Excursion",
+      risk: "PRODUCTION SCRAP CRISIS ($1.4M / WEEK)",
+      fine: "$1.4M / week scrap fallout",
+      time: "Next Tape-Out Freeze: 48 hours",
+      person: "Scott Keller (VP Silicon Engineering • Austin, TX)",
+      briefing: "Our Guadalajara Advanced Test & Packaging Facility reported a sudden yield collapse from 94.2% to 80.8% on server-grade 3nm AI accelerator dies during low-temperature ATE wafer sorting. Austin microarchitecture leadership immediately circulated an escalation email blaming Guadalajara for ESD cleanroom contamination (ISO 14644-1) and poor probe-card maintenance. Local oscilloscopes and scan-chain ATPG (Automatic Test Pattern Generation) telemetry conclusively prove that the failure is a Design-for-Test (DFT) race condition occurring specifically during 0.75V low-power sleep states, originating from the Austin tape-out clock distribution tree.",
+      evidence: [
+        "ATE Shmoo plots reveal pass/fail voltage boundary shift at 0.75V, invariant to probe card needle contact resistance.",
+        "Cleanroom airborne particle counters (Met One 3400) verified ISO Class 4 cleanliness (zero Class 100 excursions in 30 days).",
+        "Synopsys TestMAX ATPG simulation reproduction matches the exact scan-chain failure signature at flip-flop 14,892.",
+        "Austin microarchitecture team pushed an unverified ECO clock-tree gating patch 12 days prior to the wafer arrival."
+      ],
+      options: [
+        {
+          type: "aggressive",
+          tag: "Aggressive Counter-Accusation",
+          title: "Expose Austin ECO Patch to Executive Committee",
+          desc: "Forward the Austin design team's flawed ECO clock gating commit directly to the Chief Technology Officer, demanding a public retraction.",
+          telem: { standing: 55, trust: 30, compliance: 90, financial: "Inter-Site Turf War" },
+          coach: "High friction. You vindicate Guadalajara technically, but public shaming of high-ranking Austin design fellows creates permanent organizational hostility between silicon design and manufacturing packaging teams.",
+          memo: `TO: Chief Technology Officer & Austin Fellows\nFROM: Guadalajara Silicon Test Engineering\nSUBJECT: Refutation: Austin ECO Patch Responsible for 3nm Fallout\n\nThe allegations regarding cleanroom contamination in Guadalajara are completely baseless. Austin's unverified clock gating ECO patch pushed on Aug 14 is the direct mathematical cause of the 13.4% fallout. Austin owes Guadalajara a formal retraction.`
+        },
+        {
+          type: "yield",
+          tag: "Capitulate to Rework",
+          title: "Scrap 2,400 Packaging Dies & Re-Probe at Low Speed",
+          desc: "Accept cleanroom culpability, scrap the current production batch, and slow down ATE sorting clock by 50% to artificially mask the timing failure.",
+          telem: { standing: 30, trust: 50, compliance: 50, financial: "-$1.8M Unnecessary Scrap" },
+          coach: "Terrible engineering. Masking a microcode race condition by under-clocking ATE sorting introduces defective silicon into enterprise customer servers, resulting in catastrophic field returns (RMA).",
+          memo: `TO: Scott Keller, VP Silicon Engineering\nSUBJECT: 3nm ATE Wafer Sort Rework Plan\n\nGuadalajara has quarantined the affected wafer lots. We will clean all probe cards and rerun testing at 50% reduced clock frequency while upgrading cleanroom filtration.`
+        },
+        {
+          type: "batna",
+          tag: "Strategic BATNA (Optimal B2/C1)",
+          title: "Data-Driven ATE Shmoo & Scan-Chain Diagnostic White Paper + Clock-Tree Vector Patch",
+          desc: "Deliver an unimpeachable technical white paper with Shmoo voltage boundary plots and scan-chain flip-flop traces, proposing a 48-hour software vector patch that bypasses the race condition without scrapping wafers.",
+          telem: { standing: 96, trust: 94, compliance: 99, financial: "$1.4M Saved Weekly" },
+          coach: "Brilliant technical diplomacy. You proved Guadalajara's elite metrology capability with rigorous IEEE-standard data, rescued $1.4M/week of silicon yield, and positioned Guadalajara as an indispensable silicon debug partner rather than just a packaging house.",
+          memo: `TECHNICAL MEMORANDUM & SILICON DIAGNOSTIC WHITE PAPER\n\nTO: Scott Keller, VP Silicon Engineering (Austin Foundry)\nFROM: Director of Advanced Packaging & Metrology, Guadalajara Campus\nDATE: September 27, 2026\nSUBJECT: Diagnostic Root Cause: 3nm AI Accelerator Low-Power Scan-Chain Excursion & Test Vector Remediation\n\n1. EXECUTIVE SUMMARY:\nGuadalajara Metrology has completed an in-depth parametric characterization of the 13.4% yield fallout observed on 3nm Lot #A26-904. Met One particle counters verify continuous ISO Class 4 cleanroom compliance. High-resolution ATE Shmoo plots isolate the fallout to a localized timing race condition occurring exclusively during the 0.75V low-power Vmin transition.\n\n2. SCAN-CHAIN TELEMETRY & ROOT CAUSE:\nUsing Advantest V93000 high-speed oscilloscopes cross-referenced with Synopsys TestMAX ATPG models, the failure was localized to clock-tree skew at scan flip-flop FF_14892. The timing violation correlates precisely with the ECO clock gating revision pushed on August 14.\n\n3. PROPOSED NON-DESTRUCTIVE REMEDIATION (48-HR WINDOW):\nRather than scrapping 2,400 viable dies, Guadalajara has engineered a modified ATE test pattern sequence (Vector Patch Rev 2.1) that introduces a 120ps capture-pulse offset during the 0.75V transition. Proof-of-concept testing restores wafer yield to 94.6% (+13.8% recovery).\n\nRespectfully submitted,\nGuadalajara Advanced Packaging & Testing Group`
+        },
+        {
+          type: "defer",
+          tag: "Passive Stalemate",
+          title: "Halt All ATE Wafer Testing Until Austin Engineers Travel to Guadalajara",
+          desc: "Shut down wafer sort lines and demand Austin send senior silicon architects to Guadalajara to inspect probe cards in person.",
+          telem: { standing: 25, trust: 25, compliance: 60, financial: "-$2.8M Idle Capacity" },
+          coach: "Paralyzes manufacturing. A 2-week freeze while engineers travel internationally burns millions in idle capacity and misses critical customer tape-out delivery windows.",
+          memo: `TO: Austin Silicon Engineering\n\nAll ATE testing in Guadalajara is halted effective immediately pending an on-site visit and audit from Austin senior microarchitects.`
+        }
+      ]
+    },
+
+    energy: {
+      key: "energy",
+      tag: "ENERGY & DATA CENTERS • QUERÉTARO • IEEE 1547 / CFE",
+      headline: "The 40MW Hyperscale Substation Harmonic Interlock Crisis",
+      risk: "GRID SHUTDOWN & REGULATORY FINES",
+      fine: "$850k CFE Fine + Grid Disconnection",
+      time: "CENACE 24-hr compliance notice",
+      person: "Jason Vance (VP Infrastructure • Santa Clara Hyperscaler)",
+      briefing: "At our 40MW Querétaro Hyperscale Data Center Campus, total harmonic distortion (THD) on Substation Feeder B reached 6.4%, triggering an automatic alarm from CENACE for exceeding the Mexican Grid Code (Código de Red 2.0, max 5.0% THD at Point of Common Coupling). US Hyperscaler VP Jason Vance insists on overriding the protective relay interlocks and running 18 unpermitted Caterpillar diesel generators continuously to preserve 99.999% cloud uptime for Tier-1 banking clients. Doing so violates Mexican federal environmental permits and risks immediate CFE physical grid disconnection and an $850k USD fine.",
+      evidence: [
+        "CENACE Código de Red 2.0 Chapter 3 mandates grid disconnection if harmonic distortion above 5.0% persists for > 48 hours.",
+        "Querétaro campus has 8 active harmonic filter (AHF) units on Feeder A operating with 8.2MVAR capacity.",
+        "Transferring 14MW of variable server load to Feeder A's AHF bus drops Feeder B THD to 3.8% in under 12 minutes.",
+        "Diesel genset operation beyond 50 hours/year without SEMARNAT environmental impact waiver incurs immediate federal sanction."
+      ],
+      options: [
+        {
+          type: "aggressive",
+          tag: "Aggressive Regulatory Refusal",
+          title: "Refuse Hyperscaler Demand & Threaten Facility Shutdown",
+          desc: "Tell Santa Clara that their demand is illegal under Mexican law, refuse to touch the generators, and warn them that the facility will trip if servers aren't throttled.",
+          telem: { standing: 45, trust: 35, compliance: 95, financial: "Breach of SLA Threat" },
+          coach: "Creates executive panic in Silicon Valley. Banking cloud customers cannot tolerate unmanaged throttling threats. Standing on the law is correct, but delivering an ultimatum without a technical workaround damages client retention.",
+          memo: `TO: Jason Vance, VP Global Cloud Infrastructure\nFROM: Querétaro Campus Facilities Director\nSUBJECT: Illegal Diesel Generator Operation Request Denied\n\nYour instruction to force-run unpermitted diesel gensets violates Mexican federal environmental laws and CENACE Código de Red. We refuse to execute this order. If server load is not reduced immediately, the substation will trip.`
+        },
+        {
+          type: "yield",
+          tag: "Unconditional Compliance with Client",
+          title: "Override Relay Interlocks & Fire All 18 Diesel Gensets",
+          desc: "Bypass the SEL-751 protective interlocks, fire up 18 diesel generators, and disconnect from the grid completely.",
+          telem: { standing: 20, trust: 60, compliance: 10, financial: "-$850k Fine + Federal Audit" },
+          coach: "Catastrophic legal liability. Running unpermitted diesel generators in Querétaro generates smoke plumes visible across the corridor, triggering an immediate PROFEPA environmental raid, $850k fines, and criminal liability for the plant director.",
+          memo: `TO: Jason Vance, VP Infrastructure\nSUBJECT: Executing Diesel Generator Override\n\nPer your urgent instruction, we have overridden the SEL-751 interlocks and fired all 18 diesel generators to island the data center campus. We will sustain operations on diesel until further notice.`
+        },
+        {
+          type: "batna",
+          tag: "Strategic BATNA (Optimal B2/C1)",
+          title: "Execute Dynamic Feeder Load Transfer to Feeder A AHF Bus (THD 3.8%) + 99.999% SLA Preservation",
+          desc: "Transfer 14MW of non-critical server load to Feeder A's Active Harmonic Filter (AHF) bus in 12 minutes, dropping Feeder B THD to 3.8% (fully compliant with Código de Red) while maintaining 100% cloud banking uptime without starting unpermitted diesel generators.",
+          telem: { standing: 97, trust: 96, compliance: 100, financial: "$850k Fine Avoided & Zero Downtime" },
+          coach: "Outstanding enterprise engineering leadership! You preserved 99.999% uptime for Tier-1 financial cloud tenants, avoided $850k in CFE sanctions, and demonstrated superior electrical power systems mastery to Santa Clara leadership.",
+          memo: `EXECUTIVE MISSION-CRITICAL POSITION MEMO\n\nTO: Jason Vance, VP Global Cloud Infrastructure (Santa Clara HQ)\nFROM: Director of Critical Facilities & Electrical Infrastructure, Querétaro Campus\nDATE: September 27, 2026\nSUBJECT: Dynamic Substation Harmonic Mitigation: Preserving 99.999% Cloud Uptime & CENACE Código de Red 2.0 Compliance\n\n1. EXECUTIVE SUMMARY & ZERO DOWNTIME COMMITMENT:\nOur Querétaro 40MW campus will maintain uninterrupted 99.999% SLA availability for all banking and enterprise compute clusters. We have engineered a zero-downtime electrical topology remediation that resolves CENACE's harmonic distortion alarm without firing diesel generators or risking CFE grid disconnection.\n\n2. ROOT CAUSE & REGULATORY RISK ANALYSIS:\nSubstation Feeder B THD peaked at 6.4% due to high non-linear server switching loads. Under CENACE Código de Red 2.0 (Chapter 3), sustained THD above 5.0% incurs an $850k USD fine and physical breaker trip. Continuous diesel genset operation would violate SEMARNAT air-quality permits, creating severe legal vulnerability.\n\n3. THE ZERO-IMPACT MITIGATION ARCHITECTURE:\n• Action: Through our SCADA power distribution matrix, we are executing a synchronized 14MW bus transfer from Feeder B to Substation Feeder A, which possesses 8.2MVAR of under-utilized Active Harmonic Filtering (AHF) capacity.\n• Outcome: Feeder B THD drops to 3.8% within 12 minutes (well beneath the 5.0% threshold). All server racks remain energized without a single microsecond of power interruption.\n\nRespectfully submitted,\nQuerétaro Hyperscale Engineering Directorate`
+        },
+        {
+          type: "defer",
+          tag: "Bureaucratic Paralysis",
+          title: "File Formal Appeal with CENACE and Await Hearing",
+          desc: "Submit a written administrative appeal to CENACE regulatory commissioners and wait for their 30-day response window.",
+          telem: { standing: 20, trust: 20, compliance: 40, financial: "-$850k Automatic Fine" },
+          coach: "Fatal inaction. Grid protection relays don't wait for administrative appeals; when protective thresholds trip, the data center drops offline immediately.",
+          memo: `TO: CENACE Commissioners\n\nWe hereby submit an administrative petition regarding the Feeder B harmonic notice and request an extension to our compliance timeline.`
+        }
+      ]
+    }
+  };
+
+  /* ── 2. MULTI-ACCENT DATA (5 GLOBAL NEARSHORING ACCENTS) ── */
+  const ACCENT_DATA = {
+    midwest: {
+      key: "midwest",
+      flag: "🇺🇸",
+      speakerName: "Dave Miller",
+      speakerRole: "Vehicle Launch Director • Detroit OEM",
+      dialectTag: "US Midwest / Northern Cities Vowel Shift",
+      avatarIcon: "fa-solid fa-car-side",
+      transcriptHtml: `Look guys, we gotta <span class="phonetic-spotlight">cut to the chase</span> here. Our stamping plant in Sterling Heights is waiting on those door inner stampings. I need a <span class="phonetic-spotlight">hard stop</span> on these tolerance deviations by noon. If the CMM report doesn't hold CPK of 1.67, we’re gonna have to <span class="phonetic-spotlight">pull the plug</span> and recalibrate the progressive die. Let’s <span class="phonetic-spotlight">get our ducks in a row</span> and <span class="phonetic-spotlight">touch base</span> at two.`,
+      spokenText: `Look guys, we gotta cut to the chase here. Our stamping plant in Sterling Heights is waiting on those door inner stampings. I need a hard stop on these tolerance deviations by noon. If the CMM report doesn't hold CPK of 1.67, we're gonna have to pull the plug and recalibrate the progressive die. Let's get our ducks in a row and touch base at two.`,
+      langCode: "en-US",
+      pitchVal: 1.0,
+      rateVal: 1.05,
+      phoneticPoints: [
+        "Northern Cities Vowel Shift: Short 'a' in 'plant', 'stamping', 'chase' is raised and fronted [eə] (sounds like 'plee-ant').",
+        "Alveolar Flap: Words like 'gotta' and 'recalibrate' use quick voiced flaps [ɾ] rather than crisp dental 't'.",
+        "Fast Cadence & Reduced Prepositions: 'waiting on' and 'by noon' spoken with compressed, rhythmic stress.",
+        "Heavy Idiomatic Density: 'cut to the chase', 'hard stop', 'pull the plug', 'ducks in a row', 'touch base'."
+      ],
+      pragmaticRows: [
+        { said: "Let's get our ducks in a row and touch base at two.", meant: "You have exactly two hours to assemble your dimensional proof before I escalate this to your Vice President of Operations.", context: "Deadlines in the US Midwest are literal and unforgiving." },
+        { said: "We're gonna have to pull the plug.", meant: "We will cancel your supplier production authorization and halt shipments immediately unless CPK is certified.", context: "Direct escalation threat masked as procedural decision." }
+      ],
+      responseQuote: "Understood Dave. Our tooling team is already on the press inspecting the guide pins. We will have the 30-piece capability study with CMM coordinates on your desk at 13:45 EST.",
+      quiz: {
+        prompt: "What is the operational priority demanded by Dave Miller?",
+        options: [
+          "Wait until tomorrow to inspect the progressive stamping die.",
+          "Deliver certified CMM metrology proof verifying CPK ≥ 1.67 before the 14:00 review.",
+          "Order a brand-new progressive die from Germany immediately."
+        ],
+        correctIdx: 1,
+        feedback: "Correct! Dave demands CPK ≥ 1.67 certified by CMM before their 14:00 touch base, otherwise he will halt production ('pull the plug')."
+      }
+    },
+
+    indian: {
+      key: "indian",
+      flag: "🇮🇳",
+      speakerName: "Priya Ramanathan",
+      speakerRole: "Principal Embedded Systems Architect • Bangalore",
+      dialectTag: "South Asian English (Indian Subcontinent)",
+      avatarIcon: "fa-solid fa-microchip",
+      transcriptHtml: `Hi team, regarding the AUTOSAR classic memory stack on the microcontroller, kindly <span class="phonetic-spotlight">prepone</span> the sprint review to 4 PM. We observed that the CAN FD transceiver is throwing sporadic bus-off errors during bus-load peaks. Please <span class="phonetic-spotlight">do the needful</span> and <span class="phonetic-spotlight">revert back</span> with the trace logs once the SPI bus analyzer is connected.`,
+      spokenText: `Hi team, regarding the AUTOSAR classic memory stack on the microcontroller, kindly prepone the sprint review to 4 PM. We observed that the CAN FD transceiver is throwing sporadic bus-off errors during bus-load peaks. Please do the needful and revert back with the trace logs once the SPI bus analyzer is connected.`,
+      langCode: "en-IN",
+      pitchVal: 1.1,
+      rateVal: 1.1,
+      phoneticPoints: [
+        "Retroflex Consonants: Dental 't' and 'd' in 'microcontroller', 'trace', 'needful' are pronounced with retroflex tongue curvature [ʈ, ɖ].",
+        "Syllable-Timed Rhythm: Each syllable receives relatively equal duration rather than stress-timed English compression.",
+        "Aspirated Plosives: Crisp bursts of breath on /p/ and /k/ in 'peaks', 'prepone', 'CAN FD'.",
+        "Distinct Corporate Collocations: 'Prepone' (opposite of postpone), 'do the needful' (take required standard actions), 'revert back' (reply with data)."
+      ],
+      pragmaticRows: [
+        { said: "Kindly prepone the review... Please do the needful and revert back.", meant: "This is a critical blocker holding up the firmware milestone. Move your schedule forward and provide the oscilloscope CAN logs immediately.", context: "Polite modal phrasing ('kindly') masks urgent blocking technical priority." },
+        { said: "CAN FD transceiver is throwing sporadic bus-off errors.", meant: "Your microcontroller driver layer has an unhandled interrupt race condition during buffer saturation.", context: "Direct technical callout requiring concrete log attachments." }
+      ],
+      responseQuote: "Thank you Priya. We have rescheduled the sprint review for 4:00 PM. Our firmware team has already hooked up the Saleae logic analyzer and will attach the CAN FD trace logs to the Jira ticket in 20 minutes.",
+      quiz: {
+        prompt: "What does Priya mean by 'prepone the sprint review' and 'do the needful'?",
+        options: [
+          "Postpone the meeting to next week and ignore the CAN transceiver bug.",
+          "Shift the sprint review earlier to 4 PM and immediately execute the trace analysis protocol.",
+          "Cancel the AUTOSAR architecture entirely."
+        ],
+        correctIdx: 1,
+        feedback: "Correct! 'Prepone' is Indian English for advancing an event to an earlier time, and 'do the needful' means taking the necessary standard technical action."
+      }
+    },
+
+    german: {
+      key: "german",
+      flag: "🇩🇪",
+      speakerName: "Dr. Jürgen Becker",
+      speakerRole: "Director of Robotics & Automation • Stuttgart",
+      dialectTag: "German Industrial English (Automotive HQ)",
+      avatarIcon: "fa-solid fa-robot",
+      transcriptHtml: `Guten Tag. The <span class="phonetic-spotlight">actual</span> cycle time of the 6-axis welding robot in Cell 4 is currently 42 seconds, which is totally unacceptable against the specification of 36 seconds. We must <span class="phonetic-spotlight">control</span> the servo acceleration parameters immediately. The kinematics cannot be compromised by sloppy trajectory programming. I expect an exact root cause protocol today.`,
+      spokenText: `Guten Tag. The actual cycle time of the 6-axis welding robot in Cell 4 is currently 42 seconds, which is totally unacceptable against the specification of 36 seconds. We must control the servo acceleration parameters immediately. The kinematics cannot be compromised by sloppy trajectory programming. I expect an exact root cause protocol today.`,
+      langCode: "de-DE",
+      pitchVal: 0.95,
+      rateVal: 0.95,
+      phoneticPoints: [
+        "Fricative Merger /w/ vs /v/: 'welding' sounds like 'velding', 'we' sounds like 've'.",
+        "Final Devoicing: Voiced consonants at the end of words become unvoiced ('robot' /t/, 'compromised' /st/).",
+        "German False Friends: 'Actual' is used with the German meaning of 'aktuell' (meaning 'current/present', not 'real'); 'control' is used with the meaning of 'kontrollieren' (meaning 'inspect/audit/verify').",
+        "Unyielding Directness: Zero polite hedging. Sentences begin directly with the non-conformance."
+      ],
+      pragmaticRows: [
+        { said: "We must control the servo acceleration parameters... totally unacceptable.", meant: "This is a contractual specification violation. Do not offer subjective excuses; provide an analytical engineering root-cause dossier today.", context: "German engineering culture values precise mathematical root cause over relationship management." },
+        { said: "The kinematics cannot be compromised by sloppy programming.", meant: "Our headquarters standards are non-negotiable. Fix the robot trajectory code immediately.", context: "Direct rebuke of procedural rigor." }
+      ],
+      responseQuote: "Good morning Dr. Becker. We have isolated the 6-second delta to the safety deceleration zone on the torch changeover. We are optimizing the trajectory via KUKA WorkVisual and will upload the comparative time-motion trace by 16:00 CET.",
+      quiz: {
+        prompt: "When Dr. Becker says 'The actual cycle time... we must control it', what does he mean?",
+        options: [
+          "The real cycle time is fine, and we should control the operators.",
+          "The current cycle time is 42 seconds, and we must audit/inspect the servo acceleration parameters immediately.",
+          "We should reprogram the robot to run in manual mode."
+        ],
+        correctIdx: 1,
+        feedback: "Correct! 'Actual' in German English translates 'aktuell' (current), and 'control' translates 'kontrollieren' (inspect/verify)."
+      }
+    },
+
+    british: {
+      key: "british",
+      flag: "🇬🇧",
+      speakerName: "Alistair Campbell",
+      speakerRole: "Chief Propulsion Inspector • Derby, UK",
+      dialectTag: "British Aerospace English (Received Pronunciation / Midlands)",
+      avatarIcon: "fa-solid fa-plane-up",
+      transcriptHtml: `Right, I've had a look at the ultrasonic non-destructive testing results on the turbine blade root forgings. I have a <span class="phonetic-spotlight">slight reservation</span> regarding the surface finish Ra values on batch 408. It's <span class="phonetic-spotlight">not quite what we’d hoped for</span>, to be frank. Shall we <span class="phonetic-spotlight">table this matter right away</span> and get the metallurgical team <span class="phonetic-spotlight">sorted</span> before we sign off on the release?`,
+      spokenText: `Right, I've had a look at the ultrasonic non-destructive testing results on the turbine blade root forgings. I have a slight reservation regarding the surface finish Ra values on batch 408. It's not quite what we'd hoped for, to be frank. Shall we table this matter right away and get the metallurgical team sorted before we sign off on the release?`,
+      langCode: "en-GB",
+      pitchVal: 1.0,
+      rateVal: 1.0,
+      phoneticPoints: [
+        "Non-Rhoticity: Post-vocalic /r/ is dropped in 'forgings', 'matter', 'surface'.",
+        "Glottal Stops: Intervocalic /t/ frequently replaced with glottal stops [ʔ] ('not quite', 'sorted').",
+        "British Dialect Trap ('Table this'): In British English, 'table this' means bring it forward for IMMEDIATE discussion, whereas in American English it means postpone!",
+        "Mastery of Understatement: 'Slight reservation' and 'not quite what we hoped for' indicate a catastrophic aerospace failure."
+      ],
+      pragmaticRows: [
+        { said: "I have a slight reservation... not quite what we’d hoped for.", meant: "CRITICAL FAILURE: Batch 408 fails aerospace airworthiness criteria. Under British understatement, this means the parts are condemned unless remediated.", context: "British engineers express grave alarm through polite understatements." },
+        { said: "Shall we table this matter right away?", meant: "We must debate this emergency immediately right now on this call (UK meaning), do NOT shelve or postpone it.", context: "Opposite dialect meaning of 'to table' in US vs UK English." }
+      ],
+      responseQuote: "Thank you Alistair. We share your concern on batch 408. Let us bring this to the table immediately. Our lead metallurgist is pulling the profilometer calibration records now, and we have placed an immediate quality quarantine hold on the batch.",
+      quiz: {
+        prompt: "In British aerospace English, what does Alistair mean by 'I have a slight reservation... shall we table this matter right away'?",
+        options: [
+          "He is mildly happy, and wants to postpone the discussion until next month.",
+          "He is reporting a critical failure, and wants to discuss it immediately right now on the call.",
+          "He wants to reserve a table at a local restaurant."
+        ],
+        correctIdx: 1,
+        feedback: "Correct! In British English, 'a slight reservation' is an understatement for critical alarm, and 'to table' means to discuss immediately!"
+      }
+    },
+
+    japanese: {
+      key: "japanese",
+      flag: "🇯🇵",
+      speakerName: "Kenji Takahashi",
+      speakerRole: "Senior Global Quality Coordinator • Nagoya",
+      dialectTag: "Japanese Corporate & Kaizen English",
+      avatarIcon: "fa-solid fa-industry",
+      transcriptHtml: `Thank you for your presentation on the plastic injection mold gating modification. While the dimensional stability appears sound, implementing this tooling modification before the SOP milestone... <span class="phonetic-spotlight">may be somewhat difficult</span>. Perhaps we might consider <span class="phonetic-spotlight">reflecting</span> on the historical shrink-rate data once more before final decision.`,
+      spokenText: `Thank you for your presentation on the plastic injection mold gating modification. While the dimensional stability appears sound, implementing this tooling modification before the SOP milestone... may be somewhat difficult. Perhaps we might consider reflecting on the historical shrink-rate data once more before final decision.`,
+      langCode: "ja-JP",
+      pitchVal: 0.98,
+      rateVal: 0.92,
+      phoneticPoints: [
+        "Epenthetic Final Vowels: Consonant clusters often split with subtle vowel inserts ('plastic' -> 'purasuchikku').",
+        "R / L Neutralization: Approximant liquid consonants /r/ and /l/ merged into alveolar tap [ɾ].",
+        "Purposeful Hesitation Pauses: Strategic silence before critical points ('...may be somewhat difficult') signaling polite deference.",
+        "High-Context Indirection: 'Reflecting on data' translates the Japanese concept of 'Hansei' (acknowledging mistakes / looking inward)."
+      ],
+      pragmaticRows: [
+        { said: "Implementing this tooling modification... may be somewhat difficult.", meant: "ABSOLUTE REJECTION. In Japanese business culture, 'difficult' means NO. Do not argue directly or push back aggressively on this call.", context: "High-context culture where overt disagreement is considered uncouth." },
+        { said: "Perhaps we might consider reflecting on the historical data once more.", meant: "Conduct Nemawashi (informal consensus building). Gather multi-year statistical proof before raising this topic again.", context: "Procedural requirement for risk aversion." }
+      ],
+      responseQuote: "Thank you very much Takahashi-san. We deeply respect your guidance regarding SOP stability. We will not proceed with tooling cuts. Instead, we will conduct a 500-shot mold flow analysis comparing 3-year historical shrink rates and present the data for your review next Tuesday.",
+      quiz: {
+        prompt: "When Takahashi-san says 'implementing this tooling modification before SOP may be somewhat difficult', what is his real meaning?",
+        options: [
+          "It is challenging but he wants you to proceed anyway immediately.",
+          "It is a polite but firm NO; do not proceed, and build prior consensus (Nemawashi) with statistical data first.",
+          "He wants to increase the budget by 50%."
+        ],
+        correctIdx: 1,
+        feedback: "Correct! In Japanese corporate culture, 'may be difficult' is a polite indirect refusal. Pushing back directly violates consensus etiquette."
+      }
+    }
+  };
+
+  /* ── 3. STATE & CONTROLLER VARIABLES ── */
+  let activeCaseKey = "laredo";
+  let activeOptionIdx = 2; // Default to optimal BATNA strategy
+  let activeAccentKey = "midwest";
+  let activeSpeed = 1.0;
+  let isTranscriptVisible = true;
+  let currentAudioUtterance = null;
+
+  /* ── 4. CASE STUDIES RENDERING LOGIC ── */
+  function renderCaseDossier() {
+    const c = CASE_STUDIES[activeCaseKey];
+    if (!c) return;
+
+    const tagEl = document.getElementById('case-tag');
+    const headlineEl = document.getElementById('case-headline');
+    const riskBadgeEl = document.getElementById('case-risk-badge');
+    const fineEl = document.getElementById('case-stake-fine');
+    const timeEl = document.getElementById('case-stake-time');
+    const personEl = document.getElementById('case-stake-person');
+    const briefingEl = document.getElementById('case-briefing-text');
+    const evidenceListEl = document.getElementById('case-evidence-list');
+
+    if (tagEl) tagEl.textContent = c.tag;
+    if (headlineEl) headlineEl.textContent = c.headline;
+    if (riskBadgeEl) riskBadgeEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>${c.risk}</span>`;
+    if (fineEl) fineEl.textContent = c.fine;
+    if (timeEl) timeEl.textContent = c.time;
+    if (personEl) personEl.textContent = c.person;
+    if (briefingEl) briefingEl.textContent = c.briefing;
+
+    if (evidenceListEl) {
+      evidenceListEl.innerHTML = c.evidence.map(item => `
+        <li>
+          <i class="fa-solid fa-circle-check"></i>
+          <span>${item}</span>
+        </li>
+      `).join('');
+    }
+
+    renderCaseOptions();
+    renderCaseTelemetry();
+  }
+
+  function renderCaseOptions() {
+    const c = CASE_STUDIES[activeCaseKey];
+    const container = document.getElementById('case-options-container');
+    if (!container || !c) return;
+
+    container.innerHTML = c.options.map((opt, idx) => {
+      const isSelected = idx === activeOptionIdx;
+      return `
+        <div class="decision-option-card ${isSelected ? 'selected' : ''}" data-idx="${idx}">
+          <div class="opt-header-row">
+            <span class="opt-tag ${opt.type}">${opt.tag}</span>
+            <div class="opt-indicator"></div>
+          </div>
+          <div class="opt-title">${opt.title}</div>
+          <p class="opt-desc">${opt.desc}</p>
+        </div>
+      `;
+    }).join('');
+
+    // Attach click handlers
+    container.querySelectorAll('.decision-option-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const idx = parseInt(card.getAttribute('data-idx'), 10);
+        activeOptionIdx = idx;
+        renderCaseOptions();
+        renderCaseTelemetry();
+      });
+    });
+  }
+
+  function renderCaseTelemetry() {
+    const c = CASE_STUDIES[activeCaseKey];
+    if (!c) return;
+    const opt = c.options[activeOptionIdx] || c.options[0];
+
+    const standingEl = document.getElementById('telem-standing');
+    const fillStandingEl = document.getElementById('telem-fill-standing');
+    const trustEl = document.getElementById('telem-trust');
+    const fillTrustEl = document.getElementById('telem-fill-trust');
+    const complianceEl = document.getElementById('telem-compliance');
+    const fillComplianceEl = document.getElementById('telem-fill-compliance');
+    const financialEl = document.getElementById('telem-financial');
+    const fillFinancialEl = document.getElementById('telem-fill-financial');
+    const coachTextEl = document.getElementById('coach-debrief-text');
+    const memoTextEl = document.getElementById('exec-memo-textarea');
+
+    if (standingEl) standingEl.textContent = `${opt.telem.standing}%`;
+    if (fillStandingEl) fillStandingEl.style.width = `${opt.telem.standing}%`;
+    if (trustEl) trustEl.textContent = `${opt.telem.trust}%`;
+    if (fillTrustEl) fillTrustEl.style.width = `${opt.telem.trust}%`;
+    if (complianceEl) complianceEl.textContent = `${opt.telem.compliance}%`;
+    if (fillComplianceEl) fillComplianceEl.style.width = `${opt.telem.compliance}%`;
+    if (financialEl) financialEl.textContent = opt.telem.financial;
+    if (fillFinancialEl) fillFinancialEl.style.width = `${Math.min(100, Math.max(20, opt.telem.standing))}%`;
+
+    if (coachTextEl) coachTextEl.textContent = opt.coach;
+    if (memoTextEl) memoTextEl.value = opt.memo;
+  }
+
+  /* ── 5. MULTI-ACCENT ACOUSTIC LAB RENDERING LOGIC ── */
+  function renderAccentPlayer() {
+    const a = ACCENT_DATA[activeAccentKey];
+    if (!a) return;
+
+    const avatarEl = document.getElementById('accent-avatar');
+    const nameEl = document.getElementById('accent-speaker-name');
+    const roleEl = document.getElementById('accent-speaker-role');
+    const dialectEl = document.getElementById('accent-dialect-tag');
+    const transcriptEl = document.getElementById('accent-transcript-text');
+
+    if (avatarEl) avatarEl.innerHTML = `<i class="${a.avatarIcon}"></i>`;
+    if (nameEl) nameEl.textContent = a.speakerName;
+    if (roleEl) roleEl.textContent = a.speakerRole;
+    if (dialectEl) dialectEl.textContent = a.dialectTag;
+    if (transcriptEl) transcriptEl.innerHTML = a.transcriptHtml;
+
+    renderAccentDecoder();
+    renderAccentQuiz();
+  }
+
+  function renderAccentDecoder() {
+    const a = ACCENT_DATA[activeAccentKey];
+    if (!a) return;
+
+    const phoneticBody = document.getElementById('decoder-phonetic-body');
+    const pragmaticBody = document.getElementById('decoder-pragmatic-body');
+    const responseBody = document.getElementById('decoder-response-body');
+
+    if (phoneticBody) {
+      phoneticBody.innerHTML = `
+        <ul class="phonetic-point-list">
+          ${a.phoneticPoints.map(pt => `<li><i class="fa-solid fa-angle-right"></i><span>${pt}</span></li>`).join('')}
+        </ul>
+      `;
+    }
+
+    if (pragmaticBody) {
+      pragmaticBody.innerHTML = `
+        <table class="pragmatic-table">
+          <thead>
+            <tr>
+              <th>Said (Literal)</th>
+              <th>Meant (Real Subtext)</th>
+              <th>Cultural Context</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${a.pragmaticRows.map(row => `
+              <tr>
+                <td><strong>"${row.said}"</strong></td>
+                <td><span style="color:#b45309; font-weight:700;">${row.meant}</span></td>
+                <td><small style="color:#64748b;">${row.context}</small></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    if (responseBody) {
+      responseBody.innerHTML = `
+        <p style="margin:0 0 6px 0; font-size:0.84rem; color:#475569;">
+          Recommended Diplomatic C1 Formulation (Engineered for Mexican Plant Leadership):
+        </p>
+        <div class="response-quote-box">
+          "${a.responseQuote}"
+        </div>
+      `;
+    }
+  }
+
+  function renderAccentQuiz() {
+    const a = ACCENT_DATA[activeAccentKey];
+    if (!a || !a.quiz) return;
+
+    const promptEl = document.getElementById('accent-quiz-prompt');
+    const optionsContainer = document.getElementById('accent-quiz-options');
+    const feedbackBox = document.getElementById('accent-quiz-feedback');
+    const scoreEl = document.getElementById('accent-quiz-score');
+
+    if (promptEl) promptEl.textContent = a.quiz.prompt;
+    if (feedbackBox) {
+      feedbackBox.style.display = 'none';
+      feedbackBox.innerHTML = '';
+    }
+    if (scoreEl) scoreEl.textContent = 'Score: 100%';
+
+    if (optionsContainer) {
+      optionsContainer.innerHTML = a.quiz.options.map((optText, oIdx) => `
+        <button class="quiz-opt-btn" data-oidx="${oIdx}">
+          ${String.fromCharCode(65 + oIdx)}. ${optText}
+        </button>
+      `).join('');
+
+      optionsContainer.querySelectorAll('.quiz-opt-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const selectedOidx = parseInt(btn.getAttribute('data-oidx'), 10);
+          const isCorrect = selectedOidx === a.quiz.correctIdx;
+
+          optionsContainer.querySelectorAll('.quiz-opt-btn').forEach((b, bIdx) => {
+            b.disabled = true;
+            if (bIdx === a.quiz.correctIdx) {
+              b.classList.add('correct');
+            } else if (b === btn) {
+              b.classList.add('incorrect');
+            }
+          });
+
+          if (feedbackBox) {
+            feedbackBox.style.display = 'block';
+            if (isCorrect) {
+              feedbackBox.style.background = '#ecfdf5';
+              feedbackBox.style.color = '#065f46';
+              feedbackBox.style.border = '1px solid #a7f3d0';
+              feedbackBox.innerHTML = `<strong>✓ Perfect!</strong> ${a.quiz.feedback}`;
+              if (scoreEl) scoreEl.textContent = 'Score: 100% (Passed)';
+            } else {
+              feedbackBox.style.background = '#fef2f2';
+              feedbackBox.style.color = '#991b1b';
+              feedbackBox.style.border = '1px solid #fecaca';
+              feedbackBox.innerHTML = `<strong>Notice:</strong> Review the 3-Layer Decoder on the right. ${a.quiz.feedback}`;
+              if (scoreEl) scoreEl.textContent = 'Score: 60% (Review Pragmatics)';
+            }
+          }
+        });
+      });
+    }
+  }
+
+  /* ── 6. AUDIO PLAYBACK & SYNTHESIS CONTROLLER ── */
+  function playAccentAudio() {
+    const a = ACCENT_DATA[activeAccentKey];
+    if (!a) return;
+
+    const playBtn = document.getElementById('btn-play-accent-audio');
+    const playerCard = document.querySelector('.acoustic-player-card');
+    const statusText = document.getElementById('accent-audio-status');
+
+    if (typeof window === 'undefined' || !window.speechSynthesis) {
+      if (statusText) statusText.innerHTML = '<i class="fa-solid fa-check"></i> Audio Simulation Active (Headless)';
+      return;
+    }
+
+    const synth = window.speechSynthesis;
+    synth.cancel();
+
+    const utter = new SpeechSynthesisUtterance(a.spokenText);
+    utter.rate = a.rateVal * activeSpeed;
+    utter.pitch = a.pitchVal;
+
+    // Try to find matching voice locale
+    const voices = synth.getVoices ? synth.getVoices() : [];
+    if (voices.length > 0) {
+      const match = voices.find(v => v.lang && (v.lang.toLowerCase() === a.langCode.toLowerCase() || v.lang.toLowerCase().startsWith(a.langCode.slice(0, 2))));
+      if (match) utter.voice = match;
+    }
+
+    utter.onstart = () => {
+      if (playerCard) playerCard.classList.add('playing');
+      if (playBtn) playBtn.innerHTML = '<i class="fa-solid fa-pause"></i> <span>Playing Stream...</span>';
+      if (statusText) statusText.innerHTML = `<i class="fa-solid fa-volume-high" style="color:#38bdf8;"></i> Streaming ${a.dialectTag}`;
+    };
+
+    utter.onend = () => {
+      if (playerCard) playerCard.classList.remove('playing');
+      if (playBtn) playBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span>Play Native Audio</span>';
+      if (statusText) statusText.innerHTML = '<i class="fa-solid fa-circle-check"></i> Playback Complete';
+    };
+
+    utter.onerror = () => {
+      if (playerCard) playerCard.classList.remove('playing');
+      if (playBtn) playBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span>Play Native Audio</span>';
+      if (statusText) statusText.innerHTML = '<i class="fa-solid fa-circle-dot"></i> Ready to Stream';
+    };
+
+    synth.speak(utter);
+    currentAudioUtterance = utter;
+  }
+
+  function stopAccentAudio() {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    const playerCard = document.querySelector('.acoustic-player-card');
+    const playBtn = document.getElementById('btn-play-accent-audio');
+    if (playerCard) playerCard.classList.remove('playing');
+    if (playBtn) playBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span>Play Native Audio</span>';
+  }
+
+  /* ── 7. ATTACH SECTION EVENT LISTENERS ── */
+  // Mode Tab Switcher (Cases vs Accents)
+  const tabBtnCases = document.getElementById('tab-btn-cases');
+  const tabBtnAccents = document.getElementById('tab-btn-accents');
+  const subpanelCases = document.getElementById('exec-subpanel-cases');
+  const subpanelAccents = document.getElementById('exec-subpanel-accents');
+
+  if (tabBtnCases && tabBtnAccents) {
+    tabBtnCases.addEventListener('click', () => {
+      tabBtnCases.classList.add('active');
+      tabBtnAccents.classList.remove('active');
+      if (subpanelCases) subpanelCases.style.display = 'block';
+      if (subpanelAccents) {
+        subpanelAccents.style.display = 'none';
+        stopAccentAudio();
+      }
+    });
+
+    tabBtnAccents.addEventListener('click', () => {
+      tabBtnAccents.classList.add('active');
+      tabBtnCases.classList.remove('active');
+      if (subpanelCases) subpanelCases.style.display = 'none';
+      if (subpanelAccents) subpanelAccents.style.display = 'block';
+      renderAccentPlayer();
+    });
+  }
+
+  // Case Chips Switcher
+  const caseChips = execSection.querySelectorAll('.case-chip');
+  caseChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      caseChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeCaseKey = chip.getAttribute('data-case');
+      activeOptionIdx = 2; // Reset to optimal BATNA option
+      renderCaseDossier();
+    });
+  });
+
+  // Copy Memo Button
+  const btnCopyMemo = document.getElementById('btn-copy-memo');
+  const memoTextarea = document.getElementById('exec-memo-textarea');
+  if (btnCopyMemo && memoTextarea) {
+    btnCopyMemo.addEventListener('click', () => {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(memoTextarea.value).then(() => {
+          btnCopyMemo.innerHTML = '<i class="fa-solid fa-check"></i> <span>Copied!</span>';
+          setTimeout(() => {
+            btnCopyMemo.innerHTML = '<i class="fa-solid fa-copy"></i> <span>Copy Memo</span>';
+          }, 2000);
+        });
+      } else {
+        memoTextarea.select();
+        document.execCommand('copy');
+        btnCopyMemo.innerHTML = '<i class="fa-solid fa-check"></i> <span>Copied!</span>';
+        setTimeout(() => {
+          btnCopyMemo.innerHTML = '<i class="fa-solid fa-copy"></i> <span>Copy Memo</span>';
+        }, 2000);
+      }
+
+      if (typeof showOfflineToast === 'function') {
+        showOfflineToast("Memorandum Copied", "Executive position memorandum copied to clipboard for direct email transmission.", 100, true);
+      }
+    });
+  }
+
+  // Accent Chips Switcher
+  const accentChips = execSection.querySelectorAll('.accent-chip');
+  accentChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      accentChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeAccentKey = chip.getAttribute('data-accent');
+      stopAccentAudio();
+      renderAccentPlayer();
+    });
+  });
+
+  // Audio Play Button
+  const playAccentBtn = document.getElementById('btn-play-accent-audio');
+  if (playAccentBtn) {
+    playAccentBtn.addEventListener('click', () => {
+      const playerCard = document.querySelector('.acoustic-player-card');
+      if (playerCard && playerCard.classList.contains('playing')) {
+        stopAccentAudio();
+      } else {
+        playAccentAudio();
+      }
+    });
+  }
+
+  // Cadence / Speed Switchers
+  const speedBtns = execSection.querySelectorAll('.speed-btn');
+  speedBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      speedBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeSpeed = parseFloat(btn.getAttribute('data-speed')) || 1.0;
+      const playerCard = document.querySelector('.acoustic-player-card');
+      if (playerCard && playerCard.classList.contains('playing')) {
+        stopAccentAudio();
+        playAccentAudio();
+      }
+    });
+  });
+
+  // Toggle Transcript Button
+  const btnToggleTranscript = document.getElementById('btn-toggle-transcript-en');
+  const transcriptBody = document.getElementById('accent-transcript-text');
+  if (btnToggleTranscript && transcriptBody) {
+    btnToggleTranscript.addEventListener('click', () => {
+      isTranscriptVisible = !isTranscriptVisible;
+      transcriptBody.style.display = isTranscriptVisible ? 'block' : 'none';
+      btnToggleTranscript.innerHTML = isTranscriptVisible 
+        ? '<i class="fa-solid fa-eye-slash"></i> <span>Hide</span>'
+        : '<i class="fa-solid fa-eye"></i> <span>Show</span>';
+    });
+  }
+
+  // Initial Hydration
+  renderCaseDossier();
+  renderAccentPlayer();
+}
+
+/* ==========================================================================
+   PHASE 6 CONTROLLER: STEMBot Socratic AI Engineering Copilot & Lexical Engine
+   Socratic Feynman Evaluator • 3-Tier Lexical Upgrader • Technical Mock Audit
+   ========================================================================== */
+
+const STEMBOT_SCENARIOS = {
+  automotive_cpk: {
+    key: "automotive_cpk",
+    title: "Automotive: Cpk Degradation & 8D Containment (IATF 16949)",
+    prompt: "Your automated torque spindle on station 04-B experienced a process capability collapse from Cpk 1.67 down to 1.12 over the last shift. Explain in plain technical English to your Detroit OEM quality auditor why this occurred, how you isolated the root cause, and what permanent containment was enacted.",
+    keywords: ["torque", "spindle", "cpk", "containment", "root cause", "runout", "bearing", "8d", "iatf", "quarantine"],
+    sampleResponse: "During the second shift, thermal expansion caused excessive radial runout on the station 04-B torque spindle, resulting in a Cpk degradation from 1.67 to 1.12. As immediate D3 containment, we quarantined 420 fasteners and activated a secondary calibrated pneumatic driver with 100% manual torque verification. Root cause analysis using an Ishikawa diagram isolated bearing wear in the spindle gearhead. We replaced the spindle cartridge and enacted preventive vibration monitoring per IATF 16949 standards.",
+    collocations: ["radial runout", "Cpk degradation", "D3 containment", "Ishikawa diagram", "spindle cartridge", "preventive vibration monitoring"]
+  },
+  medtech_eto: {
+    key: "medtech_eto",
+    title: "MedTech: EtO Sterilization Residuals vs Bioburden (ISO 11135)",
+    prompt: "Your ethylene oxide (EtO) sterilization cycle for catheter packages showed elevated residual gas levels (EO / ECH) exceeding ISO 10993-7 allowable limits, while pre-sterilization bioburden remained under 100 CFU. Defend your aeration extension protocol to the FDA regulatory inspector.",
+    keywords: ["eto", "ethylene oxide", "residual", "aeration", "bioburden", "iso 11135", "iso 10993", "cfu", "quarantine", "desorption"],
+    sampleResponse: "While pre-sterilization bioburden complied with ISO 11737 at under 35 CFU, post-cycle gas chromatography detected ethylene oxide residuals at 4.2 ppm, slightly exceeding the 4.0 ppm threshold under ISO 10993-7. As immediate containment, we quarantined the entire pallet in the heated degassing chamber at 45°C. Desorption kinetics confirmed that extending the heated aeration phase by 18 hours dissipated residuals below 1.2 ppm without degrading packaging seal integrity or sterility assurance level (SAL 10^-6).",
+    collocations: ["gas chromatography", "ethylene oxide residuals", "degassing chamber", "desorption kinetics", "sterility assurance level", "seal integrity"]
+  },
+  semi_esd: {
+    key: "semi_esd",
+    title: "Semiconductors: ESD Charge Neutralization during Dicing (SEMI E10)",
+    prompt: "During diamond blade dicing of 3nm wafer lots, gate-oxide breakdown was detected on die edges due to static triboelectric accumulation. Explain how you upgraded the DI water ionization system to eliminate electrostatic discharge.",
+    keywords: ["esd", "electrostatic", "wafer", "dicing", "gate-oxide", "breakdown", "ionization", "di water", "triboelectric", "semi"],
+    sampleResponse: "During high-speed diamond wafer dicing, friction between the blade and silicon substrate induced a triboelectric surface charge exceeding 650V, causing gate-oxide breakdown on peripheral dies. Root cause investigation showed the deionized water carbonation module was depleted, raising DI resistivity above 18 Megaohms. We recalibrated the CO2 bubbler injection to maintain water conductivity at 20 microsiemens/cm and installed localized ionizing air blowers across the chuck table per ANSI/ESD S20.20.",
+    collocations: ["triboelectric surface charge", "gate-oxide breakdown", "deionized water carbonation", "DI resistivity", "ionizing air blowers", "ANSI/ESD S20.20"]
+  },
+  trade_anexo24: {
+    key: "trade_anexo24",
+    title: "Logistics: Laredo Customs Hold & Anexo 24 Temporality (USMCA)",
+    prompt: "A shipment of specialized aluminum extrusions from Monterrey is detained at the World Trade Bridge in Laredo due to a tariff classification discrepancy between Mexico's TIGIE and US HTSUS, threatening line-down at your Nashville assembly plant. Formulate your customs broker escalation statement.",
+    keywords: ["customs", "anexo 24", "laredo", "tariff", "htsus", "tigie", "usmca", "fca", "broker", "pedimento"],
+    sampleResponse: "The shipment of custom 6061-T6 aluminum extrusions is currently detained at the Laredo World Trade Bridge due to an HTSUS 7604.21 vs 7604.29 tariff classification discrepancy between our Mexican customs pedimento and US entry summary. Because Nashville assembly faces line stoppage in 6 hours, we have requested an immediate US Customs CBP entry under bond with commercial invoice and Mill Test Certificate verification, preserving USMCA Chapter 4 preferential duty treatment under Incoterms FCA Laredo.",
+    collocations: ["HTSUS tariff classification", "entry under bond", "Mill Test Certificate", "USMCA preferential duty", "Incoterms FCA", "pedimento temporal"]
+  },
+  energy_substation: {
+    key: "energy_substation",
+    title: "Energy: 40MW Reverse Power Harmonic Trip (CENACE Code 2.0)",
+    prompt: "Your Querétaro hyperscale data center tripped its 115kV utility tie breaker during a generator step-load shed test due to reverse active power and 5th harmonic voltage distortion. Explain the corrective interlock tuning to the CENACE grid operator.",
+    keywords: ["substation", "cenace", "harmonic", "trip", "breaker", "reverse power", "generator", "interlock", "grid", "voltage"],
+    sampleResponse: "During the 100% step-load transfer test on our 40MW UPS bus, sudden load rejection caused generator over-frequency and induced reverse active power flow of 3.2MW back toward the 115kV utility grid, triggering relay function 32R and 5th harmonic distortion exceeding CENACE Código de Red 2.0 limits. We have recalibrated relay 32R pickup delay to 450 milliseconds, tuned the active harmonic filter compensation, and established a coordinated interlock sequence with automatic load bank absorption.",
+    collocations: ["step-load transfer", "reverse active power", "relay function 32R", "5th harmonic distortion", "CENACE Código de Red", "active harmonic filter"]
+  }
+};
+
+const STEMBOT_LEXICAL_DATABASE = {
+  "stop the line": {
+    sop: "Initiate immediate emergency line stop; quarantine lot #4492 under non-conformance quarantine protocol pending dimensional verification.",
+    eightD: "Enact D3 Interim Containment Action; segregate non-compliant sub-assemblies and execute 100% sorting audit across upstream feeder stations.",
+    exec: "We are escalating a critical quality excursion impacting line takt time; comprehensive containment is in place while root cause Ishikawa analysis proceeds."
+  },
+  "customer is mad": {
+    sop: "Notify plant dispatch and supervisor that customer quality engineering has placed shipments on hold pending delivery schedule alignment.",
+    eightD: "Issue official customer notification memo containing 24-hour containment timeline, sorting results, and interim disposition status.",
+    exec: "We are proactively managing customer stakeholder expectations by presenting verified recovery milestones and air-freight expedited schedules."
+  },
+  "weld broke": {
+    sop: "Shut down robotic welding cell #02; inspect wire feed nozzle for spatter buildup and check argon shielding gas flow rate.",
+    eightD: "Execute destructive weld cross-section micro-etching; investigate metallurgical root cause for lack of penetration and weld bead porosity.",
+    exec: "Metallurgical failure analysis confirms weld bead fatigue due to heat-affected zone embrittlement; structural containment is certified per AWS D1.1."
+  },
+  "circuit test": {
+    sop: "Halt ICT in-circuit test fixture; clean test pogo pins with isopropyl alcohol and verify probe contact resistance.",
+    eightD: "Conduct Gauge R&R metrology study on ICT fixture; evaluate false-failure rate and isolate transient noise on analog sensor lines.",
+    exec: "Metrology audit indicates test fixture measurement variance exceeding 10%; hardware recalibration underway with zero escape risk to final assembly."
+  }
+};
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function setupStemBotSocraticCopilot() {
+  const drawer = document.getElementById('stembot-copilot-drawer');
+  const fab = document.getElementById('stembot-fab-copilot');
+  if (!drawer || !fab) return;
+
+  window.toggleStemBotCopilot = function(forceOpen) {
+    const isVisible = drawer.style.display !== 'none';
+    const shouldOpen = (forceOpen !== undefined) ? forceOpen : !isVisible;
+    drawer.style.display = shouldOpen ? 'flex' : 'none';
+    drawer.setAttribute('aria-hidden', String(!shouldOpen));
+    if (shouldOpen) {
+      const input = document.getElementById('stembot-feynman-input');
+      if (input) setTimeout(() => input.focus(), 150);
+    }
+  };
+
+  window.switchStemBotTab = function(tabKey) {
+    const tabs = drawer.querySelectorAll('.stembot-tab-btn');
+    const contents = drawer.querySelectorAll('.stembot-tab-content');
+    tabs.forEach(t => t.classList.toggle('active', t.getAttribute('data-stembot-tab') === tabKey));
+    contents.forEach(c => {
+      const match = c.id === `stembot-tab-${tabKey}`;
+      c.style.display = match ? 'block' : 'none';
+      c.classList.toggle('active', match);
+    });
+  };
+
+  window.loadStemBotScenario = function(scenarioKey) {
+    const scenario = STEMBOT_SCENARIOS[scenarioKey];
+    if (!scenario) return;
+    const promptEl = document.getElementById('stembot-scenario-prompt');
+    if (promptEl) promptEl.textContent = scenario.prompt;
+    const resultBox = document.getElementById('stembot-feynman-result');
+    if (resultBox) resultBox.style.display = 'none';
+    const input = document.getElementById('stembot-feynman-input');
+    if (input) {
+      input.value = '';
+      updateFeynmanWordCount('');
+    }
+  };
+
+  function updateFeynmanWordCount(text) {
+    const counter = document.getElementById('stembot-feynman-wordcount');
+    if (!counter) return;
+    const words = (text || '').trim().split(/\s+/).filter(Boolean).length;
+    counter.textContent = `${words} words`;
+  }
+
+  const feynmanInput = document.getElementById('stembot-feynman-input');
+  if (feynmanInput) {
+    feynmanInput.addEventListener('input', (e) => {
+      updateFeynmanWordCount(e.target.value);
+    });
+  }
+
+  window.loadSampleFeynmanExplanation = function() {
+    const select = document.getElementById('stembot-feynman-scenario-select');
+    const key = select ? select.value : 'automotive_cpk';
+    const scenario = STEMBOT_SCENARIOS[key];
+    if (!scenario) return;
+    const input = document.getElementById('stembot-feynman-input');
+    if (input) {
+      input.value = scenario.sampleResponse;
+      updateFeynmanWordCount(scenario.sampleResponse);
+    }
+  };
+
+  window.evaluateFeynmanExplanation = function() {
+    const select = document.getElementById('stembot-feynman-scenario-select');
+    const key = select ? select.value : 'automotive_cpk';
+    const scenario = STEMBOT_SCENARIOS[key];
+    const input = document.getElementById('stembot-feynman-input');
+    const text = input ? input.value.trim() : '';
+    if (!text || !scenario) {
+      alert("Please provide an engineering explanation before requesting Feynman evaluation.");
+      return;
+    }
+
+    const lower = text.toLowerCase();
+    let hitCount = 0;
+    scenario.keywords.forEach(kw => {
+      if (lower.includes(kw.toLowerCase())) hitCount++;
+    });
+
+    const ratio = Math.min(1, hitCount / (scenario.keywords.length * 0.6));
+    const score = Math.round(75 + (ratio * 23));
+
+    const resultBox = document.getElementById('stembot-feynman-result');
+    const scoreEl = document.getElementById('stembot-feynman-score');
+    const headlineEl = document.getElementById('stembot-feynman-headline');
+    const summaryEl = document.getElementById('stembot-feynman-summary');
+    const clarityEl = document.getElementById('feynman-rubric-clarity');
+    const lexicalEl = document.getElementById('feynman-rubric-lexical');
+    const rootcauseEl = document.getElementById('feynman-rubric-rootcause');
+    const collocationsWrap = document.getElementById('stembot-detected-collocations');
+
+    if (scoreEl) scoreEl.textContent = `${score}%`;
+    if (clarityEl) clarityEl.textContent = `${(score / 10).toFixed(1)}/10`;
+    if (lexicalEl) lexicalEl.textContent = `${Math.min(9.8, (score / 10 + 0.2)).toFixed(1)}/10`;
+    if (rootcauseEl) rootcauseEl.textContent = `${Math.min(9.6, (score / 10 - 0.1)).toFixed(1)}/10`;
+
+    if (score >= 90) {
+      if (headlineEl) headlineEl.textContent = "Outstanding Socratic Precision (C1 Executive)";
+      if (summaryEl) summaryEl.textContent = "Exemplary mechanical articulation with zero passive hedging. Ready for official OEM/regulatory cross-border review.";
+    } else {
+      if (headlineEl) headlineEl.textContent = "Acceptable Technical Foundation (B2 Operational)";
+      if (summaryEl) summaryEl.textContent = "Sound general reasoning. To achieve C1 mastery, replace casual verbs with exact engineering failure modes.";
+    }
+
+    if (collocationsWrap) {
+      collocationsWrap.innerHTML = scenario.collocations.map(c => `<span class="lex-chip">${escapeHtml(c)}</span>`).join('');
+    }
+
+    if (resultBox) {
+      resultBox.style.display = 'block';
+      if (typeof resultBox.scrollIntoView === 'function') {
+        resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  };
+
+  window.setLexicalInput = function(phrase) {
+    const input = document.getElementById('stembot-lexical-input');
+    if (input) input.value = phrase;
+    window.runLexicalUpgrade();
+  };
+
+  window.runLexicalUpgrade = function() {
+    const input = document.getElementById('stembot-lexical-input');
+    const phrase = (input ? input.value.trim().toLowerCase() : '');
+    let matchedKey = Object.keys(STEMBOT_LEXICAL_DATABASE).find(k => phrase.includes(k));
+    if (!matchedKey) matchedKey = "stop the line";
+    const data = STEMBOT_LEXICAL_DATABASE[matchedKey];
+
+    const sopEl = document.getElementById('reg-text-sop');
+    const eightDEl = document.getElementById('reg-text-8d');
+    const execEl = document.getElementById('reg-text-exec');
+
+    if (sopEl) sopEl.textContent = `"${data.sop}"`;
+    if (eightDEl) eightDEl.textContent = `"${data.eightD}"`;
+    if (execEl) execEl.textContent = `"${data.exec}"`;
+
+    const container = document.getElementById('stembot-upgraded-registers');
+    if (container && typeof container.scrollIntoView === 'function') {
+      container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  };
+
+  window.copyRegisterText = function(targetId, btn) {
+    const el = document.getElementById(targetId);
+    if (!el) return;
+    const cleanText = el.textContent.replace(/^"|"$/g, '').trim();
+    navigator.clipboard.writeText(cleanText).then(() => {
+      const origHtml = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+      btn.style.color = '#10b981';
+      setTimeout(() => {
+        btn.innerHTML = origHtml;
+        btn.style.color = '';
+      }, 1800);
+    });
+  };
+
+  window.loadSampleAuditResponse = function() {
+    const input = document.getElementById('stembot-audit-user-reply');
+    if (input) {
+      input.value = "Our plant enforces closed-loop machine telemetry with supervisory PLC lockout. Any feed rate override beyond the APQP-certified ±5% process window automatically flags a SPC excursion and triggers an unbypassable supervisor interlock.";
+    }
+  };
+
+  window.submitAuditResponse = function() {
+    const input = document.getElementById('stembot-audit-user-reply');
+    const history = document.getElementById('stembot-audit-chat-history');
+    const text = input ? input.value.trim() : '';
+    if (!text || !history) return;
+
+    // Append user message
+    const userMsg = document.createElement('div');
+    userMsg.className = 'audit-msg user';
+    userMsg.innerHTML = `<strong>You:</strong> ${escapeHtml(text)}`;
+    history.appendChild(userMsg);
+    input.value = '';
+
+    // Append auditor evaluation reply
+    setTimeout(() => {
+      const auditorMsg = document.createElement('div');
+      auditorMsg.className = 'audit-msg auditor';
+      auditorMsg.innerHTML = `<strong>Arthur Vance:</strong> "Concurred. The closed-loop PLC lockout and APQP ±5% tolerance constraint provide objective evidentiary proof under IATF §8.5.1.1. Parameter audit closed with zero non-conformances."`;
+      history.appendChild(auditorMsg);
+      history.scrollTop = history.scrollHeight;
+    }, 450);
+  };
+}

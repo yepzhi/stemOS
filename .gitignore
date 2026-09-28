@@ -10,3 +10,5 @@ temp_page_*.png
 !.env.example
 .ignore
 docs/
+dist/
+*.pdf

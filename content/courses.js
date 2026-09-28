@@ -53565,7 +53565,7234 @@ var LXP_COURSES = {
                 ]
             }
         ]
+    },
+    "automotive-lean": {
+        "id": "automotive-lean",
+        "title": "Ingeniería Automotriz y Manufactura Esbelta",
+        "titleEN": "Automotive Engineering & Lean Manufacturing",
+        "level": "B1-B2",
+        "category": "engineering",
+        "description": "Sistemas de gestión de calidad IATF 16949:2016, Core Tools automotrices (APQP, PPAP, FMEA, SPC, MSA), resolución de problemas 8D y manufactura esbelta (Kaizen, SMED, OEE).",
+        "status": "full",
+        "totalModules": 6,
+        "standard": "IATF 16949:2016 / AIAG-VDA / Six Sigma / ISO 9001",
+        "modules": [
+            {
+                "id": "auto-m1",
+                "title": "IATF 16949:2016 Quality Management & Automotive Audits",
+                "titleES": "Gestión de Calidad IATF 16949:2016 y Auditorías Automotrices",
+                "icon": "fa-solid fa-clipboard-check",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "auto-m1-r1",
+                        "title": "IATF 16949:2016 Architecture, CSRs & Layered Process Audits",
+                        "duration": "15 min",
+                        "content": "> **Industry Alignment & Engineering Standard**: Aligned with **IATF 16949:2016 (International Automotive Task Force)** and **ISO 9001:2015**. Crucial for Quality Managers, Supplier Quality Engineers (SQEs), and Production Line Leads across North American automotive corridors (Saltillo, Ramos Arizpe, Bajío, Ciudad Juárez, Hermosillo).\n\n# IATF 16949:2016 Quality Management & Automotive Audits\n\n### 1. The Automotive Quality Standard Landscape\nIn the automotive supply chain, standard ISO 9001 certification is insufficient. Global Original Equipment Manufacturers (OEMs) such as General Motors, Ford, Stellantis, Tesla, BMW, and Volkswagen mandate that all Tier-1 and Tier-2 suppliers achieve and maintain **IATF 16949:2016** certification.\n\nUnlike generic standards, IATF 16949 emphasizes:\n- **Defect prevention** rather than defect detection.\n- **Reduction of variation and waste** throughout the entire automotive supply chain.\n- Strict integration of **Customer-Specific Requirements (CSRs)** directly into operational standard operating procedures (SOPs).\n- Full contingency planning and risk management for cyber-attacks, utility disruptions, labor shortages, and supplier insolvency.\n\n### 2. Customer-Specific Requirements (CSRs)\nA major audit trap for nearshoring manufacturing plants in Mexico is overlooking **Customer-Specific Requirements (CSRs)**. While IATF 16949 establishes the overarching baseline, each OEM publishes binding supplementary requirements:\n- **General Motors (GM)**: Mandates GM 1927 (Supplier Quality Statement of Requirements) and specific BIQS (Built In Quality Supply) levels.\n- **Ford Motor Company**: Implements Q1 certification criteria, requiring specific Failure Mode avoidance and Special Process Assessments (CQI-9 for heat treating, CQI-11 for plating, CQI-12 for coating).\n- **Stellantis**: Demands strict adherence to the Customer Specific Requirements for IATF 16949, including mandatory use of their e-supplier quality portal for Non-Conformance reporting.\n\n### 3. Layered Process Audits (LPAs)\nLayered Process Audits (LPAs) are a systematic audit methodology where multiple levels of plant management perform frequent, short, focused audits of high-risk workstations:\n- **Layer 1 (Supervisors & Team Leads)**: Daily audits covering critical poka-yoke verifications, operator standardized work adherence, and gage calibration status.\n- **Layer 2 (Middle Management & Quality Engineers)**: Weekly audits evaluating process parameter stability, scrap containment records, and shift handover logs.\n- **Layer 3 (Plant Manager & Operations Directors)**: Monthly high-level executive verifications ensuring systemic root cause resolution and adherence to the Quality Management System (QMS).\n\n### 4. Audit Findings: Minor vs Major Non-Conformances\nDuring third-party registrar audits (conducted by certified bodies such as DNV, TÜV Rheinland, BSI, or Lloyd's Register), audit findings are classified into:\n1. **Major Non-Conformance**: The absence or complete breakdown of a required IATF clause, or any situation that directly risks shipping non-conforming parts to an OEM assembly plant. A Major finding jeopardizes plant certification and triggers immediate 100% containment within 24 hours.\n2. **Minor Non-Conformance**: A single isolated lapse or documentation gap that does not directly compromise product integrity or customer delivery. Corrective action plans must typically be submitted within 30 to 60 days.\n3. **Opportunity for Improvement (OFI)**: An auditor observation highlighting an area where efficiency or robust poka-yoke could be improved, carrying no formal audit penalty."
+                    },
+                    {
+                        "id": "auto-m1-r2",
+                        "title": "Shopfloor Quarantine Protocols, Red Bins & Traceability Systems",
+                        "duration": "12 min",
+                        "content": "> **Shopfloor Operational Standard**: Aligned with **AIAG CQI-14 (Consumer Centric Warranty Management)** and **IATF Clause 8.7 (Control of Nonconforming Outputs)**.\n\n### 1. Quarantine & Segregation Protocols\nWhen a manufacturing process experiences an anomaly (such as tool breakage, dimensional drift, or surface porosity), instant containment is non-negotiable:\n- **Red Bins (Scrap Bins)**: Strategically positioned at each workstation. Any part that drops, trips a sensor, or fails an end-of-line functional check must be immediately placed in a locked Red Bin.\n- **Quarantine Cage / Hold Area**: Non-conforming or suspicious material must be physically segregated in a dedicated, locked quarantine cage with restricted badge access.\n- **Hold Tagging System**: Every quarantined pallet must bear a high-visibility, serialized **HOLD Tag** displaying the Julian production date, part number, lot quantity, suspected defect description, and the signature of the Quality Engineer of record.\n\n### 2. Digital Lot Traceability\nAutomotive recalls represent tens of millions of dollars in liability. Tier-1 suppliers must ensure forward and backward traceability within two hours of customer notification:\n- **Direct Part Marking (DPM)**: Laser-etched 2D DataMatrix barcodes applied directly to components (engine heads, brake calipers, steering knuckles).\n- **Genealogy Tracking**: Linking raw material heat lot numbers, machine cycle parameters (cavity pressure, cure temperature), operator badge IDs, and timestamp down to the specific vehicle identification number (VIN)."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Brad Cunningham (Lead SQA Auditor, Detroit OEM)",
+                        "content": "Mariana, good morning. We are reviewing your IATF 16949 audit trail for the high-voltage battery enclosure line. Can you walk me through how your team enforces our Customer-Specific Requirements regarding Layered Process Audits?",
+                        "translation": "Mariana, buenos días. Estamos revisando la pista de auditoría IATF 16949 para la línea de carcasas de batería de alto voltaje. ¿Podrías explicarme cómo hace cumplir tu equipo nuestros Requisitos Específicos del Cliente con respecto a las Auditorías de Proceso por Capas?",
+                        "pedagogicalNotes": "Target terms: audit trail, high-voltage battery enclosure, Customer-Specific Requirements (CSRs), Layered Process Audits (LPAs)"
+                    },
+                    {
+                        "role": "Ing. Mariana Cordero (Plant Quality Manager, Ramos Arizpe)",
+                        "content": "Certainly, Brad. We integrated GM 1927 CSRs directly into our digitized LPA platform. Shift supervisors execute Layer 1 checklist audits every four hours on their tablets, verifying torque tool calibrations and poka-yoke sensors. If an item fails, the system logs a real-time containment alert before parts reach the end-of-line tester.",
+                        "translation": "Por supuesto, Brad. Integramos los CSR de GM 1927 directamente en nuestra plataforma digitalizada de LPA. Los supervisores de turno ejecutan listas de verificación de Capa 1 cada cuatro horas en sus tabletas, verificando la calibración de herramientas de torque y sensores poka-yoke. Si un punto falla, el sistema registra una alerta de contención en tiempo real antes de que las piezas lleguen al probador de fin de línea.",
+                        "pedagogicalNotes": "Target terms: digitized LPA platform, Layer 1 checklist, torque tool calibration, poka-yoke sensors, containment alert"
+                    },
+                    {
+                        "role": "Brad Cunningham (Lead SQA Auditor, Detroit OEM)",
+                        "content": "Excellent. While walking the shop floor, I noticed pallet lot B-204 in the quarantine area with a yellow tag instead of a red hold tag. What is the current disposition status?",
+                        "translation": "Excelente. Mientras recorría la planta, noté la tarima lote B-204 en el área de cuarentena con una etiqueta amarilla en lugar de una etiqueta roja de retención. ¿Cuál es el estatus actual de disposición?",
+                        "pedagogicalNotes": "Target terms: quarantine area, hold tag, disposition status"
+                    },
+                    {
+                        "role": "Ing. Mariana Cordero (Plant Quality Manager, Ramos Arizpe)",
+                        "content": "Pallet B-204 is quarantined under an engineering evaluation hold. The CMM metrology lab flagged a minor burr on the gasket mating face. It is locked in our ERP system so it cannot be staged or scanned for shipping until our Quality Lead signs off on the disposition report.",
+                        "translation": "La tarima B-204 está en cuarentena bajo retención por evaluación de ingeniería. El laboratorio de metrología CMM detectó una rebaba menor en la cara de acoplamiento de la junta. Está bloqueada en nuestro sistema ERP para que no pueda prepararse ni escanearse para embarque hasta que nuestro Líder de Calidad firme el reporte de disposición.",
+                        "pedagogicalNotes": "Target terms: engineering evaluation hold, CMM metrology lab, burr, gasket mating face, locked in ERP, disposition report"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "IATF 16949",
+                        "ipa": "/aɪ.eɪ.tiː.ɛf sɪksˈtiːn naɪnˈfɔːrti naɪn/",
+                        "es": "Norma internacional de gestión de calidad para la industria automotriz",
+                        "category": "Normativa Automotriz",
+                        "definition": "The global technical specification and quality management standard for the automotive industry, established by the International Automotive Task Force.",
+                        "collocations": [
+                            "IATF certified supplier",
+                            "IATF recertification audit",
+                            "IATF gap analysis"
+                        ],
+                        "falseFriends": "No confundir con ISO 9001; IATF exige requisitos mucho más estrictos de cero defectos y trazabilidad.",
+                        "nativeUsage": "The stamping plant in Saltillo passed its IATF 16949 surveillance audit with zero major findings."
+                    },
+                    {
+                        "term": "Customer-Specific Requirements (CSR)",
+                        "ipa": "/ˌkʌs.tə.mɚ spəˈsɪf.ɪk rɪˈkwaɪr.mənts/",
+                        "es": "Requisitos Específicos del Cliente (CSR)",
+                        "category": "Auditoría y Cumplimiento",
+                        "definition": "Interpretations, additional technical mandates, or supplementary guidelines specified by a vehicle OEM that suppliers must incorporate into their QMS.",
+                        "collocations": [
+                            "OEM CSR manual",
+                            "meet customer-specific requirements",
+                            "CSR compliance matrix"
+                        ],
+                        "falseFriends": "No es simplemente la orden de compra; son manuales técnicos completos de ingeniería y calidad.",
+                        "nativeUsage": "We updated our PFMEA to incorporate Ford's latest CSR for automated weld inspection."
+                    },
+                    {
+                        "term": "Layered Process Audit (LPA)",
+                        "ipa": "/ˈleɪ.ɚd ˈprɑː.ses ˈɑː.dɪt/",
+                        "es": "Auditoría de Proceso por Capas (LPA)",
+                        "category": "Aseguramiento de Calidad",
+                        "definition": "An ongoing audit system conducted by various layers of plant management to verify that critical process steps and error-proofing controls are consistently followed.",
+                        "collocations": [
+                            "conduct daily LPAs",
+                            "LPA non-conformance tracking",
+                            "Layer 2 audit schedule"
+                        ],
+                        "falseFriends": "No es una auditoría anual; es una rutina diaria o semanal realizada por el propio personal de la planta.",
+                        "nativeUsage": "The plant manager completed his weekly LPA on the robotic spot-welding cell."
+                    },
+                    {
+                        "term": "Quarantine / Segregation",
+                        "ipa": "/ˈkwɔːr.ən.tiːn / ˌseɡ.rəˈɡeɪ.ʃən/",
+                        "es": "Cuarentena / Segregación de producto no conforme",
+                        "category": "Control en Piso",
+                        "definition": "The physical isolation and digital locking of non-conforming or suspect materials to prevent accidental assembly, processing, or shipment.",
+                        "collocations": [
+                            "quarantine cage",
+                            "place on hold",
+                            "segregate suspect lot"
+                        ],
+                        "falseFriends": "Quarantine no significa 'cuarenta días'; es cualquier periodo de retención e investigación física.",
+                        "nativeUsage": "All 500 steering knuckles from the thermal furnace batch were moved to the quarantine cage."
+                    },
+                    {
+                        "term": "Disposition",
+                        "ipa": "/ˌdɪs.pəˈzɪʃ.ən/",
+                        "es": "Disposición (destino oficial del material no conforme)",
+                        "category": "Gestión de Materiales",
+                        "definition": "The authorized decision regarding the fate of non-conforming material: scrap, rework, repair, return to vendor (RTV), or use as-is under customer concession.",
+                        "collocations": [
+                            "material disposition",
+                            "disposition committee",
+                            "authorize rework disposition"
+                        ],
+                        "falseFriends": "No significa 'actitud' en este contexto de manufactura; significa la resolución técnica y destino físico del lote.",
+                        "nativeUsage": "The quality engineer signed the disposition form to scrap the cracked aluminum valve bodies."
+                    },
+                    {
+                        "term": "Traceability",
+                        "ipa": "/ˌtreɪ.səˈbɪl.ə.ti/",
+                        "es": "Trazabilidad bidireccional",
+                        "category": "Control de Procesos",
+                        "definition": "The ability to track the complete history, application, or location of an automotive component by means of recorded identification (serial, batch, VIN).",
+                        "collocations": [
+                            "lot traceability",
+                            "2D barcode traceability",
+                            "backward genealogy"
+                        ],
+                        "falseFriends": "Debe ser capaz de aislar lotes específicos en minutos, no en días.",
+                        "nativeUsage": "Laser-etched DPM allows complete traceability of every transmission gear back to its steel melt heat."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Customer-Specific Requirements (CSRs)",
+                        "botQuestion": "Welcome to the IATF 16949 Audit Lab! When manufacturing tier-1 components for an OEM like GM, Ford, or Tesla, what do we call the supplementary technical and quality mandates published by that specific automaker? And why does IATF 16949 audit them so strictly?",
+                        "requiredKeywords": [
+                            "customer-specific",
+                            "csr",
+                            "mandates",
+                            "requirements"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Outstanding! Customer-Specific Requirements (CSRs) supplement IATF 16949 with OEM-mandated specifications that must be integrated directly into your control plans and SOPs.",
+                        "feedbackRetry": "Think about the acronym CSR. It represents the specific requirements each customer (OEM) obligates their suppliers to follow."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Non-conforming Material Disposition",
+                        "botQuestion": "A pallet of machined engine blocks has been placed in the quarantine cage because mounting hole depths drifted past tolerance. What is the formal manufacturing term for the authorized decision that determines whether the parts are scrapped, reworked, or returned?",
+                        "requiredKeywords": [
+                            "disposition",
+                            "rework",
+                            "scrap"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Spot on! 'Disposition' is the official engineering determination and authorized procedure that dictates the physical outcome (scrap, rework, or return to vendor) of quarantined material.",
+                        "feedbackRetry": "The term starts with 'disp-'. It is the formal legal/technical decision on the fate of non-conforming goods."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What is the primary difference between a Major Non-Conformance and a Minor Non-Conformance during an IATF 16949 audit?",
+                        "options": [
+                            "A Major Non-Conformance represents the absence or total breakdown of a system requirement that risks shipping non-conforming parts to the customer, while a Minor is an isolated lapse.",
+                            "A Major Non-Conformance only involves administrative paperwork errors, whereas a Minor involves physical machine stoppages.",
+                            "A Major Non-Conformance is resolved in 90 days, while a Minor must be resolved within 2 hours.",
+                            "There is no difference; both automatically revoke the plant's IATF certificate immediately."
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Under automotive quality protocols, what is the mandatory immediate action when suspect parts are found at an assembly workstation?",
+                        "options": [
+                            "Place suspect parts in locked Red Bins or the quarantine area with serialized Hold Tags and freeze ERP release",
+                            "Continue running the line and inspect the parts at the end of the shift",
+                            "Blend suspect parts with good parts to balance out the defect rate",
+                            "Ship the parts to the customer with an informal explanatory note"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is a Layered Process Audit (LPA)?",
+                        "options": [
+                            "An ongoing audit methodology conducted across multiple management tiers (supervisors, engineers, plant manager) to verify adherence to standardized work",
+                            "An annual financial review conducted by external Wall Street accountants",
+                            "A paint thickness test measuring the multiple layers of primer and clearcoat on a car body",
+                            "An audit conducted exclusively by the OEM customer once every five years"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Which organization developed and maintains the IATF 16949 standard?",
+                        "options": [
+                            "The International Automotive Task Force (IATF) in coordination with ISO",
+                            "The United States Department of Transportation (DOT)",
+                            "The Society of Automotive Engineers (SAE) exclusively",
+                            "The European Union Customs Union"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "auto-m2",
+                "title": "Advanced Product Quality Planning (APQP) & PPAP Level 3 Submission",
+                "titleES": "Planeación Avanzada de Calidad del Producto (APQP) y Sumisión PPAP Nivel 3",
+                "icon": "fa-solid fa-file-shield",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "auto-m2-r1",
+                        "title": "The 5 APQP Phases & Gateway Milestone Reviews",
+                        "duration": "14 min",
+                        "content": "> **Engineering Standard Reference**: Aligned with **AIAG APQP Manual (3rd Edition)** and **VDA Band 4**. Essential for Launch Managers, Program Managers, and Industrialization Engineers.\n\n# Advanced Product Quality Planning (APQP)\n\n### 1. Purpose of APQP\nAdvanced Product Quality Planning (APQP) is a structured framework defined by the automotive industry to ensure that a newly designed component or manufacturing process satisfies all customer requirements on time, within budget, and with zero launch defects.\n\nAPQP prevents the catastrophic costs of late engineering changes (ECNs) by shifting risk identification and mitigation to the earliest concept and prototyping stages.\n\n### 2. The 5 Sequential APQP Phases\n1. **Phase 1: Plan and Define Program**:\n   - Capturing the Voice of the Customer (VOC).\n   - Establishing design goals, reliability targets, preliminary bill of materials (BOM), and preliminary process flow diagram.\n2. **Phase 2: Product Design and Development**:\n   - Design Failure Mode and Effects Analysis (DFMEA).\n   - Design for Manufacturability and Assembly (DFM/DFA).\n   - Design verification and prototype build milestone. Reaching **Design Freeze**.\n3. **Phase 3: Process Design and Development**:\n   - Detailed Process Flow Diagram (PFD).\n   - Process Failure Mode and Effects Analysis (PFMEA).\n   - Pre-Launch Control Plan establishing inspection gates.\n   - Packaging specifications and work instruction sign-offs.\n4. **Phase 4: Product and Process Validation**:\n   - Significant Production Run (Run@Rate) conducted using production tooling, production speeds, and regular shopfloor operators.\n   - Measurement Systems Analysis (MSA / Gage R&R) and initial process capability studies ($C_{pk} ge 1.67$).\n   - Production Part Approval Process (**PPAP**) submission and customer sign-off.\n5. **Phase 5: Feedback, Assessment and Corrective Action**:\n   - Ramp-up to full volume production (SOP - Start of Production).\n   - Early Production Containment (Safe Launch Plan / Firewall).\n   - Continuous improvement, scrap reduction, and Lessons Learned integration."
+                    },
+                    {
+                        "id": "auto-m2-r2",
+                        "title": "PPAP Level 3: The 18 Required Elements & Part Submission Warrant (PSW)",
+                        "duration": "14 min",
+                        "content": "> **Quality Standard Reference**: Aligned with **AIAG PPAP Manual (4th Edition)**.\n\n### 1. Why PPAP Level 3 is the Universal Industry Standard\nThe Production Part Approval Process (PPAP) demonstrates that the manufacturing process is capable of consistently producing components that meet all engineering design specifications during actual production runs.\n\nWhile the AIAG PPAP manual outlines five submission levels (Level 1 through Level 5), **Level 3** is the automotive industry's universal default for all new tooling, design revisions, and plant relocations. Under Level 3, the supplier must submit the **Part Submission Warrant (PSW)** accompanied by product samples and complete supporting documentation.\n\n### 2. The 18 Core PPAP Elements\n1. **Design Records**: Ballooned (bubble) engineering prints matching every dimensional callout to an inspection number.\n2. **Authorized Engineering Change Documents**: Approved ECNs not yet incorporated into the master CAD print.\n3. **Customer Engineering Approval**: Formal validation test sign-off from OEM engineering.\n4. **DFMEA**: Design Failure Mode and Effects Analysis (if supplier is design-responsible).\n5. **Process Flow Diagram (PFD)**: Step-by-step visual map from receiving inspection to packaging.\n6. **PFMEA**: Process Failure Mode and Effects Analysis identifying risk scores.\n7. **Control Plan**: Prototype, Pre-launch, and Production Control Plans detailing inspection frequencies and sample sizes.\n8. **Measurement Systems Analysis (MSA)**: Gage R&R studies confirming gage error is below 10%.\n9. **Dimensional Results**: 100% CMM layout of all ballooned drawing characteristics on multiple sampled parts.\n10. **Material / Performance Test Results**: Metallurgical reports, salt-spray corrosion tests, tensile strength certifications.\n11. **Initial Process Studies**: Statistical process capability ($C_p / C_{pk}$) on all Key/Critical Characteristics.\n12. **Qualified Laboratory Documentation**: ISO/IEC 17025 accreditation certificates for internal and external testing labs.\n13. **Appearance Approval Report (AAR)**: Color, grain, and gloss sign-off for Class-A exterior and interior surfaces.\n14. **Sample Production Parts**: Physical components produced during the Run@Rate.\n15. **Master Sample**: Retained physical golden sample stored in metrology lab for tool wear comparison.\n16. **Checking Aids**: Calibration and certification documentation for custom checking fixtures and go/no-go gages.\n17. **Customer-Specific Requirements**: Verification records matching OEM-specific checklists (e.g., GM 1927).\n18. **Part Submission Warrant (PSW)**: The legal declaration signed by the supplier plant manager and quality director certifying complete compliance.\n\n### 3. IMDS (International Material Data System)\nBefore any OEM signs a PSW, the supplier must upload the exact chemical composition of every component to the **IMDS** portal to verify compliance with RoHS, REACH, and conflict mineral regulations."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Brad Jensen (OEM Launch Director, Detroit)",
+                        "content": "Carlos, we have the PPAP Level 3 gateway review next Tuesday for the electric drive axle housing. How did the 300-piece Run@Rate go at your Monterrey facility?",
+                        "translation": "Carlos, tenemos la revisión de compuerta de PPAP Nivel 3 el próximo martes para la carcasa del eje de tracción eléctrica. ¿Cómo resultó la corrida Run@Rate de 300 piezas en su planta de Monterrey?",
+                        "pedagogicalNotes": "Target terms: PPAP Level 3 gateway review, electric drive axle housing, Run@Rate"
+                    },
+                    {
+                        "role": "Ing. Carlos Mendoza (Program Manager, Monterrey)",
+                        "content": "The Run@Rate was successful, Brad. We ran at full line speed of 45 parts per hour over a continuous four-hour shift. All dimensional results from our Zeiss CMM layout matched the ballooned drawing, and our initial Cpk on the primary bearing bore diameter was 1.74.",
+                        "translation": "La corrida Run@Rate fue exitosa, Brad. Operamos a la velocidad nominal de 45 piezas por hora durante un turno continuo de cuatro horas. Todos los resultados dimensionales de nuestro reporte CMM Zeiss coincidieron con el plano con globos, y nuestro Cpk inicial en el diámetro del barreno del rodamiento principal fue de 1.74.",
+                        "pedagogicalNotes": "Target terms: full line speed, parts per hour, CMM layout, ballooned drawing, initial Cpk, bearing bore diameter"
+                    },
+                    {
+                        "role": "Brad Jensen (OEM Launch Director, Detroit)",
+                        "content": "What about the metallurgical lab reports and your IMDS material declaration? We cannot sign the Part Submission Warrant without the IMDS approval number.",
+                        "translation": "¿Qué hay de los reportes del laboratorio metalúrgico y su declaración de materiales en IMDS? No podemos firmar el Certificado de Sumisión de Pieza (PSW) sin el número de aprobación IMDS.",
+                        "pedagogicalNotes": "Target terms: metallurgical lab reports, IMDS material declaration, Part Submission Warrant (PSW), approval number"
+                    },
+                    {
+                        "role": "Ing. Carlos Mendoza (Program Manager, Monterrey)",
+                        "content": "The tensile and spectrometer reports from our ISO 17025 accredited lab were uploaded yesterday. Our chemical compliance team received the IMDS acceptance notice this morning. The PSW is pre-signed and ready for your final sign-off in the portal.",
+                        "translation": "Los reportes de tracción y espectrometría de nuestro laboratorio acreditado ISO 17025 se cargaron ayer. Nuestro equipo de cumplimiento químico recibió la notificación de aceptación de IMDS esta mañana. El PSW está prefirmado y listo para su aprobación final en el portal.",
+                        "pedagogicalNotes": "Target terms: tensile and spectrometer reports, ISO 17025 accredited lab, chemical compliance team, IMDS acceptance notice, pre-signed PSW"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "PPAP (Production Part Approval Process)",
+                        "ipa": "/ˈpiː.pæp/",
+                        "es": "Proceso de Aprobación de Partes de Producción",
+                        "category": "Validación de Producto",
+                        "definition": "The standardized automotive industry methodology used to establish confidence in suppliers and their production processes before commercial shipment.",
+                        "collocations": [
+                            "PPAP submission Level 3",
+                            "PPAP package sign-off",
+                            "obtain customer PPAP approval"
+                        ],
+                        "falseFriends": "No es simplemente enviar muestras; es un expediente de 18 elementos respaldado por evidencia estadística rigurosa.",
+                        "nativeUsage": "The plant cannot invoice production shipments until the OEM issues formal PPAP approval."
+                    },
+                    {
+                        "term": "Part Submission Warrant (PSW)",
+                        "ipa": "/ˌpiː.ɛsˈdʌbəl.juː/",
+                        "es": "Certificado de Sumisión de Pieza (Warrant)",
+                        "category": "Aprobación Legal y Calidad",
+                        "definition": "The summary document in a PPAP package that legally binds the supplier, certifying that production parts meet all customer engineering specifications.",
+                        "collocations": [
+                            "sign the PSW",
+                            "customer-approved PSW",
+                            "interim PSW approval"
+                        ],
+                        "falseFriends": "Warrant no significa 'garantía de consumidor' aquí; es una declaración jurada de cumplimiento de ingeniería.",
+                        "nativeUsage": "The quality director signed the Part Submission Warrant after verifying zero open dimensional deviations."
+                    },
+                    {
+                        "term": "Ballooned Drawing (Bubble Print)",
+                        "ipa": "/bəˈluːnd ˈdrɔː.ɪŋ/",
+                        "es": "Plano con globos de inspección numerados",
+                        "category": "Metrología e Ingeniería",
+                        "definition": "An engineering blueprint marked with numbered bubbles corresponding to each dimensional callout, GD&T tolerance, and note on the dimensional report.",
+                        "collocations": [
+                            "ballooned engineering print",
+                            "cross-reference balloon numbers",
+                            "CMM balloon layout"
+                        ],
+                        "falseFriends": "No es un plano inflado; 'balloon' se refiere a los círculos numerados asignados a cada cota.",
+                        "nativeUsage": "Every dimension on the ballooned drawing must match row-by-row with the CMM inspection report."
+                    },
+                    {
+                        "term": "Run@Rate",
+                        "ipa": "/rʌn æt reɪt/",
+                        "es": "Corrida de validación a régimen de producción nominal",
+                        "category": "Lanzamiento y Capacidad",
+                        "definition": "A physical production run where the supplier demonstrates capability to manufacture components at the quoted hourly rate using production tooling and labor.",
+                        "collocations": [
+                            "conduct customer Run@Rate",
+                            "pass Run@Rate capacity verification",
+                            "Run@Rate scrap rate"
+                        ],
+                        "falseFriends": "No es una carrera deportiva; es probar que la línea produce la cantidad prometida de piezas por hora sin paros.",
+                        "nativeUsage": "The OEM representative witnessed our four-hour Run@Rate to ensure we could sustain 60 parts per hour."
+                    },
+                    {
+                        "term": "IMDS (International Material Data System)",
+                        "ipa": "/ˌaɪ.ɛm.diːˈɛs/",
+                        "es": "Sistema Internacional de Datos de Materiales",
+                        "category": "Cumplimiento Ambiental",
+                        "definition": "The automotive industry's material data system used to catalog all chemical substances contained in motor vehicle components for environmental compliance.",
+                        "collocations": [
+                            "submit IMDS datasheet",
+                            "IMDS module approval",
+                            "REACH compliance via IMDS"
+                        ],
+                        "falseFriends": "Es un requisito regulatorio estricto sin el cual ningún OEM automotriz aprueba el PPAP.",
+                        "nativeUsage": "Our IMDS submission was rejected because the polymer supplier failed to disclose a flame-retardant additive."
+                    },
+                    {
+                        "term": "Safe Launch Plan (Firewall)",
+                        "ipa": "/seɪf lɔːntʃ plæn/",
+                        "es": "Plan de Lanzamiento Seguro (Inspección Cortafuegos)",
+                        "category": "Contención Temprana",
+                        "definition": "An intensive temporary inspection gate implemented during early production ramp-up to guarantee that zero defects escape to the customer facility.",
+                        "collocations": [
+                            "execute safe launch protocol",
+                            "100% firewall inspection",
+                            "exit safe launch criteria"
+                        ],
+                        "falseFriends": "Firewall no es un cortafuegos informático aquí; es una estación física de inspección redundante al 100%.",
+                        "nativeUsage": "We established a safe launch firewall station to perform 100% visual and torque checks on the first 10,000 steering columns."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "PPAP Submission Levels",
+                        "botQuestion": "In automotive manufacturing, what is the default PPAP submission level mandated by OEMs when approving new production tooling, which requires submitting the PSW, product samples, and complete supporting documentation?",
+                        "requiredKeywords": [
+                            "level 3",
+                            "level three",
+                            "3"
+                        ],
+                        "minKeywords": 1,
+                        "feedbackSuccess": "Correct! PPAP Level 3 is the universal default requirement across global automotive manufacturing, mandating full submission of samples, warrant, and supporting engineering data.",
+                        "feedbackRetry": "It is a single digit between 1 and 5. Most automotive launch engineers work exclusively with this specific level."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Run@Rate Purpose",
+                        "botQuestion": "Before an automaker approves high-volume production, the supplier must complete a 'Run@Rate'. What does this production milestone prove to the customer regarding line speed and capacity?",
+                        "requiredKeywords": [
+                            "capacity",
+                            "volume",
+                            "speed",
+                            "rate",
+                            "parts per hour"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Spot on! The Run@Rate proves that the manufacturing line can sustain the contracted production speed and volume (parts per hour) under realistic operating conditions without sacrificing quality.",
+                        "feedbackRetry": "Focus on machine velocity and volume. The customer wants to see that you can manufacture the required parts per hour."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What is the primary document in a PPAP package that legally binds the supplier and confirms compliance with all customer specifications?",
+                        "options": [
+                            "Part Submission Warrant (PSW)",
+                            "Purchase Order Receipt",
+                            "Shipping Bill of Lading",
+                            "Maintenance Work Order"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Why are engineering blueprints 'ballooned' during PPAP element preparation?",
+                        "options": [
+                            "To assign sequential reference numbers to every dimension and GD&T callout for 100% CMM layout tracking",
+                            "To indicate which sections of the drawing can be discarded by the machine operator",
+                            "To lighten the file size of the CAD model for email transfer",
+                            "To mark areas where cost reductions can be made without customer approval"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "In APQP Phase 4, what is the standard minimum Process Capability (Cpk) threshold required for initial approval of critical features?",
+                        "options": [
+                            "Cpk >= 1.67",
+                            "Cpk >= 0.50",
+                            "Cpk = 1.00 exactly",
+                            "Cpk <= 0.85"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is the purpose of uploading data to the IMDS (International Material Data System)?",
+                        "options": [
+                            "To catalog chemical substances and verify compliance with global environmental regulations (REACH, RoHS, ELV)",
+                            "To track hourly labor costs across Mexican assembly facilities",
+                            "To schedule ocean freight container bookings from Asia",
+                            "To calculate annual corporate income taxes for suppliers"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "auto-m3",
+                "title": "AIAG-VDA FMEA: Failure Modes, Effects & Action Priority (AP)",
+                "titleES": "FMEA AIAG-VDA: Modos de Falla, Efectos y Prioridad de Acción (AP)",
+                "icon": "fa-solid fa-triangle-exclamation",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "auto-m3-r1",
+                        "title": "Harmonized AIAG-VDA FMEA Methodology: Moving from RPN to Action Priority",
+                        "duration": "15 min",
+                        "content": "> **Engineering Standard Reference**: Aligned with the **AIAG & VDA FMEA Handbook (1st Edition)**. Essential for Product Engineers, Process Engineers, and Reliability Specialists.\n\n# AIAG-VDA FMEA: Failure Modes, Effects & Action Priority\n\n### 1. The Harmonization of Automotive FMEA\nIn 2019, the Automotive Industry Action Group (AIAG, United States) and the Verband der Automobilindustrie (VDA, Germany) harmonized their disparate FMEA manuals into a unified global standard: the **AIAG-VDA FMEA Handbook**.\n\nThis harmonization eliminated contradictory standards between American OEMs (General Motors, Ford, Stellantis) and German OEMs (Volkswagen, BMW, Mercedes-Benz), creating a standardized 7-step process for analyzing technical risk.\n\n### 2. The AIAG-VDA 7-Step Approach\n1. **Planning and Preparation**: Project definition, boundary diagrams, and 5T criteria (InTent, Timing, Team, Tasks, Tool).\n2. **Structure Analysis**: Visualizing the system structure (Process Item -> Process Step -> Process Work Element: 4M Man/Machine/Material/Environment).\n3. **Function Analysis**: Defining what the product or manufacturing process step is engineered to achieve.\n4. **Failure Analysis**: Identifying Failure Modes (FM), Failure Effects (FE), and Failure Causes (FC). Creating cause-and-effect failure chains.\n5. **Risk Analysis**: Evaluating Severity (S), Occurrence (O), and Detection (D), and assigning the **Action Priority (AP)**.\n6. **Optimization**: Developing preventive and detective mitigation actions, assigning responsibilities, and documenting new S, O, D ratings.\n7. **Results Documentation**: Executive summary, risk communication, and technical sign-off.\n\n### 3. The Death of RPN and Rise of Action Priority (AP)\nFor decades, automotive engineers relied on the **Risk Priority Number (RPN)**:\n$$\\text{RPN} = \\text{Severity} \\times \\text{Occurrence} \\times \\text{Detection}$$\n\nRPN suffered from a fatal mathematical flaw: multiplying ordinal numbers gave false confidence. For example:\n- **Scenario A**: $S = 10$ (Safety Hazard), $O = 2$ (Rare), $D = 2$ (High Detection) $\\implies \\text{RPN} = 40$.\n- **Scenario B**: $S = 3$ (Minor Blemish), $O = 4$, $D = 4$ $\\implies \\text{RPN} = 48$.\n\nUnder traditional thresholds (e.g., action required if $\\text{RPN} > 100$), engineers wrongly ignored Scenario A, even though a Severity 10 poses a life-threatening vehicle crash!\n\nUnder AIAG-VDA, RPN is officially deprecated. It is replaced by **Action Priority (AP)**:\n- **High (H)**: Highest priority for action. The team **must** identify an appropriate action to improve prevention or detection controls, or justify why current controls are adequate. Mandatory whenever Severity is 9-10 with moderate Occurrence.\n- **Medium (M)**: Medium priority. The team **should** identify actions to improve controls or justify why no action is taken.\n- **Low (L)**: Low priority. The team **may** identify actions to improve prevention or detection."
+                    },
+                    {
+                        "id": "auto-m3-r2",
+                        "title": "DFMEA vs PFMEA: Prevention vs Detection Controls in Assembly Lines",
+                        "duration": "12 min",
+                        "content": "> **Engineering Quality Standard**: Aligned with **SAE J1739** and **AIAG-VDA FMEA Clause 5**.\n\n### 1. DFMEA vs PFMEA\n- **DFMEA (Design FMEA)**: Analyzes how a product's design geometry, material properties, and tolerances could fail in the hands of the end-user (e.g., thermal fatigue of an inverter solder joint, plastic embrittlement).\n- **PFMEA (Process FMEA)**: Assumes the product design is correct. It analyzes how the physical manufacturing process (machining, pressing, soldering, torquing, coating) could introduce defects due to operator error, machine wear, or environmental drift.\n\n### 2. Prevention Controls vs Detection Controls\nWhen analyzing risk in a PFMEA, controls are strictly separated into two distinct categories:\n\n| Control Type | Definition | Example on the Shopfloor |\n| :--- | :--- | :--- |\n| **Prevention Control (PC)** | Eliminates or reduces the likelihood that the Failure Cause will occur in the first place (lowers Occurrence score). | Asymmetrical locating pins that physically prevent an operator from loading a stamping die backwards (Poka-Yoke). |\n| **Detection Control (DC)** | Detects the presence of the Failure Cause or Failure Mode before the part leaves the workstation or plant (lowers Detection score). | High-resolution machine vision camera or laser micrometer that inspects thread presence after tapping. |\n\n### 3. Special Characteristics: CC vs SC\nAutomotive prints highlight special characteristics with explicit symbols (inverted deltas, diamonds, or shields):\n- **Critical Characteristic (CC / Safety)**: Impacts vehicle safety, government regulations, or steering/braking control. Requires strict $C_{pk} \\ge 1.67$ and 100% error-proofing.\n- **Significant Characteristic (SC / Fit & Function)**: Impacts fit, finish, or downstream assembly operations without compromising passenger safety. Requires $C_{pk} \\ge 1.33$."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Dr. Elena Rostova (AIAG-VDA Master Facilitator)",
+                        "content": "David, let's review the PFMEA for the automated laser welding cell on the battery tray. In step 5, for the failure mode 'incomplete weld penetration', your severity is ranked at 9 because it compromises the structural integrity of the pack. What is your Action Priority?",
+                        "translation": "David, revisemos el PFMEA para la celda de soldadura láser automatizada en la bandeja de batería. En el paso 5, para el modo de falla 'penetración incompleta de soldadura', su severidad está clasificada en 9 porque compromete la integridad estructural del paquete. ¿Cuál es su Prioridad de Acción?",
+                        "pedagogicalNotes": "Target terms: PFMEA, laser welding cell, failure mode, weld penetration, severity rank, structural integrity, Action Priority"
+                    },
+                    {
+                        "role": "Ing. David Garza (Process Engineering Lead, Saltillo)",
+                        "content": "Under the new AIAG-VDA logic tables, Elena, with a Severity of 9 and an Occurrence of 4, our Action Priority came out as High (H). Our previous RPN was only 108, which previously slipped below our old corporate action threshold of 120.",
+                        "translation": "Bajo las nuevas tablas lógicas de AIAG-VDA, Elena, con una Severidad de 9 y una Ocurrencia de 4, nuestra Prioridad de Acción resultó como Alta (H). Nuestro RPN anterior era de solo 108, el cual antes quedaba por debajo de nuestro antiguo umbral corporativo de acción de 120.",
+                        "pedagogicalNotes": "Target terms: AIAG-VDA logic tables, Severity, Occurrence, Action Priority High, RPN threshold"
+                    },
+                    {
+                        "role": "Dr. Elena Rostova (AIAG-VDA Master Facilitator)",
+                        "content": "That demonstrates exactly why the industry deprecated RPN! High severity cannot be hidden by good detection. What preventive control are you implementing in step 6 to reduce the occurrence rating?",
+                        "translation": "¡Eso demuestra exactamente por qué la industria descontinuó el RPN! Una severidad alta no puede ocultarse con buena detección. ¿Qué control preventivo están implementando en el paso 6 para reducir la calificación de ocurrencia?",
+                        "pedagogicalNotes": "Target terms: deprecated RPN, preventive control, occurrence rating"
+                    },
+                    {
+                        "role": "Ing. David Garza (Process Engineering Lead, Saltillo)",
+                        "content": "We installed an inline optical seam-tracking system with real-time laser power modulation. It prevents focal drift due to thermal expansion, dropping our Occurrence rating from 4 down to 2, successfully shifting our Action Priority from High to Low.",
+                        "translation": "Instalamos un sistema de seguimiento óptico de costura en línea con modulación de potencia láser en tiempo real. Evita la desviación focal por expansión térmica, reduciendo nuestra calificación de Ocurrencia de 4 a 2, logrando cambiar nuestra Prioridad de Acción de Alta a Baja.",
+                        "pedagogicalNotes": "Target terms: optical seam-tracking system, real-time laser power modulation, focal drift, thermal expansion, Action Priority Low"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "Action Priority (AP)",
+                        "ipa": "/ˈæk.ʃən praɪˈɔːr.ə.ti/",
+                        "es": "Prioridad de Acción (Alta, Media, Baja)",
+                        "category": "Análisis de Riesgo FMEA",
+                        "definition": "The AIAG-VDA classification system (High, Medium, Low) that replaces RPN to determine the urgency of engineering countermeasures based primarily on Severity.",
+                        "collocations": [
+                            "Action Priority High (H)",
+                            "evaluate AP table",
+                            "mitigate High AP items"
+                        ],
+                        "falseFriends": "Reemplazó completamente al RPN en las auditorías de plantas automotrices de Norteamérica y Europa.",
+                        "nativeUsage": "Every failure mode with an Action Priority of High requires documented engineering countermeasures before tooling buy-off."
+                    },
+                    {
+                        "term": "Failure Mode (FM)",
+                        "ipa": "/ˈfeɪl.jɚ moʊd/",
+                        "es": "Modo de Falla",
+                        "category": "Ingeniería de Confiabilidad",
+                        "definition": "The physical or functional manner in which a component, subsystem, or manufacturing process step fails to meet its intended design specification.",
+                        "collocations": [
+                            "potential failure mode",
+                            "failure mode chain",
+                            "mitigate failure mode"
+                        ],
+                        "falseFriends": "No es la causa ni el efecto; es la forma observable en que falla (e.g., fractura, fuga, desalineación).",
+                        "nativeUsage": "The primary failure mode identified on the fuel rail was porosity in the aluminum die casting."
+                    },
+                    {
+                        "term": "Poka-Yoke (Mistake-Proofing)",
+                        "ipa": "/ˌpoʊ.kə ˈjoʊ.ki/",
+                        "es": "Dispositivo o diseño a prueba de errores humanos",
+                        "category": "Manufactura Esbelta",
+                        "definition": "A mechanism or design feature that either prevents an operator from making an error or makes the error immediately obvious before processing.",
+                        "collocations": [
+                            "mechanical poka-yoke",
+                            "poka-yoke sensor",
+                            "foolproof assembly"
+                        ],
+                        "falseFriends": "Término japonés adoptado internacionalmente; los auditores en EE.UU. lo usan de forma indistinta con 'error-proofing'.",
+                        "nativeUsage": "We added an asymmetrical locator pin as a physical poka-yoke so the connector cannot be plugged upside down."
+                    },
+                    {
+                        "term": "Severity (S)",
+                        "ipa": "/səˈver.ə.ti/",
+                        "es": "Severidad del efecto de la falla",
+                        "category": "Escala FMEA",
+                        "definition": "A ranking from 1 to 10 assessing the worst-case consequence of a failure mode on the vehicle operator, passengers, or plant safety.",
+                        "collocations": [
+                            "Severity 10 safety hazard",
+                            "rank severity",
+                            "severity ranking table"
+                        ],
+                        "falseFriends": "No se puede reducir la severidad mediante sensores en la línea; solo se reduce rediseñando el producto.",
+                        "nativeUsage": "A brake hydraulic failure carries a Severity rating of 10 because it directly compromises vehicle stopping capability."
+                    },
+                    {
+                        "term": "Occurrence (O)",
+                        "ipa": "/əˈkɝː.əns/",
+                        "es": "Ocurrencia / Probabilidad de falla",
+                        "category": "Escala FMEA",
+                        "definition": "A ranking from 1 to 10 estimating the likelihood that a specific failure cause will occur during the product's design life or production run.",
+                        "collocations": [
+                            "reduce occurrence rating",
+                            "occurrence benchmark",
+                            "historical occurrence data"
+                        ],
+                        "falseFriends": "Se reduce mediante controles preventivos como poka-yokes, no mediante inspecciones visuales.",
+                        "nativeUsage": "Implementing automated robotic dispensing reduced the occurrence of adhesive voids from 6 to 2."
+                    },
+                    {
+                        "term": "Critical Characteristic (CC)",
+                        "ipa": "/ˈkrɪt̬.ɪ.kəl ˌker.ək.təˈrɪs.tɪk/",
+                        "es": "Característica Crítica (Seguridad y Regulación)",
+                        "category": "Especificaciones de Calidad",
+                        "definition": "A designated feature or dimensional tolerance on an engineering print that directly affects vehicle safety, government emissions, or FMVSS compliance.",
+                        "collocations": [
+                            "designated critical characteristic",
+                            "CC inverted delta symbol",
+                            "100% inspection on CCs"
+                        ],
+                        "falseFriends": "Requiere capacidad de proceso más estricta ($C_{pk} \\ge 1.67$) que las características estándar.",
+                        "nativeUsage": "Steering knuckle ball joint torque is designated as a Critical Characteristic requiring 100% recorded angle-monitoring."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "AIAG-VDA Action Priority vs RPN",
+                        "botQuestion": "Why did the unified AIAG-VDA FMEA standard officially deprecate the traditional Risk Priority Number (RPN) in favor of Action Priority (AP)? What dangerous flaw existed when simply multiplying Severity x Occurrence x Detection?",
+                        "requiredKeywords": [
+                            "severity",
+                            "multiply",
+                            "ordinal",
+                            "mathematical",
+                            "masked",
+                            "safety"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Brilliant explanation! Deprecating RPN was essential because multiplying ordinal values allowed catastrophic high-severity risks (Severity 9 or 10) to produce low RPN numbers if detection or occurrence seemed low, creating a false sense of security.",
+                        "feedbackRetry": "Think about what happens when you multiply a Severity of 10 by low numbers like 2 and 2. Did the low RPN reflect the true life-safety hazard?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Prevention vs Detection Controls",
+                        "botQuestion": "A manufacturing cell installs an asymmetrical fixture pin that makes it physically impossible for an operator to load a bracket backwards. In a PFMEA, is this classified as a 'Prevention Control' or a 'Detection Control'? And which score does it reduce: Occurrence or Detection?",
+                        "requiredKeywords": [
+                            "prevention",
+                            "occurrence"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Exactly right! An error-proofing pin physically prevents the error from occurring, making it a Prevention Control that directly lowers the Occurrence ranking.",
+                        "feedbackRetry": "Does the pin catch the defect after it happens (detection), or does it stop the operator from doing it wrong in the first place (prevention)?"
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "Under the AIAG-VDA FMEA standard, what replaces the traditional Risk Priority Number (RPN)?",
+                        "options": [
+                            "Action Priority (AP: High, Medium, Low)",
+                            "Critical Defect Ratio (CDR)",
+                            "Statistical Variance Number (SVN)",
+                            "Gross Margin Impact Index (GMII)"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "How can an engineering team reduce the Severity (S) rating of a failure mode in a DFMEA?",
+                        "options": [
+                            "Only by modifying the physical design or architecture of the product to eliminate or diminish the failure effect",
+                            "By installing a high-speed machine vision camera on the assembly line",
+                            "By retraining line operators to pay closer attention",
+                            "By increasing the sample size during daily quality audits"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is the primary difference between a DFMEA and a PFMEA?",
+                        "options": [
+                            "DFMEA analyzes product design risks assuming proper manufacturing, while PFMEA analyzes manufacturing process risks assuming a sound design",
+                            "DFMEA is only used in Germany, while PFMEA is only used in North America",
+                            "DFMEA is conducted after Start of Production (SOP), while PFMEA is done during concept",
+                            "DFMEA is written by the finance department, while PFMEA is written by human resources"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "In an AIAG-VDA PFMEA, what is the required engineering response when a failure mode is assigned an Action Priority of 'High (H)'?",
+                        "options": [
+                            "The engineering team must identify and implement an action to improve controls or provide rigorous formal justification why existing controls are adequate",
+                            "The plant must shut down all operations immediately for two months",
+                            "The team can ignore it if the cost of new sensors exceeds $500",
+                            "The supplier can negotiate with the customer to change the rating to Low"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "auto-m4",
+                "title": "8D Problem Solving & Root Cause Analysis (Ishikawa & 5 Whys)",
+                "titleES": "Resolución de Problemas 8D y Análisis Causa Raíz (Ishikawa y 5 Porqués)",
+                "icon": "fa-solid fa-wrench",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "auto-m4-r1",
+                        "title": "The 8 Disciplines (8D) Lifecycle: From Containment (D3) to Recurrence Prevention (D7)",
+                        "duration": "15 min",
+                        "content": "> **Quality Engineering Standard**: Aligned with **Ford Global 8D (G8D)**, **AIAG CQI-20**, and **VDA Band 4**. Essential for Quality Engineers responding to customer PRRs, PRNs, and warranty claims.\n\n# 8D Problem Solving & Root Cause Analysis\n\n### 1. The Industry Standard for Crisis Resolution\nThe **8 Disciplines (8D)** problem-solving methodology was developed by Ford Motor Company and is universally mandated across the global automotive industry. When an OEM or Tier-1 customer receives non-conforming parts or experiences a line stoppage, they issue a formal Quality Notification (such as a PRR - Problem Reporting and Resolution, or NCR - Non-Conformance Report), triggering an immediate 8D countdown.\n\n### 2. The 8 Disciplines Step-by-Step\n- **D0: Plan & Prepare**:\n  - Evaluate the need for an 8D.\n  - Implement an immediate **Emergency Response Action (ERA)** to protect the customer (e.g., stopping ongoing trucks, alerting downstream sorting).\n- **D1: Establish the Cross-Functional Team (CFT)**:\n  - Form a team with multidisciplinary ownership: Quality Lead, Process Engineer, Tooling Specialist, Maintenance Lead, and Machine Operator.\n- **D2: Describe the Problem (5W2H & Is/Is Not)**:\n  - Define the failure mode precisely: **Who** detected it? **What** is the exact defect? **Where** was it found (machine, pallet, customer dock)? **When** did it occur? **Why** is it a deviation? **How** was it detected? **How many** parts are affected?\n  - Use an **Is / Is Not Matrix** to establish boundaries and eliminate unrelated variables.\n- **D3: Interim Containment Actions (ICA) — The 24-Hour Mandate**:\n  - The customer requires a verified D3 response within **24 hours**.\n  - 100% sorting of inventory at the supplier plant, material in transit, customer warehouses, and customer assembly lines.\n  - Identification of the **Clean Point**: the first certified defect-free lot tagged with a distinct green dot or Julian serial marker.\n- **D4: Root Cause Analysis (RCA) — The 10-Day Mandate**:\n  - Separate root cause investigation into two branches:\n    1. **Root Cause of Occurrence**: Why did the physical manufacturing system make the defect?\n    2. **Root Cause of Escape**: Why did the quality inspection system fail to detect the defect before shipment?\n- **D5: Permanent Corrective Actions (PCA) Selection**:\n  - Develop permanent countermeasures that physically mistake-proof the process. Verify through testing that the PCA solves the root cause without unintended side-effects.\n- **D6: Implement and Validate PCA**:\n  - Cut over to production with the PCA in place. Remove interim sorting containment only after statistical proof ($C_{pk}$ recovery, zero defects over 3 consecutive production runs).\n- **D7: Prevent Recurrence (Systemic Changes)**:\n  - Update the PFMEA, Control Plan, Standardized Work Instructions, and tool preventive maintenance schedules across the affected line **and all sister lines** with similar processes.\n- **D8: Recognize the Team & Close the 8D**:\n  - Document lessons learned, present the final closure dossier to the OEM SQA, and recognize team contributions."
+                    },
+                    {
+                        "id": "auto-m4-r2",
+                        "title": "Root Cause Tools: 6M Ishikawa Diagram & The 5-Why Drill-Down",
+                        "duration": "12 min",
+                        "content": "> **Root Cause Standard**: Aligned with **Six Sigma DMAIC** and **AIAG CQI-20**.\n\n### 1. The 6M Ishikawa (Fishbone) Diagram\nWhen brain-storming potential root causes in D4, automotive teams categorize variables using the **6M framework**:\n1. **Man (Personnel)**: Operator training, shift fatigue, ergonomic strain, turnover.\n2. **Machine (Equipment)**: Tool wear, hydraulic pressure fluctuation, spindle backlash, thermal drift.\n3. **Material**: Raw steel heat variation, surface oxidation, alloy hardness, supplier resin moisture.\n4. **Method**: Outdated SOP, ambiguous work instruction, improper torque sequence, excessive feed rate.\n5. **Measurement**: Gage out of calibration, operator parallax error, defective CMM probe stylus.\n6. **Milieu (Mother Nature / Environment)**: Ambient temperature shifts, plant humidity affecting paint cure, airborne dust.\n\n### 2. The 5-Why Drill-Down: Escaping the \"Operator Error\" Trap\nA major trap that causes OEM quality directors to reject an 8D report is listing **\"Operator Error\"** or **\"Lack of Attention\"** as the root cause.\nIn automotive engineering, human error is always a symptom of a weak system. If an operator can assemble a part backwards, the manufacturing system failed to provide adequate poka-yoke error-proofing.\n\n#### Example of an Acceptable 5-Why Chain:\n- *Why 1*: Why did the brake booster leak? $\\implies$ The internal O-ring was pinched during assembly.\n- *Why 2*: Why was the O-ring pinched? $\\implies$ The insertion tool was misaligned.\n- *Why 3*: Why was the tool misaligned? $\\implies$ The guide bushing had excessive mechanical play.\n- *Why 4*: Why did the guide bushing have excessive play? $\\implies$ It exceeded its 50,000-cycle replacement threshold by 18,000 cycles.\n- *Why 5 (True Root Cause)*: Why did it exceed the threshold? $\\implies$ Preventive maintenance software lacked an automated cycle counter lock-out for modular tooling."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Marcus Vance (Director of Supplier Quality, Tier 1 Customer)",
+                        "content": "Sofia, we have an emergency. Two pallets of your aluminum steering knuckles arrived at our Kentucky plant with cross-threaded tie-rod bores, shutting down our chassis line for 45 minutes. We issued a severity-1 PRR. Where do we stand on D3 containment?",
+                        "translation": "Sofia, tenemos una emergencia. Dos tarimas de sus nudillos de dirección de aluminio llegaron a nuestra planta de Kentucky con barrenos de bieleta barridos, deteniendo nuestra línea de chasis por 45 minutos. Emitimos un PRR de severidad 1. ¿Dónde estamos con respecto a la contención D3?",
+                        "pedagogicalNotes": "Target terms: steering knuckles, cross-threaded tie-rod bores, chassis line stoppage, severity-1 PRR, D3 containment"
+                    },
+                    {
+                        "role": "Ing. Sofia Morales (Senior Quality Engineer, Saltillo)",
+                        "content": "Marcus, our Emergency Response Action was launched within two hours of your call. We mobilized a third-party sorting agency at your Kentucky dock to inspect 100% of on-hand inventory with thread plug gages. In Saltillo, our warehouse and transit stock are on physical hold, and we established our clean point at lot serial K-904 with neon green labels.",
+                        "translation": "Marcus, nuestra Acción de Respuesta de Emergencia se lanzó dentro de las dos horas posteriores a su llamada. Movilizamos una agencia de sorteo externa en su muelle de Kentucky para inspeccionar el 100% del inventario existente con calibradores de rosca. En Saltillo, nuestro stock de almacén y en tránsito está en retención física, y establecimos nuestro punto limpio en el número de serie K-904 con etiquetas verde neón.",
+                        "pedagogicalNotes": "Target terms: Emergency Response Action (ERA), third-party sorting agency, thread plug gages, clean point, lot serial"
+                    },
+                    {
+                        "role": "Marcus Vance (Director of Supplier Quality, Tier 1 Customer)",
+                        "content": "Good containment turnaround. Now, what about D4? I will immediately reject any 8D submission that says 'operator was retrained to be more careful'. What was the root cause of occurrence and escape?",
+                        "translation": "Buena rapidez de contención. Ahora, ¿qué hay de D4? Rechazaré de inmediato cualquier reporte 8D que diga 'el operador fue reentrenado para tener más cuidado'. ¿Cuál fue la causa raíz de ocurrencia y de escape?",
+                        "pedagogicalNotes": "Target terms: containment turnaround, reject 8D submission, root cause of occurrence, root cause of escape"
+                    },
+                    {
+                        "role": "Ing. Sofia Morales (Senior Quality Engineer, Saltillo)",
+                        "content": "Understood, Marcus. Our 6M Ishikawa analysis proved occurrence was caused by a stripped drive gear on CNC spindle #3, causing micro-stalls during thread tapping. Escape occurred because our end-of-line thread detection sensor had a blinded optical lens. We are replacing the spindle and installing a dual pneumatic pressure sensor that cannot be bypassed.",
+                        "translation": "Entendido, Marcus. Nuestro análisis Ishikawa 6M demostró que la ocurrencia fue causada por un engrane motriz barrido en el husillo CNC #3, provocando micro-paros durante el roscado. El escape ocurrió porque nuestro sensor de detección de rosca de fin de línea tenía un lente óptico cegado. Estamos reemplazando el husillo e instalando un sensor de presión neumático dual que no puede ser eludido.",
+                        "pedagogicalNotes": "Target terms: 6M Ishikawa analysis, stripped drive gear, CNC spindle, thread tapping, blinded optical lens, dual pneumatic pressure sensor"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "8D (Eight Disciplines)",
+                        "ipa": "/ˈeɪt.diː/",
+                        "es": "Metodología de las 8 Disciplinas para resolución de problemas",
+                        "category": "Resolución de Problemas",
+                        "definition": "A standardized problem-solving methodology designed to identify, correct, and eliminate recurring quality defects in manufacturing environments.",
+                        "collocations": [
+                            "submit 8D report",
+                            "8D containment timeline",
+                            "close out an 8D"
+                        ],
+                        "falseFriends": "No es una técnica informal; es un formato legal de ingeniería auditado por clientes OEM.",
+                        "nativeUsage": "The quality manager submitted the 8D report to Ford SQA within the required 10-day window."
+                    },
+                    {
+                        "term": "Interim Containment Action (ICA)",
+                        "ipa": "/ˈɪn.tər.ɪm kənˈteɪn.mənt ˈæk.ʃən/",
+                        "es": "Acción de Contención Provisional (D3)",
+                        "category": "Acción de Emergencia",
+                        "definition": "Temporary actions implemented immediately (typically within 24 hours) to isolate and prevent all non-conforming products from reaching the customer.",
+                        "collocations": [
+                            "24-hour ICA submission",
+                            "containment sorting",
+                            "effective ICA implementation"
+                        ],
+                        "falseFriends": "Interim significa provisional o temporal; no sustituye la acción correctiva permanente.",
+                        "nativeUsage": "Our ICA consisted of 100% manual sorting of all 4,000 stamped fenders currently in the supply pipeline."
+                    },
+                    {
+                        "term": "Clean Point",
+                        "ipa": "/kliːn pɔɪnt/",
+                        "es": "Punto Limpio (primer lote certificado libre de defectos)",
+                        "category": "Trazabilidad y Logística",
+                        "definition": "The exact date, time, and serialized lot number representing the first production shipment certified 100% defect-free following containment.",
+                        "collocations": [
+                            "establish a clean point",
+                            "clean point serial number",
+                            "first clean point shipment"
+                        ],
+                        "falseFriends": "No se refiere a limpieza física del suelo; es el hito de trazabilidad donde termina el producto sospechoso.",
+                        "nativeUsage": "The customer will only unload pallets bearing green 'Clean Point' stickers starting from lot K-840."
+                    },
+                    {
+                        "term": "Root Cause of Occurrence",
+                        "ipa": "/ruːt kɔːz ʌv əˈkɝː.əns/",
+                        "es": "Causa Raíz de Ocurrencia",
+                        "category": "Análisis Causa Raíz",
+                        "definition": "The underlying physical or systemic failure mechanism in the manufacturing process that allowed the defect to be created.",
+                        "collocations": [
+                            "identify root cause of occurrence",
+                            "occurrence 5-Why chain",
+                            "occurrence verification"
+                        ],
+                        "falseFriends": "Debe diferenciarse siempre de la causa de escape; explica por qué se produjo el defecto físico.",
+                        "nativeUsage": "The root cause of occurrence was identified as thermal degradation of the hydraulic seal in press 4."
+                    },
+                    {
+                        "term": "Root Cause of Escape",
+                        "ipa": "/ruːt kɔːz ʌv ɪˈskeɪp/",
+                        "es": "Causa Raíz de Escape",
+                        "category": "Análisis Causa Raíz",
+                        "definition": "The breakdown or gap in the quality control system that allowed the defective product to exit the workstation or facility undetected.",
+                        "collocations": [
+                            "analyze escape mechanism",
+                            "escape point 5-Whys",
+                            "containment of escape route"
+                        ],
+                        "falseFriends": "Escape no significa huir; se refiere a piezas no conformes que 'escapan' las barreras de inspección hacia el cliente.",
+                        "nativeUsage": "The root cause of escape was that the vision camera logic had been set to bypass during sensor maintenance."
+                    },
+                    {
+                        "term": "Permanent Corrective Action (PCA)",
+                        "ipa": "/ˈpɜːr.mə.nənt kəˈrek.tɪv ˈæk.ʃən/",
+                        "es": "Acción Correctiva Permanente (D5/D6)",
+                        "category": "Mejora Continua",
+                        "definition": "The systemic, error-proofed engineering solution implemented to eliminate the root cause permanently and prevent any recurrence.",
+                        "collocations": [
+                            "implement PCA",
+                            "validate PCA effectiveness",
+                            "PCA sign-off"
+                        ],
+                        "falseFriends": "No puede ser 'capacitación de operadores'; debe ser un cambio de ingeniería, herramental o software.",
+                        "nativeUsage": "The PCA involved redesigning the CNC fixture with mechanical proximity switches to prevent misloading."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "8D D3 Containment Mandate",
+                        "botQuestion": "An automotive customer calls at 8:00 AM reporting that a batch of brake calipers has oversized pin holes. Under standard 8D protocols, what is the mandatory deliverable required within 24 hours, and what do we call the first certified defect-free shipment?",
+                        "requiredKeywords": [
+                            "d3",
+                            "containment",
+                            "clean point",
+                            "sorting"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Excellent! The 24-hour mandate is the D3 Interim Containment Action (ICA) involving 100% inventory sorting, and the first certified defect-free shipment is designated as the 'Clean Point'.",
+                        "feedbackRetry": "Think about the D3 discipline (keeping bad parts away from the customer) and the milestone name with 'Point'."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Occurrence vs Escape in D4",
+                        "botQuestion": "Why do OEM Supplier Quality Directors mandate that an 8D report separate D4 Root Cause into two distinct branches: 'Occurrence' and 'Escape'?",
+                        "requiredKeywords": [
+                            "created",
+                            "produced",
+                            "detected",
+                            "shipped",
+                            "escape",
+                            "occurrence"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Spot on! An automotive quality system must understand both why the manufacturing process created the defect (Occurrence) AND why the inspection system failed to detect it before shipping to the customer (Escape).",
+                        "feedbackRetry": "Consider the two failures: making the bad part in the machine, and shipping the bad part out the door without noticing."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "Under automotive 8D standards, why is 'Operator was retrained and instructed to pay more attention' universally rejected as a valid root cause?",
+                        "options": [
+                            "Because human error is a symptom of weak systemic error-proofing (Poka-Yoke) or inadequate workstation design, not the root cause",
+                            "Because operators are legally prohibited from attending training sessions",
+                            "Because all training records must be signed by the OEM CEO in Detroit",
+                            "Because retraining operators is considered a permanent corrective action under D8"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is a 'Clean Point' in automotive quality logistics?",
+                        "options": [
+                            "The first shipment of certified defect-free components marked with distinct serialized identification after containment is established",
+                            "A physical wash station where parts are degreased prior to anodizing",
+                            "The area in the cafeteria where engineers conduct morning shift handovers",
+                            "The break-even point where a plant reaches zero financial debt"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Which 8D discipline focuses on updating the PFMEA, Control Plan, and standard work across all sister lines to prevent recurrence?",
+                        "options": [
+                            "D7 - Prevent Recurrence (Systemic Changes)",
+                            "D1 - Form the Team",
+                            "D3 - Interim Containment Actions",
+                            "D0 - Emergency Response Action"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is the standard automotive industry deadline for submitting the verified D3 Interim Containment Action report to the customer?",
+                        "options": [
+                            "24 hours",
+                            "30 calendar days",
+                            "6 months",
+                            "1 hour"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "auto-m5",
+                "title": "Statistical Process Control (SPC) & Capability Studies (Cp / Cpk)",
+                "titleES": "Control Estadístico de Procesos (SPC) y Estudios de Capacidad (Cp / Cpk)",
+                "icon": "fa-solid fa-chart-line",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "auto-m5-r1",
+                        "title": "SPC Control Charts, Common vs Special Cause Variation, and Nelson Rules",
+                        "duration": "14 min",
+                        "content": "> **Metrology Standard Reference**: Aligned with **AIAG SPC Manual (2nd Edition)** and **ISO 22514**. Essential for Metrologists, Six Sigma Black Belts, and Machining Quality Specialists.\n\n# Statistical Process Control (SPC)\n\n### 1. The Philosophy of Statistical Process Control\nStatistical Process Control (SPC) is the operational application of statistical methods to monitor, control, and optimize manufacturing processes. Conceived by Walter Shewhart and popularized by W. Edwards Deming, SPC shifts the quality paradigm from end-of-line sorting to real-time process steering.\n\n### 2. Common Cause vs Special Cause Variation\nEvery physical process exhibits variation. SPC strictly categorizes this variation into two types:\n1. **Common Cause Variation (Inherent / Chronic)**:\n   - The natural, predictable background noise of the process (e.g., micro-vibrations in machine foundations, normal ambient temperature cycles, slight metallurgical tolerances in raw steel).\n   - A process operating with only common cause variation is said to be in **statistical control**.\n   - Attempting to adjust a machine in response to common cause variation is called **overcontrol (tampering)**, which mathematically increases overall variation!\n2. **Special Cause Variation (Assignable / Sporadic)**:\n   - Unnatural, unpredictable disturbances introduced into the process (e.g., fractured milling cutter, cracked bearing, contaminated coolant, wrong raw material batch loaded).\n   - Special causes must be detected and eliminated immediately to bring the process back into control.\n\n### 3. Control Charts: X-bar & R Charts\nThe most widely used SPC chart for variable data in automotive machining is the **$\\bar{X}-R$ Chart**:\n- **$\\bar{X}$ (X-bar) Chart**: Tracks subgroup averages to detect shifts in process centering.\n- **$R$ (Range) Chart**: Tracks the difference between maximum and minimum values in each subgroup to detect changes in process dispersion.\n\n#### Critical Distinction: Control Limits vs Specification Limits\n- **Upper / Lower Control Limits (UCL / LCL)**: Calculated purely from process data ($3\\sigma$ from the process mean: $\\bar{\\bar{X}} \\pm A_2 \\bar{R}$). They represent what the process **is actually doing**.\n- **Upper / Lower Specification Limits (USL / LSL)**: Defined by engineering blueprints and GD&T customer drawings. They represent what the customer **needs the part to be**.\n- **Rule of Thumb**: *Never put engineering specification limits on an SPC control chart!*\n\n### 4. Detecting Out-of-Control Conditions (Nelson / Western Electric Rules)\nA process is statistically out of control if any of the following occur:\n- **Rule 1**: 1 single data point plots beyond Zone A (outside $\\pm 3\\sigma$ control limits).\n- **Rule 2**: 9 consecutive points plot on one side of the centerline (indicates process mean shift).\n- **Rule 3**: 6 consecutive points plot steadily increasing or decreasing (indicates tool wear or thermal drift).\n- **Rule 4**: 14 points alternating up and down (indicates systematic alternating variation, such as two different cavities or spindles)."
+                    },
+                    {
+                        "id": "auto-m5-r2",
+                        "title": "Process Capability (Cp, Cpk) & Measurement Systems Analysis (Gage R&R)",
+                        "duration": "15 min",
+                        "content": "> **Statistical Engineering Reference**: Aligned with **AIAG MSA Manual (4th Edition)** and **AIAG SPC Manual**.\n\n### 1. Process Capability Indices: $C_p$ vs $C_{pk}$\nOnce a process is in statistical control, engineers evaluate whether it is capable of satisfying engineering tolerances:\n\n1. **Process Potential Index ($C_p$)**:\n   Measures the total width of engineering tolerance relative to the inherent process dispersion ($6\\sigma$), ignoring centering:\n   $$C_p = \\frac{\\text{USL} - \\text{LSL}}{6\\sigma}$$\n2. **Process Capability Index ($C_{pk}$)**:\n   Takes into account the actual centering of the process mean relative to the nearest specification limit:\n   $$C_{pk} = \\min\\left(\\frac{\\text{USL} - \\mu}{3\\sigma}, \\frac{\\mu - \\text{LSL}}{3\\sigma}\\right)$$\n\n#### Automotive Industry Benchmarks:\n- $C_{pk} < 1.00$: Incapable process; producing non-conforming scrap.\n- $C_{pk} = 1.33$: Minimum acceptable capability for standard automotive characteristics (approx. 66 ppm defect rate).\n- $C_{pk} \\ge 1.67$: Mandatory benchmark for **Critical Characteristics (Safety / Inverted Delta)** and new tooling PPAP submissions ($5\\sigma$ quality level, < 1 ppm).\n\n### 2. Measurement Systems Analysis (MSA / Gage R&R)\nYou cannot trust your capability data if your gages are flawed. Measurement Systems Analysis (MSA) evaluates the variation contributed by the measurement instrument and operators:\n- **Repeatability (Equipment Variation - EV)**: The variation observed when the *same operator* measures the *same part* multiple times using the *same gage*.\n- **Reproducibility (Appraiser Variation - AV)**: The variation observed when *different operators* measure the *same part* using the *same gage*.\n\n#### %GRR Acceptance Criteria (AIAG Guidelines):\n- **%GRR < 10%**: The measurement system is **acceptable**.\n- **%GRR 10% - 30%**: The measurement system may be **conditionally acceptable** based on feature importance and customer sign-off.\n- **%GRR > 30%**: The measurement system is **unacceptable**; gage must be recalibrated, redesigned, or replaced.\n- **Number of Distinct Categories ($ndc$)**: Must be **$\\ge 5$** to ensure adequate gage resolution."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Nathan Wright (Quality Engineering Director, OEM Powertrain)",
+                        "content": "Rodrigo, let's examine the capability study for the rotor shaft outer diameter on line 2. Your report shows a Cp of 1.85, but your Cpk is sitting at 1.18. Why the discrepancy?",
+                        "translation": "Rodrigo, examinemos el estudio de capacidad para el diámetro exterior del eje del rotor en la línea 2. Tu reporte muestra un Cp de 1.85, pero tu Cpk está en 1.18. ¿Por qué esa discrepancia?",
+                        "pedagogicalNotes": "Target terms: capability study, rotor shaft, outer diameter, Cp, Cpk, discrepancy"
+                    },
+                    {
+                        "role": "Ing. Rodrigo Tamez (Senior Metrology Engineer, Saltillo)",
+                        "content": "The process dispersion is very tight, Nathan, which explains the high Cp of 1.85. However, the process mean shifted 12 microns toward the Upper Specification Limit due to thermal expansion on the grinding spindle during the afternoon shift.",
+                        "translation": "La dispersión del proceso es muy estrecha, Nathan, lo que explica el alto Cp de 1.85. Sin embargo, la media del proceso se desplazó 12 micras hacia el Límite de Especificación Superior debido a la expansión térmica en el husillo de rectificado durante el turno vespertino.",
+                        "pedagogicalNotes": "Target terms: process dispersion, process mean, Upper Specification Limit (USL), thermal expansion, grinding spindle"
+                    },
+                    {
+                        "role": "Nathan Wright (Quality Engineering Director, OEM Powertrain)",
+                        "content": "That shift puts you well below our required automotive threshold of Cpk 1.67 for critical dimensions. What about your measurement system? Did you complete a fresh Gage R&R on that air gage column?",
+                        "translation": "Ese desplazamiento los sitúa muy por debajo de nuestro umbral automotriz requerido de Cpk 1.67 para dimensiones críticas. ¿Qué hay de su sistema de medición? ¿Completaron un Gage R&R actualizado en esa columna de medición neumática?",
+                        "pedagogicalNotes": "Target terms: automotive threshold, critical dimensions, measurement system, Gage R&R, air gage column"
+                    },
+                    {
+                        "role": "Ing. Rodrigo Tamez (Senior Metrology Engineer, Saltillo)",
+                        "content": "Yes, we ran a standard 10-part, 3-operator, 3-trial study. The %GRR was 6.2% with 9 distinct categories (ndc), so our measurement system is fully certified. To resolve the Cpk shift, we installed a closed-loop spindle chiller and updated the CNC tool offset macro.",
+                        "translation": "Sí, realizamos un estudio estándar de 10 piezas, 3 operadores y 3 ensayos. El %GRR fue de 6.2% con 9 categorías distintas (ndc), por lo que nuestro sistema de medición está totalmente certificado. Para resolver el desplazamiento de Cpk, instalamos un enfriador de husillo de circuito cerrado y actualizamos la macro de compensación de herramienta en el CNC.",
+                        "pedagogicalNotes": "Target terms: 10-part 3-operator 3-trial study, %GRR, distinct categories (ndc), closed-loop spindle chiller, CNC tool offset macro"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "Process Capability Index (Cpk)",
+                        "ipa": "/ˌsiː.piːˈkeɪ/",
+                        "es": "Índice de Capacidad del Proceso (dispersión y centrado)",
+                        "category": "Control Estadístico de Procesos",
+                        "definition": "A statistical metric that measures how close a manufacturing process is running to its engineering specification limits, relative to natural variability and centering.",
+                        "collocations": [
+                            "calculate Cpk index",
+                            "achieve Cpk 1.67",
+                            "Cpk capability study"
+                        ],
+                        "falseFriends": "A diferencia de Cp, Cpk penaliza los procesos que no están centrados respecto a los límites de tolerancia.",
+                        "nativeUsage": "The customer rejected the PPAP because the grinding process Cpk dropped to 1.12 during thermal testing."
+                    },
+                    {
+                        "term": "Gage R&R (Repeatability & Reproducibility)",
+                        "ipa": "/ɡeɪdʒ ɑːr ænd ɑːr/",
+                        "es": "Estudio de Repetibilidad y Reproducibilidad del Instrumento de Medición",
+                        "category": "Metrología e Inspección",
+                        "definition": "A statistical trial that quantifies the percentage of process variation introduced by the measurement device (repeatability) and operators (reproducibility).",
+                        "collocations": [
+                            "run Gage R&R study",
+                            "%GRR under 10 percent",
+                            "reproducibility error"
+                        ],
+                        "falseFriends": "Gage se refiere al instrumento físico de medición (micrómetro, calibrador neumático, CMM).",
+                        "nativeUsage": "Before measuring 300 parts for the Run@Rate, we performed a Gage R&R to prove our digital calipers had %GRR < 8%."
+                    },
+                    {
+                        "term": "Control Limits (UCL / LCL)",
+                        "ipa": "/kənˈtroʊl ˈlɪm.ɪts/",
+                        "es": "Límites de Control Estadístico (Superior e Inferior)",
+                        "category": "Control Estadístico",
+                        "definition": "Statistical boundaries established at plus and minus 3 standard deviations from the process mean, calculated strictly from operational process data.",
+                        "collocations": [
+                            "upper control limit (UCL)",
+                            "lower control limit (LCL)",
+                            "points plotting beyond control limits"
+                        ],
+                        "falseFriends": "Nunca deben confundirse con los límites de especificación de ingeniería (planos del cliente).",
+                        "nativeUsage": "The quality technician flagged an out-of-control point when sample 14 exceeded the upper control limit on the X-bar chart."
+                    },
+                    {
+                        "term": "Specification Limits (USL / LSL)",
+                        "ipa": "/ˌspes.ə.fɪˈkeɪ.ʃən ˈlɪm.ɪts/",
+                        "es": "Límites de Especificación de Ingeniería (Tolerancia de Plano)",
+                        "category": "Diseño y Tolerancias",
+                        "definition": "The permissible physical dimensions and tolerances defined by product engineering drawings and customer requirements.",
+                        "collocations": [
+                            "upper specification limit (USL)",
+                            "out of spec parts",
+                            "tight specification limits"
+                        ],
+                        "falseFriends": "Son establecidos por el cliente; los límites de control los determina la física de la máquina.",
+                        "nativeUsage": "The bore diameter specification limit is 45.00 mm plus or minus 0.05 mm."
+                    },
+                    {
+                        "term": "Common Cause Variation",
+                        "ipa": "/ˈkɑː.mən kɔːz ˌver.iˈeɪ.ʃən/",
+                        "es": "Variación por Causa Común (Inherente / Aleatoria)",
+                        "category": "Estadística Industrial",
+                        "definition": "The natural, unavoidable, and predictable background variation inherent to any stable manufacturing process.",
+                        "collocations": [
+                            "reduce common cause variation",
+                            "stable common cause noise",
+                            "systemic variation"
+                        ],
+                        "falseFriends": "No debe corregirse ajustando la máquina pieza por pieza (eso causa sobreajuste/tampering).",
+                        "nativeUsage": "Trying to calibrate the lathe after every part increased variation because the deviation was just common cause noise."
+                    },
+                    {
+                        "term": "Number of Distinct Categories (ndc)",
+                        "ipa": "/ˈnʌm.bɚ ʌv dɪˈstɪŋkt ˈkæt̬.ə.ɡɔːr.iz/",
+                        "es": "Número de Categorías Distintas (Resolución efectiva del gage)",
+                        "category": "Metrología MSA",
+                        "definition": "The number of non-overlapping confidence intervals that a measurement system can reliably distinguish across product variation.",
+                        "collocations": [
+                            "ndc greater than or equal to 5",
+                            "insufficient ndc resolution",
+                            "evaluate ndc metric"
+                        ],
+                        "falseFriends": "La norma AIAG exige que el ndc sea mayor o igual a 5 para que el estudio de medición sea válido.",
+                        "nativeUsage": "The Gage R&R software reported an ndc of 2, indicating the optical micrometer lacked adequate resolution."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Cp vs Cpk Interpretation",
+                        "botQuestion": "A CNC milling process has a Cp of 1.90, but its Cpk is only 1.05. What does this statistical discrepancy reveal about the spread (dispersion) of the parts versus the location (centering) of the process mean?",
+                        "requiredKeywords": [
+                            "spread",
+                            "dispersion",
+                            "centered",
+                            "centering",
+                            "mean",
+                            "shifted",
+                            "drift"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Spot on! A high Cp with a low Cpk proves that the process variation is very small (tight dispersion), but the process mean has drifted off-center toward one of the specification limits.",
+                        "feedbackRetry": "Cp measures the width of variation, while Cpk accounts for centering. If Cp is high and Cpk is low, where is the mean?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Gage R&R Acceptance Thresholds",
+                        "botQuestion": "Under official AIAG MSA guidelines, what is the maximum acceptable %GRR percentage for a measurement gage to be considered fully acceptable without requiring special customer concession?",
+                        "requiredKeywords": [
+                            "10%",
+                            "10 percent",
+                            "under 10",
+                            "less than 10"
+                        ],
+                        "minKeywords": 1,
+                        "feedbackSuccess": "Correct! A %GRR under 10% is the universal gold standard for automotive measurement system acceptance.",
+                        "feedbackRetry": "It is a standard percentage threshold: under what two-digit percentage (less than X%) must gage error fall?"
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What is the mandatory minimum Cpk benchmark required by major automotive OEMs for Critical Characteristics (Safety / Inverted Delta features)?",
+                        "options": [
+                            "Cpk >= 1.67",
+                            "Cpk >= 1.00",
+                            "Cpk = 0.67",
+                            "Cpk = 0.00"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is the key difference between Control Limits and Specification Limits?",
+                        "options": [
+                            "Control Limits are calculated from actual process data to show process stability, while Specification Limits are set by engineering blueprints to define customer requirements",
+                            "Control Limits are set by the customer, while Specification Limits are calculated by machine operators",
+                            "Control Limits apply only to chemical fluids, while Specification Limits apply only to metal parts",
+                            "There is no difference; the terms are completely interchangeable in SPC"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "In an AIAG Measurement Systems Analysis (Gage R&R), what does 'Repeatability' measure?",
+                        "options": [
+                            "The variation obtained when the same operator measures the same part multiple times using the same gage",
+                            "The variation between different operators measuring parts on different shifts",
+                            "The time it takes for a gage to reboot after a power surge",
+                            "The total number of parts produced in an 8-hour shift"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "According to AIAG MSA standards, what is the minimum required Number of Distinct Categories (ndc) for a measurement system to have acceptable data discrimination?",
+                        "options": [
+                            "ndc >= 5",
+                            "ndc = 1",
+                            "ndc <= 3",
+                            "ndc = 0"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "auto-m6",
+                "title": "Lean Manufacturing, Kaizen & Overall Equipment Effectiveness (OEE)",
+                "titleES": "Manufactura Esbelta, Kaizen y Efectividad General del Equipo (OEE)",
+                "icon": "fa-solid fa-industry",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "auto-m6-r1",
+                        "title": "The 8 Wastes (DOWNTIME), Gemba Walks & Kaizen Continuous Improvement",
+                        "duration": "14 min",
+                        "content": "> **Operational Excellence Standard**: Aligned with the **Toyota Production System (TPS)** and **Lean Six Sigma Body of Knowledge**. Indispensable for Continuous Improvement (CI) Facilitators, Value Stream Managers, and Plant Directors.\n\n# Lean Manufacturing, Kaizen & OEE\n\n### 1. The Core Philosophy of Lean Manufacturing\nLean Manufacturing focuses relentlessly on maximizing customer value while minimizing waste. Any activity that consumes resources (time, floor space, electrical power, labor) without adding functional value from the customer's perspective is classified as **waste (Muda)**.\n\nIn addition to Muda, Lean addresses:\n- **Muri**: Overburdening equipment, operators, or processes beyond natural capacity.\n- **Mura**: Unevenness, irregularity, or volatility in production schedules and batch flow.\n\n### 2. The 8 Industrial Wastes (DOWNTIME)\nGlobal automotive plants use the acronym **DOWNTIME** to memorize and attack the 8 forms of operational waste:\n1. **Defects**: Scrap, rework, incorrect assembly, or warranty failures requiring inspection and containment.\n2. **Overproduction**: Producing components ahead of schedule or in quantities larger than customer demand (the worst waste, as it hides all other problems!).\n3. **Waiting**: Operators idling due to machine cycles, line bottlenecks, material shortages, or delayed quality buy-offs.\n4. **Non-utilized Talent**: Failing to engage operator ideas, insights, and continuous improvement contributions.\n5. **Transportation**: Unnecessary physical movement of raw materials or WIP across warehouses or between distant cell operations.\n6. **Inventory**: Excessive safety buffers, raw stock, or finished goods that tie up operational cash flow and risk obsolescence.\n7. **Motion**: Wasted ergonomic movement by operators (excessive reaching, bending, twisting, walking to fetch tools).\n8. **Extra-processing**: Performing unnecessary finishing, excessive polishing, or redundant inspections that exceed engineering print requirements.\n\n### 3. The Gemba Walk Protocol\n**Gemba** is the Japanese term for \"the real place\" where value is created: the physical shop floor.\nExecutive leadership cannot manage modern nearshoring plants from remote conference rooms. A true **Gemba Walk** follows strict operational rules:\n- **Go and See**: Observe actual cycle times and operator motions with your own eyes.\n- **Ask Why**: Engage line operators respectfully with open-ended Socratic questions (\"What is the biggest roadblock during changeovers?\").\n- **Show Respect**: Do not blame individuals for broken processes; empower the team to eliminate friction points.\n\n### 4. Kaizen Events (Blitzes)\nA **Kaizen Event** is an intensive, 3-to-5-day cross-functional workshop where engineers, maintenance technicians, and operators halt routine tasks to physically redesign an assembly workstation, streamline changeover procedures, or balance line flow."
+                    },
+                    {
+                        "id": "auto-m6-r2",
+                        "title": "SMED (Single-Minute Exchange of Die), Andon Protocols & OEE Calculation",
+                        "duration": "15 min",
+                        "content": "> **Lean Engineering Standard Reference**: Aligned with **Shigeo Shingo's SMED Methodology** and **ISO 22400 (Manufacturing Operations Management)**.\n\n### 1. SMED: Single-Minute Exchange of Die\nIn automotive stamping and injection molding, massive dies weighing up to 20 metric tons traditionally required 4 to 8 hours of downtime to swap between part variants. This forced plants into huge batch runs, creating massive inventory waste.\n\nDr. Shigeo Shingo developed **SMED (Single-Minute Exchange of Die)** to reduce changeover times to the \"single digits\" (**less than 10 minutes**).\n\n#### The 4 Stages of SMED:\n1. **Separate Internal vs External Setup**:\n   - **Internal Setup**: Operations that can **only** be performed while the machine is completely stopped (e.g., physically bolting the new die into the press bolster).\n   - **External Setup**: Operations that **can and must** be performed while the machine is running regular production (e.g., staging the next die, pre-heating the mold, fetching fasteners and tools).\n2. **Convert Internal to External**:\n   - Pre-heating dies before shutdown; using standardized quick-disconnect couplings for hydraulic lines.\n3. **Streamline Internal Operations**:\n   - Replacing threaded bolts with pneumatic quarter-turn clamps, pneumatic die lifters, and calibrated magnetic platens.\n4. **Eliminate Adjustments**:\n   - Standardizing shut heights so the press does not require trial-and-error operator adjustments.\n\n### 2. Andon Systems & Visual Management\nAn **Andon** is a visual and auditory notification system deployed across manufacturing cells:\n- **Green**: Normal production running at Takt time.\n- **Yellow**: Operator encounters a non-standard situation (missing part, tool wear warning) and requests supervisor assistance without stopping the line.\n- **Red**: Immediate line stoppage triggered by a critical safety hazard or verified defect escape. The team response protocol must deploy support within 3 minutes.\n\n### 3. Overall Equipment Effectiveness (OEE)\nOEE is the gold-standard metric for measuring industrial productivity:\n$$\\text{OEE} = \\text{Availability} \\times \\text{Performance} \\times \\text{Quality}$$\n\n#### Component Breakdown:\n1. **Availability**:\n   $$\\text{Availability} = \\frac{\\text{Operating Time}}{\\text{Planned Production Time}}$$\n   (Measures losses from unplanned downtime: breakdowns, tool changes, material stockouts).\n2. **Performance**:\n   $$\\text{Performance} = \\frac{\\text{Ideal Cycle Time} \\times \\text{Total Count}}{\\text{Operating Time}}$$\n   (Measures speed losses from minor machine idling and running below rated nameplate speed).\n3. **Quality**:\n   $$\\text{Quality} = \\frac{\\text{Good Count}}{\\text{Total Count}}$$\n   (Measures yield losses from scrap parts and rework).\n\n#### World-Class Benchmark:\n- In automotive Tier-1 manufacturing, a plant achieving **$\\text{OEE} \\ge 85\\%$** is considered **World-Class** (e.g., $90\\% \\text{ Availability} \\times 95\\% \\text{ Performance} \\times 99.9\\% \\text{ Quality} \\approx 85.4\\%$)."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Kenji Takahashi (Toyota Production System / Lean Master)",
+                        "content": "Andrea, let's review the Kaizen event data for stamping press line 4. Before the SMED workshop, your changeover from the left-hand door inner panel to the right-hand panel took 52 minutes. Where does the changeover stand now?",
+                        "translation": "Andrea, revisemos los datos del evento Kaizen para la línea 4 de prensas de estampado. Antes del taller SMED, el cambio de modelo del panel interior de puerta izquierda a la puerta derecha tomaba 52 minutos. ¿En cuánto está el cambio ahora?",
+                        "pedagogicalNotes": "Target terms: Kaizen event data, stamping press line, SMED workshop, changeover, door inner panel"
+                    },
+                    {
+                        "role": "Ing. Andrea Salazar (Continuous Improvement Leader, Silao)",
+                        "content": "We achieved single-digit changeover, Kenji! By converting hydraulic line hookups and pre-staging the incoming die as external setup while the press was still running, our internal changeover dropped to 8 minutes and 15 seconds.",
+                        "translation": "¡Logramos un cambio en dígitos individuales (menos de 10 minutos), Kenji! Al convertir las conexiones de líneas hidráulicas y preparar la matriz entrante como preparación externa mientras la prensa aún estaba operando, nuestro cambio interno bajó a 8 minutos y 15 segundos.",
+                        "pedagogicalNotes": "Target terms: single-digit changeover, external setup, internal changeover, pre-staging"
+                    },
+                    {
+                        "role": "Kenji Takahashi (Toyota Production System / Lean Master)",
+                        "content": "Outstanding discipline. And how did that changeover reduction impact your line's Overall Equipment Effectiveness (OEE) and batch sizing?",
+                        "translation": "Excelente disciplina. ¿Y cómo impactó esa reducción de cambio de modelo en la Efectividad General del Equipo (OEE) y el tamaño de lote de su línea?",
+                        "pedagogicalNotes": "Target terms: changeover reduction, Overall Equipment Effectiveness (OEE), batch sizing"
+                    },
+                    {
+                        "role": "Ing. Andrea Salazar (Continuous Improvement Leader, Silao)",
+                        "content": "Our line Availability surged by 14%, raising overall OEE from 71% to 86.4%. Even better, shrinking changeover times allowed us to cut our finished goods inventory in half, aligning production perfectly with customer Takt time.",
+                        "translation": "La disponibilidad de nuestra línea aumentó en 14%, elevando el OEE general de 71% a 86.4%. Mejor aún, reducir los tiempos de cambio nos permitió recortar nuestro inventario de producto terminado a la mitad, alineando la producción perfectamente con el tiempo Takt del cliente.",
+                        "pedagogicalNotes": "Target terms: Availability, overall OEE, finished goods inventory, customer Takt time"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "OEE (Overall Equipment Effectiveness)",
+                        "ipa": "/ˌoʊ.iːˈiː/",
+                        "es": "Efectividad General del Equipo",
+                        "category": "Métricas de Productividad",
+                        "definition": "The universal Lean metric calculating the percentage of truly productive manufacturing time (Availability × Performance × Quality).",
+                        "collocations": [
+                            "track OEE in real time",
+                            "world-class OEE benchmark",
+                            "OEE loss waterfall"
+                        ],
+                        "falseFriends": "Una planta con 100% de ocupación de operadores puede tener un OEE pésimo si las máquinas corren lentas o generan scrap.",
+                        "nativeUsage": "By eliminating micro-stops on the robotic cell, our plant increased OEE from 68% to 85%."
+                    },
+                    {
+                        "term": "SMED (Single-Minute Exchange of Die)",
+                        "ipa": "/smɛd/",
+                        "es": "Cambio Rápido de Herramental en Menos de 10 Minutos",
+                        "category": "Metodología Lean",
+                        "definition": "A Lean manufacturing system that reduces equipment setup and changeover time to single digits (under 10 minutes).",
+                        "collocations": [
+                            "SMED project",
+                            "convert internal to external setup",
+                            "SMED changeover reduction"
+                        ],
+                        "falseFriends": "Single-minute no significa un minuto exacto; significa cualquier tiempo de cambio en dígitos únicos (1 a 9 minutos).",
+                        "nativeUsage": "Applying SMED allowed the injection molding shop to reduce mold swap times from 4 hours to 7 minutes."
+                    },
+                    {
+                        "term": "Gemba Walk",
+                        "ipa": "/ˈɡɛm.bə wɔːk/",
+                        "es": "Recorrido por el piso de producción (el lugar real donde se crea valor)",
+                        "category": "Liderazgo Lean",
+                        "definition": "The practice of plant leaders walking the actual manufacturing floor to observe processes, understand work flow, and engage operators directly.",
+                        "collocations": [
+                            "conduct daily Gemba walks",
+                            "Gemba observations",
+                            "go to the Gemba"
+                        ],
+                        "falseFriends": "No es una inspección policiaca ni punitiva; su objetivo es identificar y remover obstáculos para los operadores.",
+                        "nativeUsage": "During the morning Gemba walk, the operations director noticed operators walking 20 feet to retrieve packaging boxes."
+                    },
+                    {
+                        "term": "Takt Time",
+                        "ipa": "/tɑːkt taɪm/",
+                        "es": "Tiempo Takt (ritmo de producción requerido por la demanda del cliente)",
+                        "category": "Planificación de la Producción",
+                        "definition": "The available production time divided by customer demand units, establishing the heartbeat pace required of the assembly line.",
+                        "collocations": [
+                            "calculate line Takt time",
+                            "synchronize to Takt time",
+                            "Takt time vs cycle time"
+                        ],
+                        "falseFriends": "Cycle time es lo que tarda la máquina; Takt time es el ritmo que exige el cliente.",
+                        "nativeUsage": "With customer demand at 480 units per 8-hour shift, our Takt time was calculated at exactly 60 seconds per car."
+                    },
+                    {
+                        "term": "Andon",
+                        "ipa": "/ˈæn.dɑːn/",
+                        "es": "Sistema Andon de alerta visual y paro de línea",
+                        "category": "Gestión Visual",
+                        "definition": "A visual and audio signaling system that alerts supervisors and maintenance of a workstation problem, empowering operators to stop the line.",
+                        "collocations": [
+                            "pull the Andon cord",
+                            "Andon board display",
+                            "yellow Andon alarm"
+                        ],
+                        "falseFriends": "No es una alarma decorativa; da autoridad a cualquier operario de detener la línea ante un defecto.",
+                        "nativeUsage": "The operator pulled the Andon cord when the automatic nut-runner failed to reach target torque."
+                    },
+                    {
+                        "term": "Muda (Waste)",
+                        "ipa": "/ˈmuː.də/",
+                        "es": "Desperdicio / Despilfarro operacional",
+                        "category": "Filosofía Lean",
+                        "definition": "Any human activity or consumption of physical resources that absorbs costs without creating value for the customer (the 8 Wastes / DOWNTIME).",
+                        "collocations": [
+                            "eliminate operational Muda",
+                            "Muda of waiting",
+                            "identify Muda on the shopfloor"
+                        ],
+                        "falseFriends": "Término japonés fundacional del Sistema de Producción Toyota adoptado en plantas de todo el mundo.",
+                        "nativeUsage": "Excess WIP stacked between workstations is pure Muda that ties up valuable plant capital."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "SMED Internal vs External Setup",
+                        "botQuestion": "In a SMED (Single-Minute Exchange of Die) project on a 1,000-ton stamping press, what is the critical difference between 'Internal Setup' and 'External Setup'?",
+                        "requiredKeywords": [
+                            "internal",
+                            "external",
+                            "stopped",
+                            "running",
+                            "machine"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Brilliant! Internal setup can ONLY be performed while the machine is completely stopped, whereas external setup can and should be done while the machine is actively running production.",
+                        "feedbackRetry": "Think about the state of the machine: in which setup phase must the press be shut down, and in which phase can it keep stamping parts?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "OEE World-Class Benchmark",
+                        "botQuestion": "Overall Equipment Effectiveness (OEE) is calculated by multiplying three factors: Availability, Performance, and Quality. In automotive Tier-1 manufacturing, what percentage is universally recognized as the 'World-Class' OEE benchmark?",
+                        "requiredKeywords": [
+                            "85%",
+                            "85 percent",
+                            "85"
+                        ],
+                        "minKeywords": 1,
+                        "feedbackSuccess": "Spot on! An OEE of 85% is the recognized gold standard for world-class manufacturing excellence across global automotive corridors.",
+                        "feedbackRetry": "It is an established percentage in the mid-eighties (between 80% and 90%)."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What is the mathematical formula for calculating Overall Equipment Effectiveness (OEE)?",
+                        "options": [
+                            "OEE = Availability x Performance x Quality",
+                            "OEE = Total Units Produced / Total Hours Worked",
+                            "OEE = Machine Horsepower x Electricity Consumed",
+                            "OEE = (Revenue - Expenses) / Total Assets"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "In SMED methodology, what is the primary initial strategy to reduce changeover times below 10 minutes?",
+                        "options": [
+                            "Separate setup tasks into internal and external, and convert as many internal tasks as possible into external setup",
+                            "Have operators run faster without safety gear",
+                            "Replace steel stamping dies with disposable plastic molds",
+                            "Eliminate product variants so the plant only produces one color forever"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What does the industrial acronym DOWNTIME represent in Lean Manufacturing?",
+                        "options": [
+                            "The 8 Industrial Wastes (Defects, Overproduction, Waiting, Non-utilized talent, Transportation, Inventory, Motion, Extra-processing)",
+                            "The total number of hours a plant is closed for national holidays",
+                            "The corporate hierarchy of automotive executive management",
+                            "The shipping transit duration of ocean containers from Europe"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "How is Takt Time calculated in production planning?",
+                        "options": [
+                            "Available Net Production Time divided by Customer Demand Units",
+                            "Total Machine Cycle Time multiplied by Operator Wage Rate",
+                            "Total Factory Square Footage divided by Total Machine Count",
+                            "Shipping Distance divided by Truck Velocity"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            }
+        ]
+    },
+    "medical-devices": {
+        "id": "medical-devices",
+        "title": "Dispositivos Médicos y Normativa Biomédica",
+        "titleEN": "Medical Devices & Biomedical Regulatory Engineering",
+        "level": "B1-B2",
+        "category": "engineering",
+        "description": "Sistemas de gestión de calidad para dispositivos médicos (FDA 21 CFR Part 820 / ISO 13485), cuartos limpios ISO 14644 (Clase 7 y 8), control de diseño (DHF, DMR, DHR), validación IQ/OQ/PQ, esterilización (EtO/Gamma) y gestión de riesgos ISO 14971.",
+        "status": "full",
+        "totalModules": 6,
+        "standard": "FDA 21 CFR Part 820 (QMSR) / ISO 13485:2016 / ISO 14971 / ISO 14644-1 / ISO 11607",
+        "modules": [
+            {
+                "id": "med-m1",
+                "title": "FDA 21 CFR Part 820 & ISO 13485:2016 Medical QMS & Audits",
+                "titleES": "Gestión de Calidad Médica FDA 21 CFR 820 e ISO 13485 y Auditorías Regulatorias",
+                "icon": "fa-solid fa-file-medical",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "med-m1-r1",
+                        "title": "FDA Quality System Regulation (QMSR) Harmonization with ISO 13485",
+                        "duration": "15 min",
+                        "content": "> **Regulatory Standard & Legal Authority**: Governed by the **United States Food and Drug Administration (FDA) 21 CFR Part 820** and **ISO 13485:2016 (Medical devices — Quality management systems — Requirements for regulatory purposes)**. Crucial for Quality Assurance Directors, Regulatory Affairs (RA) Associates, and Compliance Engineers in medical device manufacturing clusters (Tijuana, Mexicali, Ciudad Juárez, Reynosa).\n\n# FDA 21 CFR Part 820 & ISO 13485:2016 Medical QMS & Audits\n\n### 1. The Global Medical Device Regulatory Landscape\nUnlike general commercial manufacturing or automotive production, medical device manufacturing directly impacts human life and physiological safety. A single defect in an intravenous catheter, cardiac pacemaker lead, or surgical stapler can result in permanent patient injury or death.\n\nHistorically, medical device facilities shipping to the United States operated under the FDA's **Quality System Regulation (QSR - 21 CFR Part 820)**, while European and international markets mandated certification to **ISO 13485**. In recent years, the FDA executed the final **Quality Management System Regulation (QMSR)** harmonization rule, aligning Part 820 directly with the structure and risk-management principles of ISO 13485:2016.\n\nKey foundations of this unified medical QMS include:\n- **Risk-Based Approach**: Risk management is not a standalone document; it must permeate every process from supplier qualification to post-market surveillance.\n- **Management Responsibility**: Executive management must demonstrate active oversight through scheduled Management Reviews, resource allocation, and quality policy enforcement.\n- **Traceability of Personnel**: Stringent documentation showing that all operators entering controlled environments possess validated training records for specific assembly steps.\n\n### 2. FDA Form 483 vs Warning Letter vs Recall\nDuring an unannounced or scheduled FDA inspection (conducted by FDA Consumer Safety Officers), findings are classified into escalating legal tiers:\n1. **FDA Form 483 (Inspectional Observations)**: A formal notice issued at the conclusion of an inspection listing conditions that, in the investigator's judgment, represent violations of the Food, Drug, and Cosmetic (FD&C) Act. The manufacturer has exactly **15 business days** to submit a thorough, evidence-backed Corrective Action response.\n2. **Warning Letter**: Issued by the FDA Center for Devices and Radiological Health (CDRH) when a company's 483 response is inadequate, incomplete, or reveals systemic breakdown. Warning letters are published on the FDA public website, freeze government procurement, and immediately halt export certificates (Certificate to Foreign Government - CFG).\n3. **Medical Device Recalls (Class I, II, III)**:\n   - **Class I**: Reasonable probability that use of or exposure to the device will cause **serious adverse health consequences or death** (e.g., defective defibrillator capacitors).\n   - **Class II**: Exposure may cause temporary or medically reversible adverse health consequences.\n   - **Class III**: Use of the device is not likely to cause adverse health consequences (e.g., minor labeling error).\n\n### 3. Medical Device Single Audit Program (MDSAP)\nTo reduce audit fatigue, the **MDSAP** framework allows a single recognized Auditing Organization (AO) to conduct an annual audit satisfying the regulatory QMS mandates of five sovereign jurisdictions simultaneously:\n- **United States** (FDA)\n- **Canada** (Health Canada)\n- **Brazil** (ANVISA)\n- **Japan** (MHLW/PMDA)\n- **Australia** (TGA)"
+                    },
+                    {
+                        "id": "med-m1-r2",
+                        "title": "Medical Audit Trail, Line Clearance & Good Documentation Practices (GDP)",
+                        "duration": "13 min",
+                        "content": "> **Operational Quality Standard**: Aligned with **ALCOA+ Principles for Data Integrity** and **ISO 13485 Clause 4.2 (Documentation Requirements)**.\n\n### 1. Good Documentation Practices (GDP) & ALCOA+\nIn medical device cleanrooms and test laboratories, an unwritten law reigns: *\"If it is not documented, it did not happen.\"* Every record, signature, and entry must satisfy **ALCOA+**:\n- **Attributable**: Identifies the person who performed the action, signed in indelible ink or secured via 21 CFR Part 11 compliant digital signature.\n- **Legible**: Traceable and readable throughout the required product shelf-life (often device lifetime plus 2 years).\n- **Contemporaneous**: Recorded at the exact moment the task is executed—never backdated or pre-signed.\n- **Original**: Primary source record, not a transcribed copy.\n- **Accurate**: Honest representation of measurements without unauthorized rounding or whitewashing.\n- **Complete, Consistent, Enduring & Available**: Archival integrity throughout audit cycles.\n\n### 2. Strict Line Clearance Protocols\nTo prevent **mix-ups and cross-contamination** between differing product variants, cleanroom assembly lines must execute a formal **Line Clearance** prior to introducing any new production order:\n- All parts, components, sub-assemblies, and rejected items from the preceding batch must be physically evacuated from the cleanroom cell.\n- Obsolete work instructions, drawing travelers, and serialized labels must be cleared and accounted for in the scrap log.\n- Cleanroom work surfaces must be wiped down with validated disinfectant (e.g., 70% Sterile Isopropyl Alcohol / IPA).\n- The Line Clearance checklist must be co-signed by the Line Lead and an independent Quality Inspector before the new Device History Record (DHR) is opened."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Specialist Karen Vance (FDA Lead Investigator, San Diego District)",
+                        "content": "Good morning, Engineer Villalobos. We are conducting an inspection of your Class II cardiovascular guide catheter cleanroom line. I would like to begin by reviewing your trending log for non-conformances and your CAPA log for the past twelve months.",
+                        "translation": "Buenos días, Ingeniero Villalobos. Estamos realizando una inspección de su línea de cuarto limpio para catéteres guía cardiovasculares Clase II. Me gustaría comenzar revisando su registro de tendencias de no conformidades y su registro de CAPA de los últimos doce meses.",
+                        "pedagogicalNotes": "Target terms: Class II cardiovascular guide catheter, cleanroom line, non-conformances trending log, CAPA log"
+                    },
+                    {
+                        "role": "Ing. Alejandro Villalobos (Director of Quality & Regulatory Affairs, Tijuana)",
+                        "content": "Good morning, Investigator Vance. Welcome to our facility. Here is our secure terminal displaying our 21 CFR Part 11 compliant electronic Quality Management System. As you can see, our CAPA log shows seven open actions, all currently tracking within their targeted verification-of-effectiveness deadlines.",
+                        "translation": "Buenos días, Investigadora Vance. Bienvenida a nuestras instalaciones. Aquí tiene nuestra terminal segura que muestra nuestro Sistema de Gestión de Calidad electrónico que cumple con 21 CFR Parte 11. Como puede ver, nuestro registro de CAPA muestra siete acciones abiertas, todas actualmente en seguimiento dentro de sus plazos de verificación de eficacia.",
+                        "pedagogicalNotes": "Target terms: 21 CFR Part 11 compliant, electronic QMS, open actions, verification-of-effectiveness deadlines"
+                    },
+                    {
+                        "role": "Specialist Karen Vance (FDA Lead Investigator, San Diego District)",
+                        "content": "I notice CAPA 2026-042 was opened following a customer complaint regarding catheter tip delamination. What interim containment was executed on the shopfloor while the root cause investigation was underway?",
+                        "translation": "Noto que la CAPA 2026-042 se abrió tras una queja de cliente sobre la delaminación de la punta del catéter. ¿Qué contención provisional se ejecutó en piso de producción mientras se desarrollaba la investigación de causa raíz?",
+                        "pedagogicalNotes": "Target terms: customer complaint, catheter tip delamination, interim containment, root cause investigation"
+                    },
+                    {
+                        "role": "Ing. Alejandro Villalobos (Director of Quality & Regulatory Affairs, Tijuana)",
+                        "content": "We immediately initiated a warehouse quarantine on all finished lots sharing that polymer resin extrusion heat. Furthermore, our cleanroom team performed an immediate line clearance, calibrated the ultrasonic tip-forming dies, and instituted 100% tensile pull-testing at our final packaging barrier station.",
+                        "translation": "Iniciamos de inmediato una cuarentena en almacén para todos los lotes terminados que compartían esa corrida de extrusión de resina polimérica. Además, nuestro equipo de cuarto limpio realizó un despeje de línea inmediato, calibró los dados de conformado ultrasónico de punta e instituyó pruebas de tracción al 100% en nuestra estación final de empaque barrera.",
+                        "pedagogicalNotes": "Target terms: warehouse quarantine, extrusion heat, line clearance, ultrasonic tip-forming dies, tensile pull-testing, packaging barrier"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "FDA 21 CFR Part 820",
+                        "ipa": "/ˌɛf.diːˈeɪ ˈtwɛn.ti wʌn ˌsiː.ɛfˈɑːr pɑːrt eɪt ˈtwɛn.ti/",
+                        "es": "Reglamento del Sistema de Calidad de la FDA (QMSR)",
+                        "category": "Normativa Regulatoria",
+                        "definition": "The United States federal regulation governing the methods used in, and the facilities and controls used for, the design, manufacture, packaging, labeling, storage, installation, and servicing of all finished medical devices.",
+                        "collocations": [
+                            "Part 820 compliance",
+                            "FDA surveillance inspection",
+                            "QMSR transition"
+                        ],
+                        "falseFriends": "No es una guía optativa; es una ley federal vinculante con consecuencias penales por negligencia grave.",
+                        "nativeUsage": "The Tijuana plant upgraded its SOPs to harmonize with the revised FDA 21 CFR Part 820 QMSR rule."
+                    },
+                    {
+                        "term": "ISO 13485:2016",
+                        "ipa": "/ˌaɪ.ɛsˈoʊ θɜːrˈtiːn fɔːr ˈeɪ.ti faɪv/",
+                        "es": "Norma internacional de gestión de calidad para dispositivos médicos",
+                        "category": "Estándares Médicos",
+                        "definition": "The internationally recognized standard for quality management systems specific to medical devices, focusing on regulatory compliance, risk management, and design control.",
+                        "collocations": [
+                            "ISO 13485 certification",
+                            "notified body audit",
+                            "design dossier compliance"
+                        ],
+                        "falseFriends": "Difiere de ISO 9001 en que prioriza la seguridad del paciente y cumplimiento legal por encima de la satisfacción comercial del cliente.",
+                        "nativeUsage": "Our contract manufacturing facility achieved ISO 13485:2016 certification without a single non-conformance."
+                    },
+                    {
+                        "term": "FDA Form 483",
+                        "ipa": "/ˌɛf.diːˈeɪ fɔːrm fɔːr ˈeɪ.ti θriː/",
+                        "es": "Formulario 483 de la FDA (Observaciones de Inspección)",
+                        "category": "Auditoría FDA",
+                        "definition": "A formal document presented by FDA investigators to top management at the end of an on-site audit detailing observed conditions violating Good Manufacturing Practices (GMP).",
+                        "collocations": [
+                            "issue a Form 483",
+                            "respond to 483 observations",
+                            "15-day response window"
+                        ],
+                        "falseFriends": "No es una multa instantánea; es una notificación formal de hallazgos que exige un plan de acción correctiva en 15 días.",
+                        "nativeUsage": "The QA team worked around the clock to submit a bulletproof response to the FDA Form 483 within the mandated 15-day timeline."
+                    },
+                    {
+                        "term": "Line Clearance",
+                        "ipa": "/laɪn ˈklɪr.əns/",
+                        "es": "Despeje de línea de ensamble",
+                        "category": "Control en Piso Limpio",
+                        "definition": "The standardized procedure of completely clearing a workstation and assembly line of all components, tools, labels, and records from a previous job before commencing a new lot.",
+                        "collocations": [
+                            "conduct line clearance",
+                            "sign off on line clearance",
+                            "line clearance checklist"
+                        ],
+                        "falseFriends": "No significa 'limpiar el piso con agua'; es la verificación metódica de cero residuos o etiquetas del lote anterior para evitar confusiones de producto.",
+                        "nativeUsage": "The cleanroom supervisor verified the line clearance checklist before loading the new lot of stent delivery catheters."
+                    },
+                    {
+                        "term": "Good Documentation Practices (GDP)",
+                        "ipa": "/ɡʊd ˌdɑː.kjə.mɛnˈteɪ.ʃən ˈpræk.tɪ.sɪz/",
+                        "es": "Buenas Prácticas de Documentación (BPD / GDP)",
+                        "category": "Aseguramiento de Calidad",
+                        "definition": "A system of strict guidelines ensuring that all recorded data, lab notebooks, and production logs are attributable, legible, contemporaneous, original, and accurate (ALCOA+).",
+                        "collocations": [
+                            "GDP compliance",
+                            "single-line strike-through with initial and date",
+                            "ALCOA standards"
+                        ],
+                        "falseFriends": "Prohibido el uso de líquido corrector (white-out) o sobreescritura; los errores se corrigen con una sola línea recta, fecha, inicial y justificación.",
+                        "nativeUsage": "During the audit, the inspector flagged a GDP violation because an operator omitted the date next to a correction."
+                    },
+                    {
+                        "term": "MDSAP (Medical Device Single Audit Program)",
+                        "ipa": "/ˈɛm.diː.sæp/",
+                        "es": "Programa de Auditoría Única para Dispositivos Médicos",
+                        "category": "Auditorías Globales",
+                        "definition": "A global initiative that allows a single regulatory audit conducted by an authorized Auditing Organization to satisfy the QMS requirements of the US, Canada, Brazil, Japan, and Australia.",
+                        "collocations": [
+                            "MDSAP certified facility",
+                            "MDSAP audit model",
+                            "Health Canada MDSAP mandate"
+                        ],
+                        "falseFriends": "No sustituye las inspecciones de causa justificada de la FDA, pero exime a la planta de múltiples auditorías rutinarias extranjeras.",
+                        "nativeUsage": "By passing the annual MDSAP audit, our Juárez plant maintained export access to both the US FDA and Health Canada."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "FDA Form 483 Timelines",
+                        "botQuestion": "Welcome to the Medical Device Regulatory Lab! If an FDA investigator issues an FDA Form 483 following an audit of your cleanroom facility, how many business days does your company have to submit a formal written corrective action response?",
+                        "requiredKeywords": [
+                            "15",
+                            "fifteen",
+                            "business days",
+                            "days"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Exact! The FDA mandates a strict 15-business-day window to submit a comprehensive corrective action response with objective evidence to avoid escalation to a Warning Letter.",
+                        "feedbackRetry": "Remember the federal statutory window: it is a number of business days between 10 and 20."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Good Documentation Practices (GDP)",
+                        "botQuestion": "In a medical device manufacturing facility, what is the mandatory GDP protocol if an operator writes down an incorrect calibration value on a paper Device History Record (DHR)? How must it be corrected?",
+                        "requiredKeywords": [
+                            "single line",
+                            "strike",
+                            "initial",
+                            "date",
+                            "reason"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on! The operator must draw a single strike-through line across the incorrect entry, write the correct value alongside, and provide their initials, date, and brief rationale—never using white-out or scribbles.",
+                        "feedbackRetry": "Think about ALCOA+. You cannot obliterate the original data. You need a single line strike-through, initials, and date."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What is the primary objective of harmonizing FDA 21 CFR Part 820 into the Quality Management System Regulation (QMSR)?",
+                        "options": [
+                            "To align FDA medical device quality regulations directly with the global ISO 13485:2016 standard and its risk-management principles",
+                            "To eliminate all FDA plant audits in Mexican maquiladoras",
+                            "To allow medical devices to be sold without clinical trials or pre-market clearance",
+                            "To replace all human cleanroom operators with autonomous humanoid robots"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Under Good Documentation Practices (GDP), what do the ALCOA+ principles mandate for recorded data?",
+                        "options": [
+                            "Data must be Attributable, Legible, Contemporaneous, Original, and Accurate",
+                            "Data can be approximated from memory at the end of the work week",
+                            "Correction fluid (white-out) must be used on all spelling mistakes",
+                            "Records should be shredded after 30 days to protect intellectual property"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is the operational purpose of executing a strict 'Line Clearance' before beginning a new cleanroom batch?",
+                        "options": [
+                            "To remove all components, travelers, labels, and tools from the prior job to prevent catastrophic product mix-ups and cross-contamination",
+                            "To let the operators take an unscheduled 45-minute lunch break",
+                            "To shut down the cleanroom HEPA filters and save electrical energy",
+                            "To clean the facility windows with ammonia-based cleaners"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Which sovereign regulatory agencies participate in the Medical Device Single Audit Program (MDSAP)?",
+                        "options": [
+                            "USA (FDA), Canada (Health Canada), Brazil (ANVISA), Japan (MHLW/PMDA), and Australia (TGA)",
+                            "China (NMPA), Russia (Roszdravnadzor), and India (CDSCO) exclusively",
+                            "European Union member states only",
+                            "OPEC member nations"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "med-m2",
+                "title": "Design Controls & The Documentation Trinity: DHF, DMR, DHR",
+                "titleES": "Controles de Diseño y la Trinidad Documental: DHF, DMR, DHR y Control de Cambios",
+                "icon": "fa-solid fa-folder-tree",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "med-m2-r1",
+                        "title": "The Medical Documentation Trinity: DHF vs DMR vs DHR",
+                        "duration": "15 min",
+                        "content": "> **Engineering Documentation Standard**: Governed by **FDA 21 CFR 820.30 (Design Controls)**, **820.181 (Device Master Record)**, and **820.184 (Device History Record)**.\n\n# The Medical Documentation Trinity: DHF vs DMR vs DHR\n\nIn medical device engineering, confusing the acronyms **DHF, DMR, and DHR** is a fatal audit trap. These three documents represent the complete lifecycle of a medical device:\n\n| Acronym | Full Name | Lifecycle Stage | Analogy | Core Contents |\n| :--- | :--- | :--- | :--- | :--- |\n| **DHF** | **Design History File** | R&D & Design Validation | *The Design Diary* | Design inputs, design outputs, design verification/validation protocols, risk analysis (FMEA), clinical trial data, and design transfer sign-offs. Proves how the device was designed. |\n| **DMR** | **Device Master Record** | Manufacturing Recipe | *The Master Cookbook* | Complete engineering drawings, BOM (Bill of Materials), software source code, equipment calibration specs, cleanroom assembly SOPs, and packaging/labeling artwork. |\n| **DHR** | **Device History Record** | Production Batch Tracking | *The Birth Certificate* | Serial/lot numbers, quantity manufactured, raw material lot certificates, environmental cleanroom readings during the shift, operator signatures, and final release sign-offs. |\n\n### 1. The Design Controls Cascade (Waterfall Model)\nUnder 21 CFR 820.30, design development follows a disciplined validation cascade:\n1. **User Needs**: What the surgeon, clinician, or patient requires (e.g., *\"The vascular stent must navigate through tortuous 2 mm femoral arteries without kinking\"*).\n2. **Design Inputs**: Measurable physical, chemical, and electrical engineering criteria derived from User Needs (e.g., *\"Outer diameter $le 1.85\\text{ mm}$, trackability force $le 0.4\\text{ N}$, kink resistance radius $ge 5\\text{ mm}$\"*).\n3. **Design Outputs**: The completed blueprints, component specifications, and assembly procedures (which eventually populate the DMR).\n4. **Design Verification**: Testing whether the **Design Output matches the Design Input** (*\"Did we design the device right?\"* — benchtop testing, tensile testing, burst pressure testing).\n5. **Design Validation**: Testing whether the device **satisfies User Needs** under realistic clinical operating conditions (*\"Did we design the right device?\"* — animal studies, simulated cadaver trials, human clinical evaluations)."
+                    },
+                    {
+                        "id": "med-m2-r2",
+                        "title": "Engineering Change Orders (ECO), Redlines & Design Transfer",
+                        "duration": "12 min",
+                        "content": "> **Engineering Quality Standard**: Aligned with **ISO 13485 Clause 7.3.9 (Control of Design and Development Changes)**.\n\n### 1. Design Transfer Milestone\nDesign Transfer is the formal gateway where an R&D prototype moves from the laboratory into commercial high-volume cleanroom manufacturing. Key milestones include:\n- Verifying that manufacturing operators can consistently produce acceptable yields using only the drafted Device Master Record (DMR) SOPs.\n- Proving that production tooling, test fixtures, and gages are calibrated and qualified via Installation, Operational, and Performance Qualification (IQ/OQ/PQ).\n- Obtaining formal cross-functional sign-off from R&D, Manufacturing Engineering, Quality, and Regulatory Affairs.\n\n### 2. Engineering Change Orders (ECO) & Change Control\nIn a regulated medical plant, an engineer cannot modify a drill bit size, laser weld speed, or adhesive brand through informal verbal instructions:\n- **Change Request (CR)**: Justifies the technical, cost, or quality reason for the proposed modification.\n- **Risk Assessment**: Evaluates potential impacts on biocompatibility, electrical safety, or mechanical strength under ISO 14971.\n- **Regulatory Assessment**: Determines whether the modification requires a new FDA 510(k) pre-market notification or a European CE Mark dossier supplement.\n- **Engineering Change Order (ECO)**: The binding document that formally revises the DMR, establishes effective implementation dates, and mandates training of cleanroom assembly personnel."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Dr. Gregory Vance (VP of R&D, Irvine, California)",
+                        "content": "Rodrigo, our San Diego design team is completing the Design Transfer package for the Gen-3 laparoscopic surgical trocar. We are handing over the Design History File. Has your Juárez engineering team reviewed the draft Device Master Record?",
+                        "translation": "Rodrigo, nuestro equipo de diseño en San Diego está completando el paquete de Transferencia de Diseño para el trocar quirúrgico laparoscópico Gen-3. Les estamos transfiriendo el Expediente de Historia del Diseño (DHF). ¿Ha revisado su equipo de ingeniería en Juárez el borrador del Registro Maestro del Dispositivo (DMR)?",
+                        "pedagogicalNotes": "Target terms: Design Transfer package, laparoscopic surgical trocar, Design History File (DHF), Device Master Record (DMR)"
+                    },
+                    {
+                        "role": "Ing. Rodrigo Saldaña (Principal Manufacturing Engineer, Ciudad Juárez)",
+                        "content": "Yes, Gregory. We cross-referenced the bill of materials and assembly drawings in the DMR against our pilot cleanroom cell. Our primary concern is the adhesive curing cycle in step 14; the specified UV exposure window is too narrow for standard conveyor speeds.",
+                        "translation": "Sí, Gregory. Cotejamos la lista de materiales y los planos de ensamble del DMR contra nuestra celda piloto de cuarto limpio. Nuestra principal preocupación es el ciclo de curado de adhesivo en el paso 14; la ventana de exposición UV especificada es demasiado estrecha para las velocidades estándar de transportador.",
+                        "pedagogicalNotes": "Target terms: bill of materials (BOM), assembly drawings, pilot cleanroom cell, adhesive curing cycle, UV exposure window"
+                    },
+                    {
+                        "role": "Dr. Gregory Vance (VP of R&D, Irvine, California)",
+                        "content": "Good catch. We cannot change that curing tolerance without an approved ECO and an update to the design verification report in the DHF. Can you draft an Engineering Change Request with thermal sensor logs from your pilot run?",
+                        "translation": "Buena observación. No podemos cambiar esa tolerancia de curado sin un ECO aprobado y una actualización al reporte de verificación de diseño en el DHF. ¿Podrías redactar una Solicitud de Cambio de Ingeniería con registros de sensores térmicos de su corrida piloto?",
+                        "pedagogicalNotes": "Target terms: approved ECO, design verification report, DHF, Engineering Change Request (ECR), pilot run"
+                    },
+                    {
+                        "role": "Ing. Rodrigo Saldaña (Principal Manufacturing Engineer, Ciudad Juárez)",
+                        "content": "I will upload the ECR with thermal camera datalogs and shear strength test data by 3:00 PM today so regulatory affairs can confirm no 510(k) filing impact before we release the production DHR travelers.",
+                        "translation": "Subiré el ECR con los registros de datos de cámara térmica y datos de prueba de resistencia al corte hoy a las 3:00 PM para que asuntos regulatorios confirme que no hay impacto en el registro 510(k) antes de liberar las hojas viajeras del DHR de producción.",
+                        "pedagogicalNotes": "Target terms: shear strength test data, regulatory affairs, 510(k) filing impact, production DHR travelers"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "Design History File (DHF)",
+                        "ipa": "/dɪˈzaɪn ˈhɪs.tɚ.i faɪl/",
+                        "es": "Expediente de Historia del Diseño (DHF)",
+                        "category": "Documentación Médica",
+                        "definition": "A compilation of records that describes the design history of a finished medical device, demonstrating that it was developed in accordance with approved design plans.",
+                        "collocations": [
+                            "compile the DHF",
+                            "DHF design review",
+                            "audit the DHF"
+                        ],
+                        "falseFriends": "No es la historia de la empresa ni un currículum; es el expediente exhaustivo de I+D que prueba la verificación y validación del diseño.",
+                        "nativeUsage": "The auditor examined the DHF to verify that every user need had a corresponding clinical validation test."
+                    },
+                    {
+                        "term": "Device Master Record (DMR)",
+                        "ipa": "/dɪˈvaɪs ˈmæs.tɚ ˈrɛk.ɚd/",
+                        "es": "Registro Maestro del Dispositivo (DMR / Receta de Fabricación)",
+                        "category": "Manufactura Médica",
+                        "definition": "A comprehensive compilation of records containing the complete technical procedures, blueprints, BOMs, and specifications for manufacturing a finished medical device.",
+                        "collocations": [
+                            "release the DMR",
+                            "DMR specifications",
+                            "assembly instructions in DMR"
+                        ],
+                        "falseFriends": "DMR es la 'receta maestra' general; DHR es el registro individual de una orden o lote específico producido.",
+                        "nativeUsage": "Any change to a component tolerance requires a formal Engineering Change Order to update the DMR."
+                    },
+                    {
+                        "term": "Device History Record (DHR)",
+                        "ipa": "/dɪˈvaɪs ˈhɪs.tɚ.i ˈrɛk.ɚd/",
+                        "es": "Registro de Historia del Dispositivo (DHR / Acta de Nacimiento del Lote)",
+                        "category": "Trazabilidad de Lote",
+                        "definition": "A compilation of records containing the complete production history of a specific finished medical device lot, including serialized travelers, test results, and release signatures.",
+                        "collocations": [
+                            "review the DHR package",
+                            "DHR sign-off",
+                            "sterile batch DHR"
+                        ],
+                        "falseFriends": "Es el documento individual que acompaña a cada lote físico en piso; sin su firma de liberación el lote no puede ser exportado.",
+                        "nativeUsage": "The quality inspector reviewed the DHR to ensure all 500 pacemaker leads passed 100% dielectric insulation testing."
+                    },
+                    {
+                        "term": "Design Verification",
+                        "ipa": "/dɪˈzaɪn ˌvɛr.ə.fəˈkeɪ.ʃən/",
+                        "es": "Verificación de Diseño (¿Diseñamos bien el dispositivo?)",
+                        "category": "Ingeniería de Diseño",
+                        "definition": "Confirmation by examination and provision of objective evidence that specified design output requirements have fulfilled the design input specifications.",
+                        "collocations": [
+                            "execute design verification",
+                            "verification test protocol",
+                            "benchtop verification testing"
+                        ],
+                        "falseFriends": "No confundir con Validación; Verificación prueba datos técnicos contra especificaciones en banco de pruebas.",
+                        "nativeUsage": "Design verification proved the surgical blade maintains sharpness after 100 simulated incisions."
+                    },
+                    {
+                        "term": "Design Validation",
+                        "ipa": "/dɪˈzaɪn ˌvæl.əˈdeɪ.ʃən/",
+                        "es": "Validación de Diseño (¿Diseñamos el dispositivo correcto?)",
+                        "category": "Ensayos Clínicos",
+                        "definition": "Establishing by objective evidence that device specifications conform with user needs and intended medical uses under simulated or actual clinical conditions.",
+                        "collocations": [
+                            "clinical design validation",
+                            "cadaveric validation trial",
+                            "human factors validation"
+                        ],
+                        "falseFriends": "Valida la experiencia clínica real con médicos cirujanos o usuarios finales, no solo mediciones dimensionales en fábrica.",
+                        "nativeUsage": "Simulated surgery in animal models formed the core of our laparoscopic grasper design validation."
+                    },
+                    {
+                        "term": "Engineering Change Order (ECO)",
+                        "ipa": "/ˌɛn.dʒəˈnɪr.ɪŋ tʃeɪndʒ ˈɔːr.dɚ/",
+                        "es": "Orden de Cambio de Ingeniería (ECO)",
+                        "category": "Control de Cambios",
+                        "definition": "A formal document authorizing and specifying changes to engineering drawings, materials, software, or manufacturing processes in the Device Master Record.",
+                        "collocations": [
+                            "initiate an ECO",
+                            "route ECO for cross-functional approval",
+                            "ECO implementation date"
+                        ],
+                        "falseFriends": "No es una sugerencia verbal; es una modificación técnica formal con evaluación de impacto regulatorio y de riesgos.",
+                        "nativeUsage": "The manufacturing plant released an ECO to replace an obsolete stainless steel alloy with medical-grade titanium."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "The Medical Documentation Trinity",
+                        "botQuestion": "In medical device manufacturing, what is the exact technical acronym for the master 'cookbook' or file containing the complete blueprints, bill of materials (BOM), assembly SOPs, and packaging artwork required to manufacture a device?",
+                        "requiredKeywords": [
+                            "dmr",
+                            "device master record"
+                        ],
+                        "minKeywords": 1,
+                        "feedbackSuccess": "Correct! The DMR (Device Master Record) is the definitive manufacturing recipe containing all engineering drawings, BOMs, and SOPs necessary to produce the device.",
+                        "feedbackRetry": "Remember the three acronyms: DHF is the design diary, DHR is the lot birth certificate, and this one is the Device Master Record."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Verification vs Validation",
+                        "botQuestion": "What is the crucial conceptual difference between Design Verification and Design Validation under FDA 21 CFR 820.30?",
+                        "requiredKeywords": [
+                            "verification",
+                            "validation",
+                            "inputs",
+                            "outputs",
+                            "user needs"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Outstanding! Design Verification confirms that Design Outputs satisfy Design Inputs ('Did we design the device right?'), whereas Design Validation confirms that the device satisfies User Needs under clinical conditions ('Did we design the right device?').",
+                        "feedbackRetry": "Think about the questions: 'Did we design the device right against engineering specs?' vs 'Did we design the right device for user and clinical needs?'."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "Which medical documentation file contains the batch-specific records, operator signatures, environmental cleanroom logs, and serial numbers for a specific manufactured lot?",
+                        "options": [
+                            "Device History Record (DHR)",
+                            "Design History File (DHF)",
+                            "Device Master Record (DMR)",
+                            "Employee Personnel File"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Under FDA 21 CFR 820.30 Design Controls, what is the role of Design Verification?",
+                        "options": [
+                            "Proving with objective evidence that Design Outputs meet the specified Design Inputs through benchtop and functional testing",
+                            "Conducting focus groups with hospital marketing executives",
+                            "Setting the retail hospital sale price for the finished device",
+                            "Printing serial numbers on customer cardboard boxes"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What must be formally executed before any change to a component material, assembly process, or tolerance can be applied on a medical cleanroom floor?",
+                        "options": [
+                            "An Engineering Change Order (ECO) with risk assessment and cross-functional sign-off",
+                            "An informal sticky note on the operator's workbench",
+                            "A casual phone call to the cleanroom janitorial staff",
+                            "An announcement on social media"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What core documents reside within a Device History File (DHF)?",
+                        "options": [
+                            "Design plans, User Needs, Design Inputs, Verification/Validation protocols, risk management files (ISO 14971), and design reviews",
+                            "Monthly cafeteria lunch menus and holiday schedules",
+                            "Supplier invoices for cleanroom janitorial supplies",
+                            "Corporate tax returns filed in Delaware"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "med-m3",
+                "title": "Cleanroom Operations: ISO 14644 (Class 7 & 8), Gowning & Bioburden Control",
+                "titleES": "Operaciones en Cuarto Limpio: ISO 14644 (Clase 7 y 8), Protocolos de Vestido y Control de Bioburden",
+                "icon": "fa-solid fa-vest-patches",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "med-m3-r1",
+                        "title": "ISO 14644-1 Cleanroom Classification, Airborne Particle Counts & Differential Pressure",
+                        "duration": "15 min",
+                        "content": "> **Engineering Cleanroom Standard**: Governed by **ISO 14644-1:2015 (Classification of air cleanliness by particle concentration)** and **ISO 14644-2 (Monitoring to provide evidence of cleanroom performance)**. Essential for Facilities Engineers, Cleanroom Supervisors, and Microbiology Quality Analysts.\n\n# Cleanroom Operations: ISO 14644 (Class 7 & 8) & Bioburden Control\n\n### 1. What is an ISO Classified Cleanroom?\nIn medical device manufacturing, atmospheric airborne dust, skin flakes, synthetic fibers, and bacteria present catastrophic risks. An airborne particle settling onto a vascular implant can trigger a lethal thromboembolism or bloodstream infection.\n\nA **Cleanroom** is an enclosed environment engineered to control airborne particulate contamination, microbial levels, temperature, relative humidity (RH), and air pressure differentials.\n\n### 2. ISO 14644-1 Cleanroom Air Cleanliness Classes\nThe standard defines cleanliness based on maximum allowable concentrations of airborne particles per cubic meter of air ($particles/m^3$):\n\n| ISO Class | Equivalent US FS 209E Class | Max Particles $ge 0.5\\mu m$ per $m^3$ | Max Particles $ge 5.0\\mu m$ per $m^3$ | Common Medical Device Applications |\n| :--- | :--- | :--- | :--- | :--- |\n| **ISO 5** | Class 100 | $3,520$ | $29$ | Laminar flow hoods, sterile fill/finish, micro-optics. |\n| **ISO 7** | Class 10,000 | $352,000$ | $2,930$ | Primary assembly of invasive cardiovascular catheters, orthopedic implants, and sterile barrier packaging. |\n| **ISO 8** | Class 100,000 | $3,520,000$ | $29,300$ | Sub-assembly staging, molding of plastic housing components, gowning airlocks. |\n\n### 3. Critical Environmental Parameters\nMaintaining cleanroom integrity requires continuous automated monitoring of four critical physics parameters:\n1. **HEPA / ULPA Filtration**: High-Efficiency Particulate Air (HEPA) filters capture $ge 99.97\\%$ of particles down to $0.3\\mu m$. Air changes per hour (ACH) typically range from 30 to 60 ACH in ISO 7 suites.\n2. **Positive Differential Pressure Cascade**: Cleanrooms maintain positive air pressure relative to adjacent corridors (typically $+10\\text{ to }+15\\text{ Pascals}$ or $+0.04\\text{ to }+0.06\\text{ inches of water column}$). When an airlock door opens, air rushes *outward*, preventing contaminated hallway air from entering.\n3. **Temperature & Relative Humidity (RH)**: Maintained strictly at $68^\\circ\\text{F} \\pm 3^\\circ\\text{F}$ ($20^\\circ\\text{C} \\pm 2^\\circ\\text{C}$) and $30\\% - 60\\%\\text{ RH}$. Excess humidity encourages microbial proliferation; low humidity triggers static electrical discharge (ESD).\n4. **Isokinetic Particle Counters**: Calibrated optical particle sensors positioned at critical assembly points continuously sample cleanroom air volume."
+                    },
+                    {
+                        "id": "med-m3-r2",
+                        "title": "Aseptic Gowning Protocols, Air Showers & Bioburden Environmental Monitoring",
+                        "duration": "13 min",
+                        "content": "> **Microbiology Standard**: Aligned with **ISO 11737-1 (Determination of a population of microorganisms on products - Bioburden)** and **USP <1116> (Microbial Control and Monitoring of Cleanrooms)**.\n\n### 1. Personnel as the Primary Contamination Vector\nOver $80\\%$ of airborne particles and viable microorganisms inside a cleanroom originate from human operators shedding dead skin cells (squames), respiratory droplets, hair fragments, and makeup residue. Consequently, entering a cleanroom requires strict adherence to an **Aseptic Gowning Protocol**:\n- **Zone 1 (Pre-Entry Antechamber)**: Remove outdoor shoes and don dedicated cleanroom safety shoes; remove all jewelry, watches, and cosmetics.\n- **Zone 2 (Gowning Airlock)**:\n  1. Don sterile bouffant hair net (ensuring zero exposed hair) and beard cover.\n  2. Perform surgical hand scrubbing with antimicrobial soap followed by automated hand drying.\n  3. Don lint-free disposable face mask covering nose and mouth.\n  4. Don non-shedding Tyvek cleanroom coveralls (bunny suit), ensuring the suit never touches the floor during entry.\n  5. Step over the physical **Sticky Mat / Cleanroom Bench Divider** into the clean buffer zone.\n  6. Don sterile boot covers over pant legs; don sterile powder-free nitrile gloves, tucking coverall cuffs beneath glove gauntlets.\n  7. Spray gloved hands with sterile 70% IPA and proceed through the **Air Shower** (30-second high-velocity HEPA purge).\n\n### 2. Environmental Monitoring (EM) & Bioburden\n- **Settle Plates (Passive Air)**: Petri dishes containing Tryptic Soy Agar (TSA) exposed to ambient cleanroom air for 4 hours to capture settling bacteria and fungi.\n- **Contact Plates (RODAC)**: Convex agar plates pressed directly onto operator fingertips, forearms, gowning suits, and stainless steel workbench surfaces.\n- **Bioburden Testing**: Quantifying the baseline microbial count on unsterilized products ($CFU / unit$ - Colony Forming Units) prior to final sterilization."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Dr. Marcus Chen (Corporate Biosafety Auditor, Minneapolis)",
+                        "content": "Mariela, let's walk through your gowning antechamber and review your differential pressure cascade logs for the ISO Class 7 vascular stent crimping suite. I noticed your differential pressure gauge dropped to 6 Pascals yesterday afternoon.",
+                        "translation": "Mariela, recorramos su antecámara de vestido y revisemos sus registros de cascada de presión diferencial para la suite ISO Clase 7 de engarzado de stents vasculares. Noté que su manómetro de presión diferencial cayó a 6 Pascales ayer por la tarde.",
+                        "pedagogicalNotes": "Target terms: gowning antechamber, differential pressure cascade logs, ISO Class 7, differential pressure gauge"
+                    },
+                    {
+                        "role": "Ing. Mariela Cárdenas (Cleanroom Facilities & Microbiology Lead, Reynosa)",
+                        "content": "Yes, Dr. Chen. At 14:20 yesterday, an interlock alarm tripped when an operator inadvertently opened both the airlock entry door and the cleanroom exit door simultaneously. Our BMS logged a containment alert, and production was halted for 45 minutes while the HVAC system purged the air and recovered a steady 14 Pascals.",
+                        "translation": "Sí, Dr. Chen. A las 14:20 de ayer, sonó una alarma de enclavamiento cuando un operador abrió inadvertidamente la puerta de entrada de la esclusa y la puerta de salida del cuarto limpio al mismo tiempo. Nuestro sistema BMS registró una alerta de contención, y la producción se detuvo durante 45 minutos mientras el sistema HVAC purgaba el aire y recuperaba unos constantes 14 Pascales.",
+                        "pedagogicalNotes": "Target terms: interlock alarm, airlock entry door, BMS (Building Management System), containment alert, HVAC purge"
+                    },
+                    {
+                        "role": "Dr. Marcus Chen (Corporate Biosafety Auditor, Minneapolis)",
+                        "content": "How did your microbiology team verify environmental recovery before releasing operators back onto the crimping line?",
+                        "translation": "¿Cómo verificó su equipo de microbiología la recuperación ambiental antes de autorizar el regreso de los operadores a la línea de engarzado?",
+                        "pedagogicalNotes": "Target terms: microbiology team, environmental recovery, crimping line"
+                    },
+                    {
+                        "role": "Ing. Mariela Cárdenas (Cleanroom Facilities & Microbiology Lead, Reynosa)",
+                        "content": "Our QC microbiologists ran active isokinetic air particle samples across all six crimping workstations, confirming counts dropped below 120,000 particles per cubic meter—well below the ISO 7 threshold. We also placed settle plates and executed touch RODAC testing on all glove contacts.",
+                        "translation": "Nuestros microbiólogos de control de calidad ejecutaron muestras activas de partículas de aire isocinéticas en las seis estaciones de trabajo de engarzado, confirmando que los conteos cayeron por debajo de 120,000 partículas por metro cúbico, muy por debajo del umbral de ISO 7. También colocamos placas de sedimentación y ejecutamos pruebas de contacto RODAC en todos los guantes.",
+                        "pedagogicalNotes": "Target terms: active isokinetic air particle samples, ISO 7 threshold, settle plates, RODAC touch testing"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "Cleanroom ISO Class 7",
+                        "ipa": "/ˈkliːn.ruːm ˌaɪ.ɛsˈoʊ klæs ˈsɛv.ən/",
+                        "es": "Cuarto Limpio ISO Clase 7 (Clase 10,000)",
+                        "category": "Infraestructura Médica",
+                        "definition": "A controlled environment where airborne particulate concentration is maintained at or below 352,000 particles of size 0.5 microns or larger per cubic meter of air.",
+                        "collocations": [
+                            "ISO 7 certification",
+                            "ISO 7 cleanroom suite",
+                            "HEPA filtered ISO 7"
+                        ],
+                        "falseFriends": "No equivale a un quirófano de hospital; es un entorno industrial de alta manufactura con renovación continua de aire forzado.",
+                        "nativeUsage": "The catheter assembly process was relocated into the new ISO Class 7 cleanroom to reduce particulate defects."
+                    },
+                    {
+                        "term": "Differential Pressure Cascade",
+                        "ipa": "/ˌdɪf.əˈrɛn.ʃəl ˈprɛʃ.ɚ kæsˈkeɪd/",
+                        "es": "Cascada de presión diferencial positiva",
+                        "category": "Ingeniería de Climatización (HVAC)",
+                        "definition": "The deliberate maintenance of higher air pressure inside cleaner rooms compared to adjacent dirtier corridors, preventing contaminants from entering when doors open.",
+                        "collocations": [
+                            "positive pressure cascade",
+                            "differential pressure sensor",
+                            "maintain 12 to 15 Pascals"
+                        ],
+                        "falseFriends": "Si la presión se invierte y se vuelve negativa, los contaminantes exteriores son succionados hacia el cuarto limpio.",
+                        "nativeUsage": "The HVAC automation system alarmed when the differential pressure between the airlock and cleanroom dropped below 10 Pa."
+                    },
+                    {
+                        "term": "Bioburden",
+                        "ipa": "/ˈbaɪ.oʊˌbɜːr.dən/",
+                        "es": "Carga microbiana (Bioburden)",
+                        "category": "Microbiología",
+                        "definition": "The population of viable microorganisms present on or inside a raw material, medical device component, or sterile barrier system prior to sterilization.",
+                        "collocations": [
+                            "bioburden testing",
+                            "pre-sterilization bioburden baseline",
+                            "CFU limit"
+                        ],
+                        "falseFriends": "No es la suciedad visible; es el recuento cuantitativo en laboratorio de bacterias vivas en unidades formadoras de colonias (CFU).",
+                        "nativeUsage": "Bioburden validation confirmed the surgical implants carried less than 10 CFU per device prior to gamma irradiation."
+                    },
+                    {
+                        "term": "Gowning Protocol",
+                        "ipa": "/ˈɡaʊ.nɪŋ ˈproʊ.tə.kɑːl/",
+                        "es": "Protocolo de vestido aséptico de cuarto limpio",
+                        "category": "Higiene y Control Operativo",
+                        "definition": "The standardized sequential donning of specialized lint-free cleanroom apparel (bouffant, mask, Tyvek bunny suit, boot covers, sterile gloves) to contain human shedding.",
+                        "collocations": [
+                            "aseptic gowning qualification",
+                            "gowning SOP",
+                            "breach of gowning protocol"
+                        ],
+                        "falseFriends": "Gown no es solo una bata médica; en manufactura de dispositivos involucra el traje completo de Tyvek hermético.",
+                        "nativeUsage": "All manufacturing technicians must pass annual gowning qualification involving microbial contact plate testing."
+                    },
+                    {
+                        "term": "RODAC Plate (Contact Agar Plate)",
+                        "ipa": "/ˈroʊ.dæk pleɪt/",
+                        "es": "Placa RODAC (Placa de agar por contacto para monitoreo microbiológico)",
+                        "category": "Monitoreo Ambiental",
+                        "definition": "Replicate Organism Detection and Counting plate; a specialized convex nutrient agar dish pressed directly onto surfaces or operator gloves to sample viable bacteria.",
+                        "collocations": [
+                            "surface RODAC sampling",
+                            "RODAC touch plate",
+                            "acceptable CFU count on RODAC"
+                        ],
+                        "falseFriends": "Es un método microbiológico de muestreo físico directo, no una placa de radiografía.",
+                        "nativeUsage": "Microbiology technicians took RODAC touch plate samples from the operators' gloves at the end of the shift."
+                    },
+                    {
+                        "term": "HEPA Filter",
+                        "ipa": "/ˈhɛp.ə ˈfɪl.tɚ/",
+                        "es": "Filtro HEPA (Filtro de aire de alta eficiencia)",
+                        "category": "Filtración Industrial",
+                        "definition": "High-Efficiency Particulate Air filter capable of trapping at least 99.97% of airborne particles with a size of 0.3 microns.",
+                        "collocations": [
+                            "HEPA filter integrity test",
+                            "DOP smoke challenge test",
+                            "terminal ceiling HEPA"
+                        ],
+                        "falseFriends": "No es un filtro de aire acondicionado común; requiere pruebas anuales de fuga de humo con aerosol DOP/PAO.",
+                        "nativeUsage": "Facilities maintenance performed the annual challenge test to certify the cleanroom ceiling HEPA filters."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Cleanroom Pressure Cascade",
+                        "botQuestion": "Why do medical device cleanrooms maintain a positive differential air pressure relative to outer corridors and gowning airlocks?",
+                        "requiredKeywords": [
+                            "positive",
+                            "pressure",
+                            "outward",
+                            "contaminants",
+                            "enter",
+                            "prevent"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Spot on! Positive differential pressure forces air to rush outward when doors open, physically preventing unfiltered air and particulate contaminants from entering the clean manufacturing zone.",
+                        "feedbackRetry": "Think about air physics. If the cleanroom is at higher pressure than the hallway, which way will the air flow when a door cracks open?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Bioburden Definition",
+                        "botQuestion": "In medical device manufacturing, what does the term 'Bioburden' specifically measure on a finished component prior to terminal sterilization?",
+                        "requiredKeywords": [
+                            "microorganisms",
+                            "bacteria",
+                            "viable",
+                            "colony",
+                            "cfu",
+                            "count",
+                            "population"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Outstanding! Bioburden is the baseline population of viable microorganisms (measured in Colony Forming Units - CFU) living on a product prior to undergoing sterilization.",
+                        "feedbackRetry": "Focus on microorganisms and living bacteria on the device before it enters the sterilizer."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "Under ISO 14644-1, what is the maximum allowable concentration of particles >= 0.5 microns in an ISO Class 7 cleanroom per cubic meter of air?",
+                        "options": [
+                            "352,000 particles/m³",
+                            "3,520 particles/m³",
+                            "3,520,000 particles/m³",
+                            "Zero particles/m³"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is the primary source of particulate and microbial contamination in an operational medical device cleanroom?",
+                        "options": [
+                            "Human operators shedding skin flakes, hair fragments, respiratory droplets, and clothing lint",
+                            "Stainless steel tables deteriorating",
+                            "HEPA filter media dissolving into the air",
+                            "LED lighting emitting ultraviolet photons"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is the operational function of an airlock interlock mechanism between a gowning room and a cleanroom?",
+                        "options": [
+                            "To prevent both the outer and inner doors from opening simultaneously, maintaining the pressure barrier",
+                            "To lock operators inside if they make a manufacturing mistake",
+                            "To save electricity by turning off the lights when doors close",
+                            "To measure operator body temperature via infrared lasers"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What agar plate is specifically designed with a convex surface to press directly against cleanroom benches and operator gloves for microbial testing?",
+                        "options": [
+                            "RODAC plate (Contact plate)",
+                            "Standard Petri dish without agar",
+                            "Liquid broth tube",
+                            "Glass microscope slide"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "med-m4",
+                "title": "Process Validation: IQ, OQ, PQ & Packaging Integrity (ISO 11607)",
+                "titleES": "Validación de Procesos: IQ, OQ, PQ y Barrera Estéril de Empaque (ISO 11607)",
+                "icon": "fa-solid fa-microscope",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "med-m4-r1",
+                        "title": "The Process Validation Trinity: Installation (IQ), Operational (OQ) & Performance Qualification (PQ)",
+                        "duration": "15 min",
+                        "content": "> **Engineering Validation Standard**: Governed by **GHTF/SG3/N99-10 (Quality Management Systems - Process Validation Guidance)** and **FDA 21 CFR 820.75 (Process Validation)**. Crucial for Validation Engineers, Automation Leads, and Manufacturing Engineers.\n\n# Process Validation: IQ, OQ, PQ & Packaging Integrity\n\n### 1. When is Process Validation Mandatory?\nUnder FDA 21 CFR 820.75, when the results of a manufacturing process **cannot be fully verified by subsequent inspection and testing** (or where destructive testing would be required to verify each unit, such as sterile heat seal integrity or catheter balloon burst strength), the process **must be validated with a high degree of assurance**.\n\nValidation proves that a manufacturing system will consistently produce product meeting predetermined quality specifications when operating within defined process parameter windows.\n\n### 2. The Validation Triad: IQ, OQ, PQ\nValidation follows a three-stage qualification sequence:\n\n#### 1. Installation Qualification (IQ): *\"Is it installed correctly?\"*\n- Verifies that equipment, tooling, piping, electrical supplies, compressed air, and software have been delivered and installed strictly according to manufacturer specifications and plant safety codes.\n- Critical deliverables: Calibration certificates for temperature controllers, pressure transducers, and load cells; preventive maintenance schedules; spare parts lists; utility supply verification (voltage stability, dry oil-free compressed air).\n\n#### 2. Operational Qualification (OQ): *\"Does it operate consistently across edge-of-envelope parameter limits?\"*\n- Evaluates equipment operation across the upper and lower operating parameter limits (Worst-Case testing / Edge-of-Envelope).\n- Determines process capability ($C_p / C_{pk}$) and proves that components produced at the worst-case parameter combinations (e.g., minimum seal temperature + minimum dwell time + minimum pressure, and maximum seal temperature + maximum dwell time + maximum pressure) still meet all mechanical specifications.\n- Establishes the documented **Operating Window** for standard shopfloor production.\n\n#### 3. Performance Qualification (PQ): *\"Does it perform reliably under real full-scale production conditions over time?\"*\n- Demonstrates long-term stability and repeatability under full commercial manufacturing conditions, using regular shopfloor operators, typical raw material lot variations, shift changes, and environmental fluctuations.\n- The automotive/medical industry standard mandates running **three consecutive, successful full-scale production lots** with zero non-conformances before commercial release."
+                    },
+                    {
+                        "id": "med-m4-r2",
+                        "title": "Sterile Barrier Systems & Packaging Validation (ISO 11607-1/2)",
+                        "duration": "13 min",
+                        "content": "> **Medical Packaging Standard**: Governed by **ISO 11607-1 & ISO 11607-2 (Packaging for terminally sterilized medical devices)**.\n\n### 1. The Sterile Barrier System (SBS)\nA medical device is only as sterile as its packaging. The **Sterile Barrier System (SBS)** (typically a thermoformed plastic blister tray sealed with a porous **Tyvek®** lid, or a Tyvek/poly pouch) has two critical engineering functions:\n1. Allow the sterilizing agent (e.g., Ethylene Oxide gas) to enter and exit freely without bursting the package.\n2. Provide an impermeable microbial barrier maintaining sterility throughout shipping, handling, and shelf-life storage (often 3 to 5 years) until the point of opening in a sterile surgical suite.\n\n### 2. Mandatory Packaging Integrity Validation Tests\nTo validate a heat-sealing packaging machine under ISO 11607-2:\n- **Seal Strength Test (ASTM F88)**: A tensile peel test measuring the peak force (Newtons or pounds-force per linear inch) required to separate the Tyvek lid from the plastic tray flange.\n- **Bubble Emission Leak Test (ASTM F2096)**: The sealed package is submerged in water and pressurized to identify pinholes or unsealed channels by observing escaping air bubbles.\n- **Dye Penetration Test (ASTM F1929)**: Injecting a high-visibility synthetic dye along the seal margin to detect microscopic capillary leak channels ($> 50\\mu m$).\n- **Accelerated Aging (ASTM F1980)**: Subjecting sealed packaging to elevated thermal and humidity conditions ($55^\\circ\\text{C}$ / $60\\%\\text{ RH}$) to simulate 3-year or 5-year real-time shelf life based on the Arrhenius reaction rate reaction model ($Q_{10} = 2$)."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Specialist Scott Miller (Lead Validation Engineer, Boston)",
+                        "content": "Karla, our corporate validation team is reviewing your PQ protocol for the automated pouch sealing machine on the arthroscopic surgical shaver line in Mexicali. How did your team establish the lower and upper sealing limits during OQ?",
+                        "translation": "Karla, nuestro equipo corporativo de validación está revisando su protocolo de PQ para la máquina selladora automatizada de bolsas en la línea de rasuradores quirúrgicos artroscópicos en Mexicali. ¿Cómo estableció su equipo los límites de sellado inferior y superior durante la OQ?",
+                        "pedagogicalNotes": "Target terms: PQ protocol, automated pouch sealing machine, arthroscopic surgical shaver line, OQ (Operational Qualification)"
+                    },
+                    {
+                        "role": "Ing. Karla Dominguez (Validation & Process Engineering Manager, Mexicali)",
+                        "content": "During the OQ phase, Scott, we ran a full Design of Experiments (DOE) varying temperature between 120°C and 140°C, seal pressure between 40 and 60 PSI, and dwell time between 1.2 and 2.5 seconds. All peel-strength test specimens from our worst-case extreme corners exceeded our acceptance criterion of 1.5 Newtons per inch without any seal delamination.",
+                        "translation": "Durante la fase de OQ, Scott, ejecutamos un Diseño de Experimentos (DOE) completo variando la temperatura entre 120°C y 140°C, la presión de sellado entre 40 y 60 PSI, y el tiempo de permanencia entre 1.2 y 2.5 segundos. Todas las probetas de prueba de resistencia al despegue de nuestras esquinas extremas de peor caso superaron nuestro criterio de aceptación de 1.5 Newtons por pulgada sin delaminación de sello.",
+                        "pedagogicalNotes": "Target terms: Design of Experiments (DOE), dwell time, worst-case extreme corners, peel-strength test specimens, seal delamination"
+                    },
+                    {
+                        "role": "Specialist Scott Miller (Lead Validation Engineer, Boston)",
+                        "content": "That provides robust confidence for the operating window. What is your sample size strategy for the three-lot Performance Qualification (PQ)?",
+                        "translation": "Eso proporciona una sólida confianza para la ventana de operación. ¿Cuál es su estrategia de tamaño de muestra para la Calificación de Desempeño (PQ) de tres lotes?",
+                        "pedagogicalNotes": "Target terms: operating window, sample size strategy, three-lot PQ"
+                    },
+                    {
+                        "role": "Ing. Karla Dominguez (Validation & Process Engineering Manager, Mexicali)",
+                        "content": "We are sampling 60 sealed pouches per lot across three consecutive shifts, combining ASTM F88 tensile peel testing with ASTM F1929 dye penetration. If all 180 samples demonstrate zero capillary leaks and Cpk remains above 1.67, we will submit the final PQ summary report for QA sign-off.",
+                        "translation": "Estamos muestreando 60 bolsas selladas por lote en tres turnos consecutivos, combinando pruebas de despegue por tracción ASTM F88 con penetración de colorante ASTM F1929. Si las 180 muestras demuestran cero fugas capilares y el Cpk permanece por encima de 1.67, enviaremos el reporte de resumen de PQ final para firma de Aseguramiento de Calidad.",
+                        "pedagogicalNotes": "Target terms: ASTM F88 tensile peel testing, ASTM F1929 dye penetration, capillary leaks, Cpk above 1.67, PQ summary report"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "Process Validation",
+                        "ipa": "/ˈprɑː.sɛs ˌvæl.əˈdeɪ.ʃən/",
+                        "es": "Validación de procesos de manufactura",
+                        "category": "Ingeniería de Calidad",
+                        "definition": "Establishing by objective evidence that a process consistently produces a result or product satisfying its predetermined specifications and quality attributes.",
+                        "collocations": [
+                            "process validation protocol",
+                            "validation master plan (VMP)",
+                            "re-validation criteria"
+                        ],
+                        "falseFriends": "Mandatoria legalmente cuando la inspección al 100% no es posible o destruiría el producto (ej. sellos estériles).",
+                        "nativeUsage": "The ultrasonic catheter welding process underwent rigorous process validation before commercial launch."
+                    },
+                    {
+                        "term": "Installation Qualification (IQ)",
+                        "ipa": "/ˌɪn.stəˈleɪ.ʃən ˌkwɑː.lə.fəˈkeɪ.ʃən/",
+                        "es": "Calificación de Instalación (IQ)",
+                        "category": "Validación de Equipos",
+                        "definition": "Documented verification that all equipment, piping, electrical wiring, and auxiliary systems have been delivered and installed in accordance with engineering drawings and safety requirements.",
+                        "collocations": [
+                            "execute IQ protocol",
+                            "IQ checklist",
+                            "IQ/OQ/PQ sequence"
+                        ],
+                        "falseFriends": "No prueba si la pieza sale buena; solo certifica que la máquina está montada, cableada y calibrada correctamente.",
+                        "nativeUsage": "The technician completed the IQ protocol by verifying line voltage, air pressure sensors, and calibration tags on the RF sealer."
+                    },
+                    {
+                        "term": "Operational Qualification (OQ)",
+                        "ipa": "/ˌɑː.pəˈreɪ.ʃən.əl ˌkwɑː.lə.fəˈkeɪ.ʃən/",
+                        "es": "Calificación de Operación (OQ)",
+                        "category": "Validación de Parámetros",
+                        "definition": "Documented verification that equipment operates as intended throughout predetermined upper and lower operating parameter limits (worst-case testing).",
+                        "collocations": [
+                            "OQ parameter challenge",
+                            "worst-case testing during OQ",
+                            "establish operating window"
+                        ],
+                        "falseFriends": "Debe retar los límites extremos de la máquina, no probar únicamente los valores nominales ideales.",
+                        "nativeUsage": "During OQ, we proved the laser marker creates readable UDI barcodes even at the lowest laser power setting."
+                    },
+                    {
+                        "term": "Performance Qualification (PQ)",
+                        "ipa": "/pɚˈfɔːr.məns ˌkwɑː.lə.fəˈkeɪ.ʃən/",
+                        "es": "Calificación de Desempeño (PQ)",
+                        "category": "Validación de Producción",
+                        "definition": "Documented evidence that the integrated manufacturing process consistently produces acceptable product under commercial operating conditions over multiple consecutive lots.",
+                        "collocations": [
+                            "three consecutive PQ batches",
+                            "PQ acceptance criteria",
+                            "PQ final report sign-off"
+                        ],
+                        "falseFriends": "Exige típicamente 3 lotes completos consecutivos en piso real con operadores de turno estándar.",
+                        "nativeUsage": "The plant manager signed the PQ release after three consecutive batches of guidewires met all tensile specifications."
+                    },
+                    {
+                        "term": "Sterile Barrier System (SBS)",
+                        "ipa": "/ˈstɛr.əl ˈbær.i.ɚ ˈsɪs.təm/",
+                        "es": "Sistema de Barrera Estéril (SBS)",
+                        "category": "Empaque Médico",
+                        "definition": "The minimum package that minimizes the risk of ingress of microorganisms and allows aseptic presentation of the medical device at the point of use (ISO 11607).",
+                        "collocations": [
+                            "SBS integrity",
+                            "Tyvek pouch SBS",
+                            "maintain sterile barrier"
+                        ],
+                        "falseFriends": "No es la caja de cartón exterior (empaque de transporte); es el envase primario sellado que toca o aísla el dispositivo estéril.",
+                        "nativeUsage": "A puncture in the sterile barrier system immediately voids the sterility of the orthopedic implant."
+                    },
+                    {
+                        "term": "Dye Penetration Test (ASTM F1929)",
+                        "ipa": "/daɪ ˌpɛn.əˈtreɪ.ʃən tɛst/",
+                        "es": "Prueba de penetración de colorante para sellos estériles",
+                        "category": "Ensayos de Empaque",
+                        "definition": "A standardized test method using synthetic dye solutions to visually detect microscopic leak channels through porous packaging seals down to 50 microns.",
+                        "collocations": [
+                            "ASTM F1929 dye test",
+                            "capillary leak detection",
+                            "dye migration in seal"
+                        ],
+                        "falseFriends": "No es una prueba de pintura cosmética; es una prueba destructiva para comprobar que no existan canales microscópicos por donde entren bacterias.",
+                        "nativeUsage": "The packaging engineer injected dye solution into the Tyvek pouch seal to verify zero capillary channels existed."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "The Validation Sequence",
+                        "botQuestion": "In medical device manufacturing, what is the mandatory sequential order of the three stages of process qualification, from initial machine delivery to full commercial lot validation?",
+                        "requiredKeywords": [
+                            "iq",
+                            "oq",
+                            "pq"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Exact! The mandatory sequence is IQ (Installation Qualification), followed by OQ (Operational Qualification), and culminating in PQ (Performance Qualification).",
+                        "feedbackRetry": "Remember the three letters: Installation, Operational, and Performance Qualification."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "OQ Worst-Case Testing",
+                        "botQuestion": "Why does Operational Qualification (OQ) specifically mandate testing at 'worst-case' parameter limits (the outer edges of temperature, pressure, or dwell time)?",
+                        "requiredKeywords": [
+                            "worst-case",
+                            "limits",
+                            "tolerance",
+                            "operating window",
+                            "extreme",
+                            "robust"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Spot on! Testing at the upper and lower extremes (worst-case) proves that even if machine parameters drift toward allowable tolerance limits during production, parts will still meet all quality and safety criteria.",
+                        "feedbackRetry": "Think about machine drift. What happens if temperature drops to the lowest allowable setting on a cold winter morning?"
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "Under FDA 21 CFR 820.75, when is process validation legally mandated for a medical device manufacturing line?",
+                        "options": [
+                            "When the output of a process cannot be fully verified by subsequent non-destructive inspection or testing",
+                            "Only when the medical device is sold directly to military hospitals",
+                            "When the equipment costs less than $10,000 USD",
+                            "Only if the manufacturing facility operates in North America"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What does Installation Qualification (IQ) verify?",
+                        "options": [
+                            "That equipment, utilities, wiring, and safety interlocks are installed according to manufacturer and engineering specifications",
+                            "That operators can run the line without taking rest breaks",
+                            "That the product passes 5-year accelerated aging tests",
+                            "That hospital purchasing managers will approve the invoice"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Under ISO 11607, what is the primary functional requirement of a Sterile Barrier System (SBS)?",
+                        "options": [
+                            "To prevent the ingress of microorganisms and allow aseptic presentation of the device at the point of surgical use",
+                            "To display bright full-color promotional advertisements to patients",
+                            "To make the package heavy enough so it does not blow away in the wind",
+                            "To prevent hospital nurses from opening the package without a key"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "How many consecutive successful production lots are universally required during Performance Qualification (PQ) to demonstrate manufacturing process stability?",
+                        "options": [
+                            "Three (3) consecutive lots",
+                            "One (1) single prototype part",
+                            "Fifty (50) years of continuous production",
+                            "Zero lots; simulations in CAD are sufficient"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "med-m5",
+                "title": "Risk Management (ISO 14971) & Root Cause Medical CAPA / Non-Conformance",
+                "titleES": "Gestión de Riesgos (ISO 14971) y CAPA de Causa Raíz / No Conformidades Médicas",
+                "icon": "fa-solid fa-triangle-exclamation",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "med-m5-r1",
+                        "title": "ISO 14971:2019 Application of Risk Management to Medical Devices",
+                        "duration": "15 min",
+                        "content": "> **Medical Risk Management Standard**: Governed by **ISO 14971:2019 (Medical devices — Application of risk management to medical devices)** and **ISO/TR 24971**.\n\n# Risk Management (ISO 14971) & Root Cause Medical CAPA\n\n### 1. The Core Philosophy of Medical Risk Management\nUnlike general commercial manufacturing where risk is evaluated primarily as financial liability, **ISO 14971** defines risk strictly around patient safety:\n$$\\text{Risk} = \\text{Severity of Harm} \\times \\text{Probability of Occurrence of that Harm}$$\n\nA fundamental principle of ISO 14971:2019 is that economic or cosmetic considerations **cannot be used to justify an unacceptable medical risk**. All known and foreseeable risks must be reduced to an acceptable level as far as possible (AFAP).\n\n### 2. The Risk Management Lifecycle\n1. **Risk Analysis**: Identifying intended use, reasonably foreseeable misuse, and potential **Hazards** (potential sources of harm, e.g., electrical leakage, toxic leachate, particulate shedding, sharp burrs).\n2. **Hazardous Situations & Harm**: Mapping how a hazard leads to clinical harm (e.g., *Hazard: micro-crack in balloon wall $\\rightarrow$ Hazardous Situation: balloon bursts during angioplasty inflation $\\rightarrow$ Harm: arterial dissection or emergency bypass surgery*).\n3. **Risk Evaluation**: Plotting Severity (Catastrophic, Critical, Serious, Minor, Negligible) against Probability of Occurrence ($P_1 \\times P_2$) on an approved Risk Acceptability Matrix.\n4. **Risk Control Hierarchy**:\n   - **Step 1: Inherently Safe Design**: Eliminate the hazard at the source (e.g., replacing a sharp pointed trocar blade with a blunt auto-retracting cannula).\n   - **Step 2: Protective Measures**: Incorporate physical safeguards (e.g., pressure relief valves, optical interlocks).\n   - **Step 3: Information for Safety**: Warnings in the Instructions for Use (IFU), packaging contraindications, or training requirements (the least effective control).\n5. **Benefit-Risk Analysis**: If residual risk exceeds acceptable thresholds, clinical data must prove that the medical therapeutic benefit to the patient outweighs the residual risk."
+                    },
+                    {
+                        "id": "med-m5-r2",
+                        "title": "Corrective and Preventive Action (CAPA) Architecture & Root Cause Investigations",
+                        "duration": "13 min",
+                        "content": "> **Regulatory Enforcement Standard**: Governed by **FDA 21 CFR 820.100 (Corrective and preventive action)** and **ISO 13485 Clause 8.5.2/8.5.3**.\n\n### 1. Why CAPA is the #1 Driver of FDA Warning Letters\nMore than $50\\%$ of all FDA Warning Letters cite deficiencies in **CAPA systems**: failure to investigate root causes, failure to verify corrective action effectiveness, or treating systemic defects as isolated human errors.\n\nA compliant medical CAPA system requires a rigorous closed-loop lifecycle:\n1. **Identification & Containment**: Capturing signals from internal non-conformances (NCRs), audit findings, or post-market customer complaints. Immediate quarantine of suspect stock.\n2. **Investigation & Root Cause Analysis**: Utilizing structured methodologies (**5 Whys, Ishikawa 6M, Fault Tree Analysis / FTA**) to uncover systemic flaws in training, equipment maintenance, or raw material variation rather than blaming operator carelessness.\n3. **Corrective Action Plan**: Designing permanent engineering or procedural interventions (updating DMR drawings, reprogramming PLC interlocks, re-validating tooling).\n4. **Verification of Effectiveness (VoE)**: The most critical step audited by the FDA. The CAPA cannot be closed immediately after implementing a fix; the team must establish a measurable tracking window (e.g., zero recurring defect escapes across 10 consecutive production lots over 90 days)."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Specialist Richard Thornton (FDA Consumer Safety Officer, Irvine District)",
+                        "content": "Engineer De la Rosa, I am reviewing your plant's CAPA log. CAPA 2025-089 was opened eight months ago regarding an endotracheal tube cuff leak. Your root cause lists 'operator failed to follow SOP during heat-staking'. Why was this attributed solely to human error?",
+                        "translation": "Ingeniero De la Rosa, estoy revisando el registro de CAPA de su planta. La CAPA 2025-089 se abrió hace ocho meses respecto a una fuga en el manguito de un tubo endotraqueal. Su causa raíz indica 'el operador no siguió el SOP durante el sellado térmico'. ¿Por qué se atribuyó esto únicamente a error humano?",
+                        "pedagogicalNotes": "Target terms: CAPA log, endotracheal tube cuff leak, root cause, human error, heat-staking"
+                    },
+                    {
+                        "role": "Ing. Sofía De la Rosa (Quality Systems & CAPA Lead, Ciudad Juárez)",
+                        "content": "That was our preliminary assessment, Officer Thornton. However, our engineering review rejected that conclusion. We performed a 5 Whys investigation and discovered that thermal drift in the thermocouple was causing intermittent temperature drops of 15°C that were invisible on the analog gauge.",
+                        "translation": "Esa fue nuestra evaluación preliminar, Oficial Thornton. Sin embargo, nuestra revisión de ingeniería rechazó esa conclusión. Realizamos una investigación de 5 Porqués y descubrimos que la deriva térmica en el termopar estaba causando caídas intermitentes de temperatura de 15°C que eran invisibles en el manómetro analógico.",
+                        "pedagogicalNotes": "Target terms: preliminary assessment, 5 Whys investigation, thermal drift, thermocouple, analog gauge"
+                    },
+                    {
+                        "role": "Specialist Richard Thornton (FDA Consumer Safety Officer, Irvine District)",
+                        "content": "What permanent corrective action was implemented, and how did you verify effectiveness?",
+                        "translation": "¿Qué acción correctiva permanente se implementó y cómo verificaron la eficacia?",
+                        "pedagogicalNotes": "Target terms: permanent corrective action, verify effectiveness"
+                    },
+                    {
+                        "role": "Ing. Sofía De la Rosa (Quality Systems & CAPA Lead, Ciudad Juárez)",
+                        "content": "We replaced the analog controller with a digital closed-loop PID controller featuring automated lockouts if temperature drifts by ±2°C. For Verification of Effectiveness, we monitored 25,000 units over four months with 100% pneumatic pressure decay testing, achieving zero cuff leaks.",
+                        "translation": "Reemplazamos el controlador analógico con un controlador digital PID de lazo cerrado con bloqueos automáticos si la temperatura se desvía ±2°C. Para la Verificación de Eficacia, monitoreamos 25,000 unidades durante cuatro meses con pruebas de caída de presión neumática al 100%, logrando cero fugas de manguito.",
+                        "pedagogicalNotes": "Target terms: digital closed-loop PID controller, automated lockout, Verification of Effectiveness (VoE), pneumatic pressure decay testing"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "ISO 14971:2019",
+                        "ipa": "/ˌaɪ.ɛsˈoʊ ˈfɔːr.tiːn naɪn ˈsɛv.ən.ti wʌn/",
+                        "es": "Norma internacional de gestión de riesgos para dispositivos médicos",
+                        "category": "Gestión de Riesgos",
+                        "definition": "The global benchmark standard specifying a process for a medical device manufacturer to identify hazards, estimate and evaluate risks, control these risks, and monitor effectiveness of controls.",
+                        "collocations": [
+                            "ISO 14971 risk management file",
+                            "hazard identification",
+                            "benefit-risk determination"
+                        ],
+                        "falseFriends": "Evalúa primordialmente el daño al paciente y al personal médico, no el riesgo de pérdida económica de la empresa.",
+                        "nativeUsage": "The biomedical design team updated the ISO 14971 risk management report following a minor surgical complaint."
+                    },
+                    {
+                        "term": "CAPA (Corrective and Preventive Action)",
+                        "ipa": "/ˈkæp.ə/",
+                        "es": "Acción Correctiva y Preventiva (CAPA)",
+                        "category": "Sistemas de Calidad",
+                        "definition": "A regulatory-mandated continuous improvement system designed to collect information, investigate non-conformances, identify root causes, and verify that corrective interventions permanently prevent recurrence.",
+                        "collocations": [
+                            "open a CAPA",
+                            "CAPA root cause investigation",
+                            "close a CAPA following VoE"
+                        ],
+                        "falseFriends": "No es simplemente un reporte de scrap; es una investigación formal obligatoria ante fallas sistémicas o quejas de producto.",
+                        "nativeUsage": "The QA director presented the closed CAPA package to the FDA auditor, proving the corrective action eliminated catheter kinking."
+                    },
+                    {
+                        "term": "Verification of Effectiveness (VoE)",
+                        "ipa": "/ˌvɛr.ə.fəˈkeɪ.ʃən əv ɪˌfɛk.tɪv.nəs/",
+                        "es": "Verificación de Eficacia (VoE en CAPA)",
+                        "category": "Cierre de Auditoría",
+                        "definition": "The mandatory audit step where objective evidence is gathered over a statistically significant timeframe to confirm that an implemented corrective action successfully eliminated the problem without creating new risks.",
+                        "collocations": [
+                            "pass VoE criteria",
+                            "VoE tracking window",
+                            "extend VoE monitoring period"
+                        ],
+                        "falseFriends": "Una CAPA nunca debe cerrarse inmediatamente después de arreglar la máquina; requiere un periodo de prueba de efectividad en producción real.",
+                        "nativeUsage": "The CAPA remained open for 90 days to satisfy the verification-of-effectiveness protocol before final closure."
+                    },
+                    {
+                        "term": "Hazard vs Harm",
+                        "ipa": "/ˈhæz.ɚd / hɑːrm/",
+                        "es": "Peligro vs Daño (Conceptos clave de ISO 14971)",
+                        "category": "Análisis de Riesgo",
+                        "definition": "A Hazard is a potential source of harm (e.g., electrical voltage); Harm is the actual physical injury, damage to health, or death suffered by a human being.",
+                        "collocations": [
+                            "identify biological hazard",
+                            "severity of harm",
+                            "mitigate catastrophic harm"
+                        ],
+                        "falseFriends": "Hazard es la condición potencial de riesgo; Harm es la lesión clínica real en el paciente.",
+                        "nativeUsage": "The engineering team modified the trocar tip to eliminate the hazard of accidental abdominal wall puncture."
+                    },
+                    {
+                        "term": "Non-Conformance Report (NCR)",
+                        "ipa": "/ˌnɑːn kənˈfɔːr.məns rɪˈpɔːrt/",
+                        "es": "Reporte de No Conformidad (NCR)",
+                        "category": "Control en Piso",
+                        "definition": "A formal quality document recording that a product, raw material, or manufacturing process step has failed to satisfy specified engineering or regulatory requirements.",
+                        "collocations": [
+                            "generate an NCR",
+                            "disposition of NCR lot",
+                            "NCR trending analysis"
+                        ],
+                        "falseFriends": "Documenta el evento no conforme inmediato; si el evento se repite o es crítico, escala inmediatamente a una CAPA.",
+                        "nativeUsage": "Quality control generated an NCR when dimensional wall thickness on extruded tubing fell below minimum tolerance."
+                    },
+                    {
+                        "term": "Instructions for Use (IFU)",
+                        "ipa": "/ɪnˈstrʌk.ʃənz fɔːr juːs/",
+                        "es": "Instrucciones de Uso (IFU / Inserto Médico)",
+                        "category": "Etiquetado y Cumplimiento",
+                        "definition": "The legally binding document provided to physicians and patients detailing the device's indications, contraindications, clinical warnings, and step-by-step operating instructions.",
+                        "collocations": [
+                            "IFU labeling review",
+                            "contraindications in IFU",
+                            "e-IFU electronic leaflet"
+                        ],
+                        "falseFriends": "No es un folleto publicitario; está estrictamente regulado y auditado por la FDA como parte del etiquetado oficial.",
+                        "nativeUsage": "The regulatory affairs team updated the IFU to add a clinical contraindication for pediatric patients."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Root Cause in CAPA Investigations",
+                        "botQuestion": "When conducting a root cause investigation under FDA 21 CFR 820.100 following an assembly line failure, why does the FDA heavily penalize companies that conclude the root cause was simply 'operator error'?",
+                        "requiredKeywords": [
+                            "systemic",
+                            "training",
+                            "procedure",
+                            "root cause",
+                            "blame",
+                            "system"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Spot on! The FDA views attributing defects to 'operator error' as a superficial investigation that fails to address systemic root causes like ambiguous SOPs, poor workstation ergonomics, or lack of poka-yoke error proofing.",
+                        "feedbackRetry": "Think about systemic factors. Why did the operator make the mistake? Were the instructions confusing or was the machine missing a sensor?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Verification of Effectiveness (VoE)",
+                        "botQuestion": "Why is it an audit violation to close a CAPA immediately upon releasing an Engineering Change Order (ECO) to fix a machine?",
+                        "requiredKeywords": [
+                            "effectiveness",
+                            "verify",
+                            "evidence",
+                            "recurrence",
+                            "monitor",
+                            "time"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Exact! Regulations mandate a formal Verification of Effectiveness (VoE) period where production is monitored over time to gather objective data proving the defect has not recurred before the CAPA can be officially closed.",
+                        "feedbackRetry": "Focus on proof over time. You must verify that the fix actually worked in production over a monitoring window."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "Under ISO 14971, how is medical device 'Risk' mathematically and conceptually defined?",
+                        "options": [
+                            "The combination of the Severity of Harm and the Probability of Occurrence of that Harm",
+                            "The total manufacturing cost divided by the unit sale price",
+                            "The likelihood that the plant manager will resign within 12 months",
+                            "The number of competitors selling similar products in Europe"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is the primary reason why FDA investigators issue Warning Letters regarding company CAPA systems?",
+                        "options": [
+                            "Failure to thoroughly investigate root causes, relying on superficial 'operator error' excuses, and failure to verify corrective action effectiveness",
+                            "Using black ballpoint pens instead of blue ink pens",
+                            "Closing CAPAs too slowly during national holiday breaks",
+                            "Printing CAPA reports on glossy photo paper"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "In the ISO 14971 Risk Control hierarchy, what is the highest priority and most effective method to mitigate a hazard?",
+                        "options": [
+                            "Inherently Safe Design (eliminating or reducing the hazard through physical product design)",
+                            "Printing a small warning sentence in the paper Instructions for Use (IFU)",
+                            "Having operators sign a statement promising to be more careful",
+                            "Buying commercial liability insurance"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What must be established and fulfilled before a medical device CAPA can be formally closed in an electronic QMS?",
+                        "options": [
+                            "Verification of Effectiveness (VoE) proving through objective production data that the fix prevented defect recurrence",
+                            "A casual verbal agreement between two floor supervisors",
+                            "Deleting the customer complaint record from the database",
+                            "Paying an inspection fee to the local county courthouse"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "med-m6",
+                "title": "Sterilization Modalities (EtO, Gamma, E-Beam) & Lot Release Testing",
+                "titleES": "Modalidades de Esterilización (EtO, Gamma, E-Beam) y Liberación Paramétrica de Lote",
+                "icon": "fa-solid fa-atom",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "med-m6-r1",
+                        "title": "Sterilization Physics: Ethylene Oxide (EtO) vs Gamma Irradiation vs Electron Beam (E-Beam)",
+                        "duration": "15 min",
+                        "content": "> **Sterilization Standards**: Governed by **ISO 11135 (Ethylene oxide)**, **ISO 11137-1/2 (Radiation sterilization - Gamma & E-beam)**, and **USP <71> (Sterility Tests)**.\n\n# Sterilization Modalities & Parametric Lot Release\n\n### 1. The Sterility Assurance Level (SAL $10^{-6}$)\nFor a terminally sterilized medical device intended to contact blood or compromised tissue, global pharmacopeias mandate a **Sterility Assurance Level (SAL)** of $10^{-6}$:\n$$\\text{SAL } 10^{-6} \\implies \\text{Probability of finding a single viable surviving microorganism is } \\le 1 \\text{ in } 1,000,000 \\text{ units.}$$\n\nAchieving this requires applying validated industrial sterilization modalities capable of killing the most resistant biological spores known to science.\n\n### 2. Major Industrial Sterilization Modalities\n\n| Modality | Physical Agent | Target Microorganism Indicator | Material Compatibility & Physics | Operational Trade-Offs |\n| :--- | :--- | :--- | :--- | :--- |\n| **Ethylene Oxide (EtO)** | Toxic alkylating gas ($C_2H_4O$) under controlled humidity and temperature ($50^\\circ\\text{C}$). | *Bacillus atrophaeus* spores ($10^6$). | Ideal for temperature-sensitive polymer catheters, electronics, and optical optics. | Long cycle times (12-24h) plus mandatory **aeration degas cycles (24-72h)** to eliminate carcinogenic EtO residuals (ISO 10993-7). |\n| **Gamma Radiation** | Ionizing gamma rays emitted by Cobalt-60 ($^{60}\\text{Co}$) radioactive isotopes. | *Bacillus pumilus* or microbial bioburden. | Deep penetration through high-density pallets. No degassing required; immediate product release capability. | High radiation doses ($25 - 40\\text{ kGy}$) cause embrittlement, yellowing, and cross-linking degradation in PTFE and certain polymers. |\n| **Electron Beam (E-Beam)** | Accelerated high-energy electron stream generated by particle accelerators. | *Bacillus pumilus* spores. | High-speed, high-throughput in-line processing (seconds per box). Lower thermal degradation. | Limited depth of physical penetration compared to Gamma; requires precise density matching of shipping boxes. |\n\n### 3. Biological Indicators (BI) & Process Challenge Devices (PCD)\nTo challenge an EtO cycle, engineers place **Process Challenge Devices (PCD)** in the most difficult-to-sterilize locations inside the pallet (e.g., inside long narrow catheter lumens):\n- The PCD contains an inoculated carrier holding $ge 10^6$ bacterial spores of *Bacillus atrophaeus*.\n- Following cycle completion, BIs are sent to the microbiology lab for 7-day incubation (or rapid 24-hour enzyme-fluorescence readout) to confirm 100% microbial kill."
+                    },
+                    {
+                        "id": "med-m6-r2",
+                        "title": "Parametric Release, EtO Residuals Testing & Endotoxin (LAL) Testing",
+                        "duration": "13 min",
+                        "content": "> **Toxicology & Release Standard**: Aligned with **ISO 10993-7 (Ethylene oxide sterilization residuals)** and **USP <85> (Bacterial Endotoxins Test - LAL)**.\n\n### 1. Parametric Release vs Biological Indicator Release\nTraditionally, medical lots could not be released from quarantine until biological indicators completed laboratory incubation. Under **Parametric Release** (ISO 11135), a lot can be released based solely on automated physical sensor records:\n- Microprocessor verification that chamber temperature, relative humidity, gas concentration, exposure time, and vacuum pressure curves matched validated specifications throughout the cycle.\n\n### 2. Ethylene Oxide Residual Limits (ISO 10993-7)\nBecause EtO and its breakdown product **Ethylene Chlorohydrin (ECH)** are mutagenic and toxic, gas-sterilized implants must undergo gas chromatography testing to verify residual concentrations fall below strict parts-per-million (ppm) thresholds based on patient contact duration (limited exposure, prolonged exposure, or permanent implant).\n\n### 3. Bacterial Endotoxin (LAL / Pyrogen) Testing\nKilling bacteria is not enough. When Gram-negative bacteria die, their cell walls release **endotoxins (lipopolysaccharides / LPS)**:\n- Endotoxins can survive sterilization cycles and cause fatal pyrogenic septic shock when introduced into human blood.\n- Lots are tested via the **Limulus Amebocyte Lysate (LAL)** assay to confirm endotoxin levels are below strict FDA limits (typically $le 0.5\\text{ EU/mL}$ or $le 20\\text{ EU/device}$)."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Dr. Evelyn Reed (Director of Sterilization Science, Minneapolis)",
+                        "content": "Manuel, I am reviewing the contract sterilization records for our latest production lot of neurovascular flow-diverter stents processed through your EtO facility in Baja California. Can you confirm the gas chromatography results for ethylene oxide residuals?",
+                        "translation": "Manuel, estoy revisando los registros de esterilización por contrato para nuestro último lote de producción de stents desviadores de flujo neurovascular procesados en su planta de EtO en Baja California. ¿Podrías confirmar los resultados de cromatografía de gases para residuos de óxido de etileno?",
+                        "pedagogicalNotes": "Target terms: contract sterilization records, neurovascular flow-diverter stents, EtO facility, gas chromatography results, ethylene oxide residuals"
+                    },
+                    {
+                        "role": "Ing. Manuel Hinojosa (Sterilization Operations Director, Tijuana)",
+                        "content": "Certainly, Dr. Reed. The lot completed a 48-hour heated aeration cycle at 45°C. Our analytical chemistry lab verified that residual EtO is at 0.8 parts per million, and ethylene chlorohydrin is below 2.0 ppm—comfortably below the ISO 10993-7 permanent implant limit of 4.0 mg per device.",
+                        "translation": "Por supuesto, Dra. Reed. El lote completó un ciclo de aireación térmica de 48 horas a 45°C. Nuestro laboratorio de química analítica verificó que el EtO residual está en 0.8 partes por millón, y el clorohidrina de etileno está por debajo de 2.0 ppm, confortablemente por debajo del límite de implante permanente de ISO 10993-7 de 4.0 mg por dispositivo.",
+                        "pedagogicalNotes": "Target terms: heated aeration cycle, analytical chemistry lab, residual EtO, parts per million, ethylene chlorohydrin, permanent implant limit"
+                    },
+                    {
+                        "role": "Dr. Evelyn Reed (Director of Sterilization Science, Minneapolis)",
+                        "content": "What about the LAL endotoxin testing and your internal Process Challenge Devices (PCDs)?",
+                        "translation": "¿Qué hay de las pruebas de endotoxinas LAL y sus Dispositivos de Reto de Proceso (PCDs) internos?",
+                        "pedagogicalNotes": "Target terms: LAL endotoxin testing, Process Challenge Devices (PCDs)"
+                    },
+                    {
+                        "role": "Ing. Manuel Hinojosa (Sterilization Operations Director, Tijuana)",
+                        "content": "All 16 internal PCD spore strips showed zero growth after 48 hours of rapid incubation. Our turbidimetric kinetic LAL assay reported endotoxin concentrations under 0.05 Endotoxin Units per milliliter, satisfying our USP <85> release criteria. The lot is fully clear for commercial shipment.",
+                        "translation": "Las 16 tiras de esporas en PCDs internos mostraron cero crecimiento tras 48 horas de incubación rápida. Nuestro ensayo LAL cinético turbidimétrico reportó concentraciones de endotoxina por debajo de 0.05 Unidades de Endotoxina por mililitro, satisfaciendo nuestros criterios de liberación de USP <85>. El lote está completamente listo para embarque comercial.",
+                        "pedagogicalNotes": "Target terms: PCD spore strips, rapid incubation, turbidimetric kinetic LAL assay, Endotoxin Units per milliliter, USP <85> release criteria"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "Sterility Assurance Level (SAL 10⁻⁶)",
+                        "ipa": "/stəˈrɪl.ə.ti əˈʃʊr.əns ˈlɛv.əl/",
+                        "es": "Nivel de Aseguramiento de la Esterilidad (SAL 10⁻⁶)",
+                        "category": "Esterilización Médica",
+                        "definition": "The statistical probability of a single viable surviving microorganism being present on an item after terminal sterilization, universally required to be one in one million (10⁻⁶).",
+                        "collocations": [
+                            "achieve SAL 10^-6",
+                            "validated SAL level",
+                            "overkill sterilization approach"
+                        ],
+                        "falseFriends": "No es una garantía de cero bacterias al 100% matemático; es un cálculo probabilístico de una en un millón respaldado por validación de ciclo.",
+                        "nativeUsage": "The sterilization cycle was validated using the overkill method to guarantee an SAL of 10⁻⁶."
+                    },
+                    {
+                        "term": "Ethylene Oxide (EtO) Sterilization",
+                        "ipa": "/ˈɛθ.əˌliːn ˈɑːk.saɪd ˌstɛr.ə.ləˈzeɪ.ʃən/",
+                        "es": "Esterilización por Óxido de Etileno (EtO)",
+                        "category": "Modalidad de Esterilización",
+                        "definition": "A low-temperature gas sterilization process commonly used for medical devices that cannot withstand the high temperatures of steam autoclaves or the polymer degradation of radiation.",
+                        "collocations": [
+                            "EtO sterilization chamber",
+                            "EtO gas concentration",
+                            "aeration degas cycle"
+                        ],
+                        "falseFriends": "Requiere una fase prolongada de aireación posterior para evacuar los residuos tóxicos del gas antes del empaque final.",
+                        "nativeUsage": "Most disposable catheter assemblies are sterilized using EtO because radiation weakens their polyurethane joints."
+                    },
+                    {
+                        "term": "Process Challenge Device (PCD)",
+                        "ipa": "/ˈprɑː.sɛs ˈtʃæl.ɪndʒ dɪˈvaɪs/",
+                        "es": "Dispositivo de Reto de Proceso (PCD)",
+                        "category": "Control Biológico",
+                        "definition": "An engineered test item designed with internal tortuous pathways or narrow lumens housing a biological indicator, placed in the most difficult-to-penetrate location in a sterilization load.",
+                        "collocations": [
+                            "internal PCD",
+                            "external PCD",
+                            "spore kill in PCD"
+                        ],
+                        "falseFriends": "Es un dispositivo de prueba física de laboratorio, no un producto destinado a la venta hospitalaria.",
+                        "nativeUsage": "The sterilization engineer placed PCDs containing Bacillus atrophaeus spores at the center of each pallet."
+                    },
+                    {
+                        "term": "Limulus Amebocyte Lysate (LAL) Assay",
+                        "ipa": "/ˈlɪm.jə.ləs əˈmiː.bəˌsaɪt ˈlaɪˌseɪt ˈæs.eɪ/",
+                        "es": "Ensayo LAL (Prueba de Endotoxinas Bacterianas / Pirogenicidad)",
+                        "category": "Ensayos Farmacopeicos",
+                        "definition": "An aqueous extract of blood cells from the horseshoe crab used to detect and quantify bacterial endotoxins (pyrogens) capable of triggering fatal shock in patients.",
+                        "collocations": [
+                            "kinetic chromogenic LAL",
+                            "endotoxin unit limit (EU/mL)",
+                            "USP <85> bacterial endotoxin test"
+                        ],
+                        "falseFriends": "Detecta endotoxinas liberadas por bacterias muertas, las cuales aún pueden causar fiebre fatal en pacientes aunque el producto esté estéril.",
+                        "nativeUsage": "Every catheter batch must pass the LAL test to verify bacterial endotoxins remain below 0.5 EU/mL."
+                    },
+                    {
+                        "term": "Aeration Cycle",
+                        "ipa": "/eɪˈreɪ.ʃən ˈsaɪ.kəl/",
+                        "es": "Ciclo de aireación y desgasificación de EtO",
+                        "category": "Seguridad Toxicológica",
+                        "definition": "The controlled thermal degassing phase following an EtO sterilization cycle, where air is continuously circulated to reduce toxic gas residues to safe levels.",
+                        "collocations": [
+                            "heated aeration cell",
+                            "minimum 48-hour aeration",
+                            "EtO residual degassing"
+                        ],
+                        "falseFriends": "No es simplemente abrir la ventana; es un proceso en cámara climatizada controlada a 40-50°C para acelerar la evaporación de gases tóxicos.",
+                        "nativeUsage": "The catheter lot remained in the heated aeration chamber for 72 hours until gas chromatography confirmed EtO levels fell below 4 ppm."
+                    },
+                    {
+                        "term": "Parametric Release",
+                        "ipa": "/ˌpær.əˈmɛt.rɪk rɪˈliːs/",
+                        "es": "Liberación Paramétrica de Lote Estéril",
+                        "category": "Aseguramiento de Calidad",
+                        "definition": "The authorized commercial release of a terminally sterilized batch based exclusively on real-time sensor recordings of physical process parameters rather than waiting for biological spore incubation.",
+                        "collocations": [
+                            "qualify for parametric release",
+                            "ISO 11135 parametric release",
+                            "temperature and gas pressure curves"
+                        ],
+                        "falseFriends": "Exige una validación histórica extremadamente madura y sensores redundantes certificados por organismos reguladores.",
+                        "nativeUsage": "Parametric release shortened our shipping lead-time from seven days down to twenty-four hours."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Sterility Assurance Level (SAL)",
+                        "botQuestion": "What does the medical standard Sterility Assurance Level of 10⁻⁶ mathematically mean when releasing an invasive sterile catheter to a hospital?",
+                        "requiredKeywords": [
+                            "one in a million",
+                            "million",
+                            "probability",
+                            "viable",
+                            "surviving",
+                            "microorganism"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Exact! An SAL of 10⁻⁶ represents a statistical probability of no more than one in one million (10⁻⁶) that a viable microorganism has survived terminal sterilization on the finished device.",
+                        "feedbackRetry": "Think about the power of ten: 10⁻⁶ means 1 in how many units?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Endotoxins vs Sterility",
+                        "botQuestion": "Why is passing a sterility test alone not enough to guarantee patient safety on a vascular catheter, requiring a separate LAL Bacterial Endotoxin test?",
+                        "requiredKeywords": [
+                            "endotoxins",
+                            "pyrogens",
+                            "fever",
+                            "shock",
+                            "dead",
+                            "cell wall",
+                            "toxic"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Spot on! Even when bacteria are 100% killed by sterilization, their dead cell walls release endotoxins (pyrogens) that can trigger lethal septic shock and violent fever if introduced into human bloodstream, requiring the LAL assay.",
+                        "feedbackRetry": "What happens when bacteria die? What toxic substances remain in their cell walls that cause fever and septic shock?"
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What is the universal Sterility Assurance Level (SAL) mandated by global pharmacopeias for terminally sterilized medical implants?",
+                        "options": [
+                            "SAL 10⁻⁶ (one in one million probability of a viable organism)",
+                            "SAL 10⁻¹ (one in ten probability)",
+                            "SAL 50% (half the lot is sterile)",
+                            "Zero percent certainty"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Why is Ethylene Oxide (EtO) gas sterilization chosen over Gamma radiation for delicate polymer catheters containing micro-electronics?",
+                        "options": [
+                            "Because Gamma radiation causes embrittlement, discoloration, and structural degradation in certain polymers and electronic circuits",
+                            "Because EtO sterilization is completely non-toxic and odorless",
+                            "Because EtO cycles take only 30 seconds to complete",
+                            "Because Gamma radiation is legally banned in Mexico"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is the biological indicator spore organism universally used to validate Ethylene Oxide (EtO) sterilization cycles?",
+                        "options": [
+                            "Bacillus atrophaeus",
+                            "Escherichia coli",
+                            "Influenza virus",
+                            "Candida albicans"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What does the Limulus Amebocyte Lysate (LAL) test specifically detect and quantify?",
+                        "options": [
+                            "Bacterial endotoxins (lipopolysaccharide pyrogens) from Gram-negative bacteria",
+                            "Heavy metal contamination such as lead or mercury",
+                            "The percentage of sterile gas remaining inside packaging",
+                            "The battery life of electronic pacemakers"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            }
+        ]
+    },
+    "logistics-compliance": {
+        "id": "logistics-compliance",
+        "title": "Logística Internacional, Aduanas y Cumplimiento T-MEC",
+        "titleEN": "International Logistics & Global Trade Compliance",
+        "level": "B1-B2",
+        "category": "engineering",
+        "description": "Operaciones de comercio exterior y cadena de suministro transfronteriza: Incoterms® 2020 (FCA, DDP, DAP), reglas de origen y certificación T-MEC, programa IMMEX (Anexo 24 y 31), despacho aduanero con pedimentos y seguridad C-TPAT.",
+        "status": "full",
+        "totalModules": 6,
+        "standard": "Incoterms® 2020 (ICC) / USMCA (T-MEC) / IMMEX Anexo 24-31 / C-TPAT / WCO SAFE Framework",
+        "modules": [
+            {
+                "id": "log-m1",
+                "title": "Incoterms® 2020 in Cross-Border Manufacturing (FCA, DDP, DAP & Risk Transfer)",
+                "titleES": "Incoterms® 2020 en Manufactura Transfronteriza (FCA, DDP, DAP y Transferencia de Riesgo)",
+                "icon": "fa-solid fa-truck-moving",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "log-m1-r1",
+                        "title": "Incoterms 2020 Architecture: Allocating Costs, Risks & Customs Clearance",
+                        "duration": "15 min",
+                        "content": "> **Global Trade Standard**: Published by the **International Chamber of Commerce (ICC - Incoterms® 2020)**. Essential for Supply Chain Directors, Logistics Managers, and International Purchasing Leads operating across US-Mexico-Canada manufacturing corridors (Laredo, Otay Mesa, El Paso, Monterrey, Querétaro).\n\n# Incoterms® 2020 in Cross-Border Manufacturing\n\n### 1. The Critical Purpose of Incoterms\nIn international trade, misunderstandings regarding freight logistics cost billions annually. **Incoterms® (International Commercial Terms)** are an internationally standardized set of 11 three-letter trade terms published by the ICC.\n\nIncoterms define three non-negotiable legal responsibilities between buyer and seller:\n1. **Transfer of Risk**: The exact physical point in the logistics journey where the risk of loss or cargo damage shifts from the seller to the buyer.\n2. **Allocation of Costs**: Who pays for packaging, export drayage, ocean/air/rail freight, transit insurance, terminal handling charges (THC), and customs duties.\n3. **Customs Clearance Formalities**: Who acts as the legal Importer of Record (IOR) or Exporter of Record (EOR) responsible for export declarations and import duty payment.\n\n> **Common Audit Trap**: Incoterms **do not** transfer product title or ownership, nor do they define payment terms (e.g., Net 30, Letter of Credit) or breach of contract remedies. Ownership transfer must be explicitly stipulated in the commercial contract.\n\n### 2. High-Frequency Terms in North American Nearshoring\nIn manufacturing corridors connecting Mexican maquiladoras with US OEM assembly hubs, three Incoterms dominate:\n\n| Term | Full Name | Risk Transfer Point | Freight Cost Allocation | Export / Import Clearance |\n| :--- | :--- | :--- | :--- | :--- |\n| **EXW** | **Ex Works** | Seller's factory floor when goods are made available (unloaded). | Buyer assumes 100% of freight, loading, insurance, and transit. | Buyer handles export & import. *(Dangerous trap for foreign buyers unable to clear Mexican export customs).* |\n| **FCA** | **Free Carrier** | When goods are loaded onto the buyer's carrier at seller's facility, or delivered to buyer's border cross-dock. | Seller pays drayage to transfer point; Buyer pays main international freight. | **Seller clears export; Buyer clears import.** *(The optimal recommended replacement for EXW).* |\n| **DAP** | **Delivered at Place** | At the named destination point ready for unloading from the arriving conveyance. | Seller pays all transportation to the destination; Buyer pays unloading costs. | Seller clears export; **Buyer clears import & pays duties/taxes.** |\n| **DDP** | **Delivered Duty Paid** | At buyer's warehouse door, cleared for import, ready for unloading. | Seller pays 100% of transit costs, including import customs duties and VAT. | **Seller acts as Importer of Record (IOR)** and clears both export and import. |\n\n### 3. The Dangerous Trap of DDP for Foreign Sellers\nWhile US automotive buyers often demand **DDP** (wanting parts delivered to their factory dock with zero administrative hassle), executing DDP into Mexico requires the foreign seller to possess a Mexican corporate tax ID (RFC) registered in the official **Padrón de Importadores**. Without a registered legal entity in Mexico, a US supplier cannot legally clear import customs under DDP."
+                    },
+                    {
+                        "id": "log-m1-r2",
+                        "title": "Bill of Lading (BOL), Transfer of Risk & Cargo Insurance Claims",
+                        "duration": "13 min",
+                        "content": "> **Operational Logistics Standard**: Governed by the **Carriage of Goods by Sea Act (COGSA)**, **Uniform Commercial Code (UCC Article 7)**, and **Mexican Ley de Vías Generales de Comunicación**.\n\n### 1. The Legal Trinity of the Bill of Lading (BOL)\nThe **Bill of Lading (BOL)** is the most important legal instrument in physical transportation. It fulfills three simultaneous functions:\n1. **Receipt of Goods**: A signed acknowledgment by the freight carrier that goods were received in apparent good order and condition.\n2. **Document of Title**: Endorsement of an original negotiable BOL allows the holder to claim ownership of the cargo at port.\n3. **Contract of Carriage**: Establishes the terms and conditions under which the carrier transports the cargo from origin to destination.\n\n### 2. Clean vs Claused (Foul) Bill of Lading\n- **Clean BOL**: The carrier notes zero packaging damage, dented drums, or torn pallet wrap upon cargo receipt. Banks will **only** release funds under a commercial Letter of Credit (LC) against a pristine Clean BOL.\n- **Claused / Foul BOL**: The driver or port agent annotates physical anomalies (e.g., *\"12 cartons crushed, water stains observed on pallet 4\"*). A Claused BOL immediately freezes bank payments and establishes carrier liability for cargo insurance claims."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Gregory Walsh (VP of Global Procurement, Detroit)",
+                        "content": "Good morning, Gabriela. We are finalizing our five-year purchase agreement for aluminum transmission housings from your Saltillo foundry. Our corporate purchasing mandate requires all Tier-1 suppliers to quote strictly on a DDP Detroit assembly plant basis.",
+                        "translation": "Buenos días, Gabriela. Estamos finalizando nuestro contrato de compra a cinco años para carcasas de transmisión de aluminio de su fundición en Saltillo. Nuestro mandato corporativo de compras exige que todos los proveedores Tier-1 coticen estrictamente sobre una base DDP planta de ensamble de Detroit.",
+                        "pedagogicalNotes": "Target terms: purchase agreement, aluminum transmission housings, Tier-1 suppliers, DDP (Delivered Duty Paid), Detroit assembly plant"
+                    },
+                    {
+                        "role": "Lic. Gabriela Montemayor (Director of Supply Chain & Global Trade, Monterrey)",
+                        "content": "Good morning, Gregory. While we understand Detroit's preference for DDP, our legal and customs compliance counsel strongly recommends negotiating on an FCA Laredo, Texas cross-dock basis instead. Under FCA Laredo, we handle Mexican export clearance and the drayage bridge crossing, but your US customs broker clears entry into the US.",
+                        "translation": "Buenos días, Gregory. Aunque entendemos la preferencia de Detroit por DDP, nuestro asesor legal y de cumplimiento aduanero recomienda enfáticamente negociar sobre una base FCA cross-dock Laredo, Texas en su lugar. Bajo FCA Laredo, nosotros manejamos el despacho de exportación mexicano y el cruce del puente transfer, pero su agente aduanal estadounidense gestiona la entrada a EE.UU.",
+                        "pedagogicalNotes": "Target terms: customs compliance counsel, FCA (Free Carrier), cross-dock, export clearance, drayage bridge crossing, US customs broker"
+                    },
+                    {
+                        "role": "Gregory Walsh (VP of Global Procurement, Detroit)",
+                        "content": "What is your primary concern with DDP? Our purchasing team does not want to manage freight forwarders or US customs paperwork.",
+                        "translation": "¿Cuál es su principal preocupación con DDP? Nuestro equipo de compras no desea gestionar transportistas de carga ni trámites aduanales de EE.UU.",
+                        "pedagogicalNotes": "Target terms: freight forwarders, US customs paperwork"
+                    },
+                    {
+                        "role": "Lic. Gabriela Montemayor (Director of Supply Chain & Global Trade, Monterrey)",
+                        "content": "Under DDP, if a CBP port inspection or agricultural hold delays the trailer at the World Trade Bridge, our company would bear 100% of detention fees and potential line-down penalties. Under DAP or FCA Laredo with your preferred logistics partner, risk transfers once the trailer is staged on the US side, aligning with standard T-MEC manufacturing practices.",
+                        "translation": "Bajo DDP, si una inspección portuaria de CBP o una retención agrícola retrasa el remolque en el Puente del Comercio Mundial, nuestra empresa asumiría el 100% de las tarifas de detención y las posibles penalizaciones por paro de línea. Bajo DAP o FCA Laredo con su socio logístico preferido, el riesgo se transfiere una vez que el remolque se ubica en el lado estadounidense, alineándose con las prácticas de manufactura estándar del T-MEC.",
+                        "pedagogicalNotes": "Target terms: CBP port inspection, World Trade Bridge, detention fees, line-down penalties, transfer of risk"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "Incoterms® 2020",
+                        "ipa": "/ˈɪn.koʊˌtɜːrmz ˈtwɛn.ti ˈtwɛn.ti/",
+                        "es": "Términos Internacionales de Comercio (Incoterms 2020)",
+                        "category": "Comercio Internacional",
+                        "definition": "The 11 globally recognized commercial rules published by the International Chamber of Commerce defining the allocation of costs, risks, and customs clearance tasks between buyer and seller.",
+                        "collocations": [
+                            "Incoterms rule",
+                            "ICC official publication",
+                            "stipulate Incoterms in contract"
+                        ],
+                        "falseFriends": "No regulan la transferencia de propiedad (título) del bien ni las penalizaciones por incumplimiento de pago; solo costos, riesgos físicos y aduanas.",
+                        "nativeUsage": "The procurement contract specified Incoterms 2020 FCA Monterrey for all raw steel shipments."
+                    },
+                    {
+                        "term": "Free Carrier (FCA)",
+                        "ipa": "/friː ˈkær.i.ɚ/",
+                        "es": "Franco Transportista (FCA - Incoterm)",
+                        "category": "Logística y Transporte",
+                        "definition": "An Incoterm rule where the seller delivers the goods, cleared for export, to the carrier nominated by the buyer at the seller's premises or another named place.",
+                        "collocations": [
+                            "FCA named place",
+                            "transfer of risk under FCA",
+                            "FCA cross-dock facility"
+                        ],
+                        "falseFriends": "Es el término moderno preferido para reemplazar a EXW en manufactura transfronteriza, ya que el vendedor asume legalmente el despacho de exportación.",
+                        "nativeUsage": "Under FCA Laredo, the Mexican exporter delivers the auto parts to the Texas logistics cross-dock."
+                    },
+                    {
+                        "term": "Delivered Duty Paid (DDP)",
+                        "ipa": "/dɪˈlɪv.ɚd ˈduː.ti peɪd/",
+                        "es": "Entregada Derechos Pagados (DDP - Incoterm)",
+                        "category": "Aduanas y Flete",
+                        "definition": "The Incoterm imposing maximum obligation on the seller, who must bear all costs and risks of transportation, pay export and import duties, and handle import customs clearance.",
+                        "collocations": [
+                            "DDP shipment",
+                            "seller acts as Importer of Record under DDP",
+                            "DDP price quote"
+                        ],
+                        "falseFriends": "DDP exige que el vendedor pague todos los impuestos de importación y actúe como importador registrado en el país de destino.",
+                        "nativeUsage": "The Detroit automaker insisted on DDP terms so that shipments arrived at the plant without customs intervention."
+                    },
+                    {
+                        "term": "Transfer of Risk",
+                        "ipa": "/ˈtræns.fɚ əv rɪsk/",
+                        "es": "Transmisión / Transferencia del riesgo físico de las mercancías",
+                        "category": "Derecho Mercantil",
+                        "definition": "The exact geographic and operational moment when responsibility for physical damage, loss, or theft of cargo passes from the seller to the buyer.",
+                        "collocations": [
+                            "point of risk transfer",
+                            "transfer of risk upon loading",
+                            "insurable risk transfer"
+                        ],
+                        "falseFriends": "No coincide necesariamente con el punto de pago financiero; está definido estrictamente por el Incoterm acordado.",
+                        "nativeUsage": "Under CIP terms, transfer of risk occurs when goods are handed to the first carrier, even though the seller pays freight to destination."
+                    },
+                    {
+                        "term": "Bill of Lading (BOL)",
+                        "ipa": "/bɪl əv ˈleɪ.dɪŋ/",
+                        "es": "Conocimiento de Embarque / Carta de Porte (BOL)",
+                        "category": "Documentación Logística",
+                        "definition": "A detailed document issued by a freight carrier acknowledging receipt of cargo for shipment, acting as a receipt, a contract of carriage, and a document of title.",
+                        "collocations": [
+                            "clean bill of lading",
+                            "original negotiable BOL",
+                            "endorse the BOL"
+                        ],
+                        "falseFriends": "No es una simple factura comercial; es el título de propiedad legal que permite retirar la mercancía en aduana o puerto.",
+                        "nativeUsage": "The carrier stamped the Bill of Lading clean after verifying all 40 shipping pallets were undamaged."
+                    },
+                    {
+                        "term": "Importer of Record (IOR)",
+                        "ipa": "/ɪmˈpɔːr.tɚ əv ˈrɛk.ɚd/",
+                        "es": "Importador Registrado (IOR / Responsable Legal ante Aduana)",
+                        "category": "Aduanas y Regulación",
+                        "definition": "The entity or individual legally responsible for ensuring that imported goods comply with all local customs laws, filing declarations, and paying assessed duties and taxes.",
+                        "collocations": [
+                            "act as Importer of Record",
+                            "IOR compliance liability",
+                            "third-party IOR service"
+                        ],
+                        "falseFriends": "El IOR asume responsabilidad legal civil y penal directa ante CBP en EE.UU. o el SAT en México ante declaraciones fraudulentas.",
+                        "nativeUsage": "Foreign companies without a Mexican tax ID must hire a licensed third-party Importer of Record to clear goods into Mexico."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Incoterms Risk vs Ownership",
+                        "botQuestion": "Welcome to the International Trade & Logistics Lab! Do Incoterms® 2020 define the exact point where legal ownership and title of the goods transfer from the seller to the buyer?",
+                        "requiredKeywords": [
+                            "no",
+                            "title",
+                            "ownership",
+                            "contract",
+                            "property"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Correct! Incoterms define only the transfer of physical risk, allocation of transportation costs, and customs formalities. Legal title and ownership transfer must be explicitly stipulated in the commercial contract.",
+                        "feedbackRetry": "Remember the golden legal rule of Incoterms: they govern physical risk and costs, but do they transfer legal title?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "DDP Importer of Record",
+                        "botQuestion": "Under the Incoterm DDP (Delivered Duty Paid), which party (the buyer or the seller) is legally responsible for clearing import customs, paying import tariffs, and acting as the Importer of Record (IOR)?",
+                        "requiredKeywords": [
+                            "seller",
+                            "exporter"
+                        ],
+                        "minKeywords": 1,
+                        "feedbackSuccess": "Spot on! Under DDP, the seller assumes maximum obligation, acting as the Importer of Record, handling import customs clearance, and paying all applicable duties and taxes.",
+                        "feedbackRetry": "DDP stands for Delivered Duty Paid. Who pays the duties and clears customs: buyer or seller?"
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "Under Incoterms® 2020, what is the primary operational difference between EXW (Ex Works) and FCA (Free Carrier)?",
+                        "options": [
+                            "Under FCA the seller is responsible for export customs clearance and loading, whereas under EXW the buyer assumes all export clearance burdens",
+                            "EXW applies only to air freight, while FCA applies only to maritime cargo",
+                            "Under FCA the seller must pay import duties in the destination country",
+                            "There is no difference; they are interchangeable abbreviations"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What makes a 'Clean' Bill of Lading (BOL) mandatory when financing international trade through a commercial Letter of Credit (LC)?",
+                        "options": [
+                            "It certifies that the carrier received the cargo in apparent good order and condition with no recorded damages, which banks require before releasing funds",
+                            "It proves that the shipping container was washed with industrial soap",
+                            "It guarantees that the truck driver possesses a clean driving record",
+                            "It indicates that zero customs duties will be assessed"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Why can agreeing to DDP terms into Mexico be legally problematic for a US-based manufacturer that does not have a Mexican subsidiary?",
+                        "options": [
+                            "Because Mexican customs law requires the Importer of Record to hold a registered Mexican RFC and be enrolled in the official Padrón de Importadores",
+                            "Because English is not an official language in North America",
+                            "Because US trucks are prohibited from crossing the international border bridges",
+                            "Because DDP shipments cannot be insured under international maritime law"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What are the three core legal functions fulfilled by a Bill of Lading (BOL)?",
+                        "options": [
+                            "Receipt of goods, document of title, and contract of carriage",
+                            "Driver identification card, vehicle registration, and parking ticket",
+                            "Certificate of origin, employee timecard, and factory blueprint",
+                            "Environmental inspection log, tax invoice, and credit score report"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "log-m2",
+                "title": "USMCA / T-MEC Rules of Origin, RVC Calculations & Certificates of Origin",
+                "titleES": "Reglas de Origen T-MEC / USMCA, Cálculos de VCR y Certificación de Origen",
+                "icon": "fa-solid fa-stamp",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "log-m2-r1",
+                        "title": "T-MEC / USMCA Rules of Origin Architecture & Tariff Shift Criteria",
+                        "duration": "15 min",
+                        "content": "> **Trade Agreement Authority**: Governed by the **United States-Mexico-Canada Agreement (USMCA / T-MEC / CUSMA)**, specifically **Chapter 4 (Rules of Origin)** and **Chapter 5 (Origin Procedures)**. Crucial for Trade Compliance Officers, Customs Managers, and Cost Accountants.\n\n# USMCA / T-MEC Rules of Origin & RVC Calculations\n\n### 1. The Core Objective of Preferential Trade\nThe USMCA (T-MEC in Mexico) eliminated import tariffs ($0\\%$ duty) on qualifying goods traded between the US, Mexico, and Canada. However, preferential tariff treatment is not automatic. To claim $0\\%$ duty, a manufactured component must prove **originating status** under strict Rules of Origin.\n\nIf a Mexican maquiladora imports cheap microchips or steel from China, packages them in Tijuana, and exports them to Texas, that product is **non-originating** and subject to full Most-Favored-Nation (MFN) tariffs or punitive Section 301 duties.\n\n### 2. Methodologies for Determining Originating Status\nA good qualifies as originating if it satisfies one of three primary legal mechanisms:\n1. **Wholly Obtained or Produced (WO)**: Goods extracted, harvested, or produced entirely within the USMCA territory (e.g., silver mined in Zacatecas, crude oil extracted in Alberta).\n2. **Tariff Shift (Change in Tariff Classification - CTC)**: All non-originating raw materials imported from outside North America undergo a specified transformation resulting in a change in Harmonized System (HS) code:\n   - **CC (Change in Chapter)**: Change at the 2-digit level (e.g., Chapter 72 Steel $\\rightarrow$ Chapter 87 Automotive).\n   - **CTH (Change in Tariff Heading)**: Change at the 4-digit level (e.g., Heading 8407 Engine $\\rightarrow$ Heading 8409 Parts).\n   - **CTSH (Change in Tariff Subheading)**: Change at the 6-digit level.\n3. **Regional Value Content (RVC)**: Mandating that a minimum percentage of the component's total value consists of North American labor, materials, and overhead."
+                    },
+                    {
+                        "id": "log-m2-r2",
+                        "title": "Regional Value Content (RVC) Formulas: Transaction Value vs Net Cost",
+                        "duration": "14 min",
+                        "content": "> **Trade Compliance Formula**: Governed by **USMCA Article 4.5 (Regional Value Content)**.\n\n### 1. The Two Legal RVC Formulas\nManufacturers calculate Regional Value Content (RVC) using either the **Transaction Value Method** or the **Net Cost Method**:\n\n#### Method A: Transaction Value Method (TVM)\n$$\\text{RVC} = \\left( \\frac{\\text{TV} - \\text{VNM}}{\\text{TV}} \\right) \\times 100$$\nWhere:\n- $\\text{TV} = \\text{Transaction Value (FOB selling price of the good)}$\n- $\\text{VNM} = \\text{Value of Non-Originating Materials (materials imported from Asia or Europe)}$\n\n#### Method B: Net Cost Method (NCM) — Mandatory for Automotive & Core Parts\nAutomotive components and vehicles cannot use Transaction Value; they must use **Net Cost**:\n$$\\text{RVC} = \\left( \\frac{\\text{NC} - \\text{VNM}}{\\text{NC}} \\right) \\times 100$$\nWhere:\n- $\\text{NC} = \\text{Net Cost (Total manufacturing cost minus sales promotion, marketing, royalties, and non-allowable interest)}$\n\n### 2. Automotive Rules of Origin Tightening under T-MEC\nUnder old NAFTA rules, passenger vehicles required $62.5\\%$ RVC. The T-MEC instituted far more aggressive rules:\n- **Vehicle RVC Threshold**: Increased to **$75\\%$** under Net Cost.\n- **Core Parts Requirement**: Engines, transmissions, body panels, and steering systems must meet **$75\\%$** RVC.\n- **Steel & Aluminum Purchasing Mandate**: At least **$70\\%$** of the corporate steel and aluminum purchased by an automaker must be melted and poured within North America.\n- **Labor Value Content (LVC)**: At least **$40\\% - 45\\%$** of the value of passenger vehicles must be produced by manufacturing workers earning at least **$16 USD per hour** (primarily US and Canadian plants, driving high-wage wage leveling)."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Specialist Brian O'Connor (US Customs & Border Protection Import Specialist)",
+                        "content": "Good morning, Licenciada Arteaga. CBP is conducting a focused origin verification audit on your company's shipments of electric vehicle battery disconnect units imported through the Otay Mesa port under USMCA tariff preference. Can you provide the Bill of Materials and your RVC calculation worksheet?",
+                        "translation": "Buenos días, Licenciada Arteaga. CBP está realizando una auditoría de verificación de origen focalizada en los embarques de su empresa de unidades de desconexión de batería de vehículos eléctricos importadas por el puerto de Otay Mesa bajo preferencia arancelaria T-MEC. ¿Podría proporcionar la Lista de Materiales y su hoja de cálculo de VCR?",
+                        "pedagogicalNotes": "Target terms: focused origin verification audit, battery disconnect units, USMCA tariff preference, Bill of Materials (BOM), RVC calculation worksheet"
+                    },
+                    {
+                        "role": "Lic. Marcela Arteaga (Director of Customs & Trade Compliance, Tijuana)",
+                        "content": "Good morning, Officer O'Connor. Here is our auditable USMCA origin dossier. Our battery disconnect unit is classified under HTS subheading 8537.10. We calculated Regional Value Content using the Net Cost method, as required for automotive electrical sub-assemblies under Article 4.5.",
+                        "translation": "Buenos días, Oficial O'Connor. Aquí tiene nuestro expediente auditable de origen T-MEC. Nuestra unidad de desconexión de batería está clasificada bajo la subpartida arancelaria HTS 8537.10. Calculamos el Contenido de Valor Regional utilizando el método de Costo Neto, como lo exige para subensambles eléctricos automotrices el Artículo 4.5.",
+                        "pedagogicalNotes": "Target terms: auditable USMCA origin dossier, HTS subheading, Net Cost method, automotive electrical sub-assemblies"
+                    },
+                    {
+                        "role": "Specialist Brian O'Connor (US Customs & Border Protection Import Specialist)",
+                        "content": "I see three high-voltage relays sourced from a supplier in Shenzhen, China listed under non-originating materials. What was your total VNM deduction relative to your factory net cost?",
+                        "translation": "Veo tres relevadores de alto voltaje provenientes de un proveedor en Shenzhen, China listados bajo materiales no originarios. ¿Cuál fue su deducción total de VNM en relación con su costo neto de fábrica?",
+                        "pedagogicalNotes": "Target terms: non-originating materials (VNM), VNM deduction, factory net cost"
+                    },
+                    {
+                        "role": "Lic. Marcela Arteaga (Director of Customs & Trade Compliance, Tijuana)",
+                        "content": "The Shenzhen relays represent $42.10 USD of VNM out of a total Net Cost of $168.40 USD. Applying the formula $(168.40 - 42.10) / 168.40$, our originating content yields an RVC of 75.0%, exactly satisfying the core automotive threshold. All other molded housings and wire harnesses carry signed supplier certificates of origin from Mexican and US vendors.",
+                        "translation": "Los relevadores de Shenzhen representan $42.10 USD de VNM de un Costo Neto total de $168.40 USD. Aplicando la fórmula $(168.40 - 42.10) / 168.40$, nuestro contenido originario arroja un VCR del 75.0%, satisfaciendo exactamente el umbral automotriz esencial. Todas las demás carcasas moldeadas y arneses de cables cuentan con certificados de origen firmados por proveedores mexicanos y estadounidenses.",
+                        "pedagogicalNotes": "Target terms: VNM, Net Cost, RVC of 75.0%, core automotive threshold, signed supplier certificates of origin"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "Regional Value Content (RVC)",
+                        "ipa": "/ˈriː.dʒən.əl ˈvæl.juː ˈkɑːn.tɛnt/",
+                        "es": "Contenido de Valor Regional (VCR)",
+                        "category": "Reglas de Origen",
+                        "definition": "The percentage of a manufactured product's total value that must originate from within the USMCA (T-MEC) member countries to qualify for preferential zero-duty treatment.",
+                        "collocations": [
+                            "calculate RVC",
+                            "satisfy RVC threshold",
+                            "Net Cost RVC calculation"
+                        ],
+                        "falseFriends": "No es simplemente el porcentaje de piezas físicas; es un cálculo monetario financiero estricto basado en costos de materiales, mano de obra y gastos de planta.",
+                        "nativeUsage": "The engineering team replaced an Asian resin with a North American blend to boost RVC above the mandatory 65% limit."
+                    },
+                    {
+                        "term": "Tariff Shift (Change in Tariff Classification)",
+                        "ipa": "/ˈtær.ɪf ʃɪft/",
+                        "es": "Salto Arancelario (Cambio de Clasificación Arancelaria)",
+                        "category": "Criterios de Origen",
+                        "definition": "A rule of origin requirement where non-originating imported raw materials must undergo substantial manufacturing transformation resulting in a change of Harmonized System (HS) code.",
+                        "collocations": [
+                            "meet tariff shift rule",
+                            "Change in Tariff Heading (CTH)",
+                            "substantial transformation"
+                        ],
+                        "falseFriends": "Un simple ensamble o empaquetado cosmético no califica como salto arancelario sustancial ante aduanas.",
+                        "nativeUsage": "Machining the raw imported steel billets into precision crankshafts satisfied the CTH tariff shift rule."
+                    },
+                    {
+                        "term": "Net Cost Method",
+                        "ipa": "/nɛt kɑːst ˈmɛθ.əd/",
+                        "es": "Método de Costo Neto (para cálculo de VCR)",
+                        "category": "Contabilidad de Costos y Aduanas",
+                        "definition": "A method of calculating RVC based on total manufacturing cost minus excluded costs such as sales promotion, marketing, royalties, and non-allowable interest.",
+                        "collocations": [
+                            "apply Net Cost formula",
+                            "automotive Net Cost rule",
+                            "excluded costs under Net Cost"
+                        ],
+                        "falseFriends": "Obligatorio para la industria automotriz y piezas esenciales en el T-MEC; no se permite usar el valor de transacción comercial.",
+                        "nativeUsage": "Automotive Tier-1 suppliers must maintain accounting systems capable of segregating Net Cost for annual USMCA audits."
+                    },
+                    {
+                        "term": "Non-Originating Materials (VNM)",
+                        "ipa": "/nɑːn əˈrɪdʒ.əˌneɪ.tɪŋ məˈtɪr.i.əlz/",
+                        "es": "Valor de Materiales No Originarios (VNM)",
+                        "category": "Cumplimiento T-MEC",
+                        "definition": "The value of materials, components, or sub-assemblies imported from outside the USMCA free-trade zone (e.g., from China, Germany, or Japan) used in the production of a finished good.",
+                        "collocations": [
+                            "deduct VNM",
+                            "VNM customs value",
+                            "track non-originating bill of materials"
+                        ],
+                        "falseFriends": "Cualquier componente que carezca de un certificado de origen válido firmado debe clasificarse legalmente como VNM.",
+                        "nativeUsage": "Customs auditors penalized the importer because imported electronic sensors were treated as originating without vendor proof."
+                    },
+                    {
+                        "term": "Labor Value Content (LVC)",
+                        "ipa": "/ˈleɪ.bɚ ˈvæl.juː ˈkɑːn.tɛnt/",
+                        "es": "Contenido de Valor Laboral (CVL del T-MEC)",
+                        "category": "Regulación Automotriz T-MEC",
+                        "definition": "A revolutionary USMCA automotive rule requiring that 40% to 45% of passenger vehicle content be manufactured by facilities paying production workers at least $16 USD per hour.",
+                        "collocations": [
+                            "meet LVC requirements",
+                            "$16 dollar hourly wage threshold",
+                            "LVC audit certification"
+                        ],
+                        "falseFriends": "Diseñado específicamente para equilibrar la competitividad salarial entre México, Estados Unidos y Canadá.",
+                        "nativeUsage": "Automakers balanced high-wage R&D and US powertrain assembly to meet the 40% Labor Value Content mandate."
+                    },
+                    {
+                        "term": "Certificate of Origin",
+                        "ipa": "/sɚˈtɪf.ə.kət əv ˈɔːr.ə.dʒɪn/",
+                        "es": "Certificación de Origen (Declaración Jurada T-MEC)",
+                        "category": "Documentación Aduanera",
+                        "definition": "The formal legal declaration (containing nine required minimum data elements under USMCA Chapter 5) certifying that goods qualify for preferential duty-free treatment.",
+                        "collocations": [
+                            "issue USMCA certificate of origin",
+                            "origin verification audit",
+                            "electronic origin statement"
+                        ],
+                        "falseFriends": "Bajo el T-MEC ya no existe un formato impreso oficial del gobierno (como el antiguo formato TLCAN); puede emitirse en cualquier documento comercial (factura) con los 9 datos mínimos.",
+                        "nativeUsage": "The customs manager signed the USMCA Certificate of Origin under penalty of perjury."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "USMCA Automotive RVC Threshold",
+                        "botQuestion": "Under the USMCA / T-MEC rules of origin for passenger vehicles and core automotive parts (engines, transmissions, suspension), what is the mandatory minimum Regional Value Content (RVC) percentage required under the Net Cost method?",
+                        "requiredKeywords": [
+                            "75",
+                            "75%",
+                            "seventy-five"
+                        ],
+                        "minKeywords": 1,
+                        "feedbackSuccess": "Exact! The USMCA elevated the automotive core parts and vehicle RVC threshold to 75% under the Net Cost method, up from the old NAFTA 62.5% requirement.",
+                        "feedbackRetry": "It is a percentage between 70% and 80%. Remember the strict tightening of automotive rules under T-MEC."
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Labor Value Content (LVC) Wage Rate",
+                        "botQuestion": "What is the minimum hourly production wage mandated by the USMCA Labor Value Content (LVC) rule for the 40% to 45% high-wage manufacturing portion of vehicles?",
+                        "requiredKeywords": [
+                            "16",
+                            "$16",
+                            "sixteen"
+                        ],
+                        "minKeywords": 1,
+                        "feedbackSuccess": "Spot on! The USMCA Labor Value Content (LVC) mandates an hourly production wage of at least $16 USD to qualify vehicles for preferential duty-free access.",
+                        "feedbackRetry": "Think of the landmark wage rate: it is a specific dollar figure starting with 16."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What is a 'Tariff Shift' (Change in Tariff Classification) under USMCA rules of origin?",
+                        "options": [
+                            "A rule requiring non-originating imported raw materials to undergo substantial manufacturing transformation resulting in a change in HS tariff heading or subheading",
+                            "Moving a manufacturing plant from one country to another overnight",
+                            "Switching banks when paying foreign currency invoices",
+                            "Changing the currency symbol on a commercial invoice"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Under the USMCA Net Cost method, which corporate expenses are legally excluded from the calculation of Net Cost?",
+                        "options": [
+                            "Sales promotion, marketing, royalties, and non-allowable interest costs",
+                            "Direct cleanroom assembly labor wages",
+                            "Raw steel, resin, and copper material purchases",
+                            "Factory electricity and machinery maintenance"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Under modern USMCA origin procedures, is an official government-printed Certificate of Origin form still required?",
+                        "options": [
+                            "No; the certification can be placed on an invoice or any commercial document as long as it contains the 9 required minimum data elements",
+                            "Yes; a paper form stamped by the United Nations is mandatory for every box",
+                            "Yes; it must be handwritten in green calligraphy ink",
+                            "Certificates of origin were completely abolished and are no longer used"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is the steel and aluminum purchasing requirement for passenger vehicle manufacturers under USMCA?",
+                        "options": [
+                            "At least 70% of corporate steel and aluminum purchases must be melted and poured in North America",
+                            "100% of steel must be imported from South America",
+                            "Automakers are prohibited from using aluminum in vehicle frames",
+                            "Steel purchases must be reviewed annually by the World Health Organization"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "log-m3",
+                "title": "IMMEX Maquiladora Regimes, Anexo 24/31 & Temporary Import Inventories",
+                "titleES": "Régimen Maquilador IMMEX, Anexo 24/31 y Control de Inventarios de Importación Temporal",
+                "icon": "fa-solid fa-boxes-stacked",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "log-m3-r1",
+                        "title": "The IMMEX Decree: Duty-Free Temporary Imports for Export Manufacturing",
+                        "duration": "15 min",
+                        "content": "> **Mexican Foreign Trade Legislation**: Governed by the **Decreto para el Fomento de la Industria Manufacturera, Maquiladora y de Servicios de Exportación (IMMEX)** and the **Mexican Customs Law (Ley Aduanera, Art. 106 & 108)**.\n\n# IMMEX Maquiladora Regimes & Inventory Audits\n\n### 1. What is the IMMEX Program?\nThe **IMMEX** program is the cornerstone of Mexico's $500+ billion USD manufacturing export economy. It allows authorized manufacturing plants (maquiladoras) to **temporarily import raw materials, components, packaging, and production machinery without paying General Import Tax (IGI / Tariffs) or Value Added Tax (16% IVA)**, under the strict legal condition that the finished goods are subsequently exported within statutory deadlines.\n\nKey operational characteristics:\n- **Temporary Import Timeframes (Article 108)**: Raw materials and components can remain temporarily in Mexico for up to **18 months** (or up to 36 months for companies holding VAT/IEPS Certification). Production machinery and tooling can remain for the duration of the IMMEX program.\n- **Mandatory Return or Transformation**: Every kilogram of imported steel, resin, or microchips must be accounted for as exported finished product, lawful scrap, or destruction witnessed by tax authorities.\n- **Diversion Penalty**: Selling temporarily imported raw materials into the Mexican domestic market without executing a formal customs change of regime (pedimento de cambio de régimen F4) constitutes criminal customs fraud (contraband)."
+                    },
+                    {
+                        "id": "log-m3-r2",
+                        "title": "Anexo 24 Automated Inventory Control vs Anexo 31 VAT/IEPS Credit System",
+                        "duration": "13 min",
+                        "content": "> **SAT Tax Compliance Standard**: Governed by the **Reglas Generales de Comercio Exterior (RGCE - Anexo 24 and Anexo 31)**.\n\n### 1. Anexo 24: Automated Inventory Control System\nMexican Customs Law mandates that every IMMEX company operate an automated **Anexo 24 inventory software system** interfacing directly with plant ERP (SAP, Oracle, Epicor):\n- **First-In, First-Out (FIFO / PEPS)**: Systematically matches imported raw materials (registered under entry pedimentos **IN**) against exported finished goods (registered under exit pedimentos **RT**).\n- **Bill of Materials (BOM / Descargos)**: When a finished medical catheter or automotive alternator is exported, the system automatically *discharges* (descarga) the proportional components from the oldest open temporary import pedimento.\n\n### 2. Anexo 31: The SCCCyG VAT Credit and Guarantee System\nIn 2014, Mexico amended its tax laws to apply 16% Value Added Tax (IVA) to all temporary imports unless certified:\n- **VAT/IEPS Certification (A, AA, AAA)**: Companies demonstrating pristine tax compliance obtain a $100\\%$ fiscal credit on IVA at the customs border.\n- **Anexo 31 Integration**: The SAT maintains a centralized electronic ledger (SCCCyG). Every time goods enter under an **IN** pedimento, the virtual VAT credit is debited. When the company transmits proof of export within 18 months, the credit balance is discharged. Failure to balance Anexo 31 results in immediate cancellation of the VAT certification and massive tax liability."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Auditor Fernando Garza (SAT Foreign Trade Audit Supervisor)",
+                        "content": "Licenciada Treviño, we are conducting a structural electronic audit of your plant's Anexo 24 inventory system and Anexo 31 credit balance for the third quarter. Our cross-check shows an unresolved balance of 180 metric tons of copper magnet wire imported under pedimentos from fourteen months ago.",
+                        "translation": "Licenciada Treviño, estamos realizando una auditoría electrónica estructural del sistema de inventarios Anexo 24 de su planta y el saldo de crédito del Anexo 31 para el tercer trimestre. Nuestro cruce de información muestra un saldo no descargado de 180 toneladas métricas de alambre magneto de cobre importado bajo pedimentos de hace catorce meses.",
+                        "pedagogicalNotes": "Target terms: structural electronic audit, Anexo 24 inventory system, Anexo 31 credit balance, unresolved balance, copper magnet wire"
+                    },
+                    {
+                        "role": "Lic. Patricia Treviño (Customs & IMMEX Compliance Manager, Querétaro)",
+                        "content": "Good morning, Auditor Garza. That copper wire was consumed in the production of automotive starter solenoids exported to Ohio last month. The descargo delay occurred because our engineering team recently updated the parent part number in SAP following an ECO, causing a temporary synchronization gap in our automated Anexo 24 interface.",
+                        "translation": "Buenos días, Auditor Garza. Ese alambre de cobre se consumió en la producción de solenoides de arranque automotrices exportados a Ohio el mes pasado. La demora en el descargo ocurrió porque nuestro equipo de ingeniería actualizó recientemente el número de parte padre en SAP tras un ECO, provocando una brecha temporal de sincronización en nuestra interfaz automatizada de Anexo 24.",
+                        "pedagogicalNotes": "Target terms: automotive starter solenoids, descargo delay, parent part number, ECO, synchronization gap, Anexo 24 interface"
+                    },
+                    {
+                        "role": "Auditor Fernando Garza (SAT Foreign Trade Audit Supervisor)",
+                        "content": "Can you provide the bill of materials explosion matching the exported RT pedimentos to the original IN entry pedimentos to verify that the 18-month statutory temporary import window was not exceeded?",
+                        "translation": "¿Podría proporcionar la explosión de lista de materiales que coteje los pedimentos de exportación RT con los pedimentos de entrada IN originales para verificar que no se haya excedido el plazo legal de importación temporal de 18 meses?",
+                        "pedagogicalNotes": "Target terms: bill of materials explosion, RT export pedimentos, IN entry pedimentos, 18-month statutory window"
+                    },
+                    {
+                        "role": "Lic. Patricia Treviño (Customs & IMMEX Compliance Manager, Querétaro)",
+                        "content": "Certainly. Here is the validated FIFO discharge report. As you can see, all 180 tons were fully incorporated into finished solenoids exported under valid RT pedimentos within month 15, well within our authorized timeframe. Our Anexo 31 transmission was reconciled this morning.",
+                        "translation": "Por supuesto. Aquí tiene el reporte de descargo PEPS (FIFO) validado. Como puede observar, las 180 toneladas se incorporaron completamente en solenoides terminados exportados bajo pedimentos RT válidos dentro del mes 15, muy dentro de nuestro plazo autorizado. Nuestra transmisión de Anexo 31 fue conciliada esta mañana.",
+                        "pedagogicalNotes": "Target terms: FIFO discharge report, RT pedimentos, authorized timeframe, Anexo 31 transmission reconciled"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "IMMEX Program",
+                        "ipa": "/ˈɪm.ɛks ˈproʊ.ɡræm/",
+                        "es": "Programa IMMEX (Régimen de Maquila y Exportación)",
+                        "category": "Régimen Aduanero",
+                        "definition": "A Mexican federal foreign trade program that allows manufacturing companies to temporarily import raw materials, components, and machinery duty-free and VAT-free on the condition that finished goods are exported.",
+                        "collocations": [
+                            "hold an active IMMEX decree",
+                            "IMMEX authorized facility",
+                            "comply with IMMEX obligations"
+                        ],
+                        "falseFriends": "Las materias primas importadas bajo IMMEX no son propiedad definitiva; están bajo régimen fiscal temporal con obligación legal de retorno o cambio de régimen.",
+                        "nativeUsage": "The electronics assembly plant operates under an IMMEX manufacturing modality to import surface-mount components duty-free."
+                    },
+                    {
+                        "term": "Anexo 24",
+                        "ipa": "/əˈnɛk.soʊ ˈtwɛn.ti fɔːr/",
+                        "es": "Anexo 24 (Sistema Automatizado de Control de Inventarios)",
+                        "category": "Software Aduanero SAT",
+                        "definition": "The mandatory automated inventory control software required by Mexican Customs Law that tracks temporary imports, BOM explosions, and export discharges on a FIFO basis.",
+                        "collocations": [
+                            "Anexo 24 software audit",
+                            "Anexo 24 discharge gap",
+                            "synchronize ERP with Anexo 24"
+                        ],
+                        "falseFriends": "No es una simple hoja de Excel; debe ser un software especializado auditado por el SAT que impida inconsistencias arancelarias.",
+                        "nativeUsage": "The customs team reconciled Anexo 24 records with plant SAP production orders to prepare for the annual tax audit."
+                    },
+                    {
+                        "term": "Anexo 31 (SCCCyG)",
+                        "ipa": "/əˈnɛk.soʊ ˈθɜːr.ti wʌn/",
+                        "es": "Anexo 31 (Sistema de Control de Cuentas de Créditos y Garantías)",
+                        "category": "Control Fiscal SAT",
+                        "definition": "The electronic tax ledger operated by SAT that monitors virtual VAT credits granted to IMMEX companies with VAT/IEPS Certification, matching temporary import debits against export discharges.",
+                        "collocations": [
+                            "Anexo 31 credit balance",
+                            "reconcile Anexo 31 transmissions",
+                            "Anexo 31 expired inventory warning"
+                        ],
+                        "falseFriends": "Si el inventario temporal supera el plazo legal sin descargarse en Anexo 31, el crédito fiscal de IVA se revoca y se exige el pago del 16% con recargos.",
+                        "nativeUsage": "Failure to transmit export pedimento data to Anexo 31 triggered an automatic audit inquiry from SAT."
+                    },
+                    {
+                        "term": "Descargo (Discharge of Inventory)",
+                        "ipa": "/dɛsˈkɑːr.ɡoʊ/",
+                        "es": "Descargo aduanero de inventario de importación temporal",
+                        "category": "Operaciones Aduaneras",
+                        "definition": "The electronic deduction and matching of imported raw materials from the oldest open temporary import pedimento based on the bill of materials (BOM) of exported finished goods.",
+                        "collocations": [
+                            "execute monthly descargos",
+                            "descargo error in Anexo 24",
+                            "BOM descargo ratio"
+                        ],
+                        "falseFriends": "Descargo no significa 'descargar archivos de internet' (download); es la baja fiscal y contable de insumos temporales al salir del país.",
+                        "nativeUsage": "Exporting 5,000 surgical trocars automatically discharged 250 kilograms of stainless steel tubing in Anexo 24."
+                    },
+                    {
+                        "term": "Pedimento IN vs RT",
+                        "ipa": "/pə.dɪˈmɛn.toʊ aɪ.ɛn / ɑːr.tiː/",
+                        "es": "Claves de Pedimento IN (Entrada Temporal) y RT (Retorno de Exportación)",
+                        "category": "Claves de Comercio Exterior",
+                        "definition": "Official Mexican customs declaration codes; IN designates temporary raw material import by an IMMEX facility, and RT designates the return/export of finished products or transformed goods.",
+                        "collocations": [
+                            "file pedimento IN",
+                            "match RT to IN",
+                            "pedimento key classification"
+                        ],
+                        "falseFriends": "Son códigos fiscales oficiales del Anexo 22 que determinan la legalidad del régimen aduanero.",
+                        "nativeUsage": "The customs broker verified that every resin lot entered under an IN pedimento was matched to an RT export pedimento."
+                    },
+                    {
+                        "term": "VAT/IEPS Certification (Certificación de IVA)",
+                        "ipa": "/viː.eɪ.tiː ˌsɚ.tə.fəˈkeɪ.ʃən/",
+                        "es": "Certificación en Materia de IVA e IEPS (Rubros A, AA, AAA)",
+                        "category": "Beneficio Fiscal",
+                        "definition": "A certification granted by SAT to compliant IMMEX manufacturers providing a 100% tax credit on the 16% VAT assessed at the border on temporary imports.",
+                        "collocations": [
+                            "obtain AAA VAT certification",
+                            "renew VAT certification",
+                            "VAT credit balance"
+                        ],
+                        "falseFriends": "Sin esta certificación, una maquiladora debe desembolsar el 16% de IVA en efectivo en cada cruce aduanal fronterizo.",
+                        "nativeUsage": "Maintaining AAA VAT Certification saves our Tijuana manufacturing plant millions of dollars in monthly cash flow."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "IMMEX Temporary Import Purpose",
+                        "botQuestion": "What is the primary economic and fiscal benefit of the IMMEX program for manufacturing maquiladoras in Mexico when importing raw materials?",
+                        "requiredKeywords": [
+                            "duty",
+                            "tariff",
+                            "vat",
+                            "iva",
+                            "tax",
+                            "free",
+                            "temporary"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Exact! The IMMEX program allows manufacturing plants to import raw materials, parts, and tooling free of general import duties (IGI) and 16% VAT, provided they are transformed and exported.",
+                        "feedbackRetry": "Think about taxes: what two major taxes (import tariffs and consumption tax) are exempted on temporary imports?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Anexo 24 Inventory Method",
+                        "botQuestion": "Under Mexican Customs Law, what automated inventory accounting method must Anexo 24 systems use when discharging imported raw materials against exported finished goods?",
+                        "requiredKeywords": [
+                            "fifo",
+                            "peps",
+                            "first in",
+                            "first out"
+                        ],
+                        "minKeywords": 1,
+                        "feedbackSuccess": "Spot on! Anexo 24 mandates the FIFO (First-In, First-Out / PEPS) method to ensure that raw materials from the oldest open temporary import pedimentos are discharged first.",
+                        "feedbackRetry": "Remember the universal accounting acronym for using the oldest inventory first: F-I-F-O."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "Under the IMMEX program, what legal obligation is incurred when importing raw materials under pedimento clave 'IN'?",
+                        "options": [
+                            "The raw materials must be transformed, incorporated into finished goods, and exported within statutory deadlines (typically 18 to 36 months)",
+                            "The raw materials must be sold immediately in the local Mexican retail market",
+                            "The raw materials must be donated to local universities within 30 days",
+                            "The parts can remain permanently in Mexico without ever being tracked"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is the primary function of an Anexo 24 software system in a Mexican manufacturing plant?",
+                        "options": [
+                            "Automated customs inventory control tracking temporary imports, BOM component explosions, and export discharges on a FIFO basis",
+                            "Designing 3D CAD mechanical drawings for surgical instruments",
+                            "Calculating weekly employee payroll and overtime hours",
+                            "Monitoring factory air conditioning temperature"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What happens under Anexo 31 if an IMMEX company fails to prove that temporarily imported raw materials were exported before the statutory deadline expires?",
+                        "options": [
+                            "The virtual 16% VAT credit is canceled, and the company must pay the full VAT plus inflation adjustments, surcharges, and penalties",
+                            "The SAT congratulates the company for storing inventory",
+                            "The raw materials are automatically gifted to the plant manager",
+                            "Nothing; temporary imports have zero deadlines under Mexican law"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What Mexican customs pedimento clave is used to formally return and export finished goods transformed by an IMMEX facility?",
+                        "options": [
+                            "Pedimento RT",
+                            "Pedimento A1 (Definitive Import)",
+                            "Pedimento V1 (Virtual Transfer)",
+                            "Pedimento K1"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "log-m4",
+                "title": "Customs Brokerage, HTS Tariff Classification & Pedimento Audits",
+                "titleES": "Agencia Aduanal, Clasificación Arancelaria HTS y Auditoría de Pedimentos",
+                "icon": "fa-solid fa-file-invoice-dollar",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "log-m4-r1",
+                        "title": "The Harmonized Tariff Schedule (HTS): 6-Digit Global Baseline to 10-Digit National Codes",
+                        "duration": "15 min",
+                        "content": "> **Customs Classification Standard**: Governed by the **World Customs Organization (WCO) Harmonized Commodity Description and Coding System (HS)** and national tariff schedules (**HTSUS in USA / TIGIE & NICO in Mexico**).\n\n# Customs Brokerage & Tariff Classification\n\n### 1. The Structure of the Harmonized System (HS)\nEvery physical object traded across international borders—from a tiny surface-mount resistor to a 50-ton hydraulic press—must be assigned an official **Harmonized Tariff Schedule (HTS)** code.\n\nThe structure is hierarchical and internationally harmonized across over 200 countries up to the first **6 digits**:\n$$\\underbrace{87}_{\\text{Chapter}} \\; \\underbrace{08}_{\\text{Heading}} \\; \\underbrace{29}_{\\text{Subheading}} \\; \\underbrace{90}_{\\text{Tariff Item (National)}} \\; \\underbrace{02}_{\\text{Statistical Suffix / NICO}}$$\n\n- **Chapter (2 digits)**: Broad industrial category (e.g., Chapter 85: Electrical machinery, Chapter 87: Vehicles and parts).\n- **Heading (4 digits)**: Specific product grouping within the chapter (e.g., 8708: Parts and accessories of motor vehicles).\n- **Subheading (6 digits)**: International standardized definition.\n- **National Tariff Code & Statistical Suffix (8 to 10 digits)**: Country-specific subdivisions defining exact duty rates, non-tariff regulations, and trade statistics (e.g., the 10-digit **HTSUS** in the US, or the 8-digit **Fracción Arancelaria + 2-digit NICO** in Mexico).\n\n### 2. General Rules for the Interpretation (GRI) of the Harmonized System\nClassifying complex engineering products is a legal science governed strictly by the **General Rules of Interpretation (GRI 1 through 6)**:\n- **GRI 1**: Classification is determined first by the terms of the headings and relative section or chapter notes.\n- **GRI 2(a)**: Incomplete or unfinished articles having the essential character of the complete good (e.g., an unpainted car chassis without engine is still classified as a motor vehicle).\n- **GRI 3(b)**: Mixtures, composite goods, and goods put up in sets for retail sale are classified according to the material or component that gives them their **Essential Character**."
+                    },
+                    {
+                        "id": "log-m4-r2",
+                        "title": "The Mexican Pedimento Aduanal & The 10-Year Post-Clearance Audit Window",
+                        "duration": "13 min",
+                        "content": "> **Mexican Tax Legislation**: Governed by the **Ley Aduanera (Articles 36, 43, 81) & Código Fiscal de la Federación (CFF, Art. 67)**.\n\n### 1. The Pedimento Aduanal: Legal Identity of Cross-Border Goods\nThe **Pedimento Aduanal** is the official tax declaration document submitted to Mexican Customs (ANAM / SAT) by a licensed Customs Broker (**Agente Aduanal**) on behalf of the importer or exporter. It establishes:\n- Legal entry or exit of goods into the national territory.\n- Declared commercial and customs value (Valor en Aduana).\n- Origin and supplier tax details.\n- Exact breakdown of assessed duties and taxes: General Import Tax (IGI), Customs Processing Fee (DTA - Derecho de Trámite Aduanero), and Value Added Tax (IVA).\n\n### 2. Post-Clearance Audits & Glosa Data Synchronization\nClearing goods through the customs port green light (desaduanamiento libre) **does not mean** the shipment was deemed compliant forever:\n- **Article 67 (CFF)**: Mexican tax authorities (SAT) have a statutory **5-year audit window** (extendable to **10 years** if inventory accounting irregularities exist) to review pedimentos, commercial invoices, and tariff classifications.\n- **Data Stage (Glosa SAT)**: Importers must download monthly electronic Glosa datalogs from SAT to audit and verify that their internal ERP matches customs broker pedimento declarations down to the cent."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Specialist William Thorne (Senior US Customs Broker, Laredo, Texas)",
+                        "content": "Eduardo, good afternoon. We are preparing the US customs entry summary for your daily convoy of five tractor-trailers carrying automotive electronic throttle bodies from Saltillo into Laredo. In box 33, what is your verified 10-digit HTSUS classification?",
+                        "translation": "Eduardo, buenas tardes. Estamos preparando el resumen de entrada de aduanas de EE.UU. para su convoy diario de cinco tractocamiones que transportan cuerpos de aceleración electrónicos automotrices de Saltillo hacia Laredo. En la casilla 33, ¿cuál es su clasificación arancelaria HTSUS verificada de 10 dígitos?",
+                        "pedagogicalNotes": "Target terms: entry summary, tractor-trailers, electronic throttle bodies, 10-digit HTSUS classification"
+                    },
+                    {
+                        "role": "Lic. Eduardo Cantú (Foreign Trade Specialist, Saltillo)",
+                        "content": "Good afternoon, William. We classified the throttle bodies under HTSUS 8409.91.5085 as parts suitable for use solely or principally with spark-ignition internal combustion piston engines, carrying a 0% duty rate under our USMCA origin certification.",
+                        "translation": "Buenas tardes, William. Clasificamos los cuerpos de aceleración bajo el HTSUS 8409.91.5085 como partes adecuadas para su uso exclusiva o principalmente con motores de émbolo de encendido por chispa, con una tasa de arancel del 0% bajo nuestra certificación de origen T-MEC.",
+                        "pedagogicalNotes": "Target terms: HTSUS 8409.91.5085, spark-ignition internal combustion engines, 0% duty rate, USMCA origin certification"
+                    },
+                    {
+                        "role": "Specialist William Thorne (Senior US Customs Broker, Laredo, Texas)",
+                        "content": "Understood. The entry also includes an integrated stepper actuator motor. Did your legal team confirm this doesn't shift the classification to electrical machinery under heading 8501?",
+                        "translation": "Entendido. La entrada también incluye un motor actuador a pasos integrado. ¿Confirmó su equipo legal que esto no cambia la clasificación a maquinaria eléctrica bajo la partida 8501?",
+                        "pedagogicalNotes": "Target terms: integrated stepper actuator motor, heading 8501"
+                    },
+                    {
+                        "role": "Lic. Eduardo Cantú (Foreign Trade Specialist, Saltillo)",
+                        "content": "Yes, our trade compliance attorneys reviewed General Interpretative Rule 3(b). The mechanical throttle valve constitutes the essential character of the assembly, so heading 8409 takes legal precedence over the auxiliary electrical actuator. We have the binding classification ruling on file.",
+                        "translation": "Sí, nuestros abogados de cumplimiento comercial revisaron la Regla General Interpretativa 3(b). La válvula de mariposa mecánica constituye el carácter esencial del ensamble, por lo que la partida 8409 tiene precedencia legal sobre el actuador eléctrico auxiliar. Tenemos la resolución arancelaria vinculante en expediente.",
+                        "pedagogicalNotes": "Target terms: General Interpretative Rule 3(b), essential character, legal precedence, binding classification ruling"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "Harmonized Tariff Schedule (HTS)",
+                        "ipa": "/ˈhɑːr.mə.naɪzd ˈtær.ɪf ˈskɛdʒ.uːl/",
+                        "es": "Sistema Armonizado de Designación y Codificación de Mercancías (HTS)",
+                        "category": "Clasificación Arancelaria",
+                        "definition": "The standardized numerical coding system developed by the World Customs Organization (WCO) used by customs authorities worldwide to classify goods for customs duties, taxes, and trade statistics.",
+                        "collocations": [
+                            "6-digit HTS code",
+                            "10-digit national HTSUS code",
+                            "tariff classification dispute"
+                        ],
+                        "falseFriends": "Los primeros 6 dígitos son idénticos en todo el mundo; los dígitos 7 al 10 varían según la legislación de cada país.",
+                        "nativeUsage": "The trade compliance manager audited the master product database to verify the accuracy of all 10-digit HTS codes."
+                    },
+                    {
+                        "term": "Pedimento Aduanal",
+                        "ipa": "/pə.dɪˈmɛn.toʊ ˌæd.wəˈnɑːl/",
+                        "es": "Pedimento Aduanal (Declaración Fiscal de Entrada/Salida de Mercancías)",
+                        "category": "Derecho Aduanero Mexicano",
+                        "definition": "The official tax and customs declaration required in Mexico by the Tax Administration Service (SAT) proving the legal import, export, and transit of merchandise.",
+                        "collocations": [
+                            "file pedimento with SAT",
+                            "pedimento validation error",
+                            "audit pedimento history"
+                        ],
+                        "falseFriends": "No es una simple orden de compra o factura; es un documento fiscal oficial que ampara la legal estancia de bienes en México.",
+                        "nativeUsage": "The factory maintained scanned copies of all pedimento declarations for ten years to satisfy customs audits."
+                    },
+                    {
+                        "term": "Agente Aduanal (Customs Broker)",
+                        "ipa": "/ˈkʌs.təmz ˈbroʊ.kɚ/",
+                        "es": "Agente Aduanal (Representante Legal Autorizado ante Aduana)",
+                        "category": "Intermediación Aduanera",
+                        "definition": "A private individual licensed by the federal government authorized to handle the clearance of goods on behalf of importers and exporters through customs ports of entry.",
+                        "collocations": [
+                            "licensed customs broker",
+                            "brokerage fee",
+                            "power of attorney for customs broker"
+                        ],
+                        "falseFriends": "El agente aduanal es corresponsable solidario ante la ley fiscal si se declara una fracción arancelaria incorrecta o un valor subvaluado.",
+                        "nativeUsage": "Our customs broker transmitted the electronic pedimento to the customs validation system at the Laredo bridge."
+                    },
+                    {
+                        "term": "Essential Character (GRI 3b)",
+                        "ipa": "/ɪˈsɛn.ʃəl ˈkær.ɪk.tɚ/",
+                        "es": "Carácter Esencial (Regla General Interpretativa 3b)",
+                        "category": "Criterio de Clasificación",
+                        "definition": "The core principle under customs law stating that composite goods or sets consisting of different materials are classified based on the component that determines its primary function or value.",
+                        "collocations": [
+                            "determine essential character",
+                            "GRI 3(b) analysis",
+                            "predominant material character"
+                        ],
+                        "falseFriends": "No se basa únicamente en el peso o el costo, sino en la función técnica que define la utilidad del producto final.",
+                        "nativeUsage": "Under GRI 3(b), the custom surgical kit was classified under the primary scalpel heading because it provided the essential character."
+                    },
+                    {
+                        "term": "Glosa SAT (Data Stage)",
+                        "ipa": "/ˈɡloʊ.sə ɛs.eɪ.tiː/",
+                        "es": "Glosa de Comercio Exterior (Data Stage del SAT)",
+                        "category": "Auditoría Fiscal",
+                        "definition": "The official electronic customs database extract provided by the Mexican tax authority detailing every transaction, pedimento, tax calculation, and fraction cleared under a company's tax ID.",
+                        "collocations": [
+                            "download monthly Glosa data",
+                            "Glosa reconciliation",
+                            "discrepancy between ERP and Glosa"
+                        ],
+                        "falseFriends": "Es la fuente de verdad definitiva del gobierno fiscal; cualquier discrepancia con el ERP interno de la planta genera multas.",
+                        "nativeUsage": "The internal audit team performed a line-by-line reconciliation of the company's SAP records against the official Glosa SAT files."
+                    },
+                    {
+                        "term": "Binding Ruling",
+                        "ipa": "/ˈbaɪn.dɪŋ ˈruː.lɪŋ/",
+                        "es": "Resolución Arancelaria Vinculante (Criterio Oficial de Clasificación)",
+                        "category": "Certeza Jurídica",
+                        "definition": "An official written decision issued by customs authorities (e.g., CBP or SAT) establishing the definitive legal tariff classification, country of origin, or valuation for a specific product.",
+                        "collocations": [
+                            "request a binding ruling",
+                            "CBP binding ruling letter",
+                            "present binding ruling to customs auditor"
+                        ],
+                        "falseFriends": "Protege legalmente a la empresa contra multas y re-clasificaciones retroactivas en caso de discrepancia en aduana.",
+                        "nativeUsage": "We submitted a formal request for a CBP binding ruling to guarantee our new medical biosensor enters at a 0% tariff rate."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Harmonized System Digit Standardization",
+                        "botQuestion": "In the Harmonized Tariff Schedule (HTS), up to how many digits is the product code internationally standardized across all World Customs Organization (WCO) member countries?",
+                        "requiredKeywords": [
+                            "6",
+                            "six"
+                        ],
+                        "minKeywords": 1,
+                        "feedbackSuccess": "Exact! The first 6 digits of any HTS code (Chapter, Heading, and Subheading) are standardized globally across all member countries of the World Customs Organization.",
+                        "feedbackRetry": "Remember the hierarchy: Chapter is 2, Heading is 4, and the international standard sub-heading stops at how many digits?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Essential Character (GRI 3b)",
+                        "botQuestion": "When classifying a composite good made of both plastic and precision electronic microchips where no single heading covers the whole item, what customs legal rule determines classification based on the component giving the item its primary utility?",
+                        "requiredKeywords": [
+                            "essential character",
+                            "gri 3",
+                            "gri 3b",
+                            "rule 3"
+                        ],
+                        "minKeywords": 1,
+                        "feedbackSuccess": "Spot on! General Rule of Interpretation 3(b) mandates that composite goods be classified according to the material or component that imparts their 'Essential Character'.",
+                        "feedbackRetry": "Think of the term starting with 'Essential...' which defines what makes the product truly function."
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What portion of an HTS tariff classification code is standardized globally across all World Customs Organization member nations?",
+                        "options": [
+                            "The first 6 digits (Chapter, Heading, and Subheading)",
+                            "All 10 digits exactly",
+                            "Only the first 2 digits (Chapter only)",
+                            "None; every country invents completely unrelated numbers"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is a 'Pedimento Aduanal' under Mexican customs and tax law?",
+                        "options": [
+                            "The official fiscal and legal customs declaration submitted by a licensed customs broker proving the lawful import or export of merchandise",
+                            "A casual receipt issued by a toll booth operator on a highway",
+                            "A temporary visa issued to international tourists visiting Mexico",
+                            "A certificate of good conduct issued by local police"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Under General Rule of Interpretation 3(b) (GRI 3b), how are multi-component or composite goods legally classified?",
+                        "options": [
+                            "According to the component or material that gives the assembly its Essential Character",
+                            "By taking an average of all the prices in the assembly",
+                            "By classifying under whichever heading has the highest import tax rate",
+                            "By letting the truck driver pick their favorite number at the border"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Why do multinational companies request a formal 'Binding Ruling' from customs agencies like CBP or SAT?",
+                        "options": [
+                            "To obtain an official, legally binding determination of tariff classification that protects the company against retrospective audits and penalties",
+                            "To legally avoid paying corporate income taxes forever",
+                            "To exempt their factory from fire and occupational safety inspections",
+                            "To speed up the speed limit of their delivery trucks"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "log-m5",
+                "title": "Supply Chain Security: C-TPAT 17-Point Inspections, FAST Lanes & OEA",
+                "titleES": "Seguridad en la Cadena de Suministro: Inspección de 17 Puntos C-TPAT, Carriles FAST y OEA",
+                "icon": "fa-solid fa-shield-halved",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "log-m5-r1",
+                        "title": "C-TPAT & OEA Framework: Mitigating Contraband, Narcotics & Cargo Theft",
+                        "duration": "15 min",
+                        "content": "> **Supply Chain Security Standard**: Governed by the **Customs-Trade Partnership Against Terrorism (C-TPAT / US CBP)**, **Operador Económico Autorizado (OEA / SAT Mexico)**, and the **WCO SAFE Framework of Standards**.\n\n# Supply Chain Security: C-TPAT & FAST Lanes\n\n### 1. The Real Threat in Cross-Border Logistics\nThe US-Mexico border is the busiest commercial land crossing in the world, with over 15,000 tractor-trailers crossing daily through Laredo, Texas alone. Organized transnational crime syndicates constantly target legitimate manufacturing supply chains to smuggle narcotics, weapons, contraband, or unauthorized migrants.\n\nA single tractor-trailer from an automotive or medical maquiladora found contaminated with contraband at the international bridge triggers catastrophic consequences:\n- Immediate seizure of the commercial tractor and trailer.\n- Indefinite shutdown and suspension of the manufacturing plant's expedited customs access.\n- Millions of dollars in customer line-down penalties and criminal federal investigations.\n\n### 2. C-TPAT & OEA Certification\nTo secure cargo, US Customs and Border Protection created **C-TPAT (Customs-Trade Partnership Against Terrorism)**, harmonized with Mexico's **OEA (Operador Económico Autorizado)**:\n- Companies undergo rigorous physical security audits of their plant perimeter, CCTV surveillance, badge access control, cybersecurity, and carrier background vetting.\n- **The Core Benefit**: Certified companies receive **drastically reduced inspection rates** (up to 80% fewer intrusive border holds) and access to **FAST (Free and Secure Trade) dedicated expedited bridge lanes**, cutting border crossing transit from 8 hours down to 30 minutes."
+                    },
+                    {
+                        "id": "log-m5-r2",
+                        "title": "The Mandatory 17-Point Tractor & Trailer Inspection & High-Security ISO 17712 Bolt Seals",
+                        "duration": "13 min",
+                        "content": "> **Operational Security Protocol**: Aligned with **C-TPAT Minimum Security Criteria (MSC Section 3.2 - Conveyance and Container Security)**.\n\n### 1. The 17-Point Truck & Trailer Physical Inspection\nBefore any commercial trailer departs a Mexican manufacturing plant bound for the international border, trained security guards and drivers must execute and document a **17-Point Physical Inspection**:\n\n1. **Bumper & Engine Compartment**: Checking for false compartments inside air intake filters and behind the radiator grill.\n2. **Engine / Transmission / Steering**: Inspecting wheel wells, brake drums, and axle housings.\n3. **Fifth Wheel / Tractor Frame**: Checking between the chassis frame rails and drive axles.\n4. **Fuel Tanks**: Tapping fuel tanks to detect acoustic hollow changes indicating hidden compartments.\n5. **Cab & Sleeper Compartment**: Inspecting under bunk mattresses, headliners, and interior dashboard panels.\n6. **Outside / Undercarriage of Trailer**: Scanning air brake reservoirs, tire spare carriers, and refrigerated unit reefer housings.\n7. **Floor / Interior Walls / Ceiling**: Measuring interior vs exterior trailer dimensions using laser tape measures to detect **false front walls**.\n8. **Exterior Doors & Locking Rods**: Verifying door hinges and rivet welds have not been tampered with or replaced with hollow screws.\n\n### 2. High-Security ISO 17712 Bolt Seals & The VVTT Protocol\nOnce loaded, the trailer must be locked using a certified **ISO 17712 High-Security Bolt Seal** applying the mandatory **VVTT Protocol**:\n- **View**: Visually inspect the seal and locking mechanism for signs of pre-tampering.\n- **Verify**: Verify that the engraved serialized number on the seal matches the Bill of Lading, invoice, and gate pass verbatim.\n- **Tug**: Firmly pull and tug the seal by hand to ensure it is locked into place.\n- **Twist**: Twist and turn the bolt to ensure it cannot be unscrewed or popped open."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Specialist James Becker (C-TPAT Supply Chain Security Specialist, San Diego)",
+                        "content": "Captain Ramos, we are conducting a C-TPAT re-validation audit of your shipping dock and outbound staging yard in Tijuana. I want to observe a security guard performing the mandatory 17-point container inspection on an outbound trailer destined for the Otay Mesa commercial port.",
+                        "translation": "Capitán Ramos, estamos realizando una auditoría de revalidación de C-TPAT de su muelle de embarque y patio de maniobras de salida en Tijuana. Deseo observar a un guardia de seguridad realizando la inspección obligatoria de 17 puntos de contenedor en un remolque de salida con destino al puerto comercial de Otay Mesa.",
+                        "pedagogicalNotes": "Target terms: C-TPAT re-validation audit, shipping dock, outbound staging yard, 17-point container inspection, outbound trailer"
+                    },
+                    {
+                        "role": "Capitán Roberto Ramos (Director of Corporate Security & Asset Protection, Tijuana)",
+                        "content": "Certainly, Officer Becker. Let's step over to dock 4. The guard is currently using a calibrated ultrasonic thickness gauge and a laser measuring tape to verify the interior versus exterior depth of the trailer's front bulkhead to rule out false wall compartments.",
+                        "translation": "Por supuesto, Oficial Becker. Pasemos al muelle 4. El guardia está utilizando actualmente un medidor de espesor ultrasónico calibrado y una cinta métrica láser para verificar la profundidad interior contra la exterior del mamparo frontal del remolque para descartar compartimentos de pared falsa.",
+                        "pedagogicalNotes": "Target terms: ultrasonic thickness gauge, laser measuring tape, front bulkhead, false wall compartments"
+                    },
+                    {
+                        "role": "Specialist James Becker (C-TPAT Supply Chain Security Specialist, San Diego)",
+                        "content": "I notice the high-security bolt seal on the desk. Can you walk me through your procedure for affixing the seal and logging the serial number on the bill of lading?",
+                        "translation": "Noto el sello de perno de alta seguridad en el escritorio. ¿Podría explicarme su procedimiento para colocar el sello y registrar el número de serie en el conocimiento de embarque?",
+                        "pedagogicalNotes": "Target terms: high-security bolt seal, affixing the seal, serial number, bill of lading"
+                    },
+                    {
+                        "role": "Capitán Roberto Ramos (Director of Corporate Security & Asset Protection, Tijuana)",
+                        "content": "We enforce the strict VVTT protocol: View, Verify, Tug, and Twist. The guard verifies the engraved serial number against the SAP shipping order, snaps the ISO 17712 bolt into the primary right-door locking cam, tugs it firmly, and twists the cylinder. A high-resolution CCTV camera records the serial number before the driver receives the signed gate pass.",
+                        "translation": "Hacemos cumplir el estricto protocolo VVTT: Ver, Verificar, Tirar (Tug) y Girar (Twist). El guardia verifica el número de serie grabado contra la orden de embarque de SAP, encaja el perno ISO 17712 en la leva de bloqueo de la puerta derecha primaria, tira de él con firmeza y gira el cilindro. Una cámara CCTV de alta resolución registra el número de serie antes de que el conductor reciba el pase de salida firmado.",
+                        "pedagogicalNotes": "Target terms: VVTT protocol (View, Verify, Tug, Twist), ISO 17712 bolt, right-door locking cam, high-resolution CCTV camera, gate pass"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "C-TPAT (Customs-Trade Partnership Against Terrorism)",
+                        "ipa": "/ˈsiː.tiːˌpæt/",
+                        "es": "Asociación Aduana-Comercio Contra el Terrorismo (C-TPAT)",
+                        "category": "Seguridad Logística",
+                        "definition": "A voluntary public-private supply chain security program led by US Customs and Border Protection (CBP) focused on securing commercial cargo against contraband, narcotics, and terrorism.",
+                        "collocations": [
+                            "C-TPAT certified partner",
+                            "C-TPAT validation audit",
+                            "C-TPAT Tier 3 green lane status"
+                        ],
+                        "falseFriends": "No es una norma de calidad estética; es una certificación de seguridad física, perimetral, digital y humana.",
+                        "nativeUsage": "Our Monterrey manufacturing plant maintained C-TPAT Tier 2 status, granting our trucks access to the FAST lane."
+                    },
+                    {
+                        "term": "17-Point Inspection",
+                        "ipa": "/ˌsɛv.ənˈtiːn pɔɪnt ɪnˈspɛk.ʃən/",
+                        "es": "Inspección de seguridad de 17 puntos para tractocamiones y remolques",
+                        "category": "Protocolo de Seguridad",
+                        "definition": "The mandatory physical examination conducted on all commercial highway conveyances and ocean containers prior to loading, checking for false compartments and structural tampering.",
+                        "collocations": [
+                            "conduct 17-point inspection",
+                            "17-point checklist log",
+                            "inspect fifth wheel and bulkhead"
+                        ],
+                        "falseFriends": "Debe realizarse de manera metódica y documentada con registro fotográfico antes de permitir la salida del patio.",
+                        "nativeUsage": "The security guard completed the 17-point inspection, checking the fuel tank baffles and trailer floor for tampering."
+                    },
+                    {
+                        "term": "ISO 17712 High-Security Bolt Seal",
+                        "ipa": "/ˌaɪ.ɛsˈoʊ ˈsɛv.ən.tiːn ˈsɛv.ən ˈtwɛlv boʊlt siːl/",
+                        "es": "Sello de perno de alta seguridad certificado ISO 17712",
+                        "category": "Hardware de Seguridad",
+                        "definition": "A heavy-duty mechanical locking seal tested against tensile pull, shear cut, and impact standards, designed to provide physical deterrence and evidence of cargo tampering.",
+                        "collocations": [
+                            "affix ISO 17712 bolt seal",
+                            "tamper-evident seal",
+                            "bolt seal cutter"
+                        ],
+                        "falseFriends": "Un simple cincho de plástico no cumple con C-TPAT; solo sellos de perno de acero certificados son legales para cruces fronterizos.",
+                        "nativeUsage": "CBP officers at the bridge verified that the container's ISO 17712 bolt seal was untampered and matched the manifest."
+                    },
+                    {
+                        "term": "VVTT Protocol (View, Verify, Tug, Twist)",
+                        "ipa": "/viː viː tiː tiː ˈproʊ.tə.kɑːl/",
+                        "es": "Protocolo VVTT de colocación e inspección de sellos de seguridad",
+                        "category": "Procedimiento Operativo",
+                        "definition": "The standardized procedure required by CBP for verifying high-security bolt seals: View the seal, Verify serial number, Tug firmly downward, and Twist to confirm positive lock.",
+                        "collocations": [
+                            "execute VVTT check",
+                            "train drivers on VVTT protocol",
+                            "log VVTT inspection"
+                        ],
+                        "falseFriends": "Es una técnica física activa; evita que pernos mal cerrados se abran durante el viaje en carretera.",
+                        "nativeUsage": "Every outbound driver must demonstrate the VVTT protocol before receiving their commercial customs documentation."
+                    },
+                    {
+                        "term": "FAST Lane (Free and Secure Trade)",
+                        "ipa": "/fæst leɪn/",
+                        "es": "Carril FAST (Comercio Libre y Seguro)",
+                        "category": "Infraestructura Fronteriza",
+                        "definition": "A dedicated commercial border-crossing lane reserved exclusively for shipments where the importer, foreign manufacturer, freight carrier, and driver are all C-TPAT certified.",
+                        "collocations": [
+                            "cross via FAST lane",
+                            "FAST driver card",
+                            "FAST lane lane-reduction advantage"
+                        ],
+                        "falseFriends": "No es una autopista de peaje más rápida para turistas; es un carril aduanero exclusivo de bajo riesgo con clearance acelerado.",
+                        "nativeUsage": "Using the FAST lane at the World Trade Bridge reduced our border crossing queue from six hours down to twenty minutes."
+                    },
+                    {
+                        "term": "False Bulkhead / False Wall",
+                        "ipa": "/fɔːls ˈbʌlk.hɛd / fɔːls wɔːl/",
+                        "es": "Mamparo falso / Pared falsa en remolques (compartimento oculto)",
+                        "category": "Detección de Contrabando",
+                        "definition": "An artificial compartment constructed inside the front or rear of a shipping container or trailer used by criminal syndicates to conceal narcotics or illegal contraband.",
+                        "collocations": [
+                            "detect false bulkhead",
+                            "laser measurement for false wall",
+                            "bulkhead cavity inspection"
+                        ],
+                        "falseFriends": "Se detecta comparando la longitud exterior medida con la longitud interior útil con cinta láser.",
+                        "nativeUsage": "The security team flagged the trailer when a laser measure showed a two-foot discrepancy indicative of a false bulkhead."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "VVTT Protocol Meaning",
+                        "botQuestion": "When securing a shipping container with an ISO 17712 high-security bolt seal under C-TPAT standards, what four action words do the letters in the 'VVTT' protocol stand for?",
+                        "requiredKeywords": [
+                            "view",
+                            "verify",
+                            "tug",
+                            "twist"
+                        ],
+                        "minKeywords": 4,
+                        "feedbackSuccess": "Exact! The VVTT protocol stands for View, Verify (the serial number), Tug (to confirm locking), and Twist (to ensure the bolt cannot unscrew).",
+                        "feedbackRetry": "Remember the four sequential actions: View the seal, Verify the number, and what two physical movements with your hands?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "FAST Lane Eligibility",
+                        "botQuestion": "What four entities in a commercial supply chain must all be C-TPAT certified in order for a truck to legally use the expedited FAST (Free and Secure Trade) lane at the US border?",
+                        "requiredKeywords": [
+                            "importer",
+                            "manufacturer",
+                            "carrier",
+                            "driver"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Spot on! The FAST lane mandates that the importer, the foreign manufacturing plant, the logistics carrier (trucking company), and the commercial driver must ALL hold active C-TPAT / FAST certifications.",
+                        "feedbackRetry": "Think about every link in the physical chain: who makes the part, who buys it, who transports it, and who sits behind the steering wheel?"
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What is the primary operational advantage of achieving C-TPAT and OEA certification for a manufacturing exporter in Mexico?",
+                        "options": [
+                            "Access to expedited FAST lanes and up to an 80% reduction in intrusive commercial customs border inspections",
+                            "Exemption from all federal labor laws and safety regulations",
+                            "The ability to ship weapons and toxic chemicals without an import permit",
+                            "A free fleet of new commercial trucks provided by the government"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What type of seal is legally mandated by C-TPAT Minimum Security Criteria for all commercial trailers crossing the international border?",
+                        "options": [
+                            "ISO 17712 certified High-Security Bolt Seal",
+                            "A piece of colored masking tape",
+                            "A plastic supermarket twist-tie",
+                            "A standard padlock bought at a grocery store"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "How do security inspectors detect a 'False Bulkhead' (hidden front wall) in a shipping trailer during a 17-point inspection?",
+                        "options": [
+                            "By measuring and comparing the trailer's external length against its internal usable length using a laser measuring tool",
+                            "By asking the driver if they hid anything inside",
+                            "By painting the trailer a different color",
+                            "By weighing the trailer on a bathroom scale"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What does the 'Tug' step in the VVTT seal protocol verify?",
+                        "options": [
+                            "It confirms through downward physical force that the bolt seal has positively locked into the locking chamber and cannot slip out",
+                            "It measures the gross weight of the trailer tires",
+                            "It cleans dirt off the truck door handle",
+                            "It signals the warehouse crane to begin loading pallets"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            },
+            {
+                "id": "log-m6",
+                "title": "Freight Forwarding, Demurrage, Detention & Ocean/Air Bill of Lading (BOL)",
+                "titleES": "Agenciamiento de Carga, Demoras, Detenciones y Conocimientos de Embarque Marítimo/Aéreo",
+                "icon": "fa-solid fa-ship",
+                "isGoldModel": true,
+                "readings": [
+                    {
+                        "id": "log-m6-r1",
+                        "title": "Maritime & Air Freight: Ocean Bill of Lading (B/L) vs Air Waybill (AWB)",
+                        "duration": "15 min",
+                        "content": "> **International Transport Law**: Governed by the **Hague-Visby Rules / Hamburg Rules** for ocean freight and the **Montreal Convention 1999** for international air carriage (IATA).\n\n# Freight Forwarding & Supply Chain Disruption\n\n### 1. Modes of International Freight Carriage\nIn modern global supply chains connecting Asian chipmakers and European machine tool builders with North American factories:\n- **Ocean Freight (FCL / LCL)**: The backbone of global volume. \n  - **FCL (Full Container Load)**: Exclusive use of a standard 20-foot, 40-foot, or 40-foot High-Cube ($HC$) shipping container.\n  - **LCL (Less than Container Load)**: Consolidating freight from multiple shippers into a shared container at a Container Freight Station (CFS).\n- **Air Freight**: For emergency line-down production shipments, high-value electronics, or cold-chain active pharmaceuticals.\n  - Calculated based on **Volumetric (Chargeable) Weight**: \n    $$\\text{Volumetric Weight (kg)} = \\frac{\\text{Length (cm)} \\times \\text{Width (cm)} \\times \\text{Height (cm)}}{6,000}$$\n    The airline bills whichever is greater: the actual gross scale weight or the volumetric weight.\n\n### 2. Ocean B/L vs Air Waybill (AWB)\n- **Ocean Bill of Lading (B/L)**: Issued as an original negotiable document of title. Goods will **not** be released at the port of discharge (e.g., Manzanillo or Long Beach) without physical presentation and endorsement of the original B/L or an authorized **Telex Release / Sea Waybill**.\n- **Air Waybill (AWB)**: Issued by air freight carriers (IATA). The AWB is a receipt for cargo and a contract of carriage, but it is **never a negotiable document of title**; goods are delivered directly to the named consignee upon customs clearance."
+                    },
+                    {
+                        "id": "log-m6-r2",
+                        "title": "Demurrage, Detention & Free Time in Port Operations",
+                        "duration": "13 min",
+                        "content": "> **Operational Port Standard**: Governed by shipping line container tariffs and the **Federal Maritime Commission (FMC - Ocean Shipping Reform Act)**.\n\n### 1. The Financial Avalanche of Port Disruption\nSupply chain managers frequently confuse **Demurrage** with **Detention**, leading to hundreds of thousands of dollars in unexpected penalties:\n\n| Penalty Type | Geographic Location | What it Charges For | Standard Free Time |\n| :--- | :--- | :--- | :--- |\n| **Demurrage** | **Inside the Port Terminal / CFS** | Storage charges for a container occupying terminal space **before** it is picked up and cleared by the importer. | $4\\text{ to }7\\text{ calendar days}$ |\n| **Detention** | **Outside the Port / At Importer's Yard** | Per-diem equipment fee charged by the shipping line for holding the container **after** pickup until the empty box is returned to the carrier's depot. | $5\\text{ to }10\\text{ calendar days}$ |\n\n### 2. Mitigating Port Bottlenecks\nWhen ports like Manzanillo, Lázaro Cárdenas, or Long Beach experience congestion or customs system crashes:\n- Negotiating extended **Free Time (14 to 21 days combined demurrage/detention)** prior to booking the ocean freight booking confirmation.\n- Direct-to-Rail intermodal transfer (Intermodal Rail Ramp) moving containers directly from vessel to inland rail terminals (Pantaco, Silao, Monterrey) avoiding congested port gates."
+                    }
+                ],
+                "dialogue": [
+                    {
+                        "role": "Specialist Arthur Pendelton (Director of International Freight, Hamburg Süd, Rotterdam)",
+                        "content": "Licenciado Morales, our vessel just berthed at the Port of Manzanillo carrying twenty-two 40-foot High-Cube containers of automated assembly robotic arms from Bremen. Your free time for demurrage inside the terminal expires on Friday. What is your customs clearance and drayage schedule?",
+                        "translation": "Licenciado Morales, nuestro buque acaba de atracar en el Puerto de Manzanillo transportando veintidós contenedores High-Cube de 40 pies con brazos robóticos de ensamble automatizado desde Bremen. Su tiempo libre para demoras dentro de la terminal vence el viernes. ¿Cuál es su programa de despacho aduanal y acarreo?",
+                        "pedagogicalNotes": "Target terms: Port of Manzanillo, 40-foot High-Cube containers, free time, demurrage inside the terminal, drayage schedule"
+                    },
+                    {
+                        "role": "Lic. Fernando Morales (Logistics & International Operations Lead, San Luis Potosí)",
+                        "content": "Good morning, Arthur. Our customs broker already pre-validated the entry pedimentos with the maritime customs office. We have dedicated double-chassis drayage carriers staged outside the port gate to pull the first ten containers tomorrow morning directly to our rail ramp terminal.",
+                        "translation": "Buenos días, Arthur. Nuestro agente aduanal ya pre-validó los pedimentos de entrada con la aduana marítima. Tenemos transportistas de acarreo con chasis doble posicionados fuera de la puerta del puerto para retirar los primeros diez contenedores mañana por la mañana directamente a nuestra terminal de rampa ferroviaria.",
+                        "pedagogicalNotes": "Target terms: pre-validated entry pedimentos, maritime customs office, double-chassis drayage carriers, rail ramp terminal"
+                    },
+                    {
+                        "role": "Specialist Arthur Pendelton (Director of International Freight, Hamburg Süd, Rotterdam)",
+                        "content": "Remember that your detention clock starts ticking the moment those containers gate out. The per-diem detention rate is $225 USD per box per day after day 7.",
+                        "translation": "Recuerde que su reloj de detención comienza a correr en el momento en que esos contenedores salen por la puerta. La tarifa de detención por día (per-diem) es de $225 USD por caja por día después del día 7.",
+                        "pedagogicalNotes": "Target terms: detention clock, gate out, per-diem detention rate"
+                    },
+                    {
+                        "role": "Lic. Fernando Morales (Logistics & International Operations Lead, San Luis Potosí)",
+                        "content": "Understood. Our San Luis Potosí assembly plant has two unloading crews scheduled around the clock. The empty containers will be de-staged, inspected, and returned to your inland depot in Querétaro by day 4, well within our authorized detention window.",
+                        "translation": "Entendido. Nuestra planta de ensamble de San Luis Potosí tiene dos cuadrillas de descarga programadas las 24 horas. Los contenedores vacíos serán des-estibados, inspeccionados y retornados a su patio interior en Querétaro para el día 4, muy dentro de nuestra ventana de detención autorizada.",
+                        "pedagogicalNotes": "Target terms: around the clock, de-staged, inland depot, authorized detention window"
+                    }
+                ],
+                "lexiconMatrix": [
+                    {
+                        "term": "Demurrage vs Detention",
+                        "ipa": "/dɪˈmɜːr.ɪdʒ / dɪˈtɛn.ʃən/",
+                        "es": "Demoras (en terminal portuaria) vs Detenciones (fuera de puerto)",
+                        "category": "Cargos de Flete y Almacenaje",
+                        "definition": "Demurrage is the penalty fee charged for storing containers inside the port terminal beyond free time; Detention is the per-diem fee charged by the carrier for holding the container equipment outside the port before returning it empty.",
+                        "collocations": [
+                            "demurrage charges",
+                            "negotiate detention free time",
+                            "per-diem container penalty"
+                        ],
+                        "falseFriends": "Demurrage ocurre adentro del puerto; Detention ocurre afuera en el patio de la empresa cuando tardan en descargar y devolver la caja vacía.",
+                        "nativeUsage": "The logistics manager negotiated 14 days of combined free time to protect against port demurrage and container detention."
+                    },
+                    {
+                        "term": "Free Time",
+                        "ipa": "/friː taɪm/",
+                        "es": "Días libres de almacenaje y detención (Free Time)",
+                        "category": "Contratos de Flete Marítimo",
+                        "definition": "The agreed-upon period during which an importer or exporter can use a shipping container or hold cargo inside a terminal without incurring demurrage or detention charges.",
+                        "collocations": [
+                            "standard 7-day free time",
+                            "extend free time window",
+                            "free time expiration alert"
+                        ],
+                        "falseFriends": "No es tiempo libre recreativo; es el plazo contractual estricto antes de que comiencen las multas por día de uso de equipo.",
+                        "nativeUsage": "The shipping line granted 21 days of free time for our refrigerated ocean containers arriving in Manzanillo."
+                    },
+                    {
+                        "term": "Air Waybill (AWB)",
+                        "ipa": "/ɛr ˈweɪˌbɪl/",
+                        "es": "Guía Aérea (AWB / Contrato de Transporte Aéreo IATA)",
+                        "category": "Transporte Aéreo",
+                        "definition": "A non-negotiable transport document issued by an air carrier that acts as a receipt for goods and a contract of carriage, but unlike an ocean B/L, does not represent legal title to the cargo.",
+                        "collocations": [
+                            "master air waybill (MAWB)",
+                            "house air waybill (HAWB)",
+                            "AWB consignment tracking"
+                        ],
+                        "falseFriends": "Nunca es un título de propiedad negociable; la aerolínea entrega la carga directamente al consignatario nombrado en el documento.",
+                        "nativeUsage": "The freight forwarder emailed the master air waybill number so we could track the emergency air shipment from Frankfurt."
+                    },
+                    {
+                        "term": "Telex Release (Express Release)",
+                        "ipa": "/ˈtɛl.ɛks rɪˈliːs/",
+                        "es": "Liberación Telemática / Telex Release de Conocimiento Marítimo",
+                        "category": "Operaciones Portuarias",
+                        "definition": "An electronic message sent by the carrier at origin authorizing the destination port agent to release cargo to the named consignee without requiring presentation of physical paper bills of lading.",
+                        "collocations": [
+                            "request a telex release",
+                            "express bill of lading release",
+                            "telex fee"
+                        ],
+                        "falseFriends": "Elimina el retraso de enviar documentos físicos originales por correo internacional DHL/FedEx.",
+                        "nativeUsage": "Once the supplier confirmed payment receipt, the ocean carrier issued a telex release to unload the containers in Veracruz."
+                    },
+                    {
+                        "term": "Volumetric / Chargeable Weight",
+                        "ipa": "/ˌvɑːl.jəˈmɛt.rɪk weɪt/",
+                        "es": "Peso Volumétrico / Peso Cobrable (en Flete Aéreo)",
+                        "category": "Tarificación de Carga",
+                        "definition": "A calculation reflecting cargo density based on its cubic dimensions, used by airlines and couriers to bill for low-density lightweight packages occupying high cargo hold volume.",
+                        "collocations": [
+                            "chargeable weight calculation",
+                            "dimensional weight factor",
+                            "cubic volume divider"
+                        ],
+                        "falseFriends": "Una caja grande llena de plumas pesa poco en báscula, pero se cobra según su peso volumétrico en metros cúbicos.",
+                        "nativeUsage": "Because the plastic catheter housings were light but bulky, the airline charged based on volumetric weight rather than gross weight."
+                    },
+                    {
+                        "term": "Drayage",
+                        "ipa": "/ˈdreɪ.ɪdʒ/",
+                        "es": "Acarreo terrestre / Flete de corta distancia portuaria o fronteriza",
+                        "category": "Transporte Terrestre",
+                        "definition": "The specialized short-distance overland transportation of freight containers between an ocean port terminal, international border bridge, rail ramp, and nearby warehouse facility.",
+                        "collocations": [
+                            "drayage carrier",
+                            "cross-border drayage transfer",
+                            "drayage chassis fee"
+                        ],
+                        "falseFriends": "Drayage se refiere exclusivamente al tramo corto de enlace (ej. del puente o puerto a la bodega de trasbordo), no al flete carretero de larga distancia.",
+                        "nativeUsage": "The transfer drayage driver hauled the loaded container across the international commercial bridge into Nuevo Laredo."
+                    }
+                ],
+                "socraticChallenges": [
+                    {
+                        "step": 1,
+                        "concept": "Demurrage vs Detention",
+                        "botQuestion": "In international maritime shipping, what is the exact operational and geographic distinction between Demurrage charges and Detention charges?",
+                        "requiredKeywords": [
+                            "inside",
+                            "outside",
+                            "terminal",
+                            "port",
+                            "equipment",
+                            "container",
+                            "depot"
+                        ],
+                        "minKeywords": 3,
+                        "feedbackSuccess": "Exact! Demurrage is charged when a loaded container sits INSIDE the port terminal beyond free time, whereas Detention is charged when the container equipment is held OUTSIDE the port in the customer's yard beyond free time.",
+                        "feedbackRetry": "Think about location: is the container still sitting inside the port terminal, or was it pulled out to the company's yard?"
+                    },
+                    {
+                        "step": 2,
+                        "concept": "Air Waybill Title",
+                        "botQuestion": "Unlike a traditional Ocean Bill of Lading, is an international Air Waybill (AWB) a negotiable document of title to the cargo?",
+                        "requiredKeywords": [
+                            "no",
+                            "non-negotiable",
+                            "not",
+                            "title"
+                        ],
+                        "minKeywords": 2,
+                        "feedbackSuccess": "Spot on! An Air Waybill (AWB) is strictly a non-negotiable receipt and contract of carriage; it is NEVER a negotiable document of title, meaning the carrier releases the cargo directly to the named consignee.",
+                        "feedbackRetry": "Can you endorse and transfer ownership of an Air Waybill like an ocean document of title, or is it non-negotiable?"
+                    }
+                ],
+                "quiz": [
+                    {
+                        "q": "What is the critical geographic and legal difference between Demurrage and Detention in container shipping?",
+                        "options": [
+                            "Demurrage applies to storage inside the port terminal, while Detention applies to container equipment held outside the terminal beyond free time",
+                            "Demurrage is paid in Mexican pesos, while Detention is paid in euros",
+                            "Demurrage applies only to air cargo, while Detention applies only to rail freight",
+                            "There is no difference; they are identical terms for maritime insurance"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "Why does an airline bill an air freight shipment based on 'Volumetric Weight' rather than actual gross weight if the package contains lightweight, bulky products?",
+                        "options": [
+                            "Because aircraft cargo holds have limited physical space, so low-density bulky cargo must be billed according to the volume it occupies",
+                            "Because airline scales are not calibrated for weights under 100 kilograms",
+                            "Because international aviation law mandates that all cargo weigh at least 500 kilograms",
+                            "To calculate the altitude at which the airplane must fly"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What is a 'Telex Release' in ocean freight operations?",
+                        "options": [
+                            "An electronic notification authorizing the destination port to release cargo to the consignee without waiting for physical paper bills of lading to arrive by mail",
+                            "An antique telegraph machine kept in museum displays",
+                            "A mechanical valve used to release water pressure from a ship's ballast tanks",
+                            "An announcement made over a ship's loudspeaker system"
+                        ],
+                        "answer": 0
+                    },
+                    {
+                        "q": "What does the logistics term 'Drayage' describe in cross-border supply chains?",
+                        "options": [
+                            "Short-distance transportation of shipping containers between a port, border bridge, or rail ramp and a nearby cross-dock warehouse",
+                            "Driving a truck across an entire continent over two weeks",
+                            "Pumping fuel into an ocean container ship",
+                            "Inspecting the chemical composition of plastic pallets"
+                        ],
+                        "answer": 0
+                    }
+                ]
+            }
+        ]
+    },
+    "quality-ehs": {
+            "id": "quality-ehs",
+            "title": "Ingeniería de Calidad y Seguridad Ocupacional (EHS)",
+            "titleEN": "Quality Engineering & Environmental Health and Safety (EHS)",
+            "level": "B1-B2",
+            "category": "engineering",
+            "description": "Gestión avanzada de calidad industrial y seguridad ocupacional: Six Sigma DMAIC, control estadístico de procesos (Cp, Cpk, Gage R&R), auditorías ISO 9001:2015 / IATF, protocolos de energía cero LOTO (OSHA 29 CFR 1910.147), ergonomía industrial (NIOSH) y gestión ambiental ISO 14001 / GHS.",
+            "status": "full",
+            "totalModules": 6,
+            "standard": "ISO 9001:2015 / ISO 45001:2018 / ISO 14001:2015 / OSHA 29 CFR 1910 / AIAG-VDA / NFPA 70E",
+            "modules": [
+                    {
+                            "id": "qe-m1",
+                            "title": "Six Sigma DMAIC & Statistical Process Control (SPC)",
+                            "titleES": "Six Sigma DMAIC y Control Estadístico de Procesos (SPC)",
+                            "icon": "fa-solid fa-chart-line",
+                            "isGoldModel": true,
+                            "readings": [
+                                    {
+                                            "id": "qe-m1-r1",
+                                            "title": "DMAIC Framework & Process Capability (Cp, Cpk, Pp, Ppk) in High-Volume Manufacturing",
+                                            "duration": "15 min",
+                                            "content": "> **Quality Engineering Standard**: **ASQ (American Society for Quality) Six Sigma Body of Knowledge** and **AIAG Statistical Process Control (SPC) Manual 2nd Edition**. Crucial for Quality Assurance Managers, Black Belts, and Process Engineers operating high-volume assembly lines.\n\n# Six Sigma DMAIC & Process Capability Architecture\n\n### 1. The DMAIC Problem-Solving Engine\nIn advanced nearshoring plants, solving chronic scrap and yield issues requires a structured, empirical methodology rather than intuitive guesswork. The **DMAIC** roadmap provides this framework:\n1. **Define**: Formulate the project charter, establish the business case, map high-level process flow via **SIPOC** (Suppliers, Inputs, Process, Outputs, Customers), and capture the **Voice of the Customer (VOC)** translated into measurable **Critical to Quality (CTQ)** parameters.\n2. **Measure**: Quantify current baseline performance. Verify measurement precision and reproducibility via **Measurement Systems Analysis (MSA / Gage R&R)** before collecting process data.\n3. **Analyze**: Identify the root causes of defect variation using statistical hypothesis testing (ANOVA, 2-Sample t-Test, Chi-Square), regression analysis, and multi-vari charts.\n4. **Improve**: Design, pilot, and validate countermeasures using **Design of Experiments (DOE)** to optimize process setpoints and mistake-proof (Poka-Yoke) the workstation.\n5. **Control**: Institutionalize the gains through updated **Standard Operating Procedures (SOPs)**, Statistical Process Control (SPC) charting, and a reaction plan documented in an **Out-of-Control Action Plan (OCAP)**.\n\n### 2. Process Capability vs Process Performance: Cp vs Cpk vs Ppk\nA critical point of cross-border friction during customer audits is the technical distinction between short-term capability and long-term process performance:\n\n| Metric | Name | Formula / Interpretation | Standard Target |\n| :--- | :--- | :--- | :--- |\n| **Cp** | **Process Capability** | $Cp = \\frac{USL - LSL}{6\\sigma_{within}}$ — Measures the *potential* capability assuming the process is perfectly centered between specification limits. Ignores process shift. | $\\ge 1.33$ (General) / $\\ge 1.67$ (Critical/Safety) |\n| **Cpk** | **Process Capability Index** | $Cpk = \\min\\left(\\frac{USL - \\mu}{3\\sigma_{within}}, \\frac{\\mu - LSL}{3\\sigma_{within}}\\right)$ — Measures actual capability accounting for process centering drift. Reflects *within-subgroup* variation. | $\\ge 1.33$ (Standard production) / $\\ge 1.67$ (Automotive/Medical) |\n| **Pp** | **Process Performance** | $Pp = \\frac{USL - LSL}{6\\sigma_{overall}}$ — Uses sample standard deviation ($s$) across all historical batches. Evaluates total historical spread. | $\\ge 1.33$ |\n| **Ppk** | **Process Performance Index** | $Ppk = \\min\\left(\\frac{USL - \\bar{\\bar{X}}}{3s}, \\frac{\\bar{\\bar{X}} - LSL}{3s}\\right)$ — Accounts for centering using overall standard deviation. Required for initial PPAP part qualification. | $\\ge 1.67$ (PPAP submission baseline) |\n\n> **Audit Trap**: When $Cp$ is high (e.g., $1.80$) but $Cpk$ is low (e.g., $0.95$), the process has low internal variation but is significantly decentered toward one specification limit. Never attempt to adjust machine speed or feed rates before centering the mean."
+                                    },
+                                    {
+                                            "id": "qe-m1-r2",
+                                            "title": "Statistical Process Control (SPC), Control Charts & Measurement Systems Analysis (Gage R&R)",
+                                            "duration": "14 min",
+                                            "content": "> **Engineering Metric**: **AIAG MSA Manual 4th Edition**. Acceptance criteria: $%GRR < 10\\%$ is fully acceptable; $10\\% \\le \\%GRR \\le 30\\%$ is marginally acceptable conditional on customer sign-off; $\\%GRR > 30\\%$ indicates an unacceptable measurement system requiring immediate calibration or sensor redesign.\n\n# Statistical Process Control & Gage R&R Protocols\n\n### 1. Control Limits vs Specification Limits\nA catastrophic communication error on the plant floor is confusing **Control Limits (UCL / LCL)** with **Specification Limits (USL / LSL)**:\n- **Specification Limits (USL/LSL)** are established by design engineering or customer blueprints. They dictate whether a physical part is functionally conforming or defective.\n- **Control Limits (UCL/LCL)** are calculated statistically from real process output data ($pm 3\\sigma_{\\bar{X}}$). They represent the natural Voice of the Process.\n- **Action Principle**: A process can be completely within specification limits while being completely out of statistical control (displaying runs, trends, or stratification).\n\n### 2. Nelson Rules for Special Cause Variation\nProcess engineers monitor Shewhart control charts ($\bar{X}-R$ or I-MR charts). An out-of-control signal triggers an immediate **OCAP (Out-of-Control Action Plan)** when:\n- **Rule 1**: One single point falls outside the $3\\sigma$ control limits.\n- **Rule 2**: Nine consecutive points fall on the same side of the center line (indicating a process mean shift).\n- **Rule 3**: Six consecutive points steadily increasing or decreasing (indicating continuous tool wear or sensor drift).\n- **Rule 4**: Fourteen consecutive points alternating up and down (indicating over-control or hunting).\n\n### 3. Measurement Systems Analysis: Gage R&R\nBefore analyzing any SPC chart, the measurement equipment and human appraisers must be validated using **Gage Repeatability & Reproducibility (Gage R&R)**:\n- **Repeatability (Equipment Variation - EV)**: Variation observed when *one single appraiser* measures the exact same characteristic multiple times using the same instrument.\n- **Reproducibility (Appraiser Variation - AV)**: Variation observed between *different appraisers* measuring the same part using the same instrument.\n- **Number of Distinct Categories ($ndc$)**: Indicates the resolution capability of the gage. Must be $ge 5$ to divide the process into meaningful analytical groups."
+                                    }
+                            ],
+                            "dialogues": [
+                                    {
+                                            "id": "qe-m1-d1",
+                                            "title": "Master Black Belt vs Plant Quality Director: Process Drift & Gage R&R Failure",
+                                            "participants": [
+                                                    {
+                                                            "role": "Plant Quality Director (Juárez, Mexico)",
+                                                            "name": "Ing. Rodrigo Garza"
+                                                    },
+                                                    {
+                                                            "role": "Corporate Master Black Belt (Detroit, USA)",
+                                                            "name": "Dr. Mark Vance"
+                                                    }
+                                            ],
+                                            "scenario": "The morning production report shows that the precision CNC milling line for steering knuckles has experienced a Cpk drop from 1.67 down to 1.08, triggering a yellow alert at OEM headquarters.",
+                                            "lines": [
+                                                    {
+                                                            "speaker": "Dr. Mark Vance",
+                                                            "text": "Rodrigo, good morning. I’m looking at the overnight telemetry for Line 4. Your Cpk on the steering knuckle inner bearing bore plunged to 1.08 over the last three shifts. That violates our Tier 1 quality agreement of a minimum 1.33 ongoing Cpk. What’s driving the capability drop?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Rodrigo Garza",
+                                                            "text": "Good morning, Mark. We caught the shift immediately at 03:00 on the X-bar and R chart. Rule 3 triggered—six consecutive points trending downward. We initiated our OCAP, quarantined the last 400 parts, and conducted a preliminary tool wear analysis."
+                                                    },
+                                                    {
+                                                            "speaker": "Dr. Mark Vance",
+                                                            "text": "Did the machining center experience severe insert wear, or did someone tamper with the spindle offset?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Rodrigo Garza",
+                                                            "text": "Neither, actually. When our metrology tech re-measured the quarantined lot on the Zeiss CMM, the bore diameter came back at nominal 45.002 mm with a standard deviation of 0.003. That gives an actual Cpk of 1.72. The issue was on the plant floor air gage."
+                                                    },
+                                                    {
+                                                            "speaker": "Dr. Mark Vance",
+                                                            "text": "Are you saying the plant floor measurement system gave a false out-of-control alarm?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Rodrigo Garza",
+                                                            "text": "Exactly. We pulled the air gage and ran a Variable Gage R&R with 3 operators and 10 parts. The %GRR came out at 34.8%, and the number of distinct categories was only 2. The air pressure regulator on the shop floor pneumatic line had dropped from 6 bar to 4.2 bar, corrupting the air gage calibration."
+                                                    },
+                                                    {
+                                                            "speaker": "Dr. Mark Vance",
+                                                            "text": "That is a textbook equipment variation failure. Did you repair the pneumatic regulator and re-baseline the gage?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Rodrigo Garza",
+                                                            "text": "Yes. We installed a dedicated closed-loop pressure regulator with digital transducer feedback. Post-fix Gage R&R dropped to 7.4% with an ndc of 8. The quarantined parts have been 100% verified on the CMM and released with zero defect escapes."
+                                                    },
+                                                    {
+                                                            "speaker": "Dr. Mark Vance",
+                                                            "text": "Excellent containment discipline, Rodrigo. Please upload the Gage R&R study and the OCAP log to our corporate portal before the afternoon executive stand-up."
+                                                    }
+                                            ]
+                                    }
+                            ],
+                            "lexicon": [
+                                    {
+                                            "term": "Process Capability Index (Cpk)",
+                                            "ipa": "/ˈprɑː.sɛs ˌkeɪ.pəˈbɪl.ə.t̬i ˈɪn.dɛks/",
+                                            "definition": "A statistical metric measuring how close a process is operating relative to its specification limits, factoring in both natural spread (6-sigma) and mean centering.",
+                                            "collocations": [
+                                                    "demonstrate a minimum Cpk",
+                                                    "capability degradation",
+                                                    "tighten process capability"
+                                            ],
+                                            "auditTrap": "Do not report Cp in place of Cpk to customer auditors. Cp ignores mean decentering and will conceal chronic off-target production."
+                                    },
+                                    {
+                                            "term": "Gage Repeatability & Reproducibility (Gage R&R)",
+                                            "ipa": "/ɡeɪdʒ rɪˌpiː.t̬əˈbɪl.ə.t̬i ænd ˌriː.proʊ.duː.səˈbɪl.ə.t̬i/",
+                                            "definition": "An experimental evaluation of the variance introduced into process data by the measurement instrument itself (repeatability) and the operators operating it (reproducibility).",
+                                            "collocations": [
+                                                    "conduct a Gage R&R study",
+                                                    "exceed the 10% threshold",
+                                                    "appraiser variation"
+                                            ],
+                                            "auditTrap": "If %GRR exceeds 30%, the measurement system cannot legally be used for product disposition or PPAP sign-off."
+                                    },
+                                    {
+                                            "term": "Out-of-Control Action Plan (OCAP)",
+                                            "ipa": "/aʊt əv kənˈtroʊl ˈæk.ʃən plæn/",
+                                            "definition": "A mandatory predetermined flowchart specifying the immediate containment, quarantine, and troubleshooting actions operators must execute when an SPC chart generates a special-cause alarm.",
+                                            "collocations": [
+                                                    "trigger the OCAP",
+                                                    "execute containment protocol",
+                                                    "OCAP disposition flowchart"
+                                            ],
+                                            "auditTrap": "During ISO/IATF audits, auditors will check whether operators actually follow the steps written in the OCAP when a point exceeds control limits."
+                                    },
+                                    {
+                                            "term": "Common Cause vs Special Cause Variation",
+                                            "ipa": "/ˈkɑː.mən kɔːz / ˈspɛʃ.əl kɔːz ˌvɛr.iˈeɪ.ʃən/",
+                                            "definition": "Common cause variation is the inherent, random noise of a stable system. Special cause variation is an assignable, external disturbance (tool breakage, raw material batch shift, operator error).",
+                                            "collocations": [
+                                                    "eliminate special cause",
+                                                    "inherent process noise",
+                                                    "assignable root cause"
+                                            ],
+                                            "auditTrap": "Adjusting a machine process in response to common cause variation is called 'tampering' (over-control) and will mathematically double process variance."
+                                    },
+                                    {
+                                            "term": "Number of Distinct Categories (ndc)",
+                                            "ipa": "/ˈnʌm.bɚ əv dɪˈstɪŋkt ˈkæt̬.ə.ɡɔːr.iz/",
+                                            "definition": "A metric derived from Gage R&R indicating how many non-overlapping statistical intervals the measurement system can distinguish across the process spread. Must be 5 or higher.",
+                                            "collocations": [
+                                                    "achieve an ndc of 5 or greater",
+                                                    "adequate measurement resolution",
+                                                    "ndc calculation"
+                                            ],
+                                            "auditTrap": "An ndc below 5 indicates data is effectively being rounded off into gross bins, rendering subtle SPC trend detection impossible."
+                                    },
+                                    {
+                                            "term": "Critical to Quality (CTQ)",
+                                            "ipa": "/ˈkrɪt̬.ɪ.kəl tuː ˈkwɑː.lə.t̬i/",
+                                            "definition": "The key measurable physical, electrical, or functional characteristics of a product whose performance directly dictates customer satisfaction or regulatory compliance.",
+                                            "collocations": [
+                                                    "identify CTQ parameters",
+                                                    "flow down CTQs",
+                                                    "monitor CTQ drift"
+                                            ],
+                                            "auditTrap": "CTQs must always have measurable numerical tolerances, not vague subjective descriptions like 'smooth surface' or 'firm click'."
+                                    }
+                            ],
+                            "socraticChallenges": [
+                                    {
+                                            "id": "qe-m1-sc1",
+                                            "title": "Defending Decentered Process vs Widened Tolerances",
+                                            "prompt": "A customer auditor points out that your injection molding line has a Cp of 2.10, but your Cpk is only 1.15. The client demands a formal explanation. How do you technically articulate the issue and propose the correct corrective action without requesting tolerance relief?",
+                                            "idealResponse": "Acknowledge that while the process possesses exceptional inherent capability (Cp = 2.10 indicates process spread consumes only 47% of tolerance band), the process mean has shifted toward the Upper Specification Limit. State that rather than requesting tolerance widening, engineering is adjusting tool cooling water flow and injection pack pressure to re-center the mean at nominal, which will immediately restore Cpk above 1.67."
+                                    },
+                                    {
+                                            "id": "qe-m1-sc2",
+                                            "title": "Gage R&R Marginal Acceptance Protocol",
+                                            "prompt": "Your new optical coordinate measuring machine shows a Gage R&R of 18.5% with an ndc of 6. Production wants to deploy it immediately, but Quality Assurance hesitates. What is the engineering protocol under AIAG guidelines?",
+                                            "idealResponse": "Under AIAG 4th Edition standards, a Gage R&R between 10% and 30% is conditionally acceptable based on process criticality, customer agreement, and gage expense. Since ndc is 6 (satisfying the >= 5 rule), QA can approve temporary deployment for non-safety critical features while submitting a formal concession and optimization plan to reduce appraiser alignment variance."
+                                    }
+                            ],
+                            "quiz": [
+                                    {
+                                            "question": "What does it indicate if an engineering process displays a Cp of 1.95 but a Cpk of 0.88?",
+                                            "options": [
+                                                    "The measurement equipment has high operator reproducibility error.",
+                                                    "The process has low inherent variation but is significantly decentered from nominal.",
+                                                    "The process specification limits are too tight for modern CNC equipment.",
+                                                    "The process contains severe common cause variation requiring machine overhaul."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Cp compares tolerance width to 6-sigma spread without regard to location. A high Cp with a low Cpk proves that the spread is tight, but the process center has shifted toward one of the specification limits."
+                                    },
+                                    {
+                                            "question": "According to AIAG Measurement Systems Analysis (MSA) guidelines, what is the minimum required value for Number of Distinct Categories (ndc)?",
+                                            "options": [
+                                                    "ndc >= 3",
+                                                    "ndc >= 5",
+                                                    "ndc >= 10",
+                                                    "ndc >= 1.33"
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "AIAG standard dictates that an ndc of 5 or greater is mandatory for a measurement system to be capable of dividing the data into enough distinct intervals for SPC analysis."
+                                    },
+                                    {
+                                            "question": "Under the Nelson Rules for SPC control charts, which condition triggers a special-cause alarm?",
+                                            "options": [
+                                                    "Three consecutive points located within 1 sigma of the centerline.",
+                                                    "Six consecutive points steadily increasing or decreasing.",
+                                                    "Random distribution of points between upper and lower control limits.",
+                                                    "Every measured part conforming to customer blueprint specification limits."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Six consecutive points continuously increasing or decreasing represents Nelson Rule 3, indicating non-random trend variation such as continuous tool wear, temperature buildup, or sensor drift."
+                                    },
+                                    {
+                                            "question": "What is the primary operational consequence of 'tampering' (adjusting machine offsets based on common cause variation)?",
+                                            "options": [
+                                                    "It centers the mean and eliminates all scrap.",
+                                                    "It increases the overall process variance, often doubling output scatter.",
+                                                    "It improves the Gage R&R from 25% down to under 10%.",
+                                                    "It automatically closes customer non-conformance reports."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Deming demonstrated mathematically that adjusting a stable process in response to common cause noise (treating random variation as if it were special cause) increases process variance by up to 100%."
+                                    }
+                            ]
+                    },
+                    {
+                            "id": "qe-m2",
+                            "title": "Root Cause Analysis, 8D Interlock & Failure Modes (Ishikawa, 5 Whys, AIAG-VDA FMEA)",
+                            "titleES": "Análisis de Causa Raíz, Interbloqueo 8D y Modos de Falla (Ishikawa, 5 Porqués, FMEA)",
+                            "icon": "fa-solid fa-code-branch",
+                            "isGoldModel": true,
+                            "readings": [
+                                    {
+                                            "id": "qe-m2-r1",
+                                            "title": "Disciplined Root Cause Determination: 6M Ishikawa, 5 Whys & Escape Point Analysis",
+                                            "duration": "15 min",
+                                            "content": "> **Engineering Standard**: **AIAG CQI-20 Effective Problem Solving** and **VDA 8D Manual**. Required for all quality engineers responding to Customer Concern Notifications (CCN) and Non-Conformance Reports (NCR).\n\n# Disciplined Root Cause Determination & 8D Interlock\n\n### 1. The Distinction Between Direct Cause and Root Cause\nIn cross-border engineering escalation, junior engineers frequently confuse the **direct symptom** with the **systemic root cause**:\n- **Direct Cause (Physical Cause)**: The immediate mechanism that produced the physical failure (e.g., *'The wire harness insulation melted due to excessive electrical current'*).\n- **Escape Point (Detection Failure)**: Why did the internal quality control system fail to intercept the defect before it crossed the plant threshold? (e.g., *'The end-of-line high-potential tester had its current cutoff threshold bypassed during maintenance'*).\n- **Systemic Root Cause (Management / Design Failure)**: The organizational or procedural breakdown that allowed the condition to be created (e.g., *'Engineering change management SOP lacked a mandatory validation protocol for test fixture software revisions'*).\n\n### 2. The 6M Cause-and-Effect (Ishikawa / Fishbone) Diagram\nTo avoid premature conclusions, cross-functional teams brainstorm through the **6M framework**:\n1. **Machine**: Fixture wear, hydraulic pressure fluctuation, spindle runout, sensor calibration drift.\n2. **Method**: Outdated SOP, ambiguous visual aid, incorrect tightening sequence, unvalidated cycle time.\n3. **Material**: Tensile strength variance between resin lots, alloy hardness non-conformance, packaging degradation.\n4. **Man (People)**: Inadequate training certification, ergonomics fatigue, lack of shift handover documentation.\n5. **Measurement**: Inadequate gage resolution, operator parallax error on micrometer, dirty optical sensor lens.\n6. **Milieu (Environment)**: Ambient humidity causing polymer hygroscopic swelling, shopfloor temperature swings affecting CMM expansion.\n\n### 3. The 5 Whys Discipline & The Escape Point\nThe 5 Whys must generate two parallel interrogation trees:\n1. **Occurrence Root Cause Tree**: Why was the defect created physically on the manufacturing line?\n2. **Escape Root Cause Tree**: Why did the inspection, testing, or containment barrier fail to catch it?\n\n> **Audit Trap**: Stopping at 'Operator failed to follow visual inspection SOP' is an immediate audit finding. In modern quality systems, human error is an *outcome*, never a root cause. The true root cause must answer why the process allowed an un-mistake-proofed condition to rely on fallible human visual inspection."
+                                    },
+                                    {
+                                            "id": "qe-m2-r2",
+                                            "title": "AIAG-VDA Failure Mode and Effects Analysis (FMEA): Action Priority (AP) vs RPN",
+                                            "duration": "14 min",
+                                            "content": "> **Harmonized Quality Standard**: **AIAG-VDA FMEA Handbook 1st Edition (2019)**. Replaced the legacy RPN (Risk Priority Number = S × O × D) system with the standardized **Action Priority (AP: High, Medium, Low)** logic across global automotive and aerospace supply chains.\n\n# Modern AIAG-VDA FMEA Architecture\n\n### 1. The 7-Step FMEA Approach\nThe harmonized AIAG-VDA methodology follows a strict seven-step sequence:\n1. **Planning and Preparation**: Project definition, boundary diagrams, and project plan.\n2. **Structure Analysis**: Visualizing the system tree (System $\\rightarrow$ Subsystem $\\rightarrow$ Component Element).\n3. **Function Analysis**: Function allocations, requirements, and engineering characteristics.\n4. **Failure Analysis**: Failure chain modeling (Failure Effect [FE] $\\rightarrow$ Failure Mode [FM] $\\rightarrow$ Failure Cause [FC]).\n5. **Risk Analysis**: Assigning Severity (S), Occurrence (O), and Detection (D) ratings from 1 to 10.\n6. **Optimization**: Identifying preventive and detection actions to reduce O and D ratings; reassigning Action Priority.\n7. **Results Documentation**: Formal technical report and management sign-off.\n\n### 2. Action Priority (AP) Logic vs Legacy RPN\nUnder the old system, multiplying $S \\times O \\times D$ produced mathematically flawed thresholds (e.g., $S=10, O=2, D=2 \\rightarrow RPN=40$ was often ignored, despite posing a catastrophic safety hazard).\n\nUnder **AIAG-VDA Action Priority (AP)**:\n- **Severity (S)** is prioritized first. If $S = 9-10$ (Safety or regulatory non-compliance), the Action Priority is **High (H)** unless Occurrence is extremely low and Detection is virtually 100% automated.\n- **Occurrence (O)** evaluates the effectiveness of current *prevention* controls.\n- **Detection (D)** evaluates the ability of current *detection* controls to intercept the failure mode before shipment.\n- **AP Classifications**:\n  - **High (H)**: Highest priority for review and action. Engineering **must** either identify corrective design/process changes or obtain written customer executive concession.\n  - **Medium (M)**: Medium priority. Engineering should identify action to reduce Occurrence or Detection.\n  - **Low (L)**: Low priority. Actions are optional or best practice."
+                                    }
+                            ],
+                            "dialogues": [
+                                    {
+                                            "id": "qe-m2-d1",
+                                            "title": "Quality Assurance Engineer vs US OEM Customer Quality Director: Defending 8D Root Cause",
+                                            "participants": [
+                                                    {
+                                                            "role": "Senior QA Engineer (Saltillo, Mexico)",
+                                                            "name": "Ing. Sofía Morales"
+                                                    },
+                                                    {
+                                                            "role": "Director of Supplier Quality (Ohio, USA)",
+                                                            "name": "Bradley Cooper"
+                                                    }
+                                            ],
+                                            "scenario": "A Tier 1 transmission assembly plant in Ohio received a shipment of aluminum cast oil pans with microscopic micro-porosity in the gasket sealing channel, resulting in hydrostatic oil leaks on the dyno bench.",
+                                            "lines": [
+                                                    {
+                                                            "speaker": "Bradley Cooper",
+                                                            "text": "Sofía, we reviewed your interim D3 containment report for the transmission oil pan leaks. 100% sort is in place, but your D4 root cause draft claims 'Die casting injection pressure dropped intermittently.' That is a physical symptom, not a systemic root cause. If I present this to our VP, he will reject the 8D immediately."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Sofía Morales",
+                                                            "text": "Understood, Bradley. That was only step 1 of our 5 Whys. We completed the full 6M Ishikawa and fishbone analysis this morning with casting metallurgy and maintenance engineering. Let me walk you through both the occurrence root cause and the escape root cause."
+                                                    },
+                                                    {
+                                                            "speaker": "Bradley Cooper",
+                                                            "text": "Please go ahead. Why did the hydraulic injection pressure drop on Die Casting Machine #3?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Sofía Morales",
+                                                            "text": "Why 1: The hydraulic accumulator pressure dropped from 140 bar to 95 bar during the second intensification phase. Why 2: Nitrogen pre-charge gas inside the bladder had leaked past the valve stem seal. Why 3: The elastomer O-ring experienced thermal degradation. Why 4: The scheduled preventive maintenance interval for bladder seal replacement was set at 50,000 shots based on legacy ambient specs, but operating near the hot casting mold degraded the polymer at 32,000 shots."
+                                                    },
+                                                    {
+                                                            "speaker": "Bradley Cooper",
+                                                            "text": "Now that is an actionable engineering root cause: an invalid PM cycle under high-heat operational reality. Now what about your escape point? How did porous castings get past your leak tester?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Sofía Morales",
+                                                            "text": "That is our D4 Escape Root Cause: The differential pressure decay leak tester had its pressure decay threshold set to 0.8 mbar instead of 0.3 mbar. Why? When the machine software was updated three weeks ago, default engineering parameters overwrote the customized part-specific recipe because recipe locking had not been activated in the PLC."
+                                                    },
+                                                    {
+                                                            "speaker": "Bradley Cooper",
+                                                            "text": "That explains why the defect escaped to our dyno bench. What are the permanent corrective actions under D5 and D6?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Sofía Morales",
+                                                            "text": "For Occurrence: We replaced the bladder seals with high-temperature fluoroelastomer (FKM) and revised PM frequency to every 25,000 shots in SAP PM. For Escape: We locked the PLC recipe behind biometric password protection and added a daily mastering protocol with a certified 0.3 mbar calibrated leak orifice. If mastering fails, the station locks out automatically."
+                                                    },
+                                                    {
+                                                            "speaker": "Bradley Cooper",
+                                                            "text": "Robust mistakeproofing. Upload the revised PFMEA with updated Action Priority ratings and the revised Control Plan, and I will sign off on D5."
+                                                    }
+                                            ]
+                                    }
+                            ],
+                            "lexicon": [
+                                    {
+                                            "term": "Escape Point",
+                                            "ipa": "/ɪˈskeɪp pɔɪnt/",
+                                            "definition": "The exact inspection, testing, or process verification station where a non-conformance should have been intercepted but escaped detection due to faulty calibration, human error, or inadequate sensor limits.",
+                                            "collocations": [
+                                                    "identify the escape point",
+                                                    "containment at the escape point",
+                                                    "audit the escape point"
+                                            ],
+                                            "auditTrap": "An 8D report is incomplete and will be rejected by Tier 1 OEMs if it only explains why the defect was made without identifying the escape point."
+                                    },
+                                    {
+                                            "term": "Action Priority (AP)",
+                                            "ipa": "/ˈæk.ʃən praɪˈɔːr.ə.t̬i/",
+                                            "definition": "The standardized risk classification (High, Medium, Low) established in AIAG-VDA FMEA to prioritize corrective engineering actions based on the logical interaction of Severity, Occurrence, and Detection.",
+                                            "collocations": [
+                                                    "high action priority",
+                                                    "reduce the AP level",
+                                                    "AP evaluation matrix"
+                                            ],
+                                            "auditTrap": "Do not calculate RPN (Risk Priority Number) for programs requiring the harmonized AIAG-VDA 2019 standard; AP logic is mandatory."
+                                    },
+                                    {
+                                            "term": "Poka-Yoke (Mistake-Proofing)",
+                                            "ipa": "/ˈpoʊ.kə ˈjoʊk/",
+                                            "definition": "A physical, electrical, or software mechanism designed into a manufacturing process to make it impossible for an operator to assemble a part incorrectly or allow a non-conforming part to advance.",
+                                            "collocations": [
+                                                    "implement a poka-yoke",
+                                                    "fail-safe poka-yoke device",
+                                                    "sensor-based mistake-proofing"
+                                            ],
+                                            "auditTrap": "Visual inspection or retraining is NOT mistake-proofing. Poka-yoke requires a hard physical stop, guide pin, optical barcode interlock, or electrical interlock."
+                                    },
+                                    {
+                                            "term": "Ishikawa 6M Framework",
+                                            "ipa": "/ɪ.ʃiˈkɑː.wə sɪks ɛm/",
+                                            "definition": "A systematic root cause brainstorming taxonomy categorizing potential defect causes under Machine, Method, Material, Man, Measurement, and Milieu (Environment).",
+                                            "collocations": [
+                                                    "populate the 6M categories",
+                                                    "cause-and-effect fishbone",
+                                                    "6M brainstorm session"
+                                            ],
+                                            "auditTrap": "Avoid grouping all human-related causes under 'Man'. If the operator lacked clear instructions, the true 6M category is 'Method'."
+                                    },
+                                    {
+                                            "term": "Containment Action (D3)",
+                                            "ipa": "/kənˈteɪn.mənt ˈæk.ʃən/",
+                                            "definition": "Immediate provisional actions executed within 24 hours of defect discovery to isolate non-conforming inventory in transit, warehouse, and production to protect the customer from defect escapes.",
+                                            "collocations": [
+                                                    "put a certified containment in place",
+                                                    "firewall containment",
+                                                    "D3 quarantine boundary"
+                                            ],
+                                            "auditTrap": "Containment is never permanent; it must be monitored daily and removed only after permanent corrective actions (D6) prove 100% verified."
+                                    },
+                                    {
+                                            "term": "Process Failure Mode and Effects Analysis (PFMEA)",
+                                            "ipa": "/ˈprɑː.sɛs ˈfeɪl.jɚ moʊd ænd ɪˈfɛkts əˈnæl.ə.sɪs/",
+                                            "definition": "A living proactive engineering analytical document evaluating potential process failure modes, their severity on downstream customers, and prevention/detection controls.",
+                                            "collocations": [
+                                                    "update the PFMEA",
+                                                    "living quality document",
+                                                    "PFMEA line walk"
+                                            ],
+                                            "auditTrap": "Auditors check date stamps on PFMEAs. If a customer complaint occurred but the PFMEA was not updated to reflect the new failure cause, an audit finding will be issued."
+                                    }
+                            ],
+                            "socraticChallenges": [
+                                    {
+                                            "id": "qe-m2-sc1",
+                                            "title": "Defending Against 'Retraining' as a Corrective Action",
+                                            "prompt": "Your quality intern submits an 8D proposing 'Retrain operator on proper soldering iron angle' as the permanent corrective action for cold solder joints. As Lead Quality Engineer, how do you challenge this response and guide them toward a compliant automotive/aerospace solution?",
+                                            "idealResponse": "Explain that 'retraining' is an administrative control with high failure probability that does not resolve the physical root cause and is universally rejected in automotive/aerospace audits. Challenge the intern to investigate why the soldering temperature or dwell time fluctuated, and guide them to implement an engineering control such as a programmable soldering robot with automated thermal feedback and cycle interlocks (Poka-Yoke)."
+                                    },
+                                    {
+                                            "id": "qe-m2-sc2",
+                                            "title": "Overcoming AIAG-VDA High Action Priority Finding",
+                                            "prompt": "During an FMEA review of an airbag squib connector assembly, the team identifies a failure mode with Severity = 10 (Failure to deploy), Occurrence = 3, and Detection = 5. The resulting Action Priority is High (H). The engineering manager wants to downgrade it to Low because 'Occurrence is only 3'. How do you respond?",
+                                            "idealResponse": "Clarify that under the AIAG-VDA harmonized logic, any failure mode with Severity 9 or 10 involving regulatory non-compliance or vehicle safety defaults to High Action Priority when Detection is 5 or worse, regardless of moderate Occurrence. Emphasize that engineering is legally obligated to either redesign the connector geometry to prevent mis-insertion physically or implement 100% automated optical/electrical interlocks to drive Detection down to 1."
+                                    }
+                            ],
+                            "quiz": [
+                                    {
+                                            "question": "In the 8D methodology, what is the crucial purpose of 'Escape Point Analysis'?",
+                                            "options": [
+                                                    "To assign disciplinary penalties to the inspector who approved the defective lot.",
+                                                    "To calculate how many emergency exit doors are required in the manufacturing cell.",
+                                                    "To identify why existing testing and inspection barriers failed to detect the defect before shipment.",
+                                                    "To justify why the customer should pay for sorting costs."
+                                            ],
+                                            "correctIndex": 2,
+                                            "explanation": "Escape Point Analysis determines the exact weakness in the inspection, testing, or quality firewall that permitted the defect to leave the manufacturing station and reach the customer."
+                                    },
+                                    {
+                                            "question": "Why was the traditional RPN (Risk Priority Number) calculation replaced by Action Priority (AP) in the AIAG-VDA 2019 FMEA standard?",
+                                            "options": [
+                                                    "Because RPN calculations required advanced calculus that shopfloor operators could not compute.",
+                                                    "Because RPN products could conceal critical high-severity safety risks behind low occurrence or detection numbers.",
+                                                    "Because automotive OEMs wanted to eliminate all documentation requirements.",
+                                                    "Because German VDA standards prohibited the use of numerical scores."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Multiplying S x O x D gave equal weight to all factors, allowing catastrophic safety hazards (Severity 10) to appear low priority if Occurrence happened to be 2. AP ensures high-severity risks receive top engineering priority."
+                                    },
+                                    {
+                                            "question": "Which of the following constitutes an authentic engineering 'Poka-Yoke' (mistake-proofing) solution?",
+                                            "options": [
+                                                    "Displaying a brightly colored laminated visual alert above the operator workstation.",
+                                                    "Adding an asymmetrical alignment tab to a stamping connector so it physically cannot be inserted backwards.",
+                                                    "Requiring the shift supervisor to sign a secondary inspection travel sheet.",
+                                                    "Conducting monthly refresher training for all assembly operators."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "True Poka-Yoke relies on physical, mechanical, or automated electrical constraints (like asymmetric keying or interlocks) that make improper assembly physically impossible, independent of human vigilance."
+                                    },
+                                    {
+                                            "question": "In an Ishikawa diagram, an incorrect tightening torque caused by an uncalibrated pneumatic torque wrench should be classified under which 6M category?",
+                                            "options": [
+                                                    "Man (Human error)",
+                                                    "Measurement (or Machine/Tooling calibration)",
+                                                    "Milieu (Atmospheric pressure)",
+                                                    "Material (Bolt tensile strength)"
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Tooling and instrumentation calibration deficiencies fall under Measurement or Machine/Tooling, not 'Man'. The operator was using the tool as provided."
+                                    }
+                            ]
+                    },
+                    {
+                            "id": "qe-m3",
+                            "title": "ISO 9001:2015 & IATF QMS Auditing Protocols (Surveillance, Non-Conformances & CAPA)",
+                            "titleES": "Protocolos de Auditoría de SGC ISO 9001:2015 e IATF (Vigilancia, No Conformidades y CAPA)",
+                            "icon": "fa-solid fa-clipboard-check",
+                            "isGoldModel": true,
+                            "readings": [
+                                    {
+                                            "id": "qe-m3-r1",
+                                            "title": "ISO 9001:2015 High-Level Structure (Annex SL) & Risk-Based Quality Management",
+                                            "duration": "15 min",
+                                            "content": "> **Global QMS Standard**: **ISO 9001:2015 Quality Management Systems — Requirements** and **ISO 19011:2018 Guidelines for Auditing Management Systems**. Universal foundation for industrial manufacturing, medical, aerospace, and technical supplier qualification.\n\n# ISO 9001:2015 Architecture & Risk-Based Management\n\n### 1. The Annex SL High-Level Structure (HLS)\nModern ISO management standards (ISO 9001 for Quality, ISO 14001 for Environment, ISO 45001 for Occupational Health) share a unified 10-clause architecture known as **Annex SL**:\n- **Clauses 1–3**: Scope, Normative References, Terms and Definitions.\n- **Clause 4: Context of the Organization**: Identifying internal/external issues and interested parties' expectations.\n- **Clause 5: Leadership**: Top management accountability, Quality Policy, organizational roles and authorities.\n- **Clause 6: Planning**: Actions to address risks and opportunities (Risk-Based Thinking), Quality Objectives.\n- **Clause 7: Support**: Resources, competence, awareness, communication, and **Documented Information** (Clause 7.5).\n- **Clause 8: Operation**: Operational planning, customer requirements review, design and development controls, supplier control (Clause 8.4), and production control (Clause 8.5).\n- **Clause 9: Performance Evaluation**: Monitoring, measurement, analysis, internal audits (Clause 9.2), and **Management Review** (Clause 9.3).\n- **Clause 10: Improvement**: Non-conformity and corrective action (Clause 10.2), continual improvement.\n\n### 2. Risk-Based Thinking: Eliminating 'Preventive Action'\nA historic evolution in ISO 9001:2015 was the elimination of the separate 'Preventive Action' clause. Instead, the entire standard is built upon **Risk-Based Thinking (Clause 6.1)**:\n- Quality managers must demonstrate proactive risk identification (using Failure Mode matrices, SWOT analysis, or formal Risk Registers) before designing processes.\n- Risk management is embedded into change management (Clause 6.3): any modification to tooling, software, raw materials, or layout requires documented risk assessment prior to execution.\n\n> **Common Audit Trap**: Claiming 'We do not have risks because we are certified' will trigger a severe Major Non-Conformance against Clause 6.1. Auditors expect to see a live Risk Register tracking supply chain bottlenecks, operator turnover, equipment obsolescence, and mitigation actions."
+                                    },
+                                    {
+                                            "id": "qe-m3-r2",
+                                            "title": "Lead Auditor Protocols: Objective Evidence, Major Non-Conformance, Minor Non-Conformance & OFI",
+                                            "duration": "14 min",
+                                            "content": "> **Auditing Standard**: **ISO 19011:2018** and **IATF Rules for Achieving and Maintaining IATF Recognition 5th Edition**.\n\n# Audit Grading & Non-Conformance Resolution\n\n### 1. The Hierarchy of Audit Findings\nWhen external certification bodies (TÜV, BSI, DNV, Lloyd's Register) or Tier 1 customer auditors inspect a manufacturing facility, findings are classified into three strict tiers:\n\n| Finding Category | Definition & Criteria | Consequence / Resolution Timeline |\n| :--- | :--- | :--- |\n| **Major Non-Conformance** | Absence or total breakdown of a system required by the standard, or a condition that results in non-conforming product reaching the customer or severe regulatory risk. | **Immediate threat to certification**. Re-audit required within 90 days. Formal 8D response and containment required within 48–72 hours. |\n| **Minor Non-Conformance** | An isolated lapse in discipline or single procedural failure that does not indicate a systemic collapse of the QMS (e.g., one calibration sticker missing on a secondary caliper). | Does not withhold certification. Formal CAPA plan required within 30 to 60 days, verified at next surveillance audit. |\n| **Opportunity for Improvement (OFI)** | A process condition that complies with the standard's minimum requirements but represents potential vulnerability or suboptimal practice. | No mandatory formal CAPA required, but evaluated during subsequent audits to see if the plant reviewed the feedback. |\n\n### 2. The Anatomy of a Bulletproof Non-Conformance Statement\nProfessional lead auditors formulate findings using a non-negotiable three-part statement:\n1. **The Requirement**: Citation of the exact clause from the standard or internal SOP (e.g., *'According to ISO 9001:2015 Clause 7.1.5.1, monitoring equipment must be calibrated at specified intervals'*).\n2. **The Deficiency**: The exact failure observed (e.g., *'The micrometer on Line 2 Station 4 was found in active production with calibration expired on August 15'*).\n3. **The Objective Evidence**: Unambiguous data trail (e.g., *'Serial number MIT-4092, calibration tag #A8812, verified by auditor at 10:45 AM during stamping operation'*)."
+                                    }
+                            ],
+                            "dialogues": [
+                                    {
+                                            "id": "qe-m3-d1",
+                                            "title": "ISO/IATF Lead Auditor vs QA Director: Clause 8.5 Traceability & Non-Conformance Defense",
+                                            "participants": [
+                                                    {
+                                                            "role": "Third-Party Lead Auditor (TÜV SÜD)",
+                                                            "name": "Arthur Pendelton"
+                                                    },
+                                                    {
+                                                            "role": "Plant Quality Assurance Director (Reynosa, Mexico)",
+                                                            "name": "Ing. Laura Treviño"
+                                                    }
+                                            ],
+                                            "scenario": "During an annual IATF 16949 / ISO 9001 surveillance audit, the lead auditor is sampling laser-welded structural brackets on the shop floor and identifies a discrepancy in material traceability tags.",
+                                            "lines": [
+                                                    {
+                                                            "speaker": "Arthur Pendelton",
+                                                            "text": "Laura, let's look at pallet #B-204 at Station 6. The traveler sheet specifies cold-rolled steel coil heat number #8841-A. However, when I scan the laser QR code etched directly onto the bracket, the database returns coil lot #9012-B. That indicates an absence of material traceability under Clause 8.5.2."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Laura Treviño",
+                                                            "text": "Thank you for pointing that out, Arthur. Let me pull up our Manufacturing Execution System (MES) batch transition log. Coil #8841-A ran out at 09:15 AM today. Coil #9012-B was loaded at 09:22 AM. The laser etcher received the automated MES handshake and updated the internal data string correctly."
+                                                    },
+                                                    {
+                                                            "speaker": "Arthur Pendelton",
+                                                            "text": "Then why did the printed physical traveler sheet on the tote still reference the depleted coil lot? The operator was actively running parts with conflicting documentation."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Laura Treviño",
+                                                            "text": "You are correct. The material handler loaded the new coil into the decoiler but failed to print the refreshed MES lot traveler sheet at the line terminal, violating our internal SOP-PRD-042."
+                                                    },
+                                                    {
+                                                            "speaker": "Arthur Pendelton",
+                                                            "text": "Under ISO 9001 Clause 8.5.2 and IATF Clause 8.5.2.1, this constitutes a breakdown of identification and traceability controls. Given that the direct part laser marking was digitally synchronized, I will classify this as a Minor Non-Conformance rather than a Major, provided you demonstrate immediate containment."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Laura Treviño",
+                                                            "text": "Understood. As immediate containment, we are placing a temporary hold on the 80 brackets processed during that coil transition. Quality control will scan 100% of the lot against the MES database to verify serial alignment before release."
+                                                    },
+                                                    {
+                                                            "speaker": "Arthur Pendelton",
+                                                            "text": "And your systemic corrective action?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Laura Treviño",
+                                                            "text": "We will modify the decoiler PLC logic. When a new coil barcode is scanned, the stamping press will not cycle until the operator prints and scans the newly generated traveler barcode, creating a fool-proof physical-digital interlock."
+                                                    },
+                                                    {
+                                                            "speaker": "Arthur Pendelton",
+                                                            "text": "A robust engineering solution. I will document this as Minor Non-Conformance #02 with a 60-day closure verification."
+                                                    }
+                                            ]
+                                    }
+                            ],
+                            "lexicon": [
+                                    {
+                                            "term": "Objective Evidence",
+                                            "ipa": "/əbˈdʒɛk.tɪv ˈɛv.ə.dəns/",
+                                            "definition": "Verifiable data, physical records, test results, or direct observational statements that substantiate the existence or verification of a quality requirement, free from opinion or conjecture.",
+                                            "collocations": [
+                                                    "provide objective evidence",
+                                                    "lack of objective evidence",
+                                                    "audit objective evidence"
+                                            ],
+                                            "auditTrap": "Saying 'we always do it this way' carries zero weight in an ISO audit without verifiable documented records or timestamped system logs."
+                                    },
+                                    {
+                                            "term": "Non-Conformance Report (NCR)",
+                                            "ipa": "/nɑːn kənˈfɔːr.məns rɪˈpɔːrt/",
+                                            "definition": "A formal documented record issued when a product, process, or management system requirement fails to satisfy specified criteria or regulatory clauses.",
+                                            "collocations": [
+                                                    "issue an NCR",
+                                                    "disposition an NCR",
+                                                    "close out the NCR"
+                                            ],
+                                            "auditTrap": "Failing to log internal NCRs to look good in audits is a red flag. Experienced auditors know zero internal NCRs indicates a hidden or suppressed reporting culture."
+                                    },
+                                    {
+                                            "term": "Corrective and Preventive Action (CAPA)",
+                                            "ipa": "/kəˈrɛk.tɪv ænd prɪˈvɛn.tɪv ˈæk.ʃən/",
+                                            "definition": "A structured organizational process to eliminate the root cause of an existing non-conformity (corrective) or potential vulnerability (preventive) to prevent recurrence.",
+                                            "collocations": [
+                                                    "initiate a CAPA",
+                                                    "verify CAPA effectiveness",
+                                                    "CAPA log review"
+                                            ],
+                                            "auditTrap": "A CAPA cannot be closed upon implementing the solution. It must remain open until an 'effectiveness check' (e.g., 60 days of zero defects) validates the fix."
+                                    },
+                                    {
+                                            "term": "Management Review (Clause 9.3)",
+                                            "ipa": "/ˈmæn.ədʒ.mənt rɪˈvjuː/",
+                                            "definition": "A mandatory periodic review by executive leadership evaluating the suitability, adequacy, effectiveness, and strategic alignment of the Quality Management System.",
+                                            "collocations": [
+                                                    "conduct annual management review",
+                                                    "management review inputs",
+                                                    "executive review meeting"
+                                            ],
+                                            "auditTrap": "Auditors require formal minutes, attendance lists showing top site leadership, and measurable action items with deadlines from Management Review meetings."
+                                    },
+                                    {
+                                            "term": "Surveillance Audit",
+                                            "ipa": "/sɚˈveɪ.ləns ˈɑː.dɪt/",
+                                            "definition": "A periodic on-site audit conducted by an accredited registrar (typically annually during a 3-year certification cycle) to verify ongoing QMS compliance.",
+                                            "collocations": [
+                                                    "pass the surveillance audit",
+                                                    "surveillance audit cycle",
+                                                    "external registrar audit"
+                                            ],
+                                            "auditTrap": "Surveillance audits sample random processes. Failing to maintain documentation between audits can lead to immediate certification suspension."
+                                    },
+                                    {
+                                            "term": "Risk-Based Thinking (Clause 6.1)",
+                                            "ipa": "/rɪsk beɪst ˈθɪŋ.kɪŋ/",
+                                            "definition": "A systematic approach across all organizational processes to identify, evaluate, and mitigate potential hazards before they materialize into defects or customer dissatisfaction.",
+                                            "collocations": [
+                                                    "embed risk-based thinking",
+                                                    "risk register updates",
+                                                    "proactive risk assessment"
+                                            ],
+                                            "auditTrap": "Do not confuse business risk (financial/market) with QMS product risk. ISO 9001 focuses on risks affecting conformity of products and services."
+                                    }
+                            ],
+                            "socraticChallenges": [
+                                    {
+                                            "id": "qe-m3-sc1",
+                                            "title": "Defending an Incomplete Training Record During an ISO Audit",
+                                            "prompt": "During an audit of Clause 7.2 (Competence), an auditor discovers that a newly hired CNC operator has been running production for two weeks without an authorized signature on their training matrix. How do you respond to prevent this finding from escalating into a Major Non-Conformance?",
+                                            "idealResponse": "Acknowledge the immediate documentation lapse transparently. Present corroborating objective evidence of actual competence: show the automated HR digital onboarding module completion timestamp, the completed quiz with 100% score, and the 100% first-pass yield logs on the operator's machine. Accept a Minor Non-Conformance for the missing physical sign-off while demonstrating that product quality and operator safety were never compromised."
+                                    },
+                                    {
+                                            "id": "qe-m3-sc2",
+                                            "title": "Evaluating CAPA Effectiveness Verification Criteria",
+                                            "prompt": "A CAPA was opened after a customer received cracked bracket welds. The engineering team installed a robotic torch cleaner and wants to close the CAPA today. What objective evidence must you demand as QA Director before authorizing closure?",
+                                            "idealResponse": "Refuse immediate closure. Explain that implementing a corrective action does not prove effectiveness. Require a mandatory validation monitoring period (e.g., 60 days or 25,000 continuous weld cycles) demonstrating zero cracked welds on destructive macro-etch tests and zero customer warranty claims, supported by updated PFMEA and Control Plan documentation."
+                                    }
+                            ],
+                            "quiz": [
+                                    {
+                                            "question": "Under ISO 9001:2015, what happened to the traditional standalone requirement for 'Preventive Action'?",
+                                            "options": [
+                                                    "It was completely eliminated because prevention is no longer considered necessary.",
+                                                    "It was subsumed into the holistic concept of 'Risk-Based Thinking' embedded throughout the entire standard (Clause 6.1).",
+                                                    "It was replaced by mandatory Six Sigma Black Belt certification for all plant managers.",
+                                                    "It was moved into ISO 14001 environmental safety requirements."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "ISO 9001:2015 eliminated the separate 'preventive action' clause because the entire standard was rewritten around proactive 'Risk-Based Thinking', requiring organizations to anticipate risks across all processes."
+                                    },
+                                    {
+                                            "question": "What differentiates a 'Major Non-Conformance' from a 'Minor Non-Conformance' during an ISO certification audit?",
+                                            "options": [
+                                                    "Major non-conformances involve monetary fines, whereas minor ones do not.",
+                                                    "A Major Non-Conformance represents the total absence or systemic breakdown of a required clause, directly threatening product quality or certification.",
+                                                    "A Minor Non-Conformance can only be issued against document numbering errors.",
+                                                    "Major non-conformances can only be issued by government labor inspectors."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "A Major Non-Conformance indicates a systemic failure of the QMS or a severe condition jeopardizing product integrity, putting certification at risk until verified containment and correction occur."
+                                    },
+                                    {
+                                            "question": "What three non-negotiable elements must be present in every professional audit non-conformance statement?",
+                                            "options": [
+                                                    "The operator's name, the machine serial number, and the financial cost of scrap.",
+                                                    "The specific requirement/clause, the observed deficiency, and the objective evidence.",
+                                                    "The plant manager's signature, the supplier part number, and the shipping date.",
+                                                    "The customer's email address, the root cause, and the supplier invoice."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Under ISO 19011 auditing principles, a finding must state: 1) The exact requirement (standard or procedure), 2) The exact non-conforming condition, and 3) The concrete objective evidence observed."
+                                    },
+                                    {
+                                            "question": "When is it technically permissible to formally close a Corrective and Preventive Action (CAPA)?",
+                                            "options": [
+                                                    "Immediately upon issuing the purchase order for replacement tooling.",
+                                                    "As soon as the engineering change notice (ECN) is signed off by the maintenance supervisor.",
+                                                    "Only after a defined evaluation period provides objective evidence that the corrective action successfully eliminated recurrence.",
+                                                    "Within exactly 24 hours of receiving the customer complaint."
+                                            ],
+                                            "correctIndex": 2,
+                                            "explanation": "A CAPA cannot be legitimately closed until an 'effectiveness verification' confirms that over an extended operational window, the root cause has been eradicated and no defect recurrence has occurred."
+                                    }
+                            ]
+                    },
+                    {
+                            "id": "qe-m4",
+                            "title": "OSHA 1910, Control of Hazardous Energy (LOTO) & Machine Guarding",
+                            "titleES": "OSHA 1910, Control de Energía Peligrosa (LOTO) y Guardas de Maquinaria",
+                            "icon": "fa-solid fa-lock",
+                            "isGoldModel": true,
+                            "readings": [
+                                    {
+                                            "id": "qe-m4-r1",
+                                            "title": "OSHA 29 CFR 1910.147 Lockout/Tagout (LOTO): The 6-Step De-energization Standard",
+                                            "duration": "15 min",
+                                            "content": "> **Industrial Safety Standard**: **OSHA (Occupational Safety and Health Administration) 29 CFR 1910.147** and **NOM-004-STPS (Mexico)**. Mandatory life-critical standard across manufacturing plants globally. Non-compliance results in severe criminal liabilities, immediate plant shutdowns, and catastrophic workplace fatalities.\n\n# OSHA 29 CFR 1910.147 & The Zero Energy State\n\n### 1. The Core Philosophy of LOTO\nLockout/Tagout (LOTO) establishes minimum performance requirements to prevent unexpected energization or startup of machinery that could cause severe injury or death during servicing or maintenance.\n- **The Golden Rule**: One Person, One Lock, One Key. No employee may ever apply a lock on behalf of another or use a master key without an emergency corporate protocol.\n- **Types of Hazardous Energy**: Electrical, mechanical, hydraulic, pneumatic, chemical, thermal, and gravitational potential energy.\n\n### 2. The Standard 6-Step De-Energization Sequence\nEvery authorized employee servicing machinery must execute the non-negotiable six steps:\n1. **Preparation for Shutdown**: Notify all affected employees, identify energy sources, magnitudes, and hazards.\n2. **Machine Shutdown**: Utilize normal operating stop controls (push button, toggle switch) to stop the machine.\n3. **Machine Isolation**: Physically disconnect the machine from its energy sources (open electrical disconnect breaker, close pneumatic ball valve, drop hydraulic lock pin). Never use control circuitry (e.g., E-stop or interlock switch) as an energy isolation device!\n4. **LOTO Device Application**: Apply authorized red padlocks and lockout hasps to isolation devices with individualized tags stating employee name, department, and contact info.\n5. **Residual Energy Dissipation (Bleed/Block)**: Relieve stored pressure in pneumatic/hydraulic accumulators, discharge electrical capacitors, vent residual steam/chemicals, and insert physical mechanical safety blocks under vertical press rams to arrest gravitational drop.\n6. **Zero Energy Verification (The 'Try' Step)**: Verify zero energy state! First visually inspect pressure gages and voltmeters; then attempt to restart the machine using local startup controls (pushing the START button). Ensure the machine does not move. Return controls to OFF before starting work.\n\n> **Life-Critical Audit Trap**: An Emergency Stop button (E-Stop) or safety interlock gate is NOT an energy-isolating device under OSHA 1910.147. Operating personnel performing internal mechanical maintenance relying solely on an E-stop face immediate termination and severe regulatory penalties."
+                                    },
+                                    {
+                                            "id": "qe-m4-r2",
+                                            "title": "Machine Guarding & Functional Safety: ISO 13849-1 (PLr), Interlocks & Emergency Stops",
+                                            "duration": "14 min",
+                                            "content": "> **Machinery Safety Standard**: **ISO 13849-1 Safety of Machinery (Performance Levels PL a–e)**, **IEC 62061 (SIL 1–3)**, and **OSHA 29 CFR 1910.212**.\n\n# Machine Guarding & Functional Safety Engineering\n\n### 1. The Hierarchy of Machine Safeguarding\nWhenever hazardous machine components (nip points, rotating shafts, stamping dies, robotic arms) present amputation or crushing hazards, engineering safeguarding must follow:\n- **Fixed Guards**: Permanent physical barriers requiring tools to remove (sheet metal, polycarbonate panels). The gold standard for passive protection.\n- **Interlocked Movable Guards**: Doors or hinged barriers equipped with monitored safety interlock switches. Opening the guard disconnects safety circuit power, commanding an immediate safe stop.\n- **Presence-Sensing Devices (Optoelectronic)**: Safety light curtains and laser area scanners that detect entry into a hazard zone and break the safety circuit within milliseconds.\n\n### 2. Safety Integrity: Performance Level (PL) & Category Architecture\nModern functional safety does not rely on standard PLC software inputs. It requires dual-channel redundancy and cross-monitoring under **ISO 13849-1**:\n\n| Parameter | Meaning & Industrial Application |\n| :--- | :--- |\n| **Category 4 (Cat 4)** | A single fault inside the safety system (e.g., a shorted wire or welded relay contact) does not lead to the loss of safety function. The fault is detected at or before the next safety demand. |\n| **Performance Level e (PLe)** | Highest safety integrity rating ($Probability of Dangerous Failure per Hour < 10^{-7}$). Mandatory for high-speed mechanical power presses, robotic cells, and hydraulic shear blades. |\n| **Safety Interlock Switches** | RFID coded safety sensors or mechanical key-trapped switches that resist defeat or tampering by operators. |\n| **NFPA 70E Arc Flash Boundary** | The approach distance from energized electrical equipment within which a person could receive a second-degree burn ($1.2\\text{ cal/cm}^2$). Requires arc-rated PPE suits. |"
+                                    }
+                            ],
+                            "dialogues": [
+                                    {
+                                            "id": "qe-m4-d1",
+                                            "title": "EHS Manager vs Maintenance Supervisor: Immediate Stop-Work Authority on LOTO Breach",
+                                            "participants": [
+                                                    {
+                                                            "role": "Plant EHS Manager (Monterrey, Mexico)",
+                                                            "name": "Ing. Alejandro Cárdenas"
+                                                    },
+                                                    {
+                                                            "role": "Senior Maintenance Supervisor",
+                                                            "name": "Héctor Guzmán"
+                                                    }
+                                            ],
+                                            "scenario": "During an EHS gemba walk in the stamping department, the EHS Manager spots a maintenance technician with his upper body inside the bed of an 800-ton hydraulic press clearing a jammed metal blank.",
+                                            "lines": [
+                                                    {
+                                                            "speaker": "Ing. Alejandro Cárdenas",
+                                                            "text": "Stop work right now! Héctor, step away from that press console immediately! Technician inside the die bed, pull out of that machine right now!"
+                                                    },
+                                                    {
+                                                            "speaker": "Héctor Guzmán",
+                                                            "text": "Alejandro, relax! We just have a misfed blank jammed between the upper and lower die. The press is on E-stop and I have my hand on the reset switch. It will only take thirty seconds to pry it loose with a crowbar."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Alejandro Cárdenas",
+                                                            "text": "Héctor, as EHS Manager, I am exercising formal Stop-Work Authority. Look at that hydraulic press. The main electrical disconnect is closed, the hydraulic pump is pressurized, and there is no mechanical safety die block installed under the ram. An E-stop is a control circuit, NOT an energy isolation device!"
+                                                    },
+                                                    {
+                                                            "speaker": "Héctor Guzmán",
+                                                            "text": "The line has been down for twenty minutes, and production control is breathing down my neck about meeting shift quotas. Installing the die block and locking out the main breaker takes ten minutes."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Alejandro Cárdenas",
+                                                            "text": "I don't care if the line is down for twenty hours. If that proportional valve seals rupture or a hydraulic solenoid fails right now, that 15-ton ram will drop under gravitational weight and crush your technician instantly. Under OSHA 1910.147 and our plant safety rules, zero human body parts enter a die bed without verified zero energy."
+                                                    },
+                                                    {
+                                                            "speaker": "Héctor Guzmán",
+                                                            "text": "You're right, Alejandro. I let production pressure compromise protocol. That was an unacceptable shortcut."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Alejandro Cárdenas",
+                                                            "text": "Here is what we do: The technician steps out of the light curtain. You open the main electrical breaker, attach your personal red padlock and hasp. Bleed the hydraulic accumulator pressure down to zero bar, and swing the mechanical safety block into place with its interlock engaged. Then push the start button to verify zero motion."
+                                                    },
+                                                    {
+                                                            "speaker": "Héctor Guzmán",
+                                                            "text": "Understood. We are executing the full 6-step LOTO sequence right now. I will log the incident and conduct an immediate safety stand-down with the entire maintenance crew."
+                                                    }
+                                            ]
+                                    }
+                            ],
+                            "lexicon": [
+                                    {
+                                            "term": "Zero Energy State",
+                                            "ipa": "/ˈzɪr.oʊ ˈɛn.ɚ.dʒi steɪt/",
+                                            "definition": "The operational condition of machinery where all sources of electrical, mechanical, hydraulic, pneumatic, chemical, thermal, and gravitational energy have been completely isolated, dissipated, and blocked.",
+                                            "collocations": [
+                                                    "verify zero energy state",
+                                                    "achieve zero energy",
+                                                    "residual zero energy check"
+                                            ],
+                                            "auditTrap": "Turning off the power switch does NOT achieve zero energy. Trapped air in pneumatic cylinders or raised mechanical weights must be physically dissipated or mechanically blocked."
+                                    },
+                                    {
+                                            "term": "Lockout/Tagout (LOTO)",
+                                            "ipa": "/ˈlɑːk.aʊt ˈtæɡ.aʊt/",
+                                            "definition": "A formal OSHA safety procedure requiring physical locks and identification tags placed on energy-isolating devices to ensure equipment cannot be energized during maintenance.",
+                                            "collocations": [
+                                                    "apply LOTO protocol",
+                                                    "authorized LOTO employee",
+                                                    "LOTO isolation point"
+                                            ],
+                                            "auditTrap": "Never share locks or keys. 'One lock, one person, one key' is an absolute universal safety mandate across all global manufacturing facilities."
+                                    },
+                                    {
+                                            "term": "Stop-Work Authority (SWA)",
+                                            "ipa": "/stɑːp wɝːk əˈθɔːr.ə.t̬i/",
+                                            "definition": "The organizational policy and ethical power empowering every employee, regardless of rank or seniority, to immediately stop any operation perceived to be unsafe or non-compliant.",
+                                            "collocations": [
+                                                    "exercise stop-work authority",
+                                                    "invoke SWA",
+                                                    "support stop-work culture"
+                                            ],
+                                            "auditTrap": "Retaliating against or reprimanding an employee for exercising Stop-Work Authority in good faith is a severe violation of international labor and EHS standards."
+                                    },
+                                    {
+                                            "term": "Presence-Sensing Device",
+                                            "ipa": "/ˈprɛz.əns ˈsɛn.sɪŋ dɪˈvaɪs/",
+                                            "definition": "An optoelectronic safeguarding device (such as a safety light curtain or laser scanner) that creates a sensing field to command an immediate machine stop when an object or person enters.",
+                                            "collocations": [
+                                                    "safety light curtain",
+                                                    "laser area scanner",
+                                                    "minimum safety distance"
+                                            ],
+                                            "auditTrap": "Light curtains must be installed at a calculated safety distance (ISO 13855) so the machine achieves complete stop before a human hand can reach the hazard point."
+                                    },
+                                    {
+                                            "term": "Category 4 / Performance Level e (PLe)",
+                                            "ipa": "/ˈkæt̬.ə.ɡɔːr.i fɔːr / pɚˈfɔːr.məns ˈlɛv.əl iː/",
+                                            "definition": "The highest safety architecture rating under ISO 13849-1, requiring dual redundant channels and automatic fault cross-monitoring so that a single component failure cannot lead to loss of the safety function.",
+                                            "collocations": [
+                                                    "Cat 4 safety circuit",
+                                                    "achieve PLe rating",
+                                                    "safety relay cross-monitoring"
+                                            ],
+                                            "auditTrap": "Standard commercial PLCs cannot be used for emergency stops or light curtain logic; they lack redundant processors and fail-safe watchdog circuits."
+                                    },
+                                    {
+                                            "term": "Arc Flash Boundary",
+                                            "ipa": "/ɑːrk flæʃ ˈbaʊn.dɚ.i/",
+                                            "definition": "The designated approach distance from energized electrical conductors within which an unprotected person would suffer second-degree burns if an electrical arc flash occurred (NFPA 70E).",
+                                            "collocations": [
+                                                    "arc-rated PPE",
+                                                    "arc flash hazard analysis",
+                                                    "incident energy level"
+                                            ],
+                                            "auditTrap": "Opening an energized 480V distribution panel without verifying arc flash boundary calculations and wearing appropriate arc-rated face shields violates OSHA NFPA 70E."
+                                    }
+                            ],
+                            "socraticChallenges": [
+                                    {
+                                            "id": "qe-m4-sc1",
+                                            "title": "Challenging E-Stop as a Maintenance Isolation Device",
+                                            "prompt": "A line technician claims that pressing the red Mushroom E-Stop button is sufficient to change a saw blade because 'it cuts the circuit immediately and saves 15 minutes of downtime'. How do you refute this argument using engineering and OSHA standards?",
+                                            "idealResponse": "Explain that an E-stop button is a control circuit device, not an energy-isolating device under OSHA 29 CFR 1910.147. Point out that a software glitch, welded internal contact, or accidental reset could command the motor to run unexpectedly. Reiterate that machine isolation requires physically opening the main electrical disconnect, locking it with a personal padlock, and verifying zero energy before touching the saw blade."
+                                    },
+                                    {
+                                            "id": "qe-m4-sc2",
+                                            "title": "Calculating Safety Light Curtain Distance (ISO 13855)",
+                                            "prompt": "Engineering installed a safety light curtain 200 mm away from a fast-acting hydraulic shearing blade. The blade takes 250 milliseconds to come to a complete mechanical stop after sensor break. Is this installation compliant? How do you assess it?",
+                                            "idealResponse": "Assess using the ISO 13855 / OSHA formula: $S = (K \\times T) + C$, where human hand approach speed $K = 1600\\text{ mm/s}$ (or $2000\\text{ mm/s}$) and stopping time $T = 0.25\\text{ s}$. The stopping travel distance alone is $1600 \\times 0.25 = 400\\text{ mm}$, plus depth penetration constant $C$. Since the curtain is only 200 mm away, an operator reaching into the hazard could make contact with the blade 200 mm before it stops. The installation is non-compliant and presents imminent amputation hazard; the curtain must be relocated back to at least 450-500 mm."
+                                    }
+                            ],
+                            "quiz": [
+                                    {
+                                            "question": "Under OSHA 29 CFR 1910.147, why is an Emergency Stop button (E-Stop) NOT permitted as a lockout device?",
+                                            "options": [
+                                                    "Because E-Stops do not have bright enough warning labels.",
+                                                    "Because an E-Stop relies on control circuitry and PLC logic, which can fail or be accidentally reset, rather than physically isolating power.",
+                                                    "Because E-Stops can only be operated by licensed electricians.",
+                                                    "Because OSHA regulations only apply to companies with more than 5,000 employees."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "OSHA specifically defines control circuit devices (pushbuttons, selector switches, E-stops, interlocks) as non-energy-isolating devices because internal component failures can cause unexpected machine restarts."
+                                    },
+                                    {
+                                            "question": "What is the non-negotiable final step of the OSHA 6-step LOTO de-energization procedure prior to starting maintenance work?",
+                                            "options": [
+                                                    "Signing the overtime authorization sheet with the shift supervisor.",
+                                                    "Conducting zero energy verification (the 'Try' step) by attempting to restart the equipment using normal controls.",
+                                                    "Painting the machine disconnect box yellow.",
+                                                    "Emailing the customer quality manager that the line is offline."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Step 6 ('Verification of Isolation') requires the authorized employee to verify that electrical, mechanical, and stored energy are truly zero by testing with meters and attempting to start the machine using normal controls."
+                                    },
+                                    {
+                                            "question": "What is the core principle of 'Category 4' functional safety architecture under ISO 13849-1?",
+                                            "options": [
+                                                    "A single component failure will immediately halt the machine, but can never lead to a loss of the safety function.",
+                                                    "Safety devices must be inspected once every four years.",
+                                                    "It allows mechanical interlocks to be bypassed during production speed runs.",
+                                                    "It requires four separate locks on every electrical cabinet."
+                                            ],
+                                            "correctIndex": 0,
+                                            "explanation": "Category 4 requires dual-channel redundancy and automatic diagnostic cross-monitoring such that an internal component fault (like a stuck relay contact) will not prevent the safety function from safely executing."
+                                    },
+                                    {
+                                            "question": "What is the purpose of mechanical safety blocks when servicing vertical hydraulic stamping presses?",
+                                            "options": [
+                                                    "To keep the floor clean from oil drips.",
+                                                    "To physically prevent the heavy upper ram from falling under gravitational force in case of hydraulic seal or pressure failure.",
+                                                    "To provide an ergonomic footrest for maintenance technicians.",
+                                                    "To absorb electrical noise from high-frequency inverter drives."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Gravitational potential energy cannot be locked out with an electrical breaker. Heavy press rams must be physically supported by rated mechanical safety blocks or die pins to prevent crushing injuries if hydraulic pressure drops."
+                                    }
+                            ]
+                    },
+                    {
+                            "id": "qe-m5",
+                            "title": "ISO 45001:2018 (Occupational Health) & Industrial Ergonomics (NIOSH)",
+                            "titleES": "ISO 45001:2018 (Salud Ocupacional) y Ergonomía Industrial (NIOSH)",
+                            "icon": "fa-solid fa-person-digging",
+                            "isGoldModel": true,
+                            "readings": [
+                                    {
+                                            "id": "qe-m5-r1",
+                                            "title": "ISO 45001:2018 Occupational Health and Safety Management Systems: Hierarchy of Controls",
+                                            "duration": "15 min",
+                                            "content": "> **Global OHS Standard**: **ISO 45001:2018 Occupational Health and Safety Management Systems — Requirements with Guidance for Use**. Replaced OHSAS 18001 as the worldwide benchmark for worker safety and hazard mitigation.\n\n# ISO 45001:2018 & The Hierarchy of Controls\n\n### 1. Hazard Identification and Risk Assessment (HIRA)\nUnder ISO 45001 Clause 6.1.2, organizations must systematically identify workplace hazards and assess risks across routine, non-routine, and emergency operations:\n- **Hazard**: A source or situation with a potential to cause injury, ill-health, or fatality.\n- **Risk**: The combination of the likelihood of occurrence of a work-related hazardous event and the severity of injury or ill-health.\n- **Worker Consultation & Participation (Clause 5.4)**: Non-negotiable requirement to involve non-managerial shopfloor workers in hazard identification, risk assessment, and incident investigations.\n\n### 2. The Universal Hierarchy of Controls (Clause 8.1.2)\nWhen eliminating hazards or reducing risks, engineering teams must apply controls in order of decreasing effectiveness:\n\n```\n1. ELIMINATION       [Most Effective: Physically remove the hazard completely]\n   │\n2. SUBSTITUTION      [Replace the hazard with a safer material or lower energy process]\n   │\n3. ENGINEERING       [Isolate people from the hazard (guards, ventilation, damping)]\n   │\n4. ADMINISTRATIVE    [Change the way people work (SOPs, job rotation, training)]\n   │\n5. PPE               [Least Effective: Protect the worker with personal protective gear]\n```\n\n> **Audit Trap**: Proposing earplugs or respirators as the primary permanent countermeasure for excessive noise or toxic fumes will result in an audit non-conformance. Personal Protective Equipment (PPE) is strictly the last line of defense; engineering must first evaluate source elimination, acoustic baffling, or localized LEV (Local Exhaust Ventilation)."
+                                    },
+                                    {
+                                            "id": "qe-m5-r2",
+                                            "title": "Industrial Ergonomics, NIOSH Lifting Equation & Hearing Conservation Programs (OSHA 85 dBA)",
+                                            "duration": "14 min",
+                                            "content": "> **Ergonomic & Occupational Health Standards**: **NIOSH (National Institute for Occupational Safety and Health) Lifting Equation**, **OSHA 29 CFR 1910.95 Occupational Noise Exposure**, and **ISO 11228 (Manual handling)**.\n\n# Industrial Ergonomics & Hearing Conservation\n\n### 1. The NIOSH Manual Lifting Equation\nMusculoskeletal Disorders (MSDs) from repetitive lifting and awkward postures account for over 35% of all industrial lost-time injuries. The NIOSH equation calculates the **Recommended Weight Limit (RWL)** for two-handed manual lifting:\n\n$$RWL = LC \\times HM \\times VM \\times DM \\times AM \\times FM \\times CM$$\n\nWhere:\n- **LC (Load Constant)**: $23\\text{ kg}$ ($51\\text{ lbs}$) under ideal conditions.\n- **HM (Horizontal Multiplier)**: Penalizes distance between load and worker's body ($HM = 25/H$).\n- **VM (Vertical Multiplier)**: Penalizes lifting from floor level or above shoulders.\n- **DM (Distance Multiplier)**: Vertical travel distance.\n- **AM (Asymmetric Multiplier)**: Penalizes twisting during the lift ($AM = 1 - 0.0032A$).\n- **FM (Frequency Multiplier)**: Number of lifts per minute over duration.\n- **CM (Coupling Multiplier)**: Quality of hand-to-object grip handles.\n- **Lifting Index (LI)**: $LI = \\frac{Actual\\ Weight}{RWL}$. If $LI > 1.0$, the task poses ergonomic risk; if $LI > 3.0$, the task poses acute injury hazard requiring immediate mechanical lift-assist tooling.\n\n### 2. OSHA Hearing Conservation (OSHA 1910.95)\nContinuous noise exposure damages delicate hair cells in the cochlea, causing irreversible sensorineural hearing loss:\n- **Action Level**: $85\\text{ dBA}$ 8-hour Time-Weighted Average (TWA). Triggers mandatory inclusion in Hearing Conservation Program (annual audiometric testing, baseline audiogram, and voluntary ear protection).\n- **Permissible Exposure Limit (PEL)**: $90\\text{ dBA}$ 8-hour TWA. Triggers mandatory engineering acoustic controls, mandatory dual hearing protection, and administrative exposure limits."
+                                    }
+                            ],
+                            "dialogues": [
+                                    {
+                                            "id": "qe-m5-d1",
+                                            "title": "Ergonomics Specialist & Plant Physician vs Production Manager: Repetitive Strain Redesign",
+                                            "participants": [
+                                                    {
+                                                            "role": "Ergonomics & Safety Specialist",
+                                                            "name": "Dra. Carmen Valenzuela"
+                                                    },
+                                                    {
+                                                            "role": "Assembly Production Manager (Chihuahua, Mexico)",
+                                                            "name": "Ing. Bernardo Serna"
+                                                    }
+                                            ],
+                                            "scenario": "Three assembly line operators in the harness insertion cell have reported acute carpal tunnel syndrome and tenosynovitis within the past quarter, generating a high medical claim rate.",
+                                            "lines": [
+                                                    {
+                                                            "speaker": "Dra. Carmen Valenzuela",
+                                                            "text": "Bernardo, our quarterly medical log shows three recordable cumulative trauma disorders on Line 2 Station 3—the heavy wire harness firewall grommet insertion. The operators are experiencing wrist numbness and tendinitis."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Bernardo Serna",
+                                                            "text": "Carmen, we already bought ergonomic wrist braces for everyone at that station, and we rotate operators every two hours. What else can we do without slowing down the takt time?"
+                                                    },
+                                                    {
+                                                            "speaker": "Dra. Carmen Valenzuela",
+                                                            "text": "Wrist braces and job rotation are administrative controls at the bottom of the ISO 45001 Hierarchy of Controls. They do not eliminate the root ergonomic stress. We conducted a Rapid Upper Limb Assessment (RULA) and a NIOSH push/pinch force analysis yesterday."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Bernardo Serna",
+                                                            "text": "What did the RULA score show?"
+                                                    },
+                                                    {
+                                                            "speaker": "Dra. Carmen Valenzuela",
+                                                            "text": "The RULA score was 7—indicating imminent risk of musculoskeletal injury requiring immediate change. The manual pinch force required to seat that rubber grommet is 78 Newtons with extreme wrist radial deviation, repeated 60 times an hour over an 8-hour shift."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Bernardo Serna",
+                                                            "text": "What is your engineering proposal?"
+                                                    },
+                                                    {
+                                                            "speaker": "Dra. Carmen Valenzuela",
+                                                            "text": "We need an engineering control: a counterbalanced pneumatic grommet-seating tool. The operator merely aligns the tool tip, and pneumatic pressure seats the seal with zero manual wrist force. That reduces manual pinch force from 78 N down to 4 N and drops the RULA score to 2."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Bernardo Serna",
+                                                            "text": "What is the tooling cost and implementation lead time?"
+                                                    },
+                                                    {
+                                                            "speaker": "Dra. Carmen Valenzuela",
+                                                            "text": "Tooling is $3,200 USD from an authorized automation supplier. Considering that one carpal tunnel surgery and lost-time compensation in Mexico averages over $9,000 USD—not to mention the human cost—the ROI is achieved in less than four months."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Bernardo Serna",
+                                                            "text": "Agreed. Let's issue the capital expenditure request today. I want that pneumatic tool installed on the line by next week."
+                                                    }
+                                            ]
+                                    }
+                            ],
+                            "lexicon": [
+                                    {
+                                            "term": "Hierarchy of Controls",
+                                            "ipa": "/ˈhaɪ.rɑːr.ki əv kənˈtroʊlz/",
+                                            "definition": "The standardized system prioritizing hazard mitigation strategies from most effective (Elimination, Substitution, Engineering) to least effective (Administrative, Personal Protective Equipment).",
+                                            "collocations": [
+                                                    "apply the hierarchy of controls",
+                                                    "engineering controls over PPE",
+                                                    "hazard reduction hierarchy"
+                                            ],
+                                            "auditTrap": "Suggesting PPE as the primary long-term solution for an industrial hazard is an automatic finding in ISO 45001 audits."
+                                    },
+                                    {
+                                            "term": "Musculoskeletal Disorder (MSD)",
+                                            "ipa": "/ˌmʌs.kjə.loʊˈskɛl.ə.t̬əl dɪsˈɔːr.dɚ/",
+                                            "definition": "Injuries and disorders affecting muscles, nerves, tendons, ligaments, and joints (e.g., carpal tunnel syndrome, lumbar disc herniation, rotator cuff tendinitis) caused by ergonomic strain.",
+                                            "collocations": [
+                                                    "prevent workplace MSDs",
+                                                    "ergonomic risk factor",
+                                                    "cumulative trauma disorder"
+                                            ],
+                                            "auditTrap": "MSDs rarely result from a single acute incident; they develop from chronic repetition, high contact stress, vibration, or awkward postures over months."
+                                    },
+                                    {
+                                            "term": "Recommended Weight Limit (RWL)",
+                                            "ipa": "/ˌrɛk.əˈmɛn.dɪd weɪt ˈlɪm.ɪt/",
+                                            "definition": "The calculated maximum weight in the NIOSH lifting equation that nearly all healthy workers can lift over a defined duration without increased risk of low back pain.",
+                                            "collocations": [
+                                                    "calculate the RWL",
+                                                    "exceed the recommended weight limit",
+                                                    "NIOSH lifting equation"
+                                            ],
+                                            "auditTrap": "The standard 23 kg Load Constant only applies under perfect conditions. Any torso twist or long reach drastically slashes the allowable RWL down to 10 kg or less."
+                                    },
+                                    {
+                                            "term": "Time-Weighted Average (TWA)",
+                                            "ipa": "/taɪm ˈweɪ.t̬ɪd ˈæv.ɚ.ɪdʒ/",
+                                            "definition": "The average exposure level to an environmental hazard (such as noise in dBA or airborne chemical vapors in ppm) calculated over a standard 8-hour workday and 40-hour workweek.",
+                                            "collocations": [
+                                                    "8-hour TWA",
+                                                    "exceed the TWA threshold",
+                                                    "dosimeter measurement"
+                                            ],
+                                            "auditTrap": "Short periods of silence do not cancel out extreme peak noise. High sound levels (e.g., 105 dBA stamping) rapidly exhaust the allowable 8-hour noise dose."
+                                    },
+                                    {
+                                            "term": "Rapid Upper Limb Assessment (RULA)",
+                                            "ipa": "/ˈræp.ɪd ˈʌp.ɚ lɪm əˈsɛs.mənt/",
+                                            "definition": "A standardized ergonomic survey method evaluating biomechanical and postural loading on the neck, trunk, and upper limbs during manual assembly tasks.",
+                                            "collocations": [
+                                                    "conduct a RULA survey",
+                                                    "high RULA score",
+                                                    "ergonomic posture assessment"
+                                            ],
+                                            "auditTrap": "A RULA score of 7 requires immediate engineering redesign. Do not claim the workstation is acceptable with a score of 7 simply because the operator is experienced."
+                                    },
+                                    {
+                                            "term": "Action Level vs Permissible Exposure Limit (PEL)",
+                                            "ipa": "/ˈæk.ʃən ˈlɛv.əl / pɚˈmɪs.ə.bəl ɪkˈspoʊ.ʒɚ ˈlɪm.ɪt/",
+                                            "definition": "The Action Level (e.g., 85 dBA noise) triggers mandatory health monitoring and baseline audiograms; the PEL (e.g., 90 dBA) represents the legal upper ceiling requiring mandatory controls.",
+                                            "collocations": [
+                                                    "exceed the action level",
+                                                    "statutory PEL limit",
+                                                    "hearing conservation enrollment"
+                                            ],
+                                            "auditTrap": "An employer cannot wait until the PEL (90 dBA) is exceeded to begin hearing conservation; mandatory medical baselines start at the 85 dBA Action Level."
+                                    }
+                            ],
+                            "socraticChallenges": [
+                                    {
+                                            "id": "qe-m5-sc1",
+                                            "title": "Defending Ergonomic Automation vs Personal Back Belts",
+                                            "prompt": "A warehouse logistics manager proposes issuing elastic 'back support belts' to material handlers unloading 25 kg boxes from shipping containers, arguing it solves ergonomic back strain at minimal cost. As EHS Lead, how do you challenge this using NIOSH and ISO 45001 standards?",
+                                            "idealResponse": "Clarify that NIOSH conducted extensive medical reviews and determined there is zero statistical evidence that back support belts prevent industrial back injuries. Explain that back belts are not recognized as PPE and create a false sense of security. Demand solutions aligned with the Hierarchy of Controls: implement an engineering control, such as a vacuum tube lifter or scissor-lift pallet positioner that eliminates manual spinal loading entirely."
+                                    },
+                                    {
+                                            "id": "qe-m5-sc2",
+                                            "title": "Noise Exposure Mitigation Strategy",
+                                            "prompt": "Sound level measurements near a high-speed metal punching press indicate an 8-hour TWA of 94 dBA. The production supervisor wants to hand out disposable foam earplugs and consider the issue closed. How do you respond from a regulatory and audit perspective?",
+                                            "idealResponse": "Point out that an 8-hour TWA of 94 dBA exceeds OSHA's Permissible Exposure Limit (PEL) of 90 dBA and the 85 dBA Action Level. Emphasize that under OSHA 1910.95 and ISO 45001, PPE (earplugs) cannot be used as the permanent sole solution when the PEL is breached. Demand an engineering acoustic study to install sound-damping acoustic curtains, vibration isolator pads under the press feet, and automated air nozzle silencers to drive ambient noise below 85 dBA."
+                                    }
+                            ],
+                            "quiz": [
+                                    {
+                                            "question": "In the ISO 45001 / OSHA Hierarchy of Controls, which category is considered the MOST effective at mitigating workplace hazards?",
+                                            "options": [
+                                                    "Personal Protective Equipment (PPE)",
+                                                    "Administrative Controls (Warning signs and training)",
+                                                    "Elimination (Physically removing the hazard)",
+                                                    "Engineering Controls (Guards and ventilation)"
+                                            ],
+                                            "correctIndex": 2,
+                                            "explanation": "Elimination physically removes the hazard from the workplace entirely, making injury physically impossible and representing the pinnacle of the Hierarchy of Controls."
+                                    },
+                                    {
+                                            "question": "What is the standard OSHA 8-hour Time-Weighted Average (TWA) 'Action Level' for occupational noise exposure that mandates an employer Hearing Conservation Program?",
+                                            "options": [
+                                                    "75 dBA",
+                                                    "85 dBA",
+                                                    "90 dBA",
+                                                    "105 dBA"
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "OSHA 29 CFR 1910.95 establishes the Action Level at 85 dBA 8-hour TWA, triggering mandatory annual audiometric baseline testing, training, and hearing protector availability."
+                                    },
+                                    {
+                                            "question": "Under the NIOSH Manual Lifting Equation, what is the ideal 'Load Constant' (LC) under perfect conditions?",
+                                            "options": [
+                                                    "15 kg (33 lbs)",
+                                                    "23 kg (51 lbs)",
+                                                    "35 kg (77 lbs)",
+                                                    "50 kg (110 lbs)"
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "The NIOSH Lifting Equation establishes a baseline Load Constant (LC) of 23 kg (51 lbs), which represents the maximum weight healthy individuals can safely lift under perfect geometry."
+                                    },
+                                    {
+                                            "question": "What is a primary requirement of Clause 5.4 in the ISO 45001:2018 standard?",
+                                            "options": [
+                                                    "Requiring all employees to pay for their own safety boots.",
+                                                    "Mandating the active consultation and participation of non-managerial workers in safety decisions and incident reviews.",
+                                                    "Automating 100% of manufacturing workstations within three years.",
+                                                    "Submitting weekly accident logs to the United Nations."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Clause 5.4 of ISO 45001 is a critical governance clause requiring documented mechanisms for non-managerial shopfloor workers to participate actively in OHS hazard identification, risk assessment, and policy formation."
+                                    }
+                            ]
+                    },
+                    {
+                            "id": "qe-m6",
+                            "title": "Environmental Management (ISO 14001:2015), Chemical Safety (GHS) & Hazardous Waste",
+                            "titleES": "Gestión Ambiental (ISO 14001:2015), Seguridad Química (GHS) y Residuos Peligrosos",
+                            "icon": "fa-solid fa-leaf",
+                            "isGoldModel": true,
+                            "readings": [
+                                    {
+                                            "id": "qe-m6-r1",
+                                            "title": "ISO 14001:2015 Environmental Aspects, Life Cycle Perspective & Spill Prevention",
+                                            "duration": "15 min",
+                                            "content": "> **Environmental Management Standard**: **ISO 14001:2015 Environmental Management Systems — Requirements with Guidance for Use** and **SEMARNAT / EPA RCRA (Resource Conservation and Recovery Act)**.\n\n# ISO 14001:2015 & Industrial Environmental Stewardship\n\n### 1. Environmental Aspects vs Environmental Impacts\nA frequent point of confusion during external ISO 14001 audits is the distinction between an **Aspect** and an **Impact** (Clause 6.1.2):\n- **Environmental Aspect (The Cause)**: An element of an organization’s activities, products, or services that interacts or can interact with the environment (e.g., *consumption of electrical energy, generation of spent degreasing solvent, wastewater discharge, volatile organic compound emissions*).\n- **Environmental Impact (The Effect)**: Any change to the environment, whether adverse or beneficial, wholly or partially resulting from an organization’s environmental aspects (e.g., *depletion of fossil fuels, groundwater contamination, photochemical smog formation, acidification of local soil*).\n- **Significant Environmental Aspects**: Aspects identified through risk-scoring (frequency, severity, legal compliance, community sensitivity) that require documented operational controls and measurable environmental objectives.\n\n### 2. The Life Cycle Perspective (Clause 8.1)\nISO 14001:2015 introduced the **Life Cycle Perspective**:\n- Environmental controls must extend beyond factory walls. Engineers must consider raw material extraction, packaging design, supplier logistics, customer end-of-life disposal, and recyclability.\n- **Secondary Containment Principle**: All liquid chemical storage tanks, drums, and tote containers (IBCs) must have secondary containment berms capable of holding at least **110% of the volume of the largest container** or 10% of the total aggregate volume, whichever is greater."
+                                    },
+                                    {
+                                            "id": "qe-m6-r2",
+                                            "title": "OSHA HazCom Standard, GHS Classification, Safety Data Sheets (SDS) & Hazardous Waste Manifests",
+                                            "duration": "14 min",
+                                            "content": "> **Chemical Safety Standard**: **UN Globally Harmonized System (GHS)**, **OSHA 29 CFR 1910.1200 (HazCom)**, **NOM-018-STPS-2015 (Mexico)**, and **Ley General del Equilibrio Ecológico y la Protección al Ambiente (LGEEPA)**.\n\n# Chemical Safety & Hazardous Waste Compliance\n\n### 1. The 16-Section GHS Safety Data Sheet (SDS)\nUnder the Globally Harmonized System (GHS), all chemical manufacturers and industrial employers must maintain a standardized 16-section Safety Data Sheet (SDS) accessible to all workers:\n- **Section 1**: Identification (chemical name, manufacturer, emergency 24/7 hotline).\n- **Section 2**: Hazard(s) Identification (GHS pictograms, signal word: *DANGER* vs *WARNING*, hazard statements, precautionary statements).\n- **Section 4**: First-Aid Measures.\n- **Section 7**: Handling and Storage (incompatible chemicals, e.g., oxidizers separated from flammable solvents).\n- **Section 8**: Exposure Controls / Personal Protection (OSHA PEL, ACGIH TLV).\n- **Section 9**: Physical and Chemical Properties (flash point, vapor pressure, pH).\n- **Section 13**: Disposal Considerations (hazardous waste classification).\n\n### 2. Hazardous Waste: Cradle-to-Grave Liability\nUnder North American environmental jurisprudence (EPA RCRA in the US, SEMARNAT in Mexico):\n- **Cradle-to-Grave Principle**: The company that generates hazardous waste remains legally and financially liable for that waste from the moment it is generated, during transit, through final treatment or incineration. Hiring a licensed third-party waste hauler does NOT transfer liability if the hauler illegally dumps the waste.\n- **Manifest Tracking**: Every shipment of hazardous waste (spent oils, etching acids, paint sludge) must be accompanied by an official Hazardous Waste Manifest signed by generator, transporter, and disposal facility."
+                                    }
+                            ],
+                            "dialogues": [
+                                    {
+                                            "id": "qe-m6-d1",
+                                            "title": "Environmental Compliance Specialist vs General Manager: Emergency Chemical Spill Response",
+                                            "participants": [
+                                                    {
+                                                            "role": "Environmental Compliance Engineer",
+                                                            "name": "Ing. Daniela Soto"
+                                                    },
+                                                    {
+                                                            "role": "Plant General Manager (Matamoros, Mexico)",
+                                                            "name": "David Vance"
+                                                    }
+                                            ],
+                                            "scenario": "A forklift backing up near the chemical staging dock punctured a 1,000-liter intermediate bulk container (IBC) of trichloroethylene-based industrial degreaser.",
+                                            "lines": [
+                                                    {
+                                                            "speaker": "Ing. Daniela Soto",
+                                                            "text": "David, I have activated our plant Environmental Emergency Response Team. At 14:15, a forklift punctured a 1,000-liter IBC of chlorinated solvent degreaser on the north loading dock. Approximately 400 liters spilled before the bladder was rotated."
+                                                    },
+                                                    {
+                                                            "speaker": "David Vance",
+                                                            "text": "Daniela, is there any fire danger? Did the liquid reach the municipal storm drain outside the dock?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Daniela Soto",
+                                                            "text": "There is no immediate fire hazard because trichloroethylene has no open flash point, but it has severe inhalation toxicity. The most critical news: our secondary containment berm captured 100% of the liquid within the sealed epoxy floor. Zero chemical entered the storm sewer or municipal drain."
+                                                    },
+                                                    {
+                                                            "speaker": "David Vance",
+                                                            "text": "Thank God for that secondary containment berm. What is our current vapor concentration inside the dock?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Daniela Soto",
+                                                            "text": "Photoionization detector readings show VOC vapor levels at 65 ppm near the spill. The OSHA PEL is 100 ppm, but ACGIH TLV is only 10 ppm. I ordered an immediate evacuation of the dock and shut down the HVAC air dampers to prevent vapor recirculation into the main assembly plant."
+                                                    },
+                                                    {
+                                                            "speaker": "David Vance",
+                                                            "text": "Good call. How are we disposing of the captured solvent?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Daniela Soto",
+                                                            "text": "Our HAZMAT technicians are suited in Level B vapor PPE with self-contained breathing apparatus. They are deploying non-reactive chemical absorbent pads and inert polypropylene socks. All contaminated absorbent will be sealed into UN-rated steel recovery drums."
+                                                    },
+                                                    {
+                                                            "speaker": "David Vance",
+                                                            "text": "Do we need to notify SEMARNAT, PROFEPA, or the local civil protection authorities?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Daniela Soto",
+                                                            "text": "Because the spill exceeded the 50 kg reportable quantity threshold for chlorinated solvents, we are legally required to file an initial emergency notification with PROFEPA within 24 hours, even though containment prevented any environmental release. I already have the incident manifest drafted for your signature."
+                                                    },
+                                                    {
+                                                            "speaker": "David Vance",
+                                                            "text": "Bring it to my desk right away. Superb execution of our ISO 14001 emergency preparedness plan, Daniela."
+                                                    }
+                                            ]
+                                    }
+                            ],
+                            "lexicon": [
+                                    {
+                                            "term": "Secondary Containment",
+                                            "ipa": "/ˈsɛk.ənˌdɛr.i kənˈteɪn.mənt/",
+                                            "definition": "A physical containment system (such as an epoxy-lined berm or double-walled tank) engineered to capture leaks or catastrophic spills from primary chemical storage vessels.",
+                                            "collocations": [
+                                                    "110% secondary containment rule",
+                                                    "containment berm inspection",
+                                                    "spill containment pallet"
+                                            ],
+                                            "auditTrap": "Secondary containment basins that have open drain valves or are full of rainwater provide zero legal containment and will trigger an immediate environmental violation."
+                                    },
+                                    {
+                                            "term": "Cradle-to-Grave Liability",
+                                            "ipa": "/ˈkreɪ.dəl tuː ɡreɪv ˌlaɪ.əˈbɪl.ə.t̬i/",
+                                            "definition": "The strict legal doctrine holding the hazardous waste generator perpetually responsible for environmental damages and cleanup costs from the creation of the waste to its ultimate disposal.",
+                                            "collocations": [
+                                                    "cradle-to-grave responsibility",
+                                                    "RCRA hazardous waste generator",
+                                                    "manifest chain of custody"
+                                            ],
+                                            "auditTrap": "You cannot contract out of hazardous waste liability. If your licensed waste contractor dumps spent solvents illegally, the government will hold your company financially responsible."
+                                    },
+                                    {
+                                            "term": "Safety Data Sheet (SDS)",
+                                            "ipa": "/ˈseɪf.ti ˈdeɪ.t̬ə ʃiːt/",
+                                            "definition": "A comprehensive 16-section technical document providing chemical properties, physical hazards, toxicological data, handling precautions, and emergency response procedures under GHS.",
+                                            "collocations": [
+                                                    "accessible GHS SDS binder",
+                                                    "review Section 8 exposure limits",
+                                                    "updated SDS archive"
+                                            ],
+                                            "auditTrap": "An SDS older than 3–5 years or missing localized language (Spanish for Mexico, English for US) violates chemical hazard communication laws."
+                                    },
+                                    {
+                                            "term": "Significant Environmental Aspect",
+                                            "ipa": "/sɪɡˈnɪf.ə.kənt ɪnˌvaɪ.rənˈmɛn.t̬əl ˈæs.pɛkt/",
+                                            "definition": "An element of an organization’s activities or products that has, or can have, a substantial environmental impact based on formal quantitative evaluation criteria under ISO 14001.",
+                                            "collocations": [
+                                                    "identify significant aspects",
+                                                    "aspect evaluation matrix",
+                                                    "operational controls for aspects"
+                                            ],
+                                            "auditTrap": "An environmental objective (Clause 6.2) must exist for every aspect deemed 'significant'. Failure to align objectives with significant aspects is a standard audit non-conformance."
+                                    },
+                                    {
+                                            "term": "Reportable Quantity (RQ)",
+                                            "ipa": "/rɪˈpɔːr.t̬ə.bəl ˈkwɑːn.t̬ə.t̬i/",
+                                            "definition": "The threshold mass or volume of a hazardous chemical release that triggers mandatory immediate legal notification to federal environmental authorities (EPA, SEMARNAT, PROFEPA).",
+                                            "collocations": [
+                                                    "exceed the reportable quantity",
+                                                    "immediate statutory notification",
+                                                    "RQ chemical table"
+                                            ],
+                                            "auditTrap": "Failing to report a spill that exceeds the RQ within the statutory deadline (often 24 hours) carries severe criminal penalties and massive regulatory fines."
+                                    },
+                                    {
+                                            "term": "Volatile Organic Compound (VOC)",
+                                            "ipa": "/ˈvɑː.lə.t̬əl ɔːrˈɡæn.ɪk ˈkɑːm.paʊnd/",
+                                            "definition": "Organic chemicals with high vapor pressure at room temperature (e.g., solvents, thinners, paints) that evaporate into the atmosphere, contributing to ground-level ozone and smog.",
+                                            "collocations": [
+                                                    "VOC emissions monitoring",
+                                                    "low-VOC solvent substitution",
+                                                    "scrubber VOC destruction efficiency"
+                                            ],
+                                            "auditTrap": "Industrial air emission permits specify strict annual VOC tonnage caps. Exceeding permitted VOC limits can result in air permit revocation and line shutdowns."
+                                    }
+                            ],
+                            "socraticChallenges": [
+                                    {
+                                            "id": "qe-m6-sc1",
+                                            "title": "Defending Cradle-to-Grave Liability to Executive Management",
+                                            "prompt": "Your Finance Director wants to switch to a cheaper local waste hauler that offers a 50% discount for drum disposal, arguing 'Once the waste leaves our gate, it's their problem'. How do you defend the company against this strategy using environmental law?",
+                                            "idealResponse": "Explain the legal doctrine of 'Cradle-to-Grave' liability under environmental statutes (EPA RCRA / SEMARNAT LGEEPA). Point out that the legal generator of hazardous waste retains perpetual liability regardless of waste hauler contracts. If an unauthorized hauler illegally dumps or contaminates soil, the government holds the generator strictly, jointly, and severally liable for multi-million dollar Superfund remediation and potential criminal prosecution."
+                                    },
+                                    {
+                                            "id": "qe-m6-sc2",
+                                            "title": "Distinguishing Environmental Aspects from Impacts in an Audit",
+                                            "prompt": "During an ISO 14001 stage 2 audit, the auditor reviews your Aspect/Impact matrix. For the stamping press line, the matrix lists 'Noise pollution' as an Aspect and 'High decibels' as an Impact. The auditor prepares to write a finding. How do you correct this technically?",
+                                            "idealResponse": "Clarify immediately to the auditor that the terms were transposed: The Environmental Aspect (the activity/cause interacting with the environment) is 'Acoustic emissions from high-speed stamping operations', and the Environmental Impact (the resulting effect on the environment/humans) is 'Noise pollution, disturbance to surrounding residential communities, and potential worker hearing impairment'. Present the corrected terminology to demonstrate compliance with Clause 6.1.2."
+                                    }
+                            ],
+                            "quiz": [
+                                    {
+                                            "question": "Under ISO 14001:2015, what is the precise difference between an 'Environmental Aspect' and an 'Environmental Impact'?",
+                                            "options": [
+                                                    "Aspects refer to paper recycling, while impacts refer exclusively to toxic chemical waste.",
+                                                    "An Aspect is the cause (an element of activities interacting with the environment), while an Impact is the effect (the resulting change to the environment).",
+                                                    "Aspects are regulated by municipal law, while impacts are governed by international treaties.",
+                                                    "There is no difference; the terms are completely interchangeable in environmental audits."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Under ISO 14001 definitions, an Environmental Aspect is the activity/input/output that interacts with nature (e.g., water consumption, exhaust emissions), while the Impact is the resulting change to the environment (e.g., aquifer depletion, air quality degradation)."
+                                    },
+                                    {
+                                            "question": "What is the universal engineering requirement for 'Secondary Containment' of hazardous liquid chemicals?",
+                                            "options": [
+                                                    "The berm must be painted safety red and inspected once every ten years.",
+                                                    "The containment system must hold at least 110% of the volume of the largest container or 10% of total aggregate volume.",
+                                                    "The secondary container must be made entirely of disposable cardboard.",
+                                                    "It is only required for outdoor storage facilities in cold climates."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Environmental engineering standards dictate that secondary containment berms must hold a minimum of 110% of the volume of the single largest vessel to safely retain catastrophic ruptures without environmental release."
+                                    },
+                                    {
+                                            "question": "Under the UN Globally Harmonized System (GHS), how many standardized sections must be included in every official Safety Data Sheet (SDS)?",
+                                            "options": [
+                                                    "5 sections",
+                                                    "10 sections",
+                                                    "16 sections",
+                                                    "24 sections"
+                                            ],
+                                            "correctIndex": 2,
+                                            "explanation": "GHS mandates a strict 16-section standardized format for Safety Data Sheets, ensuring universal placement of identification, hazard classification, firefighting, handling, exposure limits, and disposal guidelines."
+                                    },
+                                    {
+                                            "question": "What does the environmental legal doctrine of 'Cradle-to-Grave Liability' mean for an industrial manufacturing facility?",
+                                            "options": [
+                                                    "The company is only liable for waste while it physically remains inside the plant perimeter.",
+                                                    "The generator retains perpetual legal and financial liability for hazardous waste from generation through ultimate disposal, regardless of third-party contracts.",
+                                                    "Liability ends exactly 30 days after the waste manifest is signed by the truck driver.",
+                                                    "Only government agencies can be held liable for chemical cleanup costs."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Cradle-to-grave liability establishes that the original waste generator remains perpetually liable for cleanup, contamination, and damages throughout the entire lifecycle of the waste."
+                                    }
+                            ]
+                    }
+            ]
+    },
+    "energy-data-centers": {
+            "id": "energy-data-centers",
+            "title": "Energía, Red Inteligente y Centros de Datos (Data Centers)",
+            "titleEN": "Energy, Smart Grid & Mission-Critical Data Centers",
+            "level": "B1-B2",
+            "category": "engineering",
+            "description": "Infraestructura de energía crítica y centros de datos de alta disponibilidad: topologías Uptime Institute Tier I–IV (redundancia 2N, mantenibilidad concurrente), termodinámica y refrigeración líquida (PUE/WUE), interconexión a la red eléctrica IEEE 1547 / CFE (Código de Red), sistemas BESS (baterías de almacenamiento) y seguridad en subestaciones de alta tensión.",
+            "status": "full",
+            "totalModules": 6,
+            "standard": "Uptime Institute Tier Standard / IEEE 1547 / ASHRAE TC 9.9 / NFPA 855 / NFPA 70E / CFE Código de Red",
+            "modules": [
+                    {
+                            "id": "eng-m1",
+                            "title": "Mission-Critical Data Center Topologies & Uptime Institute Tier Standard (Tier I to IV)",
+                            "titleES": "Topologías de Centros de Datos de Misión Crítica y Estándar Tier de Uptime Institute (Tier I a IV)",
+                            "icon": "fa-solid fa-server",
+                            "isGoldModel": true,
+                            "readings": [
+                                    {
+                                            "id": "eng-m1-r1",
+                                            "title": "Uptime Institute Tier Classification: Concurrently Maintainable (Tier III) vs Fault Tolerant (Tier IV) & 2N Redundancy",
+                                            "duration": "15 min",
+                                            "content": "> **Mission-Critical Standard**: **Uptime Institute Tier Standard: Topology** and **TIA-942 Telecommunications Infrastructure Standard for Data Centers**. Mandatory benchmark for hyperscale cloud providers (AWS, Microsoft Azure, Google Cloud) and industrial edge computing facilities.\n\n# Mission-Critical Data Center Architecture & Tier Topologies\n\n### 1. The Four Uptime Institute Tiers\nData center availability is classified into four progressive tiers based on physical infrastructure topology, redundancy paths, and maintenance capability:\n\n| Tier Level | Name & Availability Target | Redundancy Topology | Planned Maintenance Downtime | Unplanned Outage Risk |\n| :--- | :--- | :--- | :--- | :--- |\n| **Tier I** | **Basic Capacity** (99.671% / 28.8 hrs/yr) | $N$ (Non-redundant). Single path for power and cooling. | Requires full facility shutdown for routine maintenance. | Susceptible to disruptions from both planned and unplanned activities. |\n| **Tier II** | **Redundant Capacity** (99.741% / 22.0 hrs/yr) | $N+1$ redundant capacity components (generators, UPS, chillers), single distribution path. | Shutdown required for distribution path servicing (switchgear, bus ducts). | Vulnerable to single distribution path failures. |\n| **Tier III** | **Concurrently Maintainable** (99.982% / 1.6 hrs/yr) | Dual distribution paths (one active, one alternate); $N+1$ capacity. | **Zero shutdown required**. Every capacity component and distribution path can be removed for servicing without impacting production load. | Unplanned component failure may risk outage during simultaneous maintenance. |\n| **Tier IV** | **Fault Tolerant** (99.995% / 0.4 hrs/yr) | Multiple active independent distribution paths ($2(N+1)$ or $2N$); isolated compartments. | **Zero shutdown required**. Automatically isolates faults and continues operating without human intervention. | System withstands at least one worst-case unplanned failure without impact on critical load. |\n\n### 2. Concurrent Maintainability vs Fault Tolerance\nThe defining distinction between enterprise and hyperscale mission-critical facilities:\n- **Concurrent Maintainability (Tier III)**: Requires that *any* planned maintenance of power or cooling equipment (e.g., servicing a 2.5 MVA substation transformer, replacing UPS battery strings, flushing a chilled water loop) can be performed without taking the IT load offline.\n- **Fault Tolerance (Tier IV)**: Demands that the system automatically detects, isolates, and compartmentalizes an *unplanned* catastrophic failure (e.g., high-energy busway short circuit, chiller compressor explosion) without interrupting the IT computing payload. Requires complete autonomous physical separation of redundant utility and generator feeds."
+                                    },
+                                    {
+                                            "id": "eng-m1-r2",
+                                            "title": "Uninterruptible Power Supply (UPS) Architecture: Static vs Rotary UPS, Static Transfer Switches (STS) & Generator Synchronization",
+                                            "duration": "14 min",
+                                            "content": "> **Electrical Engineering Standard**: **IEEE 446 (Orange Book) Emergency and Standby Power Systems** and **NFPA 110 Standard for Emergency and Standby Power Systems**.\n\n# Power Path Redundancy & Emergency Generation\n\n### 1. UPS Topologies in Data Centers\nWhen utility power suffers a blackout or voltage sag, the critical IT load must experience zero transfer interruption:\n- **Double-Conversion Static UPS**: Incoming AC utility power is continuously rectified into DC power to charge battery strings (VRLA or Lithium-ion) and simultaneously inverted back into conditioned, pure sine-wave AC power. Transfer time is mathematically **0 milliseconds**.\n- **Rotary UPS (Flywheel / Diesel Rotary UPS - DRUPS)**: Employs a massive spinning kinetic flywheel coupled to a synchronous motor/generator. During utility loss, kinetic inertia provides 15 to 30 seconds of ridethrough power while an integrated diesel engine cranks and locks into electrical phase.\n- **Static Transfer Switch (STS)**: A solid-state thyristor-based switch capable of transferring critical power from a preferred source to an alternate source within **4 milliseconds** (one-quarter of an AC sine cycle), well within the CBEMA / ITIC hold-up curve of modern server power supplies.\n\n### 2. Emergency Standby Generators & Paralleling Switchgear\nEmergency diesel or natural gas turbine generators must start and assume 100% of the facility load within **10 seconds** of utility loss (NFPA 110 Type 10):\n- **Paralleling Switchgear**: Synchronizes multiple generator outputs in frequency, voltage, and phase angle before closing the output breakers onto a shared synchronization bus.\n- **Fuel Autonomy**: Tier III and Tier IV data centers mandate on-site bulk diesel storage tanks providing a minimum of **12 to 72 hours** of continuous full-load runtime at maximum site IT capacity."
+                                    }
+                            ],
+                            "dialogues": [
+                                    {
+                                            "id": "eng-m1-d1",
+                                            "title": "Chief Facilities Engineer vs Lead Commissioning Auditor: Tier III Concurrent Maintainability Defense",
+                                            "participants": [
+                                                    {
+                                                            "role": "Director of Data Center Engineering (Querétaro, Mexico)",
+                                                            "name": "Ing. Mateo Alarcón"
+                                                    },
+                                                    {
+                                                            "role": "Lead Tier Certification Auditor (Uptime Institute)",
+                                                            "name": "Warren Hastings"
+                                                    }
+                                            ],
+                                            "scenario": "During an on-site Tier III design validation audit for a new 45 MW hyperscale data center campus in Querétaro, the auditor questions whether the chilled water distribution loop maintains concurrent maintainability during valve replacement.",
+                                            "lines": [
+                                                    {
+                                                            "speaker": "Warren Hastings",
+                                                            "text": "Mateo, I am reviewing Single-Line Diagram mechanical sheet M-104 for Data Hall 3. You have an $N+1$ configuration of magnetic-bearing centrifugal chillers, which satisfies capacity. However, when I trace the secondary chilled water header, isolation valves V-12 and V-14 are on a single-feed branch. If you isolate valve V-12 for maintenance, don't you starve CRAH units 5 through 8 of 7-degree chilled water?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Mateo Alarcón",
+                                                            "text": "Good morning, Warren. Let me direct your attention to the reverse loop cross-connect valve XV-202 on drawing M-105. We designed a dual-ring reverse-return distribution loop with segmented sectionalizing butterfly valves."
+                                                    },
+                                                    {
+                                                            "speaker": "Warren Hastings",
+                                                            "text": "Walk me through the exact procedure if the packing seal on valve V-12 fails and requires replacement while Data Hall 3 is operating at full 10 MW thermal IT load."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Mateo Alarcón",
+                                                            "text": "Step 1: The building management system commands cross-tie valve XV-202 to open, establishing an alternate pressurized reverse-flow supply path from Loop B. Step 2: The facilities technician closes isolation valves V-11 and V-13 around the defective valve. CRAH units 5 through 8 continue receiving 45 gpm of chilled water from the secondary reverse header with zero temperature rise at the server inlet."
+                                                    },
+                                                    {
+                                                            "speaker": "Warren Hastings",
+                                                            "text": "What about the electrical side for those CRAH units? Are they dual-corded or backed by an automatic static transfer switch?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Mateo Alarcón",
+                                                            "text": "Every CRAH unit is equipped with factory-installed dual power supplies fed from independent A and B Remote Power Panels (RPPs), backed by separate 2N UPS trains. We can de-energize the entire A-side electrical distribution board for annual infrared thermography without a single cooling fan losing RPM."
+                                                    },
+                                                    {
+                                                            "speaker": "Warren Hastings",
+                                                            "text": "That satisfies the Uptime Institute Concurrent Maintainability requirement under Section 4.2. Let's move to the generator synchronization yard to witness the 10-second black-start load step test."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Mateo Alarcón",
+                                                            "text": "The six 3.2 MW Caterpillar generators are warmed, fuel day tanks are at 100%, and the load bank is wired. We are ready to open the main utility breaker whenever you give the command."
+                                                    }
+                                            ]
+                                    }
+                            ],
+                            "lexicon": [
+                                    {
+                                            "term": "Concurrent Maintainability",
+                                            "ipa": "/kənˈkɝː.ənt meɪnˌteɪ.nəˈbɪl.ə.t̬i/",
+                                            "definition": "The architectural design requirement of a Tier III facility where every capacity component (transformer, UPS, generator, chiller) and distribution path can be removed from service for maintenance without shutting down the critical IT load.",
+                                            "collocations": [
+                                                    "satisfy concurrent maintainability",
+                                                    "concurrently maintainable path",
+                                                    "Tier III compliance"
+                                            ],
+                                            "auditTrap": "If removing one circuit breaker or chilled water valve requires shutting down even a single server rack, the facility is Tier II, NOT Tier III."
+                                    },
+                                    {
+                                            "term": "Fault Tolerance",
+                                            "ipa": "/fɑːlt ˈtɑː.lɚ.əns/",
+                                            "definition": "The capability of a Tier IV infrastructure to autonomously detect, isolate, and compartmentalize an unexpected catastrophic equipment or line failure without interrupting computer operations.",
+                                            "collocations": [
+                                                    "fault-tolerant architecture",
+                                                    "autonomous fault containment",
+                                                    "Tier IV certification"
+                                            ],
+                                            "auditTrap": "Fault tolerance requires automatic autonomous containment; if human intervention is required to throw a manual switch after a failure, the facility is not fault tolerant."
+                                    },
+                                    {
+                                            "term": "Static Transfer Switch (STS)",
+                                            "ipa": "/ˈstæt̬.ɪk trænsˈfɝː swɪtʃ/",
+                                            "definition": "An ultra-fast solid-state silicon-controlled rectifier (SCR) switch that transfers electrical power between two independent AC power sources in less than 4 milliseconds.",
+                                            "collocations": [
+                                                    "deploy an STS",
+                                                    "sub-cycle transfer time",
+                                                    "STS source redundancy"
+                                            ],
+                                            "auditTrap": "Do not confuse an STS with an ATS (Automatic Transfer Switch). An ATS uses mechanical contactors requiring 100 to 200 ms to switch—long enough to crash sensitive IT servers."
+                                    },
+                                    {
+                                            "term": "2N Redundancy",
+                                            "ipa": "/tuː ɛn rɪˈdʌn.dən.si/",
+                                            "definition": "A fully duplicated, parallel system architecture providing two complete independent distribution and generation systems (System A and System B), each capable of carrying 100% of the facility load.",
+                                            "collocations": [
+                                                    "2N UPS configuration",
+                                                    "true 2N electrical path",
+                                                    "2N power distribution"
+                                            ],
+                                            "auditTrap": "Operating a 2N system at greater than 50% load on either leg is dangerous: if one leg trips, the remaining leg will immediately overload and trip offline."
+                                    },
+                                    {
+                                            "term": "Mean Time Between Failures (MTBF)",
+                                            "ipa": "/miːn taɪm bɪˈtwiːn ˈfeɪl.jɚz/",
+                                            "definition": "The predicted elapsed operating time between inherent failures of a mechanical or electrical system during normal operational hours, expressed in hours.",
+                                            "collocations": [
+                                                    "calculate the MTBF",
+                                                    "high MTBF reliability rating",
+                                                    "component MTBF degradation"
+                                            ],
+                                            "auditTrap": "MTBF reflects component reliability, not repair speed. Repair speed is governed by MTTR (Mean Time to Repair)."
+                                    },
+                                    {
+                                            "term": "Black Start Capability",
+                                            "ipa": "/blæk stɑːrt ˌkeɪ.pəˈbɪl.ə.t̬i/",
+                                            "definition": "The ability of an emergency generation plant or microgrid to restart from complete shutdown without relying on external transmission grid electrical power.",
+                                            "collocations": [
+                                                    "demonstrate black start",
+                                                    "black-start diesel generator",
+                                                    "black start test protocol"
+                                            ],
+                                            "auditTrap": "Generators require DC battery starting banks. If starter batteries are discharged during a blackout, black start capability is completely lost."
+                                    }
+                            ],
+                            "socraticChallenges": [
+                                    {
+                                            "id": "eng-m1-sc1",
+                                            "title": "Defending Tier III vs Tier IV Investment to the Board",
+                                            "prompt": "Your financial executive board asks why the company should spend 35% more capital expenditure to build a Tier IV data center instead of Tier III. How do you technically articulate the operational and business difference between Concurrent Maintainability and Fault Tolerance?",
+                                            "idealResponse": "Explain that Tier III (Concurrent Maintainability) guarantees zero downtime for *planned* maintenance, but remains vulnerable to an *unplanned* simultaneous equipment failure during maintenance windows. In contrast, Tier IV (Fault Tolerance) provides $2(N+1)$ autonomous compartmentalized redundancy that automatically absorbs worst-case unplanned catastrophic events (e.g., switchgear explosion or line short) without dropping a single packet or server. Recommend Tier IV for mission-critical banking, defense, or life-support AI clusters where downtime costs exceed $1M/minute."
+                                    },
+                                    {
+                                            "id": "eng-m1-sc2",
+                                            "title": "Troubleshooting STS Phase Angle Discrepancy",
+                                            "prompt": "During routine generator testing, the Static Transfer Switch (STS) alarms with 'Out of Phase Transfer Inhibited: Phase angle difference exceeds 15 degrees'. Why did the STS inhibit the fast sub-cycle transfer, and what would happen if forced?",
+                                            "idealResponse": "Clarify that the STS compares the real-time sinusoidal phase angle between Utility Source A and Generator Source B. If the phase angle difference exceeds 15-20 degrees, executing a sub-cycle static transfer would cause a severe out-of-phase voltage step, generating massive transformer inrush current, tripping upstream circuit breakers, and damaging server power supply capacitors. Explain that the generator governor must first synchronize frequency and phase angle before an in-phase seamless static transfer can safely occur."
+                                    }
+                            ],
+                            "quiz": [
+                                    {
+                                            "question": "Under the Uptime Institute Tier Standard, what is the core architectural requirement that defines a 'Tier III' data center?",
+                                            "options": [
+                                                    "It must have at least ten diesel generators painted safety green.",
+                                                    "It must possess 'Concurrent Maintainability' across all capacity components and distribution paths without impacting the critical IT load.",
+                                                    "It must be constructed underground to withstand seismic activity.",
+                                                    "It must operate 100% on renewable solar energy."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Concurrent Maintainability is the defining hallmark of Tier III: every capacity component and distribution path can be completely isolated and serviced without interrupting power or cooling to the IT workload."
+                                    },
+                                    {
+                                            "question": "What is the typical transfer time of a solid-state Static Transfer Switch (STS) used in data center power distribution?",
+                                            "options": [
+                                                    "Less than 4 milliseconds (sub-cycle transfer).",
+                                                    "Approximately 10 to 15 seconds.",
+                                                    "2 to 5 minutes.",
+                                                    "Exactly zero seconds because it does not switch power."
+                                            ],
+                                            "correctIndex": 0,
+                                            "explanation": "An STS utilizes high-speed silicon-controlled rectifiers (SCRs) to switch sources in less than 4 ms (under a quarter of an AC cycle), ensuring servers experience no interruption."
+                                    },
+                                    {
+                                            "question": "Why must a true 2N redundant UPS system never operate with either individual train loaded above 50% capacity during normal steady-state?",
+                                            "options": [
+                                                    "Because electric utility companies impose fines for using more than 50% power.",
+                                                    "Because if one 2N train trips offline, the remaining train must instantly absorb 100% of the facility load without overloading and tripping.",
+                                                    "Because lithium-ion batteries overheat if loaded above 50%.",
+                                                    "Because server racks cannot consume more than 5 kW per cabinet."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "In a 2N architecture, each independent system is designed to support the entire load. If Train A is at 60% and Train B trips, transferring the load to Train A would cause a 120% overload, tripping the entire facility."
+                                    },
+                                    {
+                                            "question": "Under NFPA 110 Type 10 guidelines, within what time limit must emergency standby generators start and assume critical facility load following utility power loss?",
+                                            "options": [
+                                                    "Within 10 seconds.",
+                                                    "Within 60 seconds.",
+                                                    "Within 5 minutes.",
+                                                    "Within 15 minutes."
+                                            ],
+                                            "correctIndex": 0,
+                                            "explanation": "NFPA 110 Class 10 mandates that emergency power supply systems (EPSS) for life-safety and mission-critical operations must initiate, reach rated frequency/voltage, and connect to load within 10 seconds."
+                                    }
+                            ]
+                    },
+                    {
+                            "id": "eng-m2",
+                            "title": "Data Center Energy Efficiency & Thermal Management (PUE, WUE, Liquid Cooling)",
+                            "titleES": "Eficiencia Energética en Centros de Datos y Gestión Térmica (PUE, WUE, Refrigeración Líquida)",
+                            "icon": "fa-solid fa-temperature-arrow-down",
+                            "isGoldModel": true,
+                            "readings": [
+                                    {
+                                            "id": "eng-m2-r1",
+                                            "title": "Power Usage Effectiveness (PUE) & ASHRAE TC 9.9 Thermal Guidelines for High-Density AI Server Racks",
+                                            "duration": "15 min",
+                                            "content": "> **Data Center Efficiency Standard**: **ISO/IEC 30134-2 (PUE)**, **The Green Grid**, and **ASHRAE TC 9.9 Thermal Guidelines for Data Processing Environments**.\n\n# Energy Efficiency Metrics & Thermal Envelopes\n\n### 1. The PUE Equation & Industry Benchmarks\nData center energy efficiency is globally benchmarked using **Power Usage Effectiveness (PUE)**:\n\n$$PUE = \\frac{\\text{Total Facility Energy}}{\\text{IT Equipment Energy}} = \\frac{\\text{IT Power} + \\text{Cooling Power} + \\text{Power Losses} + \\text{Lighting}}{\\text{IT Equipment Energy}}$$\n\n- **Theoretical Minimum**: $PUE = 1.0$ (100% of incoming energy reaches the computing chips; zero energy lost to cooling, transformers, or UPS conversion).\n- **Legacy Enterprise Data Centers**: $PUE = 1.8 - 2.2$ (Over 50% of total electrical power consumed by air conditioning and power losses).\n- **Modern Hyperscale Facilities**: $PUE = 1.10 - 1.25$ achieved via free cooling, evaporative economizers, and hot aisle containment.\n- **Water Usage Effectiveness (WUE)**: $WUE = \\frac{\\text{Annual Water Usage (Liters)}}{\\text{IT Equipment Energy (kWh)}}$. Critical in water-stressed nearshoring hubs (Monterrey, Querétaro, Mexicali).\n\n### 2. ASHRAE TC 9.9 Thermal Classes\nModern server silicon no longer requires sub-refrigerated rooms. Operating data centers at excessive cold temperatures wastes millions in unnecessary chiller energy:\n- **Recommended Environmental Envelope (Class A1–A4)**: Dry-bulb temperature **$18^{\\circ}\\text{C}$ to $27^{\\circ}\\text{C}$ ($64.4^{\\circ}\\text{F}$ to $80.6^{\\circ}\\text{F}$)**; Dew point $-9^{\\circ}\\text{C}$ to $15^{\\circ}\\text{C}$ with relative humidity up to 60%.\n- **Allowable Range**: Up to **$32^{\\circ}\\text{C}$ or $35^{\\circ}\\text{C}$** without hardware degradation.\n- **Delta-T ($\\Delta T$)**: The temperature difference between cold supply air and hot exhaust air across the server chassis (typically $10^{\\circ}\\text{C}$ to $15^{\\circ}\\text{C}$)."
+                                    },
+                                    {
+                                            "id": "eng-m2-r2",
+                                            "title": "Advanced Cooling Methodologies: Hot/Cold Aisle Containment, Economizers, Direct-to-Chip Liquid Cooling & Immersion Cooling",
+                                            "duration": "14 min",
+                                            "content": "> **Advanced Thermal Standard**: **ASHRAE Liquid Cooling Whitepaper (TC 9.9)** and **OCP (Open Compute Project) Advanced Cooling Solutions**.\n\n# Advanced Thermal Management: Air to Liquid Transition\n\n### 1. Airflow Containment: Eliminating Thermal Bypass\nIn traditional open raised-floor data centers, hot air exhaust loops back into server intakes (air recirculation), while conditioned cold air escapes unused into the ceiling (bypass air):\n- **Cold Aisle Containment (CAC)**: Encloses the cold aisle with metal roofs and automated sliding doors. Pressurizes conditioned air directly into server intake faces.\n- **Hot Aisle Containment (HAC)**: Encloses the hot exhaust aisle and ducts exhaust air directly into the ceiling plenum and back to CRAH coils. Proven **15% to 20% more thermodynamically efficient** than CAC because it allows higher return air temperatures, drastically improving chiller heat exchange efficiency.\n\n### 2. The Liquid Cooling Revolution for AI Clusters\nTraditional forced-air cooling reaches its physical thermodynamic limit at **$30 - 35\\text{ kW}$ per rack**. Next-generation generative AI clusters (NVIDIA H100, B200) draw **$40\\text{ kW}$ to $120\\text{ kW}$ per rack**, requiring liquid cooling:\n- **Direct-to-Chip Liquid Cooling (Cold Plate)**: A dielectric fluid or closed-loop treated water-glycol mixture circulates through micro-channel copper cold plates mounted directly on CPU/GPU heat spreaders. Liquid absorbs 70% to 80% of heat; residual heat is removed by low-velocity air.\n- **Two-Phase & Single-Phase Immersion Cooling**: Server chassis are completely submerged in specialized synthetic non-conductive dielectric fluid (fluorochemical or synthetic hydrocarbons). In two-phase immersion, fluid boils at $50^{\\circ}\\text{C}$, vapor rises to condensing coils, condenses, and drips back down in a continuous passive thermodynamic cycle with zero cooling pumps."
+                                    }
+                            ],
+                            "dialogues": [
+                                    {
+                                            "id": "eng-m2-d1",
+                                            "title": "VP of Data Center Infrastructure vs Lead Thermal Architect: Upgrading to 80 kW Liquid-Cooled AI Racks",
+                                            "participants": [
+                                                    {
+                                                            "role": "VP of Data Center Operations (Guadalajara, Mexico)",
+                                                            "name": "Ing. Gabriela Cisneros"
+                                                    },
+                                                    {
+                                                            "role": "Chief Thermal Architect",
+                                                            "name": "Dr. Kevin Zhang"
+                                                    }
+                                            ],
+                                            "scenario": "An enterprise AI tenant wants to deploy 64 racks of high-density GPU accelerators requiring 80 kW per cabinet into Data Hall 2, which was originally engineered for 12 kW air-cooled racks.",
+                                            "lines": [
+                                                    {
+                                                            "speaker": "Ing. Gabriela Cisneros",
+                                                            "text": "Kevin, we just received the final lease agreement for the enterprise AI workload. They are shipping 64 racks of high-density AI clusters next month. Each rack draws 80 kW continuous. Our current Hall 2 CRAH units and hot aisle containment are designed for 12 kW per rack. Air cooling will not handle this heat flux."
+                                                    },
+                                                    {
+                                                            "speaker": "Dr. Kevin Zhang",
+                                                            "text": "Air cooling is physically impossible at 80 kW per cabinet, Gabriela. To move enough air mass to remove that heat, the fans would require air velocities exceeding 1,200 CFM per rack—the server fans would consume more power than the compute silicon and sound like a jet engine."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Gabriela Cisneros",
+                                                            "text": "What is our deployment roadmap for liquid cooling?"
+                                                    },
+                                                    {
+                                                            "speaker": "Dr. Kevin Zhang",
+                                                            "text": "We need a hybrid Direct-to-Chip (DTC) Cooling Distribution Unit (CDU) topology. We install centralized liquid-to-liquid CDUs in the mechanical gallery connected to our primary chilled water loop. We route secondary closed-loop polypropylene piping manifolds under the floor to each rack row."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Gabriela Cisneros",
+                                                            "text": "What is the secondary supply temperature and flow rate requirement?"
+                                                    },
+                                                    {
+                                                            "speaker": "Dr. Kevin Zhang",
+                                                            "text": "With modern cold-plate micro-channel designs, we can supply Facility Water at 32 degrees Celsius—warm water cooling. That means we don't even need mechanical refrigeration chillers for the AI hall during 90% of the year; we can dissipate 100% of the heat via dry coolers and evaporative economizers."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Gabriela Cisneros",
+                                                            "text": "What will that do to our campus PUE?"
+                                                    },
+                                                    {
+                                                            "speaker": "Dr. Kevin Zhang",
+                                                            "text": "It will drive our PUE down from 1.38 to approximately 1.12. Furthermore, because we run warm water cooling, our Water Usage Effectiveness (WUE) drops by 60%, which is critical given municipal water conservation regulations in the Bajío industrial belt."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Gabriela Cisneros",
+                                                            "text": "Prepare the engineering proposal and piping isometric drawings. Let's issue the tender for the CDU skid fabrication."
+                                                    }
+                                            ]
+                                    }
+                            ],
+                            "lexicon": [
+                                    {
+                                            "term": "Power Usage Effectiveness (PUE)",
+                                            "ipa": "/ˈpaʊ.ɚ ˈjuː.sɪdʒ ɪˌfɛk.tɪv.nəs/",
+                                            "definition": "The standard metric calculated as Total Facility Energy divided by IT Equipment Energy, measuring how efficiently a data center utilizes electricity for computing versus infrastructure overhead.",
+                                            "collocations": [
+                                                    "achieve a low PUE",
+                                                    "annualized PUE benchmark",
+                                                    "PUE monitoring telemetry"
+                                            ],
+                                            "auditTrap": "PUE varies significantly across seasons. Claiming an instantaneous winter PUE of 1.12 as your annualized facility rating without annual averaging is misleading."
+                                    },
+                                    {
+                                            "term": "Cooling Distribution Unit (CDU)",
+                                            "ipa": "/ˈkuː.lɪŋ ˌdɪs.trəˈbjuː.ʃən ˈjuː.nɪt/",
+                                            "definition": "A dedicated hydraulic pumping and heat exchanger unit that isolates the primary facility chilled water loop from the secondary clean liquid loop feeding server cold plates.",
+                                            "collocations": [
+                                                    "install an in-row CDU",
+                                                    "CDU heat exchange capacity",
+                                                    "CDU differential pressure control"
+                                            ],
+                                            "auditTrap": "Primary facility water should never be pumped directly into server cold plates; debris and fouling will clog microscopic micro-channels within weeks."
+                                    },
+                                    {
+                                            "term": "Hot Aisle Containment (HAC)",
+                                            "ipa": "/hɑːt aɪl kənˈteɪn.mənt/",
+                                            "definition": "A physical airflow isolation system enclosing the server hot exhaust row and ducting hot air directly into the ceiling return plenum to prevent mixing with cold intake air.",
+                                            "collocations": [
+                                                    "construct hot aisle containment",
+                                                    "HAC ducting plenum",
+                                                    "sealed containment doors"
+                                            ],
+                                            "auditTrap": "Leaving containment doors propped open or omitting blanking panels in empty rack slots destroys airflow pressure dynamics and creates hot spots."
+                                    },
+                                    {
+                                            "term": "Water Usage Effectiveness (WUE)",
+                                            "ipa": "/ˈwɑː.t̬ɚ ˈjuː.sɪdʒ ɪˌfɛk.tɪv.nəs/",
+                                            "definition": "An environmental metric defined by The Green Grid measuring the ratio of annual water consumption (liters or gallons) to IT equipment energy consumption (kWh).",
+                                            "collocations": [
+                                                    "reduce WUE footprint",
+                                                    "zero-water cooling architecture",
+                                                    "WUE compliance threshold"
+                                            ],
+                                            "auditTrap": "Optimizing PUE using evaporative cooling towers can severely degrade WUE by consuming millions of gallons of potable water in arid regions."
+                                    },
+                                    {
+                                            "term": "Direct-to-Chip (DTC) Cooling",
+                                            "ipa": "/daɪˈrɛkt tuː tʃɪp ˈkuː.lɪŋ/",
+                                            "definition": "A liquid cooling technique where a metal cold plate with microscopic internal coolant channels is placed in direct mechanical contact with high-power processors (CPUs/GPUs).",
+                                            "collocations": [
+                                                    "cold plate thermal dissipation",
+                                                    "dielectric fluid DTC",
+                                                    "DTC retrofit manifold"
+                                            ],
+                                            "auditTrap": "Fittings must utilize quick-disconnect (QD) dry-break couplings. A single liquid leak inside a high-voltage server backplane can cause catastrophic short circuits."
+                                    },
+                                    {
+                                            "term": "Computer Room Air Handler (CRAH)",
+                                            "ipa": "/kəmˈpjuː.t̬ɚ ruːm ɛr ˈhænd.lɚ/",
+                                            "definition": "A data center cooling unit containing chilled water coils and variable-speed EC fans that conditions and circulates air within the server hall without internal mechanical compressors.",
+                                            "collocations": [
+                                                    "modulate CRAH fan speed",
+                                                    "CRAH chilled water valve",
+                                                    "dual-feed CRAH unit"
+                                            ],
+                                            "auditTrap": "Do not confuse CRAH with CRAC (Computer Room Air Conditioner). CRACs contain internal DX refrigeration compressors and are significantly less energy efficient."
+                                    }
+                            ],
+                            "socraticChallenges": [
+                                    {
+                                            "id": "eng-m2-sc1",
+                                            "title": "Defending Warm-Water Cooling in High-Temperature Climates",
+                                            "prompt": "A prospective cloud client is skeptical of your proposal to use 32°C (89.6°F) chilled water supply for direct-to-chip cooling, arguing that server chips will overheat without 7°C water. How do you defend warm-water cooling using thermodynamic and ASHRAE principles?",
+                                            "idealResponse": "Explain that copper micro-channel cold plates transfer heat to liquid over 1,000 times more effectively than forced air over aluminum fins. At 32°C supply liquid temperature, modern silicon processor junctions remain well below their 85°C thermal throttling threshold under 100% compute load. Furthermore, supplying 32°C water allows 100% compressor-free heat rejection via dry cooling economizers, slashing campus PUE from 1.45 to under 1.15 and eliminating millions of gallons of evaporative cooling water."
+                                    },
+                                    {
+                                            "id": "eng-m2-sc2",
+                                            "title": "Troubleshooting Cold Air Recirculation & Hot Spots",
+                                            "prompt": "Telemetry in Data Hall 1 shows server CPUs in the top 6U of Rack 14 running at 92°C with fan speeds at 100%, while the bottom of the rack operates at 45°C. What is the physical root cause and immediate containment action?",
+                                            "idealResponse": "Identify that missing blanking panels or unsealed cable pass-throughs in the upper U-slots are permitting hot exhaust air from the hot aisle to wrap around the top of the rack and recirculate into the server intake (recirculation bypass). Containment: Immediately install tool-less 1U/2U blanking panels in all unpopulated slots, verify brush seals on overhead cable penetrations, and inspect the ceiling containment plenum seal to restore proper static pressure differential."
+                                    }
+                            ],
+                            "quiz": [
+                                    {
+                                            "question": "What is the theoretical perfect minimum value for Power Usage Effectiveness (PUE) in a data center?",
+                                            "options": [
+                                                    "PUE = 0.0",
+                                                    "PUE = 1.0",
+                                                    "PUE = 1.5",
+                                                    "PUE = 100%"
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "A PUE of 1.0 represents 100% energy efficiency where all electricity fed into the building reaches the IT computing silicon, with zero energy consumed by cooling, lighting, or power conversion losses."
+                                    },
+                                    {
+                                            "question": "Why is Hot Aisle Containment (HAC) generally considered more energy efficient than Cold Aisle Containment (CAC)?",
+                                            "options": [
+                                                    "Because HAC allows the rest of the open data hall to act as a cool reservoir, permitting CRAH units to operate with higher return air temperatures and greater heat exchange efficiency.",
+                                                    "Because cold air rises naturally to the ceiling under convection laws.",
+                                                    "Because HAC eliminates the need for server intake fans.",
+                                                    "Because fire sprinkler codes prohibit the use of cold aisle roofs."
+                                            ],
+                                            "correctIndex": 0,
+                                            "explanation": "In HAC, the entire room outside the hot aisle is cool and comfortable, and hot air is ducted directly into return coils at peak temperature. Higher return air temperature drastically boosts the thermodynamic efficiency of cooling coils."
+                                    },
+                                    {
+                                            "question": "At approximately what power density per server rack does traditional forced-air cooling become physically and thermodynamically unviable?",
+                                            "options": [
+                                                    "5 kW to 8 kW per rack",
+                                                    "10 kW to 15 kW per rack",
+                                                    "30 kW to 35 kW per rack",
+                                                    "200 kW per rack"
+                                            ],
+                                            "correctIndex": 2,
+                                            "explanation": "Around 30–35 kW per cabinet, the volume of air required to remove heat exceeds physical airflow limits and server fan power consumption becomes prohibitive, mandating direct-to-chip or immersion liquid cooling."
+                                    },
+                                    {
+                                            "question": "What is the primary function of a Cooling Distribution Unit (CDU) in a direct-to-chip liquid cooling architecture?",
+                                            "options": [
+                                                    "To freeze water into ice blocks overnight.",
+                                                    "To isolate the facility chilled water loop from the secondary clean liquid loop and control flow, differential pressure, and temperature to server cold plates.",
+                                                    "To blow pressurized dehumidified air into server power supplies.",
+                                                    "To recharge backup UPS lithium batteries."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "A CDU acts as a hydraulic interface featuring a liquid-to-liquid heat exchanger and variable pumps that isolates the secondary precision treated coolant loop from potentially dirty building chilled water."
+                                    }
+                            ]
+                    },
+                    {
+                            "id": "eng-m3",
+                            "title": "IEEE 1547 Standard & Grid Interconnection of Distributed Energy Resources (DERs)",
+                            "titleES": "Estándar IEEE 1547 e Interconexión de Recursos Energéticos Distribuidos (DERs)",
+                            "icon": "fa-solid fa-solar-panel",
+                            "isGoldModel": true,
+                            "readings": [
+                                    {
+                                            "id": "eng-m3-r1",
+                                            "title": "IEEE 1547-2018 Interconnection Standards: Voltage and Frequency Ride-Through & Inverter Controls",
+                                            "duration": "15 min",
+                                            "content": "> **Grid Interconnection Standard**: **IEEE 1547-2018 Standard for Interconnection and Interoperability of Distributed Energy Resources with Associated Electric Power Systems Interfaces** and **UL 1741 SB**.\n\n# IEEE 1547-2018 & Smart Grid Interconnection\n\n### 1. The Paradigm Shift: From Tripping to Riding-Through\nIn legacy electrical distribution, small distributed generators (solar PV, diesel engines, fuel cells) were ordered to trip offline immediately whenever utility grid voltage or frequency fluctuated. As renewable penetration grew, sudden mass tripping during minor grid faults caused cascading blackouts.\nUnder **IEEE 1547-2018**:\n- **Smart Inverters** are mandated to support the grid during transient anomalies rather than disconnecting.\n- **Voltage Ride-Through (VRT)**: The inverter must remain synchronized and continue operating without tripping during defined Low Voltage Ride-Through (LVRT) and High Voltage Ride-Through (HVRT) windows.\n- **Frequency Ride-Through (FRT)**: Inverters must withstand under-frequency ($f < 58.8\\text{ Hz}$) and over-frequency ($f > 61.2\\text{ Hz}$) events, actively modulating real power output ($P(f)$ frequency-droop control) to stabilize grid frequency.\n\n### 2. Point of Common Coupling (PCC) & Reactive Power Control\nAll interconnection compliance parameters are measured at the **Point of Common Coupling (PCC)**—the physical boundary where the industrial plant or solar park connects to the utility transmission/distribution grid:\n- **Volt-VAr Mode ($Q(V)$)**: The smart inverter dynamically injects or absorbs reactive power (VARs) based on local grid voltage to prevent overvoltage conditions during peak midday solar generation.\n- **Active Power Curtailment ($P(V)$ Volt-Watt)**: If grid voltage exceeds acceptable thresholds despite maximum reactive power absorption, the inverter automatically curtails active kilowatt export to prevent distribution transformer overvoltage."
+                                    },
+                                    {
+                                            "id": "eng-m3-r2",
+                                            "title": "Anti-Islanding Protection, Power Factor Control & Total Harmonic Distortion (THD) under IEEE 519",
+                                            "duration": "14 min",
+                                            "content": "> **Power Quality & Safety Standards**: **IEEE 1547 Clause 8 (Islanding)**, **IEEE 519-2022 (Harmonic Control in Electric Power Systems)**, and **IEC 61000-4-30**.\n\n# Anti-Islanding Protection & Power Quality Compliance\n\n### 1. Unintentional Islanding Hazards\n**Unintentional Islanding** occurs when a section of the utility distribution grid becomes physically disconnected from the central substation but continues to be energized by local distributed solar or battery systems:\n- **Personnel Safety Threat**: Utility linemen working on what they believe are de-energized, grounded utility poles face fatal electrocution hazards from back-fed customer power.\n- **Out-of-Phase Reclosing**: When automatic utility reclosers restore grid power, the islanded generator may be out of phase with the grid, generating massive torque shock that shears generator shafts and explodes transformers.\n- **Non-Islanding Inverter Certification**: IEEE 1547 mandates that inverters detect loss of grid power and cease to energize the grid within **2.0 seconds** using active frequency drift or reactive power perturbation techniques.\n\n### 2. Harmonics Mitigation under IEEE 519-2022\nInverter-Based Resources (IBRs) utilize high-frequency pulse-width modulation (PWM) that injects harmonic currents into the utility line:\n- **Total Harmonic Distortion (THD)**: $\\text{THD}_V = \\frac{\\sqrt{\\sum_{h=2}^\\infty V_h^2}}{V_1} \\times 100\\%$. IEEE 519 limits total voltage harmonic distortion at the PCC to **$\\le 5.0\\%$** for voltages up to 69 kV.\n- **Total Demand Distortion (TDD)**: Limits current harmonics relative to the maximum customer load demand. Strict limits prevent overheating of utility transformers and interference with telecommunication circuits."
+                                    }
+                            ],
+                            "dialogues": [
+                                    {
+                                            "id": "eng-m3-d1",
+                                            "title": "Renewable Grid Interconnection Lead vs Utility Transmission Operator: IEEE 1547 Inverter Commissioning",
+                                            "participants": [
+                                                    {
+                                                            "role": "Grid Interconnection Engineer (Hermosillo, Mexico)",
+                                                            "name": "Ing. Carlos Beltrán"
+                                                    },
+                                                    {
+                                                            "role": "Utility Transmission Operations Manager",
+                                                            "name": "Sandra Mitchell"
+                                                    }
+                                            ],
+                                            "scenario": "Commissioning engineers are conducting the final witness testing of a 20 MW industrial solar PV and battery microgrid connecting to the 115 kV utility transmission substation.",
+                                            "lines": [
+                                                    {
+                                                            "speaker": "Sandra Mitchell",
+                                                            "text": "Carlos, we are reviewing your inverter telemetry at the 115 kV Point of Common Coupling. Your central inverters passed the anti-islanding trip test in 1.4 seconds, well under the 2-second ceiling. However, during yesterday's 230 kV line trip in Sonora, your solar plant tripped on under-voltage at 0.88 per-unit. Why didn't your inverters ride through the fault?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Carlos Beltrán",
+                                                            "text": "Good morning, Sandra. We reviewed the relay disturbance fault logs from yesterday at 16:32. The inverters were originally configured under legacy IEEE 1547-2003 default trip curves with instantaneous under-voltage tripping enabled. We updated the firmware yesterday evening to IEEE 1547-2018 Category III ride-through settings."
+                                                    },
+                                                    {
+                                                            "speaker": "Sandra Mitchell",
+                                                            "text": "Can you confirm the exact Category III Low Voltage Ride-Through parameters programmed into the inverter controllers?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Carlos Beltrán",
+                                                            "text": "Confirmed: The inverters will ride through voltage drops down to 0.5 per-unit for up to 10 seconds, down to 0.0 per-unit for 1.0 second, and will continuously inject dynamic reactive current to support grid voltage recovery."
+                                                    },
+                                                    {
+                                                            "speaker": "Sandra Mitchell",
+                                                            "text": "What about your Volt-VAr curve settings? When solar irradiance peaks at noon, our local 115 kV bus tends to rise to 1.04 per-unit."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Carlos Beltrán",
+                                                            "text": "Our Volt-VAr function is actively configured per IEEE 1547 curve: At nominal 1.0 p.u., power factor is 1.0. If bus voltage climbs past 1.02 p.u., the inverters immediately ramp up reactive power absorption up to 44% of rated kVA, pulling bus voltage back toward nominal without curtailing active kilowatt production."
+                                                    },
+                                                    {
+                                                            "speaker": "Sandra Mitchell",
+                                                            "text": "And your IEEE 519 Total Harmonic Distortion at the metering skid?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Carlos Beltrán",
+                                                            "text": "Our power quality meter logged a maximum Voltage THD of 1.8% and current TDD of 2.9%, both comfortably below the IEEE 519 limits of 5.0%."
+                                                    },
+                                                    {
+                                                            "speaker": "Sandra Mitchell",
+                                                            "text": "Excellent engineering work, Carlos. Your telemetry passes all transmission interconnect requirements. You are authorized to commence full commercial commercial synchronization."
+                                                    }
+                                            ]
+                                    }
+                            ],
+                            "lexicon": [
+                                    {
+                                            "term": "Point of Common Coupling (PCC)",
+                                            "ipa": "/pɔɪnt əv ˈkɑː.mən ˈkʌp.lɪŋ/",
+                                            "definition": "The exact physical and electrical point of connection between the electric utility system and the industrial consumer or distributed generation facility where regulatory compliance is measured.",
+                                            "collocations": [
+                                                    "measure at the PCC",
+                                                    "PCC metering instrument",
+                                                    "PCC voltage regulation"
+                                            ],
+                                            "auditTrap": "Do not measure harmonic distortion or power factor at internal inverter terminals; the legal compliance boundary is strictly the PCC revenue meter."
+                                    },
+                                    {
+                                            "term": "Anti-Islanding Protection",
+                                            "ipa": "/ˈæn.t̬i ˈaɪ.lən.dɪŋ prəˈtɛk.ʃən/",
+                                            "definition": "A mandatory automatic safety feature in distributed generation inverters that detects loss of utility grid voltage and immediately disconnects power within 2 seconds to prevent back-feeding.",
+                                            "collocations": [
+                                                    "trigger anti-islanding",
+                                                    "prevent unintentional islanding",
+                                                    "certified anti-islanding protocol"
+                                            ],
+                                            "auditTrap": "Unintentional islanding is an imminent life hazard for utility lineworkers. A failure to trip within 2 seconds results in immediate disconnection and revocation of grid access."
+                                    },
+                                    {
+                                            "term": "Voltage Ride-Through (VRT / LVRT)",
+                                            "ipa": "/ˈvoʊl.tɪdʒ raɪd θruː/",
+                                            "definition": "The capability of an electrical generation system to remain connected and operating during short periods of abnormally low or high grid voltage without tripping.",
+                                            "collocations": [
+                                                    "low-voltage ride-through",
+                                                    "HVRT withstand curve",
+                                                    "satisfy VRT criteria"
+                                            ],
+                                            "auditTrap": "Tripping during minor transmission voltage dips violates modern grid codes (IEEE 1547 and Mexican Código de Red), generating heavy financial penalties."
+                                    },
+                                    {
+                                            "term": "Total Harmonic Distortion (THD)",
+                                            "ipa": "/ˈtoʊ.t̬əl hɑːrˈmɑːn.ɪk dɪˈstɔːr.ʃən/",
+                                            "definition": "A mathematical measurement of the harmonic distortion present in a signal, defined as the ratio of the sum of the powers of all harmonic components to the power of the fundamental frequency.",
+                                            "collocations": [
+                                                    "keep voltage THD below 5%",
+                                                    "harmonic filter attenuation",
+                                                    "IEEE 519 THD limit"
+                                            ],
+                                            "auditTrap": "High THD causes severe overheating in distribution transformers, motor vibration, nuisance tripping of circuit breakers, and telecommunication interference."
+                                    },
+                                    {
+                                            "term": "Inverter-Based Resource (IBR)",
+                                            "ipa": "/ɪnˈvɝː.t̬ɚ beɪst ˈriː.sɔːrs/",
+                                            "definition": "An electrical generation or storage system (such as solar photovoltaic panels, wind turbines, or battery storage) that connects to the electric grid through power electronic inverters rather than traditional rotating synchronous machines.",
+                                            "collocations": [
+                                                    "penetration of IBRs",
+                                                    "IBR grid-forming inverter",
+                                                    "IBR synthetic inertia"
+                                            ],
+                                            "auditTrap": "IBRs lack mechanical rotating mass and therefore provide zero inherent physical inertia; grid stability requires programming artificial 'synthetic inertia' or fast frequency response."
+                                    },
+                                    {
+                                            "term": "Volt-VAr Control ($Q(V)$)",
+                                            "ipa": "/voʊlt vɑːr kənˈtroʊl/",
+                                            "definition": "An autonomous inverter control mode that adjusts the injection or absorption of reactive power (VArs) as a function of the grid terminal voltage to support voltage stabilization.",
+                                            "collocations": [
+                                                    "enable Volt-VAr mode",
+                                                    "reactive power injection",
+                                                    "Volt-VAr droop curve"
+                                            ],
+                                            "auditTrap": "Absorbing too much reactive power can decrease the inverter's active kilowatt capacity if the inverter apparent power (kVA) rating is saturated."
+                                    }
+                            ],
+                            "socraticChallenges": [
+                                    {
+                                            "id": "eng-m3-sc1",
+                                            "title": "Explaining Inverter Grid-Following vs Grid-Forming Modes",
+                                            "prompt": "During microgrid engineering design, a client asks why standard solar inverters shut down when the main utility substation goes dark, even with bright midday sun. How do you technically explain the difference between Grid-Following and Grid-Forming inverters?",
+                                            "idealResponse": "Explain that standard solar inverters are 'Grid-Following' (grid-tied); they rely on phase-locked loops (PLL) to detect existing utility AC voltage and frequency waveforms to synchronize their current injection. When the grid goes dark, anti-islanding trips them offline to protect lineworkers. To operate autonomously without the utility grid, the facility requires 'Grid-Forming' inverters (typically paired with BESS) that actively establish the reference AC voltage sine wave, frequency, and synthetic inertia, allowing the microgrid to form a stable electrical island."
+                                    },
+                                    {
+                                            "id": "eng-m3-sc2",
+                                            "title": "Defending Against Voltage Spikes During Peak Solar Export",
+                                            "prompt": "A distribution utility issues a formal warning that your 5 MW industrial rooftop solar system is driving local 13.8 kV distribution feeder voltage up to 14.5 kV (+5.1%) at 13:00, tripping neighbor manufacturing facilities. What engineering countermeasure under IEEE 1547 resolves this without wasting clean energy?",
+                                            "idealResponse": "Activate the IEEE 1547 autonomous Volt-VAr control function on the smart inverters. Program the inverters to operate with an inductive power factor (absorbing reactive power) as voltage approaches 1.03 p.u., up to 44% of inverter nameplate kVA rating. This reactive power absorption counteracts the line impedance voltage rise without curtailing active solar megawatt generation, stabilizing the 13.8 kV feeder within standard ANSI C84.1 Range A limits."
+                                    }
+                            ],
+                            "quiz": [
+                                    {
+                                            "question": "Under IEEE 1547-2018, what is the maximum permissible time within which a distributed generation system must detect an unintentional island and cease energizing the utility grid?",
+                                            "options": [
+                                                    "Within 2.0 seconds.",
+                                                    "Within 10.0 seconds.",
+                                                    "Within 60.0 seconds.",
+                                                    "Within 5 minutes."
+                                            ],
+                                            "correctIndex": 0,
+                                            "explanation": "IEEE 1547 Clause 8 mandates that distributed generation resources must detect unintentional islanding conditions and disconnect/cease energization within 2.0 seconds to protect personnel and equipment."
+                                    },
+                                    {
+                                            "question": "What is the primary operational objective of 'Low-Voltage Ride-Through' (LVRT) in modern smart inverters?",
+                                            "options": [
+                                                    "To cut power immediately so that the utility company can repair lines.",
+                                                    "To remain connected and synchronized during transient voltage drops, actively supporting grid voltage recovery rather than tripping offline.",
+                                                    "To recharge electric vehicle fleets during grid emergencies.",
+                                                    "To convert alternating current back into mechanical flywheel rotation."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "LVRT requires inverters to remain online through defined short-circuit and transient voltage sags to prevent sudden loss of aggregate generation that could trigger cascading electrical blackouts."
+                                    },
+                                    {
+                                            "question": "Under IEEE 519-2022 standards, what is the maximum allowable Total Voltage Harmonic Distortion (THD) at the Point of Common Coupling for systems operating up to 69 kV?",
+                                            "options": [
+                                                    "1.0%",
+                                                    "5.0%",
+                                                    "12.0%",
+                                                    "25.0%"
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "IEEE 519-2022 establishes that for distribution voltages at or below 69 kV, the maximum acceptable Voltage THD at the Point of Common Coupling (PCC) is 5.0%."
+                                    },
+                                    {
+                                            "question": "What differentiates a 'Grid-Forming' inverter from a conventional 'Grid-Following' inverter?",
+                                            "options": [
+                                                    "Grid-forming inverters are painted yellow and only operate on single-phase circuits.",
+                                                    "Grid-forming inverters actively generate and control the AC voltage magnitude and frequency waveform, enabling islanded microgrid operation without utility presence.",
+                                                    "Grid-forming inverters do not require solar panels or batteries.",
+                                                    "Grid-following inverters can only be installed in residential homes."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Grid-following inverters must follow an external voltage/frequency reference provided by the grid. Grid-forming inverters act as an independent voltage source, establishing their own frequency and voltage to power an islanded grid."
+                                    }
+                            ]
+                    },
+                    {
+                            "id": "eng-m4",
+                            "title": "High-Voltage Substation Engineering & Electrical Safety (Transformers, GIS, Arc Flash)",
+                            "titleES": "Ingeniería de Subestaciones de Alta Tensión y Seguridad Eléctrica (Transformadores, GIS, Arc Flash)",
+                            "icon": "fa-solid fa-bolt-lightning",
+                            "isGoldModel": true,
+                            "readings": [
+                                    {
+                                            "id": "eng-m4-r1",
+                                            "title": "Substation Anatomy: Power Transformers, SF6 Gas-Insulated Switchgear (GIS) & Grounding Grid (IEEE 80)",
+                                            "duration": "15 min",
+                                            "content": "> **High-Voltage Electrical Standard**: **IEEE C57.12 (Power Transformers)**, **IEEE 80 (Guide for Safety in AC Substation Grounding)**, and **IEC 62271-203 (Gas-Insulated Switchgear)**.\n\n# High-Voltage Industrial Substation Architecture\n\n### 1. Power Transformers & Health Diagnostics\nIndustrial power transformers step down transmission grid voltages (e.g., 230 kV or 115 kV) to medium distribution voltage (e.g., 13.8 kV or 34.5 kV):\n- **Dielectric Mineral Oil / Ester Fluid**: Acts as both electrical insulation and convective heat-transfer medium.\n- **Dissolved Gas Analysis (DGA)**: The premier predictive diagnostic tool for power transformers. Gas chromatography measures concentrations of combustible gases dissolved in oil:\n  - **Hydrogen ($H_2$)**: Corona discharge or partial arcing.\n  - **Methane ($CH_4$) & Ethane ($C_2H_6$)**: Low to medium thermal overheating ($150^{\\circ}\\text{C} - 500^{\\circ}\\text{C}$).\n  - **Ethylene ($C_2H_4$)**: Severe high-temperature thermal oil degradation ($>700^{\\circ}\\text{C}$).\n  - **Acetylene ($C_2H_2$)**: High-energy electrical arcing. The presence of even **1 ppm of Acetylene** triggers emergency transformer shutdown.\n\n### 2. Gas-Insulated Switchgear (GIS) vs Air-Insulated Substation (AIS)\n- **Air-Insulated Substations (AIS)**: Utilize ambient atmospheric air as electrical insulation. Require massive physical clearance distances (thousands of square meters of land) and are vulnerable to dust, humidity, and coastal salt contamination.\n- **Gas-Insulated Switchgear (GIS)**: Encloses high-voltage conductors, circuit breakers, and disconnectors inside sealed aluminum tanks pressurized with **Sulfur Hexafluoride ($SF_6$)** gas.\n  - **Footprint Advantage**: GIS consumes only **10% to 15% of the physical land area** of an AIS, making it ideal for urban data centers and densely packed industrial parks.\n  - **Dielectric Strength**: $SF_6$ possesses 3 times the dielectric breakdown strength of air and 10 times the arc-quenching capability.\n\n### 3. Substation Grounding Grid Safety under IEEE 80\nSubstation grounding grids prevent fatal electrical shocks during high-voltage phase-to-ground faults:\n- **Step Potential**: The potential difference between a person's feet spaced 1 meter apart on the earth's surface without touching any grounded structure.\n- **Touch Potential**: The potential difference between a person’s hand touching a grounded metal enclosure (transformer tank, fence) and the earth surface where their feet are standing during a ground fault.\n- **Mitigation**: Crushed rock / gravel layer ($10-15\\text{ cm}$ thick with high electrical resistivity) spread over the ground grid to increase contact resistance and keep human body currents below fibrillation thresholds."
+                                    },
+                                    {
+                                            "id": "eng-m4-r2",
+                                            "title": "Electrical Hazard Mitigation: NFPA 70E Arc Flash Boundary Calculations, Incident Energy (cal/cm2) & Switching Orders",
+                                            "duration": "14 min",
+                                            "content": "> **Electrical Workplace Safety Standard**: **NFPA 70E Standard for Electrical Safety in the Workplace (2024)** and **IEEE 1584 Guide for Performing Arc-Flash Hazard Calculations**.\n\n# NFPA 70E Arc Flash Safety & Switching Order Discipline\n\n### 1. The Anatomy of an Arc Flash\nAn electrical arc flash is an explosive high-energy plasma discharge caused by an ionized air phase-to-phase or phase-to-ground fault. Temperatures inside an arc flash reach **$19,000^{\\circ}\\text{C}$ ($35,000^{\\circ}\\text{F}$)**—four times hotter than the surface of the sun:\n- **Blast Pressure Wave**: Copper instantly vaporizes, expanding 67,000 times in volume, creating a concussive shockwave exceeding 2,000 lbs/sq ft capable of rupturing eardrums and collapsing lungs.\n- **Incident Energy**: The amount of thermal energy imparted to a surface at a specified working distance, measured in **calories per square centimeter ($\\text{cal/cm}^2$)**.\n- **Threshold of Second-Degree Burn**: $1.2\\text{ cal/cm}^2$. Any energy level exceeding $1.2\\text{ cal/cm}^2$ requires specialized flame-resistant (FR) and arc-rated (AR) PPE.\n- **Dangerous Hazard Threshold**: If calculated incident energy exceeds **$40\\text{ cal/cm}^2$**, electrical equipment is deemed **Category Dangerous / No Safe PPE Exists**—energized work is strictly prohibited by law.\n\n### 2. Standardized High-Voltage Switching Orders\nSwitching high-voltage disconnectors and circuit breakers requires a rigorous written **Switching Order**:\n1. **Three-Way Communication**: The dispatcher reads the step; the field operator repeats the step verbatim; the dispatcher confirms 'That is correct'.\n2. **Open Circuit Breaker First**: Never open an air-break disconnector under electrical load! Circuit breakers quench arcs; disconnectors do not. Opening an energized disconnector will generate a catastrophic phase-to-phase arc flash that vaporizes the operator.\n3. **Verify Zero Energy & Apply Personal Safety Grounds**: Use rated hot sticks and calibrated high-voltage proximity detectors, then clamp portable grounding clusters before touching busbars."
+                                    }
+                            ],
+                            "dialogues": [
+                                    {
+                                            "id": "eng-m4-d1",
+                                            "title": "Senior Substation Electrical Engineer vs Utility Switching Inspector: 115 kV Transformer Maintenance Protocol",
+                                            "participants": [
+                                                    {
+                                                            "role": "Plant High-Voltage Engineer (Monterrey, Mexico)",
+                                                            "name": "Ing. Fernando Lozano"
+                                                    },
+                                                    {
+                                                            "role": "Utility Substation Switching Inspector",
+                                                            "name": "Guillermo Reyes"
+                                                    }
+                                            ],
+                                            "scenario": "Field engineers are executing an authorized switching sequence to de-energize and ground a 30 MVA 115 kV/13.8 kV step-down transformer for annual oil sampling and bushing inspection.",
+                                            "lines": [
+                                                    {
+                                                            "speaker": "Guillermo Reyes",
+                                                            "text": "Fernando, we are ready to commence Switching Order #MTY-HV-042. We have three-way communication established with CENACE and utility dispatch. Step 1 on your sheet: Open 13.8 kV secondary main vacuum circuit breaker CB-201 to drop medium-voltage plant load."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Fernando Lozano",
+                                                            "text": "Copy, Guillermo. Step 1: Opening 13.8 kV secondary main vacuum circuit breaker CB-201 to drop plant load. Remote trip command executed. CB-201 indicating green open flag on SCADA and physical flag. Plant load is zero amps."
+                                                    },
+                                                    {
+                                                            "speaker": "Guillermo Reyes",
+                                                            "text": "Confirmed: Secondary load dropped. Step 2: Open 115 kV primary SF6 circuit breaker CB-101. Do not touch disconnector switch DS-101 yet."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Fernando Lozano",
+                                                            "text": "Step 2: Tripping 115 kV primary SF6 breaker CB-101. Breaker open. SF6 pressure indicator reads nominal 6.2 bar. Primary current telemetry reads 0.0 amps."
+                                                    },
+                                                    {
+                                                            "speaker": "Guillermo Reyes",
+                                                            "text": "Confirmed. Breaker CB-101 is open. Step 3: Open 115 kV motorized gang-operated disconnect switch DS-101 to establish visual air-gap isolation."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Fernando Lozano",
+                                                            "text": "Step 3: Opening motorized disconnect switch DS-101. Blades fully rotated to 90 degrees open. Visual air gap verified on all three phases. Lockout hasp and personal padlock #884 applied to manual operating crank."
+                                                    },
+                                                    {
+                                                            "speaker": "Guillermo Reyes",
+                                                            "text": "Excellent. Step 4: Verify zero potential and apply portable safety grounding clusters on the transformer 115 kV primary bushings."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Fernando Lozano",
+                                                            "text": "Step 4: Putting on 40 cal/cm² arc flash suit, electrical class 4 insulating gloves, and taking the calibrated live-line audio/visual detector hot stick. Touching Phase A: silent, no red light. Phase B: silent. Phase C: silent. Zero potential confirmed. Now attaching the 4/0 copper grounding cluster to the station ground grid bus first, then clamping to the transformer high-voltage bushings."
+                                                    },
+                                                    {
+                                                            "speaker": "Guillermo Reyes",
+                                                            "text": "Station ground grid connection made first, high-voltage clamps secured second. That satisfies NFPA 70E and IEEE 80 de-energization criteria. The 30 MVA transformer is officially isolated, de-energized, grounded, and safe for hands-on maintenance."
+                                                    }
+                                            ]
+                                    }
+                            ],
+                            "lexicon": [
+                                    {
+                                            "term": "Gas-Insulated Switchgear (GIS)",
+                                            "ipa": "/ɡæs ˈɪn.sə.leɪ.t̬ɪd ˈswɪtʃ.ɡɪr/",
+                                            "definition": "High-voltage electrical switchgear where circuit breakers, disconnectors, and busbars are housed in sealed metal tanks filled with pressurized sulfur hexafluoride (SF6) dielectric gas.",
+                                            "collocations": [
+                                                    "compact GIS substation",
+                                                    "SF6 gas pressure monitoring",
+                                                    "GIS disconnector switch"
+                                            ],
+                                            "auditTrap": "SF6 is a potent greenhouse gas with a global warming potential 23,500 times greater than CO2. Strict environmental logs and leak detection are legally required."
+                                    },
+                                    {
+                                            "term": "Incident Energy",
+                                            "ipa": "/ˈɪn.sə.dənt ˈɛn.ɚ.dʒi/",
+                                            "definition": "The amount of thermal energy generated by an electrical arc flash that reaches a person's face or body at a given working distance, expressed in calories per square centimeter (cal/cm2).",
+                                            "collocations": [
+                                                    "calculate incident energy",
+                                                    "arc flash hazard analysis",
+                                                    "exceed 40 cal/cm2 limit"
+                                            ],
+                                            "auditTrap": "Never work energized on panels with incident energy exceeding 40 cal/cm². No PPE is certified to protect against the blast pressure wave at this level."
+                                    },
+                                    {
+                                            "term": "Dissolved Gas Analysis (DGA)",
+                                            "ipa": "/dɪˈzɑːlvd ɡæs əˈnæl.ə.sɪs/",
+                                            "definition": "A laboratory diagnostic test evaluating gases dissolved in transformer insulating oil to identify internal thermal degradation, partial discharge, or electrical arcing.",
+                                            "collocations": [
+                                                    "run a DGA oil sample",
+                                                    "Duval Triangle interpretation",
+                                                    "acetylene generation in DGA"
+                                            ],
+                                            "auditTrap": "Acetylene (C2H2) is an indicator of active electrical arcing. Any detectable level of acetylene warrants immediate transformer de-energization for investigation."
+                                    },
+                                    {
+                                            "term": "Touch Potential vs Step Potential",
+                                            "ipa": "/tʌtʃ pəˈtɛn.ʃəl / stɛp pəˈtɛn.ʃəl/",
+                                            "definition": "Touch potential is the voltage between a grounded metal object and a person's hand during a fault. Step potential is the voltage between a person's feet spaced 1 meter apart on the earth.",
+                                            "collocations": [
+                                                    "IEEE 80 touch potential calculation",
+                                                    "crushed rock surface layer",
+                                                    "mesh ground grid design"
+                                            ],
+                                            "auditTrap": "Touching a metal substation perimeter fence during a transmission fault can be lethal if the fence is not bonded properly to the subterranean grounding grid."
+                                    },
+                                    {
+                                            "term": "Switching Order",
+                                            "ipa": "/ˈswɪtʃ.ɪŋ ˈɔːr.dɚ/",
+                                            "definition": "A formal, pre-approved, step-by-step written procedure that dictates the exact sequence of opening, closing, isolating, and grounding high-voltage electrical apparatus.",
+                                            "collocations": [
+                                                    "execute a switching order",
+                                                    "three-way verbal communication",
+                                                    "dispatcher switching authorization"
+                                            ],
+                                            "auditTrap": "Never open a disconnector switch while electrical current is flowing. Disconnectors lack arc-extinguishing chambers and will explode in an arc flash."
+                                    },
+                                    {
+                                            "term": "Arc Flash Boundary",
+                                            "ipa": "/ɑːrk flæʃ ˈbaʊn.dɚ.i/",
+                                            "definition": "The calculated distance from energized electrical equipment within which incident energy equals 1.2 cal/cm2 (the threshold for second-degree burns).",
+                                            "collocations": [
+                                                    "establish the arc flash boundary",
+                                                    "NFPA 70E boundary label",
+                                                    "approach limit boundary"
+                                            ],
+                                            "auditTrap": "Unqualified personnel are legally prohibited from crossing the Arc Flash Boundary unless escorted by a qualified person and wearing appropriate arc-rated PPE."
+                                    }
+                            ],
+                            "socraticChallenges": [
+                                    {
+                                            "id": "eng-m4-sc1",
+                                            "title": "Challenging Disconnector Opening Under Load",
+                                            "prompt": "A contract electrician wants to open a 13.8 kV air-break disconnector switch without walking over to trip the upstream vacuum circuit breaker first, claiming 'It's only 20 amps of lighting load, the disconnector blades will easily break that'. How do you respond as Substation Lead?",
+                                            "idealResponse": "Order an immediate stop work. Explain that air-break disconnectors are designed strictly for visual physical isolation under zero-current conditions; they have zero arc-quenching capability. Attempting to interrupt even 20 amps at 13,800 volts will draw an sustained electrical plasma arc across the air gap, which will ionize the surrounding air, jump phase-to-phase, and trigger a catastrophic arc flash explosion that will incinerate the switch and inflict fatal third-degree burns. Enforce the non-negotiable rule: Always open the circuit breaker first, verify zero current, and only then open the disconnector."
+                                    },
+                                    {
+                                            "id": "eng-m4-sc2",
+                                            "title": "Interpreting Acetylene in Transformer Oil (DGA)",
+                                            "prompt": "A routine oil test for a critical 25 MVA main plant transformer shows Acetylene (C2H2) at 8 ppm. Plant production urges you to ignore it until the Christmas maintenance shutdown. What is your engineering decision?",
+                                            "idealResponse": "Firmly refuse to defer action. Explain that while hydrogen and methane can arise from normal thermal aging, Acetylene (C2H2) only forms at temperatures exceeding 1,000°C, proving active electrical arcing between winding turns or inside the on-load tap changer (OLTC). Operating a transformer with active electrical arcing risks catastrophic internal dielectric explosion, fire, and multi-month unscheduled plant shutdown. Demand immediate load shedding, thermal imaging, and planned de-energization for internal winding resistance and acoustic partial discharge testing."
+                                    }
+                            ],
+                            "quiz": [
+                                    {
+                                            "question": "In transformer Dissolved Gas Analysis (DGA), the detection of which combustible gas indicates severe high-energy electrical arcing?",
+                                            "options": [
+                                                    "Methane (CH4)",
+                                                    "Acetylene (C2H2)",
+                                                    "Carbon Dioxide (CO2)",
+                                                    "Ethane (C2H6)"
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Acetylene (C2H2) requires temperatures above 1,000°C to synthesize in dielectric mineral oil, serving as the definitive signature of severe electrical arcing."
+                                    },
+                                    {
+                                            "question": "Under NFPA 70E, what thermal incident energy level represents the threshold where curable second-degree burns occur on human skin?",
+                                            "options": [
+                                                    "0.2 cal/cm²",
+                                                    "1.2 cal/cm²",
+                                                    "8.0 cal/cm²",
+                                                    "40.0 cal/cm²"
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "NFPA 70E defines 1.2 cal/cm² as the boundary threshold for the onset of a second-degree burn, triggering the requirement for flame-resistant (FR) clothing and arc-rated PPE."
+                                    },
+                                    {
+                                            "question": "Why must a circuit breaker ALWAYS be opened before opening a high-voltage disconnector switch during a substation switching sequence?",
+                                            "options": [
+                                                    "Because circuit breakers are quieter than disconnectors.",
+                                                    "Because disconnectors lack arc-extinguishing chambers; opening them under electrical load will draw a massive destructive arc flash.",
+                                                    "Because electric utility companies charge higher rates for disconnector operations.",
+                                                    "Because disconnectors can only be opened during daylight hours."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Circuit breakers are engineered with vacuum, oil, or SF6 arc-chutes designed to safely interrupt high currents. Disconnectors only provide visual isolation and will violently explode if opened while carrying electrical load."
+                                    },
+                                    {
+                                            "question": "What is the primary function of the layer of crushed rock/gravel spread across an outdoor substation ground yard under IEEE 80?",
+                                            "options": [
+                                                    "To prevent weeds from growing near electrical transformers.",
+                                                    "To provide a high-resistance surface layer that increases contact resistance between a person's feet and the earth, limiting electric shock current during ground faults.",
+                                                    "To absorb spilled dielectric oil before it reaches the municipal water table.",
+                                                    "To provide traction for high-voltage maintenance crane trucks."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "IEEE 80 specifies that crushed rock (which has high electrical resistivity) increases the contact resistance under human feet, significantly reducing the magnitude of body current during step and touch potential ground fault events."
+                                    }
+                            ]
+                    },
+                    {
+                            "id": "eng-m5",
+                            "title": "Battery Energy Storage Systems (BESS) & Industrial Microgrids",
+                            "titleES": "Sistemas de Almacenamiento por Baterías (BESS) y Microredes Industriales",
+                            "icon": "fa-solid fa-car-battery",
+                            "isGoldModel": true,
+                            "readings": [
+                                    {
+                                            "id": "eng-m5-r1",
+                                            "title": "BESS Chemistry & Architecture: Lithium Iron Phosphate (LFP) vs NMC, C-Rate, State of Health (SOH) & NFPA 855 Fire Safety",
+                                            "duration": "15 min",
+                                            "content": "> **Energy Storage & Fire Safety Standard**: **NFPA 855 Standard for the Installation of Stationary Energy Storage Systems (2023)**, **UL 9540 / UL 9540A (Thermal Runaway Fire Propagation)**, and **IEC 62619**.\n\n# Utility-Scale BESS Engineering & Fire Safety\n\n### 1. Lithium Chemistry Comparison: LFP vs NMC\nUtility-scale and industrial Battery Energy Storage Systems (BESS) primarily utilize two lithium-ion chemistries:\n- **Lithium Iron Phosphate (LFP / $\\text{LiFePO}_4$)**:\n  - **Thermal Stability**: Highly stable olivine crystal structure. Thermal runaway onset temperature is **$270^{\\circ}\\text{C}$**, releasing substantially less oxygen and heat during failure.\n  - **Cycle Life**: **6,000 to 10,000 cycles** at 80% Depth of Discharge (DOD). The industry gold standard for stationary grid storage and data centers.\n- **Lithium Nickel Manganese Cobalt Oxide (NMC / $\\text{LiNiMnCoO}_2$)**:\n  - **Energy Density**: Higher volumetric energy density ($Wh/L$), ideal for electric passenger vehicles.\n  - **Safety Vulnerability**: Thermal runaway onset temperature is much lower (**$150^{\\circ}\\text{C} - 210^{\\circ}\\text{C}$**), releasing volatile oxygen that sustains violent exothermic combustion.\n\n### 2. Operational Metrics: C-Rate, SOC & SOH\n- **C-Rate**: Measures discharge speed relative to battery capacity. A 1C rate discharges the entire capacity in 1 hour (e.g., a 2 MWh battery delivering 2 MW for 1 hour). A 0.25C rate represents a 4-hour duration BESS (2 MWh battery delivering 500 kW for 4 hours).\n- **State of Charge (SOC)**: The current available charge expressed as a percentage of nominal capacity (0% to 100%).\n- **State of Health (SOH)**: The remaining storage capacity relative to the original factory rating. When SOH drops below **70% to 80%**, the battery reaches its end-of-life (EOL) for high-performance grid stabilization.\n\n### 3. Thermal Runaway Mitigation under NFPA 855\n**Thermal Runaway** is an uncontrollable positive feedback loop where internal cell temperatures rise rapidly, vaporizing electrolyte into flammable hydrocarbon gases (hydrogen, carbon monoxide, methane):\n- **Deflagration Venting (NFPA 68)**: Explosion relief panels mounted on container roofs that release explosive gas overpressure upward rather than blasting walls outward into neighboring buildings.\n- **Off-Gas Detection**: Specialized sensors detect microscopic volatile organic off-gassing (VOCs) and carbon monoxide **minutes before** temperature rises or smoke detectors trip, allowing early emergency BESS de-energization and inert gas purging."
+                                    },
+                                    {
+                                            "id": "eng-m5-r2",
+                                            "title": "Microgrid Control Systems: Islanding Transitions, Seamless Black Start, Peak Shaving & Frequency Regulation",
+                                            "duration": "14 min",
+                                            "content": "> **Microgrid Engineering Standard**: **IEEE 2030.7 Standard for the Specification of Microgrid Controllers** and **IEEE 2030.8 (Testing of Microgrid Controllers)**.\n\n# Microgrid Automation & Economic Value Stacking\n\n### 1. The Microgrid Controller Hierarchy\nAn industrial microgrid integrates on-site solar generation, BESS, reciprocating gas generators, and critical factory loads:\n- **Tertiary Control (Economic Optimization)**: Evaluates real-time electricity tariff structures (peak vs off-peak rates), weather forecasts, and factory production schedules to execute **Peak Shaving** (discharging BESS during peak tariff hours to avoid expensive utility demand charges).\n- **Secondary Control (Supervisory Grid Management)**: Manages microgrid voltage and frequency levels, coordinates planned grid disconnections, and synchronizes the microgrid back to the transmission utility.\n- **Primary Control (Millisecond Response)**: Inverter-level autonomous droop control ($P-f$ and $Q-V$) that responds within milliseconds to balance active and reactive power without relying on communications networks.\n\n### 2. Seamless Islanding & Frequency Regulation\n- **Grid-Tied to Islanded Transition**: Upon loss of utility grid voltage, the microgrid controller opens the main Point of Common Coupling (PCC) circuit breaker and signals the BESS grid-forming inverter to transition from current-source mode to voltage-source mode within **16 milliseconds**, keeping critical processes running without interruption.\n- **Fast Frequency Response (FFR)**: BESS can inject full megawatt capacity in under **100 milliseconds**, providing high-value grid stabilization services that traditional mechanical gas turbines (which require minutes to spin up) cannot deliver."
+                                    }
+                            ],
+                            "dialogues": [
+                                    {
+                                            "id": "eng-m5-d1",
+                                            "title": "Microgrid Controls Engineer vs Industrial Plant Director: Seamless Islanding During Grid Blackout",
+                                            "participants": [
+                                                    {
+                                                            "role": "Microgrid Controls Specialist (Saltillo, Mexico)",
+                                                            "name": "Ing. Valeria Esquivel"
+                                                    },
+                                                    {
+                                                            "role": "Manufacturing Plant Director",
+                                                            "name": "Roberto Morales"
+                                                    }
+                                            ],
+                                            "scenario": "A violent summer thunderstorm triggered a total transmission blackout across the Saltillo industrial corridor. The plant director calls the microgrid control room to see why the stamping presses didn't stop.",
+                                            "lines": [
+                                                    {
+                                                            "speaker": "Roberto Morales",
+                                                            "text": "Valeria, I just looked out my office window and the entire industrial park is pitch black. The automotive assembly plant across the highway is completely down, but our stamping presses and robotic welders didn't even flicker. Did the utility grid stay online for us?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Valeria Esquivel",
+                                                            "text": "No, Roberto. The utility 115 kV transmission line suffered a lightning strike and tripped open at 14:02. We lost all utility grid power."
+                                                    },
+                                                    {
+                                                            "speaker": "Roberto Morales",
+                                                            "text": "Then how on earth are our heavy stamping presses still running?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Valeria Esquivel",
+                                                            "text": "Our microgrid automated seamless islanding protocol executed flawlessly. When the CFE transmission feeder lost voltage, our high-speed protection relay opened the main PCC circuit breaker in 25 milliseconds, isolating our plant from the blackout."
+                                                    },
+                                                    {
+                                                            "speaker": "Roberto Morales",
+                                                            "text": "What carried the 8 MW load during the switch?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Valeria Esquivel",
+                                                            "text": "Our 10 MWh Lithium Iron Phosphate (LFP) BESS. The grid-forming inverters switched instantly to voltage-source mode and absorbed the entire 8 MW factory load. There was zero voltage sag on our 13.8 kV distribution bus."
+                                                    },
+                                                    {
+                                                            "speaker": "Roberto Morales",
+                                                            "text": "How long can we sustain manufacturing operations before the batteries are exhausted?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Valeria Esquivel",
+                                                            "text": "Our BESS is currently at 88% State of Charge. At our current 8 MW consumption rate, battery autonomy is 65 minutes. However, our microgrid controller already commanded the two 4 MW natural gas reciprocating generators to initiate black start. They are running, synchronized, and ramping to share load. With the gas generators and our 3 MW rooftop solar array, we can run indefinitely off-grid."
+                                                    },
+                                                    {
+                                                            "speaker": "Roberto Morales",
+                                                            "text": "Valeria, that microgrid investment just saved our plant over $400,000 USD in downtime penalties and scrapped sheet metal. Outstanding engineering execution."
+                                                    }
+                                            ]
+                                    }
+                            ],
+                            "lexicon": [
+                                    {
+                                            "term": "Lithium Iron Phosphate (LFP)",
+                                            "ipa": "/ˈlɪθ.i.əm ˈaɪ.ɚn ˈfɑːs.feɪt/",
+                                            "definition": "A lithium-ion battery chemistry (LiFePO4) featuring high thermal stability, long cycle life (6,000+ cycles), and resistance to thermal runaway, making it the preferred choice for stationary grid storage.",
+                                            "collocations": [
+                                                    "LFP battery chemistry",
+                                                    "LFP thermal runaway resistance",
+                                                    "LFP cycle longevity"
+                                            ],
+                                            "auditTrap": "Do not confuse LFP with NMC. LFP has a lower nominal cell voltage (3.2V vs 3.7V) and lower volumetric density, but significantly superior fire safety characteristics."
+                                    },
+                                    {
+                                            "term": "Thermal Runaway",
+                                            "ipa": "/ˈθɝː.məl ˈrʌn.ə.weɪ/",
+                                            "definition": "An uncontrolled exothermic reaction in battery cells where rising internal temperature accelerates chemical reactions, leading to rapid gas generation, fire, and potential container explosion.",
+                                            "collocations": [
+                                                    "prevent thermal runaway propagation",
+                                                    "UL 9540A testing",
+                                                    "thermal runaway venting"
+                                            ],
+                                            "auditTrap": "Water is the primary extinguishing agent for lithium thermal runaway. Halon or clean agent gaseous systems only suppress external flame but cannot stop internal cell thermal propagation."
+                                    },
+                                    {
+                                            "term": "State of Charge (SOC) vs State of Health (SOH)",
+                                            "ipa": "/steɪt əv tʃɑːrdʒ / steɪt əv hɛlθ/",
+                                            "definition": "SOC indicates current remaining battery capacity as a percentage of total charge (like a fuel gauge). SOH indicates long-term battery degradation and remaining usable lifetime relative to factory specs.",
+                                            "collocations": [
+                                                    "maintain SOC between 20% and 80%",
+                                                    "SOH capacity fade",
+                                                    "battery management system (BMS)"
+                                            ],
+                                            "auditTrap": "Operating a BESS at 100% SOC continuously accelerates battery cell degradation and shortens calendar life."
+                                    },
+                                    {
+                                            "term": "Peak Shaving",
+                                            "ipa": "/piːk ˈʃeɪ.vɪŋ/",
+                                            "definition": "The operational practice of discharging on-site battery storage during periods of highest factory electricity demand to flatten the plant's load profile and eliminate utility peak capacity charges.",
+                                            "collocations": [
+                                                    "execute peak shaving algorithm",
+                                                    "peak demand charge reduction",
+                                                    "economic peak shaving"
+                                            ],
+                                            "auditTrap": "A single 15-minute unmanaged load spike during peak billing hours can establish an industrial customer's high capacity demand charge for the entire month."
+                                    },
+                                    {
+                                            "term": "C-Rate",
+                                            "ipa": "/siː reɪt/",
+                                            "definition": "A normalized measure of the rate at which a battery is discharged or charged relative to its maximum capacity. A 1C rate discharges 100% of capacity in exactly one hour.",
+                                            "collocations": [
+                                                    "0.5C discharge duration",
+                                                    "high C-rate fast charging",
+                                                    "C-rate thermal dissipation"
+                                            ],
+                                            "auditTrap": "Operating a battery at high C-rates (e.g., 2C or 3C) generates internal $I^2R$ resistive heating, demanding heavy liquid cooling to prevent thermal degradation."
+                                    },
+                                    {
+                                            "term": "Microgrid Controller",
+                                            "ipa": "/ˈmaɪ.kroʊ.ɡrɪd kənˈtroʊ.lɚ/",
+                                            "definition": "An intelligent supervisory automation system (IEEE 2030.7) that orchestrates distributed energy resources, energy storage, and loads to maintain stability in both grid-connected and islanded modes.",
+                                            "collocations": [
+                                                    "IEEE 2030.7 controller compliance",
+                                                    "autonomous microgrid islanding",
+                                                    "economic dispatch engine"
+                                            ],
+                                            "auditTrap": "A microgrid controller must possess hardwired fast-trip inputs; relying on standard cloud Wi-Fi or high-latency Ethernet for islanding transitions will drop plant loads."
+                                    }
+                            ],
+                            "socraticChallenges": [
+                                    {
+                                            "id": "eng-m5-sc1",
+                                            "title": "Defending LFP vs NMC Chemistry for Indoor Data Centers",
+                                            "prompt": "A project manager wants to purchase cheaper NMC electric vehicle batteries for a stationary data center UPS room because 'they take up 30% less floor space'. As Lead Energy Engineer, how do you challenge this using NFPA 855 and UL 9540 standards?",
+                                            "idealResponse": "Strictly reject the NMC proposal. Explain that NMC chemistry experiences thermal runaway at much lower temperatures (150-210°C) and releases free oxygen, creating intense self-sustaining chemical fires that cannot be extinguished by water or inert gas. In contrast, Lithium Iron Phosphate (LFP) has a much higher thermal threshold (270°C) with olivine bonding that binds oxygen tightly. Point out that under NFPA 855 and UL 9540A testing, LFP cells prevent cell-to-cell cascading fire propagation, ensuring life safety and satisfying property insurance underwriting requirements."
+                                    },
+                                    {
+                                            "id": "eng-m5-sc2",
+                                            "title": "Optimizing BESS Peak Shaving vs Battery Degradation",
+                                            "prompt": "The plant accounting department wants to cycle the BESS from 100% down to 0% twice every single day to maximize peak shaving electricity savings. How do you technically explain why this strategy destroys asset ROI?",
+                                            "idealResponse": "Explain that cycling a lithium battery across 100% Depth of Discharge (DOD) with extreme high/low State of Charge induces intense mechanical stress and lithium plating on the graphite anodes, accelerating capacity fade and reducing battery State of Health (SOH) by up to 5x. Present a mathematical model showing that restricting cycling to an optimal 20%–80% SOC band captures 85% of peak shaving revenue while extending battery operational life from 3 years to over 10 years, drastically improving overall project Return on Investment."
+                                    }
+                            ],
+                            "quiz": [
+                                    {
+                                            "question": "Why is Lithium Iron Phosphate (LFP) widely preferred over NMC chemistry for stationary utility and industrial BESS installations?",
+                                            "options": [
+                                                    "Because LFP batteries are made entirely of recycled lead.",
+                                                    "Because LFP exhibits significantly higher thermal stability, resists thermal runaway oxygen release, and provides over double the cycle life.",
+                                                    "Because LFP batteries do not require electrical inverters.",
+                                                    "Because LFP is only produced in Germany."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "LFP's chemical structure holds oxygen securely in iron phosphate bonds, preventing the catastrophic oxygen release seen in NMC thermal runaway while offering 6,000–10,000 cycle durability."
+                                    },
+                                    {
+                                            "question": "What does a battery 'C-Rate' of 0.25C represent in operational terms?",
+                                            "options": [
+                                                    "The battery discharges 25% of its capacity per second.",
+                                                    "A discharge duration of 4 hours at rated output capacity.",
+                                                    "The battery is operating at 25 degrees Celsius.",
+                                                    "The battery requires 25 hours to disconnect from the grid."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "C-Rate is the inverse of discharge hours: $1 / 0.25\\text{C} = 4\\text{ hours}$. A 0.25C battery delivers its full energy capacity over a continuous four-hour period."
+                                    },
+                                    {
+                                            "question": "Under NFPA 855 guidelines, what is the primary function of 'Deflagration Venting' on stationary BESS containers?",
+                                            "options": [
+                                                    "To circulate fresh air for technician comfort.",
+                                                    "To relieve explosive gas overpressure upward through roof panels during thermal runaway, preventing violent container rupture and structural collapse.",
+                                                    "To collect rainwater for cooling towers.",
+                                                    "To provide emergency exit routes for operators."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Deflagration venting panels (NFPA 68) burst at calibrated low pressures to vent explosive off-gases vertically into the atmosphere before internal pressures cause explosive container disintegration."
+                                    },
+                                    {
+                                            "question": "In industrial microgrid operations, what is the primary financial objective of 'Peak Shaving'?",
+                                            "options": [
+                                                    "To eliminate all electricity consumption on weekends.",
+                                                    "To discharge stored battery energy during peak tariff hours to flatten electrical demand spikes and reduce expensive utility capacity charges.",
+                                                    "To generate cryptocurrency when factory lines are paused.",
+                                                    "To sell solar panels back to the manufacturer."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Peak shaving discharges BESS to clip the peaks off an industrial facility's power demand curve, preventing high peak capacity kilowatt charges levied by electric utilities."
+                                    }
+                            ]
+                    },
+                    {
+                            "id": "eng-m6",
+                            "title": "CFE Industrial Grid Compliance (Código de Red Mexicano) & Power Quality",
+                            "titleES": "Cumplimiento del Código de Red de CFE/CRE y Calidad de la Energía Eléctrica",
+                            "icon": "fa-solid fa-gauge-high",
+                            "isGoldModel": true,
+                            "readings": [
+                                    {
+                                            "id": "eng-m6-r1",
+                                            "title": "Mexico’s Código de Red 2.0 (CRE / CFE): Power Factor Requirements (0.95 to 1.0) & Penalty Structures",
+                                            "duration": "15 min",
+                                            "content": "> **Mexican National Grid Code**: **Disposiciones Administrativas de Carácter General que contienen los criterios de eficiencia, calidad, confiabilidad, continuidad, seguridad y sustentabilidad del Sistema Eléctrico Nacional: CÓDIGO DE RED 2.0** (Comisión Reguladora de Energía - CRE / CENACE / CFE).\n\n# Código de Red 2.0 & High-Voltage Industrial Compliance\n\n### 1. The Legal Scope of Código de Red\nIn Mexico, all Medium Voltage (Media Tensión - MT) and High Voltage (Alta Tensión - AT) industrial consumers connected to the National Electric System (SEN) must comply with mandatory power quality and operational standards:\n- **Regulatory Authority**: Enforced by the **Comisión Reguladora de Energía (CRE)** with grid dispatch monitoring by **CENACE (Centro Nacional de Control de Energía)**.\n- **Financial Penalties**: Non-compliance fines range from **50,000 to 200,000 minimum wages** (millions of Mexican Pesos) or **2% to 10% of the gross annual revenue** of the non-compliant industrial facility under Ley de la Industria Eléctrica (LIE) Art. 165.\n\n### 2. The Power Factor Mandate (Factor de Potencia)\nOne of the most heavily scrutinized parameters under Código de Red:\n- **Historical Requirement**: Power Factor ($FP$) $\\ge 0.90$ lagging.\n- **Código de Red Requirement**: Industrial centers connected at High Voltage must maintain a Power Factor between **$0.95$ lagging and $1.0$ during 95% of the monthly 5-minute measurement intervals**.\n- **The Capacitive Penalty Trap**: Under no circumstances may an industrial consumer operate with a **leading (capacitive) power factor**. Over-compensating with unswitched capacitor banks during weekend low-load conditions causes voltage swelling in CFE distribution substations and triggers severe regulatory violation notices."
+                                    },
+                                    {
+                                            "id": "eng-m6-r2",
+                                            "title": "Industrial Power Quality Engineering: Voltage Sags, Flicker, Harmonics Mitigation & IEC 61850 Substation Automation",
+                                            "duration": "14 min",
+                                            "content": "> **Power Quality Engineering Standard**: **IEEE 1159 (Monitoring Electric Power Quality)**, **IEC 61000-4-15 (Flicker)**, and **IEC 61850 (Communication Networks and Systems for Power Utility Automation)**.\n\n# Industrial Power Quality & Substation Automation\n\n### 1. Power Quality Phenomena in Advanced Manufacturing\nAutomated automotive stamping lines, CNC centers, and semiconductor fabrication tools are hypersensitive to transient power disturbances:\n- **Voltage Sag (Dip)**: A sudden reduction in RMS voltage between **10% and 90%** of nominal voltage, lasting from 0.5 cycles to 1 minute, typically caused by distant lightning strikes or utility line faults. Sags represent over **80% of all industrial power quality downtime events**.\n- **Voltage Swell**: A momentary increase in RMS voltage above 110% of nominal.\n- **Voltage Flicker ($P_{st}$ and $P_{lt}$)**: Rapid, periodic voltage fluctuations (caused by electric arc furnaces, large rock crushers, or resistance welders) that cause visible lamp flicker and motor torque ripple.\n- **Active Harmonic Filters (AHF)**: Modern power electronic devices that measure harmonic current in real time and synthesize an exact equal and opposite harmonic cancellation waveform within microseconds, driving THD below 3%.\n\n### 2. Substation Automation: The IEC 61850 Protocol\nModern industrial substations replacing copper hardwired control cables with digital optical fiber buses:\n- **GOOSE (Generic Object Oriented Substation Events)**: Ultra-fast peer-to-peer multicast messaging that transmits protection trip commands between relays in less than **4 milliseconds**.\n- **Sampled Values (SV)**: Digitized high-speed voltage and current waveform streaming from optical instrument transformers to digital protection relays over redundant Ethernet."
+                                    }
+                            ],
+                            "dialogues": [
+                                    {
+                                            "id": "eng-m6-d1",
+                                            "title": "Plant Electrical Director vs CFE/CENACE Grid Compliance Auditor: Power Factor & Código de Red Review",
+                                            "participants": [
+                                                    {
+                                                            "role": "Director of Electrical Engineering (Toluca, Mexico)",
+                                                            "name": "Ing. Homero Salinas"
+                                                    },
+                                                    {
+                                                            "role": "CRE / CFE Grid Code Compliance Auditor",
+                                                            "name": "Lic. Andrea Mondragón"
+                                                    }
+                                            ],
+                                            "scenario": "An official CRE / CFE audit of an automotive Tier 1 stamping and injection molding plant to inspect 12 months of revenue meter power quality telemetry under Mexico's Código de Red 2.0.",
+                                            "lines": [
+                                                    {
+                                                            "speaker": "Lic. Andrea Mondragón",
+                                                            "text": "Good afternoon, Ing. Salinas. We have completed our analysis of your 115 kV revenue metering data recorded at your Point of Connection for the past twelve months. We are evaluating your facility against Código de Red 2.0 requirements."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Homero Salinas",
+                                                            "text": "Good afternoon, Lic. Mondragón. Welcome to our facility. We completed a comprehensive power quality upgrade last year, including new active harmonic filters. What did your 5-minute telemetry show?"
+                                                    },
+                                                    {
+                                                            "speaker": "Lic. Andrea Mondragón",
+                                                            "text": "Looking at your Power Factor: Under Código de Red Section 3.7, you must maintain a Power Factor between 0.95 lagging and 1.0 for at least 95% of monthly 5-minute intervals. Your facility achieved an outstanding 98.4% monthly compliance. However, during Easter week shutdown, your meter recorded a leading power factor of 0.97 capacitive for 18 consecutive hours."
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Homero Salinas",
+                                                            "text": "Thank you for noting that. That occurred during our annual plant maintenance shutdown. Our primary production load dropped from 15 MW down to 800 kW, but our legacy fixed capacitor bank on Substation 2 remained manually energized, causing overcompensation."
+                                                    },
+                                                    {
+                                                            "speaker": "Lic. Andrea Mondragón",
+                                                            "text": "Operating in capacitive mode is strictly penalized because it elevates utility grid voltage and creates voltage regulation instability for neighboring industrial plants. What corrective action was taken?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Homero Salinas",
+                                                            "text": "We decommissioned the fixed capacitor bank completely and installed a 3.5 MVAR Static VAr Generator (SVG) with automated PLC interlocks. The SVG modulates reactive power continuously in real time. If the plant drops to zero load, the SVG injects zero reactive power, eliminating any possibility of capacitive leading power factor."
+                                                    },
+                                                    {
+                                                            "speaker": "Lic. Andrea Mondragón",
+                                                            "text": "And your harmonic distortion levels under IEEE 519 and Código de Red limits?"
+                                                    },
+                                                    {
+                                                            "speaker": "Ing. Homero Salinas",
+                                                            "text": "Our Total Voltage Harmonic Distortion (THD) is at 1.4% with maximum individual 5th and 7th harmonics below 0.9%. All protection relays are integrated via IEC 61850 optical GOOSE messaging with direct digital telemetry reporting to CENACE."
+                                                    },
+                                                    {
+                                                            "speaker": "Lic. Andrea Mondragón",
+                                                            "text": "Your engineering countermeasure with the Static VAr Generator completely resolves the capacitive vulnerability. Your facility receives full certification of compliance with Código de Red 2.0."
+                                                    }
+                                            ]
+                                    }
+                            ],
+                            "lexicon": [
+                                    {
+                                            "term": "Código de Red (CRE)",
+                                            "ipa": "/ˈkoʊ.dɪ.ɡoʊ deɪ rɛd/",
+                                            "definition": "The mandatory technical and legal regulatory framework enacted by Mexico's Comisión Reguladora de Energía (CRE) governing efficiency, reliability, power quality, and safety for all industrial consumers connected to the national electrical grid.",
+                                            "collocations": [
+                                                    "comply with Código de Red",
+                                                    "CRE regulatory audit",
+                                                    "Código de Red technical criteria"
+                                            ],
+                                            "auditTrap": "Failure to comply with Código de Red carries penalties up to 10% of the industrial company's gross annual revenue under Mexican federal law."
+                                    },
+                                    {
+                                            "term": "Power Factor (PF)",
+                                            "ipa": "/ˈpaʊ.ɚ ˈfæk.tɚ/",
+                                            "definition": "The ratio of real active power (kW) absorbed by the load to the apparent power (kVA) flowing in the circuit, representing how effectively electrical power is converted into productive work.",
+                                            "collocations": [
+                                                    "0.95 power factor mandate",
+                                                    "lagging power factor",
+                                                    "capacitive power factor penalty"
+                                            ],
+                                            "auditTrap": "Operating with a capacitive (leading) power factor is strictly illegal under Código de Red because it forces voltage swells back onto the CFE transmission grid."
+                                    },
+                                    {
+                                            "term": "Static VAr Generator (SVG)",
+                                            "ipa": "/ˈstæt̬.ɪk vɑːr ˈdʒɛn.ə.reɪ.t̬ɚ/",
+                                            "definition": "An advanced power electronics device using IGBT inverters that dynamically generates or absorbs reactive power instantaneously to maintain unity power factor without physical capacitor steps.",
+                                            "collocations": [
+                                                    "deploy an SVG system",
+                                                    "instantaneous reactive compensation",
+                                                    "SVG power quality correction"
+                                            ],
+                                            "auditTrap": "Unlike traditional electromechanical capacitor banks that step in chunks and degrade over time, SVGs provide stepless, sub-cycle bidirectional compensation."
+                                    },
+                                    {
+                                            "term": "Voltage Sag (Dip)",
+                                            "ipa": "/ˈvoʊl.tɪdʒ sæɡ/",
+                                            "definition": "A transient drop in electrical voltage between 10% and 90% of nominal voltage lasting from 0.5 cycles to 1 minute, representing the primary cause of industrial automation trip-outs.",
+                                            "collocations": [
+                                                    "voltage sag ride-through",
+                                                    "SEMI F47 sag standard",
+                                                    "deep voltage sag event"
+                                            ],
+                                            "auditTrap": "Standard surge protectors do not protect against voltage sags; sags require active UPS systems, flywheel storage, or dynamic voltage restorers (DVR)."
+                                    },
+                                    {
+                                            "term": "Active Harmonic Filter (AHF)",
+                                            "ipa": "/ˈæk.tɪv hɑːrˈmɑːn.ɪk ˈfɪl.tɚ/",
+                                            "definition": "A parallel power electronic filter that continuously monitors non-linear load harmonics and injects opposing phase currents to cancel out distortion in real time.",
+                                            "collocations": [
+                                                    "install parallel AHFs",
+                                                    "harmonic cancellation waveform",
+                                                    "drive THD below 3%"
+                                            ],
+                                            "auditTrap": "Passive harmonic filters (LC traps) can create unwanted system resonances with the utility transformer; AHFs eliminate resonance risk through active digital control."
+                                    },
+                                    {
+                                            "term": "IEC 61850 GOOSE Protocol",
+                                            "ipa": "/aɪ iː siː sɪks wʌn eɪt faɪv zɪr.oʊ ɡuːs/",
+                                            "definition": "An international standard protocol for substation automation featuring Generic Object Oriented Substation Events (GOOSE) for peer-to-peer transmission of protection trips over optical Ethernet in under 4 ms.",
+                                            "collocations": [
+                                                    "IEC 61850 digital substation",
+                                                    "GOOSE trip messaging",
+                                                    "fiber optic substation LAN"
+                                            ],
+                                            "auditTrap": "GOOSE operates at Layer 2 (Data Link) of the OSI model; it does not use IP routing, which is why it achieves sub-4-millisecond mission-critical speed."
+                                    }
+                            ],
+                            "socraticChallenges": [
+                                    {
+                                            "id": "eng-m6-sc1",
+                                            "title": "Defending Against Capacitive Leading Power Factor Fines",
+                                            "prompt": "A plant engineer proudly reports that they added three large capacitor banks to 'push our Power Factor all the way to 0.98 leading'. As Electrical Director, why must you immediately reverse this action before CFE/CRE conducts an inspection?",
+                                            "idealResponse": "Explain that while lagging (inductive) power factor has historically been penalized, operating with a leading (capacitive) power factor is strictly prohibited under Mexico's Código de Red 2.0. Capacitive power factor injects excess reactive power into the utility transmission system, causing local voltage swells and risking ferroresonance in utility transformers. CFE meters detect leading power factor as a severe non-compliance triggering major regulatory fines. Instruct the engineer to decommission fixed capacitors and implement an automated Static VAr Generator (SVG) that holds power factor strictly between 0.95 and 1.0 lagging."
+                                    },
+                                    {
+                                            "id": "eng-m6-sc2",
+                                            "title": "Diagnosing Mystery Line Shutdowns from Voltage Sags",
+                                            "prompt": "Every Tuesday afternoon during thunderstorm season, high-speed robotic welding cells trip offline with 'Bus Under-Voltage Alarm', while lights barely flicker and motors keep spinning. Maintenance blames the robot electronics. How do you diagnose the true power quality root cause?",
+                                            "idealResponse": "Explain that high-speed robotics and variable frequency drives (VFDs) have low internal capacitance hold-up times (typically 16-20 milliseconds), making them vulnerable to transient voltage sags (voltage drops of 20-30% lasting a few cycles caused by distant lightning strikes clearing on utility transmission lines). Heavy rotating motors and human eyes do not notice a 100 ms sag due to mechanical inertia and eye persistence. Install a Class A power quality meter to capture the waveform under IEEE 1159, and install a dynamic voltage restorer (DVR) or SEMI F47-compliant DC bus buffer to ride through sags without tripping."
+                                    }
+                            ],
+                            "quiz": [
+                                    {
+                                            "question": "Under Mexico's Código de Red 2.0, what is the mandatory Power Factor requirement for High Voltage industrial consumers?",
+                                            "options": [
+                                                    "Between 0.80 and 0.90 lagging during 50% of the year.",
+                                                    "Between 0.95 lagging and 1.0 during at least 95% of monthly 5-minute intervals.",
+                                                    "Exactly 1.0 capacitive at all times.",
+                                                    "There is no power factor requirement in Mexico."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Código de Red 2.0 establishes that high-voltage industrial centers must maintain a power factor between 0.95 lagging and 1.0 during at least 95% of monthly 5-minute measurement windows."
+                                    },
+                                    {
+                                            "question": "Why is operating an industrial facility with a 'leading' (capacitive) power factor strictly penalized under modern grid codes?",
+                                            "options": [
+                                                    "Because capacitive power factor causes utility meters to run backwards.",
+                                                    "Because injecting excess capacitive reactive power causes voltage swelling in utility substations and destabilizes grid voltage regulation.",
+                                                    "Because capacitors create high radioactive emissions.",
+                                                    "Because leading power factor violates international copyright treaties."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Leading (capacitive) power factor forces reactive power back onto the transmission/distribution system, driving voltage up (voltage swell) and disrupting utility grid voltage regulation."
+                                    },
+                                    {
+                                            "question": "What electrical power disturbance accounts for more than 80% of all automated manufacturing equipment trip-outs globally?",
+                                            "options": [
+                                                    "Complete power blackouts lasting more than 4 hours.",
+                                                    "Voltage sags (momentary dips between 10% and 90% of nominal voltage lasting milliseconds).",
+                                                    "Frequency deviations of more than 5 Hz.",
+                                                    "Direct lightning strikes on the factory roof."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "Voltage sags (dips) caused by faults on remote utility lines are by far the most frequent power quality event, causing sensitive robot controllers and PLCs to drop out within milliseconds."
+                                    },
+                                    {
+                                            "question": "In modern digital substations under IEC 61850, what is the primary purpose of the 'GOOSE' messaging protocol?",
+                                            "options": [
+                                                    "To send email notifications to plant managers when energy bills are due.",
+                                                    "To transmit high-speed peer-to-peer protective trip commands between relays over optical Ethernet in less than 4 milliseconds.",
+                                                    "To download software updates from international cloud servers.",
+                                                    "To measure outdoor ambient temperature and wind speed."
+                                            ],
+                                            "correctIndex": 1,
+                                            "explanation": "GOOSE (Generic Object Oriented Substation Events) provides ultra-fast Layer-2 multicast messaging across substation optical fiber, delivering sub-4-millisecond protection trip and interlock commands."
+                                    }
+                            ]
+                    }
+            ]
     }
+,
+    "embedded-firmware-edge-ai": {
+        "id": "embedded-firmware-edge-ai",
+        "title": "Hardware Ágil, Firmware Embebido e Inteligencia Artificial en el Borde (Edge AI)",
+        "titleEN": "Agile Hardware, Embedded Firmware & Edge AI",
+        "level": "B2-C1",
+        "category": "technology",
+        "description": "Desarrollo de firmware de misión crítica y sistemas embebidos automotrices e industriales: arquitectura AUTOSAR Classic y Adaptive, sistemas operativos de tiempo real (FreeRTOS, Zephyr RTOS), estándares de codificación segura MISRA-C:2012 / MISRA-C++:2023, validación Hardware-in-the-Loop (HIL dSPACE / NI), despliegue de modelos TinyML en microcontroladores ARM Cortex-M / RISC-V y cargadores de arranque seguros (Secure Bootloader con ECDSA y rollback protection).",
+        "status": "full",
+        "totalModules": 6,
+        "standard": "AUTOSAR R22-11 / MISRA-C:2012 / ISO 26262 ASIL-D / IEEE 1451 / NIST SP 800-193 (PFR) / TinyML",
+        "modules": [
+                {
+                        "id": "emb-m1",
+                        "title": "AUTOSAR Classic vs Adaptive Architecture & Automotive Microcontrollers",
+                        "titleES": "Arquitectura AUTOSAR Classic vs Adaptive y Microcontroladores Automotrices",
+                        "icon": "fa-solid fa-microchip",
+                        "isGoldModel": true,
+                        "readings": [
+                                {
+                                        "id": "emb-m1-r1",
+                                        "title": "AUTOSAR Classic Layered Stack: BSW, RTE, and Application Software Components (SWC)",
+                                        "duration": "15 min",
+                                        "content": "> **Automotive Embedded Standard**: **AUTOSAR (Automotive Open System Architecture) Release R22-11** and **ISO 26262 Road Vehicles - Functional Safety**. Mandatory architecture for Tier-1 electronic control unit (ECU) engineering in powertrain, braking, and body domains.\n\n# AUTOSAR Classic Architecture & Layered ECU Stack\n\n### 1. The Core Philosophy of AUTOSAR\nAUTOSAR decouples application software components (**SWCs**) from the underlying microcontroller hardware (**MCU**). In traditional legacy automotive firmware, control algorithms were tightly coupled with hardware registers (e.g., direct register manipulation of timer peripherals for fuel injector PWMs). AUTOSAR abstracts hardware dependencies, enabling automotive OEMs and Tier-1 suppliers to reuse software components across distinct hardware silicon vendors (e.g., NXP S32K, Infineon AURIX TC3xx, STMicroelectronics Stellar).\n\n### 2. The Three-Tier Architecture\n\n| Architecture Layer | Core Components | Operational Role & Abstraction Level |\n| :--- | :--- | :--- |\n| **Application Layer** | **Software Components (SWCs)**, Sensor/Actuator SWCs, Composition Components | Contains the proprietary control logic (e.g., adaptive cruise control velocity calculation, battery pack state-of-charge estimation). Communicates exclusively via Ports (Client-Server and Sender-Receiver interfaces). Has zero knowledge of hardware registers. |\n| **Runtime Environment (RTE)** | Virtual Functional Bus (VFB) implementation, Runnables, Event Handlers | The communications backbone of AUTOSAR. Maps inter-runnable data exchange whether two SWCs reside on the same ECU core or communicate across a CAN FD / Automotive Ethernet bus. Generates optimized C inline functions during ECU extract configuration. |\n| **Basic Software (BSW)** | **MCAL**, ECU Abstraction, Complex Device Drivers (CDD), Services Layer | Provides hardware-dependent drivers, operating system (AUTOSAR OS OSEK/VDX derivative), diagnostic stacks (UDS ISO 14229), and memory management (NVRAM Manager, Flash EEPROM Emulation). |\n\n```\n+-------------------------------------------------------------+\n|               AUTOSAR Software Components (SWCs)            |\n+-------------------------------------------------------------+\n                              | (Sender-Receiver / Client-Server)\n+-------------------------------------------------------------+\n|                Runtime Environment (RTE)                    |\n+-------------------------------------------------------------+\n| Services (OS, Com, Diag, NvM, WdgM, BswM)                  |\n| ECU Abstraction Layer (IoHwAb, CanIf, LinIf, EthIf)         |\n| Microcontroller Abstraction Layer (MCAL: Port, Dio, Gpt, Adc)|\n+-------------------------------------------------------------+\n|             Silicon Hardware (Infineon AURIX / NXP S32)     |\n+-------------------------------------------------------------+\n```\n\n### 3. Microcontroller Abstraction Layer (MCAL)\nThe **MCAL** is the lowest software layer of the BSW, provided directly by the semiconductor vendor. It directly accesses internal MCU registers and provides standard APIs to upper layers:\n1. **Microcontroller Drivers**: Clock initialization (MCU Driver), General Purpose Timer (GPT), Watchdog Driver (WDG).\n2. **I/O Drivers**: Digital Input/Output (DIO), Analog-to-Digital Converter (ADC), Pulse Width Modulation (PWM), Port Driver (pin muxing).\n3. **Communication Drivers**: Controller Area Network (CAN), Local Interconnect Network (LIN), Serial Peripheral Interface (SPI), Ethernet (ETH).\n4. **Memory Drivers**: Internal Flash Driver (FLS), Internal RAM Driver."
+                                },
+                                {
+                                        "id": "emb-m1-r2",
+                                        "title": "AUTOSAR Adaptive Platform: POSIX PSE51, Service-Oriented Architecture (SOME/IP) & High-Performance Compute",
+                                        "duration": "14 min",
+                                        "content": "> **Domain Compute Standard**: **AUTOSAR Adaptive Platform** and **IEEE POSIX.13 PSE51**. Designed for autonomous driving domain controllers (ADAS), central gateway zonal compute modules, and telematics systems.\n\n# AUTOSAR Adaptive: Service-Oriented Architecture in High-Performance ECUs\n\n### 1. Classic vs. Adaptive: Fundamental Divergence\n\n| Architectural Dimension | AUTOSAR Classic | AUTOSAR Adaptive |\n| :--- | :--- | :--- |\n| **Primary Domain** | Deep embedded, hard real-time, safety-critical (Braking, Steering, Airbags) | Zonal controllers, ADAS perception, Infotainment, Fleet Telematics |\n| **Target Silicon** | 32-bit Microcontrollers (e.g., TriCore, Cortex-M7, Cortex-R5) | Multi-core 64-bit SoCs (e.g., Cortex-A78AE, NVIDIA Orin, Qualcomm Snapdragon Ride) |\n| **Operating System** | AUTOSAR OS (Static OSEK-based, pre-compiled scheduling table) | Real-Time POSIX OS (e.g., QNX Neutrino, Linux with PREEMPT_RT, PikeOS) |\n| **Language Standard** | ANSI C (C90/C99 strictly adhering to MISRA-C:2012) | Modern C++ (C++14/C++17 conforming to AUTOSAR C++ guidelines) |\n| **Communication Paradigm** | Signal-based (CAN FD, FlexRay message frames) | **Service-Oriented Architecture (SOME/IP, DDS)** over Gigabit Automotive Ethernet |\n| **Software Updates** | Monolithic static binary reflash via CAN bootloader | Dynamic execution, microservices, containerized OTA container updates |\n\n### 2. Scalable service-Oriented MiddlewarE over IP (SOME/IP)\nSOME/IP provides publish/subscribe and remote procedure call (RPC) mechanisms over IPv4/IPv6:\n- **Service Discovery (SOME/IP-SD)**: Dynamically advertises available ECU services and allows client nodes to subscribe to telemetry events at runtime without hardcoded CAN matrix IDs.\n- **Serialization**: Efficient binary payload serialization with little-endian or big-endian wire formatting, supporting dynamic arrays and nested structures.\n\n### 3. Zonal Electrical/Electronic (E/E) Architecture\nModern vehicles transition from 100+ distributed federated ECUs to 3–4 **Zonal Gateway Controllers** managed by a Central Vehicle Computer:\n- Zonal controllers aggregate sensor telemetry via local CAN/LIN networks and bridge payload streams to high-speed Automotive Ethernet (100BASE-T1 / 1000BASE-T1) using IEEE 802.1Q Time-Sensitive Networking (TSN)."
+                                }
+                        ],
+                        "vocabulary": [
+                                {
+                                        "en": "Basic Software (BSW)",
+                                        "es": "Software Básico (BSW)",
+                                        "definition": "Standardized software layer in AUTOSAR Classic providing foundational hardware abstraction, operating system, and communication services.",
+                                        "ipa": "/ˈbeɪ.sɪk ˈsɔːft.wɛər/",
+                                        "collocations": [
+                                                "BSW module configuration",
+                                                "MCAL layer abstraction",
+                                                "BSW scheduler tick"
+                                        ]
+                                },
+                                {
+                                        "en": "Runtime Environment (RTE)",
+                                        "es": "Entorno de Ejecución (RTE)",
+                                        "definition": "Middleware layer that mediates information exchange between AUTOSAR software components and the basic software stack.",
+                                        "ipa": "/ˈrʌn.taɪm ɪnˈvaɪ.rən.mənt/",
+                                        "collocations": [
+                                                "RTE runnable entity",
+                                                "Sender-Receiver interface",
+                                                "generate RTE header files"
+                                        ]
+                                },
+                                {
+                                        "en": "Microcontroller Abstraction Layer (MCAL)",
+                                        "es": "Capa de Abstracción de Microcontrolador (MCAL)",
+                                        "definition": "Lowest BSW layer containing hardware-specific drivers that interact directly with the microcontroller internal peripherals and registers.",
+                                        "ipa": "/ˈmaɪ.kroʊ.kənˌtroʊ.lər æbˈstræk.ʃən ˈleɪ.ər/",
+                                        "collocations": [
+                                                "MCAL pin multiplexing",
+                                                "vendor-supplied MCAL",
+                                                "MCAL configuration generator"
+                                        ]
+                                },
+                                {
+                                        "en": "Service-Oriented Architecture (SOA)",
+                                        "es": "Arquitectura Orientada a Servicios (SOA)",
+                                        "definition": "Software design model where application components communicate via standardized services across a network, utilizing protocols like SOME/IP.",
+                                        "ipa": "/ˈsɜːr.vɪs ˌɔːr.iˈɛn.tɪd ˈɑːr.kɪ.tɛk.tʃər/",
+                                        "collocations": [
+                                                "SOME/IP service discovery",
+                                                "publish-subscribe paradigm",
+                                                "service interface deployment"
+                                        ]
+                                },
+                                {
+                                        "en": "Hardware-in-the-Loop (HIL)",
+                                        "es": "Hardware en el Lazo (HIL)",
+                                        "definition": "Simulation technique where real ECU hardware is connected to a computer simulator executing real-time plant physics models.",
+                                        "ipa": "/ˈhɑːrd.wɛər ɪn ðə luːp/",
+                                        "collocations": [
+                                                "HIL test bench",
+                                                "fault injection testing",
+                                                "automated HIL test suite"
+                                        ]
+                                },
+                                {
+                                        "en": "Time-Sensitive Networking (TSN)",
+                                        "es": "Redes Sensibles al Tiempo (TSN)",
+                                        "definition": "Set of IEEE 802.1 standards providing deterministic latency, time synchronization, and bandwidth guarantees over standard Ethernet.",
+                                        "ipa": "/taɪm ˈsɛn.sɪ.tɪv ˈnɛt.wɜːr.kɪŋ/",
+                                        "collocations": [
+                                                "TSN traffic shaper",
+                                                "IEEE 802.1AS synchronization",
+                                                "bounded latency packet transmission"
+                                        ]
+                                }
+                        ],
+                        "questions": [
+                                {
+                                        "id": "emb-q1",
+                                        "prompt": "In AUTOSAR Classic, which software layer directly accesses the microcontroller's internal peripheral registers to provide standardized APIs to the ECU Abstraction Layer?",
+                                        "options": [
+                                                "Runtime Environment (RTE)",
+                                                "Microcontroller Abstraction Layer (MCAL)",
+                                                "Application Software Component (SWC)",
+                                                "Complex Device Driver (CDD)"
+                                        ],
+                                        "correctIndex": 1,
+                                        "explanation": "The Microcontroller Abstraction Layer (MCAL) is the lowest software layer of the BSW, supplied by the silicon vendor, and directly interacts with the internal registers of the MCU."
+                                },
+                                {
+                                        "id": "emb-q2",
+                                        "prompt": "Why does the AUTOSAR Adaptive Platform use POSIX PSE51 and SOME/IP over Ethernet instead of the Classic OSEK OS and static CAN message scheduling?",
+                                        "options": [
+                                                "To minimize flash memory footprint below 64 kilobytes for low-cost 8-bit body controllers.",
+                                                "To eliminate the need for functional safety validation under ISO 26262.",
+                                                "To support high-bandwidth computing, service-oriented dynamic deployment, and multi-core SoCs required for ADAS and domain controllers.",
+                                                "Because static CAN scheduling is legally prohibited in modern North American automotive plants."
+                                        ],
+                                        "correctIndex": 2,
+                                        "explanation": "AUTOSAR Adaptive addresses high-performance compute domains (ADAS, Zonal controllers) requiring multi-gigabit Ethernet bandwidth, POSIX multi-threading, dynamic microservices, and modern C++14/17 support."
+                                }
+                        ],
+                        "dialogues": [
+                                {
+                                        "speaker": "Klaus Weber",
+                                        "role": "Chief Architect, Powertrain ECUs (Stuttgart Matrix)",
+                                        "text": "We are observing jitter exceeding 85 microseconds on the PWM dead-time execution runnable during maximum SPI burst transfers. How is your MCAL DMA channel configured relative to the RTE event task priority?"
+                                },
+                                {
+                                        "speaker": "Carlos Mendoza",
+                                        "role": "Senior Embedded Firmware Engineer (Saltillo Plant)",
+                                        "text": "We identified that the SPI DMA completion interrupt was preempting the CAT2 ISR handling the motor phase commutation. We re-allocated the DMA peripheral request to channel 4 and wrapped the critical register update in an atomic RTE critical section, bounding worst-case latency to 12 microseconds."
+                                }
+                        ]
+                },
+                {
+                        "id": "emb-m2",
+                        "title": "Real-Time Operating Systems (RTOS): FreeRTOS, Zephyr & Deterministic Scheduling",
+                        "titleES": "Sistemas Operativos de Tiempo Real (RTOS): FreeRTOS, Zephyr y Planificación Determinista",
+                        "icon": "fa-solid fa-clock",
+                        "readings": [
+                                {
+                                        "id": "emb-m2-r1",
+                                        "title": "Preemptive Priority Scheduling, Context Switching & Rate Monotonic Analysis (RMA)",
+                                        "duration": "13 min",
+                                        "content": "> **Embedded Systems Standard**: **IEEE POSIX Real-Time Extensions** and **Rate-Monotonic Scheduling Theory (Liu & Layland)**. Essential for deterministic embedded firmware design in robotics, automotive, and medical devices.\n\n# Deterministic Real-Time Systems: Scheduling, Context Switches & RMA\n\n### 1. Hard Real-Time vs Soft Real-Time\nIn a **hard real-time system**, missing a single task deadline constitutes a catastrophic system failure (e.g., antilock braking system failing to calculate wheel deceleration within a 5 ms cycle). In a **soft real-time system**, missing a deadline degrades performance or user experience without causing hardware damage or safety hazards (e.g., frame dropped in a video streaming interface).\n\n### 2. Preemptive Priority-Based Scheduler Operation\nA Real-Time Operating System (**RTOS**) kernel operates a hardware timer tick (typically configured between 100 Hz and 1000 Hz, corresponding to a 1 ms to 10 ms tick period):\n1. **Ready List**: Tasks ready for execution are maintained in priority-ordered queues.\n2. **Preemption**: When a higher-priority task transitions from the *Blocked* state (e.g., unblocked by a hardware interrupt service routine via a semaphore) to the *Ready* state, the scheduler immediately suspends the lower-priority running task.\n3. **Context Switch Mechanism**:\n   - The CPU registers (e.g., Cortex-M Program Counter `PC`, Link Register `LR`, Stack Pointer `SP`, General-Purpose Registers `R0-R12`) of the preempted task are pushed onto its private stack.\n   - The PendSV (Pendable Service Call) exception handler switches the Processor Stack Pointer (`PSP`) to point to the stack top of the incoming high-priority task.\n   - Registers are popped from the new stack, and execution resumes seamlessly.\n\n### 3. Rate Monotonic Analysis (RMA)\nRate Monotonic Scheduling assigns static priorities strictly based on task execution period: tasks with the shortest periods receive the highest priorities.\nUnder Liu and Layland's theorem, a set of $n$ independent periodic tasks is guaranteed to meet all deadlines if processor utilization $U$ satisfies:\n\n$$U = \\sum_{i=1}^{n} \\frac{C_i}{T_i} \\le n(2^{1/n} - 1)$$\n\nFor a large number of tasks ($n \\to \\infty$), the utilization bound converges to approximately **69.3%** ($U \\le \\ln 2 \\approx 0.693$). Designing firmware below this threshold guarantees schedulability under worst-case execution time (WCET)."
+                                },
+                                {
+                                        "id": "emb-m2-r2",
+                                        "title": "Priority Inversion, Priority Inheritance Protocol & Zephyr RTOS Architecture",
+                                        "duration": "14 min",
+                                        "content": "> **RTOS Architecture Benchmark**: **Zephyr Project (Linux Foundation)** and **FreeRTOS Kernel v10.5+**. Industry benchmarks for connected IoT devices, edge sensor nodes, and smart manufacturing gateways.\n\n# Concurrency Hazards: Priority Inversion & The Zephyr Kernel\n\n### 1. The Classic Priority Inversion Catastrophe\n**Priority Inversion** occurs when a low-priority task ($L$) acquires a shared resource (guarded by a binary semaphore or mutex), and a high-priority task ($H$) attempts to acquire the same resource, becoming blocked. If an intermediate-priority task ($M$)—which does not require the resource—preempts $L$, task $H$ is indefinitely delayed by task $M$, violating real-time determinism.\n- *Historical Precedent*: The Mars Pathfinder spacecraft in 1997 suffered repeated total system resets caused by priority inversion on an internal shared information bus (ASI thread blocked by meteorological thread while communications tasks ran).\n\n### 2. Mitigation: Priority Inheritance Protocol (PIP)\nWhen task $H$ blocks waiting for a mutex held by task $L$, the RTOS kernel temporarily elevates the priority of task $L$ to match the priority of $H$. This prevents any intermediate-priority task $M$ from preempting $L$. Once $L$ releases the mutex, its priority is restored to its original base level, and $H$ immediately unblocks and acquires the mutex.\n\n```\nTask H (High)    : --- [Wait Mutex]===================> [Acquires Mutex]----\nTask M (Medium)  : -------- [Attempt Preempt BLOCKED by PIP] ---------------\nTask L (Low)     : --[Takes Mutex]====(Inherits H Priority)===[Releases]----\n```\n\n### 3. Zephyr RTOS: The Modern Open-Source Embedded Standard\nBackwards-compatible with POSIX and optimized for memory-constrained microcontrollers:\n- **Device Tree (`.dts`) Integration**: Hardware configurations, pin multiplexing, and peripheral clock gates are statically declared in hardware device trees, separating hardware descriptions from application C code.\n- **Kconfig System**: Kernel capabilities (networking stacks, cryptographic accelerators, Bluetooth LE) are enabled via modular granular compile-time flags, eliminating dead code."
+                                }
+                        ],
+                        "vocabulary": [
+                                {
+                                        "en": "Preemptive Scheduling",
+                                        "es": "Planificación con Desalojo (Preemptiva)",
+                                        "definition": "Scheduling policy where the RTOS kernel can interrupt an executing task to allocate CPU time to a higher-priority ready task.",
+                                        "ipa": "/priːˈɛmp.tɪv ˈskɛdʒ.uː.lɪŋ/",
+                                        "collocations": [
+                                                "deterministic preemptive scheduler",
+                                                "preempt running thread",
+                                                "preemption latency"
+                                        ]
+                                },
+                                {
+                                        "en": "Priority Inversion",
+                                        "es": "Inversión de Prioridad",
+                                        "definition": "Hazard where a high-priority task is indirectly blocked by a medium-priority task due to an unmanaged lock held by a low-priority task.",
+                                        "ipa": "/praɪˈɔːr.ə.ti ɪnˈvɜːr.ʒən/",
+                                        "collocations": [
+                                                "unbounded priority inversion",
+                                                "trigger system reset",
+                                                "priority inheritance mutex"
+                                        ]
+                                },
+                                {
+                                        "en": "Worst-Case Execution Time (WCET)",
+                                        "es": "Tiempo de Ejecución en el Peor Caso (WCET)",
+                                        "definition": "Maximum possible length of time a software task takes to execute on a specific target hardware processor.",
+                                        "ipa": "/wɜːrst keɪs ˌɛk.səˈkjuː.ʃən taɪm/",
+                                        "collocations": [
+                                                "calculate static WCET",
+                                                "bound WCET jitter",
+                                                "timing analysis tool"
+                                        ]
+                                },
+                                {
+                                        "en": "Context Switch",
+                                        "es": "Cambio de Contexto",
+                                        "definition": "Procedure where the processor saves execution state for one thread and restores another thread's state to resume execution.",
+                                        "ipa": "/ˈkɑːn.tɛkst swɪtʃ/",
+                                        "collocations": [
+                                                "context switch overhead",
+                                                "save CPU registers to stack",
+                                                "minimize context switch latency"
+                                        ]
+                                }
+                        ],
+                        "questions": [
+                                {
+                                        "id": "emb-q3",
+                                        "prompt": "How does the Priority Inheritance Protocol prevent unbounded priority inversion when a low-priority task holds a mutex required by a high-priority task?",
+                                        "options": [
+                                                "It terminates the low-priority task immediately and clears the mutex lock.",
+                                                "It temporarily raises the low-priority task's execution priority to that of the waiting high-priority task until the mutex is released.",
+                                                "It downgrades the waiting high-priority task to the idle thread priority.",
+                                                "It disables all hardware interrupts across the entire microcontroller core permanently."
+                                        ],
+                                        "correctIndex": 1,
+                                        "explanation": "Under the Priority Inheritance Protocol, the holder of a contended mutex temporarily inherits the priority of the highest-priority blocked task, preventing medium-priority tasks from preempting it."
+                                }
+                        ],
+                        "dialogues": [
+                                {
+                                        "speaker": "Brent Higgins",
+                                        "role": "Robotics Firmware Architect (Boston HQ)",
+                                        "text": "We noticed our CAN-bus packet parser task is periodically missing its 10-millisecond deadline under heavy telematics load. Are you utilizing dynamic memory allocation inside that FreeRTOS thread?"
+                                },
+                                {
+                                        "speaker": "Ana Sofía Garza",
+                                        "role": "Embedded Software Lead (Monterrey Facility)",
+                                        "text": "No, we strictly prohibited heap calls like pvPortMalloc during runtime. However, we found that our queue length was undersized, causing the telemetry publisher to block on a mutex with no priority inheritance flag enabled. We replaced the standard binary semaphore with a mutex featuring priority inheritance and statically pre-allocated message buffers."
+                                }
+                        ]
+                },
+                {
+                        "id": "emb-m3",
+                        "title": "MISRA-C:2012 & Secure Embedded Coding Standards for Safety-Critical Systems",
+                        "titleES": "Estándares de Codificación Segura MISRA-C:2012 para Sistemas Críticos de Seguridad",
+                        "icon": "fa-solid fa-shield-halved",
+                        "readings": [
+                                {
+                                        "id": "emb-m3-r1",
+                                        "title": "MISRA-C:2012 Directives & Rules: Preventing Undefined Behavior, Pointer Aliasing & Stack Overflow",
+                                        "duration": "14 min",
+                                        "content": "> **Functional Safety Coding Standard**: **MISRA-C:2012 (Guidelines for the use of the C language in critical systems)** and **ISO 26262 Part 6**. Mandatory compliance standard for Tier-1 automotive and aerospace firmware certification.\n\n# MISRA-C:2012: Eliminating C Language Undefined Behaviors\n\n### 1. The Perils of Standard C in Safety-Critical ECUs\nThe C programming language is notoriously prone to **undefined behaviors**, **unspecified behaviors**, and compiler-dependent implementation choices:\n- Unchecked pointer arithmetic can corrupt memory buffers in adjacent SRAM regions.\n- Implicit type promotions (e.g., promotion of unsigned 8-bit integers to signed 32-bit integers during bitwise shifts) introduce silent calculation overflows.\n- Unconstrained recursion or dynamic memory allocation (`malloc`/`free`) causes unpredictable stack exhaustion and heap fragmentation.\n\n### 2. MISRA-C Classification: Directives vs Rules\nMISRA-C divides guidelines into two distinct categories:\n- **Directives**: Guidelines where compliance cannot be proven strictly by analyzing the source code alone; they require tool configuration, process documentation, or system design analysis (e.g., *Dir 4.3: Assembly language shall be encapsulated and isolated*).\n- **Rules**: Guidelines where compliance can be verified automatically through Static Code Analysis (SCA) tools (e.g., PC-lint, Polyspace, Coverity, SonarQube).\n\nRules are classified by enforcement level:\n\n| Classification | Meaning & Regulatory Enforcement | Deviation Procedure |\n| :--- | :--- | :--- |\n| **Mandatory** | Absolute compliance required. Zero exceptions permitted under any circumstance. | **No deviation allowed**. Code violating a mandatory rule will immediately fail automotive certification. |\n| **Required** | Compliance required unless a formal, documented, and peer-reviewed safety deviation is justified. | Requires formal Deviation Permit detailing technical rationale, safety impact analysis, and mitigation controls. |\n| **Advisory** | Recommended engineering best practice. Adherence evaluated during code quality reviews. | Formal deviation paperwork not legally required, but non-compliance must be tracked in the project quality log. |\n\n### 3. Core MISRA-C Rules Every Embedded Engineer Must Defend\n1. **Rule 11.4 & Rule 11.6 (Pointer Conversions)**: Conversions shall not be performed between a pointer to an object and an integer type, nor between a pointer to void and any arithmetic type. *(Ensures pointer arithmetic remains strictly typed and deterministic).*\n2. **Rule 17.2 (Recursion Prohibited)**: Functions shall not call themselves, either directly or indirectly. *(Prevents unbounded stack growth and catastrophic stack overflow faults).*\n3. **Rule 21.3 (Dynamic Heap Allocation Prohibited)**: The memory allocation and deallocation functions of `<stdlib.h>` (`malloc`, `calloc`, `realloc`, `free`) shall not be used. *(Guarantees that all memory requirements are known and bounded at compile/link time).*\n4. **Rule 10.4 (Mismatched Essential Types)**: Both operands of an operator shall have the same essential type category. *(Prevents implicit signed-to-unsigned conversion bugs in threshold evaluations).*"
+                                }
+                        ],
+                        "vocabulary": [
+                                {
+                                        "en": "Static Code Analysis (SCA)",
+                                        "es": "Análisis Estático de Código",
+                                        "definition": "Software verification method where source code is analyzed without executing the program to detect defects and MISRA non-compliances.",
+                                        "ipa": "/ˈstæt.ɪk koʊd əˈnæl.ə.sɪs/",
+                                        "collocations": [
+                                                "SCA toolchain pipeline",
+                                                "resolve static analysis violations",
+                                                "zero-defect static code gate"
+                                        ]
+                                },
+                                {
+                                        "en": "Undefined Behavior",
+                                        "es": "Comportamiento Indefinido",
+                                        "definition": "Condition in the C language specification where the standard imposes no requirements, leading to unpredictable program execution or crashes.",
+                                        "ipa": "/ˌʌn.dɪˈfaɪnd bɪˈheɪv.jər/",
+                                        "collocations": [
+                                                "trigger undefined behavior",
+                                                "compiler-dependent behavior",
+                                                "eliminate undefined pointer casts"
+                                        ]
+                                },
+                                {
+                                        "en": "Stack Overflow",
+                                        "es": "Desbordamiento de Pila (Stack Overflow)",
+                                        "definition": "Runtime fault occurring when execution memory allocation exceeds the allocated bounds of the call stack, corrupting adjacent variables.",
+                                        "ipa": "/stæk ˈoʊ.vər.floʊ/",
+                                        "collocations": [
+                                                "stack watermark monitoring",
+                                                "prevent catastrophic stack overflow",
+                                                "statically bounded call depth"
+                                        ]
+                                }
+                        ],
+                        "questions": [
+                                {
+                                        "id": "emb-q4",
+                                        "prompt": "Under MISRA-C:2012, why are functions such as malloc(), calloc(), and free() strictly prohibited (Rule 21.3) in safety-critical automotive ECUs?",
+                                        "options": [
+                                                "Because dynamic memory allocation introduces non-deterministic execution times, heap fragmentation, and unpredictable memory exhaustion at runtime.",
+                                                "Because modern ARM Cortex-M microcontrollers lack hardware support for random-access memory.",
+                                                "Because dynamic allocation is only supported when writing code in Python or Java.",
+                                                "Because dynamic allocation increases binary size by more than 10 megabytes."
+                                        ],
+                                        "correctIndex": 0,
+                                        "explanation": "In safety-critical embedded systems, non-deterministic allocation times and runtime heap fragmentation can lead to memory allocation failures while driving, violating ISO 26262 determinism."
+                                }
+                        ],
+                        "dialogues": [
+                                {
+                                        "speaker": "Greg Thornton",
+                                        "role": "Global Safety & Quality Auditor (Detroit HQ)",
+                                        "text": "During our pre-certification scan of your steering control module, the static analyzer flagged three violations of MISRA-C Rule 11.4 regarding integer-to-pointer casting in your motor driver. How are you addressing this before our customer PPAP?"
+                                },
+                                {
+                                        "speaker": "Valeria Rios",
+                                        "role": "Firmware Safety Compliance Specialist (Guadalajara Facility)",
+                                        "text": "Those casts occurred within the register-level base address macros generated for memory-mapped I/O peripherals. We encapsulated all direct register access within an approved vendor MCAL layer and filed a formal MISRA Deviation Permit with formal boundary proofs, which was signed off by our ISO 26262 Functional Safety Manager."
+                                }
+                        ]
+                },
+                {
+                        "id": "emb-m4",
+                        "title": "Hardware-in-the-Loop (HIL) Testing & Automated Validation (dSPACE & NI)",
+                        "titleES": "Pruebas Hardware en el Lazo (HIL) y Validación Automatizada (dSPACE y NI)",
+                        "icon": "fa-solid fa-network-wired",
+                        "readings": [
+                                {
+                                        "id": "emb-m4-r1",
+                                        "title": "HIL Simulator Architecture: Signal Conditioning, Fault Injection Units (FIU) & Real-Time Physics Models",
+                                        "duration": "15 min",
+                                        "content": "> **Validation & Verification Standard**: **ISO 26262 Part 4 (System Level Validation)** and **ASAM HIL (Association for Standardisation of Automation and Measuring Systems)**.\n\n# Hardware-in-the-Loop (HIL) Simulation Architecture\n\n### 1. Purpose of HIL Testing\nBefore flashing firmware onto real test vehicles or industrial robotics cells, the ECU must be validated against a **Hardware-in-the-Loop (HIL) Simulator**. The real physical ECU is plugged directly into the HIL cabinet via its wiring harness. The HIL simulator executes real-time mathematical models of the physical plant (e.g., internal combustion engine thermodynamics, electric motor flux dynamics, battery thermal dissipation) at sub-millisecond cycle times (typically 100 µs to 1 ms).\n\n### 2. Core Subsystems of an Industrial HIL Rack\n\n```\n+-----------------------+              +------------------------------+\n|   Real ECU Hardware   |  Wire Harness|        HIL Simulator         |\n|                       | <==========> | Signal Conditioning & Loads  |\n| - Microcontroller     |              | Fault Injection Unit (FIU)   |\n| - Driver ICs / Power  |              | Real-Time Processor (Physics)|\n+-----------------------+              +------------------------------+\n```\n\n1. **Real-Time Processor**: High-speed real-time computer (running real-time Linux or QNX) solving differential equations representing the physical vehicle dynamics.\n2. **I/O Boards & Signal Conditioning**:\n   - DACs simulate analog sensor signals (e.g., manifold pressure, thermocouple voltages, wheel speed hall-effect pulse trains).\n   - ADCs measure actuator drive currents produced by the ECU (e.g., solenoid valve firing currents, injector pulses).\n   - Electrical loads (e.g., dummy resistor banks, electronic loads) simulate real coil inductances and impedances.\n3. **Fault Injection Units (FIU)**:\n   Hardware matrices of solid-state relays capable of introducing physical circuit faults under automated test scripts:\n   - **Pin-to-Ground Short**: Simulates wiring harness chafing against vehicle chassis ground.\n   - **Pin-to-Battery Short ($V_{bat}$)**: Simulates short circuits to 12V / 24V / 48V power lines.\n   - **Open Circuit / Broken Wire**: Simulates connector disconnections or severed harness wires.\n   - **Cross-Pin Short**: Simulates insulation breakdown between adjacent sensor lines."
+                                }
+                        ],
+                        "vocabulary": [
+                                {
+                                        "en": "Fault Injection Unit (FIU)",
+                                        "es": "Unidad de Inyección de Fallas (FIU)",
+                                        "definition": "Hardware switching hardware within a HIL simulator used to physically simulate short circuits, open circuits, and harness degradation.",
+                                        "ipa": "/fɔːlt ɪnˈdʒɛk.ʃən ˈjuː.nɪt/",
+                                        "collocations": [
+                                                "automated FIU test script",
+                                                "short-to-battery fault injection",
+                                                "open-pin harness disconnect"
+                                        ]
+                                },
+                                {
+                                        "en": "Plant Model",
+                                        "es": "Modelo de la Planta Física",
+                                        "definition": "Mathematical simulation running in real time representing the physical mechanical, thermal, or electrical dynamics of the controlled system.",
+                                        "ipa": "/plænt ˈmɑː.dəl/",
+                                        "collocations": [
+                                                "execute real-time plant model",
+                                                "simulate battery electrochemical response",
+                                                "sub-millisecond plant execution"
+                                        ]
+                                }
+                        ],
+                        "questions": [
+                                {
+                                        "id": "emb-q5",
+                                        "prompt": "What is the primary function of a Fault Injection Unit (FIU) in an automotive HIL test cabinet?",
+                                        "options": [
+                                                "To compile C code into microcontroller assembly language.",
+                                                "To mechanically measure the torque of the engine output shaft.",
+                                                "To physically simulate wiring faults such as pin-to-ground shorts, pin-to-battery shorts, and open circuits while the ECU is executing.",
+                                                "To recharge the vehicle's high-voltage lithium battery pack during bench testing."
+                                        ],
+                                        "correctIndex": 2,
+                                        "explanation": "Fault Injection Units utilize controlled relay matrices to inject realistic electrical faults (shorts to ground, battery, and open circuits) to test the ECU's diagnostic detection and failsafe transition logic."
+                                }
+                        ],
+                        "dialogues": [
+                                {
+                                        "speaker": "Jason Campbell",
+                                        "role": "HIL Validation Director (Detroit Technical Center)",
+                                        "text": "During the automated regression run for Release 4.2, the steer-by-wire ECU failed the open-circuit sensor harness test. Did the diagnostic trouble code (DTC) register within the required 50-millisecond fault detection interval?"
+                                },
+                                {
+                                        "speaker": "Hector Zambrano",
+                                        "role": "Lead HIL Automation Engineer (Saltillo Plant)",
+                                        "text": "The FIU correctly triggered the open circuit on channel 2, but the firmware debouncing filter was set to 65 milliseconds, exceeding the ASIL-D fault handling time interval (FHTI). We retuned the debounce counter to 30 milliseconds and re-verified on the dSPACE simulator with 100% test pass rate."
+                                }
+                        ]
+                },
+                {
+                        "id": "emb-m5",
+                        "title": "TinyML & Edge AI on ARM Cortex-M & RISC-V Microcontrollers",
+                        "titleES": "TinyML e Inteligencia Artificial en el Borde para Microcontroladores ARM Cortex-M y RISC-V",
+                        "icon": "fa-solid fa-brain",
+                        "readings": [
+                                {
+                                        "id": "emb-m5-r1",
+                                        "title": "Deploying Neural Networks in Extreme Constraints: Quantization (INT8), CMSIS-NN & Tensor Arenas",
+                                        "duration": "14 min",
+                                        "content": "> **Edge Intelligence Standard**: **TensorFlow Lite for Microcontrollers (TFLM)**, **CMSIS-NN (ARM Common Microcontroller Software Interface Standard)**, and **Edge Impulse**. Enabler for zero-latency predictive maintenance, acoustic anomaly detection, and vibration monitoring on plant machinery.\n\n# TinyML: Deep Learning in Kilobytes of Memory\n\n### 1. The Challenge of Edge Machine Learning\nModern deep learning models (e.g., ResNet, Transformers) require gigabytes of VRAM and teraflops of floating-point compute. In industrial edge sensors (e.g., motor vibration monitors, acoustic leak detectors, handheld ultrasonic probes), engineers must deploy neural network inference on microcontrollers operating with:\n- Less than **256 KB to 1 MB of Flash memory** (code storage).\n- Less than **64 KB to 256 KB of SRAM** (runtime memory).\n- Strict power envelopes under **50 milliwatts** (battery or energy harvesting operation).\n\n### 2. The Quantization Pipeline: FP32 to INT8\nStandard machine learning models train using 32-bit floating-point numbers (`float32`). Floating-point arithmetic on microcontrollers lacking a hardware Floating Point Unit (FPU) incurs massive cycle penalties.\n**Post-Training Quantization (PTQ)** maps continuous floating-point weights and activations to 8-bit signed integers (`int8`, values from -128 to +127):\n\n$$q = \\text{round}\\left(\\frac{r}{S}\\right) + Z$$\n\nWhere:\n- $r$ is the real floating-point value.\n- $S$ is the scale factor (positive real number).\n- $Z$ is the integer zero-point offset.\n- $q$ is the quantized 8-bit integer.\n\n**Benefits of INT8 Quantization**:\n- **4x reduction** in model flash footprint (e.g., a 2 MB model compresses to 500 KB).\n- **3x to 5x acceleration** in inference latency via SIMD (Single Instruction, Multiple Data) instructions on ARM Cortex-M4/M7/M33 cores.\n- Negligible accuracy loss (typically under 1% drop in classification F1-score).\n\n### 3. CMSIS-NN Kernel Optimizations\nARM CMSIS-NN provides hand-crafted assembly implementations of convolution, pooling, and fully-connected neural network layers. It utilizes the `SMLAD` instruction (Signed Dual Multiply with Add), executing two 16-bit multiplications and accumulating into a 32-bit register in a single clock cycle.\n\n### 4. Memory Management: The Tensor Arena\nUnlike desktop machine learning frameworks that dynamically allocate memory during inference, TinyML uses a single static byte array known as the **Tensor Arena**:\n- All input tensors, intermediate activation buffers, and output probabilities share this pre-allocated buffer.\n- Eliminates runtime dynamic heap allocation, guaranteeing compliance with safety standards (MISRA-C Rule 21.3)."
+                                }
+                        ],
+                        "vocabulary": [
+                                {
+                                        "en": "Quantization",
+                                        "es": "Cuantización",
+                                        "definition": "Process of reducing the numerical precision of neural network weights and activations (e.g., from 32-bit float to 8-bit integer) to conserve memory and cycles.",
+                                        "ipa": "/ˌkwɑːn.təˈzeɪ.ʃən/",
+                                        "collocations": [
+                                                "post-training quantization",
+                                                "INT8 quantized weights",
+                                                "quantization-aware training"
+                                        ]
+                                },
+                                {
+                                        "en": "Tensor Arena",
+                                        "es": "Arena de Tensores",
+                                        "definition": "Statically pre-allocated block of contiguous SRAM used by TinyML runtimes to hold all model activations and intermediate scratchpad buffers.",
+                                        "ipa": "/ˈtɛn.sər əˈriː.nə/",
+                                        "collocations": [
+                                                "allocate static tensor arena",
+                                                "tensor arena size estimation",
+                                                "prevent heap fragmentation during inference"
+                                        ]
+                                },
+                                {
+                                        "en": "Anomalous Vibration Detection",
+                                        "es": "Detección de Vibración Anómala",
+                                        "definition": "Edge AI application using accelerometer spectral features and neural networks to identify mechanical bearing failure before line stoppages occur.",
+                                        "ipa": "/əˈnɑː.mə.ləs vaɪˈbreɪ.ʃən dɪˈtɛk.ʃən/",
+                                        "collocations": [
+                                                "bearing wear prediction",
+                                                "FFT spectral analysis",
+                                                "edge classification pipeline"
+                                        ]
+                                }
+                        ],
+                        "questions": [
+                                {
+                                        "id": "emb-q6",
+                                        "prompt": "What is the primary benefit of performing INT8 post-training quantization on a neural network deployed on an ARM Cortex-M microcontroller?",
+                                        "options": [
+                                                "It increases the model size by four times to fill unused flash memory.",
+                                                "It reduces flash footprint by 75% and dramatically speeds up inference using single-cycle SIMD arithmetic with minimal accuracy loss.",
+                                                "It converts the microcontroller into a cloud server.",
+                                                "It enables the microcontroller to execute Python scripts natively."
+                                        ],
+                                        "correctIndex": 1,
+                                        "explanation": "Quantizing 32-bit floating-point weights to 8-bit integers achieves a 4x reduction in memory footprint and enables single-cycle integer SIMD instructions (such as ARM SMLAD), providing high inference throughput within constrained SRAM."
+                                }
+                        ],
+                        "dialogues": [
+                                {
+                                        "speaker": "Dr. Ethan Brooks",
+                                        "role": "Director of Edge AI Research (San Jose HQ)",
+                                        "text": "Our autoencoder model for ultrasonic bearing fault classification is 380 kilobytes in float32. Our production sensor node uses an STM32WB with only 128 kilobytes of user RAM. What is your optimization strategy?"
+                                },
+                                {
+                                        "speaker": "Mariana Alatorre",
+                                        "role": "TinyML Embedded Engineer (Guadalajara Electronics Hub)",
+                                        "text": "We ran full integer quantization using a representative calibration dataset of 500 vibration spectrograms. The model footprint shrank to 92 kilobytes, fitting comfortably inside flash, and we optimized the static Tensor Arena to 24 kilobytes of SRAM. Inference latency on the Cortex-M4 core dropped from 240 milliseconds to 38 milliseconds at 64 megahertz."
+                                }
+                        ]
+                },
+                {
+                        "id": "emb-m6",
+                        "title": "Secure Bootloaders, Cryptographic Root-of-Trust & Over-The-Air (OTA) Updates",
+                        "titleES": "Cargadores de Arranque Seguros (Secure Bootloaders), Raíz de Confianza Criptográfica y Actualizaciones OTA",
+                        "icon": "fa-solid fa-lock",
+                        "readings": [
+                                {
+                                        "id": "emb-m6-r1",
+                                        "title": "Secure Boot Chain: Hardware Root of Trust, ECDSA Signature Verification & Anti-Rollback Monotonic Counters",
+                                        "duration": "15 min",
+                                        "content": "> **Cybersecurity Embedded Standard**: **NIST SP 800-193 (Platform Firmware Resiliency Guidelines)** and **ISO/SAE 21434 Road Vehicles - Cybersecurity Engineering**.\n\n# Secure Boot: Establishing the Hardware Chain of Trust\n\n### 1. The Anatomy of an Embedded Boot Attack\nWithout a cryptographically verified boot process, an adversary with physical or remote bus access can flash malicious firmware onto an ECU. Such rogue firmware can disable safety interlocks, exfiltrate proprietary control parameters, or bridge isolated automotive subnetworks.\n\n### 2. The Chain of Trust Architecture\n\n```\n[ Hardware Root of Trust (Immutable ROM) ]\n                   | Verifies Public Key & ECDSA Signature\n                   v\n[ First-Stage Bootloader (FSBL) ]\n                   | Verifies Second-Stage Hash\n                   v\n[ Second-Stage Bootloader (SSBL) ]\n                   | Authenticates Application Image\n                   v\n[ Main Firmware (AUTOSAR / FreeRTOS Application) ]\n```\n\n1. **Hardware Root of Trust (RoT)**: Immutable boot ROM code etched into the silicon during semiconductor manufacturing. The RoT cannot be altered, patched, or erased.\n2. **Cryptographic Signature Verification**:\n   - The vendor signs the compiled binary with a private asymmetric key (e.g., **ECDSA curve secp256r1** or Ed25519) in a secure build server (Hardware Security Module, HSM).\n   - The public key or its cryptographic hash is permanently burned into the target MCU's **One-Time Programmable (OTP) fuses** or Hardware Security Module (HSM / SHE).\n   - Before branching execution to the application code, the bootloader computes the SHA-256 hash of the image and verifies the digital signature. If the signature is invalid, the MCU immediately halts or enters a safe recovery mode.\n\n### 3. Dual-Bank Flash & Anti-Rollback Protection\nOver-the-Air (OTA) updates introduce severe failure risks during flashing (power loss during write cycles, corrupted communication packets):\n- **A/B Dual-Bank Partitioning**: The MCU flash memory is divided into two identical banks (Bank A and Bank B). The active firmware executes from Bank A while the incoming OTA payload is written into Bank B in the background. Once written and verified, a boot flag switches the active bank on the next reboot. If Bank B fails self-tests, the bootloader automatically rolls back to Bank A.\n- **Anti-Rollback Monotonic Counters**: Attackers often attempt \"downgrade attacks,\" flashing an older, legitimate, but known-vulnerable firmware release. Hardware monotonic counters burned into fuses ensure that the bootloader rejects any binary with a version number lower than the currently recorded counter."
+                                }
+                        ],
+                        "vocabulary": [
+                                {
+                                        "en": "Hardware Root of Trust (RoT)",
+                                        "es": "Raíz de Confianza en Hardware (RoT)",
+                                        "definition": "Cryptographic foundation permanently embodied in hardware that is inherently trusted to initiate the secure boot process without vulnerability to software modification.",
+                                        "ipa": "/ˈhɑːrd.wɛər ruːt əv trʌst/",
+                                        "collocations": [
+                                                "immutable boot ROM",
+                                                "burn OTP security fuses",
+                                                "silicon root of trust"
+                                        ]
+                                },
+                                {
+                                        "en": "Over-The-Air (OTA) Update",
+                                        "es": "Actualización Inalámbrica (OTA)",
+                                        "definition": "Mechanism for remotely distributing and flashing new firmware, configuration, or encryption keys to embedded devices over wireless cellular or Wi-Fi networks.",
+                                        "ipa": "/ˈoʊ.vər ði ɛər ˈʌp.deɪt/",
+                                        "collocations": [
+                                                "A/B dual-bank flash swap",
+                                                "fail-safe OTA rollback",
+                                                "cryptographically signed OTA payload"
+                                        ]
+                                },
+                                {
+                                        "en": "Anti-Rollback Protection",
+                                        "es": "Protección Contra Reversión (Anti-Rollback)",
+                                        "definition": "Security mechanism utilizing monotonic hardware counters to prevent an attacker from flashing an older firmware version with known security exploits.",
+                                        "ipa": "/ˈæn.taɪ ˈroʊl.bæk prəˈtɛk.ʃən/",
+                                        "collocations": [
+                                                "monotonic fuse counter",
+                                                "prevent downgrade attacks",
+                                                "anti-rollback firmware policy"
+                                        ]
+                                }
+                        ],
+                        "questions": [
+                                {
+                                        "id": "emb-q7",
+                                        "prompt": "Why is an A/B dual-bank flash architecture combined with monotonic counters critical for automotive OTA firmware updates?",
+                                        "options": [
+                                                "It eliminates the need for any wireless communications transceiver in the car.",
+                                                "It enables background flashing with zero vehicle downtime and provides atomic fallback if the new image is corrupted, while monotonic counters prevent downgrade attacks.",
+                                                "It doubles the vehicle's horsepower output.",
+                                                "It formats the internal flash memory every time the vehicle engine is turned off."
+                                        ],
+                                        "correctIndex": 1,
+                                        "explanation": "Dual-bank flash allows writing the incoming update while the existing firmware operates normally; if the new image fails validation or power is severed, the bootloader safely reboots into the known-good bank, and monotonic counters block malicious version rollbacks."
+                                }
+                        ],
+                        "dialogues": [
+                                {
+                                        "speaker": "Charles Sterling",
+                                        "role": "Chief Cybersecurity Architect (Automotive OEM)",
+                                        "text": "If a fleet gateway loses cellular connectivity during a 45-megabyte firmware download midway through writing to flash, what guarantees our ECU will not be permanently bricked?"
+                                },
+                                {
+                                        "speaker": "Fernando Ortiz",
+                                        "role": "Secure Bootloader Architect (Guadalajara Facility)",
+                                        "text": "We implement an A/B dual-bank memory map with SHA-256 block integrity hashes. The active application runs uninterrupted from Bank A. Bank B is only staged and validated; the bootloader will never swap the execution pointer until the complete binary passes ECDSA signature verification and the self-test flag is acknowledged on first boot."
+                                }
+                        ]
+                }
+        ]
+}
+,
+    "advanced-supply-chain-reshoring": {
+        "id": "advanced-supply-chain-reshoring",
+        "title": "Cadenas de Suministro Avanzadas, Reshoring y Gestión Global de Compras (SCM)",
+        "titleEN": "Advanced Supply Chain Reshoring & Global SCM",
+        "level": "B2-C1",
+        "category": "business",
+        "description": "Estrategias avanzadas de reconfiguración de cadenas de suministro globales y relocalización (nearshoring/reshoring): cálculo de Reglas de Origen T-MEC/USMCA (Valor de Contenido Regional VCR y Contenido de Valor Laboral CVL), análisis de Costo Total de Propiedad (TCO vs FOB), gestión de riesgos bajo Incoterms 2020 (FCA vs DDP), operaciones aduaneras y cross-docking en Laredo/Nuevo Laredo, auditorías a proveedores bajo VDA 6.3 / IATF 16949 y trazabilidad en cadena de frío (GDP).",
+        "status": "full",
+        "totalModules": 6,
+        "standard": "USMCA/T-MEC Rules of Origin / Incoterms 2020 (ICC) / VDA 6.3 / IATF 16949 Clause 8.4 / Good Distribution Practice (GDP) / C-TPAT",
+        "modules": [
+                {
+                        "id": "scm-m1",
+                        "title": "USMCA / T-MEC Rules of Origin: Regional Value Content (RVC) & Labor Value Content (LVC)",
+                        "titleES": "Reglas de Origen T-MEC / USMCA: Valor de Contenido Regional (VCR) y Contenido de Valor Laboral (CVL)",
+                        "icon": "fa-solid fa-file-invoice-dollar",
+                        "isGoldModel": true,
+                        "readings": [
+                                {
+                                        "id": "scm-m1-r1",
+                                        "title": "Regional Value Content Calculation: Net Cost Method vs Transaction Value & Tariff Shift Rules",
+                                        "duration": "15 min",
+                                        "content": "> **Trade Compliance Standard**: **USMCA / T-MEC Chapter 4 (Rules of Origin)** and **Uniform Regulations**. Governing framework for duty-free preferential tariff treatment between Mexico, the United States, and Canada.\n\n# USMCA / T-MEC: Quantitative Rules of Origin & Tariff Shifts\n\n### 1. The Imperative of Origin Determination\nUnder the United States-Mexico-Canada Agreement (**USMCA / T-MEC**), goods traded across North American borders do not automatically qualify for zero-tariff preferential duty rates. Products must undergo rigorous legal origin qualification. Failure to prove origin exposes importers to retroactive Customs duties, punitive anti-dumping tariffs, and severe monetary penalties assessed by US Customs and Border Protection (**CBP**) and Mexico's SAT.\n\n### 2. The Tariff Shift Mechanism (Change in Tariff Classification)\nWhen non-originating raw materials or components (e.g., steel rod from South Korea, passive electronic resistors from Taiwan) undergo transformation in a Mexican manufacturing plant:\n- **Change in Chapter (CC)**: The finished good must shift at the 2-digit Harmonized System (HS) level (e.g., from HS Chapter 72 raw iron to Chapter 84 machinery).\n- **Change in Tariff Heading (CTH)**: Requires a shift at the 4-digit HS heading level.\n- **Change in Tariff Subheading (CTSH)**: Requires a shift at the 6-digit HS subheading level.\n\n### 3. Quantitative Origin Calculations: RVC Methods\nWhen the tariff shift rule alone is insufficient, the product must satisfy a minimum **Regional Value Content (RVC)** percentage:\n\n#### Method A: Transaction Value Method (TVM)\nBased on the commercial invoice price paid for the good:\n\n$$\\text{RVC} = \\frac{\\text{TV} - \\text{VNM}}{\\text{TV}} \\times 100$$\n\nWhere:\n- $\\text{TV}$ is the Transaction Value of the good, adjusted to an FOB basis.\n- $\\text{VNM}$ is the Value of Non-Originating Materials used by the producer.\n\n#### Method B: Net Cost Method (NCM)\nRequired for automotive passenger vehicles, light trucks, and heavy industrial machinery:\n\n$$\\text{RVC} = \\frac{\\text{NC} - \\text{VNM}}{\\text{NC}} \\times 100$$\n\nWhere:\n- $\\text{NC}$ is the Net Cost of the good, calculated by subtracting excluded costs (sales promotion, marketing, royalties, shipping and packing costs, and non-allowable interest costs) from total manufacturing cost."
+                                },
+                                {
+                                        "id": "scm-m1-r2",
+                                        "title": "Automotive Labor Value Content (LVC) & Steel and Aluminum Purchasing Mandates",
+                                        "duration": "14 min",
+                                        "content": "> **Automotive Trade Standard**: **USMCA Automotive Appendix (Article 7)**. Unique structural labor and raw material requirements governing North American vehicle assembly.\n\n# Automotive LVC & Steel/Aluminum Purchasing Mandates\n\n### 1. The Labor Value Content (LVC) Requirement\nTo qualify for 0% preferential tariffs under USMCA, passenger vehicles must achieve a **40% Labor Value Content (LVC)** (45% for light/heavy trucks). This mandate stipulates that a designated proportion of the vehicle must be manufactured in production facilities where production workers earn an average wage of at least **US $16 per hour**:\n- **High-Wage Material and Manufacturing Expenditures**: Minimum 25% for passenger cars (30% for trucks).\n- **High-Wage Technology Expenditures**: Up to 10% credit for enterprise expenditures on R&D and software engineering within North America.\n- **High-Wage Assembly Credit**: A 5% credit if the assembly facility operates an engine, transmission, or advanced lithium battery assembly plant paying the minimum $16/hr wage.\n\n### 2. The 70% Steel & Aluminum Purchasing Rule\nArticle 6 of the Automotive Appendix requires that at least **70% of an automaker's corporate steel and aluminum purchases** (by value) must originate in North America. Furthermore, to count as originating steel, the metal must be **\"melted and poured\"** within North America, preventing third-party transshipment of Asian slab steel processed through regional rolling mills."
+                                }
+                        ],
+                        "vocabulary": [
+                                {
+                                        "en": "Regional Value Content (RVC)",
+                                        "es": "Valor de Contenido Regional (VCR)",
+                                        "definition": "Percentage threshold indicating the portion of a product produced within USMCA territory required to qualify for tariff exemption.",
+                                        "ipa": "/ˈriː.dʒən.əl ˈvæl.juː ˈkɑːn.tɛnt/",
+                                        "collocations": [
+                                                "satisfy RVC threshold",
+                                                "Net Cost RVC calculation",
+                                                "non-originating material deduction"
+                                        ]
+                                },
+                                {
+                                        "en": "Labor Value Content (LVC)",
+                                        "es": "Contenido de Valor Laboral (CVL)",
+                                        "definition": "USMCA requirement mandating that 40-45% of an automotive vehicle's value must be produced by workers earning at least $16 USD/hour.",
+                                        "ipa": "/ˈleɪ.bər ˈvæl.juː ˈkɑːn.tɛnt/",
+                                        "collocations": [
+                                                "high-wage manufacturing credit",
+                                                "LVC certification audit",
+                                                "comply with 40% LVC benchmark"
+                                        ]
+                                },
+                                {
+                                        "en": "Tariff Shift",
+                                        "es": "Salto Arancelario",
+                                        "definition": "Transformation rule requiring foreign raw materials to change their Harmonized System classification heading upon processing.",
+                                        "ipa": "/ˈtær.ɪf ʃɪft/",
+                                        "collocations": [
+                                                "substantial transformation",
+                                                "change in tariff classification",
+                                                "satisfy tariff shift criteria"
+                                        ]
+                                },
+                                {
+                                        "en": "Melted and Poured",
+                                        "es": "Fundido y Vaciado (Acero)",
+                                        "definition": "Origin requirement mandating that steel must have been initially smelted and cast within North America to receive duty-free treatment.",
+                                        "ipa": "/ˈmɛl.tɪd ænd pɔːrd/",
+                                        "collocations": [
+                                                "melted and poured verification",
+                                                "steel mill test report (MTR)",
+                                                "transshipment circumvention"
+                                        ]
+                                }
+                        ],
+                        "questions": [
+                                {
+                                        "id": "scm-q1",
+                                        "prompt": "Under the USMCA Net Cost Method, how is Regional Value Content (RVC) calculated for automotive assemblies?",
+                                        "options": [
+                                                "By dividing the final retail MSRP price by the shipping freight cost.",
+                                                "By subtracting the Value of Non-Originating Materials (VNM) from the Net Cost (NC) and dividing by Net Cost, multiplied by 100.",
+                                                "By multiplying the total number of factory workers by 16 dollars per hour.",
+                                                "By adding import duties paid at the maritime port of entry to the wholesale price."
+                                        ],
+                                        "correctIndex": 1,
+                                        "explanation": "The Net Cost Method calculates RVC as ((NC - VNM) / NC) * 100, where excluded promotional, royalty, and non-allowable interest expenses are stripped from total cost."
+                                }
+                        ],
+                        "dialogues": [
+                                {
+                                        "speaker": "Courtney Vance",
+                                        "role": "Global Trade Compliance Director (Chicago HQ)",
+                                        "text": "Our CBP post-entry audit flagged an aluminum heat exchanger assembly coming from our Saltillo facility. The auditor claims our RVC dropped to 58%, below the 62.5% threshold. What changed in your bill of materials (BOM)?"
+                                },
+                                {
+                                        "speaker": "Rodrigo Morales",
+                                        "role": "Supply Chain & Customs Compliance Manager (Saltillo Facility)",
+                                        "text": "We traced the issue to an alternate brazing alloy supplier selected during the Q1 port congestion. While the primary extrusion remained North American, the uncertified secondary brazing foil was sourced from East Asia without a USMCA certificate of origin. We have transitioned back to our domestic supplier in Querétaro and recalibrated the Net Cost formula to 68.4% RVC."
+                                }
+                        ]
+                },
+                {
+                        "id": "scm-m2",
+                        "title": "Total Cost of Ownership (TCO) vs Landed Cost & Reshoring Economics",
+                        "titleES": "Costo Total de Propiedad (TCO) vs Costo Puesto en Planta (Landed Cost) y Economía de Relocalización",
+                        "icon": "fa-solid fa-chart-pie",
+                        "readings": [
+                                {
+                                        "id": "scm-m2-r1",
+                                        "title": "Beyond FOB Price: Working Capital In-Transit, Scrap Quarantine & Geopolitical Disruption Penalties",
+                                        "duration": "14 min",
+                                        "content": "> **Strategic Procurement Standard**: **Total Cost of Ownership (TCO) Framework (Reshoring Initiative)** and **APICS / ASCM Supply Chain Operations Reference (SCOR)** model.\n\n# Total Cost of Ownership: Deconstructing the Purchase Price Fallacy\n\n### 1. The \"Piece-Price Fallacy\" in Global Sourcing\nFor decades, procurement departments evaluated suppliers based purely on **FOB Unit Purchase Price** (Free On Board port of origin). A stamping component quoted at $2.10 in Shenzhen appeared dramatically cheaper than a $2.85 quote from Monterrey, Mexico. However, evaluating sourcing strictly on piece price ignores the hidden operational multipliers that destroy enterprise operating margins.\n\n### 2. The Comprehensive TCO Cost Equation\n\n```\nTotal Cost of Ownership (TCO) =\n    Unit Purchase Price (FOB)\n  + Ocean Freight & Bunker Fuel Surcharges\n  + Port Handling, Demurrage & Drayage\n  + Import Customs Tariffs & Brokerage Fees\n  + In-Transit Working Capital Carrying Cost (45–60 days pipeline inventory)\n  + Safety Stock Buffer Inventory Carrying Cost (WACC x Holding Cost)\n  + Quality Containment, Scrap & Air Freight Expediting Penalties\n  + Intellectual Property (IP) Exfiltration Risk & Legal Defense\n```\n\n### 3. Quantitative Case Comparison: Transpacific vs Nearshoring\n\n| Cost Driver Factor | Transpacific Sourcing (Asia) | Nearshoring Sourcing (Mexico) |\n| :--- | :--- | :--- |\n| **FOB Unit Price** | **$2.10** *(Apparent savings)* | **$2.85** |\n| **Transit Lead Time** | **42–60 Days** (Ocean transit, port queue) | **2–4 Days** (Dedicated cross-border dry van) |\n| **Pipeline Working Capital** | High (Requires 8 weeks inventory floating on ocean) | Low (Just-In-Time JIT delivery via bonded highway) |\n| **Buffer Safety Stock** | 60 Days on-hand warehouse inventory | 7 Days on-hand inventory |\n| **Tariffs & USMCA Eligibility** | 7.5% – 25% Section 301 Tariffs | **0% Preferential Duty** under USMCA Rules of Origin |\n| **Quality Risk Containment** | Defect found 6 weeks after stamping; 120k units trapped at sea | Defect identified in 48 hours; line halted with zero trapped pipeline inventory |\n| **Expedited Air Freight Risk** | $450,000 charter flight to avert automotive line shutdown | $12,000 expedited hot-shot team truck run from Monterrey |\n| **Effective Net TCO per Unit** | **$3.62** | **$3.04** *(Nearshoring delivers 16% true savings)* |"
+                                }
+                        ],
+                        "vocabulary": [
+                                {
+                                        "en": "Total Cost of Ownership (TCO)",
+                                        "es": "Costo Total de Propiedad (TCO)",
+                                        "definition": "Comprehensive financial estimate encompassing direct purchase price, shipping, tariffs, inventory carrying costs, and quality failure liabilities.",
+                                        "ipa": "/ˈtoʊ.təl kɔːst əv ˈoʊ.nər.ʃɪp/",
+                                        "collocations": [
+                                                "comprehensive TCO evaluation",
+                                                "TCO cost modeling tool",
+                                                "hidden logistics multipliers"
+                                        ]
+                                },
+                                {
+                                        "en": "Landed Cost",
+                                        "es": "Costo Puesto en Planta (Landed Cost)",
+                                        "definition": "Total price of a product once it has arrived at the buyer's warehouse dock, including freight, insurance, and import duties.",
+                                        "ipa": "/ˈlæn.dɪd kɔːst/",
+                                        "collocations": [
+                                                "calculate true landed cost",
+                                                "port drayage surcharges",
+                                                "landed cost variance"
+                                        ]
+                                },
+                                {
+                                        "en": "Working Capital Carrying Cost",
+                                        "es": "Costo de Mantenimiento de Capital de Trabajo",
+                                        "definition": "Cost of tied-up capital in inventory during long transit times, calculated using the enterprise Weighted Average Cost of Capital (WACC).",
+                                        "ipa": "/ˈwɜːr.kɪŋ ˈkæp.ɪ.təl ˈkær.i.ɪŋ kɔːst/",
+                                        "collocations": [
+                                                "pipeline inventory financing",
+                                                "WACC inventory carrying rate",
+                                                "reduce working capital exposure"
+                                        ]
+                                }
+                        ],
+                        "questions": [
+                                {
+                                        "id": "scm-q2",
+                                        "prompt": "Why can a component with a higher piece price from a Mexican nearshoring supplier yield a lower Total Cost of Ownership (TCO) than a lower-quoted transpacific supplier?",
+                                        "options": [
+                                                "Because international maritime shipping is legally barred under World Trade Organization rules.",
+                                                "Because Mexican factories are exempt from all environmental regulations.",
+                                                "Because dramatic reductions in transit time (2-4 days vs 60 days) slash inventory carrying costs, eliminate Section 301 tariffs, and minimize catastrophic air-freight expediting risks.",
+                                                "Because USMCA eliminates the need for quality control inspections entirely."
+                                        ],
+                                        "correctIndex": 2,
+                                        "explanation": "Nearshoring reduces lead time from 60 days to 2-4 days, eliminating massive in-transit inventory financing, reducing required safety stock, avoiding US Section 301 tariffs, and averting multi-hundred-thousand-dollar emergency air charters."
+                                }
+                        ],
+                        "dialogues": [
+                                {
+                                        "speaker": "Bradley Vance",
+                                        "role": "VP of Global Strategic Procurement (Cleveland HQ)",
+                                        "text": "The stamping quote from Monterrey came in at $3.15 per unit, which is 40 cents higher than our historical supplier in Ningbo. How do you justify this sourcing recommendation to our CFO?"
+                                },
+                                {
+                                        "speaker": "Gabriela Soto",
+                                        "role": "Nearshoring Supply Chain Strategist (Monterrey Hub)",
+                                        "text": "When you factor in the 25% Section 301 tariffs, ocean spot rates at $4,800 per 40-foot container, and 8 weeks of pipeline inventory financed at our 11% corporate WACC, the true landed cost from Ningbo is $3.82. Sourcing from Monterrey achieves a net delivered cost of $3.28 under USMCA duty-free terms, saving $540,000 annually while compressing lead time from 55 days to 72 hours."
+                                }
+                        ]
+                },
+                {
+                        "id": "scm-m3",
+                        "title": "Incoterms 2020: Risk Allocation, Freight Demurrage & Title Transfer",
+                        "titleES": "Incoterms 2020: Asignación de Riesgos, Estadías de Flete y Transferencia de Propiedad",
+                        "icon": "fa-solid fa-truck-ramp-box",
+                        "readings": [
+                                {
+                                        "id": "scm-m3-r1",
+                                        "title": "FCA (Free Carrier) vs DDP (Delivered Duty Paid) in Cross-Border US-Mexico Trucking Operations",
+                                        "duration": "14 min",
+                                        "content": "> **International Trade Standard**: **Incoterms 2020 (International Chamber of Commerce - ICC Publication No. 723E)**. Universally accepted commercial terms defining the division of costs, risks, and responsibilities between buyer and seller.\n\n# Incoterms 2020 in Cross-Border Logistics: FCA vs DDP\n\n### 1. The Anatomy of Cross-Border Freight Transfer\nIn cross-border logistics between Mexico and the United States, commercial contracts frequently misapply maritime Incoterms (e.g., FOB or CIF) to overland trucking operations. Under ICC rules, multimodal terms (**FCA, CPT, CIP, DAP, DPU, DDP**) must be utilized for intermodal truck and rail movements.\n\n### 2. Detailed Comparison: FCA vs DDP\n\n| Dimension | FCA (Free Carrier - Named Place) | DDP (Delivered Duty Paid - Named Destination) |\n| :--- | :--- | :--- |\n| **Seller's Risk End-Point** | When the cargo is handed over to the buyer's designated carrier at seller's facility or cross-dock (e.g., *FCA Monterrey Plant, Incoterms 2020*). | At the buyer's dock in the US/Canada, after import customs clearance and tariff payment (e.g., *DDP Chicago Warehouse*). |\n| **Export Clearance (SAT)** | **Seller (Mexican Supplier)** must clear export customs and generate electronic Anexo 24 / CFDI with Complemento Carta Porte. | Seller handles Mexican export clearance. |\n| **Cross-Border Drayage & Crossing** | **Buyer** assumes cost and operational risk during bridge crossing and Laredo transload. | **Seller** must contract Mexican line-haul, cross-border drayage transfer, and US line-haul carrier. |\n| **Import Clearance (US CBP)** | **Buyer (US Customer)** acts as Importer of Record (IOR) and files CBP Entry 7501. | **Seller** must register as a Foreign Non-Resident Importer with CBP, post an international customs bond, and pay duties. |\n| **Operational Pitfall** | Buyer must maintain sophisticated customs broker relationships at land border crossings. | Extremely hazardous for Mexican suppliers unfamiliar with US FDA, DOT, or EPA compliance requirements; delays at customs trigger demurrage for which seller is liable. |\n\n### 3. Demurrage vs Detention in Overland and Intermodal Freight\n- **Demurrage**: Storage fees assessed when a trailer or container remains parked inside an ocean terminal, intermodal rail ramp, or bonded customs yard beyond the allocated free time (typically 24–48 hours at land border ports).\n- **Detention (Per Diem)**: Charges accrued when the carrier's tractor or trailer equipment is detained outside the terminal beyond contractual free time (e.g., trailer sitting un-unloaded at a buyer's receiving dock for 4 days)."
+                                }
+                        ],
+                        "vocabulary": [
+                                {
+                                        "en": "Incoterms 2020",
+                                        "es": "Incoterms 2020",
+                                        "definition": "Standardized trade definitions promulgated by the International Chamber of Commerce defining the precise moment of cost and risk transfer.",
+                                        "ipa": "/ˈɪn.koʊˌtɜːrmz ˈtwɛn.ti ˈtwɛn.ti/",
+                                        "collocations": [
+                                                "incorporate Incoterms into commercial contract",
+                                                "named place of delivery",
+                                                "shift of transit risk"
+                                        ]
+                                },
+                                {
+                                        "en": "Importer of Record (IOR)",
+                                        "es": "Importador de Registro (IOR)",
+                                        "definition": "Entity formally responsible for ensuring imported goods comply with all local laws and for paying assessed customs duties and tariffs.",
+                                        "ipa": "/ɪmˈpɔːr.tər əv ˈrɛk.ərd/",
+                                        "collocations": [
+                                                "designate US Importer of Record",
+                                                "post continuous customs bond",
+                                                "file CBP entry documentation"
+                                        ]
+                                },
+                                {
+                                        "en": "Demurrage & Detention",
+                                        "es": "Demoras y Estadías de Flete",
+                                        "definition": "Penalties assessed by carriers and terminals when equipment or terminal yard storage exceeds contractually agreed free time limits.",
+                                        "ipa": "/dɪˈmɜːr.ɪdʒ ænd dɪˈtɛn.ʃən/",
+                                        "collocations": [
+                                                "accrue border demurrage charges",
+                                                "negotiate trailer detention window",
+                                                "settle per diem equipment penalty"
+                                        ]
+                                }
+                        ],
+                        "questions": [
+                                {
+                                        "id": "scm-q3",
+                                        "prompt": "Why is agreeing to DDP (Delivered Duty Paid) terms potentially perilous for a Mexican manufacturer exporting engineered goods to a US customer?",
+                                        "options": [
+                                                "Because DDP terms prohibit goods from being transported by highway truck.",
+                                                "Because under DDP, the seller must act as the US Importer of Record, assume all US customs regulatory compliance liabilities (FDA/EPA/DOT), and pay all border delays and demurrage penalties.",
+                                                "Because DDP cancels all intellectual property rights for the manufactured goods.",
+                                                "Because DDP terms require payment to be made exclusively in gold bullion."
+                                        ],
+                                        "correctIndex": 1,
+                                        "explanation": "Under DDP, the seller bears maximum obligation, acting as foreign Importer of Record with US CBP, assuming all liability for import duties, border inspection delays, and equipment demurrage until delivered to the customer dock."
+                                }
+                        ],
+                        "dialogues": [
+                                {
+                                        "speaker": "Markus Thorne",
+                                        "role": "Vice President of SCM Operations (San Jose HQ)",
+                                        "text": "We want our purchase orders issued on DDP San Jose warehouse terms to insulate ourselves from any cross-border logistics friction at the Laredo bridge."
+                                },
+                                {
+                                        "speaker": "Daniela Cárdenas",
+                                        "role": "International Logistics Director (Guadalajara Electronics)",
+                                        "text": "DDP poses significant regulatory exposure because US EPA compliance certifications on the specialized potting compound must be filed directly by a domestic US entity. We propose shifting to FCA Monterrey Hub or CPT San Jose, where we manage and prepay freight up to your receiving dock, but your customs team remains Importer of Record for seamless CBP entry."
+                                }
+                        ]
+                },
+                {
+                        "id": "scm-m4",
+                        "title": "Customs Brokerage, Laredo Cross-Docking & B1/B2 Bonded Corridor Operations",
+                        "titleES": "Agenciamiento Aduanal, Cross-Docking en Laredo y Operaciones de Corredor Fiscalizado",
+                        "icon": "fa-solid fa-warehouse",
+                        "readings": [
+                                {
+                                        "id": "scm-m4-r1",
+                                        "title": "The Anatomy of a Land Border Crossing: Mexican Line-Haul, Transfer B1 Drayage & US Carrier Interchange",
+                                        "duration": "15 min",
+                                        "content": "> **Border Operations Standard**: **US CBP FAST (Free and Secure Trade)**, **C-TPAT Tier III**, and **SAT Esquema de Certificación de Empresas (OEA)**.\n\n# Laredo Border Logistics: Cross-Docking & Intermodal Transfer\n\n### 1. The Laredo / Nuevo Laredo Trade Corridor\nThe World Trade Bridge (Puente del Comercio Mundial) and Colombia Solidarity Bridge between Nuevo Laredo, Tamaulipas, and Laredo, Texas, handle over **14,000 commercial tractor-trailers daily**, representing more than 40% of all overland trade between Mexico and the United States.\n\n### 2. The Three-Leg Drayage System\n\n```\n[ Mexico Line-Haul Carrier ] ---> Drop at Nuevo Laredo Yard\n                                         |\n[ B1 Drayage Transfer Tractor (Transfer) ] ---> World Trade Bridge (Crossing)\n                                         |\n[ US CBP & Mexican Aduana Inspection ]\n                                         |\n[ Laredo Logistics Cross-Dock Facility ] ---> Transload / Inspection\n                                         |\n[ US Domestic Line-Haul Carrier ] ---> Final Delivery to US Destination\n```\n\n1. **Leg 1: Mexican Line-Haul**: Mexican freight carrier transports trailer from interior plant (e.g., Saltillo, Silao, Querétaro) to carrier terminal in Nuevo Laredo.\n2. **Leg 2: Transfer Drayage (El Transfer)**: Specialized local drayage tractors registered with US FMCSA and operated by B-1 visa drivers couple to the trailer and pull it across the international bridge through Mexican customs export gates and US CBP primary inspection booths.\n3. **Leg 3: Laredo Cross-Dock Transload & US Line-Haul**: In Laredo, cargo is often inspected at a bonded cross-dock facility, transferred onto a domestic US 53-foot dry van or temperature-controlled reefer, and dispatched via US interstate highways.\n\n### 3. C-TPAT / OEA Dedicated Green Lanes (FAST)\nImporters certified under **C-TPAT (Customs-Trade Partnership Against Terrorism)** and Mexican **OEA (Operador Económico Autorizado)** utilize dedicated FAST lanes:\n- Pre-filed electronic manifests (**e-Manifest / ACE**).\n- High-security ISO 17712 mechanical bolt seals verified with RFID.\n- Reduces border bridge transit wait time from 6–8 hours during peak congestion down to **45–60 minutes**."
+                                }
+                        ],
+                        "vocabulary": [
+                                {
+                                        "en": "Cross-Docking",
+                                        "es": "Cruce de Andén (Cross-Docking)",
+                                        "definition": "Logistics practice of unloading materials from an incoming truck and loading them directly into outbound vehicles with little or no storage in between.",
+                                        "ipa": "/ˈkrɔːs ˌdɑː.kɪŋ/",
+                                        "collocations": [
+                                                "Laredo cross-dock facility",
+                                                "transload freight across docks",
+                                                "minimize warehouse dwelling time"
+                                        ]
+                                },
+                                {
+                                        "en": "Drayage / Transfer",
+                                        "es": "Servicio de Transfer / Arrastre Fronterizo",
+                                        "definition": "Short-haul trucking movement hauling freight across the international border bridge between Mexican and US terminals.",
+                                        "ipa": "/ˈdreɪ.ɪdʒ/",
+                                        "collocations": [
+                                                "contract B1 transfer driver",
+                                                "drayage crossing delays",
+                                                "international bridge toll"
+                                        ]
+                                },
+                                {
+                                        "en": "Automated Commercial Environment (ACE)",
+                                        "es": "Entorno Comercial Automatizado (ACE de CBP)",
+                                        "definition": "Primary electronic system through which the US trade community reports imports and exports to US Customs and Border Protection.",
+                                        "ipa": "/ˈɔː.təˌmeɪ.tɪd kəˈmɜːr.ʃəl ɪnˈvaɪ.rən.mənt/",
+                                        "collocations": [
+                                                "transmit ACE e-manifest",
+                                                "CBP ACE entry summary",
+                                                "automated broker interface"
+                                        ]
+                                }
+                        ],
+                        "questions": [
+                                {
+                                        "id": "scm-q4",
+                                        "prompt": "What is the primary role of a 'transfer' (drayage) tractor in the Laredo / Nuevo Laredo commercial trucking corridor?",
+                                        "options": [
+                                                "To transport goods by air across the Gulf of Mexico.",
+                                                "To perform the specialized short-distance international bridge crossing between carrier terminals on both sides of the border.",
+                                                "To assemble electronic circuit boards inside the truck cab.",
+                                                "To deliver packages directly to residential consumer doorsteps."
+                                        ],
+                                        "correctIndex": 1,
+                                        "explanation": "Drayage ('transfer') operators specialize exclusively in hauling loaded trailers across the international border bridges between Mexican staging yards and US cross-dock terminals."
+                                }
+                        ],
+                        "dialogues": [
+                                {
+                                        "speaker": "Tyler Henderson",
+                                        "role": "Director of Inbound Logistics (Atlanta Distribution Center)",
+                                        "text": "Our shipment of 40 palletized wire harnesses has been stationary in Laredo for 36 hours. What is causing this dwell time?"
+                                },
+                                {
+                                        "speaker": "Alejandro Treviño",
+                                        "role": "Border Operations Dispatcher (Laredo Cross-Dock)",
+                                        "text": "US CBP placed a random trade enforcement hold for non-intrusive VACIS gamma-ray imaging. The container cleared inspection at 09:00 hours with no anomalies. It is currently at our cross-dock being transloaded onto a dedicated Werner team-driver dry van, scheduled to arrive at your Atlanta dock within 22 hours."
+                                }
+                        ]
+                },
+                {
+                        "id": "scm-m5",
+                        "title": "Supplier Quality Audits under VDA 6.3 & Dual-Sourcing Risk Mitigation",
+                        "titleES": "Auditorías de Calidad a Proveedores bajo VDA 6.3 y Mitigación de Riesgos por Abastecimiento Dual",
+                        "icon": "fa-solid fa-list-check",
+                        "readings": [
+                                {
+                                        "id": "scm-m5-r1",
+                                        "title": "VDA 6.3 Process Audit: P2 to P7 Questions, Downgrading Rules & Turtle Diagram Analysis",
+                                        "duration": "15 min",
+                                        "content": "> **Global Automotive Audit Standard**: **VDA 6.3 Process Audit (Verband der Automobilindustrie - 4th Edition)** and **IATF 16949 Clause 8.4 (Control of Externally Provided Processes, Products and Services)**.\n\n# VDA 6.3: Assessing Process Robustness in Nearshoring Supply Bases\n\n### 1. The Purpose of VDA 6.3\nUnlike ISO 9001, which audits high-level quality management systems, **VDA 6.3** audits the direct operational robustness of the manufacturing process from product development down to serial production and customer service. It is the gold standard required by German, European, and top-tier global automakers (BMW, Mercedes-Benz, Volkswagen Group, Tesla).\n\n### 2. The Process Audit Structure (Elements P2 to P7)\n\n| Element Code | Audit Scope & Process Focus | Key Inquiry Area |\n| :--- | :--- | :--- |\n| **P2** | Project Management | Resource allocation, milestone gate reviews, escalation protocols. |\n| **P3** | Planning Product & Process Development | Design FMEA, Process FMEA, prototype validation schedules. |\n| **P4** | Implementation of Product & Process Development | Tooling pre-series verification, Cpk capability, PPAP buy-off. |\n| **P5** | Supplier Management | Sub-tier supplier qualification, incoming material incoming inspection. |\n| **P6** | Process Analysis / Production | **Largest element**: Workstation standard work, poka-yoke error proofing, calibration, traceability. |\n| **P7** | Customer Care / Satisfaction | Failure analysis turnaround time (8D discipline), containment effectiveness. |\n\n### 3. Downgrading Rules & Classification (A, B, C)\nTotal score calculation yields a percentage compliance ($E_G$):\n- **Level A (Quality Capable)**: Score $\\ge 90\\%$. Approved for serial volume production.\n- **Level B (Conditionally Capable)**: $80\\% \\le \\text{Score} < 90\\%$. Requires formal corrective action plan (CAP); supplier placed on probationary status.\n- **Level C (Not Quality Capable)**: Score $< 80\\%$. Immediate supplier block; cannot be awarded new programs.\n\n**Automatic Downgrading Trigger**:\nEven if an overall score exceeds 90%, if any single critical question (*\"*-marked question, e.g., P6.4.3: Are parts identified and traceable throughout production?) receives **zero points**, the supplier is **automatically downgraded from Level A to Level B or C**."
+                                }
+                        ],
+                        "vocabulary": [
+                                {
+                                        "en": "VDA 6.3 Process Audit",
+                                        "es": "Auditoría de Proceso VDA 6.3",
+                                        "definition": "German automotive standard auditing the capability and maturity of manufacturing processes across serial production stages.",
+                                        "ipa": "/faʊ deː aː zɛks pʊŋkt draɪ/",
+                                        "collocations": [
+                                                "conduct on-site VDA 6.3 audit",
+                                                "downgrade to Level B rating",
+                                                "critical asterisk question"
+                                        ]
+                                },
+                                {
+                                        "en": "Dual-Sourcing Strategy",
+                                        "es": "Estrategia de Abastecimiento Dual",
+                                        "definition": "Supply chain risk mitigation practice allocating production volume between two independent suppliers (e.g., 70/30 split) to ensure business continuity.",
+                                        "ipa": "/ˈduː.əl ˈsɔːr.sɪŋ ˈstræt.ə.dʒi/",
+                                        "collocations": [
+                                                "mitigate single-source risk",
+                                                "volume allocation split",
+                                                "resilient dual-source architecture"
+                                        ]
+                                },
+                                {
+                                        "en": "Poka-Yoke Error Proofing",
+                                        "es": "Dispositivo a Prueba de Errores (Poka-Yoke)",
+                                        "definition": "Physical or electronic mechanism integrated into a production process that physically prevents an operator from committing an error.",
+                                        "ipa": "/ˈpoʊ.kə ˈjoʊ.ki ˈɛr.ər ˈpruː.fɪŋ/",
+                                        "collocations": [
+                                                "mechanical poka-yoke fixture",
+                                                "optical sensor interlock",
+                                                "zero-defect assembly gate"
+                                        ]
+                                }
+                        ],
+                        "questions": [
+                                {
+                                        "id": "scm-q5",
+                                        "prompt": "In a VDA 6.3 automotive process audit, what is the consequence if a manufacturing plant achieves an overall score of 93% but scores 0 points on a single critical asterisk (*-marked) question?",
+                                        "options": [
+                                                "The plant is automatically awarded an A+ rating with honors.",
+                                                "The plant is automatically downgraded to Level B or C despite the high numerical score.",
+                                                "The auditor is dismissed and replaced.",
+                                                "The plant must close down for one calendar year."
+                                        ],
+                                        "correctIndex": 1,
+                                        "explanation": "Under strict VDA 6.3 rules, a failure (0 points) on any single *-marked question triggers an automatic downgrade from Level A to Level B or C, preventing unmonitored serial production."
+                                }
+                        ],
+                        "dialogues": [
+                                {
+                                        "speaker": "Hans Richter",
+                                        "role": "Lead Supplier Quality Auditor (Munich Matrix)",
+                                        "text": "On Line 3, we observed that operator rework on non-conforming housings is documented on paper sheets without being scanned into your MES serial traceability system. This touches critical question P6.5.3."
+                                },
+                                {
+                                        "speaker": "Guillermo Lozano",
+                                        "role": "Plant Quality Director (San Luis Potosí Facility)",
+                                        "text": "We acknowledge the finding. We have immediately locked the manual rework station and implemented a barcode interlock on our laser engraver; the rework station cannot release the part until the MES registers the engineering disposition code. We will submit the 8D containment record within 24 hours."
+                                }
+                        ]
+                },
+                {
+                        "id": "scm-m6",
+                        "title": "Cold Chain, GDP Compliance & Temperature-Controlled International Freight",
+                        "titleES": "Cadena de Frío, Cumplimiento de Buenas Prácticas de Distribución (GDP) y Carga Refrigerada Internacional",
+                        "icon": "fa-solid fa-snowflake",
+                        "readings": [
+                                {
+                                        "id": "scm-m6-r1",
+                                        "title": "Active vs Passive Packaging, Temperature Data Loggers & Validation under EU GDP & FDA 21 CFR 211",
+                                        "duration": "14 min",
+                                        "content": "> **Life Sciences Logistics Standard**: **EU Good Distribution Practice (GDP) 2013/C 343/01** and **US FDA 21 CFR Part 211.142 (Warehousing and Distribution)**. Mandatory standards for shipping biopharmaceuticals, vaccines, and biologics across borders.\n\n# Cold Chain Integrity: Validated Distribution of Life Sciences Payloads\n\n### 1. Temperature Control Categories in Cross-Border Freight\n1. **Cryogenic / Ultra-Low**: Below $-70^{\\circ}\\text{C}$ utilizing liquid nitrogen dry shippers (e.g., mRNA vaccines, cellular therapies).\n2. **Frozen**: $-20^{\\circ}\\text{C}$ controlled freezer units (e.g., blood plasma derivatives, diagnostic enzymes).\n3. **Refrigerated (Cold Chain)**: $+2^{\\circ}\\text{C}$ to $+8^{\\circ}\\text{C}$ (e.g., monoclonal antibodies, insulin, injectable biologics).\n4. **Controlled Room Temperature (CRT)**: $+15^{\\circ}\\text{C}$ to $+25^{\\circ}\\text{C}$ (protecting sensitive tablets and lyophilized vials from extreme desert or tropical highway temperatures).\n\n### 2. Active vs. Passive Thermal Packaging\n- **Passive Packaging Systems**: Vacuum insulated panels (VIP) and phase-change materials (PCM) maintaining temperature for 72 to 120 hours without external electrical power.\n- **Active Systems**: Temperature-controlled reefer trailers equipped with autonomous Thermo King or Carrier refrigeration units, integrated telematics, dual-temperature zones, and continuous electric standby.\n\n### 3. Temperature Excursion Management & Real-Time IoT Telematics\nA **temperature excursion** occurs when cargo temperature drifts outside the validated specification.\n- Every shipment contains calibrated NIST-traceable USB or cellular IoT temperature data loggers.\n- IoT monitors stream real-time GPS coordinates, temperature, humidity, and door-opening optical sensor alerts directly to the quality assurance command center.\n- Under GDP Clause 9.2, if a temperature excursion occurs during international transit, the entire shipment must be quarantined immediately upon arrival until Quality Assurance conducts a formal stability evaluation."
+                                }
+                        ],
+                        "vocabulary": [
+                                {
+                                        "en": "Temperature Excursion",
+                                        "es": "Excursión de Temperatura",
+                                        "definition": "Event in which temperature-sensitive pharmaceuticals or medical supplies deviate from specified label storage temperatures during transit.",
+                                        "ipa": "/ˈtɛm.prə.tʃər ɪkˈskɜːr.ʒən/",
+                                        "collocations": [
+                                                "investigate temperature excursion",
+                                                "quarantine exposed batch",
+                                                "mean kinetic temperature (MKT)"
+                                        ]
+                                },
+                                {
+                                        "en": "Good Distribution Practice (GDP)",
+                                        "es": "Buenas Prácticas de Distribución (GDP)",
+                                        "definition": "Quality standard governing the storage, transport, and handling of active pharmaceutical ingredients and medical products.",
+                                        "ipa": "/ɡʊd ˌdɪs.trɪˈbjuː.ʃən ˈpræk.tɪs/",
+                                        "collocations": [
+                                                "GDP certified transport fleet",
+                                                "GDP compliance audit",
+                                                "maintain unbroken cold chain"
+                                        ]
+                                },
+                                {
+                                        "en": "Phase-Change Material (PCM)",
+                                        "es": "Material de Cambio de Fase (PCM)",
+                                        "definition": "Thermal storage compound that absorbs and releases latent heat at specific transition temperatures to regulate internal package climates.",
+                                        "ipa": "/feɪz tʃeɪndʒ məˈtɪr.i.əl/",
+                                        "collocations": [
+                                                "PCM cooling pack",
+                                                "pre-conditioned thermal blanket",
+                                                "passive shipper thermal retention"
+                                        ]
+                                }
+                        ],
+                        "questions": [
+                                {
+                                        "id": "scm-q6",
+                                        "prompt": "Under Good Distribution Practice (GDP), what immediate action must be taken when a calibrated data logger indicates a temperature excursion occurred during cross-border transit?",
+                                        "options": [
+                                                "The products must be sold immediately at a discounted price.",
+                                                "The data logger must be discarded and replaced with a blank one.",
+                                                "The entire shipment must be physically quarantined upon arrival, documented, and held until Quality Assurance evaluates stability data.",
+                                                "The driver must pay a cash fine directly to customs."
+                                        ],
+                                        "correctIndex": 2,
+                                        "explanation": "Under GDP, any temperature excursion triggers an immediate quarantine of the shipment; goods cannot be released to stock or production until a documented stability evaluation verifies product integrity."
+                                }
+                        ],
+                        "dialogues": [
+                                {
+                                        "speaker": "Dr. Evelyn Reed",
+                                        "role": "Global Head of Quality Assurance (Pharma HQ)",
+                                        "text": "Our refrigerated trailer delivering high-purity biological reagents from Tijuana to San Diego recorded a 42-minute temperature spike to 11.2 degrees Celsius while waiting in the secondary customs inspection bay. What is the disposition of this lot?"
+                                },
+                                {
+                                        "speaker": "Esteban Palacios",
+                                        "role": "Cold Chain Logistics Director (Tijuana Medical Facility)",
+                                        "text": "The shipment was placed under quarantine hold at our validated cold-room facility upon dock arrival. We extracted the time-temperature integration profile and calculated the Mean Kinetic Temperature (MKT), which remained at 4.6 degrees Celsius. We have submitted the MKT analysis and stability test data to your QA committee for formal release approval."
+                                }
+                        ]
+                }
+        ]
+}
 };
 
 if (typeof module !== "undefined" && module.exports) {

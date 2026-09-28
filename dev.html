@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>stemOS — English for Specific Purposes | Advanced Industry ESP Platform</title>
-  <meta name="description" content="stemOS is an ESP (English for Specific Purposes) platform with 27 specialized industry tracks for semiconductor, aerospace, robotics, and advanced manufacturing professionals.">
+  <meta name="description" content="stemOS is an ESP (English for Specific Purposes) platform with 34 specialized industry tracks for semiconductor, aerospace, robotics, automotive, medical device, logistics, quality engineering & EHS, energy & data centers, embedded firmware & Edge AI, and advanced supply chain reshoring.">
 
   <!-- Fonts & Icons: Plus Jakarta Sans, Inter, Instrument Serif (for authentic Apple-editorial italic accents), JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <link rel="stylesheet" href="/dev.css?v=4.0.3">
+  <link rel="stylesheet" href="/dev.css?v=5.0.0">
   <link rel="stylesheet" href="/world-map.css?v=1.0.0">
 </head>
 
@@ -45,6 +45,11 @@
         <a href="#group-science" class="nav-link" data-filter-jump="cat-science">Science</a>
         <a href="#group-career" class="nav-link" data-filter-jump="cat-career">Aviation</a>
         <a href="#section-phrases" class="nav-link" data-filter-jump="phrases">Native Idioms</a>
+        <a href="#output-engine-section" class="nav-link" id="nav-btn-output-lab"><i class="fa-solid fa-pen-ruler" style="color:#10b981; margin-right:4px;"></i> Output Lab (8D &amp; Email)</a>
+        <a href="#sm2-review-section" class="nav-link" id="nav-btn-sm2"><i class="fa-solid fa-brain" style="color:#f59e0b; margin-right:4px;"></i> SM-2 Deck (<span id="nav-sm2-due-count">10</span>)</a>
+        <a href="#negotiation-pitch-section" class="nav-link" id="nav-btn-pitch-lab"><i class="fa-solid fa-microphone-lines" style="color:#ec4899; margin-right:4px;"></i> Pitch &amp; Negotiation</a>
+        <a href="#corporate-ld-section" class="nav-link" id="nav-btn-corporate-ld"><i class="fa-solid fa-chart-line" style="color:#38bdf8; margin-right:4px;"></i> Enterprise L&amp;D</a>
+        <a href="javascript:void(0)" class="nav-link" id="nav-btn-stembot" onclick="toggleStemBotCopilot(true)"><i class="fa-solid fa-robot" style="color:#0ea5e9; margin-right:4px;"></i> STEMBot Copilot</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-open-world"><i class="fa-solid fa-earth-americas" style="color:#38bdf8; margin-right:4px;"></i> 3D World</a>
       </div>
     </nav>
@@ -71,14 +76,34 @@
 
       <!-- Refined Subtitle with Soft Fade -->
       <p class="supaste-hero-subtitle soft-element" style="--delay: 0.82s">
-        <strong>27 specialized industry tracks</strong> of English for Specific Purposes &mdash; engineered for semiconductor fabrication, aerospace avionics, industrial robotics, and advanced manufacturing teams. Aligned with IEEE, SEMI, ISO, and OACI standards.
+        <strong>34 specialized industry tracks</strong> of English for Specific Purposes &mdash; engineered for semiconductor fabrication, aerospace avionics, industrial robotics, automotive engineering, medical devices, cross-border trade logistics, quality &amp; EHS, mission-critical energy &amp; data centers, AUTOSAR embedded firmware &amp; Edge AI, and nearshoring supply chain SCM. Aligned with IEEE, SEMI, ISO, IATF, FDA, OSHA, and USMCA standards.
       </p>
 
       <!-- CTA Buttons Row with Soft Fade -->
       <div class="supaste-hero-actions soft-element" style="--delay: 0.95s">
         <a href="#catalog-section" class="supaste-btn-primary">
-          <span>Explore 27 Tracks</span>
+          <span>Explore 34 Tracks</span>
           <i class="fa-solid fa-arrow-right btn-arrow"></i>
+        </a>
+        <a href="#output-engine-section" class="supaste-btn-secondary" id="hero-output-lab-btn" style="border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.1);">
+          <i class="fa-solid fa-pen-ruler" style="color:#10b981;"></i>
+          <span>Output Lab (8D &amp; Email)</span>
+        </a>
+        <a href="#sm2-review-section" class="supaste-btn-secondary" id="hero-sm2-btn" style="border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.1);">
+          <i class="fa-solid fa-brain" style="color:#f59e0b;"></i>
+          <span>SM-2 Memory Deck</span>
+        </a>
+        <a href="#negotiation-pitch-section" class="supaste-btn-secondary" id="hero-pitch-btn" style="border-color: rgba(236, 72, 153, 0.4); background: rgba(236, 72, 153, 0.1);">
+          <i class="fa-solid fa-microphone-lines" style="color:#ec4899;"></i>
+          <span>Pitch &amp; Negotiation</span>
+        </a>
+        <a href="#corporate-ld-section" class="supaste-btn-secondary" id="hero-ld-btn" style="border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.1);">
+          <i class="fa-solid fa-chart-line" style="color:#38bdf8;"></i>
+          <span>Enterprise L&amp;D</span>
+        </a>
+        <a href="#executive-leadership-section" class="supaste-btn-secondary" id="hero-exec-lab-btn" style="border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.12);">
+          <i class="fa-solid fa-chess-knight" style="color:#a855f7;"></i>
+          <span>Executive B2/C1 &amp; Accents</span>
         </a>
         <a href="#hero-showcase-window" class="supaste-btn-secondary" id="hero-view-demo-btn">
           <i class="fa-solid fa-laptop-code"></i>
@@ -93,28 +118,38 @@
       <!-- Key Metrics Strip with Soft Fade -->
       <div class="supaste-metrics-strip soft-element" style="--delay: 1.08s">
         <div class="metric-pill">
-          <span class="metric-val" id="stat-tracks">27</span>
+          <span class="metric-val" id="stat-tracks">34</span>
           <span class="metric-lbl">Tracks ESP</span>
         </div>
         <span class="metric-dot">&bull;</span>
         <div class="metric-pill">
-          <span class="metric-val" id="stat-modules">154</span>
+          <span class="metric-val" id="stat-modules">196</span>
           <span class="metric-lbl">Modules</span>
         </div>
         <span class="metric-dot">&bull;</span>
         <div class="metric-pill">
-          <span class="metric-val" id="stat-readings">157</span>
+          <span class="metric-val" id="stat-readings">266</span>
           <span class="metric-lbl">Readings</span>
         </div>
         <span class="metric-dot">&bull;</span>
         <div class="metric-pill">
-          <span class="metric-val" id="stat-questions">628</span>
+          <span class="metric-val" id="stat-questions">880</span>
           <span class="metric-lbl">MCQ Questions</span>
         </div>
         <span class="metric-dot">&bull;</span>
         <div class="metric-pill">
-          <span class="metric-val" id="stat-phrases">45</span>
+          <span class="metric-val" id="stat-phrases">162</span>
           <span class="metric-lbl">Native Idioms</span>
+        </div>
+        <span class="metric-dot">&bull;</span>
+        <div class="metric-pill">
+          <span class="metric-val" id="stat-cases">4</span>
+          <span class="metric-lbl">Case Studies B2/C1</span>
+        </div>
+        <span class="metric-dot">&bull;</span>
+        <div class="metric-pill">
+          <span class="metric-val" id="stat-accents">5</span>
+          <span class="metric-lbl">Global Accents</span>
         </div>
         <span class="metric-dot">&bull;</span>
         <div class="metric-pill">
@@ -304,7 +339,7 @@
         <div class="catalog-header-left">
           <h2 class="catalog-main-title">All Units &amp; Specialized Tracks</h2>
           <p class="catalog-main-desc">
-            27 industry disciplines organized by engineering domain. Select any unit to explore its technical modules, readings, and competency standards.
+            34 industry disciplines organized by engineering domain. Select any unit to explore its technical modules, readings, and competency standards.
           </p>
         </div>
         <div class="units-progress-container">
@@ -322,7 +357,7 @@
         </div>
       </div>
 
-      <!-- Search & Filter Controls (Spotlight Capsule & Supaste Category Pills) -->
+      <!-- Search & Filter Controls (Spotlight Capsule & Dual-Axis Pills) -->
       <div class="controls-bar" id="controls-bar">
         <div class="search-wrapper">
           <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -330,14 +365,33 @@
           <kbd class="search-shortcut">⌘K</kbd>
         </div>
 
+        <!-- Dual Axis Navigation Switcher (Eje A: Industria ✖ Eje B: Habilidades Comunicativas) -->
+        <div class="dual-axis-mode-wrapper">
+          <div class="dual-axis-toggle-pill" id="dual-axis-toggle-pill" role="tablist" aria-label="Dimensión Curricular">
+            <button class="axis-mode-btn active" id="btn-axis-industry" data-axis="industry" role="tab" aria-selected="true">
+              <i class="fa-solid fa-industry"></i>
+              <span>Por Vertical Industrial</span>
+            </button>
+            <button class="axis-mode-btn" id="btn-axis-skills" data-axis="skills" role="tab" aria-selected="false">
+              <i class="fa-solid fa-bullseye"></i>
+              <span>Por Habilidad Comunicativa</span>
+              <span class="axis-mode-badge">Eje B</span>
+            </button>
+          </div>
+          <div class="axis-mode-caption" id="axis-mode-caption">
+            <i class="fa-solid fa-compass" style="color:var(--blue-core);"></i>
+            <span id="axis-caption-text">Explorando por <strong>Sector Industrial</strong> (34 verticales de manufactura y tecnología)</span>
+          </div>
+        </div>
+
         <div class="track-filters" id="track-filters">
-          <!-- Filter buttons dynamically injected here by dev.js -->
+          <!-- Filter buttons dynamically injected here by dev.js based on active axis -->
         </div>
       </div>
 
       <!-- Level 1: All Units Modular Grid (Screenshot Model) -->
       <div id="units-grid" class="units-grid-container">
-        <!-- 26 Unit cards dynamically injected here by dev.js -->
+        <!-- 30 Unit cards dynamically injected here by dev.js -->
       </div>
 
       <!-- Level 2: Drill-Down Unit Detail View (Revealed when a Unit Card is clicked) -->
@@ -349,6 +403,1770 @@
       <main id="studio-grid" class="bento-grid-container" style="display:none;">
         <!-- Search results or legacy module cards injected here -->
       </main>
+
+    </div>
+  </section>
+
+  <!-- ── 11. TECHNICAL OUTPUT LAB: 8D PROBLEM SOLVING & ESCALATION EMAIL STUDIO ── -->
+  <section class="output-lab-section" id="output-engine-section">
+    <div class="studio-container">
+      <div class="output-lab-header">
+        <div class="output-lab-badge">
+          <i class="fa-solid fa-pen-ruler"></i> ACTIVE PRODUCTION LAB &bull; OUTPUT ENGINE V1
+        </div>
+        <h2 class="output-lab-title">
+          Technical Output Studio: <span class="supaste-serif-italic">8D Problem Solving</span> &amp; Escalation Email
+        </h2>
+        <p class="output-lab-desc">
+          Shift from passive comprehension to active engineering output. Draft audit-ready 8D corrective action reports and structured executive escalation emails with real-time AI rubric scoring and diplomatic cross-border tone validation.
+        </p>
+
+        <!-- Studio Mode Switcher Pills -->
+        <div class="output-mode-pills" role="tablist">
+          <button class="output-mode-btn active" id="btn-mode-8d" data-mode="8d" role="tab" aria-selected="true">
+            <i class="fa-solid fa-list-check"></i>
+            <span>8D Problem Solving Studio (D1–D8)</span>
+          </button>
+          <button class="output-mode-btn" id="btn-mode-email" data-mode="email" role="tab" aria-selected="false">
+            <i class="fa-solid fa-envelope-open-text"></i>
+            <span>Executive Escalation Email Builder</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- WORKSPACE 1: 8D PROBLEM SOLVING STUDIO -->
+      <div class="output-workspace" id="workspace-8d">
+        <!-- Preset Selector Strip -->
+        <div class="scenario-preset-strip">
+          <span class="preset-label"><i class="fa-solid fa-bolt"></i> Cargar Escenario Industrial:</span>
+          <div class="preset-buttons">
+            <button class="preset-chip active" data-preset="auto_weld">
+              <i class="fa-solid fa-car-side"></i> Automotriz: Porosidad en Soldadura Láser (IATF 16949)
+            </button>
+            <button class="preset-chip" data-preset="med_balloon">
+              <i class="fa-solid fa-heart-pulse"></i> Dispositivos Médicos: Falla de Presión de Balón (FDA 21 CFR 820)
+            </button>
+            <button class="preset-chip" data-preset="semi_wafer">
+              <i class="fa-solid fa-microchip"></i> Semiconductores: Deriva de Dimensión Crítica en Fotolitografía
+            </button>
+            <button class="preset-chip" data-preset="custom_blank">
+              <i class="fa-solid fa-plus"></i> Formulario en Blanco
+            </button>
+          </div>
+        </div>
+
+        <div class="output-grid-layout">
+          <!-- Left: 8D Step Form -->
+          <div class="output-form-card">
+            <div class="output-form-header">
+              <div class="form-title-group">
+                <span class="report-code" id="8d-report-id">8D-2026-AUTO-042</span>
+                <h3 class="form-title" id="8d-form-title">Automotive Laser Welding 8D Report</h3>
+              </div>
+              <span class="audit-status-tag" id="8d-audit-status"><i class="fa-solid fa-circle-check"></i> Audit In Progress</span>
+            </div>
+
+            <!-- Steps Tabs Carousel / Accordion -->
+            <div class="eightd-steps-wrapper">
+              <!-- Step D1 -->
+              <div class="eightd-step-box">
+                <div class="step-badge-num">D1</div>
+                <div class="step-content">
+                  <label class="step-label">D1: Establish the Cross-Functional Team (CFT)</label>
+                  <p class="step-guidance">Identify the Champion, Leader, and cross-functional members (Quality, Manufacturing, Process, Metrology).</p>
+                  <input type="text" id="8d-d1-input" class="step-input" placeholder="e.g., Champion: Ing. Cordero (Plant Director), Leader: Ing. Garza (SQE)...">
+                </div>
+              </div>
+
+              <!-- Step D2 -->
+              <div class="eightd-step-box">
+                <div class="step-badge-num">D2</div>
+                <div class="step-content">
+                  <label class="step-label">D2: Problem Description (5W2H Standard)</label>
+                  <p class="step-guidance">Quantify What, Where, When, How Many, and Defect Rate. Avoid jumping to causes.</p>
+                  <textarea id="8d-d2-input" class="step-textarea" rows="3" placeholder="During helium leak testing at Detroit assembly line 3..."></textarea>
+                </div>
+              </div>
+
+              <!-- Step D3 -->
+              <div class="eightd-step-box">
+                <div class="step-badge-num">D3</div>
+                <div class="step-content">
+                  <label class="step-label">D3: Interim Containment Actions (ICA) &amp; Quarantine</label>
+                  <p class="step-guidance">Document 100% sorting, red hold tags, warehouse freeze, and customer notification within 24h.</p>
+                  <textarea id="8d-d3-input" class="step-textarea" rows="3" placeholder="Immediate warehouse quarantine on all lots sharing laser head #2..."></textarea>
+                </div>
+              </div>
+
+              <!-- Step D4 -->
+              <div class="eightd-step-box">
+                <div class="step-badge-num">D4</div>
+                <div class="step-content">
+                  <label class="step-label">D4: Root Cause Analysis (Ishikawa 4M &amp; 5 Whys)</label>
+                  <p class="step-guidance">Identify the physical root cause and the escape point (why was it not detected internally?).</p>
+                  <textarea id="8d-d4-input" class="step-textarea" rows="3" placeholder="Optical lens contamination caused laser focal length drift..."></textarea>
+                </div>
+              </div>
+
+              <!-- Step D5 & D6 -->
+              <div class="eightd-step-box">
+                <div class="step-badge-num">D5/D6</div>
+                <div class="step-content">
+                  <label class="step-label">D5 &amp; D6: Permanent Corrective Action (PCA) &amp; Validation</label>
+                  <p class="step-guidance">Specify engineering error-proofing (Poka-Yoke) and provide statistical validation data (Cpk ≥ 1.67).</p>
+                  <textarea id="8d-d5-input" class="step-textarea" rows="3" placeholder="Installed automated inline optical cleanliness sensor with interlocking shutoff..."></textarea>
+                </div>
+              </div>
+
+              <!-- Step D7 & D8 -->
+              <div class="eightd-step-box">
+                <div class="step-badge-num">D7/D8</div>
+                <div class="step-content">
+                  <label class="step-label">D7 &amp; D8: Prevent Recurrence &amp; Team Recognition</label>
+                  <p class="step-guidance">Update PFMEA, Control Plan, Layered Process Audit (LPA) checklists, and formally recognize the team.</p>
+                  <textarea id="8d-d7-input" class="step-textarea" rows="3" placeholder="PFMEA revised to increase detection rating; Layer 1 LPA updated with daily lens check..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="output-form-actions">
+              <button class="output-btn-primary" id="btn-eval-8d">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Evaluate 8D with AI Rubric
+              </button>
+              <button class="output-btn-secondary" id="btn-copy-8d">
+                <i class="fa-solid fa-copy"></i> Copy Formal 8D Text
+              </button>
+              <button class="output-btn-secondary" id="btn-print-8d">
+                <i class="fa-solid fa-print"></i> Export / Print Dossier
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Real-Time Audit Rubric & Live Quality Score -->
+          <div class="output-rubric-card">
+            <div class="rubric-header">
+              <span class="rubric-badge"><i class="fa-solid fa-gauge-high"></i> Socratic Audit Rubric</span>
+              <h4 class="rubric-title">IATF / ISO Compliance Score</h4>
+            </div>
+
+            <div class="score-display-box">
+              <div class="score-number" id="rubric-score-val">88%</div>
+              <div class="score-level-text" id="rubric-score-lbl">AUDIT-READY (EXCELLENT)</div>
+              <div class="score-progress-bar">
+                <div class="score-fill" id="rubric-score-fill" style="width: 88%;"></div>
+              </div>
+            </div>
+
+            <div class="rubric-criteria-list" id="rubric-criteria-list">
+              <!-- Dynamically populated criteria checks -->
+            </div>
+
+            <div class="rubric-feedback-box">
+              <div class="feedback-title"><i class="fa-solid fa-comment-dots"></i> Lead Auditor Feedback:</div>
+              <p class="feedback-text" id="rubric-feedback-text">
+                Strong 5W2H problem definition and robust quarantine isolation. To reach 100%, ensure D6 includes explicit statistical capability indices (Cpk) and reference the specific revised PFMEA severity/detection numbers.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORKSPACE 2: EXECUTIVE ESCALATION EMAIL BUILDER -->
+      <div class="output-workspace" id="workspace-email" style="display:none;">
+        <div class="scenario-preset-strip">
+          <span class="preset-label"><i class="fa-solid fa-bolt"></i> Cargar Plantilla de Escalación:</span>
+          <div class="preset-buttons">
+            <button class="email-preset-chip active" data-epreset="line_stop">
+              <i class="fa-solid fa-triangle-exclamation"></i> Paro Inminente de Línea (Line-Down Alert)
+            </button>
+            <button class="email-preset-chip" data-epreset="concession">
+              <i class="fa-solid fa-file-contract"></i> Solicitud de Desviación / Concesión Técnica
+            </button>
+            <button class="email-preset-chip" data-epreset="customs_hold">
+              <i class="fa-solid fa-bridge"></i> Retención en Puente Aduanal (CBP / SAT Hold)
+            </button>
+            <button class="email-preset-chip" data-epreset="eco_pushback">
+              <i class="fa-solid fa-rotate"></i> Defensa de Factibilidad ante ECO de Matriz
+            </button>
+          </div>
+        </div>
+
+        <div class="output-grid-layout">
+          <!-- Left: Email Form Builder -->
+          <div class="output-form-card">
+            <div class="output-form-header">
+              <div class="form-title-group">
+                <span class="report-code">EXECUTIVE CROSS-BORDER ESCALATION</span>
+                <h3 class="form-title">Diplomatic Escalation Email Builder</h3>
+              </div>
+              <span class="audit-status-tag" style="background:rgba(2, 132, 199, 0.1); color:#0284c7; border-color:rgba(2, 132, 199, 0.25);">
+                <i class="fa-solid fa-shield"></i> BLUF Standard
+              </span>
+            </div>
+
+            <div class="email-fields-group">
+              <div class="email-field-row">
+                <label class="field-lbl">To (Executive Stakeholder):</label>
+                <input type="text" id="email-to-input" class="step-input" value="Gregory Vance &lt;g.vance@oem-operations.com&gt; (VP of Manufacturing)">
+              </div>
+              <div class="email-field-row">
+                <label class="field-lbl">Subject Line (with Urgency Tag):</label>
+                <input type="text" id="email-subject-input" class="step-input" value="[URGENT ESCALATION] Line 2 High-Voltage Battery Housing Containment &amp; Schedule Impact">
+              </div>
+              <div class="email-field-row">
+                <label class="field-lbl">Bottom Line Up Front (BLUF - The Core Message in 2 Sentences):</label>
+                <textarea id="email-bluf-input" class="step-textarea" rows="2">Line 2 battery housing production in Saltillo was paused at 08:30 due to laser weld porosity. We have implemented 100% quarantine on 320 affected assemblies and require engineering sign-off on temporary parameter adjustments by 14:00 EST to protect tomorrow's Detroit shipment.</textarea>
+              </div>
+              <div class="email-field-row">
+                <label class="field-lbl">Current Containment &amp; Financial Impact Mitigation:</label>
+                <textarea id="email-containment-input" class="step-textarea" rows="2">All parts produced since 04:00 are tagged in red bins with zero escape risk. Line 1 has been re-allocated to absorb 60% of volume. Projected line-down risk to Detroit is currently mitigated for the next 18 hours.</textarea>
+              </div>
+              <div class="email-field-row">
+                <label class="field-lbl">Call to Action &amp; Hard Deadline (Clear Ask):</label>
+                <input type="text" id="email-action-input" class="step-input" value="Please confirm authorization for chartered hot-shot freight and temporary welding concession by 14:00 EST.">
+              </div>
+            </div>
+
+            <div class="output-form-actions">
+              <button class="output-btn-primary" id="btn-generate-email">
+                <i class="fa-solid fa-sparkles"></i> Render Polished Corporate Email
+              </button>
+              <button class="output-btn-secondary" id="btn-copy-email">
+                <i class="fa-solid fa-copy"></i> Copy Email to Clipboard
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Live Formatted Email Preview & Tone Radar -->
+          <div class="output-rubric-card">
+            <div class="rubric-header">
+              <span class="rubric-badge"><i class="fa-solid fa-envelope"></i> Rendered Output</span>
+              <h4 class="rubric-title">Executive Email Preview</h4>
+            </div>
+
+            <!-- Tone & Assertiveness Gauge -->
+            <div class="email-tone-gauge">
+              <div class="tone-metric">
+                <span class="tone-lbl">Tone:</span>
+                <span class="tone-val" id="email-tone-val">Assertive &amp; Diplomatic</span>
+              </div>
+              <div class="tone-metric">
+                <span class="tone-lbl">Politeness:</span>
+                <span class="tone-val" id="email-polite-val">100% Professional</span>
+              </div>
+              <div class="tone-metric">
+                <span class="tone-lbl">BLUF Clarity:</span>
+                <span class="tone-val" id="email-clarity-val">High (Immediate Action)</span>
+              </div>
+            </div>
+
+            <!-- Email Text Paper Simulation -->
+            <div class="email-preview-paper" id="email-preview-paper">
+              <!-- Dynamically rendered email body -->
+            </div>
+
+            <!-- Native Corporate Collocations Injected -->
+            <div class="colloquial-suggestion-box">
+              <div class="coll-title"><i class="fa-solid fa-bolt"></i> Idiomatic Collocations Included:</div>
+              <div class="coll-chips" id="email-colloquial-chips">
+                <span class="coll-chip">loop you in</span>
+                <span class="coll-chip">hard stop at 14:00</span>
+                <span class="coll-chip">touch base</span>
+                <span class="coll-chip">circle back</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 13. ADAPTIVE SPACED REPETITION ENGINE (SM-2 DECK) ── -->
+  <section class="sm2-section" id="sm2-review-section">
+    <div class="sm2-container">
+      <!-- Section Header -->
+      <div class="sm2-header">
+        <div class="sm2-header-left">
+          <div class="sm2-badge">
+            <i class="fa-solid fa-brain"></i>
+            <span>FASE 2 &bull; MOTOR ADAPTATIVO SM-2</span>
+          </div>
+          <h2 class="sm2-title">Adaptive Spaced Repetition Memory Deck</h2>
+          <p class="sm2-subtitle">
+            Algoritmo <strong>SuperMemo-2 (SM-2)</strong> para retención a largo plazo de léxico crítico industrial, trampas de auditoría y modismos opacos. Calcula intervalos adaptativos ($I$), factor de facilidad ($EF$) y repeticiones ($n$) por alumno.
+          </p>
+        </div>
+        <div class="sm2-stats-pillbox">
+          <div class="sm2-stat">
+            <span class="sm2-stat-num" id="sm2-stat-due">0</span>
+            <span class="sm2-stat-lbl">Due Today</span>
+          </div>
+          <span class="sm2-stat-divider"></span>
+          <div class="sm2-stat">
+            <span class="sm2-stat-num" id="sm2-stat-total">0</span>
+            <span class="sm2-stat-lbl">In Deck</span>
+          </div>
+          <span class="sm2-stat-divider"></span>
+          <div class="sm2-stat">
+            <span class="sm2-stat-num" id="sm2-stat-retention">94%</span>
+            <span class="sm2-stat-lbl">Retention</span>
+          </div>
+          <span class="sm2-stat-divider"></span>
+          <div class="sm2-stat">
+            <span class="sm2-stat-num" id="sm2-stat-ef">2.50</span>
+            <span class="sm2-stat-lbl">Avg. EF</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls & Filter Strip -->
+      <div class="sm2-controls-strip">
+        <div class="sm2-deck-filters" id="sm2-deck-filters">
+          <button class="sm2-filter-btn active" data-deck-filter="all"><i class="fa-solid fa-layer-group"></i> All Deck</button>
+          <button class="sm2-filter-btn" data-deck-filter="nearshoring"><i class="fa-solid fa-industry"></i> Nearshoring (Tracks 28-34)</button>
+          <button class="sm2-filter-btn" data-deck-filter="automotive-lean"><i class="fa-solid fa-car-side"></i> Automotive</button>
+          <button class="sm2-filter-btn" data-deck-filter="medical-devices"><i class="fa-solid fa-heart-pulse"></i> Medical Devices</button>
+          <button class="sm2-filter-btn" data-deck-filter="logistics-compliance"><i class="fa-solid fa-truck-fast"></i> Logistics &amp; Trade</button>
+          <button class="sm2-filter-btn" data-deck-filter="quality-ehs"><i class="fa-solid fa-clipboard-check"></i> Quality &amp; EHS</button>
+          <button class="sm2-filter-btn" data-deck-filter="energy-data-centers"><i class="fa-solid fa-server"></i> Energy &amp; Data Centers</button>
+          <button class="sm2-filter-btn" data-deck-filter="embedded-firmware-edge-ai"><i class="fa-solid fa-microchip"></i> Embedded &amp; Edge AI</button>
+          <button class="sm2-filter-btn" data-deck-filter="advanced-supply-chain-reshoring"><i class="fa-solid fa-truck-ramp-box"></i> Reshoring SCM</button>
+          <button class="sm2-filter-btn" data-deck-filter="idioms"><i class="fa-solid fa-bolt"></i> Native Idioms</button>
+        </div>
+        <div class="sm2-actions-right">
+          <button class="sm2-action-btn" id="btn-seed-deck" title="Load new 10 cards for practice">
+            <i class="fa-solid fa-arrows-rotate"></i> Seed 10 Cards
+          </button>
+          <button class="sm2-action-btn" id="btn-reset-deck" title="Reset all progress locally">
+            <i class="fa-solid fa-trash-can"></i> Reset Deck
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Flashcard Workspace -->
+      <div class="sm2-workspace">
+        <div class="sm2-card-viewport">
+          <!-- 3D Flippable Card -->
+          <div class="sm2-card" id="sm2-active-card">
+            <!-- Front Face -->
+            <div class="sm2-card-face sm2-card-front">
+              <div class="sm2-card-meta-top">
+                <span class="sm2-card-domain" id="sm2-card-domain">AUTOMOTIVE &amp; LEAN</span>
+                <span class="sm2-card-interval" id="sm2-card-interval-badge">Interval: New (0d)</span>
+              </div>
+              <div class="sm2-card-front-content">
+                <div class="sm2-card-term-wrap">
+                  <h3 class="sm2-card-term" id="sm2-card-term">Process Capability Index (Cpk)</h3>
+                  <div class="sm2-card-ipa-row">
+                    <span class="sm2-card-ipa" id="sm2-card-ipa">/ˈprɑː.sɛs ˌkeɪ.pəˈbɪl.ə.t̬i ˈɪn.dɛks/</span>
+                    <button class="sm2-audio-btn" id="btn-sm2-audio" title="Listen to native US pronunciation">
+                      <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="sm2-card-prompt-hint">
+                  <i class="fa-solid fa-lightbulb"></i>
+                  <span id="sm2-card-hint">¿Cuál es la definición operacional técnica, la trampa en auditoría y el valor Cpk mínimo exigido por IATF?</span>
+                </div>
+              </div>
+              <div class="sm2-card-bottom-bar">
+                <span class="sm2-flip-hint"><kbd>Space</kbd> or Click to flip &amp; reveal answer</span>
+                <button class="sm2-flip-btn" id="btn-sm2-flip"><i class="fa-solid fa-arrow-rotate-right"></i> Flip Card</button>
+              </div>
+            </div>
+
+            <!-- Back Face -->
+            <div class="sm2-card-face sm2-card-back">
+              <div class="sm2-card-meta-top">
+                <span class="sm2-card-domain" id="sm2-card-domain-back">STANDARD AUDIT REVELATION</span>
+                <button class="sm2-audio-btn-small" id="btn-sm2-audio-back" title="Replay Audio">
+                  <i class="fa-solid fa-volume-high"></i>
+                </button>
+              </div>
+              <div class="sm2-card-back-content">
+                <div class="sm2-back-section">
+                  <div class="sm2-back-label"><i class="fa-solid fa-book"></i> Operational Definition:</div>
+                  <p class="sm2-back-text" id="sm2-card-def">Statistical metric measuring process spread relative to specification limits, accounting for mean centering drift.</p>
+                </div>
+                <div class="sm2-back-section">
+                  <div class="sm2-back-label"><i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;"></i> Shopfloor / Audit Trap:</div>
+                  <p class="sm2-back-text sm2-trap-text" id="sm2-card-trap">Do not report Cp in place of Cpk. Cp conceals severe mean drift and off-center production.</p>
+                </div>
+                <div class="sm2-back-section">
+                  <div class="sm2-back-label"><i class="fa-solid fa-comments"></i> Industrial Collocations:</div>
+                  <div class="sm2-colloc-tags" id="sm2-card-collocs">
+                    <span class="sm2-colloc-pill">demonstrate Cpk &gt;= 1.67</span>
+                    <span class="sm2-colloc-pill">capability degradation</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sm2-card-rating-bar">
+                <div class="sm2-rating-title">Rate your recall (SM-2 Calculation):</div>
+                <div class="sm2-rating-buttons">
+                  <button class="sm2-rate-btn rate-0" data-quality="0">
+                    <span class="rate-key">1</span>
+                    <span class="rate-name">Again</span>
+                    <span class="rate-sub">&lt; 1d (Reset)</span>
+                  </button>
+                  <button class="sm2-rate-btn rate-3" data-quality="3">
+                    <span class="rate-key">2</span>
+                    <span class="rate-name">Hard</span>
+                    <span class="rate-sub" id="rate-hard-interval">1d</span>
+                  </button>
+                  <button class="sm2-rate-btn rate-4" data-quality="4">
+                    <span class="rate-key">3</span>
+                    <span class="rate-name">Good</span>
+                    <span class="rate-sub" id="rate-good-interval">6d</span>
+                  </button>
+                  <button class="sm2-rate-btn rate-5" data-quality="5">
+                    <span class="rate-key">4</span>
+                    <span class="rate-name">Easy</span>
+                    <span class="rate-sub" id="rate-easy-interval">15d</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Algorithm Insights & Progress Stream -->
+        <div class="sm2-telemetry-sidebar">
+          <div class="sm2-algo-card">
+            <div class="sm2-algo-header">
+              <i class="fa-solid fa-calculator" style="color:var(--blue-core);"></i>
+              <h4>SM-2 Parameter Vector</h4>
+            </div>
+            <div class="sm2-vector-grid">
+              <div class="sm2-vector-item">
+                <span class="v-label">Interval ($I$)</span>
+                <span class="v-val" id="sm2-vec-i">1 day</span>
+              </div>
+              <div class="sm2-vector-item">
+                <span class="v-label">Repetitions ($n$)</span>
+                <span class="v-val" id="sm2-vec-n">0</span>
+              </div>
+              <div class="sm2-vector-item">
+                <span class="v-label">Ease Factor ($EF$)</span>
+                <span class="v-val" id="sm2-vec-ef">2.50</span>
+              </div>
+              <div class="sm2-vector-item">
+                <span class="v-label">Next Due Date</span>
+                <span class="v-val" id="sm2-vec-due">Today</span>
+              </div>
+            </div>
+            <div class="sm2-formula-callout">
+              EF' = EF + (0.1 - (5 - q) &times; (0.08 + (5 - q) &times; 0.02))
+            </div>
+          </div>
+
+          <div class="sm2-queue-card">
+            <div class="sm2-queue-header">
+              <i class="fa-solid fa-list-ol"></i>
+              <h4>Upcoming in Session</h4>
+              <span class="sm2-queue-count" id="sm2-queue-remaining">1 / 10</span>
+            </div>
+            <div class="sm2-queue-list" id="sm2-queue-list">
+              <!-- Dynamically rendered queue chips -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 14. PRESENTATION & PITCH BUILDER + CROSS-BORDER NEGOTIATION ARENA (PHASE 3) ── -->
+  <section class="promo-section pitch-section" id="negotiation-pitch-section">
+    <div class="promo-container">
+
+      <!-- Section Header -->
+      <div class="section-header-center">
+        <span class="section-badge" style="background: rgba(236, 72, 153, 0.1); color: #ec4899; border-color: rgba(236, 72, 153, 0.25);">
+          <i class="fa-solid fa-microphone-lines"></i> FASE 3: ORAL PRODUCTION &amp; STRATEGIC NEGOTIATION LAB
+        </span>
+        <h2 class="section-title">Presentation Pitch Builder &amp; Cross-Border Negotiation Arena</h2>
+        <p class="section-subtitle">
+          Defend engineering CAPEX, articulate root-cause architectures to US headquarters, and navigate high-stakes cross-border trade, tooling, and quality disputes with real-time AI scoring, filler-word acoustic telemetry, and dynamic stakeholder feedback.
+        </p>
+
+        <!-- Key Metrics Strip -->
+        <div class="pitch-metrics-summary">
+          <div class="pitch-metric-card">
+            <span class="pitch-m-num">5-Stage</span>
+            <span class="pitch-m-lbl">Executive Pitch Architecture</span>
+          </div>
+          <span class="pitch-m-divider"></span>
+          <div class="pitch-metric-card">
+            <span class="pitch-m-num" id="pitch-stat-fillers">0</span>
+            <span class="pitch-m-lbl">Hedges &amp; Filler Words</span>
+          </div>
+          <span class="pitch-m-divider"></span>
+          <div class="pitch-metric-card">
+            <span class="pitch-m-num" id="pitch-stat-impact">92%</span>
+            <span class="pitch-m-lbl">Executive Conviction Score</span>
+          </div>
+          <span class="pitch-m-divider"></span>
+          <div class="pitch-metric-card">
+            <span class="pitch-m-num" id="neg-stat-batna">BATNA</span>
+            <span class="pitch-m-lbl">Strategic Concession Protocol</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mode Switcher Tabs -->
+      <div class="pitch-mode-tabs-wrapper">
+        <div class="pitch-mode-tabs" role="tablist">
+          <button class="pitch-tab-btn active" id="tab-btn-pitch-builder" data-pitch-tab="builder" role="tab" aria-selected="true">
+            <i class="fa-solid fa-microphone-lines"></i>
+            <span>1. Engineering Presentation &amp; Pitch Builder</span>
+          </button>
+          <button class="pitch-tab-btn" id="tab-btn-negotiation-arena" data-pitch-tab="negotiation" role="tab" aria-selected="false">
+            <i class="fa-solid fa-handshake-simple"></i>
+            <span>2. Cross-Border Negotiation Arena (Roleplay)</span>
+          </button>
+          <button class="pitch-tab-btn" id="tab-btn-phonetic-trainer" data-pitch-tab="phonetic" role="tab" aria-selected="false">
+            <i class="fa-solid fa-wave-square"></i>
+            <span>3. Phonetic &amp; Syllable Stress Trainer</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- WORKSPACE 1: PRESENTATION & PITCH BUILDER -->
+      <div class="pitch-workspace" id="workspace-pitch-builder">
+        <!-- Scenario Presets Strip -->
+        <div class="pitch-preset-strip">
+          <span class="preset-label"><i class="fa-solid fa-bolt"></i> Cargar Escenario de Defensa Técnica:</span>
+          <div class="preset-buttons">
+            <button class="pitch-preset-chip active" data-ppreset="catheter_welder">
+              <i class="fa-solid fa-heart-pulse"></i> Medical Ultrasonic Welder CAPEX ($185k ROI)
+            </button>
+            <button class="pitch-preset-chip" data-ppreset="laser_vision">
+              <i class="fa-solid fa-camera"></i> Automotive AI Vision Defect Mitigation ($320k Scrap)
+            </button>
+            <button class="pitch-preset-chip" data-ppreset="svg_power">
+              <i class="fa-solid fa-bolt-lightning"></i> Substation SVG &amp; BESS Grid Compliance (CFE Código de Red)
+            </button>
+            <button class="pitch-preset-chip" data-ppreset="blank_pitch">
+              <i class="fa-solid fa-file-pen"></i> Plantilla en Blanco (Custom Defense)
+            </button>
+          </div>
+        </div>
+
+        <div class="pitch-studio-grid">
+          <!-- Left: 5-Stage Structured Script Inputs -->
+          <div class="pitch-form-card">
+            <div class="pitch-form-header">
+              <div class="pitch-title-group">
+                <span class="pitch-code-badge">EXECUTIVE TECHNICAL DEFENSE PROTOCOL</span>
+                <h3 class="pitch-form-title">5-Stage Structured Script Architecture</h3>
+              </div>
+              <span class="pitch-level-tag">
+                <i class="fa-solid fa-award"></i> CEFR B2/C1 Executive
+              </span>
+            </div>
+
+            <!-- Stage 1 -->
+            <div class="pitch-stage-block" data-stage="1">
+              <div class="stage-block-header">
+                <div class="stage-tag-title">
+                  <span class="stage-number">STAGE 1</span>
+                  <span class="stage-name">The Burning Platform &amp; Problem Statement</span>
+                </div>
+                <span class="stage-word-counter" id="stage1-word-count">36 words</span>
+              </div>
+              <p class="stage-instruction">Define the catastrophic cost of inaction, defect rate spike, or compliance threat in direct boardroom terms.</p>
+              <textarea id="pitch-stage1-input" class="pitch-textarea" rows="3">Over the past 72 hours, our Tijuana catheter balloon-welding yield plummeted from 99.4% to 88.2%, generating $45,000 in scrapped biocompatible tubing and putting next Monday's Boston shipment at severe regulatory non-compliance risk.</textarea>
+              <div class="pitch-collocations-strip">
+                <span class="colloc-lbl"><i class="fa-solid fa-wand-magic-sparkles"></i> Power Phrases:</span>
+                <button type="button" class="colloc-chip" data-target="pitch-stage1-input">catastrophic yield drop</button>
+                <button type="button" class="colloc-chip" data-target="pitch-stage1-input">unacceptable scrap rate</button>
+                <button type="button" class="colloc-chip" data-target="pitch-stage1-input">regulatory non-compliance risk</button>
+              </div>
+            </div>
+
+            <!-- Stage 2 -->
+            <div class="pitch-stage-block" data-stage="2">
+              <div class="stage-block-header">
+                <div class="stage-tag-title">
+                  <span class="stage-number">STAGE 2</span>
+                  <span class="stage-name">Root Cause Diagnostics &amp; Physics of Failure</span>
+                </div>
+                <span class="stage-word-counter" id="stage2-word-count">39 words</span>
+              </div>
+              <p class="stage-instruction">Explain the Ishikawa/5-Whys root cause with uncompromising physical and statistical rigor (no vague excuses).</p>
+              <textarea id="pitch-stage2-input" class="pitch-textarea" rows="3">Cross-sectional SEM micrographs and ultrasonic horn finite-element analysis revealed resonant frequency drift due to titanium horn micro-cavitation. The legacy pneumatic actuator cannot compensate for dynamic backpressure variations, inducing intermittent micro-pinhole bursts.</textarea>
+              <div class="pitch-collocations-strip">
+                <span class="colloc-lbl"><i class="fa-solid fa-wand-magic-sparkles"></i> Power Phrases:</span>
+                <button type="button" class="colloc-chip" data-target="pitch-stage2-input">frequency drift</button>
+                <button type="button" class="colloc-chip" data-target="pitch-stage2-input">micro-cavitation</button>
+                <button type="button" class="colloc-chip" data-target="pitch-stage2-input">dynamic backpressure variations</button>
+              </div>
+            </div>
+
+            <!-- Stage 3 -->
+            <div class="pitch-stage-block" data-stage="3">
+              <div class="stage-block-header">
+                <div class="stage-tag-title">
+                  <span class="stage-number">STAGE 3</span>
+                  <span class="stage-name">Proposed Engineering Architecture &amp; Validation</span>
+                </div>
+                <span class="stage-word-counter" id="stage3-word-count">42 words</span>
+              </div>
+              <p class="stage-instruction">Detail the technical upgrade, closed-loop telemetry, redundancy, and IQ/OQ/PQ validation roadmap.</p>
+              <textarea id="pitch-stage3-input" class="pitch-textarea" rows="3">We propose integrating an automated 40 kHz digital servo-driven ultrasonic press with real-time acoustic impedance monitoring and closed-loop force profiling. IQ/OQ/PQ validation is already mapped out and can be fully executed within a 7-day scheduled production window.</textarea>
+              <div class="pitch-collocations-strip">
+                <span class="colloc-lbl"><i class="fa-solid fa-wand-magic-sparkles"></i> Power Phrases:</span>
+                <button type="button" class="colloc-chip" data-target="pitch-stage3-input">closed-loop force profiling</button>
+                <button type="button" class="colloc-chip" data-target="pitch-stage3-input">real-time acoustic impedance</button>
+                <button type="button" class="colloc-chip" data-target="pitch-stage3-input">IQ/OQ/PQ validation protocol</button>
+              </div>
+            </div>
+
+            <!-- Stage 4 -->
+            <div class="pitch-stage-block" data-stage="4">
+              <div class="stage-block-header">
+                <div class="stage-tag-title">
+                  <span class="stage-number">STAGE 4</span>
+                  <span class="stage-name">Risk Mitigation &amp; Operational Fallback</span>
+                </div>
+                <span class="stage-word-counter" id="stage4-word-count">38 words</span>
+              </div>
+              <p class="stage-instruction">Anticipate executive objections regarding lead time, supplier bottlenecks, and downtime contingencies.</p>
+              <textarea id="pitch-stage4-input" class="pitch-textarea" rows="3">To eliminate disruption risk, our dual-sourcing agreement with Branson guarantees pre-configured air delivery in 5 business days. During installation, qualified manual redundant stations will operate across three shifts, maintaining 100% committed throughput without line starvation.</textarea>
+              <div class="pitch-collocations-strip">
+                <span class="colloc-lbl"><i class="fa-solid fa-wand-magic-sparkles"></i> Power Phrases:</span>
+                <button type="button" class="colloc-chip" data-target="pitch-stage4-input">mitigate supply bottlenecks</button>
+                <button type="button" class="colloc-chip" data-target="pitch-stage4-input">redundant parallel stations</button>
+                <button type="button" class="colloc-chip" data-target="pitch-stage4-input">zero line starvation</button>
+              </div>
+            </div>
+
+            <!-- Stage 5 -->
+            <div class="pitch-stage-block" data-stage="5">
+              <div class="stage-block-header">
+                <div class="stage-tag-title">
+                  <span class="stage-number">STAGE 5</span>
+                  <span class="stage-name">Financial Justification, ROI &amp; Clear Ask</span>
+                </div>
+                <span class="stage-word-counter" id="stage5-word-count">37 words</span>
+              </div>
+              <p class="stage-instruction">Close with uncompromising financial clarity: CAPEX investment, payback period in months, and the decisive call-to-action.</p>
+              <textarea id="pitch-stage5-input" class="pitch-textarea" rows="3">Total turnkey CAPEX is $185,000. By eliminating $48,000 in monthly scrap and re-work overtime, this upgrade achieves complete payback in exactly 3.8 months. We request immediate executive release of PO #8841 today to lock the delivery slot.</textarea>
+              <div class="pitch-collocations-strip">
+                <span class="colloc-lbl"><i class="fa-solid fa-wand-magic-sparkles"></i> Power Phrases:</span>
+                <button type="button" class="colloc-chip" data-target="pitch-stage5-input">turnkey CAPEX investment</button>
+                <button type="button" class="colloc-chip" data-target="pitch-stage5-input">amortized payback period</button>
+                <button type="button" class="colloc-chip" data-target="pitch-stage5-input">request immediate release of PO</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Telemetry, AI Scoring & Teleprompter -->
+          <div class="pitch-telemetry-card">
+            <!-- AI Rubric Scorecard -->
+            <div class="pitch-rubric-box">
+              <div class="rubric-header">
+                <i class="fa-solid fa-chart-pie" style="color:#ec4899;"></i>
+                <h4 class="rubric-title">Executive Pitch Scorecard</h4>
+              </div>
+
+              <div class="pitch-score-gauge-wrap">
+                <div class="pitch-score-gauge">
+                  <span class="gauge-number" id="pitch-overall-score">94%</span>
+                  <span class="gauge-sub" id="pitch-overall-level">BOARDROOM READY</span>
+                </div>
+                <div class="pitch-score-bar-outer">
+                  <div class="pitch-score-bar-inner" id="pitch-score-fill" style="width: 94%;"></div>
+                </div>
+              </div>
+
+              <!-- 4 Diagnostic Sub-Meters -->
+              <div class="pitch-diagnostics-grid">
+                <div class="diagnostic-item">
+                  <div class="diag-header">
+                    <span class="diag-lbl">Technical Precision</span>
+                    <span class="diag-val" id="diag-tech-score">96%</span>
+                  </div>
+                  <div class="diag-meter"><div class="diag-fill" id="diag-tech-fill" style="width:96%;"></div></div>
+                </div>
+
+                <div class="diagnostic-item">
+                  <div class="diag-header">
+                    <span class="diag-lbl">Executive Tone &amp; Conviction</span>
+                    <span class="diag-val" id="diag-tone-score">92%</span>
+                  </div>
+                  <div class="diag-meter"><div class="diag-fill" id="diag-tone-fill" style="width:92%;"></div></div>
+                </div>
+
+                <div class="diagnostic-item">
+                  <div class="diag-header">
+                    <span class="diag-lbl">Structural Signposting</span>
+                    <span class="diag-val" id="diag-struct-score">95%</span>
+                  </div>
+                  <div class="diag-meter"><div class="diag-fill" id="diag-struct-fill" style="width:95%;"></div></div>
+                </div>
+
+                <div class="diagnostic-item">
+                  <div class="diag-header">
+                    <span class="diag-lbl">Hedge &amp; Filler Telemetry</span>
+                    <span class="diag-val" id="diag-filler-score">98%</span>
+                  </div>
+                  <div class="diag-meter"><div class="diag-fill" id="diag-filler-fill" style="width:98%;"></div></div>
+                </div>
+              </div>
+
+              <!-- Filler Words Telemetry Callout -->
+              <div class="filler-telemetry-callout" id="filler-telemetry-box">
+                <div class="filler-callout-header">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                  <span>Acoustic Hedge &amp; Filler Detection:</span>
+                </div>
+                <div class="filler-chips-list" id="detected-fillers-list">
+                  <span class="filler-clean-badge"><i class="fa-solid fa-check"></i> Zero filler words detected. Boardroom tone is assertive and crisp.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Teleprompter / Readout Preview -->
+            <div class="pitch-teleprompter-card">
+              <div class="teleprompter-header">
+                <div class="teleprompter-title">
+                  <i class="fa-solid fa-tv"></i>
+                  <span>Live Teleprompter &amp; Speech Delivery</span>
+                </div>
+                <div class="teleprompter-stats">
+                  <span class="t-stat" id="t-stat-words">192 words</span>
+                  <span class="t-stat-dot">&bull;</span>
+                  <span class="t-stat" id="t-stat-time">~1m 25s (135 wpm)</span>
+                </div>
+              </div>
+
+              <div class="teleprompter-readout-scroll" id="teleprompter-readout">
+                <!-- Dynamically assembled pitch text -->
+              </div>
+
+              <div class="teleprompter-actions">
+                <button class="pitch-act-btn play-btn" id="btn-pitch-speech" title="Listen to native US executive delivery">
+                  <i class="fa-solid fa-play" id="pitch-speech-icon"></i>
+                  <span id="pitch-speech-lbl">Play Audio Preview</span>
+                </button>
+                <button class="pitch-act-btn copy-btn" id="btn-pitch-copy" title="Copy formatted pitch to clipboard">
+                  <i class="fa-solid fa-clipboard"></i>
+                  <span>Copy Pitch Script</span>
+                </button>
+                <button class="pitch-act-btn reset-btn" id="btn-pitch-reset" title="Reset all stages">
+                  <i class="fa-solid fa-rotate-left"></i>
+                  <span>Reset</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORKSPACE 2: CROSS-BORDER NEGOTIATION ARENA -->
+      <div class="pitch-workspace" id="workspace-negotiation-arena" style="display: none;">
+        <!-- Scenario Presets Strip -->
+        <div class="pitch-preset-strip">
+          <span class="preset-label"><i class="fa-solid fa-scale-balanced"></i> Seleccionar Escenario de Negociación:</span>
+          <div class="preset-buttons">
+            <button class="neg-scenario-chip active" data-nscenario="roughness_concession">
+              <i class="fa-solid fa-microscope"></i> 1. Roughness Concession (Ra 0.4 µm vs Ra 0.8 µm)
+            </button>
+            <button class="neg-scenario-chip" data-nscenario="customs_airfreight">
+              <i class="fa-solid fa-plane-departure"></i> 2. Laredo Customs Hold &amp; $42k Air Freight
+            </button>
+            <button class="neg-scenario-chip" data-nscenario="mold_tooling_eco">
+              <i class="fa-solid fa-gears"></i> 3. Mold Cavity Wear &amp; Line-Stop Penalty ($15k/hr)
+            </button>
+          </div>
+        </div>
+
+        <div class="neg-arena-grid">
+          <!-- Left: Negotiation Dialogue Thread & Response Center -->
+          <div class="neg-dialogue-card">
+            <div class="neg-dialogue-header">
+              <div class="neg-title-group">
+                <span class="neg-round-badge" id="neg-round-indicator">ROUND 1 OF 3</span>
+                <h3 class="neg-scenario-title" id="neg-scenario-title">Surface Roughness Concession Request</h3>
+              </div>
+              <div class="neg-status-pill" id="neg-deal-status">
+                <i class="fa-solid fa-handshake"></i> Active Negotiation
+              </div>
+            </div>
+
+            <!-- Briefing Card -->
+            <div class="neg-briefing-box" id="neg-briefing-box">
+              <div class="briefing-header">
+                <i class="fa-solid fa-compass"></i>
+                <strong>Mission Objective &amp; BATNA (Best Alternative to Negotiated Agreement):</strong>
+              </div>
+              <p class="briefing-content" id="neg-briefing-text">
+                Your CNC 5-axis cell in Monterrey is hitting tool chatter on aerospace hydraulic manifold sealing grooves. Securing Ra 0.4 µm cuts throughput by 42%, threatening downstream final assembly in Wichita. Your engineering data proves that Ra 0.8 µm with HNBR O-rings meets 5,000 PSI burst pressure with 4x safety factor. You must negotiate a temporary 60-day deviation permit without accepting financial penalties or warranty liability.
+              </p>
+            </div>
+
+            <!-- Chat / Dialogue Stream -->
+            <div class="neg-chat-stream" id="neg-chat-stream">
+              <!-- Dynamically populated dialogue bubbles -->
+            </div>
+
+            <!-- Response Options Container -->
+            <div class="neg-response-dock" id="neg-response-dock">
+              <div class="dock-header">
+                <span class="dock-title"><i class="fa-solid fa-reply"></i> Choose Your Strategic Counter-Proposal:</span>
+                <span class="dock-hint">Select a response or write your custom tactical argument</span>
+              </div>
+
+              <div class="neg-choices-list" id="neg-choices-list">
+                <!-- Option buttons generated dynamically -->
+              </div>
+
+              <!-- Custom Text Counter-Offer Toggle -->
+              <div class="neg-custom-toggle-wrap">
+                <button type="button" class="btn-toggle-custom" id="btn-toggle-custom-reply">
+                  <i class="fa-solid fa-keyboard"></i> Or write custom strategic reply
+                </button>
+              </div>
+
+              <div class="neg-custom-input-box" id="neg-custom-box" style="display: none;">
+                <textarea id="neg-custom-textarea" class="neg-custom-textarea" rows="2" placeholder="Type your strategic response in English... Focus on empirical data, shared risk, and clear BATNA boundary."></textarea>
+                <div class="neg-custom-actions">
+                  <button type="button" class="btn-submit-custom" id="btn-submit-custom-reply">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Counter-Proposal
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Stakeholder Profile & Negotiation Radar -->
+          <div class="neg-sidebar-card">
+            <!-- Stakeholder Profile Dossier -->
+            <div class="stakeholder-dossier-card">
+              <div class="dossier-header">
+                <div class="stakeholder-avatar" id="stakeholder-avatar-icon">
+                  <i class="fa-solid fa-user-tie"></i>
+                </div>
+                <div class="stakeholder-info">
+                  <h4 class="stakeholder-name" id="stakeholder-name">David Vance</h4>
+                  <span class="stakeholder-title" id="stakeholder-title">VP of Global Quality &bull; Detroit HQ</span>
+                </div>
+              </div>
+
+              <div class="stakeholder-profile-body">
+                <div class="profile-row">
+                  <span class="p-label">Negotiation Style:</span>
+                  <span class="p-val" id="stakeholder-style">Data-obsessed, low tolerance for excuses, highly risk-averse.</span>
+                </div>
+                <div class="profile-row">
+                  <span class="p-label">Hidden Agenda:</span>
+                  <span class="p-val" id="stakeholder-agenda">Faces audit pressure from FAA; cannot sign off on concessions without airtight empirical burst-test data.</span>
+                </div>
+                <div class="stakeholder-sentiment-wrap">
+                  <div class="sentiment-lbl-row">
+                    <span>Stakeholder Stance:</span>
+                    <strong id="stakeholder-stance-text" class="stance-skeptical">Skeptical &amp; Guarded</strong>
+                  </div>
+                  <div class="sentiment-meter-bar">
+                    <div class="sentiment-meter-fill" id="stakeholder-sentiment-fill" style="width: 35%; background: #f59e0b;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Negotiation Performance Radar -->
+            <div class="neg-radar-card">
+              <div class="radar-card-header">
+                <i class="fa-solid fa-gauge-high" style="color:#0284c7;"></i>
+                <h4>Negotiation Telemetry Radar</h4>
+              </div>
+
+              <div class="neg-meters-list">
+                <div class="neg-meter-item">
+                  <div class="meter-info">
+                    <span class="m-title">Technical Assertiveness</span>
+                    <span class="m-val" id="meter-assert-val">75%</span>
+                  </div>
+                  <div class="meter-track">
+                    <div class="meter-bar" id="meter-assert-fill" style="width: 75%; background: #0284c7;"></div>
+                  </div>
+                </div>
+
+                <div class="neg-meter-item">
+                  <div class="meter-info">
+                    <span class="m-title">Diplomatic Tact &amp; Rapport</span>
+                    <span class="m-val" id="meter-tact-val">82%</span>
+                  </div>
+                  <div class="meter-track">
+                    <div class="meter-bar" id="meter-tact-fill" style="width: 82%; background: #10b981;"></div>
+                  </div>
+                </div>
+
+                <div class="neg-meter-item">
+                  <div class="meter-info">
+                    <span class="m-title">BATNA &amp; Leverage Retention</span>
+                    <span class="m-val" id="meter-firm-val">70%</span>
+                  </div>
+                  <div class="meter-track">
+                    <div class="meter-bar" id="meter-firm-fill" style="width: 70%; background: #ec4899;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Executive Coach Debrief Box -->
+            <div class="neg-coach-box">
+              <div class="coach-header">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <h4>Cross-Border Executive Coach Feedback:</h4>
+              </div>
+              <p class="coach-text" id="neg-coach-text">
+                David responded favorably because you led with the 5,000 PSI burst test results instead of apologizing for CNC tool wear. Notice how US executives perceive apologies without empirical data as an admission of plant incompetence. Keep anchoring to safety-factor metrics.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORKSPACE 3: PHONETIC & SYLLABLE STRESS TRAINER -->
+      <div class="pitch-workspace" id="workspace-phonetic-trainer" style="display: none;">
+        <!-- Term Category Filter Strip -->
+        <div class="pitch-preset-strip">
+          <span class="preset-label"><i class="fa-solid fa-microphone-lines"></i> Select Engineering Term for Acoustic Analysis:</span>
+          <div class="preset-buttons" id="phonetic-term-chips">
+            <button class="phonetic-term-chip active" data-pterm="capacitor">ca·PAC·i·tor</button>
+            <button class="phonetic-term-chip" data-pterm="anisotropic">an·i·so·TROP·ic</button>
+            <button class="phonetic-term-chip" data-pterm="redundancy">re·DUN·dan·cy</button>
+            <button class="phonetic-term-chip" data-pterm="photolithography">pho·to·li·THOG·ra·phy</button>
+            <button class="phonetic-term-chip" data-pterm="piezoelectric">pie·zo·e·LEC·tric</button>
+            <button class="phonetic-term-chip" data-pterm="cavitation">ca·vi·TA·tion</button>
+            <button class="phonetic-term-chip" data-pterm="attenuation">at·ten·u·A·tion</button>
+            <button class="phonetic-term-chip" data-pterm="substantiate">sub·STAN·ti·ate</button>
+            <button class="phonetic-term-chip" data-pterm="concession">con·CES·sion</button>
+          </div>
+        </div>
+
+        <div class="phonetic-studio-grid">
+          <!-- Left: Phonetic Focus Card -->
+          <div class="phonetic-focus-card">
+            <div class="phonetic-focus-header">
+              <div class="phonetic-title-wrap">
+                <span class="phonetic-domain-tag" id="phonetic-domain">SEMICONDUCTORS &amp; HARDWARE</span>
+                <h3 class="phonetic-word-title" id="phonetic-word-title">capacitor</h3>
+              </div>
+              <span class="phonetic-ipa-badge" id="phonetic-ipa-display">/kəˈpæs.ɪ.tər/</span>
+            </div>
+
+            <!-- Syllable Breakdown Strip with Acoustic Amplitude Indicator -->
+            <div class="syllable-breakdown-box">
+              <div class="syllable-lbl"><i class="fa-solid fa-chart-simple"></i> Syllable Segmentation &amp; Primary Lexical Stress:</div>
+              <div class="syllables-track" id="syllables-track">
+                <!-- Rendered syllables -->
+              </div>
+            </div>
+
+            <!-- Acoustic Trap & Accent Decoupling Guide -->
+            <div class="acoustic-trap-card">
+              <div class="trap-header">
+                <i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i>
+                <h4>Cross-Border Acoustic Trap &amp; Native Vowel Reduction:</h4>
+              </div>
+              <p class="trap-explanation" id="phonetic-trap-text">
+                Spanish speakers tend to pronounce the initial 'ca' with a clear vowel [ka], shifting stress backward. In American English, the initial syllable is completely unstressed and reduced to a neutral schwa /kə/, while 'PAC' (/pæs/) receives 80% of acoustic energy with extended vowel duration and a flapped 't' /t̬/.
+              </p>
+            </div>
+
+            <!-- Interactive Audio Controls -->
+            <div class="phonetic-audio-dock">
+              <div class="audio-playback-actions">
+                <button type="button" class="btn-phonetic-audio" id="btn-phonetic-play-normal">
+                  <i class="fa-solid fa-volume-high"></i>
+                  <span>Native Cadence (1.0x)</span>
+                </button>
+                <button type="button" class="btn-phonetic-audio slow-btn" id="btn-phonetic-play-slow">
+                  <i class="fa-solid fa-play"></i>
+                  <span>Slow Syllables (0.75x)</span>
+                </button>
+              </div>
+
+              <!-- Interactive Mic Recording Test -->
+              <div class="phonetic-record-dock">
+                <button type="button" class="btn-phonetic-mic" id="btn-phonetic-record">
+                  <i class="fa-solid fa-microphone" id="phonetic-mic-icon"></i>
+                  <span id="phonetic-mic-label">Test My Pronunciation (Hold to Speak)</span>
+                </button>
+                <div class="mic-status-hint" id="phonetic-mic-status">
+                  Click to record your voice. stemOS analyzes acoustic stress and phonetic accuracy in real time.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Acoustic Evaluation & Radar -->
+          <div class="phonetic-telemetry-card">
+            <!-- Score Card -->
+            <div class="acoustic-score-card">
+              <div class="acoustic-score-header">
+                <i class="fa-solid fa-bullseye" style="color:#ec4899;"></i>
+                <h4>Acoustic Match &amp; Stress Telemetry</h4>
+              </div>
+
+              <div class="acoustic-score-display">
+                <div class="acoustic-circle" id="acoustic-score-circle">
+                  <span class="acoustic-num" id="acoustic-score-val">96%</span>
+                  <span class="acoustic-lbl">MATCH</span>
+                </div>
+                <div class="acoustic-status-wrap">
+                  <span class="acoustic-badge-level" id="acoustic-level-lbl">NEAR-NATIVE CADENCE</span>
+                  <p class="acoustic-sub-text" id="acoustic-feedback-sub">Primary stress on syllable 2 (PAC) verified with correct schwa reduction.</p>
+                </div>
+              </div>
+
+              <!-- Diagnostic Sub-Checks -->
+              <div class="phonetic-checklist">
+                <div class="phonetic-check-item pass" id="check-stress-placement">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <div class="check-info">
+                    <span class="c-title">Lexical Stress Placement</span>
+                    <span class="c-sub" id="c-sub-stress">Primary stress hit on syllable #2 (/pæs/)</span>
+                  </div>
+                </div>
+
+                <div class="phonetic-check-item pass" id="check-schwa-reduction">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <div class="check-info">
+                    <span class="c-title">Unstressed Vowel Reduction (/ə/)</span>
+                    <span class="c-sub" id="c-sub-schwa">Clean schwa /kə/ without Spanish clear [a] trap</span>
+                  </div>
+                </div>
+
+                <div class="phonetic-check-item pass" id="check-consonant-crispness">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <div class="check-info">
+                    <span class="c-title">American Flapped /t̬/ &amp; Ending</span>
+                    <span class="c-sub" id="c-sub-consonant">Natural alveolar tap [ɾ] before final rhotic vowel</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Engineering Terms Mastery Progress -->
+            <div class="phonetic-mastery-card">
+              <div class="mastery-header">
+                <i class="fa-solid fa-award" style="color:#f59e0b;"></i>
+                <h4>Acoustic Mastery Progress</h4>
+                <span class="mastery-count" id="mastery-count-pill">9 / 12 Mastered</span>
+              </div>
+              <div class="mastery-bar-outer">
+                <div class="mastery-bar-inner" id="mastery-bar-fill" style="width: 75%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════════
+       SECTION 15: CORPORATE L&D & WORKFORCE COMPETENCE DASHBOARD (FASE 4.1 & 4.2)
+       ISO 9001:2015 Clause 7.2 Training Audits • CEFR Uplift Matrix • SCORM Exporter
+       ══════════════════════════════════════════════════════════════════════════════ -->
+  <section class="corporate-ld-section" id="corporate-ld-section">
+    <div class="corporate-ld-container">
+      <!-- Header with ISO 9001:2015 Clause 7.2 Compliance Eyebrow -->
+      <div class="ld-header">
+        <div class="ld-header-badge">
+          <i class="fa-solid fa-building-shield"></i>
+          <span>ENTERPRISE READINESS &bull; ISO 9001:2015 CLAUSE 7.2 AUDIT SUITE</span>
+        </div>
+        <h2 class="ld-title">Corporate L&amp;D &amp; Workforce Competence Dashboard</h2>
+        <p class="ld-subtitle">
+          Real-time telemetry on technical English proficiency, CEFR level progression, cross-plant training hours, and audit-ready competence records for high-tech manufacturing corridors across Mexico and North America.
+        </p>
+      </div>
+
+      <!-- Plant / Cluster Selector Bar -->
+      <div class="ld-plant-bar">
+        <div class="ld-plant-label">
+          <i class="fa-solid fa-location-dot" style="color:var(--sky);"></i>
+          <span>Select Plant / Cluster Cohort:</span>
+        </div>
+        <div class="ld-plant-pills" id="ld-plant-selector">
+          <button class="ld-plant-chip active" data-plant="all">
+            <i class="fa-solid fa-globe"></i> All Plants (Enterprise Consolidated)
+          </button>
+          <button class="ld-plant-chip" data-plant="tijuana">
+            <i class="fa-solid fa-heart-pulse"></i> Tijuana Medical Device Cluster
+          </button>
+          <button class="ld-plant-chip" data-plant="saltillo">
+            <i class="fa-solid fa-car"></i> Saltillo Automotive Powertrain
+          </button>
+          <button class="ld-plant-chip" data-plant="monterrey">
+            <i class="fa-solid fa-plane-departure"></i> Monterrey Aerospace &amp; CNC
+          </button>
+          <button class="ld-plant-chip" data-plant="guadalajara">
+            <i class="fa-solid fa-microchip"></i> Guadalajara SMT Electronics &amp; Edge AI
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 High-Impact KPI Overview Cards -->
+      <div class="ld-kpi-grid">
+        <!-- Card 1: Enrolled Engineers -->
+        <div class="ld-kpi-card">
+          <div class="kpi-icon-wrap" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8;">
+            <i class="fa-solid fa-user-graduate"></i>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">Active Technical Cohort</span>
+            <div class="kpi-value-row">
+              <span class="kpi-val" id="kpi-cohort-val">1,240</span>
+              <span class="kpi-delta positive" id="kpi-cohort-delta">+18.4% MoM</span>
+            </div>
+            <span class="kpi-desc" id="kpi-cohort-desc">Engineers &amp; cross-border technicians in active training</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Total Training Hours Logged -->
+        <div class="ld-kpi-card">
+          <div class="kpi-icon-wrap" style="background: rgba(16, 185, 129, 0.12); color: #10b981;">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">Verified Training Hours</span>
+            <div class="kpi-value-row">
+              <span class="kpi-val" id="kpi-hours-val">14,820 <small style="font-size:0.6em; font-weight:500;">hrs</small></span>
+              <span class="kpi-delta positive" id="kpi-hours-delta">11.95 hrs/eng</span>
+            </div>
+            <span class="kpi-desc" id="kpi-hours-desc">Logged via ESP readings, interactive labs, &amp; SM-2 recall</span>
+          </div>
+        </div>
+
+        <!-- Card 3: CEFR Proficiency Uplift -->
+        <div class="ld-kpi-card">
+          <div class="kpi-icon-wrap" style="background: rgba(245, 158, 11, 0.12); color: #f59e0b;">
+            <i class="fa-solid fa-arrow-trend-up"></i>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">CEFR Level Progression</span>
+            <div class="kpi-value-row">
+              <span class="kpi-val" id="kpi-cefr-val">+1.8 <small style="font-size:0.6em; font-weight:500;">Bands</small></span>
+              <span class="kpi-delta positive" id="kpi-cefr-delta">82% to B2/C1</span>
+            </div>
+            <span class="kpi-desc" id="kpi-cefr-desc">Transition rate from A2/B1 to B2 Technical Executive</span>
+          </div>
+        </div>
+
+        <!-- Card 4: ISO 9001 Clause 7.2 Compliance -->
+        <div class="ld-kpi-card">
+          <div class="kpi-icon-wrap" style="background: rgba(168, 85, 247, 0.12); color: #c084fc;">
+            <i class="fa-solid fa-certificate"></i>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-label">ISO 9001 Cl. 7.2 Compliance</span>
+            <div class="kpi-value-row">
+              <span class="kpi-val" id="kpi-iso-val">96.4%</span>
+              <span class="kpi-delta positive" id="kpi-iso-delta">0 Non-Conformances</span>
+            </div>
+            <span class="kpi-desc" id="kpi-iso-desc">Fully documented competency records with auditor verification</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Analytics Body Grid -->
+      <div class="ld-dashboard-grid">
+        <!-- LEFT COLUMN: Leaderboard & Heatmap -->
+        <div class="ld-col-left">
+          <!-- Cross-Plant Performance Leaderboard Table -->
+          <div class="ld-panel-card">
+            <div class="ld-panel-header">
+              <div class="ld-panel-title">
+                <i class="fa-solid fa-chart-column" style="color:var(--sky);"></i>
+                <h3>Cross-Plant Workforce Benchmarks</h3>
+              </div>
+              <span class="ld-panel-badge" id="plant-active-badge">4 Manufacturing Clusters</span>
+            </div>
+            <div class="ld-table-responsive">
+              <table class="ld-table" id="plant-benchmark-table">
+                <thead>
+                  <tr>
+                    <th>Plant / Manufacturing Cluster</th>
+                    <th>Cohort</th>
+                    <th>Hours</th>
+                    <th>Exam Avg</th>
+                    <th>Pitch &amp; Neg</th>
+                    <th>Audit Status</th>
+                  </tr>
+                </thead>
+                <tbody id="plant-benchmark-tbody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Skills Matrix Heatmap: Departments vs CEFR Levels -->
+          <div class="ld-panel-card" style="margin-top: 1.5rem;">
+            <div class="ld-panel-header">
+              <div class="ld-panel-title">
+                <i class="fa-solid fa-table-cells" style="color:#10b981;"></i>
+                <h3>Departmental Competence Matrix &amp; CEFR Distribution</h3>
+              </div>
+              <div class="heatmap-legend">
+                <span class="leg-item"><span class="leg-color" style="background:rgba(16,185,129,0.2); border:1px solid rgba(16,185,129,0.4);"></span> 10-25%</span>
+                <span class="leg-item"><span class="leg-color" style="background:rgba(16,185,129,0.5); border:1px solid rgba(16,185,129,0.8);"></span> 26-50%</span>
+                <span class="leg-item"><span class="leg-color" style="background:rgba(16,185,129,0.85); border:1px solid #10b981;"></span> 51%+ (Dominant)</span>
+              </div>
+            </div>
+            <div class="ld-table-responsive">
+              <table class="ld-heatmap-table" id="skills-heatmap-table">
+                <thead>
+                  <tr>
+                    <th style="text-align:left;">Functional Department</th>
+                    <th>A2 Basic</th>
+                    <th>B1 Autonomous</th>
+                    <th>B2 Lead</th>
+                    <th>C1 Executive</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="skills-heatmap-tbody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: ISO 9001 Audit Suite & SCORM Exporter -->
+        <div class="ld-col-right">
+          <!-- ISO 9001:2015 Clause 7.2 Competence Audit Suite -->
+          <div class="ld-panel-card">
+            <div class="ld-panel-header">
+              <div class="ld-panel-title">
+                <i class="fa-solid fa-stamp" style="color:#f59e0b;"></i>
+                <h3>ISO 9001 Clause 7.2 Competence Audit Export</h3>
+              </div>
+              <span class="audit-verif-badge"><i class="fa-solid fa-shield-check"></i> Auditor Ready</span>
+            </div>
+            <div class="audit-summary-box">
+              <p class="audit-clause-quote">
+                <strong>ISO 9001:2015 &sect; 7.2 Mandate:</strong> The organization shall determine the necessary competence of person(s) doing work under its control; ensure competence on the basis of appropriate education, training, or experience; and <em>retain documented information as evidence of competence</em>.
+              </p>
+              <div class="audit-meta-grid">
+                <div class="audit-meta-item">
+                  <span class="lbl">Audit Standards:</span>
+                  <span class="val">ISO 9001 / IATF 16949 / AS9100D</span>
+                </div>
+                <div class="audit-meta-item">
+                  <span class="lbl">Record Retention:</span>
+                  <span class="val">3 Years (Auditor-Stamped Digital Log)</span>
+                </div>
+                <div class="audit-meta-item">
+                  <span class="lbl">Audit Non-Conformances:</span>
+                  <span class="val" style="color:var(--emerald);">0 Major / 0 Minor</span>
+                </div>
+                <div class="audit-meta-item">
+                  <span class="lbl">Verification Telemetry:</span>
+                  <span class="val" id="audit-last-verified-date">Continuous Active Sync</span>
+                </div>
+              </div>
+
+              <!-- Export Buttons -->
+              <div class="audit-actions-row">
+                <button class="ld-btn-primary" id="btn-export-audit-csv">
+                  <i class="fa-solid fa-file-csv"></i>
+                  <span>Download Clause 7.2 CSV Record</span>
+                </button>
+                <button class="ld-btn-secondary" id="btn-preview-audit-dossier">
+                  <i class="fa-solid fa-file-pdf"></i>
+                  <span>Generate Official PDF Dossier</span>
+                </button>
+              </div>
+              <div id="csv-export-feedback" style="display:none; font-size:0.8rem; margin-top:8px; color:var(--emerald);">
+                <i class="fa-solid fa-circle-check"></i> <span id="csv-feedback-text">Generated ISO_9001_Clause_7_2_Competence_Audit_Report.csv</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SCORM 1.2 / 2004 & LMS Integration Suite (Fase 4.2) -->
+          <div class="ld-panel-card" style="margin-top: 1.5rem;">
+            <div class="ld-panel-header">
+              <div class="ld-panel-title">
+                <i class="fa-solid fa-box-archive" style="color:#c084fc;"></i>
+                <h3>SCORM &amp; Enterprise LMS Export Package</h3>
+              </div>
+              <span class="scorm-version-badge">SCORM 1.2 / 2004 4th Ed.</span>
+            </div>
+            <p class="scorm-explainer">
+              Package stemOS engineering tracks into standardized LMS distribution archives compatible with <strong>Workday Learning</strong>, <strong>Cornerstone OnDemand</strong>, <strong>SAP SuccessFactors</strong>, and <strong>Moodle Workplace</strong>. Includes standard <code>imsmanifest.xml</code> and SCORM CMI tracking API.
+            </p>
+
+            <div class="scorm-form-group">
+              <label class="scorm-label" for="scorm-spec-select">SCORM Specification Standard:</label>
+              <select id="scorm-spec-select" class="scorm-select">
+                <option value="1.2">SCORM 1.2 (Maximum Enterprise Compatibility - Workday / Cornerstone)</option>
+                <option value="2004">SCORM 2004 4th Edition (Advanced Sequencing &amp; Navigation - SAP)</option>
+              </select>
+            </div>
+
+            <div class="scorm-form-group">
+              <label class="scorm-label" for="scorm-track-select">Select Track to Package:</label>
+              <select id="scorm-track-select" class="scorm-select">
+                <option value="all">★ All 34 Industry Tracks (Master Enterprise Bundle)</option>
+                <option value="automotive-lean">Track 28: Automotive &amp; Lean Manufacturing (IATF 16949)</option>
+                <option value="medical-devices">Track 29: Medical Devices &amp; Cleanrooms (FDA 21 CFR 820)</option>
+                <option value="logistics-compliance">Track 30: International Logistics &amp; USMCA Trade</option>
+                <option value="quality-ehs">Track 31: Quality Engineering &amp; EHS (Six Sigma / OSHA)</option>
+                <option value="energy-data-centers">Track 32: Energy, Smart Grid &amp; Data Centers</option>
+                <option value="embedded-firmware-edge-ai">Track 33: Embedded Firmware, AUTOSAR &amp; Edge AI</option>
+                <option value="advanced-supply-chain-reshoring">Track 34: Advanced Supply Chain Reshoring &amp; Global SCM</option>
+              </select>
+            </div>
+
+            <div class="scorm-form-group">
+              <label class="scorm-label" for="scorm-mastery-score">Mastery Score Threshold for Completion:</label>
+              <div class="scorm-slider-wrap">
+                <input type="range" id="scorm-mastery-score" min="70" max="95" value="80" class="scorm-slider">
+                <span class="scorm-slider-val" id="scorm-mastery-val">80%</span>
+              </div>
+            </div>
+
+            <div class="scorm-actions-row">
+              <button class="ld-btn-scorm" id="btn-generate-scorm-zip">
+                <i class="fa-solid fa-file-zipper"></i>
+                <span>Generate SCORM LMS Package (.zip)</span>
+              </button>
+            </div>
+            <div id="scorm-export-feedback" style="display:none; font-size:0.8rem; margin-top:8px; color:#c084fc;">
+              <i class="fa-solid fa-circle-check"></i> <span id="scorm-feedback-text">SCORM package generated successfully!</span>
+            </div>
+
+            <!-- Simulated Enterprise SSO SAML Status -->
+            <div class="sso-status-strip">
+              <div class="sso-indicator-dot"></div>
+              <div class="sso-info">
+                <span class="sso-title">Enterprise SSO Status: <strong>SAML 2.0 / Okta / Azure AD</strong></span>
+                <span class="sso-sub">Endpoint: <code>https://sso.stemos.io/saml/v2/sp/acs</code> &bull; Identity Provider Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal: ISO 9001 Clause 7.2 Printable Executive Audit Dossier -->
+  <div class="cs-modal-overlay" id="audit-dossier-modal" role="dialog" aria-modal="true" aria-labelledby="audit-dossier-title">
+    <div class="cs-modal-card" style="max-width:880px; padding:32px; max-height:92vh; display:flex; flex-direction:column;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.5rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:1rem;">
+        <div>
+          <span class="cs-modal-tag" style="background:rgba(16,185,129,0.15); color:#10b981; border-color:rgba(16,185,129,0.3);">
+            <i class="fa-solid fa-stamp"></i> OFFICIAL AUDIT DOSSIER &bull; ISO 9001:2015 CLAUSE 7.2
+          </span>
+          <h2 class="cs-modal-title" id="audit-dossier-title" style="margin-top:0.4rem; font-size:1.4rem;">
+            Workforce Technical Competence &amp; English Proficiency Audit Summary
+          </h2>
+          <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">
+            Prepared for Lead External Auditors &bull; Quality Management System (QMS) &bull; IATF 16949 / AS9100D Certification
+          </p>
+        </div>
+        <button id="btn-close-audit-modal" class="drawer-close-btn" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div id="audit-dossier-content" style="flex:1; overflow-y:auto; padding-right:8px;">
+        <!-- Content generated dynamically -->
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:1.5rem; border-top:1px solid rgba(255,255,255,0.1); padding-top:1rem;">
+        <button class="ld-btn-secondary" id="btn-print-audit-dossier"><i class="fa-solid fa-print"></i> Print / Save as PDF</button>
+        <button class="ld-btn-primary" id="btn-dossier-close-bottom">Dismiss Dossier</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════════
+       SECTION 16: EXECUTIVE CROSS-BORDER LEADERSHIP & MULTI-ACCENT ACOUSTIC LAB (FASE 5)
+       B2/C1 Anonymized Industrial Case Studies • 5 Global Accents • Telemetry Radar
+       ══════════════════════════════════════════════════════════════════════════════ -->
+  <section class="executive-lab-section" id="executive-leadership-section">
+    <div class="executive-lab-container">
+      
+      <!-- Section Header with B2/C1 Eyebrow -->
+      <div class="exec-header">
+        <div class="exec-badge">
+          <i class="fa-solid fa-chess-knight"></i>
+          <span>FASE 5 &bull; CEFR B2/C1 EXECUTIVE LEADERSHIP &bull; MULTI-ACCENT ACOUSTIC RADAR</span>
+        </div>
+        <h2 class="exec-title">Executive Cross-Border Decision Arena &amp; Multi-Accent Acoustic Lab</h2>
+        <p class="exec-subtitle">
+          Master high-stakes US/Canada/Europe corporate negotiation, regulatory dispute closeouts, and crisis escalation while decoding the real auditory cadence of 5 global industrial accents (US Midwest, Indian Offshore, German HQ, UK Aerospace, and Japanese Kaizen).
+        </p>
+      </div>
+
+      <!-- Mode Switcher Tabs: Case Studies vs Multi-Accent Lab -->
+      <div class="exec-tab-bar">
+        <button class="exec-tab-btn active" id="tab-btn-cases" data-tab="cases">
+          <i class="fa-solid fa-briefcase"></i>
+          <span>Executive Decision Arena (4 Case Studies B2/C1)</span>
+        </button>
+        <button class="exec-tab-btn" id="tab-btn-accents" data-tab="accents">
+          <i class="fa-solid fa-headphones-simple"></i>
+          <span>Multi-Accent Industrial Acoustic Lab (5 Accents)</span>
+        </button>
+      </div>
+
+      <!-- ═══════════ SUB-PANEL 1: EXECUTIVE DECISION ARENA ═══════════ -->
+      <div class="exec-subpanel active" id="exec-subpanel-cases">
+        
+        <!-- Case Selector Strip -->
+        <div class="case-selector-bar">
+          <div class="case-selector-title">
+            <i class="fa-solid fa-folder-open" style="color:#a855f7;"></i>
+            <span>Select Real Anonymized Industrial Crisis:</span>
+          </div>
+          <div class="case-pills-row" id="case-study-pills">
+            <button class="case-chip active" data-case="laredo">
+              <span class="case-chip-badge">Automotive</span>
+              <span class="case-chip-name">Laredo USMCA Line-Down</span>
+            </button>
+            <button class="case-chip" data-case="fda483">
+              <span class="case-chip-badge">MedTech</span>
+              <span class="case-chip-name">FDA 483 Cleanroom CAPA</span>
+            </button>
+            <button class="case-chip" data-case="semicon">
+              <span class="case-chip-badge">Semiconductors</span>
+              <span class="case-chip-name">3nm DFT Yield Excursion</span>
+            </button>
+            <button class="case-chip" data-case="energy">
+              <span class="case-chip-badge">Energy / Grid</span>
+              <span class="case-chip-name">40MW Substation Interlock</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Case Dashboard Grid: Dossier + Decision Arena + Live Telemetry -->
+        <div class="case-workspace-grid">
+          
+          <!-- Left Column: Executive Crisis Dossier & Evidence -->
+          <div class="case-dossier-card">
+            <div class="dossier-header-strip">
+              <div class="dossier-meta">
+                <span class="dossier-tag" id="case-tag">AUTOMOTIVE TIER-1 &bull; SALTILLO &bull; IATF 16949</span>
+                <h3 class="dossier-headline" id="case-headline">The Laredo World Trade Bridge Line-Down Dispute</h3>
+              </div>
+              <div class="dossier-risk-pill" id="case-risk-badge">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>CRITICAL ESCALATION</span>
+              </div>
+            </div>
+
+            <!-- Financial / Operational Stakes Strip -->
+            <div class="dossier-stakes-row">
+              <div class="stake-item">
+                <span class="stake-lbl">Financial Exposure</span>
+                <span class="stake-val" id="case-stake-fine">$25,000 / hr Line-Stop</span>
+              </div>
+              <div class="stake-item">
+                <span class="stake-lbl">Time to Line Down</span>
+                <span class="stake-val" id="case-stake-time">4h 15m (06:00 EST)</span>
+              </div>
+              <div class="stake-item">
+                <span class="stake-lbl">Stakeholder Profile</span>
+                <span class="stake-val" id="case-stake-person">Richard Sterling (VP Purchasing, Detroit)</span>
+              </div>
+            </div>
+
+            <!-- Narrative Briefing -->
+            <div class="dossier-narrative-box">
+              <h4 class="narrative-heading"><i class="fa-solid fa-file-lines"></i> Executive Situation Briefing</h4>
+              <p class="narrative-text" id="case-briefing-text">
+                Loading executive case briefing...
+              </p>
+            </div>
+
+            <!-- Technical / Regulatory Evidence Strip -->
+            <div class="dossier-evidence-box">
+              <h4 class="evidence-heading"><i class="fa-solid fa-shield-halved"></i> Technical Audit &amp; Legal Precedent</h4>
+              <ul class="evidence-list" id="case-evidence-list">
+                <!-- Dynamically injected items -->
+              </ul>
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive Decision Branch & Telemetry -->
+          <div class="case-decision-card">
+            <div class="decision-card-header">
+              <div>
+                <span class="decision-eyebrow">EXECUTIVE STRATEGY SELECTION</span>
+                <h4 class="decision-heading">Choose Your Cross-Border Strategic Course of Action</h4>
+              </div>
+              <span class="cefr-badge-b2c1">CEFR C1 Level</span>
+            </div>
+
+            <!-- 4 Strategic Option Cards -->
+            <div class="decision-options-list" id="case-options-container">
+              <!-- Dynamically injected strategy cards -->
+            </div>
+
+            <!-- Live Telemetry Radar on Strategy Choice -->
+            <div class="strategy-telemetry-box" id="strategy-telemetry-box">
+              <h5 class="telemetry-box-title"><i class="fa-solid fa-chart-simple"></i> Executive Telemetry &amp; Board Reaction</h5>
+              
+              <div class="telemetry-bars-grid">
+                <div class="telem-bar-group">
+                  <div class="telem-bar-hdr">
+                    <span>Corporate Standing &amp; Executive Clout</span>
+                    <span class="telem-pct" id="telem-standing">85%</span>
+                  </div>
+                  <div class="telem-track">
+                    <div class="telem-fill purple" id="telem-fill-standing" style="width: 85%;"></div>
+                  </div>
+                </div>
+
+                <div class="telem-bar-group">
+                  <div class="telem-bar-hdr">
+                    <span>Cross-Border Trust &amp; Partnership</span>
+                    <span class="telem-pct" id="telem-trust">90%</span>
+                  </div>
+                  <div class="telem-track">
+                    <div class="telem-fill blue" id="telem-fill-trust" style="width: 90%;"></div>
+                  </div>
+                </div>
+
+                <div class="telem-bar-group">
+                  <div class="telem-bar-hdr">
+                    <span>Legal &amp; Regulatory Compliance Integrity</span>
+                    <span class="telem-pct" id="telem-compliance">98%</span>
+                  </div>
+                  <div class="telem-track">
+                    <div class="telem-fill green" id="telem-fill-compliance" style="width: 98%;"></div>
+                  </div>
+                </div>
+
+                <div class="telem-bar-group">
+                  <div class="telem-bar-hdr">
+                    <span>Capital &amp; Penalty Mitigation</span>
+                    <span class="telem-pct" id="telem-financial">$16,500 Saved</span>
+                  </div>
+                  <div class="telem-track">
+                    <div class="telem-fill amber" id="telem-fill-financial" style="width: 88%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Executive Coach Strategic Debrief -->
+              <div class="coach-debrief-box" id="coach-debrief-box">
+                <div class="coach-avatar">
+                  <i class="fa-solid fa-user-tie"></i>
+                </div>
+                <div class="coach-content">
+                  <span class="coach-label">Executive Negotiation Coach Feedback</span>
+                  <p class="coach-text" id="coach-debrief-text">
+                    Select an executive course of action above to simulate board-level feedback and downstream contractual outcomes.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- B2/C1 Executive Memorandum & Verbal Script Generator -->
+            <div class="memo-generator-box">
+              <div class="memo-header-row">
+                <span class="memo-badge"><i class="fa-solid fa-envelope-open-text"></i> Official C1 Executive Position Memo</span>
+                <button class="btn-copy-memo" id="btn-copy-memo" title="Copy to clipboard">
+                  <i class="fa-solid fa-copy"></i> <span>Copy Memo</span>
+                </button>
+              </div>
+              <textarea class="exec-memo-textarea" id="exec-memo-textarea" readonly rows="5"></textarea>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ═══════════ SUB-PANEL 2: MULTI-ACCENT ACOUSTIC LAB ═══════════ -->
+      <div class="exec-subpanel" id="exec-subpanel-accents" style="display:none;">
+        
+        <!-- Accent Selector Strip -->
+        <div class="accent-selector-bar">
+          <div class="accent-selector-title">
+            <i class="fa-solid fa-earth-americas" style="color:#0284c7;"></i>
+            <span>Select Global Nearshoring Industrial Accent:</span>
+          </div>
+          <div class="accent-pills-row" id="accent-selector-pills">
+            <button class="accent-chip active" data-accent="midwest">
+              <span class="accent-flag">🇺🇸</span>
+              <span class="accent-name">US Midwest (Detroit Automotive)</span>
+            </button>
+            <button class="accent-chip" data-accent="indian">
+              <span class="accent-flag">🇮🇳</span>
+              <span class="accent-name">Indian Offshore (Bangalore Firmware)</span>
+            </button>
+            <button class="accent-chip" data-accent="german">
+              <span class="accent-flag">🇩🇪</span>
+              <span class="accent-name">German HQ (Stuttgart Robotics)</span>
+            </button>
+            <button class="accent-chip" data-accent="british">
+              <span class="accent-flag">🇬🇧</span>
+              <span class="accent-name">UK Aerospace (Derby Propulsion)</span>
+            </button>
+            <button class="accent-chip" data-accent="japanese">
+              <span class="accent-flag">🇯🇵</span>
+              <span class="accent-name">Japanese Kaizen (Nagoya Quality)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Accent Audio Workspace Grid -->
+        <div class="accent-workspace-grid">
+          
+          <!-- Left Column: Audio Station, Telemetry & Speed -->
+          <div class="acoustic-player-card">
+            
+            <div class="acoustic-player-header">
+              <div class="speaker-meta">
+                <div class="speaker-avatar" id="accent-avatar"><i class="fa-solid fa-car-side"></i></div>
+                <div>
+                  <h4 class="speaker-name" id="accent-speaker-name">Dave Miller</h4>
+                  <span class="speaker-role" id="accent-speaker-role">Vehicle Launch Director &bull; Detroit, MI</span>
+                </div>
+              </div>
+              <span class="accent-dialect-tag" id="accent-dialect-tag">US Midwest / Northern Cities Vowel Shift</span>
+            </div>
+
+            <!-- Waveform & Animated Visualizer -->
+            <div class="acoustic-waveform-display" id="acoustic-waveform-box">
+              <div class="waveform-bars">
+                <span class="w-bar" style="animation-delay: 0.1s"></span>
+                <span class="w-bar" style="animation-delay: 0.25s"></span>
+                <span class="w-bar" style="animation-delay: 0.05s"></span>
+                <span class="w-bar" style="animation-delay: 0.4s"></span>
+                <span class="w-bar" style="animation-delay: 0.15s"></span>
+                <span class="w-bar" style="animation-delay: 0.35s"></span>
+                <span class="w-bar" style="animation-delay: 0.2s"></span>
+                <span class="w-bar" style="animation-delay: 0.45s"></span>
+                <span class="w-bar" style="animation-delay: 0.3s"></span>
+                <span class="w-bar" style="animation-delay: 0.1s"></span>
+                <span class="w-bar" style="animation-delay: 0.5s"></span>
+                <span class="w-bar" style="animation-delay: 0.22s"></span>
+                <span class="w-bar" style="animation-delay: 0.38s"></span>
+                <span class="w-bar" style="animation-delay: 0.12s"></span>
+                <span class="w-bar" style="animation-delay: 0.28s"></span>
+              </div>
+              <div class="waveform-status-row">
+                <span class="waveform-status-text" id="accent-audio-status"><i class="fa-solid fa-circle-dot"></i> Ready to Stream</span>
+                <span class="waveform-time" id="accent-audio-duration">0:14 / 0:14</span>
+              </div>
+            </div>
+
+            <!-- Audio Controls Bar -->
+            <div class="acoustic-controls-bar">
+              <button class="acoustic-play-btn" id="btn-play-accent-audio">
+                <i class="fa-solid fa-play"></i> <span>Play Native Audio</span>
+              </button>
+              
+              <div class="speed-switcher-wrap">
+                <span class="speed-lbl">Cadence:</span>
+                <div class="speed-pills">
+                  <button class="speed-btn" data-speed="0.8">0.8x</button>
+                  <button class="speed-btn active" data-speed="1.0">1.0x</button>
+                  <button class="speed-btn" data-speed="1.25">1.25x</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Full Transcript Box with Key Phonetic Highlights -->
+            <div class="acoustic-transcript-box">
+              <div class="transcript-hdr">
+                <span class="tr-lbl"><i class="fa-solid fa-quote-left"></i> Spoken Plant Transcript</span>
+                <button class="btn-toggle-transcript" id="btn-toggle-transcript-en">
+                  <i class="fa-solid fa-eye"></i> <span>Hide / Show</span>
+                </button>
+              </div>
+              <p class="transcript-body" id="accent-transcript-text">
+                Loading transcript...
+              </p>
+            </div>
+
+            <!-- Micro-Comprehension Diagnostic Quiz -->
+            <div class="accent-quiz-box">
+              <div class="quiz-hdr">
+                <span class="quiz-badge"><i class="fa-solid fa-ear-listen"></i> Acoustic Comprehension Check</span>
+                <span class="quiz-score" id="accent-quiz-score">Score: 100%</span>
+              </div>
+              <p class="quiz-prompt" id="accent-quiz-prompt">
+                What is the operational priority demanded by the speaker?
+              </p>
+              <div class="quiz-options-grid" id="accent-quiz-options">
+                <!-- Dynamically injected choices -->
+              </div>
+              <div class="quiz-feedback-box" id="accent-quiz-feedback" style="display:none;"></div>
+            </div>
+
+          </div>
+
+          <!-- Right Column: The 3-Layer Industrial Dialect Decoder -->
+          <div class="acoustic-decoder-card">
+            <div class="decoder-header">
+              <div>
+                <span class="decoder-badge">THE 3-LAYER INDUSTRIAL DIALECT DECODER</span>
+                <h4 class="decoder-title">Cross-Cultural Pragmatics &amp; Phonetic Translation</h4>
+              </div>
+              <span class="iso-chip"><i class="fa-solid fa-shield-halved"></i> Anti-Misunderstanding Protocol</span>
+            </div>
+
+            <!-- Layer 1: Phonetic & Acoustic Shifts -->
+            <div class="decoder-layer-card layer-phonetics">
+              <div class="layer-hdr">
+                <div class="layer-num">1</div>
+                <div class="layer-title-wrap">
+                  <h5 class="layer-title">Acoustic &amp; Phonetic Shifts</h5>
+                  <span class="layer-sub">Key vowel, consonant, and prosody alterations in this accent</span>
+                </div>
+              </div>
+              <div class="layer-body" id="decoder-phonetic-body">
+                <!-- Injected content -->
+              </div>
+            </div>
+
+            <!-- Layer 2: Pragmatics ("Said vs Meant") -->
+            <div class="decoder-layer-card layer-pragmatics">
+              <div class="layer-hdr">
+                <div class="layer-num">2</div>
+                <div class="layer-title-wrap">
+                  <h5 class="layer-title">Pragmatic Filter: "Said vs. Meant"</h5>
+                  <span class="layer-sub">Literal words spoken vs. True operational and corporate intent</span>
+                </div>
+              </div>
+              <div class="layer-body" id="decoder-pragmatic-body">
+                <!-- Injected content -->
+              </div>
+            </div>
+
+            <!-- Layer 3: Strategic Counter-Response Formulation -->
+            <div class="decoder-layer-card layer-response">
+              <div class="layer-hdr">
+                <div class="layer-num">3</div>
+                <div class="layer-title-wrap">
+                  <h5 class="layer-title">Recommended Counter-Response</h5>
+                  <span class="layer-sub">Diplomatic formula engineered for Mexican engineering leadership</span>
+                </div>
+              </div>
+              <div class="layer-body" id="decoder-response-body">
+                <!-- Injected content -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
 
     </div>
   </section>
@@ -469,6 +2287,229 @@
     <p class="popover-body-def" id="popover-term-def">Technical definition and operational plant context.</p>
   </div>
 
+  <!-- ── STEMBot Socratic AI Engineering Copilot (Phase 6) ── -->
+  <aside class="stembot-fab-copilot" id="stembot-fab-copilot" onclick="toggleStemBotCopilot()" title="Open STEMBot Socratic AI Copilot">
+    <div class="stembot-fab-avatar">
+      <div class="stembot-beacon-dot"></div>
+      <svg width="24" height="24" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="6" y="8" width="24" height="20" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+        <circle cx="13" cy="18" r="3" fill="#38bdf8"/>
+        <circle cx="23" cy="18" r="3" fill="#38bdf8"/>
+        <line x1="18" y1="2" x2="18" y2="8" stroke="#38bdf8" stroke-width="2"/>
+        <circle cx="18" cy="2" r="2" fill="#ec4899"/>
+        <path d="M14 23c1.5 1.5 6.5 1.5 8 0" stroke="#f43f5e" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="stembot-fab-label">
+      <span class="stembot-fab-badge">AI Copilot</span>
+      <span class="stembot-fab-title">Socratic Mentor</span>
+    </div>
+  </aside>
+
+  <!-- STEMBot Copilot Modal Slide-over Drawer -->
+  <div class="stembot-copilot-drawer" id="stembot-copilot-drawer" style="display:none;" aria-hidden="true">
+    <div class="stembot-drawer-backdrop" onclick="toggleStemBotCopilot(false)"></div>
+    <div class="stembot-drawer-container">
+      <div class="stembot-drawer-header">
+        <div class="stembot-drawer-header-left">
+          <div class="stembot-mini-avatar">
+            <div class="stembot-beacon-dot live"></div>
+            <svg width="22" height="22" viewBox="0 0 36 36" fill="none">
+              <rect x="6" y="8" width="24" height="20" rx="6" fill="#0f172a" stroke="#0ea5e9" stroke-width="2"/>
+              <circle cx="13" cy="18" r="3" fill="#0ea5e9"/>
+              <circle cx="23" cy="18" r="3" fill="#0ea5e9"/>
+              <path d="M14 23c1.5 1.5 6.5 1.5 8 0" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="stembot-drawer-title-row">
+              <h3 class="stembot-drawer-title">STEMBot Socratic Copilot</h3>
+              <span class="stembot-live-tag"><i class="fa-solid fa-circle"></i> Live • L4 Feynman Engine</span>
+            </div>
+            <p class="stembot-drawer-subtitle">Interactive Cross-Border ESP Engineering Mentor &amp; Lexical Upgrader</p>
+          </div>
+        </div>
+        <button class="stembot-drawer-close-btn" id="btn-close-stembot" onclick="toggleStemBotCopilot(false)" title="Close STEMBot"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="stembot-drawer-nav-tabs">
+        <button class="stembot-tab-btn active" data-stembot-tab="feynman" onclick="switchStemBotTab('feynman')">
+          <i class="fa-solid fa-lightbulb"></i> Feynman Challenge
+        </button>
+        <button class="stembot-tab-btn" data-stembot-tab="lexical" onclick="switchStemBotTab('lexical')">
+          <i class="fa-solid fa-arrow-up-right-dots"></i> Lexical Upgrader
+        </button>
+        <button class="stembot-tab-btn" data-stembot-tab="dialogue" onclick="switchStemBotTab('dialogue')">
+          <i class="fa-solid fa-comments"></i> Socratic Mock Audit
+        </button>
+      </div>
+
+      <div class="stembot-drawer-body">
+        <!-- TAB 1: FEYNMAN SOCRATIC EVALUATOR -->
+        <div class="stembot-tab-content active" id="stembot-tab-feynman">
+          <div class="stembot-prompt-selector-row">
+            <label class="stembot-label">Select Engineering Scenario to Defend:</label>
+            <select class="stembot-select" id="stembot-feynman-scenario-select" onchange="loadStemBotScenario(this.value)">
+              <option value="automotive_cpk">Automotive: Cpk Degradation &amp; 8D Containment (IATF 16949)</option>
+              <option value="medtech_eto">MedTech: EtO Sterilization Residuals vs Bioburden (ISO 11135)</option>
+              <option value="semi_esd">Semiconductors: ESD Charge Neutralization during Dicing (SEMI E10)</option>
+              <option value="trade_anexo24">Logistics: Laredo Customs Hold &amp; Anexo 24 Temporality (USMCA)</option>
+              <option value="energy_substation">Energy: 40MW Reverse Power Harmonic Trip (CENACE Code 2.0)</option>
+            </select>
+          </div>
+
+          <div class="stembot-scenario-card" id="stembot-scenario-card">
+            <div class="scenario-badge"><i class="fa-solid fa-triangle-exclamation"></i> The Socratic Challenge</div>
+            <p class="scenario-prompt-text" id="stembot-scenario-prompt">
+              Your automated torque spindle on station 04-B experienced a process capability collapse from Cpk 1.67 down to 1.12 over the last shift. Explain in plain technical English to your Detroit OEM quality auditor why this occurred, how you isolated the root cause, and what permanent containment was enacted.
+            </p>
+          </div>
+
+          <div class="stembot-input-block">
+            <label class="stembot-label" for="stembot-feynman-input">Your Engineering Explanation (Plain Technical English):</label>
+            <textarea class="stembot-textarea" id="stembot-feynman-input" rows="4" placeholder="Explain the mechanism of failure, containment action, and root cause verification..."></textarea>
+            <div class="stembot-input-tools">
+              <span class="stembot-char-count" id="stembot-feynman-wordcount">0 words</span>
+              <div class="stembot-btn-group">
+                <button type="button" class="stembot-btn-secondary" onclick="loadSampleFeynmanExplanation()"><i class="fa-solid fa-wand-magic-sparkles"></i> Load Sample Response</button>
+                <button type="button" class="stembot-btn-primary" id="btn-eval-feynman" onclick="evaluateFeynmanExplanation()"><i class="fa-solid fa-bolt"></i> Evaluate Feynman Technique</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Evaluation Results -->
+          <div class="stembot-eval-result" id="stembot-feynman-result" style="display:none;">
+            <div class="stembot-result-header">
+              <div class="stembot-score-ring">
+                <span class="stembot-score-val" id="stembot-feynman-score">92%</span>
+                <span class="stembot-score-sub">Feynman Index</span>
+              </div>
+              <div class="stembot-result-meta">
+                <h4 class="stembot-result-title" id="stembot-feynman-headline">Outstanding Technical Precision</h4>
+                <p class="stembot-result-summary" id="stembot-feynman-summary">Clear mechanistic breakdown with zero ambiguity. Demonstrates mastery of IATF 16949 containment syntax.</p>
+              </div>
+            </div>
+
+            <div class="stembot-rubric-breakdown">
+              <div class="rubric-mini-card">
+                <span class="rubric-mini-label">Conceptual Clarity</span>
+                <span class="rubric-mini-val" id="feynman-rubric-clarity">9.5/10</span>
+              </div>
+              <div class="rubric-mini-card">
+                <span class="rubric-mini-label">Lexical Density</span>
+                <span class="rubric-mini-val" id="feynman-rubric-lexical">9.2/10</span>
+              </div>
+              <div class="rubric-mini-card">
+                <span class="rubric-mini-label">Root Cause Logic</span>
+                <span class="rubric-mini-val" id="feynman-rubric-rootcause">9.0/10</span>
+              </div>
+            </div>
+
+            <div class="stembot-lexical-highlights">
+              <h5 class="stembot-highlight-title"><i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Detected Nearshoring Technical Collocations:</h5>
+              <div class="stembot-chips-wrap" id="stembot-detected-collocations">
+                <span class="lex-chip">dynamic runout</span>
+                <span class="lex-chip">statistical process control</span>
+                <span class="lex-chip">8D containment protocol</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: LEXICAL UPGRADER -->
+        <div class="stembot-tab-content" id="stembot-tab-lexical" style="display:none;">
+          <p class="stembot-tab-desc">
+            Transform plain, casual, or literal plant Spanish calques into 3 professional tiers of executive English required in North American manufacturing partnerships.
+          </p>
+
+          <div class="stembot-input-block">
+            <label class="stembot-label" for="stembot-lexical-input">Input Phrase / Informal Technical Draft:</label>
+            <div style="position:relative;">
+              <input type="text" class="stembot-text-input" id="stembot-lexical-input" placeholder="e.g. We need to stop the line because of a bad part..." value="We need to stop the line because of a bad part">
+            </div>
+            <div class="stembot-sample-pills">
+              <span class="sample-pill" onclick="setLexicalInput('We need to stop the line because of a bad part')">Line Stop / Bad Part</span>
+              <span class="sample-pill" onclick="setLexicalInput('The customer is mad about the delivery delay')">Customer Angry / Delay</span>
+              <span class="sample-pill" onclick="setLexicalInput('The weld broke so we fixed it with more heat')">Weld Failure / Heat</span>
+              <span class="sample-pill" onclick="setLexicalInput('We tested the circuit and it gave weird values')">Circuit Test / Strange Values</span>
+            </div>
+            <div style="display:flex; justify-content:flex-end; margin-top:8px;">
+              <button type="button" class="stembot-btn-primary" id="btn-run-lexical-upgrade" onclick="runLexicalUpgrade()"><i class="fa-solid fa-arrow-trend-up"></i> Upgrade to 3 Professional Registers</button>
+            </div>
+          </div>
+
+          <!-- Upgraded Registers Container -->
+          <div class="stembot-upgraded-registers" id="stembot-upgraded-registers">
+            <!-- Register 1: Shopfloor SOP -->
+            <div class="register-card reg-sop">
+              <div class="register-header">
+                <span class="register-tag"><i class="fa-solid fa-industry"></i> Register 1: Shopfloor SOP</span>
+                <button type="button" class="btn-copy-register" onclick="copyRegisterText('reg-text-sop', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <p class="register-text" id="reg-text-sop">
+                "Initiate immediate emergency line stop; quarantine lot #4492 under non-conformance quarantine protocol pending dimensional verification."
+              </p>
+            </div>
+
+            <!-- Register 2: Quality & 8D Technical Report -->
+            <div class="register-card reg-8d">
+              <div class="register-header">
+                <span class="register-tag"><i class="fa-solid fa-clipboard-check"></i> Register 2: Quality &amp; 8D Technical Audit</span>
+                <button type="button" class="btn-copy-register" onclick="copyRegisterText('reg-text-8d', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <p class="register-text" id="reg-text-8d">
+                "Enact D3 Interim Containment Action; segregate non-compliant sub-assemblies and execute 100% sorting audit across upstream feeder stations."
+              </p>
+            </div>
+
+            <!-- Register 3: Executive Cross-Border Escalation (C1) -->
+            <div class="register-card reg-exec">
+              <div class="register-header">
+                <span class="register-tag"><i class="fa-solid fa-briefcase"></i> Register 3: Executive Cross-Border Escalation (C1)</span>
+                <button type="button" class="btn-copy-register" onclick="copyRegisterText('reg-text-exec', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <p class="register-text" id="reg-text-exec">
+                "We are escalating a critical quality excursion impacting line takt time; comprehensive containment is in place while root cause Ishikawa analysis proceeds."
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: SOCRATIC MOCK AUDIT -->
+        <div class="stembot-tab-content" id="stembot-tab-dialogue" style="display:none;">
+          <div class="stembot-audit-intro">
+            <div class="audit-auditor-profile">
+              <div class="auditor-badge"><i class="fa-solid fa-user-tie"></i> Lead Auditor</div>
+              <div>
+                <h5 class="auditor-name" id="mock-auditor-name">Arthur Vance (Senior ISO/TS Lead Auditor)</h5>
+                <span class="auditor-dept">Global Supplier Quality • Detroit Automotive OEM</span>
+              </div>
+            </div>
+            <p class="audit-briefing" id="mock-audit-briefing">
+              "We noticed an unverified tool wear parameter in your CNC spindle calibration log. How does your plant guarantee repeatability when tool indexing is performed across shift handovers?"
+            </p>
+          </div>
+
+          <div class="stembot-audit-chat" id="stembot-audit-chat-history">
+            <div class="audit-msg auditor">
+              <strong>Arthur Vance:</strong> "How do you verify that your operators do not override feed rate overrides to artificially hit piece-rate targets?"
+            </div>
+          </div>
+
+          <div class="stembot-input-block" style="margin-top:12px;">
+            <div style="display:flex; gap:8px;">
+              <input type="text" class="stembot-text-input" id="stembot-audit-user-reply" placeholder="Respond with technical diplomacy and audit-proof evidence..." onkeydown="if(event.key==='Enter') submitAuditResponse()">
+              <button type="button" class="stembot-btn-primary" id="btn-submit-audit" onclick="submitAuditResponse()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+            <div style="margin-top:8px; display:flex; gap:8px;">
+              <button type="button" class="stembot-btn-secondary" onclick="loadSampleAuditResponse()"><i class="fa-solid fa-wand-magic-sparkles"></i> Insert Model Diplomatic Response</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ── Footer (Supaste Editorial Style) ── -->
   <footer class="supaste-footer">
     <div class="supaste-footer-inner">
@@ -523,10 +2564,10 @@
   </div>
 
   <!-- Load stemOS courses database, phrases library, and dev controller with cache buster -->
-  <script src="/content/courses.js?v=4.0.0"></script>
-  <script src="/content/phrases_library.js?v=4.0.0"></script>
+  <script src="/content/courses.js?v=5.0.0"></script>
+  <script src="/content/phrases_library.js?v=5.0.0"></script>
   <script src="/world-map.js?v=1.0.0"></script>
-  <script src="/dev.js?v=4.0.2"></script>
+  <script src="/dev.js?v=5.0.0"></script>
 
 </body>
 
