@@ -54,6 +54,7 @@
         <a href="#incident-war-room-section" class="nav-link" id="nav-btn-warroom"><i class="fa-solid fa-headset" style="color:#f43f5e; margin-right:4px;"></i> Incident War Room</a>
         <a href="#scada-digitaltwin-section" class="nav-link" id="nav-btn-scada"><i class="fa-solid fa-gauge-high" style="color:#06b6d4; margin-right:4px;"></i> SCADA &amp; Digital Twin</a>
         <a href="#roleplay-classifier-section" class="nav-link" id="nav-btn-audio-roleplay"><i class="fa-solid fa-headphones-simple" style="color:#ec4899; margin-right:4px;"></i> Audio Roleplay Lab</a>
+        <a href="#capstone-defense-section" class="nav-link" id="nav-btn-capstone"><i class="fa-solid fa-graduation-cap" style="color:#f59e0b; margin-right:4px;"></i> Capstone Board Exam</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-certificates" onclick="openCertificateModal()"><i class="fa-solid fa-award" style="color:#eab308; margin-right:4px;"></i> Certificates &amp; QR</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-cloud-sync" onclick="openCloudSyncModal()"><i class="fa-solid fa-cloud-arrow-up" style="color:#06b6d4; margin-right:4px;"></i> <span id="nav-cloud-status">Cloud Sync</span></a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-stembot" onclick="toggleStemBotCopilot(true)"><i class="fa-solid fa-robot" style="color:#0ea5e9; margin-right:4px;"></i> STEMBot Copilot</a>
@@ -139,6 +140,10 @@
         <a href="#roleplay-classifier-section" class="supaste-btn-secondary" id="hero-roleplay-btn" style="border-color: rgba(236, 72, 153, 0.4); background: rgba(236, 72, 153, 0.12);">
           <i class="fa-solid fa-headphones-simple" style="color:#ec4899;"></i>
           <span>Audio Roleplay Lab</span>
+        </a>
+        <a href="#capstone-defense-section" class="supaste-btn-secondary" id="hero-capstone-btn" style="border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.12);">
+          <i class="fa-solid fa-graduation-cap" style="color:#f59e0b;"></i>
+          <span>Capstone Board Exam</span>
         </a>
         <a href="#hero-showcase-window" class="supaste-btn-secondary" id="hero-view-demo-btn">
           <i class="fa-solid fa-laptop-code"></i>
@@ -3011,6 +3016,244 @@
       </div>
     </div>
   </section>
+
+  <!-- ── Phase 13: Capstone Nearshoring Final Certification & Board Exam ── -->
+  <section class="capstone-defense-section" id="capstone-defense-section">
+    <div class="capstone-container">
+      <!-- Section Header -->
+      <div class="capstone-header-wrap">
+        <div class="capstone-badge">
+          <i class="fa-solid fa-graduation-cap"></i> EXECUTIVE C1 ESP &bull; CAPSTONE BOARD EXAM &amp; DEFENSE SIMULATOR
+        </div>
+        <h2 class="capstone-title">Nearshoring Capstone Board Exam &amp; Competency Audit</h2>
+        <p class="capstone-desc">
+          High-stakes multi-plant engineering board examination and live oral defense. Synthesize advanced competencies across the 4 key nearshoring hubs (Saltillo Powertrain, Tijuana MedTech, Guadalajara Semiconductors, Querétaro Hyperscale Grid) and defend operational trade-offs before an international tribunal of engineering directors.
+        </p>
+      </div>
+
+      <!-- Station Circuit Selector Bar -->
+      <div class="capstone-station-tabs">
+        <button class="capstone-station-tab active" id="tab-capstone-saltillo" onclick="switchCapstoneStation('saltillo')">
+          <i class="fa-solid fa-car-side"></i> Station 1: Saltillo Powertrain &amp; HPDC
+        </button>
+        <button class="capstone-station-tab" id="tab-capstone-tijuana" onclick="switchCapstoneStation('tijuana')">
+          <i class="fa-solid fa-syringe"></i> Station 2: Tijuana MedTech Cleanroom
+        </button>
+        <button class="capstone-station-tab" id="tab-capstone-guadalajara" onclick="switchCapstoneStation('guadalajara')">
+          <i class="fa-solid fa-microchip"></i> Station 3: Guadalajara 3nm Silicon Test
+        </button>
+        <button class="capstone-station-tab" id="tab-capstone-queretaro" onclick="switchCapstoneStation('queretaro')">
+          <i class="fa-solid fa-bolt"></i> Station 4: Querétaro Hyperscale Data Center
+        </button>
+      </div>
+
+      <!-- Main Workbench Grid -->
+      <div class="capstone-workbench-grid">
+        <!-- Left Column: Station Practical Engineering Challenge -->
+        <div class="capstone-card">
+          <div class="capstone-station-header">
+            <div>
+              <div class="capstone-station-name" id="capstone-station-title">Saltillo Powertrain &amp; Die Casting</div>
+              <div class="capstone-station-location" id="capstone-station-cluster">
+                <i class="fa-solid fa-location-dot"></i> Coahuila Auto Cluster &bull; IATF 16949 / APQP
+              </div>
+            </div>
+            <span class="capstone-opt-badge optimal" id="capstone-station-badge">STATION 1 / 4 ACTIVE</span>
+          </div>
+
+          <!-- Live Plant KPIs -->
+          <div class="capstone-kpi-grid">
+            <div class="capstone-kpi-item">
+              <div class="capstone-kpi-lbl">Operational OEE</div>
+              <div class="capstone-kpi-val" id="capstone-kpi-oee">86.4%</div>
+            </div>
+            <div class="capstone-kpi-item">
+              <div class="capstone-kpi-lbl">Process Cpk</div>
+              <div class="capstone-kpi-val" id="capstone-kpi-cpk">1.74</div>
+            </div>
+            <div class="capstone-kpi-item">
+              <div class="capstone-kpi-lbl">Line-Stop Risk</div>
+              <div class="capstone-kpi-val" style="color:#ef4444;" id="capstone-kpi-risk">$850/min</div>
+            </div>
+            <div class="capstone-kpi-item">
+              <div class="capstone-kpi-lbl">Safety State</div>
+              <div class="capstone-kpi-val" style="color:#10b981;" id="capstone-kpi-safety">LOTO Verified</div>
+            </div>
+          </div>
+
+          <!-- Dilemma Context Box -->
+          <div class="capstone-dilemma-box" id="capstone-dilemma-text">
+            During rapid-injection casting on Line 4, thermography indicates hydraulic accumulator drift causing potential internal porosity. Detroit OEM demands 1,200 engine cradles shipped tonight under penalty of line-stop liquidated damages.
+          </div>
+
+          <!-- Response Options -->
+          <div style="font-size:0.75rem; font-weight:700; color:#94a3b8; text-transform:uppercase;">
+            Candidate Tactical Containment Selection:
+          </div>
+          <div class="capstone-options-group" id="capstone-options-container">
+            <!-- Dynamically populated options -->
+          </div>
+        </div>
+
+        <!-- Right Column: Oral Defense Board Cross-Examination -->
+        <div class="capstone-card">
+          <div class="capstone-station-header">
+            <div>
+              <div class="capstone-station-name">International Oral Defense Tribunal</div>
+              <div class="capstone-station-location" style="color:#38bdf8;">
+                <i class="fa-solid fa-users-viewfinder"></i> Cross-Border Executive Interrogation Panel
+              </div>
+            </div>
+            <span class="capstone-opt-badge optimal">LIVE GRILLING</span>
+          </div>
+
+          <!-- Auditor Selector Bar -->
+          <div class="capstone-auditors-bar">
+            <button class="capstone-auditor-chip active" id="chip-auditor-dave" onclick="switchCapstoneAuditor('dave')">
+              <span>🇺🇸</span> Dave Miller (Detroit)
+            </button>
+            <button class="capstone-auditor-chip" id="chip-auditor-jurgen" onclick="switchCapstoneAuditor('jurgen')">
+              <span>🇩🇪</span> Dr. Jürgen Becker (Stuttgart)
+            </button>
+            <button class="capstone-auditor-chip" id="chip-auditor-alistair" onclick="switchCapstoneAuditor('alistair')">
+              <span>🇬🇧</span> Alistair Campbell (Derby)
+            </button>
+          </div>
+
+          <!-- Auditor Grilling Bubble -->
+          <div class="capstone-bubble-auditor">
+            <div class="capstone-bubble-title">
+              <span id="capstone-auditor-title"><i class="fa-solid fa-user-tie"></i> Dave Miller &bull; Vehicle Launch Director:</span>
+              <button class="roleplay-speed-btn" style="padding:2px 8px;" onclick="playCapstoneAuditorAudio()">
+                <i class="fa-solid fa-volume-high"></i> Listen Auditor
+              </button>
+            </div>
+            <div class="capstone-bubble-text" id="capstone-auditor-prompt">
+              "We are burning $850 a minute on the Arlington line! Why shouldn't I reroute this entire assembly contract to Kentucky right now if your casting cell is unstable?"
+            </div>
+            <div class="capstone-pragmatic-warning" id="capstone-pragmatic-warning">
+              <i class="fa-solid fa-triangle-exclamation"></i> <strong>Pragmatic Strategy:</strong> Acknowledge financial urgency without conceding unverified parts. Counter with certified D3 containment buffer and objective 30-min gate reviews.
+            </div>
+          </div>
+
+          <!-- Candidate Model Defense Rehearsal -->
+          <div class="capstone-candidate-defense">
+            <div class="capstone-bubble-title" style="color:#34d399;">
+              <span><i class="fa-solid fa-microphone"></i> Candidate C1 Oral Defense:</span>
+              <button class="roleplay-speed-btn" style="padding:2px 8px; border-color:#10b981; color:#34d399;" onclick="playCapstoneCandidateDefense()">
+                <i class="fa-solid fa-play"></i> Rehearse Defense
+              </button>
+            </div>
+            <div class="capstone-bubble-text" style="color:#cbd5e1;" id="capstone-candidate-quote">
+              "Dave, I fully recognize the $850/minute line-down exposure in Arlington. However, releasing unverified porosity lots risks an uncontainable field recall. We have already isolated Cell 4 under LOTO, activated our certified 400-unit quarantine buffer with 100% ultrasonic verification, and our chartered hot-shot truck maintains your 06:00 EST assembly window. I will hold our next checkpoint call at 23:30 CST with the complete CMM report."
+            </div>
+          </div>
+
+          <!-- Real-Time C1 Oral Competency Radar -->
+          <div class="capstone-radar-grid">
+            <div class="capstone-radar-card">
+              <div class="capstone-radar-lbl">BATNA Firmness</div>
+              <div class="capstone-radar-val" id="capstone-radar-batna">96%</div>
+            </div>
+            <div class="capstone-radar-card">
+              <div class="capstone-radar-lbl">Metrology Rigor</div>
+              <div class="capstone-radar-val" id="capstone-radar-precision">98%</div>
+            </div>
+            <div class="capstone-radar-card">
+              <div class="capstone-radar-lbl">Pressure Composure</div>
+              <div class="capstone-radar-val" id="capstone-radar-composure">95%</div>
+            </div>
+            <div class="capstone-radar-card">
+              <div class="capstone-radar-lbl">Executive Tact</div>
+              <div class="capstone-radar-val" id="capstone-radar-tact">97%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Master Scorecard & Credential Panel -->
+      <div class="capstone-scorecard-panel">
+        <div class="capstone-grade-badge">
+          <div class="capstone-grade-score" id="capstone-composite-score">98 / 100</div>
+          <div class="capstone-grade-status" id="capstone-composite-status">
+            <i class="fa-solid fa-circle-check"></i> PASS WITH HIGHEST HONORS &bull; SUMMA CUM LAUDE
+          </div>
+          <div style="font-size:0.75rem; color:#94a3b8;">
+            Acredited under <strong>SEP CONOCER EC1290</strong>, <strong>ISO 9001:2015 Cl. 7.2</strong> &amp; <strong>CEFR C1 Advanced</strong>
+          </div>
+        </div>
+
+        <div class="capstone-actions-group">
+          <button class="btn-loto-action" id="btn-open-capstone-diploma" onclick="openCapstoneDiplomaModal()">
+            <i class="fa-solid fa-award"></i> Preview Master Diploma (QR &amp; Seal)
+          </button>
+          <button class="btn-loto-action" id="btn-export-capstone-dossier" style="background:#0f172a; border-color:#f59e0b; color:#fbbf24;" onclick="exportCapstoneAuditDossier()">
+            <i class="fa-solid fa-file-signature"></i> Generate Audit Dossier (Markdown)
+          </button>
+          <button class="btn-loto-action" id="btn-export-capstone-json" style="background:#0284c7; border-color:#38bdf8;" onclick="exportCapstoneJsonCredential()">
+            <i class="fa-solid fa-download"></i> Export W3C JSON-LD
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Master Capstone Diploma Modal Overlay ── -->
+  <div class="capstone-modal-overlay" id="capstone-diploma-modal" role="dialog" aria-modal="true" aria-labelledby="capstone-modal-title">
+    <div class="capstone-diploma-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <span class="cs-modal-tag" style="background:#fef3c7; color:#b45309; border-color:#fde68a;">
+          <i class="fa-solid fa-certificate"></i> Nearshoring Executive Fellow Accreditation
+        </span>
+        <button id="btn-close-capstone-modal" class="drawer-close-btn" aria-label="Close Modal" onclick="closeCapstoneDiplomaModal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="capstone-diploma-canvas" id="capstone-printable-canvas">
+        <div class="capstone-diploma-org">stemOS Foundation &bull; High-Tech Engineering Division</div>
+        <h2 class="capstone-diploma-title" id="capstone-modal-title">FELLOWSHIP IN ADVANCED NEARSHORING ENGINEERING</h2>
+        <div style="font-size:0.82rem; color:#64748b; letter-spacing:0.05em; text-transform:uppercase;">
+          Certificación de Grado y Acreditación de Liderazgo Industrial Cross-Border (CEFR C1)
+        </div>
+
+        <div style="margin:16px 0 8px 0; font-size:0.85rem; color:#475569;">Por cuanto ha demostrado maestría integral en defensa de planta, control estadístico y negociación técnica:</div>
+        <div class="capstone-diploma-recipient" id="capstone-diploma-student-name">Ingeniero Líder Nearshoring</div>
+
+        <div class="capstone-diploma-body">
+          Habiendo completado satisfactoriamente el circuito de las 4 estaciones industriales (Saltillo, Tijuana, Guadalajara y Querétaro) y defendido con éxito los requerimientos operacionales y regulatorios bajo <strong>IATF 16949</strong>, <strong>FDA 21 CFR § 820</strong>, <strong>SEMI Standards</strong> y <strong>CENACE Código de Red 2.0</strong> con distinción summativa.
+        </div>
+
+        <div class="capstone-diploma-footer">
+          <div style="text-align:left;">
+            <div style="border-top:1px solid #1e293b; width:180px; padding-top:4px; font-weight:700; font-size:0.78rem;">Comité Evaluador stemOS</div>
+            <div style="font-size:0.7rem; color:#64748b;">Tribunal Examinador Internacional</div>
+          </div>
+
+          <div style="text-align:center;">
+            <div style="font-size:0.65rem; color:#92400e; font-weight:800; letter-spacing:0.08em;">FOLIO DE AUDITORÍA OFICIAL</div>
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.85rem; font-weight:700; color:#b45309;" id="capstone-diploma-folio">STEM-CAPSTONE-2026-0042</div>
+            <div style="font-size:0.68rem; color:#475569;" id="capstone-diploma-date">Septiembre 2026 &bull; Sello Criptográfico SHA-256</div>
+          </div>
+
+          <div style="text-align:right;">
+            <div class="capstone-qr-box" id="capstone-qr-container">
+              <!-- SVG QR injected -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:center; gap:12px; margin-top:20px;">
+        <button class="cs-modal-btn" onclick="printCapstoneDiploma()" style="background:#0f172a; color:#ffffff;">
+          <i class="fa-solid fa-print"></i> Imprimir Diploma / Guardar PDF
+        </button>
+        <button class="cs-modal-btn" onclick="closeCapstoneDiplomaModal()" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1;">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- ── Drawer Modal Reader (macOS Sheet Design) ── -->
   <div class="drawer-backdrop" id="drawer-backdrop" role="dialog" aria-modal="true" aria-labelledby="drawer-mod-title">

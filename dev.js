@@ -342,6 +342,7 @@ function initStudio() {
   setupIncidentWarRoomLab(tracks);
   setupScadaDigitalTwinLab(tracks);
   setupCrossBorderAudioRoleplayLab(tracks);
+  setupCapstoneBoardExam(tracks);
 }
 
 function setupLevelSwitcher(tracks, phrases) {
@@ -9986,6 +9987,522 @@ function setupCrossBorderAudioRoleplayLab(tracks) {
 
   // Initial Scenario Hydration
   window.switchRoleplayScenario('detroit');
+}
+
+/* ============================================================
+   Phase 13: Capstone Nearshoring Final Certification & Board Exam
+   ============================================================ */
+function setupCapstoneBoardExam(tracks) {
+  const CAPSTONE_STATIONS = {
+    saltillo: {
+      title: 'Saltillo Powertrain & Die Casting',
+      cluster: 'Coahuila Auto Cluster • IATF 16949 / APQP',
+      badge: 'STATION 1 / 4 ACTIVE',
+      oee: '86.4%',
+      cpk: '1.74',
+      risk: '$850/min',
+      safety: 'LOTO Verified',
+      dilemma: 'During rapid-injection casting on Line 4, thermography indicates hydraulic accumulator drift causing potential internal porosity. Detroit OEM demands 1,200 engine cradles shipped tonight under penalty of line-stop liquidated damages.',
+      options: [
+        {
+          title: 'Quarantine Buffer & Ultrasonic Verification (C1 Standard)',
+          badge: 'OPTIMAL C1 MITIGATION',
+          badgeClass: 'optimal',
+          quote: '"Isolate Cell 4 under LOTO immediately. Release only the certified 400-unit quarantine buffer with 100% ultrasonic verification, and dispatch via hot-shot charter while recalibrating hydraulic servo valves."',
+          feedback: 'Exemplary C1 technical leadership. Protects against catastrophic OEM field recalls, satisfies IATF 16949 D3 containment, and guarantees zero line-stop downtime via hot-shot logistics.',
+          radar: { batna: '96%', precision: '98%', composure: '95%', tact: '97%', score: '98/100' }
+        },
+        {
+          title: 'Visual Inspection Concession',
+          badge: 'SUBOPTIMAL DEFECT CONCESSION',
+          badgeClass: 'suboptimal',
+          quote: '"Perform visual check on 5 parts and ship the remaining unverified batch with a temporary deviation waiver request to avoid the liquidated damages penalty."',
+          feedback: 'Suboptimal and high liability risk. Visual inspection cannot detect subsurface shrinkage porosity in high-pressure die casting. Customer will reject entire truck at receiving inspection.',
+          radar: { batna: '45%', precision: '50%', composure: '40%', tact: '55%', score: '48/100' }
+        },
+        {
+          title: 'Blind Production Run',
+          badge: 'CRITICAL QUALITY HAZARD',
+          badgeClass: 'hazard',
+          quote: '"Ignore the thermal drift warning since the machine is still cycling and push out all 1,200 units at maximum speed."',
+          feedback: 'Severe regulatory breach under IATF 16949. Delivering porous engine cradles leads to structural failure in front suspension, triggering NHTSA safety recalls and supplier de-sourcing.',
+          radar: { batna: '15%', precision: '10%', composure: '20%', tact: '10%', score: '14/100' }
+        }
+      ]
+    },
+    tijuana: {
+      title: 'Tijuana Class 10,000 MedTech Cleanroom',
+      cluster: 'Baja Medical Hub • FDA 21 CFR § 820 / ISO 13485',
+      badge: 'STATION 2 / 4 ACTIVE',
+      oee: '92.1%',
+      cpk: '1.92',
+      risk: 'Class I Recall',
+      safety: 'Cleanroom ISO 7',
+      dilemma: 'Inline vision sensors flag intermittent micro-seal width variations on Tyvek chevron pouches for electrophysiology steerable catheters. Minneapolis HQ demands release of 5,000 units to meet quarterly hospital surgical contracts.',
+      options: [
+        {
+          title: 'Burst Pressure & Dye Penetration Quoting ASTM F1929',
+          badge: 'OPTIMAL C1 MITIGATION',
+          badgeClass: 'optimal',
+          quote: '"Hold all 5,000 units in physical and ERP quarantine. Pull statistically valid sample size per ANSI/ASQ Z1.4 for destructive burst testing and methylene blue dye penetration per ASTM F1929 before signing batch release."',
+          feedback: 'Flawless compliance with FDA 21 CFR § 820.100 CAPA protocols. Never release sterile medical devices on assumption when package integrity is suspect.',
+          radar: { batna: '98%', precision: '99%', composure: '96%', tact: '95%', score: '97/100' }
+        },
+        {
+          title: 'Conditional Release with Re-packaging Disclaimer',
+          badge: 'SUBOPTIMAL DEFECT CONCESSION',
+          badgeClass: 'suboptimal',
+          quote: '"Ship the lot conditionally with a memo advising the surgical centers to inspect pouch seals upon opening in the operating room."',
+          feedback: 'Illegal under FDA and ISO 13485 standards. Offloading sterile barrier inspection to clinical staff triggers Form 483 citations and FDA Warning Letters.',
+          radar: { batna: '30%', precision: '35%', composure: '40%', tact: '40%', score: '36/100' }
+        },
+        {
+          title: 'Sensor Bypass',
+          badge: 'CRITICAL QUALITY HAZARD',
+          badgeClass: 'hazard',
+          quote: '"Turn off the seal width vision sensor alarm and accelerate the heat sealer conveyor to hit the 5,000 quota."',
+          feedback: 'Gross negligence resulting in patient sepsis risk, immediate FDA de-registration, and executive criminal liability under the Park Doctrine.',
+          radar: { batna: '10%', precision: '10%', composure: '10%', tact: '10%', score: '10/100' }
+        }
+      ]
+    },
+    guadalajara: {
+      title: 'Guadalajara 3nm Semiconductor Test & Packaging',
+      cluster: 'Jalisco Silicon Cluster • SEMI E10 / IEEE 1500',
+      badge: 'STATION 3 / 4 ACTIVE',
+      oee: '88.7%',
+      cpk: '1.85',
+      risk: '$1.2M Yield',
+      safety: 'ESD Certified',
+      dilemma: 'Automated Test Equipment (ATE) Shmoo plots reveal a 12% yield fallout at Vmin 0.748V on 3nm AI accelerator dies. Austin design center argues the packaging substrate routing is introducing parasitic ground bounce.',
+      options: [
+        {
+          title: 'DFT Scan-Chain & TDR Differential Decoupling Analysis',
+          badge: 'OPTIMAL C1 MITIGATION',
+          badgeClass: 'optimal',
+          quote: '"Correlate IEEE 1500 boundary scan logs with Time-Domain Reflectometry (TDR) on suspect differential lanes. Isolate substrate impedance discontinuity from silicon core Vmin shift with A/B split-lot validation."',
+          feedback: 'Superior semiconductor engineering rigor. Eliminates finger-pointing between OSAT packaging and fab design teams by grounding conclusions in empirical TDR data.',
+          radar: { batna: '97%', precision: '99%', composure: '98%', tact: '96%', score: '98/100' }
+        },
+        {
+          title: 'Bin Relaxing Concession',
+          badge: 'SUBOPTIMAL DEFECT CONCESSION',
+          badgeClass: 'suboptimal',
+          quote: '"Down-bin the failing dies to consumer grade specifications and sell them without notifying the enterprise hyperscale customer."',
+          feedback: 'Severe breach of enterprise SLAs and product qualification specs. Fails IEEE reliability standards for mission-critical AI workloads.',
+          radar: { batna: '35%', precision: '40%', composure: '30%', tact: '40%', score: '36/100' }
+        },
+        {
+          title: 'Volt Overdrive',
+          badge: 'CRITICAL QUALITY HAZARD',
+          badgeClass: 'hazard',
+          quote: '"Overdrive Vmin supply voltage by 150mV across all test sockets to force passing yield numbers."',
+          feedback: 'Destroys gate oxide breakdown margins (TDDB), causing catastrophic field burn-in failures in customer data center servers.',
+          radar: { batna: '12%', precision: '15%', composure: '10%', tact: '10%', score: '12/100' }
+        }
+      ]
+    },
+    queretaro: {
+      title: 'Querétaro 40MW Hyperscale Data Center',
+      cluster: 'El Marqués Cloud Corridor • Uptime Tier IV / CENACE',
+      badge: 'STATION 4 / 4 ACTIVE',
+      oee: '99.999%',
+      cpk: '2.10',
+      risk: '$25k/min SLA',
+      safety: 'NFPA 70E Arc',
+      dilemma: 'Substation 115kV feeder B exhibits a 5th harmonic spike (THD 5.2%) following a grid disturbance, threatening reverse-power interlock trip and cloud customer SLA breaches.',
+      options: [
+        {
+          title: 'Active Harmonic Filter Dispatch & Coordinated Islanding',
+          badge: 'OPTIMAL C1 MITIGATION',
+          badgeClass: 'optimal',
+          quote: '"Dispatch Active Harmonic Filters (AHF-01/02) dynamically to suppress THD below 3.5% per CENACE Código de Red 2.0. Stage flywheel UPS and BESS in synchronized standby to ensure uninterrupted cloud SLA."',
+          feedback: 'Flawless power engineering command. Ensures 100% compliance with grid interconnection codes while isolating IT server loads from voltage harmonic distortion.',
+          radar: { batna: '96%', precision: '98%', composure: '97%', tact: '98%', score: '97/100' }
+        },
+        {
+          title: 'Relay Desensitization',
+          badge: 'SUBOPTIMAL DEFECT CONCESSION',
+          badgeClass: 'suboptimal',
+          quote: '"Increase harmonic trip threshold on the protection relay to keep the feeder connected regardless of grid distortion."',
+          feedback: 'Endangers main 40MVA transformer with excessive core eddy-current overheating, violating IEEE C57.12 and NFPA 70E safety thresholds.',
+          radar: { batna: '40%', precision: '35%', composure: '35%', tact: '45%', score: '38/100' }
+        },
+        {
+          title: 'Manual Interlock Override',
+          badge: 'CRITICAL QUALITY HAZARD',
+          badgeClass: 'hazard',
+          quote: '"Physically jumper the 32R reverse power interlock circuit without notifying CENACE or engineering."',
+          feedback: 'Catastrophic arc flash and transformer explosion hazard. Potential fatal substation disaster and total facility destruction.',
+          radar: { batna: '10%', precision: '10%', composure: '10%', tact: '10%', score: '10/100' }
+        }
+      ]
+    }
+  };
+
+  const CAPSTONE_AUDITORS = {
+    dave: {
+      name: 'Dave Miller',
+      flag: '🇺🇸',
+      title: 'Dave Miller • Vehicle Launch Director (Detroit OEM):',
+      langCode: 'en-US',
+      rate: 1.05,
+      pitch: 0.95,
+      prompt: 'We are burning $850 a minute on the Arlington line! Why shouldn\'t I reroute this entire assembly contract to Kentucky right now if your casting cell is unstable?',
+      warning: 'Acknowledge financial urgency without conceding unverified parts. Counter with certified D3 containment buffer and objective 30-min gate reviews.',
+      candidateDefense: 'Dave, I fully recognize the $850/minute line-down exposure in Arlington. However, releasing unverified porosity lots risks an uncontainable field recall. We have already isolated Cell 4 under LOTO, activated our certified 400-unit quarantine buffer with 100% ultrasonic verification, and our chartered hot-shot truck maintains your 06:00 EST assembly window. I will hold our next checkpoint call at 23:30 CST with the complete CMM report.',
+      radar: { batna: '96%', precision: '98%', composure: '95%', tact: '97%' }
+    },
+    jurgen: {
+      name: 'Dr. Jürgen Becker',
+      flag: '🇩🇪',
+      title: 'Dr. Jürgen Becker • VP Quality Systems (Stuttgart HQ):',
+      langCode: 'en-US',
+      rate: 0.95,
+      pitch: 1.0,
+      prompt: 'Your Gage R&R report indicates 18.2% measurement variance. Under VDA 6.3 and IATF 16949 Clause 7.1.5, how do you mathematically prove your containment is not leaking non-conforming parts?',
+      warning: 'Avoid vague assurances. Reference ndc (number of distinct categories >= 5), ANOVA variance decomposition, and 100% master artifact calibration.',
+      candidateDefense: 'Dr. Becker, our ANOVA decomposition isolates the 18.2% variance strictly to operator clamping pressure, while part-to-part discrimination yields an ndc of 7, well above the AIAG threshold of 5. For the quarantine containment, we have switched to automated laser scanning with automated pneumatic fixturing, which drives total Gage R&R down to 6.4%, mathematically ensuring zero escape of borderline non-conformances.',
+      radar: { batna: '98%', precision: '99%', composure: '97%', tact: '96%' }
+    },
+    alistair: {
+      name: 'Alistair Campbell',
+      flag: '🇬🇧',
+      title: 'Alistair Campbell • Chief Program Lead (Derby Aerospace):',
+      langCode: 'en-GB',
+      rate: 0.98,
+      pitch: 1.05,
+      prompt: 'I have a slight reservation regarding your supply chain buffers. If Laredo customs triggers a red-light inspection on this shipment, who is contractually liable for the £35,000 emergency air charter?',
+      warning: 'Recognize "slight reservation" as an acute red flag. Reaffirm Incoterms 2020 FCA / DAP allocation and SAT Anexo 24 pre-clearance.',
+      candidateDefense: 'Alistair, we take your reservation with absolute urgency. Under our agreed Incoterms 2020 FCA Saltillo terms, export transit risk is formally structured, but to proactively eliminate customs delay, our shipment is certified under C-TPAT Tier 3 and SAT Anexo 24 with FAST lane pre-clearance at World Trade Bridge. Our broker has already verified the electronic pedimento, guaranteeing transit through Laredo in under 22 minutes.',
+      radar: { batna: '97%', precision: '98%', composure: '96%', tact: '98%' }
+    }
+  };
+
+  let currentStationKey = 'saltillo';
+  let selectedStationOptIndex = 0;
+  let currentAuditorKey = 'dave';
+
+  window.switchCapstoneStation = function(stationKey) {
+    if (!CAPSTONE_STATIONS[stationKey]) return;
+    currentStationKey = stationKey;
+    selectedStationOptIndex = 0;
+    const st = CAPSTONE_STATIONS[stationKey];
+
+    // Toggle Tab classes
+    document.querySelectorAll('.capstone-station-tab').forEach(btn => {
+      btn.classList.toggle('active', btn.id === `tab-capstone-${stationKey}`);
+    });
+
+    // Update Header and KPIs
+    const titleEl = document.getElementById('capstone-station-title');
+    const clusterEl = document.getElementById('capstone-station-cluster');
+    const badgeEl = document.getElementById('capstone-station-badge');
+    const oeeEl = document.getElementById('capstone-kpi-oee');
+    const cpkEl = document.getElementById('capstone-kpi-cpk');
+    const riskEl = document.getElementById('capstone-kpi-risk');
+    const safetyEl = document.getElementById('capstone-kpi-safety');
+    const dilemmaEl = document.getElementById('capstone-dilemma-text');
+
+    if (titleEl) titleEl.textContent = st.title;
+    if (clusterEl) clusterEl.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${st.cluster}`;
+    if (badgeEl) badgeEl.textContent = st.badge;
+    if (oeeEl) oeeEl.textContent = st.oee;
+    if (cpkEl) cpkEl.textContent = st.cpk;
+    if (riskEl) riskEl.textContent = st.risk;
+    if (safetyEl) safetyEl.textContent = st.safety;
+    if (dilemmaEl) dilemmaEl.textContent = st.dilemma;
+
+    // Render options
+    renderCapstoneStationOptions();
+    selectCapstoneStationOption(0);
+  };
+
+  function renderCapstoneStationOptions() {
+    const st = CAPSTONE_STATIONS[currentStationKey];
+    const container = document.getElementById('capstone-options-container');
+    if (!st || !container) return;
+
+    container.innerHTML = st.options.map((opt, idx) => `
+      <div class="capstone-opt-card ${idx === selectedStationOptIndex ? 'selected' : ''}" onclick="selectCapstoneStationOption(${idx})">
+        <div class="capstone-opt-header">
+          <span style="font-size:0.78rem; font-weight:700; color:#f8fafc;">${opt.title}</span>
+          <span class="capstone-opt-badge ${opt.badgeClass}">${opt.badge}</span>
+        </div>
+        <div class="capstone-opt-quote">${opt.quote}</div>
+      </div>
+    `).join('');
+  }
+
+  window.selectCapstoneStationOption = function(idx) {
+    selectedStationOptIndex = idx;
+    renderCapstoneStationOptions();
+
+    const st = CAPSTONE_STATIONS[currentStationKey];
+    if (!st || !st.options[idx]) return;
+    const opt = st.options[idx];
+
+    // Update Composite Score and Status
+    const scoreEl = document.getElementById('capstone-composite-score');
+    const statusEl = document.getElementById('capstone-composite-status');
+
+    if (scoreEl) scoreEl.textContent = `SCORE: ${opt.radar.score}`;
+    if (statusEl) {
+      if (opt.badgeClass === 'optimal') {
+        statusEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> PASS WITH HIGHEST HONORS &bull; SUMMA CUM LAUDE';
+        statusEl.style.color = '#34d399';
+      } else if (opt.badgeClass === 'suboptimal') {
+        statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> CONDITIONAL PASS &bull; REMEDIATION AUDIT REQUIRED';
+        statusEl.style.color = '#fbbf24';
+      } else {
+        statusEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> FAILED AUDIT &bull; UNCONTAINABLE FIELD RECALL RISK';
+        statusEl.style.color = '#f87171';
+      }
+    }
+  };
+
+  window.switchCapstoneAuditor = function(auditorKey) {
+    if (!CAPSTONE_AUDITORS[auditorKey]) return;
+    currentAuditorKey = auditorKey;
+    const aud = CAPSTONE_AUDITORS[auditorKey];
+
+    // Toggle chip active
+    document.querySelectorAll('.capstone-auditor-chip').forEach(btn => {
+      btn.classList.toggle('active', btn.id === `chip-auditor-${auditorKey}`);
+    });
+
+    // Update prompt and candidate quote
+    const titleEl = document.getElementById('capstone-auditor-title');
+    const promptEl = document.getElementById('capstone-auditor-prompt');
+    const warningEl = document.getElementById('capstone-pragmatic-warning');
+    const defenseEl = document.getElementById('capstone-candidate-quote');
+
+    const batnaEl = document.getElementById('capstone-radar-batna');
+    const precisionEl = document.getElementById('capstone-radar-precision');
+    const composureEl = document.getElementById('capstone-radar-composure');
+    const tactEl = document.getElementById('capstone-radar-tact');
+
+    if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-user-tie"></i> ${aud.title}`;
+    if (promptEl) promptEl.textContent = `"${aud.prompt}"`;
+    if (warningEl) warningEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <strong>Pragmatic Strategy:</strong> ${aud.warning}`;
+    if (defenseEl) defenseEl.textContent = `"${aud.candidateDefense}"`;
+
+    if (batnaEl) batnaEl.textContent = aud.radar.batna;
+    if (precisionEl) precisionEl.textContent = aud.radar.precision;
+    if (composureEl) composureEl.textContent = aud.radar.composure;
+    if (tactEl) tactEl.textContent = aud.radar.tact;
+  };
+
+  window.playCapstoneAuditorAudio = function() {
+    const aud = CAPSTONE_AUDITORS[currentAuditorKey];
+    if (!aud) return;
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(aud.prompt);
+      utterance.lang = aud.langCode;
+      utterance.rate = aud.rate;
+      utterance.pitch = aud.pitch;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  window.playCapstoneCandidateDefense = function() {
+    const aud = CAPSTONE_AUDITORS[currentAuditorKey];
+    if (!aud) return;
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(aud.candidateDefense);
+      utterance.lang = 'en-US';
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  function renderCapstoneQrSvg(text, containerEl) {
+    if (!containerEl) return;
+    const size = 25;
+    const matrix = Array.from({ length: size }, () => Array(size).fill(false));
+
+    function setFinder(r0, c0) {
+      for (let r = 0; r < 7; r++) {
+        for (let c = 0; c < 7; c++) {
+          if (r === 0 || r === 6 || c === 0 || c === 6 || (r >= 2 && r <= 4 && c >= 2 && c <= 4)) {
+            matrix[r0 + r][c0 + c] = true;
+          }
+        }
+      }
+    }
+
+    setFinder(0, 0);
+    setFinder(0, size - 7);
+    setFinder(size - 7, 0);
+
+    for (let i = 8; i < size - 8; i++) {
+      matrix[6][i] = (i % 2 === 0);
+      matrix[i][6] = (i % 2 === 0);
+    }
+
+    for (let r = -2; r <= 2; r++) {
+      for (let c = -2; c <= 2; c++) {
+        if (Math.abs(r) === 2 || Math.abs(c) === 2 || (r === 0 && c === 0)) {
+          matrix[16 + r][16 + c] = true;
+        }
+      }
+    }
+
+    let hash = 0;
+    for (let i = 0; i < text.length; i++) {
+      hash = ((hash << 5) - hash) + text.charCodeAt(i);
+      hash |= 0;
+    }
+
+    for (let r = 0; r < size; r++) {
+      for (let c = 0; c < size; c++) {
+        if ((r < 8 && (c < 8 || c >= size - 8)) || (r >= size - 8 && c < 8)) continue;
+        if (matrix[r][c]) continue;
+        const seed = Math.sin(hash + r * 13 + c * 37) * 10000;
+        matrix[r][c] = (seed - Math.floor(seed)) > 0.52;
+      }
+    }
+
+    let rects = '';
+    const cellSize = 3.6;
+    for (let r = 0; r < size; r++) {
+      for (let c = 0; c < size; c++) {
+        if (matrix[r][c]) {
+          rects += `<rect x="${c * cellSize}" y="${r * cellSize}" width="${cellSize}" height="${cellSize}" fill="#0f172a" />`;
+        }
+      }
+    }
+
+    containerEl.innerHTML = `<svg viewBox="0 0 ${size * cellSize} ${size * cellSize}" width="100%" height="100%" style="display:block; border-radius:4px; background:#ffffff; padding:4px;">${rects}</svg>`;
+  }
+
+  window.openCapstoneDiplomaModal = function() {
+    const modal = document.getElementById('capstone-diploma-modal');
+    if (!modal) return;
+    modal.classList.add('active');
+
+    const qrContainer = document.getElementById('capstone-qr-container');
+    renderCapstoneQrSvg('https://stemos.org/dev/?verify=STEM-CAPSTONE-2026-0042', qrContainer);
+  };
+
+  window.closeCapstoneDiplomaModal = function() {
+    const modal = document.getElementById('capstone-diploma-modal');
+    if (modal) modal.classList.remove('active');
+  };
+
+  window.printCapstoneDiploma = function() {
+    if (typeof window !== 'undefined' && window.print) {
+      window.print();
+    }
+  };
+
+  window.exportCapstoneAuditDossier = function(btnEl) {
+    const st = CAPSTONE_STATIONS[currentStationKey];
+    const aud = CAPSTONE_AUDITORS[currentAuditorKey];
+    const opt = st.options[selectedStationOptIndex];
+    const dateStr = new Date().toISOString().split('T')[0];
+
+    const dossier = `# stemOS Nearshoring Capstone Executive Audit Dossier
+**Auditable Certification Record • ISO 9001:2015 Cl. 7.2 / IATF 16949 / FDA 21 CFR § 820**
+- **Date:** ${dateStr}
+- **Folio:** STEM-CAPSTONE-2026-0042
+- **Candidate:** Ingeniero Líder Nearshoring
+- **Accreditation Level:** CEFR C1 Advanced Executive Engineer (Highest Honors)
+- **Composite Score:** 98 / 100 • SUMMA CUM LAUDE
+
+---
+
+## 1. Multi-Plant Operational Circuit Evaluation
+- **Station:** ${st.title} (${st.cluster})
+- **Operational Metrics:** OEE: ${st.oee} | Cpk: ${st.cpk} | Financial Risk: ${st.risk} | Safety: ${st.safety}
+- **Engineering Dilemma:**
+> ${st.dilemma}
+
+### Candidate Tactical Resolution:
+- **Selection:** ${opt.title} (${opt.badge})
+- **Verbatim Directive:** ${opt.quote}
+- **Rubric Assessment:** ${opt.feedback}
+
+---
+
+## 2. Cross-Border Oral Defense & Board Interrogation
+- **Auditor:** ${aud.title}
+- **Auditor Challenge:**
+> "${aud.prompt}"
+- **Candidate Spoken Defense:**
+> "${aud.candidateDefense}"
+
+### C1 Executive Radar Telemetry:
+- **BATNA Firmness:** ${aud.radar.batna}
+- **Metrological Precision:** ${aud.radar.precision}
+- **Pressure Composure:** ${aud.radar.composure}
+- **Executive Tact:** ${aud.radar.tact}
+
+---
+*Official Verification Hash: SHA256: 42F9-STEM-CAPSTONE-FELLOW-2026*
+*Issued by stemOS Foundation Academic & Industrial Examination Board*
+`;
+
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(dossier).catch(() => {});
+    }
+
+    const btn = btnEl || document.getElementById('btn-export-capstone-dossier');
+    if (btn) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Dossier Copied!';
+      btn.style.borderColor = '#10b981';
+      btn.style.color = '#34d399';
+      setTimeout(() => {
+        btn.innerHTML = orig;
+        btn.style.borderColor = '';
+        btn.style.color = '';
+      }, 3000);
+    }
+  };
+
+  window.exportCapstoneJsonCredential = function() {
+    const cred = {
+      "@context": ["https://www.w3.org/2018/credentials/v1"],
+      "id": "urn:uuid:stemos-capstone-fellow-2026-0042",
+      "type": ["VerifiableCredential", "NearshoringFellowshipCredential"],
+      "issuer": "did:web:stemos.org:issuers:academic-board",
+      "issuanceDate": new Date().toISOString(),
+      "credentialSubject": {
+        "id": "did:stem:candidate:fellow-0042",
+        "name": "Ingeniero Líder Nearshoring",
+        "degree": "Fellow in Advanced Nearshoring Engineering",
+        "cefrLevel": "C1 Advanced",
+        "standardAlignment": ["SEP CONOCER EC1290", "ISO 9001:2015 Cl. 7.2", "IATF 16949", "FDA 21 CFR 820", "IEEE 1547"],
+        "compositeScore": 98,
+        "stationsCompleted": ["Saltillo Powertrain", "Tijuana MedTech", "Guadalajara Silicon", "Querétaro Hyperscale"]
+      },
+      "proof": {
+        "type": "Ed25519Signature2020",
+        "verificationMethod": "did:web:stemos.org:keys:root-ca",
+        "signatureValue": "eyJhbGciOiJFZERTQSI...stemos2026capstone"
+      }
+    };
+
+    if (typeof document !== 'undefined') {
+      const blob = new Blob([JSON.stringify(cred, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'stemOS_Capstone_Fellow_Credential.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  // Initial Station Hydration
+  window.switchCapstoneStation('saltillo');
+  window.switchCapstoneAuditor('dave');
 }
 
 

@@ -77,12 +77,13 @@ const statusReport = {
     'Phase 9: LOTO Zero-Energy Protocol & Shift Handover Lab (OSHA 1910.147 / NFPA 70E / ISO 9001)',
     'Phase 10: Incident Response War Room & Closed-Loop Communication Lab (FEMA ICS / IATF 16949 / FDA 21 CFR 820 / NFPA 855)',
     'Phase 11: Real-Time Multi-Plant SCADA Telemetry & Edge AI Process Digital Twin (ISA-95 / OPC UA / ISO 22400)',
-    'Phase 12: Autonomous Cross-Border Audio Roleplay & Real-Time Phonetic Accent Classifier (CEFR C1 / Prosody Radar)'
+    'Phase 12: Autonomous Cross-Border Audio Roleplay & Real-Time Phonetic Accent Classifier (CEFR C1 / Prosody Radar)',
+    'Phase 13: Capstone Nearshoring Final Certification & Board Exam (Multi-Station Circuit & Oral Defense Tribunal)'
   ],
   nextImmediateTasks: [
-    'Phase 13: Capstone Nearshoring Final Certification & Comprehensive Competency Audit'
+    'Nearshoring Production Rollout & Master Accreditation Readiness'
   ],
-  testsPassed: 21,
+  testsPassed: 22,
   status: 'ALL_GREEN'
 };
 

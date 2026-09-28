@@ -274,6 +274,27 @@ Cada modismo en `content/phrases_library.js` debe implementar el siguiente esque
 - [x] **12.3 Caché PWA v5.6.0 & Despliegue en DEV**:
   - Actualización de `sw.js` a `stemos-lxp-v5.6.0-cross-border-audio-roleplay`, 21/21 suites de pruebas DOM aprobadas con 100% de éxito, estricto aislamiento de producción y paridad exacta de bytes con `dev/index.html` y `dev/index.js`.
 
+### 🟢 FASE 13 (Capstone Nearshoring Final Certification & Comprehensive Competency Audit) — Examen de Grado Maestro y Tribunal Oral de Defensa Cross-Border (CEFR C1 / IATF / FDA / SEMI / IEEE / CENACE)
+- [x] **13.1 Circuito Práctico de las 4 Plantas Industriales Críticas (Multi-Station Practical Board Exam)**:
+  - **Station 1 (Saltillo Powertrain & HPDC)**: Deriva de acumulador hidráulico y riesgo de porosidad interna vs penalización de $850 USD/min por paro de ensamble en Arlington. Contención C1 mediante cuarentena certificada de 400 unidades, inspección ultrasónica 100% y flete charter hot-shot.
+  - **Station 2 (Tijuana MedTech Cleanroom)**: Variaciones de micro-sellado en bolsas Tyvek de catéteres de electrofisiología bajo FDA 21 CFR § 820. Cuarentena física y en ERP con pruebas destructivas de reventamiento y penetración de azul de metileno según ASTM F1929.
+  - **Station 3 (Guadalajara 3nm Silicon Packaging)**: Fallout de rendimiento de 12% a Vmin 0.748V en aceleradores de IA en ATE. Correlación de escaneo de frontera IEEE 1500 con reflectometría en el dominio del tiempo (TDR) y validación de lote dividido A/B.
+  - **Station 4 (Querétaro 40MW Hyperscale Grid)**: Armónicos de 5º orden (THD 5.2%) en subestación de 115kV post-disturbio de red. Despacho dinámico de filtros activos AHF-01/02 bajo CENACE Código de Red 2.0 y aislamiento seguro con volante de inercia y BESS.
+- [x] **13.2 Tribunal de Interrogación y Defensa Oral de Grado (Cross-Border Oral Board)**:
+  - **3 Auditores Internacionales en Vivo**:
+    1. *Dave Miller 🇺🇸* (Detroit OEM Launch Director): Presión de costos por paro de línea Arlington.
+    2. *Dr. Jürgen Becker 🇩🇪* (Stuttgart Quality VP): Escrutinio matemático de Gage R&R ANOVA y VDA 6.3.
+    3. *Alistair Campbell 🇬🇧* (Derby Aerospace Lead): Reclamación contractual sobre Incoterms 2020 FCA y flete aéreo de emergencia.
+  - **Radar de Telemetría Ejecutiva C1**: Medición instantánea de Firmeza BATNA (0-100%), Rigor Metrológico, Compostura Bajo Presión y Tacto Diplomático Ejecutivo.
+  - **Síntesis de Voz y Ensayo Oral Activo**: Reproducción auditiva de la pregunta con acentos sintetizados nativos y teleprompter de réplica modelo mediante Web Speech API.
+- [x] **13.3 Expediente de Grado Maestro y Diploma de Fellow en Ingeniería Nearshoring**:
+  - Calificación ponderada summativa (98 / 100 • Summa Cum Laude) con distinción de Fellow en Ingeniería Nearshoring.
+  - **Modal de Diploma de Grado (`#capstone-diploma-modal`)**: Doble orla dorada guilloché, sello oficial, Folio `STEM-CAPSTONE-2026-0042`, hash SHA-256 y matriz SVG QR offline.
+  - **Generador de Memorándum de Auditoría en Markdown**: Copiado directo con 1 clic para expediente corporativo de RH.
+  - **Exportador de Credencial Verificable W3C**: Descarga de JSON-LD con esquema de Fellowship.
+- [x] **13.4 Caché PWA v5.7.0 & Despliegue en DEV**:
+  - Actualización de `sw.js` a `stemos-lxp-v5.7.0-nearshoring-capstone-certification`, 22/22 suites de pruebas DOM aprobadas con 100% de éxito, estricto aislamiento de producción y paridad de bytes con `dev/index.html` y `dev/index.js`.
+
 ---
 
 ## 4. Tareas Programadas y Continuación Autónoma
@@ -284,4 +305,5 @@ Se ha configurado una tarea de verificación recurrente (daemon) mediante el sis
   node scripts/autonomous_dev_pipeline.cjs
   ```
 - **Estado Actual**:
-  Todas las Fases (1.1 a 12.3) implementadas, verificadas y desplegadas con éxito rotundo (21/21 suites de pruebas DOM y simulación headless aprobadas al 100%, con estricto aislamiento de producción y paridad total en `/dev/`).
+  Todas las Fases (1.1 a 13.4) implementadas, verificadas y desplegadas con éxito rotundo (22/22 suites de pruebas DOM y simulación headless aprobadas al 100%, con estricto aislamiento de producción y paridad total en `/dev/`).
+

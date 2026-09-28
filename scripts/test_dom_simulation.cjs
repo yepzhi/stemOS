@@ -1571,7 +1571,160 @@ if (!rpSpeakerName.textContent.includes('Dave Miller')) {
 }
 console.log("PASS: 4 Cross-border audio roleplay personas, dialects, and prompts verified.");
 
-console.log("\n🎉 ALL 21 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+// ── TEST 22: Capstone Nearshoring Final Certification & Comprehensive Competency Audit (Phase 13) ──
+console.log("\n── TEST 22: Capstone Nearshoring Final Certification & Board Exam (Phase 13) ──");
+const capstoneSection = document.getElementById('capstone-defense-section');
+const capstoneNavBtn = document.getElementById('nav-btn-capstone');
+const capstoneHeroBtn = document.getElementById('hero-capstone-btn');
+
+console.log("Capstone Section presence:", !!capstoneSection);
+console.log("Nav button presence:", !!capstoneNavBtn);
+console.log("Hero button presence:", !!capstoneHeroBtn);
+
+if (!capstoneSection || !capstoneNavBtn || !capstoneHeroBtn) {
+  console.error("FAIL: Capstone section or access buttons missing in DOM!");
+  process.exit(1);
+}
+
+// 22.1 Initial Station Hydration (Saltillo)
+const capStationTitle = document.getElementById('capstone-station-title');
+const capKpiOee = document.getElementById('capstone-kpi-oee');
+const capKpiCpk = document.getElementById('capstone-kpi-cpk');
+const capDilemmaText = document.getElementById('capstone-dilemma-text');
+const capOptions = document.querySelectorAll('.capstone-opt-card');
+
+console.log("Station Title:", capStationTitle ? capStationTitle.textContent : "null");
+console.log("Station OEE:", capKpiOee ? capKpiOee.textContent : "null");
+console.log("Station Cpk:", capKpiCpk ? capKpiCpk.textContent : "null");
+console.log("Options count:", capOptions.length);
+
+if (!capStationTitle || !capStationTitle.textContent.includes('Saltillo')) {
+  console.error("FAIL: Initial station is not Saltillo!");
+  process.exit(1);
+}
+if (!capDilemmaText || !capDilemmaText.textContent.includes('hydraulic accumulator drift')) {
+  console.error("FAIL: Saltillo dilemma text missing!");
+  process.exit(1);
+}
+if (capOptions.length !== 3) {
+  console.error("FAIL: Expected 3 station response options, found " + capOptions.length);
+  process.exit(1);
+}
+
+// 22.2 Station Option Selection & Rubric Feedback
+window.selectCapstoneStationOption(1); // Select Suboptimal
+const capScoreEl = document.getElementById('capstone-composite-score');
+const capStatusEl = document.getElementById('capstone-composite-status');
+console.log("Suboptimal Score:", capScoreEl ? capScoreEl.textContent : "null");
+if (!capScoreEl || !capScoreEl.textContent.includes('48/100')) {
+  console.error("FAIL: Suboptimal option score mismatch!");
+  process.exit(1);
+}
+if (!capStatusEl || !capStatusEl.textContent.includes('CONDITIONAL PASS')) {
+  console.error("FAIL: Suboptimal status feedback mismatch!");
+  process.exit(1);
+}
+
+window.selectCapstoneStationOption(0); // Select Optimal
+console.log("Optimal Score:", capScoreEl ? capScoreEl.textContent : "null");
+if (!capScoreEl || !capScoreEl.textContent.includes('98/100') || !capStatusEl.textContent.includes('SUMMA CUM LAUDE')) {
+  console.error("FAIL: Optimal option score mismatch!");
+  process.exit(1);
+}
+console.log("PASS: Station options selection, score calculations, and status feedback verified.");
+
+// 22.3 Station Circuit Switching across all 4 Plants
+window.switchCapstoneStation('tijuana');
+if (!capStationTitle.textContent.includes('Tijuana') || !capKpiCpk.textContent.includes('1.92')) {
+  console.error("FAIL: Failed to switch to Tijuana station!");
+  process.exit(1);
+}
+
+window.switchCapstoneStation('guadalajara');
+if (!capStationTitle.textContent.includes('Guadalajara') || !capKpiOee.textContent.includes('88.7%')) {
+  console.error("FAIL: Failed to switch to Guadalajara station!");
+  process.exit(1);
+}
+
+window.switchCapstoneStation('queretaro');
+if (!capStationTitle.textContent.includes('Querétaro') || !capKpiCpk.textContent.includes('2.10')) {
+  console.error("FAIL: Failed to switch to Querétaro station!");
+  process.exit(1);
+}
+
+// Revert to Saltillo
+window.switchCapstoneStation('saltillo');
+console.log("PASS: 4 Nearshoring industrial hub stations hydrated and verified successfully.");
+
+// 22.4 Oral Defense Tribunal Interrogation Switching & Web Speech Execution
+const capAuditorTitle = document.getElementById('capstone-auditor-title');
+const capAuditorPrompt = document.getElementById('capstone-auditor-prompt');
+const capCandidateQuote = document.getElementById('capstone-candidate-quote');
+const capRadarBatna = document.getElementById('capstone-radar-batna');
+
+console.log("Initial Auditor:", capAuditorTitle ? capAuditorTitle.textContent : "null");
+if (!capAuditorTitle || !capAuditorTitle.textContent.includes('Dave Miller')) {
+  console.error("FAIL: Dave Miller initial auditor missing!");
+  process.exit(1);
+}
+
+// Switch to Dr. Jürgen Becker
+window.switchCapstoneAuditor('jurgen');
+if (!capAuditorTitle.textContent.includes('Dr. Jürgen Becker') || !capAuditorPrompt.textContent.includes('Gage R&R')) {
+  console.error("FAIL: Failed to switch to Dr. Jürgen Becker!");
+  process.exit(1);
+}
+
+// Switch to Alistair Campbell
+window.switchCapstoneAuditor('alistair');
+if (!capAuditorTitle.textContent.includes('Alistair Campbell') || !capAuditorPrompt.textContent.includes('slight reservation')) {
+  console.error("FAIL: Failed to switch to Alistair Campbell!");
+  process.exit(1);
+}
+
+// Audio playback calls
+window.playCapstoneAuditorAudio();
+window.playCapstoneCandidateDefense();
+console.log("PASS: Cross-Border Oral Board interrogation and speech synthesis verified.");
+
+// 22.5 Audit Dossier Generation & Clipboard
+window.exportCapstoneAuditDossier();
+const capDossierBtn = document.getElementById('btn-export-capstone-dossier');
+console.log("Dossier Button state:", capDossierBtn ? capDossierBtn.textContent : "null");
+if (!capDossierBtn || !capDossierBtn.textContent.includes('Copied')) {
+  console.error("FAIL: Audit Dossier copy status not set!");
+  process.exit(1);
+}
+
+// 22.6 JSON Credential Export
+window.exportCapstoneJsonCredential();
+
+// 22.7 Master Diploma Modal & QR Code Generation
+window.openCapstoneDiplomaModal();
+const capDiplomaModal = document.getElementById('capstone-diploma-modal');
+const capQrContainer = document.getElementById('capstone-qr-container');
+console.log("Diploma Modal active:", capDiplomaModal && capDiplomaModal.classList.contains('active'));
+console.log("QR SVG injected:", !!capQrContainer.querySelector('svg'));
+
+if (!capDiplomaModal || !capDiplomaModal.classList.contains('active')) {
+  console.error("FAIL: Capstone diploma modal failed to activate!");
+  process.exit(1);
+}
+if (!capQrContainer || !capQrContainer.querySelector('svg')) {
+  console.error("FAIL: Capstone SVG QR code not rendered!");
+  process.exit(1);
+}
+
+window.printCapstoneDiploma();
+window.closeCapstoneDiplomaModal();
+console.log("Diploma Modal closed:", !capDiplomaModal.classList.contains('active'));
+if (capDiplomaModal.classList.contains('active')) {
+  console.error("FAIL: Capstone diploma modal failed to close!");
+  process.exit(1);
+}
+console.log("PASS: Master Capstone Diploma modal, SVG QR generator, and export workflows verified.");
+
+console.log("\n🎉 ALL 22 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
 
 
 

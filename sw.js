@@ -1,9 +1,9 @@
 /**
- * stemOS Dev Content Studio — PWA Service Worker (v5.6.0 Cross-Border Audio Roleplay & Phonetic Classifier)
- * Enables 100% complete offline caching for 34 tracks, 266 readings, 162 idioms, STEMBot Copilot, Auditable Certificates, Cloud Sync, Blueprint Lab, LOTO Zero-Energy Lab, Incident War Room, SCADA Digital Twin Lab, and Cross-Border Audio Roleplay Lab.
+ * stemOS Dev Content Studio — PWA Service Worker (v5.7.0 Nearshoring Capstone Final Certification)
+ * Enables 100% complete offline caching for 34 tracks, 266 readings, 162 idioms, STEMBot Copilot, Auditable Certificates, Cloud Sync, Blueprint Lab, LOTO Zero-Energy Lab, Incident War Room, SCADA Digital Twin Lab, Cross-Border Audio Roleplay Lab, and Capstone Board Exam.
  */
 
-const CACHE_NAME = 'stemos-lxp-v5.6.0-cross-border-audio-roleplay';
+const CACHE_NAME = 'stemos-lxp-v5.7.0-nearshoring-capstone-certification';
 
 const ASSETS_TO_CACHE = [
   '/',
