@@ -344,6 +344,24 @@ function initStudio() {
   setupCrossBorderAudioRoleplayLab(tracks);
   setupCapstoneBoardExam(tracks);
   setupStudentRegistrationAndCareerPath(tracks);
+
+  // Guarantee clean startup: all modals hidden
+  const allModalsToHide = [
+    'cert-modal-overlay',
+    'stemos-certificate-modal',
+    'stemos-verification-modal',
+    'stemos-cloud-sync-modal',
+    'exam-modal-overlay',
+    'capstone-diploma-modal',
+    'student-registration-modal'
+  ];
+  allModalsToHide.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.classList.remove('active');
+      el.style.display = 'none';
+    }
+  });
 }
 
 function setupLevelSwitcher(tracks, phrases) {
@@ -2989,9 +3007,15 @@ function setupExamModalListeners(tracks) {
   const certCloseBtn = document.getElementById('btn-close-cert-modal');
   const certOverlay = document.getElementById('cert-modal-overlay');
   if (certCloseBtn && certOverlay) {
-    certCloseBtn.addEventListener('click', () => certOverlay.classList.remove('active'));
+    certCloseBtn.addEventListener('click', () => {
+      certOverlay.classList.remove('active');
+      certOverlay.style.display = 'none';
+    });
     certOverlay.addEventListener('click', (e) => {
-      if (e.target === certOverlay) certOverlay.classList.remove('active');
+      if (e.target === certOverlay) {
+        certOverlay.classList.remove('active');
+        certOverlay.style.display = 'none';
+      }
     });
   }
 }
@@ -3176,11 +3200,15 @@ function launchOpenBadgeModal(trackId, tracks) {
   // Wire Close button
   const closeBtn = document.getElementById('btn-close-cert-modal');
   if (closeBtn && certModal) {
-    closeBtn.onclick = () => certModal.classList.remove('active');
+    closeBtn.onclick = () => {
+      certModal.classList.remove('active');
+      certModal.style.display = 'none';
+    };
   }
 
   if (certModal) {
     certModal.classList.add('active');
+    certModal.style.display = 'flex';
   }
 }
 
@@ -10384,6 +10412,7 @@ function setupCapstoneBoardExam(tracks) {
     const modal = document.getElementById('capstone-diploma-modal');
     if (!modal) return;
     modal.classList.add('active');
+    modal.style.display = 'flex';
 
     const qrContainer = document.getElementById('capstone-qr-container');
     renderCapstoneQrSvg('https://stemos.org/dev/?verify=STEM-CAPSTONE-2026-0042', qrContainer);
@@ -10391,7 +10420,10 @@ function setupCapstoneBoardExam(tracks) {
 
   window.closeCapstoneDiplomaModal = function() {
     const modal = document.getElementById('capstone-diploma-modal');
-    if (modal) modal.classList.remove('active');
+    if (modal) {
+      modal.classList.remove('active');
+      modal.style.display = 'none';
+    }
   };
 
   window.printCapstoneDiploma = function() {
@@ -11312,12 +11344,16 @@ ${p.milestones.map(m => `
   window.openStudentRegistrationModal = function() {
     if (regModal) {
       regModal.classList.add('active');
+      regModal.style.display = 'flex';
       window.goToRegStep(1);
     }
   };
 
   window.closeStudentRegistrationModal = function() {
-    if (regModal) regModal.classList.remove('active');
+    if (regModal) {
+      regModal.classList.remove('active');
+      regModal.style.display = 'none';
+    }
   };
 
   // Event Listeners

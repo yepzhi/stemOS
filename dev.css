@@ -9864,9 +9864,13 @@ body.supaste-theme {
   backdrop-filter: blur(18px);
   padding: 24px 16px;
   overflow-y: auto;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
+}
+
+.cert-modal-overlay.active {
+  display: flex;
 }
 
 .cert-modal-dialog {
