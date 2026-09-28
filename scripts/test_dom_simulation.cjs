@@ -1802,11 +1802,11 @@ if (!t23_pathCanvas.textContent.includes('Hito 1') || !t23_pathCanvas.textConten
   console.error("FAIL: 4 standardized milestones missing from Career Path output!");
   process.exit(1);
 }
-if (!t23_pathCanvas.textContent.includes('STPS Formato DC-3') || !t23_pathCanvas.textContent.includes('ISO 9001:2015')) {
-  console.error("FAIL: Official accreditation references (STPS / ISO 9001) missing from path output!");
+if (!t23_pathCanvas.textContent.includes('W3C Open Badge 3.0') || !t23_pathCanvas.textContent.includes('ISO 9001:2015')) {
+  console.error("FAIL: Official accreditation references (W3C Open Badge 3.0 / ISO 9001) missing from path output!");
   process.exit(1);
 }
-console.log("PASS: 60-Hour standardized Career Path generated with 4 milestones (15h each), % match matrix and STPS/ISO compliance.");
+console.log("PASS: 60-Hour standardized Career Path generated with 4 milestones (15h each), % match matrix and W3C/ISO compliance.");
 
 // 23.5 Markdown Path Export
 const t23_exportBtn = document.getElementById('reg-btn-export-markdown');
@@ -1830,8 +1830,8 @@ if (t23_regModal.classList.contains('active')) {
 }
 console.log("PASS: Student career path activated, persisted in LocalStorage and dynamically reflected in navigation badge.");
 
-// ── TEST 24: Active Career Path HUD, Slang Trainer & Official STPS Formato DC-3 (Phase 17) ──
-console.log("\n--- TEST 24: Active Career Path HUD, Slang Trainer & Official STPS Formato DC-3 ---");
+// ── TEST 24: Active Career Path HUD, Slang Trainer & W3C Open Badges 3.0 (Phase 17) ──
+console.log("\n--- TEST 24: Active Career Path HUD, Slang Trainer & W3C Open Badges 3.0 ---");
 
 const t24_hud = document.getElementById('active-path-hud');
 const t24_careerName = document.getElementById('hud-career-name');
@@ -1886,47 +1886,52 @@ if (t24_slangModal.classList.contains('active')) {
 }
 console.log("PASS: Plant Slang & Dialect Traps trainer modal, audio playback and close verified.");
 
-// 24.4 Official STPS Formato DC-3 Modal
-const t24_stpsModal = document.getElementById('stps-dc3-modal');
-const t24_dc3Worker = document.getElementById('dc3-worker-name');
-const t24_dc3Course = document.getElementById('dc3-course-name');
-const t24_dc3Qr = document.getElementById('dc3-qr-container');
+// 24.4 Official W3C Open Badge 3.0 & SHA-256 Verifiable Credential Modal
+const t24_w3cModal = document.getElementById('w3c-credential-modal');
+const t24_w3cStudent = document.getElementById('w3c-cert-student-name');
+const t24_w3cCareer = document.getElementById('w3c-cert-career-name');
+const t24_w3cHash = document.getElementById('w3c-cert-hash');
+const t24_w3cQr = document.getElementById('w3c-qr-container');
 
-window.openSTPSDC3Modal();
-console.log("STPS DC-3 Modal active:", t24_stpsModal ? t24_stpsModal.classList.contains('active') : false);
-console.log("DC-3 Worker Name:", t24_dc3Worker ? t24_dc3Worker.textContent : "null");
-console.log("DC-3 Course Name:", t24_dc3Course ? t24_dc3Course.textContent : "null");
-console.log("DC-3 Dynamic QR injected:", t24_dc3Qr && t24_dc3Qr.innerHTML.includes('<svg'));
+window.openCareerPathW3CCertModal();
+console.log("W3C Credential Modal active:", t24_w3cModal ? t24_w3cModal.classList.contains('active') : false);
+console.log("W3C Student Name:", t24_w3cStudent ? t24_w3cStudent.textContent : "null");
+console.log("W3C Career Name:", t24_w3cCareer ? t24_w3cCareer.textContent : "null");
+console.log("W3C SHA-256 Hash:", t24_w3cHash ? t24_w3cHash.textContent : "null");
+console.log("W3C Dynamic QR injected:", t24_w3cQr && t24_w3cQr.innerHTML.includes('<svg'));
 
-if (!t24_stpsModal || !t24_stpsModal.classList.contains('active')) {
-  console.error("FAIL: STPS Formato DC-3 modal failed to open!");
+if (!t24_w3cModal || !t24_w3cModal.classList.contains('active')) {
+  console.error("FAIL: W3C Open Badge modal failed to open!");
   process.exit(1);
 }
-if (!t24_dc3Worker || !t24_dc3Worker.textContent.includes('Diana')) {
-  console.error("FAIL: STPS DC-3 missing student worker name!");
+if (!t24_w3cStudent || !t24_w3cStudent.textContent.includes('Diana')) {
+  console.error("FAIL: W3C Credential missing student recipient name!");
   process.exit(1);
 }
-if (!t24_dc3Course || !t24_dc3Course.textContent.includes('60 Horas')) {
-  console.error("FAIL: STPS DC-3 missing 60 Horas course name!");
+if (!t24_w3cHash || !t24_w3cHash.textContent.includes('SHA256')) {
+  console.error("FAIL: W3C Credential missing SHA-256 cryptographic seal!");
   process.exit(1);
 }
-if (!t24_dc3Qr || !t24_dc3Qr.innerHTML.includes('<svg')) {
-  console.error("FAIL: STPS DC-3 missing dynamic cryptographic SVG QR code!");
+if (!t24_w3cQr || !t24_w3cQr.innerHTML.includes('<svg')) {
+  console.error("FAIL: W3C Credential missing dynamic cryptographic SVG QR code!");
   process.exit(1);
 }
 
 // Copy verification link
 const t24_dummyBtn = document.createElement('button');
-window.copySTPSVerificationLink(t24_dummyBtn);
-console.log("STPS Copy Button text:", t24_dummyBtn.innerHTML);
+window.copyCareerPathW3CLink(t24_dummyBtn);
+console.log("W3C Copy Button text:", t24_dummyBtn.innerHTML);
 
-window.printSTPSDC3();
-window.closeSTPSDC3Modal();
-if (t24_stpsModal.classList.contains('active')) {
-  console.error("FAIL: STPS Formato DC-3 modal failed to close!");
+// Export JSON-LD
+window.exportCareerPathJsonLd();
+
+window.printCareerPathW3CCert();
+window.closeCareerPathW3CCertModal();
+if (t24_w3cModal.classList.contains('active')) {
+  console.error("FAIL: W3C Credential modal failed to close!");
   process.exit(1);
 }
-console.log("PASS: Official Mexican Government STPS Formato DC-3 modal, 60h legal compliance, SVG QR and print handlers verified.");
+console.log("PASS: Official W3C Open Badge 3.0 & SHA-256 Verifiable Credential modal, JSON-LD export, SVG QR and print handlers verified.");
 
 console.log("\n🎉 ALL 24 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
 

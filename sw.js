@@ -1,9 +1,9 @@
 /**
- * stemOS Dev Content Studio — PWA Service Worker (v5.9.0 Path Execution & STPS DC-3)
- * Enables 100% complete offline caching for 34 tracks, 266 readings, 162 idioms, STEMBot Copilot, Auditable Certificates, Cloud Sync, Blueprint Lab, LOTO Zero-Energy Lab, Incident War Room, SCADA Digital Twin Lab, Cross-Border Audio Roleplay Lab, Capstone Board Exam, Student Onboarding Career Path 60h Engine, Active Path HUD, Slang Trainer, and STPS Formato DC-3.
+ * stemOS Dev Content Studio — PWA Service Worker (v5.9.1 W3C Open Badges 3.0 & SHA-256)
+ * Enables 100% complete offline caching for 34 tracks, 266 readings, 162 idioms, STEMBot Copilot, Auditable Certificates, Cloud Sync, Blueprint Lab, LOTO Zero-Energy Lab, Incident War Room, SCADA Digital Twin Lab, Cross-Border Audio Roleplay Lab, Capstone Board Exam, Student Onboarding Career Path 60h Engine, Active Path HUD, Slang Trainer, and W3C Open Badges 3.0 Verifiable Credentials.
  */
 
-const CACHE_NAME = 'stemos-lxp-v5.9.0-path-execution-and-stps-dc3';
+const CACHE_NAME = 'stemos-lxp-v5.9.1-w3c-open-badges-sha256';
 
 const ASSETS_TO_CACHE = [
   '/',

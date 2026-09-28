@@ -364,26 +364,44 @@ Cada modismo en `content/phrases_library.js` debe implementar el siguiente esque
   - Cada Path Especializado tiene una duración fija y estandarizada de **60 horas de formación experiencial comprobable**:
     - Estructurado en 4 Hitos uniformes de **15 horas cada uno** (15h Shopfloor + 15h 8D/SCADA + 15h Negotiation + 15h Capstone Board Exam).
     - Opción de extensión a **120 horas** para el Diplomado Master Fellowship Nearshoring.
-    - Homologación formal con valor curricular ante universidades mexicanas (créditos de libre elección / servicio social / residencias TecNM) y departamentos corporativos de Recursos Humanos bajo **STPS Formato DC-3**, **SEP CONOCER EC1290** e **ISO 9001:2015 Cl. 7.2**.
+    - Homologación formal con valor curricular ante universidades mexicanas y departamentos corporativos de Recursos Humanos bajo **W3C Open Badges 3.0**, **IEEE**, **SEMI** e **ISO 9001:2015 Cl. 7.2**.
 - [x] **16.5 Caché PWA v5.8.0 & Despliegue en DEV**:
   - Actualización de `sw.js` a `stemos-lxp-v5.8.0-career-paths-and-onboarding`, 23/23 suites de pruebas DOM aprobadas con 100% de éxito, estricto aislamiento de producción y paridad exacta de bytes con `dev/index.html` y `dev/index.js`.
 
-### 🟢 FASE 17 (Interactive 60-Hour Career Path Execution, Active Learner HUD & STPS DC-3 Evidence Binder) — Ejecución Interactiva del Path, HUD del Alumno en Vivo y Generador de Constancia Oficial STPS Formato DC-3
+### 🟢 FASE 17 (Interactive 60-Hour Career Path Execution, Active Learner HUD & W3C Open Badges 3.0) — Ejecución Interactiva del Path, HUD del Alumno en Vivo y Acreditación W3C Verifiable Credential con SHA-256
 - [x] **17.1 HUD del Alumno Activo (`#active-path-hud`) & Badges de Afinidad en el Catálogo**:
   - Banner dinámico superior en el estudio cuando el alumno tiene un perfil activo:
-    - Identidad del alumno: nombre, carrera del Catálogo Nacional, semestre, hub industrial y estándar de 60.0 horas.
+    - Identidad del alumno: nombre, carrera del Catálogo Nacional, semestre, hub industrial y estándar de 60.0 horas W3C.
     - Indicador de progreso de los 4 Hitos secuenciales (15h cada uno).
     - Botón de filtro toggle *"Solo Módulos de Mi Path (60h)"* que filtra y resalta en el grid los cursos asignados con un badge de porcentaje de afinidad (`.track-match-pill`, ej. `98% Match`).
 - [x] **17.2 Entrenador Interactivo de Slang Industrial & Modismos Opacos (`#path-slang-trainer`)**:
   - Entrenador de modismos y "frases de la calle del inglés industrial" contextualizado para la carrera del alumno:
     - Tarjetas de práctica auditiva con modismos de piso (ej. *cut corners, in the weeds, drop the hammer, table this, loop in, sanity check*).
     - Desglose de trampa literal vs significado de planta y botón de audio de pronunciación.
-- [x] **17.3 Generador Oficial Imprimible de Constancia STPS Formato DC-3 & Expediente SEP CONOCER**:
-  - Modal y exportador del documento oficial mexicano **Formato DC-3** (*Constancia de Competencias o Habilidades Laborales*):
-    - Requisitos del Artículo 153-V de la Ley Federal del Trabajo: datos del capacitado, ocupación, empresa/institución, nombre del programa oficial (*"Inglés Técnico de Planta Nearshoring para [Carrera] — 60 Horas"*), duración (60 horas), área temática STPS (1000 - Producción y Mantenimiento), folio único y firma del capacitador externo.
-    - Sello QR con verificación digital W3C e impresión en formato oficial de la STPS.
-- [x] **17.4 Caché PWA v5.9.0 & Pipeline 24 Suites**:
-  - Actualización de `sw.js` a `stemos-lxp-v5.9.0-path-execution-and-stps-dc3`, nueva suite TEST 24 en `test_dom_simulation.cjs`, paridad estricta y despliegue a DEV.
+- [x] **17.3 Emisión Oficial de Certificados W3C Open Badges 3.0 & Sello Criptográfico SHA-256**:
+  - Modal y exportador del diploma técnico industrial bajo el estándar global **W3C Verifiable Credentials** y **Open Badges 3.0**:
+    - Exportación de la credencial en formato nativo **JSON-LD** (`application/ld+json`) con firma criptográfica Ed25519 y hash SHA-256.
+    - Impresión de alta fidelidad en hoja de acreditación técnica con sello QR verificable en vivo.
+- [x] **17.4 Caché PWA v5.9.1 & Pipeline 24 Suites**:
+  - Actualización de `sw.js` a `stemos-lxp-v5.9.1-w3c-open-badges-sha256`, 24/24 suites de pruebas DOM aprobadas con 100% de éxito, paridad estricta y despliegue a DEV.
+
+### 🟡 FASE 18 (Stackable Micro-Credentials W3C & Nearshoring Recruiter Portfolio Showcase) — Micro-Credenciales W3C Apilables por Hito (4 × 15h) & Cartera Digital de Evidencias Verificable para Reclutadores
+- [ ] **18.1 Emisión de Micro-Credenciales W3C Apilables por Hito (15 Horas c/u)**:
+  - Generación de insignias digitales individuales apilables (Stackable Open Badges 3.0) conforme el estudiante avanza en cada hito:
+    - *Badge Hito 1 (15h)*: Shopfloor Operations & EHS Zero-Energy Specialist (OSHA 1910.147 / LOTO).
+    - *Badge Hito 2 (15h)*: Root Cause 8D & SCADA Historian Analyst (Statistical Process Control / Gemelo Digital).
+    - *Badge Hito 3 (15h)*: Cross-Border Executive Communicator & Auditor Defense (IATF 16949 / FDA 21 CFR 820).
+    - *Badge Hito 4 (15h)*: Nearshoring Fellowship Capstone Master (Tribunal Summativo de Grado).
+    - Consolidación acumulativa de los 4 badges en la credencial maestra de 60.0h.
+- [ ] **18.2 Panel de Cartera Digital del Alumno (Recruiter Portfolio Showcase)**:
+  - Interfaz visual dentro del HUD del alumno para compartir su expediente de competencias con reclutadores de empresas de nearshoring en México (Monterrey, Saltillo, Tijuana, Cd. Juárez, Querétaro, Guadalajara):
+    - Botón de vinculación directa *"Agregar a mi perfil de LinkedIn"* con metadatos pre-configurados.
+    - Vista de dossier de proyectos y solución de casos reales de planta listos para entrevista laboral.
+- [ ] **18.3 Verificador Criptográfico Público en Tiempo Real (`/dev/?verify=...`)**:
+  - Modal y vista de verificación pública en `/dev/?verify=[hash]` que decodifica y muestra en pantalla la autenticidad de cualquier credencial emitida en stemOS:
+    - Nombre del titular, carrera acreditada, horas cursadas, fecha, emisor y validez de la firma digital SHA-256.
+- [ ] **18.4 Caché PWA v5.10.0 & Suite de Pruebas DOM 25**:
+  - Actualización de Service Worker y suite de pruebas para verificar el apilamiento de badges y la vista pública de verificación.
 
 ---
 
@@ -395,7 +413,8 @@ Se ha configurado una tarea de verificación recurrente (daemon) mediante el sis
   node scripts/autonomous_dev_pipeline.cjs
   ```
 - **Estado Actual**:
-  Todas las Fases (1.1 a 17.4) implementadas, verificadas y desplegadas con éxito rotundo (24/24 suites de pruebas DOM y simulación headless aprobadas al 100%, con estricto aislamiento de producción y paridad total en `/dev/`).
+  Fases 1 a 17 completadas y desplegadas con acreditación W3C Open Badges 3.0 (SHA-256). Fase 18 lista para ejecución (Micro-Credenciales Apilables 4 × 15h, Cartera para Reclutadores y Verificador Público).
+
 
 
 

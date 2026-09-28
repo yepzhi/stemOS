@@ -14124,7 +14124,7 @@ body.supaste-theme {
 }
 
 /* ==========================================================================
-   PHASE 17: ACTIVE CAREER PATH HUD, SLANG TRAINER & STPS FORMATO DC-3
+   PHASE 17: ACTIVE CAREER PATH HUD, SLANG TRAINER & W3C OPEN BADGE 3.0 (SHA-256)
    ========================================================================== */
 
 /* ── 1. Active Career Path HUD Banner ── */
@@ -14435,8 +14435,8 @@ body.supaste-theme {
   margin-top: 6px;
 }
 
-/* ── 3. Official Mexican Government STPS Formato DC-3 Modal & Sheet ── */
-.stps-modal-overlay {
+/* ── 3. W3C Open Badge 3.0 & SHA-256 Verifiable Credential Modal ── */
+.w3c-modal-overlay {
   position: fixed;
   inset: 0;
   z-index: 100000;
@@ -14450,129 +14450,189 @@ body.supaste-theme {
   justify-content: center;
 }
 
-.stps-modal-overlay.active {
+.w3c-modal-overlay.active {
   display: flex;
 }
 
-.stps-modal-dialog {
+.w3c-modal-dialog {
   width: 100%;
   max-width: 900px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+  background: #090e1a;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 16px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(56, 189, 248, 0.15);
   padding: 24px;
+  color: #f8fafc;
+}
+
+.w3c-credential-sheet {
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.w3c-cert-border-outer {
+  border: 3px double #0284c7;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.w3c-cert-border-inner {
+  border: 1px solid #cbd5e1;
+  padding: 24px 20px;
+  border-radius: 4px;
+  background: radial-gradient(circle at center, #ffffff 60%, #f8fafc 100%);
+}
+
+.w3c-org-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.w3c-badge-pill {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #0284c7;
+  background: #e0f2fe;
+  border: 1px solid #7dd3fc;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  letter-spacing: 0.05em;
+}
+
+.w3c-main-title {
+  margin: 10px 0 2px 0;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #0c4a6e;
+  text-align: center;
+  letter-spacing: 0.03em;
+}
+
+.w3c-sub-title {
+  font-size: 0.8rem;
+  color: #0369a1;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.w3c-recipient-block {
+  text-align: center;
+  margin: 16px 0;
+}
+
+.w3c-text-lead {
+  font-size: 0.82rem;
+  color: #475569;
+  margin: 0;
+}
+
+.w3c-recipient-name {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 6px 0 8px 0;
+}
+
+.w3c-text-body {
+  font-size: 0.85rem;
+  color: #334155;
+  margin: 0 0 6px 0;
+}
+
+.w3c-career-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0284c7;
+  margin: 6px 0;
+}
+
+.w3c-standards-text {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 8px 0 0 0;
+}
+
+.w3c-milestones-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.w3c-m-badge {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 6px;
+  text-align: center;
+}
+
+.w3c-m-badge i {
+  font-size: 1rem;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.w3c-m-title {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
   color: #0f172a;
 }
 
-.stps-dc3-sheet {
-  font-family: 'Inter', -apple-system, sans-serif;
-  color: #000000;
-  background: #ffffff;
-  border: 2px solid #000000;
-  padding: 20px;
-  position: relative;
+.w3c-m-sub {
+  display: block;
+  font-size: 0.65rem;
+  color: #64748b;
 }
 
-.stps-header-grid {
+.w3c-footer-grid {
   display: grid;
-  grid-template-columns: 80px 1fr 120px;
+  grid-template-columns: 1fr 1fr 90px;
   align-items: center;
-  border-bottom: 2px solid #000000;
-  padding-bottom: 12px;
-  margin-bottom: 12px;
-  gap: 12px;
-}
-
-.stps-gov-title {
-  text-align: center;
-}
-
-.stps-gov-title h3 {
-  margin: 0;
-  font-size: 0.92rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.stps-gov-title h4 {
-  margin: 2px 0 0 0;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #334155;
-}
-
-.stps-gov-title h2 {
-  margin: 4px 0 0 0;
-  font-size: 1.05rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  color: #000000;
-}
-
-.stps-section-bar {
-  background: #000000;
-  color: #ffffff;
-  font-weight: 800;
-  font-size: 0.72rem;
-  padding: 4px 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin: 10px 0 6px 0;
-}
-
-.stps-data-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.78rem;
-  margin-bottom: 6px;
-}
-
-.stps-data-table th,
-.stps-data-table td {
-  border: 1px solid #475569;
-  padding: 5px 8px;
-  text-align: left;
-}
-
-.stps-data-table th {
-  background: #f1f5f9;
-  font-weight: 700;
-  width: 28%;
-}
-
-.stps-data-table td {
-  font-weight: 600;
-}
-
-.stps-signatures-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
   gap: 16px;
   margin-top: 18px;
-  text-align: center;
-  font-size: 0.72rem;
+  padding-top: 14px;
+  border-top: 1px solid #e2e8f0;
 }
 
-.stps-sign-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+.w3c-sign-line {
+  border-top: 1px solid #0f172a;
+  width: 160px;
+  margin-bottom: 4px;
 }
 
-.stps-sign-line {
-  border-top: 1px solid #000000;
-  margin-top: 40px;
-  padding-top: 4px;
+.w3c-signer-name {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.w3c-signer-role {
+  font-size: 0.68rem;
+  color: #64748b;
+}
+
+.w3c-hash-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
   font-weight: 700;
+  color: #0369a1;
+  margin: 2px 0;
 }
 
 @media print {
   body * {
     visibility: hidden;
   }
-  .stps-modal-overlay,
-  .stps-modal-overlay.active {
+  .w3c-modal-overlay,
+  .w3c-modal-overlay.active {
     display: block !important;
     position: absolute !important;
     left: 0 !important;
@@ -14581,17 +14641,19 @@ body.supaste-theme {
     background: #ffffff !important;
     padding: 0 !important;
   }
-  .stps-modal-dialog {
+  .w3c-modal-dialog {
     box-shadow: none !important;
     padding: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
+    background: #ffffff !important;
+    border: none !important;
   }
-  .stps-dc3-sheet,
-  .stps-dc3-sheet * {
+  .w3c-credential-sheet,
+  .w3c-credential-sheet * {
     visibility: visible !important;
   }
-  .stps-modal-actions {
+  .w3c-modal-actions {
     display: none !important;
   }
 }

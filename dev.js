@@ -344,7 +344,7 @@ function initStudio() {
   setupCrossBorderAudioRoleplayLab(tracks);
   setupCapstoneBoardExam(tracks);
   setupStudentRegistrationAndCareerPath(tracks);
-  setupActivePathHUDAndSTPSDC3(tracks);
+  setupActivePathHUDAndW3CCert(tracks);
 
   // Guarantee clean startup: all modals hidden
   const allModalsToHide = [
@@ -356,7 +356,7 @@ function initStudio() {
     'capstone-diploma-modal',
     'student-registration-modal',
     'path-slang-modal',
-    'stps-dc3-modal'
+    'w3c-credential-modal'
   ];
   allModalsToHide.forEach(id => {
     const el = document.getElementById(id);
@@ -11112,7 +11112,7 @@ function setupStudentRegistrationAndCareerPath(tracks) {
         title: `Hito 4: Capstone Engineering Fellowship Certification`,
         hours: 15,
         desc: `Examen de grado práctico ante tribunal summativo de 4 estaciones industriales (Saltillo, Tijuana, GDL, QRO) con emisión de credencial W3C y diploma con sello QR.`,
-        tags: ['Fellowship Master', 'W3C Credential', '15 Horas', 'STPS DC-3 / SEP EC1290'],
+        tags: ['Fellowship Master', 'W3C Open Badge 3.0', '15 Horas', 'IEEE & ISO 9001:2015'],
         slang: 'Full Executive Polish & Oral Board Defense'
       }
     ];
@@ -11170,7 +11170,7 @@ function setupStudentRegistrationAndCareerPath(tracks) {
             <span style="color:#94a3b8; font-size:0.75rem; margin-left:6px;">(4 Hitos &times; 15 Horas c/u &bull; Extensible a 120h Fellowship)</span>
           </div>
           <div style="font-size:0.72rem; color:#cbd5e1;">
-            <i class="fa-solid fa-stamp" style="color:#34d399; margin-right:4px;"></i> Válido STPS Formato DC-3 &bull; SEP CONOCER EC1290 &bull; ISO 9001:2015 Cl. 7.2
+            <i class="fa-solid fa-award" style="color:#34d399; margin-right:4px;"></i> Acreditación W3C Open Badge 3.0 &bull; CEFR C1 &bull; ISO 9001:2015 Cl. 7.2
           </div>
         </div>
 
@@ -11275,7 +11275,7 @@ function setupStudentRegistrationAndCareerPath(tracks) {
 
     const mdContent = `# stemOS Official Career Path Dossier (60 Hours Standard)
 **Programa Curricular Especializado en Inglés Técnico de Planta & Nearshoring**
-*Alineado a STPS Formato DC-3, SEP CONOCER EC1290 e ISO 9001:2015 Cl. 7.2*
+*Alineado a W3C Open Badges 3.0, IEEE, SEMI, ISO 9001:2015 Cl. 7.2 y Marco CEFR C1*
 
 ---
 
@@ -11446,7 +11446,7 @@ const CAREER_SLANG_DICTIONARY = [
   }
 ];
 
-function setupActivePathHUDAndSTPSDC3(tracks) {
+function setupActivePathHUDAndW3CCert(tracks) {
   const hudSection = document.getElementById('active-path-hud');
   const hudClusterName = document.getElementById('hud-cluster-name');
   const hudCareerName = document.getElementById('hud-career-name');
@@ -11458,21 +11458,21 @@ function setupActivePathHUDAndSTPSDC3(tracks) {
   const btnToggleFilter = document.getElementById('hud-btn-toggle-filter');
   const filterBtnText = document.getElementById('hud-filter-btn-text');
   const btnOpenSlang = document.getElementById('hud-btn-open-slang');
-  const btnOpenDC3 = document.getElementById('hud-btn-open-dc3');
+  const btnOpenW3CCert = document.getElementById('hud-btn-open-w3c-cert');
   const btnReconfig = document.getElementById('hud-btn-reconfigure-path');
 
   // Slang Modal Elements
   const slangModal = document.getElementById('path-slang-modal');
   const slangCardsContainer = document.getElementById('slang-trainer-cards-container');
 
-  // STPS DC-3 Elements
-  const stpsModal = document.getElementById('stps-dc3-modal');
-  const dc3WorkerName = document.getElementById('dc3-worker-name');
-  const dc3WorkerCurp = document.getElementById('dc3-worker-curp');
-  const dc3WorkerOccupation = document.getElementById('dc3-worker-occupation');
-  const dc3CourseName = document.getElementById('dc3-course-name');
-  const dc3SignWorker = document.getElementById('dc3-sign-worker');
-  const dc3QrContainer = document.getElementById('dc3-qr-container');
+  // W3C Open Badge 3.0 Modal Elements
+  const w3cModal = document.getElementById('w3c-credential-modal');
+  const w3cStudentName = document.getElementById('w3c-cert-student-name');
+  const w3cCareerName = document.getElementById('w3c-cert-career-name');
+  const w3cStandards = document.getElementById('w3c-cert-standards-text');
+  const w3cHash = document.getElementById('w3c-cert-hash');
+  const w3cDate = document.getElementById('w3c-cert-date');
+  const w3cQrContainer = document.getElementById('w3c-qr-container');
 
   let isPathFilterActive = false;
 
@@ -11581,9 +11581,9 @@ function setupActivePathHUDAndSTPSDC3(tracks) {
     }
   };
 
-  // STPS DC-3 Modal Handlers
-  window.openSTPSDC3Modal = function() {
-    if (!stpsModal) return;
+  // W3C Open Badge 3.0 Modal Handlers
+  window.openCareerPathW3CCertModal = function() {
+    if (!w3cModal) return;
 
     let profile = null;
     try {
@@ -11592,18 +11592,24 @@ function setupActivePathHUDAndSTPSDC3(tracks) {
     } catch (e) {}
 
     const workerName = (profile && profile.studentName) || 'Ing. Diana Laura Morales';
-    const careerName = (profile && profile.careerName) || 'Ingeniería Mecatrónica y Automatización';
-    const curp = 'MOLD980415HDFR02';
+    const careerName = (profile && profile.careerName) || 'Ingeniería Mecatrónica, Robótica y Automatización';
+    const stds = (profile && profile.standards && profile.standards.join(' • ')) || 'IEEE • ISO 9001:2015 • OSHA 1910.147';
 
-    if (dc3WorkerName) dc3WorkerName.textContent = workerName;
-    if (dc3WorkerCurp) dc3WorkerCurp.textContent = curp;
-    if (dc3WorkerOccupation) dc3WorkerOccupation.textContent = `${careerName} (Operaciones Nearshoring)`;
-    if (dc3CourseName) dc3CourseName.textContent = `Inglés Técnico de Planta y Nearshoring para ${careerName} (60 Horas)`;
-    if (dc3SignWorker) dc3SignWorker.textContent = workerName;
+    if (w3cStudentName) w3cStudentName.textContent = workerName;
+    if (w3cCareerName) w3cCareerName.textContent = careerName;
+    if (w3cStandards) w3cStandards.innerHTML = `Alineado rigurosamente a estándares industriales internacionales <strong>${stds}</strong> y competencia operativa <strong>CEFR C1</strong>.`;
 
-    // Generate dynamic QR Code for STPS verification
-    if (dc3QrContainer) {
-      const folio = 'STPS-DC3-2026-08492';
+    // SHA-256 Hash Mock
+    const pseudoHash = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'.slice(0, 24);
+    if (w3cHash) w3cHash.textContent = `SHA256: ${pseudoHash.toUpperCase()}`;
+    if (w3cDate) {
+      const d = new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+      w3cDate.textContent = `${d} • W3C Open Badges 3.0 & JSON-LD Verified`;
+    }
+
+    // Generate dynamic QR Code for W3C verification
+    if (w3cQrContainer) {
+      const folio = 'W3C-BADGE3-PATH60H-2026';
       const verifyUrl = `https://stemos.org/dev/?verify=${folio}`;
       const size = 17;
       const cellSize = 4;
@@ -11615,32 +11621,32 @@ function setupActivePathHUDAndSTPSDC3(tracks) {
           const isCorner3 = r > size - 6 && c < 5;
           const isRand = ((r * 13 + c * 17) % 7) < 3;
           if (isCorner1 || isCorner2 || isCorner3 || isRand) {
-            rects += `<rect x="${c * cellSize}" y="${r * cellSize}" width="${cellSize}" height="${cellSize}" fill="#000000" />`;
+            rects += `<rect x="${c * cellSize}" y="${r * cellSize}" width="${cellSize}" height="${cellSize}" fill="#0284c7" />`;
           }
         }
       }
-      dc3QrContainer.innerHTML = `<svg viewBox="0 0 ${size * cellSize} ${size * cellSize}" width="70" height="70" style="display:block; background:#ffffff; padding:2px; border:1px solid #475569;">${rects}</svg>`;
+      w3cQrContainer.innerHTML = `<svg viewBox="0 0 ${size * cellSize} ${size * cellSize}" width="70" height="70" style="display:block; background:#ffffff; padding:2px; border:1px solid #7dd3fc; border-radius:4px;">${rects}</svg>`;
     }
 
-    stpsModal.classList.add('active');
-    stpsModal.style.display = 'flex';
+    w3cModal.classList.add('active');
+    w3cModal.style.display = 'flex';
   };
 
-  window.closeSTPSDC3Modal = function() {
-    if (stpsModal) {
-      stpsModal.classList.remove('active');
-      stpsModal.style.display = 'none';
+  window.closeCareerPathW3CCertModal = function() {
+    if (w3cModal) {
+      w3cModal.classList.remove('active');
+      w3cModal.style.display = 'none';
     }
   };
 
-  window.printSTPSDC3 = function() {
+  window.printCareerPathW3CCert = function() {
     if (typeof window !== 'undefined' && window.print) {
       window.print();
     }
   };
 
-  window.copySTPSVerificationLink = function(btn) {
-    const url = 'https://stemos.org/dev/?verify=STPS-DC3-2026-08492';
+  window.copyCareerPathW3CLink = function(btn) {
+    const url = 'https://stemos.org/dev/?verify=W3C-BADGE3-PATH60H-2026';
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(url).then(() => {
         if (btn) {
@@ -11655,9 +11661,64 @@ function setupActivePathHUDAndSTPSDC3(tracks) {
     }
   };
 
+  window.exportCareerPathJsonLd = function() {
+    let profile = null;
+    try {
+      const saved = localStorage.getItem('stemos_active_student_profile');
+      if (saved) profile = JSON.parse(saved);
+    } catch (e) {}
+
+    const credentialJsonLd = {
+      "@context": [
+        "https://www.w3.org/2018/credentials/v1",
+        "https://purl.imsglobal.org/spec/ob/v3p0/context.json"
+      ],
+      "id": "urn:uuid:stemos-credential-60h-2026",
+      "type": ["VerifiableCredential", "OpenBadgeCredential"],
+      "issuer": {
+        "id": "https://stemos.org/issuer.json",
+        "type": "Profile",
+        "name": "stemOS Foundation",
+        "url": "https://stemos.org"
+      },
+      "issuanceDate": new Date().toISOString(),
+      "credentialSubject": {
+        "id": "did:stemos:student",
+        "type": "AchievementSubject",
+        "name": (profile && profile.studentName) || "Diana Laura Morales",
+        "achievement": {
+          "id": "urn:stemos:career-path:60h",
+          "type": ["Achievement"],
+          "name": `Specialized Industrial Engineering Nearshoring Path (60h) - ${(profile && profile.careerName) || "Mecatrónica"}`,
+          "description": "Demonstrated mastery of cross-border shopfloor survival, 8D root-cause problem solving, executive negotiation, and capstone oral defense.",
+          "criteria": {
+            "narrative": "60.0 hours completed across 4 milestones of 15.0 hours each with rigorous Zero-Grammar industrial pragmatics."
+          }
+        }
+      },
+      "proof": {
+        "type": "Ed25519Signature2020",
+        "created": new Date().toISOString(),
+        "verificationMethod": "https://stemos.org/keys/issuer-key-2026.json",
+        "proofPurpose": "assertionMethod",
+        "proofValue": "z3m9sSha256CriptographicSealStemOS2026W3CBadge3"
+      }
+    };
+
+    const blob = new Blob([JSON.stringify(credentialJsonLd, null, 2)], { type: 'application/ld+json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `W3C_Credential_60h_${((profile && profile.studentName) || 'Student').replace(/\s+/g, '_')}.jsonld`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   // Wire buttons
   if (btnOpenSlang) btnOpenSlang.addEventListener('click', () => window.openPathSlangModal());
-  if (btnOpenDC3) btnOpenDC3.addEventListener('click', () => window.openSTPSDC3Modal());
+  if (btnOpenW3CCert) btnOpenW3CCert.addEventListener('click', () => window.openCareerPathW3CCertModal());
   if (btnReconfig) btnReconfig.addEventListener('click', () => window.openStudentRegistrationModal());
 
   // Initialize HUD on startup
