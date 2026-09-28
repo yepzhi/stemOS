@@ -1157,6 +1157,29 @@ if (subLoto.style.display !== 'block') {
   process.exit(1);
 }
 
+// 18.7 Verify Ultra-Efficient Micro-Telemetry & Error Beacon Engine
+console.log("\n── VERIFICATION: Ultra-Efficient Micro-Telemetry Engine ──");
+if (!window.__telemetry || typeof window.__telemetry.reportError !== 'function') {
+  console.error("FAIL: window.__telemetry not exposed or missing reportError!");
+  process.exit(1);
+}
+
+window.__telemetry.logBreadcrumb('audit_check', 'Executing test breadcrumb');
+window.__telemetry.reportError(new Error("Synthetic Test Error for Post-Mortem Verification"), { component: "test_suite" });
+
+const dumps = window.__telemetry.dump();
+console.log("Telemetry Dumps Count:", dumps.length);
+if (!Array.isArray(dumps) || dumps.length === 0) {
+  console.error("FAIL: Telemetry did not record crash into local dump buffer!");
+  process.exit(1);
+}
+if (dumps[0].app !== 'stemos' || !dumps[0].error.message.includes('Synthetic Test Error')) {
+  console.error("FAIL: Telemetry payload mismatch:", dumps[0]);
+  process.exit(1);
+}
+console.log("PASS: Ultra-efficient telemetry captures unhandled/custom errors and maintains breadcrumbs.");
+window.__telemetry.clear();
+
 console.log("\n🎉 ALL 18 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
 
 

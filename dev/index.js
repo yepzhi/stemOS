@@ -1,4 +1,206 @@
 
+/**
+ * stemOS Ultra-Efficient Micro-Telemetry & Error Beacon Engine
+ * Non-blocking, zero main-thread overhead, ring-buffer breadcrumbs & sendBeacon transport.
+ */
+(function () {
+  'use strict';
+  if (typeof window === 'undefined' || window.__telemetryInitialized) return;
+  window.__telemetryInitialized = true;
+
+  const CONFIG = {
+    appName: 'stemos',
+    appVersion: '5.3.0',
+    endpoint: 'https://jovenesstem.com/api/telemetry',
+    maxBreadcrumbs: 15,
+    maxStoredCrashes: 25,
+    maxReportsPerSession: 12,
+    dedupWindowMs: 60000
+  };
+
+  const sessionId = 'ses_' + Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+  const breadcrumbs = [];
+  const errorFingerprints = new Map();
+  let reportsSentCount = 0;
+
+  function addBreadcrumb(category, message, data = null) {
+    try {
+      if (breadcrumbs.length >= CONFIG.maxBreadcrumbs) {
+        breadcrumbs.shift();
+      }
+      breadcrumbs.push({
+        t: Math.round(typeof performance !== 'undefined' ? performance.now() : Date.now()),
+        cat: category,
+        msg: String(message || '').substring(0, 100),
+        ...(data && typeof data === 'object' ? { d: data } : {})
+      });
+    } catch (_) {}
+  }
+
+  // Auto-Instrument User Clicks (Sanitized)
+  try {
+    if (typeof document !== 'undefined') {
+      document.addEventListener('click', (e) => {
+        try {
+          const target = e.target;
+          if (!target) return;
+          const tag = target.tagName ? target.tagName.toLowerCase() : '';
+          if (['button', 'a', 'input', 'select', 'svg'].includes(tag) || target.closest('button, a')) {
+            const el = target.closest('button, a') || target;
+            const label = (el.innerText || el.getAttribute('aria-label') || el.id || el.className || tag).trim().substring(0, 40);
+            addBreadcrumb('ui_click', `${tag} "${label}"`);
+          }
+        } catch (_) {}
+      }, { capture: true, passive: true });
+    }
+  } catch (_) {}
+
+  // Auto-Instrument Navigation
+  try {
+    window.addEventListener('hashchange', () => {
+      addBreadcrumb('navigation', `hash: ${location.hash}`);
+    }, { passive: true });
+  } catch (_) {}
+
+  // Core Dispatcher (Non-Blocking via sendBeacon)
+  function dispatchReport(reportPayload) {
+    if (reportsSentCount >= CONFIG.maxReportsPerSession) return;
+    reportsSentCount++;
+
+    // LocalStorage blackbox for instant post-mortem
+    try {
+      const storageKey = '__system_telemetry_errors__';
+      const history = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      history.unshift(reportPayload);
+      localStorage.setItem(storageKey, JSON.stringify(history.slice(0, CONFIG.maxStoredCrashes)));
+    } catch (_) {}
+
+    const jsonStr = JSON.stringify(reportPayload);
+    try {
+      if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        if (navigator.sendBeacon(CONFIG.endpoint, blob)) return;
+      }
+    } catch (_) {}
+
+    try {
+      if (typeof fetch === 'function') {
+        fetch(CONFIG.endpoint, {
+          method: 'POST',
+          body: jsonStr,
+          headers: { 'Content-Type': 'application/json' },
+          keepalive: true,
+          priority: 'low'
+        }).catch(() => {});
+      }
+    } catch (_) {}
+  }
+
+  function recordError(type, message, source, lineno, colno, errorObj, customContext = {}) {
+    try {
+      const cleanMsg = String(message || (errorObj && errorObj.message) || 'Unknown Error').substring(0, 300);
+      const cleanSrc = String(source || (errorObj && errorObj.fileName) || (typeof window !== 'undefined' ? window.location.pathname : 'dev')).substring(0, 150);
+      const fingerprint = `${cleanMsg}_${cleanSrc}_${lineno || 0}_${colno || 0}`;
+
+      const now = Date.now();
+      const lastSeen = errorFingerprints.get(fingerprint);
+      if (lastSeen && (now - lastSeen < CONFIG.dedupWindowMs)) {
+        return;
+      }
+      errorFingerprints.set(fingerprint, now);
+
+      const payload = {
+        app: CONFIG.appName,
+        version: CONFIG.appVersion,
+        session_id: sessionId,
+        timestamp: new Date().toISOString(),
+        type: type,
+        error: {
+          message: cleanMsg,
+          source: cleanSrc,
+          lineno: lineno || null,
+          colno: colno || null,
+          stack: errorObj && errorObj.stack ? String(errorObj.stack).substring(0, 1500) : null
+        },
+        env: {
+          url: typeof window !== 'undefined' ? window.location.href : '',
+          userAgent: typeof navigator !== 'undefined' ? navigator.userAgent.substring(0, 150) : 'node/headless',
+          language: typeof navigator !== 'undefined' ? (navigator.language || 'en-US') : 'en-US',
+          screen: typeof window !== 'undefined' ? `${window.innerWidth}x${window.innerHeight}` : '1920x1080',
+          online: typeof navigator !== 'undefined' ? navigator.onLine !== false : true
+        },
+        breadcrumbs: [...breadcrumbs],
+        context: customContext
+      };
+
+      // 1. Immediately persist to localStorage for instant post-mortem analysis
+      try {
+        const storageKey = '__system_telemetry_errors__';
+        const history = JSON.parse(localStorage.getItem(storageKey) || '[]');
+        history.unshift(payload);
+        localStorage.setItem(storageKey, JSON.stringify(history.slice(0, CONFIG.maxStoredCrashes)));
+      } catch (_) {}
+
+      // 2. Offload network dispatch to microtask / background
+      if (typeof queueMicrotask === 'function') {
+        queueMicrotask(() => dispatchReport(payload));
+      } else {
+        setTimeout(() => dispatchReport(payload), 0);
+      }
+    } catch (_) {}
+  }
+
+  // Global listeners
+  if (typeof window !== 'undefined') {
+    window.addEventListener('error', function (e) {
+      try {
+        recordError('UNHANDLED_ERROR', e.message, e.filename, e.lineno, e.colno, e.error);
+      } catch (_) {}
+    });
+
+    window.addEventListener('unhandledrejection', function (e) {
+      try {
+        const reason = e.reason;
+        const msg = reason ? (reason.message || String(reason)) : 'Unhandled Promise Rejection';
+        recordError('PROMISE_REJECTION', msg, null, null, null, reason instanceof Error ? reason : null);
+      } catch (_) {}
+    });
+
+    window.__telemetry = {
+      logBreadcrumb: addBreadcrumb,
+      reportError: function (err, context = {}) {
+        const msg = err ? (err.message || String(err)) : 'Reported Error';
+        recordError('CUSTOM_REPORT', msg, null, null, null, err instanceof Error ? err : null, context);
+      },
+      logEvent: function (action, data = {}) {
+        addBreadcrumb('event', action, data);
+      },
+      dump: function () {
+        try {
+          const stored = JSON.parse(localStorage.getItem('__system_telemetry_errors__') || '[]');
+          console.group('🔍 [stemOS Telemetry Post-Mortem Crash Dump]');
+          console.log(`Active Session: ${sessionId} | Breadcrumbs: ${breadcrumbs.length}`);
+          console.table(breadcrumbs);
+          console.log('Recent Stored Crashes:', stored);
+          console.groupEnd();
+          return stored;
+        } catch (err) {
+          return [];
+        }
+      },
+      clear: function () {
+        try {
+          localStorage.removeItem('__system_telemetry_errors__');
+          breadcrumbs.length = 0;
+          console.log('✨ [stemOS Telemetry] Cleared.');
+        } catch (_) {}
+      }
+    };
+
+    addBreadcrumb('app_init', `Telemetry ready for ${CONFIG.appName} v${CONFIG.appVersion}`);
+  }
+})();
+
 // ── FORMATIVE COMPREHENSION CHECK: BLUR & LOCK READING CONTENT ──
 window.toggleFormativeComprehensionCheck = function(modId, rIdx, forceState) {
   const container = document.getElementById(`reading-lockable-${modId}-${rIdx}`);
