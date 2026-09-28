@@ -11751,6 +11751,620 @@ body.supaste-theme {
   font-style: italic;
 }
 
+/* ==========================================================================
+   PHASE 10: INCIDENT RESPONSE WAR ROOM & CLOSED-LOOP COMMUNICATION LAB
+   ========================================================================== */
+
+.incident-war-room-section {
+  padding: 85px 24px;
+  background: radial-gradient(circle at 50% 0%, #170d10 0%, #0a0709 45%, #050406 100%);
+  border-top: 1px solid rgba(244, 63, 94, 0.25);
+  border-bottom: 1px solid rgba(244, 63, 94, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.warroom-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.warroom-header-wrap {
+  text-align: center;
+  max-width: 880px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.warroom-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.warroom-badge i {
+  color: #ef4444;
+  animation: warroomPulse 1.8s infinite;
+}
+
+@keyframes warroomPulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.warroom-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #f8fafc;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.warroom-desc {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Mode Switcher Tabs */
+.warroom-mode-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.warroom-tab-btn {
+  background: rgba(24, 24, 27, 0.85);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  color: #a1a1aa;
+  padding: 11px 22px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  transition: all 0.25s ease;
+}
+
+.warroom-tab-btn:hover {
+  border-color: rgba(244, 63, 94, 0.4);
+  color: #f4f4f5;
+  background: rgba(39, 39, 42, 0.9);
+}
+
+.warroom-tab-btn.active {
+  background: linear-gradient(135deg, rgba(225, 29, 72, 0.28), rgba(159, 18, 57, 0.18));
+  border-color: #f43f5e;
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(225, 29, 72, 0.35);
+}
+
+/* Live Ticker Alert Banner */
+.warroom-ticker-strip {
+  background: linear-gradient(90deg, rgba(30, 10, 15, 0.95) 0%, rgba(45, 14, 22, 0.95) 50%, rgba(30, 10, 15, 0.95) 100%);
+  border: 1px solid rgba(244, 63, 94, 0.35);
+  border-radius: 12px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.warroom-ticker-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.warroom-live-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 10px #ef4444;
+  animation: warroomPulse 1.2s infinite;
+}
+
+.warroom-ticker-headline {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #fca5a5;
+  letter-spacing: 0.02em;
+}
+
+.warroom-ticker-metrics {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.warroom-metric-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: right;
+}
+
+.warroom-metric-lbl {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.warroom-metric-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #ef4444;
+}
+
+/* Scenario Chips Bar */
+.warroom-scenario-bar {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  justify-content: center;
+}
+
+.warroom-chip {
+  background: rgba(24, 24, 27, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  padding: 9px 16px;
+  border-radius: 9px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.warroom-chip:hover {
+  background: rgba(244, 63, 94, 0.1);
+  color: #f1f5f9;
+  border-color: rgba(244, 63, 94, 0.35);
+}
+
+.warroom-chip.active {
+  background: linear-gradient(135deg, #be123c, #9f1239);
+  border-color: #fb7185;
+  color: #ffffff;
+  box-shadow: 0 3px 12px rgba(190, 18, 60, 0.45);
+}
+
+/* Workbench 2-Column Grid */
+.warroom-workbench-grid {
+  display: grid;
+  grid-template-columns: 1fr 500px;
+  gap: 24px;
+  align-items: stretch;
+}
+
+@media (max-width: 1080px) {
+  .warroom-workbench-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Incident Scenario Details Card */
+.warroom-card-panel {
+  background: #09080e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.warroom-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 14px;
+}
+
+.warroom-target-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #f8fafc;
+  margin: 0;
+}
+
+.warroom-severity-tag {
+  font-size: 0.74rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  color: #fda4af;
+  background: rgba(225, 29, 72, 0.15);
+  border: 1px solid rgba(225, 29, 72, 0.4);
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.warroom-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.warroom-detail-item {
+  background: #050407;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.warroom-detail-lbl {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.warroom-detail-val {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+/* Containment Decision Strategy Options */
+.warroom-strategies-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.warroom-strategies-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #fb7185;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.warroom-strategy-card {
+  background: #07060a;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.warroom-strategy-card:hover {
+  background: #0f0a12;
+  border-color: rgba(244, 63, 94, 0.4);
+}
+
+.warroom-strategy-card.selected {
+  background: rgba(225, 29, 72, 0.12);
+  border-color: #f43f5e;
+  box-shadow: 0 0 16px rgba(244, 63, 94, 0.25);
+}
+
+.warroom-strategy-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.warroom-strategy-name {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.warroom-strategy-risk {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.risk-high { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+.risk-med { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+.risk-low { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+
+.warroom-strategy-desc {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.warroom-strategy-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: #cbd5e1;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 8px;
+}
+
+/* Right Column: Executive SITREP Memo Panel */
+.warroom-memo-panel {
+  background: #09080e;
+  border: 1px solid rgba(244, 63, 94, 0.25);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.warroom-memo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 12px;
+}
+
+.warroom-memo-title {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #fb7185;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.warroom-memo-pre {
+  background: #040306;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.76rem;
+  color: #e2e8f0;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  margin: 0;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+/* ICS Quiz Card */
+.warroom-quiz-card {
+  background: #07060a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.warroom-quiz-q {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #f8fafc;
+  line-height: 1.4;
+}
+
+.warroom-quiz-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.warroom-quiz-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.warroom-quiz-btn:hover {
+  background: rgba(244, 63, 94, 0.12);
+  border-color: rgba(244, 63, 94, 0.35);
+  color: #ffffff;
+}
+
+.warroom-quiz-btn.correct {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: #10b981 !important;
+  color: #34d399 !important;
+  font-weight: 700;
+}
+
+.warroom-quiz-btn.wrong {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: #ef4444 !important;
+  color: #f87171 !important;
+}
+
+.warroom-quiz-feedback {
+  font-size: 0.76rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  line-height: 1.35;
+}
+
+/* ==========================================================================
+   SUBPANEL 2: CLOSED-LOOP COMMUNICATION PROTOCOL
+   ========================================================================== */
+
+.closedloop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .closedloop-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.closedloop-step-card {
+  background: #08070b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.closedloop-step-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.closedloop-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.badge-callout { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8; }
+.badge-repeat { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+.badge-confirm { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+
+.closedloop-step-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.closedloop-script-box {
+  background: #040306;
+  border-left: 3px solid #38bdf8;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  line-height: 1.45;
+  font-style: italic;
+}
+
+.closedloop-script-box.repeat-box {
+  border-left-color: #fbbf24;
+}
+
+.closedloop-script-box.confirm-box {
+  border-left-color: #10b981;
+}
+
+.closedloop-drill-box {
+  background: rgba(244, 63, 94, 0.06);
+  border: 1px solid rgba(244, 63, 94, 0.25);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.closedloop-drill-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #fb7185;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.closedloop-drill-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.closedloop-opt-btn {
+  background: #07060a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.closedloop-opt-btn:hover {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: #fb7185;
+  color: #ffffff;
+}
+
+.closedloop-opt-btn.correct {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: #10b981 !important;
+  color: #34d399 !important;
+  font-weight: 700;
+}
+
+.closedloop-opt-btn.wrong {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: #ef4444 !important;
+  color: #f87171 !important;
+}
+
+
 
 
 

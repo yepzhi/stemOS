@@ -339,6 +339,7 @@ function initStudio() {
   setupCertificatesAndCloudSync(tracks);
   setupBlueprintAndPidLab(tracks);
   setupLotoAndShiftHandoverLab(tracks);
+  setupIncidentWarRoomLab(tracks);
 }
 
 function setupLevelSwitcher(tracks, phrases) {
@@ -8711,5 +8712,510 @@ Lead Engineer Sign-off: AUTHORIZED & TRANSFERRED`;
   window.switchLotoScenario('automotive_robot');
   window.updateShiftHandoverMemo();
 }
+
+/* ==========================================================================
+   PHASE 10: INCIDENT RESPONSE WAR ROOM & CLOSED-LOOP COMMUNICATION LAB
+   ========================================================================== */
+function setupIncidentWarRoomLab(tracks) {
+  const WARROOM_SCENARIOS = {
+    automotive_linedown: {
+      title: "Automotive Final Assembly Line-Stop (Arlington TX)",
+      severity: "SEVERITY 1 \u2022 CRITICAL",
+      burnRate: "$850 USD / minute ($51,000 / hr)",
+      stakeholder: "VP Manufacturing Operations (Detroit OEM)",
+      defectMech: "Sub-surface casting porosity on front steering knuckle",
+      regRisk: "NHTSA Motor Vehicle Safety Non-Compliance / IATF D3 Containment",
+      tickerStatus: "ACTIVE INCIDENT: Line-Stop at Arlington Assembly OEM \u2022 Cross-Border Emergency Bridge Open",
+      clock: "00:48:15",
+      cost: "$41,012 USD",
+      strategies: [
+        {
+          name: "Option A: 100% Eddy-Current NDT Sort on Yard & Transit",
+          risk: "LOW RISK (99.9% Containment)",
+          riskClass: "risk-low",
+          desc: "Deploy 12 certified Level II NDT inspectors to Arlington assembly yard to inspect 3,400 assembled SUVs; inspect parts in transit at Laredo border crossing.",
+          speed: "6 Hours to Clear",
+          scrap: "$18,500 USD",
+          recovery: "Partial restart in 3 hrs"
+        },
+        {
+          name: "Option B: Hot-Shot Air Charter of Re-machined Replacement Batch",
+          risk: "MEDIUM RISK (High Cost)",
+          riskClass: "risk-med",
+          desc: "Charter emergency Falcon 20 cargo jet from Saltillo (SLW) to Dallas-Fort Worth (DFW) carrying 450 certified replacement knuckles.",
+          speed: "4 Hours to Delivery",
+          scrap: "$48,000 USD",
+          recovery: "Full restart in 4.5 hrs"
+        },
+        {
+          name: "Option C: Blind Tooling Offset Modification without Validation",
+          risk: "HIGH RISK (Severe Safety Hazard)",
+          riskClass: "risk-high",
+          desc: "Shift CNC cutter path offset without metallurgical micro-structure validation to bypass porosity zone.",
+          speed: "1 Hour",
+          scrap: "$3,200 USD",
+          recovery: "Unstable (90% defect recurrence risk)"
+        }
+      ],
+      callout: "\"War room, this is Incident Commander. Quarantine all steering knuckles from Heat Batch #8819 immediately. Do not release Pallets 4 through 12 to the assembly floor.\"",
+      repeat: "\"Understood. Quarantining all steering knuckles from Heat Batch #8819 now. Holding Pallets 4 through 12 in locked red-tag quarantine area.\"",
+      quiz: {
+        question: "In an active high-stakes cross-border line-down bridge, when the customer VP asks for an immediate restart ETA that is technically unconfirmed, what is the correct C1 response?",
+        options: [
+          "\"We understand the critical urgency. We have isolated the affected lot #8819 and deployed an NDT sorting gate. We will not commit to an unvalidated restart ETA, but we commit to an operational checkpoint in exactly 30 minutes.\"",
+          "\"Don't worry, we will have the line running in 10 minutes for sure.\"",
+          "\"It is not our fault, the raw material supplier sent bad aluminum billets.\"",
+          "\"We cannot do anything until our plant manager wakes up tomorrow morning.\""
+        ],
+        answer: 0,
+        explanation: "Under cross-border incident command protocols, never give false unverified restart estimates. Acknowledge customer urgency, state objective containment actions, and set firm, reliable checkpoint cadences (e.g. 30-min updates)."
+      }
+    },
+    medtech_bioburden: {
+      title: "MedTech Cleanroom Sterile Barrier Pouch Seal Excursion",
+      severity: "SEVERITY 1 \u2022 FDA RECALL RISK",
+      burnRate: "Class I Medical Device Recall Risk ($1.4M Exposure)",
+      stakeholder: "Global Regulatory Affairs VP & Notified Body Lead (T\u00dcV S\u00dcD)",
+      defectMech: "Heat-sealer thermistor drift causing incomplete Tyvek pouch seal",
+      regRisk: "FDA 21 CFR \u00a7 820.100 CAPA / ISO 11607-1 Terminal Sterilization",
+      tickerStatus: "ACTIVE INCIDENT: Sterile Seal Excursion on Cardiovascular Catheter Line \u2022 Quarantining 18,000 Units",
+      clock: "01:15:30",
+      cost: "$124,500 USD",
+      strategies: [
+        {
+          name: "Option A: Immediate Field Hold & 100% Burst-Testing",
+          risk: "LOW RISK (Audit-Compliant)",
+          riskClass: "risk-low",
+          desc: "Issue immediate distribution freeze on catheter lots #CV-401 through #CV-409; execute ASTM F1140 burst testing on 200 retains.",
+          speed: "8 Hours",
+          scrap: "$65,000 USD",
+          recovery: "Validated release in 12 hrs"
+        },
+        {
+          name: "Option B: Re-Pouch & Secondary Over-Wrap Sterilization",
+          risk: "HIGH RISK (Polymer Degradation)",
+          riskClass: "risk-high",
+          desc: "Subject non-conforming pouches to secondary EtO gas sterilization cycle.",
+          speed: "18 Hours",
+          scrap: "$12,000 USD",
+          recovery: "Severe FDA Form 483 risk (Material embrittlement)"
+        },
+        {
+          name: "Option C: Thermistor Replacement & Sealer Line 2 Divert",
+          risk: "RECOMMENDED (C1 Gold Standard)",
+          riskClass: "risk-low",
+          desc: "Lock-out Sealer #03, install NIST-calibrated thermocouple, transfer packaging to validated redundant Sealer #02.",
+          speed: "3 Hours",
+          scrap: "$32,000 USD",
+          recovery: "Immediate production on Sealer #02"
+        }
+      ],
+      callout: "\"Sterilization lead, halt cart loader on Autoclave Line 2. Retain all pouches from Lot CV-404 for burst-pressure verification before aeration.\"",
+      repeat: "\"Halt confirmed on Autoclave Line 2 cart loader. Retaining all pouches from Lot CV-404 for burst-pressure verification prior to aeration.\"",
+      quiz: {
+        question: "Under FDA 21 CFR 820 and ISO 13485, what immediate regulatory action is mandatory when a sterile barrier package seal fails inspection?",
+        options: [
+          "Quarantine all associated product lots, initiate an immediate non-conformance report (NCR), and prevent distribution pending CAPA investigation",
+          "Ship the product anyway and inspect samples at the hospital",
+          "Manually re-tape the open pouch edges",
+          "Lower the sterilization cycle temperature to compensate"
+        ],
+        answer: 0,
+        explanation: "Sterile barrier integrity directly affects patient life safety; any failure requires immediate hard quarantine, an NCR/CAPA investigation, and zero distribution until sterile efficacy is proven."
+      }
+    },
+    semicon_esd: {
+      title: "Semicon 3nm ATE Automated Wafer Sort ESD Spike Excursion",
+      severity: "SEVERITY 2 \u2022 YIELD CRISIS",
+      burnRate: "$1,200,000 USD Projected Yield Loss",
+      stakeholder: "Fab Yield Director & Foundry Interface (Austin / Hsinchu)",
+      defectMech: "Ionizer bar ground fault causing 120V static charge on wafer handler arm",
+      regRisk: "ANSI/ESD S20.20-2021 Class 0 Device Reliability Damage",
+      tickerStatus: "ACTIVE INCIDENT: Wafer Handler ESD Spike \u2022 4 Lots of 3nm AI Processors on Hold",
+      clock: "02:04:10",
+      cost: "$380,000 USD",
+      strategies: [
+        {
+          name: "Option A: 100% Gate Oxide Voltage Stress (GOST) Screening",
+          risk: "LOW RISK (Comprehensive)",
+          riskClass: "risk-low",
+          desc: "Subject all 100 suspect wafers to elevated gate voltage stress testing to weed out latent dielectric breakdown.",
+          speed: "14 Hours",
+          scrap: "$210,000 USD",
+          recovery: "Verified yield recovery in 16 hrs"
+        },
+        {
+          name: "Option B: Handler Robot Ground Strap Swap & Static Re-Zero",
+          risk: "RECOMMENDED (Fast Containment)",
+          riskClass: "risk-low",
+          desc: "Replace carbon ground bonding strap, calibrate ionizer fan balance to < \u00b15V, re-certify tool with static field meter.",
+          speed: "45 Minutes",
+          scrap: "$4,500 USD",
+          recovery: "Sort resumed on Tester #4 in 1 hr"
+        },
+        {
+          name: "Option C: Continue Sort at 50% Reduced Arm Velocity",
+          risk: "HIGH RISK (Severe Latent Failure)",
+          riskClass: "risk-high",
+          desc: "Slow down wafer transfer without repairing electrostatic grounding strap.",
+          speed: "10 Minutes",
+          scrap: "$0 USD upfront",
+          recovery: "Massive field failure returns from OEM clients"
+        }
+      ],
+      callout: "\"Cleanroom technician, disconnect ATE Tester 4 from high-voltage bias bus. Do not unload wafer chuck until electrostatic field meter reads zero volts.\"",
+      repeat: "\"Disconnecting ATE Tester 4 from high-voltage bias bus now. Holding wafer chuck in place until static field meter confirms zero volts.\"",
+      quiz: {
+        question: "Why are electrostatic discharge (ESD) events on sub-5nm advanced semiconductor nodes considered particularly insidious in high-reliability applications?",
+        options: [
+          "They often cause latent gate oxide defects that pass initial testing but fail prematurely in the field under thermal stress",
+          "They always melt the silicon substrate completely into glass",
+          "They reverse the polarity of the copper interconnects permanently",
+          "They make wafers radioactive"
+        ],
+        answer: 0,
+        explanation: "Latent ESD defects degrade gate dielectric integrity without causing outright opens or shorts at initial wafer sort, leading to catastrophic early field failures (infant mortality) in customer systems."
+      }
+    },
+    data_center_ups: {
+      title: "Hyperscale Data Center 115kV Power Loss & Transformer Fire",
+      severity: "SEVERITY 1 \u2022 99.999% SLA RISK",
+      burnRate: "$25,000 USD / minute SLA Breach Penalty",
+      stakeholder: "Cloud Infrastructure VP & Enterprise Banking Clients",
+      defectMech: "Primary bushing flashover triggering fire suppression and UPS transfer",
+      regRisk: "NFPA 855 Stationary Energy Storage / Uptime Institute Tier IV SLA",
+      tickerStatus: "ACTIVE INCIDENT: 115kV Substation Bushing Arc \u2022 40MW Campus on Diesel Generators",
+      clock: "00:22:40",
+      cost: "$567,500 USD",
+      strategies: [
+        {
+          name: "Option A: Isolate Substation Bus & Island on 6 Diesel Gensets",
+          risk: "RECOMMENDED (Guarantees SLA)",
+          riskClass: "risk-low",
+          desc: "Open tie breaker 52-T1, verify 6x 3MW diesel generators synchronizing at 13.8kV, feed critical server halls with N+1 redundancy.",
+          speed: "12 Minutes",
+          scrap: "$15,000 USD fuel",
+          recovery: "Continuous SLA preservation"
+        },
+        {
+          name: "Option B: Emergency Utility Transfer to 34.5kV Secondary Feeder",
+          risk: "MEDIUM RISK (Utility Coordination)",
+          riskClass: "risk-med",
+          desc: "Coordinate with CFE grid dispatch to re-route 15MW over industrial park distribution ring.",
+          speed: "90 Minutes",
+          scrap: "$8,000 USD",
+          recovery: "Contingent on external grid stability"
+        },
+        {
+          name: "Option C: Deep Discharge of Backup Lithium Battery Banks",
+          risk: "HIGH RISK (Thermal Runaway Hazard)",
+          riskClass: "risk-high",
+          desc: "Rely exclusively on Li-ion UPS beyond 15-minute rating without generator start.",
+          speed: "Immediate",
+          scrap: "$850,000 USD",
+          recovery: "Catastrophic battery cell degradation"
+        }
+      ],
+      callout: "\"Substation operator, open tie breaker 52-T1 immediately. Confirm generator bus synchronization at 13.8 kilovolts before closing Genset 1 feeder.\"",
+      repeat: "\"Opening tie breaker 52-T1 now. Verifying generator bus synchronization at 13.8 kilovolts prior to closing Genset 1 feeder.\"",
+      quiz: {
+        question: "During a hyperscale data center electrical emergency, what is the primary role of the Incident Commander regarding utility (CFE) communication?",
+        options: [
+          "Maintain a dedicated, recorded direct communication line with the grid dispatcher to coordinate switching boundaries before closing any feeder tie breakers",
+          "Allow any technician to toggle substation switchgear without notifying the utility",
+          "Shut down all backup diesel generators to conserve diesel fuel",
+          "Evacuate the server room and wait for the utility bill"
+        ],
+        answer: 0,
+        explanation: "Coordination with utility dispatchers (CENACE / CFE) prevents backfeeding power into de-energized lines which could electrocute utility line crews or cause out-of-phase catastrophic breaker closure."
+      }
+    }
+  };
+
+  const CLOSEDLOOP_DRILL_DATA = {
+    prompt: "Sender (Quality Manager): \"Shift maintenance lead, adjust extruder thermal zone 4 from 245\u00b0C down to 215\u00b0C, and purge the manifold with dry nitrogen for 180 seconds.\"",
+    options: [
+      { text: "\"Understood. Adjusting extruder thermal zone 4 from 245\u00b0C down to 215\u00b0C, and purging manifold with dry nitrogen for 180 seconds.\"", correct: true },
+      { text: "\"Copy that, got it! Will turn down the temperature and flush the machine right away.\"", correct: false, note: "Ambiguous: Omits exact temperature numbers (215°C) and purge duration (180s)." },
+      { text: "\"OK, reducing heat on zone 4 and blowing some nitrogen.\"", correct: false, note: "Unacceptable: Casual phrasing violates aviation/nuclear 3-way readback standards." }
+    ],
+    explanation: "Closed-loop communication mandates exact readback of numerical setpoints (215°C, 180s) to prevent catastrophic process deviations."
+  };
+
+  let currentWarRoomKey = 'automotive_linedown';
+  let selectedStrategyIndex = 0;
+
+  window.switchWarRoomSubpanel = function(mode) {
+    const btnWarroom = document.getElementById('btn-tab-warroom');
+    const btnClosedloop = document.getElementById('btn-tab-closedloop');
+    const subWarroom = document.getElementById('subpanel-warroom');
+    const subClosedloop = document.getElementById('subpanel-closedloop');
+
+    if (!btnWarroom || !btnClosedloop || !subWarroom || !subClosedloop) return;
+
+    if (mode === 'warroom') {
+      btnWarroom.classList.add('active');
+      btnClosedloop.classList.remove('active');
+      subWarroom.style.display = 'block';
+      subClosedloop.style.display = 'none';
+    } else {
+      btnClosedloop.classList.add('active');
+      btnWarroom.classList.remove('active');
+      subClosedloop.style.display = 'block';
+      subWarroom.style.display = 'none';
+    }
+  };
+
+  window.switchWarRoomScenario = function(key) {
+    if (!WARROOM_SCENARIOS[key]) return;
+    currentWarRoomKey = key;
+    selectedStrategyIndex = 0;
+    const scen = WARROOM_SCENARIOS[key];
+
+    // Update chips
+    document.querySelectorAll('.warroom-chip').forEach(btn => {
+      btn.classList.toggle('active', btn.id === `chip-${key}`);
+    });
+
+    // Update Ticker
+    const tickerStatus = document.getElementById('warroom-ticker-status');
+    const clockEl = document.getElementById('warroom-elapsed-clock');
+    const costEl = document.getElementById('warroom-accumulated-cost');
+    if (tickerStatus) tickerStatus.textContent = scen.tickerStatus;
+    if (clockEl) clockEl.textContent = scen.clock;
+    if (costEl) costEl.textContent = scen.cost;
+
+    // Update Details
+    const titleEl = document.getElementById('warroom-incident-title');
+    const sevEl = document.getElementById('warroom-severity-tag');
+    const burnEl = document.getElementById('warroom-burn-rate');
+    const stakeEl = document.getElementById('warroom-stakeholder');
+    const defectEl = document.getElementById('warroom-defect-mech');
+    const regEl = document.getElementById('warroom-reg-risk');
+
+    if (titleEl) titleEl.textContent = scen.title;
+    if (sevEl) sevEl.textContent = scen.severity;
+    if (burnEl) burnEl.textContent = scen.burnRate;
+    if (stakeEl) stakeEl.textContent = scen.stakeholder;
+    if (defectEl) defectEl.textContent = scen.defectMech;
+    if (regEl) regEl.textContent = scen.regRisk;
+
+    // Render Strategies List
+    renderWarRoomStrategies();
+
+    // Render Quiz
+    const quizQEl = document.getElementById('warroom-quiz-q');
+    const quizOptsEl = document.getElementById('warroom-quiz-opts');
+    const feedbackEl = document.getElementById('warroom-quiz-feedback');
+    if (quizQEl) quizQEl.textContent = scen.quiz.question;
+    if (quizOptsEl) {
+      quizOptsEl.innerHTML = scen.quiz.options.map((opt, idx) => `
+        <button class="warroom-quiz-btn" onclick="submitWarRoomQuiz(${idx})">
+          ${String.fromCharCode(65 + idx)}. ${opt}
+        </button>
+      `).join('');
+    }
+    if (feedbackEl) {
+      feedbackEl.style.display = 'none';
+      feedbackEl.innerHTML = '';
+    }
+
+    // Update Closed-Loop subpanel scripts
+    const calloutEl = document.getElementById('closedloop-callout-text');
+    const repeatEl = document.getElementById('closedloop-repeat-text');
+    if (calloutEl) calloutEl.textContent = scen.callout;
+    if (repeatEl) repeatEl.textContent = scen.repeat;
+
+    // Render Live SITREP
+    updateWarRoomSitrep();
+  };
+
+  function renderWarRoomStrategies() {
+    const scen = WARROOM_SCENARIOS[currentWarRoomKey];
+    const container = document.getElementById('warroom-strategies-list');
+    if (!scen || !container) return;
+
+    container.innerHTML = scen.strategies.map((strat, idx) => `
+      <div class="warroom-strategy-card ${idx === selectedStrategyIndex ? 'selected' : ''}" onclick="selectWarRoomStrategy(${idx})">
+        <div class="warroom-strategy-head">
+          <span class="warroom-strategy-name">${strat.name}</span>
+          <span class="warroom-strategy-risk ${strat.riskClass}">${strat.risk}</span>
+        </div>
+        <p class="warroom-strategy-desc">${strat.desc}</p>
+        <div class="warroom-strategy-stats">
+          <span><i class="fa-solid fa-stopwatch"></i> ${strat.speed}</span>
+          <span><i class="fa-solid fa-money-bill-wave"></i> Scrap: ${strat.scrap}</span>
+          <span><i class="fa-solid fa-truck-fast"></i> Recovery: ${strat.recovery}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.selectWarRoomStrategy = function(idx) {
+    selectedStrategyIndex = idx;
+    renderWarRoomStrategies();
+    updateWarRoomSitrep();
+  };
+
+  function updateWarRoomSitrep() {
+    const scen = WARROOM_SCENARIOS[currentWarRoomKey];
+    const previewEl = document.getElementById('warroom-sitrep-preview');
+    if (!scen || !previewEl) return;
+
+    const strat = scen.strategies[selectedStrategyIndex];
+    const now = new Date();
+    const dateStr = now.toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
+
+    const sitrep = 
+`# EXECUTIVE SITUATION REPORT (SITREP) — INCIDENT COMMAND
+INCIDENT : ${scen.title}
+SEVERITY : ${scen.severity}
+TIMESTAMP: ${dateStr}
+CHOPPER  : Active Emergency Bridge (US-HQ & MEX-Plant Ops)
+
+1. INCIDENT OVERVIEW & ROOT CAUSE EXPOSURE
+--------------------------------------------------------------------------------
+\u2022 Defect Mechanism : ${scen.defectMech}
+\u2022 Financial Impact : ${scen.burnRate}
+\u2022 Regulatory Risk  : ${scen.regRisk}
+\u2022 Key Stakeholder  : ${scen.stakeholder}
+
+2. ACTIVE CONTAINMENT ACTION (SELECTED PROTOCOL)
+--------------------------------------------------------------------------------
+\u2022 Strategy Applied : ${strat.name}
+\u2022 Risk Standing    : ${strat.risk}
+\u2022 Containment Speed: ${strat.speed}
+\u2022 Associated Cost  : ${strat.scrap}
+\u2022 Production Path  : ${strat.recovery}
+\u2022 Action Detail    : ${strat.desc}
+
+3. CLOSED-LOOP VERBAL VERIFICATION
+--------------------------------------------------------------------------------
+[x] Clear sender directive issued via Incident Command
+[x] Verbatim repeat-back recorded by Lead Investigator
+[x] Customer Liaison confirmation transmitted to Detroit / Minneapolis
+
+4. NEXT INCIDENT CHECKPOINT
+--------------------------------------------------------------------------------
+Next Cross-Border Status Call: In exactly 30 minutes.
+Incident Commander Authorization: SIGNED & ACTIVE`;
+
+    previewEl.textContent = sitrep;
+  }
+
+  window.copyWarRoomSitrep = function(btnEl) {
+    const previewEl = document.getElementById('warroom-sitrep-preview');
+    if (!previewEl) return;
+    const text = previewEl.textContent.trim();
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+    if (btnEl) {
+      const origHtml = btnEl.innerHTML;
+      btnEl.innerHTML = '<i class="fa-solid fa-check"></i> SITREP Copied!';
+      btnEl.style.background = 'rgba(16, 185, 129, 0.3)';
+      btnEl.style.borderColor = '#10b981';
+      btnEl.style.color = '#34d399';
+      setTimeout(() => {
+        btnEl.innerHTML = origHtml;
+        btnEl.style.background = '';
+        btnEl.style.borderColor = '';
+        btnEl.style.color = '';
+      }, 2000);
+    }
+  };
+
+  window.submitWarRoomQuiz = function(selectedIdx) {
+    const scen = WARROOM_SCENARIOS[currentWarRoomKey];
+    if (!scen) return;
+    const btns = document.querySelectorAll('.warroom-quiz-btn');
+    const feedbackEl = document.getElementById('warroom-quiz-feedback');
+    if (!feedbackEl) return;
+
+    btns.forEach((btn, idx) => {
+      btn.classList.remove('correct', 'wrong');
+      if (idx === scen.quiz.answer) {
+        btn.classList.add('correct');
+      } else if (idx === selectedIdx) {
+        btn.classList.add('wrong');
+      }
+    });
+
+    feedbackEl.style.display = 'block';
+    if (selectedIdx === scen.quiz.answer) {
+      feedbackEl.style.background = 'rgba(16, 185, 129, 0.15)';
+      feedbackEl.style.border = '1px solid #10b981';
+      feedbackEl.style.color = '#34d399';
+      feedbackEl.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Correct!</strong> ${scen.quiz.explanation}`;
+    } else {
+      feedbackEl.style.background = 'rgba(239, 68, 68, 0.15)';
+      feedbackEl.style.border = '1px solid #ef4444';
+      feedbackEl.style.color = '#f87171';
+      feedbackEl.innerHTML = `<strong><i class="fa-solid fa-circle-xmark"></i> Incorrect.</strong> Correct answer: <em>${scen.quiz.options[scen.quiz.answer]}</em>. ${scen.quiz.explanation}`;
+    }
+  };
+
+  // Closed-Loop Drill Submission
+  window.submitClosedLoopDrill = function(selectedIdx) {
+    const opts = CLOSEDLOOP_DRILL_DATA.options;
+    const btns = document.querySelectorAll('.closedloop-opt-btn');
+    const feedbackEl = document.getElementById('closedloop-drill-feedback');
+    if (!feedbackEl) return;
+
+    btns.forEach((btn, idx) => {
+      btn.classList.remove('correct', 'wrong');
+      if (opts[idx].correct) {
+        btn.classList.add('correct');
+      } else if (idx === selectedIdx) {
+        btn.classList.add('wrong');
+      }
+    });
+
+    feedbackEl.style.display = 'block';
+    if (opts[selectedIdx].correct) {
+      feedbackEl.style.background = 'rgba(16, 185, 129, 0.15)';
+      feedbackEl.style.border = '1px solid #10b981';
+      feedbackEl.style.color = '#34d399';
+      feedbackEl.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Exemplary Closed-Loop Repeat-Back!</strong> ${CLOSEDLOOP_DRILL_DATA.explanation}`;
+    } else {
+      feedbackEl.style.background = 'rgba(239, 68, 68, 0.15)';
+      feedbackEl.style.border = '1px solid #ef4444';
+      feedbackEl.style.color = '#f87171';
+      feedbackEl.innerHTML = `<strong><i class="fa-solid fa-triangle-exclamation"></i> Communication Hazard:</strong> ${opts[selectedIdx].note || 'Incomplete readback'}. ${CLOSEDLOOP_DRILL_DATA.explanation}`;
+    }
+  };
+
+  function hydrateClosedLoopDrill() {
+    const promptEl = document.getElementById('closedloop-drill-prompt');
+    const optsContainer = document.getElementById('closedloop-drill-options');
+    if (promptEl) promptEl.textContent = CLOSEDLOOP_DRILL_DATA.prompt;
+    if (optsContainer) {
+      optsContainer.innerHTML = CLOSEDLOOP_DRILL_DATA.options.map((opt, idx) => `
+        <button class="closedloop-opt-btn" onclick="submitClosedLoopDrill(${idx})">
+          ${String.fromCharCode(65 + idx)}. ${opt.text}
+        </button>
+      `).join('');
+    }
+  }
+
+  window.playWarRoomSpeech = function(elementId) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    const text = el.textContent.trim().replace(/^"/, '').replace(/"$/, '');
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.95;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  // Initial Scenario & Drill Hydration
+  window.switchWarRoomScenario('automotive_linedown');
+  hydrateClosedLoopDrill();
+}
+
 
 

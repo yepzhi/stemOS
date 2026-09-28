@@ -1180,7 +1180,157 @@ if (dumps[0].app !== 'stemos' || !dumps[0].error.message.includes('Synthetic Tes
 console.log("PASS: Ultra-efficient telemetry captures unhandled/custom errors and maintains breadcrumbs.");
 window.__telemetry.clear();
 
-console.log("\n🎉 ALL 18 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+console.log("\n── TEST 19: Incident Response War Room & Closed-Loop Communication Lab (Phase 10) ──");
+
+// 19.1 Section and element presence
+const warroomSection = document.getElementById('incident-war-room-section');
+console.log("War Room Section presence:", !!warroomSection);
+if (!warroomSection) {
+  console.error("FAIL: #incident-war-room-section not found in DOM!");
+  process.exit(1);
+}
+
+const navWarroomBtn = document.getElementById('nav-btn-warroom');
+const heroWarroomBtn = document.getElementById('hero-warroom-btn');
+console.log("Nav button presence:", !!navWarroomBtn);
+console.log("Hero button presence:", !!heroWarroomBtn);
+if (!navWarroomBtn || !heroWarroomBtn) {
+  console.error("FAIL: Nav or Hero CTA button for Incident War Room missing!");
+  process.exit(1);
+}
+
+// 19.2 Initial Scenario Hydration (automotive_linedown)
+const warroomTitle = document.getElementById('warroom-incident-title');
+const warroomClock = document.getElementById('warroom-elapsed-clock');
+const warroomCost = document.getElementById('warroom-accumulated-cost');
+const warroomTicker = document.getElementById('warroom-ticker-status');
+const strategiesList = document.querySelectorAll('#warroom-strategies-list .warroom-strategy-card');
+
+console.log("War Room Target Title:", warroomTitle ? warroomTitle.textContent : "null");
+console.log("Strategies count:", strategiesList.length);
+console.log("Initial Clock:", warroomClock ? warroomClock.textContent : "null");
+console.log("Initial Cost:", warroomCost ? warroomCost.textContent : "null");
+
+if (!warroomTitle || !warroomTitle.textContent.includes('Automotive Final Assembly Line-Stop')) {
+  console.error("FAIL: Automotive linedown scenario title not hydrated!");
+  process.exit(1);
+}
+if (strategiesList.length !== 3) {
+  console.error("FAIL: Expected 3 containment strategies, found " + strategiesList.length);
+  process.exit(1);
+}
+
+// 19.3 Containment Strategy Selection & Live SITREP Update
+window.selectWarRoomStrategy(1); // Select Option B: Hot-Shot Air Charter
+const sitrepPre = document.getElementById('warroom-sitrep-preview');
+console.log("SITREP Preview content length:", sitrepPre ? sitrepPre.textContent.length : 0);
+if (!sitrepPre || !sitrepPre.textContent.includes('EXECUTIVE SITUATION REPORT (SITREP)') || !sitrepPre.textContent.includes('Option B: Hot-Shot Air Charter')) {
+  console.error("FAIL: SITREP markdown preview did not update with Option B!");
+  process.exit(1);
+}
+
+// 19.4 SITREP Copy Action
+const sitrepCopyBtn = document.querySelector('.warroom-memo-header .btn-loto-action');
+window.copyWarRoomSitrep(sitrepCopyBtn);
+console.log("SITREP Copy Button state:", sitrepCopyBtn ? sitrepCopyBtn.textContent : "null");
+if (!sitrepCopyBtn || !sitrepCopyBtn.textContent.includes('Copied')) {
+  console.error("FAIL: SITREP copy button did not trigger Copied state!");
+  process.exit(1);
+}
+
+// 19.5 ICS Incident Command Protocol Quiz
+const warroomQuizBtns = document.querySelectorAll('.warroom-quiz-btn');
+console.log("War Room Quiz options count:", warroomQuizBtns.length);
+if (warroomQuizBtns.length !== 4) {
+  console.error("FAIL: Expected 4 ICS quiz options, found " + warroomQuizBtns.length);
+  process.exit(1);
+}
+window.submitWarRoomQuiz(0); // Option 0 is correct
+const warroomQuizFeedback = document.getElementById('warroom-quiz-feedback');
+console.log("War Room Quiz Feedback:", warroomQuizFeedback ? warroomQuizFeedback.textContent : "null");
+if (!warroomQuizFeedback || !warroomQuizFeedback.textContent.includes('Correct!')) {
+  console.error("FAIL: War Room Quiz submission did not display correct feedback!");
+  process.exit(1);
+}
+console.log("PASS: War Room Triage, Containment Matrix, SITREP, and ICS Quiz verified.");
+
+// 19.6 Scenario Switching Across All 4 High-Consequence Incident Scenarios
+window.switchWarRoomScenario('medtech_bioburden');
+if (!warroomTitle.textContent.includes('MedTech Cleanroom Sterile Barrier')) {
+  console.error("FAIL: Failed to switch to MedTech scenario!");
+  process.exit(1);
+}
+
+window.switchWarRoomScenario('semicon_esd');
+if (!warroomTitle.textContent.includes('Semicon 3nm ATE Automated Wafer Sort')) {
+  console.error("FAIL: Failed to switch to Semicon scenario!");
+  process.exit(1);
+}
+
+window.switchWarRoomScenario('data_center_ups');
+if (!warroomTitle.textContent.includes('Hyperscale Data Center 115kV')) {
+  console.error("FAIL: Failed to switch to Data Center scenario!");
+  process.exit(1);
+}
+console.log("PASS: 4 Cross-border incident scenarios hydrated and verified successfully.");
+
+// 19.7 Closed-Loop Communication Mode & Readback Drill
+window.switchWarRoomSubpanel('closedloop');
+const subWarroom = document.getElementById('subpanel-warroom');
+const subClosedloop = document.getElementById('subpanel-closedloop');
+console.log("Subpanel closedloop display:", subClosedloop ? subClosedloop.style.display : "null");
+console.log("Subpanel warroom display:", subWarroom ? subWarroom.style.display : "null");
+
+if (!subClosedloop || subClosedloop.style.display !== 'block' || subWarroom.style.display !== 'none') {
+  console.error("FAIL: Closed-loop subpanel display toggle failed!");
+  process.exit(1);
+}
+
+const calloutEl = document.getElementById('closedloop-callout-text');
+const repeatEl = document.getElementById('closedloop-repeat-text');
+console.log("Callout text present:", !!calloutEl && calloutEl.textContent.length > 10);
+console.log("Repeat-Back text present:", !!repeatEl && repeatEl.textContent.length > 10);
+if (!calloutEl || !repeatEl) {
+  console.error("FAIL: Closed-loop callout or repeat-back elements missing!");
+  process.exit(1);
+}
+
+// Test Closed-Loop Speech synthesis invocation
+window.playWarRoomSpeech('closedloop-callout-text');
+window.playWarRoomSpeech('closedloop-repeat-text');
+console.log("PASS: Web Speech API readback calls executed cleanly.");
+
+// Test Drill submission: submit option 1 (wrong) then option 0 (correct)
+const drillBtns = document.querySelectorAll('.closedloop-opt-btn');
+console.log("Closed-loop drill options count:", drillBtns.length);
+if (drillBtns.length !== 3) {
+  console.error("FAIL: Expected 3 closed-loop drill options, found " + drillBtns.length);
+  process.exit(1);
+}
+
+window.submitClosedLoopDrill(1); // Wrong option (ambiguous)
+const drillFeedback = document.getElementById('closedloop-drill-feedback');
+if (!drillFeedback || !drillFeedback.textContent.includes('Communication Hazard')) {
+  console.error("FAIL: Wrong drill option did not display Communication Hazard feedback!");
+  process.exit(1);
+}
+
+window.submitClosedLoopDrill(0); // Correct option (verbatim numbers)
+if (!drillFeedback || !drillFeedback.textContent.includes('Exemplary Closed-Loop Repeat-Back')) {
+  console.error("FAIL: Correct drill option did not display Exemplary Closed-Loop feedback!");
+  process.exit(1);
+}
+console.log("PASS: Aviation & nuclear grade closed-loop readback drill verified.");
+
+// Switch back to War Room subpanel
+window.switchWarRoomSubpanel('warroom');
+if (subWarroom.style.display !== 'block') {
+  console.error("FAIL: Failed to switch back to War Room subpanel!");
+  process.exit(1);
+}
+
+console.log("\n🎉 ALL 19 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+
 
 
 

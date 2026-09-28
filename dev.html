@@ -51,6 +51,7 @@
         <a href="#corporate-ld-section" class="nav-link" id="nav-btn-corporate-ld"><i class="fa-solid fa-chart-line" style="color:#38bdf8; margin-right:4px;"></i> Enterprise L&amp;D</a>
         <a href="#blueprint-reading-section" class="nav-link" id="nav-btn-blueprint-lab"><i class="fa-solid fa-compass-drafting" style="color:#38bdf8; margin-right:4px;"></i> Blueprint &amp; P&amp;ID</a>
         <a href="#loto-handover-section" class="nav-link" id="nav-btn-loto-lab"><i class="fa-solid fa-lock" style="color:#ef4444; margin-right:4px;"></i> LOTO &amp; Shift Handover</a>
+        <a href="#incident-war-room-section" class="nav-link" id="nav-btn-warroom"><i class="fa-solid fa-headset" style="color:#f43f5e; margin-right:4px;"></i> Incident War Room</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-certificates" onclick="openCertificateModal()"><i class="fa-solid fa-award" style="color:#eab308; margin-right:4px;"></i> Certificates &amp; QR</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-cloud-sync" onclick="openCloudSyncModal()"><i class="fa-solid fa-cloud-arrow-up" style="color:#06b6d4; margin-right:4px;"></i> <span id="nav-cloud-status">Cloud Sync</span></a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-stembot" onclick="toggleStemBotCopilot(true)"><i class="fa-solid fa-robot" style="color:#0ea5e9; margin-right:4px;"></i> STEMBot Copilot</a>
@@ -124,6 +125,10 @@
         <a href="#loto-handover-section" class="supaste-btn-secondary" id="hero-loto-btn" style="border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.12);">
           <i class="fa-solid fa-lock" style="color:#ef4444;"></i>
           <span>LOTO &amp; Handover Lab</span>
+        </a>
+        <a href="#incident-war-room-section" class="supaste-btn-secondary" id="hero-warroom-btn" style="border-color: rgba(244, 63, 94, 0.4); background: rgba(244, 63, 94, 0.12);">
+          <i class="fa-solid fa-headset" style="color:#f43f5e;"></i>
+          <span>Crisis War Room Lab</span>
         </a>
         <a href="#hero-showcase-window" class="supaste-btn-secondary" id="hero-view-demo-btn">
           <i class="fa-solid fa-laptop-code"></i>
@@ -2495,6 +2500,197 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Phase 10: Incident Response War Room & Closed-Loop Communication Lab ── -->
+  <section class="incident-war-room-section" id="incident-war-room-section">
+    <div class="warroom-container">
+      <!-- Section Header -->
+      <div class="warroom-header-wrap">
+        <div class="warroom-badge">
+          <i class="fa-solid fa-triangle-exclamation"></i> INCIDENT COMMAND SYSTEM (ICS) &bull; FEMA / IATF 16949 / FDA 21 CFR 820
+        </div>
+        <h2 class="warroom-title">Incident Response War Room &amp; Closed-Loop Communication Lab</h2>
+        <p class="warroom-desc">
+          High-pressure cross-border line-down triage simulation, real-time downtime cost telemetry, dynamic containment decision matrix, aviation-grade closed-loop communication (Callout &rarr; Repeat-Back &rarr; Hear-Back), and executive SITREP memo generator.
+        </p>
+        
+        <!-- Mode Switcher Tabs -->
+        <div class="warroom-mode-tabs">
+          <button class="warroom-tab-btn active" id="btn-tab-warroom" onclick="switchWarRoomSubpanel('warroom')">
+            <i class="fa-solid fa-headset"></i> Crisis War Room Triage
+          </button>
+          <button class="warroom-tab-btn" id="btn-tab-closedloop" onclick="switchWarRoomSubpanel('closedloop')">
+            <i class="fa-solid fa-repeat"></i> Closed-Loop Communication
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Ticker Alert Banner -->
+      <div class="warroom-ticker-strip">
+        <div class="warroom-ticker-left">
+          <div class="warroom-live-dot"></div>
+          <div class="warroom-ticker-headline" id="warroom-ticker-status">
+            ACTIVE INCIDENT: Line-Stop at Arlington Assembly OEM &bull; Cross-Border Emergency Bridge Open
+          </div>
+        </div>
+        <div class="warroom-ticker-metrics">
+          <div class="warroom-metric-pill">
+            <span class="warroom-metric-lbl">Downtime Clock</span>
+            <span class="warroom-metric-val" id="warroom-elapsed-clock">00:48:15</span>
+          </div>
+          <div class="warroom-metric-pill">
+            <span class="warroom-metric-lbl">Accumulated Cost</span>
+            <span class="warroom-metric-val" id="warroom-accumulated-cost">$41,012 USD</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subpanel 1: War Room Triage -->
+      <div id="subpanel-warroom" class="warroom-subpanel">
+        <!-- Scenario Selector Chips -->
+        <div class="warroom-scenario-bar">
+          <button class="warroom-chip active" id="chip-automotive_linedown" onclick="switchWarRoomScenario('automotive_linedown')">
+            <i class="fa-solid fa-car-burst"></i> 1. Automotive Arlington Line-Down
+          </button>
+          <button class="warroom-chip" id="chip-medtech_bioburden" onclick="switchWarRoomScenario('medtech_bioburden')">
+            <i class="fa-solid fa-vial-circle-check"></i> 2. MedTech Sterile Seal Excursion
+          </button>
+          <button class="warroom-chip" id="chip-semicon_esd" onclick="switchWarRoomScenario('semicon_esd')">
+            <i class="fa-solid fa-microchip"></i> 3. Semicon 3nm ATE ESD Spike
+          </button>
+          <button class="warroom-chip" id="chip-data_center_ups" onclick="switchWarRoomScenario('data_center_ups')">
+            <i class="fa-solid fa-server"></i> 4. Data Center 115kV Power Loss
+          </button>
+        </div>
+
+        <!-- Workbench Grid -->
+        <div class="warroom-workbench-grid">
+          <!-- Left Column: Incident Scope & Containment Strategy Matrix -->
+          <div class="warroom-card-panel">
+            <div class="warroom-panel-header">
+              <h3 class="warroom-target-title" id="warroom-incident-title">
+                Automotive Final Assembly Line-Stop (Arlington TX)
+              </h3>
+              <span class="warroom-severity-tag" id="warroom-severity-tag">SEVERITY 1 &bull; CRITICAL</span>
+            </div>
+
+            <!-- Incident Overview Details Grid -->
+            <div class="warroom-details-grid">
+              <div class="warroom-detail-item">
+                <span class="warroom-detail-lbl">Downtime Burn Rate</span>
+                <span class="warroom-detail-val" id="warroom-burn-rate">$850 USD / minute</span>
+              </div>
+              <div class="warroom-detail-item">
+                <span class="warroom-detail-lbl">Customer Stakeholder</span>
+                <span class="warroom-detail-val" id="warroom-stakeholder">VP Manufacturing Operations (Detroit)</span>
+              </div>
+              <div class="warroom-detail-item">
+                <span class="warroom-detail-lbl">Defect Mechanism</span>
+                <span class="warroom-detail-val" id="warroom-defect-mech">Casting porosity on front steering knuckle</span>
+              </div>
+              <div class="warroom-detail-item">
+                <span class="warroom-detail-lbl">Regulatory Exposure</span>
+                <span class="warroom-detail-val" id="warroom-reg-risk">NHTSA Safety Non-Compliance / IATF D3</span>
+              </div>
+            </div>
+
+            <!-- Containment Decision Strategies -->
+            <div class="warroom-strategies-box">
+              <div class="warroom-strategies-title">
+                <i class="fa-solid fa-shield-virus"></i> Immediate Containment Strategy Matrix (Select Action)
+              </div>
+              <div id="warroom-strategies-list">
+                <!-- Dynamically rendered containment strategy cards -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Live SITREP Memo & Incident Command Quiz -->
+          <div class="warroom-memo-panel">
+            <div class="warroom-memo-header">
+              <span class="warroom-memo-title"><i class="fa-solid fa-bullhorn"></i> Executive Situation Report (SITREP)</span>
+              <button class="btn-loto-action" onclick="copyWarRoomSitrep(this)">
+                <i class="fa-solid fa-copy"></i> Copy SITREP
+              </button>
+            </div>
+
+            <pre class="warroom-memo-pre" id="warroom-sitrep-preview"></pre>
+
+            <!-- ICS Incident Command Competency Quiz -->
+            <div class="warroom-quiz-card">
+              <div class="warroom-panel-header" style="padding-bottom:8px; margin-bottom:4px;">
+                <span class="warroom-memo-title" style="color:#fbbf24;"><i class="fa-solid fa-graduation-cap"></i> ICS / IATF Incident Command Protocol</span>
+              </div>
+              <div class="warroom-quiz-q" id="warroom-quiz-q">
+                In an active high-stakes cross-border line-down bridge, when the customer VP asks for an immediate restart ETA that is technically unconfirmed, what is the correct C1 response?
+              </div>
+              <div class="warroom-quiz-opts" id="warroom-quiz-opts">
+                <!-- Dynamically rendered -->
+              </div>
+              <div class="warroom-quiz-feedback" id="warroom-quiz-feedback" style="display:none;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subpanel 2: Closed-Loop Communication Drills -->
+      <div id="subpanel-closedloop" class="warroom-subpanel" style="display:none;">
+        <div class="closedloop-grid">
+          <!-- Step 1: Callout Card -->
+          <div class="closedloop-step-card">
+            <div class="closedloop-step-head">
+              <span class="closedloop-badge badge-callout">1</span>
+              <div>
+                <span class="closedloop-step-title">Clear Sender Callout (Unambiguous Directive)</span>
+                <div style="font-size:0.72rem; color:#94a3b8;">Sender delivers critical numerical parameter or isolation directive</div>
+              </div>
+            </div>
+            <div class="closedloop-script-box" id="closedloop-callout-text">
+              "War room, this is Incident Commander. Quarantine all steering knuckles from Heat Batch #8819 immediately. Do not release Pallets 4 through 12."
+            </div>
+            <div style="display:flex; justify-content:flex-end;">
+              <button class="btn-loto-action" onclick="playWarRoomSpeech('closedloop-callout-text')">
+                <i class="fa-solid fa-volume-high"></i> Listen Callout
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Repeat-Back Card -->
+          <div class="closedloop-step-card">
+            <div class="closedloop-step-head">
+              <span class="closedloop-badge badge-repeat">2</span>
+              <div>
+                <span class="closedloop-step-title">Receiver Readback / Repeat-Back (Verbatim)</span>
+                <div style="font-size:0.72rem; color:#94a3b8;">Receiver mirrors the exact numbers and action (no casual 'copy that' or 'ok')</div>
+              </div>
+            </div>
+            <div class="closedloop-script-box repeat-box" id="closedloop-repeat-text">
+              "Understood. Quarantining all steering knuckles from Heat Batch #8819 now. Holding Pallets 4 through 12 in locked red-tag quarantine area."
+            </div>
+            <div style="display:flex; justify-content:flex-end;">
+              <button class="btn-loto-action" onclick="playWarRoomSpeech('closedloop-repeat-text')">
+                <i class="fa-solid fa-volume-high"></i> Listen Readback
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Drill Section below -->
+        <div class="closedloop-drill-box" style="margin-top:16px;">
+          <div class="closedloop-drill-title">
+            <i class="fa-solid fa-stopwatch-20"></i> Aviation &amp; Nuclear Grade Readback Drill: Spot the Correct Closed-Loop Response
+          </div>
+          <div style="font-size:0.8rem; color:#cbd5e1; margin-bottom:8px;" id="closedloop-drill-prompt">
+            Sender: "Shift maintenance lead, adjust extruder thermal zone 4 from 245°C down to 215°C, and purge the manifold with dry nitrogen for 180 seconds."
+          </div>
+          <div class="closedloop-drill-opts" id="closedloop-drill-options">
+            <!-- Dynamically rendered readback choices -->
+          </div>
+          <div class="warroom-quiz-feedback" id="closedloop-drill-feedback" style="display:none; margin-top:8px;"></div>
         </div>
       </div>
     </div>
