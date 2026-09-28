@@ -1,9 +1,9 @@
 /**
- * stemOS Dev Content Studio — PWA Service Worker (v5.2.0 Blueprint & P&ID Reading Lab)
- * Enables 100% complete offline caching for 34 tracks, 266 readings, 162 idioms, STEMBot Copilot, Auditable Certificates, Cloud Sync, and Blueprint Lab.
+ * stemOS Dev Content Studio — PWA Service Worker (v5.3.0 LOTO & Shift Handover Lab)
+ * Enables 100% complete offline caching for 34 tracks, 266 readings, 162 idioms, STEMBot Copilot, Auditable Certificates, Cloud Sync, Blueprint Lab, and LOTO Zero-Energy Lab.
  */
 
-const CACHE_NAME = 'stemos-lxp-v5.2.0-blueprint-pid-inspection-lab';
+const CACHE_NAME = 'stemos-lxp-v5.3.0-loto-and-shift-handover';
 
 const ASSETS_TO_CACHE = [
   '/',

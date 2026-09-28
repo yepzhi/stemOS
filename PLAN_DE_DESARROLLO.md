@@ -184,6 +184,39 @@ Cada modismo en `content/phrases_library.js` debe implementar el siguiente esque
 - [x] **8.6 Caché PWA v5.2.0 & Despliegue en DEV**:
   - Actualización de `sw.js` a `stemos-lxp-v5.2.0-blueprint-pid-inspection-lab`, validación de 17 pruebas DOM headless y sincronización exacta con `dev/index.html`.
 
+### 🟢 FASE 9 (Safety Engineering & Operational Continuity) — Laboratorio Interactivo de Protocolos LOTO y Entrega de Turno (Shift Handover)
+- [x] **9.1 Workbench de Aislamiento de Energía Cero LOTO (OSHA 1910.147 / NFPA 70E)**:
+  - **4 Escenarios Críticos de Desconexión de Alta Energía**:
+    1. *Automotriz (OSHA 1910.147 / NFPA 70E Cat 4)*: Celda de Soldadura Robótica de 6 Ejes (480V 3Φ, Cabezal Neumático de 90 psi, Pasador Mecánico de Contrapeso J2).
+    2. *Biomédica (OSHA 1910.119 PSM / ISO 13485)*: Vaporizador de Óxido de Etileno en Sala Limpia (Aislamiento Doble Bloqueo y Purga - Double Block & Bleed, Alivio a Lavador Scrubber y Vapor Limpio de 45 psig).
+    3. *Semiconductores (SEMI S2/S8 & NFPA 79)*: Cortadora de Precisión de Obleas de 300mm (Generador RF 208V, Agua Desionizada de Alta Presión a 3,000 psi y Freno Mecánico de Husillo de Aire).
+    4. *Subestaciones Eléctricas (NFPA 70E / IEEE 1584 & OSHA 1910.269)*: Interruptor de Alimentador de 13.8kV (Extracción de Carro de Vacío, Descarga de Resortes de Cierre y Cierre de Cuchilla de Puesta a Tierra).
+  - **Secuencia Paso a Paso de 6 Fases**:
+    1. Preparación y Notificación al Personal Afectado.
+    2. Paro Controlado de Equipo.
+    3. Aislamiento de Fuentes Primarias y Secundarias.
+    4. Aplicación de Candados de Seguridad, Aldabas y Tarjetas Peligro Fuera de Servicio.
+    5. Disipación de Energía Almacenada (Presión, Resortes, Capacitancia).
+    6. Verificación de Estado de Energía Cero (Prueba Try-Step con Instrumentos Calibrados).
+  - **Puntos de Bloqueo Interactivos (Locks & Tags)**:
+    - Interruptores, válvulas y pernos con selector interactivo de bloqueo, telemetría de estado y validación estricta de que todos los puntos estén asegurados antes del try-step.
+  - **Simulador de Try-Step y Verificación**:
+    - Detección de fallos si se intenta arrancar con puntos sin bloquear, y confirmación exitosa con telemetría de 0.0V / 0.0 psi.
+- [x] **9.2 Guión de Verbalización C1 para Auditores EHS**:
+  - Enunciado oficial en inglés técnico para comunicar el protocolo LOTO a inspectores de OSHA, auditores corporativos y personal de mantenimiento, con botón de escucha mediante Web Speech API y copiado al portapapeles.
+- [x] **9.3 Cuestionarios de Cumplimiento OSHA 1910.147 y NFPA 70E**:
+  - Cuestionarios interactivos de opción múltiple sobre el try-step, sistemas de doble bloqueo y purga, descarga de capacitores y prueba de 3 puntos "Live-Dead-Live" con retroalimentación instantánea.
+- [x] **9.4 Protocolo de Entrega de Turno Operacional en 4 Cuadrantes (Shift Handover)**:
+  - Estructura alineada a ISO 9001 y OSHA 1910.119 PSM:
+    - *Cuadrante 1 — What Ran*: Producción nominal, cuotas alcanzadas, OEE y métricas de calidad.
+    - *Cuadrante 2 — What Failed*: Paros imprevistos, alarmas de servomotores, tiempos muertos y reportes de falla.
+    - *Cuadrante 3 — What Was Bypassed / Isolated*: Candados LOTO activos, interlocks en bypass y permisos de trabajo en caliente abiertos.
+    - *Cuadrante 4 — What Is Pending*: Tareas prioritarias para el turno entrante, refacciones esperadas y calibraciones programadas.
+  - **Generador de Memorándum Ejecutivo en Markdown**: Formateo automático de reporte de turno en tiempo real con botón de copiado.
+  - **Briefing Verbal de 90 Segundos para Junta de Cambio de Turno (Standup Briefing)**: Resumen conciso generado al vuelo con botón de reproducción de audio.
+- [x] **9.5 Caché PWA v5.3.0 & Despliegue en DEV**:
+  - Actualización de `sw.js` a `stemos-lxp-v5.3.0-loto-and-shift-handover`, 18/18 pruebas de simulación DOM aprobadas y paridad total con `dev/index.html`.
+
 ---
 
 ## 4. Tareas Programadas y Continuación Autónoma
@@ -194,6 +227,6 @@ Se ha configurado una tarea de verificación recurrente (daemon) mediante el sis
   node scripts/autonomous_dev_pipeline.cjs
   ```
 - **Estado Actual**:
-  Todas las Fases (1.1 a 8.6) implementadas, verificadas y desplegadas con éxito rotundo (17/17 suites de pruebas DOM y simulación headless aprobadas al 100%, con estricto aislamiento de producción y paridad total en `/dev/`).
+  Todas las Fases (1.1 a 9.5) implementadas, verificadas y desplegadas con éxito rotundo (18/18 suites de pruebas DOM y simulación headless aprobadas al 100%, con estricto aislamiento de producción y paridad total en `/dev/`).
 
 

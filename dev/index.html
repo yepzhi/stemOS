@@ -50,6 +50,7 @@
         <a href="#negotiation-pitch-section" class="nav-link" id="nav-btn-pitch-lab"><i class="fa-solid fa-microphone-lines" style="color:#ec4899; margin-right:4px;"></i> Pitch &amp; Negotiation</a>
         <a href="#corporate-ld-section" class="nav-link" id="nav-btn-corporate-ld"><i class="fa-solid fa-chart-line" style="color:#38bdf8; margin-right:4px;"></i> Enterprise L&amp;D</a>
         <a href="#blueprint-reading-section" class="nav-link" id="nav-btn-blueprint-lab"><i class="fa-solid fa-compass-drafting" style="color:#38bdf8; margin-right:4px;"></i> Blueprint &amp; P&amp;ID</a>
+        <a href="#loto-handover-section" class="nav-link" id="nav-btn-loto-lab"><i class="fa-solid fa-lock" style="color:#ef4444; margin-right:4px;"></i> LOTO &amp; Shift Handover</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-certificates" onclick="openCertificateModal()"><i class="fa-solid fa-award" style="color:#eab308; margin-right:4px;"></i> Certificates &amp; QR</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-cloud-sync" onclick="openCloudSyncModal()"><i class="fa-solid fa-cloud-arrow-up" style="color:#06b6d4; margin-right:4px;"></i> <span id="nav-cloud-status">Cloud Sync</span></a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-stembot" onclick="toggleStemBotCopilot(true)"><i class="fa-solid fa-robot" style="color:#0ea5e9; margin-right:4px;"></i> STEMBot Copilot</a>
@@ -119,6 +120,10 @@
         <a href="#blueprint-reading-section" class="supaste-btn-secondary" id="hero-blueprint-btn" style="border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.12);">
           <i class="fa-solid fa-compass-drafting" style="color:#38bdf8;"></i>
           <span>Blueprint &amp; P&amp;ID Lab</span>
+        </a>
+        <a href="#loto-handover-section" class="supaste-btn-secondary" id="hero-loto-btn" style="border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.12);">
+          <i class="fa-solid fa-lock" style="color:#ef4444;"></i>
+          <span>LOTO &amp; Handover Lab</span>
         </a>
         <a href="#hero-showcase-window" class="supaste-btn-secondary" id="hero-view-demo-btn">
           <i class="fa-solid fa-laptop-code"></i>
@@ -2295,6 +2300,200 @@
               <div class="bp-quiz-feedback" id="bp-quiz-feedback" style="display:none;"></div>
             </div>
 
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Phase 9: LOTO Zero-Energy Protocol & Shift Handover Lab ── -->
+  <section class="loto-handover-section" id="loto-handover-section">
+    <div class="loto-container">
+      <!-- Section Header -->
+      <div class="loto-header-wrap">
+        <div class="loto-badge">
+          <i class="fa-solid fa-lock"></i> OSHA 1910.147 / NFPA 70E &bull; ISO 45001 EHS
+        </div>
+        <h2 class="loto-title">LOTO Zero-Energy Protocol &amp; Shift Handover Lab</h2>
+        <p class="loto-desc">
+          Interactive zero-energy Lockout/Tagout isolation sequences, mechanical/pneumatic/electrical point locks, try-step verification, bilingual EHS verbal scripts, and structured 4-quadrant operational shift handover memos.
+        </p>
+        
+        <!-- Mode Switcher Tabs -->
+        <div class="loto-mode-tabs">
+          <button class="loto-tab-btn active" id="btn-tab-loto" onclick="switchLotoSubpanel('loto')">
+            <i class="fa-solid fa-shield-halved"></i> LOTO Zero-Energy Protocol
+          </button>
+          <button class="loto-tab-btn" id="btn-tab-handover" onclick="switchLotoSubpanel('handover')">
+            <i class="fa-solid fa-clipboard-check"></i> Shift Handover Protocol
+          </button>
+        </div>
+      </div>
+
+      <!-- Subpanel 1: LOTO Protocol -->
+      <div id="subpanel-loto" class="loto-subpanel">
+        <!-- Scenario Selector Chips -->
+        <div class="loto-scenario-bar">
+          <button class="loto-chip active" id="chip-automotive_robot" onclick="switchLotoScenario('automotive_robot')">
+            <i class="fa-solid fa-robot"></i> 1. Automotive Welding Cell
+          </button>
+          <button class="loto-chip" id="chip-medtech_eto" onclick="switchLotoScenario('medtech_eto')">
+            <i class="fa-solid fa-flask-vial"></i> 2. MedTech EtO Vaporizer
+          </button>
+          <button class="loto-chip" id="chip-semicon_dicing" onclick="switchLotoScenario('semicon_dicing')">
+            <i class="fa-solid fa-microchip"></i> 3. Semicon Wafer Dicer
+          </button>
+          <button class="loto-chip" id="chip-power_substation" onclick="switchLotoScenario('power_substation')">
+            <i class="fa-solid fa-bolt-lightning"></i> 4. 13.8kV Substation
+          </button>
+        </div>
+
+        <!-- LOTO Workbench Grid -->
+        <div class="loto-workbench-grid">
+          <!-- Left Column: Step-by-Step Isolation Sequence & Points -->
+          <div class="loto-card-panel">
+            <div class="loto-panel-header">
+              <h3 class="loto-target-title" id="loto-target-title">Automotive 6-Axis Welding Cell (480V / 90psi / Hydraulic)</h3>
+              <span class="loto-standard-tag" id="loto-standard-tag">OSHA 1910.147 &bull; NFPA 70E Cat 4</span>
+            </div>
+
+            <!-- Steps List -->
+            <div class="loto-steps-list" id="loto-steps-list">
+              <!-- Dynamically rendered -->
+            </div>
+
+            <!-- Isolation Points Box -->
+            <div class="loto-points-box">
+              <div class="loto-points-header">
+                <span class="loto-points-title"><i class="fa-solid fa-key" style="color:#ef4444; margin-right:6px;"></i> Isolation Points (Lockout &amp; Tagout)</span>
+                <span class="loto-points-status" id="loto-points-status">0 / 3 Locked</span>
+              </div>
+              <div class="loto-points-grid" id="loto-points-grid">
+                <!-- Dynamically rendered isolation points -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Verification, Speech Verbalization & Quiz -->
+          <div class="loto-auditor-panel">
+            <!-- Try-Step Banner -->
+            <div class="loto-trystep-banner" id="loto-trystep-banner">
+              <div class="loto-trystep-text" id="loto-trystep-text">
+                <i class="fa-solid fa-circle-exclamation" style="color:#f59e0b; margin-right:6px;"></i>
+                <span>Step 6: Apply all isolation locks before executing zero-energy verification.</span>
+              </div>
+              <button class="btn-trystep" id="btn-loto-trystep" onclick="verifyZeroEnergyTryStep()">
+                <i class="fa-solid fa-hand-fist"></i> Execute Try-Step
+              </button>
+            </div>
+
+            <!-- C1 EHS Verbal Script -->
+            <div class="loto-script-card">
+              <div class="loto-script-header">
+                <span class="loto-script-title"><i class="fa-solid fa-bullhorn"></i> C1 EHS Auditor Verbalization Script</span>
+                <div class="loto-btn-toolbar">
+                  <button class="btn-loto-action" onclick="playLotoSpeech('loto-script-text')" title="Listen to Pronunciation">
+                    <i class="fa-solid fa-volume-high"></i> Listen
+                  </button>
+                  <button class="btn-loto-action" onclick="copyLotoScript(this)" title="Copy Script">
+                    <i class="fa-solid fa-copy"></i> Copy
+                  </button>
+                </div>
+              </div>
+              <p class="loto-script-text" id="loto-script-text">
+                "Team, initiating zero-energy LOTO protocol on 6-Axis Welding Cell #4. Disconnecting 480V 3-phase feeder SW-101 and locking out with padlock #LK-401. Depressurizing pneumatic header BV-02 to 0 psi. Inserting mechanical locking pin BP-01 into robot arm counter-balance. Testing control pushbutton to verify zero motion and residual energy dissipation. Area is safe for mechanical intervention."
+              </p>
+            </div>
+
+            <!-- OSHA Compliance Quiz -->
+            <div class="loto-quiz-card">
+              <div class="loto-panel-header" style="padding-bottom:8px; margin-bottom:4px;">
+                <span class="loto-script-title" style="color:#fbbf24;"><i class="fa-solid fa-graduation-cap"></i> OSHA 1910.147 Competency Check</span>
+              </div>
+              <div class="loto-quiz-q" id="loto-quiz-q">
+                Before commencing maintenance under OSHA 1910.147, what mandatory step must occur immediately after locks and tags are affixed to energy isolation devices?
+              </div>
+              <div class="loto-quiz-opts" id="loto-quiz-opts">
+                <!-- Dynamically rendered -->
+              </div>
+              <div class="loto-quiz-feedback" id="loto-quiz-feedback" style="display:none;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subpanel 2: Operational Shift Handover Protocol -->
+      <div id="subpanel-handover" class="loto-subpanel" style="display:none;">
+        <div class="handover-workbench-grid">
+          <!-- Left Column: 4-Quadrant Inputs -->
+          <div class="loto-card-panel">
+            <div class="loto-panel-header">
+              <h3 class="loto-target-title"><i class="fa-solid fa-clipboard-list" style="color:#38bdf8; margin-right:8px;"></i> Shift Handover 4-Quadrant Protocol</h3>
+              <span class="loto-standard-tag">ISO 9001 / OSHA 1910.119 PSM</span>
+            </div>
+
+            <!-- Shift Metadata Inputs -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div class="handover-field">
+                <label class="handover-label">Facility / Production Unit</label>
+                <input type="text" class="handover-input" id="ho-facility" value="Automotive Assembly Plant - Unit 03" oninput="updateShiftHandoverMemo()">
+              </div>
+              <div class="handover-field">
+                <label class="handover-label">Shift Handover Details</label>
+                <input type="text" class="handover-input" id="ho-shift" value="Shift A (Day) &rarr; Shift B (Swing)" oninput="updateShiftHandoverMemo()">
+              </div>
+            </div>
+
+            <!-- 4 Quadrants -->
+            <div class="handover-quadrant-grid">
+              <!-- Q1: What Ran -->
+              <div class="handover-q-card">
+                <div class="handover-q-title q1-color"><i class="fa-solid fa-circle-check"></i> 1. What Ran (Nominal Operations)</div>
+                <textarea class="handover-input handover-textarea" id="ho-q1-ran" oninput="updateShiftHandoverMemo()">Lines 1 &amp; 2 operated at 98.4% OEE. Produced 4,850 units against 4,800 quota. Batch QA pass rate: 99.8%.</textarea>
+              </div>
+
+              <!-- Q2: What Failed -->
+              <div class="handover-q-card">
+                <div class="handover-q-title q2-color"><i class="fa-solid fa-triangle-exclamation"></i> 2. What Failed (Downtime &amp; Alarms)</div>
+                <textarea class="handover-input handover-textarea" id="ho-q2-failed" oninput="updateShiftHandoverMemo()">Cell #4 welding robot servo amp tripped at 14:15. Overcurrent alarm #E-4091. Downtime: 45 min. Maintenance called.</textarea>
+              </div>
+
+              <!-- Q3: What Was Bypassed / Isolated -->
+              <div class="handover-q-card">
+                <div class="handover-q-title q3-color"><i class="fa-solid fa-lock"></i> 3. What Was Bypassed / Isolated (LOTO)</div>
+                <textarea class="handover-input handover-textarea" id="ho-q3-bypassed" oninput="updateShiftHandoverMemo()">Cell #4 LOTO applied: SW-101 locked, BV-02 pneumatics vented, pin BP-01 inserted. Hot work permit #HW-882 active.</textarea>
+              </div>
+
+              <!-- Q4: What Is Pending -->
+              <div class="handover-q-card">
+                <div class="handover-q-title q4-color"><i class="fa-solid fa-list-check"></i> 4. What Is Pending (Incoming Shift Tasks)</div>
+                <textarea class="handover-input handover-textarea" id="ho-q4-pending" oninput="updateShiftHandoverMemo()">Verify servo replacement on Cell #4 before de-isolating. Calibration verification run at 16:30. Restock nitrogen cylinders.</textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Live Markdown Memo Preview & Standup Briefing -->
+          <div class="handover-memo-panel">
+            <div class="handover-memo-header">
+              <span class="handover-memo-title"><i class="fa-solid fa-file-lines"></i> Executive Shift Handover Memo</span>
+              <button class="btn-loto-action" onclick="copyHandoverMemo(this)">
+                <i class="fa-solid fa-copy"></i> Copy Memo
+              </button>
+            </div>
+
+            <pre class="handover-memo-pre" id="ho-memo-preview"></pre>
+
+            <div class="handover-standup-box">
+              <span class="handover-standup-title"><i class="fa-solid fa-microphone"></i> 90-Second Verbal Standup Script</span>
+              <p class="handover-standup-quote" id="ho-standup-quote">
+                <!-- Dynamically generated standup script -->
+              </p>
+              <div style="display:flex; justify-content:flex-end;">
+                <button class="btn-loto-action" onclick="playLotoSpeech('ho-standup-quote')" title="Listen to Standup Script">
+                  <i class="fa-solid fa-volume-high"></i> Listen Standup
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

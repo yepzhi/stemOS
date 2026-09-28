@@ -136,6 +136,7 @@ function initStudio() {
   setupStemBotSocraticCopilot();
   setupCertificatesAndCloudSync(tracks);
   setupBlueprintAndPidLab(tracks);
+  setupLotoAndShiftHandoverLab(tracks);
 }
 
 function setupLevelSwitcher(tracks, phrases) {
@@ -8071,4 +8072,442 @@ function setupBlueprintAndPidLab(tracks) {
   // Initial diagram hydration
   window.switchBlueprintDiagram('medtech_pid');
 }
+
+/* ==========================================================================
+   PHASE 9: LOTO ZERO-ENERGY PROTOCOL & SHIFT HANDOVER LAB
+   ========================================================================== */
+function setupLotoAndShiftHandoverLab(tracks) {
+  const LOTO_SCENARIOS = {
+    automotive_robot: {
+      title: "Automotive 6-Axis Welding Cell (480V 3\u03a6 / 90psi / Hydraulic)",
+      standard: "OSHA 1910.147 \u2022 NFPA 70E Cat 4",
+      steps: [
+        { num: 1, name: "Preparation & Notification", detail: "Notify affected line operators, cell leads, and stamping supervisors of Cell #4 shutdown." },
+        { num: 2, name: "Equipment Shutdown", detail: "Depress normal cycle stop on teach pendant; verify robot returns to home cradle; trip safety gate E-stop." },
+        { num: 3, name: "Energy Isolation", detail: "Open 480V 3-phase disconnect SW-101; close pneumatic header valve BV-02." },
+        { num: 4, name: "Lockout / Tagout Application", detail: "Apply red master padlock LK-401 to SW-101 hasp; affix cable lockout to valve BV-02 with Danger Out of Service tags." },
+        { num: 5, name: "Stored Energy Dissipation", detail: "Depress manual bleeder valve on air regulator to 0.0 psi; insert mechanical locking pin BP-01 into J2 counterbalance." },
+        { num: 6, name: "Verification of Zero-Energy (Try-Step)", detail: "Depress teach pendant start buttons to test non-motion; test 480V disconnect terminals with calibrated multimeter across L1-L2-L3." }
+      ],
+      points: [
+        { id: "SW-101", tag: "SW-101", desc: "480V 3-Phase Main Disconnect", locked: false, energy: "Electrical (480VAC)" },
+        { id: "BV-02", tag: "BV-02", desc: "Pneumatic Header Bleeder Valve (90 psi)", locked: false, energy: "Pneumatic (Air)" },
+        { id: "BP-01", tag: "BP-01", desc: "J2 Counterbalance Mechanical Lock Pin", locked: false, energy: "Mechanical (Gravity)" }
+      ],
+      script: "\"Team, initiating authorized zero-energy LOTO protocol on 6-Axis Welding Cell #4. Disconnecting 480V 3-phase feeder SW-101 and locking out with padlock #LK-401. Depressurizing pneumatic header BV-02 to 0 psi. Inserting mechanical locking pin BP-01 into robot arm counter-balance. Testing control pushbutton to verify zero motion and residual energy dissipation. Multimeter confirms 0.0V between all phases. System is de-energized and cleared for mechanical intervention.\"",
+      quiz: {
+        question: "Under OSHA 1910.147(d)(6), what mandatory step must occur after applying locks and tags before any technician begins servicing equipment?",
+        options: [
+          "Verify isolation by attempting to operate the equipment and testing for zero residual energy with test instruments",
+          "Immediately remove physical guards and begin mechanical teardown",
+          "Sign off the permit in the control room without testing physical switches",
+          "Wait 15 minutes for any capacitors to cool down without electrical verification"
+        ],
+        answer: 0,
+        explanation: "OSHA 1910.147(d)(6) mandates verification of isolation ('try-step') to ascertain that equipment is effectively isolated and residual energy is safely discharged."
+      }
+    },
+    medtech_eto: {
+      title: "MedTech Cleanroom EtO Vaporizer (Double Block & Bleed / Steam)",
+      standard: "OSHA 1910.119 PSM \u2022 ISO 13485 / 11135",
+      steps: [
+        { num: 1, name: "Preparation & Chamber Aeration", detail: "Notify sterilization dept; confirm EtO chamber deep vacuum purge completed and ambient reading < 1 ppm." },
+        { num: 2, name: "Cycle Abort & Valve Tripping", detail: "Execute emergency abort sequence; command automated pneumatic supply valves to fail-safe closed position." },
+        { num: 3, name: "Double Block & Bleed Isolation", detail: "Close upstream block XV-104; close downstream isolation XV-106; open intermediate vent VV-105 to scrubber." },
+        { num: 4, name: "Lockout / Tagout Application", detail: "Affix chemical valve clamshell lock to XV-104; lock clean steam supply valve SV-201 with chemical hazard tags." },
+        { num: 5, name: "Residual Chemical & Steam Venting", detail: "Verify scrubber pressure gauge at 0 psig; drain condensate trap on steam supply." },
+        { num: 6, name: "Zero-Energy & Vapor Verification", detail: "Sniff chamber port with calibrated photoionization detector (PID); confirm 0.0 ppm EtO before flange disconnect." }
+      ],
+      points: [
+        { id: "XV-104", tag: "XV-104", desc: "EtO Liquid Supply Upstream Block Valve", locked: false, energy: "Chemical (Ethylene Oxide)" },
+        { id: "VV-105", tag: "VV-105", desc: "Double Block Bleed Vent to Scrubber", locked: false, energy: "Chemical Venting" },
+        { id: "SV-201", tag: "SV-201", desc: "Clean Steam Header Isolation (45 psig)", locked: false, energy: "Thermal Steam" }
+      ],
+      script: "\"Sterilization team, executing Double Block and Bleed LOTO on EtO Vaporizer Loop #2. Primary supply XV-104 is locked closed, downstream isolation XV-106 secured, and bleeder VV-105 locked open to the catalytic abatement scrubber. Clean steam valve SV-201 is locked closed. PID sensor confirms zero toxic residual vapor below 0.1 ppm. Safe to uncouple vaporizer flanges.\"",
+      quiz: {
+        question: "Why does OSHA 1910.119 PSM require a 'Double Block and Bleed' valve arrangement for toxic lines like Ethylene Oxide?",
+        options: [
+          "To guarantee that any seat leakage from the primary valve is vented safely away before reaching the work area",
+          "To increase line pressure during maintenance",
+          "To bypass the chemical scrubber during emergency shutdowns",
+          "To eliminate the need for personal protective equipment (PPE)"
+        ],
+        answer: 0,
+        explanation: "A Double Block and Bleed configuration uses two isolation valves with an intermediate bleed vent, ensuring any valve seat weepage is vented safely to abatement rather than leaking across the work boundary."
+      }
+    },
+    semicon_dicing: {
+      title: "Semicon Precision Wafer Dicer (208V RF Gen / 3000psi DI Water)",
+      standard: "SEMI S2 / S8 Guidelines \u2022 NFPA 79",
+      steps: [
+        { num: 1, name: "Lot Evacuation & Fab Notification", detail: "Unload active 300mm wafer cassette from chuck; notify cleanroom Fab 2 yield supervisor." },
+        { num: 2, name: "Spindle Spin-Down & Power Down", detail: "Command air-bearing spindle deceleration to 0 RPM; power off blade dressing routine." },
+        { num: 3, name: "Energy Isolation", detail: "Switch off 208V RF generator breaker RF-DISC; close high-pressure DI cutting water supply DIW-V1." },
+        { num: 4, name: "Lockout / Tagout Application", detail: "Apply circuit breaker clamp lockout to RF-DISC; apply lock and tag to DIW-V1 handle." },
+        { num: 5, name: "Stored Pressure Bleed & Spindle Pin", detail: "Bleed 3,000 psi DI water accumulator via manual pressure relief PRV-3; insert SPIN-LOCK arbor lock." },
+        { num: 6, name: "Zero-Energy Verification", detail: "Confirm DI water pressure gauge at 0 psi; touch RF capacitor bank terminals with insulated grounding hook." }
+      ],
+      points: [
+        { id: "RF-DISC", tag: "RF-DISC", desc: "208V RF Generator Main Breaker", locked: false, energy: "Electrical (208VAC)" },
+        { id: "DIW-V1", tag: "DIW-V1", desc: "High-Pressure DI Water Line (3,000 psi)", locked: false, energy: "Hydraulic (Water)" },
+        { id: "SPIN-LOCK", tag: "SPIN-LOCK", desc: "Air-Bearing High-Speed Spindle Lock", locked: false, energy: "Rotational Mechanical" }
+      ],
+      script: "\"Fab 2 engineering, securing Dicing Saw #7 for spindle arbor replacement. RF generator breaker RF-DISC is locked out. High-pressure DI water valve DIW-V1 closed and bled down to zero bar. Mechanical spindle pin SPIN-LOCK is engaged. Capacitor discharge hook applied to RF circuit. Unit is verified in a zero-energy state.\"",
+      quiz: {
+        question: "In high-precision semiconductor tools containing capacitor banks or RF matching networks, how must stored electrical energy be safely dissipated?",
+        options: [
+          "By waiting or using an approved, insulated grounding hook to short and discharge capacitor banks",
+          "By spraying deionized water on the electrical terminal",
+          "By cycling the machine on and off rapidly",
+          "By removing the safety interlocks while running"
+        ],
+        answer: 0,
+        explanation: "Stored capacitance can retain lethal high voltage even after main breaker isolation. An insulated grounding hook/stick discharges capacitors to ground before technicians touch wiring."
+      }
+    },
+    power_substation: {
+      title: "13.8kV Switchgear Feeder Breaker (Medium Voltage / Arc-Flash Cat 4)",
+      standard: "NFPA 70E / IEEE 1584 \u2022 OSHA 1910.269",
+      steps: [
+        { num: 1, name: "Switching Order Review & Arc-Flash PPE", detail: "Review electrical switching schedule; don 40 cal/cm\u00b2 arc-flash suit, hood, face shield, and 20kV rubber gloves." },
+        { num: 2, name: "Breaker Trip & Open Check", detail: "Depress electrical trip pushbutton; verify breaker flag shows GREEN (Open) on cubicle door." },
+        { num: 3, name: "Breaker Truck Racking Out", detail: "Engage remote racking mechanism; rack vacuum circuit breaker truck from CONNECTED to DISCONNECTED position." },
+        { num: 4, name: "Lockout / Tagout Application", detail: "Close switchgear safety shutter; padlock racking access port with lock LK-701; attach Hold-Off tag." },
+        { num: 5, name: "Spring Discharge & Feeder Grounding", detail: "Discharge stored closing spring (SP-DISCH); close manual feeder grounding switch GRD-SW." },
+        { num: 6, name: "Live-Dead-Live Three-Point Verification", detail: "Test non-contact voltage detector on known energized bus, test de-energized feeder terminals (0.0kV), and re-verify detector on live bus." }
+      ],
+      points: [
+        { id: "52-RACK", tag: "52-RACK", desc: "13.8kV Vacuum Breaker Truck (Racked Out)", locked: false, energy: "Electrical (13.8kV)" },
+        { id: "SP-DISCH", tag: "SP-DISCH", desc: "Stored Mechanical Closing Spring", locked: false, energy: "Mechanical Spring" },
+        { id: "GRD-SW", tag: "GRD-SW", desc: "Feeder Bus Grounding Switch (Closed & Locked)", locked: false, energy: "Induced Electrostatic" }
+      ],
+      script: "\"Substation crew, performing medium-voltage clearance on 13.8kV Feeder 3. Breaker 52-RACK has been remotely racked out to disconnected position and shutter locked. Closing springs are discharged. Feeder ground switch GRD-SW is closed and tagged. Live-dead-live test completed with 15kV rated hot stick and detector. Zero voltage confirmed. Clearance active.\"",
+      quiz: {
+        question: "What is the industry-standard 'Live-Dead-Live' (Three-Point Test) required by NFPA 70E when verifying zero voltage on electrical circuits?",
+        options: [
+          "Test the meter on a known live voltage source, test the isolated target circuit, then re-test on the known live source to verify tester functionality",
+          "Turn on the circuit, measure current, and immediately shut it off",
+          "Measure voltage three times on the same dead circuit wire",
+          "Touch the conductor with a leather glove before using a digital voltmeter"
+        ],
+        answer: 0,
+        explanation: "NFPA 70E 120.5 requires testing the voltage tester on a known energized source before and after measuring the de-energized circuit to prove the meter did not fail open."
+      }
+    }
+  };
+
+  let currentScenarioKey = 'automotive_robot';
+
+  window.switchLotoSubpanel = function(mode) {
+    const btnLoto = document.getElementById('btn-tab-loto');
+    const btnHandover = document.getElementById('btn-tab-handover');
+    const subLoto = document.getElementById('subpanel-loto');
+    const subHandover = document.getElementById('subpanel-handover');
+
+    if (!btnLoto || !btnHandover || !subLoto || !subHandover) return;
+
+    if (mode === 'loto') {
+      btnLoto.classList.add('active');
+      btnHandover.classList.remove('active');
+      subLoto.style.display = 'block';
+      subHandover.style.display = 'none';
+    } else {
+      btnHandover.classList.add('active');
+      btnLoto.classList.remove('active');
+      subHandover.style.display = 'block';
+      subLoto.style.display = 'none';
+      window.updateShiftHandoverMemo();
+    }
+  };
+
+  window.switchLotoScenario = function(key) {
+    if (!LOTO_SCENARIOS[key]) return;
+    currentScenarioKey = key;
+    const scen = LOTO_SCENARIOS[key];
+
+    // Update chips
+    document.querySelectorAll('.loto-chip').forEach(btn => {
+      btn.classList.toggle('active', btn.id === `chip-${key}`);
+    });
+
+    // Update titles
+    const titleEl = document.getElementById('loto-target-title');
+    const tagEl = document.getElementById('loto-standard-tag');
+    if (titleEl) titleEl.textContent = scen.title;
+    if (tagEl) tagEl.textContent = scen.standard;
+
+    // Render Steps
+    const stepsListEl = document.getElementById('loto-steps-list');
+    if (stepsListEl) {
+      stepsListEl.innerHTML = scen.steps.map(s => `
+        <div class="loto-step-card" id="loto-step-${s.num}">
+          <div class="loto-step-num">${s.num}</div>
+          <div class="loto-step-body">
+            <span class="loto-step-name">${s.name}</span>
+            <span class="loto-step-detail">${s.detail}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render Points
+    renderLotoPointsGrid();
+
+    // Reset Try-Step Banner
+    const trystepTextEl = document.getElementById('loto-trystep-text');
+    if (trystepTextEl) {
+      trystepTextEl.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="color:#f59e0b; margin-right:6px;"></i> <span>Step 6: Apply all isolation locks before executing zero-energy verification.</span>`;
+      trystepTextEl.parentElement.style.background = '#071529';
+      trystepTextEl.parentElement.style.borderColor = 'rgba(56, 189, 248, 0.3)';
+    }
+
+    // Render Script
+    const scriptEl = document.getElementById('loto-script-text');
+    if (scriptEl) {
+      scriptEl.textContent = scen.script;
+    }
+
+    // Render Quiz
+    const quizQEl = document.getElementById('loto-quiz-q');
+    const quizOptsEl = document.getElementById('loto-quiz-opts');
+    const feedbackEl = document.getElementById('loto-quiz-feedback');
+    if (quizQEl) quizQEl.textContent = scen.quiz.question;
+    if (quizOptsEl) {
+      quizOptsEl.innerHTML = scen.quiz.options.map((opt, idx) => `
+        <button class="loto-quiz-btn" onclick="submitLotoQuiz(${idx})">
+          ${String.fromCharCode(65 + idx)}. ${opt}
+        </button>
+      `).join('');
+    }
+    if (feedbackEl) {
+      feedbackEl.style.display = 'none';
+      feedbackEl.innerHTML = '';
+    }
+  };
+
+  function renderLotoPointsGrid() {
+    const scen = LOTO_SCENARIOS[currentScenarioKey];
+    const gridEl = document.getElementById('loto-points-grid');
+    const statusEl = document.getElementById('loto-points-status');
+    if (!scen || !gridEl) return;
+
+    const lockedCount = scen.points.filter(p => p.locked).length;
+    if (statusEl) {
+      statusEl.textContent = `${lockedCount} / ${scen.points.length} Locked`;
+      statusEl.style.color = lockedCount === scen.points.length ? '#10b981' : '#38bdf8';
+    }
+
+    gridEl.innerHTML = scen.points.map(pt => `
+      <div class="loto-point-item">
+        <div class="loto-point-info">
+          <span class="loto-point-tag">${pt.tag} &bull; ${pt.energy}</span>
+          <span class="loto-point-desc">${pt.desc}</span>
+        </div>
+        <button class="btn-loto-toggle ${pt.locked ? 'locked' : ''}" onclick="toggleLotoPoint('${pt.id}')">
+          <i class="fa-solid ${pt.locked ? 'fa-lock' : 'fa-lock-open'}"></i>
+          <span>${pt.locked ? 'Locked & Tagged' : 'Lock Point'}</span>
+        </button>
+      </div>
+    `).join('');
+  }
+
+  window.toggleLotoPoint = function(pointId) {
+    const scen = LOTO_SCENARIOS[currentScenarioKey];
+    if (!scen) return;
+    const pt = scen.points.find(p => p.id === pointId);
+    if (!pt) return;
+
+    pt.locked = !pt.locked;
+    renderLotoPointsGrid();
+
+    // Check if all locked
+    const lockedCount = scen.points.filter(p => p.locked).length;
+    const trystepTextEl = document.getElementById('loto-trystep-text');
+    if (trystepTextEl) {
+      if (lockedCount === scen.points.length) {
+        trystepTextEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981; margin-right:6px;"></i> <strong>Ready for Try-Step:</strong> All ${lockedCount} points locked and tagged. Click 'Execute Try-Step' to test zero-energy state.`;
+      } else {
+        trystepTextEl.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="color:#f59e0b; margin-right:6px;"></i> <span>Step 6: ${lockedCount}/${scen.points.length} points locked. Lock all points before verification.</span>`;
+      }
+    }
+  };
+
+  window.verifyZeroEnergyTryStep = function() {
+    const scen = LOTO_SCENARIOS[currentScenarioKey];
+    if (!scen) return;
+
+    const trystepTextEl = document.getElementById('loto-trystep-text');
+    const lockedCount = scen.points.filter(p => p.locked).length;
+
+    if (lockedCount < scen.points.length) {
+      if (trystepTextEl) {
+        trystepTextEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#ef4444; margin-right:6px;"></i> <strong>TRY-STEP FAILED:</strong> Only ${lockedCount}/${scen.points.length} points isolated! Residual hazardous energy present. Cannot proceed safely!`;
+        trystepTextEl.parentElement.style.background = 'rgba(239, 68, 68, 0.15)';
+        trystepTextEl.parentElement.style.borderColor = '#ef4444';
+      }
+    } else {
+      if (trystepTextEl) {
+        trystepTextEl.innerHTML = `<i class="fa-solid fa-shield-check" style="color:#10b981; margin-right:6px;"></i> <strong>ZERO-ENERGY CONFIRMED:</strong> Try-step verified! Test pushbutton pressed (no motion); multimeter confirmed 0.0V / 0.0 psi. Safe for mechanical entry!`;
+        trystepTextEl.parentElement.style.background = 'rgba(16, 185, 129, 0.18)';
+        trystepTextEl.parentElement.style.borderColor = '#10b981';
+      }
+      // Highlight Step 6 as completed
+      const step6El = document.getElementById('loto-step-6');
+      if (step6El) {
+        step6El.classList.add('completed');
+      }
+    }
+  };
+
+  window.playLotoSpeech = function(elementId) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    const text = el.textContent.trim().replace(/^"/, '').replace(/"$/, '');
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.95;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  window.copyLotoScript = function(btnEl) {
+    const scriptEl = document.getElementById('loto-script-text');
+    if (!scriptEl) return;
+    const text = scriptEl.textContent.trim();
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+    if (btnEl) {
+      const origHtml = btnEl.innerHTML;
+      btnEl.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+      btnEl.style.background = 'rgba(16, 185, 129, 0.3)';
+      btnEl.style.borderColor = '#10b981';
+      btnEl.style.color = '#34d399';
+      setTimeout(() => {
+        btnEl.innerHTML = origHtml;
+        btnEl.style.background = '';
+        btnEl.style.borderColor = '';
+        btnEl.style.color = '';
+      }, 2000);
+    }
+  };
+
+  window.submitLotoQuiz = function(selectedIdx) {
+    const scen = LOTO_SCENARIOS[currentScenarioKey];
+    if (!scen) return;
+    const btns = document.querySelectorAll('.loto-quiz-btn');
+    const feedbackEl = document.getElementById('loto-quiz-feedback');
+    if (!feedbackEl) return;
+
+    btns.forEach((btn, idx) => {
+      btn.classList.remove('correct', 'wrong');
+      if (idx === scen.quiz.answer) {
+        btn.classList.add('correct');
+      } else if (idx === selectedIdx) {
+        btn.classList.add('wrong');
+      }
+    });
+
+    feedbackEl.style.display = 'block';
+    if (selectedIdx === scen.quiz.answer) {
+      feedbackEl.style.background = 'rgba(16, 185, 129, 0.15)';
+      feedbackEl.style.border = '1px solid #10b981';
+      feedbackEl.style.color = '#34d399';
+      feedbackEl.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Correct!</strong> ${scen.quiz.explanation}`;
+    } else {
+      feedbackEl.style.background = 'rgba(239, 68, 68, 0.15)';
+      feedbackEl.style.border = '1px solid #ef4444';
+      feedbackEl.style.color = '#f87171';
+      feedbackEl.innerHTML = `<strong><i class="fa-solid fa-circle-xmark"></i> Incorrect.</strong> Correct answer: <em>${scen.quiz.options[scen.quiz.answer]}</em>. ${scen.quiz.explanation}`;
+    }
+  };
+
+  // Operational Shift Handover Generator
+  window.updateShiftHandoverMemo = function() {
+    const facility = document.getElementById('ho-facility')?.value || 'Industrial Plant Unit';
+    const shift = document.getElementById('ho-shift')?.value || 'Shift 1 -> Shift 2';
+    const q1 = document.getElementById('ho-q1-ran')?.value || 'Nominal operations.';
+    const q2 = document.getElementById('ho-q2-failed')?.value || 'None reported.';
+    const q3 = document.getElementById('ho-q3-bypassed')?.value || 'No active LOTO locks.';
+    const q4 = document.getElementById('ho-q4-pending')?.value || 'Continue scheduled production.';
+
+    const now = new Date();
+    const dateStr = now.toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
+
+    const memoMarkdown = 
+`# OPERATIONAL SHIFT HANDOVER LOG (ISO 9001 / OSHA 1910.119 PSM)
+Facility / Unit : ${facility}
+Shift Handover  : ${shift}
+Timestamp       : ${dateStr}
+Compliance Level: High-Reliability Operations (HRO) Standard
+
+================================================================================
+1. WHAT RAN (Nominal Production, Throughput & Quality Metrics)
+--------------------------------------------------------------------------------
+${q1}
+
+================================================================================
+2. WHAT FAILED (Unplanned Downtime, Equipment Trips & Process Deviations)
+--------------------------------------------------------------------------------
+${q2}
+
+================================================================================
+3. WHAT WAS BYPASSED / ISOLATED (LOTO Locks, Safety Interlocks & Open Permits)
+--------------------------------------------------------------------------------
+${q3}
+
+================================================================================
+4. WHAT IS PENDING (Critical Action Items, Spare Parts & Incoming Shift Handover)
+--------------------------------------------------------------------------------
+${q4}
+
+================================================================================
+[x] Physical verification conducted at equipment boundary
+[x] LOTO tags, locks, and keys audited & transferred
+[x] Incoming shift supervisor verbal debrief completed
+--------------------------------------------------------------------------------
+Lead Engineer Sign-off: AUTHORIZED & TRANSFERRED`;
+
+    const previewEl = document.getElementById('ho-memo-preview');
+    if (previewEl) {
+      previewEl.textContent = memoMarkdown;
+    }
+
+    // Dynamic 90-Second Standup Script
+    const standupEl = document.getElementById('ho-standup-quote');
+    if (standupEl) {
+      standupEl.textContent = `"Good shift team, here is the verbal handover for ${shift} at ${facility}. In operations: ${q1.split('.')[0]}. Key deviation to note: ${q2.split('.')[0]}. For safety and LOTO: ${q3.split('.')[0]}. Top priority for the incoming team: ${q4.split('.')[0]}. Let's have a safe and productive shift."`;
+    }
+  };
+
+  window.copyHandoverMemo = function(btnEl) {
+    const memoEl = document.getElementById('ho-memo-preview');
+    if (!memoEl) return;
+    const text = memoEl.textContent.trim();
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+    if (btnEl) {
+      const origHtml = btnEl.innerHTML;
+      btnEl.innerHTML = '<i class="fa-solid fa-check"></i> Memo Copied!';
+      btnEl.style.background = 'rgba(16, 185, 129, 0.3)';
+      btnEl.style.borderColor = '#10b981';
+      btnEl.style.color = '#34d399';
+      setTimeout(() => {
+        btnEl.innerHTML = origHtml;
+        btnEl.style.background = '';
+        btnEl.style.borderColor = '';
+        btnEl.style.color = '';
+      }, 2000);
+    }
+  };
+
+  // Initial Scenario & Memo Hydration
+  window.switchLotoScenario('automotive_robot');
+  window.updateShiftHandoverMemo();
+}
+
 

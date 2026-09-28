@@ -1000,7 +1000,165 @@ if (!pcbaTitle || !pcbaTitle.textContent.includes('DWG-EE-4180')) {
 window.resetBlueprintZoom();
 console.log("PASS: Blueprint zoom reset executed safely.");
 
-console.log("\n🎉 ALL 17 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+console.log("\n── TEST 18: LOTO Zero-Energy Protocol & Shift Handover Lab (Phase 9) ──");
+
+// 18.1 Section and element presence
+const lotoSection = document.getElementById('loto-handover-section');
+console.log("LOTO Section presence:", !!lotoSection);
+if (!lotoSection) {
+  console.error("FAIL: #loto-handover-section not found in DOM!");
+  process.exit(1);
+}
+
+const navLotoBtn = document.getElementById('nav-btn-loto-lab');
+const heroLotoBtn = document.getElementById('hero-loto-btn');
+console.log("Nav button presence:", !!navLotoBtn);
+console.log("Hero button presence:", !!heroLotoBtn);
+if (!navLotoBtn || !heroLotoBtn) {
+  console.error("FAIL: Nav or Hero CTA button for LOTO Lab missing!");
+  process.exit(1);
+}
+
+// 18.2 LOTO Scenario switching & hydration
+window.switchLotoScenario('automotive_robot');
+const lotoTitle = document.getElementById('loto-target-title');
+const lotoTag = document.getElementById('loto-standard-tag');
+const stepsList = document.querySelectorAll('#loto-steps-list .loto-step-card');
+const pointsGrid = document.querySelectorAll('#loto-points-grid .loto-point-item');
+const pointsStatus = document.getElementById('loto-points-status');
+
+console.log("LOTO Target Title:", lotoTitle ? lotoTitle.textContent : "null");
+console.log("Steps count:", stepsList.length);
+console.log("Points count:", pointsGrid.length);
+console.log("Initial Points Status:", pointsStatus ? pointsStatus.textContent : "null");
+
+if (!lotoTitle || !lotoTitle.textContent.includes('Automotive 6-Axis Welding Cell')) {
+  console.error("FAIL: Automotive robot scenario title not hydrated!");
+  process.exit(1);
+}
+if (stepsList.length !== 6) {
+  console.error("FAIL: Expected 6 steps, found " + stepsList.length);
+  process.exit(1);
+}
+if (pointsGrid.length !== 3) {
+  console.error("FAIL: Expected 3 isolation points, found " + pointsGrid.length);
+  process.exit(1);
+}
+
+// 18.3 Interactive Point Locking & Try-Step Verification
+// Attempt try-step before locking:
+window.verifyZeroEnergyTryStep();
+let trystepText = document.getElementById('loto-trystep-text');
+console.log("Try-Step before locking:", trystepText ? trystepText.textContent : "null");
+if (!trystepText || !trystepText.textContent.includes('TRY-STEP FAILED')) {
+  console.error("FAIL: Try-step did not fail when points were unlocked!");
+  process.exit(1);
+}
+
+// Lock all 3 points
+window.toggleLotoPoint('SW-101');
+window.toggleLotoPoint('BV-02');
+window.toggleLotoPoint('BP-01');
+
+console.log("Points Status after locking 3 points:", pointsStatus.textContent);
+if (!pointsStatus.textContent.includes('3 / 3 Locked')) {
+  console.error("FAIL: Points status not reflecting 3 / 3 Locked!");
+  process.exit(1);
+}
+
+// Now execute try-step
+window.verifyZeroEnergyTryStep();
+trystepText = document.getElementById('loto-trystep-text');
+console.log("Try-Step after locking:", trystepText ? trystepText.textContent : "null");
+if (!trystepText || !trystepText.textContent.includes('ZERO-ENERGY CONFIRMED')) {
+  console.error("FAIL: Try-step did not confirm zero-energy state!");
+  process.exit(1);
+}
+const step6Card = document.getElementById('loto-step-6');
+if (!step6Card || !step6Card.classList.contains('completed')) {
+  console.error("FAIL: Step 6 card did not receive .completed class!");
+  process.exit(1);
+}
+console.log("PASS: LOTO Isolation sequence and zero-energy try-step verification verified.");
+
+// 18.4 Script Copy & Quiz Submission
+const scriptCopyBtn = document.querySelector('.loto-script-card .btn-loto-action:nth-child(2)');
+window.copyLotoScript(scriptCopyBtn);
+console.log("Script Copy Button state:", scriptCopyBtn ? scriptCopyBtn.textContent : "null");
+if (!scriptCopyBtn || !scriptCopyBtn.textContent.includes('Copied')) {
+  console.error("FAIL: Script copy button did not trigger Copied state!");
+  process.exit(1);
+}
+
+// Quiz submission (Option 0 is correct)
+const quizBtns = document.querySelectorAll('.loto-quiz-btn');
+console.log("Quiz options count:", quizBtns.length);
+if (quizBtns.length !== 4) {
+  console.error("FAIL: Expected 4 quiz options, found " + quizBtns.length);
+  process.exit(1);
+}
+window.submitLotoQuiz(0);
+const lotoQuizFeedback = document.getElementById('loto-quiz-feedback');
+console.log("LOTO Quiz Feedback:", lotoQuizFeedback ? lotoQuizFeedback.textContent : "null");
+if (!lotoQuizFeedback || !lotoQuizFeedback.textContent.includes('Correct')) {
+  console.error("FAIL: LOTO Quiz submission did not display correct feedback!");
+  process.exit(1);
+}
+console.log("PASS: EHS verbal script and OSHA compliance quiz verified.");
+
+// 18.5 Scenario Switching to MedTech EtO Vaporizer
+window.switchLotoScenario('medtech_eto');
+const medtechTitle = document.getElementById('loto-target-title');
+console.log("MedTech Scenario Title:", medtechTitle ? medtechTitle.textContent : "null");
+if (!medtechTitle || !medtechTitle.textContent.includes('MedTech Cleanroom EtO Vaporizer')) {
+  console.error("FAIL: Failed to switch to MedTech scenario!");
+  process.exit(1);
+}
+
+// 18.6 Shift Handover Subpanel & 4-Quadrant Memo Generation
+window.switchLotoSubpanel('handover');
+const subHandover = document.getElementById('subpanel-handover');
+const subLoto = document.getElementById('subpanel-loto');
+console.log("Subpanel handover display:", subHandover ? subHandover.style.display : "null");
+console.log("Subpanel loto display:", subLoto ? subLoto.style.display : "null");
+
+if (!subHandover || subHandover.style.display !== 'block' || subLoto.style.display !== 'none') {
+  console.error("FAIL: Shift Handover subpanel display toggle failed!");
+  process.exit(1);
+}
+
+const memoPre = document.getElementById('ho-memo-preview');
+console.log("Generated Handover Memo length:", memoPre ? memoPre.textContent.length : 0);
+if (!memoPre || !memoPre.textContent.includes('OPERATIONAL SHIFT HANDOVER LOG') || !memoPre.textContent.includes('WHAT RAN')) {
+  console.error("FAIL: Shift Handover markdown memo not generated properly!");
+  process.exit(1);
+}
+
+const standupQuote = document.getElementById('ho-standup-quote');
+console.log("Standup Quote:", standupQuote ? standupQuote.textContent : "null");
+if (!standupQuote || !standupQuote.textContent.includes('Good shift team')) {
+  console.error("FAIL: 90-second standup quote missing or empty!");
+  process.exit(1);
+}
+
+const memoCopyBtn = document.querySelector('.handover-memo-header .btn-loto-action');
+window.copyHandoverMemo(memoCopyBtn);
+console.log("Memo Copy Button state:", memoCopyBtn ? memoCopyBtn.textContent : "null");
+if (!memoCopyBtn || !memoCopyBtn.textContent.includes('Copied')) {
+  console.error("FAIL: Handover memo copy button did not trigger Copied state!");
+  process.exit(1);
+}
+
+// Switch back to LOTO subpanel
+window.switchLotoSubpanel('loto');
+console.log("Subpanel loto display after revert:", subLoto.style.display);
+if (subLoto.style.display !== 'block') {
+  console.error("FAIL: Failed to switch back to LOTO subpanel!");
+  process.exit(1);
+}
+
+console.log("\n🎉 ALL 18 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+
 
 
 
