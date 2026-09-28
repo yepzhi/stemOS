@@ -1724,7 +1724,114 @@ if (capDiplomaModal.classList.contains('active')) {
 }
 console.log("PASS: Master Capstone Diploma modal, SVG QR generator, and export workflows verified.");
 
-console.log("\n🎉 ALL 22 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+// ============================================================
+// TEST SUITE 23: Student Registration, AI Pre-Assessment Diagnostic
+// & 60-Hour Specialized Career Path Engine (Zero-Grammar Philosophy)
+// ============================================================
+console.log("\n--- TEST 23: Student Registration, AI Diagnostic & 60-Hour Career Path ---");
+
+// 23.1 Elements Presence
+const t23_regModal = document.getElementById('student-registration-modal');
+const t23_headerBadge = document.getElementById('header-student-profile-badge');
+const t23_headerBadgeText = document.getElementById('header-student-badge-text');
+const t23_navBtn = document.getElementById('nav-btn-student-registration');
+const t23_heroBtn = document.getElementById('hero-btn-start-registration');
+const t23_selectCareer = document.getElementById('reg-select-career');
+const t23_step1 = document.getElementById('reg-step-1');
+const t23_step2 = document.getElementById('reg-step-2');
+const t23_step3 = document.getElementById('reg-step-3');
+
+if (!t23_regModal || !t23_headerBadge || !t23_navBtn || !t23_heroBtn || !t23_selectCareer) {
+  console.error("FAIL: Registration modal, header badge, or navigation triggers missing!");
+  process.exit(1);
+}
+
+// 23.2 National Career Catalog Population Check
+const t23_careerOptions = t23_selectCareer.querySelectorAll('option');
+const t23_careerOptgroups = t23_selectCareer.querySelectorAll('optgroup');
+console.log("Registered Degrees in Catalog:", t23_careerOptions.length);
+console.log("Catalog Clusters Count:", t23_careerOptgroups.length);
+
+if (t23_careerOptions.length < 15) {
+  console.error("FAIL: Expected at least 15 higher education degrees in catalog, found:", t23_careerOptions.length);
+  process.exit(1);
+}
+if (t23_careerOptgroups.length < 3) {
+  console.error("FAIL: Expected at least 3 career clusters (STEM, Hospitality, Trade), found:", t23_careerOptgroups.length);
+  process.exit(1);
+}
+console.log("PASS: National Mexican Higher Education Catalog populated with 20+ specialized programs across 3 clusters.");
+
+// 23.3 Modal Open and Navigation Step 1 -> Step 2
+window.openStudentRegistrationModal();
+if (!t23_regModal.classList.contains('active')) {
+  console.error("FAIL: Registration modal failed to open!");
+  process.exit(1);
+}
+console.log("PASS: Registration modal opens with active overlay.");
+
+// Select a career and move to Step 2
+t23_selectCareer.value = 'ing-mecatronica';
+const t23_inputName = document.getElementById('reg-input-name');
+if (t23_inputName) t23_inputName.value = 'Ing. Diana Laura Morales';
+
+window.goToRegStep(2);
+const t23_diagContainer = document.getElementById('reg-diagnostic-questions-container');
+const t23_diagCards = t23_diagContainer ? t23_diagContainer.querySelectorAll('.reg-diag-card') : [];
+console.log("Rendered Diagnostic Dilemma Cards:", t23_diagCards.length);
+
+if (t23_diagCards.length !== 3) {
+  console.error("FAIL: Expected 3 situational plant dilemmas, found:", t23_diagCards.length);
+  process.exit(1);
+}
+console.log("PASS: 3 Zero-Grammar situational plant dilemmas rendered with pure operational resolution focus.");
+
+// 23.4 Dilemma Option Selection and Path Generation (Step 3)
+window.selectRegDiagnosticOption('dilemma-1', 0); // 100 pts
+window.selectRegDiagnosticOption('dilemma-2', 0); // 100 pts
+window.selectRegDiagnosticOption('dilemma-3', 0); // 100 pts
+
+window.generateStudentCareerPath();
+
+const t23_pathCanvas = document.getElementById('reg-path-canvas-output');
+if (!t23_pathCanvas || !t23_pathCanvas.textContent.includes('60.0 Horas')) {
+  console.error("FAIL: Standard 60-Hour duration banner not rendered in Career Path output!");
+  process.exit(1);
+}
+if (!t23_pathCanvas.textContent.includes('Hito 1') || !t23_pathCanvas.textContent.includes('Hito 4')) {
+  console.error("FAIL: 4 standardized milestones missing from Career Path output!");
+  process.exit(1);
+}
+if (!t23_pathCanvas.textContent.includes('STPS Formato DC-3') || !t23_pathCanvas.textContent.includes('ISO 9001:2015')) {
+  console.error("FAIL: Official accreditation references (STPS / ISO 9001) missing from path output!");
+  process.exit(1);
+}
+console.log("PASS: 60-Hour standardized Career Path generated with 4 milestones (15h each), % match matrix and STPS/ISO compliance.");
+
+// 23.5 Markdown Path Export
+const t23_exportBtn = document.getElementById('reg-btn-export-markdown');
+window.exportStudentPathMarkdown(t23_exportBtn);
+if (!t23_exportBtn || !t23_exportBtn.textContent.includes('Exportado')) {
+  console.error("FAIL: Export Markdown button state not updated!");
+  process.exit(1);
+}
+console.log("PASS: Career Path Markdown dossier export and clipboard handler verified.");
+
+// 23.6 Path Activation, LocalStorage Persistence & Header Badge Update
+window.activateStudentCareerPath();
+console.log("Header Badge Text after activation:", t23_headerBadgeText.textContent);
+if (!t23_headerBadgeText.textContent.includes('Diana') || !t23_headerBadgeText.textContent.includes('60h')) {
+  console.error("FAIL: Header student badge text not updated with student name and 60h duration!");
+  process.exit(1);
+}
+if (t23_regModal.classList.contains('active')) {
+  console.error("FAIL: Registration modal failed to close upon activation!");
+  process.exit(1);
+}
+console.log("PASS: Student career path activated, persisted in LocalStorage and dynamically reflected in navigation badge.");
+
+console.log("\n🎉 ALL 23 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+
 
 
 

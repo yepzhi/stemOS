@@ -1,9 +1,9 @@
 /**
- * stemOS Dev Content Studio — PWA Service Worker (v5.7.0 Nearshoring Capstone Final Certification)
- * Enables 100% complete offline caching for 34 tracks, 266 readings, 162 idioms, STEMBot Copilot, Auditable Certificates, Cloud Sync, Blueprint Lab, LOTO Zero-Energy Lab, Incident War Room, SCADA Digital Twin Lab, Cross-Border Audio Roleplay Lab, and Capstone Board Exam.
+ * stemOS Dev Content Studio — PWA Service Worker (v5.8.0 Career Paths & AI Onboarding)
+ * Enables 100% complete offline caching for 34 tracks, 266 readings, 162 idioms, STEMBot Copilot, Auditable Certificates, Cloud Sync, Blueprint Lab, LOTO Zero-Energy Lab, Incident War Room, SCADA Digital Twin Lab, Cross-Border Audio Roleplay Lab, Capstone Board Exam, and Student Onboarding Career Path 60h Engine.
  */
 
-const CACHE_NAME = 'stemos-lxp-v5.7.0-nearshoring-capstone-certification';
+const CACHE_NAME = 'stemos-lxp-v5.8.0-career-paths-and-onboarding';
 
 const ASSETS_TO_CACHE = [
   '/',

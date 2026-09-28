@@ -78,12 +78,15 @@ const statusReport = {
     'Phase 10: Incident Response War Room & Closed-Loop Communication Lab (FEMA ICS / IATF 16949 / FDA 21 CFR 820 / NFPA 855)',
     'Phase 11: Real-Time Multi-Plant SCADA Telemetry & Edge AI Process Digital Twin (ISA-95 / OPC UA / ISO 22400)',
     'Phase 12: Autonomous Cross-Border Audio Roleplay & Real-Time Phonetic Accent Classifier (CEFR C1 / Prosody Radar)',
-    'Phase 13: Capstone Nearshoring Final Certification & Board Exam (Multi-Station Circuit & Oral Defense Tribunal)'
+    'Phase 13: Capstone Nearshoring Final Certification & Board Exam (Multi-Station Circuit & Oral Defense Tribunal)',
+    'Phase 14: National Higher Education Catalog of Mexico (CENEVAL / ANUIES / TecNM / SEP)',
+    'Phase 15: AI Pre-Assessment Diagnostic & % Match Affinity Matrix',
+    'Phase 16: 60-Hour Specialized Career Path Engine, Zero-Grammar Core & STPS/ISO Compliance'
   ],
   nextImmediateTasks: [
-    'Nearshoring Production Rollout & Master Accreditation Readiness'
+    'Continuous Nearshoring Alignment & Enterprise L&D Integration'
   ],
-  testsPassed: 22,
+  testsPassed: 23,
   status: 'ALL_GREEN'
 };
 

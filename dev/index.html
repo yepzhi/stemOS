@@ -36,6 +36,10 @@
             <span class="brand-stem">stem</span><span class="brand-os">OS</span>
           </div>
         </a>
+        <button id="header-student-profile-badge" class="header-profile-badge-btn" style="display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.35); border-radius:9999px; padding:4px 10px; font-size:0.75rem; color:#34d399; font-weight:700; cursor:pointer; margin-left:12px;" title="Registro de Alumno & Path Personalizado">
+          <i class="fa-solid fa-user-graduate"></i>
+          <span id="header-student-badge-text">Registro Alumno</span>
+        </button>
       </div>
 
       <div class="supaste-nav-links">
@@ -55,6 +59,7 @@
         <a href="#scada-digitaltwin-section" class="nav-link" id="nav-btn-scada"><i class="fa-solid fa-gauge-high" style="color:#06b6d4; margin-right:4px;"></i> SCADA &amp; Digital Twin</a>
         <a href="#roleplay-classifier-section" class="nav-link" id="nav-btn-audio-roleplay"><i class="fa-solid fa-headphones-simple" style="color:#ec4899; margin-right:4px;"></i> Audio Roleplay Lab</a>
         <a href="#capstone-defense-section" class="nav-link" id="nav-btn-capstone"><i class="fa-solid fa-graduation-cap" style="color:#f59e0b; margin-right:4px;"></i> Capstone Board Exam</a>
+        <a href="javascript:void(0)" class="nav-link" id="nav-btn-student-registration"><i class="fa-solid fa-compass" style="color:#10b981; margin-right:4px;"></i> Career Path 60h</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-certificates" onclick="openCertificateModal()"><i class="fa-solid fa-award" style="color:#eab308; margin-right:4px;"></i> Certificates &amp; QR</a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-cloud-sync" onclick="openCloudSyncModal()"><i class="fa-solid fa-cloud-arrow-up" style="color:#06b6d4; margin-right:4px;"></i> <span id="nav-cloud-status">Cloud Sync</span></a>
         <a href="javascript:void(0)" class="nav-link" id="nav-btn-stembot" onclick="toggleStemBotCopilot(true)"><i class="fa-solid fa-robot" style="color:#0ea5e9; margin-right:4px;"></i> STEMBot Copilot</a>
@@ -89,6 +94,10 @@
 
       <!-- CTA Buttons Row with Soft Fade -->
       <div class="supaste-hero-actions soft-element" style="--delay: 0.95s">
+        <a href="javascript:void(0)" class="supaste-btn-secondary" id="hero-btn-start-registration" style="border-color: rgba(16, 185, 129, 0.6); background: rgba(16, 185, 129, 0.18); color: #34d399; font-weight: 700;">
+          <i class="fa-solid fa-compass" style="color:#10b981;"></i>
+          <span>Registro &amp; Path 60h</span>
+        </a>
         <a href="#catalog-section" class="supaste-btn-primary">
           <span>Explore 34 Tracks</span>
           <i class="fa-solid fa-arrow-right btn-arrow"></i>
@@ -3251,6 +3260,135 @@
         <button class="cs-modal-btn" onclick="closeCapstoneDiplomaModal()" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1;">
           Cerrar
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Phases 14-16: Student Onboarding, AI Pre-Assessment & 60-Hour Career Path Modal ── -->
+  <div class="reg-modal-overlay" id="student-registration-modal" role="dialog" aria-modal="true" aria-labelledby="reg-modal-title">
+    <div class="reg-modal-card">
+      <div class="reg-modal-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="background:rgba(16,185,129,0.2); color:#34d399; border:1px solid rgba(16,185,129,0.4); padding:4px 8px; border-radius:6px; font-size:0.75rem; font-weight:800;">
+            <i class="fa-solid fa-compass"></i> ONBOARDING STEMOS
+          </span>
+          <h2 id="reg-modal-title" style="margin:0; font-size:1.1rem; font-weight:800; color:#ffffff;">Perfil de Alumno &amp; Career Path</h2>
+        </div>
+        <button id="btn-close-reg-modal" class="drawer-close-btn" aria-label="Cerrar Onboarding" style="background:none; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Stepper Indicator -->
+      <div class="reg-stepper-bar" id="reg-stepper-bar">
+        <div class="reg-step-pill active" id="reg-step-pill-1" data-step="1">
+          <span>1. Datos &amp; Carrera</span>
+        </div>
+        <div class="reg-step-pill" id="reg-step-pill-2" data-step="2">
+          <span>2. Diagnóstico Experiencial AI (Zero-Grammar)</span>
+        </div>
+        <div class="reg-step-pill" id="reg-step-pill-3" data-step="3">
+          <span>3. Path 60h &amp; Matriz de Afinidad</span>
+        </div>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="reg-modal-body">
+        <!-- Step 1: Form -->
+        <div id="reg-step-1" class="reg-step-content" style="display:block;">
+          <p style="font-size:0.85rem; color:#94a3b8; margin-top:0; margin-bottom:16px;">
+            Ingresa tus datos académicos para vincular tu perfil al Catálogo Nacional de Carreras de México (CENEVAL / ANUIES / TecNM) y configurar tus estándares industriales aplicables.
+          </p>
+          <div class="reg-form-grid">
+            <div>
+              <label class="reg-field-label" for="reg-input-name">Nombre Completo</label>
+              <input type="text" id="reg-input-name" class="reg-field-input" placeholder="Ej. Ing. Diana Laura Morales" value="Diana Laura Morales">
+            </div>
+            <div>
+              <label class="reg-field-label" for="reg-input-email">Correo Electrónico Institucional</label>
+              <input type="email" id="reg-input-email" class="reg-field-input" placeholder="alumno@tecnm.mx" value="diana.morales@tecnm.mx">
+            </div>
+            <div>
+              <label class="reg-field-label" for="reg-select-career">Carrera / Programa de Estudio (México)</label>
+              <select id="reg-select-career" class="reg-field-select">
+                <!-- Dynamically populated from Mexican Higher Education Catalog -->
+              </select>
+            </div>
+            <div>
+              <label class="reg-field-label" for="reg-select-semester">Semestre / Nivel de Avance</label>
+              <select id="reg-select-semester" class="reg-field-select">
+                <option value="1-3">Primeros Semestres (1° - 3° - Tronco Común)</option>
+                <option value="4-6">Intermedio (4° - 6° - Materias de Especialidad)</option>
+                <option value="7-9" selected>Avanzado (7° - 9° - Residencia / Prácticas)</option>
+                <option value="graduated">Egresado / Posgrado / Ingeniero en Planta</option>
+              </select>
+            </div>
+            <div>
+              <label class="reg-field-label" for="reg-input-institution">Institución / Universidad</label>
+              <input type="text" id="reg-input-institution" class="reg-field-input" placeholder="Ej. Instituto Tecnológico de Saltillo" value="TecNM Saltillo">
+            </div>
+            <div>
+              <label class="reg-field-label" for="reg-select-target-hub">Hub Industrial Nearshoring Objetivo</label>
+              <select id="reg-select-target-hub" class="reg-field-select">
+                <option value="Saltillo-Ramos">Saltillo-Ramos Arizpe (Automotriz EV, Fundición &amp; HVAC)</option>
+                <option value="Tijuana">Tijuana-Mexicali (MedTech, Aeroespacial &amp; Microelectrónica)</option>
+                <option value="Guadalajara">Guadalajara Silicon Valley (Semiconductores &amp; High-Tech)</option>
+                <option value="Queretaro">Querétaro-Bajío (Aeroespacial &amp; Data Centers)</option>
+                <option value="Monterrey">Monterrey-Apodaca (Heavy Industry, Metalmecánica &amp; SCM)</option>
+                <option value="Nacional">Cualquier Región / Remoto Cross-Border</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:flex-end; margin-top:20px;">
+            <button id="reg-btn-goto-step-2" class="cs-modal-btn" style="background:#10b981; color:#020617; font-weight:800; border:none; padding:10px 24px; border-radius:8px; cursor:pointer;">
+              Siguiente: Diagnóstico Experiencial AI <i class="fa-solid fa-arrow-right" style="margin-left:6px;"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: AI Diagnostic Assessment (Zero-Grammar) -->
+        <div id="reg-step-2" class="reg-step-content" style="display:none;">
+          <div style="background:rgba(56,189,248,0.1); border-left:4px solid #38bdf8; padding:12px 16px; border-radius:0 8px 8px 0; margin-bottom:16px;">
+            <strong style="color:#38bdf8; font-size:0.85rem;"><i class="fa-solid fa-bolt"></i> Filosofía Zero-Grammar &amp; Slang Industrial:</strong>
+            <span style="font-size:0.8rem; color:#cbd5e1; margin-left:6px;">
+              No evaluamos gramática escolar abstracta ni tiempos verbales aislados. Evaluamos tu criterio operativo ante dilemas reales de planta y tu comprensión de modismos opacos del piso industrial.
+            </span>
+          </div>
+
+          <div id="reg-diagnostic-questions-container">
+            <!-- Questions dynamically generated based on situational plant dilemmas -->
+          </div>
+
+          <div style="display:flex; justify-content:space-between; margin-top:20px;">
+            <button id="reg-btn-back-to-step-1" class="cs-modal-btn" style="background:#1e293b; color:#cbd5e1; border:1px solid #475569; padding:8px 18px; border-radius:8px; cursor:pointer;">
+              <i class="fa-solid fa-arrow-left" style="margin-right:6px;"></i> Regresar a Datos
+            </button>
+            <button id="reg-btn-generate-path" class="cs-modal-btn" style="background:linear-gradient(135deg, #10b981 0%, #06b6d4 100%); color:#020617; font-weight:800; border:none; padding:10px 24px; border-radius:8px; cursor:pointer;">
+              Generar Path Especializado (60h) <i class="fa-solid fa-wand-magic-sparkles" style="margin-left:6px;"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Generated Career Path & Match Matrix -->
+        <div id="reg-step-3" class="reg-step-content" style="display:none;">
+          <div class="reg-path-canvas" id="reg-path-canvas-output">
+            <!-- Path header, match grid, 4 milestones, standard hours, certifications -->
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; flex-wrap:wrap; gap:10px;">
+            <button id="reg-btn-back-to-step-2" class="cs-modal-btn" style="background:#1e293b; color:#cbd5e1; border:1px solid #475569; padding:8px 18px; border-radius:8px; cursor:pointer;">
+              <i class="fa-solid fa-rotate-left" style="margin-right:6px;"></i> Re-evaluar Diagnóstico
+            </button>
+            <div style="display:flex; gap:10px;">
+              <button id="reg-btn-export-markdown" class="cs-modal-btn" style="background:#0f172a; color:#38bdf8; border:1px solid #0284c7; padding:8px 16px; border-radius:8px; cursor:pointer; font-weight:700;">
+                <i class="fa-solid fa-file-arrow-down" style="margin-right:6px;"></i> Exportar Plan (.md)
+              </button>
+              <button id="reg-btn-activate-path" class="cs-modal-btn" style="background:#10b981; color:#020617; font-weight:800; border:none; padding:10px 22px; border-radius:8px; cursor:pointer;">
+                <i class="fa-solid fa-circle-check" style="margin-right:6px;"></i> Activar Path &amp; Iniciar Cursos
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

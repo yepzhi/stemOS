@@ -343,6 +343,7 @@ function initStudio() {
   setupScadaDigitalTwinLab(tracks);
   setupCrossBorderAudioRoleplayLab(tracks);
   setupCapstoneBoardExam(tracks);
+  setupStudentRegistrationAndCareerPath(tracks);
 }
 
 function setupLevelSwitcher(tracks, phrases) {
@@ -10504,6 +10505,849 @@ function setupCapstoneBoardExam(tracks) {
   window.switchCapstoneStation('saltillo');
   window.switchCapstoneAuditor('dave');
 }
+
+/* ============================================================
+   Phases 14-16: Student Registration, AI Pre-Assessment Diagnostic
+   & 60-Hour Specialized Career Path Engine (Zero-Grammar Philosophy)
+   ============================================================ */
+function setupStudentRegistrationAndCareerPath(tracks) {
+  // 1. National Catalog of Higher Education Degrees in Mexico (CENEVAL / ANUIES / TecNM)
+  const CAREER_CATALOG = [
+    // Clúster STEM & Manufactura Avanzada (STEM Core)
+    {
+      id: 'ing-mecatronica',
+      name: 'Ingeniería Mecatrónica, Robótica y Automatización',
+      cluster: 'STEM Core',
+      clusterId: 'stem',
+      standards: ['ISO 10218-1/2', 'IATF 16949', 'IEC 61131-3 PLC', 'CE Mark Machinery'],
+      defaultHub: 'Saltillo-Ramos',
+      primaryTrack: 'ind-robotics-automation',
+      slangFocus: 'Plant Floor Slang & Maintenance Idioms',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Especialización en celdas robotizadas, servomotores, variadores Allen-Bradley/Siemens y protocolos de seguridad LOTO.'
+    },
+    {
+      id: 'ing-electronica',
+      name: 'Ingeniería Electrónica y Sistemas Embebidos',
+      cluster: 'STEM Core',
+      clusterId: 'stem',
+      standards: ['IPC-A-610 Class 3', 'AUTOSAR Classic/Adaptive', 'IEEE 802.3cg', 'J-STD-001'],
+      defaultHub: 'Guadalajara',
+      primaryTrack: 'autosar-embedded-firmware',
+      slangFocus: 'Bench Slang, Firmware Traps & Hardware Jargon',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Arquitectura de microcontroladores de 32-bits, buses CAN/LIN/Ethernet automotriz y validación de firmware para ECU.'
+    },
+    {
+      id: 'ing-semiconductores',
+      name: 'Ingeniería en Semiconductores y Microelectrónica',
+      cluster: 'STEM Core',
+      clusterId: 'stem',
+      standards: ['SEMI E10', 'IEEE 1500 Boundary-Scan', 'ISO 14644 Class 1', 'SECS/GEM'],
+      defaultHub: 'Guadalajara',
+      primaryTrack: 'semiconductor-fabrication',
+      slangFocus: 'Fab Slang, Cleanroom Idioms & Silicon Dialect',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Pruebas de ATE, empaquetado avanzado 2.5D/3D, curvas Shmoo y rendimiento de obleas bajo estándares SEMI internacionales.'
+    },
+    {
+      id: 'ing-automotriz',
+      name: 'Ingeniería Automotriz y Movilidad Eléctrica (EV)',
+      cluster: 'STEM Core',
+      clusterId: 'stem',
+      standards: ['IATF 16949', 'ISO 26262 ASIL-D', 'USMCA Rules of Origin', 'VDA 6.3'],
+      defaultHub: 'Saltillo-Ramos',
+      primaryTrack: 'automotive-engineering',
+      slangFocus: 'Assembly Line Barks, OEM Slang & Tier-1 Jargon',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Manufactura de tren motriz, paquetes de baterías de alto voltaje, troquelado profundo y contención inmediata de paros de línea.'
+    },
+    {
+      id: 'ing-aeroespacial',
+      name: 'Ingeniería Aeroespacial y Aviónica',
+      cluster: 'STEM Core',
+      clusterId: 'stem',
+      standards: ['AS9100 Rev D', 'FAA 14 CFR Part 21', 'DO-178C', 'NADCAP Composites'],
+      defaultHub: 'Queretaro',
+      primaryTrack: 'aerospace-avionics',
+      slangFocus: 'Flight-Line Jargon, Hangartalk & FAA Slang',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Manufactura de aeroestructuras compuestas, arneses de aviónica, turbomáquinas y auditorías de concesión AS9100.'
+    },
+    {
+      id: 'ing-biomedica',
+      name: 'Ingeniería Biomédica e Instrumentación Quirúrgica',
+      cluster: 'STEM Core',
+      clusterId: 'stem',
+      standards: ['FDA 21 CFR § 820', 'ISO 13485:2016', 'EU MDR 2017/745', 'ASTM F1929'],
+      defaultHub: 'Tijuana',
+      primaryTrack: 'medical-devices',
+      slangFocus: 'Cleanroom Slang, FDA Defense Idioms & Bio Jargon',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Extrusión médica en cuartos limpios Clase 10,000, sellado Tyvek, validación IQ/OQ/PQ y gestión de CAPA auditables.'
+    },
+    {
+      id: 'ing-sistemas',
+      name: 'Ingeniería en Sistemas Computacionales, Cloud & IA',
+      cluster: 'STEM Core',
+      clusterId: 'stem',
+      standards: ['ISO 27001', 'SOC 2 Type II', 'NIST SP 800-53', 'OpenTelemetry'],
+      defaultHub: 'Guadalajara',
+      primaryTrack: 'mission-critical-energy-datacenters',
+      slangFocus: 'DevOps Slang, Incident War Room Idioms & Silicon Valley Talk',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Infraestructura de nube distribuida, Edge AI en planta, observabilidad de datos y ciberseguridad industrial OT/IT.'
+    },
+    {
+      id: 'ing-industrial',
+      name: 'Ingeniería Industrial, Calidad & Lean Six Sigma',
+      cluster: 'STEM Core',
+      clusterId: 'stem',
+      standards: ['ISO 9001:2015', 'AIAG Core Tools (PPAP, APQP)', 'Lean Six Sigma DMAIC', 'VDA 6.3'],
+      defaultHub: 'Saltillo-Ramos',
+      primaryTrack: 'quality-ehs-management',
+      slangFocus: 'Kaizen Slang, Shopfloor Idioms & Auditor Jargon',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Despliegue de 8D Problem Solving, estudios de Gage R&R, balanceo de líneas y auditorías de sistemas de gestión de calidad.'
+    },
+    {
+      id: 'ing-quimica',
+      name: 'Ingeniería Química y Bioprocesos Industriales',
+      cluster: 'STEM Core',
+      clusterId: 'stem',
+      standards: ['OSHA 1910.119 PSM', 'EPA Clean Air Act', 'ISO 14001', 'REACH Regulations'],
+      defaultHub: 'Monterrey',
+      primaryTrack: 'quality-ehs-management',
+      slangFocus: 'Refinery Slang, HAZMAT Talk & Chemical Floor Idioms',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'P&ID de reactores continuos, balance térmico, gestión de materiales peligrosos (HAZMAT) y control de efluentes.'
+    },
+    {
+      id: 'ing-materiales',
+      name: 'Ingeniería en Materiales y Metalurgia Avanzada',
+      cluster: 'STEM Core',
+      clusterId: 'stem',
+      standards: ['ASTM E8/E8M', 'AMS 4928 Titanium', 'NADCAP Heat Treating', 'ISO 6892-1'],
+      defaultHub: 'Saltillo-Ramos',
+      primaryTrack: 'automotive-engineering',
+      slangFocus: 'Foundry Slang, Heat Treat Talk & Metallurgical Idioms',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Fundición a alta presión (HPDC), análisis de fractografía MEB, tratamientos térmicos criogénicos y aleaciones de aluminio.'
+    },
+    {
+      id: 'ing-energia',
+      name: 'Ingeniería en Energía y Sistemas Eléctricos de Potencia',
+      cluster: 'STEM Core',
+      clusterId: 'stem',
+      standards: ['CFE Código de Red 2.0', 'IEEE 1547', 'NFPA 70E Arc Flash', 'IEC 61850'],
+      defaultHub: 'Queretaro',
+      primaryTrack: 'mission-critical-energy-datacenters',
+      slangFocus: 'Substation Slang, Grid Dispatch Idioms & Arc Flash Talk',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Subestaciones de 115kV, mitigación de armónicos de 5º orden con filtros activos AHF, UPS estáticos y sistemas BESS.'
+    },
+    {
+      id: 'ing-ambiental',
+      name: 'Ingeniería Ambiental y Seguridad e Higiene (EHS)',
+      cluster: 'STEM Core',
+      clusterId: 'stem',
+      standards: ['ISO 45001', 'ISO 14001', 'OSHA 1910.147 LOTO', 'STPS NOM-004'],
+      defaultHub: 'Monterrey',
+      primaryTrack: 'quality-ehs-management',
+      slangFocus: 'Safety Floor Jargon, OSHA Traps & EHS Slang',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Permisos de trabajo en caliente, espacios confinados, matrices de riesgo IPERC y programas de Cero Accidentes en planta.'
+    },
+
+    // Clúster Hospitality, Turismo de Negocios y Aviación Corporativa
+    {
+      id: 'lic-hospitalidad',
+      name: 'Licenciatura en Administración Hotelera y Resorts Internacionales',
+      cluster: 'Hospitality & Executive Services',
+      clusterId: 'hospitality',
+      standards: ['USALI 11th Edition', 'AHLA Certified Hotel Admin', 'Forbes Travel Standards', 'ISO 22000'],
+      defaultHub: 'Nacional',
+      primaryTrack: 'aviation-career',
+      slangFocus: 'Front-Desk Slang, Hospitality Diplomacy & Guest Escalation',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Gestión de operaciones hoteleras de ultra-lujo, RevPAR, estándares Forbes y atención ejecutiva a directivos transfronterizos.'
+    },
+    {
+      id: 'lic-turismo-negocios',
+      name: 'Licenciatura en Turismo de Negocios, Congresos y Convenciones (MICE)',
+      cluster: 'Hospitality & Executive Services',
+      clusterId: 'hospitality',
+      standards: ['CMP Events Industry Council', 'MPI Standards', 'IAPCO Protocols', 'ISO 20121'],
+      defaultHub: 'Monterrey',
+      primaryTrack: 'aviation-career',
+      slangFocus: 'Convention Hall Jargon, Speaker Negotiation & Event Traps',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Licitaciones internacionales de congresos industriales, gestión de recintos feriales y logística para cumbres automotrices y aeroespaciales.'
+    },
+    {
+      id: 'lic-aviacion-servicios',
+      name: 'Licenciatura en Gestión Aeronáutica y Operaciones Aeroportuarias',
+      cluster: 'Hospitality & Executive Services',
+      clusterId: 'hospitality',
+      standards: ['ICAO Annex 14', 'IATA Ground Operations Manual', 'TSA Part 1544', 'OACI Level 5'],
+      defaultHub: 'Queretaro',
+      primaryTrack: 'aviation-career',
+      slangFocus: 'Ramp Rat Slang, ATC Phraseology & Dispatch Idioms',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Despacho de vuelos privados ejecutivos, rampa, peso y balance, slots de aviación corporativa y seguridad operacional SMS.'
+    },
+    {
+      id: 'lic-gastronomia',
+      name: 'Licenciatura en Gastronomía Ejecutiva y Banquetes Transfronterizos',
+      cluster: 'Hospitality & Executive Services',
+      clusterId: 'hospitality',
+      standards: ['HACCP Certified', 'ServSafe Food Protection Executive', 'ISO 22000', 'Distintivo H'],
+      defaultHub: 'Nacional',
+      primaryTrack: 'aviation-career',
+      slangFocus: 'Kitchen Brigade Slang, VIP Service Idioms & Food Cost Talk',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Servicio de protocolo VIP para misiones comerciales extranjeras, gestión de costos de alimentos y bebidas y control de inocuidad.'
+    },
+
+    // Clúster Negocios Internacionales, Logística Global y Finanzas Nearshoring
+    {
+      id: 'lic-comercio-exterior',
+      name: 'Licenciatura en Comercio Internacional, Aduanas y Logística Global',
+      cluster: 'International Trade & Supply Chain',
+      clusterId: 'trade',
+      standards: ['IMMEX Decreto', 'T-MEC Reglas de Origen', 'OEA / C-TPAT', 'Incoterms 2020'],
+      defaultHub: 'Monterrey',
+      primaryTrack: 'nearshoring-supply-chain-scm',
+      slangFocus: 'Border Slang, Customs Broker Idioms & Freight Jargon',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Pedimentos de importación temporal IMMEX, auditorías de Anexo 24/31, despachos aduanales en Laredo y aranceles T-MEC.'
+    },
+    {
+      id: 'lic-supply-chain',
+      name: 'Licenciatura en Gestión de Cadena de Suministro y Almacenes Fiscalizados',
+      cluster: 'International Trade & Supply Chain',
+      clusterId: 'trade',
+      standards: ['APICS CSCP', 'WMS EDI 850/856 Protocols', 'GS1 Barcoding', 'ISO 28000'],
+      defaultHub: 'Monterrey',
+      primaryTrack: 'nearshoring-supply-chain-scm',
+      slangFocus: 'Logistics Floor Talk, Dock Slang & Expedited Freight Idioms',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Gestión de inventarios Just-in-Time (JIT), envíos hot-shot transfronterizos, fletes aéreos fletados y optimización de cross-docking.'
+    },
+    {
+      id: 'lic-finanzas-manufactura',
+      name: 'Licenciatura en Finanzas Corporativas de Manufactura y Costos de Planta',
+      cluster: 'International Trade & Supply Chain',
+      clusterId: 'trade',
+      standards: ['US GAAP vs NIF México', 'SOX 404 Internal Controls', 'Standard Costing Variance', 'IFRS 16'],
+      defaultHub: 'Saltillo-Ramos',
+      primaryTrack: 'nearshoring-supply-chain-scm',
+      slangFocus: 'Corporate P&L Slang, Cost Center Jargon & Audit Idioms',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Cálculo de costo hora-máquina, variación de scrap, depreciación de maquinaria pesada bajo IMMEX y reportes de P&L a matriz.'
+    },
+    {
+      id: 'lic-talento-rh',
+      name: 'Licenciatura en Relaciones Laborales y Gestión de Talento en Plantas',
+      cluster: 'International Trade & Supply Chain',
+      clusterId: 'trade',
+      standards: ['NOM-035-STPS', 'Convenio 98 OIT', 'Anexo 23-A T-MEC', 'ISO 30414 HR Metrics'],
+      defaultHub: 'Tijuana',
+      primaryTrack: 'quality-ehs-management',
+      slangFocus: 'HR Corporate Slang, Union Negotiation Talk & Floor Diplomacy',
+      weeklyHours: 15,
+      totalHours: 60,
+      description: 'Negociación de contratos colectivos con sindicatos bajo reglas del T-MEC, retención de operadores técnicos y clima laboral.'
+    }
+  ];
+
+  // 2. Situational Diagnostic Dilemmas (Strict Zero-Grammar Philosophy: Pure Plant Resolution)
+  const DIAGNOSTIC_DILEMMAS = [
+    {
+      id: 'dilemma-1',
+      title: 'Situación 1: Continuidad Operativa vs. Paro Crítico de Línea ($1,200 USD/min)',
+      scenario: 'Durante la corrida previa al arranque de turno en Línea 3, el desarmador dinamométrico automatizado reporta una variación angular intermitente de 2.4% en sub-ensambles programados para envío urgente a Dallas hoy en la noche. El paro de línea cuesta $1,200 USD/min. ¿Cuál es tu comunicación operativa verbal inmediata por radio al supervisor de producción?',
+      options: [
+        {
+          text: '“Initiate immediate 100% manual quarantine on pallet #4, tag out station with red defect ticket, and invoke bypass protocol under signed authorization while metrology runs a Gage R&R.”',
+          score: 100,
+          quality: 'Solución Operativa Óptima C1',
+          feedback: 'Excelente criterio técnico: contención inmediata de producto sospechoso, protección del cliente y trazabilidad metrológica sin detener innecesariamente la planta.'
+        },
+        {
+          text: '“Keep the line running at 50% speed while I check the calibration handbook in my office to confirm if English grammar allows tolerance expansion.”',
+          score: 30,
+          quality: 'Trampa Teórica / Falsa Seguridad',
+          feedback: 'Riesgo inaceptable: la gramática o teoría abstracta no reemplaza el protocolo de contención ni evita el envío de piezas defectuosas con multas masivas.'
+        },
+        {
+          text: '“Stop everything immediately, send everyone on break, and wait until tomorrow morning’s tier-1 meeting to ask headquarters what to do.”',
+          score: 40,
+          quality: 'Pasividad Operativa Costosa',
+          feedback: 'Parálisis operativa: genera pérdidas acumuladas de miles de dólares por paro y demuestra falta de liderazgo técnico en contingencias.'
+        }
+      ]
+    },
+    {
+      id: 'dilemma-2',
+      title: 'Situación 2: Modismos Opacos del Piso de Planta (“Frases de la Calle del Inglés Industrial”)',
+      scenario: 'El Director de Lanzamiento de Detroit camina a tu estación, mira el buffer y dice enérgicamente: “We cannot afford to cut corners here! We’re totally in the weeds on this batch and the audit team from Stuttgart is gonna drop the hammer if we don’t sanity check this lot before EOD. Loop in Sarah and table that side project!” ¿Cómo decodificas esta instrucción?',
+      options: [
+        {
+          text: 'Priorizar la inspección rigurosa sin tomar atajos (no cut corners), atender de inmediato el cuello de botella crítico (in the weeds), anticipar sanciones severas (drop the hammer), verificar la coherencia técnica del lote (sanity check), enterar por correo a Sarah (loop in) y posponer tareas secundarias (table that project).',
+          score: 100,
+          quality: 'Dominio Nativo del Slang Industrial',
+          feedback: 'Interpretación impecable del argot industrial: entiendes las metáforas vivas del piso de manufactura que nunca se enseñan en escuelas de gramática tradicionales.'
+        },
+        {
+          text: 'Cortar literalmente las esquinas de las cajas de plástico, comprar herramientas de jardinería para la hierba (weeds), traer un martillo de carpintería a la junta y poner una mesa de madera.',
+          score: 20,
+          quality: 'Trampa de Traducción Literal',
+          feedback: 'Traducción literal errónea: los modismos de planta (cut corners, in the weeds, drop the hammer, table) tienen significado técnico figurado en la operación.'
+        },
+        {
+          text: 'Ignorar a Sarah porque no es jefa directa y escribirle un correo al auditor alemán explicándole las reglas gramaticales del presente perfecto.',
+          score: 35,
+          quality: 'Distracción Académica Ineficaz',
+          feedback: 'Error de foco: una junta de contingencia demanda acciones operativas inmediatas, no debates de gramática abstracta.'
+        }
+      ]
+    },
+    {
+      id: 'dilemma-3',
+      title: 'Situación 3: Negociación Ejecutiva ante Auditor Internacional (Defensa de Concesión)',
+      scenario: 'Durante una auditoría de certificación bajo IATF 16949 / ISO 9001, el auditor extranjero identifica una discrepancia de registro de calibración en el termopar secundario TC-09 y amenaza con levantar una No-Conformidad Mayor. Tienes 20 minutos para responder. ¿Cuál es tu réplica técnica ejecutiva?',
+      options: [
+        {
+          text: '“We acknowledge the observation; here is the traceable secondary probe master log, our immediate containment disposition record, and an 8D D3 containment action initiated under our certified QMS.”',
+          score: 100,
+          quality: 'Defensa Ejecutiva de Alto Impacto',
+          feedback: 'Defensa técnica sobresaliente: presentas evidencia objetiva, demuestras control del sistema de calidad (QMS) y negocias con compostura y autoridad profesional.'
+        },
+        {
+          text: '“Sir, the past participle of calibrate is calibrated, so please do not write any penalty in your official audit log.”',
+          score: 25,
+          quality: 'Fútil Discusión Lingüística',
+          feedback: 'Inadecuado: debatir reglas de conjugación verbal frente a un auditor resulta en no-conformidades mayores inmediatas y pérdida de certificación.'
+        },
+        {
+          text: '“Tell the auditor that calibration is not strictly required in Mexico because the line operator can feel that the temperature is hot enough by touch.”',
+          score: 15,
+          quality: 'Violación Crítica de Estándares',
+          feedback: 'Grave falta de cumplimiento: viola directamente los requisitos de metrología y trazabilidad exigidos por normas internacionales.'
+        }
+      ]
+    }
+  ];
+
+  let currentRegStep = 1;
+  let selectedDiagnosticAnswers = {
+    'dilemma-1': 0,
+    'dilemma-2': 0,
+    'dilemma-3': 0
+  };
+  let currentStudentProfile = null;
+
+  // DOM Elements
+  const regModal = document.getElementById('student-registration-modal');
+  const btnClose = document.getElementById('btn-close-reg-modal');
+  const navBtn = document.getElementById('nav-btn-student-registration');
+  const headerBadge = document.getElementById('header-student-profile-badge');
+  const headerBadgeText = document.getElementById('header-student-badge-text');
+  const heroBtn = document.getElementById('hero-btn-start-registration');
+
+  const step1 = document.getElementById('reg-step-1');
+  const step2 = document.getElementById('reg-step-2');
+  const step3 = document.getElementById('reg-step-3');
+
+  const pill1 = document.getElementById('reg-step-pill-1');
+  const pill2 = document.getElementById('reg-step-pill-2');
+  const pill3 = document.getElementById('reg-step-pill-3');
+
+  const selectCareer = document.getElementById('reg-select-career');
+  const inputName = document.getElementById('reg-input-name');
+  const inputEmail = document.getElementById('reg-input-email');
+  const selectSemester = document.getElementById('reg-select-semester');
+  const inputInstitution = document.getElementById('reg-input-institution');
+  const selectTargetHub = document.getElementById('reg-select-target-hub');
+
+  const btnGotoStep2 = document.getElementById('reg-btn-goto-step-2');
+  const btnBackToStep1 = document.getElementById('reg-btn-back-to-step-1');
+  const btnGeneratePath = document.getElementById('reg-btn-generate-path');
+  const btnBackToStep2 = document.getElementById('reg-btn-back-to-step-2');
+  const btnActivatePath = document.getElementById('reg-btn-activate-path');
+  const btnExportMarkdown = document.getElementById('reg-btn-export-markdown');
+
+  const diagContainer = document.getElementById('reg-diagnostic-questions-container');
+  const pathCanvas = document.getElementById('reg-path-canvas-output');
+
+  // Populate Career Select dropdown with optgroups
+  if (selectCareer) {
+    selectCareer.innerHTML = '';
+    const clusters = {
+      'STEM Core': 'Ingenierías & Manufactura Avanzada (STEM Core)',
+      'Hospitality & Executive Services': 'Hospitality, Servicios Globales & Aviación',
+      'International Trade & Supply Chain': 'Negocios Internacionales, Logística & Finanzas'
+    };
+
+    Object.keys(clusters).forEach(clusterKey => {
+      const optGroup = document.createElement('optgroup');
+      optGroup.label = clusters[clusterKey];
+      CAREER_CATALOG.filter(c => c.cluster === clusterKey).forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = `${c.name} (${c.standards[0]})`;
+        optGroup.appendChild(opt);
+      });
+      selectCareer.appendChild(optGroup);
+    });
+  }
+
+  // Hydrate Diagnostic Dilemmas in Step 2
+  function renderDiagnosticQuestions() {
+    if (!diagContainer) return;
+    diagContainer.innerHTML = '';
+
+    DIAGNOSTIC_DILEMMAS.forEach(dilemma => {
+      const card = document.createElement('div');
+      card.className = 'reg-diag-card';
+      card.id = `reg-diag-card-${dilemma.id}`;
+
+      const selectedIdx = selectedDiagnosticAnswers[dilemma.id] !== undefined ? selectedDiagnosticAnswers[dilemma.id] : 0;
+
+      card.innerHTML = `
+        <div class="reg-diag-title">
+          <i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i>
+          <span>${dilemma.title}</span>
+        </div>
+        <div class="reg-diag-scenario">
+          "${dilemma.scenario}"
+        </div>
+        <div class="reg-diag-options" id="reg-diag-options-${dilemma.id}">
+          ${dilemma.options.map((opt, optIdx) => `
+            <button class="reg-diag-opt-btn ${optIdx === selectedIdx ? 'selected' : ''}" 
+                    data-dilemma-id="${dilemma.id}" 
+                    data-opt-index="${optIdx}"
+                    onclick="window.selectRegDiagnosticOption('${dilemma.id}', ${optIdx})">
+              <div style="font-weight:700; margin-bottom:2px; color:${optIdx === 0 ? '#34d399' : '#cbd5e1'};">
+                <i class="fa-solid ${optIdx === selectedIdx ? 'fa-circle-dot' : 'fa-circle'}" style="margin-right:6px; font-size:0.75rem;"></i>
+                Opción ${String.fromCharCode(65 + optIdx)}: ${opt.quality}
+              </div>
+              <div>${opt.text}</div>
+            </button>
+          `).join('')}
+        </div>
+      `;
+      diagContainer.appendChild(card);
+    });
+  }
+
+  // Stepper navigation
+  window.goToRegStep = function(step) {
+    currentRegStep = step;
+    [step1, step2, step3].forEach((el, idx) => {
+      if (el) el.style.display = (idx + 1 === step) ? 'block' : 'none';
+    });
+
+    [pill1, pill2, pill3].forEach((pill, idx) => {
+      if (pill) {
+        pill.classList.remove('active', 'completed');
+        if (idx + 1 === step) pill.classList.add('active');
+        else if (idx + 1 < step) pill.classList.add('completed');
+      }
+    });
+
+    if (step === 2) {
+      renderDiagnosticQuestions();
+    }
+  };
+
+  window.selectRegDiagnosticOption = function(dilemmaId, optIndex) {
+    selectedDiagnosticAnswers[dilemmaId] = optIndex;
+    const optButtons = document.querySelectorAll(`#reg-diag-options-${dilemmaId} .reg-diag-opt-btn`);
+    optButtons.forEach((btn, idx) => {
+      if (idx === optIndex) {
+        btn.classList.add('selected');
+        const icon = btn.querySelector('.fa-solid');
+        if (icon) { icon.classList.remove('fa-circle'); icon.classList.add('fa-circle-dot'); }
+      } else {
+        btn.classList.remove('selected');
+        const icon = btn.querySelector('.fa-solid');
+        if (icon) { icon.classList.remove('fa-circle-dot'); icon.classList.add('fa-circle'); }
+      }
+    });
+  };
+
+  // Generate Career Path Engine
+  window.generateStudentCareerPath = function() {
+    const careerId = selectCareer ? selectCareer.value : 'ing-mecatronica';
+    const career = CAREER_CATALOG.find(c => c.id === careerId) || CAREER_CATALOG[0];
+
+    const studentName = (inputName && inputName.value.trim()) ? inputName.value.trim() : 'Diana Laura Morales';
+    const studentEmail = (inputEmail && inputEmail.value.trim()) ? inputEmail.value.trim() : 'diana.morales@tecnm.mx';
+    const semester = selectSemester ? selectSemester.value : '7-9';
+    const institution = (inputInstitution && inputInstitution.value.trim()) ? inputInstitution.value.trim() : 'TecNM Saltillo';
+    const targetHub = selectTargetHub ? selectTargetHub.value : 'Saltillo-Ramos';
+
+    // Calculate Diagnostic Score (Zero-Grammar C1 operational resolution)
+    let totalScore = 0;
+    let answeredCount = 0;
+    DIAGNOSTIC_DILEMMAS.forEach(d => {
+      const chosenIdx = selectedDiagnosticAnswers[d.id] !== undefined ? selectedDiagnosticAnswers[d.id] : 0;
+      totalScore += d.options[chosenIdx].score;
+      answeredCount++;
+    });
+    const avgScore = Math.round(totalScore / (answeredCount || 1));
+
+    // Calculate match matrix for key tracks
+    const matchScores = [
+      {
+        title: career.primaryTrack.toUpperCase().replace(/-/g, ' '),
+        category: 'Core Especialidad',
+        score: Math.min(99, Math.max(92, avgScore >= 80 ? 98 : 92)),
+        hours: 15
+      },
+      {
+        title: '8D PROBLEM SOLVING & SCADA HISTORIAN',
+        category: 'Ingeniería de Planta',
+        score: Math.min(96, Math.max(88, avgScore >= 70 ? 95 : 88)),
+        hours: 15
+      },
+      {
+        title: 'CROSS-BORDER EXECUTIVE NEGOTIATION',
+        category: 'Liderazgo & Negociación',
+        score: Math.min(95, Math.max(85, avgScore >= 80 ? 94 : 85)),
+        hours: 15
+      },
+      {
+        title: 'CAPSTONE BOARD EXAM & DEFENSE',
+        category: 'Certificación de Grado',
+        score: 100,
+        hours: 15
+      }
+    ];
+
+    // Standardized 4 Milestones × 15 Hours = 60.0 Hours
+    const milestones = [
+      {
+        num: 1,
+        title: `Hito 1: Shopfloor Survival & Continuidad Operativa (${career.cluster})`,
+        hours: 15,
+        desc: `Protocolos de arranque, LOTO (OSHA 1910.147), Relevo de Turno y lectura de diagramas bajo estándares ${career.standards.slice(0, 2).join(', ')}.`,
+        tags: [career.standards[0], 'LOTO Safety', '15 Horas', 'Zero-Grammar Core'],
+        slang: career.slangFocus
+      },
+      {
+        num: 2,
+        title: `Hito 2: Root Cause Triangulation & SCADA Telemetry (${targetHub})`,
+        hours: 15,
+        desc: `Elaboración de reportes 8D, contención D3 ante fallas críticas de $1,200/min y correlación de variables con gemelo digital e historiador.`,
+        tags: ['8D Problem Solving', 'SCADA Digital Twin', '15 Horas', targetHub],
+        slang: 'cut corners, drop the ball, sanity check, in the weeds'
+      },
+      {
+        num: 3,
+        title: `Hito 3: Cross-Border Executive Negotiation & Auditor Defense`,
+        hours: 15,
+        desc: `Defensa de concesiones ante directores extranjeros (Detroit, Stuttgart, Derby) y desarticulación de no-conformidades mayores.`,
+        tags: ['BATNA Firmness', 'International Accents', '15 Horas', 'C1 Defense'],
+        slang: 'table this, loop someone in, hard stop, play devil\'s advocate'
+      },
+      {
+        num: 4,
+        title: `Hito 4: Capstone Engineering Fellowship Certification`,
+        hours: 15,
+        desc: `Examen de grado práctico ante tribunal summativo de 4 estaciones industriales (Saltillo, Tijuana, GDL, QRO) con emisión de credencial W3C y diploma con sello QR.`,
+        tags: ['Fellowship Master', 'W3C Credential', '15 Horas', 'STPS DC-3 / SEP EC1290'],
+        slang: 'Full Executive Polish & Oral Board Defense'
+      }
+    ];
+
+    currentStudentProfile = {
+      studentName,
+      studentEmail,
+      semester,
+      institution,
+      targetHub,
+      careerId: career.id,
+      careerName: career.name,
+      cluster: career.cluster,
+      standards: career.standards,
+      slangFocus: career.slangFocus,
+      diagnosticScore: avgScore,
+      totalHours: 60,
+      fellowshipHours: 120,
+      matchScores,
+      milestones,
+      generatedDate: new Date().toISOString()
+    };
+
+    // Render in Step 3 Canvas
+    if (pathCanvas) {
+      pathCanvas.innerHTML = `
+        <div class="reg-path-header">
+          <div>
+            <div style="font-size:0.75rem; color:#38bdf8; font-weight:800; letter-spacing:0.08em; text-transform:uppercase;">
+              PATH ESPECIALIZADO DE ALTO RENDIMIENTO (60 HORAS AUDITABLES)
+            </div>
+            <h3 style="margin:4px 0 6px 0; font-size:1.25rem; font-weight:800; color:#ffffff;">
+              ${career.name}
+            </h3>
+            <div style="font-size:0.82rem; color:#94a3b8;">
+              <strong style="color:#e2e8f0;">${studentName}</strong> &bull; ${institution} &bull; Semestre ${semester} &bull; Hub: <strong style="color:#34d399;">${targetHub}</strong>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:0.7rem; color:#94a3b8;">DIAGNÓSTICO EXPERIENCIAL AI</div>
+            <div style="font-family:'JetBrains Mono', monospace; font-size:1.4rem; font-weight:800; color:${avgScore >= 80 ? '#34d399' : '#f59e0b'};">
+              ${avgScore} / 100
+            </div>
+            <div style="font-size:0.68rem; color:#38bdf8; font-weight:700;">Nivel C1 Operativo en Planta</div>
+          </div>
+        </div>
+
+        <!-- Duration & Homologation Strip -->
+        <div style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:8px; padding:10px 14px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div>
+            <span style="background:#10b981; color:#020617; font-weight:800; font-size:0.72rem; padding:2px 8px; border-radius:4px; text-transform:uppercase;">
+              ESTÁNDAR CURRICULAR UNIFORME
+            </span>
+            <strong style="color:#ffffff; margin-left:8px; font-size:0.88rem;">60.0 Horas de Formación Práctica</strong>
+            <span style="color:#94a3b8; font-size:0.75rem; margin-left:6px;">(4 Hitos &times; 15 Horas c/u &bull; Extensible a 120h Fellowship)</span>
+          </div>
+          <div style="font-size:0.72rem; color:#cbd5e1;">
+            <i class="fa-solid fa-stamp" style="color:#34d399; margin-right:4px;"></i> Válido STPS Formato DC-3 &bull; SEP CONOCER EC1290 &bull; ISO 9001:2015 Cl. 7.2
+          </div>
+        </div>
+
+        <!-- Match Grid -->
+        <div style="font-size:0.75rem; color:#94a3b8; font-weight:700; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em;">
+          Matriz de Acercamiento Curricular (% Match) con Tracks stemOS
+        </div>
+        <div class="reg-match-grid">
+          ${matchScores.map(m => `
+            <div class="reg-match-item">
+              <div class="reg-match-lbl">${m.category}</div>
+              <div style="font-size:0.72rem; font-weight:700; color:#e2e8f0; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${m.title}">${m.title}</div>
+              <div class="reg-match-val">${m.score}%</div>
+              <div style="font-size:0.65rem; color:#64748b;">${m.hours} Horas Asignadas</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- 4 Milestones Timeline -->
+        <div style="font-size:0.75rem; color:#94a3b8; font-weight:700; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em;">
+          Ruta de Certificación: 4 Hitos Secuenciales (15 Horas Cada Uno)
+        </div>
+        <div class="reg-milestones-timeline">
+          ${milestones.map(m => `
+            <div class="reg-milestone-card">
+              <div class="reg-milestone-num">${m.num}</div>
+              <div class="reg-milestone-content">
+                <div class="reg-milestone-title">
+                  ${m.title} <span style="color:#34d399; font-size:0.75rem; font-weight:700; margin-left:6px;">[15.0 hrs]</span>
+                </div>
+                <div class="reg-milestone-desc">${m.desc}</div>
+                <div style="margin-bottom:6px; font-size:0.72rem; color:#fbbf24;">
+                  <i class="fa-solid fa-comments" style="margin-right:4px;"></i> <strong>Slang &amp; Modismos:</strong> <em>${m.slang}</em>
+                </div>
+                <div class="reg-milestone-tags">
+                  ${m.tags.map(t => `<span class="reg-tag-pill">${t}</span>`).join('')}
+                  <span class="reg-tag-pill slang"><i class="fa-solid fa-bolt"></i> Zero-Grammar</span>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- Standards Footprint -->
+        <div style="border-top:1px solid rgba(148,163,184,0.15); padding-top:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; font-size:0.72rem; color:#94a3b8;">
+          <div>
+            <strong>Estándares Auditables:</strong> ${career.standards.join(' &bull; ')}
+          </div>
+          <div>
+            <strong>Filosofía:</strong> 100% Experiencial &bull; Sin gramática abstracta &bull; Modismos de planta de alta frecuencia
+          </div>
+        </div>
+      `;
+    }
+
+    window.goToRegStep(3);
+  };
+
+  // Activate Path
+  window.activateStudentCareerPath = function() {
+    if (!currentStudentProfile) {
+      window.generateStudentCareerPath();
+    }
+
+    try {
+      localStorage.setItem('stemos_active_student_profile', JSON.stringify(currentStudentProfile));
+    } catch(e) {}
+
+    // Update Header Badge
+    if (headerBadgeText && currentStudentProfile) {
+      const cleanName = currentStudentProfile.studentName.replace(/^(Ing\.|Lic\.|Mtro\.|Dr\.)\s+/i, '').trim();
+      const firstName = cleanName.split(' ')[0] || 'Alumno';
+      const shortCareer = currentStudentProfile.careerName.split(',')[0].replace('Ingeniería en ', '').replace('Ingeniería ', '').replace('Licenciatura en ', '');
+      headerBadgeText.textContent = `${firstName} • ${shortCareer} (60h)`;
+    }
+    if (headerBadge) {
+      headerBadge.style.background = 'rgba(16, 185, 129, 0.25)';
+      headerBadge.style.borderColor = '#10b981';
+      headerBadge.style.color = '#34d399';
+    }
+
+    window.closeStudentRegistrationModal();
+
+    // Scroll to catalog smoothly
+    const catalogSec = document.getElementById('catalog-section') || document.getElementById('studio-grid');
+    if (catalogSec) {
+      catalogSec.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Export Path Markdown
+  window.exportStudentPathMarkdown = function(btnEl) {
+    if (!currentStudentProfile) {
+      window.generateStudentCareerPath();
+    }
+    const p = currentStudentProfile;
+    const dateStr = new Date().toISOString().split('T')[0];
+
+    const mdContent = `# stemOS Official Career Path Dossier (60 Hours Standard)
+**Programa Curricular Especializado en Inglés Técnico de Planta & Nearshoring**
+*Alineado a STPS Formato DC-3, SEP CONOCER EC1290 e ISO 9001:2015 Cl. 7.2*
+
+---
+
+## 1. Perfil del Alumno
+- **Nombre:** ${p.studentName}
+- **Correo Institucional:** ${p.studentEmail}
+- **Institución:** ${p.institution}
+- **Semestre:** ${p.semester}
+- **Carrera / Especialidad:** ${p.careerName}
+- **Clúster Estratégico:** ${p.cluster}
+- **Hub Industrial Objetivo:** ${p.targetHub}
+- **Fecha de Emisión:** ${dateStr}
+- **Puntaje Diagnóstico AI (Zero-Grammar):** ${p.diagnosticScore} / 100 (Criterio C1 en Operaciones de Planta)
+
+---
+
+## 2. Duración y Homologación Curricular
+- **Horas de Formación Práctica:** **60.0 Horas** (4 Hitos de 15.0 horas cada uno)
+- **Opción de Titulación / Residencia:** Extensible a **120.0 Horas** para Diplomado Fellow Nearshoring
+- **Estándares de Referencia:** ${p.standards.join(', ')}
+- **Enfoque Pedagógico:** Zero-Grammar (100% Inmersión en Paros de Línea, P&ID, SCADA y Negociación con Matriz)
+
+---
+
+## 3. Matriz de Afinidad (% Match) con Módulos stemOS
+${p.matchScores.map(m => `- **${m.title}**: ${m.score}% Match (${m.hours} horas)`).join('\n')}
+
+---
+
+## 4. Estructura de los 4 Hitos Secuenciales (15 Horas Cada Uno)
+${p.milestones.map(m => `
+### ${m.title} [${m.hours} Horas]
+- **Descripción:** ${m.desc}
+- **Argot y Frases de la Calle:** *${m.slang}*
+- **Tags de Auditoría:** ${m.tags.join(' | ')}
+`).join('\n')}
+
+---
+*stemOS Foundation • High-Tech Engineering Division • Folio STEM-PATH-${dateStr.replace(/-/g, '')}-0042*
+`;
+
+    if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(mdContent).catch(() => {});
+    }
+
+    const btn = btnEl || btnExportMarkdown;
+    if (btn) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Plan Exportado (.md)!';
+      btn.style.borderColor = '#10b981';
+      btn.style.color = '#34d399';
+      setTimeout(() => {
+        btn.innerHTML = orig;
+        btn.style.borderColor = '';
+        btn.style.color = '';
+      }, 3000);
+    }
+
+    if (typeof document !== 'undefined') {
+      const blob = new Blob([mdContent], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `stemOS_Career_Path_60h_${p.careerId}.md`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  // Open / Close modal
+  window.openStudentRegistrationModal = function() {
+    if (regModal) {
+      regModal.classList.add('active');
+      window.goToRegStep(1);
+    }
+  };
+
+  window.closeStudentRegistrationModal = function() {
+    if (regModal) regModal.classList.remove('active');
+  };
+
+  // Event Listeners
+  if (navBtn) navBtn.addEventListener('click', () => window.openStudentRegistrationModal());
+  if (headerBadge) headerBadge.addEventListener('click', () => window.openStudentRegistrationModal());
+  if (heroBtn) heroBtn.addEventListener('click', () => window.openStudentRegistrationModal());
+  if (btnClose) btnClose.addEventListener('click', () => window.closeStudentRegistrationModal());
+
+  if (btnGotoStep2) btnGotoStep2.addEventListener('click', () => window.goToRegStep(2));
+  if (btnBackToStep1) btnBackToStep1.addEventListener('click', () => window.goToRegStep(1));
+  if (btnGeneratePath) btnGeneratePath.addEventListener('click', () => window.generateStudentCareerPath());
+  if (btnBackToStep2) btnBackToStep2.addEventListener('click', () => window.goToRegStep(2));
+  if (btnActivatePath) btnActivatePath.addEventListener('click', () => window.activateStudentCareerPath());
+  if (btnExportMarkdown) btnExportMarkdown.addEventListener('click', (e) => window.exportStudentPathMarkdown(e.currentTarget));
+
+  // Initialize existing profile if stored
+  try {
+    const saved = localStorage.getItem('stemos_active_student_profile');
+    if (saved) {
+      currentStudentProfile = JSON.parse(saved);
+      if (headerBadgeText && currentStudentProfile) {
+        const cleanName = currentStudentProfile.studentName.replace(/^(Ing\.|Lic\.|Mtro\.|Dr\.)\s+/i, '').trim();
+        const firstName = cleanName.split(' ')[0] || 'Alumno';
+        const shortCareer = currentStudentProfile.careerName.split(',')[0].replace('Ingeniería en ', '').replace('Ingeniería ', '').replace('Licenciatura en ', '');
+        headerBadgeText.textContent = `${firstName} • ${shortCareer} (60h)`;
+      }
+    }
+  } catch(e) {}
+}
+
 
 
 
