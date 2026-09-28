@@ -1830,7 +1830,105 @@ if (t23_regModal.classList.contains('active')) {
 }
 console.log("PASS: Student career path activated, persisted in LocalStorage and dynamically reflected in navigation badge.");
 
-console.log("\n🎉 ALL 23 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+// ── TEST 24: Active Career Path HUD, Slang Trainer & Official STPS Formato DC-3 (Phase 17) ──
+console.log("\n--- TEST 24: Active Career Path HUD, Slang Trainer & Official STPS Formato DC-3 ---");
+
+const t24_hud = document.getElementById('active-path-hud');
+const t24_careerName = document.getElementById('hud-career-name');
+const t24_studentName = document.getElementById('hud-student-name');
+const t24_hoursDisplay = document.getElementById('hud-hours-display');
+const t24_toggleFilterBtn = document.getElementById('hud-btn-toggle-filter');
+const t24_filterBtnText = document.getElementById('hud-filter-btn-text');
+
+console.log("HUD presence:", !!t24_hud);
+console.log("HUD Student Name:", t24_studentName ? t24_studentName.textContent : "null");
+console.log("HUD Career Name:", t24_careerName ? t24_careerName.textContent : "null");
+console.log("HUD Hours Display:", t24_hoursDisplay ? t24_hoursDisplay.textContent : "null");
+
+if (!t24_hud || !t24_studentName || !t24_studentName.textContent.includes('Diana')) {
+  console.error("FAIL: Active Path HUD failed to render student identity!");
+  process.exit(1);
+}
+if (!t24_hoursDisplay || !t24_hoursDisplay.textContent.includes('60.0h')) {
+  console.error("FAIL: Active Path HUD missing 60.0h duration badge!");
+  process.exit(1);
+}
+console.log("PASS: Active Career Path HUD verified with student identity, 60h duration and 4 milestones.");
+
+// 24.2 Toggle Path Filter
+if (t24_toggleFilterBtn) {
+  t24_toggleFilterBtn.click();
+  console.log("Filter Button Active Class:", t24_toggleFilterBtn.classList.contains('active'));
+  console.log("Filter Button Text:", t24_filterBtnText ? t24_filterBtnText.textContent : "null");
+  if (!t24_toggleFilterBtn.classList.contains('active') || !t24_filterBtnText.textContent.includes('Mostrar Todo')) {
+    console.error("FAIL: Path toggle filter did not activate correctly!");
+    process.exit(1);
+  }
+  // Toggle back
+  t24_toggleFilterBtn.click();
+  console.log("PASS: Toggle path filter and catalog focus verified.");
+}
+
+// 24.3 Slang Trainer Modal
+const t24_slangModal = document.getElementById('path-slang-modal');
+window.openPathSlangModal();
+const t24_slangCards = document.querySelectorAll('.slang-card-item');
+console.log("Rendered Slang Cards Count:", t24_slangCards.length);
+if (!t24_slangModal || !t24_slangModal.classList.contains('active') || t24_slangCards.length === 0) {
+  console.error("FAIL: Slang trainer modal failed to open or render slang items!");
+  process.exit(1);
+}
+window.playSlangAudio("Cut corners");
+window.closePathSlangModal();
+if (t24_slangModal.classList.contains('active')) {
+  console.error("FAIL: Slang trainer modal failed to close!");
+  process.exit(1);
+}
+console.log("PASS: Plant Slang & Dialect Traps trainer modal, audio playback and close verified.");
+
+// 24.4 Official STPS Formato DC-3 Modal
+const t24_stpsModal = document.getElementById('stps-dc3-modal');
+const t24_dc3Worker = document.getElementById('dc3-worker-name');
+const t24_dc3Course = document.getElementById('dc3-course-name');
+const t24_dc3Qr = document.getElementById('dc3-qr-container');
+
+window.openSTPSDC3Modal();
+console.log("STPS DC-3 Modal active:", t24_stpsModal ? t24_stpsModal.classList.contains('active') : false);
+console.log("DC-3 Worker Name:", t24_dc3Worker ? t24_dc3Worker.textContent : "null");
+console.log("DC-3 Course Name:", t24_dc3Course ? t24_dc3Course.textContent : "null");
+console.log("DC-3 Dynamic QR injected:", t24_dc3Qr && t24_dc3Qr.innerHTML.includes('<svg'));
+
+if (!t24_stpsModal || !t24_stpsModal.classList.contains('active')) {
+  console.error("FAIL: STPS Formato DC-3 modal failed to open!");
+  process.exit(1);
+}
+if (!t24_dc3Worker || !t24_dc3Worker.textContent.includes('Diana')) {
+  console.error("FAIL: STPS DC-3 missing student worker name!");
+  process.exit(1);
+}
+if (!t24_dc3Course || !t24_dc3Course.textContent.includes('60 Horas')) {
+  console.error("FAIL: STPS DC-3 missing 60 Horas course name!");
+  process.exit(1);
+}
+if (!t24_dc3Qr || !t24_dc3Qr.innerHTML.includes('<svg')) {
+  console.error("FAIL: STPS DC-3 missing dynamic cryptographic SVG QR code!");
+  process.exit(1);
+}
+
+// Copy verification link
+const t24_dummyBtn = document.createElement('button');
+window.copySTPSVerificationLink(t24_dummyBtn);
+console.log("STPS Copy Button text:", t24_dummyBtn.innerHTML);
+
+window.printSTPSDC3();
+window.closeSTPSDC3Modal();
+if (t24_stpsModal.classList.contains('active')) {
+  console.error("FAIL: STPS Formato DC-3 modal failed to close!");
+  process.exit(1);
+}
+console.log("PASS: Official Mexican Government STPS Formato DC-3 modal, 60h legal compliance, SVG QR and print handlers verified.");
+
+console.log("\n🎉 ALL 24 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
 
 
 

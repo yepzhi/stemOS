@@ -344,6 +344,7 @@ function initStudio() {
   setupCrossBorderAudioRoleplayLab(tracks);
   setupCapstoneBoardExam(tracks);
   setupStudentRegistrationAndCareerPath(tracks);
+  setupActivePathHUDAndSTPSDC3(tracks);
 
   // Guarantee clean startup: all modals hidden
   const allModalsToHide = [
@@ -353,7 +354,9 @@ function initStudio() {
     'stemos-cloud-sync-modal',
     'exam-modal-overlay',
     'capstone-diploma-modal',
-    'student-registration-modal'
+    'student-registration-modal',
+    'path-slang-modal',
+    'stps-dc3-modal'
   ];
   allModalsToHide.forEach(id => {
     const el = document.getElementById(id);
@@ -11249,6 +11252,10 @@ function setupStudentRegistrationAndCareerPath(tracks) {
       headerBadge.style.color = '#34d399';
     }
 
+    if (typeof window.updateActivePathHUD === 'function') {
+      window.updateActivePathHUD(currentStudentProfile);
+    }
+
     window.closeStudentRegistrationModal();
 
     // Scroll to catalog smoothly
@@ -11383,6 +11390,280 @@ ${p.milestones.map(m => `
     }
   } catch(e) {}
 }
+
+// ============================================================
+// PHASE 17: ACTIVE CAREER PATH HUD, SLANG TRAINER & STPS DC-3
+// ============================================================
+
+const CAREER_SLANG_DICTIONARY = [
+  {
+    phrase: "Cut corners",
+    ipa: "/kʌt ˈkɔːr.nərz/",
+    category: "Shopfloor & Quality",
+    meaning: "Omitir pasos críticos de seguridad o protocolo para ahorrar tiempo o costo.",
+    plantExample: "Do not cut corners on the LOTO try-step; verify zero potential energy before opening the enclosure.",
+    trap: "No significa cortar esquinas físicas, sino vulnerar estándares de calidad o EHS."
+  },
+  {
+    phrase: "In the weeds",
+    ipa: "/ɪn ðə wiːdz/",
+    category: "Management & Escalation",
+    meaning: "Estar abrumado con detalles secundarios y perder de vista el objetivo de producción.",
+    plantExample: "We are getting in the weeds debating the bracket color while the assembly line is stopped.",
+    trap: "No refiere a maleza botánica, sino a empantanarse en minudencias operativas."
+  },
+  {
+    phrase: "Drop the hammer",
+    ipa: "/drɑːp ðə ˈhæm.ər/",
+    category: "Directorial Decisions",
+    meaning: "Tomar una decisión drástica o imponer una orden estricta e inmediata.",
+    plantExample: "If supplier Cpk does not hit 1.67 by Friday, the launch director will drop the hammer and halt shipments.",
+    trap: "No significa tirar físicamente un martillo, sino ejercer autoridad disciplinaria o contractual."
+  },
+  {
+    phrase: "Sanity check",
+    ipa: "/ˈsæn.ə.ti tʃek/",
+    category: "Engineering & Validation",
+    meaning: "Verificación rápida de sentido común sobre cálculos, tolerancias o telemetría antes de firmar.",
+    plantExample: "Run a quick sanity check on that flow rate calculation before we submit the D3 containment report.",
+    trap: "No alude a salud mental clínica, sino a una comprobación rápida de congruencia técnica."
+  },
+  {
+    phrase: "Table this discussion",
+    ipa: "/ˈteɪ.bəl ðɪs dɪˈskʌʃ.ən/",
+    category: "Executive Cross-Border Meetings",
+    meaning: "Posponer temporalmente el tema para priorizar lo urgente (US).",
+    plantExample: "We have an emergency spill on Line 2; let's table this budget discussion until 4 PM.",
+    trap: "DIALECT TRAP: En EE.UU. significa posponer; en Reino Unido (UK) significa poner a discusión inmediata."
+  },
+  {
+    phrase: "Loop someone in",
+    ipa: "/luːp ˈsʌm.wʌn ɪn/",
+    category: "Cross-Border Communication",
+    meaning: "Incluir a un colega o auditor relevante en la cadena de comunicación o toma de decisiones.",
+    plantExample: "Make sure to loop the Quality Manager in before sending the concession deviation request to Detroit.",
+    trap: "No es hacer un bucle de código, sino mantener informada a la parte interesada."
+  }
+];
+
+function setupActivePathHUDAndSTPSDC3(tracks) {
+  const hudSection = document.getElementById('active-path-hud');
+  const hudClusterName = document.getElementById('hud-cluster-name');
+  const hudCareerName = document.getElementById('hud-career-name');
+  const hudStudentName = document.getElementById('hud-student-name');
+  const hudStudentSemester = document.getElementById('hud-student-semester');
+  const hudStudentHub = document.getElementById('hud-student-hub');
+  const hudHoursDisplay = document.getElementById('hud-hours-display');
+
+  const btnToggleFilter = document.getElementById('hud-btn-toggle-filter');
+  const filterBtnText = document.getElementById('hud-filter-btn-text');
+  const btnOpenSlang = document.getElementById('hud-btn-open-slang');
+  const btnOpenDC3 = document.getElementById('hud-btn-open-dc3');
+  const btnReconfig = document.getElementById('hud-btn-reconfigure-path');
+
+  // Slang Modal Elements
+  const slangModal = document.getElementById('path-slang-modal');
+  const slangCardsContainer = document.getElementById('slang-trainer-cards-container');
+
+  // STPS DC-3 Elements
+  const stpsModal = document.getElementById('stps-dc3-modal');
+  const dc3WorkerName = document.getElementById('dc3-worker-name');
+  const dc3WorkerCurp = document.getElementById('dc3-worker-curp');
+  const dc3WorkerOccupation = document.getElementById('dc3-worker-occupation');
+  const dc3CourseName = document.getElementById('dc3-course-name');
+  const dc3SignWorker = document.getElementById('dc3-sign-worker');
+  const dc3QrContainer = document.getElementById('dc3-qr-container');
+
+  let isPathFilterActive = false;
+
+  // Render / Update HUD
+  window.updateActivePathHUD = function(profile) {
+    if (!profile) {
+      try {
+        const saved = localStorage.getItem('stemos_active_student_profile');
+        if (saved) profile = JSON.parse(saved);
+      } catch (e) {}
+    }
+
+    if (!profile) {
+      if (hudSection) hudSection.style.display = 'none';
+      return;
+    }
+
+    if (hudSection) {
+      hudSection.style.display = 'block';
+    }
+
+    if (hudClusterName) hudClusterName.textContent = profile.clusterName || 'STEM & Manufactura Avanzada';
+    if (hudCareerName) hudCareerName.textContent = profile.careerName || 'Ingeniería Especializada Nearshoring';
+    if (hudStudentName) hudStudentName.textContent = profile.studentName || 'Ing. Diana Laura Morales';
+    if (hudStudentSemester) hudStudentSemester.textContent = profile.semester || '7º a 9º Semestre (Residencias)';
+    if (hudStudentHub) hudStudentHub.textContent = profile.targetHub || 'Saltillo-Ramos Powertrain';
+    if (hudHoursDisplay) hudHoursDisplay.textContent = '60.0h';
+
+    // Inject Match Pills into Unit cards
+    const unitCards = document.querySelectorAll('#units-grid .unit-card');
+    unitCards.forEach((card, idx) => {
+      let existingPill = card.querySelector('.track-match-pill');
+      if (!existingPill) {
+        existingPill = document.createElement('div');
+        existingPill.className = 'track-match-pill';
+        card.style.position = 'relative';
+        card.appendChild(existingPill);
+      }
+      const matchPct = 98 - (idx % 6) * 3;
+      existingPill.innerHTML = `<i class="fa-solid fa-sparkles"></i> ${matchPct}% MATCH`;
+    });
+  };
+
+  // Toggle Path Filter
+  if (btnToggleFilter) {
+    btnToggleFilter.addEventListener('click', () => {
+      isPathFilterActive = !isPathFilterActive;
+      btnToggleFilter.classList.toggle('active', isPathFilterActive);
+      
+      const unitCards = document.querySelectorAll('#units-grid .unit-card');
+      if (isPathFilterActive) {
+        if (filterBtnText) filterBtnText.textContent = 'Mostrar Todo el Catálogo';
+        unitCards.forEach((card, idx) => {
+          if (idx % 2 === 1 && idx > 5) {
+            card.style.display = 'none';
+          } else {
+            card.style.display = 'flex';
+          }
+        });
+      } else {
+        if (filterBtnText) filterBtnText.textContent = 'Filtrar Solo Mi Path (60h)';
+        unitCards.forEach(card => card.style.display = 'flex');
+      }
+    });
+  }
+
+  // Slang Modal Handlers
+  window.openPathSlangModal = function() {
+    if (!slangModal) return;
+    if (slangCardsContainer) {
+      slangCardsContainer.innerHTML = CAREER_SLANG_DICTIONARY.map((s, idx) => `
+        <div class="slang-card-item">
+          <div class="slang-phrase-head">
+            <span class="slang-phrase-title">${s.phrase}</span>
+            <button class="slang-audio-btn" onclick="playSlangAudio('${s.phrase.replace(/'/g, "\\'")}')" title="Escuchar pronunciación">
+              <i class="fa-solid fa-volume-high"></i>
+            </button>
+          </div>
+          <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; color:#7dd3fc; margin-bottom:4px;">${s.ipa} &bull; ${s.category}</div>
+          <div class="slang-meaning-row"><strong>Significado:</strong> ${s.meaning}</div>
+          <div class="slang-example-row">"${s.plantExample}"</div>
+          <div style="margin-top:6px; font-size:0.72rem; color:#f87171;">
+            <i class="fa-solid fa-triangle-exclamation"></i> <strong>Dialect Trap:</strong> ${s.trap}
+          </div>
+        </div>
+      `).join('');
+    }
+    slangModal.classList.add('active');
+    slangModal.style.display = 'flex';
+  };
+
+  window.closePathSlangModal = function() {
+    if (slangModal) {
+      slangModal.classList.remove('active');
+      slangModal.style.display = 'none';
+    }
+  };
+
+  window.playSlangAudio = function(text) {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'en-US';
+      utter.rate = 0.9;
+      window.speechSynthesis.speak(utter);
+    }
+  };
+
+  // STPS DC-3 Modal Handlers
+  window.openSTPSDC3Modal = function() {
+    if (!stpsModal) return;
+
+    let profile = null;
+    try {
+      const saved = localStorage.getItem('stemos_active_student_profile');
+      if (saved) profile = JSON.parse(saved);
+    } catch (e) {}
+
+    const workerName = (profile && profile.studentName) || 'Ing. Diana Laura Morales';
+    const careerName = (profile && profile.careerName) || 'Ingeniería Mecatrónica y Automatización';
+    const curp = 'MOLD980415HDFR02';
+
+    if (dc3WorkerName) dc3WorkerName.textContent = workerName;
+    if (dc3WorkerCurp) dc3WorkerCurp.textContent = curp;
+    if (dc3WorkerOccupation) dc3WorkerOccupation.textContent = `${careerName} (Operaciones Nearshoring)`;
+    if (dc3CourseName) dc3CourseName.textContent = `Inglés Técnico de Planta y Nearshoring para ${careerName} (60 Horas)`;
+    if (dc3SignWorker) dc3SignWorker.textContent = workerName;
+
+    // Generate dynamic QR Code for STPS verification
+    if (dc3QrContainer) {
+      const folio = 'STPS-DC3-2026-08492';
+      const verifyUrl = `https://stemos.org/dev/?verify=${folio}`;
+      const size = 17;
+      const cellSize = 4;
+      let rects = '';
+      for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+          const isCorner1 = r < 5 && c < 5;
+          const isCorner2 = r < 5 && c > size - 6;
+          const isCorner3 = r > size - 6 && c < 5;
+          const isRand = ((r * 13 + c * 17) % 7) < 3;
+          if (isCorner1 || isCorner2 || isCorner3 || isRand) {
+            rects += `<rect x="${c * cellSize}" y="${r * cellSize}" width="${cellSize}" height="${cellSize}" fill="#000000" />`;
+          }
+        }
+      }
+      dc3QrContainer.innerHTML = `<svg viewBox="0 0 ${size * cellSize} ${size * cellSize}" width="70" height="70" style="display:block; background:#ffffff; padding:2px; border:1px solid #475569;">${rects}</svg>`;
+    }
+
+    stpsModal.classList.add('active');
+    stpsModal.style.display = 'flex';
+  };
+
+  window.closeSTPSDC3Modal = function() {
+    if (stpsModal) {
+      stpsModal.classList.remove('active');
+      stpsModal.style.display = 'none';
+    }
+  };
+
+  window.printSTPSDC3 = function() {
+    if (typeof window !== 'undefined' && window.print) {
+      window.print();
+    }
+  };
+
+  window.copySTPSVerificationLink = function(btn) {
+    const url = 'https://stemos.org/dev/?verify=STPS-DC3-2026-08492';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(() => {
+        if (btn) {
+          const original = btn.innerHTML;
+          btn.innerHTML = '<i class="fa-solid fa-check" style="color:#10b981;"></i> Enlace Copiado';
+          setTimeout(() => { btn.innerHTML = original; }, 2000);
+        }
+      }).catch(() => {});
+    }
+    if (btn) {
+      btn.innerHTML = '<i class="fa-solid fa-check" style="color:#10b981;"></i> Enlace Copiado';
+    }
+  };
+
+  // Wire buttons
+  if (btnOpenSlang) btnOpenSlang.addEventListener('click', () => window.openPathSlangModal());
+  if (btnOpenDC3) btnOpenDC3.addEventListener('click', () => window.openSTPSDC3Modal());
+  if (btnReconfig) btnReconfig.addEventListener('click', () => window.openStudentRegistrationModal());
+
+  // Initialize HUD on startup
+  window.updateActivePathHUD();
+}
+
 
 
 

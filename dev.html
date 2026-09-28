@@ -438,6 +438,82 @@
         </div>
       </div>
 
+      <!-- ── Phase 17: Active Career Path HUD & Milestone Progression Tracker ── -->
+      <section class="active-path-hud" id="active-path-hud" style="display:none;" aria-label="Active Career Path Tracker">
+        <div class="hud-top-row">
+          <div>
+            <div class="hud-meta-badge" id="hud-cluster-tag">
+              <i class="fa-solid fa-graduation-cap"></i> <span id="hud-cluster-name">STEM Core &amp; Manufactura Avanzada</span>
+            </div>
+            <h3 class="hud-career-title" id="hud-career-title">
+              <span id="hud-career-name">Ingeniería Mecatrónica, Robótica y Automatización Industrial</span>
+              <span style="font-size:0.75rem; background:rgba(16,185,129,0.2); color:#34d399; border:1px solid rgba(16,185,129,0.4); padding:2px 8px; border-radius:4px;">PATH ACTIVO</span>
+            </h3>
+            <div class="hud-student-sub">
+              Estudiante: <strong id="hud-student-name" style="color:#ffffff;">Ing. Diana Laura Morales</strong> &bull;
+              Semestre / Nivel: <span id="hud-student-semester" style="color:#cbd5e1;">7º a 9º Semestre (Residencias)</span> &bull;
+              Hub: <span id="hud-student-hub" style="color:#38bdf8;">Saltillo-Ramos Powertrain</span>
+            </div>
+          </div>
+          <div class="hud-hours-chip">
+            <div class="hud-hours-val" id="hud-hours-display">60.0h</div>
+            <div class="hud-hours-lbl">Duración Auditada STPS / SEP</div>
+          </div>
+        </div>
+
+        <!-- 4 Milestones Progress Strip -->
+        <div class="hud-milestones-track" id="hud-milestones-track">
+          <div class="hud-milestone-box active" id="hud-m1-box">
+            <div class="hud-m-head">
+              <span>HITO 1 &bull; 15.0h</span>
+              <span style="color:#10b981;"><i class="fa-solid fa-circle-check"></i> En Curso</span>
+            </div>
+            <div class="hud-m-title">Shopfloor Survival &amp; LOTO</div>
+            <div class="hud-progress-bar"><div class="hud-progress-fill" style="width: 45%;"></div></div>
+          </div>
+          <div class="hud-milestone-box" id="hud-m2-box">
+            <div class="hud-m-head">
+              <span>HITO 2 &bull; 15.0h</span>
+              <span style="color:#94a3b8;">Pendiente</span>
+            </div>
+            <div class="hud-m-title">Root Cause 8D &amp; SCADA Twin</div>
+            <div class="hud-progress-bar"><div class="hud-progress-fill" style="width: 0%;"></div></div>
+          </div>
+          <div class="hud-milestone-box" id="hud-m3-box">
+            <div class="hud-m-head">
+              <span>HITO 3 &bull; 15.0h</span>
+              <span style="color:#94a3b8;">Pendiente</span>
+            </div>
+            <div class="hud-m-title">Executive Negotiation &amp; Defense</div>
+            <div class="hud-progress-bar"><div class="hud-progress-fill" style="width: 0%;"></div></div>
+          </div>
+          <div class="hud-milestone-box" id="hud-m4-box">
+            <div class="hud-m-head">
+              <span>HITO 4 &bull; 15.0h</span>
+              <span style="color:#94a3b8;">Examen Final</span>
+            </div>
+            <div class="hud-m-title">Capstone Fellowship Certification</div>
+            <div class="hud-progress-bar"><div class="hud-progress-fill" style="width: 0%;"></div></div>
+          </div>
+        </div>
+
+        <!-- HUD Quick Actions -->
+        <div class="hud-actions-row">
+          <button id="hud-btn-toggle-filter" class="hud-action-btn" title="Filtrar cursos de mi ruta">
+            <i class="fa-solid fa-filter"></i> <span id="hud-filter-btn-text">Filtrar Solo Mi Path (60h)</span>
+          </button>
+          <button id="hud-btn-open-slang" class="hud-action-btn" title="Entrenar modismos de mi carrera">
+            <i class="fa-solid fa-bolt"></i> Slang de Mi Carrera
+          </button>
+          <button id="hud-btn-open-dc3" class="hud-action-btn highlight" title="Generar constancia oficial STPS">
+            <i class="fa-solid fa-file-invoice"></i> Constancia STPS DC-3 (60h)
+          </button>
+          <button id="hud-btn-reconfigure-path" class="hud-action-btn" style="margin-left:auto;" title="Reconfigurar mi path o cambiar carrera">
+            <i class="fa-solid fa-sliders"></i> Cambiar Carrera
+          </button>
+        </div>
+      </section>
+
       <!-- Level 1: All Units Modular Grid (Screenshot Model) -->
       <div id="units-grid" class="units-grid-container">
         <!-- 30 Unit cards dynamically injected here by dev.js -->
@@ -3389,6 +3465,152 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Phase 17: Plant Slang & Idioms Trainer Modal ── -->
+  <div class="slang-modal-overlay" id="path-slang-modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="slang-modal-title">
+    <div class="slang-modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="background:rgba(245,158,11,0.2); color:#fbbf24; border:1px solid rgba(245,158,11,0.4); padding:3px 8px; border-radius:6px; font-size:0.75rem; font-weight:800;">
+            <i class="fa-solid fa-bolt"></i> ZERO-GRAMMAR SLANG LAB
+          </span>
+          <h3 id="slang-modal-title" style="margin:0; font-size:1.1rem; font-weight:800; color:#ffffff;">Frases de la Calle del Inglés Industrial</h3>
+        </div>
+        <button id="btn-close-slang-modal" class="drawer-close-btn" aria-label="Close Slang Trainer" onclick="closePathSlangModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p style="font-size:0.82rem; color:#94a3b8; margin:0 0 14px 0;">
+        Modismos opacos, dialect traps y expresiones de alta frecuencia utilizadas en plantas de nearshoring y juntas ejecutivas en EE.UU. que no se enseñan en escuelas tradicionales.
+      </p>
+      <div class="slang-cards-grid" id="slang-trainer-cards-container">
+        <!-- Slang cards injected dynamically based on student's cluster -->
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:14px;">
+        <button class="cs-modal-btn" onclick="closePathSlangModal()" style="background:#1e293b; color:#cbd5e1; border:1px solid #475569; padding:8px 18px; border-radius:8px; cursor:pointer;">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Phase 17: Official Mexican Government STPS Formato DC-3 Modal ── -->
+  <div class="stps-modal-overlay" id="stps-dc3-modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="stps-modal-title">
+    <div class="stps-modal-dialog">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;" class="stps-modal-actions">
+        <span class="cs-modal-tag" style="background:#ecfdf5; color:#059669; border-color:#a7f3d0; font-weight:800;">
+          <i class="fa-solid fa-stamp"></i> Documento Oficial Laboral STPS &bull; Art. 153-V LFT
+        </span>
+        <button id="btn-close-stps-modal" class="drawer-close-btn" aria-label="Cerrar Formato DC-3" onclick="closeSTPSDC3Modal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="stps-dc3-sheet" id="stps-dc3-printable-sheet">
+        <div class="stps-header-grid">
+          <div style="text-align:center;">
+            <div style="border:1px solid #000; padding:6px; font-size:0.65rem; font-weight:800; line-height:1.2;">
+              ESTADOS UNIDOS MEXICANOS
+            </div>
+          </div>
+          <div class="stps-gov-title">
+            <h3>SECRETARÍA DEL TRABAJO Y PREVISIÓN SOCIAL</h3>
+            <h4>SUBSECRETARÍA DE INCLUSIÓN LABORAL &bull; DIRECCIÓN GENERAL DE CAPACITACIÓN</h4>
+            <h2>FORMATO DC-3 &bull; CONSTANCIA DE COMPETENCIAS O HABILIDADES LABORALES</h2>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.75rem; font-weight:800;" id="dc3-doc-folio">FOLIO: DC3-2026-08492</div>
+            <div style="font-size:0.62rem; color:#475569;">Validez Oficial 60.0h</div>
+          </div>
+        </div>
+
+        <div class="stps-section-bar">1. DATOS DEL TRABAJADOR / ALUMNO CAPACITADO</div>
+        <table class="stps-data-table">
+          <tr>
+            <th>Nombre Completo:</th>
+            <td id="dc3-worker-name" colspan="3">Ing. Diana Laura Morales</td>
+          </tr>
+          <tr>
+            <th>CURP / Matrícula:</th>
+            <td id="dc3-worker-curp">MOLD980415HDFR02</td>
+            <th>Ocupación Específica:</th>
+            <td id="dc3-worker-occupation">Ingeniería Mecatrónica y Automatización de Planta</td>
+          </tr>
+          <tr>
+            <th>Puesto de Trabajo:</th>
+            <td id="dc3-worker-job">Ingeniero de Procesos y Operaciones Nearshoring</td>
+            <th>Clave Ocupacional (SINCO):</th>
+            <td id="dc3-worker-sinco">2142 - Ingenieros en Automatización y Manufactura</td>
+          </tr>
+        </table>
+
+        <div class="stps-section-bar">2. DATOS DE LA EMPRESA O INSTITUCIÓN CAPACITADORA</div>
+        <table class="stps-data-table">
+          <tr>
+            <th>Razón Social:</th>
+            <td colspan="3">stemOS Foundation &bull; Red JóvenesSTEM Nearshoring A.C.</td>
+          </tr>
+          <tr>
+            <th>Registro STPS Agente Externo:</th>
+            <td>STEM-260928-LXP-001</td>
+            <th>R.F.C. / ID Institucional:</th>
+            <td>SFE260928-8F2</td>
+          </tr>
+        </table>
+
+        <div class="stps-section-bar">3. DATOS DEL PROGRAMA DE CAPACITACIÓN, ADIESTRAMIENTO Y CERTIFICACIÓN</div>
+        <table class="stps-data-table">
+          <tr>
+            <th>Nombre del Curso Oficial:</th>
+            <td id="dc3-course-name" colspan="3">Inglés Técnico de Planta y Nearshoring para Ingeniería Mecatrónica (60 Horas)</td>
+          </tr>
+          <tr>
+            <th>Duración Estandarizada:</th>
+            <td id="dc3-course-hours"><strong>60.0 Horas de Formación Auditada (4 Hitos de 15h)</strong></td>
+            <th>Área Temática STPS:</th>
+            <td>1000 - Producción y Mantenimiento Industrial</td>
+          </tr>
+          <tr>
+            <th>Período de Ejecución:</th>
+            <td id="dc3-course-dates" colspan="3">Del 1 de Agosto de 2026 al 28 de Septiembre de 2026</td>
+          </tr>
+          <tr>
+            <th>Alineación Normativa:</th>
+            <td colspan="3">Alineado a <strong>SEP CONOCER EC1290</strong>, <strong>ISO 9001:2015 Cl. 7.2</strong> y Estándares Industriales <strong>IATF 16949 / OSHA 1910.147</strong>.</td>
+          </tr>
+        </table>
+
+        <div class="stps-section-bar">4. FIRMAS DE AUTENTICACIÓN Y VALIDACIÓN CRIPTOGRÁFICA</div>
+        <div class="stps-signatures-grid">
+          <div class="stps-sign-box">
+            <div style="font-size:0.68rem; color:#475569;">El Trabajador / Estudiante Capacitado:</div>
+            <div class="stps-sign-line" id="dc3-sign-worker">Ing. Diana Laura Morales</div>
+            <div style="font-size:0.65rem;">Firma del Alumno Acreditado</div>
+          </div>
+          <div class="stps-sign-box">
+            <div style="font-size:0.68rem; color:#475569;">Comisión Mixta / Institución Educativa:</div>
+            <div class="stps-sign-line">Ing. Alberto Hernández Yépiz</div>
+            <div style="font-size:0.65rem;">Comité Académico stemOS</div>
+          </div>
+          <div class="stps-sign-box">
+            <div id="dc3-qr-container" style="display:flex; justify-content:center; margin-bottom:4px;">
+              <!-- Sello QR inyectado -->
+            </div>
+            <div style="font-size:0.62rem; font-weight:700;">Sello W3C SHA-256</div>
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.58rem; color:#64748b;">STEM-DC3-VERIFIED</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:center; gap:12px; margin-top:16px;" class="stps-modal-actions">
+        <button class="cs-modal-btn" onclick="printSTPSDC3()" style="background:#0f172a; color:#ffffff; font-weight:800; padding:10px 24px;">
+          <i class="fa-solid fa-print"></i> Imprimir Formato DC-3 Oficial / Guardar PDF
+        </button>
+        <button class="cs-modal-btn" onclick="copySTPSVerificationLink(this)" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; font-weight:700; padding:10px 20px;">
+          <i class="fa-solid fa-link"></i> Copiar Enlace Verificable
+        </button>
+        <button class="cs-modal-btn" onclick="closeSTPSDC3Modal()" style="background:#ffffff; color:#475569; border:1px solid #cbd5e1; padding:10px 20px;">
+          Cerrar
+        </button>
       </div>
     </div>
   </div>

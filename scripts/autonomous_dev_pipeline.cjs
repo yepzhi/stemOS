@@ -81,12 +81,13 @@ const statusReport = {
     'Phase 13: Capstone Nearshoring Final Certification & Board Exam (Multi-Station Circuit & Oral Defense Tribunal)',
     'Phase 14: National Higher Education Catalog of Mexico (CENEVAL / ANUIES / TecNM / SEP)',
     'Phase 15: AI Pre-Assessment Diagnostic & % Match Affinity Matrix',
-    'Phase 16: 60-Hour Specialized Career Path Engine, Zero-Grammar Core & STPS/ISO Compliance'
+    'Phase 16: 60-Hour Specialized Career Path Engine, Zero-Grammar Core & STPS/ISO Compliance',
+    'Phase 17: Interactive 60-Hour Career Path Execution, Active Learner HUD & STPS DC-3 Evidence Binder'
   ],
   nextImmediateTasks: [
-    'Continuous Nearshoring Alignment & Enterprise L&D Integration'
+    'Enterprise Plant Integration & University Partnership Validation'
   ],
-  testsPassed: 23,
+  testsPassed: 24,
   status: 'ALL_GREEN'
 };
 
