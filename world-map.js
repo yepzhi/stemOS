@@ -278,6 +278,13 @@
             this.launchModuleCallback = null;
             this.launchSocraticCallback = null;
 
+            // Active career / Shared deterministic world
+            this.activeCareer = null;
+            const savedCareerId = localStorage.getItem('stemos_active_career') || 'it-mecatronica';
+            if (typeof window.STEMOS_CAREER_TRACKS !== 'undefined') {
+                this.activeCareer = window.STEMOS_CAREER_TRACKS.getCareerById(savedCareerId);
+            }
+
             // DOM Elements
             this.els = {};
             this.animFrameId = null;
@@ -299,6 +306,12 @@
                 this.courses = LXP_COURSES;
             }
 
+            // Initialize career from catalog if not already set
+            if (!this.activeCareer && typeof window.STEMOS_CAREER_TRACKS !== 'undefined') {
+                const savedCareerId = localStorage.getItem('stemos_active_career') || 'it-mecatronica';
+                this.activeCareer = window.STEMOS_CAREER_TRACKS.getCareerById(savedCareerId);
+            }
+
             this.buildDOM();
             this.setupStars(140);
             this.buildSphereNodes();
@@ -318,6 +331,9 @@
         }
 
         buildDOM() {
+            const currentCareerName = this.activeCareer ? this.activeCareer.name : 'Ing. Mecatrónica (TecNM)';
+            const currentBiomeName = this.activeCareer && this.activeCareer.worldTheme ? this.activeCareer.worldTheme.biomeName : 'Precision Robotics Biome';
+
             this.container.innerHTML = `
                 <div class="world-experience-wrap" id="world-experience-wrap">
                     <!-- Dynamic Colorful Tech Auroras Background -->
@@ -334,8 +350,21 @@
                             <div class="world-brand-icon"><i class="fa-solid fa-earth-americas"></i></div>
                             <div class="world-title-text">
                                 <span class="world-title-main">Mundo stemOS <span style="font-size:0.7rem;font-weight:800;color:#0284c7;background:rgba(2,132,199,0.12);padding:2px 8px;border-radius:6px;border:1px solid rgba(2,132,199,0.3);">3D ESP</span></span>
-                                <span class="world-title-sub">Ruta secuencial gamificada de 26 mundos &bull; Modo Tech White</span>
+                                <span class="world-title-sub" id="wm-biome-subtitle">Bioma Adaptado: ${currentBiomeName} &bull; 60 Horas Curriculares</span>
                             </div>
+                        </div>
+
+                        <!-- Career Selector: Shared World per Career -->
+                        <div class="world-career-selector-wrap" id="world-career-selector-wrap" style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.92); border:1px solid #cbd5e1; border-radius:999px; padding:4px 14px; box-shadow:0 4px 14px rgba(0,0,0,0.06); backdrop-filter:blur(8px);">
+                            <span style="font-size:0.72rem; font-weight:800; color:#0284c7; display:flex; align-items:center; gap:5px;">
+                                <i class="fa-solid fa-graduation-cap"></i> <span id="wm-career-system-tag">Carrera:</span>
+                            </span>
+                            <select id="wm-career-select" style="background:transparent; border:none; font-family:'Inter',sans-serif; font-size:0.8rem; font-weight:700; color:#0f172a; cursor:pointer; outline:none; max-width:280px;">
+                                <!-- Career Options injected dynamically -->
+                            </select>
+                            <span class="world-shared-pill" title="Mundo Compartido: Todos los alumnos de esta carrera ven exactamente este mismo mundo y este mismo track de 60 horas" style="font-size:0.68rem; font-weight:800; background:#dcfce7; color:#15803d; border:1px solid #86efac; border-radius:999px; padding:2px 8px; display:inline-flex; align-items:center; gap:4px;">
+                                <i class="fa-solid fa-users"></i> Mundo Compartido
+                            </span>
                         </div>
 
                         <!-- Realm Filters -->
@@ -543,6 +572,25 @@
             this.canvas = this.els.canvas;
             this.ctx = this.canvas.getContext('2d');
 
+            // Populate Career Select Dropdown (Shared World per Career)
+            const careerSelect = document.getElementById('wm-career-select');
+            if (careerSelect && typeof window.STEMOS_CAREER_TRACKS !== 'undefined') {
+                careerSelect.innerHTML = '';
+                const allCareers = window.STEMOS_CAREER_TRACKS.CAREERS || [];
+                allCareers.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.id;
+                    opt.textContent = `${c.name} (${c.systemLabel.split(' ')[0]})`;
+                    if (this.activeCareer && this.activeCareer.id === c.id) {
+                        opt.selected = true;
+                    }
+                    careerSelect.appendChild(opt);
+                });
+                careerSelect.addEventListener('change', (e) => {
+                    this.setCareer(e.target.value);
+                });
+            }
+
             // Populate Track Select Dropdown
             const trackSelect = document.getElementById('path-track-select');
             if (trackSelect) {
@@ -578,7 +626,61 @@
         buildSphereNodes() {
             this.nodes = [];
 
-            // Canonical 27-course sequential learning route (Super Mario / Duolingo Expedition)
+            // ── 1. DETERMINISTIC SHARED WORLD FOR ACTIVE CAREER ──
+            // If active career is set, all students of this career see the EXACT same 3D world
+            if (this.activeCareer && this.activeCareer.worldTheme && this.activeCareer.worldTheme.nodeCoordinates) {
+                const career = this.activeCareer;
+                const coords = career.worldTheme.nodeCoordinates;
+                const milestones = career.milestones || [];
+                const primaryTrack = this.courses[career.primaryTrackId] || {};
+                const modules = primaryTrack.modules || [];
+
+                coords.forEach((coord, idx) => {
+                    const stepNumber = idx + 1;
+                    const isStart = (idx === 0);
+                    const isFinish = (idx === coords.length - 1);
+                    const mIndex = Math.max(0, Math.min(milestones.length - 1, (coord.milestoneIndex || 1) - 1));
+                    const milestone = milestones[mIndex] || milestones[0] || {};
+                    const mod = modules[idx % (modules.length || 1)] || {};
+                    const isCheckpoint = (idx % 4 === 3);
+
+                    const nodeTitle = isCheckpoint
+                        ? `Hito ${coord.milestoneIndex} (15h): ${milestone.title || 'Evaluación Sumativa'}`
+                        : (mod.title || `${career.name} - Módulo ${stepNumber}`);
+
+                    const nodeTitleES = isCheckpoint
+                        ? `Acreditación Hito ${coord.milestoneIndex} (15h) - ${milestone.focus || 'Competencia Auditada'}`
+                        : (mod.titleES || mod.title || `Práctica Especializada ${stepNumber}`);
+
+                    this.nodes.push({
+                        id: `${career.id}-node-${stepNumber}`,
+                        trackId: career.primaryTrackId,
+                        stepNumber: stepNumber,
+                        milestoneIndex: coord.milestoneIndex,
+                        isMilestoneCheckpoint: isCheckpoint,
+                        isStart: isStart,
+                        isFinish: isFinish,
+                        title: nodeTitle,
+                        titleES: nodeTitleES,
+                        category: career.clusterId || 'engineering',
+                        standard: career.standards[idx % career.standards.length] || 'IEEE / ISO Standard',
+                        modules: [mod],
+                        icon: isCheckpoint ? 'fa-award' : (DEFAULT_TRACK_ICONS[career.primaryTrackId] || 'fa-microchip'),
+                        // Deterministic coordinates from career seed
+                        ux: coord.ux,
+                        uy: coord.uy,
+                        uz: coord.uz,
+                        sx: 0,
+                        sy: 0,
+                        sz: 0,
+                        screenRadius: isCheckpoint ? 22 : 16,
+                        visible: true
+                    });
+                });
+                return;
+            }
+
+            // ── 2. FALLBACK CANONICAL SEQUENCE ──
             const CURRICULUM_SEQUENCE = [
                 'web-dev-agentic',
                 'cybersecurity',
@@ -620,7 +722,6 @@
                 }
             });
 
-            // Append any extra tracks that may exist in catalog
             for (let trKey in this.courses) {
                 if (!addedSet.has(trKey)) {
                     orderedTracks.push({ id: trKey, ...this.courses[trKey] });
@@ -637,14 +738,11 @@
                 const isStart = (idx === 0);
                 const isFinish = (idx === total - 1);
 
-                // Smooth spherical spiral progression around the 3D globe:
-                // Traversing ~2.2 full revolutions from North (+0.65 rad) down to South (-0.65 rad)
                 const frac = total > 1 ? idx / (total - 1) : 0.5;
                 const lon = 0.35 + frac * (4.4 * Math.PI);
                 let lat = 0.65 - frac * 1.30 + (Math.sin(idx * 1.35) * 0.08);
                 lat = Math.max(-1.15, Math.min(1.15, lat));
 
-                // Spherical to Cartesian coordinates on unit sphere (Radius = 1)
                 const x = Math.cos(lat) * Math.sin(lon);
                 const y = Math.sin(lat);
                 const z = Math.cos(lat) * Math.cos(lon);
@@ -660,11 +758,9 @@
                     standard: track.standard || 'IEEE/ISO',
                     modules: track.modules || [],
                     icon: DEFAULT_TRACK_ICONS[track.id] || 'fa-book-open',
-                    // Unit sphere position
                     ux: x,
                     uy: y,
                     uz: z,
-                    // Projected 2D screen coordinates
                     sx: 0,
                     sy: 0,
                     sz: 0,
@@ -1104,28 +1200,40 @@
         drawGlobeAtmosphere(ctx, cx, cy, radius) {
             ctx.save();
 
-            // 1. Pearl White Spherical Core with subtle technological gradient
+            const theme = this.activeCareer ? this.activeCareer.worldTheme : null;
+            const primaryColor = theme ? theme.primaryColor : '#0ea5e9';
+            const glowColor = theme ? theme.glowColor : 'rgba(56, 189, 248, 0.35)';
+
+            // 1. Pearl / Themed Spherical Core with subtle technological gradient
             const grad = ctx.createRadialGradient(
                 cx - radius * 0.25, cy - radius * 0.25, radius * 0.05,
                 cx, cy, radius
             );
-            grad.addColorStop(0, '#ffffff');
-            grad.addColorStop(0.45, '#f8fafc');
-            grad.addColorStop(0.80, '#f1f5f9');
-            grad.addColorStop(0.95, '#e2e8f0');
-            grad.addColorStop(1.0, '#cbd5e1');
+            if (theme && theme.atmosphereGradient && theme.atmosphereGradient.length >= 4) {
+                grad.addColorStop(0, '#ffffff');
+                grad.addColorStop(0.40, '#f8fafc');
+                grad.addColorStop(0.75, '#f1f5f9');
+                grad.addColorStop(0.92, theme.atmosphereGradient[2]);
+                grad.addColorStop(1.0, theme.atmosphereGradient[3]);
+            } else {
+                grad.addColorStop(0, '#ffffff');
+                grad.addColorStop(0.45, '#f8fafc');
+                grad.addColorStop(0.80, '#f1f5f9');
+                grad.addColorStop(0.95, '#e2e8f0');
+                grad.addColorStop(1.0, '#cbd5e1');
+            }
 
             ctx.beginPath();
             ctx.arc(cx, cy, radius, 0, Math.PI * 2);
             ctx.fillStyle = grad;
             ctx.fill();
 
-            // 2. Tech Aurora Outer Halo
+            // 2. Tech Aurora Outer Halo with career tint
             const outerGlow = ctx.createRadialGradient(cx, cy, radius * 0.96, cx, cy, radius * 1.25);
-            outerGlow.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
-            outerGlow.addColorStop(0.45, 'rgba(168, 85, 247, 0.14)');
-            outerGlow.addColorStop(0.8, 'rgba(52, 211, 153, 0.06)');
-            outerGlow.addColorStop(1, 'rgba(56, 189, 248, 0)');
+            outerGlow.addColorStop(0, glowColor);
+            outerGlow.addColorStop(0.45, primaryColor + '2b');
+            outerGlow.addColorStop(0.8, primaryColor + '0f');
+            outerGlow.addColorStop(1, primaryColor + '00');
 
             ctx.beginPath();
             ctx.arc(cx, cy, radius * 1.25, 0, Math.PI * 2);
@@ -2097,6 +2205,44 @@
             if (typeof window.loadProgress === 'function') window.loadProgress();
             if (typeof window.renderSegmentedProgressBar === 'function') window.renderSegmentedProgressBar();
             if (typeof window.updateKPIMetrics === 'function') window.updateKPIMetrics();
+        }
+
+        setCareer(careerId) {
+            if (typeof window.STEMOS_CAREER_TRACKS !== 'undefined') {
+                const career = window.STEMOS_CAREER_TRACKS.getCareerById(careerId);
+                if (career) {
+                    this.activeCareer = career;
+                    localStorage.setItem('stemos_active_career', careerId);
+                    
+                    // Update header HUD if present
+                    const biomeSub = document.getElementById('wm-biome-subtitle');
+                    if (biomeSub && career.worldTheme) {
+                        biomeSub.textContent = `Bioma Adaptado: ${career.worldTheme.biomeName} • 60 Horas Curriculares`;
+                    }
+                    const careerSelect = document.getElementById('wm-career-select');
+                    if (careerSelect && careerSelect.value !== careerId) {
+                        careerSelect.value = careerId;
+                    }
+
+                    // Rebuild deterministic sphere nodes
+                    this.buildSphereNodes();
+
+                    // Animate camera to node 1
+                    this.pitch = 0.15;
+                    this.yaw = 0.35;
+                    this.zoom = 1.0;
+
+                    this.showToast(`Mundo Adaptado: ${career.name} (Bioma: ${career.worldTheme.biomeName})`);
+
+                    // Dispatch event
+                    window.dispatchEvent(new CustomEvent('stemos:career-changed', {
+                        detail: { careerId, career }
+                    }));
+
+                    return career;
+                }
+            }
+            return null;
         }
 
         showToast(message) {

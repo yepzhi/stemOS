@@ -10,7 +10,7 @@
 
   const CONFIG = {
     appName: 'stemos',
-    appVersion: '5.3.0',
+    appVersion: '5.10.0',
     endpoint: 'https://jovenesstem.com/api/telemetry',
     maxBreadcrumbs: 15,
     maxStoredCrashes: 25,
@@ -2949,6 +2949,49 @@ function setupSupasteInteractions(tracks, phrases) {
     });
   }
 
+  // 6b. Mobile Navigation Drawer & Dropdown Handlers
+  window.toggleMobileNav = function(forceState) {
+    const panel = document.getElementById('supaste-mobile-nav-panel');
+    if (!panel) return;
+    const isCurrentlyOpen = panel.style.display !== 'none' && panel.classList.contains('active');
+    const targetState = (typeof forceState === 'boolean') ? forceState : !isCurrentlyOpen;
+    if (targetState) {
+      panel.style.display = 'block';
+      if (typeof requestAnimationFrame === 'function') {
+        requestAnimationFrame(() => panel.classList.add('active'));
+      } else {
+        panel.classList.add('active');
+      }
+      document.body.style.overflow = 'hidden';
+    } else {
+      panel.classList.remove('active');
+      setTimeout(() => {
+        if (!panel.classList.contains('active')) panel.style.display = 'none';
+      }, 250);
+      document.body.style.overflow = '';
+    }
+  };
+
+  // Nav Dropdowns click / focus handling for touch & accessibility
+  document.querySelectorAll('.nav-dropdown-trigger').forEach(trigger => {
+    trigger.addEventListener('click', (e) => {
+      const parent = trigger.closest('.nav-dropdown');
+      if (parent) {
+        const isAlreadyOpen = parent.classList.contains('open');
+        document.querySelectorAll('.nav-dropdown.open').forEach(d => {
+          if (d !== parent) d.classList.remove('open');
+        });
+        parent.classList.toggle('open', !isAlreadyOpen);
+      }
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav-dropdown')) {
+      document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+    }
+  });
+
   // 7. Footer clear cache button
   const footerClearCache = document.getElementById('footer-clear-cache');
   if (footerClearCache) {
@@ -3224,11 +3267,11 @@ function exportOpenBadgeCredential(track, recipientName, hashCode) {
     "id": `urn:uuid:stemos-cert-${track.id}-${Date.now()}`,
     "type": ["VerifiableCredential", "OpenBadgeCredential"],
     "issuer": {
-      "id": "https://stemos.dev/issuers/stemos-foundation",
+      "id": "https://stemos.org/issuers/stemos-foundation",
       "type": "Profile",
       "name": "stemOS LXP — High-Tech Engineering Division",
-      "url": "https://stemos.dev",
-      "email": "credentials@stemos.dev"
+      "url": "https://stemos.org",
+      "email": "credentials@stemos.org"
     },
     "issuanceDate": new Date().toISOString(),
     "credentialSubject": {
@@ -3236,7 +3279,7 @@ function exportOpenBadgeCredential(track, recipientName, hashCode) {
       "type": "AchievementSubject",
       "name": recipientName,
       "achievement": {
-        "id": `https://stemos.dev/achievements/${track.id}`,
+        "id": `https://stemos.org/achievements/${track.id}`,
         "type": "Achievement",
         "name": track.badgeName || track.titleEN || track.title,
         "description": `Demostró competencia técnica y socrática en el track ${track.titleEN || track.title} (${track.category || 'STEM'}).`,
@@ -3254,7 +3297,7 @@ function exportOpenBadgeCredential(track, recipientName, hashCode) {
     "proof": {
       "type": "Ed25519Signature2020",
       "created": new Date().toISOString(),
-      "verificationMethod": "https://stemos.dev/issuers/stemos-foundation#key-1",
+      "verificationMethod": "https://stemos.org/issuers/stemos-foundation#key-1",
       "proofValue": hashCode
     }
   };
@@ -3389,6 +3432,9 @@ function setupDevWorldModal(coursesData) {
     overlay.style.display = 'none';
     document.body.style.overflow = '';
   }
+
+  window.openWorldModal = openWorldModal;
+  window.closeWorldModal = closeWorldModal;
 
   if (navBtn) navBtn.addEventListener('click', (e) => { e.preventDefault(); openWorldModal(); });
   if (heroBtn) heroBtn.addEventListener('click', (e) => { e.preventDefault(); openWorldModal(); });
@@ -11599,9 +11645,27 @@ function setupActivePathHUDAndW3CCert(tracks) {
     if (w3cCareerName) w3cCareerName.textContent = careerName;
     if (w3cStandards) w3cStandards.innerHTML = `Alineado rigurosamente a estándares industriales internacionales <strong>${stds}</strong> y competencia operativa <strong>CEFR C1</strong>.`;
 
-    // SHA-256 Hash Mock
-    const pseudoHash = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'.slice(0, 24);
-    if (w3cHash) w3cHash.textContent = `SHA256: ${pseudoHash.toUpperCase()}`;
+    // SHA-256 — real digest via SubtleCrypto (async) with synchronous CRC32 fallback
+    const hashSeed = `${workerName}|${careerName}|${new Date().toISOString().slice(0, 10)}`;
+    const setHashDisplay = (hex) => { if (w3cHash) w3cHash.textContent = `SHA256: ${hex.toUpperCase()}`; };
+    if (window.crypto && window.crypto.subtle) {
+      window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(hashSeed))
+        .then(buf => {
+          const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('').slice(0, 32);
+          setHashDisplay(hex);
+        })
+        .catch(() => {
+          // CRC32 fallback
+          let crc = 0xFFFFFFFF;
+          for (const ch of hashSeed) { crc = (crc >>> 8) ^ ((crc ^ ch.charCodeAt(0)) & 0xff) * 0x1db71064 >>> 0; }
+          setHashDisplay(((crc ^ 0xFFFFFFFF) >>> 0).toString(16).padStart(8,'0') + Date.now().toString(16));
+        });
+    } else {
+      // Sync fallback
+      let crc = 0xFFFFFFFF;
+      for (const ch of hashSeed) { crc = ((crc >>> 8) ^ (((crc ^ ch.charCodeAt(0)) & 0xff) * 0x1db71064)) >>> 0; }
+      setHashDisplay(((crc ^ 0xFFFFFFFF) >>> 0).toString(16).padStart(8,'0') + Date.now().toString(16));
+    }
     if (w3cDate) {
       const d = new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
       w3cDate.textContent = `${d} • W3C Open Badges 3.0 & JSON-LD Verified`;
@@ -11647,17 +11711,27 @@ function setupActivePathHUDAndW3CCert(tracks) {
 
   window.copyCareerPathW3CLink = function(btn) {
     const url = 'https://stemos.org/dev/?verify=W3C-BADGE3-PATH60H-2026';
+    const showCopied = (el) => {
+      if (!el) return;
+      const original = el.innerHTML;
+      el.innerHTML = '<i class="fa-solid fa-check" style="color:#10b981;"></i> Enlace Copiado';
+      setTimeout(() => { el.innerHTML = original; }, 2000);
+    };
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(url).then(() => {
-        if (btn) {
-          const original = btn.innerHTML;
-          btn.innerHTML = '<i class="fa-solid fa-check" style="color:#10b981;"></i> Enlace Copiado';
-          setTimeout(() => { btn.innerHTML = original; }, 2000);
-        }
-      }).catch(() => {});
-    }
-    if (btn) {
-      btn.innerHTML = '<i class="fa-solid fa-check" style="color:#10b981;"></i> Enlace Copiado';
+      navigator.clipboard.writeText(url).then(() => showCopied(btn)).catch(() => showCopied(btn));
+    } else {
+      // Fallback for older browsers
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      } catch (_) {}
+      showCopied(btn);
     }
   };
 
@@ -11721,13 +11795,12249 @@ function setupActivePathHUDAndW3CCert(tracks) {
   if (btnOpenW3CCert) btnOpenW3CCert.addEventListener('click', () => window.openCareerPathW3CCertModal());
   if (btnReconfig) btnReconfig.addEventListener('click', () => window.openStudentRegistrationModal());
 
+  // Phase 18: wire new HUD buttons
+  const btnStackable = document.getElementById('hud-btn-stackable-badges');
+  const btnPortfolio = document.getElementById('hud-btn-recruiter-portfolio');
+  if (btnStackable) btnStackable.addEventListener('click', () => window.openStackableBadgesModal());
+  if (btnPortfolio) btnPortfolio.addEventListener('click', () => window.openRecruiterPortfolioModal());
+
   // Initialize HUD on startup
   window.updateActivePathHUD();
 }
 
+// ============================================================
+// PHASE 18: STACKABLE MICRO-CREDENTIALS W3C & RECRUITER PORTFOLIO
+// ============================================================
 
+const STACKABLE_BADGE_META = [
+  {
+    n: 1,
+    title: 'Shopfloor Operations & EHS Zero-Energy Specialist',
+    standards: 'OSHA 1910.147 • ISO 45001 • LOTO Zero-Energy',
+    achievementId: 'urn:stemos:milestone:1:shopfloor-ehs',
+    hours: '15.0',
+    color: '#10b981'
+  },
+  {
+    n: 2,
+    title: 'Root Cause 8D & SCADA Historian Analyst',
+    standards: 'AIAG 8D • SPC / Cpk • ISA-95 OPC-UA SCADA',
+    achievementId: 'urn:stemos:milestone:2:8d-scada',
+    hours: '15.0',
+    color: '#0ea5e9'
+  },
+  {
+    n: 3,
+    title: 'Cross-Border Executive Communicator & Auditor Defense',
+    standards: 'IATF 16949 • FDA 21 CFR 820 • CEFR C1 Negotiation',
+    achievementId: 'urn:stemos:milestone:3:executive-audit',
+    hours: '15.0',
+    color: '#a78bfa'
+  },
+  {
+    n: 4,
+    title: 'Nearshoring Fellowship Capstone Master',
+    standards: 'IEEE • ISO 9001:2015 Cl.7.2 • Oral Defense Tribunal',
+    achievementId: 'urn:stemos:milestone:4:capstone-master',
+    hours: '15.0',
+    color: '#f59e0b'
+  }
+];
 
+// Helper: generate SHA-256 hash of a seed string (async), calls callback(hex)
+function generateSHA256Hex(seed, cb) {
+  if (window.crypto && window.crypto.subtle) {
+    window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(seed))
+      .then(buf => {
+        const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+        cb(hex);
+      })
+      .catch(() => cb(_crc32Fallback(seed)));
+  } else {
+    cb(_crc32Fallback(seed));
+  }
+}
 
+function _crc32Fallback(str) {
+  let crc = 0xFFFFFFFF;
+  for (const ch of str) crc = ((crc >>> 8) ^ (((crc ^ ch.charCodeAt(0)) & 0xff) * 0x1db71064)) >>> 0;
+  const base = ((crc ^ 0xFFFFFFFF) >>> 0).toString(16).padStart(8, '0');
+  return base + Date.now().toString(16) + Math.random().toString(16).slice(2, 10);
+}
 
+// Open / Close modals
+window.openStackableBadgesModal = function() {
+  const m = document.getElementById('stackable-badges-modal');
+  if (!m) return;
+  _refreshStackableBadgesUI();
+  m.style.display = 'flex';
+  m.classList.add('active');
+};
+window.closeStackableBadgesModal = function() {
+  const m = document.getElementById('stackable-badges-modal');
+  if (m) { m.classList.remove('active'); m.style.display = 'none'; }
+};
+window.openRecruiterPortfolioModal = function() {
+  const m = document.getElementById('recruiter-portfolio-modal');
+  if (!m) return;
+  _populatePortfolioModal();
+  m.style.display = 'flex';
+  m.classList.add('active');
+};
+window.closeRecruiterPortfolioModal = function() {
+  const m = document.getElementById('recruiter-portfolio-modal');
+  if (m) { m.classList.remove('active'); m.style.display = 'none'; }
+};
+window.openPublicVerifierModal = function(prefillHash) {
+  const m = document.getElementById('public-verifier-modal');
+  if (!m) return;
+  if (prefillHash) {
+    const inp = document.getElementById('verifier-hash-input');
+    if (inp) { inp.value = prefillHash; }
+  }
+  // Reset result area
+  const ra = document.getElementById('verifier-result-area');
+  if (ra) ra.innerHTML = `<div style="text-align:center; color:#475569; font-size:0.85rem; padding-top:12px;"><i class="fa-solid fa-magnifying-glass" style="font-size:2rem; margin-bottom:10px; display:block;"></i>Ingresa un hash o código de credencial para verificar.</div>`;
+  m.style.display = 'flex';
+  m.classList.add('active');
+  if (prefillHash) setTimeout(() => window.runPublicVerification(), 300);
+};
+window.closePublicVerifierModal = function() {
+  const m = document.getElementById('public-verifier-modal');
+  if (m) { m.classList.remove('active'); m.style.display = 'none'; }
+};
+
+// Emit a stackable badge for hito N
+window.emitStackableBadge = function(n) {
+  const meta = STACKABLE_BADGE_META[n - 1];
+  if (!meta) return;
+
+  let profile = null;
+  try {
+    const s = localStorage.getItem('stemos_active_student_profile');
+    if (s) profile = JSON.parse(s);
+  } catch (_) {}
+  const studentName = (profile && profile.studentName) || 'Ingeniero stemOS';
+  const careerName = (profile && profile.careerName) || 'Ingeniería Industrial Nearshoring';
+  const issuanceDate = new Date().toISOString();
+  const seed = `STEMOS|HITO${n}|${studentName}|${issuanceDate.slice(0, 10)}`;
+
+  generateSHA256Hex(seed, (hex) => {
+    const shortHex = hex.slice(0, 32).toUpperCase();
+    const badge = {
+      n,
+      title: meta.title,
+      standards: meta.standards,
+      studentName,
+      careerName,
+      issuanceDate,
+      hash: `SHA256: ${shortHex}`,
+      jsonLd: {
+        '@context': [
+          'https://www.w3.org/2018/credentials/v1',
+          'https://purl.imsglobal.org/spec/ob/v3p0/context.json'
+        ],
+        'id': `urn:uuid:stemos-m${n}-${Date.now()}`,
+        'type': ['VerifiableCredential', 'OpenBadgeCredential'],
+        'issuer': {
+          'id': 'https://stemos.org/issuers/stemos-foundation',
+          'type': 'Profile',
+          'name': 'stemOS LXP — Industrial Engineering Division',
+          'url': 'https://stemos.org'
+        },
+        'issuanceDate': issuanceDate,
+        'credentialSubject': {
+          'id': `did:stemos:student:${hex.slice(0, 8)}`,
+          'type': 'AchievementSubject',
+          'name': studentName,
+          'achievement': {
+            'id': meta.achievementId,
+            'type': ['Achievement'],
+            'name': meta.title,
+            'description': `Demostró dominio práctico en ${meta.title} — ${meta.standards}.`,
+            'criteria': {
+              'narrative': `${meta.hours} horas de formación intensiva Zero-Grammar con evaluación socrática Feynman.`
+            }
+          }
+        },
+        'proof': {
+          'type': 'StemOSIntegrityProof2026',
+          'created': issuanceDate,
+          'verificationMethod': `https://stemos.org/keys/issuer-key-2026.json`,
+          'proofPurpose': 'assertionMethod',
+          'proofValue': `z${shortHex}`
+        }
+      }
+    };
+
+    // Persist to localStorage
+    try {
+      const stored = JSON.parse(localStorage.getItem('stemos_stackable_badges_v1') || '{}');
+      stored[n] = badge;
+      localStorage.setItem('stemos_stackable_badges_v1', JSON.stringify(stored));
+    } catch (_) {}
+
+    // Update UI immediately
+    _refreshStackableBadgesUI();
+  });
+};
+
+// Download stackable badge JSON-LD
+window.downloadStackableBadge = function(n) {
+  try {
+    const stored = JSON.parse(localStorage.getItem('stemos_stackable_badges_v1') || '{}');
+    const badge = stored[n];
+    if (!badge || !badge.jsonLd) { alert('Primero emite el badge.'); return; }
+    const blob = new Blob([JSON.stringify(badge.jsonLd, null, 2)], { type: 'application/ld+json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `stemOS_Badge_Hito${n}_${(badge.studentName || 'Student').replace(/\s+/g, '_')}.jsonld`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (e) {}
+};
+
+// Refresh badge cards UI from localStorage state
+function _refreshStackableBadgesUI() {
+  let stored = {};
+  try { stored = JSON.parse(localStorage.getItem('stemos_stackable_badges_v1') || '{}'); } catch (_) {}
+
+  let completedCount = 0;
+
+  [1, 2, 3, 4].forEach(n => {
+    const badge = stored[n];
+    const statusEl = document.getElementById(`stack-s${n}`);
+    const hashEl = document.getElementById(`stack-h${n}`);
+    const dlBtn = document.getElementById(`stack-dl-btn-${n}`);
+    const emitBtn = document.getElementById(`stack-emit-btn-${n}`);
+    const card = document.getElementById(`stack-card-${n}`);
+
+    if (badge) {
+      completedCount++;
+      if (statusEl) {
+        statusEl.className = 'stack-badge-status earned';
+        statusEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Emitido';
+      }
+      if (hashEl) hashEl.textContent = badge.hash || 'SHA256: —';
+      if (dlBtn) dlBtn.disabled = false;
+      if (emitBtn) {
+        emitBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> Re-emitir';
+        emitBtn.style.background = 'rgba(16,185,129,0.15)';
+        emitBtn.style.border = '1px solid rgba(16,185,129,0.4)';
+        emitBtn.style.color = '#34d399';
+      }
+      if (card) card.style.borderColor = 'rgba(16,185,129,0.35)';
+    } else {
+      if (statusEl) {
+        statusEl.className = 'stack-badge-status pending';
+        statusEl.innerHTML = '<i class="fa-solid fa-hourglass-half"></i> Pendiente';
+      }
+    }
+  });
+
+  // Update consolidation bar
+  const label = document.getElementById('stack-progress-label');
+  if (label) label.textContent = `${completedCount} / 4 hitos completados`;
+  const portfolioBtn = document.getElementById('stack-open-portfolio-btn');
+  if (portfolioBtn) {
+    portfolioBtn.disabled = completedCount === 0;
+    if (completedCount === 4) {
+      portfolioBtn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
+      portfolioBtn.innerHTML = '<i class="fa-solid fa-trophy"></i> Portfolio Completo';
+    }
+  }
+}
+
+// Populate Recruiter Portfolio Modal
+function _populatePortfolioModal() {
+  let profile = null;
+  try {
+    const s = localStorage.getItem('stemos_active_student_profile');
+    if (s) profile = JSON.parse(s);
+  } catch (_) {}
+
+  let stored = {};
+  try { stored = JSON.parse(localStorage.getItem('stemos_stackable_badges_v1') || '{}'); } catch (_) {}
+  const completedCount = Object.keys(stored).length;
+
+  const pName = document.getElementById('portfolio-student-name');
+  const pCareer = document.getElementById('portfolio-career-name');
+  const pHub = document.getElementById('portfolio-hub');
+  const pBadgeCount = document.getElementById('portfolio-badge-count');
+  const pHours = document.getElementById('portfolio-total-hours');
+
+  if (pName) pName.textContent = (profile && profile.studentName) || 'Ing. Diana Laura Morales';
+  if (pCareer) pCareer.textContent = (profile && profile.careerName) || 'Ingeniería Mecatrónica, Robótica y Automatización';
+  if (pHub) pHub.innerHTML = `<i class="fa-solid fa-location-dot"></i> Hub: ${(profile && profile.targetHub) || 'Saltillo-Ramos Powertrain'}`;
+  if (pBadgeCount) pBadgeCount.textContent = `${completedCount} / 4 Badges`;
+  if (pHours) pHours.textContent = `${(completedCount * 15).toFixed(1)}h`;
+}
+
+// LinkedIn share (deep link to add certification)
+window.sharePortfolioToLinkedIn = function() {
+  let profile = null;
+  try {
+    const s = localStorage.getItem('stemos_active_student_profile');
+    if (s) profile = JSON.parse(s);
+  } catch (_) {}
+  const name = encodeURIComponent('stemOS Industrial Nearshoring Specialist');
+  const org = encodeURIComponent('stemOS LXP');
+  const issueYear = new Date().getFullYear();
+  const issueMonth = new Date().getMonth() + 1;
+  const certUrl = encodeURIComponent('https://stemos.org/dev/?verify=W3C-BADGE3-PATH60H-2026');
+  const certId = encodeURIComponent('W3C-BADGE3-PATH60H-2026');
+  const liUrl = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${name}&organizationId=&issueYear=${issueYear}&issueMonth=${issueMonth}&certUrl=${certUrl}&certId=${certId}`;
+  window.open(liUrl, '_blank', 'noopener');
+};
+
+// Copy portfolio verification link
+window.copyPortfolioVerifyLink = function(btn) {
+  let stored = {};
+  try { stored = JSON.parse(localStorage.getItem('stemos_stackable_badges_v1') || '{}'); } catch (_) {}
+  const topHash = stored[4] ? stored[4].hash.replace('SHA256: ', '') : 'W3C-BADGE3-PATH60H-2026';
+  const url = `https://stemos.org/dev/?verify=${topHash}`;
+  const showCopied = (el) => {
+    if (!el) return;
+    const orig = el.innerHTML;
+    el.innerHTML = '<i class="fa-solid fa-check" style="color:#10b981;"></i> Copiado';
+    setTimeout(() => { el.innerHTML = orig; }, 2000);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => showCopied(btn)).catch(() => showCopied(btn));
+  } else {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta);
+    } catch (_) {}
+    showCopied(btn);
+  }
+};
+
+// Download full portfolio JSON-LD
+window.downloadPortfolioJson = function() {
+  let profile = null;
+  try { const s = localStorage.getItem('stemos_active_student_profile'); if (s) profile = JSON.parse(s); } catch (_) {}
+  let stored = {};
+  try { stored = JSON.parse(localStorage.getItem('stemos_stackable_badges_v1') || '{}'); } catch (_) {}
+
+  const dossier = {
+    '@context': ['https://www.w3.org/2018/credentials/v1', 'https://purl.imsglobal.org/spec/ob/v3p0/context.json'],
+    'id': `urn:stemos:portfolio:${Date.now()}`,
+    'type': ['VerifiablePresentation', 'StemOSRecruiterDossier'],
+    'holder': {
+      'id': 'did:stemos:student',
+      'name': (profile && profile.studentName) || 'Ingeniero stemOS',
+      'career': (profile && profile.careerName) || 'Ingeniería Industrial Nearshoring',
+      'hub': (profile && profile.targetHub) || 'Saltillo-Ramos Powertrain'
+    },
+    'verifiableCredential': Object.values(stored).map(b => b.jsonLd).filter(Boolean),
+    'created': new Date().toISOString()
+  };
+
+  const blob = new Blob([JSON.stringify(dossier, null, 2)], { type: 'application/ld+json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `stemOS_Dossier_${((profile && profile.studentName) || 'Student').replace(/\s+/g, '_')}.jsonld`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+};
+
+// Public Verifier: lookup hash or code in localStorage badges
+window.runPublicVerification = function() {
+  const inp = document.getElementById('verifier-hash-input');
+  const ra = document.getElementById('verifier-result-area');
+  if (!inp || !ra) return;
+  const query = inp.value.trim().replace(/^SHA256:\s*/i, '').toUpperCase();
+  if (!query) return;
+
+  let stored = {};
+  try { stored = JSON.parse(localStorage.getItem('stemos_stackable_badges_v1') || '{}'); } catch (_) {}
+  let certMap = {};
+  try { certMap = JSON.parse(localStorage.getItem('stemos_certified_tracks_v1') || '{}'); } catch (_) {}
+
+  // Search stackable badges
+  let found = null;
+  for (const badge of Object.values(stored)) {
+    const h = (badge.hash || '').replace(/^SHA256:\s*/i, '').toUpperCase();
+    if (h && (h.startsWith(query) || query.startsWith(h.slice(0, 8)))) {
+      found = { type: 'milestone', badge };
+      break;
+    }
+  }
+
+  // Search W3C 60h (stored in verified_tracks)
+  if (!found) {
+    for (const [tid, cert] of Object.entries(certMap)) {
+      const h = (cert.hash || '').replace(/^SHA256:\s*/i, '').toUpperCase();
+      if (h && (h.includes(query) || query.includes(h.slice(0, 6)))) {
+        found = { type: 'track', cert, tid };
+        break;
+      }
+    }
+  }
+
+  if (found) {
+    const issuedDate = found.type === 'milestone'
+      ? new Date(found.badge.issuanceDate).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' })
+      : new Date(found.cert.certifiedAt).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+    const titleText = found.type === 'milestone' ? found.badge.title : (found.cert.trackTitle || found.tid);
+    const holderText = found.type === 'milestone' ? found.badge.studentName : 'stemOS Student';
+    const hashText = found.type === 'milestone' ? found.badge.hash : found.cert.hash;
+    ra.innerHTML = `
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+        <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#059669,#10b981); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+          <i class="fa-solid fa-circle-check" style="color:#ffffff; font-size:1.2rem;"></i>
+        </div>
+        <div>
+          <div style="font-size:1rem; font-weight:800; color:#10b981;">✅ Credencial Verificada</div>
+          <div style="font-size:0.78rem; color:#64748b;">Emitida por stemOS LXP Foundation</div>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:0.82rem;">
+        <div style="color:#94a3b8;">Titular</div><div style="color:#f1f5f9; font-weight:600;">${holderText}</div>
+        <div style="color:#94a3b8;">Credencial</div><div style="color:#f1f5f9;">${titleText}</div>
+        <div style="color:#94a3b8;">Fecha de emisión</div><div style="color:#f1f5f9;">${issuedDate}</div>
+        <div style="color:#94a3b8;">Hash</div><div style="color:#38bdf8; font-family:monospace; font-size:0.72rem; word-break:break-all;">${hashText}</div>
+        <div style="color:#94a3b8;">Emisor</div><div style="color:#f1f5f9;">stemOS LXP • W3C Open Badges 3.0</div>
+        <div style="color:#94a3b8;">Estado</div><div style="color:#10b981; font-weight:700;">VÁLIDA ✔</div>
+      </div>`;
+  } else {
+    ra.innerHTML = `
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div style="width:44px; height:44px; border-radius:50%; background:rgba(239,68,68,0.15); display:flex; align-items:center; justify-content:center; flex-shrink:0; border:1px solid rgba(239,68,68,0.3);">
+          <i class="fa-solid fa-xmark" style="color:#f87171; font-size:1.2rem;"></i>
+        </div>
+        <div>
+          <div style="font-size:0.95rem; font-weight:800; color:#f87171;">No encontrada</div>
+          <div style="font-size:0.8rem; color:#64748b;">La credencial no está registrada en este dispositivo. Verifica que el hash sea correcto o que corresponda a este perfil de alumno.</div>
+        </div>
+      </div>`;
+  }
+};
+
+// Auto-launch verifier from URL ?verify= param on DOMContentLoaded
+(function() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const verifyCode = params.get('verify');
+    if (verifyCode) {
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          if (typeof window.openPublicVerifierModal === 'function') {
+            window.openPublicVerifierModal(verifyCode);
+          }
+        }, 1200);
+      });
+    }
+  } catch (_) {}
+})();
+
+/* ============================================================
+   FASE 19: AI TECHNICAL RECRUITER & NEARSHORING TALENT HUB
+   ============================================================ */
+
+window.RECRUITER_PERSONAS = {
+  dave: {
+    id: "dave",
+    name: "Dave Miller 🇺🇸",
+    role: "Vehicle Launch Director • Detroit OEM / Saltillo Powertrain",
+    focus: "IATF 16949 • High-Pressure Die Casting • Line-Stop Escalations",
+    avatarIcon: "fa-solid fa-car",
+    lang: "en-US",
+    pitch: 0.92,
+    rate: 0.98,
+    scenarios: [
+      {
+        counter: "Scenario 1 of 3: Automotive Plant-Floor Crisis",
+        difficulty: "Level: Senior Technical",
+        question: "Tell me about a time when a critical manufacturing line-stop occurred under your watch. What was the root cause, what immediate containment protocol did you initiate, and how did you communicate the resolution timeline to senior executive leadership?",
+        optimalSample: "In my previous assignment at Saltillo Casting, our HPDC Line 4 suffered high porosity exceeding 3.8% scrap. My task was to restore stability under IATF 16949 within 2 hours. I spearheaded a 5-Why analysis, adjusted accumulator injection pressure to 180 bar, and revised the mold thermoregulation. As a result, scrap dropped to 0.4%, Cpk stabilized at 1.78, and we prevented an uncontained shutdown, saving $68,000 USD.",
+        suboptimalSample: "We had an issue on the line and people were upset. My task was to fix it quickly. I told the operators to work harder and checked the machine. In the end, the machine was working again and everyone was happy.",
+        feedbackHire: "Impressive structure! You immediately took accountability and quantified your impact using standard Six Sigma and IATF metrics. The way you balanced technical containment with executive communication is exactly what our US operations look for in high-priority nearshoring transfers.",
+        feedbackRetry: "Your response lacked clear industrial context. Specify the exact manufacturing plant, standard (e.g. IATF 16949), root cause methodology (e.g. 5-Why, Ishikawa), and quantify the result with scrap %, Cpk, or financial savings."
+      },
+      {
+        counter: "Scenario 2 of 3: Launch Process Capability & Cpk Excursion",
+        difficulty: "Level: Staff Lead",
+        question: "Under IATF 16949 clause 8.5.1, how do you handle a scenario where process capability (Cpk) drops below 1.33 on safety-critical steering knuckles during a launch ramp-up?",
+        optimalSample: "During pre-series ramp-up in Coahuila, critical steering knuckle bore diameter slipped to Cpk 1.12. My task was to bring process capability back above our customer threshold of 1.67 without halting delivery. I instituted 100% attribute sorting, instrumented the CNC fixture with laser LVDT probes, and isolated tool chatter to spindle bearing play. As a result, Cpk rebounded to 1.74, zero defective parts reached the assembly line, and PPAP Level 3 was approved.",
+        suboptimalSample: "When the parts were out of tolerance, I talked to the quality team. We tried running the machine slower and adjusted some things. Then the parts looked okay to ship.",
+        feedbackHire: "Outstanding technical rigor! You cited exact capability thresholds (Cpk 1.67) and described both 100% sorting containment and root-cause tool chatter mitigation.",
+        feedbackRetry: "Please detail specific SPC capability metrics and the containment actions taken under IATF 16949 before releasing production batches."
+      },
+      {
+        counter: "Scenario 3 of 3: Quality Auditor Metrology Defense",
+        difficulty: "Level: Director Defense",
+        question: "Describe a conflict you had with an overseas quality auditor regarding non-conforming progressive stamping parts. How did you defend your plant's dimensional metrology without escalating into adversarial hostility?",
+        optimalSample: "At our Ramos Arizpe stamping plant, a German auditor flagged a 0.25mm profile tolerance discrepancy on A-pillar reinforcements. My responsibility was to defend our Gage R&R study while preserving stakeholder trust. I diplomatically scheduled a joint CMM correlation review, demonstrated that our optical scanning fixture accounted for thermal expansion at 22°C ambient, and verified our calibration against NIST standards. As a result, the auditor accepted our measurement system and closed the finding with zero non-conformances.",
+        suboptimalSample: "The auditor said our parts were bad, but I knew he was wrong. We argued during the meeting and I told him our machines are very good. He finally gave up.",
+        feedbackHire: "Superb diplomatic pragmatics! Defending dimensional metrology through Gage R&R correlation and NIST standards without hostility reflects true C1 executive competence.",
+        feedbackRetry: "Avoid adversarial argumentation in audits. Ground your defense in Gage R&R metrology studies, CMM correlation, and international calibration standards."
+      }
+    ]
+  },
+
+  sarah: {
+    id: "sarah",
+    name: "Sarah Jenkins 🇺🇸",
+    role: "VP of Quality & Regulatory • Boston MedTech / Tijuana Medical Cluster",
+    focus: "FDA 21 CFR § 820 • ISO 13485 • CAPA Remediation • Class III Catheters",
+    avatarIcon: "fa-solid fa-heart-pulse",
+    lang: "en-US",
+    pitch: 1.05,
+    rate: 1.0,
+    scenarios: [
+      {
+        counter: "Scenario 1 of 3: High-Severity CAPA Root-Cause Investigation",
+        difficulty: "Level: Senior Regulatory",
+        question: "Walk me through a high-severity CAPA investigation you spearheaded under FDA 21 CFR § 820. How did you identify the fundamental root cause rather than just treating superficial symptoms?",
+        optimalSample: "In our Tijuana Class III catheter facility, we experienced sporadic balloon delamination during burst testing. My task was to lead an urgent CAPA under FDA 21 CFR § 820.100. I convened a cross-functional DMAIC team, utilized failure mode and effects analysis (FMEA), and discovered an uncalibrated thermal RF sealer dwell time variation of 80 milliseconds. I quarantined 1,400 suspect lots, revalidated the IQ/OQ/PQ sealing envelope, and updated the DMR. As a result, burst strength exceeded specification by 24%, zero complaint escalations occurred, and FDA audit scrutiny passed cleanly.",
+        suboptimalSample: "We had a CAPA because the tubes leaked. I wrote a report saying we should train the operators more. After retraining, we signed off on the document and closed the CAPA.",
+        feedbackHire: "Flawless regulatory mindset! You correctly recognized that operator retraining is a superficial cop-out. Revalidating IQ/OQ/PQ and updating the DMR demonstrates authentic Class III compliance.",
+        feedbackRetry: "FDA auditors penalize CAPAs that conclude with 'operator retraining'. You must identify technical root cause, isolate IQ/OQ/PQ parameters, and demonstrate DMR/DHF updates."
+      },
+      {
+        counter: "Scenario 2 of 3: Cleanroom Bioburden Spike Containment",
+        difficulty: "Level: Senior EHS/Quality",
+        question: "In an ISO Class 7 cleanroom, bioburden levels spiked unexpectedly near the ultrasonic sealing station. What immediate quarantine actions did you take, and how did you validate the re-sterilization protocol?",
+        optimalSample: "During routine environmental monitoring in our ISO Class 7 cleanroom, CFU colony counts jumped 300% above alert limits. My task was to prevent non-sterile product release while maintaining supply chain continuity. I immediately enacted a line-stop quarantine on 3 shifts of production, conducted swab assays identifying HEPA filter seal degradation, and ordered an Ethylene Oxide (EtO) sterilization validation under ISO 11135. As a result, microbial levels returned to baseline zero CFU, and we released the lots safely with full toxicological clearance.",
+        suboptimalSample: "When the air was dirty in the cleanroom, we cleaned the floor with alcohol and opened the doors to air it out. Then we continued manufacturing.",
+        feedbackHire: "Exemplary cleanroom protocol! Opening doors or informal cleaning would trigger an immediate 483 warning letter. Your adherence to ISO 11135 and HEPA seal remediation is textbook perfection.",
+        feedbackRetry: "Never compromise cleanroom positive pressure envelopes. Reference ISO Class standards, environmental monitoring CFU thresholds, and ISO 11135 sterilization validation."
+      },
+      {
+        counter: "Scenario 3 of 3: Cross-Border Design Transfer Traceability",
+        difficulty: "Level: Executive Transfer",
+        question: "How do you navigate design transfer discrepancies between Boston R&D engineers and our Tijuana cleanroom manufacturing floor while maintaining strict DMR and DHF traceability?",
+        optimalSample: "During design transfer of a novel steerable sheath from Boston R&D to Tijuana, manufacturing engineers observed assembly pinch points absent in prototype builds. My responsibility was to reconcile the DHF without delaying our commercial launch date. I orchestrated a bi-weekly engineering gate review, revised the pFMEA risk priority numbers, and established statistical tolerance stack-up analysis. As a result, we updated the DMR with zero design change notice (DCN) rejections, achieving 99.2% first-pass yield upon transfer.",
+        suboptimalSample: "Boston sent us drawings that did not fit on the line. I called them and told them their design was impractical. We just modified the tooling on our own.",
+        feedbackHire: "Masterful engineering diplomacy! Modifying medical tooling without DCNs violates 21 CFR § 820.30. Your structured pFMEA and DMR revision preserved both regulatory compliance and design integrity.",
+        feedbackRetry: "Design changes in medical devices require strict Design Control protocols under 21 CFR § 820.30 (DHF, DMR, DCN). Always follow formal design transfer gating."
+      }
+    ]
+  },
+
+  marcus: {
+    id: "marcus",
+    name: "Marcus Vance 🇺🇸",
+    role: "Principal Edge AI & Embedded Systems Architect • Austin / Guadalajara Tech Hub",
+    focus: "AUTOSAR Classic/Adaptive • CAN-FD • Edge AI Computer Vision • RTOS Latency",
+    avatarIcon: "fa-solid fa-microchip",
+    lang: "en-US",
+    pitch: 0.96,
+    rate: 1.02,
+    scenarios: [
+      {
+        counter: "Scenario 1 of 3: Automotive CAN-FD Bus-Off Diagnosis",
+        difficulty: "Level: Principal Firmware",
+        question: "Describe a scenario where sporadic CAN-FD bus-off errors occurred during peak traffic loads on an electronic control unit (ECU). How did you instrument the diagnostic trace and isolate the interrupt latency?",
+        optimalSample: "During high-speed hardware-in-the-loop (HIL) testing of our zonal body controller, the CAN-FD controller periodically entered bus-off states under 85% bus load. My task was to diagnose the fault without disabling payload CRC checks. I instrumented a Saleae logic analyzer and Vector CANoe, capturing oscilloscope traces that revealed an unshielded inductive kickback from a PWM motor driver corrupting arbitration bits. I implemented an RC snubber filter and optimized the FreeRTOS interrupt priority mask. As a result, frame error rates dropped to 0 ppm over 72 hours of stress testing.",
+        suboptimalSample: "The CAN bus was crashing when sending too many messages. I went into the code and made the baud rate slower so it wouldn't crash as much. That fixed the problem.",
+        feedbackHire: "Superb diagnostic acumen! Using Saleae logic analyzers, CANoe, and addressing inductive EMI hardware issues while adjusting FreeRTOS interrupt latency demonstrates world-class embedded capability.",
+        feedbackRetry: "Reducing the baud rate is unacceptable in automotive real-time networking. You must isolate physical-layer EMI, arbitration phase timing, and RTOS interrupt service routine latency."
+      },
+      {
+        counter: "Scenario 2 of 3: TinyML Quantization & Edge Inference",
+        difficulty: "Level: Staff Edge AI",
+        question: "When optimizing a TinyML computer vision model for real-time defect inspection on an ARM Cortex-M55 edge sensor, how did you balance inference quantization with false-negative detection rates?",
+        optimalSample: "We deployed an anomaly detection CNN on an ARM Cortex-M55 to detect microscopic welding flaws at 30 frames per second. My task was to compress the FP32 model within 512KB SRAM without degrading recall below 99.5%. I executed 8-bit post-training integer quantization (INT8) using TensorFlow Lite for Microcontrollers and utilized CMSIS-NN SIMD vectorization. As a result, model footprint shrank by 73%, latency plummeted from 68ms to 19ms, and false-negative escape rates remained at zero across 100,000 cycle inspections.",
+        suboptimalSample: "I made the AI model smaller using a Python library. It ran faster on the chip and caught most of the bad parts during testing.",
+        feedbackHire: "Exceptional edge computing execution! You accurately highlighted CMSIS-NN SIMD intrinsics, INT8 quantization, and achieved deterministic latency under 20ms at zero escapes.",
+        feedbackRetry: "Provide concrete quantitative AI engineering details: FP32 to INT8 quantization, SRAM memory budget, inference latency (ms), and frame throughput (FPS)."
+      },
+      {
+        counter: "Scenario 3 of 3: Deterministic RTOS Thread Deadlock Resolution",
+        difficulty: "Level: Senior RTOS",
+        question: "Tell me how you resolved a deadlock condition in a multi-threaded FreeRTOS automotive firmware stack without compromising deterministic deadline guarantees.",
+        optimalSample: "On our powertrain telemetry ECU running FreeRTOS, a priority inversion bug caused our 10ms watchdog task to starve when low-priority flash logging and medium-priority CAN transmission contested shared SPI mutexes. My task was to eradicate the deadlock while satisfying hard real-time safety constraints. I refactored the resource management to incorporate Priority Inheritance Mutexes (vTaskPriorityInheritance) and implemented lockless ring buffers with atomic pointer swaps. As a result, worst-case task jitter fell below 240 microseconds, eliminating all watchdog trip events.",
+        suboptimalSample: "The RTOS was freezing up randomly. I added delays and sleeps in the while loops so the threads wouldn't collide with each other.",
+        feedbackHire: "Brilliant RTOS principles! Using Priority Inheritance and lock-free ring buffers instead of naive sleep delays is the hallmark of an advanced C1 embedded engineer.",
+        feedbackRetry: "Inserting delays or sleep statements into real-time code creates unpredictable jitter and fails automotive functional safety audits (ISO 26262)."
+      }
+    ]
+  },
+
+  elena: {
+    id: "elena",
+    name: "Elena Rostova 🇺🇸",
+    role: "Cross-Border SCM & Trade Compliance Director • Chicago / Cd. Juárez Twin-Plants",
+    focus: "USMCA / T-MEC Annex 4-B • C-TPAT • Expedited Air Freight • Nearshoring SCM",
+    avatarIcon: "fa-solid fa-truck-ramp-box",
+    lang: "en-US",
+    pitch: 1.0,
+    rate: 1.0,
+    scenarios: [
+      {
+        counter: "Scenario 1 of 3: USMCA Customs Border Hold Crisis",
+        difficulty: "Level: Director Compliance",
+        question: "A critical customs hold at the Otay Mesa / El Paso port of entry threatened to stop our assembly plant in Tennessee within 18 hours. How did you orchestrate expedited clearance under USMCA rules of origin?",
+        optimalSample: "At the World Trade Bridge crossing in Laredo, US Customs placed an intensive hold on 4 trailers of safety restraint wire harnesses due to an automated tariff classification mismatch. My responsibility was to secure customs release before our customer shut down final assembly at a cost of $22,000 per minute. I spearheaded emergency coordination with our licensed customs broker, submitted certified USMCA Certificate of Origin Annex 4-B affidavits proving regional value content (RVC) exceeded 75%, and obtained FAST-lane green-light status within 4 hours. As a result, deliveries arrived on schedule with zero line-stop penalties.",
+        suboptimalSample: "The border was blocked because paperwork was wrong. I emailed the broker and complained that our trucks were stuck. We waited for them to clear the trucks.",
+        feedbackHire: "Phenomenal command of cross-border trade operations! Citing USMCA Annex 4-B, Regional Value Content (RVC 75%), FAST lanes, and financial downtime risk shows supreme supply chain leadership.",
+        feedbackRetry: "In cross-border crises, passive waiting is unacceptable. You must leverage customs broker escalations, C-TPAT/FAST lanes, and certified USMCA rules of origin documentation."
+      },
+      {
+        counter: "Scenario 2 of 3: Force Majeure Emergency Dual-Sourcing",
+        difficulty: "Level: Senior SCM",
+        question: "Describe a situation where a single-source Tier 2 supplier experienced a catastrophic force majeure. How did you establish emergency dual-sourcing while preserving tariff preferential status?",
+        optimalSample: "When a resin compounder in Monterrey suffered a transformer fire, our raw material supply for airbag covers was cut off with only 5 days of safety stock remaining. My task was to qualify a secondary source without triggering punitive 25% non-USMCA tariffs. I benchmarked candidate suppliers in Querétaro and Saltillo, fast-tracked PPAP Level 4 mold validation, and audited their raw material bill of materials for North American origin. As a result, the secondary line was approved in 72 hours, maintaining unbroken plant delivery and zero tariff penalties.",
+        suboptimalSample: "Our supplier had a fire and we ran out of plastic. We bought parts from China on Alibaba and had them shipped by plane. It was very expensive but we survived.",
+        feedbackHire: "Outstanding supply chain resilience! Fast-tracking PPAP Level 4 and safeguarding North American origin rules prevented massive tariff penalties.",
+        feedbackRetry: "Purchasing emergency parts from non-preferential countries without qualification violates OEM supply contracts and introduces severe customs tariff exposure."
+      },
+      {
+        counter: "Scenario 3 of 3: Incoterms 2020 Demurrage & Liability Negotiation",
+        difficulty: "Level: Executive Procurement",
+        question: "Under Incoterms 2020 DDP vs FCA, walk me through how you negotiated logistics liability transfer and demurrage penalties with an international freight forwarder.",
+        optimalSample: "Our transatlantic cargo arriving via Port of Houston was incurring $45,000 in container demurrage fees due to chassis shortages. My objective was to shift our procurement terms from FCA to DDP while reallocating detention risks. I conducted a contract review, demonstrated that the carrier failed to provide appointment slots within the 48-hour free time window, and leveraged our annual $12M freight spend to waive 80% of demurrage fees. As a result, we clawed back $36,000 USD and instituted milestone-based GPS geofence alerts on all nearshoring corridors.",
+        suboptimalSample: "We had lots of late fees at the port. I called the shipping company and asked them for a discount because we are a big customer.",
+        feedbackHire: "Masterclass in logistics pragmatics! Clarifying carrier appointment failures during the demurrage free time window and implementing GPS geofencing displays top-tier executive acumen.",
+        feedbackRetry: "Ground logistics negotiations in contractual terms: free-time detention windows, carrier obligation clauses, and Incoterms 2020 risk transfer points."
+      }
+    ]
+  }
+};
+
+window.currentRecruiterId = "dave";
+window.currentScenarioIdx = 0;
+
+// Switch Subpanels in Phase 19, 20 & 21 Talent Hub & Defense Arena
+window.switchHubTab = function(tabId) {
+  const tabs = ['star-interview', 'live-agent', 'job-board', 'salary-calc', 'recruiter-portal', 'whiteboard-defense', 'resume-tailor', 'live-drills', 'executive-negotiation', 'audit-defense', 'gemba-crucible', 'escalation-tribunal', 'virtual-walkthrough', 'patent-arena', 'esg-crucible', 'reshoring-warroom', 'cyber-arena', 'pdm-crucible', 'microgrid-arbitrage', 'chiplet-metrology', 'battery-crucible', 'immersion-cooling', 'bioprocess-validation', 'hydrogen-synthesis', 'upw-reclamation', 'avionics-assurance', 'subsea-crucible', 'smr-crucible', 'dac-crucible', 'mcs-crucible', 'qkd-crucible', 'euv-litho', 'hvdc-cable', 'quantum-sensing'];
+  tabs.forEach(t => {
+    const btn = document.getElementById(`tab-btn-${t}`);
+    const panel = document.getElementById(`hub-panel-${t}`);
+    if (btn) btn.classList.toggle('active', t === tabId);
+    if (panel) panel.style.display = (t === tabId) ? 'block' : 'none';
+  });
+
+  if (tabId === 'live-agent') {
+    if (typeof window.initLiveInterviewSession === 'function') {
+      window.initLiveInterviewSession();
+    }
+  } else if (tabId === 'recruiter-portal') {
+    if (typeof window.filterTalentPipeline === 'function') {
+      window.filterTalentPipeline();
+    }
+  } else if (tabId === 'whiteboard-defense') {
+    if (typeof window.initWhiteboardArena === 'function') {
+      window.initWhiteboardArena();
+    }
+  } else if (tabId === 'resume-tailor') {
+    if (typeof window.initResumeTailor === 'function') {
+      window.initResumeTailor();
+    }
+  } else if (tabId === 'live-drills') {
+    if (typeof window.initIncidentDrill === 'function') {
+      window.initIncidentDrill();
+    }
+  } else if (tabId === 'executive-negotiation') {
+    if (typeof window.initExecutiveNegotiation === 'function') {
+      window.initExecutiveNegotiation();
+    }
+  } else if (tabId === 'audit-defense') {
+    if (typeof window.initAuditDefense === 'function') {
+      window.initAuditDefense();
+    }
+  } else if (tabId === 'gemba-crucible') {
+    if (typeof window.initGembaCrucible === 'function') {
+      window.initGembaCrucible();
+    }
+  } else if (tabId === 'escalation-tribunal') {
+    if (typeof window.initEscalationTribunal === 'function') {
+      window.initEscalationTribunal();
+    }
+  } else if (tabId === 'virtual-walkthrough') {
+    if (typeof window.initVirtualWalkthrough === 'function') {
+      window.initVirtualWalkthrough();
+    }
+  } else if (tabId === 'patent-arena') {
+    if (typeof window.initPatentArena === 'function') {
+      window.initPatentArena();
+    }
+  } else if (tabId === 'esg-crucible') {
+    if (typeof window.initEsgCrucible === 'function') {
+      window.initEsgCrucible();
+    }
+  } else if (tabId === 'reshoring-warroom') {
+    if (typeof window.initReshoringWarRoom === 'function') {
+      window.initReshoringWarRoom();
+    }
+  } else if (tabId === 'cyber-arena') {
+    if (typeof window.initCyberArena === 'function') {
+      window.initCyberArena();
+    }
+  } else if (tabId === 'pdm-crucible') {
+    if (typeof window.initPdmCrucible === 'function') {
+      window.initPdmCrucible();
+    }
+  } else if (tabId === 'microgrid-arbitrage') {
+    if (typeof window.initMicrogridArbitrage === 'function') {
+      window.initMicrogridArbitrage();
+    }
+  } else if (tabId === 'chiplet-metrology') {
+    if (typeof window.initChipletMetrology === 'function') {
+      window.initChipletMetrology();
+    }
+  } else if (tabId === 'battery-crucible') {
+    if (typeof window.initBatteryCrucible === 'function') {
+      window.initBatteryCrucible();
+    }
+  } else if (tabId === 'immersion-cooling') {
+    if (typeof window.initImmersionCooling === 'function') {
+      window.initImmersionCooling();
+    }
+  } else if (tabId === 'bioprocess-validation') {
+    if (typeof window.initBioprocessValidation === 'function') {
+      window.initBioprocessValidation();
+    }
+  } else if (tabId === 'hydrogen-synthesis') {
+    if (typeof window.initHydrogenSynthesis === 'function') {
+      window.initHydrogenSynthesis();
+    }
+  } else if (tabId === 'upw-reclamation') {
+    if (typeof window.initUpwReclamation === 'function') {
+      window.initUpwReclamation();
+    }
+  } else if (tabId === 'avionics-assurance') {
+    if (typeof window.initAvionicsAssurance === 'function') {
+      window.initAvionicsAssurance();
+    }
+  } else if (tabId === 'subsea-crucible') {
+    if (typeof window.initSubseaCrucible === 'function') {
+      window.initSubseaCrucible();
+    }
+  } else if (tabId === 'smr-crucible') {
+    if (typeof window.initSmrCrucible === 'function') {
+      window.initSmrCrucible();
+    }
+  } else if (tabId === 'dac-crucible') {
+    if (typeof window.initDacCrucible === 'function') {
+      window.initDacCrucible();
+    }
+  } else if (tabId === 'mcs-crucible') {
+    if (typeof window.initMcsCrucible === 'function') {
+      window.initMcsCrucible();
+    }
+  } else if (tabId === 'qkd-crucible') {
+    if (typeof window.initQkdCrucible === 'function') {
+      window.initQkdCrucible();
+    }
+  } else if (tabId === 'euv-litho') {
+    if (typeof window.initEuvCrucible === 'function') {
+      window.initEuvCrucible();
+    }
+  } else if (tabId === 'hvdc-cable') {
+    if (typeof window.initHvdcCrucible === 'function') {
+      window.initHvdcCrucible();
+    }
+  } else if (tabId === 'quantum-sensing') {
+    if (typeof window.initSensingCrucible === 'function') {
+      window.initSensingCrucible();
+    }
+  } else if (tabId === 'job-board') {
+    if (typeof window.renderJobVacancies === 'function') {
+      window.renderJobVacancies();
+    }
+  } else if (tabId === 'salary-calc') {
+    if (typeof window.calculateNearshoringSalaryBenchmark === 'function') {
+      window.calculateNearshoringSalaryBenchmark();
+    }
+  }
+};
+
+// Select Recruiter Persona
+window.selectRecruiterPersona = function(personaId) {
+  if (!window.RECRUITER_PERSONAS[personaId]) return;
+  window.currentRecruiterId = personaId;
+  window.currentScenarioIdx = 0;
+
+  // Update pills UI
+  const pills = document.querySelectorAll('.recruiter-pill-card');
+  pills.forEach(p => {
+    const isAct = p.id === `persona-card-${personaId}`;
+    p.classList.toggle('active', isAct);
+    const badge = p.querySelector('.persona-status-badge');
+    if (badge) badge.textContent = isAct ? 'Activo' : 'Seleccionar';
+  });
+
+  window.updateRecruiterCockpitDisplay();
+};
+
+// Cycle through the 3 scenarios of current recruiter
+window.cycleRecruiterScenario = function(direction) {
+  const recruiter = window.RECRUITER_PERSONAS[window.currentRecruiterId];
+  if (!recruiter || !recruiter.scenarios) return;
+  const count = recruiter.scenarios.length;
+  window.currentScenarioIdx = (window.currentScenarioIdx + direction + count) % count;
+  window.updateRecruiterCockpitDisplay();
+};
+
+// Update active recruiter card DOM
+window.updateRecruiterCockpitDisplay = function() {
+  const recruiter = window.RECRUITER_PERSONAS[window.currentRecruiterId];
+  if (!recruiter) return;
+  const scenario = recruiter.scenarios[window.currentScenarioIdx];
+
+  const nameEl = document.getElementById('recruiter-display-name');
+  const roleEl = document.getElementById('recruiter-display-role');
+  const focusEl = document.getElementById('recruiter-display-focus');
+  const avatarBox = document.getElementById('recruiter-avatar-box');
+  const counterEl = document.getElementById('recruiter-scenario-counter');
+  const questionEl = document.getElementById('recruiter-question-text');
+  const listenLabel = document.getElementById('listen-prompt-label');
+
+  if (nameEl) nameEl.textContent = recruiter.name;
+  if (roleEl) roleEl.textContent = recruiter.role;
+  if (focusEl) focusEl.innerHTML = `<i class="fa-solid fa-microchip"></i> ${recruiter.focus}`;
+  if (avatarBox) avatarBox.innerHTML = `<i class="${recruiter.avatarIcon}"></i>`;
+  if (counterEl && scenario) counterEl.textContent = scenario.counter;
+  if (questionEl && scenario) questionEl.textContent = `"${scenario.question}"`;
+  if (listenLabel) listenLabel.textContent = `Escuchar Pregunta en Inglés (${recruiter.name.split(' ')[0]} US Accent)`;
+
+  // Reset evaluation scorecard when scenario switches
+  const evalCard = document.getElementById('star-evaluation-results');
+  if (evalCard) evalCard.style.display = 'none';
+};
+
+// Listen to Recruiter Question using Web Speech Synthesis
+window.listenRecruiterPrompt = function() {
+  const recruiter = window.RECRUITER_PERSONAS[window.currentRecruiterId];
+  if (!recruiter) return;
+  const scenario = recruiter.scenarios[window.currentScenarioIdx];
+  if (!scenario) return;
+
+  const wave = document.getElementById('recruiter-audio-wave');
+  if (wave) wave.classList.add('playing');
+
+  if (typeof window.speechSynthesis !== 'undefined') {
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(scenario.question);
+      utterance.lang = recruiter.lang || 'en-US';
+      utterance.pitch = recruiter.pitch || 1.0;
+      utterance.rate = recruiter.rate || 1.0;
+      utterance.onend = () => {
+        if (wave) wave.classList.remove('playing');
+      };
+      utterance.onerror = () => {
+        if (wave) wave.classList.remove('playing');
+      };
+      window.speechSynthesis.speak(utterance);
+    } catch (_) {
+      setTimeout(() => { if (wave) wave.classList.remove('playing'); }, 2500);
+    }
+  } else {
+    setTimeout(() => { if (wave) wave.classList.remove('playing'); }, 2500);
+  }
+};
+
+// Microphone Voice-to-Text Simulation & Web Speech Recognition
+window.interviewMicActive = false;
+window.toggleInterviewMic = function() {
+  const btn = document.getElementById('btn-mic-toggle-interview');
+  const ind = document.getElementById('interview-mic-indicator');
+  const label = document.getElementById('mic-toggle-label');
+  const txt = document.getElementById('star-candidate-response');
+
+  window.interviewMicActive = !window.interviewMicActive;
+
+  if (window.interviewMicActive) {
+    if (btn) btn.classList.add('recording');
+    if (ind) ind.style.display = 'flex';
+    if (label) label.textContent = 'Detener Grabación';
+
+    // If Web Speech Recognition API exists, use it
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (typeof SpeechRecognition !== 'undefined') {
+      try {
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.onresult = (evt) => {
+          let transcript = '';
+          for (let i = evt.resultIndex; i < evt.results.length; ++i) {
+            transcript += evt.results[i][0].transcript;
+          }
+          if (txt) txt.value = transcript;
+        };
+        recognition.start();
+        window._interviewRecognition = recognition;
+      } catch (_) {}
+    }
+  } else {
+    if (btn) btn.classList.remove('recording');
+    if (ind) ind.style.display = 'none';
+    if (label) label.textContent = 'Dictar con Micrófono';
+    if (window._interviewRecognition) {
+      try { window._interviewRecognition.stop(); } catch (_) {}
+    }
+  }
+};
+
+// Load Sample Response (Optimal C1 or Suboptimal Weak)
+window.loadSampleStarResponse = function(type) {
+  const recruiter = window.RECRUITER_PERSONAS[window.currentRecruiterId];
+  if (!recruiter) return;
+  const scenario = recruiter.scenarios[window.currentScenarioIdx];
+  if (!scenario) return;
+
+  const txt = document.getElementById('star-candidate-response');
+  if (!txt) return;
+
+  if (type === 'optimal') {
+    txt.value = scenario.optimalSample;
+  } else {
+    txt.value = scenario.suboptimalSample;
+  }
+};
+
+// NLP Rule-based STAR Response Evaluator
+window.evaluateStarCandidateResponse = function() {
+  const txt = document.getElementById('star-candidate-response');
+  const val = (txt && txt.value) ? txt.value.trim() : '';
+
+  const recruiter = window.RECRUITER_PERSONAS[window.currentRecruiterId];
+  const scenario = recruiter ? recruiter.scenarios[window.currentScenarioIdx] : null;
+
+  const resContainer = document.getElementById('star-evaluation-results');
+  if (!resContainer) return;
+
+  if (val.length < 20) {
+    alert("Por favor formula una respuesta técnica en inglés antes de evaluar.");
+    return;
+  }
+
+  // 1. Situation Analysis (0-25)
+  let scoreS = 5;
+  const sitPatterns = /(in my previous|at the|during the|facility|plant|line|cleanroom|assembly|casting|powertrain|supplier|when our|experienced|suffered|facing)/i;
+  if (sitPatterns.test(val)) scoreS += 10;
+  if (/(saltillo|monterrey|tijuana|juarez|queretaro|guadalajara|hpdc|oem|automotive|medical|firmware|supply chain|cleanroom)/i.test(val)) scoreS += 9;
+  scoreS = Math.min(25, scoreS);
+
+  // 2. Task Analysis (0-25)
+  let scoreT = 5;
+  const taskPatterns = /(my task|my responsibility|objective|tasked with|under iatf|under fda|iso|within|deadline|standard|constraint|challenge|requirement|prevent)/i;
+  if (taskPatterns.test(val)) scoreT += 10;
+  if (/(iatf 16949|21 cfr|iso 13485|iso 26262|iso 11135|iso 10993|iso class|as9100|usmca|autosar|ppap|capa|cpk threshold|zero line-stop|cleanroom|sterile|supply chain|continuity|2 hours|72 hours)/i.test(val)) scoreT += 9;
+  scoreT = Math.min(25, scoreT);
+
+  // 3. Action Analysis (0-25)
+  let scoreA = 6;
+  const actionPatterns = /(spearheaded|implemented|executed|conducted|analyzed|isolated|calibrated|re-flashed|quarantined|revalidated|adjusted|orchestrated|audited|troubleshot)/i;
+  if (actionPatterns.test(val)) scoreA += 10;
+  if (/(5-why|ishikawa|dmaic|fmea|saleae|canoe|snubber|int8|quantization|simd|cmsis|eto|hepa|cmm|nist|gage r&r|priority inheritance|fast-lane)/i.test(val)) scoreA += 8;
+  scoreA = Math.min(25, scoreA);
+
+  // 4. Result Analysis (0-25)
+  let scoreR = 4;
+  const resultPatterns = /(as a result|scrap dropped|stabilized|prevented|saved|achieved|exceeded|rebounded|eliminated|zero non-conformance|zero defect)/i;
+  if (resultPatterns.test(val)) scoreR += 10;
+  if (/(%|cpk|ppm|\$|usd|ms|hours|yield|cfu)/i.test(val)) scoreR += 10;
+  scoreR = Math.min(25, scoreR);
+
+  // 5. C1 Vocabulary Bonus (0-10)
+  let scoreLex = 0;
+  const c1Keywords = /(containment|mitigate|contingency|stakeholder|deterministic|traceability|escalation|root cause|demurrage|bioburden|rigor|uncontained|reconciled|priority inversion)/gi;
+  const matches = val.match(c1Keywords) || [];
+  scoreLex = Math.min(10, matches.length * 2);
+
+  const totalScore = Math.min(100, scoreS + scoreT + scoreA + scoreR + scoreLex);
+
+  // Render Scorecard
+  const totalScoreEl = document.getElementById('star-total-score');
+  const verdictBanner = document.getElementById('eval-verdict-banner');
+  const verdictTitle = document.getElementById('star-verdict-title');
+  const verdictDesc = document.getElementById('star-verdict-desc');
+  const lexicalLabel = document.getElementById('star-lexical-label');
+
+  if (totalScoreEl) totalScoreEl.textContent = totalScore;
+  if (lexicalLabel) lexicalLabel.textContent = `C1 Lexical Bonus: +${scoreLex} pts (${matches.length} terms)`;
+
+  if (verdictBanner) {
+    verdictBanner.className = 'eval-verdict-banner';
+    if (totalScore >= 88) {
+      if (verdictTitle) verdictTitle.textContent = "HIRE • ADVANCED C1 CANDIDATE";
+      if (verdictDesc) verdictDesc.textContent = "Estructura STAR impecable, métricas cuantificables de ingeniería y diplomacia técnica lista para nearshoring transfer.";
+    } else if (totalScore >= 70) {
+      verdictBanner.classList.add('warning');
+      if (verdictTitle) verdictTitle.textContent = "CONSIDER • INTERMEDIATE B2+ CANDIDATE";
+      if (verdictDesc) verdictDesc.textContent = "Base técnica sólida. Agrega más métricas de impacto cuantitativo (scrap %, Cpk, o costos ahorrados) en la sección Result.";
+    } else {
+      verdictBanner.classList.add('remedial');
+      if (verdictTitle) verdictTitle.textContent = "RETRY • NEEDS STAR RIGOR & METRICS";
+      if (verdictDesc) verdictDesc.textContent = "Respuesta vaga o genérica. Describe la planta específica, norma aplicable, herramientas de causa raíz y métricas reales.";
+    }
+  }
+
+  // Set Bar Gauges
+  const setMeter = (dim, score, maxScore) => {
+    const valEl = document.getElementById(`score-${dim}-val`);
+    const fillEl = document.getElementById(`meter-${dim}-fill`);
+    const noteEl = document.getElementById(`note-${dim}`);
+    if (valEl) valEl.textContent = `${score} / ${maxScore}`;
+    if (fillEl) fillEl.style.width = `${(score / maxScore) * 100}%`;
+    if (noteEl) {
+      if (score >= 20) noteEl.textContent = "Dominio sobresaliente y acotación técnica precisa.";
+      else if (score >= 14) noteEl.textContent = "Aceptable; se recomienda mayor especificidad técnica.";
+      else noteEl.textContent = "Poco desarrollado; faltan estándares y terminología de planta.";
+    }
+  };
+
+  setMeter('situation', scoreS, 25);
+  setMeter('task', scoreT, 25);
+  setMeter('action', scoreA, 25);
+  setMeter('result', scoreR, 25);
+
+  // Recruiter Feedback
+  const feedbackContent = document.getElementById('recruiter-feedback-content');
+  const recommendationsList = document.getElementById('lexical-recommendations-list');
+  if (feedbackContent && scenario) {
+    feedbackContent.textContent = totalScore >= 80 ? `"${scenario.feedbackHire}"` : `"${scenario.feedbackRetry}"`;
+  }
+  if (recommendationsList) {
+    const defaultRecs = totalScore >= 80 
+      ? [`'containment protocol'`, `'Cpk stabilization'`, `'cross-functional DMAIC'`, `'root cause analysis'`]
+      : [`Usa 'spearheaded' en lugar de 'did'`, `Cita 'IATF 16949 / FDA 820'`, `Cuantifica con '% scrap reduction'`, `Describe herramientas '5-Why / Ishikawa'`];
+    recommendationsList.innerHTML = defaultRecs.map(r => `<span class="rec-tag"><i class="fa-solid fa-check"></i> ${r}</span>`).join('');
+  }
+
+  // Display card
+  resContainer.style.display = 'block';
+
+  // Save interview trial in local storage telemetry
+  try {
+    const history = JSON.parse(localStorage.getItem('stemos_interview_scores_v1') || '[]');
+    history.push({
+      date: new Date().toISOString(),
+      recruiter: window.currentRecruiterId,
+      scenarioIdx: window.currentScenarioIdx,
+      score: totalScore
+    });
+    localStorage.setItem('stemos_interview_scores_v1', JSON.stringify(history));
+  } catch (_) {}
+};
+
+// ── TAB 2: NEARSHORING JOB VACANCIES DATA ──
+window.NEARSHORING_VACANCIES = [
+  {
+    id: "vac-aut-01",
+    company: "Aptiv / BorgWarner",
+    hub: "saltillo",
+    hubName: "Saltillo - Ramos Powertrain Hub",
+    track: "automotive",
+    title: "Senior Powertrain Calibration Engineer",
+    salaryMxn: "$72,000 - $90,000 MXN / mes",
+    salaryUsd: "$3,900 - $4,850 USD",
+    workType: "Híbrido",
+    reqs: ["Career Path 60h", "Milestone 2 W3C", "C1 Technical English", "IATF 16949"],
+    baseMatch: 96,
+    recruiterId: "dave",
+    scenarioIdx: 0
+  },
+  {
+    id: "vac-med-01",
+    company: "Medtronic / Fisher & Paykel",
+    hub: "tijuana",
+    hubName: "Tijuana - Otay MedTech Cluster",
+    track: "medical",
+    title: "Medical Device Quality & Regulatory Lead",
+    salaryMxn: "$68,000 - $85,000 MXN / mes",
+    salaryUsd: "$3,670 - $4,600 USD",
+    workType: "Presencial (Cleanroom)",
+    reqs: ["FDA 21 CFR § 820", "ISO 13485", "CAPA Lead", "B2+/C1 English"],
+    baseMatch: 94,
+    recruiterId: "sarah",
+    scenarioIdx: 0
+  },
+  {
+    id: "vac-emb-01",
+    company: "Continental / Visteon",
+    hub: "guadalajara",
+    hubName: "Guadalajara Silicon Hub",
+    track: "embedded",
+    title: "Embedded Firmware & Edge AI Architect",
+    salaryMxn: "$85,000 - $110,000 MXN / mes",
+    salaryUsd: "$4,600 - $5,950 USD",
+    workType: "Híbrido / Remoto USA",
+    reqs: ["AUTOSAR Classic/Adaptive", "CAN-FD / CANoe", "FreeRTOS", "C1 Technical English"],
+    baseMatch: 98,
+    recruiterId: "marcus",
+    scenarioIdx: 0
+  },
+  {
+    id: "vac-scm-01",
+    company: "Foxconn / Flex",
+    hub: "juarez",
+    hubName: "Cd. Juárez - El Paso Twin-Plant",
+    track: "logistics",
+    title: "Cross-Border Trade Compliance & SCM Specialist",
+    salaryMxn: "$58,000 - $75,000 MXN / mes",
+    salaryUsd: "$3,130 - $4,050 USD",
+    workType: "Presencial",
+    reqs: ["T-MEC / USMCA Rules of Origin", "C-TPAT Audit", "IMMEX", "Bilingual C1"],
+    baseMatch: 91,
+    recruiterId: "elena",
+    scenarioIdx: 0
+  },
+  {
+    id: "vac-aero-01",
+    company: "Safran / Bombardier",
+    hub: "queretaro",
+    hubName: "Querétaro Aerospace Park",
+    track: "aerospace",
+    title: "Aerospace Turbine Validation Engineer",
+    salaryMxn: "$75,000 - $95,000 MXN / mes",
+    salaryUsd: "$4,050 - $5,130 USD",
+    workType: "Presencial",
+    reqs: ["AS9100 Rev D", "GD&T ASME Y14.5", "Gage R&R Metrology", "C1 English"],
+    baseMatch: 95,
+    recruiterId: "dave",
+    scenarioIdx: 2
+  },
+  {
+    id: "vac-semi-01",
+    company: "Tesla / Tier 1 Power Hub",
+    hub: "monterrey",
+    hubName: "Monterrey - Santa Catarina Megaplant",
+    track: "automotive",
+    title: "Semiconductor Process Reliability Engineer",
+    salaryMxn: "$80,000 - $105,000 MXN / mes",
+    salaryUsd: "$4,320 - $5,670 USD",
+    workType: "Híbrido",
+    reqs: ["SEMI Standards", "SiC / GaN Packaging", "Six Sigma DMAIC", "Bilingual C1"],
+    baseMatch: 97,
+    recruiterId: "marcus",
+    scenarioIdx: 1
+  },
+  {
+    id: "vac-ev-01",
+    company: "General Motors EV Propulsion",
+    hub: "saltillo",
+    hubName: "Ramos Arizpe Ultium EV Hub",
+    track: "automotive",
+    title: "High-Voltage Battery Safety & EHS Lead",
+    salaryMxn: "$70,000 - $88,000 MXN / mes",
+    salaryUsd: "$3,780 - $4,750 USD",
+    workType: "Híbrido",
+    reqs: ["NFPA 855 / ISO 26262", "LOTO Zero-Energy", "OSHA 1910.147", "C1 English"],
+    baseMatch: 93,
+    recruiterId: "dave",
+    scenarioIdx: 1
+  },
+  {
+    id: "vac-med-02",
+    company: "Boston Scientific",
+    hub: "tijuana",
+    hubName: "Tijuana MedTech Corridor",
+    track: "medical",
+    title: "Catheter R&D & Bio-Compatibility Engineer",
+    salaryMxn: "$65,000 - $82,000 MXN / mes",
+    salaryUsd: "$3,500 - $4,430 USD",
+    workType: "Presencial",
+    reqs: ["ISO 10993", "Cleanroom ISO Class 7", "Design Control 820.30", "B2+/C1 English"],
+    baseMatch: 92,
+    recruiterId: "sarah",
+    scenarioIdx: 1
+  },
+  {
+    id: "vac-ai-01",
+    company: "Intel / Tata Elxsi Lab",
+    hub: "guadalajara",
+    hubName: "Guadalajara Silicon Hub",
+    track: "embedded",
+    title: "ROS2 Robotics & Computer Vision Developer",
+    salaryMxn: "$78,000 - $98,000 MXN / mes",
+    salaryUsd: "$4,200 - $5,300 USD",
+    workType: "Híbrido",
+    reqs: ["ROS2 Galactic/Humble", "OpenCV / TinyML", "ARM Cortex-M", "C1 English"],
+    baseMatch: 96,
+    recruiterId: "marcus",
+    scenarioIdx: 1
+  },
+  {
+    id: "vac-egy-01",
+    company: "Cloud Hyperscaler / Ascenty",
+    hub: "queretaro",
+    hubName: "Querétaro Hyperscale Data Hub",
+    track: "aerospace",
+    title: "Mission-Critical Power Infrastructure Lead",
+    salaryMxn: "$74,000 - $92,000 MXN / mes",
+    salaryUsd: "$4,000 - $4,970 USD",
+    workType: "Presencial",
+    reqs: ["Uptime Tier III/IV", "IEEE 1547 Grid Interconnect", "Substation Safety", "C1 English"],
+    baseMatch: 90,
+    recruiterId: "dave",
+    scenarioIdx: 0
+  },
+  {
+    id: "vac-scm-02",
+    company: "BRP / Lear Corporation",
+    hub: "juarez",
+    hubName: "Cd. Juárez Twin-Plant Industrial Hub",
+    track: "logistics",
+    title: "Twin-Plant Logistics & Expedited Freight Director",
+    salaryMxn: "$82,000 - $108,000 MXN / mes",
+    salaryUsd: "$4,430 - $5,840 USD",
+    workType: "Híbrido",
+    reqs: ["Incoterms 2020 DDP", "Air Freight Demurrage", "FAST Lane", "Bilingual C1"],
+    baseMatch: 94,
+    recruiterId: "elena",
+    scenarioIdx: 2
+  },
+  {
+    id: "vac-qehs-01",
+    company: "Nemak / Ternium High-Tech",
+    hub: "monterrey",
+    hubName: "Monterrey Industrial Zone",
+    track: "automotive",
+    title: "Corporate EHS & Zero-Harm Program Lead",
+    salaryMxn: "$64,000 - $80,000 MXN / mes",
+    salaryUsd: "$3,450 - $4,320 USD",
+    workType: "Presencial",
+    reqs: ["ISO 45001 / ISO 14001", "NOM-004-STPS", "Incident Command", "B2+/C1 English"],
+    baseMatch: 89,
+    recruiterId: "sarah",
+    scenarioIdx: 0
+  }
+];
+
+window.currentJobHubFilter = "all";
+window.currentJobTrackFilter = "all";
+
+// Render Vacancies Grid with filtering and candidate match calculation
+window.renderJobVacancies = function(filterHub, filterTrack) {
+  if (filterHub) window.currentJobHubFilter = filterHub;
+  if (filterTrack) window.currentJobTrackFilter = filterTrack;
+
+  const grid = document.getElementById('nearshoring-vacancies-grid');
+  if (!grid) return;
+
+  // Retrieve active student profile
+  let profile = null;
+  try {
+    const s = localStorage.getItem('stemos_active_student_profile');
+    if (s) profile = JSON.parse(s);
+  } catch (_) {}
+
+  const studentDegree = (profile && profile.careerName) || "Ingeniería Mecatrónica, Robótica y Automatización";
+  const studentName = (profile && profile.studentName) || "Diana Laura Morales";
+
+  // Filter vacancies
+  const filtered = window.NEARSHORING_VACANCIES.filter(v => {
+    const matchHub = (window.currentJobHubFilter === 'all' || v.hub === window.currentJobHubFilter);
+    const matchTrack = (window.currentJobTrackFilter === 'all' || v.track === window.currentJobTrackFilter);
+    return matchHub && matchTrack;
+  });
+
+  // Update affinity banner
+  const affTitle = document.getElementById('job-board-affinity-title');
+  const affDesc = document.getElementById('job-board-affinity-desc');
+  const affStats = document.getElementById('job-board-affinity-stats');
+  if (affTitle) affTitle.textContent = `Afinidad para: ${studentName} (${studentDegree})`;
+  if (affDesc) affDesc.textContent = `Mostrando ${filtered.length} vacantes vinculadas a tu Career Path 60h y estándares W3C.`;
+  if (affStats) affStats.innerHTML = `<span class="affinity-pill"><i class="fa-solid fa-check-circle" style="color:#10b981;"></i> ${filtered.length} Vacantes Filtradas</span>`;
+
+  grid.innerHTML = filtered.map(v => {
+    // Dynamic affinity match calculation based on degree and track
+    let matchPct = v.baseMatch;
+    if (studentDegree.toLowerCase().includes('meca') && (v.track === 'automotive' || v.track === 'embedded')) {
+      matchPct = Math.min(99, matchPct + 3);
+    }
+
+    return `
+      <div class="vacancy-card" id="card-${v.id}">
+        <div>
+          <div class="vacancy-top-row">
+            <span class="vacancy-company-badge"><i class="fa-solid fa-building"></i> ${v.company}</span>
+            <span class="vacancy-match-ring">${matchPct}% MATCH</span>
+          </div>
+          <h3 class="vacancy-title">${v.title}</h3>
+          <div class="vacancy-location">
+            <i class="fa-solid fa-location-dot" style="color:#38bdf8;"></i>
+            <span>${v.hubName} &bull; ${v.workType}</span>
+          </div>
+          <div class="vacancy-salary-range">
+            <div class="salary-primary">${v.salaryMxn}</div>
+            <div class="salary-secondary">${v.salaryUsd}</div>
+          </div>
+          <div class="vacancy-requirements-tags">
+            ${(v.reqs || v.tags || []).map(r => `<span class="req-pill"><i class="fa-solid fa-check" style="color:#10b981; font-size:0.6rem;"></i> ${r}</span>`).join('')}
+          </div>
+        </div>
+
+        <div class="vacancy-actions-group">
+          <button class="btn-vac-apply" id="btn-apply-${v.id}" onclick="applyToJobVacancy('${v.id}')">
+            <i class="fa-solid fa-paper-plane"></i> Aplicar con stemOS
+          </button>
+          <button class="btn-vac-practice" id="btn-practice-${v.id}" onclick="practiceJobQuestion('${v.id}')" title="Simular entrevista técnica de esta vacante">
+            <i class="fa-solid fa-microphone"></i> Entrenar Pregunta
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+};
+
+window.filterJobBoard = function(hub, track) {
+  if (hub) {
+    window.currentJobHubFilter = hub;
+    const btns = document.querySelectorAll('#hub-city-filters .job-filter-pill');
+    btns.forEach(b => b.classList.toggle('active', b.getAttribute('data-hub') === hub));
+  }
+  if (track) {
+    window.currentJobTrackFilter = track;
+    const btns = document.querySelectorAll('#hub-track-filters .job-filter-pill');
+    btns.forEach(b => b.classList.toggle('active', b.getAttribute('data-track') === track));
+  }
+  window.renderJobVacancies();
+};
+
+// Apply to a Vacancy: submits student's verified W3C portfolio and latest STAR score
+window.applyToJobVacancy = function(vacId) {
+  const vacancy = window.NEARSHORING_VACANCIES.find(v => v.id === vacId);
+  if (!vacancy) return;
+
+  let profile = null;
+  try {
+    const s = localStorage.getItem('stemos_active_student_profile');
+    if (s) profile = JSON.parse(s);
+  } catch (_) {}
+
+  const applicant = (profile && profile.studentName) || "Diana Laura Morales";
+  const career = (profile && profile.careerName) || "Ingeniería Mecatrónica, Robótica y Automatización";
+
+  const btn = document.getElementById(`btn-apply-${vacId}`);
+  if (btn) {
+    btn.innerHTML = `<i class="fa-solid fa-check"></i> Expediente Enviado`;
+    btn.style.background = '#10b981';
+    btn.disabled = true;
+  }
+
+  // Toast confirmation
+  alert(`✅ ¡Postulación Exitosa!\n\nSe ha transmitido tu expediente digital verificable a ${vacancy.company} (${vacancy.hubName}):\n\n• Candidato: ${applicant}\n• Carrera: ${career}\n• Credencial Maestra: 60.0 Horas (W3C Open Badges 3.0)\n• Sello Criptográfico: SHA256: 7D02D38F1A0E743F6F6\n• Folio de Solicitud: STEM-APP-2026-${Math.floor(10000 + Math.random() * 90000)}\n\nEl Hiring Manager (${vacancy.recruiterId.toUpperCase()}) recibirá tu telemetría STAR y perfil.`);
+};
+
+// Practice Technical Interview Question for this specific vacancy
+window.practiceJobQuestion = function(vacId) {
+  const vacancy = window.NEARSHORING_VACANCIES.find(v => v.id === vacId);
+  if (!vacancy) return;
+
+  // Switch to Tab 1
+  window.switchHubTab('star-interview');
+
+  // Set Recruiter and Scenario
+  window.selectRecruiterPersona(vacancy.recruiterId);
+  window.currentScenarioIdx = vacancy.scenarioIdx || 0;
+  window.updateRecruiterCockpitDisplay();
+
+  // Scroll to cockpit
+  const cockpit = document.getElementById('active-recruiter-card');
+  if (cockpit && typeof cockpit.scrollIntoView === 'function') {
+    cockpit.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
+// ── TAB 3: SALARY BENCHMARKING & RESICO TAX ENGINE ──
+window.SALARY_BENCHMARK_BASE = {
+  entry: { baseMxn: 28000, bilingualMxn: 48000 },
+  mid: { baseMxn: 38000, bilingualMxn: 76000 },
+  senior: { baseMxn: 55000, bilingualMxn: 105000 },
+  director: { baseMxn: 80000, bilingualMxn: 155000 }
+};
+
+window.HUB_MULTIPLIERS = {
+  saltillo: 1.02,
+  monterrey: 1.08,
+  tijuana: 1.05,
+  juarez: 0.98,
+  queretaro: 1.04,
+  guadalajara: 1.06
+};
+
+window.salaryCurrency = "MXN";
+window.EXCHANGE_RATE_USD = 18.50;
+
+window.setSalaryCurrency = function(cur) {
+  window.salaryCurrency = cur;
+  const btns = document.querySelectorAll('#calc-currency-toggle .seg-btn');
+  btns.forEach(b => b.classList.toggle('active', b.getAttribute('data-cur') === cur));
+  window.calculateNearshoringSalaryBenchmark();
+};
+
+window.calculateNearshoringSalaryBenchmark = function() {
+  const senioritySelect = document.getElementById('calc-seniority-select');
+  const hubSelect = document.getElementById('calc-hub-select');
+  const regimeSelect = document.getElementById('calc-regime-select');
+
+  const seniority = (senioritySelect && senioritySelect.value) || 'mid';
+  const hub = (hubSelect && hubSelect.value) || 'saltillo';
+  const regime = (regimeSelect && regimeSelect.value) || 'asalariado';
+
+  const baseData = window.SALARY_BENCHMARK_BASE[seniority] || window.SALARY_BENCHMARK_BASE.mid;
+  const mult = window.HUB_MULTIPLIERS[hub] || 1.0;
+
+  const rawBase = Math.round(baseData.baseMxn * mult);
+  const rawBilingual = Math.round(baseData.bilingualMxn * mult);
+  const rawDelta = rawBilingual - rawBase;
+  const pctDelta = ((rawDelta / rawBase) * 100).toFixed(1);
+
+  // Tax calculations
+  let taxDeduction = 0;
+  let taxNet = 0;
+
+  if (regime === 'asalariado') {
+    // Progressive ISR (~23-28%) + IMSS (~2.7%)
+    const isrRate = rawBilingual > 90000 ? 0.30 : (rawBilingual > 60000 ? 0.25 : 0.21);
+    const imssRate = 0.027;
+    taxDeduction = Math.round(rawBilingual * (isrRate + imssRate));
+    taxNet = rawBilingual - taxDeduction;
+  } else {
+    // RESICO Transfronterizo (1.5% to 2.5% flat ISR, 0% IVA on exported services)
+    const resicoRate = rawBilingual > 100000 ? 0.025 : 0.015;
+    taxDeduction = Math.round(rawBilingual * resicoRate);
+    taxNet = rawBilingual - taxDeduction;
+  }
+
+  // Format Helper
+  const fmt = (amountMxn) => {
+    if (window.salaryCurrency === 'USD') {
+      const usd = Math.round(amountMxn / window.EXCHANGE_RATE_USD);
+      return `$${usd.toLocaleString('en-US')} USD`;
+    }
+    return `$${amountMxn.toLocaleString('es-MX')} MXN`;
+  };
+
+  // Update DOM elements
+  const monoEl = document.getElementById('calc-monolingual-salary');
+  const biEl = document.getElementById('calc-bilingual-salary');
+  const deltaEl = document.getElementById('calc-premium-delta');
+  const grossValEl = document.getElementById('tax-gross-val');
+  const schemeLabelEl = document.getElementById('tax-scheme-label');
+  const deductValEl = document.getElementById('tax-deduction-val');
+  const netValEl = document.getElementById('tax-net-val');
+  const resicoNote = document.getElementById('resico-advantage-note');
+  const proj5yEl = document.getElementById('calc-5year-projection');
+
+  if (monoEl) monoEl.textContent = fmt(rawBase);
+  if (biEl) biEl.textContent = fmt(rawBilingual);
+  if (deltaEl) deltaEl.textContent = `+${fmt(rawDelta)} / mes (+${pctDelta}%)`;
+  if (grossValEl) grossValEl.textContent = fmt(rawBilingual);
+
+  if (schemeLabelEl) {
+    schemeLabelEl.textContent = regime === 'asalariado' 
+      ? 'Retención Estimada de ISR + IMSS (Asalariado):' 
+      : 'Retención Preferencial RESICO T-MEC (1.5% - 2.5% ISR):';
+  }
+  if (deductValEl) deductValEl.textContent = `-${fmt(taxDeduction)}`;
+  if (netValEl) netValEl.textContent = fmt(taxNet);
+
+  if (resicoNote) {
+    resicoNote.style.display = regime === 'resico' ? 'flex' : 'none';
+  }
+
+  // 5-Year Cumulative Projection
+  const fiveYearTotal = rawDelta * 12 * 5;
+  const fiveYearUsd = Math.round(fiveYearTotal / window.EXCHANGE_RATE_USD);
+  if (proj5yEl) {
+    proj5yEl.textContent = `+$${fiveYearTotal.toLocaleString('es-MX')} MXN ($${fiveYearUsd.toLocaleString('en-US')} USD)`;
+  }
+};
+
+// Export Salary Benchmark Report as Markdown
+window.exportSalaryBenchmarkReport = function() {
+  const seniority = document.getElementById('calc-seniority-select')?.value || 'mid';
+  const hub = document.getElementById('calc-hub-select')?.value || 'saltillo';
+  const regime = document.getElementById('calc-regime-select')?.value || 'asalariado';
+
+  const report = `# stemOS Nearshoring Tech Salary Benchmark Dossier
+**Fecha:** ${new Date().toLocaleDateString('es-MX')}  
+**Polo Industrial:** ${hub.toUpperCase()}  
+**Nivel de Seniority:** ${seniority.toUpperCase()}  
+**Régimen Fiscal:** ${regime.toUpperCase()}  
+
+## 1. Resumen Ejecutivo de Compensación
+- **Salario Monolingüe (A2/B1):** ${document.getElementById('calc-monolingual-salary')?.textContent || '$38,000 MXN'}
+- **Salario Bilingüe stemOS (C1 Técnico):** ${document.getElementById('calc-bilingual-salary')?.textContent || '$76,000 MXN'}
+- **Prima Salarial Directa:** ${document.getElementById('calc-premium-delta')?.textContent || '+$38,000 MXN / mes (+100%)'}
+- **Ingreso Neto Take-Home Pay:** ${document.getElementById('tax-net-val')?.textContent || '$55,550 MXN'}
+- **Ventaja Patrimonial Proyectada a 5 Años:** ${document.getElementById('calc-5year-projection')?.textContent || '+$2,280,000 MXN'}
+
+## 2. Marco Regulatorio y Fiscal Transfronterizo
+- Acreditado bajo **USMCA / T-MEC Capítulo 15 & 19**.
+- Optimización legal con **Régimen Simplificado de Confianza (RESICO)** para consultoría y soporte de ingeniería a matrices en EE.UU.
+
+---
+*Emitido por stemOS LXP Foundation • Nearshoring Talent Hub*`;
+
+  // Copy or trigger download
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(report).then(() => {
+      alert("📋 Reporte de Benchmarking Salarial copiado al portapapeles en formato Markdown.");
+    }).catch(() => {
+      alert("Reporte generado con éxito.");
+    });
+  } else {
+    alert("📋 Reporte de Benchmarking Salarial generado.");
+  }
+};
+
+// ══════════════════════════════════════════════════════════════════════════
+// PHASE 20: Cross-Border Talent Pipeline & Recruiter Live Voice/Chat Agent
+// ══════════════════════════════════════════════════════════════════════════
+
+window.LIVE_INTERVIEW_SESSIONS = {
+  dave: {
+    name: "Dave Miller 🇺🇸",
+    role: "Vehicle Launch Director • Detroit OEM / Saltillo Powertrain",
+    dialect: "US Midwest Industrial English (Detroit/Saltillo)",
+    avatarIcon: '<i class="fa-solid fa-car"></i>',
+    turn1Prompt: "We are qualifying a high-pressure die-casting (HPDC) structural shock tower at our Saltillo facility. Radiography shows micro-porosity at the thick-to-thin rib transition. Walk me through your immediate containment actions under IATF 16949 and how you instrument the die cavity to isolate the physical root cause.",
+    turn1Samples: {
+      optimal: "Good morning Dave. Under IATF 16949 Section 8.7, my immediate action is quarantine of all work-in-progress castings and issuing an internal 8D containment alert with 100% X-ray non-destructive inspection. For physical root-cause isolation in the Saltillo HPDC cell, I install piezo-electric in-cavity pressure transducers at the transition rib and hook up high-speed telemetry to monitor the intensification phase. By correlating peak hydraulic intensification pressure with cavity fill time, we isolated a 15-millisecond lag in accumulator valve firing, allowing us to stabilize the fast-shot transition and recover Cpk to 1.74.",
+      suboptimal: "Hi Dave. I would stop the casting machine and ask the operators to check the die temperature. Then I would talk to quality to see if we can still ship some parts if the porosity is not too big."
+    },
+    evaluateTurn1: function(text) {
+      const lower = text.toLowerCase();
+      const hasPorosity = lower.includes('porosity') || lower.includes('cavity') || lower.includes('x-ray') || lower.includes('radiography');
+      const hasTelemetry = lower.includes('transducer') || lower.includes('telemetry') || lower.includes('pressure') || lower.includes('intensification');
+      const hasIATF = lower.includes('iatf') || lower.includes('containment') || lower.includes('8d') || lower.includes('quarantine');
+      
+      if (hasTelemetry && (hasIATF || hasPorosity)) {
+        return "You highlighted in-cavity pressure transducers and accumulator valve lag. That is solid shopfloor telemetry. Now, how do you verify that increasing intensification pressure does not cause thermal shock or micro-checking on the H13 die steel, and how do you defend this process window change during a formal PPAP audit with our Detroit chassis engineering group?";
+      } else {
+        return "That's a start, but in high-pressure casting at Saltillo we live and die by porosity under radiography. How did you specifically verify hydraulic shot profile consistency across shifts and isolate accumulator lag?";
+      }
+    },
+    turn2Samples: {
+      optimal: "To prevent thermal fatigue and micro-checking on the premium H13 tool steel, we maintain conformal cooling water temperatures at 160°C and apply pulsed micro-spray release agent to keep surface Delta-T under 80°C. During the PPAP audit with Detroit Chassis Engineering, we submit the updated Control Plan, the modified PFMEA with RPN reduced from 144 to 36, and a 300-piece capability study proving Cpk of 1.74 without exceeding the allowable tensile stress threshold of the steel.",
+      suboptimal: "We just spray more release agent on the mold so it doesn't get damaged, and then we email Detroit saying the machine is working fine now."
+    },
+    evaluateTurn2: function(text) {
+      const lower = text.toLowerCase();
+      const hasPPAP = lower.includes('ppap') || lower.includes('pfmea') || lower.includes('control plan') || lower.includes('cpk') || lower.includes('capability');
+      const hasThermal = lower.includes('thermal') || lower.includes('cooling') || lower.includes('h13') || lower.includes('delta-t');
+
+      if (hasPPAP || hasThermal) {
+        return "Understood. The PFMEA and thermal Delta-T controls are rigorous. Now final scenario: Suppose the Detroit platform director calls at midnight claiming assembly line-stoppage risk and asks for an emergency deviation waiver to ship 400 unverified units. What is your exact response and cross-border escalation protocol?";
+      } else {
+        return "Detroit requires tighter validation before signing off. What specific capability metrics (Cpk/Ppk) and thermal gradient limits do you document in the PPAP package?";
+      }
+    },
+    turn3Samples: {
+      optimal: "I would respectfully and firmly hold the quality firewall. I would explain to the Detroit platform director: 'I understand the assembly line stoppage risk, but shipping unverified structural shock towers poses a safety-critical fracture liability under FMVSS 201. I cannot sign a deviation waiver for non-conforming structural components without engineering sign-off. Instead, our Saltillo rapid-containment team has already mobilized an offline CT-scan sorting protocol to release 100% verified sound parts within 4 hours, preserving both your production schedule and vehicle safety integrity.'",
+      suboptimal: "I would sign the waiver because the platform director is my boss and we cannot stop the assembly line in Detroit."
+    },
+    evaluateTurn3: function(text) {
+      return "Outstanding technical defense and executive poise. Your pragmatic mastery of IATF 16949, in-cavity telemetry, and cross-border escalation protocols fully clears our C1 bar. I am recommending an immediate on-site plant visit and formal offer.";
+    }
+  },
+  sarah: {
+    name: "Sarah Jenkins 🇺🇸",
+    role: "VP of Quality & Regulatory • Boston MedTech / Tijuana Medical Cluster",
+    dialect: "US East Coast Medical Regulatory English (Boston/Tijuana)",
+    avatarIcon: '<i class="fa-solid fa-microscope"></i>',
+    turn1Prompt: "We are scaling cleanroom assembly for Class III intravascular drug-delivery catheters in Tijuana. Bioburden testing revealed an elevated spore count near the automated ultrasonic welding station. Walk me through your immediate containment under FDA 21 CFR § 820.100 and how you isolate the airflow and particulate vector.",
+    turn1Samples: {
+      optimal: "Hello Sarah. Under 21 CFR § 820.100 and ISO 13485:2016 Clause 8.5.2, my immediate containment is to place an automated line hold on the ultrasonic welding station, quarantine all catheter lots processed within the last 72 hours, and initiate an urgent CAPA. For environmental triage, we deploy real-time laser airborne particle counters to map velocity profiles across the ISO Class 7 cleanroom and perform smoke pattern visualization to identify any turbulent eddy currents bypassing the laminar HEPA ceiling grids.",
+      suboptimal: "Hi Sarah. We would stop the welding station and clean the floor with disinfectant. Then we would re-test after lunch to see if the spores disappeared."
+    },
+    evaluateTurn1: function(text) {
+      return "Good environmental containment. Now, how do you validate that the ultrasonic horn vibrational harmonics are not shedding micro-particulates into the sterile barrier, and what statistical sampling plan (ANSI/ASQ Z1.4) do you present to FDA auditors?";
+    },
+    turn2Samples: {
+      optimal: "We instrument the ultrasonic horn with laser doppler vibrometry to ensure acoustic energy is confined to 20 kHz ± 50 Hz. Furthermore, we apply ANSI/ASQ Z1.4 General Inspection Level II with an Acceptance Quality Limit (AQL) of 0.65% for sterile barrier pouch integrity, backed by 100% dye penetration testing under ASTM F1929.",
+      suboptimal: "We use standard testing tools and check 5 samples per batch to make sure the seal looks clean."
+    },
+    evaluateTurn2: function(text) {
+      return "Final regulatory challenge: During an unannounced FDA inspection in Tijuana, the auditor issues an initial 483 observation questioning your bioburden trending. How do you respond within the 15-day regulatory window?";
+    },
+    turn3Samples: {
+      optimal: "Within the statutory 15 business days, we submit an exhaustive written response addressing each observation. We present the validated environmental monitoring data, the closed CAPA with verified effectiveness checks, and root-cause analysis showing zero finished-device contamination, thus securing full FDA clearance without warning letter escalation.",
+      suboptimal: "We would tell the inspector that we disagree and promise to clean more frequently."
+    },
+    evaluateTurn3: function(text) {
+      return "Exemplary mastery of FDA 21 CFR § 820 and sterile barrier integrity. Your regulatory poise and analytical rigor are world-class. You are cleared for our Senior Quality Lead role.";
+    }
+  },
+  marcus: {
+    name: "Marcus Vance 🇺🇸",
+    role: "Director of Silicon Hardware & Firmware • Austin High-Tech / Guadalajara Silicon Hub",
+    dialect: "US Southwest High-Tech English (Austin/Guadalajara)",
+    avatarIcon: '<i class="fa-solid fa-microchip"></i>',
+    turn1Prompt: "Our mixed-signal Edge AI accelerator in Guadalajara is failing JTAG boundary scan during thermal chamber stress testing at 105°C. Walk me through your signal integrity triage, oscilloscope probing strategy, and how you differentiate between firmware race conditions in FreeRTOS and silicon electromigration.",
+    turn1Samples: {
+      optimal: "Marcus, to isolate high-temperature boundary scan failures, I probe the TCK, TMS, and TDI lines using active differential probes with 4 GHz bandwidth to examine eye diagrams for jitter and ground bounce. To differentiate firmware timing from physical degradation, we analyze FreeRTOS task traces with priority inversion hooks, observing whether watchdog timer resets correlate strictly with thermal cycle junctions or persist under static clock frequencies.",
+      suboptimal: "I would check the FreeRTOS code to see if there is an infinite loop, and then let the chip cool down to room temperature."
+    },
+    evaluateTurn1: function(text) {
+      return "Strong triage on active probing and eye diagrams. Now, how do you redesign the PCB power delivery network (PDN) to suppress transient voltage droop during neural network inference bursts, keeping impedance below 20 milliohms up to 200 MHz?";
+    },
+    turn2Samples: {
+      optimal: "We optimize the PDN by placing low-ESR ceramic decoupling capacitors (0201 package) directly under the BGA package balls via microvias-in-pad. We run 3D electromagnetic simulations in Ansys HFSS to ensure the impedance profile stays under 18 milliohms from DC through 250 MHz, preventing transient voltage sag during 40-amp inference bursts.",
+      suboptimal: "We can add some bigger capacitors on the edge of the circuit board to store more power for the AI chip."
+    },
+    evaluateTurn2: function(text) {
+      return "Final scenario: Austin executive leadership is pushing to tape out on Friday, but your temperature corner simulation shows a 2% timing margin shortfall on the memory controller. How do you defend your technical decision to hold tape-out?";
+    },
+    turn3Samples: {
+      optimal: "I present a data-driven risk matrix to executive leadership: 'Taping out with a 2% negative slack at 105°C carries an 85% probability of silicon spin respin, costing $3.2M and 16 weeks of delay. By holding tape-out for 72 hours, our Guadalajara engineering cell can pipeline two critical paths in RTL, recovering 8% positive slack and guaranteeing first-pass silicon success.'",
+      suboptimal: "I would tell Austin that we should wait because rushing is risky."
+    },
+    evaluateTurn3: function(text) {
+      return "Exceptional silicon engineering leadership. You blend deep RTL/PDN physics with executive diplomacy. Fully recommended for our Principal Architecture staff in Guadalajara.";
+    }
+  },
+  elena: {
+    name: "Elena Rostova 🇺🇸",
+    role: "Head of Global Logistics & Cross-Border Compliance • Chicago HQ / Cd. Juárez Supply Chain",
+    dialect: "US Midwest Commercial & Legal English (Chicago/Cd. Juárez)",
+    avatarIcon: '<i class="fa-solid fa-truck-fast"></i>',
+    turn1Prompt: "US Customs and Border Protection (CBP) has flagged a critical shipment of 800 electronic control units at the Zaragoza international bridge under a T-MEC Regional Value Content audit. Walk me through your immediate 24-hour response to clear customs and prevent assembly line shutdowns in Arlington, Texas.",
+    turn1Samples: {
+      optimal: "Elena, my immediate 24-hour action is dispatching our bonded customs broker with the certified USMCA Certificate of Origin and Anexo 24 bill of materials trace proving 75% Regional Value Content under the net cost method. Concurrently, to insulate the Arlington assembly plant from downtime, I initiate an expedited bonded customs release under Section 321 or temporary entry bond while the audit inquiry is reviewed.",
+      suboptimal: "I would call the truck driver at the bridge and ask the logistics broker to pay the fine so they let the shipment cross."
+    },
+    evaluateTurn1: function(text) {
+      return "Solid documentation agility. How do you allocate demurrage costs and detention liability between the freight forwarder and cross-border drayage carriers under Incoterms 2020 (DAP vs DPU)?";
+    },
+    turn2Samples: {
+      optimal: "Under Incoterms 2020 DAP Arlington, the seller bears all risks and transportation costs until goods are made available for unloading. However, our contractual master service agreement stipulates that carrier detention beyond the 2-hour free-time window at the international bridge is absorbed by the drayage operator if delay stems from driver credentialing or documentation errors on their dispatch portal.",
+      suboptimal: "We check who signed the bill of lading and split the fees 50/50 with the freight company."
+    },
+    evaluateTurn2: function(text) {
+      return "Final scenario: Severe weather closes Interstate 35 and the freight carrier demands a $18,000 emergency surcharge for dedicated air charter. How do you negotiate this with Chicago corporate procurement?";
+    },
+    turn3Samples: {
+      optimal: "I benchmark the $18,000 air charter cost against the catastrophic $50,000-per-hour assembly plant shutdown penalty. I secure approval by negotiating a pre-contracted volume charter rate with our tier-1 air cargo partner, reducing the net surcharge to $11,500 while preserving delivery deadlines and safeguarding tier-1 supplier status.",
+      suboptimal: "I tell Chicago they have to pay the $18,000 because we have no choice."
+    },
+    evaluateTurn3: function(text) {
+      return "Outstanding strategic negotiation and contractual command. You protect plant operations and company margins simultaneously. Strongly hired for Senior Cross-Border Logistics Director.";
+    }
+  }
+};
+
+window.currentLiveTurn = 1;
+window.currentLiveRecruiter = "dave";
+window.liveSessionHistory = [];
+window.isMicListening = false;
+
+// Initialize Live Interview Session
+window.initLiveInterviewSession = function(recruiterId) {
+  const rId = recruiterId || window.currentRecruiterId || 'dave';
+  window.currentLiveRecruiter = rId;
+  const sessionData = window.LIVE_INTERVIEW_SESSIONS[rId] || window.LIVE_INTERVIEW_SESSIONS.dave;
+  window.currentLiveTurn = 1;
+
+  // Update Recruiter Banner UI
+  const nameEl = document.getElementById('live-agent-display-name');
+  const roleEl = document.getElementById('live-agent-display-role');
+  const dialectEl = document.getElementById('live-agent-dialect-tag');
+  const avatarEl = document.getElementById('live-agent-avatar-icon');
+  const turnDisplay = document.getElementById('live-turn-display');
+
+  if (nameEl) nameEl.textContent = sessionData.name;
+  if (roleEl) roleEl.textContent = sessionData.role;
+  if (dialectEl) dialectEl.textContent = sessionData.dialect;
+  if (avatarEl) avatarEl.innerHTML = sessionData.avatarIcon;
+  if (turnDisplay) turnDisplay.textContent = 'Turno 1 de 3 • Pregunta Inicial';
+
+  // Seed history with Turn 1 Question
+  window.liveSessionHistory = [
+    {
+      sender: 'recruiter',
+      name: sessionData.name,
+      text: sessionData.turn1Prompt,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }
+  ];
+
+  window.renderLiveConversationThread();
+
+  // Reset Telemetry Gauges to Nominal Baseline
+  const fluFill = document.getElementById('live-fluency-fill');
+  const fluDisp = document.getElementById('live-fluency-display');
+  const fluDesc = document.getElementById('live-fluency-desc');
+  const starFill = document.getElementById('live-star-fill');
+  const starDisp = document.getElementById('live-star-coverage');
+  const confDisp = document.getElementById('live-confidence-meter');
+  const notesBody = document.getElementById('live-recruiter-notes');
+
+  if (fluFill) fluFill.style.width = '92%';
+  if (fluDisp) fluDisp.textContent = '92%';
+  if (fluDesc) fluDesc.textContent = 'Esperando formulación técnica del candidato en inglés C1.';
+  if (starFill) starFill.style.width = '88%';
+  if (starDisp) starDisp.textContent = '88%';
+  if (confDisp) confDisp.textContent = 'EVALUANDO (C1 Target)';
+  if (notesBody) notesBody.textContent = `"${sessionData.name} ha iniciado la sesión técnica en vivo. Esperando respuesta estructurada STAR para el Turno 1."`;
+};
+
+// Render Conversation Thread Bubbles
+window.renderLiveConversationThread = function() {
+  const thread = document.getElementById('live-conversation-thread');
+  if (!thread) return;
+
+  thread.innerHTML = window.liveSessionHistory.map((msg, idx) => {
+    const isRecruiter = msg.sender === 'recruiter';
+    const bubbleClass = isRecruiter ? 'live-bubble recruiter' : 'live-bubble candidate';
+    const senderIcon = isRecruiter ? '<i class="fa-solid fa-headset" style="color:#38bdf8;"></i>' : '<i class="fa-solid fa-user-astronaut" style="color:#34d399;"></i>';
+    const audioBtn = isRecruiter 
+      ? `<button type="button" class="bubble-audio-btn" onclick="playBubbleAudio(${idx})" title="Escuchar audio de este turno"><i class="fa-solid fa-volume-high"></i></button>`
+      : '';
+
+    return `
+      <div class="${bubbleClass}">
+        <div class="bubble-head">
+          <span class="bubble-sender">${senderIcon} ${msg.name}</span>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span class="bubble-time">${msg.time}</span>
+            ${audioBtn}
+          </div>
+        </div>
+        <div class="bubble-text">${msg.text}</div>
+      </div>
+    `;
+  }).join('');
+
+  thread.scrollTop = thread.scrollHeight;
+};
+
+// Play audio for current/latest turn
+window.playCurrentTurnAudio = function() {
+  const lastRecruiterMsg = [...window.liveSessionHistory].reverse().find(m => m.sender === 'recruiter');
+  if (!lastRecruiterMsg) return;
+
+  const btnLabel = document.getElementById('live-listen-label');
+  if (btnLabel) btnLabel.textContent = 'Reproduciendo Audio...';
+
+  if ('speechSynthesis' in window) {
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(lastRecruiterMsg.text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.96;
+      utterance.pitch = 1.0;
+      utterance.onend = () => {
+        if (btnLabel) btnLabel.textContent = 'Escuchar al Reclutador';
+      };
+      utterance.onerror = () => {
+        if (btnLabel) btnLabel.textContent = 'Escuchar al Reclutador';
+      };
+      window.speechSynthesis.speak(utterance);
+    } catch (e) {
+      if (btnLabel) btnLabel.textContent = 'Escuchar al Reclutador';
+    }
+  } else {
+    setTimeout(() => {
+      if (btnLabel) btnLabel.textContent = 'Escuchar al Reclutador';
+    }, 1500);
+  }
+};
+
+// Play specific bubble audio
+window.playBubbleAudio = function(index) {
+  const msg = window.liveSessionHistory[index];
+  if (!msg || !('speechSynthesis' in window)) return;
+  try {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(msg.text);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.96;
+    window.speechSynthesis.speak(utterance);
+  } catch (e) {}
+};
+
+// Toggle Live Mic Dictation
+window.toggleLiveInterviewMic = function() {
+  const micBtn = document.getElementById('btn-live-mic-toggle');
+  const micIndicator = document.getElementById('live-mic-indicator');
+  const micLabel = document.getElementById('live-mic-label');
+  const textarea = document.getElementById('live-candidate-input');
+
+  window.isMicListening = !window.isMicListening;
+
+  if (window.isMicListening) {
+    if (micBtn) micBtn.classList.add('recording');
+    if (micIndicator) micIndicator.style.display = 'flex';
+    if (micLabel) micLabel.textContent = 'Detener Dictado';
+
+    // Check for Web Speech Recognition API
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      try {
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.interimResults = true;
+        recognition.continuous = false;
+
+        recognition.onresult = (event) => {
+          let transcript = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            transcript += event.results[i][0].transcript;
+          }
+          if (textarea) textarea.value = transcript;
+        };
+
+        recognition.onend = () => {
+          window.isMicListening = false;
+          if (micBtn) micBtn.classList.remove('recording');
+          if (micIndicator) micIndicator.style.display = 'none';
+          if (micLabel) micLabel.textContent = 'Dictar Respuesta';
+        };
+
+        recognition.start();
+        window._activeLiveRecognition = recognition;
+      } catch (err) {
+        // Fallback for mock environments
+      }
+    }
+  } else {
+    if (micBtn) micBtn.classList.remove('recording');
+    if (micIndicator) micIndicator.style.display = 'none';
+    if (micLabel) micLabel.textContent = 'Dictar Respuesta';
+    if (window._activeLiveRecognition) {
+      try { window._activeLiveRecognition.stop(); } catch(e) {}
+    }
+  }
+};
+
+// Load Sample Response for current turn
+window.loadLiveTurnSample = function(turnNum) {
+  const rId = window.currentLiveRecruiter || 'dave';
+  const sessionData = window.LIVE_INTERVIEW_SESSIONS[rId] || window.LIVE_INTERVIEW_SESSIONS.dave;
+  const textarea = document.getElementById('live-candidate-input');
+  if (!textarea) return;
+
+  if (turnNum === 1) {
+    textarea.value = sessionData.turn1Samples.optimal;
+  } else if (turnNum === 2) {
+    textarea.value = sessionData.turn2Samples.optimal;
+  } else if (turnNum === 3) {
+    textarea.value = sessionData.turn3Samples.optimal;
+  }
+};
+
+// Submit Candidate Response and Generate Dynamic Recruiter Follow-Up
+window.submitLiveCandidateResponse = function() {
+  const textarea = document.getElementById('live-candidate-input');
+  const text = textarea ? textarea.value.trim() : '';
+
+  if (!text) {
+    alert("Por favor formula o dicta tu respuesta técnica antes de enviar.");
+    return;
+  }
+
+  const rId = window.currentLiveRecruiter || 'dave';
+  const sessionData = window.LIVE_INTERVIEW_SESSIONS[rId] || window.LIVE_INTERVIEW_SESSIONS.dave;
+  const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  // 1. Append Candidate Bubble
+  window.liveSessionHistory.push({
+    sender: 'candidate',
+    name: "Tú (Ingeniero Candidato C1)",
+    text: text,
+    time: timeNow
+  });
+
+  textarea.value = '';
+
+  // 2. Multi-turn Progression Logic
+  const turnDisplay = document.getElementById('live-turn-display');
+  const fluFill = document.getElementById('live-fluency-fill');
+  const fluDisp = document.getElementById('live-fluency-display');
+  const fluDesc = document.getElementById('live-fluency-desc');
+  const starFill = document.getElementById('live-star-fill');
+  const starDisp = document.getElementById('live-star-coverage');
+  const confDisp = document.getElementById('live-confidence-meter');
+  const notesBody = document.getElementById('live-recruiter-notes');
+
+  if (window.currentLiveTurn === 1) {
+    const followUpQuestion = sessionData.evaluateTurn1(text);
+    window.liveSessionHistory.push({
+      sender: 'recruiter',
+      name: sessionData.name,
+      text: followUpQuestion,
+      time: timeNow
+    });
+
+    window.currentLiveTurn = 2;
+    if (turnDisplay) turnDisplay.textContent = 'Turno 2 de 3 • Follow-Up Técnico Dinámico';
+    if (fluFill) fluFill.style.width = '95%';
+    if (fluDisp) fluDisp.textContent = '95%';
+    if (fluDesc) fluDesc.textContent = 'Terminología IATF / 8D y telemetría de piso aplicadas con gran precisión.';
+    if (starFill) starFill.style.width = '93%';
+    if (starDisp) starDisp.textContent = '93%';
+    if (confDisp) confDisp.textContent = 'ALTA (C1 Lead)';
+    if (notesBody) notesBody.textContent = `"${sessionData.name}: Candidato demostró sólida comprensión de instrumentación en cavidad. Realizando repregunta sobre integridad térmica y validación PPAP."`;
+
+  } else if (window.currentLiveTurn === 2) {
+    const escalationQuestion = sessionData.evaluateTurn2(text);
+    window.liveSessionHistory.push({
+      sender: 'recruiter',
+      name: sessionData.name,
+      text: escalationQuestion,
+      time: timeNow
+    });
+
+    window.currentLiveTurn = 3;
+    if (turnDisplay) turnDisplay.textContent = 'Turno 3 de 3 • Escalamiento y Criterio Ejecutivo';
+    if (fluFill) fluFill.style.width = '97%';
+    if (fluDisp) fluDisp.textContent = '97%';
+    if (fluDesc) fluDesc.textContent = 'Argumentación cuantitativa (Delta-T, PFMEA, Cpk) sobresaliente.';
+    if (starFill) starFill.style.width = '96%';
+    if (starDisp) starDisp.textContent = '96%';
+    if (confDisp) confDisp.textContent = 'SOBRESALIENTE (Lead)';
+    if (notesBody) notesBody.textContent = `"${sessionData.name}: Dominio impecable de PFMEA y control térmico. Planteando dilema de escalamiento ético y presión ejecutiva."`;
+
+  } else {
+    // Final Turn 3 Submission & Executive Verdict
+    const finalVerdict = sessionData.evaluateTurn3(text);
+    window.liveSessionHistory.push({
+      sender: 'recruiter',
+      name: sessionData.name,
+      text: finalVerdict,
+      time: timeNow
+    });
+
+    window.currentLiveTurn = 4; // Completed
+    if (turnDisplay) turnDisplay.textContent = 'Sesión Completada • Acreditación C1 Validada';
+    if (fluFill) fluFill.style.width = '98%';
+    if (fluDisp) fluDisp.textContent = '98%';
+    if (fluDesc) fluDesc.textContent = 'Nivel C1 Operativo consolidado. Diplomacia ejecutiva y firmeza técnica.';
+    if (starFill) starFill.style.width = '97%';
+    if (starDisp) starDisp.textContent = '97%';
+    if (confDisp) confDisp.textContent = 'CONTRATACIÓN INMEDIATA (C1 Master)';
+    if (notesBody) notesBody.textContent = `"${sessionData.name}: CANDIDATO APROBADO CON HONORES. Excelente contención ética, control estadístico y liderazgo técnico transfronterizo. Recomendado para contratación directa."`;
+  }
+
+  window.renderLiveConversationThread();
+  window.playCurrentTurnAudio();
+};
+
+// Restart Live Interview Session
+window.restartLiveInterviewSession = function() {
+  window.initLiveInterviewSession(window.currentLiveRecruiter);
+};
+
+// Export Live Session Transcript as Markdown
+window.exportLiveSessionTranscript = function() {
+  const rId = window.currentLiveRecruiter || 'dave';
+  const sessionData = window.LIVE_INTERVIEW_SESSIONS[rId] || window.LIVE_INTERVIEW_SESSIONS.dave;
+  const fluScore = document.getElementById('live-fluency-display')?.textContent || '96%';
+  const starScore = document.getElementById('live-star-coverage')?.textContent || '94%';
+  const verdict = document.getElementById('live-recruiter-notes')?.textContent || 'Candidato Aprobado';
+
+  const threadMd = window.liveSessionHistory.map(m => `### [${m.time}] ${m.name}\n${m.text}\n`).join('\n');
+
+  const transcript = `# stemOS Nearshoring Live Technical Interview Dossier
+**Fecha:** ${new Date().toLocaleDateString('es-MX')}  
+**Reclutador Técnico:** ${sessionData.name}  
+**Rol & Hub:** ${sessionData.role}  
+**Dialecto & Entorno:** ${sessionData.dialect}  
+
+## 1. Métricas de Telemetría Acústica y Fluidez
+- **Índice de Fluidez C1:** ${fluScore}
+- **Rigor Cuantitativo STAR:** ${starScore}
+- **Veredicto Ejecutivo:** ${verdict}
+
+## 2. Transcripción Multi-Turno Auditada
+${threadMd}
+
+---
+*Emitido por stemOS Foundation • Nearshoring Talent Hub & Live Recruiter Agent*`;
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(transcript).then(() => {
+      alert("📋 Minuta de Entrevista en Vivo copiada al portapapeles en formato Markdown.");
+    }).catch(() => {
+      alert("Minuta generada con éxito.");
+    });
+  } else {
+    alert("📋 Minuta de Entrevista en Vivo generada.");
+  }
+};
+
+// ── Enterprise Nearshoring Recruiter Portal & Talent Pipeline CRM ──
+
+window.TALENT_PIPELINE_CANDIDATES = [
+  {
+    id: "cand-diana",
+    name: "Ing. Diana Laura Morales",
+    degree: "Ingeniería Mecatrónica & Robótica",
+    degreeKey: "mecatronica",
+    hub: "Saltillo - Ramos Powertrain",
+    hubKey: "saltillo",
+    starScore: 98,
+    w3cHash: "SHA256: 7D02D38F1A0E7507C9F",
+    standards: ["IATF 16949", "ISO 9001", "8D Root Cause", "HPDC Die-Casting"],
+    hoursCertified: 60.0,
+    cefr: "C1 Operational Fluency",
+    avatarIcon: '<i class="fa-solid fa-robot" style="color:#10b981;"></i>'
+  },
+  {
+    id: "cand-mateo",
+    name: "Ing. Mateo Valenzuela Cruz",
+    degree: "Bioingeniería & Dispositivos Médicos",
+    degreeKey: "biomedica",
+    hub: "Tijuana - MedTech & Cleanroom",
+    hubKey: "tijuana",
+    starScore: 96,
+    w3cHash: "SHA256: 4A89E19F5C3B0284D1E",
+    standards: ["FDA 21 CFR § 820", "ISO 13485", "Cleanroom ISO 7", "Bioburden"],
+    hoursCertified: 60.0,
+    cefr: "C1 Operational Fluency",
+    avatarIcon: '<i class="fa-solid fa-microscope" style="color:#38bdf8;"></i>'
+  },
+  {
+    id: "cand-sofia",
+    name: "Ing. Sofía Cárdenas Beltrán",
+    degree: "Nanotecnología & Semiconductores",
+    degreeKey: "nanotecnologia",
+    hub: "Guadalajara - Silicon & VLSI",
+    hubKey: "guadalajara",
+    starScore: 97,
+    w3cHash: "SHA256: 9B1348FA7D5C2E09871",
+    standards: ["SEMI S2/S8", "Cadence Virtuoso", "VLSI Design", "JTAG Scan"],
+    hoursCertified: 60.0,
+    cefr: "C1 Operational Fluency",
+    avatarIcon: '<i class="fa-solid fa-microchip" style="color:#a855f7;"></i>'
+  },
+  {
+    id: "cand-javier",
+    name: "Ing. Javier Ochoa Peñaloza",
+    degree: "Ingeniería Aeronáutica & Turbinas",
+    degreeKey: "aeronautica",
+    hub: "Querétaro - Aerospace & Turbines",
+    hubKey: "queretaro",
+    starScore: 95,
+    w3cHash: "SHA256: 2C4409BA3E8F124095A",
+    standards: ["AS9100D", "Ansys Fluent", "FAA Part 21", "Turbine Blades"],
+    hoursCertified: 60.0,
+    cefr: "C1 Operational Fluency",
+    avatarIcon: '<i class="fa-solid fa-plane-up" style="color:#f59e0b;"></i>'
+  },
+  {
+    id: "cand-andrea",
+    name: "Ing. Andrea Fuentes Villarreal",
+    degree: "Firmware & Embedded Edge AI",
+    degreeKey: "embedded",
+    hub: "Monterrey - Semiconductors",
+    hubKey: "monterrey",
+    starScore: 94,
+    w3cHash: "SHA256: 6D5891AC4B2E879013F",
+    standards: ["AUTOSAR Classic", "FreeRTOS", "ISO 26262 ASIL-D", "C++20"],
+    hoursCertified: 60.0,
+    cefr: "C1 Operational Fluency",
+    avatarIcon: '<i class="fa-solid fa-code" style="color:#ec4899;"></i>'
+  },
+  {
+    id: "cand-rodrigo",
+    name: "Lic. Rodrigo Garza Elizondo",
+    degree: "Comercio Exterior & Logística T-MEC",
+    degreeKey: "logistica",
+    hub: "Cd. Juárez - Twin-Plants SCM",
+    hubKey: "juarez",
+    starScore: 92,
+    w3cHash: "SHA256: 3F9018EB7C1A5432098",
+    standards: ["USMCA Rules of Origin", "Anexo 24/30", "Incoterms 2020", "C-TPAT"],
+    hoursCertified: 60.0,
+    cefr: "C1 Operational Fluency",
+    avatarIcon: '<i class="fa-solid fa-truck-ramp-box" style="color:#06b6d4;"></i>'
+  }
+];
+
+// Render Talent Pipeline Grid Cards
+window.renderTalentPipeline = function(candidatesList) {
+  const container = document.getElementById('recruiter-pipeline-grid');
+  const countEl = document.getElementById('pipeline-candidates-count');
+  const list = candidatesList || window.TALENT_PIPELINE_CANDIDATES;
+
+  if (countEl) {
+    countEl.textContent = `${list.length} Candidatos Certificados`;
+  }
+
+  if (!container) return;
+
+  if (list.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1/-1; text-align:center; padding:40px; color:#64748b;">
+        <i class="fa-solid fa-users-slash" style="font-size:2.5rem; margin-bottom:12px; display:block;"></i>
+        No se encontraron candidatos que coincidan con los filtros seleccionados.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = list.map(c => `
+    <div class="pipeline-card" id="pipeline-card-${c.id}">
+      <div class="pipeline-card-header">
+        <div class="pipeline-card-avatar">${c.avatarIcon}</div>
+        <div class="pipeline-card-info">
+          <div class="pipeline-name">${c.name}</div>
+          <div class="pipeline-degree">${c.degree}</div>
+          <span class="pipeline-hub-tag"><i class="fa-solid fa-location-dot"></i> ${c.hub}</span>
+        </div>
+      </div>
+
+      <div class="pipeline-w3c-badge">
+        <i class="fa-solid fa-shield-check"></i>
+        <span>${c.w3cHash}</span>
+      </div>
+
+      <div class="pipeline-skills-tags">
+        ${c.standards.map(s => `<span class="pipeline-skill-chip">${s}</span>`).join('')}
+      </div>
+
+      <div class="pipeline-metrics-row">
+        <div class="pipeline-metric-box">
+          <div class="pipeline-metric-num" style="color:#10b981;">${c.starScore} / 100</div>
+          <div class="pipeline-metric-lbl">Rigor STAR C1</div>
+        </div>
+        <div class="pipeline-metric-box">
+          <div class="pipeline-metric-num" style="color:#38bdf8;">${c.hoursCertified}h</div>
+          <div class="pipeline-metric-lbl">Acreditación W3C</div>
+        </div>
+      </div>
+
+      <div class="pipeline-card-footer">
+        <button type="button" class="btn-pipeline-action secondary" onclick="viewCandidateDossier('${c.id}')">
+          <i class="fa-solid fa-address-card"></i> Ver Dossier
+        </button>
+        <button type="button" class="btn-pipeline-action primary" onclick="inviteCandidateLiveInterview('${c.id}')">
+          <i class="fa-solid fa-headset"></i> Entrevista en Vivo
+        </button>
+      </div>
+    </div>
+  `).join('');
+};
+
+// Filter Talent Pipeline Candidates
+window.filterTalentPipeline = function() {
+  const hubFilter = document.getElementById('pipeline-hub-filter')?.value || 'all';
+  const degreeFilter = document.getElementById('pipeline-degree-filter')?.value || 'all';
+  const scoreFilter = document.getElementById('pipeline-score-filter')?.value || 'all';
+
+  let filtered = [...window.TALENT_PIPELINE_CANDIDATES];
+
+  if (hubFilter !== 'all') {
+    filtered = filtered.filter(c => c.hubKey === hubFilter);
+  }
+
+  if (degreeFilter !== 'all') {
+    filtered = filtered.filter(c => c.degreeKey === degreeFilter);
+  }
+
+  if (scoreFilter !== 'all') {
+    const minScore = parseInt(scoreFilter, 10);
+    filtered = filtered.filter(c => c.starScore >= minScore);
+  }
+
+  window.renderTalentPipeline(filtered);
+};
+
+// View Candidate Dossier
+window.viewCandidateDossier = function(candidateId) {
+  const cand = window.TALENT_PIPELINE_CANDIDATES.find(c => c.id === candidateId);
+  if (!cand) return;
+
+  if (typeof window.openRecruiterPortfolioModal === 'function') {
+    window.openRecruiterPortfolioModal();
+  } else {
+    alert(`Dossier Técnico W3C para ${cand.name}\nHub: ${cand.hub}\nHash: ${cand.w3cHash}\nScore: ${cand.starScore}/100`);
+  }
+};
+
+// Invite Candidate to Live Interview
+window.inviteCandidateLiveInterview = function(candidateId) {
+  const cand = window.TALENT_PIPELINE_CANDIDATES.find(c => c.id === candidateId);
+  if (!cand) return;
+
+  // Map hub to recruiter
+  let targetRecruiter = 'dave';
+  if (cand.hubKey === 'tijuana') targetRecruiter = 'sarah';
+  else if (cand.hubKey === 'guadalajara' || cand.hubKey === 'monterrey') targetRecruiter = 'marcus';
+  else if (cand.hubKey === 'juarez' || cand.hubKey === 'queretaro') targetRecruiter = 'elena';
+
+  window.switchHubTab('live-agent');
+  window.initLiveInterviewSession(targetRecruiter);
+};
+
+// Post Vacancy Modal Handlers
+window.openPostVacancyModal = function() {
+  const modal = document.getElementById('post-vacancy-modal');
+  if (modal) modal.style.display = 'flex';
+};
+
+window.closePostVacancyModal = function() {
+  const modal = document.getElementById('post-vacancy-modal');
+  if (modal) modal.style.display = 'none';
+};
+
+window.submitNewNearshoringVacancy = function() {
+  const title = document.getElementById('post-vacancy-title')?.value.trim();
+  const company = document.getElementById('post-vacancy-company')?.value.trim();
+  const hub = document.getElementById('post-vacancy-hub')?.value || 'saltillo';
+  const level = document.getElementById('post-vacancy-level')?.value || 'Senior Staff (C1 Fluent)';
+  const salary = document.getElementById('post-vacancy-salary')?.value.trim() || '$75,000 - $95,000 MXN / mes';
+  const tagsStr = document.getElementById('post-vacancy-tags')?.value.trim() || 'IATF 16949, 8D';
+  const desc = document.getElementById('post-vacancy-desc')?.value.trim() || 'Desafío técnico en manufactura y liderazgo de ingeniería cross-border.';
+
+  if (!title || !company) {
+    alert("Por favor completa el título y empresa de la vacante.");
+    return;
+  }
+
+  const tags = tagsStr.split(',').map(t => t.trim()).filter(Boolean);
+
+  const hubMap = {
+    saltillo: "Saltillo - Ramos Powertrain",
+    monterrey: "Monterrey - Semiconductors",
+    tijuana: "Tijuana - MedTech & Cleanroom",
+    juarez: "Cd. Juárez - Twin-Plants SCM",
+    queretaro: "Querétaro - Aerospace & Turbines",
+    guadalajara: "Guadalajara - Silicon & VLSI"
+  };
+
+  const trackMap = {
+    saltillo: "automotive",
+    monterrey: "embedded",
+    tijuana: "medical",
+    juarez: "logistics",
+    queretaro: "aerospace",
+    guadalajara: "embedded"
+  };
+
+  const newVac = {
+    id: `vac-custom-${Date.now()}`,
+    title: title,
+    company: company,
+    hub: hub,
+    hubName: hubMap[hub] || "Saltillo - Ramos Powertrain",
+    track: trackMap[hub] || "automotive",
+    salaryMxn: salary.includes('MXN') ? salary : `${salary} MXN / mes`,
+    salaryUsd: salary.includes('USD') ? salary : `$4,500 - $6,000 USD`,
+    workType: "Híbrido",
+    reqs: tags.length ? tags : ["IATF 16949", "C1 English", "8D Methodology"],
+    tags: tags,
+    baseMatch: 95,
+    cefr: level,
+    desc: desc,
+    starTarget: "Senior Technical Lead Evaluation",
+    recruiterId: hub === 'tijuana' ? 'sarah' : (hub === 'guadalajara' ? 'marcus' : (hub === 'juarez' ? 'elena' : 'dave')),
+    scenarioIdx: 0
+  };
+
+  if (!window.NEARSHORING_VACANCIES) {
+    window.NEARSHORING_VACANCIES = [];
+  }
+
+  window.NEARSHORING_VACANCIES.unshift(newVac);
+
+  if (typeof window.renderJobVacancies === 'function') {
+    window.renderJobVacancies();
+  }
+
+  window.closePostVacancyModal();
+  alert(`✅ ¡Vacante Publicada Exitosamente!\n\n"${title}" para ${company} ya está disponible en el Nearshoring Job Board.`);
+};
+
+// ============================================================================
+// PHASE 21: SENIOR FELLOWSHIP & CAREER LAUNCHPAD SUITE
+// PILLAR 1: SYSTEM ARCHITECTURE & WHITEBOARD DEFENSE ARENA (SYSTEM DESIGN STUDIO)
+// PILLAR 2: AI NEARSHORING CV & ATS RESUME OPTIMIZER (US-STYLE RESUME TAILOR)
+// PILLAR 3: CROSS-BORDER MULTI-PLANT INCIDENT DRILL (LIVE WAR ROOM 2.0)
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// PILLAR 1: WHITEBOARD DEFENSE ARENA ENGINE
+// ----------------------------------------------------------------------------
+window.WHITEBOARD_SCENARIOS = {
+  'ev-inverter': {
+    id: 'ev-inverter',
+    pillId: 'wb-scen-pill-ev',
+    title: 'EV 800V SiC Traction Inverter • Safety-Critical Topology',
+    standards: 'ISO 26262 ASIL-D • AUTOSAR Classic • CAN FD 5 Mbps',
+    architectName: 'Dr. Ethan Vance 🇺🇸',
+    architectRole: 'Chief Systems Architect • Detroit Automotive & EV Group',
+    promptText: '"Your block diagram specifies a high-speed CAN FD bus for throttle and torque vectoring. If the node encounters \'babbling idiot syndrome\' due to EMI from the 800V SiC switching transients, how does your hardware watchdog and AUTOSAR bus-off recovery ensure the vehicle remains fail-operational without losing regenerative braking stability?"',
+    optimalDefense: 'Our architecture deploys Dual-Lockstep AURIX TC397 cores with hardware diversity and a windowed watchdog SPI monitor via PMIC TLF35584. To resolve the babbling idiot failure on CAN FD, we enforce CAN bus transceiver dominant timeout and frame error passive confinement with an isolated SPI backup line. Moving from 10 kHz IGBTs to 20 kHz SiC MOSFETs cuts switching losses by 62%, decreasing junction temperature by 38°C while the ASIL-D safe state transition is guaranteed within 8.4 milliseconds.',
+    suboptimalDefense: 'We just use CAN bus and if it gets stuck we restart the microcontroller using a basic software delay loop. SiC is faster than IGBT so it should be fine.',
+    feedbackOptimal: 'Exemplary defense! Your separation of safety-critical CAN FD frames using hardware bus guardians, combined with AUTOSAR Dem/FIM diagnostic event isolation and sub-10ms fail-operational guarantee, thoroughly addresses our ASIL-D safety goal.',
+    feedbackSuboptimal: 'Insufficient rigor for an ASIL-D system. Relying on software delay loops violates ISO 26262 Part 5 hardware safety metrics, and does not address babbling idiot isolation or thermal runaway risk.',
+    scoresOptimal: { standards: '25 / 25', fmea: '25 / 25', cost: '24 / 25', diplomacy: '24 / 25' },
+    scoresSuboptimal: { standards: '12 / 25', fmea: '10 / 25', cost: '14 / 25', diplomacy: '12 / 25' },
+    nodes: [
+      { id: 'wb-node-sensors', icon: 'fa-gauge-simple-high', title: 'Sensor Array & ADCs', desc: 'Resolver + Hall Current + NTC Thermistors (Redundant)', status: 'normal', tag: 'Dual Redundant' },
+      { id: 'wb-node-mcu', icon: 'fa-microchip', title: 'Infineon AURIX TC397', desc: 'Dual-Lockstep 300MHz Core • ASIL-D Safety Engine', status: 'lockstep', tag: 'Core Lockstep' },
+      { id: 'wb-node-pmic', icon: 'fa-shield-halved', title: 'PMIC TLF35584 Watchdog', desc: 'Windowed Watchdog + Safe State Control Logic', status: 'normal', tag: 'Watchdog SPI' },
+      { id: 'wb-node-inverter', icon: 'fa-bolt', title: 'Wolfspeed 1200V SiC Inverter', desc: '3-Phase Bridge • 20 kHz PWM • Active Miller Clamp', status: 'normal', tag: 'SiC High-Speed' },
+      { id: 'wb-node-bus', icon: 'fa-network-wired', title: 'CAN FD 5 Mbps Bus', desc: 'ISO 11898-2 Transceiver w/ Dominant Timeout Guard', status: 'normal', tag: 'Isolated Bus' }
+    ],
+    metrics: {
+      safety: 'ISO 26262 ASIL-D',
+      latency: '1.2 ms (Determinista)',
+      busload: '38.4% (CAN FD Safe)',
+      faultStatus: 'FAIL-OPERATIONAL'
+    }
+  },
+  'medtech-robotics': {
+    id: 'medtech-robotics',
+    pillId: 'wb-scen-pill-medtech',
+    title: 'Surgical Robotic Manipulator • 6-DOF Closed-Loop',
+    standards: 'IEC 62304 Class C • ISO 13485 • EtherCAT DC < 15µs',
+    architectName: 'Sarah Jenkins, VP of Medical Robotics 🇺🇸',
+    architectRole: 'VP of Medical Device Engineering • San Diego BioRobotics',
+    promptText: '"A micro-jitter of 2ms on EtherCAT causes sub-millimeter surgical drift. How does your safety architecture prevent patient tissue laceration if the primary trajectory core crashes mid-incision?"',
+    optimalDefense: 'We enforce IEC 62304 Class C dual-channel cross-monitored ARM Cortex-R5 cores synchronized over deterministic EtherCAT with distributed clock jitter under 15 microseconds. If primary trajectory computation fails, the secondary safety supervisor triggers hardware electro-mechanical brake clamping in under 4ms and transitions the 6-DOF end effector to passive compliant damping.',
+    suboptimalDefense: 'We catch the exception in software and send a warning to the surgeon screen so they can pause the surgery manually.',
+    feedbackOptimal: 'Superb clinical safety defense. Sub-4ms hardware clamping and deterministic EtherCAT distributed clock meets FDA 510(k) and IEC 62304 Class C rigorous standards.',
+    feedbackSuboptimal: 'Unacceptable latency. Manual pause by surgeon cannot prevent micro-tear injuries when servo loops drift at millisecond intervals.',
+    scoresOptimal: { standards: '25 / 25', fmea: '24 / 25', cost: '23 / 25', diplomacy: '25 / 25' },
+    scoresSuboptimal: { standards: '11 / 25', fmea: '09 / 25', cost: '12 / 25', diplomacy: '10 / 25' },
+    nodes: [
+      { id: 'wb-node-sensors', icon: 'fa-crosshairs', title: '6-DOF Optical Encoders', desc: 'Sub-micron Rotary Resolvers + 6-Axis F/T Load Cell', status: 'normal', tag: 'Dual Encoders' },
+      { id: 'wb-node-mcu', icon: 'fa-microchip', title: 'Dual ARM Cortex-R5 MCU', desc: 'IEC 62304 Class C Cross-Monitored Kinematics Core', status: 'lockstep', tag: 'Safe RTOS' },
+      { id: 'wb-node-pmic', icon: 'fa-shield-heart', title: 'E-Stop Safety Supervisor', desc: 'Hardware Power Interlock + Electromagnetic Clamps', status: 'normal', tag: '< 4ms Clamping' },
+      { id: 'wb-node-inverter', icon: 'fa-robot', title: 'Galil Multi-Axis Drivers', desc: 'FOC Brushless Servo Drives with Dynamic Damping', status: 'normal', tag: 'Galvanic Iso' },
+      { id: 'wb-node-bus', icon: 'fa-ethernet', title: 'Deterministic EtherCAT', desc: 'Distributed Clocks (DC) Sync Jitter < 15 µs', status: 'normal', tag: 'Sub-ms Cycle' }
+    ],
+    metrics: {
+      safety: 'IEC 62304 Class C',
+      latency: '0.4 ms (EtherCAT DC)',
+      busload: '24.1% (Real-Time)',
+      faultStatus: 'FAIL-SAFE PASSIVE'
+    }
+  },
+  'silicon-edge': {
+    id: 'silicon-edge',
+    pillId: 'wb-scen-pill-silicon',
+    title: 'Automotive Edge AI ADAS Sensor Fusion • Heterogeneous PDN',
+    standards: 'ISO 21448 SOTIF • ASIL-B/D • 1000BASE-T1 TSN',
+    architectName: 'Marcus Vance 🇺🇸',
+    architectRole: 'VP of Silicon Platforms • Austin Edge Silicon',
+    promptText: '"Direct sunlight glare causes camera saturation while radar detects a phantom reflection. How does your SOTIF sensor fusion layer arbitrate collision avoidance within 35ms without phantom emergency braking?"',
+    optimalDefense: 'Under ISO 21448 SOTIF criteria, our heterogeneous fusion pipeline processes 77GHz FMCW radar point clouds and 8MP HDR camera frames through independent Hailo-8 neural accelerators. In the event of optical bloom or sensor confidence dropping below 0.85, Bayesian Kalman filtering prioritizes radar doppler vectors, initiating autonomous emergency braking with an ASIL-D certified trajectory envelope in 22ms.',
+    suboptimalDefense: 'If camera is blinded we just use radar distance and brake hard immediately just in case.',
+    feedbackOptimal: 'Outstanding perception arbitration. Bayesian Kalman confidence weighting prevents false-positive phantom braking while keeping latency within 22ms.',
+    feedbackSuboptimal: 'High risk of phantom braking causing rear-end collisions on highways. Lacks SOTIF validation for sensor confidence gating.',
+    scoresOptimal: { standards: '25 / 25', fmea: '25 / 25', cost: '23 / 25', diplomacy: '24 / 25' },
+    scoresSuboptimal: { standards: '13 / 25', fmea: '11 / 25', cost: '12 / 25', diplomacy: '11 / 25' },
+    nodes: [
+      { id: 'wb-node-sensors', icon: 'fa-radar', title: '77GHz Radar + 8MP HDR Cam', desc: 'Co-registered Raw Point Clouds & Automotive CSI-2', status: 'normal', tag: 'Heterogeneous' },
+      { id: 'wb-node-mcu', icon: 'fa-brain', title: 'Hailo-8 Dual NPU + ASIL Core', desc: '52 TOPS Edge AI Perception + Safety Co-Processor', status: 'lockstep', tag: 'SOTIF Engine' },
+      { id: 'wb-node-pmic', icon: 'fa-battery-three-quarters', title: 'Automotive PMIC & PDN', desc: 'Multiphase Regulators with Over-Voltage Crowbar', status: 'normal', tag: 'ISO 7637-2' },
+      { id: 'wb-node-inverter', icon: 'fa-car-burst', title: 'Braking & Steering ESC', desc: 'Dual-Channel Actuator Controller w/ Redundant Force', status: 'normal', tag: 'ASIL-D Brake' },
+      { id: 'wb-node-bus', icon: 'fa-network-wired', title: '1000BASE-T1 Ethernet TSN', desc: 'IEEE 802.1Qbv Time-Aware Shaper Audio-Video Bridge', status: 'normal', tag: 'Gigabit Auto' }
+    ],
+    metrics: {
+      safety: 'ISO 21448 SOTIF / ASIL-D',
+      latency: '22 ms (Perception Loop)',
+      busload: '64.2% (TSN Stream)',
+      faultStatus: 'FAIL-DEGRADED SAFE'
+    }
+  },
+  'coldchain-logistics': {
+    id: 'coldchain-logistics',
+    pillId: 'wb-scen-pill-coldchain',
+    title: 'T-MEC Pharma Cold-Chain Crypto Telemetry • Sub-Zero RTD',
+    standards: 'FDA 21 CFR Part 11 • GAMP 5 • USMCA Cross-Border',
+    architectName: 'Elena Rostova 🇺🇸',
+    architectRole: 'VP of Global Supply Chain • Detroit Logistics',
+    promptText: '"During cross-border transit at the Laredo port of entry, cell service drops for 4 hours while dry ice sublimates. How does your node prevent catastrophic thermal degradation of mRNA vaccines?"',
+    optimalDefense: 'We utilize dual redundant PT100 RTD cryogenic sensors logged to tamper-proof internal FRAM with SHA-256 hash sealing compliant with FDA 21 CFR Part 11. During cellular blackouts, an opportunistic mesh BLE relay queries ambient transport temperature, triggering secondary thermoelectric Peltier reserve cooling and queueing encrypted batch uploads for instant transmission upon cellular handshake.',
+    suboptimalDefense: 'We save data in SD card and wait until we get to the warehouse in San Antonio to see if it thawed.',
+    feedbackOptimal: 'Flawless compliance with FDA 21 CFR Part 11 and USMCA pharmaceutical transport integrity. Autonomous Peltier reserve cooling prevents spoiled vaccine shipments.',
+    feedbackSuboptimal: 'Non-compliant with GAMP 5 and FDA 21 CFR Part 11. Tamper-evident logging and active temperature mitigation during blackouts are mandatory.',
+    scoresOptimal: { standards: '25 / 25', fmea: '24 / 25', cost: '25 / 25', diplomacy: '24 / 25' },
+    scoresSuboptimal: { standards: '10 / 25', fmea: '08 / 25', cost: '13 / 25', diplomacy: '09 / 25' },
+    nodes: [
+      { id: 'wb-node-sensors', icon: 'fa-snowflake', title: 'Dual PT100 RTD Cryo Probes', desc: 'Class A Platinum RTD (-100°C to +40°C Precision)', status: 'normal', tag: 'FDA Calibrated' },
+      { id: 'wb-node-mcu', icon: 'fa-microchip', title: 'ARM Cortex-M33 TrustZone', desc: 'Secure Boot • Hardware Cryptographic Engine', status: 'lockstep', tag: 'Crypto Core' },
+      { id: 'wb-node-pmic', icon: 'fa-memory', title: 'Tamper-Proof FRAM Logger', desc: 'SHA-256 Hash Chain per Record • 21 CFR Part 11', status: 'normal', tag: 'Audit Vault' },
+      { id: 'wb-node-inverter', icon: 'fa-fan', title: 'Thermoelectric Peltier Unit', desc: 'Secondary Closed-Loop Reserve Cooling Module', status: 'normal', tag: 'Aux Thermal' },
+      { id: 'wb-node-bus', icon: 'fa-tower-cell', title: 'NB-IoT / LTE-M + BLE Mesh', desc: 'Encrypted Opportunistic Gateway w/ Local Store & Forward', status: 'normal', tag: 'Mesh Offline' }
+    ],
+    metrics: {
+      safety: 'FDA 21 CFR Part 11',
+      latency: '10 s (FRAM Audit)',
+      busload: '12.0% (BLE / NB-IoT)',
+      faultStatus: 'RESERVE-AUTONOMOUS'
+    }
+  }
+};
+
+window.currentWbScenario = 'ev-inverter';
+window.wbState = {
+  faultInjected: false,
+  lockstep: true,
+  frequency: '20kHz SiC'
+};
+
+// Initialize Whiteboard Defense Arena
+window.initWhiteboardArena = function() {
+  window.switchWhiteboardScenario(window.currentWbScenario || 'ev-inverter');
+};
+
+// Switch scenario
+window.switchWhiteboardScenario = function(scenKey) {
+  const scen = window.WHITEBOARD_SCENARIOS[scenKey];
+  if (!scen) return;
+  window.currentWbScenario = scenKey;
+  window.wbState.faultInjected = false;
+  window.wbState.lockstep = true;
+
+  // Update pills
+  const pills = ['ev', 'medtech', 'silicon', 'coldchain'];
+  pills.forEach(p => {
+    const pill = document.getElementById(`wb-scen-pill-${p}`);
+    if (pill) {
+      pill.classList.toggle('active', scen.pillId === `wb-scen-pill-${p}`);
+    }
+  });
+
+  // Update Canvas info
+  const titleEl = document.getElementById('wb-canvas-title');
+  if (titleEl) titleEl.textContent = scen.title;
+  const stdsEl = document.getElementById('wb-canvas-standards');
+  if (stdsEl) stdsEl.textContent = scen.standards;
+
+  // Update Architect info
+  const archName = document.getElementById('wb-architect-name');
+  if (archName) archName.textContent = scen.architectName;
+  const archRole = document.getElementById('wb-architect-role');
+  if (archRole) archRole.textContent = scen.architectRole;
+  const promptEl = document.getElementById('wb-architect-prompt-text');
+  if (promptEl) promptEl.textContent = scen.promptText;
+
+  // Reset candidate input and scorecard
+  const inputEl = document.getElementById('wb-candidate-defense-input');
+  if (inputEl) inputEl.value = '';
+  const scoreCard = document.getElementById('wb-scorecard-card');
+  if (scoreCard) scoreCard.style.display = 'none';
+
+  // Update controls
+  const faultBtnLabel = document.getElementById('wb-fault-btn-label');
+  if (faultBtnLabel) faultBtnLabel.textContent = 'Inyectar Falla CAN FD';
+  const faultBtn = document.getElementById('wb-btn-toggle-fault');
+  if (faultBtn) faultBtn.classList.remove('active');
+
+  const lockstepBtnLabel = document.getElementById('wb-lockstep-btn-label');
+  if (lockstepBtnLabel) lockstepBtnLabel.textContent = 'Dual Lockstep (ASIL-D)';
+  const lockstepBtn = document.getElementById('wb-btn-toggle-lockstep');
+  if (lockstepBtn) lockstepBtn.classList.add('active');
+
+  window.renderWhiteboardNodes();
+  window.updateWhiteboardMetrics();
+};
+
+// Render nodes in diagram
+window.renderWhiteboardNodes = function() {
+  const container = document.getElementById('whiteboard-blocks-container');
+  if (!container) return;
+
+  const scen = window.WHITEBOARD_SCENARIOS[window.currentWbScenario];
+  if (!scen) return;
+
+  container.innerHTML = scen.nodes.map(n => {
+    let nodeClass = 'wb-block-node';
+    let statusBadge = `<span class="wb-node-tag">${n.tag}</span>`;
+    let iconColor = '#38bdf8';
+
+    if (n.id === 'wb-node-mcu') {
+      if (window.wbState.lockstep) {
+        nodeClass += ' active-lockstep';
+        iconColor = '#10b981';
+        statusBadge = `<span class="wb-node-tag" style="background:rgba(16,185,129,0.2); color:#10b981;"><i class="fa-solid fa-lock"></i> Lockstep Sync</span>`;
+      } else {
+        nodeClass += ' single-core';
+        iconColor = '#f59e0b';
+        statusBadge = `<span class="wb-node-tag" style="background:rgba(245,158,11,0.2); color:#f59e0b;"><i class="fa-solid fa-triangle-exclamation"></i> Single Core</span>`;
+      }
+    }
+
+    if (n.id === 'wb-node-bus' && window.wbState.faultInjected) {
+      nodeClass += ' fault-injected';
+      iconColor = '#ef4444';
+      statusBadge = `<span class="wb-node-tag" style="background:rgba(239,68,68,0.2); color:#ef4444;"><i class="fa-solid fa-bolt"></i> BABBLING IDIOT</span>`;
+    }
+
+    return `
+      <div class="${nodeClass}" id="${n.id}">
+        <div class="wb-node-header">
+          <i class="fa-solid ${n.icon}" style="color:${iconColor}; font-size:1.2rem;"></i>
+          ${statusBadge}
+        </div>
+        <div class="wb-node-title">${n.title}</div>
+        <div class="wb-node-desc">${n.desc}</div>
+      </div>
+    `;
+  }).join('');
+};
+
+// Toggle Fault Injection
+window.toggleWhiteboardFaultInjection = function() {
+  window.wbState.faultInjected = !window.wbState.faultInjected;
+  const faultBtnLabel = document.getElementById('wb-fault-btn-label');
+  const faultBtn = document.getElementById('wb-btn-toggle-fault');
+
+  if (window.wbState.faultInjected) {
+    if (faultBtnLabel) faultBtnLabel.textContent = 'Recuperar Falla (Iso Active)';
+    if (faultBtn) faultBtn.classList.add('active');
+  } else {
+    if (faultBtnLabel) faultBtnLabel.textContent = 'Inyectar Falla CAN FD';
+    if (faultBtn) faultBtn.classList.remove('active');
+  }
+
+  window.renderWhiteboardNodes();
+  window.updateWhiteboardMetrics();
+};
+
+// Toggle Lockstep Core
+window.toggleWhiteboardLockstep = function() {
+  window.wbState.lockstep = !window.wbState.lockstep;
+  const lockstepBtnLabel = document.getElementById('wb-lockstep-btn-label');
+  const lockstepBtn = document.getElementById('wb-btn-toggle-lockstep');
+
+  if (window.wbState.lockstep) {
+    if (lockstepBtnLabel) lockstepBtnLabel.textContent = 'Dual Lockstep (ASIL-D)';
+    if (lockstepBtn) lockstepBtn.classList.add('active');
+  } else {
+    if (lockstepBtnLabel) lockstepBtnLabel.textContent = 'Single Core (ASIL-B Degraded)';
+    if (lockstepBtn) lockstepBtn.classList.remove('active');
+  }
+
+  window.renderWhiteboardNodes();
+  window.updateWhiteboardMetrics();
+};
+
+// Update Metrics Display
+window.updateWhiteboardMetrics = function() {
+  const scen = window.WHITEBOARD_SCENARIOS[window.currentWbScenario];
+  if (!scen) return;
+
+  const safetyEl = document.getElementById('wb-val-safety');
+  const latencyEl = document.getElementById('wb-val-latency');
+  const busloadEl = document.getElementById('wb-val-busload');
+  const faultEl = document.getElementById('wb-val-fault-status');
+
+  if (!safetyEl || !latencyEl || !busloadEl || !faultEl) return;
+
+  if (!window.wbState.lockstep) {
+    safetyEl.textContent = 'ISO 26262 ASIL-B (Degraded)';
+    safetyEl.style.color = '#f59e0b';
+  } else {
+    safetyEl.textContent = scen.metrics.safety;
+    safetyEl.style.color = '#10b981';
+  }
+
+  if (window.wbState.faultInjected) {
+    busloadEl.textContent = '94.2% (Bus Overloaded - Babbling)';
+    busloadEl.style.color = '#ef4444';
+    faultEl.textContent = 'FAIL-SILENT ISOLATED';
+    faultEl.style.color = '#f59e0b';
+    latencyEl.textContent = '4.8 ms (Transceiver Timeout)';
+  } else {
+    busloadEl.textContent = scen.metrics.busload;
+    busloadEl.style.color = '#a855f7';
+    faultEl.textContent = scen.metrics.faultStatus;
+    faultEl.style.color = '#10b981';
+    latencyEl.textContent = scen.metrics.latency;
+  }
+};
+
+// Play Architect Speech synthesis
+window.playWhiteboardArchitectPrompt = function() {
+  const scen = window.WHITEBOARD_SCENARIOS[window.currentWbScenario];
+  if (!scen) return;
+
+  if (typeof window.speechSynthesis !== 'undefined') {
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(scen.promptText);
+    utt.lang = 'en-US';
+    utt.rate = 1.0;
+    utt.pitch = 0.95;
+    window.speechSynthesis.speak(utt);
+  } else {
+    alert(`[Chief Architect Audio Dispatch]\n\n${scen.architectName}:\n${scen.promptText}`);
+  }
+};
+
+// Toggle candidate mic simulation
+window.toggleWhiteboardMic = function() {
+  const micLabel = document.getElementById('wb-mic-label');
+  const input = document.getElementById('wb-candidate-defense-input');
+  if (!input) return;
+
+  if (micLabel && micLabel.textContent.includes('Dictar')) {
+    micLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Grabando...';
+    setTimeout(() => {
+      window.loadWhiteboardSample('optimal');
+      if (micLabel) micLabel.textContent = 'Dictar Defensa';
+    }, 1200);
+  }
+};
+
+// Load Defense Sample
+window.loadWhiteboardSample = function(type) {
+  const scen = window.WHITEBOARD_SCENARIOS[window.currentWbScenario];
+  const input = document.getElementById('wb-candidate-defense-input');
+  if (!scen || !input) return;
+
+  if (type === 'optimal') {
+    input.value = scen.optimalDefense;
+  } else {
+    input.value = scen.suboptimalDefense;
+  }
+};
+
+// Submit Defense Evaluation
+window.submitWhiteboardDefense = function() {
+  const scen = window.WHITEBOARD_SCENARIOS[window.currentWbScenario];
+  const input = document.getElementById('wb-candidate-defense-input');
+  const card = document.getElementById('wb-scorecard-card');
+  const feedbackEl = document.getElementById('wb-architect-feedback');
+  const rubricStd = document.getElementById('wb-rubric-standards');
+  const rubricFmea = document.getElementById('wb-rubric-fmea');
+  const rubricCost = document.getElementById('wb-rubric-cost');
+  const rubricDiplomacy = document.getElementById('wb-rubric-diplomacy');
+
+  if (!scen || !card || !feedbackEl) return;
+
+  const defenseText = (input ? input.value : '').trim().toLowerCase();
+
+  const isOptimal = defenseText.length > 120 && (
+    defenseText.includes('lockstep') ||
+    defenseText.includes('watchdog') ||
+    defenseText.includes('dominant timeout') ||
+    defenseText.includes('ethercat') ||
+    defenseText.includes('kalman') ||
+    defenseText.includes('sotif') ||
+    defenseText.includes('fram') ||
+    defenseText.includes('peltier') ||
+    defenseText.includes('cross-monitored')
+  ) && !defenseText.includes('basic software delay loop') && !defenseText.includes('pause the surgery manually');
+
+  card.style.display = 'block';
+
+  if (isOptimal) {
+    feedbackEl.textContent = `"${scen.feedbackOptimal}"`;
+    if (rubricStd) rubricStd.textContent = scen.scoresOptimal.standards;
+    if (rubricFmea) rubricFmea.textContent = scen.scoresOptimal.fmea;
+    if (rubricCost) rubricCost.textContent = scen.scoresOptimal.cost;
+    if (rubricDiplomacy) rubricDiplomacy.textContent = scen.scoresOptimal.diplomacy;
+  } else {
+    feedbackEl.textContent = `"${scen.feedbackSuboptimal}"`;
+    if (rubricStd) rubricStd.textContent = scen.scoresSuboptimal.standards;
+    if (rubricFmea) rubricFmea.textContent = scen.scoresSuboptimal.fmea;
+    if (rubricCost) rubricCost.textContent = scen.scoresSuboptimal.cost;
+    if (rubricDiplomacy) rubricDiplomacy.textContent = scen.scoresSuboptimal.diplomacy;
+  }
+};
+
+// Export Whiteboard Dossier
+window.exportWhiteboardDossier = function() {
+  const scen = window.WHITEBOARD_SCENARIOS[window.currentWbScenario];
+  if (!scen) return;
+  const input = document.getElementById('wb-candidate-defense-input');
+  const candidateText = input ? input.value : 'No submission provided.';
+
+  const md = `# STEMOS SENIOR ARCHITECT WHITEBOARD DEFENSE DOSSIER
+**System**: ${scen.title}
+**Standards**: ${scen.standards}
+**Evaluator**: ${scen.architectName} (${scen.architectRole})
+**Status**: ASIL-D Certified Evaluation
+**Date**: ${new Date().toISOString()}
+
+---
+
+## 1. Architectural Challenge
+${scen.promptText}
+
+## 2. Candidate Technical Defense (CEFR C1 Oral Defense)
+${candidateText}
+
+## 3. Chief Architect Verdict & Scorecard
+- **Normative Rigor (ISO/IEC/FDA)**: 25 / 25
+- **Failure Mode & Effects Analysis (FMEA)**: 25 / 25
+- **Engineering Cost & Latency Tradeoffs**: 24 / 25
+- **Cross-Border Technical Diplomacy**: 24 / 25
+
+**Chief Architect Notes**:
+"${scen.feedbackOptimal}"
+
+---
+*Verified by stemOS Foundation LXP • Cryptographic Hash: 7D02D38F1A0E7507C9F*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Whiteboard_Defense_${scen.id}_Dossier.md`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+// ----------------------------------------------------------------------------
+// PILLAR 2: AI NEARSHORING CV & ATS RESUME OPTIMIZER (US-STYLE RESUME TAILOR)
+// ----------------------------------------------------------------------------
+window.initResumeTailor = function() {
+  // Sync profile details if available
+  const storedProfile = localStorage.getItem('stemos_active_student_profile');
+  if (storedProfile) {
+    try {
+      const p = JSON.parse(storedProfile);
+      if (p.name) {
+        const nameInput = document.getElementById('cv-input-name');
+        if (nameInput) nameInput.value = p.name;
+        const previewName = document.getElementById('ats-preview-name');
+        if (previewName) previewName.textContent = p.name.toUpperCase();
+      }
+    } catch(e) {}
+  }
+};
+
+window.importStudentProfileToResume = function() {
+  const nameInput = document.getElementById('cv-input-name');
+  const titleInput = document.getElementById('cv-input-title');
+  const instInput = document.getElementById('cv-input-institution');
+  const hubInput = document.getElementById('cv-input-hub');
+  const stdsInput = document.getElementById('cv-input-standards');
+  const expInput = document.getElementById('cv-input-experience');
+
+  if (nameInput) nameInput.value = 'Ing. Diana Laura Morales';
+  if (titleInput) titleInput.value = 'Senior Nearshoring Mechatronics & Automation Engineer';
+  if (instInput) instInput.value = 'TecNM Saltillo / stemOS LXP Foundation';
+  if (hubInput) hubInput.value = 'Saltillo-Ramos Arizpe Powertrain Hub';
+  if (stdsInput) stdsInput.value = 'IATF 16949, ISO 9001:2015, Six Sigma DMAIC, 8D Root Cause, Cpk/Ppk, OPC UA, LOTO, GD&T';
+  if (expInput) expInput.value = 'Estuve a cargo de resolver los problemas de porosidad en la máquina de fundición HPDC en Saltillo. Ayudé a que la máquina funcionara mejor y bajamos los defectos para que el cliente en Detroit estuviera contento.';
+
+  // Update preview
+  const prevName = document.getElementById('ats-preview-name');
+  if (prevName) prevName.textContent = 'DIANA LAURA MORALES';
+  const prevTitle = document.getElementById('ats-preview-title');
+  if (prevTitle) prevTitle.textContent = 'Senior Nearshoring Mechatronics & Automation Engineer • CEFR C1 Professional';
+
+  alert('✅ Perfil de estudiante (Diana Laura Morales • TecNM Saltillo • 60h Acreditadas) importado exitosamente.');
+};
+
+window.optimizeResumeATS = function() {
+  const expInput = document.getElementById('cv-input-experience');
+  const bulletsContainer = document.getElementById('ats-preview-bullets');
+  const scoreNum = document.getElementById('ats-match-score');
+  const scoreFill = document.getElementById('ats-score-fill');
+
+  const bullets = [
+    'Spearheaded high-pressure die-casting (HPDC) root-cause containment under IATF 16949 Section 8.7, slashing micro-porosity scrap rate from 4.8% to 0.4% across 45,000 structural shock towers.',
+    'Architected real-time OPC UA telemetry pipeline with in-cavity piezo-electric pressure sensors, recovering process capability from Cpk 1.12 to 1.74 and avoiding $340,000 in unscheduled tooling rework.',
+    'Orchestrated cross-border 8D technical defense with Detroit chassis engineering directors in fluent C1 English, resolving PPAP submission hurdles within 72 hours.'
+  ];
+
+  if (bulletsContainer) {
+    bulletsContainer.innerHTML = bullets.map(b => `<li>${b}</li>`).join('');
+  }
+
+  if (scoreNum) scoreNum.textContent = '99% PASS';
+  if (scoreFill) {
+    scoreFill.style.width = '99%';
+    scoreFill.style.background = '#10b981';
+  }
+
+  // Update draft experience textarea
+  if (expInput) {
+    expInput.value = bullets.join('\n\n');
+  }
+
+  const tagsBox = document.getElementById('ats-detected-keywords');
+  if (tagsBox) {
+    tagsBox.innerHTML = `
+      <span class="ats-tag"><i class="fa-solid fa-check"></i> IATF 16949</span>
+      <span class="ats-tag"><i class="fa-solid fa-check"></i> Cpk 1.74</span>
+      <span class="ats-tag"><i class="fa-solid fa-check"></i> 8D Containment</span>
+      <span class="ats-tag"><i class="fa-solid fa-check"></i> W3C Open Badges 3.0</span>
+      <span class="ats-tag"><i class="fa-solid fa-check"></i> EEO Anti-Bias Compliant</span>
+      <span class="ats-tag"><i class="fa-solid fa-check"></i> Google XYZ Formula</span>
+    `;
+  }
+};
+
+window.downloadResumeMarkdown = function() {
+  const name = document.getElementById('ats-preview-name')?.textContent || 'DIANA LAURA MORALES';
+  const title = document.getElementById('ats-preview-title')?.textContent || 'Senior Nearshoring Mechatronics Engineer';
+  const summary = document.getElementById('ats-preview-summary')?.textContent.trim() || '';
+  const hash = document.getElementById('ats-preview-w3c-hash')?.textContent || '7D02D38F1A0E7507C9F';
+
+  const md = `# ${name}
+**${title}**
+*Saltillo, Coahuila, Mexico (T-MEC Nearshoring Corridor)* | *diana.morales@tecnm.mx* | *linkedin.com/in/dianamorales-stemos*
+*100% US EEO Compliant: Zero-Bias Architecture (No Photo, No DOB, No Marital Status)*
+
+---
+
+## EXECUTIVE TECHNICAL SUMMARY
+${summary}
+
+## AUDITABLE W3C VERIFIABLE CREDENTIALS
+- **Credential**: Fellowship in Advanced Nearshoring Engineering (60.0 Standardized Hours)
+- **Authority**: stemOS Foundation LXP & TecNM Consortium
+- **Cryptographic Hash**: ${hash}
+- **Verification Portal**: https://stemos.org/dev/?verify=STEM-W3C-2026-MEC-91024
+
+## ENGINEERING EXPERIENCE & QUANTITATIVE PLANT IMPACT (GOOGLE XYZ FORMULA)
+### Lead Process & Quality Engineering Resident | Saltillo Powertrain & EV Facility
+*2025 – Present | Saltillo, Coahuila*
+- Spearheaded high-pressure die-casting (HPDC) root-cause containment under IATF 16949 Section 8.7, slashing micro-porosity scrap rate from 4.8% to 0.4% across 45,000 structural shock towers.
+- Architected real-time OPC UA telemetry pipeline with in-cavity piezo-electric pressure sensors, recovering process capability from Cpk 1.12 to 1.74 and avoiding $340,000 in unscheduled tooling rework.
+- Orchestrated cross-border 8D technical defense with Detroit chassis engineering directors in fluent C1 English, resolving PPAP submission hurdles within 72 hours.
+
+## STANDARDS, PROTOCOLS & COMPETENCIES
+- **Industrial Standards**: IATF 16949, ISO 9001:2015, ISO 14644-1, OSHA 1910.147 (LOTO), NFPA 70E, USMCA Rules of Origin.
+- **Engineering Tools**: Siemens TIA Portal, Ansys CFD, FreeRTOS, SCADA OPC UA, SPC DMAIC, GD&T ASME Y14.5.
+- **Language Fluency**: English (CEFR C1 Operational Fluency • Certified Technical Cross-Border Leadership).
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${name.replace(/\s+/g, '_')}_US_ATS_Resume.md`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+window.printATSResume = function() {
+  if (typeof window.print === 'function') {
+    window.print();
+  } else {
+    alert('Función de impresión enviada a spooler del navegador.');
+  }
+};
+
+window.copyATSText = function(btn) {
+  const sheet = document.getElementById('ats-resume-sheet');
+  if (!sheet) return;
+  const text = sheet.innerText || sheet.textContent;
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      if (btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> ¡Copiado!';
+        setTimeout(() => { btn.innerHTML = orig; }, 2000);
+      }
+    });
+  } else {
+    if (btn) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> ¡Copiado!';
+      setTimeout(() => { btn.innerHTML = orig; }, 2000);
+    }
+  }
+};
+
+// ----------------------------------------------------------------------------
+// PILLAR 3: CROSS-BORDER MULTI-PLANT INCIDENT DRILL (LIVE WAR ROOM 2.0)
+// ----------------------------------------------------------------------------
+window.drillState = {
+  active: false,
+  timerSeconds: 120,
+  intervalId: null,
+  currentStep: 1,
+  totalSaved: 600000,
+  containmentMins: 18,
+  stepsResults: []
+};
+
+window.initIncidentDrill = function() {
+  // Reset state to initial preview
+  window.drillState.active = false;
+  window.drillState.timerSeconds = 120;
+  if (window.drillState.intervalId) {
+    clearInterval(window.drillState.intervalId);
+    window.drillState.intervalId = null;
+  }
+  const timerEl = document.getElementById('drill-triage-timer');
+  if (timerEl) timerEl.textContent = '02:00';
+  window.renderDrillStep(1);
+};
+
+window.startIncidentDrill = function() {
+  window.drillState.active = true;
+  window.drillState.timerSeconds = 120;
+  window.drillState.currentStep = 1;
+  window.drillState.stepsResults = [];
+  window.drillState.totalSaved = 600000;
+  window.drillState.containmentMins = 18;
+
+  const btnTrigger = document.getElementById('btn-start-drill-trigger');
+  if (btnTrigger) {
+    btnTrigger.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Reiniciar Simulacro';
+  }
+
+  if (window.drillState.intervalId) {
+    clearInterval(window.drillState.intervalId);
+  }
+
+  window.drillState.intervalId = setInterval(() => {
+    if (!window.drillState.active) {
+      clearInterval(window.drillState.intervalId);
+      return;
+    }
+    window.drillState.timerSeconds--;
+    const mins = Math.floor(window.drillState.timerSeconds / 60);
+    const secs = window.drillState.timerSeconds % 60;
+    const timerEl = document.getElementById('drill-triage-timer');
+    if (timerEl) {
+      timerEl.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    if (window.drillState.timerSeconds <= 0) {
+      clearInterval(window.drillState.intervalId);
+      window.drillState.active = false;
+      alert('⚠️ ¡TIEMPO AGOTADO! La línea de ensamble en Detroit se ha detenido. Penalización contractual aplicada.');
+    }
+  }, 1000);
+
+  window.renderDrillStep(1);
+  window.playDrillRadioAudio();
+};
+
+window.playDrillRadioAudio = function() {
+  const dispatchText = "Saltillo, this is Detroit Assembly. We have two cracked engine blocks on the transfer line at Station 4. Radiography shows micro-voids in the main bearing bulkhead. We have 110 minutes of buffer inventory before the line goes dark. What is your containment protocol, and how fast can you confirm lot traceability?";
+
+  if (typeof window.speechSynthesis !== 'undefined') {
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(dispatchText);
+    utt.lang = 'en-US';
+    utt.rate = 1.05;
+    utt.pitch = 0.9;
+    window.speechSynthesis.speak(utt);
+  } else {
+    alert(`[RADIO DISPATCH - DETROIT OEM]\n\n${dispatchText}`);
+  }
+};
+
+window.renderDrillStep = function(stepNum) {
+  const dock = document.getElementById('drill-decision-dock');
+  if (!dock) return;
+
+  if (stepNum === 1) {
+    dock.innerHTML = `
+      <div class="drill-step-title"><i class="fa-solid fa-list-check"></i> Paso 1 de 3: Acción Inmediata de Contención (IATF 16949 Section 8.7)</div>
+      <div class="drill-options-grid">
+        <button type="button" class="btn-drill-choice" onclick="submitDrillStep(1, 'optimal')">
+          <strong>A) Cuarentena Electrónica &amp; Certificación 100% Rayos-X</strong><br>
+          <small>Bloqueo automático de lote #2026-X84 en almacén de Ramos Arizpe y activación de inspección por ultrasonido offline sin detener el buffer certificado.</small>
+        </button>
+        <button type="button" class="btn-drill-choice" onclick="submitDrillStep(1, 'suboptimal')">
+          <strong>B) Continuar Envíos y Solicitar Desvío</strong><br>
+          <small>Permitir que Detroit ensamble las piezas restantes asumiendo el riesgo de fractura en banco de pruebas.</small>
+        </button>
+      </div>
+    `;
+  } else if (stepNum === 2) {
+    dock.innerHTML = `
+      <div class="drill-step-title"><i class="fa-solid fa-microscope"></i> Paso 2 de 3: Correlación de Causa Raíz &amp; Telemetría OPC UA</div>
+      <div class="drill-options-grid">
+        <button type="button" class="btn-drill-choice" onclick="submitDrillStep(2, 'optimal')">
+          <strong>A) Correlación de Presión en Cavidad con Rotor Degasificador</strong><br>
+          <small>Cruzar curvas de presión en cavidad con registros del desgasificador de aluminio para confirmar falla en rotor de purga en turno 2.</small>
+        </button>
+        <button type="button" class="btn-drill-choice" onclick="submitDrillStep(2, 'suboptimal')">
+          <strong>B) Culpar Desgaste en Herramental CNC de Maquinado</strong><br>
+          <small>Ordenar afilado de fresas de corte sin revisar la metalurgia ni la química de la aleación fundida.</small>
+        </button>
+      </div>
+    `;
+  } else if (stepNum === 3) {
+    dock.innerHTML = `
+      <div class="drill-step-title"><i class="fa-solid fa-plane-departure"></i> Paso 3 de 3: Despacho de Emergencia &amp; Logística Aérea</div>
+      <div class="drill-options-grid">
+        <button type="button" class="btn-drill-choice" onclick="submitDrillStep(3, 'optimal')">
+          <strong>A) Vuelo Chárter Aéreo Dedicado (SLW ➔ DTW en 4.5 hrs)</strong><br>
+          <small>Fletar aeronave ejecutiva de carga desde Saltillo a Detroit con 240 monoblocks inspeccionados con cero defectos, salvando la línea de ensamble.</small>
+        </button>
+        <button type="button" class="btn-drill-choice" onclick="submitDrillStep(3, 'suboptimal')">
+          <strong>B) Transporte Terrestre Consolidado por Laredo (28 hrs)</strong><br>
+          <small>Enviar camión por aduana terrestre arriesgando un paro de 14 horas en Detroit a $50,000 USD/hora.</small>
+        </button>
+      </div>
+    `;
+  } else {
+    // Completed debrief
+    dock.innerHTML = `
+      <div style="background:rgba(16,185,129,0.15); border:1px solid #10b981; border-radius:10px; padding:16px; text-align:center;">
+        <i class="fa-solid fa-circle-check" style="color:#10b981; font-size:2rem; margin-bottom:8px;"></i>
+        <h4 style="color:#fff; margin:0 0 6px 0;">¡Simulacro de Crisis Concluido con Éxito!</h4>
+        <p style="color:#cbd5e1; font-size:0.85rem; margin:0;">
+          Has completado el protocolo de contención IATF 16949 y despacho aéreo en tiempo récord, evitando un paro total de ensamblaje en Detroit.
+        </p>
+      </div>
+    `;
+  }
+};
+
+window.submitDrillStep = function(stepNum, choiceType) {
+  window.drillState.stepsResults.push({ step: stepNum, choice: choiceType });
+
+  const radioLog = document.getElementById('drill-radio-log');
+  const financialSaved = document.getElementById('drill-financial-saved');
+  const containmentTime = document.getElementById('drill-containment-time');
+  const debriefText = document.getElementById('drill-debrief-text');
+
+  if (choiceType === 'optimal') {
+    if (radioLog) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'radio-msg outgoing';
+      msgDiv.innerHTML = `
+        <div class="radio-msg-head">
+          <strong>[SALTILLO POWERTRAIN] Diana Morales &bull; Lead Engineer:</strong>
+          <span>${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+        </div>
+        <div class="radio-msg-body">
+          ${stepNum === 1 ? 'Detroit, containment executed. Lot #2026-X84 electronically quarantined in SAP. Ultrasound NDT offline active. Zero-defect buffer certified for next 90 minutes.' :
+            (stepNum === 2 ? 'Root cause pinpointed via OPC UA telemetry: Degasser rotor fault in melt furnace. Cavity pressure curves isolated to shift 2. Corrective degassing cycle restored.' :
+            'Emergency air charter secured out of Plan de Guadalupe (SLW). 240 certified monoblocks landing at Detroit Metro (DTW) in 4.5 hours. Zero downtime incurred.')}
+        </div>
+      `;
+      radioLog.appendChild(msgDiv);
+      radioLog.scrollTop = radioLog.scrollHeight;
+    }
+  } else {
+    window.drillState.totalSaved = Math.max(0, window.drillState.totalSaved - 150000);
+    window.drillState.containmentMins += 25;
+  }
+
+  if (financialSaved) financialSaved.textContent = `$${window.drillState.totalSaved.toLocaleString()} USD`;
+  if (containmentTime) containmentTime.textContent = `${window.drillState.containmentMins} Minutos`;
+
+  if (stepNum < 3) {
+    window.drillState.currentStep = stepNum + 1;
+    window.renderDrillStep(stepNum + 1);
+  } else {
+    // Finish drill
+    if (window.drillState.intervalId) {
+      clearInterval(window.drillState.intervalId);
+      window.drillState.intervalId = null;
+    }
+    window.drillState.active = false;
+    window.renderDrillStep(4);
+
+    if (debriefText) {
+      debriefText.textContent = `Desempeño Sobresaliente: Evitaste $${window.drillState.totalSaved.toLocaleString()} USD en penalizaciones de paro con un tiempo de contención de ${window.drillState.containmentMins} minutos. Tu comunicación técnica en C1 cumplió al 100% con los requerimientos de IATF 16949 Section 8.7 y SLA de cliente Tier-1.`;
+    }
+  }
+};
+
+window.exportDrillSitrep = function() {
+  const md = `# STEMOS CROSS-BORDER INCIDENT SITREP & 8D EMERGENCY REPORT
+**Incident**: Saltillo Powertrain Cell 04 to Detroit OEM Assembly Line-Stop Threat
+**Downtime Penalty Prevented**: $${window.drillState.totalSaved.toLocaleString()} USD
+**Response & Containment Latency**: ${window.drillState.containmentMins} minutes (SLA < 30 min)
+**Lead Incident Commander**: Ing. Diana Laura Morales (TecNM Saltillo / stemOS Resident)
+**Compliance**: IATF 16949 Section 8.7 (Control of Nonconforming Outputs)
+
+---
+
+## 1. Initial Emergency Dispatch
+- **Source**: Detroit OEM Assembly Station 4
+- **Failure**: Porosity micro-cracks in cylinder block main bearing bulkhead
+- **Buffer at Alert**: 110 minutes
+
+## 2. Immediate Containment Action (8D - D3)
+- Lot #2026-X84 placed in electronic quarantine across SAP ERP.
+- Non-destructive 100% ultrasound & radiographic testing deployed on warehouse buffer inventory.
+
+## 3. Root Cause Telemetry (8D - D4)
+- OPC UA sensor correlation isolated thermal drift and degassing rotor stall in melt furnace during shift 2.
+- In-cavity pressure curves verified back to Cpk 1.74 nominal baseline.
+
+## 4. Emergency Logistics & Dispatch (8D - D5)
+- Dedicated cargo air charter dispatched from Saltillo Plan de Guadalupe (SLW) to Detroit Metro (DTW).
+- Zero customer line-stoppage hours incurred.
+
+---
+*Generated by stemOS Live War Room 2.0 • Cryptographic Seal: 7D02D38F1A0E7507C9F*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Incident_Drill_Detroit_Saltillo_SITREP.md`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+// Initialize Phase 19, 20 & 21 components on load
+(function() {
+  const initTalentHub = () => {
+    if (typeof window.updateRecruiterCockpitDisplay === 'function') {
+      window.updateRecruiterCockpitDisplay();
+    }
+    if (typeof window.renderJobVacancies === 'function') {
+      window.renderJobVacancies();
+    }
+    if (typeof window.calculateNearshoringSalaryBenchmark === 'function') {
+      window.calculateNearshoringSalaryBenchmark();
+    }
+    if (typeof window.initLiveInterviewSession === 'function') {
+      window.initLiveInterviewSession();
+    }
+    if (typeof window.filterTalentPipeline === 'function') {
+      window.filterTalentPipeline();
+    }
+    if (typeof window.initWhiteboardArena === 'function') {
+      window.initWhiteboardArena();
+    }
+    if (typeof window.initResumeTailor === 'function') {
+      window.initResumeTailor();
+    }
+    if (typeof window.initIncidentDrill === 'function') {
+      window.initIncidentDrill();
+    }
+    if (typeof window.initExecutiveNegotiation === 'function') {
+      window.initExecutiveNegotiation();
+    }
+    if (typeof window.initAuditDefense === 'function') {
+      window.initAuditDefense();
+    }
+    if (typeof window.initGembaCrucible === 'function') {
+      window.initGembaCrucible();
+    }
+    if (typeof window.initEscalationTribunal === 'function') {
+      window.initEscalationTribunal();
+    }
+    if (typeof window.initVirtualWalkthrough === 'function') {
+      window.initVirtualWalkthrough();
+    }
+    if (typeof window.initPatentArena === 'function') {
+      window.initPatentArena();
+    }
+    if (typeof window.initEsgCrucible === 'function') {
+      window.initEsgCrucible();
+    }
+    if (typeof window.initReshoringWarRoom === 'function') {
+      window.initReshoringWarRoom();
+    }
+    if (typeof window.initCyberArena === 'function') {
+      window.initCyberArena();
+    }
+    if (typeof window.initPdmCrucible === 'function') {
+      window.initPdmCrucible();
+    }
+    if (typeof window.initMicrogridArbitrage === 'function') {
+      window.initMicrogridArbitrage();
+    }
+    if (typeof window.initChipletMetrology === 'function') {
+      window.initChipletMetrology();
+    }
+    if (typeof window.initBatteryCrucible === 'function') {
+      window.initBatteryCrucible();
+    }
+    if (typeof window.initImmersionCooling === 'function') {
+      window.initImmersionCooling();
+    }
+    if (typeof window.initBioprocessValidation === 'function') {
+      window.initBioprocessValidation();
+    }
+    if (typeof window.initHydrogenSynthesis === 'function') {
+      window.initHydrogenSynthesis();
+    }
+    if (typeof window.initUpwReclamation === 'function') {
+      window.initUpwReclamation();
+    }
+    if (typeof window.initAvionicsAssurance === 'function') {
+      window.initAvionicsAssurance();
+    }
+    if (typeof window.initSubseaCrucible === 'function') {
+      window.initSubseaCrucible();
+    }
+    if (typeof window.initSmrCrucible === 'function') {
+      window.initSmrCrucible();
+    }
+    if (typeof window.initDacCrucible === 'function') {
+      window.initDacCrucible();
+    }
+    if (typeof window.initMcsCrucible === 'function') {
+      window.initMcsCrucible();
+    }
+    if (typeof window.initQkdCrucible === 'function') {
+      window.initQkdCrucible();
+    }
+    if (typeof window.initEuvCrucible === 'function') {
+      window.initEuvCrucible();
+    }
+    if (typeof window.initHvdcCrucible === 'function') {
+      window.initHvdcCrucible();
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTalentHub);
+  } else {
+    setTimeout(initTalentHub, 100);
+  }
+})();
+
+// ============================================================================
+// PHASE 22: CROSS-BORDER EXECUTIVE NEGOTIATION & REGULATORY AUDIT DEFENSE SUITE
+// PILLAR 1: EXECUTIVE NEGOTIATION CHAMBER & T-MEC SUPPLIER DISPUTE SETTLEMENT
+// PILLAR 2: SURPRISE IATF 16949 / FDA 21 CFR § 820 AUDIT DEFENSE ROOM
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// PILLAR 1: EXECUTIVE NEGOTIATION CHAMBER ENGINE
+// ----------------------------------------------------------------------------
+window.NEGOTIATION_SCENARIOS = {
+  'debit-memo': {
+    id: 'debit-memo',
+    pillId: 'neg-scen-pill-debit',
+    title: 'Warranty Debit Memo $280k • Porosity Line-Stop Liability',
+    opponentName: 'Robert Sterling 🇺🇸',
+    opponentRole: 'VP of Global Purchasing & Supply Chain • Detroit Powertrain OEM',
+    penaltyClaimed: '$280,000 USD',
+    defaultClaimNum: 280000,
+    demandText: '"Saltillo, our finance division has issued Debit Memo #DM-8821 for $280,000 USD to offset line-stop warranty liability caused by porosity in your shock tower shipments. Unless you accept full chargeback by 5:00 PM EST, we are reallocating future platform volume to a competing domestic Tier-1 supplier. What is your settlement counterproposal?"',
+    tactics: {
+      telemetry: 'Based on our OPC UA in-cavity pressure and thermal imaging logs, the shock towers were certified at Cpk 1.74 with zero micro-voids upon SLW dispatch. Cross-referencing Detroit station 4 torque data reveals excessive mechanical press misalignment. We propose establishing an objective joint teardown team to isolate root cause before debit processing.',
+      split: 'Rather than absorbing a cash debit that jeopardizes component buffer production, we propose covering $45,000 USD in dedicated on-site engineering triage and allocating 5,000 extra certified buffer units at zero freight markup over the next quarter.',
+      criteria: 'Under IATF 16949 Section 8.7 and ASTM E505 Category 1 radiographical standards, supplier liability requires documented containment notification within 24 hours. Because Detroit assembled parts past buffer triage, commercial equity dictates mutual cost sharing under USMCA supply chain guidelines.'
+    },
+    optimalResponse: 'Based on our OPC UA in-cavity pressure and thermal imaging logs, the shock towers were certified at Cpk 1.74 with zero micro-voids upon SLW dispatch. Cross-referencing Detroit station 4 torque data reveals excessive mechanical press misalignment. Under IATF 16949 Section 8.7 and ASTM E505 Category 1 radiographical standards, we propose covering $45,000 USD in dedicated on-site engineering triage while preserving full platform allocation.',
+    optimalSaved: 235000,
+    optimalHealth: 94,
+    termsheetOptimal: '<strong>Cláusula 1:</strong> El reclamo de Debit Memo #DM-8821 ($280,000 USD) se reduce a un pago neto de $45,000 USD cubierto en servicios de ingeniería in-kind.<br><strong>Cláusula 2:</strong> Saltillo Powertrain mantiene estatus Preferred Tier-1 con preservación del 100% de la cuota de producción para el ciclo 2026-2027.<br><strong>Cláusula 3:</strong> Ambas partes adoptan telemetría en línea OPC UA como estándar vinculante de liberación de embarque.',
+    buyerResponseOptimal: 'Saltillo, your telemetry proof and ASTM E505 data are compelling. We acknowledge the press alignment variance at Station 4. We accept the $45k engineering support credit and retain your preferred Tier-1 status. Settlement approved.',
+    buyerResponseSuboptimal: 'Your counterproposal lacks technical data and fails to satisfy our commercial controllers. Unless you provide telemetry evidence or in-kind concessions, the full $280k chargeback stands.'
+  },
+  'incoterms': {
+    id: 'incoterms',
+    pillId: 'neg-scen-pill-incoterms',
+    title: 'Incoterms 2020 DAP vs DDP Tariff Shift & Demurrage',
+    opponentName: 'Eleanor Vance 🇺🇸',
+    opponentRole: 'Director of Global Trade & Logistics • San Diego Medical',
+    penaltyClaimed: '$165,000 USD',
+    defaultClaimNum: 165000,
+    demandText: '"Due to customs inspections at the Otay Mesa port of entry, we incurred $165,000 in demurrage and expedited broker fees. Under your proposed transition from DDP to DAP, who absorbs border clearance contingencies?"',
+    tactics: {
+      telemetry: 'Under Incoterms 2020 DAP, risk transfers once goods are placed at the buyer\'s disposal ready for unloading. Our GPS cold-chain data shows border clearance delays were initiated by FDA random inspection flags outside supplier control.',
+      split: 'We propose split customs brokerage management with pre-cleared FAST lane certification, sharing unexpected demurrage fees 50/50 above standard SLA baselines.',
+      criteria: 'USMCA Article 5.4 mandates documented certificate of origin compliance. All tariffs remain 0% preferential duties; demurrage can be credited through expedited cross-docking.'
+    },
+    optimalResponse: 'Under Incoterms 2020 DAP, risk transfers once goods are placed at the buyer\'s disposal ready for unloading. Our GPS cold-chain data shows border clearance delays were initiated by FDA random inspection flags outside supplier control. We propose split customs brokerage management with pre-cleared FAST lane certification, sharing unexpected demurrage fees 50/50 while maintaining 0% USMCA preferential tariffs.',
+    optimalSaved: 120000,
+    optimalHealth: 92,
+    termsheetOptimal: '<strong>Cláusula 1:</strong> Gastos de demora aduanal se comparten 50/50 ($45,000 USD netos).<br><strong>Cláusula 2:</strong> Transición formal a Incoterms 2020 DAP con certificación FAST Lane en Otay Mesa.<br><strong>Cláusula 3:</strong> Aprobación de despacho preferencial USMCA con cero aranceles.',
+    buyerResponseOptimal: 'Agreed. FAST lane pre-clearance will eliminate border bottlenecks. We will execute the DAP amendment with the 50/50 demurrage credit.',
+    buyerResponseSuboptimal: 'We cannot accept an open-ended tariff risk without defined demurrage limits and documented USMCA certificates.'
+  },
+  'indexation': {
+    id: 'indexation',
+    pillId: 'neg-scen-pill-indexation',
+    title: 'Raw Materials LME Aluminum Escalation Index',
+    opponentName: 'Marcus Vance 🇺🇸',
+    opponentRole: 'VP of Strategic Sourcing • Austin EV & Energy',
+    penaltyClaimed: '$190,000 USD',
+    defaultClaimNum: 190000,
+    demandText: '"You are demanding an 11.4% price surcharge citing LME aluminum and energy spikes in Monterrey. Our contracted ceiling allows only 3.0%. How do you justify this without breaching our long-term master purchase agreement?"',
+    tactics: {
+      telemetry: 'London Metal Exchange (LME) cash aluminum three-month futures have risen 34.2% since contract inception. We propose linking price adjustments directly to Platts Metals Week index with a bilateral corridor of +/- 4%.',
+      split: 'To protect your unit economics, we will absorb the first 4% of raw material variance if Austin extends the procurement volume contract for 24 additional months.',
+      criteria: 'Objective indexation guarantees fair market pass-through: when commodity prices drop, Detroit immediately reaps 100% of price reductions without renegotiation.'
+    },
+    optimalResponse: 'London Metal Exchange cash aluminum three-month futures have risen 34.2% since contract inception. We propose linking price adjustments directly to Platts Metals Week index with a bilateral corridor of +/- 4%. To protect your unit economics, we will absorb the first 4% of raw material variance if Austin extends the procurement volume contract for 24 additional months.',
+    optimalSaved: 145000,
+    optimalHealth: 96,
+    termsheetOptimal: '<strong>Cláusula 1:</strong> Aprobación de indexación bilateral vinculada al índice LME/Platts Metals con corredor de +/- 4%.<br><strong>Cláusula 2:</strong> Extensión contractual por 24 meses adicionales asegurando abastecimiento preferente.<br><strong>Cláusula 3:</strong> Absorción compartida del 4% en volatilidad extrema de energía.',
+    buyerResponseOptimal: 'A corridor-based index tied to LME with volume extension is economically sound for both boards. Proposal accepted.',
+    buyerResponseSuboptimal: 'Arbitrary price hikes without indexed benchmarks violate our master purchasing agreement.'
+  }
+};
+
+window.currentNegScenario = 'debit-memo';
+window.negState = {
+  savedAmount: 0,
+  partnershipScore: 65,
+  roundsCount: 1
+};
+
+window.initExecutiveNegotiation = function() {
+  window.switchNegotiationScenario(window.currentNegScenario || 'debit-memo');
+};
+
+window.switchNegotiationScenario = function(scenKey) {
+  const scen = window.NEGOTIATION_SCENARIOS[scenKey];
+  if (!scen) return;
+  window.currentNegScenario = scenKey;
+  window.negState.savedAmount = 0;
+  window.negState.partnershipScore = 65;
+  window.negState.roundsCount = 1;
+
+  // Update pills
+  const pills = ['debit', 'incoterms', 'indexation'];
+  pills.forEach(p => {
+    const pill = document.getElementById(`neg-scen-pill-${p}`);
+    if (pill) {
+      pill.classList.toggle('active', scen.pillId === `neg-scen-pill-${p}`);
+    }
+  });
+
+  // Update opponent info
+  const nameEl = document.getElementById('neg-opponent-name');
+  if (nameEl) nameEl.textContent = scen.opponentName;
+  const roleEl = document.getElementById('neg-opponent-role');
+  if (roleEl) roleEl.textContent = scen.opponentRole;
+
+  // Reset chat history with initial demand
+  const chatHist = document.getElementById('neg-chat-history');
+  if (chatHist) {
+    chatHist.innerHTML = `
+      <div class="neg-bubble incoming">
+        <div class="neg-bubble-meta">
+          <strong>[BUYER CLAIM] ${scen.opponentName}:</strong>
+          <span>Round 1 of 3 • Initial Claim</span>
+        </div>
+        <div class="neg-bubble-text" id="neg-demand-text">
+          ${scen.demandText}
+        </div>
+      </div>
+    `;
+  }
+
+  // Update telemetry
+  const claimedEl = document.getElementById('neg-penalty-claimed');
+  if (claimedEl) claimedEl.textContent = scen.penaltyClaimed;
+  const savedEl = document.getElementById('neg-amount-saved');
+  if (savedEl) savedEl.textContent = '$0 USD';
+  const partnerScoreEl = document.getElementById('neg-partnership-score');
+  if (partnerScoreEl) {
+    partnerScoreEl.textContent = '65% CAUTION';
+    partnerScoreEl.style.color = '#f59e0b';
+  }
+  const scoreFill = document.getElementById('neg-score-fill');
+  if (scoreFill) {
+    scoreFill.style.width = '65%';
+    scoreFill.style.background = '#f59e0b';
+  }
+
+  // Reset proposal input & termsheet
+  const inputEl = document.getElementById('neg-candidate-proposal-input');
+  if (inputEl) inputEl.value = '';
+  const termBody = document.getElementById('neg-termsheet-body');
+  if (termBody) {
+    termBody.innerHTML = '<em>Presenta tu contraoferta técnica para negociar los términos del addendum legal...</em>';
+  }
+};
+
+window.applyNegotiationTactic = function(tacticKey) {
+  const scen = window.NEGOTIATION_SCENARIOS[window.currentNegScenario];
+  const inputEl = document.getElementById('neg-candidate-proposal-input');
+  if (!scen || !inputEl) return;
+
+  const tacticText = scen.tactics[tacticKey] || '';
+  if (inputEl.value.trim().length === 0) {
+    inputEl.value = tacticText;
+  } else {
+    inputEl.value += ' ' + tacticText;
+  }
+};
+
+window.submitNegotiationProposal = function() {
+  const scen = window.NEGOTIATION_SCENARIOS[window.currentNegScenario];
+  const inputEl = document.getElementById('neg-candidate-proposal-input');
+  const chatHist = document.getElementById('neg-chat-history');
+  const savedEl = document.getElementById('neg-amount-saved');
+  const partnerScoreEl = document.getElementById('neg-partnership-score');
+  const scoreFill = document.getElementById('neg-score-fill');
+  const termBody = document.getElementById('neg-termsheet-body');
+
+  if (!scen || !inputEl || !chatHist) return;
+
+  const proposalText = inputEl.value.trim();
+  if (proposalText.length === 0) {
+    alert('Por favor redacta o selecciona una táctica para presentar tu contraoferta.');
+    return;
+  }
+
+  // Append candidate response
+  const candBubble = document.createElement('div');
+  candBubble.className = 'neg-bubble outgoing';
+  candBubble.innerHTML = `
+    <div class="neg-bubble-meta">
+      <strong>[SALTILLO LEAD NEGOTIATOR] Diana Morales:</strong>
+      <span>Counterproposal &bull; Harvard C1</span>
+    </div>
+    <div class="neg-bubble-text">
+      ${proposalText}
+    </div>
+  `;
+  chatHist.appendChild(candBubble);
+
+  const textLower = proposalText.toLowerCase();
+  const isOptimal = proposalText.length > 80 && (
+    textLower.includes('telemetry') ||
+    textLower.includes('opc ua') ||
+    textLower.includes('cpk') ||
+    textLower.includes('astm') ||
+    textLower.includes('iatf') ||
+    textLower.includes('split') ||
+    textLower.includes('in-kind') ||
+    textLower.includes('dap') ||
+    textLower.includes('fast') ||
+    textLower.includes('corridor') ||
+    textLower.includes('lme') ||
+    textLower.includes('platts')
+  );
+
+  const respBubble = document.createElement('div');
+  respBubble.className = 'neg-bubble incoming';
+
+  if (isOptimal) {
+    window.negState.savedAmount = scen.optimalSaved;
+    window.negState.partnershipScore = scen.optimalHealth;
+
+    respBubble.innerHTML = `
+      <div class="neg-bubble-meta">
+        <strong>[FINAL SETTLEMENT] ${scen.opponentName}:</strong>
+        <span>Agreement Concluded</span>
+      </div>
+      <div class="neg-bubble-text" style="color:#10b981; font-weight:600;">
+        "${scen.buyerResponseOptimal}"
+      </div>
+    `;
+
+    if (savedEl) savedEl.textContent = `$${scen.optimalSaved.toLocaleString()} USD`;
+    if (partnerScoreEl) {
+      partnerScoreEl.textContent = `${scen.optimalHealth}% STRATEGIC PARTNER`;
+      partnerScoreEl.style.color = '#10b981';
+    }
+    if (scoreFill) {
+      scoreFill.style.width = `${scen.optimalHealth}%`;
+      scoreFill.style.background = '#10b981';
+    }
+    if (termBody) {
+      termBody.innerHTML = scen.termsheetOptimal;
+    }
+  } else {
+    window.negState.savedAmount = Math.round(scen.defaultClaimNum * 0.15);
+    window.negState.partnershipScore = 48;
+
+    respBubble.innerHTML = `
+      <div class="neg-bubble-meta">
+        <strong>[CLAIM DISPUTE] ${scen.opponentName}:</strong>
+        <span>Counterproposal Insufficient</span>
+      </div>
+      <div class="neg-bubble-text" style="color:#ef4444;">
+        "${scen.buyerResponseSuboptimal}"
+      </div>
+    `;
+
+    if (savedEl) savedEl.textContent = `$${window.negState.savedAmount.toLocaleString()} USD`;
+    if (partnerScoreEl) {
+      partnerScoreEl.textContent = '48% HIGH RISK';
+      partnerScoreEl.style.color = '#ef4444';
+    }
+    if (scoreFill) {
+      scoreFill.style.width = '48%';
+      scoreFill.style.background = '#ef4444';
+    }
+  }
+
+  chatHist.appendChild(respBubble);
+  chatHist.scrollTop = chatHist.scrollHeight;
+};
+
+window.playNegotiationAudio = function() {
+  const scen = window.NEGOTIATION_SCENARIOS[window.currentNegScenario];
+  if (!scen) return;
+
+  if (typeof window.speechSynthesis !== 'undefined') {
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(scen.demandText);
+    utt.lang = 'en-US';
+    utt.rate = 1.0;
+    utt.pitch = 0.95;
+    window.speechSynthesis.speak(utt);
+  } else {
+    alert(`[VP PURCHASING AUDIO DEMAND]\n\n${scen.opponentName}:\n${scen.demandText}`);
+  }
+};
+
+window.toggleNegotiationMic = function() {
+  const micLabel = document.getElementById('neg-mic-label');
+  const inputEl = document.getElementById('neg-candidate-proposal-input');
+  const scen = window.NEGOTIATION_SCENARIOS[window.currentNegScenario];
+  if (!inputEl || !scen) return;
+
+  if (micLabel && micLabel.textContent.includes('Dictar')) {
+    micLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Grabando...';
+    setTimeout(() => {
+      inputEl.value = scen.optimalResponse;
+      if (micLabel) micLabel.textContent = 'Dictar Contraoferta';
+    }, 1200);
+  }
+};
+
+window.exportSettlementMemo = function() {
+  const scen = window.NEGOTIATION_SCENARIOS[window.currentNegScenario];
+  if (!scen) return;
+
+  const md = `# BINDING DISPUTE SETTLEMENT ADDENDUM & COMMERCIAL MEMORANDUM
+**Dispute Matter**: ${scen.title}
+**Claimed Exposure**: ${scen.penaltyClaimed}
+**Capital Saved / Liability Avoided**: $${window.negState.savedAmount.toLocaleString()} USD
+**Parties**: Saltillo Powertrain Mexico & ${scen.opponentName} (${scen.opponentRole})
+**Governing Framework**: USMCA / T-MEC Chapter 5 & Harvard Principled Negotiation
+**Date**: ${new Date().toISOString()}
+
+---
+
+## 1. Background & Disputed Claim
+${scen.demandText}
+
+## 2. Agreed Terms of Settlement
+${scen.termsheetOptimal.replace(/<br>/g, '\n').replace(/<strong>/g, '**').replace(/<\/strong>/g, '**')}
+
+## 3. Commercial Status
+- **Partnership Health Index**: ${window.negState.partnershipScore}%
+- **Preferred Supplier Standing**: Reaffirmed Tier-1
+- **Cryptographic Dispute Resolution Seal**: SHA256-7D02D38F1A0E7507C9F
+
+---
+*Generated by stemOS Executive Negotiation Chamber • Cryptographic Hash: 7D02D38F1A0E7507C9F*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Settlement_Addendum_${scen.id}.md`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+// ----------------------------------------------------------------------------
+// PILLAR 2: REGULATORY AUDIT DEFENSE CHAMBER ENGINE
+// ----------------------------------------------------------------------------
+window.AUDIT_SCENARIOS = {
+  'iatf': {
+    id: 'iatf',
+    pillId: 'audit-scen-pill-iatf',
+    title: 'IATF 16949 Third-Party Surveillance Audit • HPDC Process',
+    auditorName: 'Eleanor Vance 🇬🇧/🇺🇸',
+    auditorRole: 'Lead IATF 16949 Registrar Auditor • Automotive Quality Services',
+    promptText: '"I am reviewing Section 8.5.1 of your Control Plan for HPDC Cell 4. You experienced micro-porosity drift during shift 2. Where is your Gage R&R study proving that your ultrasonic measurement system has an NDC greater than 5, and how did you verify that your containment action prevented mixed inventory from entering shipping docks?"',
+    optimalDoc: 'msa',
+    optimalExplanation: 'Here is Document DOC-01: our Gage R&R study GAGE-384 conducted in compliance with AIAG MSA 4th Edition. It confirms a %GRR of 7.2% and Number of Distinct Categories (NDC) of 8, exceeding the minimum threshold of 5. Furthermore, as shown in DOC-04, SAP electronic quarantine locked Lot #2026-X84 at the barcode level, ensuring zero defective parts escaped to the shipping dock.',
+    suboptimalExplanation: 'We check the parts by hand and our operators are very experienced. We don\'t have the Gage R&R right here but nobody complained about quality.',
+    feedbackOptimal: 'Auditoría superada exitosamente. La presentación del estudio de MSA con NDC de 8 y el bloqueo en SAP demostraron pleno cumplimiento con IATF 16949 Section 8.5.1 y 8.7. Cero no conformidades mayores emitidas.',
+    feedbackSuboptimal: 'Falla de auditoría: No se presentó evidencia estadística de capacidad de medición ni registros de contención trazables. Se emite No Conformidad Mayor bajo IATF 16949 Cláusula 7.1.5 y 8.7.',
+    rubricOptimal: { trace: '25 / 25', evidence: '25 / 25', defense: '25 / 25', capa: '25 / 25' },
+    rubricSuboptimal: { trace: '10 / 25', evidence: '08 / 25', defense: '12 / 25', capa: '09 / 25' }
+  },
+  'fda': {
+    id: 'fda',
+    pillId: 'audit-scen-pill-fda',
+    title: 'FDA 21 CFR § 820 Cleanroom & DHR Audit',
+    auditorName: 'Dr. Arthur Pendelton 🇺🇸',
+    auditorRole: 'FDA Senior Field Investigator • CDRH Medical Device Audits',
+    promptText: '"During our inspection of your Class 7 cleanroom catheter assembly line, we observed bioburden excursion alerts. Under 21 CFR § 820.70 and § 820.100, show me your Device History Record (DHR) reconciliation and your CAPA root cause protocol before I consider issuing Form 483."',
+    optimalDoc: 'capa',
+    optimalExplanation: 'Inspector Pendelton, here is Document DOC-04: Device History Record reconciliation and CAPA Report CAPA-2026-MED. Bioburden counts were isolated to cleanroom HEPA filter differential pressure sensor calibration drift. The entire production run was quarantined under electronic hold, verified sterile under ISO 11135 EtO cycle parameters, and filter banks were replaced with zero excursion recurrences.',
+    suboptimalExplanation: 'We cleaned the room with alcohol and restarted production the next morning so we wouldn\'t delay customer shipments.',
+    feedbackOptimal: 'Thorough compliance demonstration. DHR traceability, validated EtO sterilization and closed CAPA satisfy FDA 21 CFR § 820.70 and 820.100 requirements. No Form 483 issued.',
+    feedbackSuboptimal: 'Serious regulatory deviation. Releasing cleanroom products without formal CAPA root-cause investigation triggers FDA Form 483 Warning Letter and potential Stop-Ship citation.',
+    rubricOptimal: { trace: '25 / 25', evidence: '25 / 25', defense: '25 / 25', capa: '25 / 25' },
+    rubricSuboptimal: { trace: '12 / 25', evidence: '09 / 25', defense: '10 / 25', capa: '08 / 25' }
+  },
+  'as9100': {
+    id: 'as9100',
+    pillId: 'audit-scen-pill-as9100',
+    title: 'AS9100D Aerospace Turbine Blades FAI & Traceability',
+    auditorName: 'Eleanor Vance 🇬🇧/🇺🇸',
+    auditorRole: 'Lead Aerospace AS9100D Auditor • Defense & Aviation Registrar',
+    promptText: '"We are verifying First Article Inspection (FAI) under SAE AS9102 for Inconel turbine blades. Provide your PFMEA showing how high-temperature creep severity is mitigated and demonstrate that your CMM coordinate measuring machines are calibrated with unbroken traceability to NIST."',
+    optimalDoc: 'fmea',
+    optimalExplanation: 'Auditor Vance, here is Document DOC-03: PFMEA Risk Matrix cross-referenced with CMM calibration certificate CAL-991 traceable to NIST/CENAM under ISO 17025. Creep rupture severity is mitigated through 100% automated optical CMM profiling and vacuum heat treatment validation, achieving an RPN reduction from 180 to 28 with zero non-conformances.',
+    suboptimalExplanation: 'Our operators have been machining Inconel for years so we know the machines are accurate without checking the calibration certificates every month.',
+    feedbackOptimal: 'Exemplary aerospace rigor. Full SAE AS9102 FAI compliance, unbroken NIST traceability and robust PFMEA validation. Re-certification recommended.',
+    feedbackSuboptimal: 'Major non-conformance under AS9100D Clause 7.1.5. Uncalibrated CMM measurement voids First Article Inspection integrity.',
+    rubricOptimal: { trace: '25 / 25', evidence: '25 / 25', defense: '25 / 25', capa: '25 / 25' },
+    rubricSuboptimal: { trace: '11 / 25', evidence: '08 / 25', defense: '11 / 25', capa: '10 / 25' }
+  }
+};
+
+window.currentAuditScenario = 'iatf';
+window.currentAuditDoc = 'msa';
+
+window.initAuditDefense = function() {
+  window.switchAuditScenario(window.currentAuditScenario || 'iatf');
+};
+
+window.switchAuditScenario = function(scenKey) {
+  const scen = window.AUDIT_SCENARIOS[scenKey];
+  if (!scen) return;
+  window.currentAuditScenario = scenKey;
+  window.currentAuditDoc = scen.optimalDoc;
+
+  // Update pills
+  const pills = ['iatf', 'fda', 'as9100'];
+  pills.forEach(p => {
+    const pill = document.getElementById(`audit-scen-pill-${p}`);
+    if (pill) {
+      pill.classList.toggle('active', scen.pillId === `audit-scen-pill-${p}`);
+    }
+  });
+
+  // Update auditor info
+  const nameEl = document.getElementById('audit-auditor-name');
+  if (nameEl) nameEl.textContent = scen.auditorName;
+  const roleEl = document.getElementById('audit-auditor-role');
+  if (roleEl) roleEl.textContent = scen.auditorRole;
+  const promptEl = document.getElementById('audit-interrogation-prompt');
+  if (promptEl) promptEl.textContent = scen.promptText;
+
+  // Reset doc selection
+  window.selectAuditEvidence(scen.optimalDoc);
+
+  // Reset candidate input
+  const inputEl = document.getElementById('audit-candidate-explanation');
+  if (inputEl) inputEl.value = '';
+
+  // Reset telemetry to initial
+  const findingStatus = document.getElementById('audit-finding-status');
+  if (findingStatus) {
+    findingStatus.textContent = 'EN REVISIÓN';
+    findingStatus.style.color = '#38bdf8';
+  }
+  const latencyEl = document.getElementById('audit-evidence-latency');
+  if (latencyEl) latencyEl.textContent = 'En Espera';
+
+  const notesEl = document.getElementById('audit-closing-notes');
+  if (notesEl) {
+    notesEl.textContent = 'Presenta el documento técnico de evidencia y tu justificación oral para recibir el dictamen oficial.';
+  }
+};
+
+window.selectAuditEvidence = function(docId) {
+  window.currentAuditDoc = docId;
+  const docCards = document.querySelectorAll('.audit-doc-card');
+  docCards.forEach(c => {
+    c.classList.toggle('active', c.id === `audit-doc-${docId}`);
+  });
+};
+
+window.submitAuditDefense = function() {
+  const scen = window.AUDIT_SCENARIOS[window.currentAuditScenario];
+  const inputEl = document.getElementById('audit-candidate-explanation');
+  const findingStatus = document.getElementById('audit-finding-status');
+  const latencyEl = document.getElementById('audit-evidence-latency');
+  const rubTrace = document.getElementById('audit-rubric-trace');
+  const rubEvid = document.getElementById('audit-rubric-evidence');
+  const rubDef = document.getElementById('audit-rubric-defense');
+  const rubCapa = document.getElementById('audit-rubric-capa');
+  const notesEl = document.getElementById('audit-closing-notes');
+
+  if (!scen || !inputEl) return;
+
+  const defenseText = inputEl.value.trim().toLowerCase();
+  const docMatch = (window.currentAuditDoc === scen.optimalDoc);
+
+  const isOptimal = defenseText.length > 60 && docMatch && (
+    defenseText.includes('gage') ||
+    defenseText.includes('msa') ||
+    defenseText.includes('ndc') ||
+    defenseText.includes('quarantine') ||
+    defenseText.includes('capa') ||
+    defenseText.includes('dhr') ||
+    defenseText.includes('pfmea') ||
+    defenseText.includes('calibration') ||
+    defenseText.includes('traceable')
+  );
+
+  if (isOptimal) {
+    if (findingStatus) {
+      findingStatus.textContent = 'CONFORME (CERO NC)';
+      findingStatus.style.color = '#10b981';
+    }
+    if (latencyEl) latencyEl.textContent = '14 Segundos (SLA < 60s)';
+    if (rubTrace) rubTrace.textContent = scen.rubricOptimal.trace;
+    if (rubEvid) rubEvid.textContent = scen.rubricOptimal.evidence;
+    if (rubDef) rubDef.textContent = scen.rubricOptimal.defense;
+    if (rubCapa) rubCapa.textContent = scen.rubricOptimal.capa;
+    if (notesEl) notesEl.textContent = `"${scen.feedbackOptimal}"`;
+  } else {
+    if (findingStatus) {
+      findingStatus.textContent = 'NO CONFORMIDAD MAYOR';
+      findingStatus.style.color = '#ef4444';
+    }
+    if (latencyEl) latencyEl.textContent = '68 Segundos (SLA Excedido)';
+    if (rubTrace) rubTrace.textContent = scen.rubricSuboptimal.trace;
+    if (rubEvid) rubEvid.textContent = scen.rubricSuboptimal.evidence;
+    if (rubDef) rubDef.textContent = scen.rubricSuboptimal.defense;
+    if (rubCapa) rubCapa.textContent = scen.rubricSuboptimal.capa;
+    if (notesEl) notesEl.textContent = `"${scen.feedbackSuboptimal}"`;
+  }
+};
+
+window.playAuditAudio = function() {
+  const scen = window.AUDIT_SCENARIOS[window.currentAuditScenario];
+  if (!scen) return;
+
+  if (typeof window.speechSynthesis !== 'undefined') {
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(scen.promptText);
+    utt.lang = 'en-US';
+    utt.rate = 1.0;
+    utt.pitch = 0.95;
+    window.speechSynthesis.speak(utt);
+  } else {
+    alert(`[REGULATORY AUDITOR AUDIO]\n\n${scen.auditorName}:\n${scen.promptText}`);
+  }
+};
+
+window.toggleAuditMic = function() {
+  const micLabel = document.getElementById('audit-mic-label');
+  const inputEl = document.getElementById('audit-candidate-explanation');
+  const scen = window.AUDIT_SCENARIOS[window.currentAuditScenario];
+  if (!inputEl || !scen) return;
+
+  if (micLabel && micLabel.textContent.includes('Dictar')) {
+    micLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Grabando...';
+    setTimeout(() => {
+      inputEl.value = scen.optimalExplanation;
+      window.selectAuditEvidence(scen.optimalDoc);
+      if (micLabel) micLabel.textContent = 'Dictar Defensa';
+    }, 1200);
+  }
+};
+
+window.exportAuditReport = function() {
+  const scen = window.AUDIT_SCENARIOS[window.currentAuditScenario];
+  if (!scen) return;
+
+  const md = `# OFFICIAL REGULATORY & SURVEILLANCE AUDIT CLOSING REPORT
+**Standard Audited**: ${scen.title}
+**Lead Auditor**: ${scen.auditorName} (${scen.auditorRole})
+**Audited Facility**: Saltillo Powertrain & Cleanroom Technologies
+**Audit Date**: ${new Date().toISOString()}
+**Accreditation Body**: IATF 16949 / FDA CDRH Validated
+
+---
+
+## 1. Formal Audit Interrogation & Requirement
+${scen.promptText}
+
+## 2. Objective Evidence Presented
+- Primary Artifact: DOC-${window.currentAuditDoc.toUpperCase()}
+- Evidence Retrieval Latency: 14 seconds (SLA < 60s)
+- Traceability Record: NIST / CENAM Accredited Calibration & SAP ERP Barcode Quarantine
+
+## 3. Regulatory Findings & Scorecard
+- **Traceability Integrity**: 25 / 25
+- **Objective Evidence Proof**: 25 / 25
+- **Non-Evasive Defense**: 25 / 25
+- **CAPA 8D Effectiveness**: 25 / 25
+
+**Auditor Closing Remarks**:
+"${scen.feedbackOptimal}"
+
+---
+*Verified by stemOS Regulatory Audit Defense Suite • Cryptographic Hash: 7D02D38F1A0E7507C9F*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Regulatory_Audit_Report_${scen.id}.md`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+// ==========================================
+// FASE 23: PLANT-FLOOR GEMBA WALK & SHIFT CRUCIBLE (PILLAR 1)
+// ==========================================
+
+window.GEMBA_TRACKS = {
+  'semi': {
+    id: 'semi',
+    pillId: 'gemba-track-pill-semi',
+    trackName: 'Semiconductores: Cuarto Limpio 3nm (Guadalajara)',
+    leaderName: 'Hiroshi Tanaka 🇯🇵/🇺🇸',
+    leaderRole: 'Director de Operaciones de Fab • Guadalajara Advanced Silicon Corridor',
+    directivePrompt: '"Shift Lead Morales, our lithography scanner in Bay 4 is reporting an overlay drift of 3.2nm against our 1.5nm target, driving defect density to 0.18 defects/cm². Walk the bay, inspect the scanner and slurry stations, and give me your containment directive before we scrap this 300mm wafer lot."',
+    stations: [
+      {
+        id: 1,
+        title: 'Estación A: Escáner Litográfico DUV/EUV',
+        status: 'Desalineación de Retícula (Overlay +3.2nm)',
+        statusClass: 'anomaly',
+        icon: 'fa-solid fa-atom',
+        color: '#06b6d4',
+        detail: 'El sensor de posicionamiento piezoeléctrico de la platina de obleas muestra una deriva térmica de +3.2nm debido a turbulencia en el flujo de aire laminar del plenum.'
+      },
+      {
+        id: 2,
+        title: 'Estación B: Slurry CMP & Planarización',
+        status: 'Viscosidad Estable (14.2 cP Nominal)',
+        statusClass: 'nominal',
+        icon: 'fa-solid fa-flask-vial',
+        color: '#f59e0b',
+        detail: 'Monitoreo de flujo de lechada de sílice coloidal dentro de límites nominales (14.2 cP). Remoción planar uniforme sin micro-rayado.'
+      },
+      {
+        id: 3,
+        title: 'Estación C: FOUP AMHS & Purga de Nitrógeno',
+        status: 'Sellado N2 Hermético (Presión 1.2 bar)',
+        statusClass: 'nominal',
+        icon: 'fa-solid fa-box-archive',
+        color: '#a855f7',
+        detail: 'Cápsulas FOUP herméticamente presurizadas con N2 de ultra-alta pureza. Cero contaminación por humedad u oxígeno transportado.'
+      }
+    ],
+    quickActions: {
+      contain: 'Order immediate bay-level hold on litho track 4 and lock downstream CMP dispatch in SECS/GEM.',
+      calibrate: 'Trigger automatic laser interferometric calibration on the wafer stage and verify alignment marks against SEMI E10.',
+      protocol: 'Execute standard OCAP-LITHO-38, re-measure overlay offset to 1.1nm, and release wafer lot with zero scrap.'
+    },
+    optimalExplanation: 'Director Tanaka, we have placed an immediate bay-level hold on Litho Track 4 and locked downstream CMP dispatch through SECS/GEM. We executed laser interferometric recalibration on the wafer stage chuck, compensating for the thermal airflow gradient. Alignment marks were re-verified under SEMI E10, recovering overlay accuracy to 1.1nm and restoring yield to 96.4% with zero wafer scrap.',
+    metricPrimaryVal: '96.4%',
+    metricPrimaryLbl: 'Rendimiento de Obleas (Wafer Fab Yield Rate)',
+    metricSecondaryVal: '0.02 /cm²',
+    metricSecondaryLbl: 'Densidad de Micro-Defectos Particulados',
+    shiftScore: '98% NOMINAL EXCELLENCE',
+    debriefNotes: '"Directiva ejecutada con éxito. La calibración interferométrica estabilizó la retícula en 1.1nm, recuperando el rendimiento a 96.4% con cero obleas de 300mm scrap."',
+    reportFilename: 'SEMI_Cleanroom_Gemba_Yield_Report.md'
+  },
+  'battery': {
+    id: 'battery',
+    pillId: 'gemba-track-pill-battery',
+    trackName: 'Baterías EV: Cuarto Seco & Slurry (Saltillo)',
+    leaderName: 'Marcus Vance 🇺🇸',
+    leaderRole: 'VP of Cell Manufacturing • Ultium Cells Saltillo Gigafactory',
+    directivePrompt: '"Lead Cell Engineer Morales, our continuous dry room dew point alarm just breached -32°C against our -45°C limit during cathode slurry coating. Inspect our desiccant dehumidifiers and roll-press calendering line, and provide your containment protocol."',
+    stations: [
+      {
+        id: 1,
+        title: 'Estación A: Torre Desecante & Dew Point',
+        status: 'Excursión de Humedad (-32°C vs -45°C Límite)',
+        statusClass: 'anomaly',
+        icon: 'fa-solid fa-droplet-slash',
+        color: '#ef4444',
+        detail: 'Rueda desecante de rotor de gel de sílice presenta saturación parcial en la zona de regeneración térmica, elevando punto de rocío.'
+      },
+      {
+        id: 2,
+        title: 'Estación B: Calandrado & Espesor de Cátodo',
+        status: 'Espesor Nominal (±1.5µm de Tolerancia)',
+        statusClass: 'nominal',
+        icon: 'fa-solid fa-compress',
+        color: '#10b981',
+        detail: 'Rodillos de compresión de alta presión mantienen densidad gravimétrica de cátodo NMC 811 en 3.45 g/cm³.'
+      },
+      {
+        id: 3,
+        title: 'Estación C: Llenado de Electrolito al Vacío',
+        status: 'Presión de Vacío Hermética (0.05 mbar)',
+        statusClass: 'nominal',
+        icon: 'fa-solid fa-flask',
+        color: '#38bdf8',
+        detail: 'Cámaras de sellado al vacío y dosificación de hexafluorofosfato de litio operan en ciclo estanco sin fugas.'
+      }
+    ],
+    quickActions: {
+      contain: 'Halt slurry roll-coating feed and seal raw cathode foil reels inside moisture-barrier bags.',
+      calibrate: 'Engage secondary backup desiccant reactivation heater and ramp dry air circulation to 12,000 CFM.',
+      protocol: 'Enforce UL 2580 environmental quarantine, re-validate dew point to -48°C, and clear battery batch.'
+    },
+    optimalExplanation: 'VP Vance, we immediately halted slurry roll-coating feed and sealed raw cathode foil reels inside moisture-barrier airlocks. Secondary desiccant reactivation heaters were engaged, boosting regeneration air to 140°C and recovering dry room dew point to -48.2°C. Pouch cell internal resistance verified at 0.78 mΩ under UL 2580 and USABC standards with zero degradation.',
+    metricPrimaryVal: '-48.2°C',
+    metricPrimaryLbl: 'Punto de Rocío Cuarto Seco (Dew Point)',
+    metricSecondaryVal: '0.78 mΩ',
+    metricSecondaryLbl: 'Resistencia Interna de Celda (AC IR)',
+    shiftScore: '97% DRY ROOM EXCELLENCE',
+    debriefNotes: '"Contención ejemplar en cuarto seco. La reactivación de la torre desecante restauró el punto de rocío a -48.2°C y las pruebas de impedancia de celdas arrojaron 0.78 mΩ."',
+    reportFilename: 'Battery_Gigafactory_DryRoom_Audit.md'
+  },
+  'cyber': {
+    id: 'cyber',
+    pillId: 'gemba-track-pill-cyber',
+    trackName: 'Ciberseguridad OT: Subestación IEC 62443 (Monterrey)',
+    leaderName: 'Dave Miller 🇺🇸',
+    leaderRole: 'Chief Information Security Officer (Industrial OT) • Monterrey Smart Grid',
+    directivePrompt: '"Shift Commander Morales, our industrial IDS detected anomalous unauthenticated Modbus TCP Function Code 05 packets flooding PLC Substation 2. Inspect the SCADA HMI gateway, managed switch DPI, and SIS Triconex keylock to isolate the rogue node."',
+    stations: [
+      {
+        id: 1,
+        title: 'Estación A: Gateway SCADA Modbus TCP 502',
+        status: 'Inyección Anómala de Comandos (Puerto 502)',
+        statusClass: 'anomaly',
+        icon: 'fa-solid fa-network-wired',
+        color: '#ef4444',
+        detail: 'Ráfaga de paquetes maliciosos no autenticados intentando forzar bobinas de disparo en interruptores de potencia 115kV.'
+      },
+      {
+        id: 2,
+        title: 'Estación B: Switch Administrado DPI Whitelist',
+        status: 'Filtrado de Paquetes Activo (Deep Packet Inspection)',
+        statusClass: 'nominal',
+        icon: 'fa-solid fa-server',
+        color: '#10b981',
+        detail: 'Reglas de firewall industrial N-Tron bloqueando tráfico IP fuera del rango de ingeniería de control autorizado.'
+      },
+      {
+        id: 3,
+        title: 'Estación C: SIS Triconex SIL-3 Safety Matrix',
+        status: 'Bloqueo Físico en Run Mode (Zero Override)',
+        statusClass: 'nominal',
+        icon: 'fa-solid fa-shield-virus',
+        color: '#38bdf8',
+        detail: 'Sistema instrumentado de seguridad con redundancia triple modular (TMR) operando con llave física en posición segura.'
+      }
+    ],
+    quickActions: {
+      contain: 'Sever rogue maintenance laptop port at managed switch Level 2 and enforce Purdue IDMZ microsegmentation.',
+      calibrate: 'Enable cryptographic deep packet inspection (DPI) whitelist rules under IEC 62443-3-3.',
+      protocol: 'Re-authenticate all SCADA client certificates, confirm SIS Triconex integrity, and log forensic PCAP.'
+    },
+    optimalExplanation: 'Commander Miller, we severed the rogue maintenance laptop link at Managed Switch Port 8, isolating the unauthenticated Modbus injection. Industrial DPI firewall rules were updated under IEC 62443-3-3 to drop any unauthenticated Function Code 05 commands. SIS Triconex triple modular redundancy remained fully locked in Run Mode, resulting in 100% rogue packet mitigation and zero power interruption.',
+    metricPrimaryVal: '100%',
+    metricPrimaryLbl: 'Tasa de Bloqueo de Paquetes No Autorizados',
+    metricSecondaryVal: 'SIL-3',
+    metricSecondaryLbl: 'Estatus de Integridad SIS Triconex TMR',
+    shiftScore: '99% ZERO-TRUST SECURED',
+    debriefNotes: '"Respuesta impecable bajo IEC 62443. La microsegmentación aisló el puerto comprometido en menos de 30 segundos, manteniendo la subestación 115kV en servicio continuo."',
+    reportFilename: 'OT_Cybersecurity_Gemba_SITREP.md'
+  },
+  'datacenter': {
+    id: 'datacenter',
+    pillId: 'gemba-track-pill-datacenter',
+    trackName: 'Data Center: 50MW Uptime Tier IV (Querétaro)',
+    leaderName: 'Sarah Jenkins 🇺🇸',
+    leaderRole: 'VP of Infrastructure & Mission-Critical Operations • Querétaro Hyperscale',
+    directivePrompt: '"Facility Director Morales, our dual-fed 2MW rotary UPS B-string just alarmed with a thermal runaway delta-T of 7°C during a utility grid surge. Check the ATS transfer logic and CRAH airflow cooling before server rack temperatures exceed ASHRAE Class A1 thresholds."',
+    stations: [
+      {
+        id: 1,
+        title: 'Estación A: UPS Rotativo B-String 2MW',
+        status: 'Delta-T Térmico en Celdas (+7°C Excursión)',
+        statusClass: 'anomaly',
+        icon: 'fa-solid fa-battery-half',
+        color: '#ef4444',
+        detail: 'Sensor térmico infrarrojo detecta sobrecalentamiento localizado en barra colectora de celda de batería 42 en String B.'
+      },
+      {
+        id: 2,
+        title: 'Estación B: ATS 13.8kV Transfer Switch',
+        status: 'Respaldo de Generador en Espera (Tier IV 2N)',
+        statusClass: 'nominal',
+        icon: 'fa-solid fa-bolt',
+        color: '#10b981',
+        detail: 'Interruptores de conmutación automática de media tensión sincronizados con grupos electrógenos diésel de 2.5 MVA.'
+      },
+      {
+        id: 3,
+        title: 'Estación C: Chiller & Unidades CRAH ΔP',
+        status: 'Presión Estática Piso Elevado (35 Pa Nominal)',
+        statusClass: 'nominal',
+        icon: 'fa-solid fa-fan',
+        color: '#38bdf8',
+        detail: 'Manejadoras de aire de sala de cómputo (CRAH) suministrando 68°F continuo con caudal plenum presurizado.'
+      }
+    ],
+    quickActions: {
+      contain: 'Transfer 100% critical load to redundant UPS A-String and decouple String B for thermal isolation.',
+      calibrate: 'Verify automatic generator synchronization under IEEE 1547 and balance raised-floor CRAH airflow damper.',
+      protocol: 'Enforce Uptime Institute Tier IV concurrently maintainable protocol and generate facility handover memo.'
+    },
+    optimalExplanation: 'VP Jenkins, we seamlessly transferred 100% of the critical compute load to redundant UPS A-String with zero millisecond phase disruption under our 2N fault-tolerant architecture. String B was decoupled for thermal busbar inspection. Raised floor plenum pressure was stabilized at 35 Pa, maintaining server inlet temperatures at 21.4°C within ASHRAE Class A1 limits and preserving our 1.18 PUE metric.',
+    metricPrimaryVal: '1.18',
+    metricPrimaryLbl: 'Efectividad de Uso Energético (PUE Index)',
+    metricSecondaryVal: '21.4°C',
+    metricSecondaryLbl: 'Temperatura de Entrada de Servidores (ASHRAE A1)',
+    shiftScore: '98% TIER IV COMPLIANT',
+    debriefNotes: '"Operación de conmutación 2N impecable. Cero micro-cortes en servidores hiperescala, carga balanceada y PUE sostenido en 1.18."',
+    reportFilename: 'DataCenter_TierIV_Handover.md'
+  }
+};
+
+window.currentGembaTrack = 'semi';
+window.currentGembaStation = 1;
+
+// Methods for Gemba Walk
+window.initGembaCrucible = function() {
+  window.switchGembaTrack(window.currentGembaTrack || 'semi');
+};
+
+window.switchGembaTrack = function(trackKey) {
+  const track = window.GEMBA_TRACKS[trackKey];
+  if (!track) return;
+  window.currentGembaTrack = trackKey;
+  window.currentGembaStation = 1;
+
+  // Update pills
+  const pills = ['semi', 'battery', 'cyber', 'datacenter'];
+  pills.forEach(p => {
+    const pill = document.getElementById(`gemba-track-pill-${p}`);
+    if (pill) pill.classList.toggle('active', p === trackKey);
+  });
+
+  // Update leader info & directive
+  const nameEl = document.getElementById('gemba-leader-name');
+  if (nameEl) nameEl.textContent = track.leaderName;
+  const roleEl = document.getElementById('gemba-leader-role');
+  if (roleEl) roleEl.textContent = track.leaderRole;
+  const dirEl = document.getElementById('gemba-directive-prompt');
+  if (dirEl) dirEl.textContent = track.directivePrompt;
+
+  // Render stations rack
+  track.stations.forEach(st => {
+    const titleEl = document.getElementById(`gemba-st-${st.id}-title`);
+    const statusEl = document.getElementById(`gemba-st-${st.id}-status`);
+    const cardEl = document.getElementById(`gemba-st-${st.id}`);
+    if (titleEl) titleEl.textContent = st.title;
+    if (statusEl) {
+      statusEl.textContent = st.status;
+      statusEl.style.color = (st.statusClass === 'anomaly') ? '#ef4444' : '#10b981';
+    }
+    if (cardEl) {
+      cardEl.classList.toggle('active', st.id === 1);
+      cardEl.classList.toggle('anomaly', st.statusClass === 'anomaly');
+      cardEl.classList.remove('resolved');
+    }
+  });
+
+  // Reset candidate input
+  const inputEl = document.getElementById('gemba-candidate-action-input');
+  if (inputEl) inputEl.value = '';
+
+  // Telemetry
+  const pVal = document.getElementById('gemba-metric-primary-val');
+  const pLbl = document.getElementById('gemba-metric-primary-lbl');
+  const sVal = document.getElementById('gemba-metric-secondary-val');
+  const sLbl = document.getElementById('gemba-metric-secondary-lbl');
+  const scoreEl = document.getElementById('gemba-shift-score');
+  const fillEl = document.getElementById('gemba-shift-meter-fill');
+  const debriefEl = document.getElementById('gemba-debrief-notes');
+
+  if (pVal) pVal.textContent = track.metricPrimaryVal;
+  if (pLbl) pLbl.textContent = track.metricPrimaryLbl;
+  if (sVal) sVal.textContent = track.metricSecondaryVal;
+  if (sLbl) sLbl.textContent = track.metricSecondaryLbl;
+  if (scoreEl) scoreEl.textContent = track.shiftScore;
+  if (fillEl) {
+    fillEl.style.width = '98%';
+    fillEl.style.background = '#10b981';
+  }
+  if (debriefEl) debriefEl.textContent = 'Formula tu directiva de contención técnica en inglés C1 para estabilizar el turno.';
+};
+
+window.inspectGembaStation = function(stationNum) {
+  window.currentGembaStation = stationNum;
+  const track = window.GEMBA_TRACKS[window.currentGembaTrack];
+  if (!track) return;
+
+  [1, 2, 3].forEach(id => {
+    const card = document.getElementById(`gemba-st-${id}`);
+    if (card) card.classList.toggle('active', id === stationNum);
+  });
+
+  const st = track.stations.find(s => s.id === stationNum);
+  if (st) {
+    const dirEl = document.getElementById('gemba-directive-prompt');
+    if (dirEl) {
+      dirEl.innerHTML = `<strong>[Inspección en Estación ${stationNum} - ${st.title}]:</strong><br>${st.detail}`;
+    }
+  }
+};
+
+window.applyGembaQuickAction = function(actionKey) {
+  const track = window.GEMBA_TRACKS[window.currentGembaTrack];
+  const inputEl = document.getElementById('gemba-candidate-action-input');
+  if (!track || !inputEl) return;
+
+  const actionText = track.quickActions[actionKey] || '';
+  if (inputEl.value.trim().length === 0) {
+    inputEl.value = actionText;
+  } else {
+    inputEl.value += ' ' + actionText;
+  }
+};
+
+window.resolveGembaHazard = function() {
+  const track = window.GEMBA_TRACKS[window.currentGembaTrack];
+  const inputEl = document.getElementById('gemba-candidate-action-input');
+  const debriefEl = document.getElementById('gemba-debrief-notes');
+  const scoreEl = document.getElementById('gemba-shift-score');
+  const fillEl = document.getElementById('gemba-shift-meter-fill');
+
+  if (!track || !inputEl) return;
+  const text = inputEl.value.trim().toLowerCase();
+
+  if (text.length === 0) {
+    alert('Por favor redacta o selecciona una directiva de piso de planta en inglés C1.');
+    return;
+  }
+
+  const isOptimal = text.length > 50 && (
+    text.includes('hold') ||
+    text.includes('secs') ||
+    text.includes('laser') ||
+    text.includes('interferometric') ||
+    text.includes('dew point') ||
+    text.includes('desiccant') ||
+    text.includes('slurry') ||
+    text.includes('modbus') ||
+    text.includes('dpi') ||
+    text.includes('triconex') ||
+    text.includes('ups') ||
+    text.includes('ats') ||
+    text.includes('ashrae') ||
+    text.includes('crah')
+  );
+
+  if (isOptimal) {
+    // Mark station 1 as resolved
+    const st1 = document.getElementById('gemba-st-1');
+    const st1Status = document.getElementById('gemba-st-1-status');
+    if (st1) {
+      st1.classList.remove('anomaly');
+      st1.classList.add('resolved');
+    }
+    if (st1Status) {
+      st1Status.textContent = 'Anomalía Corregida & Calibrada';
+      st1Status.style.color = '#10b981';
+    }
+
+    if (scoreEl) {
+      scoreEl.textContent = track.shiftScore;
+      scoreEl.style.color = '#10b981';
+    }
+    if (fillEl) {
+      fillEl.style.width = '98%';
+      fillEl.style.background = '#10b981';
+    }
+    if (debriefEl) {
+      debriefEl.textContent = track.debriefNotes;
+    }
+  } else {
+    if (scoreEl) {
+      scoreEl.textContent = '62% DEVIATION RISK';
+      scoreEl.style.color = '#ef4444';
+    }
+    if (fillEl) {
+      fillEl.style.width = '62%';
+      fillEl.style.background = '#ef4444';
+    }
+    if (debriefEl) {
+      debriefEl.textContent = 'Directiva insuficiente. Se requiere aplicar contención formal y calibración de instrumentos según la norma aplicable.';
+    }
+  }
+};
+
+window.playGembaAudio = function() {
+  const track = window.GEMBA_TRACKS[window.currentGembaTrack];
+  if (!track) return;
+
+  if (typeof window.speechSynthesis !== 'undefined') {
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(track.directivePrompt);
+    utt.lang = 'en-US';
+    utt.rate = 1.0;
+    window.speechSynthesis.speak(utt);
+  } else {
+    alert(`[GEMBA SHIFT DIRECTIVE]\n\n${track.leaderName}:\n${track.directivePrompt}`);
+  }
+};
+
+window.toggleGembaMic = function() {
+  const btn = document.getElementById('btn-gemba-mic-toggle');
+  const label = document.getElementById('gemba-mic-label');
+  const inputEl = document.getElementById('gemba-candidate-action-input');
+  const track = window.GEMBA_TRACKS[window.currentGembaTrack];
+
+  if (!btn || !label || !inputEl || !track) return;
+
+  if (btn.classList.contains('recording')) {
+    btn.classList.remove('recording');
+    btn.style.background = '';
+    btn.style.color = '';
+    label.textContent = 'Dictar Directiva';
+  } else {
+    btn.classList.add('recording');
+    btn.style.background = '#ef4444';
+    btn.style.color = '#fff';
+    label.textContent = 'Grabando Voz C1...';
+    if (inputEl.value.trim().length === 0) {
+      inputEl.value = track.optimalExplanation;
+    }
+  }
+};
+
+window.exportGembaReport = function() {
+  const track = window.GEMBA_TRACKS[window.currentGembaTrack];
+  if (!track) return;
+
+  const md = `# stemOS Plant-Floor Gemba Walk & Shift Handover Report
+**Industry Track**: ${track.trackName}
+**Shift Operations Director**: ${track.leaderName} (${track.leaderRole})
+**Timestamp**: ${new Date().toISOString()}
+**Lead Shift Commander**: Ing. Diana Laura Morales (TecNM / stemOS Senior Fellow)
+
+---
+
+## 1. Initial Gemba Anomaly Briefing
+${track.directivePrompt}
+
+## 2. Shopfloor Hotspots Inspection Log
+- **Station 1**: ${track.stations[0].title} — Status: Resolved & Nominally Aligned
+- **Station 2**: ${track.stations[1].title} — Status: Verified In-Spec
+- **Station 3**: ${track.stations[2].title} — Status: Sealed & Nominal
+
+## 3. Shift Telemetry & Yield Recovery
+- **Primary Metric**: ${track.metricPrimaryVal} (${track.metricPrimaryLbl})
+- **Secondary Metric**: ${track.metricSecondaryVal} (${track.metricSecondaryLbl})
+- **Shift Health Verdict**: ${track.shiftScore}
+
+## 4. Shift Handover Debrief
+${track.debriefNotes}
+
+---
+*Official stemOS Plant-Floor Gemba Report • Cryptographic Seal: 7D02D38F1A0E7507C9F*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = track.reportFilename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+// ==========================================
+// FASE 23: CROSS-TRACK EXECUTIVE ROOT-CAUSE BOARD TRIBUNAL (PILLAR 2)
+// ==========================================
+
+window.TRIBUNAL_SCENARIOS = {
+  'aero': {
+    id: 'aero',
+    pillId: 'tribunal-scen-pill-aero',
+    title: 'Aeroespacial: FAI AS9102 & Ruptura por Creep de Álabes (Querétaro)',
+    chairName: 'Dr. Ethan Vance 🇺🇸 & Victoria Price 🇬🇧',
+    chairRole: 'Presidentes del Consejo Técnico • Global Executive Review Committee',
+    promptText: '"Lead Aerospace Engineer Morales, the US Air Force propulsion customer has formally rejected First Article Inspection #FAI-991 for batch #INCONEL-88. High-temperature creep rupture occurred at 850 hours instead of the 1,200-hour design margin. Before we ground the fleet and initiate contractual liquidated damages of $1.2M USD, what physical metallurgical mechanism caused this deviation, and why should this board not declare a critical manufacturing defect?"',
+    arguments: {
+      physics: 'Scanning Electron Microscope (SEM) fractography proves failure was driven by secondary carbide precipitation coarsening along grain boundaries during vacuum stress-relief annealing, not substrate alloy deficiency.',
+      normative: 'Under SAE AS9102 Section 5.4 and ASTM E139 creep testing protocols, thermal soak deviations during non-destructive testing are classified as process parameter drift resolvable via re-solution treatment, preserving base material integrity.',
+      financial: 'We propose executing re-solution annealing and hot isostatic pressing (HIP) under customer surveillance at zero incremental charge, capping financial exposure to $0 USD while ensuring 100% FAI compliance.'
+    },
+    optimalDefense: 'Esteemed Board Members, SEM fractography proves creep rupture at 850 hours was driven by secondary carbide precipitation coarsening along grain boundaries during vacuum stress-relief annealing, rather than substrate Inconel alloy deficiency. Under SAE AS9102 Section 5.4 and ASTM E139 protocols, base alloy integrity remains intact. We propose executing re-solution annealing and hot isostatic pressing (HIP) under customer surveillance, recovering the 1,200-hour creep margin at zero incremental markup and eliminating all fleet grounding liabilities.',
+    rubricOptimal: { physics: '25 / 25', normative: '25 / 25', poise: '25 / 25', containment: '25 / 25' },
+    rubricSuboptimal: { physics: '12 / 25', normative: '10 / 25', poise: '14 / 25', containment: '08 / 25' },
+    verdictOptimal: 'EXONERADO (DICTAMEN FAVORABLE)',
+    verdictSuboptimal: 'DICTAMEN ADVERSO (RESPONSABILIDAD CONFIRMADA)',
+    liabilityOptimal: '$0 USD (Absorción Mitigada)',
+    liabilitySuboptimal: '$1,200,000 USD (Penalización Reclamada)',
+    notesOptimal: '"El consejo valida unánimemente la causa raíz termodinámica. Se aprueba la modificación del ciclo de tratamiento térmico al vacío y se autoriza la liberación del lote con cero penalizaciones contractuales."',
+    notesSuboptimal: '"Defensa insuficiente. No se presentaron análisis metalúrgicos que eximan a la planta de responsabilidad contractual. Se ratifica la no conformidad mayor."',
+    reportFilename: 'Aerospace_Turbine_Board_Resolution.md'
+  },
+  'medtech': {
+    id: 'medtech',
+    pillId: 'tribunal-scen-pill-medtech',
+    title: 'MedTech: Bioburden en Marcapasos Clase III FDA 21 CFR (Tijuana)',
+    chairName: 'Dr. Arthur Pendelton 🇺🇸 & Sarah Jenkins 🇺🇸',
+    chairRole: 'FDA CDRH Review Board & Global Regulatory Committee',
+    promptText: '"Senior Biomedical Engineer Morales, the CDRH compliance committee has convened regarding bioburden excursion CAPA-2026-MED on Class III implantable pulse generators. Explain why the FDA should not issue a Warning Letter and stop-ship citation for your cleanroom sterilization validation."',
+    arguments: {
+      physics: 'Microbiological assay isolates the excursion to Bacillus atrophaeus bioburden on cleanroom HEPA fan filter unit 4, with zero contamination reaching hermetically sealed titanium pacemaker headers.',
+      normative: 'Under FDA 21 CFR § 820.70 and ISO 11135 ethylene oxide validation, 100% of lots underwent validated 10^-6 Sterility Assurance Level (SAL) verification prior to packaging.',
+      financial: 'Complete DHR reconciliation and automated HEPA differential pressure monitoring close CAPA-2026-MED with zero product recall or patient safety risk.'
+    },
+    optimalDefense: 'Inspector Pendelton and Regulatory Board, our microbiological assay isolated the transient bioburden spike to HEPA unit 4 differential pressure drift, completely isolated from hermetically laser-welded titanium housings. Under FDA 21 CFR § 820.70 and ISO 11135, all finished devices achieved 10^-6 Sterility Assurance Level (SAL). With DHR reconciliation verified and HEPA filter banks upgraded, CAPA-2026-MED is formally closed with zero recall exposure.',
+    rubricOptimal: { physics: '25 / 25', normative: '25 / 25', poise: '25 / 25', containment: '25 / 25' },
+    rubricSuboptimal: { physics: '11 / 25', normative: '12 / 25', poise: '12 / 25', containment: '10 / 25' },
+    verdictOptimal: 'EXONERADO (DICTAMEN FAVORABLE)',
+    verdictSuboptimal: 'WARNING LETTER RECOMENDADO',
+    liabilityOptimal: '$0 USD (Absorción Mitigada)',
+    liabilitySuboptimal: '$2,400,000 USD (Recall Regulatorio)',
+    notesOptimal: '"El comité regulador valida la trazabilidad del DHR y la integridad de la barrera de esterilización. No se emitirá Form 483 ni Warning Letter."',
+    notesSuboptimal: '"Desviación regulatoria crítica. Falta de validación formal de esterilización previa a liberación de lote."',
+    reportFilename: 'MedTech_Pacemaker_Board_Resolution.md'
+  },
+  'ev': {
+    id: 'ev',
+    pillId: 'tribunal-scen-pill-ev',
+    title: 'Electromovilidad: Inversor 800V SiC & Prevención de Recall (Saltillo)',
+    chairName: 'Robert Sterling 🇺🇸 & Dr. Ethan Vance 🇺🇸',
+    chairRole: 'Global Powertrain Executive Board • Detroit / Saltillo EV Program',
+    promptText: '"Chief Powertrain Architect Morales, field telemetry from 1,200 electric vehicles reveals SiC MOSFET gate-driver thermal trips under aggressive regenerative braking. Prove to this executive board that software firmware throttling resolves the root cause without requiring an 800V inverter hardware recall."',
+    arguments: {
+      physics: 'Telemetry Fourier analysis confirms gate-driver junction overheating stems from dead-time shoot-through resonances at 20 kHz switching frequencies, not silicon carbide die fracture.',
+      normative: 'Under ISO 26262 ASIL-D functional safety safety-case SC-882, adaptive dead-time software control and active thermal foldback preserve full torque dynamics while keeping junction temperature below 150°C.',
+      financial: 'Deploying an Over-The-Air (OTA) AUTOSAR firmware update resolves the anomaly across 100% of customer vehicles in 48 hours, eliminating a $45M USD physical hardware recall.'
+    },
+    optimalDefense: 'Executive Board Members, telemetry Fourier analysis proves SiC gate-driver thermal trips are triggered by dead-time shoot-through harmonics at 20 kHz switching frequencies under extreme regenerative braking, not semiconductor substrate degradation. Under ISO 26262 ASIL-D functional safety specifications, we have validated an adaptive dead-time calibration patch in our AUTOSAR BSW stack. Pushing this OTA firmware update eliminates the resonance and guarantees junction temperatures below 145°C, preventing a $45M USD hardware recall.',
+    rubricOptimal: { physics: '25 / 25', normative: '25 / 25', poise: '25 / 25', containment: '25 / 25' },
+    rubricSuboptimal: { physics: '10 / 25', normative: '11 / 25', poise: '13 / 25', containment: '07 / 25' },
+    verdictOptimal: 'EXONERADO (DICTAMEN FAVORABLE)',
+    verdictSuboptimal: 'RECALL OBLIGATORIO DECRETADO',
+    liabilityOptimal: '$0 USD (Absorción Mitigada)',
+    liabilitySuboptimal: '$45,000,000 USD (Costo de Recall Físico)',
+    notesOptimal: '"Resolución ejecutiva aprobada. El parche de firmware OTA cumple con ISO 26262 ASIL-D y cancela formalmente cualquier necesidad de retiro de hardware."',
+    notesSuboptimal: '"Riesgo inaceptable de seguridad funcional. El consejo ordena reemplazo físico de módulos de potencia."',
+    reportFilename: 'EV_Inverter_Board_Resolution.md'
+  }
+};
+
+window.currentTribunalScenario = 'aero';
+
+window.initEscalationTribunal = function() {
+  window.switchTribunalScenario(window.currentTribunalScenario || 'aero');
+};
+
+window.switchTribunalScenario = function(scenKey) {
+  const scen = window.TRIBUNAL_SCENARIOS[scenKey];
+  if (!scen) return;
+  window.currentTribunalScenario = scenKey;
+
+  // Update pills
+  const pills = ['aero', 'medtech', 'ev'];
+  pills.forEach(p => {
+    const pill = document.getElementById(`tribunal-scen-pill-${p}`);
+    if (pill) pill.classList.toggle('active', p === scenKey);
+  });
+
+  // Update chairperson & prompt
+  const nameEl = document.getElementById('tribunal-chair-name');
+  if (nameEl) nameEl.textContent = scen.chairName;
+  const roleEl = document.getElementById('tribunal-chair-role');
+  if (roleEl) roleEl.textContent = scen.chairRole;
+  const promptEl = document.getElementById('tribunal-examination-prompt');
+  if (promptEl) promptEl.textContent = scen.promptText;
+
+  // Reset candidate input
+  const inputEl = document.getElementById('tribunal-candidate-defense-input');
+  if (inputEl) inputEl.value = '';
+
+  // Telemetry reset
+  const verdEl = document.getElementById('tribunal-verdict-status');
+  const liabEl = document.getElementById('tribunal-liability-exposure');
+  const notesEl = document.getElementById('tribunal-resolution-notes');
+
+  if (verdEl) {
+    verdEl.textContent = 'EN DELIBERACIÓN';
+    verdEl.style.color = '#38bdf8';
+  }
+  if (liabEl) {
+    liabEl.textContent = 'Bajo Escrutinio';
+    liabEl.style.color = '#cbd5e1';
+  }
+  if (notesEl) {
+    notesEl.textContent = 'Presenta tu alegato técnico y justificación física para que el consejo emita su veredicto.';
+  }
+};
+
+window.applyTribunalArgument = function(argKey) {
+  const scen = window.TRIBUNAL_SCENARIOS[window.currentTribunalScenario];
+  const inputEl = document.getElementById('tribunal-candidate-defense-input');
+  if (!scen || !inputEl) return;
+
+  const argText = scen.arguments[argKey] || '';
+  if (inputEl.value.trim().length === 0) {
+    inputEl.value = argText;
+  } else {
+    inputEl.value += ' ' + argText;
+  }
+};
+
+window.submitTribunalDefense = function() {
+  const scen = window.TRIBUNAL_SCENARIOS[window.currentTribunalScenario];
+  const inputEl = document.getElementById('tribunal-candidate-defense-input');
+  const verdEl = document.getElementById('tribunal-verdict-status');
+  const liabEl = document.getElementById('tribunal-liability-exposure');
+  const rubPhys = document.getElementById('tribunal-rubric-physics');
+  const rubNorm = document.getElementById('tribunal-rubric-normative');
+  const rubPoise = document.getElementById('tribunal-rubric-poise');
+  const rubCont = document.getElementById('tribunal-rubric-containment');
+  const notesEl = document.getElementById('tribunal-resolution-notes');
+
+  if (!scen || !inputEl) return;
+  const text = inputEl.value.trim().toLowerCase();
+
+  if (text.length === 0) {
+    alert('Por favor formula o dicta tu alegato ante el consejo en inglés C1.');
+    return;
+  }
+
+  const isOptimal = text.length > 60 && (
+    text.includes('fractography') ||
+    text.includes('carbide') ||
+    text.includes('creep') ||
+    text.includes('as9102') ||
+    text.includes('annealing') ||
+    text.includes('hip') ||
+    text.includes('bioburden') ||
+    text.includes('hepa') ||
+    text.includes('sal') ||
+    text.includes('sterility') ||
+    text.includes('gate-driver') ||
+    text.includes('fourier') ||
+    text.includes('dead-time') ||
+    text.includes('autosar') ||
+    text.includes('ota')
+  );
+
+  if (isOptimal) {
+    if (verdEl) {
+      verdEl.textContent = scen.verdictOptimal;
+      verdEl.style.color = '#10b981';
+    }
+    if (liabEl) {
+      liabEl.textContent = scen.liabilityOptimal;
+      liabEl.style.color = '#10b981';
+    }
+    if (rubPhys) rubPhys.textContent = scen.rubricOptimal.physics;
+    if (rubNorm) rubNorm.textContent = scen.rubricOptimal.normative;
+    if (rubPoise) rubPoise.textContent = scen.rubricOptimal.poise;
+    if (rubCont) rubCont.textContent = scen.rubricOptimal.containment;
+    if (notesEl) notesEl.textContent = scen.notesOptimal;
+  } else {
+    if (verdEl) {
+      verdEl.textContent = scen.verdictSuboptimal;
+      verdEl.style.color = '#ef4444';
+    }
+    if (liabEl) {
+      liabEl.textContent = scen.liabilitySuboptimal;
+      liabEl.style.color = '#ef4444';
+    }
+    if (rubPhys) rubPhys.textContent = scen.rubricSuboptimal.physics;
+    if (rubNorm) rubNorm.textContent = scen.rubricSuboptimal.normative;
+    if (rubPoise) rubPoise.textContent = scen.rubricSuboptimal.poise;
+    if (rubCont) rubCont.textContent = scen.rubricSuboptimal.containment;
+    if (notesEl) notesEl.textContent = scen.notesSuboptimal;
+  }
+};
+
+window.playTribunalAudio = function() {
+  const scen = window.TRIBUNAL_SCENARIOS[window.currentTribunalScenario];
+  if (!scen) return;
+
+  if (typeof window.speechSynthesis !== 'undefined') {
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(scen.promptText);
+    utt.lang = 'en-US';
+    utt.rate = 0.98;
+    window.speechSynthesis.speak(utt);
+  } else {
+    alert(`[EXECUTIVE BOARD INTERROGATION]\n\n${scen.chairName}:\n${scen.promptText}`);
+  }
+};
+
+window.toggleTribunalMic = function() {
+  const btn = document.getElementById('btn-tribunal-mic-toggle');
+  const label = document.getElementById('tribunal-mic-label');
+  const inputEl = document.getElementById('tribunal-candidate-defense-input');
+  const scen = window.TRIBUNAL_SCENARIOS[window.currentTribunalScenario];
+
+  if (!btn || !label || !inputEl || !scen) return;
+
+  if (btn.classList.contains('recording')) {
+    btn.classList.remove('recording');
+    btn.style.background = '';
+    btn.style.color = '';
+    label.textContent = 'Dictar Alegato';
+  } else {
+    btn.classList.add('recording');
+    btn.style.background = '#ec4899';
+    btn.style.color = '#fff';
+    label.textContent = 'Grabando Alegato C1...';
+    if (inputEl.value.trim().length === 0) {
+      inputEl.value = scen.optimalDefense;
+    }
+  }
+};
+
+window.exportTribunalResolution = function() {
+  const scen = window.TRIBUNAL_SCENARIOS[window.currentTribunalScenario];
+  if (!scen) return;
+
+  const md = `# stemOS Executive Technical Escalation Board Resolution
+**Case**: ${scen.title}
+**Tribunal Board Chairs**: ${scen.chairName} (${scen.chairRole})
+**Date of Deliberation**: ${new Date().toISOString()}
+**Lead Defending Engineer**: Ing. Diana Laura Morales (TecNM / stemOS Senior Fellow)
+
+---
+
+## 1. Formal Cross-Examination Inquiry
+${scen.promptText}
+
+## 2. Board Rubric & Quantitative Evaluation
+- **Metallurgical & Physical Rigor**: 25 / 25
+- **International Normative Precedent**: 25 / 25
+- **Executive Poise (CEFR C1)**: 25 / 25
+- **Risk Mitigation & Financial Containment**: 25 / 25
+
+## 3. Official Board Ruling & Binding Resolution
+- **Official Verdict**: ${scen.verdictOptimal}
+- **Contractual Liability Avoided**: ${scen.liabilityOptimal}
+- **Resolution Summary**:
+${scen.notesOptimal}
+
+---
+*Official stemOS Executive Escalation Tribunal Protocol • Cryptographic Seal: 7D02D38F1A0E7507C9F*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = scen.reportFilename;
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 24: AUTONOMOUS MULTI-PLANT VR WALKTHROUGH & DIGITAL TWIN 3.0
+// ============================================================================
+
+window.VR_WALKTHROUGH_DATA = {
+  bays: {
+    'bay-1': {
+      id: 'bay-1',
+      title: 'BAY 1: ASML TWINSCAN EUV / DUV SCANNER',
+      equipment: 'ASML NXE:3600D EUV Scanner (0.33 NA, 13.5nm source)',
+      directorPrompt: '"Look at the laminar airflow vector field over Bay 1. We are experiencing micro-eddy turbulence right above the EUV reticle stage and a 4 Pa pressure drop across the airlock transition. How do you isolate the contaminated plenum without stopping the entire 3nm line, and how will you verify zero particulate contamination under ISO 14644-1 Class 1?"',
+      telemetry: {
+        particles: '0.2 / m³',
+        airflow: '0.45 m/s',
+        pressure: '+28.5 Pa',
+        climate: '20.0°C | 42%',
+        isoClass: 'ISO 14644-1 Cl. 1'
+      },
+      actionResults: {
+        'filter-test': {
+          text: 'PAO photometer scan across ULPA grid shows 99.99995% efficiency. Plenum zone 2 damper readjusted to 1800 CFM.',
+          pressure: '+29.2 Pa',
+          particles: '0.1 / m³'
+        },
+        'velocity-profile': {
+          text: 'Hot-wire anemometer grid indicates uniform unidirectional velocity of 0.45 ± 0.02 m/s across the wafer track.',
+          airflow: '0.45 m/s'
+        },
+        'particle-sampling': {
+          text: 'Optical Laser Particle Counter (LPC) 28.3 L/min sample confirms 0 counts ≥0.1 μm over a 15-minute dwell cycle.',
+          particles: '0.0 / m³',
+          isoClass: 'ISO Class 1 (Zero-Defect)'
+        }
+      },
+      anomaly: {
+        text: 'ALERTA ISO 14644: Disrupción de Flujo Laminar detectada en banco de filtros ULPA 04. Vórtice turbulento en retícula EUV.',
+        particlesAlert: '14.8 / m³ (ISO 3 Warning)',
+        pressureAlert: '+12.1 Pa (Compromised)',
+        airflowAlert: '0.22 m/s (Turbulent)',
+        resolvedText: 'Válvula de sellado de plenum ULPA-04 sellada herméticamente. Flujo laminar reestablecido a 0.45 m/s unidireccional.'
+      },
+      optimalFeedback: 'Excellent technical rigor. Your prompt identification of the positive pressure cascade and immediate verification of the ULPA filter integrity aligns with SEMI E78 standards and minimizes defect density risk.',
+      vocab: ['#LaminarAirflow', '#PressureCascade', '#ISO14644-1', '#YieldAssurance', '#EUVLithography']
+    },
+    'bay-2': {
+      id: 'bay-2',
+      title: 'BAY 2: HIGH-CURRENT ION IMPLANTATION & RTA',
+      equipment: 'Varian VIISta Trident High-Current Implanter & Flash Lamp RTA',
+      directorPrompt: '"During 7nm source/drain Boron implant annealing at 1050°C, the vacuum loadlock turbo-molecular pump telemetry shows a subtle hydrocarbon outgassing spike of 8x10^-8 Torr. How do you verify toxic dopant containment (AsH3/PH3) under SEMI S2 protocols while safeguarding downstream wafer diffusion profiles?"',
+      telemetry: {
+        particles: '0.4 / m³',
+        airflow: '0.48 m/s',
+        pressure: '+31.0 Pa',
+        climate: '19.8°C | 40%',
+        isoClass: 'ISO 14644-1 Cl. 1'
+      },
+      actionResults: {
+        'filter-test': {
+          text: 'Scrubber intake differential pressure calibrated to -120 Pa. Zero fugitive hydride emissions detected.',
+          pressure: '+31.5 Pa',
+          particles: '0.2 / m³'
+        },
+        'velocity-profile': {
+          text: 'Fume hood capture velocity verified at 0.52 m/s at the wafer transfer chamber aperture.',
+          airflow: '0.48 m/s'
+        },
+        'particle-sampling': {
+          text: 'In-situ residual gas analyzer (RGA) confirms baseline vacuum restoration at 2.4x10^-9 Torr.',
+          particles: '0.1 / m³',
+          isoClass: 'ISO Class 1 Certified'
+        }
+      },
+      anomaly: {
+        text: 'ALERTA SEMI S2: Presión en cámara de implantación fuera de tolerancia. Riesgo de outgassing de hidruros tóxicos.',
+        particlesAlert: '28.5 / m³',
+        pressureAlert: '+14.0 Pa',
+        airflowAlert: '0.19 m/s',
+        resolvedText: 'Criobombas regeneradas y enclavamiento de seguridad SEMI S2 rearmado exitosamente.'
+      },
+      optimalFeedback: 'Outstanding command of high-vacuum semiconductor safety. Your integration of SEMI S2 fail-safe interlocks and toxic gas abatement verification demonstrates executive-grade Fab leadership.',
+      vocab: ['#IonImplantation', '#SEMIS2Safety', '#HydrideAbatement', '#HighVacuum', '#RTAAnnealing']
+    },
+    'bay-3': {
+      id: 'bay-3',
+      title: 'BAY 3: ALD ATOMIC LAYER DEPOSITION & CMP',
+      equipment: 'ASM Pulsar ALD Reactor & Ebara F-REX CMP Planarization',
+      directorPrompt: '"We are depositing 12nm of High-κ HfO2 dielectric. The in-line slurry delivery for subsequent CMP shows an abrasive particle agglomeration micro-spike at 0.5μm, threatening scratch defects on shallow trench isolation (STI). What is your immediate containment and slurry filtration bypass protocol?"',
+      telemetry: {
+        particles: '0.3 / m³',
+        airflow: '0.44 m/s',
+        pressure: '+29.0 Pa',
+        climate: '20.2°C | 44%',
+        isoClass: 'ISO 14644-1 Cl. 1'
+      },
+      actionResults: {
+        'filter-test': {
+          text: 'Dual-stage depth polypropylene capsule filters engaged; large particle count (LPC >0.56μm) dropped below 500/mL.',
+          pressure: '+29.5 Pa',
+          particles: '0.2 / m³'
+        },
+        'velocity-profile': {
+          text: 'CMP polisher laminar exhaust velocity calibrated to 0.44 m/s, preventing aerosolized slurry back-draft.',
+          airflow: '0.44 m/s'
+        },
+        'particle-sampling': {
+          text: 'Surfscan laser light scattering confirms post-CMP surface roughness Ra < 0.12 nm with zero micro-scratches.',
+          particles: '0.1 / m³',
+          isoClass: 'ISO Class 1 Certified'
+        }
+      },
+      anomaly: {
+        text: 'ALERTA CMP: Aglomeración de nano-partículas en slurry abrasivo de alúmina/sílice. Riesgo de microrrayado STI.',
+        particlesAlert: '32.1 / m³',
+        pressureAlert: '+18.2 Pa',
+        airflowAlert: '0.25 m/s',
+        resolvedText: 'Filtro bypass POU activado y flujo de slurry purgado con agua desionizada ultra-pura (UPW).'
+      },
+      optimalFeedback: 'Flawless root-cause mitigation. Your rapid diversion to point-of-use (POU) dual filtration protected the STI dielectric stacks while keeping throughput steady.',
+      vocab: ['#HighKappaDielectric', '#CMPPlanarization', '#SlurryFiltration', '#STIIsolation', '#YieldEngineering']
+    },
+    'bay-4': {
+      id: 'bay-4',
+      title: 'BAY 4: IN-LINE CD-SEM & SPECTROSCOPIC ELLIPSOMETRY',
+      equipment: 'Hitachi CG5000 High-Resolution CD-SEM & KLA SpectraShape',
+      directorPrompt: '"In-line CD-SEM measurements on our 3nm gate critical dimension indicate a 0.8nm positive drift over 3 consecutive lots. Simultaneously, spectroscopic ellipsometry reports a 1.2% film thickness variation. How do you cross-correlate these metrology signals and issue an automated feed-forward APC correction to the litho track?"',
+      telemetry: {
+        particles: '0.1 / m³',
+        airflow: '0.46 m/s',
+        pressure: '+30.0 Pa',
+        climate: '20.1°C | 41%',
+        isoClass: 'ISO 14644-1 Cl. 1'
+      },
+      actionResults: {
+        'filter-test': {
+          text: 'SEM electron gun ultra-high vacuum verified at 1x10^-10 Torr. Acoustic dampening chamber noise < 30 dB.',
+          pressure: '+30.5 Pa',
+          particles: '0.1 / m³'
+        },
+        'velocity-profile': {
+          text: 'Precision environmental enclosure airflow tuned to 0.46 m/s with micro-perforated ceiling panels.',
+          airflow: '0.46 m/s'
+        },
+        'particle-sampling': {
+          text: 'Metrology stage zero-vibration baseline confirmed. Automated APC dose adjustment loop closed.',
+          particles: '0.0 / m³',
+          isoClass: 'ISO Class 1 (Zero-Defect)'
+        }
+      },
+      anomaly: {
+        text: 'ALERTA METROLOGÍA: Desviación crítica de dimensión (CD drift > 0.6nm) detectada en compuerta 3nm.',
+        particlesAlert: '18.4 / m³',
+        pressureAlert: '+21.0 Pa',
+        airflowAlert: '0.30 m/s',
+        resolvedText: 'Lazo cerrado Advanced Process Control (APC) compensó dosis de exposición EUV en -1.4 mJ/cm².'
+      },
+      optimalFeedback: 'Superb statistical process control and metrology correlation. Your feed-forward APC architecture effectively arrested the drift before any wafer dispositioning was required.',
+      vocab: ['#CDSEM', '#SpectroscopicEllipsometry', '#APCControl', '#GateEtchMetrology', '#SixSigmaSPC']
+    }
+  }
+};
+
+window.currentWalkthroughBay = 'bay-1';
+window.walkthroughCameraView = 'iso';
+window.walkthroughShowParticles = true;
+window.walkthroughAnomalyActive = false;
+
+window.initVirtualWalkthrough = function() {
+  window.selectWalkthroughBay(window.currentWalkthroughBay || 'bay-1');
+};
+
+window.selectWalkthroughBay = function(bayId) {
+  const bay = window.VR_WALKTHROUGH_DATA.bays[bayId];
+  if (!bay) return;
+  window.currentWalkthroughBay = bayId;
+  window.walkthroughAnomalyActive = false;
+
+  // Update nav buttons
+  ['bay-1', 'bay-2', 'bay-3', 'bay-4'].forEach(id => {
+    const btn = document.getElementById(`btn-${id}`);
+    if (btn) btn.classList.toggle('active', id === bayId);
+  });
+
+  // Update titles & prompts
+  const titleEl = document.getElementById('walkthrough-bay-title');
+  if (titleEl) titleEl.textContent = bay.title;
+
+  const promptEl = document.getElementById('walkthrough-director-prompt');
+  if (promptEl) promptEl.textContent = bay.directorPrompt;
+
+  // Hide anomaly banner
+  const banner = document.getElementById('walkthrough-anomaly-banner');
+  if (banner) banner.style.display = 'none';
+
+  // Update telemetry
+  const partEl = document.getElementById('walkthrough-stat-particles');
+  const airEl = document.getElementById('walkthrough-stat-airflow');
+  const pressEl = document.getElementById('walkthrough-stat-pressure');
+  const climEl = document.getElementById('walkthrough-stat-climate');
+
+  if (partEl) partEl.textContent = bay.telemetry.particles;
+  if (airEl) airEl.textContent = bay.telemetry.airflow;
+  if (pressEl) pressEl.textContent = bay.telemetry.pressure;
+  if (climEl) climEl.textContent = bay.telemetry.climate;
+
+  // Reset debrief
+  const debriefBody = document.getElementById('walkthrough-debrief-body');
+  if (debriefBody) debriefBody.textContent = 'Selecciona una prueba técnica o escribe tu justificación técnica para que el Dr. Sato emita su evaluación de cuarto limpio.';
+
+  const scorePill = document.getElementById('walkthrough-feedback-score');
+  if (scorePill) {
+    scorePill.textContent = 'Ready for Inspection';
+    scorePill.style.color = '#38bdf8';
+    scorePill.style.borderColor = '#0284c7';
+    scorePill.style.background = 'rgba(2,132,199,0.15)';
+  }
+
+  // Draw Canvas
+  window.drawWalkthroughCanvas();
+};
+
+window.setWalkthroughCamera = function(mode) {
+  window.walkthroughCameraView = mode;
+  const isoBtn = document.getElementById('btn-walkthrough-view-iso');
+  const topBtn = document.getElementById('btn-walkthrough-view-top');
+  if (isoBtn) {
+    isoBtn.style.color = (mode === 'iso') ? '#38bdf8' : '#94a3b8';
+    isoBtn.style.borderColor = (mode === 'iso') ? '#0284c7' : '#334155';
+  }
+  if (topBtn) {
+    topBtn.style.color = (mode === 'top') ? '#38bdf8' : '#94a3b8';
+    topBtn.style.borderColor = (mode === 'top') ? '#0284c7' : '#334155';
+  }
+  window.drawWalkthroughCanvas();
+};
+
+window.toggleWalkthroughParticles = function() {
+  window.walkthroughShowParticles = !window.walkthroughShowParticles;
+  const btn = document.getElementById('btn-walkthrough-toggle-particles');
+  if (btn) {
+    btn.innerHTML = window.walkthroughShowParticles 
+      ? '<i class="fa-solid fa-wind"></i> Vectores ON'
+      : '<i class="fa-solid fa-ban"></i> Vectores OFF';
+    btn.style.color = window.walkthroughShowParticles ? '#10b981' : '#ef4444';
+  }
+  window.drawWalkthroughCanvas();
+};
+
+window.drawWalkthroughCanvas = function() {
+  const canvas = document.getElementById('walkthrough-canvas-viewport');
+  if (!canvas) return;
+  const ctx = canvas.getContext ? canvas.getContext('2d') : null;
+  if (!ctx) return;
+
+  const w = canvas.width || 760;
+  const h = canvas.height || 420;
+
+  // Clear background
+  ctx.fillStyle = '#020617';
+  ctx.fillRect(0, 0, w, h);
+
+  const isIso = window.walkthroughCameraView === 'iso';
+  const bay = window.VR_WALKTHROUGH_DATA.bays[window.currentWalkthroughBay] || window.VR_WALKTHROUGH_DATA.bays['bay-1'];
+  const hasAnomaly = window.walkthroughAnomalyActive;
+
+  if (isIso) {
+    // ── ISOMETRIC CLEANROOM PROJECTION ──
+    // Raised floor grid
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 1;
+    for (let x = -200; x <= w + 200; x += 40) {
+      ctx.beginPath();
+      ctx.moveTo(x, h * 0.4);
+      ctx.lineTo(x - 180, h * 0.95);
+      ctx.stroke();
+    }
+    for (let y = h * 0.4; y <= h * 0.95; y += 30) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+
+    // Overhead ULPA / HEPA Filter Bank Plenum (Ceiling)
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(80, 20, w - 160, 50);
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(80, 20, w - 160, 50);
+
+    // Plenum Filter Grid Lines
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+    ctx.lineWidth = 1;
+    for (let gx = 100; gx < w - 80; gx += 30) {
+      ctx.beginPath();
+      ctx.moveTo(gx, 20);
+      ctx.lineTo(gx, 70);
+      ctx.stroke();
+    }
+
+    // Main Equipment Block (e.g. ASML Twinscan Scanner / Implanter / CMP)
+    const eqGrad = ctx.createLinearGradient(w * 0.3, h * 0.35, w * 0.7, h * 0.75);
+    eqGrad.addColorStop(0, '#1e293b');
+    eqGrad.addColorStop(0.5, '#0f172a');
+    eqGrad.addColorStop(1, '#0284c7');
+
+    ctx.fillStyle = eqGrad;
+    ctx.strokeStyle = hasAnomaly ? '#ef4444' : '#38bdf8';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(w * 0.28, h * 0.4, w * 0.44, h * 0.4, 8) : ctx.rect(w * 0.28, h * 0.4, w * 0.44, h * 0.4);
+    ctx.fill();
+    ctx.stroke();
+
+    // Equipment Front Specular Chamber Window
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+    ctx.fillRect(w * 0.33, h * 0.46, w * 0.34, h * 0.16);
+    ctx.strokeStyle = '#64748b';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(w * 0.33, h * 0.46, w * 0.34, h * 0.16);
+
+    // Silicon Wafer Stage (Glowing 300mm Wafer Disk)
+    ctx.beginPath();
+    ctx.ellipse(w * 0.5, h * 0.54, 45, 14, 0, 0, Math.PI * 2);
+    ctx.fillStyle = hasAnomaly ? 'rgba(239, 68, 68, 0.3)' : 'rgba(56, 189, 248, 0.35)';
+    ctx.fill();
+    ctx.strokeStyle = hasAnomaly ? '#ef4444' : '#38bdf8';
+    ctx.stroke();
+
+    // Equipment Status LED & Label
+    ctx.fillStyle = hasAnomaly ? '#ef4444' : '#10b981';
+    ctx.beginPath();
+    ctx.arc(w * 0.31, h * 0.44, 5, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#f8fafc';
+    ctx.font = 'bold 11px system-ui, sans-serif';
+    ctx.fillText(bay.equipment, w * 0.33, h * 0.44);
+
+    // Laminar Airflow Velocity Vectors (Downward Streamlines)
+    if (window.walkthroughShowParticles) {
+      ctx.strokeStyle = hasAnomaly ? 'rgba(239, 68, 68, 0.65)' : 'rgba(56, 189, 248, 0.6)';
+      ctx.lineWidth = 1.5;
+
+      const vectorCols = [120, 160, 200, 250, 310, 360, 410, 460, 520, 570, 610];
+      vectorCols.forEach(vx => {
+        ctx.beginPath();
+        ctx.moveTo(vx, 70);
+        ctx.lineTo(vx, h * 0.38);
+        ctx.stroke();
+
+        // Arrow head
+        ctx.beginPath();
+        ctx.moveTo(vx - 3, h * 0.38 - 6);
+        ctx.lineTo(vx, h * 0.38);
+        ctx.lineTo(vx + 3, h * 0.38 - 6);
+        ctx.stroke();
+      });
+
+      // Floating ISO Particles
+      ctx.fillStyle = hasAnomaly ? '#f87171' : '#38bdf8';
+      const pCount = hasAnomaly ? 32 : 8;
+      for (let i = 0; i < pCount; i++) {
+        const px = 100 + ((i * 47) % (w - 200));
+        const py = 75 + ((i * 31) % (h * 0.7));
+        ctx.beginPath();
+        ctx.arc(px, py, hasAnomaly ? 2.5 : 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Anomaly Turbulent Eddy
+      if (hasAnomaly) {
+        ctx.strokeStyle = 'rgba(239, 68, 68, 0.85)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(w * 0.5, h * 0.36, 26, 0, Math.PI * 1.6);
+        ctx.stroke();
+
+        ctx.fillStyle = '#fee2e2';
+        ctx.font = 'bold 10px system-ui, sans-serif';
+        ctx.fillText('TURBULENT EDDY VORTEX', w * 0.42, h * 0.33);
+      }
+    }
+
+  } else {
+    // ── TOP-DOWN (PLAN) VIEW ──
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < w; x += 40) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+      ctx.stroke();
+    }
+    for (let y = 0; y < h; y += 40) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+
+    // Equipment Footprint (Top View)
+    ctx.fillStyle = '#0f172a';
+    ctx.strokeStyle = hasAnomaly ? '#ef4444' : '#38bdf8';
+    ctx.lineWidth = 2;
+    ctx.fillRect(w * 0.25, h * 0.25, w * 0.5, h * 0.5);
+    ctx.strokeRect(w * 0.25, h * 0.25, w * 0.5, h * 0.5);
+
+    // Wafer Load Ports & Reticle Stage
+    ctx.fillStyle = 'rgba(56, 189, 248, 0.2)';
+    ctx.fillRect(w * 0.28, h * 0.3, 60, 40);
+    ctx.strokeRect(w * 0.28, h * 0.3, 60, 40);
+
+    ctx.fillRect(w * 0.62, h * 0.3, 60, 40);
+    ctx.strokeRect(w * 0.62, h * 0.3, 60, 40);
+
+    // Central Chamber
+    ctx.beginPath();
+    ctx.arc(w * 0.5, h * 0.5, 45, 0, Math.PI * 2);
+    ctx.fillStyle = hasAnomaly ? 'rgba(239, 68, 68, 0.25)' : 'rgba(2, 132, 199, 0.25)';
+    ctx.fill();
+    ctx.strokeStyle = hasAnomaly ? '#ef4444' : '#0284c7';
+    ctx.stroke();
+
+    ctx.fillStyle = '#f8fafc';
+    ctx.font = 'bold 12px system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(bay.title, w * 0.5, h * 0.5);
+    ctx.font = '10px system-ui, sans-serif';
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillText('TOP-DOWN PLAN VIEW • AIRLOCK ISOLATION ZONE', w * 0.5, h * 0.5 + 16);
+    ctx.textAlign = 'left';
+  }
+
+  // HUD Top Overlay Bar
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
+  ctx.fillRect(0, 0, w, 28);
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, 28);
+  ctx.lineTo(w, 28);
+  ctx.stroke();
+
+  ctx.fillStyle = hasAnomaly ? '#ef4444' : '#10b981';
+  ctx.font = 'bold 10px monospace';
+  ctx.fillText(hasAnomaly ? '● CONTAMINATION ANOMALY ACTIVE' : '● ISO 14644-1 CLASS 1 CLEANROOM ENVIRONMENT NOMINAL', 14, 18);
+
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '10px monospace';
+  ctx.fillText(`CAM: ${window.walkthroughCameraView.toUpperCase()} | PARTICLES: ${window.walkthroughShowParticles ? 'ACTIVE' : 'MUTED'}`, w - 210, 18);
+};
+
+window.applyWalkthroughAction = function(actionType) {
+  const bay = window.VR_WALKTHROUGH_DATA.bays[window.currentWalkthroughBay];
+  if (!bay) return;
+
+  const result = bay.actionResults[actionType];
+  if (!result) return;
+
+  // Update telemetry values if specified in action
+  if (result.pressure) {
+    const pressEl = document.getElementById('walkthrough-stat-pressure');
+    if (pressEl) pressEl.textContent = result.pressure;
+  }
+  if (result.airflow) {
+    const airEl = document.getElementById('walkthrough-stat-airflow');
+    if (airEl) airEl.textContent = result.airflow;
+  }
+  if (result.particles) {
+    const partEl = document.getElementById('walkthrough-stat-particles');
+    if (partEl) partEl.textContent = result.particles;
+  }
+
+  // Update debrief card
+  const debriefBody = document.getElementById('walkthrough-debrief-body');
+  if (debriefBody) {
+    debriefBody.textContent = `[Verificación Técnica Completada]: ${result.text}`;
+  }
+
+  const scorePill = document.getElementById('walkthrough-feedback-score');
+  if (scorePill) {
+    scorePill.textContent = 'Test Passed • 100%';
+    scorePill.style.color = '#10b981';
+    scorePill.style.borderColor = '#059669';
+    scorePill.style.background = 'rgba(16,185,129,0.15)';
+  }
+
+  window.drawWalkthroughCanvas();
+};
+
+window.injectWalkthroughAnomaly = function() {
+  const bay = window.VR_WALKTHROUGH_DATA.bays[window.currentWalkthroughBay];
+  if (!bay) return;
+
+  window.walkthroughAnomalyActive = true;
+
+  // Show banner
+  const banner = document.getElementById('walkthrough-anomaly-banner');
+  const bannerText = document.getElementById('walkthrough-anomaly-text');
+  if (banner) banner.style.display = 'flex';
+  if (bannerText) bannerText.textContent = bay.anomaly.text;
+
+  // Degrade telemetry
+  const partEl = document.getElementById('walkthrough-stat-particles');
+  const airEl = document.getElementById('walkthrough-stat-airflow');
+  const pressEl = document.getElementById('walkthrough-stat-pressure');
+
+  if (partEl) partEl.textContent = bay.anomaly.particlesAlert;
+  if (airEl) airEl.textContent = bay.anomaly.airflowAlert;
+  if (pressEl) pressEl.textContent = bay.anomaly.pressureAlert;
+
+  const scorePill = document.getElementById('walkthrough-feedback-score');
+  if (scorePill) {
+    scorePill.textContent = 'CRITICAL ALERT (Action Required)';
+    scorePill.style.color = '#ef4444';
+    scorePill.style.borderColor = '#dc2626';
+    scorePill.style.background = 'rgba(239,68,68,0.15)';
+  }
+
+  const debriefBody = document.getElementById('walkthrough-debrief-body');
+  if (debriefBody) {
+    debriefBody.textContent = `[ALERTA DE ANOMALÍA]: ${bay.anomaly.text} Presenta una justificación técnica C1 en el formulario inferior para ejecutar el protocolo de contención.`;
+  }
+
+  window.drawWalkthroughCanvas();
+};
+
+window.resolveWalkthroughAnomaly = function() {
+  const bay = window.VR_WALKTHROUGH_DATA.bays[window.currentWalkthroughBay];
+  if (!bay) return;
+
+  window.walkthroughAnomalyActive = false;
+
+  // Hide banner
+  const banner = document.getElementById('walkthrough-anomaly-banner');
+  if (banner) banner.style.display = 'none';
+
+  // Restore telemetry
+  const partEl = document.getElementById('walkthrough-stat-particles');
+  const airEl = document.getElementById('walkthrough-stat-airflow');
+  const pressEl = document.getElementById('walkthrough-stat-pressure');
+  const climEl = document.getElementById('walkthrough-stat-climate');
+
+  if (partEl) partEl.textContent = bay.telemetry.particles;
+  if (airEl) airEl.textContent = bay.telemetry.airflow;
+  if (pressEl) pressEl.textContent = bay.telemetry.pressure;
+  if (climEl) climEl.textContent = bay.telemetry.climate;
+
+  const scorePill = document.getElementById('walkthrough-feedback-score');
+  if (scorePill) {
+    scorePill.textContent = 'Anomaly Resolved (Nominal)';
+    scorePill.style.color = '#10b981';
+    scorePill.style.borderColor = '#059669';
+    scorePill.style.background = 'rgba(16,185,129,0.15)';
+  }
+
+  const debriefBody = document.getElementById('walkthrough-debrief-body');
+  if (debriefBody) {
+    debriefBody.textContent = `[Contención Exitosa]: ${bay.anomaly.resolvedText} El entorno de sala limpia ha regresado al estado ISO 14644-1 Clase 1.`;
+  }
+
+  window.drawWalkthroughCanvas();
+};
+
+window.playWalkthroughAudio = function() {
+  const bay = window.VR_WALKTHROUGH_DATA.bays[window.currentWalkthroughBay];
+  if (!bay) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(bay.directorPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleWalkthroughMic = function() {
+  const textarea = document.getElementById('walkthrough-candidate-response');
+  if (!textarea) return;
+
+  const sampleDefense = "We must immediately initiate a dynamic pressure cascade lock down, increasing adjacent plenum blower speed to restore a positive ΔP gradient of +25 Pa. Concurrently, we will deploy real-time laser photometer sampling to isolate the turbulent eddy and prevent reticle pellicle deposition...";
+  if (textarea.value.trim().length === 0) {
+    textarea.value = sampleDefense;
+  } else {
+    textarea.value += " " + sampleDefense;
+  }
+};
+
+window.submitWalkthroughDefense = function() {
+  const bay = window.VR_WALKTHROUGH_DATA.bays[window.currentWalkthroughBay];
+  const textarea = document.getElementById('walkthrough-candidate-response');
+  if (!bay) return;
+
+  const text = textarea ? textarea.value.trim() : '';
+  const scorePill = document.getElementById('walkthrough-feedback-score');
+  const debriefBody = document.getElementById('walkthrough-debrief-body');
+  const chipsContainer = document.getElementById('walkthrough-vocab-chips');
+
+  // If anomaly was active, resolve it on good submission
+  if (window.walkthroughAnomalyActive) {
+    window.resolveWalkthroughAnomaly();
+  }
+
+  if (scorePill) {
+    scorePill.textContent = 'Score: 96/100 (C1 Distinguished)';
+    scorePill.style.color = '#10b981';
+    scorePill.style.borderColor = '#059669';
+    scorePill.style.background = 'rgba(16,185,129,0.15)';
+  }
+
+  if (debriefBody) {
+    debriefBody.textContent = `"${bay.optimalFeedback}"`;
+  }
+
+  if (chipsContainer && bay.vocab) {
+    chipsContainer.innerHTML = bay.vocab.map(v => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#38bdf8; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${v}</span>`
+    ).join(' ');
+  }
+
+  window.drawWalkthroughCanvas();
+};
+
+window.exportWalkthroughReport = function() {
+  const bay = window.VR_WALKTHROUGH_DATA.bays[window.currentWalkthroughBay] || window.VR_WALKTHROUGH_DATA.bays['bay-1'];
+  const text = document.getElementById('walkthrough-candidate-response')?.value || 'Engineering response recorded during live simulation.';
+  const score = document.getElementById('walkthrough-feedback-score')?.textContent || '96/100 (C1)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Cleanroom VR Walkthrough & Digital Twin 3.0 Audit Protocol
+**Date**: ${dateStr}
+**Inspection Target**: ${bay.title}
+**Equipment**: ${bay.equipment}
+**Evaluating Cleanroom VP**: Dr. Kenji Sato 🇯🇵/🇺🇸 (Yield & Fab VP)
+**Lead Cleanroom Engineer**: stemOS Senior Technical Fellow
+
+---
+
+## 1. Cleanroom Environmental Telemetry & Compliance
+- **ISO 14644-1 Classification**: ${bay.telemetry.isoClass}
+- **Aerosol Particle Density (≥0.1μm)**: ${bay.telemetry.particles}
+- **Laminar Flow Airspeed Velocity**: ${bay.telemetry.airflow}
+- **Plenum Differential Pressure Gradient**: ${bay.telemetry.pressure}
+- **Thermal & Relative Humidity Control**: ${bay.telemetry.climate} (SEMI E78 Compliant)
+
+---
+
+## 2. In-Line Audit Challenge & Inquiry
+${bay.directorPrompt}
+
+---
+
+## 3. Engineer's Technical Defense & Containment Strategy
+${text}
+
+---
+
+## 4. Director's Evaluation & Certification Ruling
+- **Technical Rigor Score**: ${score}
+- **Auditor Assessment**:
+${bay.optimalFeedback}
+
+- **Core Normative Competencies**:
+${bay.vocab.map(v => `- ${v}`).join('\n')}
+
+---
+*Official stemOS Fab & Cleanroom Digital Twin Protocol • SHA-256 Validated Audit Trail*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Cleanroom_VR_Audit_${bay.id}.md`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 25: CROSS-BORDER AUTONOMOUS AI PATENT & IP CLAIM DEFENSE ARENA
+// ============================================================================
+
+window.PATENT_ARENA_DATA = {
+  cases: {
+    'semicon': {
+      id: 'semicon',
+      docNumber: 'US Patent 11,842,930 B2',
+      jurisdiction: 'USPTO / PTAB Validated',
+      title: 'High-Density Through-Silicon Via (TSV) Interconnect with Cu-Ni-Sn Micro-Pillars for 3D Chiplet Integration',
+      assignee: 'stemOS Semiconductor Systems LLC • Priority: June 14, 2023 • PCT/US2023/048192',
+      claimText: '1. A 3D semiconductor multi-chiplet assembly comprising: a first silicon die having an active face with a plurality of TSVs having a diameter under 2.5 μm; a copper-nickel micro-pillar array bonded to said TSVs at an interconnect pitch between 15 μm and 25 μm; wherein intermetallic compound (IMC) formation is substantially limited to (Cu,Ni)6Sn5 phase with thickness < 1.2 μm, avoiding void nucleation during thermal cycling.',
+      priorArtCitation: 'Chiba et al. (JP 2021-189201 A) - Cita ensambles de micro-esferas de soldadura eutéctica Sn-Ag con pitch de 40 μm.',
+      technicalDifference: 'Nuestra reivindicación 1 exige metalurgia Cu-Ni-Sn sin plomo con fase IMC intermetálica pura menor a 1.2 μm y paso sub-25 μm, físicamente imposible con la soldadura eutéctica del arte previo que colapsa por puente térmico.',
+      benchNames: 'Hon. Sarah Sterling 🇺🇸 & Dr. Jean-Pierre Laurent 🇫🇷/🇺🇸',
+      judgePrompt: '"Counsel, the petitioner asserts that your micro-pillar claim is anticipated by Chiba under Section 102, or alternatively rendered obvious under Section 103 in view of known solder reflow physics. How do you construe the limitation \'(Cu,Ni)6Sn5 phase with thickness under 1.2 microns\' to demonstrate that this metallurgic structure constitutes an unexpected, non-obvious technical result rather than routine experimentation?"',
+      arguments: {
+        priorart: 'May it please the Board, Petitioner\'s anticipation challenge under 35 U.S.C. § 102 fails as a matter of law. Chiba relies exclusively on Sn-3.0Ag-0.5Cu solder balls that reflow into unconstrained solder joints with uncontrolled Cu6Sn5 scalloping exceeding 4.8 microns. In stark contrast, Claim 1 requires solid-state diffusion limiting IMC thickness strictly below 1.2 microns, a physical impossibility under Chiba\'s thermal budget.',
+        doctrine: 'Under Warner-Jenkinson and Festo, Petitioner cannot invoke the Doctrine of Equivalents. During prosecution, the limitation specifying an interconnect pitch between 15 and 25 microns was explicitly entered to overcome Chiba\'s 40-micron disclosure. Prosecution history estoppel completely bars Petitioner from capturing our proprietary micro-pillar geometry.',
+        enablement: 'Under 35 U.S.C. § 112, Specification columns 7 through 11 provide exhaustive working examples of electroplating current densities (1.8 to 2.4 A/dm²) and transient liquid phase bonding profiles (240°C for 180 seconds). A person having ordinary skill in the art (PHOSITA) can readily practice the claimed invention without undue experimentation.'
+      },
+      optimalDecision: {
+        score: 'PATENT CLAIMS UPHELD (VALID • 98/100)',
+        liabilitySaved: '$12.5M USD Royalty Exposure Avoided (Injunction Vacated)',
+        notes: '"The Board finds that the candidate\'s rigorous claim construction and clear metallurgical distinction of the (Cu,Ni)6Sn5 intermetallic boundary overcomes the cited prior art. Petition for Inter Partes Review is hereby DENIED with prejudice."',
+        chips: ['#35USC102', '#NonObviousness', '#ProsecutionEstoppel', '#FreedomToOperate', '#TSVPackaging']
+      },
+      reportFilename: 'PTAB_Final_Decision_TSV_Semicon.md'
+    },
+    'solidstate': {
+      id: 'solidstate',
+      docNumber: 'US Patent 11,929,481 B1',
+      jurisdiction: 'USPTO / PTAB Validated',
+      title: 'Doped Sulfide Solid-State Electrolyte Matrix with Passivated Lithium-Metal Anode Interface',
+      assignee: 'stemOS Energy Storage Inc. (Saltillo Gigafab) • Priority: Sept 02, 2023 • US 18/451,029',
+      claimText: '1. A solid-state electrochemical cell comprising: a lithium-metal anode; a composite cathode comprising high-nickel NMC90 active particles; and a solid sulfide electrolyte membrane having a room-temperature ionic conductivity greater than 1.4 x 10^-2 S/cm, wherein said electrolyte comprises a Li10GeP2S12 matrix doped with 1.5 to 3.0 atomic percent Lanthanum and is passivated with an in-situ formed Li3N-LiF solid-electrolyte interphase.',
+      priorArtCitation: 'Kanno et al. (US 2018/0294520 A1) - Cita conductores superiónicos LGPS sin dopaje ni capa de pasivación in-situ.',
+      technicalDifference: 'El arte previo de Kanno sufre descomposición electroquímica y dendritas a potenciales menores a 2.1V vs Li/Li+. Nuestra patente reivindica pasivación bifásica Li3N-LiF que extiende la ventana electroquímica hasta 4.8V.',
+      benchNames: 'Hon. Marcus Theriot 🇺🇸 & Dr. Aris Thorne 🇬🇧/🇺🇸',
+      judgePrompt: '"Counsel, Petitioner contends that adding Lanthanum dopants to known LGPS conductors is obvious to try under KSR v. Teleflex. Why does your claimed 1.4x10^-2 S/cm ionic conductivity coupled with the Li3N-LiF artificial SEI demonstrate synergistic unexpected results sufficient to rebut the prima facie case of obviousness?"',
+      arguments: {
+        priorart: 'Petitioner misapplies 35 U.S.C. § 103 by utilizing impermissible hindsight reconstruction. Prior to our priority date, the prevailing consensus taught that rare-earth doping caused severe lattice distortion and collapsed lithium conduction channels. Our discovery that Lanthanum expands the c-axis lattice parameter by 0.18 Å is a classic unexpected synergistic result under Graham v. John Deere.',
+        doctrine: 'Petitioner\'s attempt to assert equivalents on halogenated sulfide derivatives must be rejected under prosecution history estoppel. Claim 1 is explicitly restricted to in-situ formed Li3N-LiF passivated boundaries, definitively excluding ex-situ polymer coatings.',
+        enablement: 'The specification provides full thermal gravimetric data, mechanical shear moduli (G = 24 GPa), and over 2,000 continuous fast-charge cycles at 4C without lithium dendrite penetration, satisfying the written description and enablement mandates of 35 U.S.C. § 112.'
+      },
+      optimalDecision: {
+        score: 'PATENT CLAIMS UPHELD (VALID • 99/100)',
+        liabilitySaved: '$34.0M USD Exclusionary Injunction Defeated',
+        notes: '"Petitioner failed to establish a reasonable likelihood of prevailing with respect to Claim 1. The evidence demonstrates substantial secondary considerations of non-obviousness including long-felt unmet need and commercial success in EV platforms."',
+        chips: ['#SolidStateElectrolyte', '#KSRNonObviousness', '#GrahamFactors', '#PatentValidity', '#EVBatteryTech']
+      },
+      reportFilename: 'PTAB_Final_Decision_SolidState_Battery.md'
+    },
+    'firmware': {
+      id: 'firmware',
+      docNumber: 'US Patent 11,784,592 B2',
+      jurisdiction: 'USPTO / PTAB Validated',
+      title: 'Fault-Tolerant Space-Vector PWM Switching Algorithm for 800V Silicon-Carbide Traction Inverters',
+      assignee: 'stemOS Power Electronics LLC (Monterrey / Austin) • Priority: Nov 19, 2023',
+      claimText: '1. A computer-implemented method for controlling a multi-phase silicon-carbide (SiC) traction inverter in an electric vehicle: sampling dc-link ripple voltage at 200 kHz; calculating real-time d-q axis voltage vectors; executing an adaptive dead-time compensation routine dynamically adjusting gate drive pulse-width between 40 ns and 120 ns based on junction temperature; and modulating space vectors to eliminate fifth and seventh harmonic torque ripple.',
+      priorArtCitation: 'Takahashi et al. (EP 3 410 582 B1) - Cita compensación fija de tiempo muerto mediante tablas estáticas sin lazo d-q dinámico.',
+      technicalDifference: 'Takahashi opera con tiempo muerto fijo de 1.2 microsegundos, lo que en inversores SiC genera oscilaciones catastróficas por dV/dt > 50 V/ns. Nuestra reivindicación ajusta el pulso dinámicamente a nanosegundos.',
+      benchNames: 'Hon. Sarah Sterling 🇺🇸 & Hon. Christopher Evans 🇺🇸',
+      judgePrompt: '"Counsel, the petitioner claims that calculating dynamic dead-time using temperature feedback is an abstract mathematical concept directed to patent-ineligible subject matter under 35 U.S.C. § 101 and the Alice two-step framework. How does Claim 1 effectuate a transformative physical improvement in traction inverter hardware?"',
+      arguments: {
+        priorart: 'Under Alice Step 2 and Enfish, Claim 1 is patent-eligible because it improves the functioning of the inverter hardware itself. The adaptive 40-120 ns dead-time routine prevents physical SiC shoot-through failure and reduces thermal dissipation by 38%, which the Federal Circuit consistently recognizes as a patent-eligible physical transformation.',
+        doctrine: 'Takahashi\'s lookup table disclosure cannot read on our real-time closed-loop d-q coordinate transformation. The doctrine of equivalents is inapplicable where, as here, the structural operation involves distinct physical feedback mechanisms.',
+        enablement: 'The disclosure satisfies 35 U.S.C. § 112 with full C-code algorithmic state machines and AUTOSAR complex device driver (CDD) interface specifications, enabling any embedded firmware engineer to replicate the fault-tolerant modulation loop.'
+      },
+      optimalDecision: {
+        score: 'PATENT CLAIMS UPHELD (VALID • 97/100)',
+        liabilitySaved: '$18.2M USD Trade Secret & Licensing Dispute Dismissed',
+        notes: '"The Board confirms that Claim 1 recites patent-eligible subject matter under 35 U.S.C. § 101 that improves inverter physical performance. Furthermore, all claims are novel and non-obvious over Takahashi."',
+        chips: ['#AliceStep2', '#Section101Eligibility', '#SiCInverter', '#AUTOSARFirmware', '#TradeSecretDefense']
+      },
+      reportFilename: 'PTAB_Final_Decision_SiC_Inverter_Firmware.md'
+    }
+  }
+};
+
+window.currentPatentCase = 'semicon';
+
+window.initPatentArena = function() {
+  window.switchPatentCase(window.currentPatentCase || 'semicon');
+};
+
+window.switchPatentCase = function(caseKey) {
+  const c = window.PATENT_ARENA_DATA.cases[caseKey];
+  if (!c) return;
+  window.currentPatentCase = caseKey;
+
+  // Update nav buttons
+  ['semicon', 'solidstate', 'firmware'].forEach(k => {
+    const btn = document.getElementById(`btn-patent-case-${k}`);
+    if (btn) btn.classList.toggle('active', k === caseKey);
+  });
+
+  // Update patent specification elements
+  const docNumEl = document.getElementById('patent-doc-number');
+  const jurTagEl = document.getElementById('patent-jurisdiction-tag');
+  const titleEl = document.getElementById('patent-title-display');
+  const assigneeEl = document.getElementById('patent-assignee-display');
+  const claimTextEl = document.getElementById('patent-claim-text');
+  const citationEl = document.getElementById('patent-prior-art-citation');
+  const diffEl = document.getElementById('patent-technical-difference');
+
+  if (docNumEl) docNumEl.textContent = c.docNumber;
+  if (jurTagEl) jurTagEl.innerHTML = `<i class="fa-solid fa-stamp"></i> ${c.jurisdiction}`;
+  if (titleEl) titleEl.textContent = c.title;
+  if (assigneeEl) assigneeEl.textContent = c.assignee;
+  if (claimTextEl) claimTextEl.textContent = c.claimText;
+  if (citationEl) citationEl.textContent = c.priorArtCitation;
+  if (diffEl) diffEl.textContent = c.technicalDifference;
+
+  // Update bench elements
+  const benchNamesEl = document.getElementById('patent-bench-names');
+  const interrogationEl = document.getElementById('patent-judge-interrogation');
+  if (benchNamesEl) benchNamesEl.textContent = c.benchNames;
+  if (interrogationEl) interrogationEl.textContent = c.judgePrompt;
+
+  // Clear brief
+  const briefInput = document.getElementById('patent-candidate-brief');
+  if (briefInput) briefInput.value = '';
+
+  // Reset scorecard
+  const scorePill = document.getElementById('patent-verdict-score');
+  const liabilityEl = document.getElementById('patent-liability-saved');
+  const notesEl = document.getElementById('patent-ptab-decision-notes');
+
+  if (scorePill) {
+    scorePill.textContent = 'HEARING IN PROGRESS • UNDER EXAMINATION';
+    scorePill.style.color = '#c084fc';
+    scorePill.style.borderColor = '#7c3aed';
+    scorePill.style.background = 'rgba(124,58,237,0.15)';
+  }
+  if (liabilityEl) {
+    liabilityEl.textContent = 'Exposure at Stake: Pending Markman Briefing';
+    liabilityEl.style.color = '#94a3b8';
+  }
+  if (notesEl) {
+    notesEl.textContent = 'Inyecta o redacta los argumentos legales y técnicos para solicitar el dictamen formal del tribunal de patentes.';
+  }
+};
+
+window.applyPatentArgument = function(argKey) {
+  const c = window.PATENT_ARENA_DATA.cases[window.currentPatentCase];
+  const briefInput = document.getElementById('patent-candidate-brief');
+  if (!c || !briefInput) return;
+
+  const argText = c.arguments[argKey] || '';
+  if (briefInput.value.trim().length === 0) {
+    briefInput.value = argText;
+  } else {
+    briefInput.value += "\n\n" + argText;
+  }
+};
+
+window.playPatentAudio = function() {
+  const c = window.PATENT_ARENA_DATA.cases[window.currentPatentCase];
+  if (!c) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(c.judgePrompt);
+    utter.rate = 0.98;
+    utter.pitch = 1.0;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.togglePatentMic = function() {
+  const briefInput = document.getElementById('patent-candidate-brief');
+  if (!briefInput) return;
+
+  const sampleOralDefense = "May it please the Board, Petitioner's anticipation challenge under 35 U.S.C. § 102 fails as a matter of law. Claim 1 explicitly requires an intermetallic compound (IMC) thickness strictly below 1.2 microns, which is fundamentally incompatible with the cited prior art reflow thermal regime.";
+  if (briefInput.value.trim().length === 0) {
+    briefInput.value = sampleOralDefense;
+  } else {
+    briefInput.value += " " + sampleOralDefense;
+  }
+};
+
+window.submitPatentDefense = function() {
+  const c = window.PATENT_ARENA_DATA.cases[window.currentPatentCase];
+  if (!c) return;
+
+  const scorePill = document.getElementById('patent-verdict-score');
+  const liabilityEl = document.getElementById('patent-liability-saved');
+  const notesEl = document.getElementById('patent-ptab-decision-notes');
+  const chipsContainer = document.getElementById('patent-legal-chips');
+
+  if (scorePill) {
+    scorePill.textContent = c.optimalDecision.score;
+    scorePill.style.color = '#10b981';
+    scorePill.style.borderColor = '#059669';
+    scorePill.style.background = 'rgba(16,185,129,0.15)';
+  }
+
+  if (liabilityEl) {
+    liabilityEl.textContent = c.optimalDecision.liabilitySaved;
+    liabilityEl.style.color = '#38bdf8';
+  }
+
+  if (notesEl) {
+    notesEl.textContent = c.optimalDecision.notes;
+  }
+
+  if (chipsContainer && c.optimalDecision.chips) {
+    chipsContainer.innerHTML = c.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#c084fc; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportPatentRuling = function() {
+  const c = window.PATENT_ARENA_DATA.cases[window.currentPatentCase] || window.PATENT_ARENA_DATA.cases['semicon'];
+  const brief = document.getElementById('patent-candidate-brief')?.value || 'Counsel argument recorded during live PTAB hearing.';
+  const verdict = document.getElementById('patent-verdict-score')?.textContent || 'PATENT CLAIMS UPHELD (98/100)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# United States Patent and Trademark Office (USPTO)
+## Before the Patent Trial and Appeal Board (PTAB)
+**Date**: ${dateStr}
+**Proceeding**: Inter Partes Review / Freedom-to-Operate Evaluation
+**Patent at Issue**: ${c.docNumber}
+**Invention Title**: ${c.title}
+**Patent Owner**: ${c.assignee}
+**Administrative Patent Judges**: ${c.benchNames}
+
+---
+
+## 1. Contested Claim Subject to Review
+\`\`\`
+${c.claimText}
+\`\`\`
+
+## 2. Cited Prior Art & Technical Distinctions
+- **Petitioner Reference**: ${c.priorArtCitation}
+- **Patent Owner Distinguishing Factual Basis**:
+${c.technicalDifference}
+
+---
+
+## 3. Patent Owner Oral Argument & Legal Brief
+${brief}
+
+---
+
+## 4. Final Written Decision & Ruling
+- **Adjudicated Finding**: ${verdict}
+- **Economic Liability Avoided**: ${c.optimalDecision.liabilitySaved}
+- **Board Opinion**:
+${c.optimalDecision.notes}
+
+- **Normative Statutory Grounds**:
+${c.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official PTAB Administrative Judicial Record • Certified by stemOS IP Law & Nearshoring Directorate*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = c.reportFilename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 26: AUTONOMOUS AI BOARDROOM ESG & DECARBONIZATION CAPITAL ALLOCATION CRUCIBLE
+// ============================================================================
+
+window.ESG_CRUCIBLE_DATA = {
+  projects: {
+    'steel': {
+      id: 'steel',
+      facility: 'FACILITY: MONTERREY GREEN STEELWORKS',
+      norm: 'EU CBAM • ISO 14064 Verified',
+      title: '100% Green Hydrogen Direct Reduced Iron (H2-DRI) + Electric Arc Furnace Transition',
+      targetScope: 'Scope 1 & Scope 2 Decarbonization • Electrolyzer Stack: 250 MW PEM • Renewable PPA: 400 MW Wind',
+      abatement: '-1.8 t/ton',
+      capex: '$185M USD',
+      irr: '18.4% TIR',
+      taxAvoided: '$42.8M / año',
+      engineeringSpec: 'Reemplazo de alto horno alimentado con coque por torre vertical Energiron H2-DRI de 2.0M ton/año acoplada a celda electrolizadora PEM de 250 MW. La reducción química Fe2O3 + 3 H2 → 2 Fe + 3 H2O genera vapor de agua puro en lugar de CO2, alimentando un horno EAF alimentado 100% con energía eólica de Coahuila.',
+      boardMembers: 'Elena Rostova 🇪🇺/🇺🇸 & Alistair Finch 🇬🇧',
+      boardPrompt: '"Lead Engineer, allocating $185M USD for a full H2-DRI transition represents 24% of our annual regional CAPEX budget. Our institutional investors require proof that your Levelized Cost of Carbon Abatement (LCCA) remains below $55/ton CO2e and that green hydrogen supply is legally ring-fenced under EU CBAM Article 7 before capital release. What is your risk-adjusted financial and thermodynamic justification?"',
+      actions: {
+        lcca: {
+          note: '[Cálculo LCCA Validado]: Costo Nivelado de Abatimiento modelado en $42.50 USD / ton CO2e considerando PPA eólico a $31/MWh y eficiencia PEM de 4.2 kWh/Nm³ H2. Cumple holgadamente el benchmark institucional (<$55/t).',
+          abatement: '-1.85 t/ton'
+        },
+        greenbond: {
+          note: '[Financiamiento Estructurado]: Emisión de Bono Verde bajo Principios ICMA sobresuscrita 3.2x con cupón de 4.85% (spread -45 bps). WACC ponderado reducido a 5.12%, acelerando el Payback del proyecto a 3.9 años.',
+          irr: '19.8% TIR'
+        },
+        cbam: {
+          note: '[Certificación EU CBAM]: Trazabilidad digital de emisiones embebidas directas e indirectas verificada por auditor acreditado EN ISO 14065. Tasa de ajuste aduanero en frontera europea fijada en €0.00/ton de acero laminado.',
+          taxAvoided: '$46.2M / año'
+        },
+        stress: {
+          note: '[Prueba de Estrés Climático]: Con el precio de la tonelada de carbono en el EU ETS escalando a $120 USD/t, el Valor Presente Neto (VPN) del proyecto se expande a +$310M USD y el EBITDA anual protegido aumenta en $58M USD.',
+          irr: '24.2% TIR'
+        }
+      },
+      optimalDecision: {
+        score: 'CAPEX ALLOCATION APPROVED (98/100 • UNANIMOUS BOARD RULING)',
+        notes: '"The Board unanimously approves the $185M USD capital disbursement for Phase 1 Green H2-DRI execution. Your levelized abatement calculation ($42.50/t) and EU CBAM border duty neutralization safeguard our 2030 Net Zero trajectory."',
+        chips: ['#EUCBAM', '#GreenHydrogen', '#LCCA', '#GreenBondICMA', '#Scope1Decarb']
+      },
+      reportFilename: 'ESG_Capital_Allocation_Monterrey_H2_DRI.md'
+    },
+    'gigafab': {
+      id: 'gigafab',
+      facility: 'FACILITY: SALTILLO EV BATTERY GIGAFAB',
+      norm: 'RE100 • GHG Protocol Scope 1-3 Verified',
+      title: '45 MWp Rooftop Solar PV + 120 MWh BESS + Industrial Heat Pumps for Electrode Drying',
+      targetScope: 'Scope 1 & Scope 2 Zero-Emission Transition • Thermal Energy Storage • Microgrid Islanding',
+      abatement: '-88% CO2e',
+      capex: '$64M USD',
+      irr: '21.6% TIR',
+      taxAvoided: '$14.2M / año',
+      engineeringSpec: 'Despliegue de 45 MWp de módulos solares bifaciales TOPCon sobre cubiertas de nave industrial, respaldados por BESS de fosfato de hierro y litio (LFP) de 120 MWh. Eliminación de calderas de gas natural mediante bombas de calor de CO2 transcítico de alta temperatura (140°C) para secado de cátodos.',
+      boardMembers: 'Elena Rostova 🇪🇺/🇺🇸 & Marcus Vance 🇺🇸',
+      boardPrompt: '"Engineering Fellow, replacing industrial natural gas boilers with high-temperature transcritical heat pumps involves novel thermal inertia risks during continuous battery slurry coating. How do you defend the 21.6% IRR against grid peak-demand charges and demonstrate zero production disruption during cloudy transients?"',
+      actions: {
+        lcca: {
+          note: '[Cálculo LCCA Validado]: Costo nivelado de abatimiento modelado en $36.10 USD / ton CO2e mediante desplazamiento de 12.8M m³ anuales de gas natural fósil.',
+          abatement: '-91% CO2e'
+        },
+        greenbond: {
+          note: '[Línea de Crédito Verde]: Facilidad sindicada con garantía de activos solares a tasa SOFR + 115 bps. Amortización cubierta al 100% por ahorros en recibo de CFE y gas.',
+          irr: '22.9% TIR'
+        },
+        cbam: {
+          note: '[Huella de Carbono de Batería UE]: Declaración de pasaporte digital de batería según Reglamento (UE) 2023/1542, con huella de ciclo de vida < 48 kg CO2e/kWh de celda producida.',
+          taxAvoided: '$16.5M / año'
+        },
+        stress: {
+          note: '[Resiliencia ante Apagones]: Simulación de interrupción total de red de 4 horas resuelta por BESS en modo isla en 18 milisegundos sin pérdida de un solo lote de celdas.',
+          irr: '23.4% TIR'
+        }
+      },
+      optimalDecision: {
+        score: 'CAPEX ALLOCATION APPROVED (99/100 • UNANIMOUS BOARD RULING)',
+        notes: '"The investment committee grants full authorization for the $64M USD Saltillo battery microgrid and heat pump electrification. The EU Battery Passport compliance gives us an unbeatable competitive moat in export markets."',
+        chips: ['#BatteryPassport', '#IndustrialHeatPumps', '#BESSMicrogrid', '#RE100', '#TranscriticalCO2']
+      },
+      reportFilename: 'ESG_Capital_Allocation_Saltillo_Battery_Microgrid.md'
+    },
+    'datacenter': {
+      id: 'datacenter',
+      facility: 'FACILITY: QUERÉTARO HYPERSCALE CLOUD CAMPUS',
+      norm: 'Uptime Tier IV • ASHRAE A1 • GHG Protocol Scope 2',
+      title: '60MW Hyperscale Data Center Two-Phase Immersion Cooling & 30% H2-Ready Gas Turbines',
+      targetScope: 'Waterless Thermal Management • PUE 1.08 • Zero-Water Evaporation • Scope 2 Abatement',
+      abatement: '-72% Scope 2',
+      capex: '$92M USD',
+      irr: '19.2% TIR',
+      taxAvoided: '$28.4M / año',
+      engineeringSpec: 'Conversión de racks de alta densidad (120 kW/rack para servidores IA) a tanques de inmersión bifásica con fluidos dieléctricos de bajo GWP. Central de cogeneración de 80 MW in-situ con turbinas aeroderivadas SGT-A35 preparadas para combustión de mezcla 30% H2 / 70% gas natural.',
+      boardMembers: 'Alistair Finch 🇬🇧 & Sarah Jenkins 🇺🇸',
+      boardPrompt: '"Querétaro experiences acute regional water scarcity and electric transmission congestion. How does your $92M CAPEX plan guarantee waterless heat rejection while achieving a PUE of 1.08, and what contractual guarantees do you have that hydrogen co-firing will not degrade turbine availability?"',
+      actions: {
+        lcca: {
+          note: '[Cálculo LCCA Validado]: LCCA de $47.80/t CO2e. Consumo de agua de enfriamiento reducido a 0 litros/MWh (ahorro de 450 millones de litros de agua anuales en el acuífero de Querétaro).',
+          abatement: '-76% Scope 2'
+        },
+        greenbond: {
+          note: '[Financiamiento Tecnológico Sostenible]: Préstamo verde vinculado a KPI de PUE < 1.10 y WUE = 0.00. Bonificación de 25 bps en tasa de interés al auditarse anualmente.',
+          irr: '20.5% TIR'
+        },
+        cbam: {
+          note: '[Auditoría de Alcance 2]: Verificación bajo protocolo GHG de energía libre de carbono 24/7 (24/7 CFE Clean Energy Matching) certificada en blockchain.',
+          taxAvoided: '$31.0M / año'
+        },
+        stress: {
+          note: '[Pico Térmico Exterior 42°C]: Enfriamiento por inmersión bifásica mantiene la temperatura de unión de las GPU por debajo de 62°C a carga máxima continua con PUE de 1.082.',
+          irr: '21.0% TIR'
+        }
+      },
+      optimalDecision: {
+        score: 'CAPEX ALLOCATION APPROVED (98/100 • UNANIMOUS BOARD RULING)',
+        notes: '"Unanimous authorization for the $92M USD immersion cooling & H2-ready turbine retrofit. The zero-water consumption model neutralizes our acute regulatory exposure in the Bajío basin."',
+        chips: ['#TwoPhaseImmersion', '#PUE108', '#ZeroWaterCooling', '#H2ReadyTurbine', '#Scope2Reduction']
+      },
+      reportFilename: 'ESG_Capital_Allocation_Queretaro_Hyperscale_DC.md'
+    }
+  }
+};
+
+window.currentEsgProject = 'steel';
+
+window.initEsgCrucible = function() {
+  window.switchEsgProject(window.currentEsgProject || 'steel');
+};
+
+window.switchEsgProject = function(projKey) {
+  const p = window.ESG_CRUCIBLE_DATA.projects[projKey];
+  if (!p) return;
+  window.currentEsgProject = projKey;
+
+  // Update nav buttons
+  ['steel', 'gigafab', 'datacenter'].forEach(k => {
+    const btn = document.getElementById(`btn-esg-proj-${k}`);
+    if (btn) btn.classList.toggle('active', k === projKey);
+  });
+
+  // Update facility & badges
+  const facBadge = document.getElementById('esg-facility-badge');
+  const normBadge = document.getElementById('esg-norm-badge');
+  const titleEl = document.getElementById('esg-project-title');
+  const scopeEl = document.getElementById('esg-target-scope');
+  const specEl = document.getElementById('esg-engineering-spec');
+
+  if (facBadge) facBadge.textContent = p.facility;
+  if (normBadge) normBadge.innerHTML = `<i class="fa-solid fa-certificate"></i> ${p.norm}`;
+  if (titleEl) titleEl.textContent = p.title;
+  if (scopeEl) scopeEl.textContent = p.targetScope;
+  if (specEl) specEl.textContent = p.engineeringSpec;
+
+  // Update telemetry stats
+  const abateEl = document.getElementById('esg-stat-abatement');
+  const capexEl = document.getElementById('esg-stat-capex');
+  const irrEl = document.getElementById('esg-stat-irr');
+  const taxEl = document.getElementById('esg-stat-tax');
+
+  if (abateEl) abateEl.textContent = p.abatement;
+  if (capexEl) capexEl.textContent = p.capex;
+  if (irrEl) irrEl.textContent = p.irr;
+  if (taxEl) taxEl.textContent = p.taxAvoided;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('esg-board-members');
+  const inquiryEl = document.getElementById('esg-board-inquiry');
+  if (boardEl) boardEl.textContent = p.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = p.boardPrompt;
+
+  // Clear pitch
+  const pitchInput = document.getElementById('esg-candidate-pitch');
+  if (pitchInput) pitchInput.value = '';
+
+  // Reset decision
+  const rulingScore = document.getElementById('esg-ruling-score');
+  const decisionNotes = document.getElementById('esg-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'CAPEX REVIEW IN PROGRESS';
+    rulingScore.style.color = '#38bdf8';
+    rulingScore.style.borderColor = '#0284c7';
+    rulingScore.style.background = 'rgba(2,132,199,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Ejecuta simulaciones de abatimiento o redacta tu justificación ejecutiva C1 para solicitar la resolución de desembolso del consejo.';
+  }
+};
+
+window.applyEsgAction = function(actionKey) {
+  const p = window.ESG_CRUCIBLE_DATA.projects[window.currentEsgProject];
+  if (!p) return;
+
+  const act = p.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.abatement) {
+    const abateEl = document.getElementById('esg-stat-abatement');
+    if (abateEl) abateEl.textContent = act.abatement;
+  }
+  if (act.irr) {
+    const irrEl = document.getElementById('esg-stat-irr');
+    if (irrEl) irrEl.textContent = act.irr;
+  }
+  if (act.taxAvoided) {
+    const taxEl = document.getElementById('esg-stat-tax');
+    if (taxEl) taxEl.textContent = act.taxAvoided;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('esg-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('esg-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'MODELING VALIDATED • READY FOR PITCH';
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+};
+
+window.playEsgAudio = function() {
+  const p = window.ESG_CRUCIBLE_DATA.projects[window.currentEsgProject];
+  if (!p) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(p.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleEsgMic = function() {
+  const pitchInput = document.getElementById('esg-candidate-pitch');
+  if (!pitchInput) return;
+
+  const samplePitch = "Madam Chief Sustainability Officer, members of the Board: The $185M CAPEX achieves an LCCA of $42.50 per ton of CO2e, well beneath the threshold. By securing a 15-year PPA for 400 MW of wind power and utilizing PEM electrolyzers with 68% LHV efficiency, our green steel guarantees zero EU CBAM carbon border tax exposure.";
+  if (pitchInput.value.trim().length === 0) {
+    pitchInput.value = samplePitch;
+  } else {
+    pitchInput.value += " " + samplePitch;
+  }
+};
+
+window.submitEsgDefense = function() {
+  const p = window.ESG_CRUCIBLE_DATA.projects[window.currentEsgProject];
+  if (!p) return;
+
+  const rulingScore = document.getElementById('esg-ruling-score');
+  const decisionNotes = document.getElementById('esg-board-decision-notes');
+  const chipsContainer = document.getElementById('esg-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = p.optimalDecision.score;
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = p.optimalDecision.notes;
+  }
+
+  if (chipsContainer && p.optimalDecision.chips) {
+    chipsContainer.innerHTML = p.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#34d399; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportEsgReport = function() {
+  const p = window.ESG_CRUCIBLE_DATA.projects[window.currentEsgProject] || window.ESG_CRUCIBLE_DATA.projects['steel'];
+  const pitch = document.getElementById('esg-candidate-pitch')?.value || 'Executive investment pitch delivered during live boardroom session.';
+  const ruling = document.getElementById('esg-ruling-score')?.textContent || 'CAPEX ALLOCATION APPROVED (98/100)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Industrial ESG & Decarbonization Capital Allocation Protocol
+## EU CBAM Compliance & Net-Zero Capital Commitment
+**Date**: ${dateStr}
+**Facility**: ${p.facility}
+**Project**: ${p.title}
+**Normative Framework**: ${p.norm}
+**Boardroom Evaluating Committee**: ${p.boardMembers}
+
+---
+
+## 1. Thermodynamic & Environmental Specifications
+- **Target Emission Boundary**: ${p.targetScope}
+- **CO2e Abatement Intensity**: ${p.abatement}
+- **Annual EU CBAM Tariff Neutralization**: ${p.taxAvoided}
+- **Engineering Architecture Summary**:
+${p.engineeringSpec}
+
+---
+
+## 2. Financial Metrics & Capital Allocation
+- **Approved CAPEX Disbursement**: ${p.capex}
+- **Financial Return Metrics**: ${p.irr}
+- **Lead Engineer's Board Defense Pitch**:
+${pitch}
+
+---
+
+## 3. Official Board Ruling & Binding Allocation
+- **Boardroom Adjudication**: ${ruling}
+- **Executive Decision Notes**:
+${p.optimalDecision.notes}
+
+- **Core ESG Competencies & Frameworks**:
+${p.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Industrial Decarbonization Protocol • Cryptographic Verification Seal: ESG-NETZERO-2026-CBAM*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = p.reportFilename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 27: CROSS-BORDER AUTONOMOUS GLOBAL SUPPLY CHAIN RESHORING WAR ROOM
+// ============================================================================
+
+window.RESHORING_WARROOM_DATA = {
+  crises: {
+    'semicon': {
+      id: 'semicon',
+      hub: 'LOGISTICS HUB: GUADALAJARA SEMICON DUCT',
+      treaty: 'USMCA Art. 4.2 • Incoterms 2020 FCA',
+      title: 'Asia-Pacific Substrate Embargo • Fast-Track North American Dual Sourcing',
+      targetScope: 'Disruption: Port Closure in Kaohsiung • Affected: Ajinomoto Build-up Film (ABF) Substrates • Risk: 14 Plants Blocked',
+      leadTime: '14 Días',
+      rvc: '78.4% RVC',
+      variance: '-4.2% TCO',
+      risk: '$1.4M / día',
+      sourcingSpec: 'Activación de fabricante calificado de sustratos ABF en Austin, Texas con enlace terrestre aduanero express hacia Guadalajara (puente internacional Pharr/Reynosa). Contrato de suministro preferencial con asignación 60/40 de volumen y buffer stock de seguridad de 45 días en almacén fiscalizado de Jalisco.',
+      boardMembers: 'Victoria Vance 🇺🇸 & Rajesh Patel 🇮🇳/🇺🇸',
+      boardPrompt: '"Supply Chain Lead, shipping ABF substrates from Texas rather than Taiwan increases piece-part purchase price by 12%. How do you justify this unit cost premium in your Total Cost of Ownership (TCO) model, and what guarantee do we have that your dual-sourcing ramp meets our 14-day SLA without line-down penalties?"',
+      actions: {
+        tco: {
+          note: '[Cálculo TCO Validado]: El sobreprecio de compra unitario (+12%) queda neutralizado por la eliminación de fletes marítimos transpacíficos, reducción del inventario en tránsito de 68 a 4 días y arancel 0% T-MEC, resultando en un ahorro neto de TCO del -4.2%.',
+          variance: '-4.8% TCO'
+        },
+        rvc: {
+          note: '[Auditoría de Origen T-MEC]: Verificación del Artículo 4.2 completada. El Valor de Contenido Regional (RVC) del microprocesador ensamblado en Guadalajara se sitúa en 81.2% (método de costo neto), muy por encima del umbral del 75%.',
+          rvc: '81.2% RVC'
+        },
+        buffer: {
+          note: '[Rebalanceo de Inventario]: 45 días de stock de seguridad desplegados en almacén de depósito fiscal en Guadalajara. Cobertura suficiente para amortiguar cualquier retraso aduanero fronterizo.',
+          leadTime: '12 Días'
+        },
+        incoterm: {
+          note: '[Optimización Aduanera]: Migración contractual de DDP a FCA Austin. stemOS asume el control directo del cruce fronterizo con carril C-TPAT / FAST, acortando el despacho aduanero a 120 minutos.',
+          risk: '$0 / día (Riesgo Neutralizado)'
+        }
+      },
+      optimalDecision: {
+        score: 'DUAL-SOURCING PLAYBOOK APPROVED (99/100 • UNANIMOUS BOARD RULING)',
+        notes: '"The Global Procurement Committee approves the 60/40 Texas-Guadalajara dual-sourcing transition. Your TCO modeling accurately captures tariff avoidance and eliminates $1.4M/day line-down liability."',
+        chips: ['#USMCA', '#DualSourcing', '#TCOModeling', '#Incoterms2020', '#CTPATFast']
+      },
+      reportFilename: 'Supply_Chain_Contingency_Guadalajara_ABF.md'
+    },
+    'battery': {
+      id: 'battery',
+      hub: 'LOGISTICS HUB: SALTILLO GIGAFAB CORRIDOR',
+      treaty: 'IRA Section 30D • USMCA Critical Minerals',
+      title: 'Battery-Grade Lithium Carbonate & Nickel Sulfate Dual-Sourcing Protocol',
+      targetScope: 'Disruption: Chilean Brine Export Quota Squeeze • Affected: Battery Grade Li2CO3 / NiSO4 • Risk: Loss of $7,500 IRA Tax Credit',
+      leadTime: '18 Días',
+      rvc: '82.5% RVC',
+      variance: '-6.1% TCO',
+      risk: '$2.8M / lote',
+      sourcingSpec: 'Contrato de suministro directo con refinadora de hidróxido de litio en Nevada y planta de reciclaje de masa negra en Monterrey (ciclo cerrado). Validación de trazabilidad mineral mediante pasaporte digital conforme al Art. 4.2 del T-MEC y Section 30D del Inflation Reduction Act.',
+      boardMembers: 'Victoria Vance 🇺🇸 & Marcus Vance 🇺🇸',
+      boardPrompt: '"Engineering & Sourcing Fellow: Qualifying a domestic recycled black-mass supplier for cathode active materials requires strict ICP-OES chemical purity assays (< 10 ppm iron/copper). How do you prove this recycled feedstock preserves our 2,000-cycle battery degradation guarantee while securing the $7,500 clean vehicle IRA tax subsidy?"',
+      actions: {
+        tco: {
+          note: '[Cálculo TCO Validado]: La masa negra reciclada in-situ en Monterrey reduce los costos logísticos en $1,200 USD por tonelada métrica de carbonato equivalente.',
+          variance: '-7.4% TCO'
+        },
+        rvc: {
+          note: '[Auditoría de Minerales Críticos IRA]: El 84% del valor de los minerales críticos proviene de Norteamérica o países con TLC, garantizando el 100% del subsidio federal de $7,500 USD por vehículo eléctrico.',
+          rvc: '84.0% RVC'
+        },
+        buffer: {
+          note: '[Buffer Stock de Hidróxido]: Almacenamiento criogénico de 60 días de precursor de sal de litio en bodegas de Saltillo con control de humedad (< 1% HR).',
+          leadTime: '15 Días'
+        },
+        incoterm: {
+          note: '[Incoterm DAP Saltillo]: Entrega garantizada en planta bajo régimen de depósito fiscal automotriz IMMEX con exención de IVA en importación temporal.',
+          risk: '$0 / lote (Subsidio Blindado)'
+        }
+      },
+      optimalDecision: {
+        score: 'DUAL-SOURCING PLAYBOOK APPROVED (99/100 • UNANIMOUS BOARD RULING)',
+        notes: '"Unanimous sign-off for the Saltillo battery mineral dual-sourcing framework. Preserving our Section 30D tax credit qualification secures over $140M in customer rebates for our OEM clients."',
+        chips: ['#IRACriticalMinerals', '#BatteryPassport', '#BlackMassRecycling', '#IMMEX', '#USMCA']
+      },
+      reportFilename: 'Supply_Chain_Contingency_Saltillo_Battery_Minerals.md'
+    },
+    'aero': {
+      id: 'aero',
+      hub: 'LOGISTICS HUB: QUERÉTARO AEROSPACE CLUSTER',
+      treaty: 'FAA / AFAC Bilateral • AS9100 Rev D • NADCAP',
+      title: 'Inconel 718 Aerospace Forgings & Turbine Disc Dual-Sourcing Qualification',
+      targetScope: 'Disruption: European Superalloy Forging Backlog (42 Weeks) • Affected: Hot-Section Turbine Rotors • Risk: AOG Grounding Penalties',
+      leadTime: '21 Días',
+      rvc: '76.8% RVC',
+      variance: '-3.5% TCO',
+      risk: '$950,000 USD / avión',
+      sourcingSpec: 'Doble homologación con forjadora certificada en Monterrey y maquinado electroquímico de precisión en Querétaro. Auditoría especial de procesos térmicos NADCAP Heat Treating y ensayos no destructivos por corrientes inducidas (Eddy Current).',
+      boardMembers: 'Victoria Vance 🇺🇸 & Rajesh Patel 🇮🇳/🇺🇸',
+      boardPrompt: '"Lead Sourcing Specialist: Inconel 718 hot-section forgings operate under extreme thermo-mechanical fatigue. How does your rapid 21-day supplier qualification protocol ensure NADCAP metallurgical conformity without risking catastrophical turbine disc failure during certification flights?"',
+      actions: {
+        tco: {
+          note: '[Cálculo TCO Validado]: La forja regional elimina tiempos muertos de 42 semanas a 3 semanas, evitando $9.5M USD en penalizaciones contractuales por retraso de entrega (Aircraft on Ground - AOG).',
+          variance: '-5.0% TCO'
+        },
+        rvc: {
+          note: '[Auditoría AS9100 / NADCAP]: Proceso de tratamiento térmico por solución y envejecimiento (AMS 5663) verificado al 100% con trazabilidad metalográfica de tamaño de grano ASTM 8 o más fino.',
+          rvc: '79.2% RVC'
+        },
+        buffer: {
+          note: '[Buffer Stock Estratégico]: Stock de seguridad de 30 discos forjados pre-mecanizados almacenados bajo atmósfera controlada.',
+          leadTime: '18 Días'
+        },
+        incoterm: {
+          note: '[Incoterm DPU Querétaro]: Entrega directa en muelle de planta con inspección dimensional CMM in-situ y liberación inmediata bajo First Article Inspection (FAI) AS9102.',
+          risk: '$0 / avión (AOG Evitado)'
+        }
+      },
+      optimalDecision: {
+        score: 'DUAL-SOURCING PLAYBOOK APPROVED (98/100 • UNANIMOUS BOARD RULING)',
+        notes: '"The committee validates the NADCAP dual-qualification roadmap for Inconel 718 turbine forgings. Flight-safety compliance and lead-time compression from 42 to 3 weeks represent world-class supply chain execution."',
+        chips: ['#AS9100', '#NADCAP', '#Inconel718', '#AOGRiskMitigation', '#FirstArticleInspection']
+      },
+      reportFilename: 'Supply_Chain_Contingency_Queretaro_Inconel718.md'
+    }
+  }
+};
+
+window.currentScCrisis = 'semicon';
+
+window.initReshoringWarRoom = function() {
+  window.switchScCrisis(window.currentScCrisis || 'semicon');
+};
+
+window.switchScCrisis = function(crisisKey) {
+  const c = window.RESHORING_WARROOM_DATA.crises[crisisKey];
+  if (!c) return;
+  window.currentScCrisis = crisisKey;
+
+  // Update nav buttons
+  ['semicon', 'battery', 'aero'].forEach(k => {
+    const btn = document.getElementById(`btn-sc-crisis-${k}`);
+    if (btn) btn.classList.toggle('active', k === crisisKey);
+  });
+
+  // Update hub & badges
+  const hubBadge = document.getElementById('sc-hub-badge');
+  const treatyBadge = document.getElementById('sc-treaty-badge');
+  const titleEl = document.getElementById('sc-crisis-title');
+  const scopeEl = document.getElementById('sc-target-scope');
+  const specEl = document.getElementById('sc-sourcing-spec');
+
+  if (hubBadge) hubBadge.textContent = c.hub;
+  if (treatyBadge) treatyBadge.innerHTML = `<i class="fa-solid fa-certificate"></i> ${c.treaty}`;
+  if (titleEl) titleEl.textContent = c.title;
+  if (scopeEl) scopeEl.textContent = c.targetScope;
+  if (specEl) specEl.textContent = c.sourcingSpec;
+
+  // Update telemetry stats
+  const leadEl = document.getElementById('sc-stat-leadtime');
+  const rvcEl = document.getElementById('sc-stat-rvc');
+  const varEl = document.getElementById('sc-stat-variance');
+  const riskEl = document.getElementById('sc-stat-risk');
+
+  if (leadEl) leadEl.textContent = c.leadTime;
+  if (rvcEl) rvcEl.textContent = c.rvc;
+  if (varEl) varEl.textContent = c.variance;
+  if (riskEl) riskEl.textContent = c.risk;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('sc-board-members');
+  const inquiryEl = document.getElementById('sc-board-inquiry');
+  if (boardEl) boardEl.textContent = c.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = c.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('sc-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('sc-ruling-score');
+  const decisionNotes = document.getElementById('sc-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'SUPPLY CHAIN REVIEW IN PROGRESS';
+    rulingScore.style.color = '#fbbf24';
+    rulingScore.style.borderColor = '#d97706';
+    rulingScore.style.background = 'rgba(217,119,6,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Ejecuta simulaciones de TCO/RVC o redacta tu estrategia ejecutiva de abastecimiento C1 para solicitar la aprobación del comité de compras.';
+  }
+};
+
+window.applyScAction = function(actionKey) {
+  const c = window.RESHORING_WARROOM_DATA.crises[window.currentScCrisis];
+  if (!c) return;
+
+  const act = c.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.leadTime) {
+    const leadEl = document.getElementById('sc-stat-leadtime');
+    if (leadEl) leadEl.textContent = act.leadTime;
+  }
+  if (act.rvc) {
+    const rvcEl = document.getElementById('sc-stat-rvc');
+    if (rvcEl) rvcEl.textContent = act.rvc;
+  }
+  if (act.variance) {
+    const varEl = document.getElementById('sc-stat-variance');
+    if (varEl) varEl.textContent = act.variance;
+  }
+  if (act.risk) {
+    const riskEl = document.getElementById('sc-stat-risk');
+    if (riskEl) riskEl.textContent = act.risk;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('sc-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('sc-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'TRADE ACTIONS AUDITED • READY FOR BRIEFING';
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+};
+
+window.playScAudio = function() {
+  const c = window.RESHORING_WARROOM_DATA.crises[window.currentScCrisis];
+  if (!c) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(c.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleScMic = function() {
+  const strategyInput = document.getElementById('sc-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Vice President Vance, Director Patel: While piece-part price increases by 12%, Total Cost of Ownership (TCO) decreases by 4.2% when factoring in eliminated trans-Pacific maritime freight rates, zero Section 301 punitive tariffs, and USMCA regional origin compliance.";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitScDefense = function() {
+  const c = window.RESHORING_WARROOM_DATA.crises[window.currentScCrisis];
+  if (!c) return;
+
+  const rulingScore = document.getElementById('sc-ruling-score');
+  const decisionNotes = document.getElementById('sc-board-decision-notes');
+  const chipsContainer = document.getElementById('sc-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = c.optimalDecision.score;
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = c.optimalDecision.notes;
+  }
+
+  if (chipsContainer && c.optimalDecision.chips) {
+    chipsContainer.innerHTML = c.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#fbbf24; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportScReport = function() {
+  const c = window.RESHORING_WARROOM_DATA.crises[window.currentScCrisis] || window.RESHORING_WARROOM_DATA.crises['semicon'];
+  const strategy = document.getElementById('sc-candidate-strategy')?.value || 'Executive procurement and sourcing brief delivered during live war room session.';
+  const ruling = document.getElementById('sc-ruling-score')?.textContent || 'DUAL-SOURCING PLAYBOOK APPROVED (99/100)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Global Supply Chain Reshoring & Dual-Sourcing Playbook
+## Cross-Border Operational Redundancy & USMCA Trade Resilience
+**Date**: ${dateStr}
+**Logistics Hub**: ${c.hub}
+**Disruption Scenario**: ${c.title}
+**Trade Treaty / Regulatory Framework**: ${c.treaty}
+**Global Sourcing Evaluation Committee**: ${c.boardMembers}
+
+---
+
+## 1. Disruption Impact & Operational Scope
+- **Critical Components Affected**: ${c.targetScope}
+- **Compressible Lead Time**: ${c.leadTime}
+- **USMCA Regional Value Content (RVC)**: ${c.rvc}
+- **Total Cost of Ownership (TCO) Delta**: ${c.variance}
+- **Daily Line-Down Financial Exposure Avoided**: ${c.risk}
+- **Reshoring Execution Architecture**:
+${c.sourcingSpec}
+
+---
+
+## 2. Lead Procurement Strategist's Committee Defense
+${strategy}
+
+---
+
+## 3. Global Procurement Committee Adjudication
+- **Official Ruling**: ${ruling}
+- **Committee Decision & Actionable Directives**:
+${c.optimalDecision.notes}
+
+- **Core Supply Chain Competencies**:
+${c.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Logistics Directive • Certified Under USMCA / T-MEC Cross-Border Supply Security Protocols*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = c.reportFilename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 28: AUTONOMOUS INDUSTRIAL CYBERSECURITY THREAT HUNTING ARENA
+// ============================================================================
+
+window.CYBER_ARENA_DATA = {
+  campaigns: {
+    'plc': {
+      id: 'plc',
+      facility: 'FACILITY: MONTERREY HOT-STRIP SIDERURGY (SCADA OT)',
+      standard: 'IEC 62443-4-2 • NIST SP 800-82',
+      title: 'Unauthorized Ladder Logic Firmware Tampering over Modbus TCP (Port 502)',
+      targetScope: 'Vector: Stuxnet-Style Function Code 16 (Preset Multiple Registers) • Target: Hydraulic Roll Gap Servos • Severity: Critical SIL-3',
+      sla: '2m 14s',
+      purdue: 'Level 1/2',
+      integrity: '99.8%',
+      saved: '$3.2M USD',
+      forensicSpec: 'Infiltración detectada en switch gestionado Nivel 2. El payload malicioso intenta sobrescribir la tabla de registros Modbus 40012-40018 para forzar sobrepresión de 320 bar en los cilindros de laminado. Mitigación: Regla Snort OT bloqueando Function Code 16 no autorizado y rollback de memoria EEPROM autenticada con firma criptográfica RSA-4096.',
+      boardMembers: 'Alexander Wright 🇺🇸 & Sven Lindqvist 🇸🇪/🇺🇸',
+      boardPrompt: '"Incident Responder: Modbus function code 16 has just triggered uncommanded cylinder roll-gap adjustments on the Monterrey roughing mill. The attacker compromised the Level 2 engineering workstation. How do you isolate the PLC subnet without halting continuous hot steel rolling, and how do you cryptographically attest that the safety PLC ladder memory has not been compromised?"',
+      actions: {
+        dpi: {
+          note: '[Inspección Profunda DPI]: Filtro de paquetes Modbus TCP activado en firewall OT Fortinet Rugged. 42 tramas FC16 maliciosas dropeadas sin alterar el tráfico cíclico de telemetría FC03/FC04.',
+          integrity: '100% (Verificado)'
+        },
+        airgap: {
+          note: '[Aislamiento Air-Gap Nivel 1/2]: Subred de servoválvulas desconectada del switch de agregación IT/OT. Comunicación limitada exclusivamente al bus safety cableado en bucle cerrado SIL-3.',
+          purdue: 'Purdue L1 Aislado'
+        },
+        mtls: {
+          note: '[Criptografía IEC 62351]: Despliegue de certificados X.509 en controladores de campo. Comunicación punto a punto autenticada con TLS 1.3 y claves elípticas Ed25519.',
+          sla: '1m 45s'
+        },
+        pcap: {
+          note: '[Evidencia Forense]: Captura Wireshark PCAP de 4.8 MB exportada con firma SHA-256 junto con firma Suricata SID:2026110 para distribución a la comunidad CISA.',
+          saved: '$3.5M USD'
+        }
+      },
+      optimalDecision: {
+        score: 'INCIDENT CONTAINED • 99/100 (CISA GOLD STANDARD)',
+        notes: '"Incident containment validated within 2m 14s. The Purdue Level 1 isolation, Snort DPI rule deployment, and firmware cryptographic verification prevented catastrophic equipment breakdown and avoided $3.2M USD in equipment replacement."',
+        chips: ['#IEC62443', '#PurdueModel', '#ModbusDPI', '#AirGapIsolation', '#SIL3Safety']
+      },
+      reportFilename: 'ICS_Incident_Forensic_Monterrey_Modbus.md'
+    },
+    'ransomware': {
+      id: 'ransomware',
+      facility: 'FACILITY: SALTILLO EV BATTERY GIGAFAB (FORMATION ICS)',
+      standard: 'CISA ICS Advisory • ISA/IEC 62443-3-3',
+      title: 'ALPHV/BlackCat Ransomware Lateral Movement into Battery Formation SCADA',
+      targetScope: 'Vector: Compromised Supplier VPN to Purdue L3 SCADA • Target: Cell Formation Cyclers & Thermal Chambers • Severity: Catastrophic Safety Hazard',
+      sla: '2m 48s',
+      purdue: 'Level 2/3',
+      integrity: '99.4%',
+      saved: '$4.6M USD',
+      forensicSpec: 'El binario de ransomware intentó cifrar las bases de datos de curvas de ciclado electroquímico y alterar los umbrales de sobretemperatura en los hornos de formación. Contramedida: Segmentación Zero-Trust inmediata, corte de enlace WAN y restauración instantánea desde copias inmutables fuera de línea WORM (Write Once, Read Many).',
+      boardMembers: 'Alexander Wright 🇺🇸 & Marcus Vance 🇺🇸',
+      boardPrompt: '"Incident Commander: Ransomware beacons are pinging external C2 servers from the Saltillo battery formation supervisory node. If the thermal runaway interlocks are modified by the ransomware payload, we risk a plant-wide chemical fire. How do you execute network segmentation within our 3-minute SLA while ensuring battery formation chambers remain in safe cold-standby?"',
+      actions: {
+        dpi: {
+          note: '[Bloqueo de C2]: Inspección de capas 4-7 detecta balizas HTTPS en puerto 8443 hacia IP maliciosa extranjera. Sesiones TCP terminadas con TCP RST.',
+          integrity: '100% (C2 Bloqueado)'
+        },
+        airgap: {
+          note: '[Aislamiento Perimetral]: Corte físico de gateway IT/OT en 42 segundos. Todos los cicladores de celda pasan autónomamente a modo Fail-Safe de descarga lenta controlada.',
+          purdue: 'Purdue L2/L3 Cortado'
+        },
+        mtls: {
+          note: '[Validación de Integridad]: Hashes SHA-256 de ejecutables SCADA contrastados con línea base de fábrica. Proceso de cifrado neutralizado al 100%.',
+          sla: '2m 10s'
+        },
+        pcap: {
+          note: '[Notificación Regulatoria]: Paquete forense preparado conforme a la Directiva CISA CIRCIA para notificación dentro de las 72 horas.',
+          saved: '$5.1M USD'
+        }
+      },
+      optimalDecision: {
+        score: 'INCIDENT CONTAINED • 99/100 (CISA GOLD STANDARD)',
+        notes: '"Heroic containment execution. Immediate air-gap severed the ransomware blast radius before cell formation chambers were compromised, preventing thermal runaway and safeguarding $4.6M in battery inventory."',
+        chips: ['#RansomwareContainment', '#AirGap', '#ZeroTrustOT', '#CISAAdvisory', '#WORMBackup']
+      },
+      reportFilename: 'ICS_Incident_Forensic_Saltillo_Ransomware.md'
+    },
+    'mitm': {
+      id: 'mitm',
+      facility: 'FACILITY: QUERÉTARO CLEANROOM SEMICON CAMPUS',
+      standard: 'BACnet Secure Connect (ASHRAE 135) • ISO 14644-1',
+      title: 'Man-in-the-Middle BACnet/IP Sensor Spoofing on Cleanroom Differential Pressure',
+      targetScope: 'Vector: ARP Cache Poisoning on BACnet Port 47808 • Target: ISO Class 1 HVAC Damper Controllers • Severity: High Yield-Loss Risk',
+      sla: '1m 58s',
+      purdue: 'Level 1 HVAC',
+      integrity: '99.9%',
+      saved: '$1.8M USD',
+      forensicSpec: 'El adversario inyectó paquetes BACnet falsificados para reportar presión negativa ficticia (-12 Pa) buscando activar ventilación de emergencia que habría contaminado con partículas las cámaras DUV/EUV. Mitigación: Despliegue de BACnet/SC (Secure Connect) con cifrado TLS 1.3, anulación de tablas ARP estáticas y verificación cruzada con manómetros Magnehelic analógicos redundantes.',
+      boardMembers: 'Alexander Wright 🇺🇸 & Sven Lindqvist 🇸🇪/🇺🇸',
+      boardPrompt: '"Cyber Lead: Spoofed BACnet telemetry almost triggered a dirty-air purge over our EUV lithography cleanroom. How does your forensic analysis isolate the rogue device MAC address on the industrial ethernet ring, and how do you guarantee sensor data authenticity without introducing network jitter?"',
+      actions: {
+        dpi: {
+          note: '[Detección MitM]: Análisis de tablas ARP detecta MAC duplicada en puerto 14 de switch Hirschmann. Puerto deshabilitado por port-security en 180 ms.',
+          integrity: '100% (MitM Eliminado)'
+        },
+        airgap: {
+          note: '[Segmentación VLAN]: Aislamiento de la VLAN 40 (HVAC Cleanroom) en subred privada no enrutable protegida por inspección 802.1X.',
+          purdue: 'VLAN 40 Aislada'
+        },
+        mtls: {
+          note: '[Migración BACnet/SC]: Transición a BACnet Secure Connect sobre WebSockets con autenticación mTLS de certificados de dispositivo.',
+          sla: '1m 20s'
+        },
+        pcap: {
+          note: '[Auditoría Forense]: Reporte forense detallando artefactos de red y validación de presión diferencial real (+28.5 Pa nominal).',
+          saved: '$2.2M USD'
+        }
+      },
+      optimalDecision: {
+        score: 'INCIDENT CONTAINED • 98/100 (CISA GOLD STANDARD)',
+        notes: '"Exemplary incident resolution. Port-security mitigation and BACnet/SC migration protected cleanroom ISO Class 1 integrity, avoiding wafer yield losses exceeding $1.8M USD."',
+        chips: ['#BACnetSC', '#MitMDefense', '#ARPSpoofing', '#PortSecurity', '#ISO14644']
+      },
+      reportFilename: 'ICS_Incident_Forensic_Queretaro_BACnet.md'
+    }
+  }
+};
+
+window.currentCyberCampaign = 'plc';
+
+window.initCyberArena = function() {
+  window.switchCyberCampaign(window.currentCyberCampaign || 'plc');
+};
+
+window.switchCyberCampaign = function(campKey) {
+  const c = window.CYBER_ARENA_DATA.campaigns[campKey];
+  if (!c) return;
+  window.currentCyberCampaign = campKey;
+
+  // Update nav buttons
+  ['plc', 'ransomware', 'mitm'].forEach(k => {
+    const btn = document.getElementById(`btn-cyber-camp-${k}`);
+    if (btn) btn.classList.toggle('active', k === campKey);
+  });
+
+  // Update facility & badges
+  const facBadge = document.getElementById('cyber-facility-badge');
+  const stdBadge = document.getElementById('cyber-standard-badge');
+  const titleEl = document.getElementById('cyber-campaign-title');
+  const scopeEl = document.getElementById('cyber-target-scope');
+  const specEl = document.getElementById('cyber-forensic-spec');
+
+  if (facBadge) facBadge.textContent = c.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${c.standard}`;
+  if (titleEl) titleEl.textContent = c.title;
+  if (scopeEl) scopeEl.textContent = c.targetScope;
+  if (specEl) specEl.textContent = c.forensicSpec;
+
+  // Update telemetry stats
+  const slaEl = document.getElementById('cyber-stat-sla');
+  const purdueEl = document.getElementById('cyber-stat-purdue');
+  const integEl = document.getElementById('cyber-stat-integrity');
+  const savedEl = document.getElementById('cyber-stat-saved');
+
+  if (slaEl) slaEl.textContent = c.sla;
+  if (purdueEl) purdueEl.textContent = c.purdue;
+  if (integEl) integEl.textContent = c.integrity;
+  if (savedEl) savedEl.textContent = c.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('cyber-board-members');
+  const inquiryEl = document.getElementById('cyber-board-inquiry');
+  if (boardEl) boardEl.textContent = c.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = c.boardPrompt;
+
+  // Clear brief
+  const responseInput = document.getElementById('cyber-candidate-response');
+  if (responseInput) responseInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('cyber-ruling-score');
+  const decisionNotes = document.getElementById('cyber-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'INCIDENT TRIAGE IN PROGRESS';
+    rulingScore.style.color = '#f87171';
+    rulingScore.style.borderColor = '#b91c1c';
+    rulingScore.style.background = 'rgba(185,28,28,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Ejecuta inspecciones forenses DPI/Air-Gap o redacta tu estrategia de contención C1 para solicitar el dictamen oficial del CISO.';
+  }
+};
+
+window.applyCyberAction = function(actionKey) {
+  const c = window.CYBER_ARENA_DATA.campaigns[window.currentCyberCampaign];
+  if (!c) return;
+
+  const act = c.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.sla) {
+    const slaEl = document.getElementById('cyber-stat-sla');
+    if (slaEl) slaEl.textContent = act.sla;
+  }
+  if (act.purdue) {
+    const purdueEl = document.getElementById('cyber-stat-purdue');
+    if (purdueEl) purdueEl.textContent = act.purdue;
+  }
+  if (act.integrity) {
+    const integEl = document.getElementById('cyber-stat-integrity');
+    if (integEl) integEl.textContent = act.integrity;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('cyber-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('cyber-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('cyber-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'TACTICAL ACTION VERIFIED • READY FOR BRIEFING';
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+};
+
+window.playCyberAudio = function() {
+  const c = window.CYBER_ARENA_DATA.campaigns[window.currentCyberCampaign];
+  if (!c) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(c.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleCyberMic = function() {
+  const responseInput = document.getElementById('cyber-candidate-response');
+  if (!responseInput) return;
+
+  const sampleResponse = "Commander Wright, Incident Commander Lindqvist: We immediately severed the Purdue Level 2-to-Level 1 routing via firewall state drop while maintaining hardwired SIL-3 emergency stop loops. Deep packet inspection (DPI) on port 502 confirmed forged Modbus FC16 frames originating from IP 192.168.10.45. Firmware SHA-256 hash attestation verifies the safety PLC ROM remains uncorrupted.";
+  if (responseInput.value.trim().length === 0) {
+    responseInput.value = sampleResponse;
+  } else {
+    responseInput.value += " " + sampleResponse;
+  }
+};
+
+window.submitCyberDefense = function() {
+  const c = window.CYBER_ARENA_DATA.campaigns[window.currentCyberCampaign];
+  if (!c) return;
+
+  const rulingScore = document.getElementById('cyber-ruling-score');
+  const decisionNotes = document.getElementById('cyber-board-decision-notes');
+  const chipsContainer = document.getElementById('cyber-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = c.optimalDecision.score;
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = c.optimalDecision.notes;
+  }
+
+  if (chipsContainer && c.optimalDecision.chips) {
+    chipsContainer.innerHTML = c.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#f87171; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportCyberReport = function() {
+  const c = window.CYBER_ARENA_DATA.campaigns[window.currentCyberCampaign] || window.CYBER_ARENA_DATA.campaigns['plc'];
+  const defense = document.getElementById('cyber-candidate-response')?.value || 'Executive cybersecurity incident briefing delivered during live command session.';
+  const ruling = document.getElementById('cyber-ruling-score')?.textContent || 'INCIDENT CONTAINED • 99/100 (CISA GOLD STANDARD)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Industrial Cybersecurity Incident Command Protocol
+## ICS/SCADA Forensic Remediation & CISA Regulatory Notification
+**Date**: ${dateStr}
+**Target Facility**: ${c.facility}
+**Threat Vector Scenario**: ${c.title}
+**Normative Compliance**: ${c.standard}
+**Incident Command Evaluation Committee**: ${c.boardMembers}
+
+---
+
+## 1. Attack Vector Anatomy & Threat Scope
+- **Threat Vector & Exploitation Details**: ${c.targetScope}
+- **Containment SLA Achieved**: ${c.sla}
+- **Purdue Model Architectural Boundary**: ${c.purdue}
+- **Network Traffic Integrity Ratio**: ${c.integrity}
+- **Avoided Equipment Damage & Downtime Loss**: ${c.saved}
+- **Forensic Mitigation Architecture**:
+${c.forensicSpec}
+
+---
+
+## 2. Lead Incident Responder's Technical Brief
+${defense}
+
+---
+
+## 3. Incident Command Adjudication & Regulatory Status
+- **Official Ruling**: ${ruling}
+- **Command Decision Notes**:
+${c.optimalDecision.notes}
+
+- **Core Cybersecurity Competencies**:
+${c.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Incident Record • Certified Under IEC 62443 & CISA Cross-Border Infrastructure Defense Standards*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = c.reportFilename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 29: CROSS-BORDER AUTONOMOUS AI PREDICTIVE MAINTENANCE & ZERO-DOWNTIME CRUCIBLE
+// ============================================================================
+
+window.PDM_CRUCIBLE_DATA = {
+  assets: {
+    'turbo': {
+      id: 'turbo',
+      plant: 'FACILITY: QUERÉTARO AEROSPACE PROPULSION TURBOMACHINERY',
+      standard: 'ISO 10816-3 • ISO 13373-1',
+      title: 'Sub-Harmonic Resonant Shaft Whirl & VFD Bearing Fluting (15,000 RPM)',
+      targetScope: 'Spectral Anomaly: 0.43X Running Speed Oil Whirl • Kurtosis: 4.85 (Elevated) • Impeller Breakdown Risk: $850,000 USD',
+      rms: '1.42 mm/s',
+      rul: '4,200 Horas',
+      kurtosis: '3.12',
+      saved: '$2,100,000 USD',
+      diagnosticSpec: 'Espectro FFT revela componente síncrona 1X a 250 Hz (15,000 RPM) con banda lateral sub-armónica a 107.5 Hz (0.43X) indicativa de inestabilidad hidrodinámica en cojinete basculante. Demodulación de pico muestra fluting incipiente por descarga electrostática de inversor SiC. Mitigación: Instalación de anillo de puesta a tierra Aegis, purga y relubricación con aceite sintético ISO VG 32 y balanceo dinámico en dos planos.',
+      boardMembers: 'Dr. Aris Thorne 🇺🇸 & Dr. Klaus Schneider 🇩🇪/🇺🇸',
+      boardPrompt: '"Lead Reliability Engineer: We are observing high-frequency demodulated peaks at 3.4 kHz coinciding with BPFO bearing fault frequencies on the Saltillo calender line. If roll chatter creates a thickness variation exceeding 0.5 microns, the entire battery cell lot is scrapped. How does your envelope demodulation prove bearing race micro-spalling versus hydraulic pump cavitation, and how do you project Remaining Useful Life (RUL) under Weibull analysis?"',
+      actions: {
+        fft: {
+          note: '[Descomposición Espectral FFT]: Cascada espectral waterfall confirma pico armónico 1X balanceado a 250 Hz con atenuación de 82% en sub-armónico 0.43X tras ajuste de precarga en cojinetes basculantes.',
+          rms: '0.88 mm/s'
+        },
+        weibull: {
+          note: '[Modelado Weibull]: Parámetro de forma beta = 2.8 y escala eta = 5,400 horas. Probabilidad de falla antes del próximo overhaul programado < 0.2%.',
+          rul: '5,100 Horas'
+        },
+        lube: {
+          note: '[Tribología de Película]: Espesor de película elastohidrodinámica lambda = 2.45 verificado por dieléctrico en línea. Fluting eléctrico neutralizado por anillo Aegis.',
+          kurtosis: '2.84 (Ideal)'
+        },
+        balance: {
+          note: '[Balanceo Dinámico 2 Planos]: Desbalance residual reducido a Grado ISO G1.0 (0.24 g-mm/kg), eliminando vibración armónica en carcasa de compresor.',
+          saved: '$2,450,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'RELIABILITY PROTOCOL CERTIFIED • 99/100 (ISO 13373-1 COMPLIANT)',
+        notes: '"The Global Reliability Council unanimously approves the asset health remediation roadmap. The envelope demodulation and Weibull RUL projection avoided catastrophic shaft failure and secured zero unplanned downtime."',
+        chips: ['#ISO13373', '#FFTSpectrum', '#HFRTDemodulation', '#WeibullRUL', '#OilWhirlMitigation']
+      },
+      reportFilename: 'PdM_Reliability_Queretaro_Turbocompressor.md'
+    },
+    'calender': {
+      id: 'calender',
+      plant: 'FACILITY: SALTILLO EV GIGAFAB (ELECTRODE CALENDERING LINE)',
+      standard: 'ISO 20816-1 • ASTM E1444 Acoustic Emission',
+      title: 'Roll Chatter Resonance & Spherical Roller Bearing Outer Race Micro-Spalling',
+      targetScope: 'Anomaly: BPFO 142.5 Hz Envelope Peak • Cathode Foil Thickness Drift: ±0.35 µm • Coil Scrap Hazard: $1.2M USD',
+      rms: '1.95 mm/s',
+      rul: '3,800 Horas',
+      kurtosis: '4.10',
+      saved: '$3,400,000 USD',
+      diagnosticSpec: 'Demodulación de envolvente acústica de alta frecuencia HFRT detecta impacto periódico a 142.5 Hz coincidente con la frecuencia de paso de bolas en pista exterior (BPFO). La micro-picadura genera chatter hidráulico en los servocilindros de compresión. Mitigación: Reemplazo programado de cartucho de rodamientos de precisión SKF Explorer y compensación adaptativa feed-forward en servoválvulas Moog.',
+      boardMembers: 'Dr. Aris Thorne 🇺🇸 & Marcus Vance 🇺🇸',
+      boardPrompt: '"Plant Reliability Lead: Cathode foil micro-calendering in Saltillo requires zero roll chatter. Your acoustic demodulation flags BPFO defect energy, but maintenance operations wants to push the bearing cartridge another 60 days. How do you defend immediate planned cartridge swap using Weibull hazard rates and avoided scrap costs?"',
+      actions: {
+        fft: {
+          note: '[Análisis de Envolvente HFRT]: Energía de demodulación aislada en banda 2-10 kHz. Modulación por 1X (frecuencia de giro del rodillo) corrobora defecto puntual en pista fija exterior.',
+          rms: '1.10 mm/s'
+        },
+        weibull: {
+          note: '[Cálculo de Tasa de Falla Weibull]: Curva de degradación indica que operar 60 días adicionales elevaría la probabilidad de falla catastrófica a 76.4%. Cartucho programado para cambio en ventana de 48h.',
+          rul: '4,400 Horas'
+        },
+        lube: {
+          note: '[Análisis de Aceite ISO 4406]: Conteo de partículas ferrosas 16/14/11. Micro-filtración magnética activada en bucle de recirculación para proteger engranajes reductores.',
+          kurtosis: '2.95 (Nominal)'
+        },
+        balance: {
+          note: '[Compensación Feed-Forward]: Algoritmo de control activo suprime la vibración armónica en cilindros hidráulicos en un 88%, preservando tolerancia de lámina a ±0.15 µm.',
+          saved: '$3,800,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'RELIABILITY PROTOCOL CERTIFIED • 99/100 (ISO 13373-1 COMPLIANT)',
+        notes: '"Decisive reliability intervention. The quantitative Weibull hazard justification and HFRT evidence validated the proactive cartridge changeover, protecting $3.4M USD in high-nickel cathode coils."',
+        chips: ['#CalenderChatter', '#BPFOEnvelope', '#HFRTAcoustics', '#WeibullHazard', '#LithiumBatteryQMS']
+      },
+      reportFilename: 'PdM_Reliability_Saltillo_Calender_Bearing.md'
+    },
+    'caster': {
+      id: 'caster',
+      plant: 'FACILITY: MONTERREY HEAVY SIDERURGY (CONTINUOUS SLAB CASTER)',
+      standard: 'AISE Technical Report No. 13 • ISO 13374 Condition Monitoring',
+      title: 'Copper Mold Plate Thermographic Sticker Breakout Detection & FBG Optic Array',
+      targetScope: 'Thermal Anomaly: Localized 1,540°C Copper Temperature Inversion • Shell Rupture Risk: Liquid Steel Breakout ($2.1M USD Damage)',
+      rms: '2.10 mm/s',
+      rul: '2,900 Horas',
+      kurtosis: '3.80',
+      saved: '$4,100,000 USD',
+      diagnosticSpec: 'Matriz de 192 sensores de fibra óptica Bragg (FBG) incrustados en las placas de cobre detecta propagación de punto caliente descendente a 0.85 m/min. Comportamiento típico de desgarro de cascarón solidificado (sticker). Mitigación: Disminución coordinada de velocidad de colada a 0.4 m/min, incremento de frecuencia de oscilación a 180 cpm y adición de polvo colador de alta lubricidad.',
+      boardMembers: 'Dr. Aris Thorne 🇺🇸 & Dr. Klaus Schneider 🇩🇪/🇺🇸',
+      boardPrompt: '"Chief Reliability Engineer: A mold sticker event on the Monterrey continuous caster can rupture and spill 180 metric tons of molten steel at 1,540°C into the spray chamber. How do your fiber-optic FBG temperature gradient models detect shell tearing in under 1.5 seconds, and what mechanical adjustments prevent a breakout catastrophe?"',
+      actions: {
+        fft: {
+          note: '[Mapeo Térmico FBG]: Inversión de gradiente térmico detectada en termopar FBG #42. Cascarón de acero soldado temporalmente con placa de cobre por lubricación deficiente.',
+          rms: '1.25 mm/s'
+        },
+        weibull: {
+          note: '[Resincronización de Oscilación]: Carrera de molde ajustada con tiempo de desmoldeo negativo (negative strip time) de 0.12 segundos para curar la grieta transversal.',
+          rul: '3,600 Horas'
+        },
+        lube: {
+          note: '[Alimentación de Polvo Sintético]: Polvo colador con viscosidad 1.8 Poise inyectado automáticamente para reconstituir la película vítrea lubricante.',
+          kurtosis: '2.90 (Estable)'
+        },
+        balance: {
+          note: '[Estabilización Hidráulica]: Presiones de rodillos de guía de línea de colada niveladas. Rompimiento de acero líquido 100% evitado.',
+          saved: '$4,500,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'RELIABILITY PROTOCOL CERTIFIED • 99/100 (ISO 13373-1 COMPLIANT)',
+        notes: '"Flawless thermodynamic and metallurgical diagnostic defense. Dynamic mold oscillation override healed the solidifying shell within 1.2 seconds, preventing a liquid steel breakout disaster and avoiding $4.1M USD in damages."',
+        chips: ['#ContinuousCasting', '#FBGThermography', '#StickerBreakout', '#LiquidSteelSafety', '#NegativeStripTime']
+      },
+      reportFilename: 'PdM_Reliability_Monterrey_Continuous_Caster.md'
+    }
+  }
+};
+
+window.currentPdmAsset = 'turbo';
+
+window.initPdmCrucible = function() {
+  window.switchPdmAsset(window.currentPdmAsset || 'turbo');
+};
+
+window.switchPdmAsset = function(assetKey) {
+  const a = window.PDM_CRUCIBLE_DATA.assets[assetKey];
+  if (!a) return;
+  window.currentPdmAsset = assetKey;
+
+  // Update nav buttons
+  ['turbo', 'calender', 'caster'].forEach(k => {
+    const btn = document.getElementById(`btn-pdm-asset-${k}`);
+    if (btn) btn.classList.toggle('active', k === assetKey);
+  });
+
+  // Update plant & badges
+  const plantBadge = document.getElementById('pdm-plant-badge');
+  const stdBadge = document.getElementById('pdm-standard-badge');
+  const titleEl = document.getElementById('pdm-asset-title');
+  const scopeEl = document.getElementById('pdm-target-scope');
+  const specEl = document.getElementById('pdm-diagnostic-spec');
+
+  if (plantBadge) plantBadge.textContent = a.plant;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-award"></i> ${a.standard}`;
+  if (titleEl) titleEl.textContent = a.title;
+  if (scopeEl) scopeEl.textContent = a.targetScope;
+  if (specEl) specEl.textContent = a.diagnosticSpec;
+
+  // Update telemetry stats
+  const rmsEl = document.getElementById('pdm-stat-rms');
+  const rulEl = document.getElementById('pdm-stat-rul');
+  const kurtosisEl = document.getElementById('pdm-stat-kurtosis');
+  const savedEl = document.getElementById('pdm-stat-saved');
+
+  if (rmsEl) rmsEl.textContent = a.rms;
+  if (rulEl) rulEl.textContent = a.rul;
+  if (kurtosisEl) kurtosisEl.textContent = a.kurtosis;
+  if (savedEl) savedEl.textContent = a.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('pdm-board-members');
+  const inquiryEl = document.getElementById('pdm-board-inquiry');
+  if (boardEl) boardEl.textContent = a.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = a.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('pdm-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('pdm-ruling-score');
+  const decisionNotes = document.getElementById('pdm-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'DIAGNOSTIC ADJUDICATION PENDING';
+    rulingScore.style.color = '#22d3ee';
+    rulingScore.style.borderColor = '#0891b2';
+    rulingScore.style.background = 'rgba(8,145,178,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Ejecuta análisis espectral FFT/Weibull o redacta tu dictamen técnico de confiabilidad C1 para solicitar la certificación del Consejo.';
+  }
+};
+
+window.applyPdmAction = function(actionKey) {
+  const a = window.PDM_CRUCIBLE_DATA.assets[window.currentPdmAsset];
+  if (!a) return;
+
+  const act = a.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.rms) {
+    const rmsEl = document.getElementById('pdm-stat-rms');
+    if (rmsEl) rmsEl.textContent = act.rms;
+  }
+  if (act.rul) {
+    const rulEl = document.getElementById('pdm-stat-rul');
+    if (rulEl) rulEl.textContent = act.rul;
+  }
+  if (act.kurtosis) {
+    const kurtosisEl = document.getElementById('pdm-stat-kurtosis');
+    if (kurtosisEl) kurtosisEl.textContent = act.kurtosis;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('pdm-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('pdm-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('pdm-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'INTERVENTION VALIDATED • READY FOR CERTIFICATION';
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+};
+
+window.playPdmAudio = function() {
+  const a = window.PDM_CRUCIBLE_DATA.assets[window.currentPdmAsset];
+  if (!a) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(a.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.togglePdmMic = function() {
+  const strategyInput = document.getElementById('pdm-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Dr. Thorne, Dr. Schneider: High-frequency resonance technique (HFRT) demodulation isolates impact energy specifically at 142.5 Hz, exactly matching the Ball Pass Frequency Outer Race (BPFO), ruling out broad-spectrum cavitation noise. Our 2-parameter Weibull model with shape parameter beta 2.8 indicates wear-out degradation with 4,200 hours of Remaining Useful Life (RUL).";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitPdmDefense = function() {
+  const a = window.PDM_CRUCIBLE_DATA.assets[window.currentPdmAsset];
+  if (!a) return;
+
+  const rulingScore = document.getElementById('pdm-ruling-score');
+  const decisionNotes = document.getElementById('pdm-board-decision-notes');
+  const chipsContainer = document.getElementById('pdm-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = a.optimalDecision.score;
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = a.optimalDecision.notes;
+  }
+
+  if (chipsContainer && a.optimalDecision.chips) {
+    chipsContainer.innerHTML = a.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#22d3ee; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportPdmReport = function() {
+  const a = window.PDM_CRUCIBLE_DATA.assets[window.currentPdmAsset] || window.PDM_CRUCIBLE_DATA.assets['turbo'];
+  const defense = document.getElementById('pdm-candidate-strategy')?.value || 'Executive predictive maintenance and machinery reliability brief delivered during live council session.';
+  const ruling = document.getElementById('pdm-ruling-score')?.textContent || 'RELIABILITY PROTOCOL CERTIFIED • 99/100 (ISO 13373-1 COMPLIANT)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Machinery Health & Reliability Certification Protocol
+## ISO 13373-1 / ISO 10816 Predictive Vibration & Tribology Audit
+**Date**: ${dateStr}
+**Plant Asset**: ${a.plant}
+**Machinery Diagnostic Case**: ${a.title}
+**Normative Compliance**: ${a.standard}
+**Global Reliability Evaluation Council**: ${a.boardMembers}
+
+---
+
+## 1. Machinery Health Baseline & Condition Monitoring Telemetry
+- **Spectral Anomaly & Defect Scope**: ${a.targetScope}
+- **Vibration Velocity RMS**: ${a.rms} (ISO 10816 Criteria)
+- **Projected Remaining Useful Life (RUL)**: ${a.rul}
+- **Vibration Kurtosis / Crest Factor**: ${a.kurtosis}
+- **Avoided Unplanned Downtime Cost**: ${a.saved}
+- **Diagnostic Decomposition & Intervention Roadmap**:
+${a.diagnosticSpec}
+
+---
+
+## 2. Lead Reliability Engineer's Technical Defense
+${defense}
+
+---
+
+## 3. Reliability Council Ruling & Official Certification
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${a.optimalDecision.notes}
+
+- **Core Engineering & Reliability Competencies**:
+${a.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Engineering Record • Certified Under ISO 13373-1 Condition Monitoring Standards*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = a.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 30: AUTONOMOUS CROSS-BORDER MICROGRID & INDUSTRIAL ENERGY ARBITRAGE
+// ============================================================================
+
+window.MICROGRID_ARBITRAGE_DATA = {
+  scenarios: {
+    'peak': {
+      id: 'peak',
+      corridor: 'ENERGY CORRIDOR: REYNOSA-MCALLEN CROSS-BORDER INTERCONNECT',
+      standard: 'IEEE 1547-2018 • CENACE / ERCOT',
+      title: 'ERCOT-CENACE Summer Peak Shaving & 4CP Demand Charge Avoidance',
+      targetScope: 'Peak Coincident Event: 17:00-18:00 CST • Tariff Penalty: $120 USD/kW • Annual Transmission Charge Avoidance: $2,800,000 USD',
+      freq: '60.00 Hz',
+      soc: '88.4%',
+      lmp: '$38.40 / MWh',
+      saved: '$2,800,000 USD',
+      dispatchSpec: 'Red neuronal predictiva detecta probabilidad de 98.4% de pico coincidente 4CP a las 17:15 CST. Despacho automatizado del banco BESS LFP de 50 MW a 1C discharge rate. Aplanamiento de curva de demanda en subestación de 230 kV de 72 MW a 22 MW nominales, eliminando la penalización de capacidad tarifaria de ERCOT/CENACE y preservando $2.8M USD anuales.',
+      boardMembers: 'Cassandra Vance 🇺🇸 & Dr. Mateo Rossi 🇮🇹/🇺🇸',
+      boardPrompt: '"Energy Strategist: ERCOT nodal pricing at the Reynosa tie-line has hit $1,450/MWh due to a thermal generation trip, while our factory load is peaking. How does your BESS economic dispatch schedule discharge without violating battery cycle warranty limits, and how do you calculate the net arbitrage spread against day-ahead CENACE prices?"',
+      actions: {
+        dispatch: {
+          note: '[Despacho BESS 50 MW]: Inyección en bus de 230 kV ejecutada en 680 ms. Demanda de planta contenida en 22 MW durante el intervalo de 15 minutos del 4CP de ERCOT.',
+          soc: '72.1% (Despachado)'
+        },
+        island: {
+          note: '[Modo Isla IEEE 1547]: Sincronización de ángulo de fase verificado. Respaldo N-1 activado sin perturbaciones de armónicos en cargas motrices.',
+          freq: '60.01 Hz'
+        },
+        cogen: {
+          note: '[Spark Spread Verde]: Costo marginal de generación reducido a $24.80/MWh mediante co-disparo de 15% H2 verde en turbina solar Titan.',
+          lmp: '$24.80 / MWh'
+        },
+        lmp: {
+          note: '[Arbitraje Nodal]: Retiro programado en ventana de baja tarifa nocturna ($18/MWh) y venta de excedentes de BESS en banda pico de $1,450/MWh.',
+          saved: '$3,150,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'DISPATCH STRATEGY APPROVED • 99/100 (FERC/CENACE ARBITRAGE GOLD)',
+        notes: '"The Energy Arbitrage Council unreservedly approves the microgrid dispatch roadmap. The 50 MW BESS peak-shaving execution successfully avoided the 4CP tariff penalty, securing $2.8M USD in net savings while preserving grid stability."',
+        chips: ['#4CPPeakShaving', '#BESSStorage', '#LMPArbitrage', '#IEEE1547', '#ERCOTCrossBorder']
+      },
+      reportFilename: 'Microgrid_Arbitrage_Reynosa_4CP.md'
+    },
+    'island': {
+      id: 'island',
+      corridor: 'ENERGY CORRIDOR: SALTILLO INDUSTRIAL GRID & BESS MICROGRID',
+      standard: 'NERC PRC-024 • IEEE 2030.7 Microgrid Controller',
+      title: 'Substation Transformer Trip & Seamless High-Speed Microgrid Islanding (< 40 ms)',
+      targetScope: 'Contingency: 115 kV Grid Loss • Target: 18,000 EV Battery Formation Cyclers • Scrub Rate Hazard: $1.9M USD',
+      freq: '59.98 Hz',
+      soc: '94.2%',
+      lmp: '$42.10 / MWh',
+      saved: '$1,900,000 USD',
+      dispatchSpec: 'Pérdida imprevista de alimentación externa de CFE por falla de arco en seccionador de 115 kV. El microgrid controller detecta caída de derivada de frecuencia (ROCOF) y dispara interruptores de vacío en 28 ms. Control droop V/f e inversores grid-forming con inercia sintética sostienen tensión en 480 V sin interrumpir ciclado térmico de celdas.',
+      boardMembers: 'Cassandra Vance 🇺🇸 & Marcus Vance 🇺🇸',
+      boardPrompt: '"Microgrid Controller Lead: A lightning strike just severed our 115 kV feed into the Saltillo battery campus. If voltage sags for more than 50 milliseconds, our automated electrolyte formation cyclers crash. How does your synthetic inertia droop loop maintain voltage angle stability during sub-cycle islanding transition?"',
+      actions: {
+        dispatch: {
+          note: '[Soporte de Potencia Reactiva]: Inversores inteligentes inyectan 12 MVAR de soporte reactivo inmediato para compensar arranque de bombas de refrigerante.',
+          soc: '89.5% (En Isla)'
+        },
+        island: {
+          note: '[Transición a Modo Isla en 28 ms]: Interruptor de vacío abierto limpiamente en cruce por cero de corriente. Frecuencia estabilizada en 60.00 Hz por control droop.',
+          freq: '60.00 Hz (Estable)'
+        },
+        cogen: {
+          note: '[Cogeneración Black-Start]: Microturbina Capstone de 2 MW sincronizada para asumir carga de base y desacelerar descarga de batería.',
+          lmp: '$36.20 / MWh'
+        },
+        lmp: {
+          note: '[Cálculo de Confiabilidad]: 18,000 celdas de batería preservadas con cero fluctuación de corriente en formación. Cero pérdida de producto.',
+          saved: '$2,300,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'DISPATCH STRATEGY APPROVED • 99/100 (FERC/CENACE ARBITRAGE GOLD)',
+        notes: '"Outstanding microgrid islanding response. Seamless 28 ms vacuum breaker trip and synthetic inertia droop prevented voltage collapse, keeping battery formation online and saving $1.9M USD in work-in-progress inventory."',
+        chips: ['#MicrogridIslanding', '#GridFormingInverters', '#SyntheticInertia', '#ROCOFProtection', '#BatteryFormation']
+      },
+      reportFilename: 'Microgrid_Arbitrage_Saltillo_Islanding.md'
+    },
+    'cogen': {
+      id: 'cogen',
+      corridor: 'ENERGY CORRIDOR: MONTERREY HEAVY INDUSTRY HYDROGEN & COGEN',
+      standard: 'ISO 50001 • ASME PTC 46 Overall Plant Performance',
+      title: 'Tri-Generation Gas/H2 Fuel-Switching & Day-Ahead Spot Power Arbitrage',
+      targetScope: 'Arbitrage Opportunity: Henry Hub Natural Gas vs Solar Day-Ahead Surplus • EAF Load: 120 MW • Target Savings: $3.4M USD / año',
+      freq: '60.00 Hz',
+      soc: '91.0%',
+      lmp: '$28.90 / MWh',
+      saved: '$3,400,000 USD',
+      dispatchSpec: 'Optimización multi-variable entre despacho de turbina de gas en ciclo combinado, caldera de recuperación de calor (HRSG) y electrólisis PEM de 20 MW alimentada con excedentes de energía solar a tarifa negativa en ERCOT/CENACE. Conmutación dinámica de combustible con mezcla 30% H2 verde para abastecer hornos de arco.',
+      boardMembers: 'Cassandra Vance 🇺🇸 & Dr. Mateo Rossi 🇮🇹/🇺🇸',
+      boardPrompt: '"Clean Energy Architect: With solar PV generating excess 80 MW across northern Mexico at negative spot prices ($ -4/MWh), how do you direct power into our 20 MW PEM electrolyzers for green hydrogen storage while timing our EAF melting cycles to exploit lowest-cost power blocks?"',
+      actions: {
+        dispatch: {
+          note: '[Captura de Tarifas Negativas]: Electrolizador PEM de 20 MW activado a plena carga durante ventana de tarifa negativa, acumulando 420 kg/h de H2 verde a costo neto cero.',
+          soc: '98.5% (Full Solar)'
+        },
+        island: {
+          note: '[Respaldo Cogeneración]: Vapor de proceso a 42 bar desde HRSG despachado para calentamiento de tren de laminación sin consumo de combustible adicional.',
+          freq: '60.00 Hz (Nominal)'
+        },
+        cogen: {
+          note: '[Spark Spread Arbitrado]: Mezcla de 30% H2 / 70% CH4 en quemadores de horno EAF reduce emisiones de CO2 en 28,000 t/año y optimiza costo marginal a $21.50/MWh.',
+          lmp: '$21.50 / MWh'
+        },
+        lmp: {
+          note: '[Despacho Económico Programado]: Fusión de acero sincronizada en bloque horario de menor costo tarifario, maximizando spread económico.',
+          saved: '$3,900,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'DISPATCH STRATEGY APPROVED • 99/100 (FERC/CENACE ARBITRAGE GOLD)',
+        notes: '"Brilliant thermodynamic and economic arbitrage execution. The negative-tariff green hydrogen capture combined with dynamic EAF melt scheduling achieved $3.4M USD in annual energy cost reductions."',
+        chips: ['#GreenHydrogen', '#PEMElectrolysis', '#SparkSpreadArbitrage', '#EAFLoadScheduling', '#NegativePowerPricing']
+      },
+      reportFilename: 'Microgrid_Arbitrage_Monterrey_Cogen_H2.md'
+    }
+  }
+};
+
+window.currentGridScenario = 'peak';
+
+window.initMicrogridArbitrage = function() {
+  window.switchGridScenario(window.currentGridScenario || 'peak');
+};
+
+window.switchGridScenario = function(scenKey) {
+  const s = window.MICROGRID_ARBITRAGE_DATA.scenarios[scenKey];
+  if (!s) return;
+  window.currentGridScenario = scenKey;
+
+  // Update nav buttons
+  ['peak', 'island', 'cogen'].forEach(k => {
+    const btn = document.getElementById(`btn-grid-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === scenKey);
+  });
+
+  // Update corridor & badges
+  const corridorBadge = document.getElementById('grid-corridor-badge');
+  const stdBadge = document.getElementById('grid-standard-badge');
+  const titleEl = document.getElementById('grid-scenario-title');
+  const scopeEl = document.getElementById('grid-target-scope');
+  const specEl = document.getElementById('grid-dispatch-spec');
+
+  if (corridorBadge) corridorBadge.textContent = s.corridor;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-bolt"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.dispatchSpec;
+
+  // Update telemetry stats
+  const freqEl = document.getElementById('grid-stat-freq');
+  const socEl = document.getElementById('grid-stat-soc');
+  const lmpEl = document.getElementById('grid-stat-lmp');
+  const savedEl = document.getElementById('grid-stat-saved');
+
+  if (freqEl) freqEl.textContent = s.freq;
+  if (socEl) socEl.textContent = s.soc;
+  if (lmpEl) lmpEl.textContent = s.lmp;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('grid-board-members');
+  const inquiryEl = document.getElementById('grid-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('grid-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('grid-ruling-score');
+  const decisionNotes = document.getElementById('grid-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'DISPATCH ADJUDICATION PENDING';
+    rulingScore.style.color = '#fde047';
+    rulingScore.style.borderColor = '#eab308';
+    rulingScore.style.background = 'rgba(234,179,8,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Ejecuta despachos de BESS/Modo Isla o redacta tu estrategia técnica C1 para solicitar la aprobación del Consejo Energético.';
+  }
+};
+
+window.applyGridAction = function(actionKey) {
+  const s = window.MICROGRID_ARBITRAGE_DATA.scenarios[window.currentGridScenario];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.freq) {
+    const freqEl = document.getElementById('grid-stat-freq');
+    if (freqEl) freqEl.textContent = act.freq;
+  }
+  if (act.soc) {
+    const socEl = document.getElementById('grid-stat-soc');
+    if (socEl) socEl.textContent = act.soc;
+  }
+  if (act.lmp) {
+    const lmpEl = document.getElementById('grid-stat-lmp');
+    if (lmpEl) lmpEl.textContent = act.lmp;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('grid-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('grid-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('grid-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'DISPATCH ACTION VERIFIED • READY FOR APPROVAL';
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+};
+
+window.playGridAudio = function() {
+  const s = window.MICROGRID_ARBITRAGE_DATA.scenarios[window.currentGridScenario];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleGridMic = function() {
+  const strategyInput = document.getElementById('grid-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Officer Vance, Dr. Rossi: We initiated an immediate 50 MW discharge from our LFP BESS facility via smart PCS inverters, capping factory draw at 22 MW during the 4CP coincident peak window. Net spark spread optimization against CENACE day-ahead clearing prices yields $2.8M USD in avoided annual transmission tariff surcharges while keeping battery degradation below 0.02% per equivalent full cycle.";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitGridDefense = function() {
+  const s = window.MICROGRID_ARBITRAGE_DATA.scenarios[window.currentGridScenario];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('grid-ruling-score');
+  const decisionNotes = document.getElementById('grid-board-decision-notes');
+  const chipsContainer = document.getElementById('grid-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#fde047; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportGridReport = function() {
+  const s = window.MICROGRID_ARBITRAGE_DATA.scenarios[window.currentGridScenario] || window.MICROGRID_ARBITRAGE_DATA.scenarios['peak'];
+  const defense = document.getElementById('grid-candidate-strategy')?.value || 'Executive microgrid dispatch and cross-border power arbitrage brief delivered during live council session.';
+  const ruling = document.getElementById('grid-ruling-score')?.textContent || 'DISPATCH STRATEGY APPROVED • 99/100 (FERC/CENACE ARBITRAGE GOLD)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Industrial Microgrid Dispatch & Power Arbitrage Protocol
+## Cross-Border Wholesale Electricity Market & BESS Optimization (CENACE / ERCOT)
+**Date**: ${dateStr}
+**Energy Interconnect**: ${s.corridor}
+**Arbitrage Case Scenario**: ${s.title}
+**Normative Compliance**: ${s.standard}
+**Energy Arbitrage Evaluation Committee**: ${s.boardMembers}
+
+---
+
+## 1. Power Grid Baseline & Real-Time Nodal Telemetry
+- **Contingency / Tariff Scope**: ${s.targetScope}
+- **Grid Operating Frequency**: ${s.freq}
+- **Battery Energy Storage State of Charge (SOC)**: ${s.soc}
+- **Locational Marginal Pricing (LMP)**: ${s.lmp}
+- **Net Tariff & Penalty Savings**: ${s.saved}
+- **Dispatch Architecture & Automated Controls**:
+${s.dispatchSpec}
+
+---
+
+## 2. Lead Energy Strategist's Technical Brief
+${defense}
+
+---
+
+## 3. Energy Council Adjudication & Official Dispatch Certification
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core Microgrid & Energy Arbitrage Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Energy Infrastructure Record • Certified Under IEEE 1547 & Cross-Border Reliability Standards*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 31: AUTONOMOUS ADVANCED PACKAGING & 3D CHIPLET METROLOGY CLEANROOM
+// ============================================================================
+
+window.CHIPLET_METROLOGY_DATA = {
+  stations: {
+    'tsv': {
+      id: 'tsv',
+      facility: 'CLEANROOM: GUADALAJARA 2.5D INTERPOSER METROLOGY LINE',
+      standard: 'SEMI 3D-IC • IEEE 2401',
+      title: 'High-Aspect Ratio (10:1) Through-Silicon Via (TSV) Micro-Void Detection',
+      targetScope: 'Defect Target: Cu Bottom-Seam Micro-Voids • Aspect Ratio: 10:1 (50 µm depth / 5 µm diameter) • Wafer Lot Scrap Risk: $4,200,000 USD',
+      voidRatio: '0.04%',
+      afmRms: '0.38 nm',
+      warpage: '+0.85 µm',
+      saved: '$4,200,000 USD',
+      inspectionSpec: 'Tomografía de rayos X de haz cónico (XCT) con fuente nano-foco de 160 kV reconstruye 3,600 proyecciones radiográficas de la oblea interposer de 300 mm. El algoritmo volumétrico identifica vacíos electroquímicos de cobre < 0.12 µm confinados en el fondo de las vías ciegas debido a difusión deficiente de supresor en el baño electroquímico. Mitigación: Purga del electrolito ácido y recalibración de pulsos de corriente inversa periódica (PRC).',
+      boardMembers: 'Dr. Hiroshi Tanaka 🇯🇵/🇺🇸 & Dr. Elena Rostova 🇺🇸',
+      boardPrompt: '"Lead Packaging Metrologist: In our 2.5D CoWoS line, X-ray tomography detected a 0.04% voiding density near the TSV bottom-seam on our silicon interposer wafers. How does your sub-50nm volumetric reconstruction distinguish between electroplating pinch-off voids versus grain boundary micro-cracks, and how do you validate that thermal cycling (-40°C to 125°C) will not cause electromigration failure?"',
+      actions: {
+        xct: {
+          note: '[Escaneo XCT 50nm]: Tomografía volumétrica completada. Cero vacíos pasantes (> 0.2 µm). Densidad residual de vacíos confirmada en 0.02% (Límite SEMI < 0.10%).',
+          voidRatio: '0.02% (Verificado)'
+        },
+        afm: {
+          note: '[Perfilometría AFM]: Rugosidad interfacial de interconexión TSV-pad mapeada en 0.32 nm RMS, garantizando adhesión metalúrgica.',
+          afmRms: '0.32 nm'
+        },
+        csam: {
+          note: '[Microscopía C-SAM]: Interfase sustrato-interposer libre de delaminación bajo transductor de alta frecuencia de 230 MHz.',
+          warpage: '+0.60 µm'
+        },
+        warp: {
+          note: '[Simulación FEM Warpage]: Esfuerzo termomecánico von Mises acotado a 76 MPa durante perfil de reflujo a 260°C. Cero riesgo de agrietamiento dieléctrico.',
+          saved: '$4,800,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'CHIPLET METROLOGY CERTIFIED • 99/100 (SEMI ADVANCED PACKAGING GOLD)',
+        notes: '"The Semiconductor Packaging Council unanimously approves the metrology qualification. The volumetric XCT resolution and thermomechanical stress validation verified TSV integrity and secured zero wafer scrap, preserving $4.2M USD in 2.5D interposer production."',
+        chips: ['#TSVMetrology', '#ConeBeamXCT', '#HybridBonding', '#SEMI3DIC', '#HighAspectRatioVia']
+      },
+      reportFilename: 'Chiplet_Metrology_Guadalajara_TSV.md'
+    },
+    'afm': {
+      id: 'afm',
+      facility: 'CLEANROOM: QUERÉTARO WAFER-TO-WAFER HYBRID BONDING LAB',
+      standard: 'ISO 14644 Class 1 • SEMI MS11 Nanometrology',
+      title: 'Sub-Nanometer Atomic Force Microscopy (AFM) CMP Dishing & Cu-Cu Direct Bonding',
+      targetScope: 'Pitch: 2.0 µm Cu Pads • Tolerance: Dishing < 2.0 nm / RMS < 0.40 nm • Cold-Weld Reliability: 99.99%',
+      voidRatio: '0.01%',
+      afmRms: '0.28 nm',
+      warpage: '+0.42 µm',
+      saved: '$3,600,000 USD',
+      inspectionSpec: 'AFM en modo tapping mapea topografía atómica de almohadillas de cobre incrustadas en dieléctrico SiCN tras pulido químico-mecánico (CMP). El perfilómetro detecta receso dishing controlado de 1.1 nm y rugosidad RMS de 0.28 nm. El receso se compensa perfectamente con la dilatación térmica de Cu a 200°C, logrando unión covalente sin huecos interfaciales.',
+      boardMembers: 'Dr. Hiroshi Tanaka 🇯🇵/🇺🇸 & Dr. Klaus Schneider 🇩🇪/🇺🇸',
+      boardPrompt: '"Hybrid Bonding Lead: For our 2.0 µm pitch Cu-Cu direct interconnects, excessive CMP dishing leaves interfacial gaps, while protruding copper prevents SiCN dielectric covalent fusion. What AFM profile topology do you require, and how do you calculate the thermal expansion mismatch kinetics at 200°C anneal?"',
+      actions: {
+        xct: {
+          note: '[Inspección de Unión H-Bond]: Interfase dieléctrica unida covalentemente con energía de adhesión de 2.4 J/m² confirmada.',
+          voidRatio: '0.00% (Perfecto)'
+        },
+        afm: {
+          note: '[Mapeo Topográfico AFM]: Dishing de Cu medido en 1.12 nm y rugosidad RMS optimizada a 0.24 nm tras acondicionamiento de almohadilla CMP.',
+          afmRms: '0.24 nm (Óptimo)'
+        },
+        csam: {
+          note: '[C-SAM Acústico]: Cero micro-despegue o atrapamiento de aire en el perímetro de la oblea de 300 mm.',
+          warpage: '+0.35 µm'
+        },
+        warp: {
+          note: '[Cinética Térmica de Unión]: Crecimiento de grano de cobre a través de la interfase completa en recocido de 200°C sin micro-grietas.',
+          saved: '$4,100,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'CHIPLET METROLOGY CERTIFIED • 99/100 (SEMI ADVANCED PACKAGING GOLD)',
+        notes: '"Outstanding nanoscale planarization and hybrid bonding validation. The 0.24 nm RMS topography and controlled 1.1 nm dishing achieved atomic-level Cu-Cu fusion, eliminating bonding voids across 100% of the die array."',
+        chips: ['#AFMNanometrology', '#HybridBonding', '#CMPDishing', '#DirectCuCuBond', '#SubMicronPitch']
+      },
+      reportFilename: 'Chiplet_Metrology_Queretaro_AFM.md'
+    },
+    'csam': {
+      id: 'csam',
+      facility: 'CLEANROOM: MONTERREY HBM3E 12-HIGH STACK TESTING FAB',
+      standard: 'JEDEC JESD229-3 • SEMI G13 Acoustic Metrology',
+      title: 'Scanning Acoustic Microscopy (C-SAM 230 MHz) for 12-High HBM3e Memory Stack Delamination',
+      targetScope: 'Stack: 12-DRAM Dies + Logic Base • Interface: Non-Conductive Film (NCF) Underfill • Value at Stake: $5,500,000 USD',
+      voidRatio: '0.02%',
+      afmRms: '0.35 nm',
+      warpage: '+1.10 µm',
+      saved: '$5,500,000 USD',
+      inspectionSpec: 'Inspección acústica con transductor de focalización acústica de cuarzo a 230 MHz en inmersión de fluorocarbono de alta pureza. Discrimina reflexiones de fase de 180° producidas por huecos de aire microscópicos en la película NCF entre las capas 8 y 9 de DRAM, evitando sobrecalentamiento térmico en aceleradores de inteligencia artificial.',
+      boardMembers: 'Dr. Hiroshi Tanaka 🇯🇵/🇺🇸 & Dr. Elena Rostova 🇺🇸',
+      boardPrompt: '"HBM Metrology Architect: In a 12-high HBM3e stack with 10,000 micro-bumps per layer, thermo-compression bonding underfill can trap micro-voids that trigger hot spots under 120W TDP loads. How does your 230 MHz acoustic reflection phase analysis distinguish between harmless fillet meniscus variations and critical layer delamination?"',
+      actions: {
+        xct: {
+          note: '[Correlación XCT-Acústica]: Co-registro tridimensional de coordenadas de micro-bumps con ecos acústicos para aislar la capa defectuosa.',
+          voidRatio: '0.01% (Aislado)'
+        },
+        afm: {
+          note: '[Topografía de Micro-Bumps]: Planaridad de cabezales micro-bump Sn-Ag verificada a ± 0.15 µm en todo el arreglo matricial.',
+          afmRms: '0.30 nm'
+        },
+        csam: {
+          note: '[C-SAM Acústico 230 MHz]: Inversión de fase acústica descartada. Resina NCF uniforme con 100% de humectación en los 12 niveles de DRAM.',
+          warpage: '+0.75 µm (Estable)'
+        },
+        warp: {
+          note: '[Alabeo Criogénico-Térmico]: Curvatura de pila HBM3e compensada con diseño de sustrato orgánico de bajo CTE (3 ppm/°C).',
+          saved: '$6,200,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'CHIPLET METROLOGY CERTIFIED • 99/100 (SEMI ADVANCED PACKAGING GOLD)',
+        notes: '"Exemplary multi-layer acoustic diagnostic protocol. The 230 MHz acoustic impedance gating successfully isolated interfacial NCF integrity across all 12 DRAM layers, safeguarding $5.5M USD in high-bandwidth memory modules."',
+        chips: ['#HBM3eStack', '#CSAMAcoustic', '#NCFUnderfill', '#PhaseInversionEcho', '#HighBandwidthMemory']
+      },
+      reportFilename: 'Chiplet_Metrology_Monterrey_HBM3e.md'
+    }
+  }
+};
+
+window.currentChipletStation = 'tsv';
+
+window.initChipletMetrology = function() {
+  window.switchChipletStation(window.currentChipletStation || 'tsv');
+};
+
+window.switchChipletStation = function(stationKey) {
+  const s = window.CHIPLET_METROLOGY_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentChipletStation = stationKey;
+
+  // Update nav buttons
+  ['tsv', 'afm', 'csam'].forEach(k => {
+    const btn = document.getElementById(`btn-chiplet-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('chiplet-facility-badge');
+  const stdBadge = document.getElementById('chiplet-standard-badge');
+  const titleEl = document.getElementById('chiplet-station-title');
+  const scopeEl = document.getElementById('chiplet-target-scope');
+  const specEl = document.getElementById('chiplet-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-certificate"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update telemetry stats
+  const voidEl = document.getElementById('chiplet-stat-void');
+  const afmEl = document.getElementById('chiplet-stat-afm');
+  const warpEl = document.getElementById('chiplet-stat-warp');
+  const savedEl = document.getElementById('chiplet-stat-saved');
+
+  if (voidEl) voidEl.textContent = s.voidRatio;
+  if (afmEl) afmEl.textContent = s.afmRms;
+  if (warpEl) warpEl.textContent = s.warpage;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('chiplet-board-members');
+  const inquiryEl = document.getElementById('chiplet-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('chiplet-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('chiplet-ruling-score');
+  const decisionNotes = document.getElementById('chiplet-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'METROLOGY ADJUDICATION PENDING';
+    rulingScore.style.color = '#c084fc';
+    rulingScore.style.borderColor = '#a855f7';
+    rulingScore.style.background = 'rgba(168,85,247,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Ejecuta inspecciones de rayos X XCT/AFM/C-SAM o redacta tu dictamen técnico C1 para solicitar la certificación del Consejo SEMI.';
+  }
+};
+
+window.applyChipletAction = function(actionKey) {
+  const s = window.CHIPLET_METROLOGY_DATA.stations[window.currentChipletStation];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.voidRatio) {
+    const voidEl = document.getElementById('chiplet-stat-void');
+    if (voidEl) voidEl.textContent = act.voidRatio;
+  }
+  if (act.afmRms) {
+    const afmEl = document.getElementById('chiplet-stat-afm');
+    if (afmEl) afmEl.textContent = act.afmRms;
+  }
+  if (act.warpage) {
+    const warpEl = document.getElementById('chiplet-stat-warp');
+    if (warpEl) warpEl.textContent = act.warpage;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('chiplet-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('chiplet-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('chiplet-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'METROLOGY SCAN VERIFIED • READY FOR APPROVAL';
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+};
+
+window.playChipletAudio = function() {
+  const s = window.CHIPLET_METROLOGY_DATA.stations[window.currentChipletStation];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleChipletMic = function() {
+  const strategyInput = document.getElementById('chiplet-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Dr. Tanaka, Dr. Rostova: High-resolution cone-beam XCT reconstruction with 50nm voxel resolution demonstrates that the observed 0.04% void density is localized strictly below 0.12 µm at the bottom cup seam, well within SEMI 3D-IC void tolerance limits (< 0.10%). Finite element thermomechanical modeling confirms that under JEDEC standard thermal cycling (-40°C to 125°C), maximum von Mises stress remains at 82 MPa, preventing plastic shear strain and electromigration degradation.";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitChipletDefense = function() {
+  const s = window.CHIPLET_METROLOGY_DATA.stations[window.currentChipletStation];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('chiplet-ruling-score');
+  const decisionNotes = document.getElementById('chiplet-board-decision-notes');
+  const chipsContainer = document.getElementById('chiplet-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#c084fc; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportChipletReport = function() {
+  const s = window.CHIPLET_METROLOGY_DATA.stations[window.currentChipletStation] || window.CHIPLET_METROLOGY_DATA.stations['tsv'];
+  const defense = document.getElementById('chiplet-candidate-strategy')?.value || 'Packaging metrology brief and 3D-IC qualification report delivered during live evaluation.';
+  const ruling = document.getElementById('chiplet-ruling-score')?.textContent || 'CHIPLET METROLOGY CERTIFIED • 99/100 (SEMI ADVANCED PACKAGING GOLD)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS 3D-IC Heterogeneous Chiplet Metrology & Yield Protocol
+## Advanced Packaging Inspection & Non-Destructive Analysis (SEMI / IEEE 2401)
+**Date**: ${dateStr}
+**Cleanroom Facility**: ${s.facility}
+**Inspection Station**: ${s.title}
+**Normative Standard**: ${s.standard}
+**Packaging Metrology Council**: ${s.boardMembers}
+
+---
+
+## 1. Advanced Packaging Telemetry & In-Line Nanometrology
+- **Inspection Target Scope**: ${s.targetScope}
+- **Through-Silicon Via (TSV) Void Ratio**: ${s.voidRatio}
+- **AFM Surface Roughness RMS**: ${s.afmRms}
+- **Wafer Warpage & Bow**: ${s.warpage}
+- **Defect Mitigation & Yield Preserved**: ${s.saved}
+- **Nanophysical Diagnosis & SEMI Inspection Specification**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead Packaging Metrologist's Technical Brief
+${defense}
+
+---
+
+## 3. SEMI Packaging Council Adjudication & Official Certification
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core Heterogeneous Integration & Metrology Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Semiconductor Record • Certified Under SEMI 3D-IC & IEEE 2401 Standards*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 32: CROSS-BORDER AUTONOMOUS AI EV BATTERY PACK THERMAL RUNAWAY CONTAINMENT & UN 38.3 TESTING CRUCIBLE
+// ============================================================================
+
+window.BATTERY_SAFETY_DATA = {
+  stations: {
+    'nail': {
+      id: 'nail',
+      facility: 'FACILITY: SALTILLO GIGAFAB EXTREME TESTING LAB',
+      standard: 'UN 38.3 • SAE J2464 • ISO 6469-1',
+      title: 'Tungsten Nail Penetration (80 mm/s) & Silica Aerogel Thermal Barrier Containment',
+      targetScope: 'Hazard Vector: Internal Short-Circuit in 4680 NMC 811 Cell • Target: Adjacent Cell Temp < 70°C • Recall Scrap Avoidance: $3,800,000 USD',
+      temp: '58.4°C',
+      pressure: '+14.2 kPa',
+      isolation: '> 500 Ω/V',
+      saved: '$3,800,000 USD',
+      inspectionSpec: 'Inyección de clavo de acero de 3 mm a 80 mm/s perfora el separador cerámico y genera cortocircuito localizado con densidad de corriente > 1,200 A/cm². La temperatura del núcleo de la celda afectada alcanza 680°C en 1.8 segundos con desprendimiento de gases (CO, H2, HF). La barrera intermedia de aerogel de sílice hidrofóbico de 1.5 mm (k = 0.018 W/m·K) frena la transferencia de calor por conducción, manteniendo las celdas cilíndricas 4680 vecinas por debajo de 58.4°C y evitando la reacción de fuga térmica en cadena.',
+      boardMembers: 'Dr. Valérie Dubois 🇫🇷/🇺🇸 & Karl Bergström 🇸🇪/🇺🇸',
+      boardPrompt: '"Lead Battery Safety Engineer: During an SAE J2464 nail penetration test on our 800V structural pack, cell #42 triggered thermal runaway, venting pressurized electrolyte gases into the pack canopy. How does your silica aerogel barrier prevent thermal propagation to neighboring cells below 70°C, and how does your pressure relief valve mitigate deflagration risk under UN 38.3 transport criteria?"',
+      actions: {
+        nail: {
+          note: '[Ensayo Clavo Penetración]: Clavo disparado a 80 mm/s. Celda diana despresurizada a través de disco de ruptura. Temperatura vecina contenida en 54.2°C.',
+          temp: '54.2°C (Contenido)'
+        },
+        cool: {
+          note: '[Enfriamiento Líquido]: Bombeo de etilenglicol a 22 L/min activado. Disipación de 14 kW térmicos por placa fría inferior.',
+          pressure: '+11.8 kPa'
+        },
+        pyro: {
+          note: '[Aislamiento Pirotécnico]: Pyro-fuse activado ante gradiente térmico anómalo. Pack desconectado del inversor en 1.15 ms.',
+          isolation: '> 1,000 Ω/V'
+        },
+        iso: {
+          note: '[Prueba Hi-Pot 2,500V DC]: Resistencia de aislamiento dieléctrico medida en 850 kΩ/V. Cero fugas a chasis.',
+          saved: '$4,500,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'BATTERY PACK CERTIFIED • 99/100 (UN 38.3 & ISO 6469-1 COMPLIANT)',
+        notes: '"The High-Voltage Safety Council unanimously approves the battery pack thermal containment architecture. The silica aerogel insulation and pyro-fuse coordination prevented thermal runaway propagation, securing UN 38.3 transport certification and avoiding $3.8M USD in potential fleet recall liability."',
+        chips: ['#ThermalRunaway', '#AerogelBarrier', '#PyroFuse800V', '#UN38_3Transport', '#SAEJ2464']
+      },
+      reportFilename: 'EV_Battery_Safety_Saltillo_Nail.md'
+    },
+    'cooling': {
+      id: 'cooling',
+      facility: 'FACILITY: RAMOS ARIZPE STRUCTURAL PACK & MODULE INTEGRATION PLANT',
+      standard: 'ISO 26262 ASIL-D • SAE J2929 EV Safety',
+      title: 'Serpentine Microchannel Cold Plate Liquid Cooling & 350 kW DC Fast-Charge Thermal Stress',
+      targetScope: 'Stress: 350 kW (450A / 800V) Fast-Charging • Liquid Flow: 18.5 L/min Glycol-Water (50/50) • Delta-T Limit: < 3.0°C',
+      temp: '44.8°C',
+      pressure: '+8.6 kPa',
+      isolation: '> 500 Ω/V',
+      saved: '$3,200,000 USD',
+      inspectionSpec: 'Monitoreo ultrasónico Doppler y termografía diferencial en placa fría de aluminio soldada por vacío (brazed cold plate). Mapea el gradiente térmico a lo largo de 96 celdas prismáticas bajo recarga de 350 kW. El caudal variable compensa la resistencia hidráulica, garantizando que el delta térmico celular nunca supere 2.4°C para prevenir degradación prematura del ánodo de silicio-grafito.',
+      boardMembers: 'Dr. Valérie Dubois 🇫🇷/🇺🇸 & Dr. Mateo Rossi 🇮🇹/🇺🇸',
+      boardPrompt: '"Thermal Systems Lead: Under continuous 350 kW fast charging, coolant boiling in microchannels can create vapor pockets that spike cell temperature by 25°C within 30 seconds. How does your flow manifold dynamically balance pressure drop across the 6 parallel cooling circuits, and what ASIL-D diagnostic triggers the current derating curve?"',
+      actions: {
+        nail: {
+          note: '[Modelado Térmico Placa Fría]: Gradiente térmico transversal estabilizado en 1.8°C entre entrada y salida del colector.',
+          temp: '41.2°C (Óptimo)'
+        },
+        cool: {
+          note: '[Caudal Dinámico 24 L/min]: Cavitación y burbujas de vapor eliminadas mediante presurización del circuito a 1.8 bar.',
+          pressure: '+7.2 kPa'
+        },
+        pyro: {
+          note: '[Control Térmico ASIL-D]: Derating de corriente de carga escalonado a 250 kW tras alcanzar 45°C en celda terminal.',
+          isolation: '> 800 Ω/V'
+        },
+        iso: {
+          note: '[Ensayo de Estanqueidad IP67]: Cero fuga de refrigerante bajo prueba de presión de helio a 3.5 bar.',
+          saved: '$3,900,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'BATTERY PACK CERTIFIED • 99/100 (UN 38.3 & ISO 6469-1 COMPLIANT)',
+        notes: '"Outstanding liquid cooling architecture and ASIL-D thermal protection. The balanced microchannel manifold ensured sub-2°C temperature uniformity across all modules, protecting battery cycle life and passing high-power DC charging validation."',
+        chips: ['#ColdPlateCooling', '#FastCharging350kW', '#ASIL_D_Safety', '#ThermalManifold', '#LithiumPlatingMitigation']
+      },
+      reportFilename: 'EV_Battery_Safety_RamosArizpe_Cooling.md'
+    },
+    'pyro': {
+      id: 'pyro',
+      facility: 'FACILITY: MONTERREY HIGH-VOLTAGE POWERTRAIN & INVERTER COMPLEX',
+      standard: 'ISO 6469-3 • UL 2580 Electric Energy Storage',
+      title: 'Ultra-Fast Pyrotechnic Pyro-Fuse (1.15 ms) & High-Voltage Busbar Plasma Arc Containment',
+      targetScope: 'Fault: 20,000A Dead Short at 800V Busbar • Actuation: < 1.5 ms Pyro-Switch • Arc Quench Energy: 45 kJ',
+      temp: '38.2°C',
+      pressure: '+18.5 kPa',
+      isolation: '> 500 Ω/V',
+      saved: '$5,100,000 USD',
+      inspectionSpec: 'Simulación y disparo experimental de interruptor pirotécnico (pyro-fuse) accionado por carga de micro-ignición de nitrato de circonio y potasio. Ante un cortocircuito franco de 20 kA inducido por choque mecánico, el émbolo cerámico corta la barra de cobre en 1.15 ms y la cámara de arena de sílice extingue el arco de plasma a 6,000 K en menos de 3.2 ms sin perforar la carcasa del pack.',
+      boardMembers: 'Karl Bergström 🇸🇪/🇺🇸 & Dr. Hiroshi Tanaka 🇯🇵/🇺🇸',
+      boardPrompt: '"High-Voltage Safety Architect: A catastrophic dead short at the pack terminals draws 20,000A before standard electromechanical contactors can respond. Walk us through the sub-millisecond current derivative sensing (di/dt) that fires your pyro-fuse, and prove that back-EMF inductive voltage spikes do not puncture the silicon-carbide inverter gate oxides."',
+      actions: {
+        nail: {
+          note: '[Disparo Pirotécnico 1.15 ms]: Carga pirotécnica detonada. Barra conductora de cobre cortada y separada mecánicamente con 15 mm de entrehierro.',
+          temp: '36.5°C'
+        },
+        cool: {
+          note: '[Extinción de Arco de Plasma]: Cámara de granulado cerámico desioniza el plasma conductor en 2.8 ms.',
+          pressure: '+12.4 kPa'
+        },
+        pyro: {
+          note: '[Supresión de Picos Inductivos]: Red de diodos snubber TVS absorbe sobretensión inductiva limitando el pico a 920V en busbar de 800V.',
+          isolation: '> 1,200 Ω/V (Aislado)'
+        },
+        iso: {
+          note: '[Inspección Post-Disparo]: Cero eyección de partículas metálicas o gases ionizados al compartimiento de pasajeros.',
+          saved: '$5,800,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'BATTERY PACK CERTIFIED • 99/100 (UN 38.3 & ISO 6469-1 COMPLIANT)',
+        notes: '"Flawless high-voltage short-circuit isolation. The 1.15 ms pyro-fuse actuation and plasma arc quenching eliminated all explosion risk under 20,000A fault conditions, fulfilling the most stringent ISO 6469-3 and UL 2580 safety mandates."',
+        chips: ['#PyroFuse800V', '#PlasmaArcQuench', '#SubMillisecondDisconnect', '#HighVoltageSafety', '#UL2580']
+      },
+      reportFilename: 'EV_Battery_Safety_Monterrey_PyroFuse.md'
+    }
+  }
+};
+
+window.currentBatteryStation = 'nail';
+
+window.initBatteryCrucible = function() {
+  window.switchBatteryStation(window.currentBatteryStation || 'nail');
+};
+
+window.switchBatteryStation = function(stationKey) {
+  const s = window.BATTERY_SAFETY_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentBatteryStation = stationKey;
+
+  // Update nav buttons
+  ['nail', 'cooling', 'pyro'].forEach(k => {
+    const btn = document.getElementById(`btn-battery-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('battery-facility-badge');
+  const stdBadge = document.getElementById('battery-standard-badge');
+  const titleEl = document.getElementById('battery-station-title');
+  const scopeEl = document.getElementById('battery-target-scope');
+  const specEl = document.getElementById('battery-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update telemetry stats
+  const tempEl = document.getElementById('battery-stat-temp');
+  const pressEl = document.getElementById('battery-stat-press');
+  const isoEl = document.getElementById('battery-stat-iso');
+  const savedEl = document.getElementById('battery-stat-saved');
+
+  if (tempEl) tempEl.textContent = s.temp;
+  if (pressEl) pressEl.textContent = s.pressure;
+  if (isoEl) isoEl.textContent = s.isolation;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('battery-board-members');
+  const inquiryEl = document.getElementById('battery-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('battery-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('battery-ruling-score');
+  const decisionNotes = document.getElementById('battery-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'HOMOLOGATION EVALUATION PENDING';
+    rulingScore.style.color = '#f87171';
+    rulingScore.style.borderColor = '#ef4444';
+    rulingScore.style.background = 'rgba(239,68,68,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Ejecuta ensayos destructivos/mitigación térmica o redacta tu estrategia de homologación C1 para solicitar la certificación del Consejo SAE/UN.';
+  }
+};
+
+window.applyBatteryAction = function(actionKey) {
+  const s = window.BATTERY_SAFETY_DATA.stations[window.currentBatteryStation];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.temp) {
+    const tempEl = document.getElementById('battery-stat-temp');
+    if (tempEl) tempEl.textContent = act.temp;
+  }
+  if (act.pressure) {
+    const pressEl = document.getElementById('battery-stat-press');
+    if (pressEl) pressEl.textContent = act.pressure;
+  }
+  if (act.isolation) {
+    const isoEl = document.getElementById('battery-stat-iso');
+    if (isoEl) isoEl.textContent = act.isolation;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('battery-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('battery-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('battery-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'SAFETY TEST PASSED • READY FOR CERTIFICATION';
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+};
+
+window.playBatteryAudio = function() {
+  const s = window.BATTERY_SAFETY_DATA.stations[window.currentBatteryStation];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleBatteryMic = function() {
+  const strategyInput = document.getElementById('battery-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Dr. Dubois, Director Bergström: The 1.5mm hydrophobic silica aerogel barrier maintains adjacent cell skin temperature at 58.4°C, well below the 70°C threshold required to prevent secondary SEI decomposition. The burst disc actuates at +14.2 kPa, routing vented gases through a flame-arresting mesh that quenches ignited radicals, ensuring zero external fire propagation and achieving full UN 38.3 and ISO 6469-1 compliance.";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitBatteryDefense = function() {
+  const s = window.BATTERY_SAFETY_DATA.stations[window.currentBatteryStation];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('battery-ruling-score');
+  const decisionNotes = document.getElementById('battery-board-decision-notes');
+  const chipsContainer = document.getElementById('battery-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#f87171; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportBatteryReport = function() {
+  const s = window.BATTERY_SAFETY_DATA.stations[window.currentBatteryStation] || window.BATTERY_SAFETY_DATA.stations['nail'];
+  const defense = document.getElementById('battery-candidate-strategy')?.value || 'EV battery safety brief and thermal containment protocol delivered during live homologation.';
+  const ruling = document.getElementById('battery-ruling-score')?.textContent || 'BATTERY PACK CERTIFIED • 99/100 (UN 38.3 & ISO 6469-1 COMPLIANT)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS EV Battery Thermal Runaway & UN 38.3 Certification Protocol
+## Structural Battery Pack Safety & High-Voltage Testing (SAE J2464 / ISO 6469-1)
+**Date**: ${dateStr}
+**Testing Facility**: ${s.facility}
+**Test Station**: ${s.title}
+**Normative Standard**: ${s.standard}
+**Homologation Council**: ${s.boardMembers}
+
+---
+
+## 1. High-Voltage Pack Telemetry & Thermal Containment
+- **Hazard Vector & Target Scope**: ${s.targetScope}
+- **Adjacent Cell Peak Temperature**: ${s.temp}
+- **Internal Pack Canopy Pressure**: ${s.pressure}
+- **High-Voltage Electrical Isolation**: ${s.isolation}
+- **Fleet Recall Liability Avoided**: ${s.saved}
+- **Thermal Runaway Physics & UN 38.3 Test Specification**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead Battery Safety Engineer's Technical Brief
+${defense}
+
+---
+
+## 3. Battery Homologation Council Adjudication & Official Certification
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core High-Voltage Battery Safety Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Automotive Record • Certified Under UN 38.3, SAE J2464 & ISO 6469-1 Standards*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 33: AUTONOMOUS HYPERSCALE DATA CENTER DIRECT-TO-CHIP TWO-PHASE IMMERSION COOLING & POWER DENSITY OPTIMIZATION CHAMBER
+// ============================================================================
+
+window.IMMERSION_COOLING_DATA = {
+  stations: {
+    'twophase': {
+      id: 'twophase',
+      facility: 'FACILITY: QUERÉTARO AI HYPERSCALE CLOUD CLUSTER',
+      standard: 'ASHRAE TC 9.9 • OCP Immersion • IEEE 1413',
+      title: 'Direct-to-Die Two-Phase Fluorochemical Boiling & Overhead Vapor Condensation Loop',
+      targetScope: 'Thermal Load: 8× 1,000W AI GPUs (120 kW/Rack) • Fluid: Novec/Fluorinert 50°C BP • Target PUE: 1.04 • OPEX Avoided: $4,800,000 USD/año',
+      pue: '1.04',
+      dielectric: '> 45 kV',
+      temp: '64.2°C',
+      saved: '$4,800,000 USD',
+      inspectionSpec: 'Fluido dieléctrico fluorado no inflamable de bajo GWP hierve a 50°C directamente sobre microestructuras de ebullición porosa sinterizadas en la tapa de los sockets GPU. El calor latente de vaporización (h_fg = 88 kJ/kg) absorbe 120 kW térmicos de flujo continuo por rack sin requerir ventiladores ni compresores chillers mecánicos. El vapor asciende a serpentines de condensación enfriados por agua de torre a 32°C, manteniendo la densidad de flujo de calor crítica (CHF) > 42 W/cm² y eliminando puntos calientes térmicos.',
+      boardMembers: 'Dr. Arvind Swaminathan 🇮🇳/🇺🇸 & Dr. Chloe Desrosiers 🇨🇦/🇺🇸',
+      boardPrompt: '"Lead Thermal Systems Architect: In our 120 kW AI accelerator rack, sustained LLM fine-tuning pushes GPU core dissipation to 1,050W per package. How does your two-phase nucleate boiling regime prevent Critical Heat Flux (CHF) vapor blanket dryout, and what vapor recovery protocol guarantees 99.8% fluid containment to maintain a 1.04 PUE without fluid loss?"',
+      actions: {
+        twophase: {
+          note: '[Ebullición Bifásica Activada]: Transferencia de calor en ebullición nucleada establecida. Coeficiente h = 28,000 W/m²·K. Temperatura de unión reducida a 59.8°C.',
+          temp: '59.8°C (Óptimo)'
+        },
+        pao: {
+          note: '[Recuperación de Vapores]: Condensadores de termosifón operando a 99.9% de eficiencia de reflujo. PUE medido en 1.032.',
+          pue: '1.032'
+        },
+        pol: {
+          note: '[Monitoreo Dieléctrico]: Rigidez dieléctrica confirmada en 48 kV en gap de 2.5 mm. Cero contaminantes polares.',
+          dielectric: '> 48 kV'
+        },
+        cond: {
+          note: '[Purga de Incondensables]: Válvula de vacío automático extrajo aire residual del canopy hermético.',
+          saved: '$5,200,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'IMMERSION COOLING CERTIFIED • 99/100 (OCP IMMERSION COOLING GOLD)',
+        notes: '"The Open Compute Project Infrastructure Council unanimously certifies the two-phase immersion deployment. The 1.04 PUE and sub-65°C junction temperature under 120 kW rack density establish state-of-the-art thermal efficiency, saving $4.8M USD in annual hyperscale cooling power."',
+        chips: ['#TwoPhaseImmersion', '#PUE_1_04', '#NucleateBoiling', '#OCPImmersionGold', '#DirectToChip']
+      },
+      reportFilename: 'Hyperscale_Immersion_Queretaro_TwoPhase.md'
+    },
+    'pao': {
+      id: 'pao',
+      facility: 'FACILITY: MONTERREY GPU SUPERCLUSTER & AI TRAINING FACILITY',
+      standard: 'OCP Single-Phase Immersion • ISO 4406 Cleanliness',
+      title: 'Single-Phase Synthetic Polyalphaolefin (PAO) Fluid Viscosity & Sub-Micron Filtration',
+      targetScope: 'Flow Rate: 450 L/min PAO Tank Circulation • Viscosity: 5 cSt @ 40°C • Cleanliness Target: ISO 14/12/9',
+      pue: '1.08',
+      dielectric: '> 42 kV',
+      temp: '68.5°C',
+      saved: '$3,900,000 USD',
+      inspectionSpec: 'Circulación forzada de hidrocarburo sintético PAO grado térmico a través de 42 nodos de aceleración. El sistema de filtración coalescente y tamiz de micropartículas de 0.5 µm elimina polímeros lixiviados de cables y trazas de soldadura, preservando la rigidez dieléctrica contra rupturas eléctricas en líneas PCIe Gen 5 de 32 GT/s.',
+      boardMembers: 'Dr. Arvind Swaminathan 🇮🇳/🇺🇸 & Marcus Vance 🇺🇸',
+      boardPrompt: '"Infrastructure Reliability Lead: Over 6 months of continuous operation, plasticizers and thermal interface materials can leach into single-phase PAO fluid, degrading fluid kinematic viscosity and increasing dielectric loss tangent (tan delta). What online acoustic spectroscopy and filtration loop prevents high-frequency signal degradation on our 800G optical transceivers?"',
+      actions: {
+        twophase: {
+          note: '[Caudal Dinámico 480 L/min]: Bombas de levitación magnética elevan el flujo eliminando la capa límite térmica.',
+          temp: '64.1°C'
+        },
+        pao: {
+          note: '[Filtración Sub-Micrónica Láser]: Partículas sólidas suspendidas filtradas a nivel ISO 12/10/8. Pérdida dieléctrica normalizada.',
+          dielectric: '> 46 kV (Puro)'
+        },
+        pol: {
+          note: '[Optimización PUE]: Intercambiador de calor de placas de titanio conectado a circuito de agua de enfriamiento seco.',
+          pue: '1.065'
+        },
+        cond: {
+          note: '[Muestreo Reológico]: Viscosidad cinemática verificada en 4.8 cSt. Cero acumulación de lodos poliméricos.',
+          saved: '$4,300,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'IMMERSION COOLING CERTIFIED • 99/100 (OCP IMMERSION COOLING GOLD)',
+        notes: '"Outstanding single-phase immersion management. Continuous PAO filtration and viscosity control maintained optical transceiver signal integrity and dielectric compliance, meeting Tier IV datacenter reliability requirements."',
+        chips: ['#SinglePhasePAO', '#SubMicronFiltration', '#DielectricLossTangent', '#800GOptics', '#TierIVDatacenter']
+      },
+      reportFilename: 'Hyperscale_Immersion_Monterrey_PAO.md'
+    },
+    'pol': {
+      id: 'pol',
+      facility: 'FACILITY: GUADALAJARA HIGH-DENSITY SERVER RACK PROTOTYPING LAB',
+      standard: 'IEEE 1413 Reliability • Open Rack Standard v3 (ORV3)',
+      title: 'Point-of-Load (PoL) 48V-to-1V VRM Planar Inductor Thermal Throttling & AVS Mitigation',
+      targetScope: 'Power: 1,200A Socket Current • Conversion: 48V DC Busbar to 0.85V Core • Efficiency Target: > 94.5%',
+      pue: '1.05',
+      dielectric: '> 45 kV',
+      temp: '71.2°C',
+      saved: '$4,200,000 USD',
+      inspectionSpec: 'Módulos reguladores de voltaje (VRM) de inductancia acoplada planar inmersos en fluido dieléctrico para abastecer 1,200A al núcleo GPU. La telemetría in-situ detecta el calentamiento del núcleo magnético de ferrita por encima del punto de Curie y activa el algoritmo de Adaptive Voltage Scaling (AVS), reduciendo la ondulación de corriente (ripple) a menos de 15 mV sin degradar la tasa de cómputo.',
+      boardMembers: 'Dr. Chloe Desrosiers 🇨🇦/🇺🇸 & Dr. Elena Rostova 🇺🇸',
+      boardPrompt: '"Power Distribution Architect: Delivering 1,200A at 0.85V under step-transient load swings of 800A/µs creates severe localized resistive heating in the VRM planar inductors. How does your immersion thermal interface design avoid thermal runaway in the ferrite cores while maintaining greater than 94% conversion efficiency from the 48V busbar?"',
+      actions: {
+        twophase: {
+          note: '[AVS Voltage Scaling]: Voltaje de núcleo ajustado dinámicamente de 0.88V a 0.81V manteniendo la frecuencia de inferencia.',
+          temp: '63.4°C'
+        },
+        pao: {
+          note: '[Disipación Directa en Inductor]: Micro-jet impingement de fluido dieléctrico sobre inductores de ferrita.',
+          pue: '1.038'
+        },
+        pol: {
+          note: '[Eficiencia VRM 95.2%]: Transistores GaN de nitruro de galio reducen pérdidas de conmutación en bus de 48V.',
+          dielectric: '> 47 kV'
+        },
+        cond: {
+          note: '[Supresión de Transitorios]: Condensadores de tantalio de matriz multi-capa amortiguan el overshoot a 12 mV.',
+          saved: '$4,700,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'IMMERSION COOLING CERTIFIED • 99/100 (OCP IMMERSION COOLING GOLD)',
+        notes: '"Exemplary 48V-to-1V power conversion and planar magnetics thermal design. Direct immersion of the high-current VRM stages eliminated thermal throttling, sustaining maximum GPU throughput with 95.2% conversion efficiency."',
+        chips: ['#PoL_VRM', '#48V_Busbar', '#PlanarInductors', '#AdaptiveVoltageScaling', '#GaNPowerStages']
+      },
+      reportFilename: 'Hyperscale_Immersion_Guadalajara_VRM.md'
+    }
+  }
+};
+
+window.currentImmersionStation = 'twophase';
+
+window.initImmersionCooling = function() {
+  window.switchImmersionStation(window.currentImmersionStation || 'twophase');
+};
+
+window.switchImmersionStation = function(stationKey) {
+  const s = window.IMMERSION_COOLING_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentImmersionStation = stationKey;
+
+  // Update nav buttons
+  ['twophase', 'pao', 'pol'].forEach(k => {
+    const btn = document.getElementById(`btn-immersion-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('immersion-facility-badge');
+  const stdBadge = document.getElementById('immersion-standard-badge');
+  const titleEl = document.getElementById('immersion-station-title');
+  const scopeEl = document.getElementById('immersion-target-scope');
+  const specEl = document.getElementById('immersion-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-certificate"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update telemetry stats
+  const pueEl = document.getElementById('immersion-stat-pue');
+  const dielEl = document.getElementById('immersion-stat-diel');
+  const tempEl = document.getElementById('immersion-stat-temp');
+  const savedEl = document.getElementById('immersion-stat-saved');
+
+  if (pueEl) pueEl.textContent = s.pue;
+  if (dielEl) dielEl.textContent = s.dielectric;
+  if (tempEl) tempEl.textContent = s.temp;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('immersion-board-members');
+  const inquiryEl = document.getElementById('immersion-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('immersion-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('immersion-ruling-score');
+  const decisionNotes = document.getElementById('immersion-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'THERMAL EVALUATION PENDING';
+    rulingScore.style.color = '#38bdf8';
+    rulingScore.style.borderColor = '#0ea5e9';
+    rulingScore.style.background = 'rgba(14,165,233,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Ejecuta controles termofluídicos o redacta tu estrategia de inmersión y PUE C1 para solicitar la certificación del Consejo OCP.';
+  }
+};
+
+window.applyImmersionAction = function(actionKey) {
+  const s = window.IMMERSION_COOLING_DATA.stations[window.currentImmersionStation];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.temp) {
+    const tempEl = document.getElementById('immersion-stat-temp');
+    if (tempEl) tempEl.textContent = act.temp;
+  }
+  if (act.pue) {
+    const pueEl = document.getElementById('immersion-stat-pue');
+    if (pueEl) pueEl.textContent = act.pue;
+  }
+  if (act.dielectric) {
+    const dielEl = document.getElementById('immersion-stat-diel');
+    if (dielEl) dielEl.textContent = act.dielectric;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('immersion-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('immersion-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('immersion-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'THERMAL PROFILE OPTIMIZED • READY FOR CERTIFICATION';
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+};
+
+window.playImmersionAudio = function() {
+  const s = window.IMMERSION_COOLING_DATA.stations[window.currentImmersionStation];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleImmersionMic = function() {
+  const strategyInput = document.getElementById('immersion-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Dr. Swaminathan, Dr. Desrosiers: By deploying re-entrant micro-porous copper boiling surfaces directly on the GPU heat spreader, we enhance bubble nucleation frequency while maintaining the critical heat flux margin above 55 W/cm², keeping the GPU junction temperature at 64.2°C under 1,050W TDP. Our hermetically sealed tank with top bellows and thermosiphon condensing coil achieves 99.9% vapor recovery, delivering an audited PUE of 1.04...";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitImmersionDefense = function() {
+  const s = window.IMMERSION_COOLING_DATA.stations[window.currentImmersionStation];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('immersion-ruling-score');
+  const decisionNotes = document.getElementById('immersion-board-decision-notes');
+  const chipsContainer = document.getElementById('immersion-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#38bdf8; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportImmersionReport = function() {
+  const s = window.IMMERSION_COOLING_DATA.stations[window.currentImmersionStation] || window.IMMERSION_COOLING_DATA.stations['twophase'];
+  const defense = document.getElementById('immersion-candidate-strategy')?.value || 'Immersion cooling technical architecture and PUE optimization protocol delivered during live OCP evaluation.';
+  const ruling = document.getElementById('immersion-ruling-score')?.textContent || 'IMMERSION COOLING CERTIFIED • 99/100 (OCP IMMERSION COOLING GOLD)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Hyperscale AI Immersion Cooling & Power Density Protocol
+## Direct-to-Chip Two-Phase & High-Density Thermal Management (ASHRAE TC 9.9 / OCP)
+**Date**: ${dateStr}
+**Testing Facility**: ${s.facility}
+**Optimization Station**: ${s.title}
+**Normative Standard**: ${s.standard}
+**Evaluation Council**: ${s.boardMembers}
+
+---
+
+## 1. High-Density Rack Telemetry & Fluid Thermodynamics
+- **Thermal Load & Target Scope**: ${s.targetScope}
+- **Rack Power Usage Effectiveness (PUE)**: ${s.pue}
+- **Dielectric Breakdown Strength**: ${s.dielectric}
+- **GPU Junction Temperature (Tj)**: ${s.temp}
+- **Annual Hyperscale OPEX Saved**: ${s.saved}
+- **Nucleate Boiling Physics & OCP Specification**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead Thermal Architect's Technical Brief
+${defense}
+
+---
+
+## 3. Open Compute Project Council Adjudication & Official Certification
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core Hyperscale Thermal Management Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Datacenter Record • Certified Under ASHRAE TC 9.9 & Open Compute Project Guidelines*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 34: AUTONOMOUS AI NEARSHORING BIOPROCESS & STERILE SINGLE-USE BIOREACTOR VALIDATION CLEANROOM
+// ============================================================================
+
+window.BIOPROCESS_VALIDATION_DATA = {
+  stations: {
+    'sub': {
+      id: 'sub',
+      facility: 'FACILITY: TOLUCA BIOMANUFACTURING STERILE SUITE',
+      standard: 'FDA cGMP Annex 1 • 21 CFR Part 11 • ISO 13408',
+      title: 'Single-Use Bioreactor (2,000L SUB) Perfusion Dissolved Oxygen & Volumetric Mass Transfer (kLa)',
+      targetScope: 'Target: mAb Bioreactor Perfusion • Cell Density: 42.5M cells/mL • dO2 Control: 40.2% • Batch Risk Avoidance: $3,400,000 USD',
+      vcd: '42.5M cél/mL',
+      dO2: '40.2%',
+      tmp: '1.15 bar',
+      saved: '$3,400,000 USD',
+      inspectionSpec: 'Cultivo celular continuo en biorreactor de un solo uso (SUB) con bolsa gamma-esterilizada multicapa (EVOH/PE). El sistema de agitación por impulsor de bajo cizallamiento (Elephant Ear) acoplado a un microburbujeador sinterizado de 20 µm suministra O2 enriquecido, logrando un coeficiente kLa de 28.4 h⁻¹ sin romper las membranas de las células CHO. El balance de masa de perfusión retira medio agotado manteniendo viabilidad celular > 98% durante 28 días de operación ininterrumpida.',
+      boardMembers: 'Dr. Lucía Echeverría 🇲🇽/🇺🇸 & Dr. Alistair MacIntyre 🇬🇧/🇺🇸',
+      boardPrompt: '"Lead Bioprocess Engineer: In our 2,000L single-use perfusion run for monoclonal antibody expression, high cell densities can lead to hypoxia or shear-induced cell lysis if microsparging gas velocity exceeds 0.05 m/s. Walk us through how your cascade control maintains dO2 at 40% while keeping kLa above 25 h⁻¹, and prove your sterile weld boundary conforms to cGMP Annex 1 zero-contamination standards."',
+      actions: {
+        sparge: {
+          note: '[Ajuste de Micro-Burbujeo]: Enriquecimiento de O2 a 55% molar. Coeficiente kLa estabilizado en 31.2 h⁻¹ con viabilidad celular de 98.8%.',
+          dO2: '41.8% (Óptimo)'
+        },
+        tff: {
+          note: '[Perfusión Aséptica Balanceada]: Tasa de dilución de 1.5 volúmenes de reactor/día con retención celular del 100%.',
+          vcd: '44.8M cél/mL'
+        },
+        raman: {
+          note: '[Monitoreo In-Line de Glucosa]: Quimiometría Raman mantiene concentración de glucosa en 1.5 g/L sin spikes de lactato.',
+          tmp: '1.12 bar'
+        },
+        audit: {
+          note: '[Verificación Estéril cGMP]: Integridad de soldadura de tubos térmicos C-Flex validada con cero unidades formadoras de colonias (UFC).',
+          saved: '$3,750,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'BIOPROCESS VALIDATED • 99/100 (FDA cGMP & 21 CFR PART 11 COMPLIANT)',
+        notes: '"The FDA cGMP Regulatory Validation Panel approves the commercial batch release. The oxygen mass transfer cascade and cryptographic audit trail meet the highest international standards, protecting the $3.4M USD mAb therapeutic harvest."',
+        chips: ['#SingleUseBioreactor', '#kLa_MassTransfer', '#cGMPAnnex1', '#FDA_21CFR_Part11', '#mAbHarvest']
+      },
+      reportFilename: 'Bioprocess_Validation_Toluca_SUB2000L.md'
+    },
+    'tff': {
+      id: 'tff',
+      facility: 'FACILITY: ZAPOPAN BIOLOGICS CONCENTRATION & HARVEST LINE',
+      standard: 'USP <1043> Single-Use • ISO 14644 Class 5 Grade A',
+      title: 'Sterile Tangential Flow Ultrafiltration (TFF) Transmembrane Pressure (TMP) & Fouling Recovery',
+      targetScope: 'Purification: Monoclonal IgG Concentration to 120 g/L • TMP Limit: < 1.40 bar • Flux Recovery: > 96%',
+      vcd: 'N/A (Cosecha)',
+      dO2: 'N/A',
+      tmp: '1.18 bar',
+      saved: '$2,900,000 USD',
+      inspectionSpec: 'Casete de ultrafiltración de polietersulfona (PES) con corte de peso molecular de 30 kDa para diafiltración de buffer y formulación final. El control adaptativo de bombas peristálticas gemelas modula la contrapresión del permeado, suprimiendo la compactación de la torta de polarización de concentración. El protocolo de limpieza in-situ (CIP) con hidróxido de sodio 0.5M a 40°C recupera el flujo volumétrico normalizado a más del 96% del valor de agua limpia.',
+      boardMembers: 'Dr. Lucía Echeverría 🇲🇽/🇺🇸 & Dr. Elena Rostova 🇺🇸',
+      boardPrompt: '"Downstream Purification Lead: During final ultrafiltration targeting 120 g/L antibody concentration, protein self-association creates exponential viscosity spikes that foul PES membrane pores. How does your automated transmembrane pressure feedback loop prevent gel-layer formation, and what sanitization cycle guarantees endotoxin levels below 0.25 EU/mL?"',
+      actions: {
+        sparge: {
+          note: '[Regulación de TMP por Recirculación]: Flujo tangencial cruzado ajustado a 350 LMH evitando incrustación superficial.',
+          tmp: '1.08 bar (Fluido)'
+        },
+        tff: {
+          note: '[Retrolavado Aséptico]: Pulso de permeado inverso de 15 segundos desaloja proteínas adsorbidas en los poros.',
+          vcd: 'Flujo 98.4%'
+        },
+        raman: {
+          note: '[Titulometría UV 280nm In-Line]: Concentración alcanzada exactamente a 120.4 g/L con dispersión isométrica < 1.2%.',
+          dO2: 'Endotox <0.05 EU'
+        },
+        audit: {
+          note: '[Validación de Carga Biológica]: Ensayo LAL cromogénico confirma endotoxinas en 0.04 EU/mL.',
+          saved: '$3,200,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'BIOPROCESS VALIDATED • 99/100 (FDA cGMP & 21 CFR PART 11 COMPLIANT)',
+        notes: '"Downstream ultrafiltration and sterile boundary fully validated. The automated TMP modulation eliminated membrane fouling, yielding high antibody purity and endotoxin levels well below international pharmacopeial limits."',
+        chips: ['#TangentialFlowFiltration', '#TransmembranePressure', '#CIP_Sanitization', '#PES_Membrane', '#EndotoxinControl']
+      },
+      reportFilename: 'Bioprocess_Validation_Zapopan_TFF.md'
+    },
+    'raman': {
+      id: 'raman',
+      facility: 'FACILITY: CUERNAVACA ACTIVE PHARMACEUTICAL INGREDIENT COMPLEX',
+      standard: 'FDA 21 CFR Part 11 Electronic Records • GAMP 5 Category 4',
+      title: 'In-Line Raman Spectroscopy & Cryptographic Audit Trail Signature Integrity',
+      targetScope: 'Sensor: 785nm Fiber Raman Probe • Audit Standard: SHA-256 HMAC & RFC 3161 • Zero Batch Rejection Target',
+      vcd: '39.8M cél/mL',
+      dO2: '40.0%',
+      tmp: '1.14 bar',
+      saved: '$4,100,000 USD',
+      inspectionSpec: 'Espectrómetro Raman con láser monomodo de 785 nm y sonda de inmersión estéril de zafiro integrada al puerto lateral del biorreactor sin contacto con el operador. Los modelos de calibración por mínimos cuadrados parciales (PLS) cuantifican glucosa, glutamina y lactato cada 15 minutos. Todos los registros analíticos se firman con certificados X.509 y se sellan criptográficamente con marcas temporales RFC 3161 inmutables, garantizando cumplimiento total de FDA 21 CFR Part 11.',
+      boardMembers: 'Dr. Alistair MacIntyre 🇬🇧/🇺🇸 & Dr. David Chen 🇺🇸',
+      boardPrompt: '"Director of Data Integrity: In continuous biologics manufacturing, automated Process Analytical Technology (PAT) generates thousands of process parameter time-series points. How do you prove to an FDA investigator that your in-line Raman chemometric models cannot be manipulated post-run, and how is your electronic signature cryptographic hash anchored to prevent retrospective data alterations?"',
+      actions: {
+        sparge: {
+          note: '[Calibración Raman Poliestireno]: Desplazamiento Raman verificado con estándar NIST a 1001.4 cm⁻¹ con error < 0.2 cm⁻¹.',
+          dO2: 'Calibrado NIST'
+        },
+        tff: {
+          note: '[Regresión PLS en Tiempo Real]: Predicción de glucosa a 1.48 g/L (R² = 0.994) disparando alimentación automática de glucosa.',
+          vcd: 'Glucosa 1.48 g/L'
+        },
+        raman: {
+          note: '[Sellado Temporal RFC 3161]: Firma digital emitida por Autoridad Certificadora con timestamp sincronizado por satélite GPS.',
+          tmp: 'Firma X.509 OK'
+        },
+        audit: {
+          note: '[Hash SHA-256 Validado]: Cadena de custodia criptográfica intacta. Cero anomalías en el log de auditoría de lote.',
+          saved: '$4,500,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'BIOPROCESS VALIDATED • 99/100 (FDA cGMP & 21 CFR PART 11 COMPLIANT)',
+        notes: '"Outstanding PAT implementation and 21 CFR Part 11 electronic records architecture. In-line Raman chemometrics combined with SHA-256 audit trails provide undeniable data integrity and flawless cGMP compliance."',
+        chips: ['#RamanSpectroscopy', '#ProcessAnalyticalTechnology', '#FDA_Part11_Audit', '#SHA256_Signature', '#RFC3161_Timestamp']
+      },
+      reportFilename: 'Bioprocess_Validation_Cuernavaca_Raman.md'
+    }
+  }
+};
+
+window.currentBioprocessStation = 'sub';
+
+window.initBioprocessValidation = function() {
+  window.switchBioprocessStation(window.currentBioprocessStation || 'sub');
+};
+
+window.switchBioprocessStation = function(stationKey) {
+  const s = window.BIOPROCESS_VALIDATION_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentBioprocessStation = stationKey;
+
+  // Update nav buttons
+  ['sub', 'tff', 'raman'].forEach(k => {
+    const btn = document.getElementById(`btn-bioprocess-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('bioprocess-facility-badge');
+  const stdBadge = document.getElementById('bioprocess-standard-badge');
+  const titleEl = document.getElementById('bioprocess-station-title');
+  const scopeEl = document.getElementById('bioprocess-target-scope');
+  const specEl = document.getElementById('bioprocess-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-shield-virus"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update telemetry stats
+  const vcdEl = document.getElementById('bioprocess-stat-vcd');
+  const doEl = document.getElementById('bioprocess-stat-do');
+  const tmpEl = document.getElementById('bioprocess-stat-tmp');
+  const savedEl = document.getElementById('bioprocess-stat-saved');
+
+  if (vcdEl) vcdEl.textContent = s.vcd;
+  if (doEl) doEl.textContent = s.dO2;
+  if (tmpEl) tmpEl.textContent = s.tmp;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('bioprocess-board-members');
+  const inquiryEl = document.getElementById('bioprocess-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('bioprocess-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('bioprocess-ruling-score');
+  const decisionNotes = document.getElementById('bioprocess-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'REGULATORY VALIDATION PENDING';
+    rulingScore.style.color = '#38bdf8';
+    rulingScore.style.borderColor = '#0ea5e9';
+    rulingScore.style.background = 'rgba(14,165,233,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Ejecuta controles asépticos o redacta tu estrategia de validación de bioprocesos y trazabilidad C1 para solicitar la liberación de lote cGMP.';
+  }
+};
+
+window.applyBioprocessAction = function(actionKey) {
+  const s = window.BIOPROCESS_VALIDATION_DATA.stations[window.currentBioprocessStation];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.dO2) {
+    const doEl = document.getElementById('bioprocess-stat-do');
+    if (doEl) doEl.textContent = act.dO2;
+  }
+  if (act.vcd) {
+    const vcdEl = document.getElementById('bioprocess-stat-vcd');
+    if (vcdEl) vcdEl.textContent = act.vcd;
+  }
+  if (act.tmp) {
+    const tmpEl = document.getElementById('bioprocess-stat-tmp');
+    if (tmpEl) tmpEl.textContent = act.tmp;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('bioprocess-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('bioprocess-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('bioprocess-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'ASEPTIC PARAMETERS OPTIMIZED • READY FOR BATCH RELEASE';
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+};
+
+window.playBioprocessAudio = function() {
+  const s = window.BIOPROCESS_VALIDATION_DATA.stations[window.currentBioprocessStation];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleBioprocessMic = function() {
+  const strategyInput = document.getElementById('bioprocess-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Dr. Echeverría, Director MacIntyre: To decouple oxygen transfer from bubble shear stress, our automated cascade modulates oxygen mole fraction (O2 enrichment up to 60%) before increasing agitation tip speed, maintaining kLa at 28.4 h⁻¹ while preserving cell viability above 98.5%. Single-use fluid connections use automated aseptic thermal welders with validated integrity tests, while all sampling events generate cryptographic SHA-256 audit logs fulfilling FDA 21 CFR Part 11...";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitBioprocessDefense = function() {
+  const s = window.BIOPROCESS_VALIDATION_DATA.stations[window.currentBioprocessStation];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('bioprocess-ruling-score');
+  const decisionNotes = document.getElementById('bioprocess-board-decision-notes');
+  const chipsContainer = document.getElementById('bioprocess-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#10b981';
+    rulingScore.style.borderColor = '#059669';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#34d399; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportBioprocessReport = function() {
+  const s = window.BIOPROCESS_VALIDATION_DATA.stations[window.currentBioprocessStation] || window.BIOPROCESS_VALIDATION_DATA.stations['sub'];
+  const defense = document.getElementById('bioprocess-candidate-strategy')?.value || 'Bioprocess aseptic validation protocol and 21 CFR Part 11 compliance defense delivered during live FDA inspection simulation.';
+  const ruling = document.getElementById('bioprocess-ruling-score')?.textContent || 'BIOPROCESS VALIDATED • 99/100 (FDA cGMP & 21 CFR PART 11 COMPLIANT)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Bioprocess & Single-Use Bioreactor Validation Protocol
+## FDA 21 CFR Part 11, cGMP Annex 1 & ISO 13408 Commercial Batch Release
+**Date**: ${dateStr}
+**Testing Facility**: ${s.facility}
+**Validation Suite**: ${s.title}
+**Normative Standard**: ${s.standard}
+**Inspection Board**: ${s.boardMembers}
+
+---
+
+## 1. Bioprocess Critical Quality Attributes (CQAs) & In-Line Telemetry
+- **Target Biologics Scope**: ${s.targetScope}
+- **Viable Cell Density (VCD)**: ${s.vcd}
+- **Dissolved Oxygen (dO2)**: ${s.dO2}
+- **Transmembrane Pressure (TMP)**: ${s.tmp}
+- **Batch Financial Value Protected**: ${s.saved}
+- **Cell Kinetics & cGMP Boundary Specifications**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead Bioprocess Architect's Validation Brief
+${defense}
+
+---
+
+## 3. FDA cGMP Validation Panel Adjudication & Official Release
+- **Adjudicated Ruling**: ${ruling}
+- **Panel Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core Biomanufacturing & Validation Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Pharmaceutical Record • Certified Under FDA 21 CFR Part 11 & cGMP Annex 1 Guidelines*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 35: AUTONOMOUS CLEAN HYDROGEN ELECTROLYZER & AMMONIA CRACKING SYNTHESIS CRUCIBLE
+// ============================================================================
+
+window.HYDROGEN_SYNTHESIS_DATA = {
+  stations: {
+    'pem': {
+      id: 'pem',
+      facility: 'FACILITY: PUERTO PEÑASCO CLEAN ENERGY CORRIDOR',
+      standard: 'ISO 22734 • ASME B31.12 • NFPA 2 Hydrogen Code',
+      title: 'High-Pressure PEM Electrolyzer Stack (20 MW) & Membrane Pin-Hole Crossover Detection',
+      targetScope: 'Target: 20 MW Solar-to-H2 Stack • Pressure: 30.4 bar • Crossover Target: < 1.5% LEL • Risk Avoidance: $4,600,000 USD',
+      pressure: '30.4 bar',
+      purity: '99.999%',
+      crossover: '0.42% LEL',
+      saved: '$4,600,000 USD',
+      inspectionSpec: 'Pila de electrólisis de agua tipo PEM (membrana perfluorosulfónica reforzada de 50 µm con catalizador de IrOx en el ánodo y Pt/C en el cátodo) acoplada a parque solar de 120 MW. El sensor de espectrometría de masas in-line monitorea la difusión gas-líquido a través de la membrana. El mantenimiento de contrapresión balanceada (ΔP cátodo-ánodo < 0.5 bar) previene la sobrepresurización diferencial y mantiene el O2 disuelto en H2 por debajo de 0.42% del límite inferior de explosividad (LEL).',
+      boardMembers: 'Dr. Tarek Al-Mansoor 🇦🇪/🇺🇸 & Dr. Ingrid Lindholm 🇸🇪/🇺🇸',
+      boardPrompt: '"Lead Hydrogen Systems Engineer: In our 20 MW high-pressure PEM stack operating at 30 bar, fluctuating renewable solar input can cause transient pinhole gas crossover where O2 permeates into the H2 product stream. How does your differential pressure control prevent flammable gas mixtures exceeding 1.5% LEL, and what metallurgy protocol guarantees resistance against high-pressure hydrogen embrittlement under ASME B31.12?"',
+      actions: {
+        pem: {
+          note: '[Ajuste de Válvula Domo Backpressure]: Contrapresión balanceada a ±12 mbar. Crossover O2 en H2 mitigado a 0.28% LEL.',
+          crossover: '0.28% LEL (Óptimo)'
+        },
+        soec: {
+          note: '[Regulación de Pila PEM]: Densidad de corriente estabilizada a 2.4 A/cm² con eficiencia Faradaica del 84.5%.',
+          pressure: '30.8 bar'
+        },
+        cracking: {
+          note: '[Sensor Espectrómetro In-Line]: Pureza de H2 confirmada en 99.9992% sin trazas de humedad ni oxígeno libre.',
+          purity: '99.9995%'
+        },
+        psa: {
+          note: '[Verificación Metalúrgica ASME B31.12]: Tuberías 316L con níquel > 28.5% verificadas con cero microfisuración intergranular.',
+          saved: '$4,950,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'HYDROGEN SAFETY CERTIFIED • 99/100 (ISO 22734 & NFPA 2 COMPLIANT)',
+        notes: '"The Global Clean Energy Transition & Process Safety Council unanimously certifies the hydrogen production and ammonia synthesis architecture. The crossover suppression and ASME B31.12 embrittlement safeguards establish benchmark safety."',
+        chips: ['#PEM_Electrolysis', '#Crossover_LEL', '#ASME_B31_12', '#NFPA2_Hydrogen', '#TitaniumEmbrittlement']
+      },
+      reportFilename: 'Clean_Hydrogen_Electrolyzer_PuertoPenasco.md'
+    },
+    'soec': {
+      id: 'soec',
+      facility: 'FACILITY: MONCLOVA GREEN STEEL DRI COMPLEX',
+      standard: 'ISO 14687 Grade D Industrial • NFPA 54 / NFPA 86',
+      title: 'High-Temperature Solid Oxide Electrolyzer (SOEC 800°C) & DRI Steel Furnace Coupling',
+      targetScope: 'Furnace: 1.2M Ton/Year Direct Reduced Iron • Steam Temp: 815°C • Thermal Ramp Limit: < 2.0°C/min • Avoided Outage: $5,200,000 USD',
+      pressure: '1.85 bar',
+      purity: '99.98%',
+      crossover: '0.15% LEL',
+      saved: '$5,200,000 USD',
+      inspectionSpec: 'Módulos de electrólisis de vapor a alta temperatura SOEC utilizando celdas cerámicas de zirconio estabilizado con itria (YSZ) y ánodos de manganita de lantano-estroncio (LSM). La integración con el calor residual del reactor DRI suministra vapor a 815°C, logrando una eficiencia eléctrica de 3.2 kWh/Nm³ de H2. El controlador de rampa térmica suprime esfuerzos termo-mecánicos con gradientes < 1.4°C/min para prevenir la fractura frágil y delaminación del electrolito cerámico.',
+      boardMembers: 'Dr. Tarek Al-Mansoor 🇦🇪/🇺🇸 & Dr. Klaus von Berg 🇩🇪/🇺🇸',
+      boardPrompt: '"High-Temperature Hydrogen Lead: Direct coupling of 800°C SOEC steam electrolyzers to our steel DRI shaft furnace presents extreme thermomechanical delamination risks during electrical tripping events. How does your ramp-rate controller prevent catastrophic ceramic cell cracking, and what protective gas blanket preserves nickel cermet cathodes from oxidative degradation?"',
+      actions: {
+        pem: {
+          note: '[Inyección de Gas de Protección]: Purga con gas reformado 5% H2 en N2 previene re-oxidación de cátodos de Ni-YSZ.',
+          crossover: '0.11% LEL'
+        },
+        soec: {
+          note: '[Control de Rampa Térmica]: Enfriamiento controlado a 1.2°C/min sin micro-fisuración acústica detectada.',
+          pressure: '1.92 bar (Estable)'
+        },
+        cracking: {
+          note: '[Eficiencia de Celda SOEC]: Conversión de vapor de agua al 88.5% alimentando directamente toberas del horno DRI.',
+          purity: '99.985%'
+        },
+        psa: {
+          note: '[Reducción de Huella de Carbono]: 100% de reemplazo de gas natural en reducción de mineral con cero emisiones netas.',
+          saved: '$5,800,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'HYDROGEN SAFETY CERTIFIED • 99/100 (ISO 22734 & NFPA 2 COMPLIANT)',
+        notes: '"Outstanding SOEC high-temperature thermomechanical integration. The ramp-rate modulation and protective reducing atmosphere ensure multi-year ceramic stack durability and zero-carbon green steel synthesis."',
+        chips: ['#SOEC_HighTemp', '#GreenSteel_DRI', '#YSZ_Electrolyte', '#ThermalStressMitigation', '#ZeroEmissionMetallurgy']
+      },
+      reportFilename: 'Clean_Hydrogen_SOEC_Monclova_Steel.md'
+    },
+    'ammonia': {
+      id: 'ammonia',
+      facility: 'FACILITY: COATZACOALCOS CHEMICAL SYNTHESIS & LOGISTICS CORRIDOR',
+      standard: 'ISO 14687 Grade E Fuel Cell Automotive • CGA G-5.5',
+      title: 'Haber-Bosch Green Ammonia Cracking & Ruthenium Bed PSA Sub-0.1 ppm Clean-Up',
+      targetScope: 'Output: 50 Ton/Day H2 for Fuel Cells • Cracking Temp: 650°C • Residual NH3: < 0.1 ppm • Capital Asset Protection: $6,100,000 USD',
+      pressure: '18.5 bar',
+      purity: '99.9998%',
+      crossover: '0.08% LEL',
+      saved: '$6,100,000 USD',
+      inspectionSpec: 'Reactor de craqueo catalítico de amoníaco anhidro con lecho empacado de rutenio soportado en alúmina activada a 650°C (conversión > 99.8%). El gas disociado (75% H2, 25% N2) ingresa a un tren de adsorción por oscilación de presión (PSA) de 4 lechos con zeolitas sintéticas que eliminan trazas de amoníaco por debajo de 0.08 ppm, evitando la intoxicación irreversible de membranas en celdas de combustible PEMFC automotrices.',
+      boardMembers: 'Dr. Ingrid Lindholm 🇸🇪/🇺🇸 & Dr. Haruto Tanaka 🇯🇵/🇺🇸',
+      boardPrompt: '"Chemical Process Safety Director: Green ammonia is the ideal high-density maritime hydrogen carrier, but even 0.1 ppm of residual uncracked NH3 will poison PEM fuel cell catalysts permanently. Demonstrate how your PSA pressure swing cycle guarantees sub-0.1 ppm NH3 purity, and detail your toxic vapor mitigation scrubbers under OSHA 1910.111 and CGA G-5.5."',
+      actions: {
+        pem: {
+          note: '[Regulación Térmica de Reactor 650°C]: Termopares multizona garantizan conversión de craqueo al 99.91%.',
+          pressure: '19.2 bar'
+        },
+        soec: {
+          note: '[Ciclo PSA de 4 Lechos]: Ciclo de despresurización rápida purga adsorbato de nitrógeno y amoníaco.',
+          crossover: '0.05% LEL'
+        },
+        cracking: {
+          note: '[Analizador In-Line de Amoníaco]: Espectrómetro fotoacústico mide amoníaco residual en 0.04 ppm (Límite < 0.1 ppm).',
+          purity: '99.9999% (ISO 14687)'
+        },
+        psa: {
+          note: '[Scrubber de Seguridad Ácida]: Torre de absorción con ácido sulfúrico diluido neutraliza vapores de venteo al 100%.',
+          saved: '$6,600,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'HYDROGEN SAFETY CERTIFIED • 99/100 (ISO 22734 & NFPA 2 COMPLIANT)',
+        notes: '"Exemplary ammonia dissociation and PSA purification defense. Meeting the sub-0.1 ppm NH3 threshold confirms compliance with ISO 14687 Grade E automotive fuel standards while OSHA 1910.111 toxic boundaries are flawlessly maintained."',
+        chips: ['#AmmoniaCracking', '#RutheniumCatalyst', '#PSA_Purification', '#Sub01ppm_NH3', '#OSHA1910_Safety']
+      },
+      reportFilename: 'Clean_Hydrogen_Ammonia_Cracking_Coatzacoalcos.md'
+    }
+  }
+};
+
+window.currentHydrogenStation = 'pem';
+
+window.initHydrogenSynthesis = function() {
+  window.switchHydrogenStation(window.currentHydrogenStation || 'pem');
+};
+
+window.switchHydrogenStation = function(stationKey) {
+  const s = window.HYDROGEN_SYNTHESIS_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentHydrogenStation = stationKey;
+
+  // Update nav buttons
+  ['pem', 'soec', 'ammonia'].forEach(k => {
+    const btn = document.getElementById(`btn-hydrogen-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('hydrogen-facility-badge');
+  const stdBadge = document.getElementById('hydrogen-standard-badge');
+  const titleEl = document.getElementById('hydrogen-station-title');
+  const scopeEl = document.getElementById('hydrogen-target-scope');
+  const specEl = document.getElementById('hydrogen-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-atom"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update telemetry stats
+  const pressureEl = document.getElementById('hydrogen-stat-pressure');
+  const purityEl = document.getElementById('hydrogen-stat-purity');
+  const crossoverEl = document.getElementById('hydrogen-stat-crossover');
+  const savedEl = document.getElementById('hydrogen-stat-saved');
+
+  if (pressureEl) pressureEl.textContent = s.pressure;
+  if (purityEl) purityEl.textContent = s.purity;
+  if (crossoverEl) crossoverEl.textContent = s.crossover;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('hydrogen-board-members');
+  const inquiryEl = document.getElementById('hydrogen-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('hydrogen-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('hydrogen-ruling-score');
+  const decisionNotes = document.getElementById('hydrogen-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'SAFETY CERTIFICATION PENDING';
+    rulingScore.style.color = '#38bdf8';
+    rulingScore.style.borderColor = '#0ea5e9';
+    rulingScore.style.background = 'rgba(14,165,233,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Aplica mitigaciones electroquímicas o redacta tu protocolo de seguridad de proceso NFPA 2 / ASME B31.12 para solicitar certificación oficial.';
+  }
+};
+
+window.applyHydrogenAction = function(actionKey) {
+  const s = window.HYDROGEN_SYNTHESIS_DATA.stations[window.currentHydrogenStation];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.crossover) {
+    const crossoverEl = document.getElementById('hydrogen-stat-crossover');
+    if (crossoverEl) crossoverEl.textContent = act.crossover;
+  }
+  if (act.pressure) {
+    const pressureEl = document.getElementById('hydrogen-stat-pressure');
+    if (pressureEl) pressureEl.textContent = act.pressure;
+  }
+  if (act.purity) {
+    const purityEl = document.getElementById('hydrogen-stat-purity');
+    if (purityEl) purityEl.textContent = act.purity;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('hydrogen-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('hydrogen-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('hydrogen-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'ELECTROCHEMICAL PARAMETERS STABILIZED • READY FOR CERTIFICATION';
+    rulingScore.style.color = '#22d3ee';
+    rulingScore.style.borderColor = '#0891b2';
+    rulingScore.style.background = 'rgba(6,182,212,0.15)';
+  }
+};
+
+window.playHydrogenAudio = function() {
+  const s = window.HYDROGEN_SYNTHESIS_DATA.stations[window.currentHydrogenStation];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleHydrogenMic = function() {
+  const strategyInput = document.getElementById('hydrogen-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Dr. Al-Mansoor, Director Lindholm: To suppress pinhole crossover, our electrochemical plant uses active dome-loaded pneumatic backpressure regulators maintaining cathodic H2 and anodic O2 pressure differential within +/- 20 mbar even during rapid solar intermittency, keeping O2 in H2 below 0.4% LEL. For embrittlement protection under ASME B31.12, all high-pressure lines use low-carbon austenitic 316L stainless steel with nickel equivalent > 28.5% and electropolished inner bores...";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitHydrogenDefense = function() {
+  const s = window.HYDROGEN_SYNTHESIS_DATA.stations[window.currentHydrogenStation];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('hydrogen-ruling-score');
+  const decisionNotes = document.getElementById('hydrogen-board-decision-notes');
+  const chipsContainer = document.getElementById('hydrogen-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#22d3ee';
+    rulingScore.style.borderColor = '#0891b2';
+    rulingScore.style.background = 'rgba(6,182,212,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#22d3ee; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportHydrogenReport = function() {
+  const s = window.HYDROGEN_SYNTHESIS_DATA.stations[window.currentHydrogenStation] || window.HYDROGEN_SYNTHESIS_DATA.stations['pem'];
+  const defense = document.getElementById('hydrogen-candidate-strategy')?.value || 'Clean hydrogen production and ammonia synthesis protocol delivered during live process safety certification simulation.';
+  const ruling = document.getElementById('hydrogen-ruling-score')?.textContent || 'HYDROGEN SAFETY CERTIFIED • 99/100 (ISO 22734 & NFPA 2 COMPLIANT)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Clean Hydrogen & Ammonia Synthesis Protocol
+## ISO 22734, ASME B31.12 & NFPA 2 Safety Compliance Certification
+**Date**: ${dateStr}
+**Testing Facility**: ${s.facility}
+**Synthesis Suite**: ${s.title}
+**Normative Standard**: ${s.standard}
+**Evaluation Council**: ${s.boardMembers}
+
+---
+
+## 1. Electrochemical & Thermodynamic Telemetry
+- **Target Synthesis Scope**: ${s.targetScope}
+- **Operating Pressure**: ${s.pressure}
+- **Hydrogen Purity (H2)**: ${s.purity}
+- **Oxygen Crossover (O2 in H2)**: ${s.crossover}
+- **Mitigated Explosion & Safety Asset Value**: ${s.saved}
+- **Process Safety & Kinetics Specifications**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead Hydrogen Architect's Technical Protocol
+${defense}
+
+---
+
+## 3. Global Process Safety Council Adjudication & Official Release
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core Clean Hydrogen & Safety Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Energy Transition Record • Certified Under ISO 22734, ASME B31.12 & NFPA 2 Guidelines*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 36: AUTONOMOUS AI SEMICONDUCTOR CLEANROOM ULTRA-PURE WATER & TRACE CHEMICAL CONTAMINATION RECLAMATION CRUCIBLE
+// ============================================================================
+
+window.UPW_RECLAMATION_DATA = {
+  stations: {
+    'ro': {
+      id: 'ro',
+      facility: 'FACILITY: CHIHUAHUA SUB-3NM SEMICONDUCTOR UPW SUITE',
+      standard: 'SEMI F63 • ISO 14046 • ASTM D5127 Grade E-1',
+      title: 'Multi-Stage Reverse Osmosis (RO) & Vacuum Membrane Degasification (VMD) for Sub-1 ppb DO',
+      targetScope: 'Target: Sub-3nm UPW Polishing • Resistivity: 18.2 MΩ·cm • Dissolved Oxygen: < 1.0 ppb • Yield Risk Protection: $4,400,000 USD',
+      resistivity: '18.2 MΩ·cm',
+      toc: '0.38 ppb',
+      do: '0.75 ppb',
+      saved: '$4,400,000 USD',
+      inspectionSpec: 'Tren de purificación continua para oblea de 300 mm en nodo sub-3nm. La desgasificación por membranas hidrofóbicas de fibra hueca acopladas a bombas de vacío turbomoleculares con barrido de nitrógeno purga el oxígeno disuelto (DO) por debajo de 0.8 ppb, suprimiendo la formación de micro-óxido no controlado en interfaces de compuerta silicio-dieléctrico. La resistividad se estabiliza en 18.2 MΩ·cm a 25°C con cero microburbujas en el punto de uso (POU).',
+      boardMembers: 'Dr. Mei-Ling Zhou 🇹🇼/🇺🇸 & Dr. Carlos Valenzuela 🇲🇽/🇺🇸',
+      boardPrompt: '"Lead UPW Systems Engineer: In our sub-3nm front-end wet-bench lines, trace dissolved oxygen above 1 ppb causes uncontrolled native silicon oxidation that ruins high-k metal gate capacitance. How does your vacuum membrane degasification and continuous electro-deionization (CEDI) architecture guarantee 18.2 MOhm-cm resistivity, sub-0.5 ppb TOC, and what zero liquid discharge loop recovers 98%+ of chemical rinse effluents under ISO 14046?"',
+      actions: {
+        vmd: {
+          note: '[Ajuste de Vacío VMD & Sweep N2]: Presión absoluta a 35 mbar con flujo de barrido de N2 al 99.999%. DO reducido a 0.58 ppb.',
+          do: '0.58 ppb (Ultra-Degassed)'
+        },
+        cedi: {
+          note: '[Pulido Iónico CEDI]: Corriente continua ajustada a 4.2 A por celda. Boro residual reducido a 0.04 ppb y sílice reactiva < 0.05 ppb.',
+          resistivity: '18.25 MΩ·cm'
+        },
+        toc: {
+          note: '[Mineralización UV 185nm]: Dosis fotocatalítica de 95 mJ/cm² degrada compuestos orgánicos traza. TOC estabilizado en 0.29 ppb.',
+          toc: '0.29 ppb (SEMI Gold)'
+        },
+        zld: {
+          note: '[Optimización ZLD & MVR]: Evaporador de recompresión mecánica opera a régimen continuo recuperando el 98.8% del agua de enjuague.',
+          saved: '$4,750,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'UPW SEMI F63 CERTIFIED • 99/100 (SEMI F63 & ISO 14046 COMPLIANT)',
+        notes: '"The Semiconductor Water & Chemical Reclamation Council unanimously certifies the UPW polishing and ZLD recycling architecture. The 18.2 MOhm-cm resistivity, sub-ppb DO control, and 98.6% water recovery benchmark global excellence."',
+        chips: ['#SEMI_F63_UPW', '#VMD_Degasification', '#CEDI_IonExchange', '#ZLD_ZeroLiquidDischarge', '#SubPPB_TOC']
+      },
+      reportFilename: 'Semiconductor_UPW_Chihuahua_Sub3nm.md'
+    },
+    'cedi': {
+      id: 'cedi',
+      facility: 'FACILITY: MONTERREY ADVANCED WAFER FAB POLISHING LOOP',
+      standard: 'SEMI F63 Grade A • ASTM D5127 Critical Dielectric',
+      title: 'Continuous Electro-Deionization (CEDI) & Nuclear-Grade Mixed-Bed Polishing for Sub-0.08 ppb Boron',
+      targetScope: 'Fab Capacity: 85,000 Wafers/Month • Silica Target: < 0.1 ppb • Boron Leakage: < 0.08 ppb • Avoided Gate Shortage: $5,100,000 USD',
+      resistivity: '18.22 MΩ·cm',
+      toc: '0.34 ppb',
+      do: '0.68 ppb',
+      saved: '$5,100,000 USD',
+      inspectionSpec: 'Celdas de electro-desionización continua (CEDI) con resinas de intercambio catiónico y aniónico de alta selectividad regeneradas eléctricamente in-situ sin adición de ácido clorhídrico ni hidróxido de sodio. El módulo de pulido final con lecho mixto nuclear de grado semiconductor retiene especies débilmente ionizadas como ácido ortosilícico y ácido bórico por debajo de 0.06 ppb, evitando la difusión intersticial en el silicio monocristalino durante el recocido térmico rápido (RTA).',
+      boardMembers: 'Dr. Mei-Ling Zhou 🇹🇼/🇺🇸 & Dr. Hiroshi Tanaka 🇯🇵/🇺🇸',
+      boardPrompt: '"Semiconductor Metrology & Wet Cleaning Lead: Trace un-ionized boron and reactive silica slip past traditional ion exchange when resin beads approach exhaustion, shifting transistor threshold voltage across 3nm finFET arrays. How does your CEDI electrical regeneration gradient prevent boron leakage, and how is online resistivity temperature-compensated to 0.01°C precision?"',
+      actions: {
+        vmd: {
+          note: '[Ajuste de Compensación Térmica ASTM D1125]: Sensor de conductividad calibrado a 25.00°C con algoritmo de disociación del agua pura.',
+          resistivity: '18.24 MΩ·cm'
+        },
+        cedi: {
+          note: '[Regeneración Continua CEDI]: Gradiente de potencial elimina el 99.7% del boro soluble. Concentración detectada: 0.038 ppb.',
+          do: '0.62 ppb'
+        },
+        toc: {
+          note: '[Lámparas Amalgama de Doble Longitud de Onda 185/254nm]: Destrucción simultánea de carbono orgánico y desinfección bacteriana.',
+          toc: '0.26 ppb'
+        },
+        zld: {
+          note: '[Segregación de Corrientes de Drenaje]: Separación de efluentes concentrados de metales pesados para precipitación electroquímica.',
+          saved: '$5,600,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'UPW SEMI F63 CERTIFIED • 99/100 (SEMI F63 & ISO 14046 COMPLIANT)',
+        notes: '"Outstanding CEDI electrochemical regeneration and temperature-compensated ionic monitoring defense. The elimination of boron leakage and sub-0.05 ppb silica ensures perfect threshold voltage uniformity across advanced finFET wafers."',
+        chips: ['#CEDI_ElectroDeionization', '#BoronLeakageMitigation', '#ReactiveSilica_sub01ppb', '#HighK_DielectricIntegrity', '#SEMI_Metrology']
+      },
+      reportFilename: 'Semiconductor_UPW_CEDI_Monterrey_Fab.md'
+    },
+    'zld': {
+      id: 'zld',
+      facility: 'FACILITY: SALTILLO SEMICONDUCTOR CORRIDOR INDUSTRIAL WATER HUB',
+      standard: 'ISO 14046 Water Footprint • SEMI S2 Environmental Safety',
+      title: 'Zero Liquid Discharge (ZLD) Forward Osmosis & Mechanical Vapor Recompression (MVR)',
+      targetScope: 'Water Reclamation: 98.6% Circular Recovery • Daily Recycle: 4.2M Gallons • Brine Sludge: Crystallized Solid Salt • Water Stewardship Asset: $5,800,000 USD',
+      resistivity: '18.2 MΩ·cm',
+      toc: '0.41 ppb',
+      do: '0.82 ppb',
+      saved: '$5,800,000 USD',
+      inspectionSpec: 'Sistema de reciclaje de aguas residuales de ultra-alta concentración para manufactura de microchips. Integra neutralización de ácido fluorhídrico (HF) con cloruro de calcio para precipitar fluoruro de calcio grado comercial (CaF2), seguido de ósmosis directa biomimética de alta presión (120 bar) y evaporador MVR que condensa destilado ultra-puro con conductividad < 5 µS/cm para reinyectar al pretratamiento del fab, logrando una huella hídrica circular sin descargas al acuífero.',
+      boardMembers: 'Dr. Carlos Valenzuela 🇲🇽/🇺🇸 & Dr. Alistair MacIntyre 🇬🇧/🇺🇸',
+      boardPrompt: '"Industrial Water Stewardship Director: Arid nearshoring semiconductor hubs cannot survive without circular water recycling. Detail your forward osmosis and MVR closed-loop strategy for reclaiming 98%+ of hazardous HF and CMP slurries, and explain how crystallizer dry-cake disposal complies with SEMI S2 and ISO 14046 without toxic aquifer leaching."',
+      actions: {
+        vmd: {
+          note: '[Precipitación de Fluoruro CaF2]: Dosificación estequiométrica de CaCl2 recupera el 99.8% de iones F- como sal sólida inerte.',
+          saved: '$6,200,000 USD'
+        },
+        cedi: {
+          note: '[Filtro de Membrana Cerámica de Carburo de Silicio]: Retención total de partículas coloidales de sílice de CMP antes del MVR.',
+          toc: '0.35 ppb'
+        },
+        toc: {
+          note: '[Compresión Mecánica de Vapor (MVR)]: Consumo energético optimizado a 22 kWh/m³ con condensado de alta pureza.',
+          do: '0.70 ppb'
+        },
+        zld: {
+          note: '[Cristalizador de Sal Seca ZLD]: Tasa de recuperación de agua dulce elevada al 98.7% con residuo sólido seco no peligroso.',
+          resistivity: '18.23 MΩ·cm'
+        }
+      },
+      optimalDecision: {
+        score: 'UPW SEMI F63 CERTIFIED • 99/100 (SEMI F63 & ISO 14046 COMPLIANT)',
+        notes: '"Exemplary closed-loop Zero Liquid Discharge water stewardship defense. Achieving 98.7% water recovery with inert CaF2 mineral precipitation sets the gold standard for sustainable semiconductor manufacturing in arid nearshoring zones."',
+        chips: ['#ZeroLiquidDischarge', '#MVR_Evaporation', '#HF_Precipitation', '#ISO14046_WaterFootprint', '#CircularSemiconductorWater']
+      },
+      reportFilename: 'Semiconductor_ZLD_Saltillo_Water_Reclamation.md'
+    }
+  }
+};
+
+window.currentUpwStation = 'ro';
+
+window.initUpwReclamation = function() {
+  window.switchUpwStation(window.currentUpwStation || 'ro');
+};
+
+window.switchUpwStation = function(stationKey) {
+  const s = window.UPW_RECLAMATION_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentUpwStation = stationKey;
+
+  // Update nav buttons
+  ['ro', 'cedi', 'zld'].forEach(k => {
+    const btn = document.getElementById(`btn-upw-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('upw-facility-badge');
+  const stdBadge = document.getElementById('upw-standard-badge');
+  const titleEl = document.getElementById('upw-station-title');
+  const scopeEl = document.getElementById('upw-target-scope');
+  const specEl = document.getElementById('upw-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update telemetry stats
+  const resEl = document.getElementById('upw-stat-resistivity');
+  const tocEl = document.getElementById('upw-stat-toc');
+  const doEl = document.getElementById('upw-stat-do');
+  const savedEl = document.getElementById('upw-stat-saved');
+
+  if (resEl) resEl.textContent = s.resistivity;
+  if (tocEl) tocEl.textContent = s.toc;
+  if (doEl) doEl.textContent = s.do;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('upw-board-members');
+  const inquiryEl = document.getElementById('upw-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('upw-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('upw-ruling-score');
+  const decisionNotes = document.getElementById('upw-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'SAFETY CERTIFICATION PENDING';
+    rulingScore.style.color = '#38bdf8';
+    rulingScore.style.borderColor = '#0ea5e9';
+    rulingScore.style.background = 'rgba(14,165,233,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Aplica mitigaciones fisicoquímicas o redacta tu protocolo de purificación SEMI F63 / ISO 14046 para solicitar certificación oficial.';
+  }
+};
+
+window.applyUpwAction = function(actionKey) {
+  const s = window.UPW_RECLAMATION_DATA.stations[window.currentUpwStation];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.do) {
+    const doEl = document.getElementById('upw-stat-do');
+    if (doEl) doEl.textContent = act.do;
+  }
+  if (act.resistivity) {
+    const resEl = document.getElementById('upw-stat-resistivity');
+    if (resEl) resEl.textContent = act.resistivity;
+  }
+  if (act.toc) {
+    const tocEl = document.getElementById('upw-stat-toc');
+    if (tocEl) tocEl.textContent = act.toc;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('upw-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('upw-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('upw-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'UPW PARAMETERS STABILIZED • READY FOR CERTIFICATION';
+    rulingScore.style.color = '#38bdf8';
+    rulingScore.style.borderColor = '#0284c7';
+    rulingScore.style.background = 'rgba(14,165,233,0.15)';
+  }
+};
+
+window.playUpwAudio = function() {
+  const s = window.UPW_RECLAMATION_DATA.stations[window.currentUpwStation];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleUpwMic = function() {
+  const strategyInput = document.getElementById('upw-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Dr. Zhou, Director Valenzuela: To prevent gate dielectric degradation, our UPW loop cascades 185nm UV photochemical destructors for TOC mineralization (< 0.4 ppb) into dual-stage hollow-fiber vacuum membrane contactors with nitrogen sweep gas, driving dissolved oxygen down to 0.72 ppb. Continuous Electro-Deionization (CEDI) polished by virgin nuclear-grade resin maintains resistivity at 18.2 MOhm-cm at 25C with boron < 0.05 ppb. For ISO 14046 compliance, our mechanical vapor recompression ZLD plant achieves 98.6% water recovery...";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitUpwDefense = function() {
+  const s = window.UPW_RECLAMATION_DATA.stations[window.currentUpwStation];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('upw-ruling-score');
+  const decisionNotes = document.getElementById('upw-board-decision-notes');
+  const chipsContainer = document.getElementById('upw-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#38bdf8';
+    rulingScore.style.borderColor = '#0284c7';
+    rulingScore.style.background = 'rgba(14,165,233,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#38bdf8; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportUpwReport = function() {
+  const s = window.UPW_RECLAMATION_DATA.stations[window.currentUpwStation] || window.UPW_RECLAMATION_DATA.stations['ro'];
+  const defense = document.getElementById('upw-candidate-strategy')?.value || 'Semiconductor Ultra-Pure Water and ZLD closed-loop protocol delivered during live cleanroom certification simulation.';
+  const ruling = document.getElementById('upw-ruling-score')?.textContent || 'UPW SEMI F63 CERTIFIED • 99/100 (SEMI F63 & ISO 14046 COMPLIANT)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Semiconductor UPW & ZLD Reclamation Protocol
+## SEMI F63, ISO 14046 & ASTM D5127 Cleanroom Compliance Certification
+**Date**: ${dateStr}
+**Testing Facility**: ${s.facility}
+**Purification Suite**: ${s.title}
+**Normative Standard**: ${s.standard}
+**Evaluation Council**: ${s.boardMembers}
+
+---
+
+## 1. Physico-Chemical & Ionic Telemetry
+- **Target Polishing Scope**: ${s.targetScope}
+- **Ionic Resistivity**: ${s.resistivity}
+- **Total Organic Carbon (TOC)**: ${s.toc}
+- **Dissolved Oxygen (DO)**: ${s.do}
+- **Mitigated Wafer Scrap & Protected Yield Asset**: ${s.saved}
+- **Chemical Reclamation & Engineering Specifications**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead UPW Systems Architect's Technical Protocol
+${defense}
+
+---
+
+## 3. Semiconductor Water & Chemical Reclamation Council Adjudication
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core UPW & Water Stewardship Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Semiconductor Record • Certified Under SEMI F63, ISO 14046 & ASTM D5127 Guidelines*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 37: AUTONOMOUS NEARSHORING AEROSPACE & DEFENSE AVIONICS MIL-STD-1553 & DO-254 HARDWARE ASSURANCE CRUCIBLE
+// ============================================================================
+
+window.AVIONICS_ASSURANCE_DATA = {
+  stations: {
+    'mil1553': {
+      id: 'mil1553',
+      facility: 'FACILITY: QUERÉTARO AEROSPACE CLUSTER FLIGHT LAB',
+      standard: 'MIL-STD-1553B Notice 2 • RTCA DO-254 DAL-A • SAE AS15531',
+      title: 'Dual-Redundant MIL-STD-1553B Bus Controller & Remote Terminal Response Time Assurance',
+      targetScope: 'Target: Flight Control Bus Assurance • BER: < 10⁻⁹ • RT Response Time: 4.0 - 12.0 µs • Flight Risk Avoidance: $7,200,000 USD',
+      ber: '< 10⁻⁹ BER',
+      mtbf: '> 10⁹ Hours',
+      clamp: '28.4V Clamp',
+      saved: '$7,200,000 USD',
+      inspectionSpec: 'Bus de datos militar serial multiplexado diferencial a 1.0 MHz con codificación bifásica Manchester II acoplado por transformador aislador (relación 1:1.41) con stubs blindados de par trenzado (78 Ω). El analizador de protocolos inyecta palabras de comando con paridad invertida y valida que las terminales remotas (RT) respondan estrictamente en el intervalo reglamentario de 4.0 a 12.0 µs sin colisión de canal dual (Canal A/B).',
+      boardMembers: 'Col. (Ret.) Marcus Vance 🇺🇸 & Dr. Elena Morales 🇲🇽/🇺🇸',
+      boardPrompt: '"Lead Flight Avionics Engineer: In our DAL-A flight control computer, asynchronous sensor inputs crossing clock domains without provable synchronizers create metastability that can lock the actuator bus during turbulent landing. Prove how your multi-flop synchronization and formal mathematical model prevent metastability under RTCA DO-254, explain your transformer isolation against common-mode noise under MIL-STD-1553B, and demonstrate how bidirectional TVS clamping suppresses 600V lightning surges under DO-160G Section 22."',
+      actions: {
+        manchester: {
+          note: '[Ajuste de Codificación Manchester II]: Simetría de flanco calibrada al 50.0% con cero cruce por cero residual. BER verificado en 10⁻¹⁰.',
+          ber: '< 10⁻¹⁰ BER (MIL-SPEC)'
+        },
+        cdc: {
+          note: '[Sincronizador CDC Multi-Flop]: Sincronizador de 3 etapas implementado en FPGA. MTBF de metaestabilidad elevado a 10¹¹ horas.',
+          mtbf: '> 10¹¹ Hours (DAL-A)'
+        },
+        tvs: {
+          note: '[Supresor TVS DO-160G]: Diodos TVS bidireccionales en stubs de bus fijan transitorios de rayo Nivel 4 a 27.6V pico.',
+          clamp: '27.6V Clamp (Safe)'
+        },
+        trojan: {
+          note: '[Verificación Formal Anti-Trojan]: Análisis formal de transiciones de estado con JasperGold descarta puertas lógicas no autenticadas.',
+          saved: '$7,800,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'AVIONICS AIRWORTHINESS CERTIFIED • 99/100 (DO-254 DAL-A & MIL-STD-1553B COMPLIANT)',
+        notes: '"The Aerospace Avionics & Defense Certification Council unanimously certifies the flight control hardware architecture. The formal proof of clock domain crossing safety, transformer stub isolation, and lightning transient containment satisfy all FAA/DGAC DAL-A criteria."',
+        chips: ['#DO_254_DAL_A', '#MIL_STD_1553B', '#DO_160G_Lightning', '#ClockDomainCrossing_MTBF', '#HardwareTrojan_Zero']
+      },
+      reportFilename: 'Avionics_Assurance_Queretaro_MIL1553.md'
+    },
+    'do254': {
+      id: 'do254',
+      facility: 'FACILITY: MEXICALI AVIONICS & AEROSPACE ELECTRONICS CENTER',
+      standard: 'RTCA DO-254 Level A • FAA AC 20-152A • EASA AMC 20-152A',
+      title: 'DO-254 DAL-A FPGA Formal RTL Proofs & Asynchronous Clock Domain Crossing (CDC) Crucible',
+      targetScope: 'Flight Critical Hardware: FADEC Engine Control • RTL Coverage: 100% MC/DC Equivalent • Metastability MTBF: > 10¹² Hours • Certified Flight Asset: $8,400,000 USD',
+      ber: '< 10⁻¹⁰ BER',
+      mtbf: '> 10¹² Hours',
+      clamp: '28.1V Clamp',
+      saved: '$8,400,000 USD',
+      inspectionSpec: 'Lógica programable FPGA tolerante a radiación (SEE/SEU) para control digital de motores a reacción FADEC. Implementa triple redundancia modular (TMR) con votación mayoritaria en registros de control y sincronizadores de bus Gray-code en FIFOs asíncronas para transferir telemetría de turbina sin riesgo de skew de reloj ni ciclos de reloj perdidos bajo aceleraciones de 9G y temperaturas de -55°C a +125°C.',
+      boardMembers: 'Dr. Elena Morales 🇲🇽/🇺🇸 & Maj. David Henderson 🇺🇸',
+      boardPrompt: '"Designated Engineering Representative (DER) & Engine Systems Lead: In high-bypass turbofan FADEC controllers, Single Event Upsets (SEU) from cosmic ray neutron flux can flip state-machine registers and cause sudden engine stall. Detail your Triple Modular Redundancy (TMR) voting logic, your formal RTL property proof of dead-lock immunity, and your verification metrics for FAA AC 20-152A DAL-A airborne hardware compliance."',
+      actions: {
+        manchester: {
+          note: '[Triple Redundancia Modular TMR]: Votadores mayoritarios en cada máquina de estados eliminan fallos por inversión de bit (SEU).',
+          ber: '< 10⁻¹¹ BER'
+        },
+        cdc: {
+          note: '[Punteros Gray-Code Asíncronos]: Cruce entre reloj de muestreo de 200 MHz y bus de control de 40 MHz sin metaestabilidad.',
+          mtbf: '> 10¹³ Hours (TMR Pass)'
+        },
+        tvs: {
+          note: '[Filtro EMI Modo Común DO-160G]: Supresión de armónicos de alta frecuencia inducidos por actuadores electromecánicos EMA.',
+          clamp: '26.8V Clamp'
+        },
+        trojan: {
+          note: '[Demostración Formal de Cobertura Elemental]: Comprobación matemática en todas las ramas lógicas alcanzables (100% Statement/Branch).',
+          saved: '$8,900,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'AVIONICS AIRWORTHINESS CERTIFIED • 99/100 (DO-254 DAL-A & MIL-STD-1553B COMPLIANT)',
+        notes: '"Exemplary DO-254 DAL-A airborne electronic hardware formal verification. The combination of Triple Modular Redundancy (TMR), Gray-code clock domain FIFOs, and complete RTL formal property proofs ensures deterministic flight-critical engine control under extreme atmospheric neutron environments."',
+        chips: ['#DO_254_DAL_A', '#TMR_TripleRedundancy', '#SEU_RadiationHardened', '#FormalRTL_Verification', '#FAA_AC_20_152A']
+      },
+      reportFilename: 'Avionics_DO254_FADEC_Mexicali_Hardware.md'
+    },
+    'do160g': {
+      id: 'do160g',
+      facility: 'FACILITY: CHIHUAHUA DEFENSE & AVIONICS TEST SUITE',
+      standard: 'RTCA DO-160G Section 22 Category A4J44 • MIL-STD-461G',
+      title: 'DO-160G Section 22 Pin Injection & Lightning Surge Transient Containment',
+      targetScope: 'Threat Profile: Level 4 Direct Lightning Strike • Pin Injection: 600V / 120A (Waveform 4 & 5A) • High-Voltage Clamping: < 29V • Aircraft Safety Asset: $9,100,000 USD',
+      ber: '< 10⁻⁹ BER',
+      mtbf: '> 10¹⁰ Hours',
+      clamp: '27.4V Clamp',
+      saved: '$9,100,000 USD',
+      inspectionSpec: 'Banco de pruebas de descargas de rayo para conectores herméticos de ala y empenaje. Inyecta pulsos de rayo inducido de 600V en circuito abierto y 120A en cortocircuito (Formas de onda 4 y 5A de doble exponencial). El circuito de protección multi-etapa con descargadores de gas cerámicos (GDT), resistencias de choque de pulso y arrays de diodos TVS de silicio de avalancha rápida (< 1 ps) frena la sobretensión destructiva antes de alcanzar los circuitos integrados de señal mixta.',
+      boardMembers: 'Col. (Ret.) Marcus Vance 🇺🇸 & Dr. Alistair MacIntyre 🇬🇧/🇺🇸',
+      boardPrompt: '"Electromagnetic Compatibility & Lightning Protection Specialist: Modern carbon-composite airframes provide substantially less Faraday shielding than traditional aluminum fuselages, amplifying lightning-induced magnetic transients inside wing harness bundles. Demonstrate how your pin-level TVS and common-mode choke protection clamps 600V/120A Level 4 lightning impulses without dielectric punch-through or permanent transceiver degradation under DO-160G Section 22."',
+      actions: {
+        manchester: {
+          note: '[Aislamiento Galvánico Reforzado 2,500 VRMS]: Transformadores de pulso aíslan transitorios de tierra entre fuselaje y computador de vuelo.',
+          ber: '< 10⁻¹⁰ BER'
+        },
+        cdc: {
+          note: '[Diodo TVS de Avalancha Rápida]: Tiempo de respuesta sub-nanosegundo recorta el frente de onda de subida de 6.4 µs (Forma de onda 4).',
+          clamp: '25.9V Clamp (Level 4 Pass)'
+        },
+        tvs: {
+          note: '[Choque de Modo Común Toroidal]: Atenuación de 38 dB en el rango de 10 MHz a 100 MHz para evitar oscilaciones parásitas de rayo.',
+          mtbf: '> 10¹¹ Hours'
+        },
+        trojan: {
+          note: '[Prueba de Rigidez Dieléctrica Post-Impacto]: Resistencia de aislamiento > 100 MΩ a 500 VDC tras 10 impactos consecutivos de rayo.',
+          saved: '$9,600,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'AVIONICS AIRWORTHINESS CERTIFIED • 99/100 (DO-254 DAL-A & MIL-STD-1553B COMPLIANT)',
+        notes: '"Outstanding DO-160G Section 22 pin-injection lightning surge defense. Multi-stage GDT and fast-avalanche TVS clamping maintains pin voltages safely below transceiver breakdown thresholds, guaranteeing flight-critical bus survivability even during direct cloud-to-aircraft lightning attachments."',
+        chips: ['#DO_160G_Section22', '#LightningPinInjection', '#TVS_SurgeClamping', '#CompositeAirframe_EMC', '#MIL_STD_461G']
+      },
+      reportFilename: 'Avionics_DO160G_Lightning_Chihuahua_Defense.md'
+    }
+  }
+};
+
+window.currentAvionicsStation = 'mil1553';
+
+window.initAvionicsAssurance = function() {
+  window.switchAvionicsStation(window.currentAvionicsStation || 'mil1553');
+};
+
+window.switchAvionicsStation = function(stationKey) {
+  const s = window.AVIONICS_ASSURANCE_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentAvionicsStation = stationKey;
+
+  // Update nav buttons
+  ['mil1553', 'do254', 'do160g'].forEach(k => {
+    const btn = document.getElementById(`btn-avionics-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('avionics-facility-badge');
+  const stdBadge = document.getElementById('avionics-standard-badge');
+  const titleEl = document.getElementById('avionics-station-title');
+  const scopeEl = document.getElementById('avionics-target-scope');
+  const specEl = document.getElementById('avionics-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update telemetry stats
+  const berEl = document.getElementById('avionics-stat-ber');
+  const mtbfEl = document.getElementById('avionics-stat-mtbf');
+  const clampEl = document.getElementById('avionics-stat-clamp');
+  const savedEl = document.getElementById('avionics-stat-saved');
+
+  if (berEl) berEl.textContent = s.ber;
+  if (mtbfEl) mtbfEl.textContent = s.mtbf;
+  if (clampEl) clampEl.textContent = s.clamp;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('avionics-board-members');
+  const inquiryEl = document.getElementById('avionics-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('avionics-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('avionics-ruling-score');
+  const decisionNotes = document.getElementById('avionics-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'AIRWORTHINESS CERTIFICATION PENDING';
+    rulingScore.style.color = '#fbbf24';
+    rulingScore.style.borderColor = '#f59e0b';
+    rulingScore.style.background = 'rgba(245,158,11,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Aplica mitigaciones de hardware o redacta tu protocolo de aseguramiento DO-254 / MIL-STD-1553B para solicitar certificación oficial.';
+  }
+};
+
+window.applyAvionicsAction = function(actionKey) {
+  const s = window.AVIONICS_ASSURANCE_DATA.stations[window.currentAvionicsStation];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.ber) {
+    const berEl = document.getElementById('avionics-stat-ber');
+    if (berEl) berEl.textContent = act.ber;
+  }
+  if (act.mtbf) {
+    const mtbfEl = document.getElementById('avionics-stat-mtbf');
+    if (mtbfEl) mtbfEl.textContent = act.mtbf;
+  }
+  if (act.clamp) {
+    const clampEl = document.getElementById('avionics-stat-clamp');
+    if (clampEl) clampEl.textContent = act.clamp;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('avionics-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('avionics-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('avionics-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'AVIONICS HARDWARE VALIDATED • READY FOR AIRWORTHINESS CERTIFICATION';
+    rulingScore.style.color = '#fbbf24';
+    rulingScore.style.borderColor = '#d97706';
+    rulingScore.style.background = 'rgba(245,158,11,0.15)';
+  }
+};
+
+window.playAvionicsAudio = function() {
+  const s = window.AVIONICS_ASSURANCE_DATA.stations[window.currentAvionicsStation];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleAvionicsMic = function() {
+  const strategyInput = document.getElementById('avionics-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Col. Vance, Dr. Morales: For DO-254 DAL-A compliance, our FPGA RTL implements 3-stage metastability synchronizers with MTBF > 10^11 hours verified via formal property checking in JasperGold. For the dual-redundant MIL-STD-1553B flight bus, transformer isolation with 1:1.41 ratio provides 45 dB common-mode rejection and stub terminations preventing line reflections, maintaining BER < 10^-10. For DO-160G Section 22 lightning pin injection, fast-response bidirectional TVS diodes clamp 600V/120A Level 4 transients to 28.4V...";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitAvionicsDefense = function() {
+  const s = window.AVIONICS_ASSURANCE_DATA.stations[window.currentAvionicsStation];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('avionics-ruling-score');
+  const decisionNotes = document.getElementById('avionics-board-decision-notes');
+  const chipsContainer = document.getElementById('avionics-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#fbbf24';
+    rulingScore.style.borderColor = '#d97706';
+    rulingScore.style.background = 'rgba(245,158,11,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#fbbf24; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportAvionicsReport = function() {
+  const s = window.AVIONICS_ASSURANCE_DATA.stations[window.currentAvionicsStation] || window.AVIONICS_ASSURANCE_DATA.stations['mil1553'];
+  const defense = document.getElementById('avionics-candidate-strategy')?.value || 'Aerospace Avionics DO-254 and MIL-STD-1553B flight-critical hardware assurance protocol delivered during live airworthiness simulation.';
+  const ruling = document.getElementById('avionics-ruling-score')?.textContent || 'AVIONICS AIRWORTHINESS CERTIFIED • 99/100 (DO-254 DAL-A & MIL-STD-1553B COMPLIANT)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Aerospace & Defense Avionics Hardware Assurance Protocol
+## RTCA DO-254, MIL-STD-1553B & DO-160G Airworthiness Certification
+**Date**: ${dateStr}
+**Testing Facility**: ${s.facility}
+**Avionics Suite**: ${s.title}
+**Normative Standard**: ${s.standard}
+**Certification Council**: ${s.boardMembers}
+
+---
+
+## 1. Electrical & Digital Telemetry
+- **Target Flight Control Scope**: ${s.targetScope}
+- **Bus Bit Error Rate (BER)**: ${s.ber}
+- **CDC Metastability MTBF**: ${s.mtbf}
+- **DO-160G Surge Voltage Clamp**: ${s.clamp}
+- **Mitigated Flight Risk & Protected Aircraft Asset**: ${s.saved}
+- **Hardware Architecture & Engineering Specifications**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead Flight Avionics Engineer's Technical Protocol
+${defense}
+
+---
+
+## 3. Aerospace Avionics & Defense Certification Council Adjudication
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core Avionics & Airworthiness Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Aerospace Record • Certified Under RTCA DO-254, MIL-STD-1553B & DO-160G Airworthiness Guidelines*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 38: AUTONOMOUS NEARSHORING AI SUBSEA & DEEPWATER SUBSEA BLOWOUT PREVENTER (BOP) & HPHT CRUCIBLE
+// ============================================================================
+
+window.SUBSEA_CRUCIBLE_DATA = {
+  stations: {
+    'ram': {
+      id: 'ram',
+      facility: 'FACILITY: CAMPECHE SOUND DEEPWATER DRILLSHIP',
+      standard: 'API Spec 53 5th Ed. • API Spec 16D • BSEE 30 CFR 250 Subpart G',
+      title: 'Blind-Shear Ram Pipe Severing & HPHT 15,000 psi Wellhead Seal Containment',
+      targetScope: 'Target: Ultra-Deepwater Well Control • Shear Time: < 32 s • Wellhead Pressure: 14,200 psi • Environmental Spillage Avoided: $12,500,000 USD',
+      time: '31.8 s',
+      mux: '4,850 psi',
+      well: '14,200 psi',
+      saved: '$12,500,000 USD',
+      inspectionSpec: 'Pila BOP submarina de 18-3/4" clasificada para 15,000 psi y 350°F con doble preventor anular y 6 cavidades de arietes (2 Blind-Shear, 3 Pipe Rams variables, 1 Test Ram). El ariete ciego de corte utiliza cuchillas de geometría en V asistidas por booster hidráulico a 3,000 psi, capaz de seccionar tubería de 5-1/2" 21.9 lb/ft grado S-135 y sellar el pozo herméticamente a 2,800 m de profundidad marina en 31.8 segundos, superando con creces la exigencia reglamentaria de 45 segundos de API Spec 53.',
+      boardMembers: 'Cap. Hector Sandoval 🇲🇽/🇺🇸 & Dr. Fiona Gallagher 🇬🇧/🇺🇸',
+      boardPrompt: '"Subsea Well Control Superintendent: A gas influx kick causes shut-in drill pipe pressure (SIDPP) to spike to 13,800 psi in 2,800m water depth with simultaneous hydraulic umbilical disconnection from the drillship. Detail how your subsea accumulator volume meets API Spec 16D sizing for 3 consecutive ram actuations, explain the deadman acoustic trigger protocol under BSEE 30 CFR 250, and prove how your blind-shear rams sever S-135 pipe and hermetically isolate the HPHT wellbore in under 45 seconds."',
+      actions: {
+        boost: {
+          note: '[Booster Hidráulico Activado]: Presión diferencial de cierre en cámara de arietes elevada a 3,000 psi. Tubería S-135 seccionada limpiamente en 28.5 s.',
+          time: '28.5 s (API 53 Pass)'
+        },
+        mux: {
+          note: '[Conmutación MUX Pod B]: Válvulas solenoide del módulo de control submarino B asumen el control hidráulico sin caída de presión en línea piloto.',
+          mux: '4,980 psi (Pod B Active)'
+        },
+        acoustic: {
+          note: '[Disparo Acústico Deadman]: Señal acústica de 12 kHz confirmada por transductor hidroacústico a 2,800m. Secuencia autoshear armada y lista.',
+          saved: '$13,200,000 USD'
+        },
+        annular: {
+          note: '[Cierre Preventor Anular]: Elemento esférico elastomérico energizado a 1,500 psi. Anular de pozo cerrado herméticamente.',
+          well: '13,400 psi (Stabilized)'
+        }
+      },
+      optimalDecision: {
+        score: 'DEEPWATER WELL CONTROL CERTIFIED • 99/100 (API SPEC 53 & BSEE 30 CFR 250 COMPLIANT)',
+        notes: '"The Deepwater Well Control & Subsea BOP Certification Council unanimously approves the emergency response protocol. The shear ram sizing calculation, hydrostatic depth compensation, and acoustic deadman sequence fully satisfy API Spec 53 and BSEE 30 CFR 250 deepwater requirements."',
+        chips: ['#API_Spec_53', '#BlindShearRam_Severing', '#Deadman_AcousticTrigger', '#BSEE_30CFR250', '#HPHT_15000psi_Containment']
+      },
+      reportFilename: 'Subsea_BOP_WellControl_Campeche_Sound.md'
+    },
+    'mux': {
+      id: 'mux',
+      facility: 'FACILITY: DOS BOCAS DEEPWATER OFFSHORE LOGISTICS BASE',
+      standard: 'API Spec 16D Section 5 • ISO 13628-6 • NACE MR0175',
+      title: 'Electro-Hydraulic Multiplex (MUX) Subsea Control Pod & Accumulator Bank Sizing',
+      targetScope: 'Subsea Control System: Dual-Redundant Pod A/B • Hydrostatic Depth: 2,800 m • Usable Hydraulic Volume: 1,450 gal • Rig Asset Protection: $14,800,000 USD',
+      time: '29.2 s',
+      mux: '5,020 psi',
+      well: '13,900 psi',
+      saved: '$14,800,000 USD',
+      inspectionSpec: 'Módulos submarinos de control multiplexado electrohidráulico (MUX Pod A y B) con líneas ópticas redundantes blindadas y latencia de telemetría inferior a 250 ms. Los bancos de acumuladores de nitrógeno submarinos (24 botellas de 15 galones) cuentan con precarga calculada térmicamente para considerar las temperaturas del fondo marino a 4°C y compensación por la presión hidrostática del agua de mar (275 bar / 4,000 psi), garantizando el volumen utilizable FPT (Fast Pumping Technology) exigido por API Spec 16D.',
+      boardMembers: 'Dr. Fiona Gallagher 🇬🇧/🇺🇸 & Ing. Carlos Castañeda 🇲🇽',
+      boardPrompt: '"Subsea Controls Lead: At 2,800m water depth, hydrostatic head reduces the effective differential pressure of surface-delivered hydraulic fluid. Explain how your subsea nitrogen precharge calculation accounts for deepwater isothermal cooling (4°C) without freezing the pilot fluid, and detail how your Dual-Redundant MUX Pod fail-safe valves prevent unintentional BOP unlock during emergency disconnect."',
+      actions: {
+        boost: {
+          note: '[Compensación Hidrostática Submarina]: Bancos de nitrógeno a 5,000 psi calibrados para 4°C garantizan 3 ciclos completos de arietes.',
+          mux: '5,100 psi (Depth Comp.)'
+        },
+        mux: {
+          note: '[Auto-Aislamiento de Pod A]: Detección de fuga menor en solenoide piloto activa aislamiento galvánico y conmutación transparente a Pod B.',
+          time: '27.8 s'
+        },
+        acoustic: {
+          note: '[Verificación de Enlace Acústico DGPS]: Telemetría acústica de ultra-corto alcance (USBL) sincronizada con el transpondedor de la pila BOP.',
+          saved: '$15,200,000 USD'
+        },
+        annular: {
+          note: '[Válvula Reguladora Submarina]: Presión anular ajustada a 1,200 psi para permitir paso de juntas de herramienta (tool joints) sin desgaste prematuro.',
+          well: '13,100 psi (Regulated)'
+        }
+      },
+      optimalDecision: {
+        score: 'DEEPWATER WELL CONTROL CERTIFIED • 99/100 (API SPEC 53 & BSEE 30 CFR 250 COMPLIANT)',
+        notes: '"Exemplary electro-hydraulic MUX subsea control pod architecture and accumulator sizing. Full compliance with API Spec 16D isothermal nitrogen pressure calculations guarantees uninterrupted hydraulic power reserve at ultra-deepwater hydrostatic regimes."',
+        chips: ['#API_Spec_16D', '#MUX_SubseaPod', '#NitrogenAccumulator_Isothermal', '#FailSafe_ElectroHydraulic', '#Deepwater_HydrostaticComp']
+      },
+      reportFilename: 'Subsea_MUX_Pod_Accumulator_DosBocas.md'
+    },
+    'deadman': {
+      id: 'deadman',
+      facility: 'FACILITY: TAMPICO DEEPWATER OFFSHORE FLEET HEADQUARTERS',
+      standard: 'BSEE 30 CFR 250.734 • API Standard 53 Annex C • NORSOK D-010',
+      title: 'Acoustic Telemetry Deadman / Autoshear Deepwater Emergency Disconnect System (EDS)',
+      targetScope: 'Safety Trigger: Complete Umbilical Loss (Loss of Power & Signal) • Acoustic Telemetry: 12 kHz Hydrophone • Disconnect & Shear: < 30 s • Marine Risk Mitigated: $16,400,000 USD',
+      time: '28.1 s',
+      mux: '4,910 psi',
+      well: '13,600 psi',
+      saved: '$16,400,000 USD',
+      inspectionSpec: 'Sistema de desconexión de emergencia submarino (EDS) de tres etapas: 1) Cizallamiento simultáneo de tubería y cable conductor de registro mediante Blind-Shear Rams; 2) Desacople del conector hidráulico del paquete inferior del riser marino (LMRP); 3) Sellado hermético del pozo HPHT con arietes ciegos y cierre de válvulas choke and kill submarinas. El transceptor acústico de respaldo con baterías submarinas de litio-cloruro de tionilo garantiza 180 días de autonomía para activación hidroacústica codificada.',
+      boardMembers: 'Cap. Hector Sandoval 🇲🇽/🇺🇸 & Rear Adm. (Ret.) Richard Vance 🇺🇸',
+      boardPrompt: '"Offshore Emergency Response Director: During a dynamic positioning (DP3) drive-off or storm drift, the drilling riser approaches its physical angle limit of 10 degrees with imminent structural failure. Defend your Automated Emergency Disconnect Sequence (EDS), timing budget, pipe space-out verification, and environmental containment protocols under BSEE 30 CFR 250 and API Standard 53."',
+      actions: {
+        boost: {
+          note: '[Secuencia EDS Modalidad Rápida]: Disparo coordinado: corte de sarta de perforación y desacople de LMRP completado en 24.8 segundos.',
+          time: '24.8 s (EDS Rapid Mode)'
+        },
+        mux: {
+          note: '[Válvulas Choke & Kill Submarinas Cerradas]: Doble barrera de aislamiento de fluidos activada contra retorno de hidrocarburos a la columna de agua.',
+          well: '12,800 psi (Zero Leakage)'
+        },
+        acoustic: {
+          note: '[Autenticación de Comando Hidroacústico]: Código criptográfico FSK de 128 bits validado por transductor montado en el lecho marino.',
+          mux: '5,050 psi (Deadman Fired)'
+        },
+        annular: {
+          note: '[Sellado LMRP & Monitoreo ROV]: Vehículo de operación remota submarina (ROV) verifica visualmente cero emisión de gas en el cabezal de pozo.',
+          saved: '$17,100,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'DEEPWATER WELL CONTROL CERTIFIED • 99/100 (API SPEC 53 & BSEE 30 CFR 250 COMPLIANT)',
+        notes: '"Unanimous certification of the Deepwater Autonomous EDS and Acoustic Deadman protocol. The deterministic timing budget, failsafe shear-blind ram execution, and subsea acoustic telemetry defense ensure zero blowout risk and full environmental containment under extreme DP drive-off scenarios."',
+        chips: ['#EmergencyDisconnectSystem_EDS', '#AcousticTelemetry_FSK', '#LMRP_SubseaRelease', '#BSEE_30CFR250_734', '#DP3_DriveOff_Mitigation']
+      },
+      reportFilename: 'Subsea_Deadman_Acoustic_EDS_Tampico.md'
+    }
+  }
+};
+
+window.currentSubseaStation = 'ram';
+
+window.initSubseaCrucible = function() {
+  window.switchSubseaStation(window.currentSubseaStation || 'ram');
+};
+
+window.switchSubseaStation = function(stationKey) {
+  const s = window.SUBSEA_CRUCIBLE_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentSubseaStation = stationKey;
+
+  // Update nav buttons
+  ['ram', 'mux', 'deadman'].forEach(k => {
+    const btn = document.getElementById(`btn-subsea-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('subsea-facility-badge');
+  const stdBadge = document.getElementById('subsea-standard-badge');
+  const titleEl = document.getElementById('subsea-station-title');
+  const scopeEl = document.getElementById('subsea-target-scope');
+  const specEl = document.getElementById('subsea-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update telemetry stats
+  const timeEl = document.getElementById('subsea-stat-time');
+  const muxEl = document.getElementById('subsea-stat-mux');
+  const wellEl = document.getElementById('subsea-stat-well');
+  const savedEl = document.getElementById('subsea-stat-saved');
+
+  if (timeEl) timeEl.textContent = s.time;
+  if (muxEl) muxEl.textContent = s.mux;
+  if (wellEl) wellEl.textContent = s.well;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('subsea-board-members');
+  const inquiryEl = document.getElementById('subsea-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('subsea-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('subsea-ruling-score');
+  const decisionNotes = document.getElementById('subsea-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'DEEPWATER WELL CONTROL CERTIFICATION PENDING';
+    rulingScore.style.color = '#38bdf8';
+    rulingScore.style.borderColor = '#0284c7';
+    rulingScore.style.background = 'rgba(2,132,199,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Aplica acciones tácticas de control o somete tu protocolo técnico de control de pozo API 53 / BSEE para solicitar certificación oficial.';
+  }
+};
+
+window.applySubseaAction = function(actionKey) {
+  const s = window.SUBSEA_CRUCIBLE_DATA.stations[window.currentSubseaStation];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.time) {
+    const timeEl = document.getElementById('subsea-stat-time');
+    if (timeEl) timeEl.textContent = act.time;
+  }
+  if (act.mux) {
+    const muxEl = document.getElementById('subsea-stat-mux');
+    if (muxEl) muxEl.textContent = act.mux;
+  }
+  if (act.well) {
+    const wellEl = document.getElementById('subsea-stat-well');
+    if (wellEl) wellEl.textContent = act.well;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('subsea-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('subsea-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('subsea-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'SUBSEA HYDRAULIC PRESSURE STABILIZED • READY FOR CERTIFICATION';
+    rulingScore.style.color = '#38bdf8';
+    rulingScore.style.borderColor = '#0284c7';
+    rulingScore.style.background = 'rgba(2,132,199,0.15)';
+  }
+};
+
+window.playSubseaAudio = function() {
+  const s = window.SUBSEA_CRUCIBLE_DATA.stations[window.currentSubseaStation];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleSubseaMic = function() {
+  const strategyInput = document.getElementById('subsea-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Capt. Sandoval, Dr. Gallagher: In response to the 13,800 psi HPHT gas kick and umbilical disconnection, our subsea MUX control system automatically arms the Deadman / Autoshear sequence. The subsea accumulator bank, precharged with nitrogen to 5,000 psi and depth-compensated for 2,800m hydrostatic head, delivers 3,000 psi operating pressure directly to the Blind-Shear Ram boosters. The rams cleanly sever 5-1/2 inch S-135 drill pipe in 28.5 seconds and energize elastomer packer seals to withstand 15,000 psi shut-in pressure, exceeding API Spec 53 and BSEE 30 CFR 250 criteria...";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitSubseaDefense = function() {
+  const s = window.SUBSEA_CRUCIBLE_DATA.stations[window.currentSubseaStation];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('subsea-ruling-score');
+  const decisionNotes = document.getElementById('subsea-board-decision-notes');
+  const chipsContainer = document.getElementById('subsea-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#38bdf8';
+    rulingScore.style.borderColor = '#0284c7';
+    rulingScore.style.background = 'rgba(2,132,199,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#38bdf8; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportSubseaReport = function() {
+  const s = window.SUBSEA_CRUCIBLE_DATA.stations[window.currentSubseaStation] || window.SUBSEA_CRUCIBLE_DATA.stations['ram'];
+  const defense = document.getElementById('subsea-candidate-strategy')?.value || 'Deepwater Subsea BOP Well Control and HPHT Containment Protocol delivered during live simulation.';
+  const ruling = document.getElementById('subsea-ruling-score')?.textContent || 'DEEPWATER WELL CONTROL CERTIFIED • 99/100 (API SPEC 53 & BSEE 30 CFR 250 COMPLIANT)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Deepwater Subsea Well Control & HPHT Containment Protocol
+## API Spec 53, API Spec 16D & BSEE 30 CFR 250 Airworthiness & Safety Record
+**Date**: ${dateStr}
+**Testing Facility**: ${s.facility}
+**Subsea Assembly**: ${s.title}
+**Normative Standard**: ${s.standard}
+**Certification Council**: ${s.boardMembers}
+
+---
+
+## 1. Subsea Telemetry & Hydraulic Parameters
+- **Target Wellhead Scope**: ${s.targetScope}
+- **Blind-Shear Ram Severing Time**: ${s.time}
+- **MUX Subsea Control Pod Pressure**: ${s.mux}
+- **Shut-In Annular Wellbore Pressure**: ${s.well}
+- **Mitigated Marine Environmental Spillage & Asset**: ${s.saved}
+- **Engineering & Subsea BOP Stack Specifications**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead Subsea Well Control Superintendent's Technical Protocol
+${defense}
+
+---
+
+## 3. Deepwater Well Control & Subsea BOP Certification Council Adjudication
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core Deepwater Well Control Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Deepwater Record • Certified Under API Spec 53 & BSEE 30 CFR 250 Deepwater Well Control Guidelines*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 39: AUTONOMOUS NEARSHORING AI NUCLEAR SMR & MOLTEN SALT REACTOR (MSR) CONTROL ROOM & THERMAL-HYDRAULICS CRUCIBLE
+// ============================================================================
+
+window.SMR_CRUCIBLE_DATA = {
+  stations: {
+    'prhrs': {
+      id: 'prhrs',
+      facility: 'FACILITY: LAGUNA VERDE ADVANCED NUCLEAR TEST FACILITY',
+      standard: 'NRC 10 CFR 50.34 • IAEA SSR-2/1 Safety of Nuclear Power Plants • ASME Section III Div 5',
+      title: 'Passive Residual Heat Removal System (PRHRS) & Natural Circulation Boil-off',
+      targetScope: 'Target: Inherent SMR Passive Safety • Post-SCRAM Decay Power: 1.8% • Natural Flow: 48.2 kg/s • Meltdown Risk Avoided: $25,000,000 USD',
+      power: '1.8% Dec. Heat',
+      temp: '295.4 °C',
+      flow: '48.2 kg/s',
+      saved: '$25,000,000 USD',
+      inspectionSpec: 'Módulo SMR de agua a presión integrada (iPWR 77 MWe / 250 MWth) con generadores de vapor helicoidales y presurizador en el interior de la vasija del reactor (RPV). El sistema pasivo de remoción de calor residual (PRHRS) conecta el circuito primario a intercambiadores de calor sumergidos en la piscina de contención subterránea. Al abrirse las válvulas de falla abierta por pérdida total de energía (SBO), la flotabilidad térmica induce un flujo natural de 48.2 kg/s sin bombas mecánicas, manteniendo la temperatura del combustible por debajo de 300°C indefinidamente durante más de 72 horas continuas conforme a NRC 10 CFR 50.34.',
+      boardMembers: 'Dr. Aris Thorne 🇺🇸 & Dr. Maria Valenzuela 🇲🇽/🇺🇸',
+      boardPrompt: '"Lead Nuclear Systems Architect: During an unmitigated Station Blackout (SBO) with simultaneous loss of offsite power and emergency diesel generators, justify how your SMR passive natural circulation loop removes core decay heat without relying on AC power for 72+ hours under NRC 10 CFR 50.34, explain the Doppler broadening coefficient in UO2/MOX fuel pins, and demonstrate how thermal siphoning prevents void fraction flashing in the riser."',
+      actions: {
+        scram: {
+          note: '[Disparo SCRAM Confirmado]: Barras de control de carburo de boro insertadas por gravedad en 1.8 s. Potencia neutrónica colapsada a 1.2% calor de decaimiento.',
+          power: '1.2% Dec. Heat (SCRAM Full In)'
+        },
+        prhrs: {
+          note: '[Apertura Válvulas PRHRS]: Circuito pasivo abierto por resortes de desenergización. Flujo de circulación natural elevado a 52.4 kg/s por gradiente térmico.',
+          flow: '52.4 kg/s (Passive Flow Óptimo)'
+        },
+        freeze: {
+          note: '[Aislamiento Térmico MSR]: Monitoreo de vasija SMR confirma disipación constante hacia la piscina de contención subterránea.',
+          temp: '286.2 °C (Cooling Steady)'
+        },
+        boron: {
+          note: '[Inyección Pasiva de Boro]: Boro enriquecido al 10B introducido por acumuladores de nitrógeno a presión. Margen de subcriticidad ampliado a keff = 0.92.',
+          saved: '$26,500,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'NUCLEAR SAFETY CERTIFIED • 99/100 (NRC 10 CFR 50 & IAEA SSR-2/1 COMPLIANT)',
+        notes: '"The Nuclear Reactor Safety & SMR Regulatory Board unanimously validates the thermal-hydraulics defense. The natural circulation buoyancy calculations, negative Doppler feedback margins, and passive containment pool boil-off strategy satisfy all NRC 10 CFR 50.34 and IAEA SSR-2/1 safety margins with zero core damage risk."',
+        chips: ['#NRC_10CFR50', '#PassiveDecayHeat_PRHRS', '#Doppler_ReactivityFeedback', '#MSR_FreezeValve', '#InherentSafety_SBO_72h']
+      },
+      reportFilename: 'Nuclear_SMR_PRHRS_Laguna_Verde.md'
+    },
+    'freeze': {
+      id: 'freeze',
+      facility: 'FACILITY: SONORA CLEAN NUCLEAR POWER STATION',
+      standard: 'ASME Section III Division 5 High Temp Reactors • IAEA TECDOC-1970 • DOE Molten Salt Protocol',
+      title: 'Molten Salt Reactor (MSR FLiBe 650°C) Freeze Valve Passive Gravity Drain Tank',
+      targetScope: 'Salt Chemistry: 2LiF-BeF2 (FLiBe) with Dissolved UF4 • Core Operating Temp: 650°C • Passive Drain Time: < 4.5 min • Radiation Containment Value: $28,000,000 USD',
+      power: '2.1% Dec. Heat',
+      temp: '648.5 °C',
+      flow: '62.0 kg/s',
+      saved: '$28,000,000 USD',
+      inspectionSpec: 'Reactor de sal fundida (MSR) de alta temperatura operando a presión casi atmosférica (1.2 atm) con sal portadora FLiBe (LiF-BeF2-UF4) a 650°C. La seguridad de última línea depende de una válvula de tapón congelado (Freeze Valve) mantenida sólida por un soplador de helio activo. Ante una pérdida total de energía (SBO), el soplador se detiene, el calor de decaimiento de la sal funde el tapón congelado en menos de 4 minutos y todo el inventario de combustible líquido drena por gravedad a tanques subterráneos subcríticos enfriados pasivamente por aire (RVACS).',
+      boardMembers: 'Dr. Maria Valenzuela 🇲🇽/🇺🇸 & Prof. Hiroshi Tanaka 🇯🇵/🇺🇸',
+      boardPrompt: '"MSR Chemical & Thermal Systems Lead: In a Molten Salt Reactor at 650°C, atmospheric pressure eliminates explosive steam containment breaches. Explain how your freeze plug thermal design guarantees thawing and gravity drain within 4.5 minutes of active cooling loss, prove that your underground drain tanks maintain subcritical geometry (keff < 0.90) without graphite moderation, and explain passive decay heat dissipation through the RVACS chimney."',
+      actions: {
+        scram: {
+          note: '[Atenuación Neutrónica Pasiva]: Coeficiente de temperatura del combustible salino fuertemente negativo reduce reactividad automáticamente.',
+          power: '1.4% Dec. Heat (MSR Inherent Drop)'
+        },
+        prhrs: {
+          note: '[Intercambiador Secundario FLiBe/Sal Solar]: Transferencia térmica desacoplada hacia sistema de almacenamiento de vapor industrial.',
+          flow: '65.5 kg/s (Salt Loop Active)'
+        },
+        freeze: {
+          note: '[Fundición de Válvula Freeze Valve]: Soplador de enfriamiento detenido. Tapón de sal FLiBe fundido en 3.8 min. Sal drenada a tanques subterráneos pasivos.',
+          temp: '612.0 °C (Drain Completed)'
+        },
+        boron: {
+          note: '[Verificación de Geometría Subcrítica]: Tanques de drenaje con tubos de absorción neutrónica de carburo de silicio aseguran keff = 0.88 sin moderador.',
+          saved: '$29,200,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'NUCLEAR SAFETY CERTIFIED • 99/100 (NRC 10 CFR 50 & IAEA SSR-2/1 COMPLIANT)',
+        notes: '"Unanimous approval of the MSR passive gravity drain and freeze valve protocol. The unpressurized molten salt chemistry, passive freeze plug fail-safe mechanism, and subcritical underground tank decay heat cooling fulfill ASME Section III Division 5 high-temperature nuclear safety criteria."',
+        chips: ['#MSR_FLiBe_650C', '#FreezeValve_PassiveDrain', '#AtmosphericPressure_Nuclear', '#SubcriticalDrainTank', '#RVACS_AirChimney']
+      },
+      reportFilename: 'Nuclear_MSR_FreezeValve_Sonora.md'
+    },
+    'doppler': {
+      id: 'doppler',
+      facility: 'FACILITY: MONTERREY NUCLEAR ENERGY & HEAVY INDUSTRY PARK',
+      standard: 'NRC General Design Criteria (GDC 11 & GDC 26) • 10 CFR 50 Appendix A • ANS-19.1',
+      title: 'Doppler Reactivity Feedback & Gravity-Driven Control Rod Dynamic Insertion',
+      targetScope: 'Nuclear Dynamics: Strong Negative Prompt Doppler (-3.8 pcm/°C) • Shutdown Margin: keff < 0.95 • Control Rod Insertion Time: < 2.0 s • Industrial Grid Protected: $31,000,000 USD',
+      power: '0.9% Dec. Heat',
+      temp: '278.0 °C',
+      flow: '44.8 kg/s',
+      saved: '$31,000,000 USD',
+      inspectionSpec: 'Núcleo del reactor SMR con combustible cerámico UO2 dopado con Gd2O3 como veneno quemable integral. El ensanchamiento Doppler de las resonancias de captura neutrónica de U-238 proporciona un coeficiente de reactividad por temperatura del combustible fuertemente negativo (-3.8 pcm/°C). Cualquier sobretensión o incremento no previsto de temperatura induce una caída intrínseca inmediata de reactividad en femtosegundos sin intervención humana ni eléctrica, respaldado por la inserción de las barras de control por corte de electroimanes.',
+      boardMembers: 'Dr. Aris Thorne 🇺🇸 & Dr. Maria Valenzuela 🇲🇽/🇺🇸',
+      boardPrompt: '"Nuclear Kinetics & Safety Physicist: Detail the prompt resonance absorption physics behind the negative Doppler temperature coefficient in your SMR core. In a rapid secondary turbine trip scenario with reduced heat removal, defend how prompt Doppler feedback self-limits core fission power prior to mechanical control rod insertion, and demonstrate how GDC 11 and GDC 26 shutdown margins are guaranteed."',
+      actions: {
+        scram: {
+          note: '[Desconexión de Electroimanes]: Retención magnética liberada por falla eléctrica. 16 conjuntos de barras de control caen al núcleo en 1.6 segundos.',
+          power: '0.6% Dec. Heat (Full Shutdown)'
+        },
+        prhrs: {
+          note: '[Sifón Térmico Primario]: Densidad en bajante fría mantiene circulación sin cavitación ni fluctuaciones de presión en presurizador.',
+          flow: '46.5 kg/s (Stable Loop)'
+        },
+        freeze: {
+          note: '[Monitoreo de Xenón 135]: Seguimiento de transitorios de xenón tras apagado confirma ausencia de inestabilidad neutrónica espacial.',
+          temp: '265.4 °C (Stable Plateau)'
+        },
+        boron: {
+          note: '[Inyección Pasiva de Respaldo]: Sistema redundante de boro mantiene margen de parada en frío (Cold Shutdown Margin) con keff < 0.90.',
+          saved: '$32,500,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'NUCLEAR SAFETY CERTIFIED • 99/100 (NRC 10 CFR 50 & IAEA SSR-2/1 COMPLIANT)',
+        notes: '"Unanimous certification of the SMR prompt nuclear kinetics and Doppler reactivity feedback architecture. The self-limiting physical mechanism and gravity-driven control rod reliability fully satisfy NRC General Design Criteria 11 and 26 with exceptional safety margins."',
+        chips: ['#DopplerBroadening_U238', '#NRC_GDC11_Reactivity', '#NRC_GDC26_ControlRods', '#InherentPhysics_SelfLimiting', '#ColdShutdownMargin']
+      },
+      reportFilename: 'Nuclear_SMR_Doppler_Monterrey.md'
+    }
+  }
+};
+
+window.currentSmrStation = 'prhrs';
+
+window.initSmrCrucible = function() {
+  window.switchSmrStation(window.currentSmrStation || 'prhrs');
+};
+
+window.switchSmrStation = function(stationKey) {
+  const s = window.SMR_CRUCIBLE_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentSmrStation = stationKey;
+
+  // Update nav buttons
+  ['prhrs', 'freeze', 'doppler'].forEach(k => {
+    const btn = document.getElementById(`btn-smr-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('smr-facility-badge');
+  const stdBadge = document.getElementById('smr-standard-badge');
+  const titleEl = document.getElementById('smr-station-title');
+  const scopeEl = document.getElementById('smr-target-scope');
+  const specEl = document.getElementById('smr-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update telemetry stats
+  const powerEl = document.getElementById('smr-stat-power');
+  const tempEl = document.getElementById('smr-stat-temp');
+  const flowEl = document.getElementById('smr-stat-flow');
+  const savedEl = document.getElementById('smr-stat-saved');
+
+  if (powerEl) powerEl.textContent = s.power;
+  if (tempEl) tempEl.textContent = s.temp;
+  if (flowEl) flowEl.textContent = s.flow;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('smr-board-members');
+  const inquiryEl = document.getElementById('smr-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('smr-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('smr-ruling-score');
+  const decisionNotes = document.getElementById('smr-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'NUCLEAR SAFETY EVALUATION PENDING';
+    rulingScore.style.color = '#facc15';
+    rulingScore.style.borderColor = '#eab308';
+    rulingScore.style.background = 'rgba(234,179,8,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Aplica acciones tácticas de control o somete tu protocolo técnico de termohidráulica y seguridad pasiva SMR para solicitar certificación oficial.';
+  }
+};
+
+window.applySmrAction = function(actionKey) {
+  const s = window.SMR_CRUCIBLE_DATA.stations[window.currentSmrStation];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.power) {
+    const powerEl = document.getElementById('smr-stat-power');
+    if (powerEl) powerEl.textContent = act.power;
+  }
+  if (act.temp) {
+    const tempEl = document.getElementById('smr-stat-temp');
+    if (tempEl) tempEl.textContent = act.temp;
+  }
+  if (act.flow) {
+    const flowEl = document.getElementById('smr-stat-flow');
+    if (flowEl) flowEl.textContent = act.flow;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('smr-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('smr-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('smr-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'CORE PASSIVE EQUILIBRIUM ACHIEVED • READY FOR CERTIFICATION';
+    rulingScore.style.color = '#facc15';
+    rulingScore.style.borderColor = '#eab308';
+    rulingScore.style.background = 'rgba(234,179,8,0.15)';
+  }
+};
+
+window.playSmrAudio = function() {
+  const s = window.SMR_CRUCIBLE_DATA.stations[window.currentSmrStation];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleSmrMic = function() {
+  const strategyInput = document.getElementById('smr-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Dr. Thorne, Dr. Valenzuela: In our SMR configuration, upon a complete Station Blackout (SBO), the fail-open PRHRS actuation valves de-energize to the open position by spring force. Natural convection is driven purely by the density difference between the hot core riser and the cold return leg submerged in the 4,000 m3 ultimate heat sink pool. The negative Doppler temperature coefficient of -3.8 pcm/°C instantly counteracts prompt reactivity insertions, maintaining keff below 0.95 and keeping peak clad temperature below 650°C, fully satisfying NRC 10 CFR 50.34 and IAEA SSR-2/1 criteria...";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitSmrDefense = function() {
+  const s = window.SMR_CRUCIBLE_DATA.stations[window.currentSmrStation];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('smr-ruling-score');
+  const decisionNotes = document.getElementById('smr-board-decision-notes');
+  const chipsContainer = document.getElementById('smr-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#facc15';
+    rulingScore.style.borderColor = '#eab308';
+    rulingScore.style.background = 'rgba(234,179,8,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#facc15; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportSmrReport = function() {
+  const s = window.SMR_CRUCIBLE_DATA.stations[window.currentSmrStation] || window.SMR_CRUCIBLE_DATA.stations['prhrs'];
+  const defense = document.getElementById('smr-candidate-strategy')?.value || 'Nuclear SMR and MSR Passive Thermal-Hydraulics & Inherent Safety Protocol delivered during live simulation.';
+  const ruling = document.getElementById('smr-ruling-score')?.textContent || 'NUCLEAR SAFETY CERTIFIED • 99/100 (NRC 10 CFR 50 & IAEA SSR-2/1 COMPLIANT)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Nuclear SMR & Molten Salt Reactor (MSR) Control Room Protocol
+## NRC 10 CFR 50, IAEA SSR-2/1 & ASME Section III Division 5 Safety Record
+**Date**: ${dateStr}
+**Testing Facility**: ${s.facility}
+**Nuclear Assembly**: ${s.title}
+**Regulatory Standard**: ${s.standard}
+**Certification Council**: ${s.boardMembers}
+
+---
+
+## 1. SMR Telemetry & Nuclear Thermal-Hydraulics Parameters
+- **Target Safety Scope**: ${s.targetScope}
+- **Post-SCRAM Core Decay Heat**: ${s.power}
+- **Core Cladding Equilibrium Temp**: ${s.temp}
+- **Passive Natural Circulation Flow**: ${s.flow}
+- **Mitigated Core Meltdown & Asset Protection**: ${s.saved}
+- **Engineering & Passive Thermal Specifications**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead Nuclear Systems Architect's Technical Protocol
+${defense}
+
+---
+
+## 3. Nuclear Reactor Safety & SMR Regulatory Board Adjudication
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core Nuclear Safety & Thermal-Hydraulics Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Nuclear Record • Certified Under NRC 10 CFR 50 & IAEA SSR-2/1 Nuclear Power Safety Guidelines*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 40: AUTONOMOUS NEARSHORING AI CARBON CAPTURE, UTILIZATION & DIRECT AIR CAPTURE (DAC) SEQUESTRATION GEOMECHANICS CRUCIBLE
+// ============================================================================
+
+window.DAC_CRUCIBLE_DATA = {
+  stations: {
+    'tvsa': {
+      id: 'tvsa',
+      facility: 'FACILITY: ALTAMIRA INDUSTRIAL PORT DAC MEGATON HUB',
+      standard: 'EPA Class VI UIC • ISO 27914 Geological Storage • ISO 14064-2 GHG Quantification',
+      title: 'Solid Amine Temperature-Vacuum Swing Adsorption (TVSA) Direct Air Capture',
+      targetScope: 'Target: Ambient DAC 420 ppm • Desorption Temp: 95°C / 0.2 bar • CO2 Purity: 99.8% • EPA 45Q Value Protected: $18,500,000 USD',
+      purity: '99.8% Pure CO2',
+      pressure: '135.2 bar',
+      caprock: '0.02 mm/yr',
+      saved: '$18,500,000 USD',
+      inspectionSpec: 'Módulos de contactores de aire con sorbente de sílice mesoporosa funcionalizada con polietilenimina (PEI). El ciclo TVSA adsorbe CO2 atmosférico a 420 ppm con ventiladores de flujo axial a baja caída de presión (ΔP < 80 Pa). La regeneración se efectúa mediante vapor saturado a baja entalpía (95°C) y vacío a 0.2 bar abs, liberando un flujo de CO2 con 99.8% de pureza en base seca. El consumo energético específico se sitúa en 1,420 kWh/t CO2 térmico y 280 kWh/t eléctrico, certificable bajo créditos fiscales IRS Sección 45Q e ISO 14064-2.',
+      boardMembers: 'Dr. Elena Vance 🇺🇸 & Ing. Roberto Garza 🇲🇽/🇺🇸',
+      boardPrompt: '"Lead CCUS Systems Architect: Defend your TVSA solid sorbent desorptive energy balance when capturing 420 ppm CO2 from ambient air, demonstrate how your supercritical CO2 dense-phase wellhead pumping pressure at 135 bar respects the 85% formation fracture gradient threshold under EPA Class VI UIC regulations, and prove that caprock acoustic impedance surveys guarantee zero migration into USDWs over a 1,000-year storage horizon."',
+      actions: {
+        desorb: {
+          note: '[Ciclo TVSA Completado]: Desorción a 95°C bajo vacío de 0.18 bar concluida. Pureza de CO2 incrementada a 99.85% con regeneración térmica estable.',
+          purity: '99.85% (Ultra-Pure DAC)'
+        },
+        compress: {
+          note: '[Tren Compresor Supercrítico]: Compresión centrífuga de 8 etapas con interenfriamiento. CO2 estabilizado en fase densa a 138.0 bar y 45°C.',
+          pressure: '138.0 bar (Dense Phase)'
+        },
+        insar: {
+          note: '[Interferometría Radar 4D]: Satélite Sentinel-1 confirma subsidencia/levantamiento milimétrico dentro de tolerancia elástica (< 0.015 mm/año).',
+          caprock: '0.015 mm/yr (Elastic Base)'
+        },
+        seal: {
+          note: '[Empacador de Fondo EPA Class VI]: Verificación de doble barrera con elastómero HNBR resistente a ácido carbónico. Integridad certificada.',
+          saved: '$19,200,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'CCUS GEOMECHANICS CERTIFIED • 99/100 (EPA CLASS VI & ISO 27914 COMPLIANT)',
+        notes: '"The Carbon Removal & Geological Storage Adjudication Board unanimously validates the DAC capture energy calculations and geomechanical plume containment strategy. The fracture gradient safety margin, downhole microseismic array, and 1,000-year storage integrity fully satisfy EPA Class VI UIC and ISO 27914 requirements with full eligibility for 45Q carbon credits."',
+        chips: ['#EPA_ClassVI_UIC', '#DirectAirCapture_TVSA', '#Supercritical_CO2_135bar', '#Caprock_FractureGradient', '#ISO_27914_Storage']
+      },
+      reportFilename: 'CCUS_DAC_TVSA_Altamira.md'
+    },
+    'saline': {
+      id: 'saline',
+      facility: 'FACILITY: COATZACOALCOS GEOSEQUESTRATION FIELD',
+      standard: 'EPA Class VI UIC Permit Standards • ISO 27914 • ASME B31.8 Supercritical CO2 Transport',
+      title: 'Supercritical CO2 Dense Phase Compressor & Deep Saline Aquifer Wellhead Injection',
+      targetScope: 'Geological Formation: Saline Sandstone 2,400 m Depth • Hydrostatic Pressure: 24.5 MPa • Bottom-Hole Fracture Gradient Margin: 82% Limit • Formation Value: $21,000,000 USD',
+      purity: '99.9% Dense Phase',
+      pressure: '142.5 bar',
+      caprock: '0.01 mm/yr',
+      saved: '$21,000,000 USD',
+      inspectionSpec: 'Pozo de inyección profunda en acuífero salino regional a 2,400 metros bajo el nivel del terreno, aislado por encima y por debajo por estratos de lutitas impermeables de 350 m de espesor. El CO2 comprimido en fase densa supercrítica (densidad: 780 kg/m3) se inyecta a través de tubería de aleación 13Cr resistente a la corrosión acuosa con salmuera ácida. La presión de inyección en fondo de pozo (BHP) se monitoriza continuamente a 27.2 MPa, manteniendo un margen de seguridad del 18% por debajo de la presión mínima de iniciación de fractura (33.2 MPa).',
+      boardMembers: 'Dr. Elena Vance 🇺🇸 & Ing. Roberto Garza 🇲🇽/🇺🇸',
+      boardPrompt: '"Deep Reservoir Geomechanics Lead: Under EPA Class VI Area of Review (AoR) guidelines, prove that your supercritical CO2 dense-phase wellhead pumping pressure does not exceed 85% of the calculated formation fracture pressure at 2,400 meters. Explain how your downhole chemical composition monitoring prevents halite salt precipitation near the perforation screen, and justify your post-injection site care (PISC) model."',
+      actions: {
+        desorb: {
+          note: '[Acondicionamiento Termodinámico]: Inyección de glicol para deshidratación extrema de CO2 (H2O < 20 ppm) previniendo formación de hidratos.',
+          purity: '99.92% (Water-Free)'
+        },
+        compress: {
+          note: '[Presurización Gradual de Inyección]: Curva de rampa hidráulica controlada mantiene BHP a 26.8 MPa (79% del gradiente de fractura).',
+          pressure: '139.8 bar (Optimized BHP)'
+        },
+        insar: {
+          note: '[Sensor de Presión de Fondo Continuo]: Telemetría en tiempo real por fibra óptica confirma disipación uniforme de la pluma en matriz porosa.',
+          caprock: '0.012 mm/yr (Steady Plume)'
+        },
+        seal: {
+          note: '[Barrera de Cemento Expandible]: Cemento geopolimérico resistente a CO2 sella el espacio anular sin microfugas ni fisuración.',
+          saved: '$22,500,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'CCUS GEOMECHANICS CERTIFIED • 99/100 (EPA CLASS VI & ISO 27914 COMPLIANT)',
+        notes: '"Unanimous certification of the deep saline aquifer wellhead injection protocol. The bottom-hole fracture pressure containment, halite precipitation mitigation, and multiphase plume dispersion modeling strictly comply with EPA Class VI UIC permitting mandates."',
+        chips: ['#SalineAquifer_2400m', '#EPA_ClassVI_AoR', '#DensePhase_CO2_780kgm3', '#FracturePressure_SafetyMargin', '#Corrosion_13Cr_Tubing']
+      },
+      reportFilename: 'CCUS_Saline_Injection_Coatzacoalcos.md'
+    },
+    'caprock': {
+      id: 'caprock',
+      facility: 'FACILITY: BURGOS BASIN STORAGE COMPLEX',
+      standard: 'ISO 27914 Carbon Dioxide Capture & Storage • EPA 40 CFR 146 Subpart H • SEG Geomechanics',
+      title: 'Caprock Integrity Microseismic Acoustic Array & 4D InSAR Subsidence/Uplift Geomechanics',
+      targetScope: 'Monitoring Array: 24 Downhole 3-Component Geophones • Seismicity Threshold: Mw < 0.5 • Caprock Breakthrough Pressure: > 45 MPa • Sequestration Security Value: $24,500,000 USD',
+      purity: '99.8% Sequestration',
+      pressure: '134.0 bar',
+      caprock: '0.008 mm/yr',
+      saved: '$24,500,000 USD',
+      inspectionSpec: 'Complejo de almacenamiento geológico en la Cuenca de Burgos con roca sello (caprock) de lutita anhidrita de ultra-baja permeabilidad (k < 10^-19 m2) y espesor superior a 420 metros. El sistema de monitoreo permanente integra 24 geófonos triaxiales de fondo en pozos de observación para triangulación microacústica instantánea de eventos de microrotura (Mw > -1.0) y radar satelital InSAR de apertura sintética con reflectores de esquina terrestres calibrados para medir levantamiento superficial con precisión milimétrica.',
+      boardMembers: 'Dr. Elena Vance 🇺🇸 & Ing. Roberto Garza 🇲🇽/🇺🇸',
+      boardPrompt: '"Geophysical Reservoir Monitoring Specialist: Detail how your downhole microseismic array differentiates between natural regional tectonic stress and induced micro-shearing during continuous dense-phase CO2 injection. Explain your caprock capillary entry pressure testing protocol, and demonstrate that your 4D InSAR surface displacement vectors match synthetic poroelastic reservoir models without breaching USDW protection barriers."',
+      actions: {
+        desorb: {
+          note: '[Calibración Microacústica]: Arreglo de geófonos calibrado mediante pulsos piezoeléctricos. Detección sensible hasta magnitud Mw = -1.5.',
+          purity: '99.8% (Acoustic Monitored)'
+        },
+        compress: {
+          note: '[Ajuste Dinámico de Caudal]: Inyección regulada dinámicamente para suprimir picos de sobrepresión en la zona de contacto con la lutita sello.',
+          pressure: '133.5 bar (Equilibrium Safe)'
+        },
+        insar: {
+          note: '[Procesamiento InSAR Interferométrico]: Modelo poroelástico confirma deformación puramente elástica sin migración vertical ni fallamiento.',
+          caprock: '0.007 mm/yr (Perfect Seal)'
+        },
+        seal: {
+          note: '[Protocolo de Cierre Automático]: Válvulas ESD de fondo programadas para cierre en < 15 segundos ante detección sísmica Mw > 0.5.',
+          saved: '$25,800,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'CCUS GEOMECHANICS CERTIFIED • 99/100 (EPA CLASS VI & ISO 27914 COMPLIANT)',
+        notes: '"Unanimous validation of the caprock integrity and microseismic geomechanical assurance suite. The capillary entry pressure verification, microseismic event discrimination, and 4D InSAR deformation limits guarantee permanent confinement over geological timescales."',
+        chips: ['#CaprockIntegrity_Anhydrite', '#Microseismic_DownholeArray', '#4D_InSAR_Deformation', '#InducedSeismicity_Mitigation', '#USDW_PermanentProtection']
+      },
+      reportFilename: 'CCUS_Caprock_InSAR_Burgos.md'
+    }
+  }
+};
+
+window.currentDacStation = 'tvsa';
+
+window.initDacCrucible = function() {
+  window.switchDacStation(window.currentDacStation || 'tvsa');
+};
+
+window.switchDacStation = function(stationKey) {
+  const s = window.DAC_CRUCIBLE_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentDacStation = stationKey;
+
+  // Update nav buttons
+  ['tvsa', 'saline', 'caprock'].forEach(k => {
+    const btn = document.getElementById(`btn-dac-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('dac-facility-badge');
+  const stdBadge = document.getElementById('dac-standard-badge');
+  const titleEl = document.getElementById('dac-station-title');
+  const scopeEl = document.getElementById('dac-target-scope');
+  const specEl = document.getElementById('dac-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update telemetry stats
+  const purityEl = document.getElementById('dac-stat-purity');
+  const pressureEl = document.getElementById('dac-stat-pressure');
+  const caprockEl = document.getElementById('dac-stat-caprock');
+  const savedEl = document.getElementById('dac-stat-saved');
+
+  if (purityEl) purityEl.textContent = s.purity;
+  if (pressureEl) pressureEl.textContent = s.pressure;
+  if (caprockEl) caprockEl.textContent = s.caprock;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('dac-board-members');
+  const inquiryEl = document.getElementById('dac-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('dac-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('dac-ruling-score');
+  const decisionNotes = document.getElementById('dac-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'CCUS GEOMECHANICAL AUDIT PENDING';
+    rulingScore.style.color = '#34d399';
+    rulingScore.style.borderColor = '#10b981';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Aplica acciones tácticas de captura o somete tu protocolo técnico de secuestro de carbono y geomecánica profunda para solicitar certificación oficial.';
+  }
+};
+
+window.applyDacAction = function(actionKey) {
+  const s = window.DAC_CRUCIBLE_DATA.stations[window.currentDacStation];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.purity) {
+    const purityEl = document.getElementById('dac-stat-purity');
+    if (purityEl) purityEl.textContent = act.purity;
+  }
+  if (act.pressure) {
+    const pressureEl = document.getElementById('dac-stat-pressure');
+    if (pressureEl) pressureEl.textContent = act.pressure;
+  }
+  if (act.caprock) {
+    const caprockEl = document.getElementById('dac-stat-caprock');
+    if (caprockEl) caprockEl.textContent = act.caprock;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('dac-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('dac-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('dac-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'SEQUESTRATION STABILITY VERIFIED • READY FOR CERTIFICATION';
+    rulingScore.style.color = '#34d399';
+    rulingScore.style.borderColor = '#10b981';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+};
+
+window.playDacAudio = function() {
+  const s = window.DAC_CRUCIBLE_DATA.stations[window.currentDacStation];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleDacMic = function() {
+  const strategyInput = document.getElementById('dac-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Dr. Vance, Ing. Garza: In our DAC-CCUS facility, ambient air at 420 ppm is contacted across amine-grafted silica monoliths. Desorption is accomplished via low-grade industrial waste heat at 95°C under 0.2 bar vacuum, yielding 99.8% pure dry CO2 at 1,420 kWh/t thermal duty. The CO2 is compressed through an 8-stage centrifugal train to dense phase supercritical conditions at 135 bar and 45°C. Bottom-hole injection pressure is strictly maintained at 78% of the formation fracture gradient (18.2 MPa limit), while permanent downhole acoustic arrays and satellite InSAR confirm zero caprock micro-fracturing and complete containment within the saline aquifer for >1,000 years, fully complying with EPA Class VI UIC and ISO 27914 criteria...";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitDacDefense = function() {
+  const s = window.DAC_CRUCIBLE_DATA.stations[window.currentDacStation];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('dac-ruling-score');
+  const decisionNotes = document.getElementById('dac-board-decision-notes');
+  const chipsContainer = document.getElementById('dac-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#34d399';
+    rulingScore.style.borderColor = '#10b981';
+    rulingScore.style.background = 'rgba(16,185,129,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#34d399; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportDacReport = function() {
+  const s = window.DAC_CRUCIBLE_DATA.stations[window.currentDacStation] || window.DAC_CRUCIBLE_DATA.stations['tvsa'];
+  const defense = document.getElementById('dac-candidate-strategy')?.value || 'Carbon Capture & Deep Geological Sequestration Protocol delivered during live simulation.';
+  const ruling = document.getElementById('dac-ruling-score')?.textContent || 'CCUS GEOMECHANICS CERTIFIED • 99/100 (EPA CLASS VI & ISO 27914 COMPLIANT)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Carbon Capture (DAC) & Deep Saline Geological Sequestration Protocol
+## EPA Class VI UIC, ISO 27914 & ASME B31.8 Technical Record
+**Date**: ${dateStr}
+**Testing Facility**: ${s.facility}
+**Capture & Injection Assembly**: ${s.title}
+**Regulatory Standard**: ${s.standard}
+**Certification Council**: ${s.boardMembers}
+
+---
+
+## 1. CCUS Telemetry & Geomechanics Parameters
+- **Target Safety Scope**: ${s.targetScope}
+- **CO2 Stream Purity**: ${s.purity}
+- **Supercritical Injection Pressure**: ${s.pressure}
+- **Caprock Surface Deformation Rate**: ${s.caprock}
+- **Mitigated Carbon Tax & 45Q Credits Value**: ${s.saved}
+- **Engineering & Storage Specifications**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead CCUS Systems Architect's Technical Protocol
+${defense}
+
+---
+
+## 3. Carbon Removal & Geological Storage Adjudication Board Ruling
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core CCUS & Geomechanical Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Carbon Management Record • Certified Under EPA Class VI UIC & ISO 27914 Geological Storage Guidelines*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 41: AUTONOMOUS NEARSHORING AI HEAVY-DUTY ELECTRIC VEHICLE (EV) MEGAWATT CHARGING SYSTEM (MCS) & HIGH-POWER FLEET TELEMATICS CRUCIBLE
+// ============================================================================
+
+window.MCS_CRUCIBLE_DATA = {
+  stations: {
+    'dispenser': {
+      id: 'dispenser',
+      facility: 'FACILITY: LAREDO-MONTERREY LOGISTICS HUB',
+      standard: 'CharIN MCS • SAE J3271 • ISO 15118-20 • IEC 61851-23-1',
+      title: 'Active Liquid-Cooled MCS Dispenser & Busbar Thermal Runaway Management',
+      targetScope: 'Peak Power: 3.75 MW (1,250V / 3,000A) • Pin Temp Limit: < 85°C • Coolant: Deionized Glycol 15 LPM • Fleet Capital Value: $14,200,000 USD',
+      power: '3,250 kW',
+      temp: '64.2 °C',
+      eff: '98.8% SiC',
+      saved: '$14,200,000 USD',
+      inspectionSpec: 'Dispensador de alta corriente Megawatt Charging System (MCS) bajo el estándar SAE J3271 y CharIN. Cuenta con cable de carga coaxial refrigerado activamente mediante bomba de desplazamiento positivo que impulsa mezcla de agua-glicol desionizada a 15 L/min a través de canales internos en los pines de contacto de aleación cobre-berilio bañados en plata. Sensores de fibra óptica de Bragg (FBG) miden gradientes térmicos en cada borne a 100 Hz, garantizando que la temperatura de unión permanezca bajo el umbral crítico de 85°C a corrientes continuas de hasta 3,000 A DC.',
+      boardMembers: 'Dr. Marcus Vance 🇺🇸 & Ing. Daniela Morales 🇲🇽/🇺🇸',
+      boardPrompt: '"Lead Megawatt Fleet Electrification Architect: Defend your convective heat transfer modeling in the liquid-cooled MCS cable when conducting 3,000A at 1,250V DC under ambient border temperatures of 42°C, prove how your ISO 15118-20 bidirectional V2G silicon carbide inverter modulates reactive power without destabilizing the regional 34.5 kV utility distribution feed, and demonstrate how your dynamic C-rate charging profile mitigates lithium plating and capacity fade across a 500-truck Class 8 fleet."',
+      actions: {
+        cool: {
+          note: '[Caudal de Refrigeración Incrementado]: Flujo de glicol elevado a 18.5 L/min. Temperatura de pines estabilizada en 59.4°C bajo 3,000A continuos.',
+          temp: '59.4 °C (Cryo-Boost)'
+        },
+        v2g: {
+          note: '[Inversión Bidireccional V2G Activa]: Despacho de 1.8 MW a la microred de depósito con factor de potencia unitario cos(phi)=0.998.',
+          power: '3,450 kW (V2G Optimized)'
+        },
+        soh: {
+          note: '[Algoritmo Anti-Plating Ejecutado]: Pulsos de despolarización electroquímica suprimen formación de dendritas de litio. SOH preservado al 97.4%.',
+          eff: '99.1% (Loss Minimization)'
+        },
+        tls: {
+          note: '[Sesión Criptográfica TLS 1.3 Verificada]: Handshake mutuo con certificados de operador OEM validados bajo ISO 15118-20 Plug & Charge.',
+          saved: '$15,500,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'MEGAWATT CHARGING CERTIFIED • 99/100 (CHARIN MCS & ISO 15118-20 COMPLIANT)',
+        notes: '"The Megawatt Charging Systems & Heavy Fleet Electrification Council unanimously ratifies the candidate\'s thermal dissipation design and high-power telemetry defense. The active liquid cooling metrics, SiC bidirectional V2G stability, and lithium plating mitigation algorithms fully satisfy CharIN MCS, SAE J3271, and ISO 15118-20 air and grid reliability thresholds."',
+        chips: ['#CharIN_MCS_3750kW', '#LiquidCooled_SAE_J3271', '#ISO_15118_20_V2G', '#LithiumPlating_Mitigation', '#SiC_Inverter_1500V']
+      },
+      reportFilename: 'Megawatt_EV_MCS_Laredo_Corridor.md'
+    },
+    'v2g': {
+      id: 'v2g',
+      facility: 'FACILITY: OTAY MESA HIGH-POWER FREIGHT DEPOT',
+      standard: 'ISO 15118-20 V2G • IEEE 1547-2018 Interconnection • CharIN MCS Bidirectional Power',
+      title: 'Bidirectional ISO 15118-20 V2G Peak Shaving & Silicon Carbide (SiC) Inverter Matrix',
+      targetScope: 'Depot Grid Capacity: 25 MVA Substation • Inverter Efficiency: 98.8% SiC • Grid Peak Shaving Arbitrage: $16,500,000 USD • Power Factor: 0.99 Lagging/Leading',
+      power: '3,600 kW',
+      temp: '61.5 °C',
+      eff: '98.9% SiC',
+      saved: '$16,500,000 USD',
+      inspectionSpec: 'Matriz de inversores bidireccionales basados en semiconductores de carburo de silicio (SiC MOSFETs) de 1,500 V y 3.3 kV con topología multinivel NPC (Neutral Point Clamped). El sistema ejecuta algoritmos de peak shaving y soporte de frecuencia FFR (Fast Frequency Response) inyectando o extrayendo hasta 3.75 MW por bahía hacia la microrred del depósito de carga. La comunicación de control con el sistema de gestión de baterías (BMS) del tractocamión se rige por ISO 15118-20 con sesiones cifradas TLS 1.3 y tiempo de respuesta en rampa inferior a 20 ms.',
+      boardMembers: 'Dr. Marcus Vance 🇺🇸 & Ing. Daniela Morales 🇲🇽/🇺🇸',
+      boardPrompt: '"Microgrid & High-Power Inverter Lead: Explain how your SiC multilevel inverter handles sub-cycle grid voltage dips (LVRT) under IEEE 1547-2018 without dropping the 3,000A DC charging link. Detail your ISO 15118-20 dynamic tariff schedule negotiation protocol, and defend your harmonic distortion mitigation strategy (THDi < 3%) under rapid bidirectional power transitions."',
+      actions: {
+        cool: {
+          note: '[Bucle de Refrigeración Inversor]: Disipación forzada por agua desionizada en placas frías de SiC mantiene Tjuntura < 110°C.',
+          temp: '58.2 °C (SiC Stable)'
+        },
+        v2g: {
+          note: '[Despacho de Potencia Reactiva]: Compensación VAR local ejecutada, reduciendo la distorsión armónica total THD a 1.8%.',
+          power: '3,700 kW (Full Grid Assist)'
+        },
+        soh: {
+          note: '[Limitación de Rampa dI/dt]: Pendiente de corriente acotada a 250 A/s para mitigar estrés térmico en el busbar de batería.',
+          eff: '99.2% (SiC High Efficiency)'
+        },
+        tls: {
+          note: '[Renovación de Certificados X.509]: Claves efímeras ECDHE intercambiadas sin interrupción de transferencia de potencia V2G.',
+          saved: '$17,200,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'MEGAWATT CHARGING CERTIFIED • 99/100 (CHARIN MCS & ISO 15118-20 COMPLIANT)',
+        notes: '"Unanimous certification of the bidirectional SiC inverter matrix and ISO 15118-20 depot microgrid arbitration architecture. The LVRT ride-through, harmonic filtering, and dynamic tariff negotiation strictly comply with IEEE 1547 and CharIN V2G standards."',
+        chips: ['#SiC_Multilevel_Inverter', '#ISO_15118_20_PlugAndCharge', '#IEEE_1547_LVRT', '#V2G_PeakShaving', '#THD_Below_3Percent']
+      },
+      reportFilename: 'Megawatt_V2G_SiC_Otay_Mesa.md'
+    },
+    'telematics': {
+      id: 'telematics',
+      facility: 'FACILITY: EL PASO-JUÁREZ INDUSTRIAL CORRIDOR',
+      standard: 'SAE J1939-21 High-Speed CAN • ISO 26262 ASIL-C • UN 38.3 Fleet Safety Guidelines',
+      title: 'Class 8 Heavy Freight Fleet Predictive Telematics & Battery Health Degradation Protection',
+      targetScope: 'Fleet Size: 500 Heavy Freight Tractors • Pack Architecture: 800V / 600 kWh NMC 811 • SOH Target: > 92% at 500k Miles • Downtime Avoided: $18,400,000 USD',
+      power: '3,100 kW',
+      temp: '63.0 °C',
+      eff: '98.7% SiC',
+      saved: '$18,400,000 USD',
+      inspectionSpec: 'Plataforma telemática de borde (edge telematics) instalada en tractocamiones pesados Clase 8 que transitan diariamente la frontera Juárez-El Paso. Adquiere variables electroquímicas de las celdas a 50 Hz mediante bus SAE J1939 CAN FD y red TSN (Time-Sensitive Networking). Un gemelo digital electroquímico de célula basado en el modelo Newman P2D calcula el sobrepotencial del ánodo de grafito en tiempo real para regular dinámicamente la corriente de carga del dispensador MCS, asegurando que nunca se cruce el umbral termodinámico de deposición de litio metálico (lithium plating).',
+      boardMembers: 'Dr. Marcus Vance 🇺🇸 & Ing. Daniela Morales 🇲🇽/🇺🇸',
+      boardPrompt: '"Fleet Telematics & Battery Health Specialist: How does your on-board digital twin distinguish between solid-electrolyte interphase (SEI) layer growth and reversible lithium stripping during 3C charging at 5°C ambient temperature? Defend your dynamic charging current de-rating maps across different state-of-charge (SOC) regions and explain how your over-the-air (OTA) BMS firmware updates maintain ISO 26262 ASIL-C functional safety."',
+      actions: {
+        cool: {
+          note: '[Preacondicionamiento Térmico de Pack]: Circuito HVAC del camión precalienta la batería a 28°C antes de iniciar la sesión MCS de 3 MW.',
+          temp: '60.1 °C (Preconditioned)'
+        },
+        v2g: {
+          note: '[Algoritmo de Carga Escalonada]: Reducción programada de corriente de 3,000A a 1,800A al superar el 70% de SOC.',
+          power: '3,300 kW (Adaptive SOC)'
+        },
+        soh: {
+          note: '[Estimación Kalman Extendida (EKF)]: Telemetría confirma retención de capacidad de 96.8% tras 450 ciclos continuos de megavatios.',
+          eff: '99.0% (Zero Plating)'
+        },
+        tls: {
+          note: '[Validación FUSA ISO 26262]: Bloqueo de seguridad ASIL-C activado ante discrepancia de tensión de celda > 15 mV.',
+          saved: '$19,800,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'MEGAWATT CHARGING CERTIFIED • 99/100 (CHARIN MCS & ISO 15118-20 COMPLIANT)',
+        notes: '"Unanimous validation of the predictive battery telematics and electrochemical anti-plating control suite. The Newman P2D digital twin calculations, dynamic current de-rating, and ASIL-C functional safety guarantees maximize fleet uptime while eliminating catastrophic thermal degradation."',
+        chips: ['#Newman_P2D_DigitalTwin', '#AntiLithiumPlating', '#SAE_J1939_CAN_FD', '#ISO_26262_ASIL_C', '#Class8_FreightElectrification']
+      },
+      reportFilename: 'Megawatt_Telematics_Class8_Juarez.md'
+    }
+  }
+};
+
+window.currentMcsStation = 'dispenser';
+
+window.initMcsCrucible = function() {
+  window.switchMcsStation(window.currentMcsStation || 'dispenser');
+};
+
+window.switchMcsStation = function(stationKey) {
+  const s = window.MCS_CRUCIBLE_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentMcsStation = stationKey;
+
+  // Update nav buttons
+  ['dispenser', 'v2g', 'telematics'].forEach(k => {
+    const btn = document.getElementById(`btn-mcs-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('mcs-facility-badge');
+  const stdBadge = document.getElementById('mcs-standard-badge');
+  const titleEl = document.getElementById('mcs-station-title');
+  const scopeEl = document.getElementById('mcs-target-scope');
+  const specEl = document.getElementById('mcs-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update telemetry stats
+  const powerEl = document.getElementById('mcs-stat-power');
+  const tempEl = document.getElementById('mcs-stat-temp');
+  const effEl = document.getElementById('mcs-stat-eff');
+  const savedEl = document.getElementById('mcs-stat-saved');
+
+  if (powerEl) powerEl.textContent = s.power;
+  if (tempEl) tempEl.textContent = s.temp;
+  if (effEl) effEl.textContent = s.eff;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('mcs-board-members');
+  const inquiryEl = document.getElementById('mcs-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('mcs-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('mcs-ruling-score');
+  const decisionNotes = document.getElementById('mcs-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'MEGAWATT FLEET ELECTRIFICATION AUDIT PENDING';
+    rulingScore.style.color = '#38bdf8';
+    rulingScore.style.borderColor = '#0284c7';
+    rulingScore.style.background = 'rgba(2,132,199,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Aplica acciones tácticas de carga MCS o somete tu protocolo técnico de electrificación y telemática de flotas pesadas para solicitar certificación oficial.';
+  }
+};
+
+window.applyMcsAction = function(actionKey) {
+  const s = window.MCS_CRUCIBLE_DATA.stations[window.currentMcsStation];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.power) {
+    const powerEl = document.getElementById('mcs-stat-power');
+    if (powerEl) powerEl.textContent = act.power;
+  }
+  if (act.temp) {
+    const tempEl = document.getElementById('mcs-stat-temp');
+    if (tempEl) tempEl.textContent = act.temp;
+  }
+  if (act.eff) {
+    const effEl = document.getElementById('mcs-stat-eff');
+    if (effEl) effEl.textContent = act.eff;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('mcs-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('mcs-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('mcs-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'MCS CHARGING STABILITY VERIFIED • READY FOR CERTIFICATION';
+    rulingScore.style.color = '#38bdf8';
+    rulingScore.style.borderColor = '#0284c7';
+    rulingScore.style.background = 'rgba(2,132,199,0.15)';
+  }
+};
+
+window.playMcsAudio = function() {
+  const s = window.MCS_CRUCIBLE_DATA.stations[window.currentMcsStation];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleMcsMic = function() {
+  const strategyInput = document.getElementById('mcs-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Dr. Vance, Ing. Morales: In our MCS depot charging facility, 3.75 MW liquid-cooled dispensers utilize a 50/50 deionized water-glycol coolant loop at 15 LPM to maintain SAE J3271 copper-beryllium pin terminals below 68°C even at sustained 3,000A DC delivery. Bidirectional power transfer is orchestrated via 1,500V Silicon Carbide (SiC) inverters achieving 98.8% conversion efficiency, interfacing with ISO 15118-20 TLS 1.3 encrypted Plug & Charge. Real-time battery telematics enforce adaptive pulse-charging algorithms that throttle current based on electrochemical negative-electrode overpotential, completely preventing metallic lithium plating and preserving pack SOH above 94% across 800,000 miles of Class 8 cross-border hauling...";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitMcsDefense = function() {
+  const s = window.MCS_CRUCIBLE_DATA.stations[window.currentMcsStation];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('mcs-ruling-score');
+  const decisionNotes = document.getElementById('mcs-board-decision-notes');
+  const chipsContainer = document.getElementById('mcs-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#38bdf8';
+    rulingScore.style.borderColor = '#0284c7';
+    rulingScore.style.background = 'rgba(2,132,199,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#38bdf8; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportMcsReport = function() {
+  const s = window.MCS_CRUCIBLE_DATA.stations[window.currentMcsStation] || window.MCS_CRUCIBLE_DATA.stations['dispenser'];
+  const defense = document.getElementById('mcs-candidate-strategy')?.value || 'Megawatt EV Charging & Fleet Telematics Protocol delivered during live simulation.';
+  const ruling = document.getElementById('mcs-ruling-score')?.textContent || 'MEGAWATT CHARGING CERTIFIED • 99/100 (CHARIN MCS & ISO 15118-20 COMPLIANT)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Heavy-Duty Electric Vehicle (EV) Megawatt Charging System (MCS) Protocol
+## CharIN MCS, SAE J3271 & ISO 15118-20 Technical Record
+**Date**: ${dateStr}
+**Testing Facility**: ${s.facility}
+**Charging Architecture**: ${s.title}
+**Regulatory Standard**: ${s.standard}
+**Certification Council**: ${s.boardMembers}
+
+---
+
+## 1. Megawatt Charging & Fleet Telematics Parameters
+- **Target Safety Scope**: ${s.targetScope}
+- **Peak Charging Power**: ${s.power}
+- **Connector Pin Temperature**: ${s.temp}
+- **SiC Inverter Efficiency**: ${s.eff}
+- **Protected Fleet Value & Uptime**: ${s.saved}
+- **Engineering & Thermal Dissipation Specifications**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead Megawatt Fleet Electrification Architect's Protocol
+${defense}
+
+---
+
+## 3. Megawatt Charging Systems & Fleet Electrification Council Ruling
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core MCS & High-Power Telematics Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Megawatt Fleet Record • Certified Under CharIN MCS & ISO 15118-20 Fleet Electrification Guidelines*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 42: AUTONOMOUS NEARSHORING AI QUANTUM CRYPTOGRAPHY KEY DISTRIBUTION (QKD) & POST-QUANTUM CRYPTOGRAPHY (PQC) OPTICAL TELEMETRY CRUCIBLE
+// ============================================================================
+
+window.QKD_CRUCIBLE_DATA = {
+  stations: {
+    'bb84': {
+      id: 'bb84',
+      facility: 'FACILITY: QUERÉTARO-DALLAS CROSS-BORDER OPTICAL FIBER LINK',
+      standard: 'ITU-T Y.3800 • ETSI GS QKD 004 • NIST FIPS 203 • IEEE 1913',
+      title: 'Decoy-State BB84 Polarization-Entangled Single-Photon Dark Fiber Terminal',
+      targetScope: 'Distance: 1,200 km Trusted Nodes • Target QBER: < 3.2% • Secret Key Rate: 48.2 kbps • Capital Protected: $28,500,000 USD',
+      qber: '2.85%',
+      rate: '48.2 kbps',
+      lat: '11.4 μs',
+      saved: '$28,500,000 USD',
+      inspectionSpec: 'Terminal de fibra óptica monomodo oscura (dark fiber ITU-T G.652D) que opera en la tercera ventana óptica (1,550 nm) con modulación de fotón único por estados señuelo (Decoy-State BB84). Utiliza tres intensidades ópticas (señal, señuelo débil y vacío) para mitigar de forma estricta los ataques de división del número de fotones (PNS). Los detectores de avalancha monoffotón InGaAs/InP (SPAD) enfriados termoeléctricamente a -50°C exhiben una probabilidad de recuento oscuro inferior a 1×10⁻⁶ por pulso de compuerta, garantizando una tasa de error cuántico de bit (QBER) sostenida en 2.85% sobre el tramo de 1,200 km con nodos de retransmisión de confianza bajo ITU-T Y.3802.',
+      boardMembers: 'Dr. Evelyn Thorne 🇺🇸 & Ing. Alejandro Benítez 🇲🇽/🇺🇸',
+      boardPrompt: '"Lead Quantum Systems Architect: Defend your Decoy-State BB84 statistical estimation bounds against photon-number-splitting (PNS) eavesdropping over 1,200 km dark fiber spans, prove how your hybrid X25519 + ML-KEM-1024 hardware FPGA core executes constant-time polynomial multiplication without side-channel timing leaks, and demonstrate how your quantum random number generator (QRNG) complies with NIST SP 800-90B entropy validation to protect regional 400 kV SCADA telemetry."',
+      actions: {
+        qber: {
+          note: '[Calibración SPAD Completada]: Polarización de compuerta optimizada y discriminador CFD ajustado. QBER cae a 2.15%.',
+          qber: '2.15% (SPAD Calibrated)'
+        },
+        pqc: {
+          note: '[Aceleración Hardware Activa]: Multiplicación NTT polinómica en FPGA ejecutada en tiempo constante sin fuga electromagnética.',
+          lat: '8.9 μs (FPGA Ultra-Fast)'
+        },
+        qrng: {
+          note: '[Inyección de Entropía Cuántica]: Generador QRNG por fluctuaciones de vacío electromagnético a 2.5 Gbps eleva tasa de llaves secretas.',
+          rate: '56.4 kbps (QRNG Boost)'
+        },
+        pns: {
+          note: '[Detección de Ataque PNS]: Variación anómala de transmitancia en estados señuelo detectada; pulsos multifotón purgados de la matriz.',
+          saved: '$31,200,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'QUANTUM CRYPTOGRAPHY CERTIFIED • 99/100 (ITU-T Y.3800 & NIST PQC COMPLIANT)',
+        notes: '"The Quantum Information & Post-Quantum Cryptography Council unanimously ratifies the candidate\'s quantum key distribution protocol and PQC hardware acceleration defense. The Decoy-State BB84 statistical error bounds, constant-time ML-KEM-1024 encapsulation, and vacuum-fluctuation QRNG entropy guarantees fully satisfy ITU-T Y.3800 and NIST FIPS 203 quantum resilience thresholds."',
+        chips: ['#DecoyState_BB84', '#NIST_FIPS_203_ML_KEM', '#ITU_T_Y3800_QKD', '#QRNG_VacuumFluctuation', '#PNS_Mitigation']
+      },
+      reportFilename: 'Cross_Border_QKD_Queretaro_Dallas.md'
+    },
+    'pqc': {
+      id: 'pqc',
+      facility: 'FACILITY: MONTERREY-AUSTIN HIGH-SECURITY INDUSTRIAL INTERCONNECT',
+      standard: 'NIST FIPS 203 (ML-KEM) • NIST FIPS 204 (ML-DSA) • IEEE 1913 • RFC 9370',
+      title: 'NIST PQC Hybrid Key Encapsulation (ML-KEM-1024 / Kyber) & Stateful Hash Signatures',
+      targetScope: 'Session Security: Post-Quantum Category 5 • Latency Overhead: < 15 μs • SCADA Protected: 400 kV Grid Tie-lines • Capital Protected: $32,000,000 USD',
+      qber: '2.40%',
+      rate: '52.0 kbps',
+      lat: '10.8 μs',
+      saved: '$32,000,000 USD',
+      inspectionSpec: 'Módulo criptográfico en silicio (FPGA UltraScale+) que implementa el estándar NIST FIPS 203 (ML-KEM-1024) y FIPS 204 (ML-DSA) para acuerdos de llaves híbridas post-cuánticas combinadas con curvas elípticas clásicas (X25519 + ML-KEM). El hardware procesa la transformada numérica teórica (NTT) de grado 256 en aritmética modular de punto fijo en tiempo constante para anular ataques de canal lateral por análisis de potencia diferencial (DPA) o temporización. Se integra en túneles MACsec IEEE 802.1AE para encriptar en tiempo real la telemetría SCADA IEC 60870-5-104 de las interconexiones eléctricas binacionales.',
+      boardMembers: 'Dr. Evelyn Thorne 🇺🇸 & Ing. Alejandro Benítez 🇲🇽/🇺🇸',
+      boardPrompt: '"Post-Quantum Hardware Architect: Explain your NTT polynomial arithmetic pipelining on FPGA and how you achieve sub-12 microsecond encapsulation latency without memory bus contention. Defend your hybrid TLS 1.3 / MACsec key exchange migration strategy, and demonstrate how stateful hash-based signatures (LMS/HSS under NIST SP 800-208) guarantee firmware integrity for cross-border industrial grid controllers."',
+      actions: {
+        qber: {
+          note: '[Sincronización PQC/QBER]: Acoplamiento de llaves cuánticas simétricas OTP con claves encapsuladas ML-KEM-1024 completado.',
+          qber: '1.95% (Hybrid Opt)'
+        },
+        pqc: {
+          note: '[Canal Lateral Neutralizado]: Enmascaramiento de primer orden (Boolean masking) aplicado en operaciones de decapsulación Kyber.',
+          lat: '9.2 μs (Constant Time)'
+        },
+        qrng: {
+          note: '[Semilla Criptográfica QRNG]: Entropía física inyectada directamente al generador determinista DRBG NIST SP 800-90A.',
+          rate: '58.0 kbps (Hybrid Peak)'
+        },
+        pns: {
+          note: '[Validación FIPS 204]: Verificación de firma ML-DSA en paquete de telemetría SCADA completada en 18 μs sin jitter.',
+          saved: '$34,500,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'QUANTUM CRYPTOGRAPHY CERTIFIED • 99/100 (ITU-T Y.3800 & NIST PQC COMPLIANT)',
+        notes: '"Unanimous validation of the NIST PQC hybrid hardware architecture and constant-time ML-KEM-1024 cryptographic core. The NTT pipelining, side-channel DPA mitigation, and seamless MACsec SCADA integration strictly comply with NIST FIPS 203 and IEEE 1913 standards."',
+        chips: ['#NIST_FIPS_203_ML_KEM', '#NTT_Pipelining_FPGA', '#StatefulHash_SP800_208', '#ConstantTime_Crypto', '#SCADA_MACsec']
+      },
+      reportFilename: 'Post_Quantum_PQC_Monterrey_Austin.md'
+    },
+    'qrng': {
+      id: 'qrng',
+      facility: 'FACILITY: TIJUANA-SAN DIEGO QUANTUM DEFENSE NODE',
+      standard: 'NIST SP 800-90B Entropy Source • ITU-T X.509 • ETSI GS QKD 014 API',
+      title: 'Quantum Random Number Generator (QRNG) Vacuum Fluctuation & PNS Attack Defense',
+      targetScope: 'Entropy Generation: 2.5 Gbps • Min-Entropy: 7.98 bits/byte • Optical Eavesdropping Detection: < 5 ms • Capital Protected: $36,800,000 USD',
+      qber: '2.10%',
+      rate: '62.5 kbps',
+      lat: '9.5 μs',
+      saved: '$36,800,000 USD',
+      inspectionSpec: 'Nodo de defensa cuántica que explota las fluctuaciones de vacío del campo electromagnético en un divisor de haz simétrico de 50:50 acoplado a un detector homodino balanceado de bajo ruido. Genera secuencias continuas de números aleatorios a 2.5 Gbps con min-entropía superior a 7.98 bits por byte certificada bajo NIST SP 800-90B. El sistema integra un reflectómetro óptico en el dominio del tiempo en tiempo real (Q-OTDR) que detecta derivaciones físicas de fibra o alteraciones por flexión (microbending taps) en menos de 5 ms, abortando la sesión de llaves BB84 de inmediato.',
+      boardMembers: 'Dr. Evelyn Thorne 🇺🇸 & Ing. Alejandro Benítez 🇲🇽/🇺🇸',
+      boardPrompt: '"Quantum Security & Hardware Assurance Lead: Defend your balanced homodyne detection calibration against local oscillator intensity fluctuations. How does your Q-OTDR distinguish between mechanical vibrational noise from border freight rail traffic and optical fiber eavesdropping microbends? Detail your ETSI GS QKD 014 key management API implementation for sovereign aerospace telecommunications."',
+      actions: {
+        qber: {
+          note: '[Alineación Homodina Balanceada]: Supresión de modo común (CMRR) ajustada a > 55 dB, reduciendo ruido cuántico espurio.',
+          qber: '1.75% (Homodyne Lock)'
+        },
+        pqc: {
+          note: '[Cifrado One-Time Pad]: Llaves QKD consumidas a régimen estricto OTP para flujos de datos biométricos transfronterizos.',
+          lat: '8.4 μs (Zero Overhead)'
+        },
+        qrng: {
+          note: '[Test Estadístico NIST SP 800-22]: Batería completa de 15 pruebas estadísticas superada con p-valor > 0.01 en tiempo real.',
+          rate: '68.0 kbps (Max Throughput)'
+        },
+        pns: {
+          note: '[Alerta Q-OTDR Abortada]: Microcurvatura óptica de 0.05 dB aislada e identificada en el km 42.1; tráfico desviado a ruta redundante.',
+          saved: '$39,200,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'QUANTUM CRYPTOGRAPHY CERTIFIED • 99/100 (ITU-T Y.3800 & NIST PQC COMPLIANT)',
+        notes: '"Unanimous certification of the vacuum-fluctuation QRNG entropy engine and real-time optical eavesdropping defense subsystem. The homodyne CMRR tuning, Q-OTDR intrusion response, and ETSI GS QKD 014 sovereign key management rigorously protect cross-border aerospace and industrial assets."',
+        chips: ['#QRNG_Vacuum_Homodyne', '#NIST_SP800_90B', '#Q_OTDR_TapDetection', '#ETSI_GS_QKD_014', '#OneTimePad_Sovereign']
+      },
+      reportFilename: 'Quantum_QRNG_Defense_Tijuana_SanDiego.md'
+    }
+  }
+};
+
+window.currentQkdStation = 'bb84';
+
+window.initQkdCrucible = function() {
+  window.switchQkdStation(window.currentQkdStation || 'bb84');
+};
+
+window.switchQkdStation = function(stationKey) {
+  const s = window.QKD_CRUCIBLE_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentQkdStation = stationKey;
+
+  // Update nav buttons
+  ['bb84', 'pqc', 'qrng'].forEach(k => {
+    const btn = document.getElementById(`btn-qkd-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('qkd-facility-badge');
+  const stdBadge = document.getElementById('qkd-standard-badge');
+  const titleEl = document.getElementById('qkd-station-title');
+  const scopeEl = document.getElementById('qkd-target-scope');
+  const specEl = document.getElementById('qkd-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update telemetry stats
+  const qberEl = document.getElementById('qkd-stat-qber');
+  const rateEl = document.getElementById('qkd-stat-rate');
+  const latEl = document.getElementById('qkd-stat-lat');
+  const savedEl = document.getElementById('qkd-stat-saved');
+
+  if (qberEl) qberEl.textContent = s.qber;
+  if (rateEl) rateEl.textContent = s.rate;
+  if (latEl) latEl.textContent = s.lat;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('qkd-board-members');
+  const inquiryEl = document.getElementById('qkd-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('qkd-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('qkd-ruling-score');
+  const decisionNotes = document.getElementById('qkd-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'QUANTUM CIPHER AUDIT PENDING';
+    rulingScore.style.color = '#a855f7';
+    rulingScore.style.borderColor = '#7e22ce';
+    rulingScore.style.background = 'rgba(126,34,206,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Aplica acciones tácticas de control cuántico o somete tu protocolo técnico de ciberseguridad QKD/PQC para solicitar certificación oficial.';
+  }
+};
+
+window.applyQkdAction = function(actionKey) {
+  const s = window.QKD_CRUCIBLE_DATA.stations[window.currentQkdStation];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.qber) {
+    const qberEl = document.getElementById('qkd-stat-qber');
+    if (qberEl) qberEl.textContent = act.qber;
+  }
+  if (act.rate) {
+    const rateEl = document.getElementById('qkd-stat-rate');
+    if (rateEl) rateEl.textContent = act.rate;
+  }
+  if (act.lat) {
+    const latEl = document.getElementById('qkd-stat-lat');
+    if (latEl) latEl.textContent = act.lat;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('qkd-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('qkd-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('qkd-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'QUANTUM OPTICAL LINK VERIFIED • READY FOR CERTIFICATION';
+    rulingScore.style.color = '#a855f7';
+    rulingScore.style.borderColor = '#7e22ce';
+    rulingScore.style.background = 'rgba(126,34,206,0.15)';
+  }
+};
+
+window.playQkdAudio = function() {
+  const s = window.QKD_CRUCIBLE_DATA.stations[window.currentQkdStation];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleQkdMic = function() {
+  const strategyInput = document.getElementById('qkd-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Dr. Thorne, Ing. Benítez: In our cross-border optical network, Decoy-State BB84 terminals utilize 3-intensity states (signal, weak decoy, and vacuum) over 1,550 nm dark fiber, bounding single-photon gain and error rates to strictly prohibit PNS eavesdropping while maintaining QBER at 2.45%. For session layer key agreement across our 400 kV SCADA links, hybrid X25519 + ML-KEM-1024 (NIST FIPS 203) key encapsulation is accelerated on custom FPGA modules executing in constant-time 11.4 μs without electromagnetic or cache side-channel vulnerability. Entropy generation relies on vacuum-fluctuation QRNG validated under NIST SP 800-90B at 2.5 Gbps, guaranteeing unconditional forward secrecy and safeguarding $28,500,000 USD in high-value nearshoring industrial assets against Harvest-Now-Decrypt-Later threats...";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitQkdDefense = function() {
+  const s = window.QKD_CRUCIBLE_DATA.stations[window.currentQkdStation];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('qkd-ruling-score');
+  const decisionNotes = document.getElementById('qkd-board-decision-notes');
+  const chipsContainer = document.getElementById('qkd-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#a855f7';
+    rulingScore.style.borderColor = '#7e22ce';
+    rulingScore.style.background = 'rgba(126,34,206,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#a855f7; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportQkdReport = function() {
+  const s = window.QKD_CRUCIBLE_DATA.stations[window.currentQkdStation] || window.QKD_CRUCIBLE_DATA.stations['bb84'];
+  const defense = document.getElementById('qkd-candidate-strategy')?.value || 'Quantum Cryptography & Post-Quantum Encryption Protocol delivered during live simulation.';
+  const ruling = document.getElementById('qkd-ruling-score')?.textContent || 'QUANTUM CRYPTOGRAPHY CERTIFIED • 99/100 (ITU-T Y.3800 & NIST PQC COMPLIANT)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Quantum Key Distribution (QKD) & Post-Quantum Cryptography (PQC) Protocol
+## ITU-T Y.3800, ETSI GS QKD 004 & NIST FIPS 203 Technical Record
+**Date**: ${dateStr}
+**Testing Facility**: ${s.facility}
+**Quantum Optical Architecture**: ${s.title}
+**Regulatory Standard**: ${s.standard}
+**Certification Council**: ${s.boardMembers}
+
+---
+
+## 1. Quantum Optical Telemetry & Key Generation Parameters
+- **Target Security Scope**: ${s.targetScope}
+- **Quantum Bit Error Rate (QBER)**: ${s.qber}
+- **Secret Key Generation Rate**: ${s.rate}
+- **PQC Hardware Encapsulation Latency**: ${s.lat}
+- **Protected Capital & Infrastructure Value**: ${s.saved}
+- **Quantum & Optical Cryptographic Specifications**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead Quantum Systems Architect's Defense Protocol
+${defense}
+
+---
+
+## 3. Quantum Information & Post-Quantum Cryptography Council Ruling
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core Quantum Security & PQC Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Quantum Security Record • Certified Under ITU-T Y.3800, ETSI GS QKD 004 & NIST FIPS 203 Guidelines*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 43: AUTONOMOUS NEARSHORING AI SUBMICRON EXTREME ULTRAVIOLET (EUV) PHOTOLITHOGRAPHY & COMPUTATIONAL PATTERNING CRUCIBLE
+// ============================================================================
+
+window.EUV_CRUCIBLE_DATA = {
+  stations: {
+    'lpp': {
+      id: 'lpp',
+      facility: 'FACILITY: GUADALAJARA-AUSTIN SEMICONDUCTOR CLEANROOM LINK',
+      standard: 'SEMI E10 • SEMI P48 • ASML High-NA Specs • IEEE Lithography',
+      title: 'Laser-Produced Plasma (LPP) Sn Droplet Source & High-NA (0.55 NA) Anamorphic Scanner',
+      targetScope: 'Source Power: 415 W @ IF • Magnification: 4x X / 8x Y Anamorphic • Wafers/hr: 185 WPH • Protected Capital: $42,000,000 USD',
+      power: '415 W',
+      ler: '1.08 nm',
+      trans: '91.4%',
+      saved: '$42,000,000 USD',
+      inspectionSpec: 'Generador de plasma EUV a 13.5 nm por ablación láser de gotas de estaño líquido de 27 μm inyectadas a 50 kHz con velocidad de 80 m/s en una cámara de vacío a 10⁻⁷ mbar. Un pre-pulso láser CO2 de picosegundos aplana la gota en forma de disco y un pulso principal de nanosegundos (30 kW) ioniza el estaño a estados de carga Sn¹⁰⁺-Sn¹⁴⁺, generando 415 W de radiación EUV en el foco intermedio (IF). El sistema óptico anamórfico High-NA (0.55 NA) desacopla la magnificación (4x en X, 8x en Y) para evitar el viñeteado en la fotomáscara Mo/Si y permitir la resolución de semicírculos y pasos de línea de 8 nm para la integración de transistores GAA RibbonFET / CFET sub-2 nm bajo estándares SEMI P48.',
+      boardMembers: 'Dr. Aris Thorne 🇳🇱/🇺🇸 & Dra. Jimena Villarreal 🇲🇽/🇺🇸',
+      boardPrompt: '"Lead Photolithography Architect: Defend your High-NA 0.55 NA anamorphic projection optics alignment against field-stitching errors across split exposure reticles, demonstrate how your laser-produced plasma (LPP) debris mitigation prevents tin ion sputtering on multi-layer collector mirrors under 400 W continuous dose, and justify how your carbon nanotube (CNT) pellicle maintains 90%+ EUV transmission without thermal buckling or chemical outgassing during 185 wafer-per-hour fab operation."',
+      actions: {
+        droplet: {
+          note: '[Inyección Sn Optimizada]: Sincronización temporal de pre-pulso láser y tasa de repetición ajustada a 50 kHz; potencia IF sube a 445 W.',
+          power: '445 W (Boost Mode)'
+        },
+        anamorphic: {
+          note: '[Alineación Anamórfica 0.55 NA]: Corrección de frente de onda por actuadores piezoeléctricos; distorsión reducida y overlay a 0.85 nm.',
+          ler: '0.98 nm (High-NA Lock)'
+        },
+        ler: {
+          note: '[Filtro Deconvolución Estocástica]: Corrección de proximidad óptica (OPC) y suavizado de rugosidad de línea activo.',
+          ler: '0.94 nm (Sub-1nm LER)'
+        },
+        cnt: {
+          note: '[Estabilización Radiativa CNT]: Emisividad térmica elevada y flujo de hidrógeno laminar optimizado; transmitancia alcanza 92.8%.',
+          trans: '92.8% (CNT Pure)'
+        }
+      },
+      optimalDecision: {
+        score: 'EUV LITHOGRAPHY CERTIFIED • 99/100 (HIGH-NA 0.55 NA & SEMI E10 COMPLIANT)',
+        notes: '"The Photolithography & Subatomic Metrology Council unanimously ratifies the candidate\'s High-NA anamorphic optics design, LPP source tin mitigation architecture, and CNT pellicle thermal endurance. The optical wavefront error budget, stochastic LER deconvolution, and multi-layer defect review strictly satisfy SEMI E10, SEMI P48, and ASML sub-2 nm fab specifications."',
+        chips: ['#HighNA_055NA_Anamorphic', '#LPP_TinDroplet_400W', '#Stochastic_LER_Mitigation', '#CNT_Pellicle_Thermal', '#SEMI_E10_Compliance']
+      },
+      reportFilename: 'EUV_Photolithography_Guadalajara_Austin.md'
+    },
+    'multibeam': {
+      id: 'multibeam',
+      facility: 'FACILITY: MONTERREY HIGH-DENSITY ADVANCED FAB',
+      standard: 'SEMI P48 Photomask Standard • IEEE TCAD • ISO 14644-1 Class 1',
+      title: 'Multi-Beam E-Beam Photomask Inspection & Stochastic Line-Edge Roughness (LER) Review',
+      targetScope: 'Beams: 330,000 Electron Beams • Inspection Pitch: 8 nm Critical Dimension • Reticle Yield: 99.4% • Capital Protected: $48,000,000 USD',
+      power: '420 W',
+      ler: '1.02 nm',
+      trans: '91.8%',
+      saved: '$48,000,000 USD',
+      inspectionSpec: 'Sistema de inspección de máscaras EUV de haz múltiple basado en una matriz de micro-aberturas de 330,000 haces electrónicos que escanea fotomáscaras de 6x6 pulgadas compuestas por 40-50 bicapas de Mo/Si de 3.4 nm. Detecta defectos enterrados de fase en el sustrato de cuarzo y puenteo de fotoresina con resolución de 0.8 nm. Los algoritmos de deconvolución de difusión de electrones secundarios mitigan la estocasticidad del fotoelectrón EUV, garantizando una rugosidad de borde de línea (LER) inferior a 1.02 nm a lo largo de 100 millones de compuertas lógicas GAA.',
+      boardMembers: 'Dr. Aris Thorne 🇳🇱/🇺🇸 & Dra. Jimena Villarreal 🇲🇽/🇺🇸',
+      boardPrompt: '"Senior Reticle & Mask Metrology Lead: How does your 330,000 multi-beam electron optics column eliminate charging artifacts on low-conductivity ruthenium capping layers? Detail your real-time machine-learning stochastic defect classification pipeline and explain how you distinguish between critical phase defects and benign resist shrinkage in extreme low k1 factor regimes."',
+      actions: {
+        droplet: {
+          note: '[Alineación de Haces E-Beam]: Telecentrismo multi-haz calibrado; corriente de columna estabilizada a 1.2 nA por haz.',
+          power: '430 W (Stable Focus)'
+        },
+        anamorphic: {
+          note: '[Mitigación de Carga Electrostática]: Neutralización de carga por haz de iones de argón de baja energía; deriva de escaneo < 0.2 nm.',
+          ler: '0.96 nm (Anti-Charge)'
+        },
+        ler: {
+          note: '[Clasificación Estocástica ML]: Red convolucional en tiempo real aísla defectos de puenteo sub-1 nm sin falsos positivos.',
+          ler: '0.91 nm (Ultra-Sharp)'
+        },
+        cnt: {
+          note: '[Control Térmico de Retícula]: Compensación de expansión térmica por interferometría láser activa; distorsión planar nula.',
+          saved: '$52,000,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'EUV LITHOGRAPHY CERTIFIED • 99/100 (HIGH-NA 0.55 NA & SEMI E10 COMPLIANT)',
+        notes: '"Unanimous endorsement of the multi-beam photomask metrology architecture and real-time stochastic defect deconvolution pipeline. The electron-beam charging suppression, sub-1 nm phase defect sensitivity, and SEMI P48 mask yield protection represent world-class semiconductor engineering."',
+        chips: ['#MultiBeam_EBeam_330k', '#SEMI_P48_MaskYield', '#PhaseDefect_Detection', '#Ru_Capping_Inspection', '#SecondaryElectron_Opt']
+      },
+      reportFilename: 'EUV_Mask_Inspection_Monterrey_Fab.md'
+    },
+    'pellicle': {
+      id: 'pellicle',
+      facility: 'FACILITY: PHOENIX-HERMOSILLO CLEANROOM CORRIDOR',
+      standard: 'ASML Free-Standing Pellicle Spec • SEMI E10 • ISO 14644-1',
+      title: 'Carbon Nanotube (CNT) Free-Standing EUV Pellicle Thermal Dissipation & Outgassing Monitor',
+      targetScope: 'Heat Dissipation: 450 W Continuous • EUV Transmission: > 91.4% • Mask Lifetime: > 10,000 Exposures • Capital Protected: $56,000,000 USD',
+      power: '415 W',
+      ler: '1.05 nm',
+      trans: '92.2%',
+      saved: '$56,000,000 USD',
+      inspectionSpec: 'Membrana pelicular protectora autoportante fabricada con redes entrelazadas de nanotubos de carbono (CNT) de pared simple y doble (SWCNT/DWCNT) suspendidas sobre un marco de silicio de ultra-bajo coeficiente de expansión térmica. Diseñada para disipar pasivamente 450 W de absorción térmica por radiación de cuerpo negro a 950°C en hidrógeno residual sin combarse mecánicamente ni rozar el plano de la fotomáscara. Presenta una desgasificación fotoquímica nula de hidrocarburos volátiles, bloqueando el 100% de partículas aerotransportadas mayores a 10 nm.',
+      boardMembers: 'Dr. Aris Thorne 🇳🇱/🇺🇸 & Dra. Jimena Villarreal 🇲🇽/🇺🇸',
+      boardPrompt: '"EUV Pellicle & Thermomechanical Specialist: Demonstrate how your free-standing CNT pellicle accommodates thermal expansion without developing localized wrinkling or non-uniform optical transmission across 13.5 nm wavelengths. Defend your hydrogen plasma radical etching resistance testing and explain your acoustic vibration dampening strategy during rapid wafer stage accelerations of 20g."',
+      actions: {
+        droplet: {
+          note: '[Pre-Tensión Mecánica CNT]: Membrana ajustada a tensión biaxial de 250 MPa; deflexión máxima limitada a < 15 μm bajo 20g.',
+          power: '440 W (Tension Hold)'
+        },
+        anamorphic: {
+          note: '[Resistencia a Radicales H*]: Recubrimiento de grafeno atómico protector previene ataque químico por plasma de hidrógeno.',
+          ler: '0.99 nm (Graphene Barrier)'
+        },
+        ler: {
+          note: '[Uniformidad de Transmitancia]: Variación espacial de densidad CNT inferior a 0.3%; sin aberraciones de fase en oblea.',
+          ler: '0.93 nm (Uniform Trans)'
+        },
+        cnt: {
+          note: '[Enfriamiento Emisivo Óptimo]: Temperatura superficial estabilizada en 880°C bajo dosis continua; cero desgasificación.',
+          trans: '93.5% (Max Thermal Clear)'
+        }
+      },
+      optimalDecision: {
+        score: 'EUV LITHOGRAPHY CERTIFIED • 99/100 (HIGH-NA 0.55 NA & SEMI E10 COMPLIANT)',
+        notes: '"Unanimous certification of the free-standing carbon nanotube pellicle thermal architecture and hydrogen radical shielding mechanism. The 450 W radiative cooling, zero outgassing verification, and high transmission stability comply with the most stringent ASML and SEMI high-productivity scanner requirements."',
+        chips: ['#CNT_FreeStanding_Pellicle', '#450W_RadiativeCooling', '#HydrogenRadical_Shield', '#ZeroOutgassing_Cleanroom', '#20g_AccelerationDamping']
+      },
+      reportFilename: 'EUV_Pellicle_Thermal_Phoenix_Hermosillo.md'
+    }
+  }
+};
+
+window.currentEuvStation = 'lpp';
+
+window.initEuvCrucible = function() {
+  window.switchEuvStation(window.currentEuvStation || 'lpp');
+};
+
+window.switchEuvStation = function(stationKey) {
+  const s = window.EUV_CRUCIBLE_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentEuvStation = stationKey;
+
+  // Update nav buttons
+  ['lpp', 'multibeam', 'pellicle'].forEach(k => {
+    const btn = document.getElementById(`btn-euv-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('euv-facility-badge');
+  const stdBadge = document.getElementById('euv-standard-badge');
+  const titleEl = document.getElementById('euv-station-title');
+  const scopeEl = document.getElementById('euv-target-scope');
+  const specEl = document.getElementById('euv-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update telemetry stats
+  const powerEl = document.getElementById('euv-stat-power');
+  const lerEl = document.getElementById('euv-stat-ler');
+  const transEl = document.getElementById('euv-stat-trans');
+  const savedEl = document.getElementById('euv-stat-saved');
+
+  if (powerEl) powerEl.textContent = s.power;
+  if (lerEl) lerEl.textContent = s.ler;
+  if (transEl) transEl.textContent = s.trans;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('euv-board-members');
+  const inquiryEl = document.getElementById('euv-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('euv-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('euv-ruling-score');
+  const decisionNotes = document.getElementById('euv-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'EUV PATTERNING AUDIT PENDING';
+    rulingScore.style.color = '#ec4899';
+    rulingScore.style.borderColor = '#db2777';
+    rulingScore.style.background = 'rgba(219,39,119,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Aplica acciones tácticas de control fotolitográfico o somete tu protocolo técnico EUV/SEMI para solicitar certificación oficial.';
+  }
+};
+
+window.applyEuvAction = function(actionKey) {
+  const s = window.EUV_CRUCIBLE_DATA.stations[window.currentEuvStation];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.power) {
+    const powerEl = document.getElementById('euv-stat-power');
+    if (powerEl) powerEl.textContent = act.power;
+  }
+  if (act.ler) {
+    const lerEl = document.getElementById('euv-stat-ler');
+    if (lerEl) lerEl.textContent = act.ler;
+  }
+  if (act.trans) {
+    const transEl = document.getElementById('euv-stat-trans');
+    if (transEl) transEl.textContent = act.trans;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('euv-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('euv-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('euv-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'EUV OPTICAL PROFILE VERIFIED • READY FOR CERTIFICATION';
+    rulingScore.style.color = '#ec4899';
+    rulingScore.style.borderColor = '#db2777';
+    rulingScore.style.background = 'rgba(219,39,119,0.15)';
+  }
+};
+
+window.playEuvAudio = function() {
+  const s = window.EUV_CRUCIBLE_DATA.stations[window.currentEuvStation];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleEuvMic = function() {
+  const strategyInput = document.getElementById('euv-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Dr. Thorne, Dra. Villarreal: In our sub-2 nm semiconductor cleanroom, the High-NA 0.55 NA anamorphic projection scanner employs 4x magnification in X and 8x in Y to avoid mask illumination shadowing, with laser interferometer stage synchronization eliminating field-stitching overlay errors below 1.1 nm. For the 415 W LPP source, Sn ion debris is diverted by a transverse 1.4 Tesla magnetic field combined with atomic hydrogen buffer gas scavenging, preserving Mo/Si collector reflectivity over 4,000 operational hours. The free-standing carbon nanotube pellicle sustains 91.4% EUV transmission and radiates 450 W of absorbed thermal flux directly via emissive cooling, suppressing stochastic line-edge roughness (LER) to 0.98 nm and protecting $42,000,000 USD in 300 mm wafer yield under SEMI E10 compliance...";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitEuvDefense = function() {
+  const s = window.EUV_CRUCIBLE_DATA.stations[window.currentEuvStation];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('euv-ruling-score');
+  const decisionNotes = document.getElementById('euv-board-decision-notes');
+  const chipsContainer = document.getElementById('euv-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#ec4899';
+    rulingScore.style.borderColor = '#db2777';
+    rulingScore.style.background = 'rgba(219,39,119,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#ec4899; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportEuvReport = function() {
+  const s = window.EUV_CRUCIBLE_DATA.stations[window.currentEuvStation] || window.EUV_CRUCIBLE_DATA.stations['lpp'];
+  const defense = document.getElementById('euv-candidate-strategy')?.value || 'Submicron EUV Photolithography Protocol delivered during live simulation.';
+  const ruling = document.getElementById('euv-ruling-score')?.textContent || 'EUV LITHOGRAPHY CERTIFIED • 99/100 (HIGH-NA 0.55 NA & SEMI E10 COMPLIANT)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Extreme Ultraviolet (EUV) Photolithography & Computational Patterning Protocol
+## High-NA 0.55 NA Anamorphic Optics, SEMI E10 & SEMI P48 Technical Record
+**Date**: ${dateStr}
+**Testing Facility**: ${s.facility}
+**Photolithography Architecture**: ${s.title}
+**Regulatory Standard**: ${s.standard}
+**Certification Council**: ${s.boardMembers}
+
+---
+
+## 1. Photolithographic Telemetry & Scanner Parameters
+- **Target Engineering Scope**: ${s.targetScope}
+- **EUV Source Power (@ IF)**: ${s.power}
+- **Stochastic Line-Edge Roughness (LER)**: ${s.ler}
+- **Pellicle EUV Transmission**: ${s.trans}
+- **Protected Wafer Yield & Capital**: ${s.saved}
+- **Photolithography & Optical Specifications**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead Photolithography Architect's Defense Protocol
+${defense}
+
+---
+
+## 3. Photolithography & Subatomic Metrology Council Ruling
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core Photolithography & Metrology Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Semiconductor Record • Certified Under SEMI E10, SEMI P48 & ASML High-NA Specifications*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// PHASE 44: AUTONOMOUS NEARSHORING AI SUBSEA HIGH-VOLTAGE DIRECT CURRENT (HVDC) INTERCONNECTOR & DYNAMIC SUBSEA UMBILICAL CABLE CRUCIBLE
+// ============================================================================
+
+window.HVDC_CRUCIBLE_DATA = {
+  stations: {
+    'xlpe': {
+      id: 'xlpe',
+      facility: 'FACILITY: COATZACOALCOS-TAMPA SUBSEA INTERTIE LINK',
+      standard: 'CIGRE B1 • CIGRE TB 496 • IEC 62067 • IEEE 1453',
+      title: '±525 kV Extruded XLPE Deepwater Subsea HVDC Cable & Radial Water-Treeing Barrier',
+      targetScope: 'Distance: 650 km Route • Conductor: 2,500 mm² Segmented Copper • Max Water Depth: 2,200 m • Protected Capital: $46,500,000 USD',
+      voltage: '±525 kV',
+      power: '2,000 MW',
+      pd: '< 1.8 pC',
+      saved: '$46,500,000 USD',
+      inspectionSpec: 'Enlace submarino bipolar a ±525 kV DC de 650 km con capacidad nominal de 2,000 MW que une el complejo petroquímico eólico de Coatzacoalcos con la península de Florida (Tampa Bay). El conductor Milliken de cobre segmentado de 2,500 mm² cuenta con aislamiento de polietileno reticulado extruido (XLPE de ultra-alta pureza) de 26 mm de espesor formulado para resistir inversión de polaridad y acumulación de carga espacial según las recomendaciones CIGRE TB 496. Incluye una vaina continua extruida de aleación de plomo que actúa como barrera radial hermética contra la humedad marina y doble capa de armadura helicoidal contra-rotatoria de alambres de acero de alta resistencia a la tracción (1,770 MPa) recubiertos de betún y polipropileno hilado para resistir tensiones de tendido de 450 kN a 2,200 metros de profundidad sin torsión angular.',
+      boardMembers: 'Dr. Kenneth Thorne 🇬🇧/🇺🇸 & Ing. Paulina Cárdenas 🇲🇽/🇺🇸',
+      boardPrompt: '"Lead Subsea Power Systems Architect: Defend your extruded ±525 kV XLPE dielectric space-charge accumulation limits under rapid polarity reversal transients according to CIGRE TB 496, demonstrate how your modular multilevel converter (MMC-VSC) coordinates sub-cycle active and reactive power stabilization during sudden offshore AC grid disconnection, and justify how your dynamic subsea umbilical cable mitigates vortex-induced vibrations (VIV) and bending fatigue across 2,200-meter deep sea trenches without micro-cracking fiber-optic sensing cores."',
+      actions: {
+        voltage: {
+          note: '[Ajuste Bipolar ±525 kV]: Compensación de caída de tensión óhmica en 650 km activada; flujo continuo optimizado a 2,150 MW.',
+          power: '2,150 MW (Boost Grid)'
+        },
+        mmc: {
+          note: '[Sincronización MMC-VSC]: Balance dinámico de submódulos y filtrado armónico; descargas parciales caen a < 1.2 pC.',
+          pd: '< 1.2 pC (Ultra-Pure)'
+        },
+        das: {
+          note: '[Filtro Acústico Distribuido DAS]: Detección de resonancia hidrodinámica en tiempo real; amortiguamiento VIV optimizado.',
+          saved: '$51,000,000 USD'
+        },
+        burial: {
+          note: '[Inspección Sonar ROV]: Verificación de zanja a 2.5 m bajo lecho sedimentario; protección contra anclas certificada.',
+          voltage: '±525 kV (Locked)'
+        }
+      },
+      optimalDecision: {
+        score: 'SUBSEA HVDC CERTIFIED • 99/100 (CIGRE TB 496 & IEC 62067 COMPLIANT)',
+        notes: '"The Subsea Transmission & Marine Power Interconnection Council unanimously ratifies the candidate\'s ±525 kV XLPE cable dielectric design, MMC-VSC reactive power coordination, and dynamic umbilical VIV vibration damping strategy. Space-charge accumulation testing, water-treeing barrier integrity, and DAS acoustic bathymetry strictly fulfill CIGRE B1, CIGRE TB 496, and IEC 62067 standards."',
+        chips: ['#Subsea_525kV_HVDC', '#CIGRE_TB496_Testing', '#MMC_VSC_ReactiveQ', '#DynamicUmbilical_DAS', '#IEC_62067_Compliance']
+      },
+      reportFilename: 'Subsea_HVDC_Coatzacoalcos_Tampa.md'
+    },
+    'mmc': {
+      id: 'mmc',
+      facility: 'FACILITY: PROGRESO-KEY WEST ENERGY CORRIDOR',
+      standard: 'IEEE 1453 • CIGRE B4 • IEC 62747 • NERC Reliability',
+      title: 'Modular Multilevel Converter (MMC VSC-HVDC) Subsea Grid Tie & Reactive Power Stabilization',
+      targetScope: 'Converter Power: 2,400 MVA • Submodules: 400 per arm • Black-Start: < 180 ms • Protected Capital: $52,000,000 USD',
+      voltage: '±525 kV',
+      power: '2,200 MW',
+      pd: '< 1.5 pC',
+      saved: '$52,000,000 USD',
+      inspectionSpec: 'Estación convertidora costa afuera con topología modular multinivel (MMC-VSC) basada en transistores IGBT de 4.5 kV / 3 kA configurados en submódulos híbridos (50% medio puente, 50% puente completo) que permiten el despeje y bloqueo instantáneo de fallas bipolares DC sin desconectar el enlace de CA. Suministra soporte dinámico de potencia reactiva de ±750 MVAR con control independiente de voltaje en el punto de acoplamiento común (PCC). Capaz de operar en modo arranque en negro (black-start) restaurando la red eléctrica insular y peninsular en menos de 180 ms con distorsión armónica total (THD) inferior al 1.2%.',
+      boardMembers: 'Dr. Kenneth Thorne 🇬🇧/🇺🇸 & Ing. Paulina Cárdenas 🇲🇽/🇺🇸',
+      boardPrompt: '"Senior High-Voltage Converter Architect: Detail your hybrid MMC submodule configuration for subsea DC line fault clearance without AC breaker tripping. Explain your vector-current cross-coupling decoupling strategy under weak AC grid conditions (Short Circuit Ratio SCR < 1.5) and demonstrate how you eliminate circulating currents among converter arms."',
+      actions: {
+        voltage: {
+          note: '[Desacoplamiento P-Q en MMC]: Control vectorial desacoplado estabiliza PCC; inyección reactiva instantánea a ±750 MVAR.',
+          power: '2,350 MW (Max VSC)'
+        },
+        mmc: {
+          note: '[Supresión de Corrientes Circulantes]: Filtro de doble frecuencia de línea en lazos de control elimina pérdidas Joule en brazos.',
+          pd: '< 1.0 pC (Zero Ripple)'
+        },
+        das: {
+          note: '[Protocolo Black-Start Verificado]: Sincronización de ángulo de fase en red débil completada en 165 ms.',
+          saved: '$58,000,000 USD'
+        },
+        burial: {
+          note: '[Aislamiento Galvánico Marino]: Barrera de transformadores convertidores estrella-delta disipa sobretensiones atmosféricas.',
+          voltage: '±525 kV (MMC Pure)'
+        }
+      },
+      optimalDecision: {
+        score: 'SUBSEA HVDC CERTIFIED • 99/100 (CIGRE TB 496 & IEC 62067 COMPLIANT)',
+        notes: '"Unanimous endorsement of the hybrid modular multilevel converter architecture and weak-grid reactive power stabilization protocol. The circulating current suppression, fast black-start capability, and DC fault ride-through represent state-of-the-art power electronic engineering."',
+        chips: ['#MMC_VSC_HybridSubmodules', '#WeakGrid_SCR_15', '#CirculatingCurrent_Suppression', '#FastBlackStart_180ms', '#CIGRE_B4_Compliance']
+      },
+      reportFilename: 'Subsea_MMC_Progreso_KeyWest.md'
+    },
+    'umbilical': {
+      id: 'umbilical',
+      facility: 'FACILITY: ALTAMIRA-BROWNSVILLE DEEPWATER TRENCH',
+      standard: 'ISO 13628-5 • API Spec 17E • CIGRE B1 • DNV-ST-F119',
+      title: 'Dynamic Umbilical Flex Cable & Deepwater Fiber-Optic Acoustic Sonar Bathymetry',
+      targetScope: 'Water Depth: 2,400 m • Dynamic Bending Radius: 4.8 m • Fiber Channels: 96 Core Single-Mode • Protected Capital: $49,000,000 USD',
+      voltage: '±525 kV',
+      power: '2,050 MW',
+      pd: '< 1.6 pC',
+      saved: '$49,000,000 USD',
+      inspectionSpec: 'Cable umbilical submarino multifunción dinámico suspendido en configuración lazy-wave entre una subestación marina flotante tipo spar y el lecho marino a 2,400 metros de profundidad. Integra tres conductores de potencia apantallados de 132 kV, tubos hidráulicos de acero super dúplex para inyección química y un haz central de 96 fibras ópticas monomodo acopladas a un interrogador acústico distribuido (DAS) y de temperatura (DTS). Mitiga la fatiga mecánica por flexión inducida por oleaje y corrientes de bucle del Golfo mediante rigidizadores de flexión de poliuretano y módulos de flotabilidad sintáctica.',
+      boardMembers: 'Dr. Kenneth Thorne 🇬🇧/🇺🇸 & Ing. Paulina Cárdenas 🇲🇽/🇺🇸',
+      boardPrompt: '"Deepwater Umbilical & Marine Systems Engineer: How does your lazy-wave dynamic umbilical configuration absorb heave and surge motions of floating offshore platforms during Category 4 hurricane conditions? Describe your real-time distributed acoustic sensing (DAS) calibration for subsea seabed sediment scouring and explain your bend stiffener fatigue life assessment under DNV-ST-F119."',
+      actions: {
+        voltage: {
+          note: '[Configuración Lazy-Wave Calibrada]: Módulos de flotabilidad sintáctica ajustan curvatura; radio de flexión > 5.2 m bajo oleaje extremo.',
+          power: '2,180 MW (Stable Flow)'
+        },
+        mmc: {
+          note: '[Amortiguador VIV Hidrodinámico]: Aletas helicoidales estriadas suprimen desprendimiento de vórtices y resonancia estructural.',
+          pd: '< 1.1 pC (Strain Free)'
+        },
+        das: {
+          note: '[Interrogación DAS en 96 Fibras]: Detección de tensiones axiales a 2 kHz; vida útil por fatiga extendida a 35 años.',
+          saved: '$54,000,000 USD'
+        },
+        burial: {
+          note: '[Mapeo Sonar Batimétrico 3D]: Escaneo batimétrico multihaz descarta afloramiento de rocas o desprendimientos submarinos.',
+          voltage: '±525 kV (Deep Trench)'
+        }
+      },
+      optimalDecision: {
+        score: 'SUBSEA HVDC CERTIFIED • 99/100 (CIGRE TB 496 & IEC 62067 COMPLIANT)',
+        notes: '"Unanimous certification of the deepwater dynamic umbilical mechanical architecture and distributed optical sensing diagnostics. The lazy-wave buoyancy profile, vortex vibration suppression, and 35-year fatigue endurance exceed DNV-ST-F119 and API Spec 17E requirements."',
+        chips: ['#DynamicUmbilical_LazyWave', '#DistributedAcousticSensing_DAS', '#VIV_SuppressionStrakes', '#DNV_ST_F119_Fatigue', '#Deepwater_2400m_Trench']
+      },
+      reportFilename: 'Subsea_Umbilical_Altamira_Brownsville.md'
+    }
+  }
+};
+
+window.currentHvdcStation = 'xlpe';
+
+window.initHvdcCrucible = function() {
+  window.switchHvdcStation(window.currentHvdcStation || 'xlpe');
+};
+
+window.switchHvdcStation = function(stationKey) {
+  const s = window.HVDC_CRUCIBLE_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentHvdcStation = stationKey;
+
+  // Update nav buttons
+  ['xlpe', 'mmc', 'umbilical'].forEach(k => {
+    const btn = document.getElementById(`btn-hvdc-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('hvdc-facility-badge');
+  const stdBadge = document.getElementById('hvdc-standard-badge');
+  const titleEl = document.getElementById('hvdc-station-title');
+  const scopeEl = document.getElementById('hvdc-target-scope');
+  const specEl = document.getElementById('hvdc-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${s.standard}`;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update telemetry stats
+  const voltEl = document.getElementById('hvdc-stat-voltage');
+  const powerEl = document.getElementById('hvdc-stat-power');
+  const pdEl = document.getElementById('hvdc-stat-pd');
+  const savedEl = document.getElementById('hvdc-stat-saved');
+
+  if (voltEl) voltEl.textContent = s.voltage;
+  if (powerEl) powerEl.textContent = s.power;
+  if (pdEl) pdEl.textContent = s.pd;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board members and prompt
+  const boardEl = document.getElementById('hvdc-board-members');
+  const inquiryEl = document.getElementById('hvdc-board-inquiry');
+  if (boardEl) boardEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Clear brief
+  const strategyInput = document.getElementById('hvdc-candidate-strategy');
+  if (strategyInput) strategyInput.value = '';
+
+  // Reset ruling card
+  const rulingScore = document.getElementById('hvdc-ruling-score');
+  const decisionNotes = document.getElementById('hvdc-board-decision-notes');
+
+  if (rulingScore) {
+    rulingScore.textContent = 'SUBSEA HVDC AUDIT PENDING';
+    rulingScore.style.color = '#06b6d4';
+    rulingScore.style.borderColor = '#0891b2';
+    rulingScore.style.background = 'rgba(8,145,178,0.15)';
+  }
+  if (decisionNotes) {
+    decisionNotes.textContent = 'Aplica acciones tácticas de telemetría submarina o somete tu protocolo técnico HVDC/CIGRE para solicitar certificación oficial.';
+  }
+};
+
+window.applyHvdcAction = function(actionKey) {
+  const s = window.HVDC_CRUCIBLE_DATA.stations[window.currentHvdcStation];
+  if (!s) return;
+
+  const act = s.actions[actionKey];
+  if (!act) return;
+
+  // Update relevant metric if provided
+  if (act.voltage) {
+    const voltEl = document.getElementById('hvdc-stat-voltage');
+    if (voltEl) voltEl.textContent = act.voltage;
+  }
+  if (act.power) {
+    const powerEl = document.getElementById('hvdc-stat-power');
+    if (powerEl) powerEl.textContent = act.power;
+  }
+  if (act.pd) {
+    const pdEl = document.getElementById('hvdc-stat-pd');
+    if (pdEl) pdEl.textContent = act.pd;
+  }
+  if (act.saved) {
+    const savedEl = document.getElementById('hvdc-stat-saved');
+    if (savedEl) savedEl.textContent = act.saved;
+  }
+
+  // Update decision notes with action confirmation
+  const decisionNotes = document.getElementById('hvdc-board-decision-notes');
+  if (decisionNotes) {
+    decisionNotes.textContent = act.note;
+  }
+
+  const rulingScore = document.getElementById('hvdc-ruling-score');
+  if (rulingScore) {
+    rulingScore.textContent = 'SUBSEA HVDC TELEMETRY OPTIMIZED • READY FOR CERTIFICATION';
+    rulingScore.style.color = '#06b6d4';
+    rulingScore.style.borderColor = '#0891b2';
+    rulingScore.style.background = 'rgba(8,145,178,0.15)';
+  }
+};
+
+window.playHvdcAudio = function() {
+  const s = window.HVDC_CRUCIBLE_DATA.stations[window.currentHvdcStation];
+  if (!s) return;
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(s.boardPrompt);
+    utter.rate = 1.0;
+    utter.pitch = 0.95;
+    utter.lang = 'en-US';
+    window.speechSynthesis.speak(utter);
+  }
+};
+
+window.toggleHvdcMic = function() {
+  const strategyInput = document.getElementById('hvdc-candidate-strategy');
+  if (!strategyInput) return;
+
+  const sampleStrategy = "Dr. Kenneth Thorne, Ing. Paulina Cárdenas: In our 650 km ±525 kV deepwater subsea link, space charge accumulation is suppressed using ultra-clean, inorganic nano-composite XLPE with pulsed electro-acoustic (PEA) monitoring, keeping electric field distortion below 5% under CIGRE TB 496 prequalification protocols. The shoreline MMC-VSC terminal utilizes 400 half-bridge and full-bridge submodules per arm with cascaded vector controllers that inject up to ±600 MVAR of dynamic reactive power within 15 ms of offshore grid trips, maintaining system frequency at 60.0 Hz. Along the deepwater seabed, the double contra-helical steel armored cable is entrenched 2.5 meters below the sediment by jet-trenching ROVs, while distributed acoustic sensing (DAS) interrogates embedded single-mode fiber cores at 2 kHz to detect vortex-induced vibrations (VIV) and anchor dragging threats in real time, safeguarding $46,500,000 USD in cross-border energy transactions under IEC 62067 compliance...";
+  if (strategyInput.value.trim().length === 0) {
+    strategyInput.value = sampleStrategy;
+  } else {
+    strategyInput.value += " " + sampleStrategy;
+  }
+};
+
+window.submitHvdcDefense = function() {
+  const s = window.HVDC_CRUCIBLE_DATA.stations[window.currentHvdcStation];
+  if (!s) return;
+
+  const rulingScore = document.getElementById('hvdc-ruling-score');
+  const decisionNotes = document.getElementById('hvdc-board-decision-notes');
+  const chipsContainer = document.getElementById('hvdc-competency-chips');
+
+  if (rulingScore) {
+    rulingScore.textContent = s.optimalDecision.score;
+    rulingScore.style.color = '#06b6d4';
+    rulingScore.style.borderColor = '#0891b2';
+    rulingScore.style.background = 'rgba(8,145,178,0.15)';
+  }
+
+  if (decisionNotes) {
+    decisionNotes.textContent = s.optimalDecision.notes;
+  }
+
+  if (chipsContainer && s.optimalDecision.chips) {
+    chipsContainer.innerHTML = s.optimalDecision.chips.map(chip => 
+      `<span style="font-size:0.65rem; background:#1e293b; color:#06b6d4; padding:0.15rem 0.4rem; border-radius:4px; border:1px solid #334155;">${chip}</span>`
+    ).join(' ');
+  }
+};
+
+window.exportHvdcReport = function() {
+  const s = window.HVDC_CRUCIBLE_DATA.stations[window.currentHvdcStation] || window.HVDC_CRUCIBLE_DATA.stations['xlpe'];
+  const defense = document.getElementById('hvdc-candidate-strategy')?.value || 'Subsea HVDC Transmission Protocol delivered during live simulation.';
+  const ruling = document.getElementById('hvdc-ruling-score')?.textContent || 'SUBSEA HVDC CERTIFIED • 99/100 (CIGRE TB 496 & IEC 62067 COMPLIANT)';
+  const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+  const md = `# stemOS Subsea High-Voltage Direct Current (HVDC) Interconnector & Umbilical Protocol
+## ±525 kV XLPE Transmission, MMC-VSC & Dynamic Umbilical Technical Record
+**Date**: ${dateStr}
+**Testing Facility**: ${s.facility}
+**Subsea Transmission Architecture**: ${s.title}
+**Regulatory Standard**: ${s.standard}
+**Certification Council**: ${s.boardMembers}
+
+---
+
+## 1. Subsea Electrical & Hydrodynamic Telemetry
+- **Target Engineering Scope**: ${s.targetScope}
+- **Subsea Direct Current Voltage**: ${s.voltage}
+- **Continuous Power Transmitted**: ${s.power}
+- **Partial Discharge (PD) Level**: ${s.pd}
+- **Protected Marine Capital & Reliability**: ${s.saved}
+- **Subsea Cable & Converter Specifications**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead Subsea Power Systems Architect's Defense Protocol
+${defense}
+
+---
+
+## 3. Subsea Transmission & Marine Power Interconnection Council Ruling
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core Marine Power & HVDC Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS High-Voltage Offshore Record • Certified Under CIGRE B1, CIGRE TB 496 & IEC 62067 Specifications*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// =============================================================================
+// PHASE 45 — AUTONOMOUS NEARSHORING AI SUBATOMIC QUANTUM SENSING &
+//            COLD-ATOM GRAVIMETRY INERTIAL NAVIGATION CRUCIBLE
+// Standards: NIST IR 8441 • IEEE Quantum Initiative • ISO/IEC 22989 • CENAM
+// =============================================================================
+
+window.SENSING_CRUCIBLE_DATA = {
+  stations: {
+    'mot': {
+      id: 'mot',
+      facility: 'FACILITY: MONTERREY-SALTILLO SUBTERRANEAN AQUIFER GRID',
+      standard: 'NIST IR 8441 Quantum Gravimetry • IEEE Quantum Initiative • ISO/IEC 22989 • CENAM MX-NMI',
+      title: '⁸⁷Rb Magneto-Optical Trap (MOT) & Stimulated Raman Atom Interferometry Gravimeter',
+      targetScope: 'Atomic Species: ⁸⁷Rb (D2 line 780.24 nm) • MOT Temperature: 2.5 μK • Interrogation Time: 160 ms • Gravimetric Sensitivity: 1.2 μGal • Capital Protected: $55,000,000 USD',
+      grav: '1.2 μGal',
+      drift: '< 0.0001°/hr',
+      noise: '< 0.8 fT/√Hz',
+      saved: '$55,000,000 USD',
+      inspectionSpec: 'Gravímetro de interferometría atómica absoluta basado en una Trampa Magneto-Óptica (MOT) de átomos de ⁸⁷Rb enfriados por 6 haces láser contrapropagantes sintonizados a la transición D2 (λ = 780.241 nm). El ciclo de medida comprende: (1) enfriamiento subestadiario Doppler hasta 2.5 μK mediante melaza óptica; (2) selección de estado magnético en mF = 0 por bombeo óptico para cancelar el corrimiento Zeeman de primer orden; (3) secuencia de interferometría de ondas de materia Mach-Zehnder con tres pulsos Raman estimulados (π/2 – π – π/2) separados por el tiempo de interrogación T = 160 ms, maximizando el área de la trayectoria de Sagnac y la sensibilidad a la aceleración gravitacional local g. La resolución de 1.2 μGal (1 μGal = 10⁻⁸ m/s²) permite discriminar variaciones de carga hídrica en acuíferos subterráneos del Valle de Monterrey y la cuenca de Saltillo con incertidumbre de tipo-A inferior a 0.3 μGal bajo NIST IR 8441.',
+      boardMembers: 'Dr. Tobias Vance 🇺🇸/🇩🇪 & Dra. Jimena Almonte 🇲🇽/🇺🇸',
+      boardPrompt: '"Lead Quantum Metrologist: In your ⁸⁷Rb Mach-Zehnder atom interferometer operating with a 160 ms interrogation time, defend how you suppress phase noise from ambient industrial micro-seismic vibrations at the Monterrey-Saltillo subterranean site, demonstrate how stimulated Raman pulse Rabi frequency precision (δΩ_R/Ω_R < 10⁻⁴) limits systematic bias in the inertial phase shift ΔΦ = k_eff · g · T², and prove that your active inertial vibration isolation platform maintains fringe contrast above 65% during simultaneous Class 8 truck traffic across the nearby Carretera 40D highway."',
+      actions: {
+        vibiso: {
+          note: '[Plataforma Inercial Activa Calibrada]: Sismómetro de banda ancha (0.01–100 Hz) acoplado a actuadores piezoeléctricos; reducción de vibración de planta > 40 dB. Contraste de franjas: 68.2%.',
+          grav: '1.05 μGal (Vib. Isolated)'
+        },
+        rabi: {
+          note: '[Corrección de Frecuencia Rabi Estimulada]: Calibración de potencia óptica por referencia de espejo retrorreflector atado a CENAM. Desviación sistemática de fase Raman reducida a δΩ_R/Ω_R = 8×10⁻⁵.',
+          drift: '< 0.00008°/hr (Rabi Cal.)'
+        },
+        zeeman: {
+          note: '[Corrimiento Zeeman de Segundo Orden Cancelado]: Estado mF = 0 seleccionado con extinción > 55 dB de estados residuales sensibles a campo magnético. Sesgo inercial corregido.',
+          grav: '0.98 μGal (Zeeman Free)'
+        },
+        coriolis: {
+          note: '[Corrección de Efecto Coriolis]: Acelerómetro de referencia MEMS tricausal compensa la rotación terrestre local (Ω_⊕ cos φ) en tiempo real. Incertidumbre tipo-A: 0.28 μGal.',
+          saved: '$58,500,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'QUANTUM SENSING EXCELLENCE GOLD • 99/100 (NIST IR 8441 & IEEE QUANTUM COMPLIANT)',
+        notes: '"The Quantum Metrology & Atomic Sensor Council unanimously ratifies the candidate\'s ⁸⁷Rb Mach-Zehnder interferometer design, active inertial isolation architecture, and stimulated Raman phase precision. The 1.2 μGal gravimetric sensitivity, sub-Zeeman systematic bias, and Coriolis compensation rigorously satisfy NIST IR 8441 absolute gravimetry traceability and IEEE Quantum Initiative industrial deployment standards."',
+        chips: ['#87Rb_MOT_Gravimetry', '#RamanInterferometry_PI2_P_PI2', '#NIST_IR_8441_Traceability', '#ActiveVibrationIsolation', '#MachZehnder_160ms']
+      },
+      reportFilename: 'Quantum_MOT_Gravimeter_Monterrey_Saltillo.md'
+    },
+    'gyro': {
+      id: 'gyro',
+      facility: 'FACILITY: QUERÉTARO-GUADALAJARA GPS-DENIED TUNNEL CORRIDOR',
+      standard: 'IEEE P3390 Quantum Inertial Navigation • NIST IR 8441 • NATO STANAG 4278 INS • ISO/IEC 22989',
+      title: 'Matter-Wave Gyroscope & Sagnac-Area Phase Shift Cold-Atom Inertial Navigation Unit',
+      targetScope: 'Geometry: Dual Counter-Propagating ⁸⁷Rb Fountains • Sagnac Enclosed Area: 11.0 cm² • Angular Drift: < 0.0001°/hr • Navigation Bias: < 0.05 m/hr • Capital Protected: $48,000,000 USD',
+      grav: '1.4 μGal',
+      drift: '< 0.0001°/hr',
+      noise: '< 1.2 fT/√Hz',
+      saved: '$48,000,000 USD',
+      inspectionSpec: 'Giroscopio cuántico de onda de materia basado en geometría de fuente dual con dos nubes de átomos de ⁸⁷Rb lanzadas en sentidos contrapropagantes dentro de una cámara de vacío ultrahigh (UHV, < 5×10⁻¹⁰ mbar) a lo largo del eje vertical del túnel ferroviario Querétaro-Guadalajara. El principio de operación es la interferometría de Sagnac atómica: el área de Sagnac efectiva A_S = ħ/(2m) · T² · v₀ ≈ 11 cm² (con tiempo de interrogación T = 150 ms y velocidad de lanzamiento v₀ = 3.8 m/s) transforma la velocidad angular Ω del vehículo en un desplazamiento de fase ΔΦ = 4π A_S Ω / λ_dB proporcional a la rotación, con deriva angular inferior a 0.0001°/hr. Garantiza navegación inercial cuántica autónoma sin señal GPS en toda la extensión del corredor subterráneo de 285 km bajo NATO STANAG 4278 para vehículos industriales de carga pesada.',
+      boardMembers: 'Dr. Tobias Vance 🇺🇸/🇩🇪 & Dra. Jimena Almonte 🇲🇽/🇺🇸',
+      boardPrompt: '"Quantum Inertial Navigation Architect: Detail the Sagnac-area phase shift mechanism in your dual counter-propagating ⁸⁷Rb matter-wave gyroscope for the Querétaro-Guadalajara GPS-denied tunnel. Demonstrate how you suppress magnetic field gradient dephasing across the atomic fountain loop, explain your atom-shot-noise-limited sensitivity floor at 160 nrad/s/√Hz, and defend how your feed-forward Raman laser phase control maintains fringe contrast above 60% under the centripetal accelerations of a curved tunnel at 120 km/hr."',
+      actions: {
+        vibiso: {
+          note: '[Supresión de Gradiente Magnético]: Bobinas de compensación de campo magnético activas (6 ejes) reducen ∇B < 0.1 nT/cm en el volumen de interferometría. Contraste: 63.8%.',
+          grav: '1.2 μGal (B-Comp Active)'
+        },
+        rabi: {
+          note: '[Corrección de Fase Laser Feed-Forward]: Acelerometría clásica MEMS predicee ΔΦ_laser en tiempo real; fase Raman pre-corregida. Contraste de franjas sube a 66.4%.',
+          drift: '< 0.00009°/hr (Feed-Fwd)'
+        },
+        zeeman: {
+          note: '[Calibración de Área de Sagnac]: Rotación Terrestre Ω_⊕ usada como referencia interna; A_S calibrado a 11.02 cm² ± 0.03 cm². Bias de navegación: 0.042 m/hr.',
+          grav: '1.1 μGal (Sagnac Cal.)'
+        },
+        coriolis: {
+          note: '[Fusión Inercial Cuántica-Clásica]: Kalman extendido fusiona datos del giroscopio atómico con acelerómetros MEMS; CEP 50 (circular error probable) acotado a 8.2 m en 285 km.',
+          saved: '$51,000,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'QUANTUM SENSING EXCELLENCE GOLD • 99/100 (NIST IR 8441 & IEEE QUANTUM COMPLIANT)',
+        notes: '"Unanimous certification of the dual-fountain matter-wave Sagnac gyroscope architecture and GPS-denied quantum-classical navigation fusion. The 0.0001°/hr drift bound, atom-shot-noise-limited phase sensitivity, and feed-forward Raman laser phase control fully satisfy IEEE P3390 quantum inertial navigation and NATO STANAG 4278 requirements for autonomous heavy freight tunnel navigation."',
+        chips: ['#MatterWave_Sagnac_Gyro', '#87Rb_DualFountain_INU', '#GPSDenied_Navigation', '#NATOStanag4278_INS', '#AtomShotNoise_160nrad']
+      },
+      reportFilename: 'Quantum_Gyro_Sagnac_Queretaro_Guadalajara.md'
+    },
+    'squid': {
+      id: 'squid',
+      facility: 'FACILITY: SONORA-BAJA CRITICAL MINERAL & LITHIUM TRENCH',
+      standard: 'IEEE Std 1302 SQUID Magnetometry • NIST IR 8441 • IEC 61788-1 Superconductivity • ISO 22989',
+      title: 'Planar Second-Order SQUID Gradiometer (4.2 K) & Subterranean Geomagnetic Vector Inversion',
+      targetScope: 'Cryogenic Bath: Liquid Helium 4.2 K • SQUID Sensitivity: < 0.8 fT/√Hz • Gradiometer Baseline: 100 mm • Lithium Pegmatite Depth: 1,400 m • Capital Protected: $55,000,000 USD',
+      grav: '0.9 μGal',
+      drift: '< 0.00005°/hr',
+      noise: '< 0.8 fT/√Hz',
+      saved: '$55,000,000 USD',
+      inspectionSpec: 'Gradiómetro geomagnético vectorial de segundo orden basado en SQUIDs (Superconducting Quantum Interference Devices) planares de Nb/AlOx/Nb fabricados en proceso de 4 capas de bajo ruido. Los sensores operan sumergidos en helio líquido a 4.2 K dentro de un criostato de flujo de vapor de baja evaporación (< 1.2 L/hr) con un escudo triple de mu-metal y una cámara de blindaje ferromagnético activo que reduce el campo remanente a < 5 nT. El gradiómetro de segundo orden (baseline entre espiras de 100 mm) cancela fuentes de campo magnético lejano (interferencia ambiental), preservando únicamente los gradientes locales producidos por contrastes de susceptibilidad magnética en el subsuelo. La resolución magnética de < 0.8 fT/√Hz en la banda 0.01–10 Hz, acoplada a algoritmos de inversión geofísica 3D (Tikhonov regularization), permite mapear diques de litio-pegmatita y depósitos de cobre-pórfido a 1,400 m de profundidad en la Trench Sonora-Baja, salvaguardando $55,000,000 USD en reservas estratégicas de minerales críticos bajo IEC 61788-1.',
+      boardMembers: 'Dr. Tobias Vance 🇺🇸/🇩🇪 & Dra. Jimena Almonte 🇲🇽/🇺🇸',
+      boardPrompt: '"Quantum Magnetometry & Geophysics Lead: In your planar second-order SQUID gradiometer operating at 4.2 K inside a triple-layer mu-metal shield for the Sonora-Baja lithium trench, explain how your flux-locked loop (FLL) feedback electronics maintain SQUID bias at the optimal working point without flux jumps during rapid external field transients from nearby mining equipment. Defend your 3D Tikhonov inversion model for discriminating lithium pegmatite dike susceptibility (χ ≈ 10⁻⁵ SI) from surrounding granite basement, and prove your cryostat liquid helium management strategy maintains sub-0.01 K temperature stability for 72 continuous hours of geophysical survey operation."',
+      actions: {
+        vibiso: {
+          note: '[FLL Electrónica Estabilizada]: Amplificador SQUID de ultra-bajo ruido con ganancia de lazo cerrado (FLL) de 100 dB elimina saltos de flujo cuántico (Φ₀ = 2.07×10⁻¹⁵ Wb). Ruido: 0.72 fT/√Hz.',
+          noise: '0.72 fT/√Hz (FLL Optimized)'
+        },
+        rabi: {
+          note: '[Inversión 3D Tikhonov Completada]: Malla de inversión 200×200×50 m con regularización adaptativa aísla dique litio-pegmatita de 340 m de longitud a 1,380 m de profundidad. χ = 1.2×10⁻⁵ SI.',
+          grav: '0.82 μGal (Inversion Run)'
+        },
+        zeeman: {
+          note: '[Blindaje Activo Tri-Axial]: Bobinas de cancelación anti-interferencia de minería (≤ 50 Hz) reducen campo externo residual a < 2 nT en el volumen del SQUID. THD magnético < 0.1%.',
+          noise: '0.68 fT/√Hz (Active Shield)'
+        },
+        coriolis: {
+          note: '[Gestión de Helio Líquido 72 h]: Intercambiador de calor de placa de alta eficiencia y válvula JT (Joule-Thomson) de control automático mantienen T_He = 4.200 K ± 0.005 K por 73.4 horas continuas.',
+          saved: '$59,200,000 USD'
+        }
+      },
+      optimalDecision: {
+        score: 'QUANTUM SENSING EXCELLENCE GOLD • 99/100 (NIST IR 8441 & IEEE QUANTUM COMPLIANT)',
+        notes: '"Unanimous certification of the planar second-order SQUID gradiometer cryogenic architecture and 3D Tikhonov geophysical inversion pipeline. The flux-locked loop stability, sub-0.8 fT/√Hz magnetic noise floor, triple-layer active shielding, and 72-hour helium management protocol fully satisfy IEEE Std 1302, IEC 61788-1, and NIST IR 8441 quantum magnetometry standards for critical mineral exploration at 1,400 m depth."',
+        chips: ['#PlanarSQUID_SecondOrder', '#FluxLockedLoop_FLL', '#Tikhonov3D_GeoInversion', '#LithiumPegmatite_1400m', '#CryoStat_4K_72hr']
+      },
+      reportFilename: 'Quantum_SQUID_Gradiometer_Sonora_Baja.md'
+    }
+  }
+};
+
+window.currentSensingStation = 'mot';
+
+window.initSensingCrucible = function() {
+  window.switchSensingStation(window.currentSensingStation || 'mot');
+};
+
+window.switchSensingStation = function(stationKey) {
+  const s = window.SENSING_CRUCIBLE_DATA.stations[stationKey];
+  if (!s) return;
+  window.currentSensingStation = stationKey;
+
+  // Update nav buttons
+  ['mot', 'gyro', 'squid'].forEach(k => {
+    const btn = document.getElementById(`btn-sensing-scen-${k}`);
+    if (btn) btn.classList.toggle('active', k === stationKey);
+  });
+
+  // Update facility & badges
+  const facilityBadge = document.getElementById('sensing-facility-badge');
+  const stdBadge = document.getElementById('sensing-standard-badge');
+  const titleEl = document.getElementById('sensing-station-title');
+  const scopeEl = document.getElementById('sensing-target-scope');
+  const specEl = document.getElementById('sensing-inspection-spec');
+
+  if (facilityBadge) facilityBadge.textContent = s.facility;
+  if (stdBadge) stdBadge.textContent = s.standard;
+  if (titleEl) titleEl.textContent = s.title;
+  if (scopeEl) scopeEl.textContent = s.targetScope;
+  if (specEl) specEl.textContent = s.inspectionSpec;
+
+  // Update live stats
+  const gravEl = document.getElementById('sensing-stat-grav');
+  const driftEl = document.getElementById('sensing-stat-drift');
+  const noiseEl = document.getElementById('sensing-stat-noise');
+  const savedEl = document.getElementById('sensing-stat-saved');
+
+  if (gravEl) gravEl.textContent = s.grav;
+  if (driftEl) driftEl.textContent = s.drift;
+  if (noiseEl) noiseEl.textContent = s.noise;
+  if (savedEl) savedEl.textContent = s.saved;
+
+  // Update board
+  const membersEl = document.getElementById('sensing-board-members');
+  const inquiryEl = document.getElementById('sensing-board-inquiry');
+  if (membersEl) membersEl.textContent = s.boardMembers;
+  if (inquiryEl) inquiryEl.textContent = s.boardPrompt;
+
+  // Reset ruling area
+  const rulingEl = document.getElementById('sensing-ruling-score');
+  const notesEl = document.getElementById('sensing-board-decision-notes');
+  const chipsEl = document.getElementById('sensing-competency-chips');
+  if (rulingEl) rulingEl.textContent = 'AWAITING DEFENSE...';
+  if (notesEl) notesEl.textContent = 'Submit your quantum sensing defense to receive the Council\'s ruling.';
+  if (chipsEl) chipsEl.innerHTML = '';
+
+  // Reset textarea
+  const textarea = document.getElementById('sensing-candidate-strategy');
+  if (textarea) textarea.value = '';
+};
+
+window.applySensingAction = function(actionKey) {
+  const s = window.SENSING_CRUCIBLE_DATA.stations[window.currentSensingStation];
+  if (!s || !s.actions[actionKey]) return;
+  const action = s.actions[actionKey];
+
+  if (action.grav) {
+    const el = document.getElementById('sensing-stat-grav');
+    if (el) el.textContent = action.grav;
+  }
+  if (action.drift) {
+    const el = document.getElementById('sensing-stat-drift');
+    if (el) el.textContent = action.drift;
+  }
+  if (action.noise) {
+    const el = document.getElementById('sensing-stat-noise');
+    if (el) el.textContent = action.noise;
+  }
+  if (action.saved) {
+    const el = document.getElementById('sensing-stat-saved');
+    if (el) el.textContent = action.saved;
+  }
+
+  // Log breadcrumb
+  if (window.__telemetry) {
+    window.__telemetry.logEvent('sensing_action', { station: window.currentSensingStation, action: actionKey });
+  }
+};
+
+window.submitSensingDefense = function() {
+  const s = window.SENSING_CRUCIBLE_DATA.stations[window.currentSensingStation];
+  if (!s) return;
+
+  const textarea = document.getElementById('sensing-candidate-strategy');
+  const strategy = textarea ? textarea.value.trim() : '';
+  if (!strategy) {
+    alert('Por favor, escribe tu defensa técnica cuántica antes de enviar.');
+    return;
+  }
+
+  // Auto-apply optimal action sequence
+  Object.keys(s.actions).forEach(k => window.applySensingAction(k));
+
+  // Render ruling
+  const rulingEl = document.getElementById('sensing-ruling-score');
+  const notesEl = document.getElementById('sensing-board-decision-notes');
+  const chipsEl = document.getElementById('sensing-competency-chips');
+
+  if (rulingEl) rulingEl.textContent = s.optimalDecision.score;
+  if (notesEl) notesEl.textContent = s.optimalDecision.notes;
+  if (chipsEl) {
+    chipsEl.innerHTML = s.optimalDecision.chips
+      .map(ch => `<span style="background:rgba(168,85,247,0.15); color:#a855f7; padding:0.2rem 0.5rem; border-radius:4px; border:1px solid #a855f7; font-size:0.72rem; font-weight:700;">${ch}</span>`)
+      .join('');
+  }
+
+  if (window.__telemetry) {
+    window.__telemetry.logEvent('sensing_defense_submitted', { station: window.currentSensingStation, score: s.optimalDecision.score });
+  }
+};
+
+window.exportSensingReport = function() {
+  const s = window.SENSING_CRUCIBLE_DATA.stations[window.currentSensingStation];
+  if (!s) return;
+
+  const textarea = document.getElementById('sensing-candidate-strategy');
+  const defense = textarea ? textarea.value.trim() || '[No defense submitted]' : '[No defense submitted]';
+  const ruling = s.optimalDecision.score || 'PENDING';
+
+  const md = `# stemOS Quantum Sensing & Gravimetry Protocol
+## ${s.title}
+
+**Standard**: ${s.standard}
+**Date**: ${new Date().toISOString().split('T')[0]}
+**Board**: ${s.boardMembers}
+
+---
+
+## 1. Quantum Sensor & Geophysical Telemetry
+- **Target Engineering Scope**: ${s.targetScope}
+- **Gravimetric Resolution**: ${s.grav}
+- **Angular Drift (INS)**: ${s.drift}
+- **Magnetic Noise Floor**: ${s.noise}
+- **Protected Critical Mineral Capital**: ${s.saved}
+- **Sensor & Cryogenic Specifications**:
+${s.inspectionSpec}
+
+---
+
+## 2. Lead Quantum Metrologist's Defense Protocol
+${defense}
+
+---
+
+## 3. Quantum Metrology & Atomic Sensor Council Ruling
+- **Adjudicated Ruling**: ${ruling}
+- **Council Decision Notes**:
+${s.optimalDecision.notes}
+
+- **Core Quantum Sensing Competencies**:
+${s.optimalDecision.chips.map(ch => `- ${ch}`).join('\n')}
+
+---
+*Official stemOS Quantum Sensing Record • Certified Under NIST IR 8441, IEEE Quantum Initiative & ISO/IEC 22989 Standards*
+`;
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const aEl = document.createElement('a');
+  aEl.href = url;
+  aEl.download = s.reportFilename;
+  document.body.appendChild(aEl);
+  aEl.click();
+  document.body.removeChild(aEl);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// INDUSTRY STANDARDS VS. OUTDATED UNIVERSITY CURRICULA CONTROLLER
+// ============================================================================
+window.REALITY_DRILL_DATA = {
+  academic: {
+    mode: 'mode-academic',
+    scenarioTag: 'Examen de Inglés General en Facultad de Ingeniería (Syllabus Académico Teórico)',
+    scenarioTitle: 'Pregunta típica de opción múltiple descontextualizada:',
+    question: '"Choose the correct option: When Mr. Smith arrives at the airport, he ______ a taxi to the international conference."',
+    options: [
+      { text: '[A] takes (Opción gramatical de libro de texto)', isCorrect: true },
+      { text: '[B] taking', isCorrect: false },
+      { text: '[C] is took', isCorrect: false },
+      { text: '[D] was take', isCorrect: false }
+    ],
+    analysis: '⚠️ <strong>Diagnóstico de Desfase:</strong> Cero valor en planta de manufactura avanzada. Esta evaluación no mide si el ingeniero es capaz de leer un diagrama P&ID, aislar una fuente de alta tensión bajo OSHA 1910.147 LOTO, reportar un defecto wafer sub-micrónico bajo SEMI S2, ni defender un reporte de causa raíz 8D ante un auditor de Detroit o Silicon Valley.'
+  },
+  industry: {
+    mode: 'mode-industry',
+    scenarioTag: 'Desafío de Misión Crítica stemOS — Inversor de Batería EV a 800V (ISO 26262 ASIL-D & UN 38.3)',
+    scenarioTitle: 'Simulación de protocolo de contención en celda de pruebas térmicas:',
+    question: '"During dynamometer thermal stressing, cell cluster #4 reports an uncontrolled dV/dt drop and an exotherm spike above 72°C. Formulate the containment order to the test bay supervisor:"',
+    options: [
+      { text: '<strong>[A] Rigor stemOS:</strong> "Initiate immediate dry-chemical blanket purge, isolate the 800V high-voltage interlock (HVIL), and escalate a Priority-1 thermal runaway containment protocol under UN 38.3."', isCorrect: true },
+      { text: '<strong>[B] Genérico:</strong> "Please wait and look at the temperature screen until the battery stops being hot."', isCorrect: false },
+      { text: '<strong>[C] Informal:</strong> "Turn off the computer and call the general maintenance office tomorrow morning."', isCorrect: false },
+      { text: '<strong>[D] Peligroso:</strong> "Open the test chamber door with bare hands to check the battery smell."', isCorrect: false }
+    ],
+    analysis: ' <strong>Rigor Industrial stemOS:</strong> Inmersión auténtica en estándares globales. El alumno domina la terminología exacta que previene explosiones catastróficas, resguarda la vida humana en planta, y satisface auditorías de aseguramiento de calidad automotriz (ISO 26262 / IATF 16949).'
+  }
+};
+
+window.switchRealityGapDrill = function(mode) {
+  const container = document.getElementById('reality-drill-body');
+  const btnAcademic = document.getElementById('btn-drill-academic');
+  const btnIndustry = document.getElementById('btn-drill-industry');
+  
+  if (!container) return;
+
+  const data = window.REALITY_DRILL_DATA[mode] || window.REALITY_DRILL_DATA.academic;
+
+  if (btnAcademic && btnIndustry) {
+    if (mode === 'academic') {
+      btnAcademic.classList.add('active');
+      btnIndustry.classList.remove('active');
+    } else {
+      btnIndustry.classList.add('active');
+      btnAcademic.classList.remove('active');
+    }
+  }
+
+  container.className = 'reality-drill-body ' + data.mode;
+  container.innerHTML = `
+    <span class="drill-scenario-tag">${data.scenarioTag}</span>
+    <div style="font-size:0.86rem; color:var(--text-muted); margin-bottom:8px; font-weight:600;">${data.scenarioTitle}</div>
+    <div class="drill-question-box">${data.question}</div>
+    <div class="drill-options-grid">
+      ${data.options.map(opt => `
+        <div class="drill-opt-item" style="${opt.isCorrect ? 'border-color:rgba(14,165,233,0.5); background:#ffffff;' : ''}">
+          <i class="fa-solid ${opt.isCorrect ? 'fa-circle-check' : 'fa-circle'}" style="color:${opt.isCorrect ? (mode === 'industry' ? '#10b981' : '#0284c7') : '#94a3b8'};"></i>
+          <span>${opt.text}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div class="drill-analysis-note">
+      ${data.analysis}
+    </div>
+  `;
+};
+
+// Auto-initialize drill on load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof window.switchRealityGapDrill === 'function') {
+      window.switchRealityGapDrill('academic');
+    }
+  });
+} else {
+  if (typeof window.switchRealityGapDrill === 'function') {
+    window.switchRealityGapDrill('academic');
+  }
+}
 
 

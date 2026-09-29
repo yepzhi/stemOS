@@ -1933,7 +1933,3547 @@ if (t24_w3cModal.classList.contains('active')) {
 }
 console.log("PASS: Official W3C Open Badge 3.0 & SHA-256 Verifiable Credential modal, JSON-LD export, SVG QR and print handlers verified.");
 
-console.log("\n🎉 ALL 24 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+// ── TEST 25: Stackable Micro-Badges 4x15h, Recruiter Portfolio, Public Verifier & UI Nav Refactor (Phase 18) ──
+console.log("\n--- TEST 25: Stackable Micro-Badges 4x15h, Recruiter Portfolio & Nav Refactor ---");
+
+// 1. Stackable Badges Modal
+const t25_badgesModal = document.getElementById('stackable-badges-modal');
+const t25_badgesGrid = document.getElementById('stackable-badges-grid');
+window.openStackableBadgesModal();
+console.log("Stackable Badges Modal active:", t25_badgesModal ? t25_badgesModal.classList.contains('active') : false);
+if (!t25_badgesModal || !t25_badgesModal.classList.contains('active')) {
+  console.error("FAIL: Stackable Badges modal failed to open!");
+  process.exit(1);
+}
+
+const t25_badgeCards = t25_badgesGrid ? t25_badgesGrid.querySelectorAll('.stack-badge-card') : [];
+console.log("Rendered Stackable Badge Cards Count:", t25_badgeCards.length);
+if (t25_badgeCards.length < 4) {
+  console.error("FAIL: Expected 4 milestone badges (15h each), found:", t25_badgeCards.length);
+  process.exit(1);
+}
+
+// Test issuing a badge
+window.emitStackableBadge(1);
+console.log("PASS: Stackable badge emission simulated for Milestone 1.");
+
+window.closeStackableBadgesModal();
+if (t25_badgesModal.classList.contains('active')) {
+  console.error("FAIL: Stackable Badges modal failed to close!");
+  process.exit(1);
+}
+console.log("PASS: Stackable Micro-Badges modal lifecycle verified.");
+
+// 2. Recruiter Portfolio Modal
+const t25_portfolioModal = document.getElementById('recruiter-portfolio-modal');
+const t25_portfolioStudent = document.getElementById('portfolio-student-name');
+const t25_portfolioCareer = document.getElementById('portfolio-career-name');
+window.openRecruiterPortfolioModal();
+console.log("Recruiter Portfolio Modal active:", t25_portfolioModal ? t25_portfolioModal.classList.contains('active') : false);
+console.log("Portfolio Candidate Name:", t25_portfolioStudent ? t25_portfolioStudent.textContent : "null");
+console.log("Portfolio Target Career:", t25_portfolioCareer ? t25_portfolioCareer.textContent : "null");
+
+if (!t25_portfolioModal || !t25_portfolioModal.classList.contains('active')) {
+  console.error("FAIL: Recruiter Portfolio modal failed to open!");
+  process.exit(1);
+}
+if (!t25_portfolioStudent || !t25_portfolioStudent.textContent.includes('Diana')) {
+  console.error("FAIL: Recruiter Portfolio missing candidate name!");
+  process.exit(1);
+}
+
+const t25_portDummyBtn = document.createElement('button');
+window.copyPortfolioVerifyLink(t25_portDummyBtn);
+console.log("Portfolio Copy Link state:", t25_portDummyBtn.innerHTML);
+
+window.closeRecruiterPortfolioModal();
+if (t25_portfolioModal.classList.contains('active')) {
+  console.error("FAIL: Recruiter Portfolio modal failed to close!");
+  process.exit(1);
+}
+console.log("PASS: Candidate Recruiter Portfolio & dossier export verified.");
+
+// 3. Public Verifier Modal
+const t25_verifierModal = document.getElementById('public-verifier-modal');
+const t25_verifierInput = document.getElementById('verifier-hash-input');
+window.openPublicVerifierModal('STEM-W3C-2026-MEC-91024');
+console.log("Public Verifier Modal active:", t25_verifierModal ? t25_verifierModal.classList.contains('active') : false);
+console.log("Verifier Hash Input:", t25_verifierInput ? t25_verifierInput.value : "null");
+
+if (!t25_verifierModal || !t25_verifierModal.classList.contains('active')) {
+  console.error("FAIL: Public Verifier modal failed to open!");
+  process.exit(1);
+}
+
+window.runPublicVerification();
+const t25_resArea = document.getElementById('verifier-result-area');
+console.log("Verifier Output Present:", t25_resArea && t25_resArea.innerHTML.length > 50);
+
+window.closePublicVerifierModal();
+if (t25_verifierModal.classList.contains('active')) {
+  console.error("FAIL: Public Verifier modal failed to close!");
+  process.exit(1);
+}
+console.log("PASS: Public SHA-256 Verifier modal & verification workflow verified.");
+
+// 4. UI/UX Architecture & Navigation Refactor
+const t25_dropCatalog = document.getElementById('nav-dropdown-catalog');
+const t25_dropLabs = document.getElementById('nav-dropdown-labs');
+const t25_dropCreds = document.getElementById('nav-dropdown-tools');
+const t25_mobileToggle = document.getElementById('supaste-nav-mobile-toggle');
+const t25_mobilePanel = document.getElementById('supaste-mobile-nav-panel');
+const t25_simulatorsDock = document.getElementById('hero-simulators-dock');
+
+console.log("Navbar Dropdown Catalog present:", !!t25_dropCatalog);
+console.log("Navbar Dropdown Labs present:", !!t25_dropLabs);
+console.log("Navbar Dropdown Tools/Credentials present:", !!t25_dropCreds);
+console.log("Mobile Nav Drawer Trigger present:", !!t25_mobileToggle);
+console.log("Hero Simulators Dock present:", !!t25_simulatorsDock);
+
+if (!t25_dropCatalog || !t25_dropLabs || !t25_dropCreds) {
+  console.error("FAIL: Dropdown menus missing from navigation architecture!");
+  process.exit(1);
+}
+
+if (!t25_simulatorsDock) {
+  console.error("FAIL: Hero Simulators Dock missing from hero section!");
+  process.exit(1);
+}
+
+// Test mobile navigation drawer toggle
+if (typeof window.toggleMobileNav === 'function' && t25_mobilePanel) {
+  window.toggleMobileNav(true);
+  console.log("Mobile panel active after toggle(true):", t25_mobilePanel.classList.contains('active'));
+  window.toggleMobileNav(false);
+  console.log("Mobile panel active after toggle(false):", t25_mobilePanel.classList.contains('active'));
+}
+console.log("PASS: UI/UX Navigation Refactor, Dropdowns & Responsive Mobile Drawer verified.");
+
+console.log("\n── TEST 26: AI Technical Recruiter & Cross-Border Mock Interview Simulator (Phase 19) ──");
+
+// 1. Navigation and Section Presence
+const t26_section = document.getElementById('nearshoring-talent-hub-section');
+const t26_navBtn = document.getElementById('nav-btn-talent-hub');
+const t26_heroBtn = document.getElementById('hero-talent-hub-btn');
+
+console.log("Talent Hub Section present:", !!t26_section);
+console.log("Nav button present:", !!t26_navBtn);
+console.log("Hero dock pill present:", !!t26_heroBtn);
+
+if (!t26_section || !t26_navBtn || !t26_heroBtn) {
+  console.error("FAIL: Phase 19 Talent Hub section or navigation triggers missing!");
+  process.exit(1);
+}
+
+// 2. Tab Switching Lifecycle
+window.switchHubTab('job-board');
+const t26_panelJob = document.getElementById('hub-panel-job-board');
+const t26_panelStar = document.getElementById('hub-panel-star-interview');
+const t26_panelSalary = document.getElementById('hub-panel-salary-calc');
+
+console.log("Job Board panel display after switch:", t26_panelJob.style.display);
+console.log("STAR Interview panel display after switch:", t26_panelStar.style.display);
+
+if (t26_panelJob.style.display !== 'block' || t26_panelStar.style.display !== 'none') {
+  console.error("FAIL: Hub tab switching failed!");
+  process.exit(1);
+}
+
+window.switchHubTab('star-interview');
+console.log("STAR Interview panel restored:", t26_panelStar.style.display === 'block');
+
+// 3. Recruiter Persona Switching & Scenarios
+console.log("Initial Recruiter ID:", window.currentRecruiterId);
+window.selectRecruiterPersona('sarah');
+console.log("Updated Recruiter ID:", window.currentRecruiterId);
+const t26_recName = document.getElementById('recruiter-display-name');
+const t26_recRole = document.getElementById('recruiter-display-role');
+console.log("Recruiter DOM Name:", t26_recName.textContent);
+console.log("Recruiter DOM Role:", t26_recRole.textContent);
+
+if (window.currentRecruiterId !== 'sarah' || !t26_recName.textContent.includes('Sarah Jenkins')) {
+  console.error("FAIL: Recruiter persona selection failed!");
+  process.exit(1);
+}
+
+window.cycleRecruiterScenario(1);
+console.log("Cycled Scenario Index:", window.currentScenarioIdx);
+if (window.currentScenarioIdx !== 1) {
+  console.error("FAIL: Scenario cycling failed!");
+  process.exit(1);
+}
+
+// Test Audio Trigger
+window.listenRecruiterPrompt();
+console.log("PASS: Recruiter audio prompt dispatched safely via SpeechSynthesis stub.");
+
+// 4. STAR Candidate Response Evaluator
+// A) Test Suboptimal Evaluation
+window.loadSampleStarResponse('suboptimal');
+const t26_responseBox = document.getElementById('star-candidate-response');
+console.log("Loaded Suboptimal Sample length:", t26_responseBox.value.length);
+
+window.evaluateStarCandidateResponse();
+const t26_totalScoreEl = document.getElementById('star-total-score');
+const t26_verdictTitle = document.getElementById('star-verdict-title');
+const suboptimalScore = parseInt(t26_totalScoreEl.textContent, 10);
+console.log("Suboptimal Total Score:", suboptimalScore);
+console.log("Suboptimal Verdict:", t26_verdictTitle.textContent);
+
+if (suboptimalScore > 75 || !t26_verdictTitle.textContent.includes('RETRY') && !t26_verdictTitle.textContent.includes('CONSIDER')) {
+  console.error("FAIL: Suboptimal STAR response was scored too high or received wrong verdict!");
+  process.exit(1);
+}
+
+// B) Test Optimal C1 Evaluation
+window.loadSampleStarResponse('optimal');
+console.log("Loaded Optimal Sample length:", t26_responseBox.value.length);
+
+window.evaluateStarCandidateResponse();
+const optimalScore = parseInt(t26_totalScoreEl.textContent, 10);
+console.log("Optimal Total Score:", optimalScore);
+console.log("Optimal Verdict:", t26_verdictTitle.textContent);
+
+const t26_scoreS = document.getElementById('score-situation-val').textContent;
+const t26_scoreT = document.getElementById('score-task-val').textContent;
+const t26_scoreA = document.getElementById('score-action-val').textContent;
+const t26_scoreR = document.getElementById('score-result-val').textContent;
+console.log(`STAR Breakdown: S=[${t26_scoreS}] T=[${t26_scoreT}] A=[${t26_scoreA}] R=[${t26_scoreR}]`);
+
+if (optimalScore < 85 || !t26_verdictTitle.textContent.includes('HIRE')) {
+  console.error("FAIL: Optimal STAR response failed to score ≥85 or achieve HIRE verdict!");
+  process.exit(1);
+}
+console.log("PASS: STAR Interview Evaluation Engine verified for both optimal and suboptimal candidate inputs.");
+
+// 5. Nearshoring Job Board & Matcher
+window.switchHubTab('job-board');
+const t26_vacCards = document.querySelectorAll('.vacancy-card');
+console.log("Rendered Vacancy Cards count:", t26_vacCards.length);
+
+if (t26_vacCards.length < 12) {
+  console.error("FAIL: Expected at least 12 nearshoring vacancy postings, found:", t26_vacCards.length);
+  process.exit(1);
+}
+
+// Test filtering by Hub
+window.filterJobBoard('saltillo', null);
+const t26_saltilloCards = document.querySelectorAll('.vacancy-card');
+console.log("Filtered Saltillo Vacancies count:", t26_saltilloCards.length);
+if (t26_saltilloCards.length < 2) {
+  console.error("FAIL: Saltillo filter returned too few vacancies!");
+  process.exit(1);
+}
+
+// Reset filter
+window.filterJobBoard('all', 'all');
+
+// Test Apply to Vacancy
+window.alert = (msg) => console.log("Alert Dialog Mocked:", msg.substring(0, 40) + "...");
+window.applyToJobVacancy('vac-aut-01');
+const t26_applyBtn = document.getElementById('btn-apply-vac-aut-01');
+console.log("Apply button text after submission:", t26_applyBtn.textContent.trim());
+if (!t26_applyBtn.textContent.includes('Expediente Enviado')) {
+  console.error("FAIL: Job application flow did not update button state!");
+  process.exit(1);
+}
+
+// Test Practice Job Question
+window.practiceJobQuestion('vac-med-01');
+console.log("Active recruiter after practice click:", window.currentRecruiterId);
+console.log("STAR Panel display after practice click:", t26_panelStar.style.display);
+if (window.currentRecruiterId !== 'sarah' || t26_panelStar.style.display !== 'block') {
+  console.error("FAIL: Practice job question failed to switch tab and set target recruiter!");
+  process.exit(1);
+}
+console.log("PASS: Nearshoring Job Board, Filtering, Student Application, and Question Practice verified.");
+
+// 6. Cross-Border Salary & Tax Calculator
+window.switchHubTab('salary-calc');
+const t26_monoSalary = document.getElementById('calc-monolingual-salary');
+const t26_biSalary = document.getElementById('calc-bilingual-salary');
+const t26_premiumDelta = document.getElementById('calc-premium-delta');
+const t26_taxNet = document.getElementById('tax-net-val');
+const t26_5year = document.getElementById('calc-5year-projection');
+
+console.log("Monolingual Salary Display:", t26_monoSalary.textContent);
+console.log("Bilingual C1 Salary Display:", t26_biSalary.textContent);
+console.log("Bilingual Premium Delta Display:", t26_premiumDelta.textContent);
+console.log("Net Take-Home Pay Display:", t26_taxNet.textContent);
+console.log("5-Year Projection Display:", t26_5year.textContent);
+
+if (!t26_monoSalary.textContent.includes('MXN') || !t26_biSalary.textContent.includes('MXN')) {
+  console.error("FAIL: Salary calculator failed to format MXN values!");
+  process.exit(1);
+}
+
+// Test currency switch to USD
+window.setSalaryCurrency('USD');
+console.log("Bilingual Salary in USD:", t26_biSalary.textContent);
+if (!t26_biSalary.textContent.includes('USD')) {
+  console.error("FAIL: Currency toggle to USD failed!");
+  process.exit(1);
+}
+
+// Test currency switch back to MXN
+window.setSalaryCurrency('MXN');
+
+// Test RESICO scheme selection
+const t26_regimeSelect = document.getElementById('calc-regime-select');
+if (t26_regimeSelect) {
+  t26_regimeSelect.value = 'resico';
+  window.calculateNearshoringSalaryBenchmark();
+  const resicoNote = document.getElementById('resico-advantage-note');
+  console.log("RESICO Advantage Note display:", resicoNote.style.display);
+  if (resicoNote.style.display !== 'flex') {
+    console.error("FAIL: RESICO advantage note not displayed under resico regime!");
+    process.exit(1);
+  }
+}
+
+// Test Export Benchmark Report
+window.exportSalaryBenchmarkReport();
+console.log("PASS: Cross-Border Salary & RESICO Tax Calculator lifecycle verified.");
+
+console.log("\n── TEST 27: Cross-Border Talent Pipeline & Recruiter Live Voice/Chat Agent (Phase 20) ──");
+
+// 27.1 Section, Nav, and Hero Dock Presence
+const t27_navLiveBtn = document.getElementById('nav-btn-live-chat');
+const t27_navPipelineBtn = document.getElementById('nav-btn-talent-pipeline');
+const t27_heroLiveBtn = document.getElementById('hero-live-agent-btn');
+const t27_panelLive = document.getElementById('hub-panel-live-agent');
+const t27_panelPipeline = document.getElementById('hub-panel-recruiter-portal');
+
+console.log("Nav Live Chat Button presence:", !!t27_navLiveBtn);
+console.log("Nav Pipeline Button presence:", !!t27_navPipelineBtn);
+console.log("Hero Live Agent Pill presence:", !!t27_heroLiveBtn);
+console.log("Live Agent Panel presence:", !!t27_panelLive);
+console.log("Recruiter Pipeline Panel presence:", !!t27_panelPipeline);
+
+if (!t27_navLiveBtn || !t27_navPipelineBtn || !t27_heroLiveBtn || !t27_panelLive || !t27_panelPipeline) {
+  console.error("FAIL: Phase 20 navigation or subpanels missing from DOM!");
+  process.exit(1);
+}
+
+// 27.2 Switch to Live Agent Tab & Initialize Dave Miller
+window.switchHubTab('live-agent');
+window.initLiveInterviewSession('dave');
+console.log("Live Agent panel display after switch:", t27_panelLive.style.display);
+if (t27_panelLive.style.display !== 'block') {
+  console.error("FAIL: Failed to activate live-agent tab!");
+  process.exit(1);
+}
+
+// 27.3 Verify Recruiter Banner & Initial Turn 1 Seed
+const t27_agentName = document.getElementById('live-agent-display-name');
+const t27_agentDialect = document.getElementById('live-agent-dialect-tag');
+const t27_turnDisplay = document.getElementById('live-turn-display');
+const t27_thread = document.getElementById('live-conversation-thread');
+
+console.log("Live Agent Name:", t27_agentName ? t27_agentName.textContent : "null");
+console.log("Live Agent Dialect:", t27_agentDialect ? t27_agentDialect.textContent : "null");
+console.log("Turn Display:", t27_turnDisplay ? t27_turnDisplay.textContent : "null");
+
+const initialBubbles = t27_thread.querySelectorAll('.live-bubble');
+console.log("Initial Seed Bubbles count:", initialBubbles.length);
+
+if (!t27_agentName || !t27_agentName.textContent.includes('Dave Miller')) {
+  console.error("FAIL: Initial live recruiter name not Dave Miller!");
+  process.exit(1);
+}
+if (initialBubbles.length !== 1) {
+  console.error("FAIL: Expected 1 initial recruiter bubble, found:", initialBubbles.length);
+  process.exit(1);
+}
+
+// 27.4 Microphone Dictation Toggle Simulation
+window.toggleLiveInterviewMic();
+const t27_micIndicator = document.getElementById('live-mic-indicator');
+console.log("Mic indicator display after start:", t27_micIndicator.style.display);
+window.toggleLiveInterviewMic();
+console.log("Mic indicator display after stop:", t27_micIndicator.style.display);
+if (t27_micIndicator.style.display !== 'none') {
+  console.error("FAIL: Mic indicator did not hide upon stopping!");
+  process.exit(1);
+}
+
+// 27.5 Load Turn 1 Sample & Submit
+window.loadLiveTurnSample(1);
+const t27_input = document.getElementById('live-candidate-input');
+console.log("Loaded Turn 1 Candidate Response length:", t27_input.value.length);
+if (t27_input.value.length < 50) {
+  console.error("FAIL: Turn 1 sample response was not loaded into candidate input!");
+  process.exit(1);
+}
+
+window.submitLiveCandidateResponse();
+const bubblesTurn1 = t27_thread.querySelectorAll('.live-bubble');
+console.log("Bubbles count after Turn 1 submission:", bubblesTurn1.length);
+console.log("Turn Display after Turn 1 submission:", t27_turnDisplay.textContent);
+
+if (bubblesTurn1.length !== 3) {
+  console.error("FAIL: Expected 3 bubbles after Turn 1 (Initial Q + Candidate A + Recruiter Follow-up Q), found:", bubblesTurn1.length);
+  process.exit(1);
+}
+if (!t27_turnDisplay.textContent.includes('Turno 2')) {
+  console.error("FAIL: Turn display did not advance to Turn 2!");
+  process.exit(1);
+}
+
+// 27.6 Multi-Turn Progression: Turn 2 -> Turn 3 -> Completion
+window.loadLiveTurnSample(2);
+window.submitLiveCandidateResponse();
+console.log("Turn Display after Turn 2 submission:", t27_turnDisplay.textContent);
+if (!t27_turnDisplay.textContent.includes('Turno 3')) {
+  console.error("FAIL: Turn display did not advance to Turn 3!");
+  process.exit(1);
+}
+
+window.loadLiveTurnSample(3);
+window.submitLiveCandidateResponse();
+console.log("Turn Display after Turn 3 submission:", t27_turnDisplay.textContent);
+const t27_recruiterNotes = document.getElementById('live-recruiter-notes');
+console.log("Recruiter Notes after completion:", t27_recruiterNotes.textContent.substring(0, 60) + "...");
+
+if (!t27_turnDisplay.textContent.includes('Completada')) {
+  console.error("FAIL: Turn display did not show completion state!");
+  process.exit(1);
+}
+if (!t27_recruiterNotes.textContent.includes('CANDIDATO APROBADO')) {
+  console.error("FAIL: Recruiter notes did not record candidate approval!");
+  process.exit(1);
+}
+
+// 27.7 Audio Playback Stub & Session Export
+window.playCurrentTurnAudio();
+window.exportLiveSessionTranscript();
+console.log("PASS: Multi-Turn Live Voice/Chat Recruiter conversation lifecycle verified.");
+
+// 27.8 Enterprise Recruiter Portal & Talent Pipeline CRM
+window.switchHubTab('recruiter-portal');
+console.log("Recruiter Portal display after switch:", t27_panelPipeline.style.display);
+if (t27_panelPipeline.style.display !== 'block') {
+  console.error("FAIL: Failed to activate recruiter-portal tab!");
+  process.exit(1);
+}
+
+const pipelineCards = document.querySelectorAll('.pipeline-card');
+console.log("Rendered Candidate Pipeline Cards count:", pipelineCards.length);
+if (pipelineCards.length < 6) {
+  console.error("FAIL: Expected at least 6 candidate cards in pipeline, found:", pipelineCards.length);
+  process.exit(1);
+}
+
+// Verify Diana Laura Morales card
+const dianaCard = document.getElementById('pipeline-card-cand-diana');
+console.log("Diana Laura Morales Pipeline Card presence:", !!dianaCard);
+if (!dianaCard || !dianaCard.textContent.includes('7D02D38F1A0E7507C9F')) {
+  console.error("FAIL: Diana Laura Morales candidate card or W3C hash missing!");
+  process.exit(1);
+}
+
+// 27.9 Filter Pipeline by Hub
+const hubFilter = document.getElementById('pipeline-hub-filter');
+hubFilter.value = 'saltillo';
+window.filterTalentPipeline();
+const filteredCards = document.querySelectorAll('.pipeline-card');
+console.log("Filtered Saltillo Candidates count:", filteredCards.length);
+if (filteredCards.length < 1 || !filteredCards[0].textContent.includes('Saltillo')) {
+  console.error("FAIL: Pipeline filter by hub failed!");
+  process.exit(1);
+}
+
+// Reset filter
+hubFilter.value = 'all';
+window.filterTalentPipeline();
+
+// 27.10 Post Vacancy Modal Lifecycle
+window.openPostVacancyModal();
+const vacModal = document.getElementById('post-vacancy-modal');
+console.log("Post Vacancy Modal display after open:", vacModal.style.display);
+if (vacModal.style.display !== 'flex') {
+  console.error("FAIL: Post vacancy modal did not open!");
+  process.exit(1);
+}
+
+// Fill form
+document.getElementById('post-vacancy-title').value = "Senior Battery Thermal Lead";
+document.getElementById('post-vacancy-company').value = "Ultium Cells Saltillo";
+document.getElementById('post-vacancy-salary').value = "$95,000 MXN / mes ($5,100 USD)";
+document.getElementById('post-vacancy-tags').value = "IATF 16949, Ansys CFD, FreeRTOS";
+document.getElementById('post-vacancy-desc').value = "Cross-border thermal runaway containment engineering lead.";
+
+window.submitNewNearshoringVacancy();
+console.log("Post Vacancy Modal display after submit:", vacModal.style.display);
+if (vacModal.style.display !== 'none') {
+  console.error("FAIL: Post vacancy modal did not close after submit!");
+  process.exit(1);
+}
+
+const firstVacancy = window.NEARSHORING_VACANCIES[0];
+console.log("Top Vacancy in Job Board after post:", firstVacancy.title, "-", firstVacancy.company);
+if (firstVacancy.title !== "Senior Battery Thermal Lead") {
+  console.error("FAIL: New vacancy was not added to the top of NEARSHORING_VACANCIES!");
+  process.exit(1);
+}
+
+console.log("PASS: Enterprise Recruiter Portal, Talent Pipeline CRM, and Vacancy Posting verified.");
+
+console.log("\n── TEST 28: Phase 21 Senior Fellowship & Career Launchpad Suite ──");
+
+// 28.1 Verify Navigation and Tab Switching for Phase 21 Panels
+const t28_navWhiteboard = document.getElementById('nav-btn-whiteboard');
+const t28_navResume = document.getElementById('nav-btn-resume-tailor');
+const t28_navDrills = document.getElementById('nav-btn-drills');
+const t28_heroWbBtn = document.getElementById('hero-whiteboard-btn');
+const t28_heroResumeBtn = document.getElementById('hero-resume-btn');
+const t28_heroDrillsBtn = document.getElementById('hero-drills-btn');
+
+console.log("Nav Whiteboard Button presence:", !!t28_navWhiteboard);
+console.log("Nav Resume Tailor Button presence:", !!t28_navResume);
+console.log("Nav Incident Drills Button presence:", !!t28_navDrills);
+console.log("Hero Simulators Dock Phase 21 Pills presence:", !!(t28_heroWbBtn && t28_heroResumeBtn && t28_heroDrillsBtn));
+
+if (!t28_navWhiteboard || !t28_navResume || !t28_navDrills || !t28_heroWbBtn || !t28_heroResumeBtn || !t28_heroDrillsBtn) {
+  console.error("FAIL: Phase 21 navigation links or hero pills missing!");
+  process.exit(1);
+}
+
+// 28.2 Pillar 1: System Architecture & Whiteboard Defense Arena
+window.switchHubTab('whiteboard-defense');
+const t28_wbPanel = document.getElementById('hub-panel-whiteboard-defense');
+console.log("Whiteboard Panel display after switch:", t28_wbPanel.style.display);
+if (t28_wbPanel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate whiteboard-defense panel!");
+  process.exit(1);
+}
+
+// Verify Scenario Initialization (EV Inverter)
+const t28_wbTitle = document.getElementById('wb-canvas-title');
+const t28_wbArchitect = document.getElementById('wb-architect-name');
+const t28_wbPrompt = document.getElementById('wb-architect-prompt-text');
+console.log("Whiteboard Scenario Title:", t28_wbTitle.textContent);
+console.log("Chief Architect Name:", t28_wbArchitect.textContent);
+if (!t28_wbTitle.textContent.includes('EV 800V SiC') || !t28_wbArchitect.textContent.includes('Dr. Ethan Vance')) {
+  console.error("FAIL: EV Inverter scenario metadata not initialized!");
+  process.exit(1);
+}
+
+// Verify Block Diagram Nodes Rendered (5 nodes)
+const t28_wbBlocks = document.querySelectorAll('#whiteboard-blocks-container .wb-block-node');
+console.log("Rendered Architecture Nodes count:", t28_wbBlocks.length);
+if (t28_wbBlocks.length !== 5) {
+  console.error("FAIL: Expected 5 block diagram nodes, found:", t28_wbBlocks.length);
+  process.exit(1);
+}
+
+// Test Fault Injection Toggle
+window.toggleWhiteboardFaultInjection();
+const t28_busloadVal = document.getElementById('wb-val-busload').textContent;
+console.log("Busload after Fault Injection:", t28_busloadVal);
+if (!t28_busloadVal.includes('Babbling') && !t28_busloadVal.includes('Overloaded')) {
+  console.error("FAIL: Fault injection did not update busload metrics!");
+  process.exit(1);
+}
+// Toggle back
+window.toggleWhiteboardFaultInjection();
+
+// Test Lockstep Toggle
+window.toggleWhiteboardLockstep();
+const t28_safetyVal = document.getElementById('wb-val-safety').textContent;
+console.log("Safety Metric after Lockstep toggle:", t28_safetyVal);
+if (!t28_safetyVal.includes('ASIL-B')) {
+  console.error("FAIL: Lockstep toggle did not degrade safety metric to ASIL-B!");
+  process.exit(1);
+}
+// Toggle back to ASIL-D
+window.toggleWhiteboardLockstep();
+
+// Test Speech Synthesis and Audio Dispatches
+window.playWhiteboardArchitectPrompt();
+
+// Test Suboptimal Candidate Defense Submission
+window.loadWhiteboardSample('suboptimal');
+window.submitWhiteboardDefense();
+const t28_scoreCard = document.getElementById('wb-scorecard-card');
+const t28_rubricStd = document.getElementById('wb-rubric-standards').textContent;
+console.log("Scorecard display after suboptimal defense:", t28_scoreCard.style.display);
+console.log("Suboptimal Normative Rigor score:", t28_rubricStd);
+if (t28_scoreCard.style.display !== 'block' || !t28_rubricStd.includes('12 / 25')) {
+  console.error("FAIL: Suboptimal defense evaluation rubric failed!");
+  process.exit(1);
+}
+
+// Test Optimal Candidate Defense Submission
+window.loadWhiteboardSample('optimal');
+window.submitWhiteboardDefense();
+const t28_rubricStdOpt = document.getElementById('wb-rubric-standards').textContent;
+const t28_feedbackOpt = document.getElementById('wb-architect-feedback').textContent;
+console.log("Optimal Normative Rigor score:", t28_rubricStdOpt);
+console.log("Optimal Feedback excerpt:", t28_feedbackOpt.substring(0, 40) + "...");
+if (!t28_rubricStdOpt.includes('25 / 25') || !t28_feedbackOpt.includes('Exemplary')) {
+  console.error("FAIL: Optimal defense evaluation rubric failed!");
+  process.exit(1);
+}
+
+// Test Whiteboard Dossier Markdown Export
+window.exportWhiteboardDossier();
+
+// Switch to MedTech Robotics Scenario
+window.switchWhiteboardScenario('medtech-robotics');
+const t28_medtechTitle = document.getElementById('wb-canvas-title').textContent;
+console.log("Switched Scenario Title:", t28_medtechTitle);
+if (!t28_medtechTitle.includes('Surgical Robotic')) {
+  console.error("FAIL: Switching to MedTech scenario failed!");
+  process.exit(1);
+}
+
+console.log("PASS: Pillar 1 (System Architecture & Whiteboard Defense Arena) verified.");
+
+// 28.3 Pillar 2: AI Nearshoring CV & ATS Resume Optimizer (US-Style Resume Tailor)
+window.switchHubTab('resume-tailor');
+const t28_resumePanel = document.getElementById('hub-panel-resume-tailor');
+console.log("Resume Tailor Panel display after switch:", t28_resumePanel.style.display);
+if (t28_resumePanel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate resume-tailor panel!");
+  process.exit(1);
+}
+
+// Import Student Profile
+window.importStudentProfileToResume();
+const t28_cvNameInput = document.getElementById('cv-input-name').value;
+const t28_cvInstInput = document.getElementById('cv-input-institution').value;
+console.log("Imported Candidate Name:", t28_cvNameInput);
+console.log("Imported Candidate Institution:", t28_cvInstInput);
+if (!t28_cvNameInput.includes('Diana Laura Morales') || !t28_cvInstInput.includes('TecNM Saltillo')) {
+  console.error("FAIL: Candidate profile import failed!");
+  process.exit(1);
+}
+
+// Run ATS Optimizer (Google XYZ transformation)
+window.optimizeResumeATS();
+const t28_atsScore = document.getElementById('ats-match-score').textContent;
+const t28_bullets = document.querySelectorAll('#ats-preview-bullets li');
+console.log("Optimized ATS Match Score:", t28_atsScore);
+console.log("Rendered Google XYZ Bullets count:", t28_bullets.length);
+if (!t28_atsScore.includes('99%') || t28_bullets.length !== 3) {
+  console.error("FAIL: ATS optimization or Google XYZ bullets generation failed!");
+  process.exit(1);
+}
+
+// Verify EEO Zero-Bias Compliance Badge in Resume Sheet
+const t28_eeoBadge = document.querySelector('.ats-eeo-badge');
+console.log("EEO Anti-Bias Badge text:", t28_eeoBadge ? t28_eeoBadge.textContent.trim() : 'missing');
+if (!t28_eeoBadge || !t28_eeoBadge.textContent.includes('US EEO Compliant')) {
+  console.error("FAIL: US EEO zero-bias compliance badge missing!");
+  process.exit(1);
+}
+
+// Verify W3C Hash in preview
+const t28_w3cHash = document.getElementById('ats-preview-w3c-hash').textContent;
+console.log("Resume Auditable W3C Hash:", t28_w3cHash);
+if (!t28_w3cHash.includes('7D02D38F1A0E7507C9F')) {
+  console.error("FAIL: W3C cryptographic hash missing in resume sheet!");
+  process.exit(1);
+}
+
+// Test Export, Print & Copy Handlers
+window.downloadResumeMarkdown();
+window.printATSResume();
+window.copyATSText();
+console.log("PASS: Pillar 2 (AI Nearshoring CV & ATS Resume Optimizer) verified.");
+
+// 28.4 Pillar 3: Cross-Border Multi-Plant Incident Drill (Live War Room 2.0)
+window.switchHubTab('live-drills');
+const t28_drillsPanel = document.getElementById('hub-panel-live-drills');
+console.log("Incident Drills Panel display after switch:", t28_drillsPanel.style.display);
+if (t28_drillsPanel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate live-drills panel!");
+  process.exit(1);
+}
+
+// Initial Timer check
+const t28_initialTimer = document.getElementById('drill-triage-timer').textContent;
+console.log("Initial Triage Countdown Timer:", t28_initialTimer);
+if (t28_initialTimer !== '02:00') {
+  console.error("FAIL: Initial triage countdown should be 02:00, found:", t28_initialTimer);
+  process.exit(1);
+}
+
+// Start Drill
+window.startIncidentDrill();
+console.log("Drill Active State:", window.drillState.active);
+if (!window.drillState.active) {
+  console.error("FAIL: Incident drill failed to activate!");
+  process.exit(1);
+}
+
+// Test Audio Radio Dispatch Playback
+window.playDrillRadioAudio();
+
+// Submit Step 1 (Optimal Containment)
+window.submitDrillStep(1, 'optimal');
+console.log("Drill Step after Step 1 submission:", window.drillState.currentStep);
+const t28_radioMsgs = document.querySelectorAll('#drill-radio-log .radio-msg');
+console.log("Radio Log Messages count after Step 1:", t28_radioMsgs.length);
+if (window.drillState.currentStep !== 2 || t28_radioMsgs.length < 2) {
+  console.error("FAIL: Step 1 submission did not advance step or log radio transmission!");
+  process.exit(1);
+}
+
+// Submit Step 2 (Optimal Root-Cause Telemetry Correlation)
+window.submitDrillStep(2, 'optimal');
+console.log("Drill Step after Step 2 submission:", window.drillState.currentStep);
+if (window.drillState.currentStep !== 3) {
+  console.error("FAIL: Step 2 submission failed!");
+  process.exit(1);
+}
+
+// Submit Step 3 (Optimal Emergency Air Charter)
+window.submitDrillStep(3, 'optimal');
+console.log("Drill Active State after Step 3:", window.drillState.active);
+const t28_financialSaved = document.getElementById('drill-financial-saved').textContent;
+const t28_containmentMins = document.getElementById('drill-containment-time').textContent;
+const t28_debriefText = document.getElementById('drill-debrief-text').textContent;
+console.log("Financial Penalties Avoided:", t28_financialSaved);
+console.log("Response Latency:", t28_containmentMins);
+console.log("Executive Debrief excerpt:", t28_debriefText.substring(0, 50) + "...");
+
+if (window.drillState.active !== false || !t28_financialSaved.includes('$600,000') || !t28_containmentMins.includes('18')) {
+  console.error("FAIL: Incident drill completion telemetry mismatch!");
+  process.exit(1);
+}
+
+// Export Incident SITREP
+window.exportDrillSitrep();
+console.log("PASS: Pillar 3 (Cross-Border Multi-Plant Incident Drill) verified.");
+
+// ==========================================
+// TEST 29: PHASE 22 - EXECUTIVE NEGOTIATION & SURPRISE AUDIT DEFENSE CHAMBERS
+// ==========================================
+console.log("\n--- TEST 29: PHASE 22 - EXECUTIVE NEGOTIATION & SURPRISE AUDIT DEFENSE CHAMBERS ---");
+
+// 29.1 Navigation & DOM Container Verification
+const t29_tabNeg = document.getElementById('tab-btn-executive-negotiation');
+const t29_tabAudit = document.getElementById('tab-btn-audit-defense');
+const t29_panelNeg = document.getElementById('hub-panel-executive-negotiation');
+const t29_panelAudit = document.getElementById('hub-panel-audit-defense');
+const t29_navNeg = document.getElementById('nav-btn-negotiation');
+const t29_navAudit = document.getElementById('nav-btn-audit');
+const t29_heroNeg = document.getElementById('hero-negotiation-btn');
+const t29_heroAudit = document.getElementById('hero-audit-btn');
+
+console.log("Negotiation Tab button exists:", !!t29_tabNeg);
+console.log("Audit Defense Tab button exists:", !!t29_tabAudit);
+console.log("Negotiation Panel exists:", !!t29_panelNeg);
+console.log("Audit Defense Panel exists:", !!t29_panelAudit);
+
+if (!t29_tabNeg || !t29_tabAudit || !t29_panelNeg || !t29_panelAudit || !t29_navNeg || !t29_navAudit || !t29_heroNeg || !t29_heroAudit) {
+  console.error("FAIL: Phase 22 Navigation or Panel DOM elements missing!");
+  process.exit(1);
+}
+
+// 29.2 Pillar 1: Cross-Border Executive Negotiation Chamber
+window.switchHubTab('executive-negotiation');
+console.log("Executive Negotiation Panel display after tab switch:", t29_panelNeg.style.display);
+if (t29_panelNeg.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-executive-negotiation!");
+  process.exit(1);
+}
+
+// Verify initial scenario state (Debit Memo - Robert Sterling)
+const t29_opponentName = document.getElementById('neg-opponent-name').textContent;
+const t29_penaltyClaimed = document.getElementById('neg-penalty-claimed').textContent;
+const t29_amountSaved = document.getElementById('neg-amount-saved').textContent;
+const t29_partnershipScore = document.getElementById('neg-partnership-score').textContent;
+console.log("Initial Opponent:", t29_opponentName);
+console.log("Initial Claimed Penalty:", t29_penaltyClaimed);
+console.log("Initial Amount Saved:", t29_amountSaved);
+console.log("Initial Partnership Score:", t29_partnershipScore);
+
+if (!t29_opponentName.includes('Robert Sterling') || !t29_penaltyClaimed.includes('$280,000')) {
+  console.error("FAIL: Initial negotiation scenario data mismatch!");
+  process.exit(1);
+}
+
+// Test Harvard Principled Negotiation Tactic Injection
+window.applyNegotiationTactic('telemetry');
+window.applyNegotiationTactic('criteria');
+const t29_proposalInput = document.getElementById('neg-candidate-proposal-input');
+console.log("Proposal input after tactics injection length:", t29_proposalInput.value.length);
+if (!t29_proposalInput.value.includes('ASTM E505') || !t29_proposalInput.value.includes('Cpk 1.74')) {
+  console.error("FAIL: Negotiation tactic injection failed to populate ASTM E505 or Cpk telemetry!");
+  process.exit(1);
+}
+
+// Submit proposal and verify counter-offer exchange
+window.submitNegotiationProposal();
+const t29_chatBubbles = document.querySelectorAll('#neg-chat-history .neg-bubble');
+console.log("Total Chat Bubbles after candidate proposal submission:", t29_chatBubbles.length);
+const t29_postSaved = document.getElementById('neg-amount-saved').textContent;
+const t29_postPartnership = document.getElementById('neg-partnership-score').textContent;
+const t29_termsheet = document.getElementById('neg-termsheet-body').textContent;
+console.log("Post-negotiation Amount Saved:", t29_postSaved);
+console.log("Post-negotiation Partnership Score:", t29_postPartnership);
+
+if (t29_chatBubbles.length < 3 || !t29_postSaved.includes('$235,000') || !t29_postPartnership.includes('94%') || !t29_termsheet.includes('Debit Memo')) {
+  console.error("FAIL: Negotiation counter-offer or financial telemetry resolution mismatch!");
+  process.exit(1);
+}
+
+// Test Audio Playback & Mic Handlers
+window.playNegotiationAudio();
+window.toggleNegotiationMic();
+window.toggleNegotiationMic(); // toggle off
+
+// Switch Scenario to Incoterms Tariff Shift
+window.switchNegotiationScenario('incoterms');
+const t29_tariffClaim = document.getElementById('neg-penalty-claimed').textContent;
+console.log("Tariff Scenario Claimed Penalty:", t29_tariffClaim);
+if (!t29_tariffClaim.includes('$165,000')) {
+  console.error("FAIL: Failed to switch negotiation scenario to Incoterms Tariff Shift!");
+  process.exit(1);
+}
+
+// Export Settlement Memo
+window.exportSettlementMemo();
+console.log("PASS: Pillar 1 (Cross-Border Executive Negotiation Chamber) verified.");
+
+// 29.3 Pillar 2: Surprise IATF 16949 & FDA 21 CFR § 820 Audit Defense Chamber
+window.switchHubTab('audit-defense');
+console.log("Audit Defense Panel display after tab switch:", t29_panelAudit.style.display);
+if (t29_panelAudit.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-audit-defense!");
+  process.exit(1);
+}
+
+// Verify initial audit scenario (IATF 16949 - Eleanor Vance)
+const t29_auditorName = document.getElementById('audit-auditor-name').textContent;
+const t29_findingStatus = document.getElementById('audit-finding-status').textContent;
+console.log("Initial Lead Auditor:", t29_auditorName);
+console.log("Initial Finding Status:", t29_findingStatus);
+
+if (!t29_auditorName.includes('Eleanor Vance') || !t29_findingStatus.includes('EN REVISIÓN')) {
+  console.error("FAIL: Initial audit defense scenario metadata mismatch!");
+  process.exit(1);
+}
+
+// Select evidence from document rack
+window.selectAuditEvidence('cp');
+const t29_cpCard = document.getElementById('audit-doc-cp');
+console.log("Control Plan Card active:", t29_cpCard.classList.contains('active'));
+window.selectAuditEvidence('msa');
+const t29_msaCard = document.getElementById('audit-doc-msa');
+console.log("MSA Study Card active:", t29_msaCard.classList.contains('active'));
+
+if (!t29_cpCard || !t29_msaCard || !t29_msaCard.classList.contains('active')) {
+  console.error("FAIL: Document evidence rack selection failed!");
+  process.exit(1);
+}
+
+// Supply optimal explanation and submit audit defense
+document.getElementById('audit-candidate-explanation').value = window.AUDIT_SCENARIOS['iatf'].optimalExplanation;
+window.submitAuditDefense();
+const t29_resolvedStatus = document.getElementById('audit-finding-status').textContent;
+const t29_rubricTrace = document.getElementById('audit-rubric-trace').textContent;
+const t29_closingNotes = document.getElementById('audit-closing-notes').textContent;
+console.log("Post-defense Finding Status:", t29_resolvedStatus);
+console.log("Traceability Rubric Score:", t29_rubricTrace);
+console.log("Closing Notes excerpt:", t29_closingNotes.substring(0, 45) + "...");
+
+if (!t29_resolvedStatus.includes('CONFORME') || !t29_rubricTrace.includes('25 / 25') || !t29_closingNotes.includes('Auditoría superada')) {
+  console.error("FAIL: Audit defense submission did not satisfy auditor inquiry!");
+  process.exit(1);
+}
+
+// Test Audio Playback & Mic Handlers
+window.playAuditAudio();
+window.toggleAuditMic();
+window.toggleAuditMic(); // toggle off
+
+// Switch Scenario to FDA 21 CFR § 820 Cleanroom DHR
+window.switchAuditScenario('fda');
+const t29_fdaAuditor = document.getElementById('audit-auditor-name').textContent;
+console.log("Switched Auditor Name (FDA):", t29_fdaAuditor);
+if (!t29_fdaAuditor.includes('Dr. Arthur Pendelton')) {
+  console.error("FAIL: Failed to switch to FDA Cleanroom DHR Audit scenario!");
+  process.exit(1);
+}
+
+// Export Audit Closing Report
+window.exportAuditReport();
+console.log("PASS: Pillar 2 (Surprise IATF 16949 & FDA Audit Defense Chamber) verified.");
+
+// ==========================================
+// TEST 30: PHASE 23 - PLANT-FLOOR GEMBA WALK CRUCIBLE & EXECUTIVE ESCALATION TRIBUNAL
+// ==========================================
+console.log("\n--- TEST 30: PHASE 23 - PLANT-FLOOR GEMBA WALK CRUCIBLE & EXECUTIVE ESCALATION TRIBUNAL ---");
+
+// 30.1 Navigation & DOM Container Verification
+const t30_tabGemba = document.getElementById('tab-btn-gemba-crucible');
+const t30_tabTribunal = document.getElementById('tab-btn-escalation-tribunal');
+const t30_panelGemba = document.getElementById('hub-panel-gemba-crucible');
+const t30_panelTribunal = document.getElementById('hub-panel-escalation-tribunal');
+const t30_navGemba = document.getElementById('nav-btn-gemba');
+const t30_navTribunal = document.getElementById('nav-btn-tribunal');
+const t30_heroGemba = document.getElementById('hero-gemba-btn');
+const t30_heroTribunal = document.getElementById('hero-tribunal-btn');
+
+console.log("Gemba Tab button exists:", !!t30_tabGemba);
+console.log("Tribunal Tab button exists:", !!t30_tabTribunal);
+console.log("Gemba Panel exists:", !!t30_panelGemba);
+console.log("Tribunal Panel exists:", !!t30_panelTribunal);
+
+if (!t30_tabGemba || !t30_tabTribunal || !t30_panelGemba || !t30_panelTribunal || !t30_navGemba || !t30_navTribunal || !t30_heroGemba || !t30_heroTribunal) {
+  console.error("FAIL: Phase 23 Navigation or Panel DOM elements missing!");
+  process.exit(1);
+}
+
+// 30.2 Pillar 1: Plant-Floor Gemba Walk & Shift Leadership Crucible
+window.switchHubTab('gemba-crucible');
+console.log("Gemba Crucible Panel display after switch:", t30_panelGemba.style.display);
+if (t30_panelGemba.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-gemba-crucible!");
+  process.exit(1);
+}
+
+// Verify initial track (Semiconductors 3nm - Hiroshi Tanaka)
+const t30_gembaLeader = document.getElementById('gemba-leader-name').textContent;
+const t30_st1Status = document.getElementById('gemba-st-1-status').textContent;
+const t30_st1 = document.getElementById('gemba-st-1');
+console.log("Initial Gemba Leader:", t30_gembaLeader);
+console.log("Station 1 Status:", t30_st1Status);
+
+if (!t30_gembaLeader.includes('Hiroshi Tanaka') || !t30_st1Status.includes('Desalineación')) {
+  console.error("FAIL: Initial Gemba track or station 1 anomaly data mismatch!");
+  process.exit(1);
+}
+
+// Test station inspection
+window.inspectGembaStation(2);
+const t30_st2 = document.getElementById('gemba-st-2');
+console.log("Station 2 active after inspection:", t30_st2.classList.contains('active'));
+if (!t30_st2.classList.contains('active')) {
+  console.error("FAIL: Inspecting station 2 did not set active class!");
+  process.exit(1);
+}
+
+// Apply quick actions and submit containment directive
+window.applyGembaQuickAction('contain');
+window.applyGembaQuickAction('calibrate');
+const t30_gembaInput = document.getElementById('gemba-candidate-action-input');
+console.log("Gemba action input length after quick actions:", t30_gembaInput.value.length);
+if (!t30_gembaInput.value.includes('laser') || !t30_gembaInput.value.includes('hold')) {
+  console.error("FAIL: Quick action injection failed to populate containment directive!");
+  process.exit(1);
+}
+
+// Resolve hazard and verify nominal state recovery
+window.resolveGembaHazard();
+const t30_st1Resolved = document.getElementById('gemba-st-1-status').textContent;
+const t30_yieldVal = document.getElementById('gemba-metric-primary-val').textContent;
+const t30_shiftScore = document.getElementById('gemba-shift-score').textContent;
+console.log("Station 1 Status after resolution:", t30_st1Resolved);
+console.log("Yield Rate:", t30_yieldVal);
+console.log("Shift Score:", t30_shiftScore);
+
+if (!t30_st1Resolved.includes('Corregida') || !t30_yieldVal.includes('96.4%') || !t30_shiftScore.includes('NOMINAL')) {
+  console.error("FAIL: Gemba containment resolution did not recover plant telemetry!");
+  process.exit(1);
+}
+
+// Test Audio Playback & Mic
+window.playGembaAudio();
+window.toggleGembaMic();
+window.toggleGembaMic(); // toggle off
+
+// Switch Track to EV Battery Gigafactory (Saltillo)
+window.switchGembaTrack('battery');
+const t30_batteryLeader = document.getElementById('gemba-leader-name').textContent;
+const t30_dewPointVal = document.getElementById('gemba-metric-primary-val').textContent;
+console.log("Battery Track Leader:", t30_batteryLeader);
+console.log("Battery Dew Point:", t30_dewPointVal);
+if (!t30_batteryLeader.includes('Marcus Vance') || !t30_dewPointVal.includes('-48.2°C')) {
+  console.error("FAIL: Failed to switch to Battery Gigafactory Gemba track!");
+  process.exit(1);
+}
+
+// Export Gemba Report
+window.exportGembaReport();
+console.log("PASS: Pillar 1 (Plant-Floor Gemba Walk & Shift Leadership Crucible) verified.");
+
+// 30.3 Pillar 2: Cross-Track Executive Root-Cause Board Tribunal
+window.switchHubTab('escalation-tribunal');
+console.log("Escalation Tribunal Panel display after switch:", t30_panelTribunal.style.display);
+if (t30_panelTribunal.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-escalation-tribunal!");
+  process.exit(1);
+}
+
+// Verify initial scenario (Aerospace AS9102 FAI Creep - Dr. Ethan Vance & Victoria Price)
+const t30_tribunalChair = document.getElementById('tribunal-chair-name').textContent;
+const t30_initialVerdict = document.getElementById('tribunal-verdict-status').textContent;
+console.log("Initial Board Chairs:", t30_tribunalChair);
+console.log("Initial Verdict Status:", t30_initialVerdict);
+
+if (!t30_tribunalChair.includes('Ethan Vance') || !t30_initialVerdict.includes('EN DELIBERACIÓN')) {
+  console.error("FAIL: Initial tribunal scenario metadata mismatch!");
+  process.exit(1);
+}
+
+// Apply Harvard C1 argument injectors
+window.applyTribunalArgument('physics');
+window.applyTribunalArgument('normative');
+const t30_tribunalInput = document.getElementById('tribunal-candidate-defense-input');
+console.log("Tribunal defense input length after argument injections:", t30_tribunalInput.value.length);
+if (!t30_tribunalInput.value.includes('carbide') || !t30_tribunalInput.value.includes('AS9102')) {
+  console.error("FAIL: Tribunal argument injection failed to populate metallurgy & AS9102 standards!");
+  process.exit(1);
+}
+
+// Submit defense and verify board exoneration
+window.submitTribunalDefense();
+const t30_finalVerdict = document.getElementById('tribunal-verdict-status').textContent;
+const t30_avoidedLiability = document.getElementById('tribunal-liability-exposure').textContent;
+const t30_rubricPhysics = document.getElementById('tribunal-rubric-physics').textContent;
+const t30_resolutionNotes = document.getElementById('tribunal-resolution-notes').textContent;
+console.log("Post-defense Board Verdict:", t30_finalVerdict);
+console.log("Avoided Liability:", t30_avoidedLiability);
+console.log("Physics Rubric Score:", t30_rubricPhysics);
+console.log("Resolution Notes excerpt:", t30_resolutionNotes.substring(0, 45) + "...");
+
+if (!t30_finalVerdict.includes('EXONERADO') || !t30_avoidedLiability.includes('$0 USD') || !t30_rubricPhysics.includes('25 / 25')) {
+  console.error("FAIL: Tribunal defense submission did not achieve board exoneration!");
+  process.exit(1);
+}
+
+// Test Audio Playback & Mic
+window.playTribunalAudio();
+window.toggleTribunalMic();
+window.toggleTribunalMic(); // toggle off
+
+// Switch Tribunal Scenario to EV Inverter Recall Prevention
+window.switchTribunalScenario('ev');
+const t30_evChair = document.getElementById('tribunal-chair-name').textContent;
+console.log("Switched Tribunal Chairs (EV):", t30_evChair);
+if (!t30_evChair.includes('Robert Sterling')) {
+  console.error("FAIL: Failed to switch to EV Inverter Tribunal scenario!");
+  process.exit(1);
+}
+
+// Export Board Resolution
+window.exportTribunalResolution();
+console.log("PASS: Pillar 2 (Cross-Track Executive Root-Cause Board Tribunal) verified.");
+
+// ============================================================================
+// TEST 31: PHASE 24 - VIRTUAL REALITY CLEANROOM WALKTHROUGH & DIGITAL TWIN 3.0
+// ============================================================================
+console.log("\n--- TEST 31: Phase 24 - VR Cleanroom Walkthrough & Digital Twin 3.0 ---");
+
+// 31.1 Verify Tab Buttons & Navigation Hooks
+const t31_tabWalk = document.getElementById('tab-btn-virtual-walkthrough');
+const t31_navBtn = document.getElementById('nav-btn-walkthrough');
+const t31_mobileBtn = document.getElementById('mobile-nav-btn-walkthrough');
+const t31_heroBtn = document.getElementById('hero-walkthrough-btn');
+const t31_panel = document.getElementById('hub-panel-virtual-walkthrough');
+
+console.log("Tab Button exists:", !!t31_tabWalk);
+console.log("Nav Dropdown Link exists:", !!t31_navBtn);
+console.log("Mobile Drawer Link exists:", !!t31_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t31_heroBtn);
+console.log("Panel exists:", !!t31_panel);
+
+if (!t31_tabWalk || !t31_panel || !t31_navBtn || !t31_mobileBtn || !t31_heroBtn) {
+  console.error("FAIL: Missing Phase 24 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 31.2 Activate Tab and Verify Initialization
+window.switchHubTab('virtual-walkthrough');
+console.log("VR Walkthrough Panel display:", t31_panel.style.display);
+if (t31_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-virtual-walkthrough!");
+  process.exit(1);
+}
+
+// 31.3 Verify Bay 1 Data & Initial Telemetry
+const t31_bayTitle = document.getElementById('walkthrough-bay-title').textContent;
+const t31_particles = document.getElementById('walkthrough-stat-particles').textContent;
+const t31_airflow = document.getElementById('walkthrough-stat-airflow').textContent;
+const t31_pressure = document.getElementById('walkthrough-stat-pressure').textContent;
+const t31_directorPrompt = document.getElementById('walkthrough-director-prompt').textContent;
+
+console.log("Initial Bay Title:", t31_bayTitle);
+console.log("Initial Telemetry (Particles / Airflow / Pressure):", t31_particles, "/", t31_airflow, "/", t31_pressure);
+console.log("Director Prompt excerpt:", t31_directorPrompt.substring(0, 50) + "...");
+
+if (!t31_bayTitle.includes('ASML TWINSCAN') || !t31_particles.includes('0.2') || !t31_airflow.includes('0.45') || !t31_pressure.includes('+28.5')) {
+  console.error("FAIL: Bay 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 31.4 Test Camera Switch & Vector Toggle
+window.setWalkthroughCamera('top');
+console.log("Walkthrough camera view set to:", window.walkthroughCameraView);
+if (window.walkthroughCameraView !== 'top') {
+  console.error("FAIL: Failed to set camera to top view!");
+  process.exit(1);
+}
+
+window.setWalkthroughCamera('iso');
+if (window.walkthroughCameraView !== 'iso') {
+  console.error("FAIL: Failed to restore camera to iso view!");
+  process.exit(1);
+}
+
+window.toggleWalkthroughParticles();
+console.log("Particles toggle (OFF):", window.walkthroughShowParticles);
+if (window.walkthroughShowParticles !== false) {
+  console.error("FAIL: Particles toggle did not disable vectors!");
+  process.exit(1);
+}
+
+window.toggleWalkthroughParticles();
+console.log("Particles toggle (ON):", window.walkthroughShowParticles);
+if (window.walkthroughShowParticles !== true) {
+  console.error("FAIL: Particles toggle did not re-enable vectors!");
+  process.exit(1);
+}
+
+// 31.5 Test In-Line Technical Action (ULPA PAO Filter Test)
+window.applyWalkthroughAction('filter-test');
+const t31_postActionPressure = document.getElementById('walkthrough-stat-pressure').textContent;
+const t31_debrief = document.getElementById('walkthrough-debrief-body').textContent;
+console.log("Post Action Pressure:", t31_postActionPressure);
+console.log("Debrief excerpt:", t31_debrief.substring(0, 45) + "...");
+
+if (!t31_postActionPressure.includes('+29.2') || !t31_debrief.includes('99.99995%')) {
+  console.error("FAIL: applyWalkthroughAction failed to update pressure or debrief!");
+  process.exit(1);
+}
+
+// 31.6 Test Anomaly Injection & Resolution
+window.injectWalkthroughAnomaly();
+const t31_anomalyBanner = document.getElementById('walkthrough-anomaly-banner');
+const t31_alertParticles = document.getElementById('walkthrough-stat-particles').textContent;
+console.log("Anomaly Banner display:", t31_anomalyBanner.style.display);
+console.log("Degraded particle telemetry:", t31_alertParticles);
+
+if (t31_anomalyBanner.style.display !== 'flex' || !t31_alertParticles.includes('14.8')) {
+  console.error("FAIL: injectWalkthroughAnomaly did not display banner or degrade telemetry!");
+  process.exit(1);
+}
+
+window.resolveWalkthroughAnomaly();
+console.log("Anomaly Banner display after resolve:", t31_anomalyBanner.style.display);
+const t31_restoredParticles = document.getElementById('walkthrough-stat-particles').textContent;
+console.log("Restored particle telemetry:", t31_restoredParticles);
+
+if (t31_anomalyBanner.style.display !== 'none' || !t31_restoredParticles.includes('0.2')) {
+  console.error("FAIL: resolveWalkthroughAnomaly failed to restore nominal state!");
+  process.exit(1);
+}
+
+// 31.7 Test Audio, Voice Dictation & Defense Submission
+window.playWalkthroughAudio();
+window.toggleWalkthroughMic();
+const t31_candidateText = document.getElementById('walkthrough-candidate-response').value;
+console.log("Candidate Response populated length:", t31_candidateText.length);
+if (t31_candidateText.length < 20 || !t31_candidateText.includes('pressure cascade')) {
+  console.error("FAIL: Voice dictation failed to populate candidate response!");
+  process.exit(1);
+}
+
+window.submitWalkthroughDefense();
+const t31_scorePill = document.getElementById('walkthrough-feedback-score').textContent;
+const t31_chips = document.querySelectorAll('#walkthrough-vocab-chips span');
+console.log("Final Evaluator Score:", t31_scorePill);
+console.log("Vocab Chips Count:", t31_chips.length);
+
+if (!t31_scorePill.includes('96/100') || t31_chips.length === 0) {
+  console.error("FAIL: submitWalkthroughDefense did not score or render chips properly!");
+  process.exit(1);
+}
+
+// 31.8 Switch to Bay 4 (In-line CD-SEM Metrology) & Export Report
+window.selectWalkthroughBay('bay-4');
+const t31_bay4Title = document.getElementById('walkthrough-bay-title').textContent;
+console.log("Switched Bay 4 Title:", t31_bay4Title);
+if (!t31_bay4Title.includes('CD-SEM')) {
+  console.error("FAIL: Failed to switch to Bay 4!");
+  process.exit(1);
+}
+
+window.exportWalkthroughReport();
+console.log("PASS: Phase 24 (Virtual Reality Cleanroom Walkthrough & Digital Twin 3.0) verified.");
+
+// ============================================================================
+// TEST 32: PHASE 25 - CROSS-BORDER AUTONOMOUS AI PATENT & IP CLAIM DEFENSE ARENA
+// ============================================================================
+console.log("\n--- TEST 32: Phase 25 - Patent & IP Claim Defense Arena ---");
+
+// 32.1 Verify Navigation Hooks & Panel Elements
+const t32_tabPatent = document.getElementById('tab-btn-patent-arena');
+const t32_navBtn = document.getElementById('nav-btn-patent-arena');
+const t32_mobileBtn = document.getElementById('mobile-nav-btn-patent-arena');
+const t32_heroBtn = document.getElementById('hero-patent-btn');
+const t32_panel = document.getElementById('hub-panel-patent-arena');
+
+console.log("Tab Button exists:", !!t32_tabPatent);
+console.log("Nav Dropdown Link exists:", !!t32_navBtn);
+console.log("Mobile Drawer Link exists:", !!t32_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t32_heroBtn);
+console.log("Panel exists:", !!t32_panel);
+
+if (!t32_tabPatent || !t32_panel || !t32_navBtn || !t32_mobileBtn || !t32_heroBtn) {
+  console.error("FAIL: Missing Phase 25 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 32.2 Activate Tab and Verify Initialization
+window.switchHubTab('patent-arena');
+console.log("Patent Arena Panel display:", t32_panel.style.display);
+if (t32_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-patent-arena!");
+  process.exit(1);
+}
+
+// 32.3 Verify Case 1 Metadata & Claim 1 Limitations
+const t32_docNumber = document.getElementById('patent-doc-number').textContent;
+const t32_title = document.getElementById('patent-title-display').textContent;
+const t32_claimText = document.getElementById('patent-claim-text').textContent;
+const t32_priorArt = document.getElementById('patent-prior-art-citation').textContent;
+const t32_benchNames = document.getElementById('patent-bench-names').textContent;
+
+console.log("Patent Number:", t32_docNumber);
+console.log("Patent Title:", t32_title);
+console.log("Bench Judges:", t32_benchNames);
+console.log("Claim 1 excerpt:", t32_claimText.substring(0, 60) + "...");
+console.log("Prior Art Citation excerpt:", t32_priorArt.substring(0, 50) + "...");
+
+if (!t32_docNumber.includes('11,842,930') || !t32_title.includes('TSV') || !t32_benchNames.includes('Sarah Sterling')) {
+  console.error("FAIL: Patent Case 1 metadata mismatch!");
+  process.exit(1);
+}
+
+// 32.4 Test Argument Injectors
+window.applyPatentArgument('priorart');
+window.applyPatentArgument('doctrine');
+const t32_briefInput = document.getElementById('patent-candidate-brief');
+console.log("Candidate brief length after argument injections:", t32_briefInput.value.length);
+
+if (!t32_briefInput.value.includes('35 U.S.C. § 102') || !t32_briefInput.value.includes('Festo')) {
+  console.error("FAIL: Patent argument injection failed to populate legal citations!");
+  process.exit(1);
+}
+
+// 32.5 Test Audio, Mic & Defense Submission
+window.playPatentAudio();
+window.togglePatentMic();
+
+window.submitPatentDefense();
+const t32_verdictScore = document.getElementById('patent-verdict-score').textContent;
+const t32_liabilitySaved = document.getElementById('patent-liability-saved').textContent;
+const t32_decisionNotes = document.getElementById('patent-ptab-decision-notes').textContent;
+const t32_chips = document.querySelectorAll('#patent-legal-chips span');
+
+console.log("PTAB Adjudicated Verdict:", t32_verdictScore);
+console.log("Liability Avoided:", t32_liabilitySaved);
+console.log("Decision Notes excerpt:", t32_decisionNotes.substring(0, 50) + "...");
+console.log("Legal Terminology Chips count:", t32_chips.length);
+
+if (!t32_verdictScore.includes('UPHELD') || !t32_liabilitySaved.includes('$12.5M USD') || t32_chips.length === 0) {
+  console.error("FAIL: submitPatentDefense did not render upheld verdict or liability savings!");
+  process.exit(1);
+}
+
+// 32.6 Switch to Case 2 (Solid-State Battery) and Case 3 (SiC Inverter Firmware)
+window.switchPatentCase('solidstate');
+const t32_case2Title = document.getElementById('patent-title-display').textContent;
+console.log("Switched Case 2 Title:", t32_case2Title);
+if (!t32_case2Title.includes('Solid-State Electrolyte')) {
+  console.error("FAIL: Failed to switch to Solid-State Battery patent case!");
+  process.exit(1);
+}
+
+window.switchPatentCase('firmware');
+const t32_case3Title = document.getElementById('patent-title-display').textContent;
+console.log("Switched Case 3 Title:", t32_case3Title);
+if (!t32_case3Title.includes('Silicon-Carbide Traction Inverters')) {
+  console.error("FAIL: Failed to switch to SiC Inverter Firmware patent case!");
+  process.exit(1);
+}
+
+// 32.7 Export PTAB Written Decision
+window.exportPatentRuling();
+console.log("PASS: Phase 25 (Cross-Border Autonomous AI Patent & IP Claim Defense Arena) verified.");
+
+// ============================================================================
+// TEST 33: PHASE 26 - AUTONOMOUS AI BOARDROOM ESG & DECARBONIZATION CRUCIBLE
+// ============================================================================
+console.log("\n--- TEST 33: Phase 26 - ESG & Decarbonization Capital Allocation Crucible ---");
+
+// 33.1 Verify Navigation Hooks & Panel Elements
+const t33_tabEsg = document.getElementById('tab-btn-esg-crucible');
+const t33_navBtn = document.getElementById('nav-btn-esg-crucible');
+const t33_mobileBtn = document.getElementById('mobile-nav-btn-esg-crucible');
+const t33_heroBtn = document.getElementById('hero-esg-btn');
+const t33_panel = document.getElementById('hub-panel-esg-crucible');
+
+console.log("Tab Button exists:", !!t33_tabEsg);
+console.log("Nav Dropdown Link exists:", !!t33_navBtn);
+console.log("Mobile Drawer Link exists:", !!t33_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t33_heroBtn);
+console.log("Panel exists:", !!t33_panel);
+
+if (!t33_tabEsg || !t33_panel || !t33_navBtn || !t33_mobileBtn || !t33_heroBtn) {
+  console.error("FAIL: Missing Phase 26 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 33.2 Activate Tab and Verify Initialization
+window.switchHubTab('esg-crucible');
+console.log("ESG Crucible Panel display:", t33_panel.style.display);
+if (t33_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-esg-crucible!");
+  process.exit(1);
+}
+
+// 33.3 Verify Project 1 Metadata & Initial Telemetry
+const t33_facility = document.getElementById('esg-facility-badge').textContent;
+const t33_title = document.getElementById('esg-project-title').textContent;
+const t33_abatement = document.getElementById('esg-stat-abatement').textContent;
+const t33_capex = document.getElementById('esg-stat-capex').textContent;
+const t33_irr = document.getElementById('esg-stat-irr').textContent;
+const t33_tax = document.getElementById('esg-stat-tax').textContent;
+const t33_boardPrompt = document.getElementById('esg-board-inquiry').textContent;
+
+console.log("Facility:", t33_facility);
+console.log("Project Title:", t33_title);
+console.log("Telemetry (Abatement / CAPEX / IRR / Tax):", t33_abatement, "/", t33_capex, "/", t33_irr, "/", t33_tax);
+console.log("Board Inquiry excerpt:", t33_boardPrompt.substring(0, 50) + "...");
+
+if (!t33_facility.includes('MONTERREY') || !t33_abatement.includes('-1.8') || !t33_capex.includes('$185M') || !t33_tax.includes('$42.8M')) {
+  console.error("FAIL: ESG Project 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 33.4 Test Financial & Technical Modeling Actions
+window.applyEsgAction('lcca');
+const t33_updatedAbatement = document.getElementById('esg-stat-abatement').textContent;
+console.log("Post-LCCA Abatement:", t33_updatedAbatement);
+if (!t33_updatedAbatement.includes('-1.85')) {
+  console.error("FAIL: applyEsgAction('lcca') failed to update abatement metric!");
+  process.exit(1);
+}
+
+window.applyEsgAction('greenbond');
+const t33_updatedIrr = document.getElementById('esg-stat-irr').textContent;
+console.log("Post-GreenBond IRR:", t33_updatedIrr);
+if (!t33_updatedIrr.includes('19.8%')) {
+  console.error("FAIL: applyEsgAction('greenbond') failed to update IRR metric!");
+  process.exit(1);
+}
+
+// 33.5 Test Audio, Mic Dictation & Defense Submission
+window.playEsgAudio();
+window.toggleEsgMic();
+const t33_pitchInput = document.getElementById('esg-candidate-pitch').value;
+console.log("Pitch input length after voice dictation:", t33_pitchInput.length);
+if (t33_pitchInput.length < 20 || !t33_pitchInput.includes('LCCA')) {
+  console.error("FAIL: Voice dictation failed to populate candidate pitch!");
+  process.exit(1);
+}
+
+window.submitEsgDefense();
+const t33_rulingScore = document.getElementById('esg-ruling-score').textContent;
+const t33_decisionNotes = document.getElementById('esg-board-decision-notes').textContent;
+const t33_chips = document.querySelectorAll('#esg-competency-chips span');
+
+console.log("Board Ruling Adjudication:", t33_rulingScore);
+console.log("Decision Notes excerpt:", t33_decisionNotes.substring(0, 50) + "...");
+console.log("ESG Competency Chips count:", t33_chips.length);
+
+if (!t33_rulingScore.includes('APPROVED') || !t33_decisionNotes.includes('$185M USD') || t33_chips.length === 0) {
+  console.error("FAIL: submitEsgDefense did not render approved ruling or chips!");
+  process.exit(1);
+}
+
+// 33.6 Switch to Project 2 (Saltillo Gigafab) and Project 3 (Querétaro Immersion DC)
+window.switchEsgProject('gigafab');
+const t33_proj2Title = document.getElementById('esg-project-title').textContent;
+console.log("Switched Project 2 Title:", t33_proj2Title);
+if (!t33_proj2Title.includes('45 MWp Rooftop Solar')) {
+  console.error("FAIL: Failed to switch to Project 2 (Gigafab)!");
+  process.exit(1);
+}
+
+window.switchEsgProject('datacenter');
+const t33_proj3Title = document.getElementById('esg-project-title').textContent;
+console.log("Switched Project 3 Title:", t33_proj3Title);
+if (!t33_proj3Title.includes('Two-Phase Immersion Cooling')) {
+  console.error("FAIL: Failed to switch to Project 3 (Datacenter)!");
+  process.exit(1);
+}
+
+// 33.7 Export CBAM Declaration & ESG Protocol
+window.exportEsgReport();
+console.log("PASS: Phase 26 (Autonomous AI Boardroom ESG & Decarbonization Capital Allocation Crucible) verified.");
+
+// ============================================================================
+// TEST 34: PHASE 27 - CROSS-BORDER AUTONOMOUS GLOBAL SUPPLY CHAIN RESHORING WAR ROOM
+// ============================================================================
+console.log("\n--- TEST 34: Phase 27 - Global Supply Chain Reshoring War Room ---");
+
+// 34.1 Verify Navigation Hooks & Panel Elements
+const t34_tabSc = document.getElementById('tab-btn-reshoring-warroom');
+const t34_navBtn = document.getElementById('nav-btn-reshoring-warroom');
+const t34_mobileBtn = document.getElementById('mobile-nav-btn-reshoring-warroom');
+const t34_heroBtn = document.getElementById('hero-reshoring-btn');
+const t34_panel = document.getElementById('hub-panel-reshoring-warroom');
+
+console.log("Tab Button exists:", !!t34_tabSc);
+console.log("Nav Dropdown Link exists:", !!t34_navBtn);
+console.log("Mobile Drawer Link exists:", !!t34_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t34_heroBtn);
+console.log("Panel exists:", !!t34_panel);
+
+if (!t34_tabSc || !t34_panel || !t34_navBtn || !t34_mobileBtn || !t34_heroBtn) {
+  console.error("FAIL: Missing Phase 27 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 34.2 Activate Tab and Verify Initialization
+window.switchHubTab('reshoring-warroom');
+console.log("Reshoring War Room Panel display:", t34_panel.style.display);
+if (t34_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-reshoring-warroom!");
+  process.exit(1);
+}
+
+// 34.3 Verify Crisis 1 Metadata & Initial Telemetry
+const t34_hub = document.getElementById('sc-hub-badge').textContent;
+const t34_title = document.getElementById('sc-crisis-title').textContent;
+const t34_leadTime = document.getElementById('sc-stat-leadtime').textContent;
+const t34_rvc = document.getElementById('sc-stat-rvc').textContent;
+const t34_variance = document.getElementById('sc-stat-variance').textContent;
+const t34_risk = document.getElementById('sc-stat-risk').textContent;
+const t34_boardPrompt = document.getElementById('sc-board-inquiry').textContent;
+
+console.log("Logistics Hub:", t34_hub);
+console.log("Crisis Title:", t34_title);
+console.log("Telemetry (Lead Time / RVC / Variance / Risk):", t34_leadTime, "/", t34_rvc, "/", t34_variance, "/", t34_risk);
+console.log("Board Inquiry excerpt:", t34_boardPrompt.substring(0, 50) + "...");
+
+if (!t34_hub.includes('GUADALAJARA') || !t34_leadTime.includes('14 Días') || !t34_rvc.includes('78.4%') || !t34_risk.includes('$1.4M')) {
+  console.error("FAIL: Crisis 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 34.4 Test Trade Actions & TCO Modeling
+window.applyScAction('tco');
+const t34_updatedVar = document.getElementById('sc-stat-variance').textContent;
+console.log("Post-TCO Variance:", t34_updatedVar);
+if (!t34_updatedVar.includes('-4.8%')) {
+  console.error("FAIL: applyScAction('tco') failed to update variance metric!");
+  process.exit(1);
+}
+
+window.applyScAction('rvc');
+const t34_updatedRvc = document.getElementById('sc-stat-rvc').textContent;
+console.log("Post-RVC Audit:", t34_updatedRvc);
+if (!t34_updatedRvc.includes('81.2%')) {
+  console.error("FAIL: applyScAction('rvc') failed to update RVC metric!");
+  process.exit(1);
+}
+
+// 34.5 Test Audio, Mic Dictation & Defense Submission
+window.playScAudio();
+window.toggleScMic();
+const t34_strategyInput = document.getElementById('sc-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t34_strategyInput.length);
+if (t34_strategyInput.length < 20 || !t34_strategyInput.includes('TCO')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitScDefense();
+const t34_rulingScore = document.getElementById('sc-ruling-score').textContent;
+const t34_decisionNotes = document.getElementById('sc-board-decision-notes').textContent;
+const t34_chips = document.querySelectorAll('#sc-competency-chips span');
+
+console.log("Procurement Ruling Adjudication:", t34_rulingScore);
+console.log("Decision Notes excerpt:", t34_decisionNotes.substring(0, 50) + "...");
+console.log("Competency Chips count:", t34_chips.length);
+
+if (!t34_rulingScore.includes('APPROVED') || !t34_decisionNotes.includes('Texas-Guadalajara') || t34_chips.length === 0) {
+  console.error("FAIL: submitScDefense did not render approved ruling or chips!");
+  process.exit(1);
+}
+
+// 34.6 Switch to Crisis 2 (Saltillo Battery Minerals) and Crisis 3 (Querétaro Inconel 718)
+window.switchScCrisis('battery');
+const t34_crisis2Title = document.getElementById('sc-crisis-title').textContent;
+console.log("Switched Crisis 2 Title:", t34_crisis2Title);
+if (!t34_crisis2Title.includes('Battery-Grade Lithium')) {
+  console.error("FAIL: Failed to switch to Crisis 2 (Battery Minerals)!");
+  process.exit(1);
+}
+
+window.switchScCrisis('aero');
+const t34_crisis3Title = document.getElementById('sc-crisis-title').textContent;
+console.log("Switched Crisis 3 Title:", t34_crisis3Title);
+if (!t34_crisis3Title.includes('Inconel 718 Aerospace Forgings')) {
+  console.error("FAIL: Failed to switch to Crisis 3 (Inconel 718)!");
+  process.exit(1);
+}
+
+// 34.7 Export Dual-Sourcing Playbook
+window.exportScReport();
+console.log("PASS: Phase 27 (Cross-Border Autonomous Global Supply Chain Reshoring War Room) verified.");
+
+// ============================================================================
+// TEST 35: PHASE 28 - AUTONOMOUS INDUSTRIAL CYBERSECURITY THREAT HUNTING ARENA
+// ============================================================================
+console.log("\n--- TEST 35: Phase 28 - Industrial Cybersecurity Threat Hunting Arena ---");
+
+// 35.1 Verify Navigation Hooks & Panel Elements
+const t35_tabCyber = document.getElementById('tab-btn-cyber-arena');
+const t35_navBtn = document.getElementById('nav-btn-cyber-arena');
+const t35_mobileBtn = document.getElementById('mobile-nav-btn-cyber-arena');
+const t35_heroBtn = document.getElementById('hero-cyber-btn');
+const t35_panel = document.getElementById('hub-panel-cyber-arena');
+
+console.log("Tab Button exists:", !!t35_tabCyber);
+console.log("Nav Dropdown Link exists:", !!t35_navBtn);
+console.log("Mobile Drawer Link exists:", !!t35_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t35_heroBtn);
+console.log("Panel exists:", !!t35_panel);
+
+if (!t35_tabCyber || !t35_panel || !t35_navBtn || !t35_mobileBtn || !t35_heroBtn) {
+  console.error("FAIL: Missing Phase 28 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 35.2 Activate Tab and Verify Initialization
+window.switchHubTab('cyber-arena');
+console.log("Cyber Arena Panel display:", t35_panel.style.display);
+if (t35_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-cyber-arena!");
+  process.exit(1);
+}
+
+// 35.3 Verify Campaign 1 Metadata & Initial Telemetry
+const t35_fac = document.getElementById('cyber-facility-badge').textContent;
+const t35_title = document.getElementById('cyber-campaign-title').textContent;
+const t35_sla = document.getElementById('cyber-stat-sla').textContent;
+const t35_purdue = document.getElementById('cyber-stat-purdue').textContent;
+const t35_integ = document.getElementById('cyber-stat-integrity').textContent;
+const t35_saved = document.getElementById('cyber-stat-saved').textContent;
+const t35_inquiry = document.getElementById('cyber-board-inquiry').textContent;
+
+console.log("Target Facility:", t35_fac);
+console.log("Threat Campaign Title:", t35_title);
+console.log("Telemetry (SLA / Purdue / Integrity / Saved):", t35_sla, "/", t35_purdue, "/", t35_integ, "/", t35_saved);
+console.log("Incident Command Inquiry excerpt:", t35_inquiry.substring(0, 50) + "...");
+
+if (!t35_fac.includes('MONTERREY') || !t35_sla.includes('2m 14s') || !t35_integ.includes('99.8%') || !t35_saved.includes('$3.2M')) {
+  console.error("FAIL: Campaign 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 35.4 Test Forensics & Tactical Actions
+window.applyCyberAction('dpi');
+const t35_updatedInteg = document.getElementById('cyber-stat-integrity').textContent;
+console.log("Post-DPI Integrity:", t35_updatedInteg);
+if (!t35_updatedInteg.includes('100%')) {
+  console.error("FAIL: applyCyberAction('dpi') failed to update integrity metric!");
+  process.exit(1);
+}
+
+window.applyCyberAction('airgap');
+const t35_updatedPurdue = document.getElementById('cyber-stat-purdue').textContent;
+console.log("Post-AirGap Purdue:", t35_updatedPurdue);
+if (!t35_updatedPurdue.includes('Aislado')) {
+  console.error("FAIL: applyCyberAction('airgap') failed to update purdue metric!");
+  process.exit(1);
+}
+
+// 35.5 Test Audio, Mic Dictation & Defense Submission
+window.playCyberAudio();
+window.toggleCyberMic();
+const t35_responseInput = document.getElementById('cyber-candidate-response').value;
+console.log("Response input length after voice dictation:", t35_responseInput.length);
+if (t35_responseInput.length < 20 || !t35_responseInput.includes('Purdue')) {
+  console.error("FAIL: Voice dictation failed to populate candidate response!");
+  process.exit(1);
+}
+
+window.submitCyberDefense();
+const t35_rulingScore = document.getElementById('cyber-ruling-score').textContent;
+const t35_decisionNotes = document.getElementById('cyber-board-decision-notes').textContent;
+const t35_chips = document.querySelectorAll('#cyber-competency-chips span');
+
+console.log("Incident Command Ruling Adjudication:", t35_rulingScore);
+console.log("Decision Notes excerpt:", t35_decisionNotes.substring(0, 50) + "...");
+console.log("Cyber Competency Chips count:", t35_chips.length);
+
+if (!t35_rulingScore.includes('CONTAINED') || !t35_decisionNotes.includes('Purdue Level 1 isolation') || t35_chips.length === 0) {
+  console.error("FAIL: submitCyberDefense did not render approved ruling or chips!");
+  process.exit(1);
+}
+
+// 35.6 Switch to Campaign 2 (Saltillo Ransomware) and Campaign 3 (Querétaro BACnet MitM)
+window.switchCyberCampaign('ransomware');
+const t35_camp2Title = document.getElementById('cyber-campaign-title').textContent;
+console.log("Switched Campaign 2 Title:", t35_camp2Title);
+if (!t35_camp2Title.includes('ALPHV/BlackCat Ransomware')) {
+  console.error("FAIL: Failed to switch to Campaign 2 (Ransomware)!");
+  process.exit(1);
+}
+
+window.switchCyberCampaign('mitm');
+const t35_camp3Title = document.getElementById('cyber-campaign-title').textContent;
+console.log("Switched Campaign 3 Title:", t35_camp3Title);
+if (!t35_camp3Title.includes('BACnet/IP Sensor Spoofing')) {
+  console.error("FAIL: Failed to switch to Campaign 3 (BACnet MitM)!");
+  process.exit(1);
+}
+
+// 35.7 Export Incident Command Protocol
+window.exportCyberReport();
+console.log("PASS: Phase 28 (Autonomous Industrial Cybersecurity Threat Hunting Arena) verified.");
+
+// ============================================================================
+// TEST 36: PHASE 29 - AUTONOMOUS AI PREDICTIVE MAINTENANCE & RELIABILITY CRUCIBLE
+// ============================================================================
+console.log("\n--- TEST 36: Phase 29 - Predictive Maintenance & Reliability Crucible ---");
+
+// 36.1 Verify Navigation Hooks & Panel Elements
+const t36_tabPdm = document.getElementById('tab-btn-pdm-crucible');
+const t36_navBtn = document.getElementById('nav-btn-pdm-crucible');
+const t36_mobileBtn = document.getElementById('mobile-nav-btn-pdm-crucible');
+const t36_heroBtn = document.getElementById('hero-pdm-btn');
+const t36_panel = document.getElementById('hub-panel-pdm-crucible');
+
+console.log("Tab Button exists:", !!t36_tabPdm);
+console.log("Nav Dropdown Link exists:", !!t36_navBtn);
+console.log("Mobile Drawer Link exists:", !!t36_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t36_heroBtn);
+console.log("Panel exists:", !!t36_panel);
+
+if (!t36_tabPdm || !t36_panel || !t36_navBtn || !t36_mobileBtn || !t36_heroBtn) {
+  console.error("FAIL: Missing Phase 29 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 36.2 Activate Tab and Verify Initialization
+window.switchHubTab('pdm-crucible');
+console.log("PdM Crucible Panel display:", t36_panel.style.display);
+if (t36_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-pdm-crucible!");
+  process.exit(1);
+}
+
+// 36.3 Verify Asset 1 Metadata & Initial Telemetry
+const t36_plant = document.getElementById('pdm-plant-badge').textContent;
+const t36_title = document.getElementById('pdm-asset-title').textContent;
+const t36_rms = document.getElementById('pdm-stat-rms').textContent;
+const t36_rul = document.getElementById('pdm-stat-rul').textContent;
+const t36_kurtosis = document.getElementById('pdm-stat-kurtosis').textContent;
+const t36_saved = document.getElementById('pdm-stat-saved').textContent;
+const t36_inquiry = document.getElementById('pdm-board-inquiry').textContent;
+
+console.log("Target Plant:", t36_plant);
+console.log("Asset Diagnostic Title:", t36_title);
+console.log("Telemetry (RMS / RUL / Kurtosis / Saved):", t36_rms, "/", t36_rul, "/", t36_kurtosis, "/", t36_saved);
+console.log("Reliability Council Inquiry excerpt:", t36_inquiry.substring(0, 50) + "...");
+
+if (!t36_plant.includes('QUERÉTARO') || !t36_rms.includes('1.42 mm/s') || !t36_rul.includes('4,200 Horas') || !t36_saved.includes('$2,100,000')) {
+  console.error("FAIL: Asset 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 36.4 Test Diagnostics & Tactical Actions
+window.applyPdmAction('fft');
+const t36_updatedRms = document.getElementById('pdm-stat-rms').textContent;
+console.log("Post-FFT RMS Velocity:", t36_updatedRms);
+if (!t36_updatedRms.includes('0.88 mm/s')) {
+  console.error("FAIL: applyPdmAction('fft') failed to update RMS metric!");
+  process.exit(1);
+}
+
+window.applyPdmAction('weibull');
+const t36_updatedRul = document.getElementById('pdm-stat-rul').textContent;
+console.log("Post-Weibull RUL:", t36_updatedRul);
+if (!t36_updatedRul.includes('5,100 Horas')) {
+  console.error("FAIL: applyPdmAction('weibull') failed to update RUL metric!");
+  process.exit(1);
+}
+
+// 36.5 Test Audio, Mic Dictation & Defense Submission
+window.playPdmAudio();
+window.togglePdmMic();
+const t36_strategyInput = document.getElementById('pdm-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t36_strategyInput.length);
+if (t36_strategyInput.length < 20 || !t36_strategyInput.includes('BPFO')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitPdmDefense();
+const t36_rulingScore = document.getElementById('pdm-ruling-score').textContent;
+const t36_decisionNotes = document.getElementById('pdm-board-decision-notes').textContent;
+const t36_chips = document.querySelectorAll('#pdm-competency-chips span');
+
+console.log("Reliability Council Ruling Adjudication:", t36_rulingScore);
+console.log("Decision Notes excerpt:", t36_decisionNotes.substring(0, 50) + "...");
+console.log("Reliability Competency Chips count:", t36_chips.length);
+
+if (!t36_rulingScore.includes('CERTIFIED') || !t36_decisionNotes.includes('envelope demodulation') || t36_chips.length === 0) {
+  console.error("FAIL: submitPdmDefense did not render certified ruling or chips!");
+  process.exit(1);
+}
+
+// 36.6 Switch to Asset 2 (Saltillo Calender) and Asset 3 (Monterrey Continuous Caster)
+window.switchPdmAsset('calender');
+const t36_asset2Title = document.getElementById('pdm-asset-title').textContent;
+console.log("Switched Asset 2 Title:", t36_asset2Title);
+if (!t36_asset2Title.includes('Roll Chatter Resonance')) {
+  console.error("FAIL: Failed to switch to Asset 2 (Calender Line)!");
+  process.exit(1);
+}
+
+window.switchPdmAsset('caster');
+const t36_asset3Title = document.getElementById('pdm-asset-title').textContent;
+console.log("Switched Asset 3 Title:", t36_asset3Title);
+if (!t36_asset3Title.includes('Copper Mold Plate Thermographic')) {
+  console.error("FAIL: Failed to switch to Asset 3 (Continuous Caster)!");
+  process.exit(1);
+}
+
+// 36.7 Export Reliability Certification Protocol
+window.exportPdmReport();
+console.log("PASS: Phase 29 (Autonomous AI Predictive Maintenance & Reliability Crucible) verified.");
+
+// ============================================================================
+// TEST 37: PHASE 30 - AUTONOMOUS CROSS-BORDER MICROGRID & ENERGY ARBITRAGE CHAMBER
+// ============================================================================
+console.log("\n--- TEST 37: Phase 30 - Autonomous Microgrid & Energy Arbitrage Chamber ---");
+
+// 37.1 Verify Navigation Hooks & Panel Elements
+const t37_tabGrid = document.getElementById('tab-btn-microgrid-arbitrage');
+const t37_navBtn = document.getElementById('nav-btn-microgrid-arbitrage');
+const t37_mobileBtn = document.getElementById('mobile-nav-btn-microgrid-arbitrage');
+const t37_heroBtn = document.getElementById('hero-microgrid-btn');
+const t37_panel = document.getElementById('hub-panel-microgrid-arbitrage');
+
+console.log("Tab Button exists:", !!t37_tabGrid);
+console.log("Nav Dropdown Link exists:", !!t37_navBtn);
+console.log("Mobile Drawer Link exists:", !!t37_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t37_heroBtn);
+console.log("Panel exists:", !!t37_panel);
+
+if (!t37_tabGrid || !t37_panel || !t37_navBtn || !t37_mobileBtn || !t37_heroBtn) {
+  console.error("FAIL: Missing Phase 30 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 37.2 Activate Tab and Verify Initialization
+window.switchHubTab('microgrid-arbitrage');
+console.log("Microgrid Panel display:", t37_panel.style.display);
+if (t37_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-microgrid-arbitrage!");
+  process.exit(1);
+}
+
+// 37.3 Verify Scenario 1 Metadata & Initial Telemetry
+const t37_corridor = document.getElementById('grid-corridor-badge').textContent;
+const t37_title = document.getElementById('grid-scenario-title').textContent;
+const t37_freq = document.getElementById('grid-stat-freq').textContent;
+const t37_soc = document.getElementById('grid-stat-soc').textContent;
+const t37_lmp = document.getElementById('grid-stat-lmp').textContent;
+const t37_saved = document.getElementById('grid-stat-saved').textContent;
+const t37_inquiry = document.getElementById('grid-board-inquiry').textContent;
+
+console.log("Energy Corridor:", t37_corridor);
+console.log("Scenario Title:", t37_title);
+console.log("Telemetry (Freq / SOC / LMP / Saved):", t37_freq, "/", t37_soc, "/", t37_lmp, "/", t37_saved);
+console.log("Energy Arbitrage Council Inquiry excerpt:", t37_inquiry.substring(0, 50) + "...");
+
+if (!t37_corridor.includes('REYNOSA-MCALLEN') || !t37_freq.includes('60.00 Hz') || !t37_soc.includes('88.4%') || !t37_saved.includes('$2,800,000')) {
+  console.error("FAIL: Scenario 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 37.4 Test Dispatch & Tactical Actions
+window.applyGridAction('dispatch');
+const t37_updatedSoc = document.getElementById('grid-stat-soc').textContent;
+console.log("Post-Dispatch SOC:", t37_updatedSoc);
+if (!t37_updatedSoc.includes('72.1%')) {
+  console.error("FAIL: applyGridAction('dispatch') failed to update SOC metric!");
+  process.exit(1);
+}
+
+window.applyGridAction('cogen');
+const t37_updatedLmp = document.getElementById('grid-stat-lmp').textContent;
+console.log("Post-Cogen LMP:", t37_updatedLmp);
+if (!t37_updatedLmp.includes('$24.80')) {
+  console.error("FAIL: applyGridAction('cogen') failed to update LMP metric!");
+  process.exit(1);
+}
+
+// 37.5 Test Audio, Mic Dictation & Defense Submission
+window.playGridAudio();
+window.toggleGridMic();
+const t37_strategyInput = document.getElementById('grid-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t37_strategyInput.length);
+if (t37_strategyInput.length < 20 || !t37_strategyInput.includes('BESS')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitGridDefense();
+const t37_rulingScore = document.getElementById('grid-ruling-score').textContent;
+const t37_decisionNotes = document.getElementById('grid-board-decision-notes').textContent;
+const t37_chips = document.querySelectorAll('#grid-competency-chips span');
+
+console.log("Energy Council Ruling Adjudication:", t37_rulingScore);
+console.log("Decision Notes excerpt:", t37_decisionNotes.substring(0, 50) + "...");
+console.log("Energy Arbitrage Competency Chips count:", t37_chips.length);
+
+if (!t37_rulingScore.includes('APPROVED') || !t37_decisionNotes.includes('4CP tariff penalty') || t37_chips.length === 0) {
+  console.error("FAIL: submitGridDefense did not render approved ruling or chips!");
+  process.exit(1);
+}
+
+// 37.6 Switch to Scenario 2 (Saltillo Islanding) and Scenario 3 (Monterrey Cogen H2)
+window.switchGridScenario('island');
+const t37_scen2Title = document.getElementById('grid-scenario-title').textContent;
+console.log("Switched Scenario 2 Title:", t37_scen2Title);
+if (!t37_scen2Title.includes('Substation Transformer Trip')) {
+  console.error("FAIL: Failed to switch to Scenario 2 (Islanding)!");
+  process.exit(1);
+}
+
+window.switchGridScenario('cogen');
+const t37_scen3Title = document.getElementById('grid-scenario-title').textContent;
+console.log("Switched Scenario 3 Title:", t37_scen3Title);
+if (!t37_scen3Title.includes('Tri-Generation Gas/H2 Fuel-Switching')) {
+  console.error("FAIL: Failed to switch to Scenario 3 (Cogen H2)!");
+  process.exit(1);
+}
+
+// 37.7 Export Energy Arbitrage Protocol
+window.exportGridReport();
+console.log("PASS: Phase 30 (Autonomous Cross-Border Microgrid & Clean Industrial Energy Arbitrage Chamber) verified.");
+
+// ============================================================================
+// TEST 38: PHASE 31 - AUTONOMOUS 3D CHIPLET METROLOGY CLEANROOM
+// ============================================================================
+console.log("\n--- TEST 38: Phase 31 - Autonomous 3D Chiplet Metrology Cleanroom ---");
+
+// 38.1 Verify Navigation Hooks & Panel Elements
+const t38_tabChiplet = document.getElementById('tab-btn-chiplet-metrology');
+const t38_navBtn = document.getElementById('nav-btn-chiplet-metrology');
+const t38_mobileBtn = document.getElementById('mobile-nav-btn-chiplet-metrology');
+const t38_heroBtn = document.getElementById('hero-chiplet-btn');
+const t38_panel = document.getElementById('hub-panel-chiplet-metrology');
+
+console.log("Tab Button exists:", !!t38_tabChiplet);
+console.log("Nav Dropdown Link exists:", !!t38_navBtn);
+console.log("Mobile Drawer Link exists:", !!t38_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t38_heroBtn);
+console.log("Panel exists:", !!t38_panel);
+
+if (!t38_tabChiplet || !t38_panel || !t38_navBtn || !t38_mobileBtn || !t38_heroBtn) {
+  console.error("FAIL: Missing Phase 31 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 38.2 Activate Tab and Verify Initialization
+window.switchHubTab('chiplet-metrology');
+console.log("Chiplet Panel display:", t38_panel.style.display);
+if (t38_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-chiplet-metrology!");
+  process.exit(1);
+}
+
+// 38.3 Verify Station 1 Metadata & Initial Telemetry
+const t38_facility = document.getElementById('chiplet-facility-badge').textContent;
+const t38_title = document.getElementById('chiplet-station-title').textContent;
+const t38_void = document.getElementById('chiplet-stat-void').textContent;
+const t38_afm = document.getElementById('chiplet-stat-afm').textContent;
+const t38_warp = document.getElementById('chiplet-stat-warp').textContent;
+const t38_saved = document.getElementById('chiplet-stat-saved').textContent;
+const t38_inquiry = document.getElementById('chiplet-board-inquiry').textContent;
+
+console.log("Facility:", t38_facility);
+console.log("Station Title:", t38_title);
+console.log("Telemetry (Void / AFM / Warpage / Saved):", t38_void, "/", t38_afm, "/", t38_warp, "/", t38_saved);
+console.log("Metrology Council Inquiry excerpt:", t38_inquiry.substring(0, 50) + "...");
+
+if (!t38_facility.includes('GUADALAJARA') || !t38_void.includes('0.04%') || !t38_afm.includes('0.38 nm') || !t38_saved.includes('$4,200,000')) {
+  console.error("FAIL: Station 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 38.4 Test Metrology & Tactical Actions
+window.applyChipletAction('xct');
+const t38_updatedVoid = document.getElementById('chiplet-stat-void').textContent;
+console.log("Post-XCT Void Ratio:", t38_updatedVoid);
+if (!t38_updatedVoid.includes('0.02%')) {
+  console.error("FAIL: applyChipletAction('xct') failed to update Void metric!");
+  process.exit(1);
+}
+
+window.applyChipletAction('afm');
+const t38_updatedAfm = document.getElementById('chiplet-stat-afm').textContent;
+console.log("Post-AFM RMS:", t38_updatedAfm);
+if (!t38_updatedAfm.includes('0.32 nm')) {
+  console.error("FAIL: applyChipletAction('afm') failed to update AFM metric!");
+  process.exit(1);
+}
+
+// 38.5 Test Audio, Mic Dictation & Defense Submission
+window.playChipletAudio();
+window.toggleChipletMic();
+const t38_strategyInput = document.getElementById('chiplet-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t38_strategyInput.length);
+if (t38_strategyInput.length < 20 || !t38_strategyInput.includes('XCT')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitChipletDefense();
+const t38_rulingScore = document.getElementById('chiplet-ruling-score').textContent;
+const t38_decisionNotes = document.getElementById('chiplet-board-decision-notes').textContent;
+const t38_chips = document.querySelectorAll('#chiplet-competency-chips span');
+
+console.log("Packaging Council Ruling Adjudication:", t38_rulingScore);
+console.log("Decision Notes excerpt:", t38_decisionNotes.substring(0, 50) + "...");
+console.log("Metrology Competency Chips count:", t38_chips.length);
+
+if (!t38_rulingScore.includes('CERTIFIED') || !t38_decisionNotes.includes('TSV integrity') || t38_chips.length === 0) {
+  console.error("FAIL: submitChipletDefense did not render certified ruling or chips!");
+  process.exit(1);
+}
+
+// 38.6 Switch to Station 2 (Querétaro AFM) and Station 3 (Monterrey HBM3e)
+window.switchChipletStation('afm');
+const t38_stn2Title = document.getElementById('chiplet-station-title').textContent;
+console.log("Switched Station 2 Title:", t38_stn2Title);
+if (!t38_stn2Title.includes('Sub-Nanometer Atomic Force Microscopy')) {
+  console.error("FAIL: Failed to switch to Station 2 (AFM)!");
+  process.exit(1);
+}
+
+window.switchChipletStation('csam');
+const t38_stn3Title = document.getElementById('chiplet-station-title').textContent;
+console.log("Switched Station 3 Title:", t38_stn3Title);
+if (!t38_stn3Title.includes('Scanning Acoustic Microscopy')) {
+  console.error("FAIL: Failed to switch to Station 3 (CSAM)!");
+  process.exit(1);
+}
+
+// 38.7 Export Chiplet Metrology Protocol
+window.exportChipletReport();
+console.log("PASS: Phase 31 (Autonomous High-Throughput Advanced Packaging & 3D Heterogeneous Chiplet Metrology Cleanroom) verified.");
+
+// ============================================================================
+// TEST 39: PHASE 32 - EV BATTERY PACK THERMAL RUNAWAY CONTAINMENT & UN 38.3
+// ============================================================================
+console.log("\n--- TEST 39: Phase 32 - EV Battery Pack Safety & UN 38.3 Testing ---");
+
+// 39.1 Verify Navigation Hooks & Panel Elements
+const t39_tabBattery = document.getElementById('tab-btn-battery-crucible');
+const t39_navBtn = document.getElementById('nav-btn-battery-crucible');
+const t39_mobileBtn = document.getElementById('mobile-nav-btn-battery-crucible');
+const t39_heroBtn = document.getElementById('hero-battery-btn');
+const t39_panel = document.getElementById('hub-panel-battery-crucible');
+
+console.log("Tab Button exists:", !!t39_tabBattery);
+console.log("Nav Dropdown Link exists:", !!t39_navBtn);
+console.log("Mobile Drawer Link exists:", !!t39_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t39_heroBtn);
+console.log("Panel exists:", !!t39_panel);
+
+if (!t39_tabBattery || !t39_panel || !t39_navBtn || !t39_mobileBtn || !t39_heroBtn) {
+  console.error("FAIL: Missing Phase 32 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 39.2 Activate Tab and Verify Initialization
+window.switchHubTab('battery-crucible');
+console.log("Battery Crucible Panel display:", t39_panel.style.display);
+if (t39_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-battery-crucible!");
+  process.exit(1);
+}
+
+// 39.3 Verify Station 1 Metadata & Initial Telemetry
+const t39_facility = document.getElementById('battery-facility-badge').textContent;
+const t39_title = document.getElementById('battery-station-title').textContent;
+const t39_temp = document.getElementById('battery-stat-temp').textContent;
+const t39_press = document.getElementById('battery-stat-press').textContent;
+const t39_iso = document.getElementById('battery-stat-iso').textContent;
+const t39_saved = document.getElementById('battery-stat-saved').textContent;
+const t39_inquiry = document.getElementById('battery-board-inquiry').textContent;
+
+console.log("Facility:", t39_facility);
+console.log("Station Title:", t39_title);
+console.log("Telemetry (Temp / Pressure / Isolation / Saved):", t39_temp, "/", t39_press, "/", t39_iso, "/", t39_saved);
+console.log("Homologation Council Inquiry excerpt:", t39_inquiry.substring(0, 50) + "...");
+
+if (!t39_facility.includes('SALTILLO') || !t39_temp.includes('58.4°C') || !t39_press.includes('+14.2 kPa') || !t39_saved.includes('$3,800,000')) {
+  console.error("FAIL: Station 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 39.4 Test Battery Mitigation & Tactical Actions
+window.applyBatteryAction('nail');
+const t39_updatedTemp = document.getElementById('battery-stat-temp').textContent;
+console.log("Post-Nail Action Temp:", t39_updatedTemp);
+if (!t39_updatedTemp.includes('54.2°C')) {
+  console.error("FAIL: applyBatteryAction('nail') failed to update Temp metric!");
+  process.exit(1);
+}
+
+window.applyBatteryAction('cool');
+const t39_updatedPress = document.getElementById('battery-stat-press').textContent;
+console.log("Post-Cool Action Pressure:", t39_updatedPress);
+if (!t39_updatedPress.includes('+11.8 kPa')) {
+  console.error("FAIL: applyBatteryAction('cool') failed to update Pressure metric!");
+  process.exit(1);
+}
+
+// 39.5 Test Audio, Mic Dictation & Defense Submission
+window.playBatteryAudio();
+window.toggleBatteryMic();
+const t39_strategyInput = document.getElementById('battery-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t39_strategyInput.length);
+if (t39_strategyInput.length < 20 || !t39_strategyInput.includes('aerogel')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitBatteryDefense();
+const t39_rulingScore = document.getElementById('battery-ruling-score').textContent;
+const t39_decisionNotes = document.getElementById('battery-board-decision-notes').textContent;
+const t39_chips = document.querySelectorAll('#battery-competency-chips span');
+
+console.log("Homologation Council Ruling Adjudication:", t39_rulingScore);
+console.log("Decision Notes excerpt:", t39_decisionNotes.substring(0, 50) + "...");
+console.log("Battery Competency Chips count:", t39_chips.length);
+
+if (!t39_rulingScore.includes('CERTIFIED') || !t39_decisionNotes.includes('thermal runaway') || t39_chips.length === 0) {
+  console.error("FAIL: submitBatteryDefense did not render certified ruling or chips!");
+  process.exit(1);
+}
+
+// 39.6 Switch to Station 2 (Ramos Arizpe Cooling) and Station 3 (Monterrey Pyro-Fuse)
+window.switchBatteryStation('cooling');
+const t39_stn2Title = document.getElementById('battery-station-title').textContent;
+console.log("Switched Station 2 Title:", t39_stn2Title);
+if (!t39_stn2Title.includes('Serpentine Microchannel Cold Plate')) {
+  console.error("FAIL: Failed to switch to Station 2 (Cooling)!");
+  process.exit(1);
+}
+
+window.switchBatteryStation('pyro');
+const t39_stn3Title = document.getElementById('battery-station-title').textContent;
+console.log("Switched Station 3 Title:", t39_stn3Title);
+if (!t39_stn3Title.includes('Ultra-Fast Pyrotechnic Pyro-Fuse')) {
+  console.error("FAIL: Failed to switch to Station 3 (Pyro-Fuse)!");
+  process.exit(1);
+}
+
+// 39.7 Export Battery Safety Protocol
+window.exportBatteryReport();
+console.log("PASS: Phase 32 (Cross-Border Autonomous AI EV Battery Pack Thermal Runaway Containment & UN 38.3 Testing Crucible) verified.");
+
+// ============================================================================
+// TEST 40: PHASE 33 - HYPERSCALE IMMERSION COOLING & POWER DENSITY OPTIMIZATION
+// ============================================================================
+console.log("\n--- TEST 40: Phase 33 - Hyperscale Two-Phase Immersion Cooling & PUE ---");
+
+// 40.1 Verify Navigation Hooks & Panel Elements
+const t40_tabImmersion = document.getElementById('tab-btn-immersion-cooling');
+const t40_navBtn = document.getElementById('nav-btn-immersion-cooling');
+const t40_mobileBtn = document.getElementById('mobile-nav-btn-immersion-cooling');
+const t40_heroBtn = document.getElementById('hero-immersion-btn');
+const t40_panel = document.getElementById('hub-panel-immersion-cooling');
+
+console.log("Tab Button exists:", !!t40_tabImmersion);
+console.log("Nav Dropdown Link exists:", !!t40_navBtn);
+console.log("Mobile Drawer Link exists:", !!t40_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t40_heroBtn);
+console.log("Panel exists:", !!t40_panel);
+
+if (!t40_tabImmersion || !t40_panel || !t40_navBtn || !t40_mobileBtn || !t40_heroBtn) {
+  console.error("FAIL: Missing Phase 33 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 40.2 Activate Tab and Verify Initialization
+window.switchHubTab('immersion-cooling');
+console.log("Immersion Cooling Panel display:", t40_panel.style.display);
+if (t40_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-immersion-cooling!");
+  process.exit(1);
+}
+
+// 40.3 Verify Station 1 Metadata & Initial Telemetry
+const t40_facility = document.getElementById('immersion-facility-badge').textContent;
+const t40_title = document.getElementById('immersion-station-title').textContent;
+const t40_pue = document.getElementById('immersion-stat-pue').textContent;
+const t40_diel = document.getElementById('immersion-stat-diel').textContent;
+const t40_temp = document.getElementById('immersion-stat-temp').textContent;
+const t40_saved = document.getElementById('immersion-stat-saved').textContent;
+const t40_inquiry = document.getElementById('immersion-board-inquiry').textContent;
+
+console.log("Facility:", t40_facility);
+console.log("Station Title:", t40_title);
+console.log("Telemetry (PUE / Dielectric / Temp / Saved):", t40_pue, "/", t40_diel, "/", t40_temp, "/", t40_saved);
+console.log("Evaluation Council Inquiry excerpt:", t40_inquiry.substring(0, 50) + "...");
+
+if (!t40_facility.includes('QUERÉTARO') || !t40_pue.includes('1.04') || !t40_diel.includes('> 45 kV') || !t40_saved.includes('$4,800,000')) {
+  console.error("FAIL: Station 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 40.4 Test Immersion Actions
+window.applyImmersionAction('twophase');
+const t40_updatedTemp = document.getElementById('immersion-stat-temp').textContent;
+console.log("Post-TwoPhase Action Temp:", t40_updatedTemp);
+if (!t40_updatedTemp.includes('59.8°C')) {
+  console.error("FAIL: applyImmersionAction('twophase') failed to update Temp metric!");
+  process.exit(1);
+}
+
+window.applyImmersionAction('pao');
+const t40_updatedPue = document.getElementById('immersion-stat-pue').textContent;
+console.log("Post-PAO Action PUE:", t40_updatedPue);
+if (!t40_updatedPue.includes('1.032')) {
+  console.error("FAIL: applyImmersionAction('pao') failed to update PUE metric!");
+  process.exit(1);
+}
+
+// 40.5 Test Audio, Mic Dictation & Defense Submission
+window.playImmersionAudio();
+window.toggleImmersionMic();
+const t40_strategyInput = document.getElementById('immersion-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t40_strategyInput.length);
+if (t40_strategyInput.length < 20 || !t40_strategyInput.includes('nucleation')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitImmersionDefense();
+const t40_rulingScore = document.getElementById('immersion-ruling-score').textContent;
+const t40_decisionNotes = document.getElementById('immersion-board-decision-notes').textContent;
+const t40_chips = document.querySelectorAll('#immersion-competency-chips span');
+
+console.log("Immersion Council Ruling Adjudication:", t40_rulingScore);
+console.log("Decision Notes excerpt:", t40_decisionNotes.substring(0, 50) + "...");
+console.log("Immersion Competency Chips count:", t40_chips.length);
+
+if (!t40_rulingScore.includes('CERTIFIED') || !t40_decisionNotes.includes('immersion deployment') || t40_chips.length === 0) {
+  console.error("FAIL: submitImmersionDefense did not render certified ruling or chips!");
+  process.exit(1);
+}
+
+// 40.6 Switch to Station 2 (Monterrey PAO) and Station 3 (Guadalajara VRM)
+window.switchImmersionStation('pao');
+const t40_stn2Title = document.getElementById('immersion-station-title').textContent;
+console.log("Switched Station 2 Title:", t40_stn2Title);
+if (!t40_stn2Title.includes('Single-Phase Synthetic Polyalphaolefin')) {
+  console.error("FAIL: Failed to switch to Station 2 (PAO)!");
+  process.exit(1);
+}
+
+window.switchImmersionStation('pol');
+const t40_stn3Title = document.getElementById('immersion-station-title').textContent;
+console.log("Switched Station 3 Title:", t40_stn3Title);
+if (!t40_stn3Title.includes('Point-of-Load (PoL) 48V-to-1V VRM')) {
+  console.error("FAIL: Failed to switch to Station 3 (PoL)!");
+  process.exit(1);
+}
+
+// 40.7 Export Immersion Protocol Report
+window.exportImmersionReport();
+console.log("PASS: Phase 33 (Autonomous Hyperscale Data Center Direct-to-Chip Two-Phase Immersion Cooling & Power Density Optimization Chamber) verified.");
+
+// ============================================================================
+// TEST 41: PHASE 34 - BIOPROCESS & SINGLE-USE BIOREACTOR VALIDATION CLEANROOM
+// ============================================================================
+console.log("\n--- TEST 41: Phase 34 - Bioprocess Single-Use Bioreactor Validation & 21 CFR Part 11 ---");
+
+// 41.1 Verify Navigation Hooks & Panel Elements
+const t41_tabBioprocess = document.getElementById('tab-btn-bioprocess-validation');
+const t41_navBtn = document.getElementById('nav-btn-bioprocess-validation');
+const t41_mobileBtn = document.getElementById('mobile-nav-btn-bioprocess-validation');
+const t41_heroBtn = document.getElementById('hero-bioprocess-btn');
+const t41_panel = document.getElementById('hub-panel-bioprocess-validation');
+
+console.log("Tab Button exists:", !!t41_tabBioprocess);
+console.log("Nav Dropdown Link exists:", !!t41_navBtn);
+console.log("Mobile Drawer Link exists:", !!t41_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t41_heroBtn);
+console.log("Panel exists:", !!t41_panel);
+
+if (!t41_tabBioprocess || !t41_panel || !t41_navBtn || !t41_mobileBtn || !t41_heroBtn) {
+  console.error("FAIL: Missing Phase 34 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 41.2 Activate Tab and Verify Initialization
+window.switchHubTab('bioprocess-validation');
+console.log("Bioprocess Validation Panel display:", t41_panel.style.display);
+if (t41_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-bioprocess-validation!");
+  process.exit(1);
+}
+
+// 41.3 Verify Station 1 Metadata & Initial Telemetry
+const t41_facility = document.getElementById('bioprocess-facility-badge').textContent;
+const t41_title = document.getElementById('bioprocess-station-title').textContent;
+const t41_vcd = document.getElementById('bioprocess-stat-vcd').textContent;
+const t41_do = document.getElementById('bioprocess-stat-do').textContent;
+const t41_tmp = document.getElementById('bioprocess-stat-tmp').textContent;
+const t41_saved = document.getElementById('bioprocess-stat-saved').textContent;
+const t41_inquiry = document.getElementById('bioprocess-board-inquiry').textContent;
+
+console.log("Facility:", t41_facility);
+console.log("Station Title:", t41_title);
+console.log("Telemetry (VCD / dO2 / TMP / Saved):", t41_vcd, "/", t41_do, "/", t41_tmp, "/", t41_saved);
+console.log("FDA Evaluation Inquiry excerpt:", t41_inquiry.substring(0, 50) + "...");
+
+if (!t41_facility.includes('TOLUCA') || !t41_vcd.includes('42.5M') || !t41_do.includes('40.2%') || !t41_saved.includes('$3,400,000')) {
+  console.error("FAIL: Station 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 41.4 Test Bioprocess Actions
+window.applyBioprocessAction('sparge');
+const t41_updatedDo = document.getElementById('bioprocess-stat-do').textContent;
+console.log("Post-Sparge Action dO2:", t41_updatedDo);
+if (!t41_updatedDo.includes('41.8%')) {
+  console.error("FAIL: applyBioprocessAction('sparge') failed to update dO2 metric!");
+  process.exit(1);
+}
+
+window.applyBioprocessAction('tff');
+const t41_updatedVcd = document.getElementById('bioprocess-stat-vcd').textContent;
+console.log("Post-TFF Action VCD:", t41_updatedVcd);
+if (!t41_updatedVcd.includes('44.8M')) {
+  console.error("FAIL: applyBioprocessAction('tff') failed to update VCD metric!");
+  process.exit(1);
+}
+
+// 41.5 Test Audio, Mic Dictation & Defense Submission
+window.playBioprocessAudio();
+window.toggleBioprocessMic();
+const t41_strategyInput = document.getElementById('bioprocess-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t41_strategyInput.length);
+if (t41_strategyInput.length < 20 || !t41_strategyInput.includes('shear')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitBioprocessDefense();
+const t41_rulingScore = document.getElementById('bioprocess-ruling-score').textContent;
+const t41_decisionNotes = document.getElementById('bioprocess-board-decision-notes').textContent;
+const t41_chips = document.querySelectorAll('#bioprocess-competency-chips span');
+
+console.log("Bioprocess Validation Ruling Adjudication:", t41_rulingScore);
+console.log("Decision Notes excerpt:", t41_decisionNotes.substring(0, 50) + "...");
+console.log("Bioprocess Competency Chips count:", t41_chips.length);
+
+if (!t41_rulingScore.includes('VALIDATED') || !t41_decisionNotes.includes('Regulatory Validation') || t41_chips.length === 0) {
+  console.error("FAIL: submitBioprocessDefense did not render validated ruling or chips!");
+  process.exit(1);
+}
+
+// 41.6 Switch to Station 2 (Zapopan TFF) and Station 3 (Cuernavaca Raman)
+window.switchBioprocessStation('tff');
+const t41_stn2Title = document.getElementById('bioprocess-station-title').textContent;
+console.log("Switched Station 2 Title:", t41_stn2Title);
+if (!t41_stn2Title.includes('Sterile Tangential Flow Ultrafiltration')) {
+  console.error("FAIL: Failed to switch to Station 2 (TFF)!");
+  process.exit(1);
+}
+
+window.switchBioprocessStation('raman');
+const t41_stn3Title = document.getElementById('bioprocess-station-title').textContent;
+console.log("Switched Station 3 Title:", t41_stn3Title);
+if (!t41_stn3Title.includes('In-Line Raman Spectroscopy')) {
+  console.error("FAIL: Failed to switch to Station 3 (Raman)!");
+  process.exit(1);
+}
+
+// 41.7 Export Bioprocess Protocol Report
+window.exportBioprocessReport();
+console.log("PASS: Phase 34 (Autonomous AI Nearshoring Bioprocess & Sterile Single-Use Bioreactor Validation Cleanroom) verified.");
+
+// ============================================================================
+// TEST 42: PHASE 35 - CLEAN HYDROGEN ELECTROLYZER & AMMONIA CRACKING CRUCIBLE
+// ============================================================================
+console.log("\n--- TEST 42: Phase 35 - Clean Hydrogen PEM Electrolyzer & Ammonia Cracking Synthesis ---");
+
+// 42.1 Verify Navigation Hooks & Panel Elements
+const t42_tabHydrogen = document.getElementById('tab-btn-hydrogen-synthesis');
+const t42_navBtn = document.getElementById('nav-btn-hydrogen-synthesis');
+const t42_mobileBtn = document.getElementById('mobile-nav-btn-hydrogen-synthesis');
+const t42_heroBtn = document.getElementById('hero-hydrogen-btn');
+const t42_panel = document.getElementById('hub-panel-hydrogen-synthesis');
+
+console.log("Tab Button exists:", !!t42_tabHydrogen);
+console.log("Nav Dropdown Link exists:", !!t42_navBtn);
+console.log("Mobile Drawer Link exists:", !!t42_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t42_heroBtn);
+console.log("Panel exists:", !!t42_panel);
+
+if (!t42_tabHydrogen || !t42_panel || !t42_navBtn || !t42_mobileBtn || !t42_heroBtn) {
+  console.error("FAIL: Missing Phase 35 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 42.2 Activate Tab and Verify Initialization
+window.switchHubTab('hydrogen-synthesis');
+console.log("Hydrogen Synthesis Panel display:", t42_panel.style.display);
+if (t42_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-hydrogen-synthesis!");
+  process.exit(1);
+}
+
+// 42.3 Verify Station 1 Metadata & Initial Telemetry
+const t42_facility = document.getElementById('hydrogen-facility-badge').textContent;
+const t42_title = document.getElementById('hydrogen-station-title').textContent;
+const t42_pressure = document.getElementById('hydrogen-stat-pressure').textContent;
+const t42_purity = document.getElementById('hydrogen-stat-purity').textContent;
+const t42_crossover = document.getElementById('hydrogen-stat-crossover').textContent;
+const t42_saved = document.getElementById('hydrogen-stat-saved').textContent;
+const t42_inquiry = document.getElementById('hydrogen-board-inquiry').textContent;
+
+console.log("Facility:", t42_facility);
+console.log("Station Title:", t42_title);
+console.log("Telemetry (Pressure / Purity / Crossover / Saved):", t42_pressure, "/", t42_purity, "/", t42_crossover, "/", t42_saved);
+console.log("Hydrogen Evaluation Inquiry excerpt:", t42_inquiry.substring(0, 50) + "...");
+
+if (!t42_facility.includes('PUERTO PEÑASCO') || !t42_pressure.includes('30.4 bar') || !t42_purity.includes('99.999%') || !t42_saved.includes('$4,600,000')) {
+  console.error("FAIL: Station 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 42.4 Test Hydrogen Actions
+window.applyHydrogenAction('pem');
+const t42_updatedCrossover = document.getElementById('hydrogen-stat-crossover').textContent;
+console.log("Post-PEM Action Crossover:", t42_updatedCrossover);
+if (!t42_updatedCrossover.includes('0.28% LEL')) {
+  console.error("FAIL: applyHydrogenAction('pem') failed to update crossover metric!");
+  process.exit(1);
+}
+
+window.applyHydrogenAction('soec');
+const t42_updatedPressure = document.getElementById('hydrogen-stat-pressure').textContent;
+console.log("Post-SOEC Action Pressure:", t42_updatedPressure);
+if (!t42_updatedPressure.includes('30.8 bar')) {
+  console.error("FAIL: applyHydrogenAction('soec') failed to update pressure metric!");
+  process.exit(1);
+}
+
+// 42.5 Test Audio, Mic Dictation & Defense Submission
+window.playHydrogenAudio();
+window.toggleHydrogenMic();
+const t42_strategyInput = document.getElementById('hydrogen-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t42_strategyInput.length);
+if (t42_strategyInput.length < 20 || !t42_strategyInput.includes('crossover')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitHydrogenDefense();
+const t42_rulingScore = document.getElementById('hydrogen-ruling-score').textContent;
+const t42_decisionNotes = document.getElementById('hydrogen-board-decision-notes').textContent;
+const t42_chips = document.querySelectorAll('#hydrogen-competency-chips span');
+
+console.log("Hydrogen Safety Ruling Adjudication:", t42_rulingScore);
+console.log("Decision Notes excerpt:", t42_decisionNotes.substring(0, 50) + "...");
+console.log("Hydrogen Competency Chips count:", t42_chips.length);
+
+if (!t42_rulingScore.includes('SAFETY CERTIFIED') || !t42_decisionNotes.includes('Safety Council') || t42_chips.length === 0) {
+  console.error("FAIL: submitHydrogenDefense did not render certified ruling or chips!");
+  process.exit(1);
+}
+
+// 42.6 Switch to Station 2 (Monclova SOEC) and Station 3 (Coatzacoalcos Ammonia)
+window.switchHydrogenStation('soec');
+const t42_stn2Title = document.getElementById('hydrogen-station-title').textContent;
+console.log("Switched Station 2 Title:", t42_stn2Title);
+if (!t42_stn2Title.includes('High-Temperature Solid Oxide Electrolyzer')) {
+  console.error("FAIL: Failed to switch to Station 2 (SOEC)!");
+  process.exit(1);
+}
+
+window.switchHydrogenStation('ammonia');
+const t42_stn3Title = document.getElementById('hydrogen-station-title').textContent;
+console.log("Switched Station 3 Title:", t42_stn3Title);
+if (!t42_stn3Title.includes('Haber-Bosch Green Ammonia Cracking')) {
+  console.error("FAIL: Failed to switch to Station 3 (Ammonia)!");
+  process.exit(1);
+}
+
+// 42.7 Export Hydrogen Protocol Report
+window.exportHydrogenReport();
+console.log("PASS: Phase 35 (Autonomous Clean Hydrogen Electrolyzer & Ammonia Cracking Synthesis Crucible) verified.");
+
+// ============================================================================
+// TEST 43: PHASE 36 - SEMICONDUCTOR UPW & ZLD RECLAMATION CRUCIBLE
+// ============================================================================
+console.log("\n--- TEST 43: Phase 36 - Semiconductor Ultra-Pure Water & ZLD Reclamation ---");
+
+// 43.1 Verify Navigation Hooks & Panel Elements
+const t43_tabUpw = document.getElementById('tab-btn-upw-reclamation');
+const t43_navBtn = document.getElementById('nav-btn-upw-reclamation');
+const t43_mobileBtn = document.getElementById('mobile-nav-btn-upw-reclamation');
+const t43_heroBtn = document.getElementById('hero-upw-btn');
+const t43_panel = document.getElementById('hub-panel-upw-reclamation');
+
+console.log("Tab Button exists:", !!t43_tabUpw);
+console.log("Nav Dropdown Link exists:", !!t43_navBtn);
+console.log("Mobile Drawer Link exists:", !!t43_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t43_heroBtn);
+console.log("Panel exists:", !!t43_panel);
+
+if (!t43_tabUpw || !t43_panel || !t43_navBtn || !t43_mobileBtn || !t43_heroBtn) {
+  console.error("FAIL: Missing Phase 36 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 43.2 Activate Tab and Verify Initialization
+window.switchHubTab('upw-reclamation');
+console.log("UPW Reclamation Panel display:", t43_panel.style.display);
+if (t43_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-upw-reclamation!");
+  process.exit(1);
+}
+
+// 43.3 Verify Station 1 Metadata & Initial Telemetry
+const t43_facility = document.getElementById('upw-facility-badge').textContent;
+const t43_title = document.getElementById('upw-station-title').textContent;
+const t43_resistivity = document.getElementById('upw-stat-resistivity').textContent;
+const t43_toc = document.getElementById('upw-stat-toc').textContent;
+const t43_do = document.getElementById('upw-stat-do').textContent;
+const t43_saved = document.getElementById('upw-stat-saved').textContent;
+const t43_inquiry = document.getElementById('upw-board-inquiry').textContent;
+
+console.log("Facility:", t43_facility);
+console.log("Station Title:", t43_title);
+console.log("Telemetry (Resistivity / TOC / DO / Saved):", t43_resistivity, "/", t43_toc, "/", t43_do, "/", t43_saved);
+console.log("UPW Evaluation Inquiry excerpt:", t43_inquiry.substring(0, 50) + "...");
+
+if (!t43_facility.includes('CHIHUAHUA') || !t43_resistivity.includes('18.2') || !t43_do.includes('0.75 ppb') || !t43_saved.includes('$4,400,000')) {
+  console.error("FAIL: Station 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 43.4 Test UPW Actions
+window.applyUpwAction('vmd');
+const t43_updatedDo = document.getElementById('upw-stat-do').textContent;
+console.log("Post-VMD Action DO:", t43_updatedDo);
+if (!t43_updatedDo.includes('0.58 ppb')) {
+  console.error("FAIL: applyUpwAction('vmd') failed to update DO metric!");
+  process.exit(1);
+}
+
+window.applyUpwAction('cedi');
+const t43_updatedRes = document.getElementById('upw-stat-resistivity').textContent;
+console.log("Post-CEDI Action Resistivity:", t43_updatedRes);
+if (!t43_updatedRes.includes('18.25')) {
+  console.error("FAIL: applyUpwAction('cedi') failed to update resistivity metric!");
+  process.exit(1);
+}
+
+// 43.5 Test Audio, Mic Dictation & Defense Submission
+window.playUpwAudio();
+window.toggleUpwMic();
+const t43_strategyInput = document.getElementById('upw-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t43_strategyInput.length);
+if (t43_strategyInput.length < 20 || !t43_strategyInput.includes('dielectric')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitUpwDefense();
+const t43_rulingScore = document.getElementById('upw-ruling-score').textContent;
+const t43_decisionNotes = document.getElementById('upw-board-decision-notes').textContent;
+const t43_chips = document.querySelectorAll('#upw-competency-chips span');
+
+console.log("UPW Safety Ruling Adjudication:", t43_rulingScore);
+console.log("Decision Notes excerpt:", t43_decisionNotes.substring(0, 50) + "...");
+console.log("UPW Competency Chips count:", t43_chips.length);
+
+if (!t43_rulingScore.includes('SEMI F63 CERTIFIED') || !t43_decisionNotes.includes('Water & Chemical') || t43_chips.length === 0) {
+  console.error("FAIL: submitUpwDefense did not render certified ruling or chips!");
+  process.exit(1);
+}
+
+// 43.6 Switch to Station 2 (Monterrey CEDI) and Station 3 (Saltillo ZLD)
+window.switchUpwStation('cedi');
+const t43_stn2Title = document.getElementById('upw-station-title').textContent;
+console.log("Switched Station 2 Title:", t43_stn2Title);
+if (!t43_stn2Title.includes('Continuous Electro-Deionization')) {
+  console.error("FAIL: Failed to switch to Station 2 (CEDI)!");
+  process.exit(1);
+}
+
+window.switchUpwStation('zld');
+const t43_stn3Title = document.getElementById('upw-station-title').textContent;
+console.log("Switched Station 3 Title:", t43_stn3Title);
+if (!t43_stn3Title.includes('Zero Liquid Discharge')) {
+  console.error("FAIL: Failed to switch to Station 3 (ZLD)!");
+  process.exit(1);
+}
+
+// 43.7 Export UPW Protocol Report
+window.exportUpwReport();
+console.log("PASS: Phase 36 (Autonomous AI Semiconductor Cleanroom Ultra-Pure Water & Trace Chemical Contamination Reclamation Crucible) verified.");
+
+// ============================================================================
+// TEST 44: PHASE 37 - AEROSPACE AVIONICS & MIL-STD-1553 HARDWARE ASSURANCE CRUCIBLE
+// ============================================================================
+console.log("\n--- TEST 44: Phase 37 - Aerospace Avionics & MIL-STD-1553 Hardware Assurance ---");
+
+// 44.1 Verify Navigation Hooks & Panel Elements
+const t44_tabAvionics = document.getElementById('tab-btn-avionics-assurance');
+const t44_navBtn = document.getElementById('nav-btn-avionics-assurance');
+const t44_mobileBtn = document.getElementById('mobile-nav-btn-avionics-assurance');
+const t44_heroBtn = document.getElementById('hero-avionics-btn');
+const t44_panel = document.getElementById('hub-panel-avionics-assurance');
+
+console.log("Tab Button exists:", !!t44_tabAvionics);
+console.log("Nav Dropdown Link exists:", !!t44_navBtn);
+console.log("Mobile Drawer Link exists:", !!t44_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t44_heroBtn);
+console.log("Panel exists:", !!t44_panel);
+
+if (!t44_tabAvionics || !t44_panel || !t44_navBtn || !t44_mobileBtn || !t44_heroBtn) {
+  console.error("FAIL: Missing Phase 37 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 44.2 Activate Tab and Verify Initialization
+window.switchHubTab('avionics-assurance');
+console.log("Avionics Assurance Panel display:", t44_panel.style.display);
+if (t44_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-avionics-assurance!");
+  process.exit(1);
+}
+
+// 44.3 Verify Station 1 Metadata & Initial Telemetry
+const t44_facility = document.getElementById('avionics-facility-badge').textContent;
+const t44_title = document.getElementById('avionics-station-title').textContent;
+const t44_ber = document.getElementById('avionics-stat-ber').textContent;
+const t44_mtbf = document.getElementById('avionics-stat-mtbf').textContent;
+const t44_clamp = document.getElementById('avionics-stat-clamp').textContent;
+const t44_saved = document.getElementById('avionics-stat-saved').textContent;
+const t44_inquiry = document.getElementById('avionics-board-inquiry').textContent;
+
+console.log("Facility:", t44_facility);
+console.log("Station Title:", t44_title);
+console.log("Telemetry (BER / MTBF / Clamp / Saved):", t44_ber, "/", t44_mtbf, "/", t44_clamp, "/", t44_saved);
+console.log("Avionics Evaluation Inquiry excerpt:", t44_inquiry.substring(0, 50) + "...");
+
+if (!t44_facility.includes('QUERÉTARO') || !t44_ber.includes('10⁻⁹') || !t44_clamp.includes('28.4V') || !t44_saved.includes('$7,200,000')) {
+  console.error("FAIL: Station 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 44.4 Test Avionics Actions
+window.applyAvionicsAction('manchester');
+const t44_updatedBer = document.getElementById('avionics-stat-ber').textContent;
+console.log("Post-Manchester Action BER:", t44_updatedBer);
+if (!t44_updatedBer.includes('10⁻¹⁰')) {
+  console.error("FAIL: applyAvionicsAction('manchester') failed to update BER metric!");
+  process.exit(1);
+}
+
+window.applyAvionicsAction('cdc');
+const t44_updatedMtbf = document.getElementById('avionics-stat-mtbf').textContent;
+console.log("Post-CDC Action MTBF:", t44_updatedMtbf);
+if (!t44_updatedMtbf.includes('10¹¹')) {
+  console.error("FAIL: applyAvionicsAction('cdc') failed to update MTBF metric!");
+  process.exit(1);
+}
+
+// 44.5 Test Audio, Mic Dictation & Defense Submission
+window.playAvionicsAudio();
+window.toggleAvionicsMic();
+const t44_strategyInput = document.getElementById('avionics-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t44_strategyInput.length);
+if (t44_strategyInput.length < 20 || !t44_strategyInput.includes('synchronizers')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitAvionicsDefense();
+const t44_rulingScore = document.getElementById('avionics-ruling-score').textContent;
+const t44_decisionNotes = document.getElementById('avionics-board-decision-notes').textContent;
+const t44_chips = document.querySelectorAll('#avionics-competency-chips span');
+
+console.log("Avionics Airworthiness Ruling Adjudication:", t44_rulingScore);
+console.log("Decision Notes excerpt:", t44_decisionNotes.substring(0, 50) + "...");
+console.log("Avionics Competency Chips count:", t44_chips.length);
+
+if (!t44_rulingScore.includes('AVIONICS AIRWORTHINESS CERTIFIED') || !t44_decisionNotes.includes('Aerospace Avionics') || t44_chips.length === 0) {
+  console.error("FAIL: submitAvionicsDefense did not render certified ruling or chips!");
+  process.exit(1);
+}
+
+// 44.6 Switch to Station 2 (Mexicali DO-254) and Station 3 (Chihuahua DO-160G)
+window.switchAvionicsStation('do254');
+const t44_stn2Title = document.getElementById('avionics-station-title').textContent;
+console.log("Switched Station 2 Title:", t44_stn2Title);
+if (!t44_stn2Title.includes('Formal RTL Proofs')) {
+  console.error("FAIL: Failed to switch to Station 2 (DO-254)!");
+  process.exit(1);
+}
+
+window.switchAvionicsStation('do160g');
+const t44_stn3Title = document.getElementById('avionics-station-title').textContent;
+console.log("Switched Station 3 Title:", t44_stn3Title);
+if (!t44_stn3Title.includes('Lightning Surge Transient')) {
+  console.error("FAIL: Failed to switch to Station 3 (DO-160G)!");
+  process.exit(1);
+}
+
+// 44.7 Export Avionics Protocol Report
+window.exportAvionicsReport();
+console.log("PASS: Phase 37 (Autonomous Nearshoring Aerospace & Defense Avionics MIL-STD-1553 & DO-254 Hardware Assurance Crucible) verified.");
+
+// ============================================================================
+// TEST 45: PHASE 38 - AUTONOMOUS SUBSEA BOP & HPHT DEEPWATER WELL CONTROL CRUCIBLE
+// ============================================================================
+console.log("\n--- TEST 45: Phase 38 - Autonomous Subsea BOP & HPHT Deepwater Well Control ---");
+
+// 45.1 Verify Navigation Hooks & Panel Elements
+const t45_tabSubsea = document.getElementById('tab-btn-subsea-crucible');
+const t45_navBtn = document.getElementById('nav-btn-subsea-crucible');
+const t45_mobileBtn = document.getElementById('mobile-nav-btn-subsea-crucible');
+const t45_heroBtn = document.getElementById('hero-subsea-btn');
+const t45_panel = document.getElementById('hub-panel-subsea-crucible');
+
+console.log("Tab Button exists:", !!t45_tabSubsea);
+console.log("Nav Dropdown Link exists:", !!t45_navBtn);
+console.log("Mobile Drawer Link exists:", !!t45_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t45_heroBtn);
+console.log("Panel exists:", !!t45_panel);
+
+if (!t45_tabSubsea || !t45_panel || !t45_navBtn || !t45_mobileBtn || !t45_heroBtn) {
+  console.error("FAIL: Missing Phase 38 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 45.2 Activate Tab and Verify Initialization
+window.switchHubTab('subsea-crucible');
+console.log("Subsea Crucible Panel display:", t45_panel.style.display);
+if (t45_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-subsea-crucible!");
+  process.exit(1);
+}
+
+// 45.3 Verify Station 1 Metadata & Initial Telemetry
+const t45_facility = document.getElementById('subsea-facility-badge').textContent;
+const t45_title = document.getElementById('subsea-station-title').textContent;
+const t45_time = document.getElementById('subsea-stat-time').textContent;
+const t45_mux = document.getElementById('subsea-stat-mux').textContent;
+const t45_well = document.getElementById('subsea-stat-well').textContent;
+const t45_saved = document.getElementById('subsea-stat-saved').textContent;
+const t45_inquiry = document.getElementById('subsea-board-inquiry').textContent;
+
+console.log("Facility:", t45_facility);
+console.log("Station Title:", t45_title);
+console.log("Telemetry (Time / MUX / Well / Saved):", t45_time, "/", t45_mux, "/", t45_well, "/", t45_saved);
+console.log("Subsea Evaluation Inquiry excerpt:", t45_inquiry.substring(0, 50) + "...");
+
+if (!t45_facility.includes('CAMPECHE') || !t45_time.includes('31.8') || !t45_well.includes('14,200') || !t45_saved.includes('$12,500,000')) {
+  console.error("FAIL: Station 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 45.4 Test Subsea Actions
+window.applySubseaAction('boost');
+const t45_updatedTime = document.getElementById('subsea-stat-time').textContent;
+console.log("Post-Boost Action Time:", t45_updatedTime);
+if (!t45_updatedTime.includes('28.5')) {
+  console.error("FAIL: applySubseaAction('boost') failed to update shear time metric!");
+  process.exit(1);
+}
+
+window.applySubseaAction('mux');
+const t45_updatedMux = document.getElementById('subsea-stat-mux').textContent;
+console.log("Post-MUX Action Pod Pressure:", t45_updatedMux);
+if (!t45_updatedMux.includes('4,980')) {
+  console.error("FAIL: applySubseaAction('mux') failed to update MUX pressure metric!");
+  process.exit(1);
+}
+
+// 45.5 Test Audio, Mic Dictation & Defense Submission
+window.playSubseaAudio();
+window.toggleSubseaMic();
+const t45_strategyInput = document.getElementById('subsea-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t45_strategyInput.length);
+if (t45_strategyInput.length < 20 || !t45_strategyInput.includes('Deadman')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitSubseaDefense();
+const t45_rulingScore = document.getElementById('subsea-ruling-score').textContent;
+const t45_decisionNotes = document.getElementById('subsea-board-decision-notes').textContent;
+const t45_chips = document.querySelectorAll('#subsea-competency-chips span');
+
+console.log("Subsea Well Control Ruling Adjudication:", t45_rulingScore);
+console.log("Decision Notes excerpt:", t45_decisionNotes.substring(0, 50) + "...");
+console.log("Subsea Competency Chips count:", t45_chips.length);
+
+if (!t45_rulingScore.includes('DEEPWATER WELL CONTROL CERTIFIED') || !t45_decisionNotes.includes('Deepwater') || t45_chips.length === 0) {
+  console.error("FAIL: submitSubseaDefense did not render certified ruling or chips!");
+  process.exit(1);
+}
+
+// 45.6 Switch to Station 2 (Dos Bocas MUX Pod) and Station 3 (Tampico Acoustic Deadman)
+window.switchSubseaStation('mux');
+const t45_stn2Title = document.getElementById('subsea-station-title').textContent;
+console.log("Switched Station 2 Title:", t45_stn2Title);
+if (!t45_stn2Title.includes('Electro-Hydraulic Multiplex')) {
+  console.error("FAIL: Failed to switch to Station 2 (MUX Pod)!");
+  process.exit(1);
+}
+
+window.switchSubseaStation('deadman');
+const t45_stn3Title = document.getElementById('subsea-station-title').textContent;
+console.log("Switched Station 3 Title:", t45_stn3Title);
+if (!t45_stn3Title.includes('Acoustic Telemetry Deadman')) {
+  console.error("FAIL: Failed to switch to Station 3 (Deadman)!");
+  process.exit(1);
+}
+
+// 45.7 Export Subsea Protocol Report
+window.exportSubseaReport();
+console.log("PASS: Phase 38 (Autonomous Nearshoring AI Subsea & Deepwater Subsea Blowout Preventer (BOP) & HPHT Crucible) verified.");
+
+// ============================================================================
+// TEST 46: PHASE 39 - AUTONOMOUS NUCLEAR SMR & MOLTEN SALT REACTOR (MSR) CONTROL ROOM CRUCIBLE
+// ============================================================================
+console.log("\n--- TEST 46: Phase 39 - Autonomous Nuclear SMR & MSR Control Room ---");
+
+// 46.1 Verify Navigation Hooks & Panel Elements
+const t46_tabSmr = document.getElementById('tab-btn-smr-crucible');
+const t46_navBtn = document.getElementById('nav-btn-smr-crucible');
+const t46_mobileBtn = document.getElementById('mobile-nav-btn-smr-crucible');
+const t46_heroBtn = document.getElementById('hero-smr-btn');
+const t46_panel = document.getElementById('hub-panel-smr-crucible');
+
+console.log("Tab Button exists:", !!t46_tabSmr);
+console.log("Nav Dropdown Link exists:", !!t46_navBtn);
+console.log("Mobile Drawer Link exists:", !!t46_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t46_heroBtn);
+console.log("Panel exists:", !!t46_panel);
+
+if (!t46_tabSmr || !t46_panel || !t46_navBtn || !t46_mobileBtn || !t46_heroBtn) {
+  console.error("FAIL: Missing Phase 39 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 46.2 Activate Tab and Verify Initialization
+window.switchHubTab('smr-crucible');
+console.log("Nuclear SMR Crucible Panel display:", t46_panel.style.display);
+if (t46_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-smr-crucible!");
+  process.exit(1);
+}
+
+// 46.3 Verify Station 1 Metadata & Initial Telemetry
+const t46_facility = document.getElementById('smr-facility-badge').textContent;
+const t46_title = document.getElementById('smr-station-title').textContent;
+const t46_power = document.getElementById('smr-stat-power').textContent;
+const t46_temp = document.getElementById('smr-stat-temp').textContent;
+const t46_flow = document.getElementById('smr-stat-flow').textContent;
+const t46_saved = document.getElementById('smr-stat-saved').textContent;
+const t46_inquiry = document.getElementById('smr-board-inquiry').textContent;
+
+console.log("Facility:", t46_facility);
+console.log("Station Title:", t46_title);
+console.log("Telemetry (Power / Temp / Flow / Saved):", t46_power, "/", t46_temp, "/", t46_flow, "/", t46_saved);
+console.log("Nuclear Evaluation Inquiry excerpt:", t46_inquiry.substring(0, 50) + "...");
+
+if (!t46_facility.includes('LAGUNA VERDE') || !t46_power.includes('1.8%') || !t46_flow.includes('48.2') || !t46_saved.includes('$25,000,000')) {
+  console.error("FAIL: Station 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 46.4 Test SMR Actions
+window.applySmrAction('scram');
+const t46_updatedPower = document.getElementById('smr-stat-power').textContent;
+console.log("Post-SCRAM Action Core Power:", t46_updatedPower);
+if (!t46_updatedPower.includes('1.2%')) {
+  console.error("FAIL: applySmrAction('scram') failed to update power metric!");
+  process.exit(1);
+}
+
+window.applySmrAction('prhrs');
+const t46_updatedFlow = document.getElementById('smr-stat-flow').textContent;
+console.log("Post-PRHRS Action Natural Flow:", t46_updatedFlow);
+if (!t46_updatedFlow.includes('52.4')) {
+  console.error("FAIL: applySmrAction('prhrs') failed to update flow metric!");
+  process.exit(1);
+}
+
+// 46.5 Test Audio, Mic Dictation & Defense Submission
+window.playSmrAudio();
+window.toggleSmrMic();
+const t46_strategyInput = document.getElementById('smr-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t46_strategyInput.length);
+if (t46_strategyInput.length < 20 || !t46_strategyInput.includes('PRHRS')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitSmrDefense();
+const t46_rulingScore = document.getElementById('smr-ruling-score').textContent;
+const t46_decisionNotes = document.getElementById('smr-board-decision-notes').textContent;
+const t46_chips = document.querySelectorAll('#smr-competency-chips span');
+
+console.log("Nuclear SMR Ruling Adjudication:", t46_rulingScore);
+console.log("Decision Notes excerpt:", t46_decisionNotes.substring(0, 50) + "...");
+console.log("Nuclear Competency Chips count:", t46_chips.length);
+
+if (!t46_rulingScore.includes('NUCLEAR SAFETY CERTIFIED') || !t46_decisionNotes.includes('Nuclear') || t46_chips.length === 0) {
+  console.error("FAIL: submitSmrDefense did not render certified ruling or chips!");
+  process.exit(1);
+}
+
+// 46.6 Switch to Station 2 (Sonora MSR FLiBe) and Station 3 (Monterrey Doppler Reactivity)
+window.switchSmrStation('freeze');
+const t46_stn2Title = document.getElementById('smr-station-title').textContent;
+console.log("Switched Station 2 Title:", t46_stn2Title);
+if (!t46_stn2Title.includes('Molten Salt Reactor')) {
+  console.error("FAIL: Failed to switch to Station 2 (MSR Freeze Valve)!");
+  process.exit(1);
+}
+
+window.switchSmrStation('doppler');
+const t46_stn3Title = document.getElementById('smr-station-title').textContent;
+console.log("Switched Station 3 Title:", t46_stn3Title);
+if (!t46_stn3Title.includes('Doppler Reactivity Feedback')) {
+  console.error("FAIL: Failed to switch to Station 3 (Doppler)!");
+  process.exit(1);
+}
+
+// 46.7 Export SMR Protocol Report
+window.exportSmrReport();
+console.log("PASS: Phase 39 (Autonomous Nearshoring AI Nuclear SMR & Molten Salt Reactor (MSR) Control Room & Thermal-Hydraulics Crucible) verified.");
+
+// ============================================================================
+// TEST 47: PHASE 40 - AUTONOMOUS CARBON CAPTURE (DAC) & GEOLOGICAL SEQUESTRATION CRUCIBLE
+// ============================================================================
+console.log("\n--- TEST 47: Phase 40 - Autonomous Carbon Capture (DAC) & Geological Sequestration ---");
+
+// 47.1 Verify Navigation Hooks & Panel Elements
+const t47_tabDac = document.getElementById('tab-btn-dac-crucible');
+const t47_navBtn = document.getElementById('nav-btn-dac-crucible');
+const t47_mobileBtn = document.getElementById('mobile-nav-btn-dac-crucible');
+const t47_heroBtn = document.getElementById('hero-dac-btn');
+const t47_panel = document.getElementById('hub-panel-dac-crucible');
+
+console.log("Tab Button exists:", !!t47_tabDac);
+console.log("Nav Dropdown Link exists:", !!t47_navBtn);
+console.log("Mobile Drawer Link exists:", !!t47_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t47_heroBtn);
+console.log("Panel exists:", !!t47_panel);
+
+if (!t47_tabDac || !t47_panel || !t47_navBtn || !t47_mobileBtn || !t47_heroBtn) {
+  console.error("FAIL: Missing Phase 40 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 47.2 Activate Tab and Verify Initialization
+window.switchHubTab('dac-crucible');
+console.log("Carbon Capture DAC Crucible Panel display:", t47_panel.style.display);
+if (t47_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-dac-crucible!");
+  process.exit(1);
+}
+
+// 47.3 Verify Station 1 Metadata & Initial Telemetry
+const t47_facility = document.getElementById('dac-facility-badge').textContent;
+const t47_title = document.getElementById('dac-station-title').textContent;
+const t47_purity = document.getElementById('dac-stat-purity').textContent;
+const t47_pressure = document.getElementById('dac-stat-pressure').textContent;
+const t47_caprock = document.getElementById('dac-stat-caprock').textContent;
+const t47_saved = document.getElementById('dac-stat-saved').textContent;
+const t47_inquiry = document.getElementById('dac-board-inquiry').textContent;
+
+console.log("Facility:", t47_facility);
+console.log("Station Title:", t47_title);
+console.log("Telemetry (Purity / Pressure / Caprock / Saved):", t47_purity, "/", t47_pressure, "/", t47_caprock, "/", t47_saved);
+console.log("CCUS Evaluation Inquiry excerpt:", t47_inquiry.substring(0, 50) + "...");
+
+if (!t47_facility.includes('ALTAMIRA') || !t47_purity.includes('99.8%') || !t47_pressure.includes('135.2') || !t47_saved.includes('$18,500,000')) {
+  console.error("FAIL: Station 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 47.4 Test DAC Actions
+window.applyDacAction('desorb');
+const t47_updatedPurity = document.getElementById('dac-stat-purity').textContent;
+console.log("Post-Desorb Action CO2 Purity:", t47_updatedPurity);
+if (!t47_updatedPurity.includes('99.85%')) {
+  console.error("FAIL: applyDacAction('desorb') failed to update purity metric!");
+  process.exit(1);
+}
+
+window.applyDacAction('compress');
+const t47_updatedPressure = document.getElementById('dac-stat-pressure').textContent;
+console.log("Post-Compress Action Supercritical Pressure:", t47_updatedPressure);
+if (!t47_updatedPressure.includes('138.0')) {
+  console.error("FAIL: applyDacAction('compress') failed to update pressure metric!");
+  process.exit(1);
+}
+
+// 47.5 Test Audio, Mic Dictation & Defense Submission
+window.playDacAudio();
+window.toggleDacMic();
+const t47_strategyInput = document.getElementById('dac-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t47_strategyInput.length);
+if (t47_strategyInput.length < 20 || !t47_strategyInput.includes('DAC-CCUS')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitDacDefense();
+const t47_rulingScore = document.getElementById('dac-ruling-score').textContent;
+const t47_decisionNotes = document.getElementById('dac-board-decision-notes').textContent;
+const t47_chips = document.querySelectorAll('#dac-competency-chips span');
+
+console.log("CCUS Ruling Adjudication:", t47_rulingScore);
+console.log("Decision Notes excerpt:", t47_decisionNotes.substring(0, 50) + "...");
+console.log("CCUS Competency Chips count:", t47_chips.length);
+
+if (!t47_rulingScore.includes('CCUS GEOMECHANICS CERTIFIED') || !t47_decisionNotes.includes('Carbon') || t47_chips.length === 0) {
+  console.error("FAIL: submitDacDefense did not render certified ruling or chips!");
+  process.exit(1);
+}
+
+// 47.6 Switch to Station 2 (Coatzacoalcos Saline) and Station 3 (Burgos Caprock)
+window.switchDacStation('saline');
+const t47_stn2Title = document.getElementById('dac-station-title').textContent;
+console.log("Switched Station 2 Title:", t47_stn2Title);
+if (!t47_stn2Title.includes('Deep Saline Aquifer')) {
+  console.error("FAIL: Failed to switch to Station 2 (Deep Saline Aquifer)!");
+  process.exit(1);
+}
+
+window.switchDacStation('caprock');
+const t47_stn3Title = document.getElementById('dac-station-title').textContent;
+console.log("Switched Station 3 Title:", t47_stn3Title);
+if (!t47_stn3Title.includes('Caprock Integrity')) {
+  console.error("FAIL: Failed to switch to Station 3 (Caprock)!");
+  process.exit(1);
+}
+
+// 47.7 Export DAC Protocol Report
+window.exportDacReport();
+console.log("PASS: Phase 40 (Autonomous Nearshoring AI Carbon Capture, Utilization & Direct Air Capture (DAC) Sequestration Geomechanics Crucible) verified.");
+
+// ============================================================================
+// TEST 48: PHASE 41 - AUTONOMOUS MEGAWATT EV CHARGING (MCS) & FLEET TELEMATICS CRUCIBLE
+// ============================================================================
+console.log("\n--- TEST 48: Phase 41 - Autonomous Megawatt EV Charging (MCS) & Fleet Telematics ---");
+
+// 48.1 Verify Navigation Hooks & Panel Elements
+const t48_tabMcs = document.getElementById('tab-btn-mcs-crucible');
+const t48_navBtn = document.getElementById('nav-btn-mcs-crucible');
+const t48_mobileBtn = document.getElementById('mobile-nav-btn-mcs-crucible');
+const t48_heroBtn = document.getElementById('hero-mcs-btn');
+const t48_panel = document.getElementById('hub-panel-mcs-crucible');
+
+console.log("Tab Button exists:", !!t48_tabMcs);
+console.log("Nav Dropdown Link exists:", !!t48_navBtn);
+console.log("Mobile Drawer Link exists:", !!t48_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t48_heroBtn);
+console.log("Panel exists:", !!t48_panel);
+
+if (!t48_tabMcs || !t48_panel || !t48_navBtn || !t48_mobileBtn || !t48_heroBtn) {
+  console.error("FAIL: Missing Phase 41 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 48.2 Activate Tab and Verify Initialization
+window.switchHubTab('mcs-crucible');
+console.log("Megawatt Charging MCS Crucible Panel display:", t48_panel.style.display);
+if (t48_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-mcs-crucible!");
+  process.exit(1);
+}
+
+// 48.3 Verify Station 1 Metadata & Initial Telemetry
+const t48_facility = document.getElementById('mcs-facility-badge').textContent;
+const t48_title = document.getElementById('mcs-station-title').textContent;
+const t48_power = document.getElementById('mcs-stat-power').textContent;
+const t48_temp = document.getElementById('mcs-stat-temp').textContent;
+const t48_eff = document.getElementById('mcs-stat-eff').textContent;
+const t48_saved = document.getElementById('mcs-stat-saved').textContent;
+const t48_inquiry = document.getElementById('mcs-board-inquiry').textContent;
+
+console.log("Facility:", t48_facility);
+console.log("Station Title:", t48_title);
+console.log("Telemetry (Power / Temp / Eff / Saved):", t48_power, "/", t48_temp, "/", t48_eff, "/", t48_saved);
+console.log("MCS Evaluation Inquiry excerpt:", t48_inquiry.substring(0, 50) + "...");
+
+if (!t48_facility.includes('LAREDO-MONTERREY') || !t48_power.includes('3,250') || !t48_temp.includes('64.2') || !t48_saved.includes('$14,200,000')) {
+  console.error("FAIL: Station 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 48.4 Test MCS Actions
+window.applyMcsAction('cool');
+const t48_updatedTemp = document.getElementById('mcs-stat-temp').textContent;
+console.log("Post-Cool Action Connector Pin Temp:", t48_updatedTemp);
+if (!t48_updatedTemp.includes('59.4')) {
+  console.error("FAIL: applyMcsAction('cool') failed to update temp metric!");
+  process.exit(1);
+}
+
+window.applyMcsAction('v2g');
+const t48_updatedPower = document.getElementById('mcs-stat-power').textContent;
+console.log("Post-V2G Action Charging Power:", t48_updatedPower);
+if (!t48_updatedPower.includes('3,450')) {
+  console.error("FAIL: applyMcsAction('v2g') failed to update power metric!");
+  process.exit(1);
+}
+
+// 48.5 Test Audio, Mic Dictation & Defense Submission
+window.playMcsAudio();
+window.toggleMcsMic();
+const t48_strategyInput = document.getElementById('mcs-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t48_strategyInput.length);
+if (t48_strategyInput.length < 20 || !t48_strategyInput.includes('MCS')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitMcsDefense();
+const t48_rulingScore = document.getElementById('mcs-ruling-score').textContent;
+const t48_decisionNotes = document.getElementById('mcs-board-decision-notes').textContent;
+const t48_chips = document.querySelectorAll('#mcs-competency-chips span');
+
+console.log("MCS Ruling Adjudication:", t48_rulingScore);
+console.log("Decision Notes excerpt:", t48_decisionNotes.substring(0, 50) + "...");
+console.log("MCS Competency Chips count:", t48_chips.length);
+
+if (!t48_rulingScore.includes('MEGAWATT CHARGING CERTIFIED') || !t48_decisionNotes.includes('Megawatt') || t48_chips.length === 0) {
+  console.error("FAIL: submitMcsDefense did not render certified ruling or chips!");
+  process.exit(1);
+}
+
+// 48.6 Switch to Station 2 (Otay Mesa V2G) and Station 3 (Juárez Telematics)
+window.switchMcsStation('v2g');
+const t48_stn2Title = document.getElementById('mcs-station-title').textContent;
+console.log("Switched Station 2 Title:", t48_stn2Title);
+if (!t48_stn2Title.includes('Bidirectional ISO 15118-20 V2G')) {
+  console.error("FAIL: Failed to switch to Station 2 (V2G SiC)!");
+  process.exit(1);
+}
+
+window.switchMcsStation('telematics');
+const t48_stn3Title = document.getElementById('mcs-station-title').textContent;
+console.log("Switched Station 3 Title:", t48_stn3Title);
+if (!t48_stn3Title.includes('Class 8 Heavy Freight Fleet')) {
+  console.error("FAIL: Failed to switch to Station 3 (Telematics)!");
+  process.exit(1);
+}
+
+// 48.7 Export MCS Protocol Report
+window.exportMcsReport();
+console.log("PASS: Phase 41 (Autonomous Nearshoring AI Heavy-Duty Electric Vehicle (EV) Megawatt Charging System (MCS) & High-Power Fleet Telematics Crucible) verified.");
+
+// ============================================================================
+// TEST 49: PHASE 42 - AUTONOMOUS QUANTUM KEY DISTRIBUTION (QKD) & POST-QUANTUM CRYPTOGRAPHY (PQC) CRUCIBLE
+// ============================================================================
+console.log("\n--- TEST 49: Phase 42 - Autonomous Quantum QKD & Post-Quantum Cryptography ---");
+
+// 49.1 Verify Navigation Hooks & Panel Elements
+const t49_tabQkd = document.getElementById('tab-btn-qkd-crucible');
+const t49_navBtn = document.getElementById('nav-btn-qkd-crucible');
+const t49_mobileBtn = document.getElementById('mobile-nav-btn-qkd-crucible');
+const t49_heroBtn = document.getElementById('hero-qkd-btn');
+const t49_panel = document.getElementById('hub-panel-qkd-crucible');
+
+console.log("Tab Button exists:", !!t49_tabQkd);
+console.log("Nav Dropdown Link exists:", !!t49_navBtn);
+console.log("Mobile Drawer Link exists:", !!t49_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t49_heroBtn);
+console.log("Panel exists:", !!t49_panel);
+
+if (!t49_tabQkd || !t49_panel || !t49_navBtn || !t49_mobileBtn || !t49_heroBtn) {
+  console.error("FAIL: Missing Phase 42 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 49.2 Activate Tab and Verify Initialization
+window.switchHubTab('qkd-crucible');
+console.log("Quantum QKD & PQC Crucible Panel display:", t49_panel.style.display);
+if (t49_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-qkd-crucible!");
+  process.exit(1);
+}
+
+// 49.3 Verify Station 1 Metadata & Initial Telemetry
+const t49_facility = document.getElementById('qkd-facility-badge').textContent;
+const t49_title = document.getElementById('qkd-station-title').textContent;
+const t49_qber = document.getElementById('qkd-stat-qber').textContent;
+const t49_rate = document.getElementById('qkd-stat-rate').textContent;
+const t49_lat = document.getElementById('qkd-stat-lat').textContent;
+const t49_saved = document.getElementById('qkd-stat-saved').textContent;
+const t49_inquiry = document.getElementById('qkd-board-inquiry').textContent;
+
+console.log("Facility:", t49_facility);
+console.log("Station Title:", t49_title);
+console.log("Telemetry (QBER / Rate / Latency / Protected):", t49_qber, "/", t49_rate, "/", t49_lat, "/", t49_saved);
+console.log("Quantum Evaluation Inquiry excerpt:", t49_inquiry.substring(0, 50) + "...");
+
+if (!t49_facility.includes('QUERÉTARO-DALLAS') || !t49_qber.includes('2.85%') || !t49_rate.includes('48.2') || !t49_saved.includes('$28,500,000')) {
+  console.error("FAIL: Station 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 49.4 Test QKD Actions
+window.applyQkdAction('qber');
+const t49_updatedQber = document.getElementById('qkd-stat-qber').textContent;
+console.log("Post-QBER Action SPAD Calibrated QBER:", t49_updatedQber);
+if (!t49_updatedQber.includes('2.15%')) {
+  console.error("FAIL: applyQkdAction('qber') failed to update qber metric!");
+  process.exit(1);
+}
+
+window.applyQkdAction('pqc');
+const t49_updatedLat = document.getElementById('qkd-stat-lat').textContent;
+console.log("Post-PQC Action FPGA Encapsulation Latency:", t49_updatedLat);
+if (!t49_updatedLat.includes('8.9')) {
+  console.error("FAIL: applyQkdAction('pqc') failed to update latency metric!");
+  process.exit(1);
+}
+
+// 49.5 Test Audio, Mic Dictation & Defense Submission
+window.playQkdAudio();
+window.toggleQkdMic();
+const t49_strategyInput = document.getElementById('qkd-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t49_strategyInput.length);
+if (t49_strategyInput.length < 20 || !t49_strategyInput.includes('BB84')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitQkdDefense();
+const t49_rulingScore = document.getElementById('qkd-ruling-score').textContent;
+const t49_decisionNotes = document.getElementById('qkd-board-decision-notes').textContent;
+const t49_chips = document.querySelectorAll('#qkd-competency-chips span');
+
+console.log("QKD Ruling Adjudication:", t49_rulingScore);
+console.log("Decision Notes excerpt:", t49_decisionNotes.substring(0, 50) + "...");
+console.log("QKD Competency Chips count:", t49_chips.length);
+
+if (!t49_rulingScore.includes('QUANTUM CRYPTOGRAPHY CERTIFIED') || !t49_decisionNotes.includes('Quantum') || t49_chips.length === 0) {
+  console.error("FAIL: submitQkdDefense did not render certified ruling or chips!");
+  process.exit(1);
+}
+
+// 49.6 Switch to Station 2 (Monterrey-Austin PQC) and Station 3 (Tijuana QRNG)
+window.switchQkdStation('pqc');
+const t49_stn2Title = document.getElementById('qkd-station-title').textContent;
+console.log("Switched Station 2 Title:", t49_stn2Title);
+if (!t49_stn2Title.includes('NIST PQC Hybrid Key Encapsulation')) {
+  console.error("FAIL: Failed to switch to Station 2 (PQC ML-KEM)!");
+  process.exit(1);
+}
+
+window.switchQkdStation('qrng');
+const t49_stn3Title = document.getElementById('qkd-station-title').textContent;
+console.log("Switched Station 3 Title:", t49_stn3Title);
+if (!t49_stn3Title.includes('Quantum Random Number Generator (QRNG)')) {
+  console.error("FAIL: Failed to switch to Station 3 (QRNG)!");
+  process.exit(1);
+}
+
+// 49.7 Export QKD Protocol Report
+window.exportQkdReport();
+console.log("PASS: Phase 42 (Autonomous Nearshoring AI Quantum Cryptography Key Distribution (QKD) & Post-Quantum Cryptography (PQC) Optical Telemetry Crucible) verified.");
+
+// ============================================================================
+// TEST 50: PHASE 43 - AUTONOMOUS SUBMICRON EXTREME ULTRAVIOLET (EUV) PHOTOLITHOGRAPHY CRUCIBLE
+// ============================================================================
+console.log("\n--- TEST 50: Phase 43 - Autonomous Submicron EUV Photolithography Crucible ---");
+
+// 50.1 Verify Navigation Hooks & Panel Elements
+const t50_tabEuv = document.getElementById('tab-btn-euv-litho');
+const t50_navBtn = document.getElementById('nav-btn-euv-litho');
+const t50_mobileBtn = document.getElementById('mobile-nav-btn-euv-litho');
+const t50_heroBtn = document.getElementById('hero-euv-btn');
+const t50_panel = document.getElementById('hub-panel-euv-litho');
+
+console.log("Tab Button exists:", !!t50_tabEuv);
+console.log("Nav Dropdown Link exists:", !!t50_navBtn);
+console.log("Mobile Drawer Link exists:", !!t50_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t50_heroBtn);
+console.log("Panel exists:", !!t50_panel);
+
+if (!t50_tabEuv || !t50_panel || !t50_navBtn || !t50_mobileBtn || !t50_heroBtn) {
+  console.error("FAIL: Missing Phase 43 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 50.2 Activate Tab and Verify Initialization
+window.switchHubTab('euv-litho');
+console.log("EUV Photolithography Crucible Panel display:", t50_panel.style.display);
+if (t50_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-euv-litho!");
+  process.exit(1);
+}
+
+// 50.3 Verify Station 1 Metadata & Initial Telemetry
+const t50_facility = document.getElementById('euv-facility-badge').textContent;
+const t50_title = document.getElementById('euv-station-title').textContent;
+const t50_power = document.getElementById('euv-stat-power').textContent;
+const t50_ler = document.getElementById('euv-stat-ler').textContent;
+const t50_trans = document.getElementById('euv-stat-trans').textContent;
+const t50_saved = document.getElementById('euv-stat-saved').textContent;
+const t50_inquiry = document.getElementById('euv-board-inquiry').textContent;
+
+console.log("Facility:", t50_facility);
+console.log("Station Title:", t50_title);
+console.log("Telemetry (Power / LER / Transmittance / Protected):", t50_power, "/", t50_ler, "/", t50_trans, "/", t50_saved);
+console.log("EUV Evaluation Inquiry excerpt:", t50_inquiry.substring(0, 50) + "...");
+
+if (!t50_facility.includes('GUADALAJARA-AUSTIN') || !t50_power.includes('415') || !t50_ler.includes('1.08') || !t50_saved.includes('$42,000,000')) {
+  console.error("FAIL: Station 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 50.4 Test EUV Actions
+window.applyEuvAction('droplet');
+const t50_updatedPower = document.getElementById('euv-stat-power').textContent;
+console.log("Post-Droplet Action EUV Power:", t50_updatedPower);
+if (!t50_updatedPower.includes('445')) {
+  console.error("FAIL: applyEuvAction('droplet') failed to update power metric!");
+  process.exit(1);
+}
+
+window.applyEuvAction('anamorphic');
+const t50_updatedLer = document.getElementById('euv-stat-ler').textContent;
+console.log("Post-Anamorphic Action LER Metric:", t50_updatedLer);
+if (!t50_updatedLer.includes('0.98')) {
+  console.error("FAIL: applyEuvAction('anamorphic') failed to update LER metric!");
+  process.exit(1);
+}
+
+// 50.5 Test Audio, Mic Dictation & Defense Submission
+window.playEuvAudio();
+window.toggleEuvMic();
+const t50_strategyInput = document.getElementById('euv-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t50_strategyInput.length);
+if (t50_strategyInput.length < 20 || !t50_strategyInput.includes('High-NA')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitEuvDefense();
+const t50_rulingScore = document.getElementById('euv-ruling-score').textContent;
+const t50_decisionNotes = document.getElementById('euv-board-decision-notes').textContent;
+const t50_chips = document.querySelectorAll('#euv-competency-chips span');
+
+console.log("EUV Ruling Adjudication:", t50_rulingScore);
+console.log("Decision Notes excerpt:", t50_decisionNotes.substring(0, 50) + "...");
+console.log("EUV Competency Chips count:", t50_chips.length);
+
+if (!t50_rulingScore.includes('EUV LITHOGRAPHY CERTIFIED') || !t50_decisionNotes.includes('Photolithography') || t50_chips.length === 0) {
+  console.error("FAIL: submitEuvDefense did not render certified ruling or chips!");
+  process.exit(1);
+}
+
+// 50.6 Switch to Station 2 (Monterrey Multi-Beam) and Station 3 (Phoenix Pellicle)
+window.switchEuvStation('multibeam');
+const t50_stn2Title = document.getElementById('euv-station-title').textContent;
+console.log("Switched Station 2 Title:", t50_stn2Title);
+if (!t50_stn2Title.includes('Multi-Beam E-Beam Photomask Inspection')) {
+  console.error("FAIL: Failed to switch to Station 2 (Multi-beam E-Beam)!");
+  process.exit(1);
+}
+
+window.switchEuvStation('pellicle');
+const t50_stn3Title = document.getElementById('euv-station-title').textContent;
+console.log("Switched Station 3 Title:", t50_stn3Title);
+if (!t50_stn3Title.includes('Carbon Nanotube (CNT) Free-Standing EUV Pellicle')) {
+  console.error("FAIL: Failed to switch to Station 3 (Pellicle)!");
+  process.exit(1);
+}
+
+// 50.7 Export EUV Protocol Report
+window.exportEuvReport();
+console.log("PASS: Phase 43 (Autonomous Nearshoring AI Submicron Extreme Ultraviolet (EUV) Photolithography & Computational Patterning Crucible) verified.");
+
+// ============================================================================
+// TEST 51: PHASE 44 - AUTONOMOUS SUBSEA HIGH-VOLTAGE DIRECT CURRENT (HVDC) INTERCONNECTOR CRUCIBLE
+// ============================================================================
+console.log("\n--- TEST 51: Phase 44 - Autonomous Subsea HVDC Interconnector & Dynamic Umbilical Crucible ---");
+
+// 51.1 Verify Navigation Hooks & Panel Elements
+const t51_tabHvdc = document.getElementById('tab-btn-hvdc-cable');
+const t51_navBtn = document.getElementById('nav-btn-hvdc-cable');
+const t51_mobileBtn = document.getElementById('mobile-nav-btn-hvdc-cable');
+const t51_heroBtn = document.getElementById('hero-hvdc-btn');
+const t51_panel = document.getElementById('hub-panel-hvdc-cable');
+
+console.log("Tab Button exists:", !!t51_tabHvdc);
+console.log("Nav Dropdown Link exists:", !!t51_navBtn);
+console.log("Mobile Drawer Link exists:", !!t51_mobileBtn);
+console.log("Hero Dock Pill exists:", !!t51_heroBtn);
+console.log("Panel exists:", !!t51_panel);
+
+if (!t51_tabHvdc || !t51_panel || !t51_navBtn || !t51_mobileBtn || !t51_heroBtn) {
+  console.error("FAIL: Missing Phase 44 DOM navigation or panel elements!");
+  process.exit(1);
+}
+
+// 51.2 Activate Tab and Verify Initialization
+window.switchHubTab('hvdc-cable');
+console.log("Subsea HVDC Interconnector Crucible Panel display:", t51_panel.style.display);
+if (t51_panel.style.display !== 'block') {
+  console.error("FAIL: Failed to activate hub-panel-hvdc-cable!");
+  process.exit(1);
+}
+
+// 51.3 Verify Station 1 Metadata & Initial Telemetry
+const t51_facility = document.getElementById('hvdc-facility-badge').textContent;
+const t51_title = document.getElementById('hvdc-station-title').textContent;
+const t51_voltage = document.getElementById('hvdc-stat-voltage').textContent;
+const t51_power = document.getElementById('hvdc-stat-power').textContent;
+const t51_pd = document.getElementById('hvdc-stat-pd').textContent;
+const t51_saved = document.getElementById('hvdc-stat-saved').textContent;
+const t51_inquiry = document.getElementById('hvdc-board-inquiry').textContent;
+
+console.log("Facility:", t51_facility);
+console.log("Station Title:", t51_title);
+console.log("Telemetry (Voltage / Power / PD / Protected):", t51_voltage, "/", t51_power, "/", t51_pd, "/", t51_saved);
+console.log("HVDC Evaluation Inquiry excerpt:", t51_inquiry.substring(0, 50) + "...");
+
+if (!t51_facility.includes('COATZACOALCOS-TAMPA') || !t51_voltage.includes('525') || !t51_power.includes('2,000') || !t51_saved.includes('$46,500,000')) {
+  console.error("FAIL: Station 1 initial telemetry metadata mismatch!");
+  process.exit(1);
+}
+
+// 51.4 Test HVDC Actions
+window.applyHvdcAction('voltage');
+const t51_updatedPower = document.getElementById('hvdc-stat-power').textContent;
+console.log("Post-Voltage Action HVDC Power:", t51_updatedPower);
+if (!t51_updatedPower.includes('2,150')) {
+  console.error("FAIL: applyHvdcAction('voltage') failed to update power metric!");
+  process.exit(1);
+}
+
+window.applyHvdcAction('mmc');
+const t51_updatedPd = document.getElementById('hvdc-stat-pd').textContent;
+console.log("Post-MMC Action Partial Discharge Metric:", t51_updatedPd);
+if (!t51_updatedPd.includes('1.2')) {
+  console.error("FAIL: applyHvdcAction('mmc') failed to update PD metric!");
+  process.exit(1);
+}
+
+// 51.5 Test Audio, Mic Dictation & Defense Submission
+window.playHvdcAudio();
+window.toggleHvdcMic();
+const t51_strategyInput = document.getElementById('hvdc-candidate-strategy').value;
+console.log("Strategy input length after voice dictation:", t51_strategyInput.length);
+if (t51_strategyInput.length < 20 || !t51_strategyInput.includes('525 kV')) {
+  console.error("FAIL: Voice dictation failed to populate candidate strategy!");
+  process.exit(1);
+}
+
+window.submitHvdcDefense();
+const t51_rulingScore = document.getElementById('hvdc-ruling-score').textContent;
+const t51_decisionNotes = document.getElementById('hvdc-board-decision-notes').textContent;
+const t51_chips = document.querySelectorAll('#hvdc-competency-chips span');
+
+console.log("Subsea HVDC Ruling Adjudication:", t51_rulingScore);
+console.log("Decision Notes excerpt:", t51_decisionNotes.substring(0, 50) + "...");
+console.log("HVDC Competency Chips count:", t51_chips.length);
+
+if (!t51_rulingScore.includes('SUBSEA HVDC CERTIFIED') || !t51_decisionNotes.includes('Subsea Transmission') || t51_chips.length === 0) {
+  console.error("FAIL: submitHvdcDefense did not render certified ruling or chips!");
+  process.exit(1);
+}
+
+// 51.6 Switch to Station 2 (Progreso MMC) and Station 3 (Altamira Umbilical)
+window.switchHvdcStation('mmc');
+const t51_stn2Title = document.getElementById('hvdc-station-title').textContent;
+console.log("Switched Station 2 Title:", t51_stn2Title);
+if (!t51_stn2Title.includes('Modular Multilevel Converter (MMC VSC-HVDC)')) {
+  console.error("FAIL: Failed to switch to Station 2 (MMC-VSC)!");
+  process.exit(1);
+}
+
+window.switchHvdcStation('umbilical');
+const t51_stn3Title = document.getElementById('hvdc-station-title').textContent;
+console.log("Switched Station 3 Title:", t51_stn3Title);
+if (!t51_stn3Title.includes('Dynamic Umbilical Flex Cable')) {
+  console.error("FAIL: Failed to switch to Station 3 (Umbilical)!");
+  process.exit(1);
+}
+
+
+// 51.7 Export HVDC Protocol Report
+window.exportHvdcReport();
+console.log("PASS: Phase 44 (Autonomous Nearshoring AI Subsea High-Voltage Direct Current (HVDC) Interconnector & Dynamic Subsea Umbilical Cable Crucible) verified.");
+
+// ============================================================================
+// TEST 52: PHASE 45 - AUTONOMOUS NEARSHORING AI SUBATOMIC QUANTUM SENSING &
+//          COLD-ATOM GRAVIMETRY INERTIAL NAVIGATION CRUCIBLE
+// ============================================================================
+
+console.log("\n--- TEST 52: Phase 45 - Autonomous Cold-Atom Quantum Sensing & Gravimetry Crucible ---");
+
+// 52.1 Verify nav/tab/hero buttons exist
+const t52_tabBtn = document.getElementById('tab-btn-quantum-sensing');
+const t52_navBtn = document.getElementById('nav-btn-quantum-sensing');
+const t52_mobileBtn = document.getElementById('mobile-nav-btn-quantum-sensing');
+const t52_heroBtn = document.getElementById('hero-sensing-btn');
+const t52_panel = document.getElementById('hub-panel-quantum-sensing');
+
+if (!t52_tabBtn) { console.error("FAIL: tab-btn-quantum-sensing not found!"); process.exit(1); }
+if (!t52_navBtn) { console.error("FAIL: nav-btn-quantum-sensing not found!"); process.exit(1); }
+if (!t52_mobileBtn) { console.error("FAIL: mobile-nav-btn-quantum-sensing not found!"); process.exit(1); }
+if (!t52_heroBtn) { console.error("FAIL: hero-sensing-btn not found!"); process.exit(1); }
+if (!t52_panel) { console.error("FAIL: hub-panel-quantum-sensing not found!"); process.exit(1); }
+console.log("52.1 PASS: All Phase 45 nav/tab/hero/panel DOM elements found.");
+
+// 52.2 Activate the quantum-sensing tab via switchHubTab
+window.switchHubTab('quantum-sensing');
+const t52_panelDisplay = document.getElementById('hub-panel-quantum-sensing').style.display;
+if (t52_panelDisplay === 'none') {
+  console.error("FAIL: Failed to activate hub-panel-quantum-sensing!");
+  process.exit(1);
+}
+console.log("52.2 PASS: quantum-sensing panel is active (display:", t52_panelDisplay, ")");
+
+// 52.3 Verify default MOT station initial state (after initSensingCrucible)
+const t52_facility = document.getElementById('sensing-facility-badge').textContent;
+const t52_title = document.getElementById('sensing-station-title').textContent;
+const t52_grav = document.getElementById('sensing-stat-grav').textContent;
+const t52_drift = document.getElementById('sensing-stat-drift').textContent;
+const t52_noise = document.getElementById('sensing-stat-noise').textContent;
+const t52_saved = document.getElementById('sensing-stat-saved').textContent;
+const t52_inquiry = document.getElementById('sensing-board-inquiry').textContent;
+
+console.log("Facility:", t52_facility);
+console.log("Title:", t52_title);
+console.log("Grav:", t52_grav, "| Drift:", t52_drift, "| Noise:", t52_noise, "| Saved:", t52_saved);
+console.log("Board inquiry (excerpt):", t52_inquiry.substring(0, 60) + "...");
+
+if (!t52_facility.includes('MONTERREY-SALTILLO')) {
+  console.error("FAIL: MOT station facility badge mismatch! Got:", t52_facility);
+  process.exit(1);
+}
+if (!t52_title.includes('Magneto-Optical Trap')) {
+  console.error("FAIL: MOT station title mismatch! Got:", t52_title);
+  process.exit(1);
+}
+if (!t52_grav.includes('μGal')) {
+  console.error("FAIL: MOT gravimetric stat not rendered! Got:", t52_grav);
+  process.exit(1);
+}
+if (!t52_inquiry.includes('Rabi')) {
+  console.error("FAIL: MOT board inquiry missing Rabi frequency content!");
+  process.exit(1);
+}
+console.log("52.3 PASS: MOT station initial state rendered correctly.");
+
+// 52.4 Submit sensing defense and verify Council ruling
+const t52_textarea = document.getElementById('sensing-candidate-strategy');
+t52_textarea.value = "Dr. Vance, Dra. Almonte: In our ⁸⁷Rb Mach-Zehnder atom interferometer operating at the Monterrey-Saltillo subterranean aquifer site with T = 160 ms interrogation time, micro-seismic phase noise from Carretera 40D truck traffic is suppressed by an active inertial vibration isolation platform coupling a broadband seismometer (0.01–100 Hz) to piezoelectric actuators achieving > 40 dB vibration rejection in the 1–100 Hz band, maintaining fringe contrast above 65%. Stimulated Raman pulse Rabi frequency precision is held at δΩ_R/Ω_R = 8×10⁻⁵ by locking optical power to a retroreflector reference traceable to CENAM, limiting the systematic phase bias in ΔΦ = k_eff · g · T² to < 0.3 μGal type-A uncertainty under NIST IR 8441 protocols. Second-order Zeeman shifts are nulled by selecting the mF = 0 magnetically insensitive transition with > 55 dB optical pumping extinction. Coriolis acceleration from Earth's rotation (Ω_⊕ cos φ) is compensated in real time by a tri-axial MEMS reference accelerometer, achieving 1.2 μGal absolute gravimetric sensitivity to map industrial aquifer water-table variations in the Saltillo basin.";
+
+window.submitSensingDefense();
+
+const t52_rulingScore = document.getElementById('sensing-ruling-score').textContent;
+const t52_decisionNotes = document.getElementById('sensing-board-decision-notes').textContent;
+const t52_chips = document.querySelectorAll('#sensing-competency-chips span');
+
+console.log("Ruling Score:", t52_rulingScore);
+console.log("Decision Notes excerpt:", t52_decisionNotes.substring(0, 60) + "...");
+console.log("Competency chips count:", t52_chips.length);
+
+if (!t52_rulingScore.includes('QUANTUM SENSING EXCELLENCE GOLD')) {
+  console.error("FAIL: submitSensingDefense did not render QUANTUM SENSING EXCELLENCE GOLD ruling! Got:", t52_rulingScore);
+  process.exit(1);
+}
+if (!t52_decisionNotes.includes('Quantum Metrology')) {
+  console.error("FAIL: Council decision notes missing Quantum Metrology content!");
+  process.exit(1);
+}
+if (t52_chips.length === 0) {
+  console.error("FAIL: No competency chips rendered after defense submission!");
+  process.exit(1);
+}
+console.log("52.4 PASS: submitSensingDefense rendered certified ruling, notes, and chips.");
+
+// 52.5 Switch to Station 2 (Gyroscope - Querétaro-Guadalajara)
+window.switchSensingStation('gyro');
+const t52_stn2Title = document.getElementById('sensing-station-title').textContent;
+const t52_stn2Facility = document.getElementById('sensing-facility-badge').textContent;
+console.log("Station 2 Title:", t52_stn2Title);
+if (!t52_stn2Title.includes('Matter-Wave Gyroscope')) {
+  console.error("FAIL: Failed to switch to Station 2 (Matter-Wave Gyroscope)! Got:", t52_stn2Title);
+  process.exit(1);
+}
+if (!t52_stn2Facility.includes('QUERÉTARO-GUADALAJARA')) {
+  console.error("FAIL: Station 2 facility badge mismatch! Got:", t52_stn2Facility);
+  process.exit(1);
+}
+console.log("52.5 PASS: Switched to Station 2 (Matter-Wave Sagnac Gyroscope) correctly.");
+
+// 52.6 Switch to Station 3 (SQUID Gradiometer - Sonora-Baja)
+window.switchSensingStation('squid');
+const t52_stn3Title = document.getElementById('sensing-station-title').textContent;
+const t52_stn3Facility = document.getElementById('sensing-facility-badge').textContent;
+console.log("Station 3 Title:", t52_stn3Title);
+if (!t52_stn3Title.includes('SQUID Gradiometer')) {
+  console.error("FAIL: Failed to switch to Station 3 (SQUID Gradiometer)! Got:", t52_stn3Title);
+  process.exit(1);
+}
+if (!t52_stn3Facility.includes('SONORA-BAJA')) {
+  console.error("FAIL: Station 3 facility badge mismatch! Got:", t52_stn3Facility);
+  process.exit(1);
+}
+console.log("52.6 PASS: Switched to Station 3 (Planar SQUID Gradiometer 4.2K) correctly.");
+
+// 52.7 Export Quantum Sensing Protocol Report
+window.exportSensingReport();
+console.log("52.7 PASS: exportSensingReport() executed without errors.");
+
+console.log("PASS: Phase 45 (Autonomous Nearshoring AI Subatomic Quantum Sensing & Cold-Atom Gravimetry Inertial Navigation Crucible) verified.");
+
+console.log("\n🎉 ALL 52 INTEGRATION & DOM SIMULATION TESTS PASSED WITH 100% SUCCESS!");
+
+
+
+
+
+
+
+
+
+
 
 
 
