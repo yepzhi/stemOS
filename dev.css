@@ -230,6 +230,94 @@ body.supaste-theme {
   font-weight: 600;
 }
 
+/* Nav Dropdowns — Elegant floating menus */
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.nav-caret {
+  font-size: 0.68rem;
+  transition: transform 0.2s ease;
+  opacity: 0.7;
+}
+
+.nav-dropdown:hover .nav-caret,
+.nav-dropdown:focus-within .nav-caret {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  display: none !important;
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  z-index: 2500;
+  min-width: 230px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu {
+  display: flex !important;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.nav-dropdown-menu .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-dropdown-menu .nav-link:hover {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.nav-dropdown-grid {
+  display: none !important;
+  grid-template-columns: repeat(3, 280px);
+  gap: 4px;
+  max-height: 68vh;
+  overflow-y: auto;
+  min-width: 860px;
+}
+
+.nav-dropdown:hover .nav-dropdown-grid,
+.nav-dropdown:focus-within .nav-dropdown-grid {
+  display: grid !important;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
 /* Nav Right CTA Button — Identical to Supaste download button */
 .supaste-nav-right {
   display: flex;
@@ -460,8 +548,77 @@ body.supaste-theme {
   align-items: center;
   justify-content: center;
   gap: 16px;
-  margin-bottom: 34px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
+}
+
+/* Hero Simulators Dock — Clean, organized pill container */
+.hero-simulators-dock {
+  margin-top: 24px;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 16px 20px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dock-header {
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.dock-badge-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+}
+
+.dock-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.dock-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.dock-pill:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: #38bdf8;
+  color: #38bdf8;
+  transform: translateY(-1px);
+}
+
+.dock-pill.highlight-pill {
+  background: rgba(2, 132, 199, 0.25);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #7dd3fc;
 }
 
 /* Primary Button — Solid Black Pill */

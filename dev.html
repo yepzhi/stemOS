@@ -13,8 +13,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <link rel="stylesheet" href="/dev.css?v=5.1.0">
-  <link rel="stylesheet" href="/world-map.css?v=1.0.0">
+  <link rel="stylesheet" href="/dev.css?v=5.12.0">
+  <link rel="stylesheet" href="/world-map.css?v=2.0.0">
 </head>
 
 <body class="supaste-theme">
@@ -40,6 +40,10 @@
           <i class="fa-solid fa-user-graduate"></i>
           <span id="header-student-badge-text">Registro Alumno</span>
         </button>
+        <a href="/" class="header-profile-badge-btn" style="display:inline-flex; align-items:center; gap:6px; background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.35); border-radius:9999px; padding:4px 12px; font-size:0.75rem; color:#38bdf8; font-weight:700; text-decoration:none; margin-left:8px;" title="Ver Portal Ejecutivo Landing (stemos.org)">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Landing stemos.org</span>
+        </a>
       </div>
 
       <div class="supaste-nav-links">
@@ -11197,11 +11201,12 @@
     </div>
   </div>
 
-  <!-- Load stemOS courses database, phrases library, and dev controller with cache buster -->
+  <!-- Load stemOS courses database, phrases library, career tracks, and dev controller with cache buster -->
   <script src="/content/courses.js?v=5.11.0"></script>
   <script src="/content/phrases_library.js?v=5.11.0"></script>
-  <script src="/world-map.js?v=1.0.0"></script>
-  <script src="/dev.js?v=5.11.0"></script>
+  <script src="/content/career_tracks.js?v=2.0.0"></script>
+  <script src="/world-map.js?v=2.0.0"></script>
+  <script src="/dev.js?v=5.12.0"></script>
 
 </body>
 
