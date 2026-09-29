@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta de Alumno y Registro 60h — stemOS</title>
+    <meta name="description" content="Portal oficial de alta y registro de estudiantes para tracks de 60 horas curriculares de stemOS. Universidades Tecnológicas, TecNM y Universidades Estatales.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230284c7'/%3E%3Cstop offset='100%25' stop-color='%230369a1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='64' font-family='system-ui, -apple-system, sans-serif' font-weight='900' font-size='48' fill='white' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --primary-light: #e0f2fe;
+            --primary-glow: rgba(2, 132, 199, 0.25);
+            --teal: #00a896;
+            --emerald: #10b981;
+            --fg: #0f172a;
+            --fg-muted: #64748b;
+            --fg-dim: #94a3b8;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+            --shadow-card: 0 10px 30px -5px rgba(2, 132, 199, 0.08), 0 0 0 1px rgba(15, 23, 42, 0.05);
+            --r: 20px;
+            --t: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 50%, #f8fafc 100%);
+            color: var(--fg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient subtle grid pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle at 1px 1px, rgba(2, 132, 199, 0.06) 1px, transparent 0);
+            background-size: 28px 28px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Ambient aurora top glow */
+        .aurora-blur {
+            position: fixed;
+            top: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 700px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.22) 0%, rgba(2, 132, 199, 0.08) 50%, transparent 70%);
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header */
+        .reg-header {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 36px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand-text {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            font-size: 1.6rem;
+            letter-spacing: -0.04em;
+        }
+
+        .brand-stem { color: #0284c7; }
+        .brand-os { color: #0f172a; }
+
+        .brand-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 800;
+            background: #e0f2fe;
+            color: #0284c7;
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid #bae6fd;
+            text-transform: uppercase;
+        }
+
+        .header-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--fg-muted);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--border);
+            transition: all var(--t);
+        }
+
+        .header-nav-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        /* Main Registration Container */
+        .reg-wrapper {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 20px 60px;
+        }
+
+        .reg-card {
+            background: #ffffff;
+            border-radius: 28px;
+            width: 100%;
+            max-width: 760px;
+            padding: 44px 48px;
+            box-shadow: 0 25px 70px -15px rgba(2, 132, 199, 0.12), 0 0 0 1px rgba(15, 23, 42, 0.05);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            position: relative;
+            overflow: hidden;
+            animation: cardAppear 0.5s var(--t) both;
+        }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Progress Bar & Steps Tracker */
+        .reg-progress-header {
+            margin-bottom: 32px;
+        }
+
+        .reg-steps-pills {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .step-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--fg-dim);
+            transition: color var(--t);
+        }
+
+        .step-pill.active {
+            color: var(--primary);
+        }
+
+        .step-pill.completed {
+            color: var(--emerald);
+        }
+
+        .step-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            border: 2px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--fg-muted);
+            transition: all var(--t);
+        }
+
+        .step-pill.active .step-dot {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .step-pill.completed .step-dot {
+            background: var(--emerald);
+            border-color: var(--emerald);
+            color: #ffffff;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0284c7 0%, #00a896 100%);
+            border-radius: 999px;
+            transition: width 0.4s var(--t);
+        }
+
+        /* Wizard Step Slides */
+        .wizard-step-container {
+            position: relative;
+            min-height: 420px;
+        }
+
+        .wizard-step {
+            display: none;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .wizard-step.active {
+            display: block !important;
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .wizard-step.slide-left-out {
+            display: block;
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        .wizard-step.slide-right-out {
+            display: block;
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .step-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.85rem;
+            letter-spacing: -0.03em;
+            color: var(--fg);
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .step-desc {
+            font-size: 0.92rem;
+            color: var(--fg-muted);
+            line-height: 1.55;
+            margin-bottom: 24px;
+        }
+
+        /* Form Inputs */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media(max-width: 640px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .reg-card { padding: 32px 24px; border-radius: 20px; }
+            .step-pill span { display: none; }
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .field-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .input-text, .input-select {
+            width: 100%;
+            padding: 13px 16px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--fg);
+            outline: none;
+            transition: all var(--t);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+
+        .input-text:focus, .input-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        /* System Selection Cards (UT vs TecNM vs Estatal vs LATAM) */
+        .system-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        @media(max-width: 580px) {
+            .system-cards-grid { grid-template-columns: 1fr; }
+        }
+
+        .system-choice-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 16px;
+            background: #ffffff;
+            cursor: pointer;
+            transition: all var(--t);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            text-align: left;
+        }
+
+        .system-choice-card:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+            transform: translateY(-2px);
+        }
+
+        .system-choice-card.selected {
+            border-color: var(--primary);
+            background: #f0f9ff;
+            box-shadow: 0 6px 18px rgba(2, 132, 199, 0.12);
+        }
+
+        .system-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #e0f2fe;
+            color: #0284c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+            transition: all var(--t);
+        }
+
+        .system-choice-card.selected .system-icon {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        .system-choice-info h4 {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: var(--fg);
+            margin-bottom: 2px;
+        }
+
+        .system-choice-info p {
+            font-size: 0.76rem;
+            color: var(--fg-muted);
+            line-height: 1.35;
+        }
+
+        /* Interactive Career Preview Card */
+        .career-preview-sheet {
+            background: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-top: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .preview-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: #0284c7;
+        }
+
+        .preview-hours-pill {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #10b981;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            padding: 3px 8px;
+            border-radius: 999px;
+        }
+
+        .preview-milestones-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        @media(max-width: 600px) {
+            .preview-milestones-row { grid-template-columns: 1fr 1fr; }
+        }
+
+        .milestone-mini-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 0.74rem;
+        }
+
+        .milestone-mini-card strong {
+            display: block;
+            color: #0f172a;
+            font-size: 0.76rem;
+            margin-bottom: 2px;
+        }
+
+        /* Situational Diagnostic Question Card */
+        .diagnostic-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 18px;
+        }
+
+        .diag-scenario-box {
+            background: #f8fafc;
+            border-left: 4px solid #0284c7;
+            padding: 12px 16px;
+            border-radius: 0 10px 10px 0;
+            font-size: 0.88rem;
+            color: #334155;
+            font-style: italic;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .diag-options-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .diag-option-btn {
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 12px 16px;
+            text-align: left;
+            cursor: pointer;
+            transition: all var(--t);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: var(--fg);
+        }
+
+        .diag-option-btn:hover {
+            border-color: var(--primary);
+            background: #f0f9ff;
+        }
+
+        .diag-option-btn.selected {
+            border-color: var(--primary);
+            background: #f0f9ff;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.12);
+        }
+
+        .opt-radio-circle {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #94a3b8;
+            margin-top: 2px;
+            flex-shrink: 0;
+            transition: all var(--t);
+        }
+
+        .diag-option-btn.selected .opt-radio-circle {
+            border-color: var(--primary);
+            background: var(--primary);
+            box-shadow: inset 0 0 0 3px #ffffff;
+        }
+
+        /* Success & ID Card Step */
+        .success-card {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .success-icon-badge {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: #ecfdf5;
+            color: #10b981;
+            border: 3px solid #a7f3d0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 24px rgba(16, 185, 129, 0.2);
+            animation: bounceIn 0.6s var(--t) both;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .student-credential-pass {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: 20px;
+            padding: 24px;
+            color: #ffffff;
+            text-align: left;
+            margin: 24px auto;
+            max-width: 520px;
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .student-credential-pass::after {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .pass-meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .pass-student-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .pass-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            font-size: 0.8rem;
+        }
+
+        .pass-detail-grid span { color: #94a3b8; display: block; font-size: 0.72rem; }
+        .pass-detail-grid strong { color: #f8fafc; font-weight: 700; }
+
+        /* Action Buttons */
+        .wizard-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all var(--t);
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 40%, #0d9488 100%) !important;
+            color: #ffffff !important;
+            border-radius: 99px !important;
+            padding: 13px 30px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            box-shadow: 0 4px 18px rgba(2, 132, 199, 0.4);
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0369a1 0%, #075985 40%, #0f766e 100%) !important;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 26px rgba(2, 132, 199, 0.55);
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #475569;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 99px;
+            padding: 12px 24px;
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+            color: #0f172a;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 40%, #047857 100%) !important;
+            color: #ffffff !important;
+            border-radius: 99px !important;
+            padding: 15px 36px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            box-shadow: 0 6px 22px rgba(16, 185, 129, 0.4);
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            border: none;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(16, 185, 129, 0.55);
+        }
+
+        /* ── JSweb StarBorder & Shiny Text Styles ── */
+        @keyframes star-h-top    { 0%{left:-45%} 100%{left:145%} }
+        @keyframes star-h-bottom { 0%{left:145%} 100%{left:-45%} }
+        @keyframes star-v-left   { 0%{top:-40%}  100%{top:140%}  }
+        @keyframes star-v-right  { 0%{top:140%}  100%{top:-40%}  }
+        @keyframes shiny-sweep   { 0%{background-position:-200% center} 100%{background-position:200% center} }
+
+        .shiny-text, [data-shiny] {
+            background: linear-gradient(120deg, currentColor 20%, #ffffff 45%, #7dd3fc 52%, #ffffff 58%, currentColor 80%);
+            background-size: 250% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shiny-sweep 3s linear infinite;
+            display: inline-flex;
+            align-items: center;
+            gap: inherit;
+        }
+
+        @media (max-width: 520px) {
+            .wizard-actions {
+                flex-direction: column-reverse !important;
+                gap: 10px !important;
+            }
+            .wizard-actions .btn {
+                width: 100% !important;
+                justify-content: center !important;
+                text-align: center;
+            }
+            .wizard-actions div:first-child:empty {
+                display: none;
+            }
+            .system-cards-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="aurora-blur"></div>
+
+    <!-- Header -->
+    <header class="reg-header">
+        <a href="index.html" class="brand-link">
+            <span class="brand-text"><span class="brand-stem">stem</span><span class="brand-os">OS</span></span>
+            <span class="brand-pill">ESP Onboarding</span>
+        </a>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="app.html" class="header-nav-btn">
+                <i class="fa-solid fa-right-to-bracket"></i> Ya tengo cuenta
+            </a>
+            <a href="index.html" class="header-nav-btn" style="color:#0284c7; border-color:#bae6fd;">
+                <i class="fa-solid fa-arrow-left"></i> Volver a la Landing
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Registration Flow Container -->
+    <main class="reg-wrapper">
+        <div class="reg-card">
+
+            <!-- Progress Header & Steps Tracker -->
+            <div class="reg-progress-header">
+                <div class="reg-steps-pills">
+                    <div class="step-pill active" id="pill-step-1">
+                        <div class="step-dot" id="dot-1">1</div>
+                        <span>Identidad</span>
+                    </div>
+                    <div class="step-pill" id="pill-step-2">
+                        <div class="step-dot" id="dot-2">2</div>
+                        <span>Institución</span>
+                    </div>
+                    <div class="step-pill" id="pill-step-3">
+                        <div class="step-dot" id="dot-3">3</div>
+                        <span>Carrera 60h</span>
+                    </div>
+                    <div class="step-pill" id="pill-step-4">
+                        <div class="step-dot" id="dot-4">4</div>
+                        <span>Diagnóstico</span>
+                    </div>
+                    <div class="step-pill" id="pill-step-5">
+                        <div class="step-dot" id="dot-5">5</div>
+                        <span>Mundo 3D</span>
+                    </div>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="reg-progress-bar" style="width: 20%;"></div>
+                </div>
+            </div>
+
+            <!-- Wizard Step Container -->
+            <form id="student-registration-form" onsubmit="event.preventDefault();">
+                <div class="wizard-step-container">
+
+                    <!-- STEP 1: IDENTIDAD Y CREDENCIALES -->
+                    <div class="wizard-step active" id="step-1">
+                        <span class="step-badge"><i class="fa-solid fa-user"></i> Paso 1 de 4</span>
+                        <h2 class="step-title">Bienvenido a tu Alta de Alumno stemOS</h2>
+                        <p class="step-desc">Ingresa tus datos para vincular tu matrícula al Catálogo Nacional de Carreras y habilitar tu acreditación de 60 horas curriculares.</p>
+
+                        <div class="form-grid">
+                            <div class="field-group full-width">
+                                <label class="field-label" for="reg-name"><i class="fa-solid fa-id-badge" style="color:#0284c7;"></i> Nombre Completo</label>
+                                <input type="text" id="reg-name" class="input-text" placeholder="Ej. Ing. Diana Laura Morales" required>
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label" for="reg-email"><i class="fa-solid fa-envelope" style="color:#0284c7;"></i> Correo Institucional</label>
+                                <input type="email" id="reg-email" class="input-text" placeholder="alumno@tecnm.mx / ut.edu.mx" required>
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label" for="reg-matricula"><i class="fa-solid fa-hashtag" style="color:#0284c7;"></i> Matrícula o Folio Escolar</label>
+                                <input type="text" id="reg-matricula" class="input-text" placeholder="Ej. 21051944" required>
+                            </div>
+                        </div>
+
+                        <div class="wizard-actions">
+                            <div></div>
+                            <button type="button" class="btn btn-primary" data-starborder data-sb-color="#38bdf8" data-sb-speed="2.5" onclick="nextWizardStep(1)">
+                                <span class="shiny-text">Continuar a Mi Institución</span> <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: INSTITUCIÓN Y SUBSISTEMA ACADÉMICO -->
+                    <div class="wizard-step" id="step-2">
+                        <span class="step-badge"><i class="fa-solid fa-building-columns"></i> Paso 2 de 4</span>
+                        <h2 class="step-title">Selecciona tu Subsistema Académico</h2>
+                        <p class="step-desc">stemOS se alinea a los modelos educativos de México y Latinoamérica. Selecciona el subsistema al que perteneces.</p>
+
+                        <div class="system-cards-grid">
+                            <div class="system-choice-card selected" onclick="selectAcademicSystem('ut', this)">
+                                <div class="system-icon"><i class="fa-solid fa-wrench"></i></div>
+                                <div class="system-choice-info">
+                                    <h4>Universidades Tecnológicas (UT)</h4>
+                                    <p>TSU e Ingenierías Bis / 70% Práctica y Estadías</p>
+                                </div>
+                            </div>
+                            <div class="system-choice-card" onclick="selectAcademicSystem('it', this)">
+                                <div class="system-icon"><i class="fa-solid fa-gear"></i></div>
+                                <div class="system-choice-info">
+                                    <h4>TecNM (Institutos Tecnológicos)</h4>
+                                    <p>Ingenierías Nacionales y Residencias de Planta</p>
+                                </div>
+                            </div>
+                            <div class="system-choice-card" onclick="selectAcademicSystem('univ-estatal', this)">
+                                <div class="system-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                                <div class="system-choice-info">
+                                    <h4>Universidades Estatales</h4>
+                                    <p>UNAM, IPN, UDG, UANL, UAQ, UABC y Autónomas</p>
+                                </div>
+                            </div>
+                            <div class="system-choice-card" onclick="selectAcademicSystem('latam', this)">
+                                <div class="system-icon"><i class="fa-solid fa-earth-americas"></i></div>
+                                <div class="system-choice-info">
+                                    <h4>Universidades de LATAM</h4>
+                                    <p>UTN Argentina, SENA Colombia, Chile, Perú</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="field-group">
+                                <label class="field-label" for="reg-campus"><i class="fa-solid fa-building-columns" style="color:#0284c7;"></i> Institución / Subsistema</label>
+                                <input type="text" id="reg-campus" class="input-text" placeholder="Ej. Universidad Tecnológica / TecNM / Estatal" required>
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label" for="reg-semester"><i class="fa-solid fa-layer-group" style="color:#0284c7;"></i> Nivel de Avance</label>
+                                <select id="reg-semester" class="input-select">
+                                    <option value="1-3">Primeros Semestres / Cuatrimestres (1° - 3°)</option>
+                                    <option value="4-6">Intermedio / Materias de Especialidad (4° - 6°)</option>
+                                    <option value="7-9" selected>Avanzado / Residencia Profesional / Estadía (7° - 10°)</option>
+                                    <option value="egresado">Egresado / Ingeniero en Piso de Planta</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="wizard-actions">
+                            <button type="button" class="btn btn-secondary" onclick="prevWizardStep(2)">
+                                <i class="fa-solid fa-arrow-left"></i> Atrás
+                            </button>
+                            <button type="button" class="btn btn-primary" data-starborder data-sb-color="#38bdf8" data-sb-speed="2.5" onclick="nextWizardStep(2)">
+                                <span class="shiny-text">Continuar a Mi Carrera</span> <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: SELECCIÓN DE CARRERA Y TRACK 60H -->
+                    <div class="wizard-step" id="step-3">
+                        <span class="step-badge"><i class="fa-solid fa-compass"></i> Paso 3 de 4</span>
+                        <h2 class="step-title">Selecciona tu Carrera y Track Curricular (60h)</h2>
+                        <p class="step-desc">Tu carrera determinará tu Mentor Socrático IA, tus estándares normativos aplicables y tu Mundo 3D compartido.</p>
+
+                        <div class="field-group full-width" style="margin-bottom:14px;">
+                            <label class="field-label" for="reg-career-select"><i class="fa-solid fa-microchip" style="color:#0284c7;"></i> Programa de Estudio</label>
+                            <select id="reg-career-select" class="input-select" onchange="updateCareerPreviewSheet(this.value)">
+                                <!-- Dynamically populated by career_tracks.js -->
+                            </select>
+                        </div>
+
+                        <!-- Live Career Preview Sheet -->
+                        <div class="career-preview-sheet" id="career-preview-sheet">
+                            <div class="preview-header">
+                                <span class="preview-title" id="preview-career-title">Ingeniería Mecatrónica</span>
+                                <span class="preview-hours-pill"><i class="fa-solid fa-clock"></i> 60.0h Auditables</span>
+                            </div>
+                            <div style="font-size:0.83rem; color:#475569;" id="preview-career-desc">
+                                Automatización, celdas robotizadas, PLCs, visión artificial y servomotores.
+                            </div>
+                            <div class="preview-milestones-row" id="preview-milestones-container">
+                                <!-- Injected dynamically -->
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:#64748b; border-top:1px solid #e2e8f0; padding-top:8px;">
+                                <span><i class="fa-solid fa-robot" style="color:#0284c7;"></i> Mentor: <strong id="preview-mentor-name" style="color:#0f172a;">Chief Eng. Robert Vance</strong></span>
+                                <span><i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> Bioma: <strong id="preview-biome-name" style="color:#0f172a;">Precision Mechatronics Core</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="wizard-actions">
+                            <button type="button" class="btn btn-secondary" onclick="prevWizardStep(3)">
+                                <i class="fa-solid fa-arrow-left"></i> Atrás
+                            </button>
+                            <button type="button" class="btn btn-primary" data-starborder data-sb-color="#38bdf8" data-sb-speed="2.5" onclick="nextWizardStep(3)">
+                                <span class="shiny-text">Continuar a Diagnóstico Zero-Grammar</span> <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 4: DIAGNÓSTICO SITUACIONAL ZERO-GRAMMAR -->
+                    <div class="wizard-step" id="step-4">
+                        <span class="step-badge"><i class="fa-solid fa-bolt"></i> Paso 4 de 4</span>
+                        <h2 class="step-title">Diagnóstico Situacional de Piso de Planta</h2>
+                        <p class="step-desc">Sin gramática abstracta ni ejercicios teóricos. Evaluamos tu criterio operativo real en inglés ante contingencias de manufactura.</p>
+
+                        <!-- Dilema Situacional 1 -->
+                        <div class="diagnostic-card">
+                            <div style="font-weight:700; font-size:0.86rem; color:#0f172a; margin-bottom:8px;">
+                                <i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i> Situación 1: Paro no Programado y Protocolo LOTO
+                            </div>
+                            <div class="diag-scenario-box">
+                                "La línea de ensamble automático reporta un sobrecalentamiento en el servomotor del Eje 4. El supervisor extranjero te pregunta por radio: 'Can we bypass the interlock and reset the drive on the fly to meet the hourly quota?' ¿Cuál es tu respuesta técnica?"
+                            </div>
+                            <div class="diag-options-stack">
+                                <button type="button" class="diag-option-btn selected" onclick="selectDiagOption(1, 0, this)">
+                                    <div class="opt-radio-circle"></div>
+                                    <div><strong>Opción A:</strong> “Negative. We must lock out and tag out (LOTO) per OSHA standards. Bypassing safety interlocks introduces severe crush hazard and will void UL/CE compliance.”</div>
+                                </button>
+                                <button type="button" class="diag-option-btn" onclick="selectDiagOption(1, 1, this)">
+                                    <div class="opt-radio-circle"></div>
+                                    <div><strong>Opción B:</strong> “Yes, reset it quickly while the operator watches the motor so we don't lose scrap numbers.”</div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Dilema Situacional 2 -->
+                        <div class="diagnostic-card">
+                            <div style="font-weight:700; font-size:0.86rem; color:#0f172a; margin-bottom:8px;">
+                                <i class="fa-solid fa-comments" style="color:#0284c7;"></i> Situación 2: Modismos Opacos del Piso de Planta (“Slang Industrial”)
+                            </div>
+                            <div class="diag-scenario-box">
+                                "El director de manufactura en junta dice: 'We cannot afford to cut corners here. We're totally in the weeds with this lot, so loop in quality control and table that side fixture project.' ¿Cómo actúas?"
+                            </div>
+                            <div class="diag-options-stack">
+                                <button type="button" class="diag-option-btn selected" onclick="selectDiagOption(2, 0, this)">
+                                    <div class="opt-radio-circle"></div>
+                                    <div><strong>Opción A:</strong> No tomo atajos, atiendo la saturación crítica de inmediato, entero al equipo de calidad y pospongo el proyecto secundario.</div>
+                                </button>
+                                <button type="button" class="diag-option-btn" onclick="selectDiagOption(2, 1, this)">
+                                    <div class="opt-radio-circle"></div>
+                                    <div><strong>Opción B:</strong> Corto las esquinas de los empaques, compro herramientas para cortar hierba y coloco una mesa física en el taller.</div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="wizard-actions">
+                            <button type="button" class="btn btn-secondary" onclick="prevWizardStep(4)">
+                                <i class="fa-solid fa-arrow-left"></i> Atrás
+                            </button>
+                            <button type="button" class="btn btn-primary" data-starborder data-sb-color="#38bdf8" data-sb-speed="2.5" onclick="submitStudentRegistration()">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> <span class="shiny-text">Finalizar Alta &amp; Generar Mi Mundo 3D</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 5: ÉXITO, CARNET DIGITAL Y ACTIVACIÓN DE MUNDO 3D -->
+                    <div class="wizard-step" id="step-5">
+                        <div class="success-card">
+                            <div class="success-icon-badge">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <span class="step-badge" style="background:#ecfdf5; color:#10b981; border:1px solid #a7f3d0;">
+                                <i class="fa-solid fa-circle-check"></i> Alta Exitosa
+                            </span>
+                            <h2 class="step-title">¡Bienvenido a tu Mundo stemOS!</h2>
+                            <p class="step-desc" style="max-width:540px; margin-left:auto; margin-right:auto;">
+                                Tu expediente ha sido registrado y alineado a las <strong>60 horas curriculares auditables</strong>. Se ha generado tu credencial con semilla determinista para tu carrera.
+                            </p>
+
+                            <!-- Digital Student Pass -->
+                            <div class="student-credential-pass">
+                                <div class="pass-meta-row">
+                                    <div>
+                                        <span style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.12em; color:#38bdf8; font-weight:800;">STEMOS DIGITAL CREDENTIAL</span>
+                                        <div class="pass-student-name" id="pass-name-display">Ing. Diana Laura Morales</div>
+                                        <div style="font-size:0.78rem; color:#94a3b8;" id="pass-campus-display">TecNM &bull; Institutos Tecnológicos</div>
+                                    </div>
+                                    <div style="text-align:right;">
+                                        <i class="fa-solid fa-qrcode" style="font-size:2.4rem; color:#38bdf8;"></i>
+                                        <div style="font-size:0.65rem; color:#64748b; font-family:'JetBrains Mono',monospace;" id="pass-folio-display">FOLIO: STEMOS-2026</div>
+                                    </div>
+                                </div>
+                                <div class="pass-detail-grid">
+                                    <div>
+                                        <span>PROGRAMA ACADÉMICO</span>
+                                        <strong id="pass-career-display">Ing. Mecatrónica</strong>
+                                    </div>
+                                    <div>
+                                        <span>VALIDEZ CURRICULAR</span>
+                                        <strong style="color:#34d399;">60.0h (4 Hitos W3C)</strong>
+                                    </div>
+                                    <div>
+                                        <span>ESTÁNDARES NORMATIVOS</span>
+                                        <strong id="pass-standards-display">IEC 61131-3, ISO 10218</strong>
+                                    </div>
+                                    <div>
+                                        <span>MUNDO 3D COMPARTIDO</span>
+                                        <strong style="color:#38bdf8;" id="pass-biome-display">Biome: Precision Robotics</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display:flex; justify-content:center; gap:16px; margin-top:28px; flex-wrap:wrap;">
+                                <a href="app.html" class="btn btn-success" id="btn-enter-student-app" data-starborder data-sb-color="#10b981" data-sb-speed="2.5">
+                                    <i class="fa-solid fa-earth-americas"></i> <span class="shiny-text">Entrar a Mi Aula Virtual (LXP)</span>
+                                </a>
+                                <a href="index.html#mundo-adaptado" class="btn btn-secondary">
+                                    <i class="fa-solid fa-globe"></i> Ver Mi Mundo en la Landing
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </main>
+
+    <!-- Load Career Tracks Catalog & Controller -->
+    <script src="content/career_tracks.js?v=2.0.0"></script>
+    <script>
+        let currentStep = 1;
+        let selectedSystem = 'ut';
+        let studentData = {
+            name: '',
+            email: '',
+            matricula: '',
+            system: 'ut',
+            campus: '',
+            semester: '7-9',
+            careerId: 'it-mecatronica',
+            diagnostics: { d1: 0, d2: 0 }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initCareersDropdown();
+        });
+
+        function initCareersDropdown() {
+            const select = document.getElementById('reg-career-select');
+            if (!select || typeof window.STEMOS_CAREER_TRACKS === 'undefined') return;
+
+            const careers = window.STEMOS_CAREER_TRACKS.CAREERS || [];
+            select.innerHTML = '';
+
+            const groups = {
+                'ut': 'Universidades Tecnológicas (UT)',
+                'it': 'Tecnológico Nacional de México (TecNM)',
+                'univ-estatal': 'Universidades Estatales y Autónomas',
+                'latam': 'Universidades de Latinoamérica (LATAM)'
+            };
+
+            Object.keys(groups).forEach(sysKey => {
+                const optGroup = document.createElement('optgroup');
+                optGroup.label = groups[sysKey];
+                careers.filter(c => c.system === sysKey).forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.id;
+                    opt.textContent = `${c.name} (60h • ${c.standards ? c.standards[0] : 'Norma'})`;
+                    optGroup.appendChild(opt);
+                });
+                select.appendChild(optGroup);
+            });
+
+            if (careers.length > 0) {
+                updateCareerPreviewSheet(careers[0].id);
+            }
+        }
+
+        function selectAcademicSystem(sys, el) {
+            selectedSystem = sys;
+            studentData.system = sys;
+            document.querySelectorAll('.system-choice-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+
+            // Pre-select first career of that system
+            if (typeof window.STEMOS_CAREER_TRACKS !== 'undefined') {
+                const sysCareers = window.STEMOS_CAREER_TRACKS.getCareersBySystem(sys);
+                if (sysCareers.length > 0) {
+                    const select = document.getElementById('reg-career-select');
+                    if (select) {
+                        select.value = sysCareers[0].id;
+                        updateCareerPreviewSheet(sysCareers[0].id);
+                    }
+                }
+            }
+        }
+
+        function updateCareerPreviewSheet(careerId) {
+            if (typeof window.STEMOS_CAREER_TRACKS === 'undefined') return;
+            const c = window.STEMOS_CAREER_TRACKS.getCareerById(careerId);
+            if (!c) return;
+
+            studentData.careerId = c.id;
+            document.getElementById('preview-career-title').textContent = c.name;
+            document.getElementById('preview-career-desc').textContent = c.description;
+            document.getElementById('preview-mentor-name').textContent = c.aiMentor ? c.aiMentor.name : 'Chief AI Mentor';
+            document.getElementById('preview-biome-name').textContent = c.worldTheme ? c.worldTheme.biomeName : 'Standard Core';
+
+            const milesContainer = document.getElementById('preview-milestones-container');
+            if (milesContainer && c.milestones) {
+                milesContainer.innerHTML = c.milestones.map((m, idx) => `
+                    <div class="milestone-mini-card">
+                        <strong>Hito ${idx + 1} (${m.hours}h)</strong>
+                        <div style="color:#64748b; font-size:0.7rem;">${m.title}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function selectDiagOption(dilemmaNum, optIndex, el) {
+            studentData.diagnostics['d' + dilemmaNum] = optIndex;
+            const parent = el.closest('.diag-options-stack');
+            if (parent) {
+                parent.querySelectorAll('.diag-option-btn').forEach(btn => btn.classList.remove('selected'));
+                el.classList.add('selected');
+            }
+        }
+
+        function nextWizardStep(fromStep) {
+            if (fromStep === 1) {
+                const name = document.getElementById('reg-name').value.trim();
+                const email = document.getElementById('reg-email').value.trim();
+                const matricula = document.getElementById('reg-matricula').value.trim();
+                if (!name || !email || !matricula) {
+                    alert('Por favor completa todos tus datos personales para continuar.');
+                    return;
+                }
+                studentData.name = name;
+                studentData.email = email;
+                studentData.matricula = matricula;
+            } else if (fromStep === 2) {
+                const campus = document.getElementById('reg-campus').value.trim();
+                if (!campus) {
+                    alert('Por favor indica tu plantel o campus.');
+                    return;
+                }
+                studentData.campus = campus;
+                studentData.semester = document.getElementById('reg-semester').value;
+            }
+
+            goToStep(fromStep + 1);
+        }
+
+        function prevWizardStep(fromStep) {
+            goToStep(fromStep - 1);
+        }
+
+        function goToStep(targetStep) {
+            const currentEl = document.getElementById('step-' + currentStep);
+            const targetEl = document.getElementById('step-' + targetStep);
+
+            if (!currentEl || !targetEl) return;
+
+            // Slide classes
+            currentEl.classList.remove('active');
+            currentEl.style.display = 'none';
+
+            targetEl.style.display = 'block';
+            setTimeout(() => {
+                targetEl.classList.add('active');
+            }, 20);
+
+            // Update Progress Bar & Pills
+            currentStep = targetStep;
+            const progressPercent = Math.min(100, targetStep * 20);
+            document.getElementById('reg-progress-bar').style.width = progressPercent + '%';
+
+            for (let i = 1; i <= 5; i++) {
+                const pill = document.getElementById('pill-step-' + i);
+                if (pill) {
+                    pill.classList.remove('active', 'completed');
+                    if (i === currentStep) pill.classList.add('active');
+                    else if (i < currentStep) pill.classList.add('completed');
+                }
+            }
+        }
+
+        function submitStudentRegistration() {
+            // Save to localStorage
+            const folio = 'STEMOS-2026-' + Math.floor(1000 + Math.random() * 9000);
+            studentData.folio = folio;
+            studentData.registeredAt = new Date().toISOString();
+
+            localStorage.setItem('stemos_student_profile', JSON.stringify(studentData));
+            localStorage.setItem('stemos_active_career', studentData.careerId);
+            localStorage.setItem('stemos_backdoor', 'true');
+
+            // Populate Success Pass
+            document.getElementById('pass-name-display').textContent = studentData.name;
+            document.getElementById('pass-campus-display').textContent = studentData.campus;
+            document.getElementById('pass-folio-display').textContent = 'FOLIO: ' + folio;
+
+            if (typeof window.STEMOS_CAREER_TRACKS !== 'undefined') {
+                const c = window.STEMOS_CAREER_TRACKS.getCareerById(studentData.careerId);
+                if (c) {
+                    document.getElementById('pass-career-display').textContent = c.name;
+                    document.getElementById('pass-standards-display').textContent = (c.standards || []).slice(0, 2).join(', ');
+                    document.getElementById('pass-biome-display').textContent = c.worldTheme ? c.worldTheme.biomeName : 'Industrial Core';
+                }
+            }
+
+            goToStep(5);
+        }
+
+        // ── JSweb StarBorder Light Beams Engine ──
+        function initStarBorders() {
+            document.querySelectorAll('[data-starborder]').forEach(el => {
+                if (el._starBorderInit) return;
+                el._starBorderInit = true;
+                el.style.position = 'relative';
+                el.style.isolation = 'isolate';
+                el.style.overflow = 'hidden';
+
+                const c = el.dataset.sbColor || '#38bdf8';
+                const s = parseFloat(el.dataset.sbSpeed) || 3;
+
+                const makeBeam = (side) => {
+                    const beam = document.createElement('span');
+                    const isH = side === 'top' || side === 'bottom';
+                    Object.assign(beam.style, {
+                        position: 'absolute',
+                        pointerEvents: 'none',
+                        zIndex: '0',
+                        borderRadius: '9999px',
+                    });
+                    if (isH) {
+                        Object.assign(beam.style, {
+                            height: '2.5px',
+                            width: '45%',
+                            [side]: '0',
+                            left: side === 'top' ? '-45%' : '145%',
+                            background: `linear-gradient(90deg, transparent, #fff, ${c}, transparent)`,
+                            boxShadow: `0 0 12px ${c}, 0 0 5px #fff`,
+                            animation: `star-h-${side} ${s}s linear infinite`,
+                        });
+                    } else {
+                        Object.assign(beam.style, {
+                            width: '2.5px',
+                            height: '40%',
+                            [side === 'left' ? 'left' : 'right']: '0',
+                            top: side === 'left' ? '-40%' : '140%',
+                            background: `linear-gradient(180deg, transparent, #fff, ${c}, transparent)`,
+                            boxShadow: `0 0 12px ${c}, 0 0 5px #fff`,
+                            animation: `star-v-${side} ${s}s linear infinite`,
+                        });
+                    }
+                    return beam;
+                };
+
+                ['top', 'bottom', 'left', 'right'].forEach(side => el.prepend(makeBeam(side)));
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initStarBorders);
+    </script>
+
+</body>
+
+</html>

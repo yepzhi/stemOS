@@ -13,8 +13,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <link rel="stylesheet" href="/dev.css?v=5.12.0">
-  <link rel="stylesheet" href="/world-map.css?v=2.0.0">
+  <link rel="stylesheet" href="index.css?v=5.12.0">
+  <link rel="stylesheet" href="../world-map.css?v=2.0.0">
 </head>
 
 <body class="supaste-theme">
@@ -36,11 +36,12 @@
             <span class="brand-stem">stem</span><span class="brand-os">OS</span>
           </div>
         </a>
-        <button id="header-student-profile-badge" class="header-profile-badge-btn" style="display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.35); border-radius:9999px; padding:4px 10px; font-size:0.75rem; color:#34d399; font-weight:700; cursor:pointer; margin-left:12px;" title="Registro de Alumno & Path Personalizado">
+        <a href="register.html" target="_blank" class="btn-signup-pill" data-starborder data-sb-color="#38bdf8" data-sb-speed="2.5" title="Registro de Alumno & Path Personalizado" style="margin-left:12px;">
           <i class="fa-solid fa-user-graduate"></i>
-          <span id="header-student-badge-text">Registro Alumno</span>
-        </button>
-        <a href="/" class="header-profile-badge-btn" style="display:inline-flex; align-items:center; gap:6px; background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.35); border-radius:9999px; padding:4px 12px; font-size:0.75rem; color:#38bdf8; font-weight:700; text-decoration:none; margin-left:8px;" title="Ver Portal Ejecutivo Landing (stemos.org)">
+          <span class="shiny-text">Registro Alumno</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <a href="/" class="header-profile-badge-btn hide-mobile" style="display:inline-flex; align-items:center; gap:6px; background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.35); border-radius:9999px; padding:4px 12px; font-size:0.75rem; color:#38bdf8; font-weight:700; text-decoration:none; margin-left:8px;" title="Ver Portal Ejecutivo Landing (stemos.org)">
           <i class="fa-solid fa-arrow-left"></i>
           <span>Landing stemos.org</span>
         </a>
@@ -134,7 +135,11 @@
 
       <!-- Mobile Hamburger Button -->
       <button id="supaste-nav-mobile-toggle" class="supaste-mobile-nav-toggle" aria-label="Abrir Menú Móvil" onclick="toggleMobileNav()">
-        <i class="fa-solid fa-bars"></i>
+        <span class="hamburger-box">
+          <span class="hamburger-bar" style="background:#ffffff;"></span>
+          <span class="hamburger-bar" style="background:#ffffff;"></span>
+          <span class="hamburger-bar" style="background:#ffffff;"></span>
+        </span>
       </button>
     </nav>
   </header>
@@ -146,12 +151,26 @@
       <div class="mobile-nav-header">
         <div class="supaste-brand-name">
           <span class="brand-stem">stem</span><span class="brand-os">OS</span>
+          <span style="font-size:0.65rem; background:rgba(56,189,248,0.2); color:#38bdf8; padding:2px 6px; border-radius:4px; margin-left:8px; font-family:'JetBrains Mono',monospace;">DEV</span>
         </div>
         <button class="drawer-close-btn" aria-label="Cerrar Menú Móvil" onclick="toggleMobileNav(false)">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
       <div class="mobile-nav-body">
+        <!-- Top Drawer Auth CTA (JSweb style) -->
+        <div style="padding:14px; background:rgba(255,255,255,0.04); border-radius:12px; margin-bottom:14px; border:1px solid rgba(255,255,255,0.08);">
+          <a href="register.html" target="_blank" class="btn-signup-pill" data-starborder data-sb-color="#38bdf8" data-sb-speed="2.5" style="width:100%; justify-content:center; padding:10px 16px; font-size:0.85rem;">
+            <i class="fa-solid fa-user-graduate"></i>
+            <span class="shiny-text">Registro Alumno (60h)</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; font-size:0.75rem;">
+            <a href="/" style="color:#38bdf8; text-decoration:none; font-weight:600;"><i class="fa-solid fa-arrow-left"></i> Ir a stemos.org</a>
+            <a href="app.html" style="color:#10b981; text-decoration:none; font-weight:600;"><i class="fa-solid fa-circle-play"></i> Abrir LXP</a>
+          </div>
+        </div>
+
         <div class="mobile-nav-group-title"><i class="fa-solid fa-layer-group"></i> Catálogo ESP</div>
         <a href="#studio-grid" class="mobile-nav-item" onclick="toggleMobileNav(false)" data-filter-jump="all"><i class="fa-solid fa-check"></i> Todos los Tracks (34)</a>
         <a href="#group-technology" class="mobile-nav-item" onclick="toggleMobileNav(false)" data-filter-jump="cat-technology"><i class="fa-solid fa-microchip"></i> Technology</a>
@@ -11202,12 +11221,101 @@
   </div>
 
   <!-- Load stemOS courses database, phrases library, career tracks, and dev controller with cache buster -->
-  <script src="/content/courses.js?v=5.11.0"></script>
-  <script src="/content/phrases_library.js?v=5.11.0"></script>
-  <script src="/content/career_tracks.js?v=2.0.0"></script>
-  <script src="/world-map.js?v=2.0.0"></script>
-  <script src="/dev.js?v=5.12.0"></script>
+  <script src="../content/courses.js?v=5.11.0"></script>
+  <script src="../content/phrases_library.js?v=5.11.0"></script>
+  <script src="../content/career_tracks.js?v=2.0.0"></script>
+  <script src="../world-map.js?v=2.0.0"></script>
+  <script src="index.js?v=5.12.0"></script>
 
+  <script>
+    // ── Mobile Navigation Drawer Toggle ──
+    function toggleMobileNav(forceState) {
+      const panel = document.getElementById('supaste-mobile-nav-panel');
+      const toggle = document.getElementById('supaste-nav-mobile-toggle');
+      if (!panel) return;
+
+      const isOpen = panel.classList.contains('active');
+      const target = forceState !== undefined ? forceState : !isOpen;
+
+      if (target) {
+        panel.style.display = 'block';
+        void panel.offsetWidth; // force reflow
+        panel.classList.add('active');
+        panel.setAttribute('aria-hidden', 'false');
+        if (toggle) toggle.classList.add('is-active');
+        document.body.style.overflow = 'hidden';
+      } else {
+        panel.classList.remove('active');
+        panel.setAttribute('aria-hidden', 'true');
+        if (toggle) toggle.classList.remove('is-active');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+          if (!panel.classList.contains('active')) {
+            panel.style.display = 'none';
+          }
+        }, 350);
+      }
+    }
+
+    // ── StarBorder light beam initialization ──
+    function initStarBorders() {
+      document.querySelectorAll('[data-starborder]').forEach(el => {
+        if (el._starBorderInit) return;
+        el._starBorderInit = true;
+        el.style.position = 'relative';
+        el.style.isolation = 'isolate';
+        el.style.overflow = 'hidden';
+
+        const c = el.dataset.sbColor || '#38bdf8';
+        const s = parseFloat(el.dataset.sbSpeed) || 3;
+
+        const makeBeam = (side) => {
+          const beam = document.createElement('span');
+          const isH = side === 'top' || side === 'bottom';
+          Object.assign(beam.style, {
+            position: 'absolute',
+            pointerEvents: 'none',
+            zIndex: '0',
+            borderRadius: '9999px',
+          });
+          if (isH) {
+            Object.assign(beam.style, {
+              height: '2.5px',
+              width: '45%',
+              [side]: '0',
+              left: side === 'top' ? '-45%' : '145%',
+              background: `linear-gradient(90deg, transparent, #fff, ${c}, transparent)`,
+              boxShadow: `0 0 12px ${c}, 0 0 5px #fff`,
+              animation: `star-h-${side} ${s}s linear infinite`,
+            });
+          } else {
+            Object.assign(beam.style, {
+              width: '2.5px',
+              height: '40%',
+              [side === 'left' ? 'left' : 'right']: '0',
+              top: side === 'left' ? '-40%' : '140%',
+              background: `linear-gradient(180deg, transparent, #fff, ${c}, transparent)`,
+              boxShadow: `0 0 12px ${c}, 0 0 5px #fff`,
+              animation: `star-v-${side} ${s}s linear infinite`,
+            });
+          }
+          return beam;
+        };
+
+        ['top', 'bottom', 'left', 'right'].forEach(side => el.prepend(makeBeam(side)));
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initStarBorders();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        toggleMobileNav(false);
+      }
+    });
+  </script>
 </body>
 
 </html>

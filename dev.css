@@ -346,6 +346,272 @@ body.supaste-theme {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
+/* ── MODERN MOBILE HAMBURGER TOGGLE (JSweb & Supaste Fused) ── */
+.supaste-mobile-nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-spring);
+  position: relative;
+  z-index: 10001;
+  flex-shrink: 0;
+}
+
+.supaste-mobile-nav-toggle:hover {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: #38bdf8;
+  transform: scale(1.04);
+}
+
+.supaste-mobile-nav-toggle:active {
+  transform: scale(0.95);
+}
+
+.hamburger-box {
+  width: 18px;
+  height: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hamburger-bar {
+  width: 100%;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center;
+}
+
+.supaste-mobile-nav-toggle.is-active .hamburger-bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+  background: #38bdf8 !important;
+}
+
+.supaste-mobile-nav-toggle.is-active .hamburger-bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.supaste-mobile-nav-toggle.is-active .hamburger-bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+  background: #38bdf8 !important;
+}
+
+@media (max-width: 1024px) {
+  .supaste-nav {
+    width: calc(100% - 24px) !important;
+    max-width: 100% !important;
+    justify-content: space-between !important;
+    padding: 8px 14px !important;
+  }
+  .supaste-nav-links,
+  .nav-dropdown,
+  .nav-dropdown-menu,
+  .nav-dropdown-grid {
+    display: none !important;
+  }
+  .hide-mobile {
+    display: none !important;
+  }
+  .supaste-mobile-nav-toggle {
+    display: inline-flex !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .btn-signup-pill {
+    padding: 5px 10px !important;
+    font-size: 0.74rem !important;
+    gap: 5px !important;
+  }
+  .supaste-nav-left {
+    gap: 8px !important;
+  }
+}
+
+/* ── SUPASTE RESPONSIVE MOBILE NAVIGATION DRAWER ── */
+.supaste-mobile-nav-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  pointer-events: none;
+  visibility: hidden;
+  transition: visibility 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.supaste-mobile-nav-panel.active {
+  display: block !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+}
+
+.mobile-nav-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.supaste-mobile-nav-panel.active .mobile-nav-backdrop {
+  opacity: 1;
+}
+
+.mobile-nav-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 88vw;
+  max-width: 380px;
+  height: 100%;
+  background: #0f172a;
+  color: #ffffff;
+  box-shadow: -12px 0 45px rgba(0, 0, 0, 0.6);
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.supaste-mobile-nav-panel.active .mobile-nav-content {
+  transform: translateX(0);
+}
+
+.mobile-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: max(18px, env(safe-area-inset-top, 18px)) 20px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: #091122;
+}
+
+.drawer-close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.drawer-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+.mobile-nav-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 12px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-nav-group-title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 6px 8px;
+}
+
+.mobile-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #e2e8f0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  margin-bottom: 3px;
+}
+
+.mobile-nav-item:hover {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  transform: translateX(4px);
+}
+
+.mobile-nav-item:active {
+  background: rgba(56, 189, 248, 0.25);
+  transform: scale(0.98);
+}
+
+/* StarBorder & ShinyText Support in dev.css */
+@keyframes star-h-top    { 0%{left:-45%} 100%{left:145%} }
+@keyframes star-h-bottom { 0%{left:145%} 100%{left:-45%} }
+@keyframes star-v-left   { 0%{top:-40%}  100%{top:140%}  }
+@keyframes star-v-right  { 0%{top:140%}  100%{top:-40%}  }
+@keyframes shiny-sweep   { 0%{background-position:-200% center} 100%{background-position:200% center} }
+
+.shiny-text, [data-shiny] {
+  background: linear-gradient(120deg, currentColor 20%, #ffffff 45%, #7dd3fc 52%, #ffffff 58%, currentColor 80%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shiny-sweep 3s linear infinite;
+  display: inline-flex;
+  align-items: center;
+  gap: inherit;
+}
+
+.btn-signup-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 40%, #0d9488 100%) !important;
+  color: #ffffff !important;
+  border-radius: 99px !important;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn-signup-pill:hover {
+  background: linear-gradient(135deg, #0369a1 0%, #075985 40%, #0f766e 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5);
+}
+
 /* ── 4. SUPASTE ATMOSPHERIC CANVAS & HERO SECTION ── */
 .supaste-hero-section {
   position: relative;

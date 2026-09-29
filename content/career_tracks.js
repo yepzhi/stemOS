@@ -297,7 +297,7 @@
     // ════════════════════════════════════════════════════════════════════════
     {
       id: 'it-mecatronica',
-      name: 'Ingeniería Mecatrónica (TecNM)',
+      name: 'Ingeniería Mecatrónica',
       system: 'it',
       systemLabel: 'Tecnológico Nacional de México (TecNM)',
       typicalCampuses: ['IT de Saltillo', 'IT de Toluca', 'IT de Culiacán', 'IT de Hermosillo', 'IT de Morelia', 'IT de Veracruz'],
@@ -332,7 +332,7 @@
     },
     {
       id: 'it-electromecanica',
-      name: 'Ingeniería Electromecánica (TecNM)',
+      name: 'Ingeniería Electromecánica',
       system: 'it',
       systemLabel: 'Tecnológico Nacional de México (TecNM)',
       typicalCampuses: ['IT de Tijuana', 'IT de Cd. Madero', 'IT de Aguascalientes', 'IT de Chihuahua', 'IT de Pachuca'],
@@ -507,7 +507,7 @@
     },
     {
       id: 'it-logistica',
-      name: 'Ingeniería en Logística (TecNM)',
+      name: 'Ingeniería en Logística',
       system: 'it',
       systemLabel: 'Tecnológico Nacional de México (TecNM)',
       typicalCampuses: ['IT de Cd. Juárez', 'IT de Tijuana', 'IT de Querétaro', 'IT de Nogales', 'IT de Toluca', 'IT de Puebla'],
@@ -651,7 +651,7 @@
     // ════════════════════════════════════════════════════════════════════════
     {
       id: 'est-aeroespacial',
-      name: 'Ingeniería Aeroespacial y Aviónica (UNAM, IPN, UAQ, UABC, UANL)',
+      name: 'Ingeniería Aeroespacial y Aviónica',
       system: 'univ-estatal',
       systemLabel: 'Universidades Estatales y Autónomas',
       typicalCampuses: ['Universidad Nacional Autónoma de México (UNAM)', 'Instituto Politécnico Nacional (UPIITA / ESIME)', 'Universidad Autónoma de Querétaro (UAQ)', 'Universidad Autónoma de Baja California (UABC)', 'Universidad Autónoma de Nuevo León (UANL)'],
@@ -686,7 +686,7 @@
     },
     {
       id: 'est-biomedica',
-      name: 'Ingeniería Biomédica e Instrumentación Quirúrgica (UAM, UDG, UANL, IBERO)',
+      name: 'Ingeniería Biomédica e Instrumentación Quirúrgica',
       system: 'univ-estatal',
       systemLabel: 'Universidades Estatales y Autónomas',
       typicalCampuses: ['Universidad Autónoma Metropolitana (UAM)', 'Universidad de Guadalajara (UDG)', 'Universidad Autónoma de Nuevo León (UANL)', 'Universidad Autónoma de Ciudad Juárez (UACJ)'],
@@ -721,7 +721,7 @@
     },
     {
       id: 'est-semiconductores',
-      name: 'Ingeniería en Semiconductores y Microelectrónica (UDG, UNAM, IPN, UACJ, ITSON)',
+      name: 'Ingeniería en Semiconductores y Microelectrónica',
       system: 'univ-estatal',
       systemLabel: 'Universidades Estatales y Autónomas',
       typicalCampuses: ['Universidad de Guadalajara (UDG)', 'CINVESTAV / IPN', 'Universidad Autónoma de Ciudad Juárez (UACJ)', 'Instituto Tecnológico de Sonora (ITSON)'],
@@ -756,7 +756,7 @@
     },
     {
       id: 'est-ia-datos',
-      name: 'Ingeniería en Inteligencia Artificial y Ciencia de Datos (IPN UPIITA, UNAM, UANL)',
+      name: 'Ingeniería en Inteligencia Artificial y Ciencia de Datos',
       system: 'univ-estatal',
       systemLabel: 'Universidades Estatales y Autónomas',
       typicalCampuses: ['UPIITA - Instituto Politécnico Nacional', 'Facultad de Ingeniería - UNAM', 'FIME - Universidad Autónoma de Nuevo León', 'CUCEI - Universidad de Guadalajara'],
@@ -791,7 +791,7 @@
     },
     {
       id: 'est-ciberseguridad',
-      name: 'Ingeniería en Ciberseguridad y Redes Críticas (UANL, UABC, UAQ, IPN)',
+      name: 'Ingeniería en Ciberseguridad y Redes Críticas',
       system: 'univ-estatal',
       systemLabel: 'Universidades Estatales y Autónomas',
       typicalCampuses: ['Universidad Autónoma de Nuevo León (UANL)', 'Universidad Autónoma de Baja California (UABC)', 'Universidad Autónoma de Querétaro (UAQ)', 'UPIITA - IPN'],
@@ -826,7 +826,7 @@
     },
     {
       id: 'est-comercio-internacional',
-      name: 'Licenciatura en Negocios y Comercio Internacional IMMEX (UNAM, UDG, UANL)',
+      name: 'Licenciatura en Negocios y Comercio Internacional IMMEX',
       system: 'univ-estatal',
       systemLabel: 'Universidades Estatales y Autónomas',
       typicalCampuses: ['Facultad de Contaduría y Administración - UNAM', 'CUCEA - Universidad de Guadalajara', 'FACPYA - Universidad Autónoma de Nuevo León', 'FCA - UABC Tijuana'],
@@ -865,7 +865,7 @@
     // ════════════════════════════════════════════════════════════════════════
     {
       id: 'latam-automatizacion-scada',
-      name: 'Ingeniería en Automatización y Control Industrial (UTN Argentina, Univs LATAM)',
+      name: 'Ingeniería en Automatización y Control Industrial',
       system: 'latam',
       systemLabel: 'Universidades de Latinoamérica (LATAM)',
       typicalCampuses: ['Universidad Tecnológica Nacional (UTN Argentina)', 'Politécnico Grancolombiano / SENA (Colombia)', 'Universidad Técnica Federico Santa María (Chile)', 'Universidad Nacional de Ingeniería (UNI Perú)'],
@@ -900,7 +900,7 @@
     },
     {
       id: 'latam-telecomunicaciones',
-      name: 'Ingeniería en Telecomunicaciones y Telemática (LATAM)',
+      name: 'Ingeniería en Telecomunicaciones y Telemática',
       system: 'latam',
       systemLabel: 'Universidades de Latinoamérica (LATAM)',
       typicalCampuses: ['Universidad de Buenos Aires (UBA)', 'Universidad de Chile', 'Universidad Nacional de Colombia', 'Pontificia Universidad Católica del Perú (PUCP)'],
@@ -935,7 +935,7 @@
     },
     {
       id: 'latam-agroindustria-bioprocesos',
-      name: 'Ingeniería Agroindustrial y Bioprocesos de Exportación (LATAM)',
+      name: 'Ingeniería Agroindustrial y Bioprocesos de Exportación',
       system: 'latam',
       systemLabel: 'Universidades de Latinoamérica (LATAM)',
       typicalCampuses: ['Universidad Zamorano', 'Universidad Nacional Agraria La Molina (Perú)', 'Universidad de Caldas (Colombia)', 'INTA / UBA (Argentina)'],
