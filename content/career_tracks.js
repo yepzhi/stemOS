@@ -14,12 +14,17 @@
  */
 
 (function (root, factory) {
+  const result = factory();
   if (typeof define === 'function' && define.amd) {
-    define([], factory);
+    define([], () => result);
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory();
-  } else {
-    root.STEMOS_CAREER_TRACKS = factory();
+    module.exports = result;
+  }
+  if (typeof root !== 'undefined') {
+    root.STEMOS_CAREER_TRACKS = result;
+  }
+  if (typeof window !== 'undefined') {
+    window.STEMOS_CAREER_TRACKS = result;
   }
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
