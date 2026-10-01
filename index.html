@@ -86,9 +86,6 @@
 
         html {
             scroll-behavior: smooth;
-            overflow-x: hidden;
-            width: 100%;
-            max-width: 100vw;
         }
 
         body {
@@ -97,8 +94,6 @@
             color: var(--fg);
             line-height: 1.6;
             overflow-x: hidden;
-            width: 100%;
-            max-width: 100vw;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -171,13 +166,10 @@
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
             width: 100%;
-            max-width: 100vw;
-            box-sizing: border-box;
             height: 72px;
             z-index: 9999;
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border-light);
@@ -191,8 +183,6 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            max-width: 1240px;
-            box-sizing: border-box;
         }
 
         .brand-logo-link {
@@ -317,658 +307,6 @@
             padding: 14px 28px;
             font-size: 1rem;
             border-radius: 14px;
-        }
-
-        /* ── JSWEB HIGH-END BUTTONS & SIGN UP STYLING ── */
-        .btn-pill {
-            border-radius: 99px !important;
-        }
-
-        .btn-signup {
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 40%, #0d9488 100%) !important;
-            color: #ffffff !important;
-            font-weight: 800 !important;
-            letter-spacing: -0.01em;
-            border: none !important;
-            box-shadow: 0 4px 18px rgba(2, 132, 199, 0.38), 0 0 14px rgba(13, 148, 136, 0.25);
-            position: relative;
-            overflow: hidden;
-            isolation: isolate;
-            cursor: pointer;
-            transition: all 0.25s var(--t);
-        }
-
-        .btn-signup:hover {
-            background: linear-gradient(135deg, #0369a1 0%, #075985 40%, #0f766e 100%) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px -4px rgba(2, 132, 199, 0.55), 0 0 20px rgba(13, 148, 136, 0.4);
-        }
-
-        .btn-signup:active {
-            transform: scale(0.97);
-        }
-
-        .btn-signup i.fa-arrow-right {
-            transition: transform 0.25s var(--t);
-        }
-
-        .btn-signup:hover i.fa-arrow-right {
-            transform: translateX(4px);
-        }
-
-        /* StarBorder Luminous Beam Keyframes & Animations */
-        @keyframes star-h-top    { 0%{left:-45%} 100%{left:145%} }
-        @keyframes star-h-bottom { 0%{left:145%} 100%{left:-45%} }
-        @keyframes star-v-left   { 0%{top:-40%}  100%{top:140%}  }
-        @keyframes star-v-right  { 0%{top:140%}  100%{top:-40%}  }
-        @keyframes shiny-sweep   { 0%{background-position:-200% center} 100%{background-position:200% center} }
-
-        .shiny-text, [data-shiny] {
-            background: linear-gradient(120deg, currentColor 20%, #ffffff 45%, #7dd3fc 52%, #ffffff 58%, currentColor 80%);
-            background-size: 250% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shiny-sweep 3s linear infinite;
-            display: inline-flex;
-            align-items: center;
-            gap: inherit;
-        }
-
-        .nav-login-link {
-            font-size: 0.88rem;
-            font-weight: 700;
-            color: var(--fg-muted);
-            text-decoration: none;
-            padding: 8px 14px;
-            border-radius: 99px;
-            transition: all var(--t);
-        }
-
-        .nav-login-link:hover {
-            color: var(--primary);
-            background: rgba(2, 132, 199, 0.08);
-        }
-
-        /* ── SLEEK ANIMATED HAMBURGER MENU BUTTON ── */
-        .site-mobile-hamburger {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            width: 44px;
-            height: 44px;
-            padding: 0;
-            background: rgba(255, 255, 255, 0.95);
-            border: 1.5px solid var(--border);
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: var(--shadow-sm);
-            transition: all var(--t);
-            position: relative;
-            z-index: 10001;
-            flex-shrink: 0;
-        }
-
-        .site-mobile-hamburger:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25);
-            transform: scale(1.04);
-        }
-
-        .site-mobile-hamburger:active {
-            transform: scale(0.96);
-        }
-
-        .hamburger-box {
-            width: 20px;
-            height: 15px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .hamburger-bar {
-            display: block;
-            width: 100%;
-            height: 2.2px;
-            background: #0f172a;
-            border-radius: 4px;
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, background-color 0.2s ease;
-        }
-
-        .site-mobile-hamburger.is-active .hamburger-bar:nth-child(1) {
-            transform: translateY(6.4px) rotate(45deg);
-            background: var(--primary);
-        }
-
-        .site-mobile-hamburger.is-active .hamburger-bar:nth-child(2) {
-            opacity: 0;
-            transform: scaleX(0);
-        }
-
-        .site-mobile-hamburger.is-active .hamburger-bar:nth-child(3) {
-            transform: translateY(-6.4px) rotate(-45deg);
-            background: var(--primary);
-        }
-
-        .signup-text-compact {
-            display: none;
-        }
-
-        @media (max-width: 991px) {
-            .site-mobile-hamburger {
-                display: inline-flex;
-            }
-            .nav-links {
-                display: none !important;
-            }
-            .hide-mobile {
-                display: none !important;
-            }
-            .header-actions {
-                gap: 8px;
-            }
-            .nav-login-link {
-                display: none;
-            }
-        }
-
-        @media (max-width: 520px) {
-            .signup-text-full {
-                display: none !important;
-            }
-            .signup-text-compact {
-                display: inline-flex !important;
-            }
-            .brand-pill-tag {
-                display: none !important;
-            }
-            .brand-logo-text {
-                font-size: 1.35rem !important;
-            }
-            .site-header {
-                height: 60px !important;
-            }
-            .header-inner {
-                padding: 0 8px !important;
-            }
-            .site-mobile-hamburger {
-                width: 38px !important;
-                height: 38px !important;
-            }
-            .btn-signup.btn-sm {
-                padding: 6px 10px !important;
-                font-size: 0.78rem !important;
-            }
-        }
-
-        /* ── RESPONSIVE MOBILE DRAWER & SHEET ── */
-        .site-mobile-drawer {
-            position: fixed;
-            inset: 0;
-            z-index: 100000;
-            pointer-events: none;
-            visibility: hidden;
-            transition: visibility 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .site-mobile-drawer.is-open {
-            pointer-events: auto;
-            visibility: visible;
-        }
-
-        .drawer-backdrop {
-            position: absolute;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.55);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            opacity: 0;
-            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .site-mobile-drawer.is-open .drawer-backdrop {
-            opacity: 1;
-        }
-
-        .drawer-sheet {
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 88vw;
-            max-width: 380px;
-            height: 100%;
-            background: #ffffff;
-            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.22);
-            transform: translateX(100%);
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .site-mobile-drawer.is-open .drawer-sheet {
-            transform: translateX(0);
-        }
-
-        .drawer-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: max(18px, env(safe-area-inset-top, 18px)) 20px 14px;
-            border-bottom: 1px solid var(--border-light);
-            background: #ffffff;
-        }
-
-        .drawer-close-btn {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: #f8fafc;
-            color: #64748b;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.2s var(--t);
-        }
-
-        .drawer-close-btn:hover {
-            background: #e2e8f0;
-            color: #0f172a;
-            transform: rotate(90deg);
-        }
-
-        .drawer-auth-box {
-            padding: 16px 20px;
-            background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .btn-full {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .drawer-auth-sub {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            margin-top: 10px;
-            font-size: 0.8rem;
-            color: var(--fg-muted);
-        }
-
-        .drawer-login-link {
-            color: var(--primary);
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        .drawer-login-link:hover {
-            text-decoration: underline;
-        }
-
-        .drawer-scrollable {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 14px;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .drawer-section-title {
-            font-size: 0.72rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #94a3b8;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 12px 6px 8px;
-        }
-
-        .drawer-nav-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 14px;
-        }
-
-        .drawer-nav-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            border-radius: 12px;
-            text-decoration: none;
-            color: var(--fg);
-            background: transparent;
-            transition: all 0.2s var(--t);
-        }
-
-        .drawer-nav-link:hover {
-            background: #f1f5f9;
-            transform: translateX(3px);
-        }
-
-        .drawer-nav-link:active {
-            background: #e2e8f0;
-            transform: scale(0.98);
-        }
-
-        .drawer-nav-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.95rem;
-            flex-shrink: 0;
-        }
-
-        .bg-blue { background: rgba(2, 132, 199, 0.12); color: #0284c7; }
-        .bg-cyan { background: rgba(6, 182, 212, 0.12); color: #0891b2; }
-        .bg-emerald { background: rgba(16, 185, 129, 0.12); color: #059669; }
-        .bg-purple { background: rgba(168, 85, 247, 0.12); color: #7e22ce; }
-        .bg-amber { background: rgba(245, 158, 11, 0.12); color: #d97706; }
-        .bg-rose { background: rgba(244, 63, 94, 0.12); color: #e11d48; }
-        .bg-gold { background: rgba(234, 179, 8, 0.15); color: #b45309; }
-        .bg-slate { background: rgba(71, 85, 105, 0.12); color: #334155; }
-
-        .drawer-nav-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-        }
-
-        .drawer-nav-title {
-            font-size: 0.88rem;
-            font-weight: 700;
-            color: var(--fg);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .drawer-nav-sub {
-            font-size: 0.72rem;
-            color: var(--fg-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .drawer-chevron {
-            font-size: 0.75rem;
-            color: #94a3b8;
-        }
-
-        .drawer-footer {
-            padding: 12px 18px max(16px, env(safe-area-inset-bottom, 16px));
-            border-top: 1px solid var(--border-light);
-            background: #f8fafc;
-            text-align: center;
-        }
-
-        .drawer-compliance-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: #475569;
-        }
-
-        .drawer-version-tag {
-            font-size: 0.68rem;
-            color: #94a3b8;
-            margin-top: 4px;
-        }
-
-        /* ── WHITE REGISTRATION MODAL (JSweb inspired wizard) ── */
-        .student-reg-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 200000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            visibility: hidden;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
-        }
-
-        .student-reg-modal.active {
-            visibility: visible;
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .reg-modal-backdrop {
-            position: absolute;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-
-        .reg-wizard-card {
-            position: relative;
-            background: #ffffff;
-            width: 100%;
-            max-width: 660px;
-            max-height: 90vh;
-            border-radius: 24px;
-            box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 1;
-            transform: translateY(20px) scale(0.98);
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .student-reg-modal.active .reg-wizard-card {
-            transform: translateY(0) scale(1);
-        }
-
-        .reg-modal-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 24px;
-            border-bottom: 1px solid #e2e8f0;
-            background: #ffffff;
-        }
-
-        .reg-step-tracker {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .step-pill-dot {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: #f1f5f9;
-            color: #64748b;
-            font-size: 0.72rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.25s var(--t);
-        }
-
-        .step-pill-dot.active {
-            background: #0284c7;
-            color: #ffffff;
-            box-shadow: 0 2px 10px rgba(2, 132, 199, 0.4);
-        }
-
-        .step-pill-dot.completed {
-            background: #10b981;
-            color: #ffffff;
-        }
-
-        .reg-step-line {
-            width: 14px;
-            height: 2px;
-            background: #e2e8f0;
-        }
-
-        .reg-progress-wrap {
-            width: 100%;
-            height: 4px;
-            background: #e2e8f0;
-        }
-
-        .reg-progress-fill {
-            height: 100%;
-            width: 20%;
-            background: linear-gradient(90deg, #0284c7 0%, #10b981 100%);
-            transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .reg-modal-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .wizard-slide {
-            display: none;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .wizard-slide.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .reg-form-group {
-            margin-bottom: 18px;
-        }
-
-        .reg-label {
-            display: block;
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 6px;
-        }
-
-        .reg-input {
-            width: 100%;
-            padding: 11px 14px;
-            border-radius: 12px;
-            border: 1.5px solid #cbd5e1;
-            background: #ffffff;
-            font-size: 0.92rem;
-            font-family: inherit;
-            color: #0f172a;
-            transition: all 0.2s ease;
-            outline: none;
-        }
-
-        .reg-input:focus {
-            border-color: #0284c7;
-            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.18);
-        }
-
-        .subsystem-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 8px;
-        }
-
-        @media(max-width: 520px) {
-            .subsystem-grid { grid-template-columns: 1fr; }
-        }
-
-        .subsystem-card {
-            border: 1.5px solid #e2e8f0;
-            border-radius: 14px;
-            padding: 12px 14px;
-            background: #f8fafc;
-            cursor: pointer;
-            transition: all 0.2s var(--t);
-        }
-
-        .subsystem-card:hover {
-            border-color: #0284c7;
-            background: #ffffff;
-            transform: translateY(-2px);
-        }
-
-        .subsystem-card.selected {
-            border-color: #0284c7;
-            background: #f0f9ff;
-            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.15);
-        }
-
-        .reg-modal-actions {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 24px;
-            padding-top: 18px;
-            border-top: 1px solid #e2e8f0;
-            gap: 12px;
-        }
-
-        @media (max-width: 480px) {
-            .reg-wizard-card {
-                max-height: 94vh !important;
-                border-radius: 20px !important;
-            }
-            .reg-modal-head {
-                padding: 14px 16px !important;
-            }
-            .reg-modal-body {
-                padding: 16px 16px !important;
-            }
-            .reg-modal-actions {
-                flex-direction: column-reverse !important;
-                gap: 10px !important;
-                margin-top: 16px !important;
-                padding-top: 14px !important;
-            }
-            .reg-modal-actions .btn,
-            .reg-modal-actions .btn-signup {
-                width: 100% !important;
-                justify-content: center !important;
-                text-align: center;
-            }
-            .reg-modal-actions a {
-                width: 100%;
-                text-align: center;
-                display: block;
-            }
-            .subsystem-grid {
-                grid-template-columns: 1fr !important;
-                gap: 8px !important;
-            }
-            .subsystem-card {
-                padding: 12px 14px !important;
-            }
         }
 
         /* ── HERO SECTION ── */
@@ -1607,21 +945,6 @@
             margin-top: auto;
         }
 
-        .lab-module-meta {
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: #475569;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 8px 14px;
-            border-radius: 10px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: auto;
-            align-self: flex-start;
-        }
-
         /* ── ZERO GRAMMAR & SLANG SECTION ── */
         .slang-cards-grid {
             display: grid;
@@ -1829,163 +1152,18 @@
             </nav>
 
             <div class="header-actions">
-                <a href="javascript:void(0)" onclick="openStudentRegistrationModal()" class="nav-login-link">Iniciar Sesión</a>
-                <a href="javascript:void(0)" onclick="openStudentRegistrationModal()" class="btn btn-signup btn-pill btn-sm" data-starborder data-sb-color="#38bdf8" data-sb-speed="3">
-                    <span class="signup-text-full shiny-text">Crear Cuenta Gratis</span>
-                    <span class="signup-text-compact shiny-text">Registro</span>
-                    <i class="fa-solid fa-arrow-right"></i>
+                <a href="#catalogo-carreras" class="btn btn-secondary btn-sm">Explorar Carreras</a>
+                <a href="app.html" class="btn btn-primary btn-sm">
+                    <i class="fa-solid fa-earth-americas"></i>
+                    <span>Ingresar al LXP</span>
                 </a>
-                <a href="dev.html" class="btn btn-secondary btn-sm hide-mobile" title="Abrir Dev Studio Workbench" target="_blank" rel="noopener">
+                <a href="dev.html" class="btn btn-secondary btn-sm" title="Abrir Dev Studio Workbench" target="_blank" rel="noopener">
                     <i class="fa-solid fa-code"></i>
                     <span>Dev Studio</span>
                 </a>
-                <button class="site-mobile-hamburger" id="site-mobile-hamburger" aria-label="Abrir Menú Móvil" onclick="toggleSiteMobileDrawer()">
-                    <span class="hamburger-box">
-                        <span class="hamburger-bar"></span>
-                        <span class="hamburger-bar"></span>
-                        <span class="hamburger-bar"></span>
-                    </span>
-                </button>
             </div>
         </div>
     </header>
-
-    <!-- ══════════════════════════════════════════════════════════════
-         MOBILE NAVIGATION DRAWER & GLASS OVERLAY
-         ══════════════════════════════════════════════════════════════ -->
-    <div id="site-mobile-drawer" class="site-mobile-drawer" aria-hidden="true">
-        <div class="drawer-backdrop" onclick="toggleSiteMobileDrawer(false)"></div>
-        <div class="drawer-sheet">
-            <div class="drawer-head">
-                <a href="#" class="brand-logo-link" onclick="toggleSiteMobileDrawer(false)">
-                    <span class="brand-logo-text"><span class="brand-stem">stem</span><span class="brand-os">OS</span></span>
-                    <span class="brand-pill-tag">ESP 60h</span>
-                </a>
-                <button class="drawer-close-btn" aria-label="Cerrar Menú" onclick="toggleSiteMobileDrawer(false)">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <!-- Drawer Auth CTA (JSweb Style) -->
-            <div class="drawer-auth-box">
-                <a href="javascript:void(0)" onclick="toggleSiteMobileDrawer(false); openStudentRegistrationModal();" class="btn btn-signup btn-pill btn-full" data-starborder data-sb-color="#38bdf8" data-sb-speed="2.5" style="padding:12px 20px;">
-                    <i class="fa-solid fa-user-plus"></i>
-                    <span class="shiny-text">Crear Cuenta Gratis</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-                <div class="drawer-auth-sub">
-                    <span>¿Ya tienes matrícula o cuenta?</span>
-                    <a href="javascript:void(0)" onclick="toggleSiteMobileDrawer(false); openStudentRegistrationModal();" class="drawer-login-link">Iniciar Sesión</a>
-                </div>
-            </div>
-
-            <!-- Drawer Navigation Groups -->
-            <div class="drawer-scrollable">
-                <div class="drawer-section-title">
-                    <i class="fa-solid fa-compass"></i>
-                    <span>Ecosistema &amp; Tracks</span>
-                </div>
-                <div class="drawer-nav-list">
-                    <a href="#metodologia" class="drawer-nav-link" onclick="toggleSiteMobileDrawer(false)">
-                        <div class="drawer-nav-icon bg-blue"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                        <div class="drawer-nav-info">
-                            <span class="drawer-nav-title">Metodología 60 Horas</span>
-                            <span class="drawer-nav-sub">Estándar para UTs, TecNM y Estatales</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right drawer-chevron"></i>
-                    </a>
-                    <a href="#mundo-adaptado" class="drawer-nav-link" onclick="toggleSiteMobileDrawer(false)">
-                        <div class="drawer-nav-icon bg-cyan"><i class="fa-solid fa-earth-americas"></i></div>
-                        <div class="drawer-nav-info">
-                            <span class="drawer-nav-title">Mundo 3D Adaptado</span>
-                            <span class="drawer-nav-sub">Mismo mundo y track para tu carrera</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right drawer-chevron"></i>
-                    </a>
-                    <a href="#catalogo-carreras" class="drawer-nav-link" onclick="toggleSiteMobileDrawer(false)">
-                        <div class="drawer-nav-icon bg-emerald"><i class="fa-solid fa-graduation-cap"></i></div>
-                        <div class="drawer-nav-info">
-                            <span class="drawer-nav-title">Catálogo de Carreras (25+)</span>
-                            <span class="drawer-nav-sub">Ingenierías, TSU y Licenciaturas</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right drawer-chevron"></i>
-                    </a>
-                    <a href="#simuladores" class="drawer-nav-link" onclick="toggleSiteMobileDrawer(false)">
-                        <div class="drawer-nav-icon bg-purple"><i class="fa-solid fa-microchip"></i></div>
-                        <div class="drawer-nav-info">
-                            <span class="drawer-nav-title">Simuladores de Planta</span>
-                            <span class="drawer-nav-sub">SCADA, LOTO, P&amp;ID, 8D War Room</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right drawer-chevron"></i>
-                    </a>
-                    <a href="#tutor-ia" class="drawer-nav-link" onclick="toggleSiteMobileDrawer(false)">
-                        <div class="drawer-nav-icon bg-amber"><i class="fa-solid fa-brain"></i></div>
-                        <div class="drawer-nav-info">
-                            <span class="drawer-nav-title">Tutor Socrático con IA</span>
-                            <span class="drawer-nav-sub">Feedback de pronunciación &amp; gramática industrial</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right drawer-chevron"></i>
-                    </a>
-                    <a href="#zero-grammar" class="drawer-nav-link" onclick="toggleSiteMobileDrawer(false)">
-                        <div class="drawer-nav-icon bg-rose"><i class="fa-solid fa-shield-halved"></i></div>
-                        <div class="drawer-nav-info">
-                            <span class="drawer-nav-title">Filosofía Zero-Grammar</span>
-                            <span class="drawer-nav-sub">Sin tiempos verbales abstractos, pura operación</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right drawer-chevron"></i>
-                    </a>
-                    <a href="#certificaciones" class="drawer-nav-link" onclick="toggleSiteMobileDrawer(false)">
-                        <div class="drawer-nav-icon bg-gold"><i class="fa-solid fa-award"></i></div>
-                        <div class="drawer-nav-info">
-                            <span class="drawer-nav-title">Acreditación Digital W3C</span>
-                            <span class="drawer-nav-sub">Open Badges 3.0 para Nearshoring</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right drawer-chevron"></i>
-                    </a>
-                </div>
-
-                <div class="drawer-section-title">
-                    <i class="fa-solid fa-laptop-code"></i>
-                    <span>Entornos de Aprendizaje</span>
-                </div>
-                <div class="drawer-nav-list">
-                    <a href="app.html" class="drawer-nav-link" onclick="toggleSiteMobileDrawer(false)">
-                        <div class="drawer-nav-icon bg-emerald"><i class="fa-solid fa-circle-play"></i></div>
-                        <div class="drawer-nav-info">
-                            <span class="drawer-nav-title">Ingresar a la Plataforma LXP</span>
-                            <span class="drawer-nav-sub">Entorno estudiantil interactivo</span>
-                        </div>
-                        <i class="fa-solid fa-arrow-up-right-from-square drawer-chevron"></i>
-                    </a>
-                    <a href="dev.html" class="drawer-nav-link" target="_blank" rel="noopener">
-                        <div class="drawer-nav-icon bg-slate"><i class="fa-solid fa-code"></i></div>
-                        <div class="drawer-nav-info">
-                            <span class="drawer-nav-title">Dev Studio Workbench</span>
-                            <span class="drawer-nav-sub">Editor de contenidos &amp; simuladores</span>
-                        </div>
-                        <i class="fa-solid fa-arrow-up-right-from-square drawer-chevron"></i>
-                    </a>
-                    <a href="register.html" class="drawer-nav-link" target="_blank">
-                        <div class="drawer-nav-icon bg-blue"><i class="fa-solid fa-id-card"></i></div>
-                        <div class="drawer-nav-info">
-                            <span class="drawer-nav-title">Portal de Alta Alumno</span>
-                            <span class="drawer-nav-sub">Registro completo en página dedicada</span>
-                        </div>
-                        <i class="fa-solid fa-arrow-up-right-from-square drawer-chevron"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Drawer Footer -->
-            <div class="drawer-footer">
-                <div class="drawer-compliance-pill">
-                    <i class="fa-solid fa-shield-check" style="color:#10b981;"></i>
-                    <span>Alineado a W3C Open Badges 3.0 &amp; ISO 17024</span>
-                </div>
-                <div class="drawer-version-tag">stemOS v4.2 Nearshoring Edition · 100% Gratuito</div>
-            </div>
-        </div>
-    </div>
 
 
     <!-- ══════════════════════════════════════════════════════════════
@@ -2011,20 +1189,20 @@
             </p>
 
             <div class="hero-actions">
-                <a href="javascript:void(0)" onclick="openStudentRegistrationModal()" class="btn btn-signup btn-pill btn-lg" data-starborder data-sb-color="#7dd3fc" data-sb-speed="3">
+                <a href="#catalogo-carreras" class="btn btn-primary btn-lg">
                     <i class="fa-solid fa-graduation-cap"></i>
-                    <span class="shiny-text">¡Inicia tu Carrera 60h Gratis Hoy!</span>
+                    <span>Seleccionar Mi Carrera &amp; Track (60h)</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
-                <a href="#catalogo-carreras" class="btn btn-secondary btn-pill btn-lg">
-                    <i class="fa-solid fa-compass"></i>
-                    <span>Explorar Tracks por Carrera</span>
-                </a>
-                <a href="#mundo-adaptado" class="btn btn-secondary btn-pill btn-lg">
+                <a href="#mundo-adaptado" class="btn btn-secondary btn-lg">
                     <i class="fa-solid fa-earth-americas"></i>
                     <span>Ver Mundo 3D Adaptado</span>
                 </a>
-                <a href="app.html" class="btn btn-emerald btn-pill btn-lg">
+                <a href="#simuladores" class="btn btn-secondary btn-lg">
+                    <i class="fa-solid fa-microchip"></i>
+                    <span>Suite de Simuladores</span>
+                </a>
+                <a href="app.html" class="btn btn-emerald btn-lg">
                     <i class="fa-solid fa-circle-play"></i>
                     <span>Ingresar al LXP Completo</span>
                 </a>
@@ -2222,22 +1400,22 @@
                             Mecatrónica (TecNM)
                         </button>
                         <button type="button" class="career-quick-btn" onclick="switchPreviewCareer('est-semiconductores')">
-                            Semiconductores (Estatales)
+                            Semiconductores (UDG)
                         </button>
                         <button type="button" class="career-quick-btn" onclick="switchPreviewCareer('est-aeroespacial')">
-                            Aeroespacial (Estatales)
+                            Aeroespacial (UAQ)
                         </button>
                         <button type="button" class="career-quick-btn" onclick="switchPreviewCareer('ut-mantenimiento-industrial')">
-                            Mantenimiento (UTs)
+                            Mantenimiento (UT)
                         </button>
                         <button type="button" class="career-quick-btn" onclick="switchPreviewCareer('est-biomedica')">
-                            Biomédica (Estatales)
+                            Biomédica (Tijuana)
                         </button>
                         <button type="button" class="career-quick-btn" onclick="switchPreviewCareer('ut-logistica-transporte')">
-                            Logística (UTs)
+                            Logística (Nuevo Laredo)
                         </button>
                         <button type="button" class="career-quick-btn" onclick="switchPreviewCareer('it-automotriz')">
-                            Automotriz EV (TecNM)
+                            Automotriz EV (Saltillo)
                         </button>
                     </div>
                 </div>
@@ -2286,7 +1464,7 @@
             <!-- Live Search -->
             <div class="catalog-search-row">
                 <i class="fa-solid fa-magnifying-glass catalog-search-icon"></i>
-                <input type="text" id="career-search-input" class="catalog-search-input" placeholder="Buscar por carrera, subsistema (UTs, TecNM, Estatales) o norma técnica (SEMI, IEEE, IATF)..." oninput="handleCareerSearch(this.value)">
+                <input type="text" id="career-search-input" class="catalog-search-input" placeholder="Buscar por carrera, campus (Saltillo, Tijuana, Querétaro) o norma (SEMI, IEEE, IATF)..." oninput="handleCareerSearch(this.value)">
             </div>
 
             <!-- Dynamic Careers Grid -->
@@ -2298,39 +1476,41 @@
 
 
     <!-- ══════════════════════════════════════════════════════════════
-         SECTION 4: PRACTICAL LABS & SIMULATION OVERVIEW (JSWEB STYLE)
+         SECTION 4: SPECIALIZED LABS & SIMULATORS SUITE
          ══════════════════════════════════════════════════════════════ -->
     <section class="sec-py" id="simuladores" style="background: #ffffff; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
         <div class="container">
             <div class="sec-head">
                 <span class="sec-eyebrow"><i class="fa-solid fa-microchip"></i> Simulación Industrial de Alta Fidelidad</span>
-                <h2 class="sec-title">Arquitectura de <span class="highlight">Laboratorios y Módulos Prácticos</span></h2>
+                <h2 class="sec-title">Suite de <span class="highlight">Simuladores &amp; Laboratorios de Planta</span></h2>
                 <p class="sec-sub">
-                    stemOS sustituye los cuestionarios teóricos tradicionales con bancos de trabajo de ingeniería real. Cada práctica se ejecuta de manera modular con telemetría viva, normas internacionales y argumentación técnica en inglés.
+                    En lugar de ejercicios teóricos descontextualizados, los estudiantes operan bancos de trabajo de ingeniería real. Cada simulador cuenta con evaluación técnica en tiempo real y argumentación verbal en inglés C1.
                 </p>
             </div>
 
             <div class="labs-grid">
-                <!-- Pillar 1: Metrología y Planos P&ID -->
+                <!-- Lab 1: P&ID Blueprints -->
                 <div class="lab-card">
                     <div class="lab-banner" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
-                        <span class="lab-badge">ASME Y14.5 &bull; ANSI/ISA-5.1</span>
+                        <span class="lab-badge">DWG-0492 &bull; ASME Y14.5</span>
                         <i class="fa-solid fa-compass-drafting lab-banner-icon"></i>
                     </div>
                     <div class="lab-body">
                         <span class="lab-standard-pill">ANSI/ISA-5.1 &bull; ASME Y14.5-2018</span>
-                        <h3 class="lab-title">Metrología, Planos P&amp;ID y GD&amp;T</h3>
+                        <h3 class="lab-title">Inspector de Planos P&amp;ID y GD&amp;T</h3>
                         <p class="lab-desc">
-                            Inspección vectorial de planos de ingeniería, diagramas de lazo de instrumentación y tubería (P&amp;ID), verificación de marcos de control geométrico GD&amp;T y emisión de órdenes de cambio de ingeniería (ECO).
+                            Lienzo vectorial interactivo de planos blueprint oscuros con marcos de control de posición verdadera (&oplus; 0.05Ⓜ), tolerancias de perpendicularidad y formulación de órdenes de cambio de ingeniería (ECO).
                         </p>
-                        <div class="lab-module-meta">
-                            <i class="fa-solid fa-cube" style="color:#0284c7;"></i>
-                            <span>Práctica Modular &bull; Hito 2 Curricular</span>
+                        <div class="lab-actions-row">
+                            <button type="button" class="btn btn-primary btn-sm" onclick="openLabModal('blueprint')">
+                                <i class="fa-solid fa-play"></i> Simular Inspección
+                            </button>
+                            <a href="dev.html#blueprint-lab" class="btn btn-secondary btn-sm" target="_blank" rel="noopener">Dev Workbench &rarr;</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Pillar 2: LOTO Zero-Energy -->
+                <!-- Lab 2: LOTO Zero-Energy -->
                 <div class="lab-card">
                     <div class="lab-banner" style="background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);">
                         <span class="lab-badge">OSHA 1910.147 &bull; NFPA 70E</span>
@@ -2338,18 +1518,20 @@
                     </div>
                     <div class="lab-body">
                         <span class="lab-standard-pill">OSHA 1910.147 &bull; NFPA 70E Cat 4</span>
-                        <h3 class="lab-title">Seguridad Operativa y Aislamiento LOTO</h3>
+                        <h3 class="lab-title">Simulador LOTO de Energía Cero</h3>
                         <p class="lab-desc">
-                            Protocolo riguroso de bloqueo de energía cero en 6 pasos para celdas robotizadas y líneas de proceso: candados físicos, aldabas maestras, tarjetas de peligro y comprobación de energía residual a 0.0V.
+                            Secuencia rigurosa de 6 fases con candados físicos, aldabas y etiquetas Danger. Incluye el try-step obligatorio probando voltímetro a 0.0V antes de entrar a celdas de soldadura o vaporizadores EtO.
                         </p>
-                        <div class="lab-module-meta">
-                            <i class="fa-solid fa-cube" style="color:#ea580c;"></i>
-                            <span>Práctica Modular &bull; Hito 1 Curricular</span>
+                        <div class="lab-actions-row">
+                            <button type="button" class="btn btn-primary btn-sm" onclick="openLabModal('loto')">
+                                <i class="fa-solid fa-play"></i> Ejecutar Try-Step
+                            </button>
+                            <a href="dev.html#loto-lab" class="btn btn-secondary btn-sm" target="_blank" rel="noopener">Dev Workbench &rarr;</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Pillar 3: War Room Incident Triage -->
+                <!-- Lab 3: War Room Incident Triage -->
                 <div class="lab-card">
                     <div class="lab-banner" style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);">
                         <span class="lab-badge">FEMA ICS &bull; Line-Down</span>
@@ -2357,18 +1539,20 @@
                     </div>
                     <div class="lab-body">
                         <span class="lab-standard-pill">FEMA ICS &bull; Closed-Loop 3-Way</span>
-                        <h3 class="lab-title">Comando de Incidentes &amp; War Room</h3>
+                        <h3 class="lab-title">War Room de Incidentes de Planta</h3>
                         <p class="lab-desc">
-                            Triage de paros críticos de línea de producción ($1,200 USD/min) bajo reloj de pérdidas en tiempo real, formulación de SITREPs ejecutivos y comunicación cerrada de 3 vías con repetición exacta de parámetros numéricos.
+                            Manejo de paros críticos de línea ($1,200 USD/min) con reloj de pérdidas en tiempo real, formulación de SITREPs ejecutivos y comunicación cerrada de 3 vías (Callout &rarr; Repeat-Back &rarr; Hear-Back).
                         </p>
-                        <div class="lab-module-meta">
-                            <i class="fa-solid fa-cube" style="color:#dc2626;"></i>
-                            <span>Práctica Modular &bull; Hito 3 Curricular</span>
+                        <div class="lab-actions-row">
+                            <button type="button" class="btn btn-primary btn-sm" onclick="openLabModal('warroom')">
+                                <i class="fa-solid fa-play"></i> Entrar a Sala de Guerra
+                            </button>
+                            <a href="dev.html#incident-lab" class="btn btn-secondary btn-sm" target="_blank" rel="noopener">Dev Workbench &rarr;</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Pillar 4: SCADA Historian -->
+                <!-- Lab 4: SCADA Historian -->
                 <div class="lab-card">
                     <div class="lab-banner" style="background: linear-gradient(135deg, #059669 0%, #064e3b 100%);">
                         <span class="lab-badge">ISA-95 &bull; OPC-UA Telemetry</span>
@@ -2376,36 +1560,58 @@
                     </div>
                     <div class="lab-body">
                         <span class="lab-standard-pill">ISA-95 &bull; ISO 22400 OEE</span>
-                        <h3 class="lab-title">Telemetría SCADA y Gemelos Digitales</h3>
+                        <h3 class="lab-title">Consola SCADA Multi-Planta</h3>
                         <p class="lab-desc">
-                            Monitoreo en vivo de telemetría industrial mediante protocolos OPC-UA, diagnóstico de fallas intermitentes, análisis de causa raíz con metodología 8D y correlación de métricas de confiabilidad OEE.
+                            Monitoreo de telemetría viva de 4 clústeres: fundición de alta presión en Saltillo, cuartos limpios de catéteres en Tijuana, empaquetado de silicio en Guadalajara y subestaciones de Querétaro.
                         </p>
-                        <div class="lab-module-meta">
-                            <i class="fa-solid fa-cube" style="color:#059669;"></i>
-                            <span>Práctica Modular &bull; Hito 4 Curricular</span>
+                        <div class="lab-actions-row">
+                            <button type="button" class="btn btn-primary btn-sm" onclick="openLabModal('scada')">
+                                <i class="fa-solid fa-play"></i> Ver Telemetría
+                            </button>
+                            <a href="dev.html#scada-lab" class="btn btn-secondary btn-sm" target="_blank" rel="noopener">Dev Workbench &rarr;</a>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Callout Banner: Desacoplado a Módulos y Workbench -->
-            <div style="margin-top: 36px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 280px;">
-                    <div style="font-size: 0.78rem; font-weight: 800; color: #0284c7; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-                        <i class="fa-solid fa-layer-group"></i> Entorno de Práctica Desacoplado
+                <!-- Lab 5: 8D Problem Solving -->
+                <div class="lab-card">
+                    <div class="lab-banner" style="background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%);">
+                        <span class="lab-badge">IATF 16949 &bull; Tone Radar</span>
+                        <i class="fa-solid fa-envelope-circle-check lab-banner-icon"></i>
                     </div>
-                    <h3 style="font-size: 1.2rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
-                        Talleres y Simuladores Integrados en el Workbench
-                    </h3>
-                    <p style="font-size: 0.88rem; color: #64748b; line-height: 1.5; margin: 0;">
-                        Los simuladores interactivos, consolas de telemetría y evaluaciones socráticas se encuentran activos directamente dentro de los módulos de cada carrera y en el banco de trabajo de ingeniería.
-                    </p>
+                    <div class="lab-body">
+                        <span class="lab-standard-pill">AIAG 8D &bull; Executive Escalation</span>
+                        <h3 class="lab-title">8D Escalation Email &amp; Tone Radar</h3>
+                        <p class="lab-desc">
+                            Estudio de redacción técnica que transforma notas operativas apresuradas en reportes 8D y correos de escalación ejecutiva C1 con radar de tono diplomático y firmeza técnica.
+                        </p>
+                        <div class="lab-actions-row">
+                            <button type="button" class="btn btn-primary btn-sm" onclick="openLabModal('escalation')">
+                                <i class="fa-solid fa-play"></i> Redactar Escalación
+                            </button>
+                            <a href="dev.html#escalation-lab" class="btn btn-secondary btn-sm" target="_blank" rel="noopener">Dev Workbench &rarr;</a>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <a href="dev.html#incident-war-room-section" class="btn btn-primary" data-starborder="true" style="padding: 13px 26px; border-radius: 12px; font-weight: 700; font-size: 0.92rem; display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
-                        <span>Explorar Workbench de Simuladores</span>
-                        <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.85rem;"></i>
-                    </a>
+
+                <!-- Lab 6: Full Engineering Suite -->
+                <div class="lab-card" style="border: 2px solid #0284c7;">
+                    <div class="lab-banner" style="background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);">
+                        <span class="lab-badge">Dev Studio &bull; Master Workbench</span>
+                        <i class="fa-solid fa-laptop-code lab-banner-icon"></i>
+                    </div>
+                    <div class="lab-body">
+                        <span class="lab-standard-pill">Full Enterprise Suite &bull; 34 Tracks</span>
+                        <h3 class="lab-title">Dev Studio &amp; Engineering Workbench</h3>
+                        <p class="lab-desc">
+                            Accede a la suite completa con todos los módulos activos, simuladores de negociación multi-ronda, evaluador acústico de estrés y generador SCORM LMS para universidades.
+                        </p>
+                        <div class="lab-actions-row">
+                            <a href="dev.html" class="btn btn-primary btn-sm" target="_blank" rel="noopener" style="width:100%;">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir Dev Studio
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2704,7 +1910,7 @@
             </button>
             <span class="sec-eyebrow" id="modal-career-sys-tag">TECNM NACIONAL</span>
             <h2 id="modal-career-name" style="font-size:1.5rem; margin-bottom:6px; line-height:1.3;">Ingeniería Mecatrónica</h2>
-            <div id="modal-career-campuses" style="font-size:0.82rem; color:#64748b; margin-bottom:16px;"><i class="fa-solid fa-building-columns" style="color:#0284c7; margin-right:6px;"></i>TecNM (Institutos Tecnológicos)</div>
+            <div id="modal-career-campuses" style="font-size:0.82rem; color:#64748b; margin-bottom:16px;">IT de Saltillo, IT de Toluca, IT de Culiacán</div>
 
             <p id="modal-career-desc" style="font-size:0.9rem; color:var(--fg-muted); line-height:1.6; margin-bottom:20px;">
                 Descripción del track y especialidad.
@@ -2733,294 +1939,28 @@
 
 
     <!-- ══════════════════════════════════════════════════════════════
-         MODAL: ALTA DE ALUMNO Y REGISTRO 60H (WHITE THEME - JSWEB STYLE)
+         MODAL: SIMULADOR PREVIEW / LAUNCHER
          ══════════════════════════════════════════════════════════════ -->
-    <div class="student-reg-modal" id="student-registration-modal" aria-hidden="true">
-        <div class="reg-modal-backdrop" onclick="closeStudentRegistrationModal()"></div>
-        <div class="reg-wizard-card">
-            <!-- Modal Head -->
-            <div class="reg-modal-head">
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <div class="supaste-squircle-logo sm" style="background:linear-gradient(135deg, #0284c7, #10b981); color:#fff; width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:12px;">S</div>
-                    <div>
-                        <div style="font-weight:800; font-size:0.95rem; color:#0f172a; line-height:1.2;">Alta de Estudiante · Track 60h</div>
-                        <div style="font-size:0.75rem; color:#64748b;">Alineado a UTs, TecNM y Universidades Estatales</div>
-                    </div>
-                </div>
+    <div class="modal-overlay" id="lab-preview-modal" onclick="closeModalOnBackdrop(event, 'lab-preview-modal')">
+        <div class="modal-card">
+            <button type="button" class="modal-close-btn" onclick="closeModal('lab-preview-modal')">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <span class="sec-eyebrow" id="modal-lab-badge">SIMULADOR ESPECIALIZADO</span>
+            <h2 id="modal-lab-title" style="font-size:1.5rem; margin-bottom:12px; line-height:1.3;">Inspector de Planos P&amp;ID</h2>
+            <p id="modal-lab-desc" style="font-size:0.9rem; color:var(--fg-muted); line-height:1.6; margin-bottom:20px;">
+                Descripción del simulador.
+            </p>
 
-                <div class="reg-step-tracker hide-mobile">
-                    <span class="step-pill-dot active" id="modal-pill-1">1</span>
-                    <span class="reg-step-line"></span>
-                    <span class="step-pill-dot" id="modal-pill-2">2</span>
-                    <span class="reg-step-line"></span>
-                    <span class="step-pill-dot" id="modal-pill-3">3</span>
-                    <span class="reg-step-line"></span>
-                    <span class="step-pill-dot" id="modal-pill-4">4</span>
-                    <span class="reg-step-line"></span>
-                    <span class="step-pill-dot" id="modal-pill-5">5</span>
-                </div>
-
-                <button type="button" class="drawer-close-btn" aria-label="Cerrar Modal" onclick="closeStudentRegistrationModal()">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+            <div id="modal-lab-visual" style="background:#0f172a; border-radius:16px; padding:20px; color:#38bdf8; font-family:'JetBrains Mono', monospace; font-size:0.8rem; margin-bottom:24px; min-height:120px; display:flex; align-items:center; justify-content:center; text-align:center;">
+                <!-- Telemetry or blueprint preview -->
             </div>
 
-            <!-- Progress Bar -->
-            <div class="reg-progress-wrap">
-                <div class="reg-progress-fill" id="modal-reg-progress-bar"></div>
-            </div>
-
-            <!-- Modal Body (Steps) -->
-            <div class="reg-modal-body">
-                <!-- STEP 1: Personal Info -->
-                <div class="wizard-slide active" id="modal-step-1">
-                    <div style="margin-bottom:18px;">
-                        <span style="font-size:0.7rem; font-weight:800; color:#0284c7; text-transform:uppercase; letter-spacing:0.08em; font-family:'JetBrains Mono',monospace;">PASO 1 DE 5 · IDENTIDAD</span>
-                        <h3 style="font-size:1.35rem; color:#0f172a; margin-top:2px;">Comienza tu Registro Curricular</h3>
-                        <p style="font-size:0.85rem; color:#64748b;">Ingresa tus datos para vincular tu matrícula oficial con tus 60 horas auditables y tu portafolio W3C.</p>
-                    </div>
-
-                    <div class="reg-form-group">
-                        <label class="reg-label" for="modal-reg-name">Nombre Completo del Estudiante *</label>
-                        <input type="text" id="modal-reg-name" class="reg-input" placeholder="Ej. Roberto Carlos Munguía Gómez" required>
-                    </div>
-
-                    <div class="reg-form-group">
-                        <label class="reg-label" for="modal-reg-email">Correo Electrónico Institucional o Personal *</label>
-                        <input type="email" id="modal-reg-email" class="reg-input" placeholder="nombre.alumno@ut.edu.mx o personal@gmail.com" required>
-                    </div>
-
-                    <div class="reg-form-group">
-                        <label class="reg-label" for="modal-reg-matricula">Matrícula o Folio de Estudiante *</label>
-                        <input type="text" id="modal-reg-matricula" class="reg-input" placeholder="Ej. 2024-UT-8921" required>
-                    </div>
-
-                    <div class="reg-modal-actions">
-                        <a href="register.html" target="_blank" style="font-size:0.8rem; color:#0284c7; font-weight:700; text-decoration:none;">
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir en Pantalla Completa
-                        </a>
-                        <button type="button" class="btn btn-signup btn-pill" onclick="nextModalStep(1)">
-                            <span>Siguiente: Mi Universidad</span>
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- STEP 2: Institution & Subsystem -->
-                <div class="wizard-slide" id="modal-step-2">
-                    <div style="margin-bottom:18px;">
-                        <span style="font-size:0.7rem; font-weight:800; color:#0284c7; text-transform:uppercase; letter-spacing:0.08em; font-family:'JetBrains Mono',monospace;">PASO 2 DE 5 · INSTITUCIÓN</span>
-                        <h3 style="font-size:1.35rem; color:#0f172a; margin-top:2px;">Selecciona tu Subsistema Educativo</h3>
-                        <p style="font-size:0.85rem; color:#64748b;">stemOS adapta la validación de horas a tu marco educativo nacional.</p>
-                    </div>
-
-                    <div class="subsystem-grid">
-                        <div class="subsystem-card selected" id="subsys-ut" onclick="selectModalSubsystem('ut', this)">
-                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-                                <i class="fa-solid fa-building-columns" style="color:#0284c7;"></i>
-                                <strong style="font-size:0.9rem; color:#0f172a;">UTs (Tecnológicas)</strong>
-                            </div>
-                            <div style="font-size:0.75rem; color:#64748b;">Modelo 70% práctico / 30% teórico y estadías profesionales.</div>
-                        </div>
-
-                        <div class="subsystem-card" id="subsys-tecnm" onclick="selectModalSubsystem('tecnm', this)">
-                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-                                <i class="fa-solid fa-microchip" style="color:#10b981;"></i>
-                                <strong style="font-size:0.9rem; color:#0f172a;">TecNM / ITs</strong>
-                            </div>
-                            <div style="font-size:0.75rem; color:#64748b;">Institutos Tecnológicos Federales y Descentralizados.</div>
-                        </div>
-
-                        <div class="subsystem-card" id="subsys-estatales" onclick="selectModalSubsystem('estatales', this)">
-                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-                                <i class="fa-solid fa-landmark" style="color:#f59e0b;"></i>
-                                <strong style="font-size:0.9rem; color:#0f172a;">Univ. Estatales</strong>
-                            </div>
-                            <div style="font-size:0.75rem; color:#64748b;">Facultades de Ingeniería, Ciencias Químicas y Computación.</div>
-                        </div>
-
-                        <div class="subsystem-card" id="subsys-latam" onclick="selectModalSubsystem('latam', this)">
-                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-                                <i class="fa-solid fa-earth-americas" style="color:#8b5cf6;"></i>
-                                <strong style="font-size:0.9rem; color:#0f172a;">Univ. LATAM</strong>
-                            </div>
-                            <div style="font-size:0.75rem; color:#64748b;">Colombia, Chile, Perú, Brasil y Centroamérica.</div>
-                        </div>
-                    </div>
-
-                    <div class="reg-form-group" style="margin-top:16px;">
-                        <label class="reg-label" for="modal-reg-campus">Institución o Subsistema *</label>
-                        <input type="text" id="modal-reg-campus" class="reg-input" placeholder="Ej. Universidad Tecnológica / TecNM / Estatal">
-                    </div>
-
-                    <div class="reg-form-group">
-                        <label class="reg-label" for="modal-reg-semester">Semestre o Cuatrimestre en Curso</label>
-                        <select id="modal-reg-semester" class="reg-input" style="cursor:pointer;">
-                            <option value="1">1º - 3º Período (Fundamentos)</option>
-                            <option value="4" selected>4º - 6º Período (Especialización)</option>
-                            <option value="7">7º - 9º Período (Estadía / Residencia)</option>
-                            <option value="egresado">Egresado / Próximo a Titulación</option>
-                        </select>
-                    </div>
-
-                    <div class="reg-modal-actions">
-                        <button type="button" class="btn btn-secondary btn-pill" onclick="prevModalStep(2)">
-                            <i class="fa-solid fa-arrow-left"></i> Anterior
-                        </button>
-                        <button type="button" class="btn btn-signup btn-pill" onclick="nextModalStep(2)">
-                            <span>Siguiente: Mi Carrera 60h</span>
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- STEP 3: Career Track Selection (60h) -->
-                <div class="wizard-slide" id="modal-step-3">
-                    <div style="margin-bottom:18px;">
-                        <span style="font-size:0.7rem; font-weight:800; color:#0284c7; text-transform:uppercase; letter-spacing:0.08em; font-family:'JetBrains Mono',monospace;">PASO 3 DE 5 · CARRERA Y TRACK 60H</span>
-                        <h3 style="font-size:1.35rem; color:#0f172a; margin-top:2px;">Selecciona tu Carrera Profesional</h3>
-                        <p style="font-size:0.85rem; color:#64748b;">Todos los estudiantes de tu misma carrera comparten el mismo mundo 3D adaptado y el mismo track de 60 horas.</p>
-                    </div>
-
-                    <div class="reg-form-group">
-                        <label class="reg-label" for="modal-reg-career">Carrera Especializada *</label>
-                        <select id="modal-reg-career" class="reg-input" onchange="updateModalCareerPreview(this.value)" style="cursor:pointer; font-weight:600;">
-                            <!-- Populated dynamically via JS -->
-                        </select>
-                    </div>
-
-                    <!-- Reactive Career Preview Card -->
-                    <div id="modal-career-preview-box" style="background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:16px; padding:16px; margin-top:12px;">
-                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-                            <span id="modal-prev-badge" style="font-family:'JetBrains Mono',monospace; font-size:0.7rem; font-weight:800; background:#e0f2fe; color:#0284c7; padding:2px 8px; border-radius:6px;">60.0 HORAS · 4 HITOS</span>
-                            <span id="modal-prev-biome" style="font-size:0.75rem; color:#10b981; font-weight:700;"><i class="fa-solid fa-cube"></i> Bioma 3D</span>
-                        </div>
-                        <div id="modal-prev-title" style="font-weight:800; font-size:1.05rem; color:#0f172a;">Ingeniería Mecatrónica &amp; Automatización</div>
-                        <div id="modal-prev-desc" style="font-size:0.8rem; color:#64748b; margin-top:4px; line-height:1.5;">Track diseñado con estándares PLC IEC 61131-3, IATF 16949 y robótica automotriz.</div>
-
-                        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; margin-top:12px;" id="modal-prev-milestones">
-                            <!-- Injected by JS -->
-                        </div>
-                    </div>
-
-                    <div class="reg-modal-actions">
-                        <button type="button" class="btn btn-secondary btn-pill" onclick="prevModalStep(3)">
-                            <i class="fa-solid fa-arrow-left"></i> Anterior
-                        </button>
-                        <button type="button" class="btn btn-signup btn-pill" onclick="nextModalStep(3)">
-                            <span>Siguiente: Diagnóstico</span>
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- STEP 4: Zero-Grammar Situational Diagnostic -->
-                <div class="wizard-slide" id="modal-step-4">
-                    <div style="margin-bottom:18px;">
-                        <span style="font-size:0.7rem; font-weight:800; color:#0284c7; text-transform:uppercase; letter-spacing:0.08em; font-family:'JetBrains Mono',monospace;">PASO 4 DE 5 · ZERO-GRAMMAR CHECK</span>
-                        <h3 style="font-size:1.35rem; color:#0f172a; margin-top:2px;">Diagnóstico de Reflejos de Planta</h3>
-                        <p style="font-size:0.85rem; color:#64748b;">Evaluación rápida situacional. Cero reglas gramaticales abstractas: solo comunicación operacional en piso de producción.</p>
-                    </div>
-
-                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:14px; margin-bottom:14px;">
-                        <div style="font-size:0.85rem; font-weight:800; color:#0f172a; margin-bottom:8px;">
-                            <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;"></i> Situación 1: Falla Crítica en Turno de Noche
-                        </div>
-                        <p style="font-size:0.78rem; color:#475569; margin-bottom:10px;">
-                            Un sensor de presión en la línea 2 marca 85 PSI cuando el límite seguro de diseño es 60 PSI. Tu supervisor en Detroit te llama por radio. ¿Cuál es tu respuesta técnica correcta?
-                        </p>
-                        <div style="display:flex; flex-direction:column; gap:6px;">
-                            <button type="button" class="subsystem-card" onclick="selectModalDiag(1, 0, this)" style="text-align:left; padding:8px 12px; font-size:0.78rem;">
-                                <strong>A)</strong> "Line 2 manifold pressure reading 85 PSI, exceeds 60 PSI threshold. Executing emergency depressurization immediately."
-                            </button>
-                            <button type="button" class="subsystem-card" onclick="selectModalDiag(1, 1, this)" style="text-align:left; padding:8px 12px; font-size:0.78rem;">
-                                <strong>B)</strong> "Hello boss, the machine is having a problem with pressure, maybe wait five minutes."
-                            </button>
-                        </div>
-                    </div>
-
-                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:14px; margin-bottom:14px;">
-                        <div style="font-size:0.85rem; font-weight:800; color:#0f172a; margin-bottom:8px;">
-                            <i class="fa-solid fa-shield-halved" style="color:#0284c7;"></i> Situación 2: Protocolo LOTO de Energía Cero
-                        </div>
-                        <p style="font-size:0.78rem; color:#475569; margin-bottom:10px;">
-                            Antes de ingresar al área de celdas robóticas para mantenimiento preventivo:
-                        </p>
-                        <div style="display:flex; flex-direction:column; gap:6px;">
-                            <button type="button" class="subsystem-card" onclick="selectModalDiag(2, 0, this)" style="text-align:left; padding:8px 12px; font-size:0.78rem;">
-                                <strong>A)</strong> "Zero energy state verified with multimeter at 0.0V. Hasps and padlock tagged under technician ID."
-                            </button>
-                            <button type="button" class="subsystem-card" onclick="selectModalDiag(2, 1, this)" style="text-align:left; padding:8px 12px; font-size:0.78rem;">
-                                <strong>B)</strong> "Switch off the main breaker and leave a hand-written note on the floor."
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="reg-modal-actions">
-                        <button type="button" class="btn btn-secondary btn-pill" onclick="prevModalStep(4)">
-                            <i class="fa-solid fa-arrow-left"></i> Anterior
-                        </button>
-                        <button type="button" class="btn btn-signup btn-pill" onclick="submitModalStudentRegistration()">
-                            <i class="fa-solid fa-certificate"></i>
-                            <span>Finalizar y Emitir Credencial</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- STEP 5: W3C Open Badge & 3D World Pass -->
-                <div class="wizard-slide" id="modal-step-5">
-                    <div style="text-align:center; padding:10px 0 20px;">
-                        <div style="width:58px; height:58px; border-radius:50%; background:#dcfce7; color:#10b981; display:flex; align-items:center; justify-content:center; font-size:1.8rem; margin:0 auto 12px; box-shadow:0 4px 15px rgba(16,185,129,0.25);">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <h3 style="font-size:1.4rem; color:#0f172a;">¡Bienvenido a stemOS!</h3>
-                        <p style="font-size:0.85rem; color:#64748b;">Tu alta de alumno ha sido registrada con éxito. Se ha vinculado tu mundo 3D y tu track de 60 horas.</p>
-                    </div>
-
-                    <!-- Digital Student Credential Pass Card -->
-                    <div style="background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius:20px; padding:20px; color:#ffffff; position:relative; overflow:hidden; box-shadow:0 15px 35px -10px rgba(15,23,42,0.5);">
-                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
-                            <div>
-                                <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:#38bdf8; letter-spacing:0.1em; text-transform:uppercase;">W3C OPEN BADGES 3.0 VERIFIED</span>
-                                <div id="modal-pass-name" style="font-weight:800; font-size:1.15rem; color:#ffffff; margin-top:2px;">Roberto Carlos Munguía</div>
-                                <div id="modal-pass-campus" style="font-size:0.75rem; color:#94a3b8;">TecNM &bull; Institutos Tecnológicos</div>
-                            </div>
-                            <div style="background:#ffffff; padding:6px; border-radius:8px;">
-                                <i class="fa-solid fa-qrcode" style="font-size:36px; color:#0f172a;"></i>
-                            </div>
-                        </div>
-
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; border-top:1px solid rgba(255,255,255,0.12); padding-top:12px; margin-top:12px; font-size:0.75rem;">
-                            <div>
-                                <span style="color:#94a3b8; display:block; font-size:0.65rem;">CARRERA ASIGNADA</span>
-                                <strong id="modal-pass-career" style="color:#38bdf8;">Mecatrónica &amp; Automatización</strong>
-                            </div>
-                            <div>
-                                <span style="color:#94a3b8; display:block; font-size:0.65rem;">MUNDO 3D &amp; TRACK</span>
-                                <strong id="modal-pass-biome" style="color:#34d399;">Robotics Hub (60h)</strong>
-                            </div>
-                            <div>
-                                <span style="color:#94a3b8; display:block; font-size:0.65rem;">FOLIO DE ESTUDIANTE</span>
-                                <span id="modal-pass-folio" style="font-family:'JetBrains Mono',monospace; color:#facc15;">STEMOS-2026-7842</span>
-                            </div>
-                            <div>
-                                <span style="color:#94a3b8; display:block; font-size:0.65rem;">ESTADO CURRICULAR</span>
-                                <span style="color:#10b981; font-weight:700;"><i class="fa-solid fa-circle-check"></i> Activo (0/60h)</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
-                        <a href="app.html" class="btn btn-signup btn-pill btn-full" style="padding:14px; font-size:0.95rem;">
-                            <i class="fa-solid fa-earth-americas"></i>
-                            <span>Entrar a mi Mundo 3D Adaptado &amp; LXP</span>
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-                        <button type="button" class="btn btn-secondary btn-pill btn-full" onclick="closeStudentRegistrationModal()">
-                            <span>Continuar Explorando la Plataforma</span>
-                        </button>
-                    </div>
-                </div>
+            <div style="display:flex; gap:12px;">
+                <a id="modal-lab-dev-link" href="dev.html" class="btn btn-primary" style="flex:1;" target="_blank" rel="noopener">
+                    <i class="fa-solid fa-laptop-code"></i> Abrir en Dev Studio Completo
+                </a>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('lab-preview-modal')">Cerrar</button>
             </div>
         </div>
     </div>
@@ -3069,7 +2009,7 @@
                     c.name.toLowerCase().includes(q) ||
                     c.description.toLowerCase().includes(q) ||
                     c.cluster.toLowerCase().includes(q) ||
-                    (c.systemLabel && c.systemLabel.toLowerCase().includes(q)) ||
+                    (c.typicalCampuses && c.typicalCampuses.some(cmp => cmp.toLowerCase().includes(q))) ||
                     (c.standards && c.standards.some(std => std.toLowerCase().includes(q)))
                 );
             }
@@ -3087,6 +2027,7 @@
 
             container.innerHTML = careers.map(c => {
                 const sysClass = c.system === 'ut' ? 'sys-ut' : (c.system === 'it' ? 'sys-it' : (c.system === 'latam' ? 'sys-latam' : 'sys-estatal'));
+                const campuses = c.typicalCampuses ? c.typicalCampuses.slice(0, 2).join(', ') : 'Campus Nacionales';
                 const standardsPills = (c.standards || []).slice(0, 3).map(s => `<span class="standard-pill">${s}</span>`).join('');
 
                 return `
@@ -3097,8 +2038,8 @@
                         </div>
                         <h3 class="career-name-heading">${c.name}</h3>
                         <div class="career-campuses">
-                            <i class="fa-solid fa-building-columns" style="color:#0284c7;"></i>
-                            <span>${c.systemLabel}</span>
+                            <i class="fa-solid fa-location-dot" style="color:#0284c7;"></i>
+                            <span>${campuses}</span>
                         </div>
                         <p class="career-desc-text">${c.description}</p>
                         <div class="career-standards-row">${standardsPills}</div>
@@ -3154,7 +2095,7 @@
 
             document.getElementById('modal-career-sys-tag').textContent = career.systemLabel.toUpperCase();
             document.getElementById('modal-career-name').textContent = career.name;
-            document.getElementById('modal-career-campuses').innerHTML = `<i class="fa-solid fa-building-columns" style="color:#0284c7; margin-right:6px;"></i>${career.systemLabel}`;
+            document.getElementById('modal-career-campuses').textContent = (career.typicalCampuses || []).join(' • ');
             document.getElementById('modal-career-desc').textContent = career.description;
 
             const mContainer = document.getElementById('modal-career-milestones');
@@ -3184,6 +2125,62 @@
             }
 
             openModal('career-detail-modal');
+        }
+
+        function openLabModal(labKey) {
+            const modal = document.getElementById('lab-preview-modal');
+            const titleEl = document.getElementById('modal-lab-title');
+            const descEl = document.getElementById('modal-lab-desc');
+            const visualEl = document.getElementById('modal-lab-visual');
+            const badgeEl = document.getElementById('modal-lab-badge');
+            const devLink = document.getElementById('modal-lab-dev-link');
+
+            const labData = {
+                blueprint: {
+                    badge: 'DWG-0492 • ASME Y14.5 & ANSI/ISA-5.1',
+                    title: 'Inspector de Planos P&ID y GD&T',
+                    desc: 'Workbench interactivo con planos blueprint de manufactura de alta precisión. Mide tolerancias de posición verdadera,Datums [A], [B], [C] y emite órdenes ECO.',
+                    visual: '> LOADING DWG-MED-0492: ISO 11135 EtO STERILIZER LOOP\n[STATUS: TRUE POSITION \u2295 0.05\u24C2 VALIDATED | DATUM A, B, C ALIGNED]\nArticulating C1 inspection verbalization for FDA / OEM auditor...',
+                    anchor: 'dev.html#blueprint-lab'
+                },
+                loto: {
+                    badge: 'OSHA 1910.147 • NFPA 70E',
+                    title: 'Simulador LOTO de Aislamiento de Energía Cero',
+                    desc: 'Secuencia estricta de 6 fases con candados de seguridad, aldabas maestras y prueba de arranque try-step con verificación de 0.0V / 0.0 psi.',
+                    visual: '> INITIATING LOTO PROCEDURE ON ROBOTIC CELL #4\n[LOCK 1: APPLIED 480V 3\u03A6 | LOCK 2: PNEUMATIC 90 PSI ISOLATED]\n[TRY-STEP ACTIVE: VOLTAGE 0.0V \u2014 ZERO ENERGY STATE CONFIRMED]',
+                    anchor: 'dev.html#loto-lab'
+                },
+                warroom: {
+                    badge: 'FEMA ICS • CLOSED-LOOP COMMUNICATION',
+                    title: 'War Room de Incidentes Críticos de Planta',
+                    desc: 'Resolución de paros de línea bajo presión financiera extrema ($1,200 USD/min) y protocolo cerrado de 3 vías con repetición exacta de parámetros numéricos.',
+                    visual: '> SITUATION REPORT (SITREP) \u2014 PRODUCTION HALT AT LINE 3\n[ELAPSED: 00:14:22 | FINANCIAL LOSS AVOIDED: $620,000 USD]\nClosed-Loop Readback: "Bypass confirmed at 35 psig by authorized engineer."',
+                    anchor: 'dev.html#incident-lab'
+                },
+                scada: {
+                    badge: 'ISA-95 • REAL-TIME OPC-UA TELEMETRY',
+                    title: 'Consola SCADA Multi-Planta en Tiempo Real',
+                    desc: 'Monitoreo de telemetría viva de 4 instalaciones industriales en México: hornos HPDC en Saltillo, cleanrooms en Tijuana, subestaciones en Querétaro y empaquetado en Guadalajara.',
+                    visual: '> OPC-UA INDUSTRIAL BROKER CONNECTED [TLS 1.3]\n[SALTILLO HPDC OEE: 86.4% | MELT TEMP: 685\u00B0C | CYCLE: 38.2s]\n[TIJUANA CLEANROOM: ISO CLASS 7 \u2014 DP: +15 Pa \u2014 BIOBURDEN OK]',
+                    anchor: 'dev.html#scada-lab'
+                },
+                escalation: {
+                    badge: 'AIAG 8D • EXECUTIVE C1 TONE RADAR',
+                    title: '8D Problem Solving & Escalation Email Studio',
+                    desc: 'Estudio de redacción técnica que transforma notas de planta ambiguas en reportes 8D y comunicados ejecutivos con radar de tono diplomático y firmeza técnica.',
+                    visual: '> GENERATING D3 CONTAINMENT & D4 ROOT CAUSE STATEMENT\n[TONE RADAR: DIPLOMATIC 94% | TECHNICAL FIRMNESS 98% | BLAME 0%]\nDraft ready to export to clipboard for North American OEM directors.',
+                    anchor: 'dev.html#escalation-lab'
+                }
+            };
+
+            const data = labData[labKey] || labData.blueprint;
+            badgeEl.textContent = data.badge;
+            titleEl.textContent = data.title;
+            descEl.textContent = data.desc;
+            visualEl.innerHTML = `<pre style="margin:0; text-align:left; color:#38bdf8; font-family:'JetBrains Mono',monospace; font-size:0.8rem; line-height:1.5;">${data.visual}</pre>`;
+            devLink.href = data.anchor;
+
+            openModal('lab-preview-modal');
         }
 
         function openModal(modalId) {
@@ -3245,309 +2242,6 @@
 
             speechSynthesis.speak(utter);
         }
-
-        // ══════════════════════════════════════════════════════════════
-        // JSWEB STARBORDER BUTTON LIGHT BEAM ENGINE
-        // ══════════════════════════════════════════════════════════════
-        function initStarBorders() {
-            document.querySelectorAll('[data-starborder]').forEach(el => {
-                if (el._starBorderInit) return;
-                el._starBorderInit = true;
-                el.style.position = 'relative';
-                el.style.isolation = 'isolate';
-                el.style.overflow = 'hidden';
-
-                const c = el.dataset.sbColor || '#38bdf8';
-                const s = parseFloat(el.dataset.sbSpeed) || 3;
-
-                const makeBeam = (side) => {
-                    const beam = document.createElement('span');
-                    const isH = side === 'top' || side === 'bottom';
-                    Object.assign(beam.style, {
-                        position: 'absolute',
-                        pointerEvents: 'none',
-                        zIndex: '0',
-                        borderRadius: '9999px',
-                    });
-                    if (isH) {
-                        Object.assign(beam.style, {
-                            height: '2.5px',
-                            width: '45%',
-                            [side]: '0',
-                            left: side === 'top' ? '-45%' : '145%',
-                            background: `linear-gradient(90deg, transparent, #fff, ${c}, transparent)`,
-                            boxShadow: `0 0 12px ${c}, 0 0 5px #fff`,
-                            animation: `star-h-${side} ${s}s linear infinite`,
-                        });
-                    } else {
-                        Object.assign(beam.style, {
-                            width: '2.5px',
-                            height: '40%',
-                            [side === 'left' ? 'left' : 'right']: '0',
-                            top: side === 'left' ? '-40%' : '140%',
-                            background: `linear-gradient(180deg, transparent, #fff, ${c}, transparent)`,
-                            boxShadow: `0 0 12px ${c}, 0 0 5px #fff`,
-                            animation: `star-v-${side} ${s}s linear infinite`,
-                        });
-                    }
-                    return beam;
-                };
-
-                ['top', 'bottom', 'left', 'right'].forEach(side => el.prepend(makeBeam(side)));
-            });
-        }
-
-        // ══════════════════════════════════════════════════════════════
-        // MOBILE HAMBURGER & DRAWER CONTROLLER
-        // ══════════════════════════════════════════════════════════════
-        function toggleSiteMobileDrawer(forceState) {
-            const drawer = document.getElementById('site-mobile-drawer');
-            const hamburger = document.getElementById('site-mobile-hamburger');
-            if (!drawer) return;
-
-            const isOpen = drawer.classList.contains('is-open');
-            const target = forceState !== undefined ? forceState : !isOpen;
-
-            if (target) {
-                drawer.classList.add('is-open');
-                drawer.setAttribute('aria-hidden', 'false');
-                if (hamburger) hamburger.classList.add('is-active');
-                document.body.style.overflow = 'hidden';
-            } else {
-                drawer.classList.remove('is-open');
-                drawer.setAttribute('aria-hidden', 'true');
-                if (hamburger) hamburger.classList.remove('is-active');
-                document.body.style.overflow = '';
-            }
-        }
-
-        // ══════════════════════════════════════════════════════════════
-        // WHITE STUDENT REGISTRATION WIZARD (JSWEB STYLE)
-        // ══════════════════════════════════════════════════════════════
-        let modalCurrentStep = 1;
-        const modalStudentData = {
-            name: '',
-            email: '',
-            matricula: '',
-            subsystem: 'ut',
-            campus: '',
-            semester: '4',
-            careerId: 'mecatronica',
-            diagnostics: {},
-            folio: ''
-        };
-
-        function openStudentRegistrationModal() {
-            const modal = document.getElementById('student-registration-modal');
-            if (!modal) return;
-
-            // Populate career dropdown
-            populateModalCareers();
-
-            // Check if student already registered in localStorage
-            const saved = localStorage.getItem('stemos_student_profile');
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    Object.assign(modalStudentData, parsed);
-                    populateModalSuccessPass();
-                    goToModalStep(5);
-                } catch (e) {
-                    goToModalStep(1);
-                }
-            } else {
-                goToModalStep(1);
-            }
-
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            initStarBorders();
-        }
-
-        function closeStudentRegistrationModal() {
-            const modal = document.getElementById('student-registration-modal');
-            if (modal) {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
-
-        function populateModalCareers() {
-            const sel = document.getElementById('modal-reg-career');
-            if (!sel || sel.options.length > 0) return;
-
-            if (typeof window.STEMOS_CAREER_TRACKS !== 'undefined' && window.STEMOS_CAREER_TRACKS.getAllCareers) {
-                const careers = window.STEMOS_CAREER_TRACKS.getAllCareers();
-                sel.innerHTML = careers.map(c => `
-                    <option value="${c.id}">${c.name} (${c.totalHours}h · ${c.degreeLevel || 'Ingeniería'})</option>
-                `).join('');
-                if (careers.length > 0) {
-                    updateModalCareerPreview(careers[0].id);
-                }
-            } else {
-                sel.innerHTML = `
-                    <option value="mecatronica">Ingeniería Mecatrónica &amp; Automatización (60.0h)</option>
-                    <option value="semiconductores">Ingeniería en Semiconductores &amp; Microelectrónica (60.0h)</option>
-                    <option value="aeroespacial">Ingeniería Aeronáutica &amp; Sistemas de Vuelo (60.0h)</option>
-                    <option value="automotriz">Ingeniería Automotriz &amp; Vehículos Eléctricos (60.0h)</option>
-                    <option value="ciberseguridad">Ingeniería en Ciberseguridad Industrial OT/IT (60.0h)</option>
-                    <option value="biotecnologia">Ingeniería Biotecnológica &amp; Biofarmacéutica (60.0h)</option>
-                    <option value="energia">Ingeniería en Energías Renovables &amp; Hidrógeno Verde (60.0h)</option>
-                    <option value="quimica">Ingeniería Química de Procesos &amp; Polímeros (60.0h)</option>
-                `;
-                updateModalCareerPreview('mecatronica');
-            }
-        }
-
-        function updateModalCareerPreview(careerId) {
-            modalStudentData.careerId = careerId;
-            const titleEl = document.getElementById('modal-prev-title');
-            const descEl = document.getElementById('modal-prev-desc');
-            const biomeEl = document.getElementById('modal-prev-biome');
-            const milesContainer = document.getElementById('modal-prev-milestones');
-
-            if (typeof window.STEMOS_CAREER_TRACKS !== 'undefined' && window.STEMOS_CAREER_TRACKS.getCareerById) {
-                const c = window.STEMOS_CAREER_TRACKS.getCareerById(careerId);
-                if (c) {
-                    if (titleEl) titleEl.textContent = c.name;
-                    if (descEl) descEl.textContent = c.description || (c.subsystemScope + ' · ' + (c.standards || []).join(', '));
-                    if (biomeEl) biomeEl.innerHTML = `<i class="fa-solid fa-cube"></i> ${c.worldTheme ? c.worldTheme.biomeName : 'Industrial Core'}`;
-                    if (milesContainer && c.milestones) {
-                        milesContainer.innerHTML = c.milestones.map((m, idx) => `
-                            <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:6px 8px; text-align:center;">
-                                <strong style="font-size:0.7rem; color:#0284c7; display:block;">Hito ${idx + 1} (${m.hours}h)</strong>
-                                <span style="font-size:0.65rem; color:#64748b; line-height:1.2; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${m.title}</span>
-                            </div>
-                        `).join('');
-                    }
-                    return;
-                }
-            }
-
-            // Fallback preview
-            if (titleEl) titleEl.textContent = 'Track Especializado 60 Horas';
-            if (descEl) descEl.textContent = '4 hitos de 15 horas cada uno alineados a estándares internacionales.';
-            if (milesContainer) {
-                milesContainer.innerHTML = [1,2,3,4].map(i => `
-                    <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:6px 8px; text-align:center;">
-                        <strong style="font-size:0.7rem; color:#0284c7; display:block;">Hito ${i} (15h)</strong>
-                        <span style="font-size:0.65rem; color:#64748b;">Módulo ${i}</span>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function selectModalSubsystem(code, el) {
-            modalStudentData.subsystem = code;
-            document.querySelectorAll('.subsystem-card').forEach(c => c.classList.remove('selected'));
-            if (el) el.classList.add('selected');
-        }
-
-        function selectModalDiag(num, optIdx, el) {
-            modalStudentData.diagnostics['d' + num] = optIdx;
-            const parent = el.parentElement;
-            if (parent) {
-                parent.querySelectorAll('.subsystem-card').forEach(b => b.classList.remove('selected'));
-                el.classList.add('selected');
-            }
-        }
-
-        function nextModalStep(fromStep) {
-            if (fromStep === 1) {
-                const name = document.getElementById('modal-reg-name').value.trim();
-                const email = document.getElementById('modal-reg-email').value.trim();
-                const matricula = document.getElementById('modal-reg-matricula').value.trim();
-                if (!name || !email || !matricula) {
-                    alert('Por favor ingresa tu nombre, correo y matrícula para continuar.');
-                    return;
-                }
-                modalStudentData.name = name;
-                modalStudentData.email = email;
-                modalStudentData.matricula = matricula;
-            } else if (fromStep === 2) {
-                const campus = document.getElementById('modal-reg-campus').value.trim();
-                if (!campus) {
-                    alert('Por favor indica tu plantel o campus.');
-                    return;
-                }
-                modalStudentData.campus = campus;
-                modalStudentData.semester = document.getElementById('modal-reg-semester').value;
-            }
-
-            goToModalStep(fromStep + 1);
-        }
-
-        function prevModalStep(fromStep) {
-            goToModalStep(fromStep - 1);
-        }
-
-        function goToModalStep(targetStep) {
-            const currentEl = document.getElementById('modal-step-' + modalCurrentStep);
-            const targetEl = document.getElementById('modal-step-' + targetStep);
-
-            if (!currentEl || !targetEl) return;
-
-            currentEl.classList.remove('active');
-            currentEl.style.display = 'none';
-
-            targetEl.style.display = 'block';
-            setTimeout(() => {
-                targetEl.classList.add('active');
-            }, 20);
-
-            modalCurrentStep = targetStep;
-            const pct = Math.min(100, targetStep * 20);
-            const pBar = document.getElementById('modal-reg-progress-bar');
-            if (pBar) pBar.style.width = pct + '%';
-
-            for (let i = 1; i <= 5; i++) {
-                const pill = document.getElementById('modal-pill-' + i);
-                if (pill) {
-                    pill.classList.remove('active', 'completed');
-                    if (i === modalCurrentStep) pill.classList.add('active');
-                    else if (i < modalCurrentStep) pill.classList.add('completed');
-                }
-            }
-            initStarBorders();
-        }
-
-        function submitModalStudentRegistration() {
-            const folio = 'STEMOS-2026-' + Math.floor(1000 + Math.random() * 9000);
-            modalStudentData.folio = folio;
-            modalStudentData.registeredAt = new Date().toISOString();
-
-            localStorage.setItem('stemos_student_profile', JSON.stringify(modalStudentData));
-            localStorage.setItem('stemos_active_career', modalStudentData.careerId);
-            localStorage.setItem('stemos_backdoor', 'true');
-
-            populateModalSuccessPass();
-            goToModalStep(5);
-        }
-
-        function populateModalSuccessPass() {
-            const nameEl = document.getElementById('modal-pass-name');
-            const campusEl = document.getElementById('modal-pass-campus');
-            const folioEl = document.getElementById('modal-pass-folio');
-            const careerEl = document.getElementById('modal-pass-career');
-            const biomeEl = document.getElementById('modal-pass-biome');
-
-            if (nameEl) nameEl.textContent = modalStudentData.name || 'Estudiante stemOS';
-            if (campusEl) campusEl.textContent = modalStudentData.campus || 'Universidad Tecnológica';
-            if (folioEl) folioEl.textContent = modalStudentData.folio || 'STEMOS-2026-LIVE';
-
-            if (typeof window.STEMOS_CAREER_TRACKS !== 'undefined' && window.STEMOS_CAREER_TRACKS.getCareerById) {
-                const c = window.STEMOS_CAREER_TRACKS.getCareerById(modalStudentData.careerId);
-                if (c) {
-                    if (careerEl) careerEl.textContent = c.name;
-                    if (biomeEl) biomeEl.textContent = (c.worldTheme ? c.worldTheme.biomeName : 'Industrial') + ' (60h)';
-                }
-            }
-        }
-
-        // Initialize StarBorders when DOM loads
-        document.addEventListener('DOMContentLoaded', function () {
-            initStarBorders();
-        });
     </script>
 </body>
 
