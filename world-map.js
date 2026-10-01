@@ -47,6 +47,54 @@
         career: { label: 'Aviación & Carrera', color: '#22c55e', glow: 'rgba(34, 197, 94, 0.5)', icon: 'fa-plane' }
     };
 
+    // ── Interleaved Curriculum Station Types (Fases 51-52 Zero A2 Policy) ──
+    const NODE_TYPES = {
+        'theory': {
+            id: 'theory',
+            label: 'Theory',
+            badge: 'THEORY 3.5h',
+            icon: 'fa-book-open',
+            glyph: '📖',
+            color: '#38bdf8', // sky-400
+            glow: 'rgba(56, 189, 248, 0.45)',
+            defaultHours: 3.5,
+            defaultXP: 300
+        },
+        'english-b1': {
+            id: 'english-b1',
+            label: 'English B1',
+            badge: 'ENGLISH B1 3.5h',
+            icon: 'fa-language',
+            glyph: '🇬🇧',
+            color: '#10b981', // emerald-500
+            glow: 'rgba(16, 185, 129, 0.45)',
+            defaultHours: 3.5,
+            defaultXP: 300
+        },
+        'practical-lab': {
+            id: 'practical-lab',
+            label: 'Practical Lab',
+            badge: 'LAB SIM 4.0h',
+            icon: 'fa-flask',
+            glyph: '🔬',
+            color: '#f59e0b', // amber-500
+            glow: 'rgba(245, 158, 11, 0.45)',
+            defaultHours: 4.0,
+            defaultXP: 400
+        },
+        'milestone': {
+            id: 'milestone',
+            label: 'Checkpoint',
+            badge: 'CHECKPOINT 4.0h',
+            icon: 'fa-trophy',
+            glyph: '🎯',
+            color: '#ef4444', // red-500
+            glow: 'rgba(239, 68, 68, 0.5)',
+            defaultHours: 4.0,
+            defaultXP: 500
+        }
+    };
+
     // stemBOT Dialogue & STEM Guidance Phrases
     const STEMBOT_PHRASES = [
         "¡Hola! ¿Listo para conquistar este reto?",
@@ -504,7 +552,7 @@
                                 <div class="wmd-tag-row">
                                     <span class="path-cat-badge" id="wmd-cat-tag">TECNOLOGÍA</span>
                                     <span class="path-standard-badge" id="wmd-mod-code">MÓDULO 1</span>
-                                    <span class="path-standard-badge" id="wmd-level-tag">CEFR A2-B1</span>
+                                    <span class="path-standard-badge" id="wmd-level-tag">CEFR B1 Technical Immersion</span>
                                 </div>
                                 <h3 class="wmd-title" id="wmd-title">OT/ICS Zero-Trust Architecture</h3>
                                 <div class="wmd-subtitle" id="wmd-subtitle">Arquitectura Zero-Trust en OT/ICS y Redes Aisladas</div>
@@ -626,7 +674,7 @@
         buildSphereNodes() {
             this.nodes = [];
 
-            // ── 1. DETERMINISTIC SHARED WORLD FOR ACTIVE CAREER ──
+            // ── 1. DETERMINISTIC SHARED WORLD FOR ACTIVE CAREER (FASES 51-52) ──
             // If active career is set, all students of this career see the EXACT same 3D world
             if (this.activeCareer && this.activeCareer.worldTheme && this.activeCareer.worldTheme.nodeCoordinates) {
                 const career = this.activeCareer;
@@ -635,6 +683,12 @@
                 const primaryTrack = this.courses[career.primaryTrackId] || {};
                 const modules = primaryTrack.modules || [];
 
+                // Retrieve 16-module deterministic path from STEMOS_CAREER_PATHS (Fase 51-52)
+                const careerPath = (typeof window.STEMOS_CAREER_PATHS !== 'undefined')
+                    ? window.STEMOS_CAREER_PATHS.getPathForCareer(career.id)
+                    : null;
+                const pathModules = careerPath ? careerPath.modules : null;
+
                 coords.forEach((coord, idx) => {
                     const stepNumber = idx + 1;
                     const isStart = (idx === 0);
@@ -642,30 +696,51 @@
                     const mIndex = Math.max(0, Math.min(milestones.length - 1, (coord.milestoneIndex || 1) - 1));
                     const milestone = milestones[mIndex] || milestones[0] || {};
                     const mod = modules[idx % (modules.length || 1)] || {};
-                    const isCheckpoint = (idx % 4 === 3);
 
-                    const nodeTitle = isCheckpoint
-                        ? `Hito ${coord.milestoneIndex} (15h): ${milestone.title || 'Evaluación Sumativa'}`
-                        : (mod.title || `${career.name} - Módulo ${stepNumber}`);
+                    // Interleaved Pattern: M01=theory, M02=english-b1, M03=practical-lab, M04=milestone
+                    const pathMod = (pathModules && pathModules[idx]) ? pathModules[idx] : null;
+                    const defaultType = (idx % 4 === 0) ? 'theory' : ((idx % 4 === 1) ? 'english-b1' : ((idx % 4 === 2) ? 'practical-lab' : 'milestone'));
+                    const moduleType = pathMod ? pathMod.type : defaultType;
+                    const isCheckpoint = (moduleType === 'milestone');
+                    const typeConfig = NODE_TYPES[moduleType] || NODE_TYPES['theory'];
 
-                    const nodeTitleES = isCheckpoint
-                        ? `Acreditación Hito ${coord.milestoneIndex} (15h) - ${milestone.focus || 'Competencia Auditada'}`
-                        : (mod.titleES || mod.title || `Práctica Especializada ${stepNumber}`);
+                    const nodeTitle = pathMod
+                        ? `${pathMod.id}: ${pathMod.title}`
+                        : (isCheckpoint
+                            ? `Hito ${coord.milestoneIndex} (15h): ${milestone.title || 'Evaluación Sumativa'}`
+                            : (mod.title || `${career.name} - Módulo ${stepNumber}`));
+
+                    const nodeTitleES = pathMod
+                        ? `${pathMod.shortTitle || pathMod.title}`
+                        : (isCheckpoint
+                            ? `Acreditación Hito ${coord.milestoneIndex} (15h) - ${milestone.focus || 'Competencia Auditada'}`
+                            : (mod.titleES || mod.title || `Práctica Especializada ${stepNumber}`));
 
                     this.nodes.push({
                         id: `${career.id}-node-${stepNumber}`,
+                        moduleId: pathMod ? pathMod.id : `M${String(stepNumber).padStart(2, '0')}`,
+                        careerId: career.id,
                         trackId: career.primaryTrackId,
                         stepNumber: stepNumber,
-                        milestoneIndex: coord.milestoneIndex,
+                        milestoneIndex: coord.milestoneIndex || Math.floor(idx / 4) + 1,
+                        moduleType: moduleType,
+                        typeConfig: typeConfig,
                         isMilestoneCheckpoint: isCheckpoint,
                         isStart: isStart,
                         isFinish: isFinish,
                         title: nodeTitle,
                         titleES: nodeTitleES,
+                        shortTitle: pathMod ? pathMod.shortTitle : null,
+                        hours: pathMod ? pathMod.hours : (isCheckpoint ? 4.0 : 3.5),
+                        xp: pathMod ? pathMod.xp : (isCheckpoint ? 500 : (moduleType === 'practical-lab' ? 400 : 300)),
+                        competency: pathMod ? pathMod.competency : 'Industrial Competency',
+                        standard: pathMod ? pathMod.standard : (career.standards[idx % career.standards.length] || 'IEEE / ISO Standard'),
                         category: career.clusterId || 'engineering',
-                        standard: career.standards[idx % career.standards.length] || 'IEEE / ISO Standard',
-                        modules: [mod],
-                        icon: isCheckpoint ? 'fa-award' : (DEFAULT_TRACK_ICONS[career.primaryTrackId] || 'fa-microchip'),
+                        modules: [pathMod || mod],
+                        icon: typeConfig.icon || (isCheckpoint ? 'fa-award' : (DEFAULT_TRACK_ICONS[career.primaryTrackId] || 'fa-microchip')),
+                        glyph: typeConfig.glyph || '⚙️',
+                        color: typeConfig.color || '#38bdf8',
+                        glow: typeConfig.glow || 'rgba(56, 189, 248, 0.4)',
                         // Deterministic coordinates from career seed
                         ux: coord.ux,
                         uy: coord.uy,
@@ -846,8 +921,15 @@
                     vp.classList.remove('dragging');
                 }
                 if (isClick && this.hoveredNode) {
+                    const node = this.hoveredNode;
+                    const gatingStatus = this.getNodeGatingStatus(node);
+                    if (gatingStatus === 'locked') {
+                        this.sound.playBlip(220, 0.12);
+                        this.showLockedToast(node);
+                        return;
+                    }
                     this.sound.playWarp();
-                    this.openWorldPath(this.hoveredNode.id);
+                    this.openWorldPath(node.trackId || node.id, node);
                 }
             };
 
@@ -1519,90 +1601,188 @@
             ctx.restore();
         }
 
+        /* ─── CURRICULUM GATING & SEQUENTIAL UNLOCKING (FASE 52) ───── */
+        getNodeGatingStatus(node) {
+            const careerId = node.careerId || (this.activeCareer ? this.activeCareer.id : 'it-mecatronica');
+            const moduleId = node.moduleId || `M${String(node.stepNumber).padStart(2, '0')}`;
+            const stepNum = node.stepNumber || 1;
+
+            // 1. Teacher override check from localStorage
+            try {
+                const unlocks = JSON.parse(localStorage.getItem('stemos_teacher_unlocks') || '[]');
+                if (unlocks.includes(moduleId) || unlocks.includes(`${careerId}:${moduleId}`) || unlocks.includes('*')) {
+                    return 'unlocked';
+                }
+            } catch (e) {}
+
+            // 2. Student saved progress in this career track
+            let savedProg = null;
+            try {
+                const raw = localStorage.getItem('stemos_progress_' + careerId) || localStorage.getItem('stemos_student_progress');
+                if (raw) savedProg = JSON.parse(raw);
+            } catch (e) {}
+
+            if (savedProg && savedProg.modules && savedProg.modules[moduleId]) {
+                const modState = savedProg.modules[moduleId];
+                if (modState.status === 'completed' || modState.completed) return 'completed';
+                if (modState.status === 'in-progress') return 'in-progress';
+            }
+
+            // 3. Fallback to legacy progress checks
+            const legacyProg = this.getUserProgress();
+            if (legacyProg.completedTracks && legacyProg.completedTracks[node.id]) return 'completed';
+            if (legacyProg.completedModules && legacyProg.completedModules[moduleId]) return 'completed';
+
+            // 4. Sequential Gating Invariant (Fase 52.2):
+            // Step 1 (M01) is always unlocked / in-progress for all students
+            if (stepNum === 1) return 'in-progress';
+
+            // Station N unlocks ONLY when Station N-1 has been completed
+            const prevModId = `M${String(stepNum - 1).padStart(2, '0')}`;
+            if (savedProg && savedProg.modules && savedProg.modules[prevModId] && 
+               (savedProg.modules[prevModId].status === 'completed' || savedProg.modules[prevModId].completed)) {
+                return 'in-progress';
+            }
+            if (legacyProg.completedModules && legacyProg.completedModules[prevModId]) {
+                return 'in-progress';
+            }
+
+            return 'locked';
+        }
+
+        showLockedToast(node) {
+            let toast = document.getElementById('wm-locked-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'wm-locked-toast';
+                toast.style.cssText = 'position:absolute; bottom:85px; left:50%; transform:translateX(-50%); z-index:999999; background:rgba(15,23,42,0.92); backdrop-filter:blur(12px); border:1px solid rgba(239,68,68,0.4); border-radius:14px; padding:12px 20px; color:#ffffff; font-family:"Plus Jakarta Sans", sans-serif; box-shadow:0 12px 32px rgba(0,0,0,0.35); display:flex; align-items:center; gap:12px; max-width:90%; transition:all 0.3s cubic-bezier(0.16,1,0.3,1); pointer-events:none; opacity:0;';
+                if (this.container) this.container.appendChild(toast);
+                else document.body.appendChild(toast);
+            }
+            const prevModNumber = Math.max(1, (node.stepNumber || 1) - 1);
+            const prevModCode = `M${String(prevModNumber).padStart(2, '0')}`;
+            toast.innerHTML = `
+                <div style="width:34px; height:34px; border-radius:10px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.35); display:flex; align-items:center; justify-content:center; color:#f87171; font-size:1.1rem; flex-shrink:0;">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <div>
+                    <div style="font-size:0.85rem; font-weight:800; color:#f87171; margin-bottom:2px;">Station ${node.moduleId || 'M' + node.stepNumber} Locked</div>
+                    <div style="font-size:0.75rem; color:#cbd5e1;">Complete previous station <strong>${prevModCode}</strong> first to unlock this operational milestone, or request teacher bypass.</div>
+                </div>
+            `;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+            clearTimeout(this._lockToastTimer);
+            this._lockToastTimer = setTimeout(() => {
+                if (toast) {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(-50%) translateY(10px)';
+                }
+            }, 3600);
+        }
+
         drawNode(ctx, node, isFront) {
-            const catMeta = REALM_META[node.category] || REALM_META.technology;
+            const nodeColor = node.color || (REALM_META[node.category] || REALM_META.technology).color;
+            const nodeGlow = node.glow || (REALM_META[node.category] || REALM_META.technology).glow;
             const isHovered = this.hoveredNode === node;
             const isFilterDim = this.activeFilter !== 'all' && node.category !== this.activeFilter;
+            const gatingStatus = this.getNodeGatingStatus(node);
+            const isLocked = gatingStatus === 'locked';
+            const isCompleted = gatingStatus === 'completed';
+            const isInProgress = gatingStatus === 'in-progress' || gatingStatus === 'unlocked';
 
             ctx.save();
 
             if (!isFront) {
                 // Back-facing node: semi-transparent, subtle depth fog
-                ctx.globalAlpha = isFilterDim ? 0.04 : 0.22;
+                ctx.globalAlpha = isFilterDim ? 0.03 : (isLocked ? 0.08 : 0.22);
                 ctx.beginPath();
                 ctx.arc(node.sx, node.sy, node.screenRadius * 0.65, 0, Math.PI * 2);
-                ctx.fillStyle = catMeta.color;
+                ctx.fillStyle = isLocked ? '#64748b' : nodeColor;
                 ctx.fill();
                 ctx.restore();
                 return;
             }
 
-            // Front-facing node (White Tech Mode Puck)
-            ctx.globalAlpha = isFilterDim ? 0.25 : 1;
+            // Front-facing node:
+            // Gating rule (Fase 52.2): Locked nodes appear with opacity 0.42 and lock badge
+            ctx.globalAlpha = isFilterDim ? 0.20 : (isLocked ? 0.42 : 1.0);
 
             // Hover Halo
-            if (isHovered) {
+            if (isHovered && !isLocked) {
                 ctx.beginPath();
                 ctx.arc(node.sx, node.sy, node.screenRadius * 1.6, 0, Math.PI * 2);
-                ctx.fillStyle = catMeta.glow;
+                ctx.fillStyle = nodeGlow;
                 ctx.fill();
             }
 
-            // Step 1 START Beacon: Pulsing radar rings
-            if (node.isStart && !isFilterDim) {
+            // Active / In-Progress Pulsing radar rings
+            if (isInProgress && !isFilterDim) {
                 const pulse = (Date.now() * 0.0025) % 1;
                 ctx.beginPath();
                 ctx.arc(node.sx, node.sy, node.screenRadius + pulse * 18 * this.zoom, 0, Math.PI * 2);
-                ctx.strokeStyle = `rgba(2, 132, 199, ${(1 - pulse) * 0.8})`;
+                ctx.strokeStyle = `${nodeColor}${(Math.round((1 - pulse) * 200)).toString(16).padStart(2, '0')}`;
                 ctx.lineWidth = 2.2;
                 ctx.stroke();
             }
 
-            // Outer drop shadow on white sphere
+            // Outer drop shadow on sphere
             ctx.save();
-            ctx.shadowColor = 'rgba(15, 23, 42, 0.14)';
+            ctx.shadowColor = isLocked ? 'rgba(0, 0, 0, 0.08)' : 'rgba(15, 23, 42, 0.16)';
             ctx.shadowBlur = 10;
             ctx.shadowOffsetY = 3;
 
-            // Disc Background: Crisp White Puck
+            // Disc Background: Crisp White Puck (or subtle muted slate if locked)
             ctx.beginPath();
             ctx.arc(node.sx, node.sy, node.screenRadius, 0, Math.PI * 2);
-            ctx.fillStyle = '#ffffff';
+            ctx.fillStyle = isLocked ? '#f1f5f9' : '#ffffff';
             ctx.fill();
             ctx.restore();
 
-            // Disc Border: Realm Colored Ring
+            // Disc Border: Interleaved Type Color or Locked Slate Ring
             ctx.beginPath();
             ctx.arc(node.sx, node.sy, node.screenRadius, 0, Math.PI * 2);
-            ctx.lineWidth = isHovered ? 3.8 : 2.8;
-            ctx.strokeStyle = isHovered ? '#0284c7' : catMeta.color;
+            ctx.lineWidth = isHovered ? 3.8 : (isLocked ? 2.0 : 3.0);
+            ctx.strokeStyle = isLocked ? '#94a3b8' : (isHovered ? '#0284c7' : nodeColor);
             ctx.stroke();
 
-            // Inner Step Number inside Puck
-            ctx.font = `800 ${Math.max(10, Math.round(node.screenRadius * 0.88))}px Outfit, 'Plus Jakarta Sans', sans-serif`;
-            ctx.fillStyle = catMeta.color;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(node.stepNumber || '', node.sx, node.sy + 0.5);
+            // Inner Disc Content:
+            // If locked: draw lock icon
+            // If unlocked: draw step number / module ID
+            if (isLocked) {
+                ctx.font = `800 ${Math.max(10, Math.round(node.screenRadius * 0.85))}px sans-serif`;
+                ctx.fillStyle = '#64748b';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('🔒', node.sx, node.sy + 0.5);
+            } else {
+                ctx.font = `800 ${Math.max(10, Math.round(node.screenRadius * 0.80))}px Outfit, 'Plus Jakarta Sans', sans-serif`;
+                ctx.fillStyle = nodeColor;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(node.moduleId ? node.moduleId.replace('M', '') : (node.stepNumber || ''), node.sx, node.sy + 0.5);
+            }
 
-            // Progress status check
-            const prog = this.getUserProgress();
-            const isCompleted = prog.completedTracks && prog.completedTracks[node.id];
-
+            // Completed indicator green badge / checkmark
             if (isCompleted) {
-                // Completed indicator green badge
                 ctx.fillStyle = '#10b981';
                 ctx.beginPath();
-                ctx.arc(node.sx + node.screenRadius * 0.72, node.sy - node.screenRadius * 0.72, 6, 0, Math.PI * 2);
+                ctx.arc(node.sx + node.screenRadius * 0.72, node.sy - node.screenRadius * 0.72, 6.5, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.strokeStyle = '#ffffff';
-                ctx.lineWidth = 1.5;
+                ctx.lineWidth = 1.6;
                 ctx.stroke();
+
+                ctx.font = '800 8.5px sans-serif';
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('✓', node.sx + node.screenRadius * 0.72, node.sy - node.screenRadius * 0.72);
             }
 
             // Step 1 START Flag / Badge Pill
             if (node.isStart && node.sz > 0.15 && !isFilterDim) {
-                const badgeText = 'INICIO 1';
+                const badgeText = 'START 1';
                 ctx.font = '800 9.5px Outfit, sans-serif';
                 const m = ctx.measureText(badgeText);
                 const bW = m.width + 12;
@@ -1620,9 +1800,9 @@
                 ctx.fillText(badgeText, node.sx, bY + bH / 2);
             }
 
-            // Step 26 META Flag / Badge Pill
+            // Final Step FINISH Flag / Badge Pill
             if (node.isFinish && node.sz > 0.15 && !isFilterDim) {
-                const badgeText = 'META 26';
+                const badgeText = 'FELLOWSHIP 16';
                 ctx.font = '800 9.5px Outfit, sans-serif';
                 const m = ctx.measureText(badgeText);
                 const bW = m.width + 12;
@@ -1630,7 +1810,7 @@
                 const bX = node.sx - bW / 2;
                 const bY = node.sy - node.screenRadius - 18;
 
-                ctx.fillStyle = '#d97706';
+                ctx.fillStyle = '#10b981';
                 ctx.beginPath();
                 ctx.roundRect(bX, bY, bW, bH, 8);
                 ctx.fill();
@@ -1642,8 +1822,9 @@
 
             // Node Title Pill (Floating text badge below node)
             if (node.sz > 0.22 && !isFilterDim) {
-                const cleanTitle = node.title.length > 20 ? node.title.substring(0, 18) + '…' : node.title;
-                const labelText = `${node.stepNumber}. ${cleanTitle}`;
+                const displayTitle = node.shortTitle || node.title;
+                const cleanTitle = displayTitle.length > 20 ? displayTitle.substring(0, 18) + '…' : displayTitle;
+                const labelText = `${node.moduleId || 'M' + node.stepNumber} · ${cleanTitle}`;
                 ctx.font = '700 11px Outfit, Inter, sans-serif';
                 const textMetrics = ctx.measureText(labelText);
                 const padX = 8;
@@ -1652,23 +1833,21 @@
                 const pillX = node.sx - pillW / 2;
                 const pillY = node.sy + node.screenRadius + 4;
 
-                // Pill background in White Mode
                 ctx.save();
                 ctx.shadowColor = 'rgba(15, 23, 42, 0.08)';
                 ctx.shadowBlur = 8;
                 ctx.shadowOffsetY = 2;
-                ctx.fillStyle = isHovered ? '#ffffff' : 'rgba(255, 255, 255, 0.94)';
+                ctx.fillStyle = isHovered ? '#ffffff' : (isLocked ? 'rgba(241, 245, 249, 0.94)' : 'rgba(255, 255, 255, 0.94)');
                 ctx.beginPath();
                 ctx.roundRect(pillX, pillY, pillW, pillH, 6);
                 ctx.fill();
                 ctx.restore();
 
                 ctx.lineWidth = 1;
-                ctx.strokeStyle = isHovered ? catMeta.color : 'rgba(203, 213, 225, 0.9)';
+                ctx.strokeStyle = isHovered ? nodeColor : (isLocked ? '#cbd5e1' : `${nodeColor}55`);
                 ctx.stroke();
 
-                // Pill Text
-                ctx.fillStyle = '#0f172a';
+                ctx.fillStyle = isLocked ? '#64748b' : '#0f172a';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(labelText, node.sx, pillY + pillH / 2);
@@ -1680,13 +1859,20 @@
         /* ==========================================================================
            LEVEL PATH VIEW (SUPER MARIO BROS & DUOLINGO WINDING PATH)
            ========================================================================== */
-        openWorldPath(trackId) {
-            const track = this.courses[trackId];
-            if (!track) return;
+        openWorldPath(trackId, targetNode) {
+            let track = this.courses[trackId];
+            const career = this.activeCareer;
+            const careerPath = (career && typeof window.STEMOS_CAREER_PATHS !== 'undefined')
+                ? window.STEMOS_CAREER_PATHS.getPathForCareer(career.id)
+                : null;
+
+            // If career path is requested or node belongs to active career
+            const isCareerPath = (career && (!track || trackId === career.primaryTrackId || (targetNode && targetNode.careerId === career.id)));
+
+            if (!track && !isCareerPath) return;
             this.selectedTrackId = trackId;
 
             this.hideTooltip();
-            const catMeta = REALM_META[track.category] || REALM_META.technology;
             const prog = this.getUserProgress();
 
             // 1. Update Header Card
@@ -1696,29 +1882,52 @@
             const statProg = document.getElementById('path-stat-progress-text');
             const selectEl = document.getElementById('path-track-select');
 
-            if (catBadge) {
-                catBadge.textContent = catMeta.label.toUpperCase();
-                catBadge.style.background = `${catMeta.color}22`;
-                catBadge.style.color = catMeta.color;
-                catBadge.style.border = `1px solid ${catMeta.color}55`;
+            if (isCareerPath && careerPath) {
+                const catMeta = REALM_META[career.clusterId] || REALM_META.engineering;
+                if (catBadge) {
+                    catBadge.textContent = `${career.system ? career.system.toUpperCase() : 'CAREER'} · 60H DETERMINISTIC`;
+                    catBadge.style.background = `${catMeta.color}22`;
+                    catBadge.style.color = catMeta.color;
+                    catBadge.style.border = `1px solid ${catMeta.color}55`;
+                }
+                if (stdBadge) stdBadge.innerHTML = `CEFR B1 Technical Immersion &bull; ${career.standards ? career.standards[0] : 'ISO / IEEE Standards'}`;
+                if (titleEl) titleEl.textContent = `${career.name} (60.0h Track)`;
+                
+                // Progress from cohort / career path
+                const pathProgress = (typeof window.STEMOS_CAREER_PATHS !== 'undefined')
+                    ? window.STEMOS_CAREER_PATHS.calculateCohortProgress(career.id, Object.keys(prog.completedModules || {}))
+                    : null;
+                const completedCount = pathProgress ? pathProgress.completedCount : 0;
+                if (statProg) {
+                    statProg.textContent = `${completedCount}/16 Curricular Stations Completed (${pathProgress ? pathProgress.progressPercent : 0}% · ${pathProgress ? pathProgress.earnedXP : 0}/5,600 XP)`;
+                }
+
+                // Render Career 16-Module Path
+                this.renderCareerWindingPath(careerPath, prog);
+            } else if (track) {
+                const catMeta = REALM_META[track.category] || REALM_META.technology;
+                if (catBadge) {
+                    catBadge.textContent = catMeta.label.toUpperCase();
+                    catBadge.style.background = `${catMeta.color}22`;
+                    catBadge.style.color = catMeta.color;
+                    catBadge.style.border = `1px solid ${catMeta.color}55`;
+                }
+                if (stdBadge) stdBadge.textContent = `CEFR B1 Technical Immersion · ${track.standard || 'IEEE/ISO'}`;
+                if (titleEl) titleEl.textContent = track.titleEN || track.title;
+                if (selectEl) selectEl.value = trackId;
+
+                const modules = track.modules || [];
+                let completedCount = 0;
+                modules.forEach(m => {
+                    if (prog.completedModules && prog.completedModules[m.id]) completedCount++;
+                });
+
+                if (statProg) {
+                    statProg.textContent = `${completedCount}/${modules.length} Módulos Conquistados (${Math.round((completedCount / (modules.length || 1)) * 100)}%)`;
+                }
+
+                this.renderWindingPath(track, prog);
             }
-            if (stdBadge) stdBadge.textContent = `Nivel ${track.level || 'A2-B1'} &bull; ${track.standard || 'IEEE/ISO'}`;
-            if (titleEl) titleEl.textContent = track.titleEN || track.title;
-            if (selectEl) selectEl.value = trackId;
-
-            // Compute Progress
-            const modules = track.modules || [];
-            let completedCount = 0;
-            modules.forEach(m => {
-                if (prog.completedModules && prog.completedModules[m.id]) completedCount++;
-            });
-
-            if (statProg) {
-                statProg.textContent = `${completedCount}/${modules.length} Módulos Conquistados (${Math.round((completedCount / (modules.length || 1)) * 100)}%)`;
-            }
-
-            // 2. Render Winding Path Steps
-            this.renderWindingPath(track, prog);
 
             // 3. Open Path View with animation
             if (this.els.pathView) {
@@ -1841,6 +2050,277 @@
 
             // Draw SVG Bezier Curve Trail connecting discs
             setTimeout(() => this.drawSvgCurveTrail(), 60);
+        }
+
+        /* ─── 16-MODULE CAREER WINDING PATH (FASES 51-52) ───────────── */
+        renderCareerWindingPath(careerPath, prog) {
+            const container = document.getElementById('path-nodes-layer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const modules = careerPath.modules || [];
+            if (modules.length === 0) {
+                container.innerHTML = `<div style="text-align:center;padding:40px;color:#94a3b8;">No curricular modules found for this career path.</div>`;
+                return;
+            }
+
+            const alignments = ['align-left', 'align-center', 'align-right', 'align-center'];
+            let activeNodeFound = false;
+            let currentHitoHeaderRendered = 0;
+
+            modules.forEach((mod, idx) => {
+                const stepNum = idx + 1;
+                const hitoNum = mod.hito || Math.floor(idx / 4) + 1;
+
+                // Insert Hito Milestone Header Divider
+                if (hitoNum !== currentHitoHeaderRendered) {
+                    currentHitoHeaderRendered = hitoNum;
+                    const hitoNames = [
+                        'Shopfloor Survival & Operational Continuity (15.0h)',
+                        'Root Cause Triangulation & Diagnostics (15.0h)',
+                        'Cross-Border Negotiation & Auditor Defense (15.0h)',
+                        'Capstone Engineering Fellowship (15.0h)'
+                    ];
+                    const hitoDivider = document.createElement('div');
+                    hitoDivider.className = 'path-hito-divider';
+                    hitoDivider.style.cssText = 'width:100%; max-width:500px; margin:28px auto 14px; text-align:center; position:relative; z-index:2;';
+                    hitoDivider.innerHTML = `
+                        <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(15,23,42,0.85); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.15); padding:6px 18px; border-radius:999px; box-shadow:0 6px 20px rgba(0,0,0,0.15);">
+                            <span style="font-size:0.75rem; font-weight:800; color:#38bdf8; text-transform:uppercase; letter-spacing:0.06em;">
+                                <i class="fa-solid fa-flag-checkered"></i> HITO ${hitoNum}
+                            </span>
+                            <span style="color:#64748b; font-size:0.7rem;">&bull;</span>
+                            <span style="font-size:0.75rem; color:#f8fafc; font-weight:700;">${hitoNames[hitoNum - 1] || 'Industrial Milestone'}</span>
+                        </div>
+                    `;
+                    container.appendChild(hitoDivider);
+                }
+
+                // Gating status
+                const nodeRef = {
+                    careerId: careerPath.careerId,
+                    moduleId: mod.id,
+                    stepNumber: stepNum
+                };
+                const gatingStatus = this.getNodeGatingStatus(nodeRef);
+                const isCompleted = gatingStatus === 'completed';
+                const isUnlocked = gatingStatus !== 'locked';
+                const isActive = (gatingStatus === 'in-progress') && !activeNodeFound;
+                if (isActive) activeNodeFound = true;
+
+                const alignClass = alignments[idx % alignments.length];
+                const typeConfig = NODE_TYPES[mod.type] || NODE_TYPES['theory'];
+                const iconClass = typeConfig.icon || 'fa-microchip';
+
+                const stepEl = document.createElement('div');
+                stepEl.className = `path-level-step ${alignClass} ${isCompleted ? 'completed' : isActive ? 'active-node' : isUnlocked ? 'unlocked' : 'locked'}`;
+
+                let statusPill = `<span class="plc-status-pill" style="background:${typeConfig.color}22; color:${typeConfig.color};"><i class="fa-solid fa-play"></i> In Progress</span>`;
+                if (isCompleted) {
+                    statusPill = `<span class="plc-status-pill" style="background:#05966922; color:#10b981;"><i class="fa-solid fa-check-double"></i> Station Passed</span>`;
+                } else if (!isUnlocked) {
+                    statusPill = `<span class="plc-status-pill" style="background:rgba(15,23,42,0.06); color:#64748b;"><i class="fa-solid fa-lock"></i> Station Locked</span>`;
+                }
+
+                const mascotHtml = isActive ? this.createStemBotHtml({ isChampion: false }) : '';
+                const starCrownHtml = isCompleted ? `
+                    <div class="path-star-crown">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                ` : '';
+
+                stepEl.innerHTML = `
+                    <div class="path-node-disc" data-mod-id="${mod.id}" title="${mod.title}" style="border-color:${isUnlocked ? typeConfig.color : '#94a3b8'};">
+                        ${mascotHtml}
+                        ${starCrownHtml}
+                        <span class="node-m-num" style="color:${isUnlocked ? typeConfig.color : '#64748b'};">${mod.id}</span>
+                        <i class="${isUnlocked ? iconClass : 'fa-solid fa-lock'} node-m-icon" style="color:${isUnlocked ? typeConfig.color : '#64748b'};"></i>
+                    </div>
+
+                    <div class="path-level-card" style="border-left:3px solid ${isUnlocked ? typeConfig.color : '#cbd5e1'};">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                            ${statusPill}
+                            <span style="font-size:0.7rem; font-weight:800; color:${typeConfig.color}; background:${typeConfig.color}15; padding:2px 8px; border-radius:6px;">
+                                ${typeConfig.badge}
+                            </span>
+                        </div>
+                        <div class="plc-title">${mod.title}</div>
+                        <div class="plc-meta">
+                            <span><i class="fa-solid fa-clock"></i> ${mod.hours || 3.5}h Curricular</span>
+                            <span style="margin:0 4px;">&bull;</span>
+                            <span style="color:#d97706; font-weight:700;"><i class="fa-solid fa-bolt"></i> +${mod.xp || 300} XP</span>
+                            <span style="margin:0 4px;">&bull;</span>
+                            <span>${mod.standard || 'ISO / IEEE'}</span>
+                        </div>
+                    </div>
+                `;
+
+                // Disc click event
+                const disc = stepEl.querySelector('.path-node-disc');
+                if (disc) {
+                    disc.addEventListener('click', () => {
+                        if (!isUnlocked) {
+                            this.sound.playBlip(220, 0.12);
+                            this.showLockedToast(nodeRef);
+                            return;
+                        }
+                        this.sound.playBlip(750, 0.06);
+                        this.openCareerModuleDrawer(careerPath, mod, idx, isUnlocked, isCompleted);
+                    });
+                }
+
+                container.appendChild(stepEl);
+            });
+
+            // If all 16 are completed, place mascot on final node in champion mode
+            if (!activeNodeFound && modules.length > 0) {
+                const lastStep = container.querySelector('.path-level-step:last-child .path-node-disc');
+                if (lastStep) {
+                    lastStep.insertAdjacentHTML('afterbegin', this.createStemBotHtml({ isChampion: true }));
+                }
+            }
+
+            // Interactive click & hover handlers on stemBOT
+            const stemBotMascot = container.querySelector('#path-stembot-mascot');
+            if (stemBotMascot) {
+                stemBotMascot.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.onStemBotClicked(stemBotMascot);
+                });
+            }
+
+            setTimeout(() => this.drawSvgCurveTrail(), 60);
+        }
+
+        openCareerModuleDrawer(careerPath, mod, modIndex, isUnlocked, isCompleted) {
+            const catMeta = REALM_META[careerPath.cluster] || REALM_META.engineering;
+            const typeConfig = NODE_TYPES[mod.type] || NODE_TYPES['theory'];
+
+            document.getElementById('wmd-cat-tag').textContent = `${typeConfig.badge} · ${typeConfig.label.toUpperCase()}`;
+            document.getElementById('wmd-cat-tag').style.background = `${typeConfig.color}22`;
+            document.getElementById('wmd-cat-tag').style.color = typeConfig.color;
+
+            document.getElementById('wmd-mod-code').textContent = `STATION ${mod.id}`;
+            document.getElementById('wmd-level-tag').textContent = `CEFR B1 Technical Immersion · ${mod.standard || 'ISO Standard'}`;
+
+            document.getElementById('wmd-title').textContent = mod.title;
+            document.getElementById('wmd-subtitle').textContent = mod.competency || mod.shortTitle || '';
+
+            document.getElementById('wmd-stat-readings').textContent = `${mod.hours || 3.5}h Curricular`;
+            document.getElementById('wmd-stat-time').textContent = `Hito ${mod.hito || Math.floor(modIndex / 4) + 1} of 4`;
+            document.getElementById('wmd-stat-xp').textContent = `+${mod.xp || 300} XP`;
+
+            const statusEl = document.getElementById('wmd-stat-status');
+            if (isCompleted) {
+                statusEl.innerHTML = '<i class="fa-solid fa-check"></i> Passed';
+                statusEl.style.color = '#10b981';
+            } else if (isUnlocked) {
+                statusEl.innerHTML = '<i class="fa-solid fa-play"></i> In Progress';
+                statusEl.style.color = '#0284c7';
+            } else {
+                statusEl.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
+                statusEl.style.color = '#64748b';
+            }
+
+            const readingsList = document.getElementById('wmd-readings-list');
+            readingsList.innerHTML = `
+                <div class="wmd-reading-item" style="border-left:3px solid ${typeConfig.color};">
+                    <div class="wmd-r-title">
+                        <span style="color:${typeConfig.color};font-weight:800;font-size:0.75rem;margin-right:6px;">${typeConfig.label.toUpperCase()}</span>
+                        ${mod.title}
+                    </div>
+                    <div class="wmd-r-meta">
+                        <span><i class="fa-solid fa-clock"></i> ${mod.hours || 3.5}h</span>
+                        <i class="fa-solid ${isCompleted ? 'fa-circle-check' : 'fa-circle'}" style="color:${isCompleted ? '#10b981' : 'rgba(203,213,225,0.7)'};margin-left:8px;"></i>
+                    </div>
+                </div>
+                <div style="padding:10px 14px; background:rgba(15,23,42,0.03); border-radius:10px; margin-top:8px; font-size:0.8rem; color:#475569;">
+                    <div style="font-weight:700; color:#0f172a; margin-bottom:4px;"><i class="fa-solid fa-shield-halved" style="color:#0284c7;"></i> Assessed Industrial Competency:</div>
+                    ${mod.competency || 'Demonstrate technical operational communication and procedural compliance according to ISO and OSHA standards.'}
+                </div>
+            `;
+
+            const btnPrimary = document.getElementById('wmd-btn-launch-primary');
+            const btnToggle = document.getElementById('wmd-btn-toggle-complete');
+            const toggleText = document.getElementById('wmd-toggle-complete-text');
+
+            if (btnToggle && toggleText) {
+                toggleText.textContent = isCompleted ? 'Mark as In-Progress' : 'Mark Station as Completed (+XP)';
+                btnToggle.onclick = () => {
+                    this.toggleCareerModuleCompletion(careerPath.careerId, mod.id, mod.xp || 300);
+                };
+            }
+
+            if (btnPrimary) {
+                btnPrimary.onclick = () => {
+                    this.closeDrawer();
+                    this.sound.playWarp();
+                    if (mod.type === 'milestone') {
+                        const examOverlay = document.getElementById('exam-modal-overlay');
+                        if (examOverlay) {
+                            examOverlay.classList.add('active');
+                            examOverlay.style.display = 'flex';
+                        }
+                    } else if (mod.type === 'practical-lab') {
+                        if (typeof window.openAcademicModal === 'function') {
+                            window.openAcademicModal(careerPath.primaryTrackId, mod);
+                        }
+                    } else {
+                        if (typeof window.openDrawer === 'function') {
+                            window.openDrawer(careerPath.primaryTrackId || 'robotics-automation', mod.id, this.courses);
+                        }
+                    }
+                };
+            }
+
+            if (this.els.drawer) this.els.drawer.classList.add('open');
+            if (this.els.backdrop) this.els.backdrop.classList.add('open');
+        }
+
+        toggleCareerModuleCompletion(careerId, moduleId, xpReward) {
+            const storageKey = 'stemos_progress_' + careerId;
+            let prog = {};
+            try {
+                prog = JSON.parse(localStorage.getItem(storageKey) || '{}');
+            } catch (e) {}
+
+            if (!prog.modules) prog.modules = {};
+            const current = prog.modules[moduleId] || {};
+            const isNowCompleted = current.status !== 'completed';
+
+            prog.modules[moduleId] = {
+                status: isNowCompleted ? 'completed' : 'in-progress',
+                score: isNowCompleted ? 95 : null,
+                xp: isNowCompleted ? xpReward : 0,
+                completedAt: isNowCompleted ? new Date().toISOString() : null
+            };
+
+            localStorage.setItem(storageKey, JSON.stringify(prog));
+
+            // Sync XP
+            if (isNowCompleted) {
+                let currentXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+                currentXP += xpReward;
+                localStorage.setItem('stemos_student_xp', String(currentXP));
+                this.sound.playCoin();
+                if (typeof window.updateStudentXPHUD === 'function') {
+                    window.updateStudentXPHUD(currentXP);
+                }
+            }
+
+            // Re-render
+            const careerPath = (typeof window.STEMOS_CAREER_PATHS !== 'undefined')
+                ? window.STEMOS_CAREER_PATHS.getPathForCareer(careerId)
+                : null;
+            if (careerPath) {
+                this.renderCareerWindingPath(careerPath, this.getUserProgress());
+                const mod = (careerPath.modules || []).find(m => m.id === moduleId);
+                if (mod) {
+                    this.openCareerModuleDrawer(careerPath, mod, mod.order - 1, true, isNowCompleted);
+                }
+            }
         }
 
         drawSvgCurveTrail() {
@@ -2070,7 +2550,7 @@
             document.getElementById('wmd-cat-tag').style.color = catMeta.color;
 
             document.getElementById('wmd-mod-code').textContent = `MÓDULO ${modIndex + 1}`;
-            document.getElementById('wmd-level-tag').textContent = `Nivel ${track.level || 'A2-B1'}`;
+            document.getElementById('wmd-level-tag').textContent = `CEFR B1 Technical Immersion`;
 
             document.getElementById('wmd-title').textContent = mod.title;
             document.getElementById('wmd-subtitle').textContent = mod.titleES || mod.title;

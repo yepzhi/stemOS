@@ -2470,10 +2470,10 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
     position: relative;
     z-index: 5;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
     width: 100%;
-    max-width: 980px;
+    max-width: 1040px;
     padding: 0 20px;
 }
 

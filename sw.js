@@ -1,9 +1,9 @@
 /**
- * stemOS Dev Content Studio — PWA Service Worker (v5.36.0 Subsea HVDC & Umbilicals Suite)
- * Enables 100% complete offline caching for 34 tracks, 266 readings, 162 idioms, STEMBot Copilot, Auditable Certificates, Cloud Sync, Blueprint Lab, LOTO Zero-Energy Lab, Incident War Room, SCADA Digital Twin Lab, Cross-Border Audio Roleplay Lab, Capstone Board Exam, Student Onboarding Career Path 60h Engine, Active Path HUD, Slang Trainer, W3C Open Badges 3.0 Verifiable Credentials, Stackable Micro-Credentials 4×15h with Recruiter Portfolio Showcase, Nearshoring Talent Hub with STAR Mock Interview Simulator, Multi-Turn Live Voice/Chat Recruiter Agent, Enterprise Talent Pipeline CRM, System Architecture Whiteboard Defense Arena, AI Nearshoring ATS Resume Tailor, Cross-Border Multi-Plant Incident Drills, Executive Negotiation Chamber, Surprise Regulatory Audit Defense Chamber, Plant-Floor Gemba Walk Crucible, Cross-Track Executive Escalation Tribunal, Autonomous VR Cleanroom Walkthrough & Digital Twin 3.0, Cross-Border Autonomous AI Patent & IP Claim Defense Arena, Autonomous AI Boardroom ESG & Decarbonization Capital Allocation Crucible, Cross-Border Autonomous Global Supply Chain Reshoring & Dual-Sourcing Risk War Room, Autonomous Industrial Cybersecurity Threat Hunting & SCADA Incident Command Arena, Cross-Border Autonomous AI Predictive Maintenance & Zero-Unplanned-Downtime Reliability Crucible, Autonomous Cross-Border Microgrid & Clean Industrial Energy Arbitrage Chamber, Autonomous High-Throughput Advanced Packaging & 3D Heterogeneous Chiplet Metrology Cleanroom, Cross-Border Autonomous AI EV Battery Pack Thermal Runaway Containment & UN 38.3 Testing Crucible, Autonomous Hyperscale Data Center Direct-to-Chip Two-Phase Immersion Cooling & Power Density Optimization Chamber, Autonomous AI Nearshoring Bioprocess & Sterile Single-Use Bioreactor Validation Cleanroom, Autonomous Clean Hydrogen Electrolyzer & Ammonia Cracking Synthesis Crucible, Autonomous AI Semiconductor Cleanroom Ultra-Pure Water & Trace Chemical Contamination Reclamation Crucible, Autonomous Nearshoring Aerospace & Defense Avionics MIL-STD-1553 & DO-254 Hardware Assurance Crucible, Autonomous Nearshoring AI Subsea & Deepwater Subsea Blowout Preventer (BOP) & HPHT Crucible, Autonomous Nearshoring AI Nuclear SMR & Molten Salt Reactor (MSR) Control Room & Thermal-Hydraulics Crucible, Autonomous Nearshoring AI Carbon Capture, Utilization & Direct Air Capture (DAC) Sequestration Geomechanics Crucible, Autonomous Nearshoring AI Heavy-Duty Electric Vehicle (EV) Megawatt Charging System (MCS) & High-Power Fleet Telematics Crucible, Autonomous Nearshoring AI Quantum Cryptography Key Distribution (QKD) & Post-Quantum Cryptography (PQC) Optical Telemetry Crucible, Autonomous Nearshoring AI Submicron Extreme Ultraviolet (EUV) Photolithography & Computational Patterning Crucible, and Autonomous Nearshoring AI Subsea High-Voltage Direct Current (HVDC) Interconnector & Dynamic Subsea Umbilical Cable Crucible.
+ * stemOS Dev Content Studio & Institutional Academic Ecosystem — PWA Service Worker (v6.0.0 Academic Portals & Curricular Engine)
+ * Full offline PWA caching for 4 Portals (Student, Admin, Teacher, Register), 25 Career Paths (60h), Interleaved Curricula, XP HUD, and 3D World Map.
  */
 
-const CACHE_NAME = 'stemos-lxp-v5.38.0-landing-sync';
+const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 
 const ASSETS_TO_CACHE = [
   '/',
@@ -11,10 +11,14 @@ const ASSETS_TO_CACHE = [
   '/styles.css',
   '/app.html',
   '/app.js',
+  '/register.html',
+  '/admin.html',
+  '/teacher.html',
   '/world-map.css',
   '/world-map.js',
   '/content/courses.js',
   '/content/career_tracks.js',
+  '/content/career_paths.js',
   '/content/phrases_library.js',
   '/dev',
   '/dev/',

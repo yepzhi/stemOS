@@ -2363,7 +2363,70 @@ document.addEventListener('DOMContentLoaded', () => {
         const kpiMins = document.getElementById('kpi-time-mins');
         if (kpiHours) kpiHours.textContent = String(hours).padStart(2, '0');
         if (kpiMins) kpiMins.textContent = String(mins).padStart(2, '0');
+
+        // Curricular XP & Student Engineering Level (Fase 53)
+        if (typeof window.updateStudentXPHUD === 'function') {
+            window.updateStudentXPHUD();
+        }
     };
+
+    /* ─── XP & GAMIFICATION ENGINE (FASE 53) ─────────────────────── */
+    const STUDENT_LEVELS = [
+        { level: 1, title: 'Intern', minXP: 0, icon: '🟢', badge: 'L1 Intern' },
+        { level: 2, title: 'Technician', minXP: 500, icon: '🔵', badge: 'L2 Tech' },
+        { level: 3, title: 'Specialist', minXP: 1200, icon: '🟣', badge: 'L3 Spec' },
+        { level: 4, title: 'Engineer', minXP: 2200, icon: '🟠', badge: 'L4 Eng' },
+        { level: 5, title: 'Senior Engineer', minXP: 3500, icon: '🔴', badge: 'L5 Senior' },
+        { level: 6, title: 'Lead', minXP: 5000, icon: '⭐', badge: 'L6 Lead' },
+        { level: 7, title: 'Fellow', minXP: 6500, icon: '💎', badge: 'L7 Fellow' },
+        { level: 8, title: 'Master Fellow', minXP: 8000, icon: '👑', badge: 'L8 Master' }
+    ];
+
+    window.getStudentLevelForXP = function(xp) {
+        let current = STUDENT_LEVELS[0];
+        for (let i = STUDENT_LEVELS.length - 1; i >= 0; i--) {
+            if (xp >= STUDENT_LEVELS[i].minXP) {
+                current = STUDENT_LEVELS[i];
+                break;
+            }
+        }
+        return current;
+    };
+
+    window.updateStudentXPHUD = function(xp) {
+        let currentXP = (typeof xp === 'number') ? xp : parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+        // If active career has saved progress, compute real progress XP
+        const activeCareerId = localStorage.getItem('stemos_active_career') || 'it-mecatronica';
+        try {
+            const raw = localStorage.getItem('stemos_progress_' + activeCareerId);
+            if (raw) {
+                const prog = JSON.parse(raw);
+                if (prog.modules) {
+                    let earned = 0;
+                    for (let m in prog.modules) {
+                        if (prog.modules[m].status === 'completed' && prog.modules[m].xp) {
+                            earned += prog.modules[m].xp;
+                        }
+                    }
+                    if (earned > 0) currentXP = Math.max(currentXP, earned);
+                }
+            }
+        } catch (e) {}
+
+        const level = window.getStudentLevelForXP(currentXP);
+        const elTotalXp = document.getElementById('kpi-total-xp');
+        const elRank = document.getElementById('kpi-student-rank');
+        const elHeaderXp = document.getElementById('header-xp-val');
+        const elHeaderBadge = document.getElementById('header-rank-badge');
+
+        if (elTotalXp) elTotalXp.textContent = currentXP.toLocaleString();
+        if (elRank) elRank.textContent = `L${level.level} · ${level.title}`;
+        if (elHeaderXp) elHeaderXp.textContent = `${currentXP.toLocaleString()} XP`;
+        if (elHeaderBadge) elHeaderBadge.textContent = level.badge;
+    };
+
+    // Initial HUD update
+    window.updateStudentXPHUD();
 
     /* --- 7. GLOSSARY / PHRASES VIEW --- */
     let activeGlossaryCat = 'all';

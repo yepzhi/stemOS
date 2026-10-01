@@ -122,6 +122,10 @@
             <i class="fa-solid fa-chevron-down nav-caret"></i>
           </a>
           <div class="nav-dropdown-menu">
+            <a href="admin.html" class="nav-link" target="_blank"><i class="fa-solid fa-shield-halved" style="color:#0ea5e9;"></i> Portal Admin &amp; School Manager</a>
+            <a href="teacher.html" class="nav-link" target="_blank"><i class="fa-solid fa-chalkboard-user" style="color:#10b981;"></i> Portal Docente &amp; Faculty</a>
+            <a href="register.html" class="nav-link" target="_blank"><i class="fa-solid fa-id-card" style="color:#f59e0b;"></i> Student Onboarding Wizard</a>
+            <a href="app.html" class="nav-link" target="_blank"><i class="fa-solid fa-globe" style="color:#8b5cf6;"></i> Plataforma Estudiantes (LXP 3D)</a>
             <a href="javascript:void(0)" class="nav-link" id="nav-btn-student-registration"><i class="fa-solid fa-compass" style="color:#10b981;"></i> Career Path 60h</a>
             <a href="javascript:void(0)" class="nav-link" id="nav-btn-certificates" onclick="openCertificateModal()"><i class="fa-solid fa-award" style="color:#eab308;"></i> Certificates &amp; QR</a>
             <a href="#nearshoring-talent-hub-section" class="nav-link" id="nav-btn-resume-tailor" onclick="switchHubTab('resume-tailor')"><i class="fa-solid fa-file-invoice" style="color:#10b981;"></i> AI Resume &amp; ATS Tailor</a>
@@ -132,6 +136,12 @@
           </div>
         </div>
       </div>
+
+      <!-- Student Profile Header Badge -->
+      <a href="javascript:void(0)" class="nav-profile-badge" id="header-student-profile-badge" style="display:none; align-items:center; gap:6px; padding:6px 12px; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); border-radius:8px; color:#34d399; font-size:0.8rem; font-weight:700; text-decoration:none;" onclick="openStudentRegistrationModal()">
+        <i class="fa-solid fa-user-graduate"></i>
+        <span id="header-student-badge-text">Profile</span>
+      </a>
 
       <!-- Mobile Hamburger Button -->
       <button id="supaste-nav-mobile-toggle" class="supaste-mobile-nav-toggle" aria-label="Abrir Menú Móvil" onclick="toggleMobileNav()">
@@ -170,6 +180,11 @@
             <a href="app.html" style="color:#10b981; text-decoration:none; font-weight:600;"><i class="fa-solid fa-circle-play"></i> Abrir LXP</a>
           </div>
         </div>
+        <div class="mobile-nav-group-title"><i class="fa-solid fa-graduation-cap"></i> Portales Académicos</div>
+        <a href="admin.html" class="mobile-nav-item" target="_blank"><i class="fa-solid fa-shield-halved" style="color:#0ea5e9;"></i> Portal Admin &amp; School Manager</a>
+        <a href="teacher.html" class="mobile-nav-item" target="_blank"><i class="fa-solid fa-chalkboard-user" style="color:#10b981;"></i> Portal Docente &amp; Faculty</a>
+        <a href="register.html" class="mobile-nav-item" target="_blank"><i class="fa-solid fa-id-card" style="color:#f59e0b;"></i> Student Onboarding Wizard</a>
+        <a href="app.html" class="mobile-nav-item" target="_blank"><i class="fa-solid fa-globe" style="color:#8b5cf6;"></i> Plataforma Estudiantes (LXP 3D)</a>
 
         <div class="mobile-nav-group-title"><i class="fa-solid fa-layer-group"></i> Catálogo ESP</div>
         <a href="#studio-grid" class="mobile-nav-item" onclick="toggleMobileNav(false)" data-filter-jump="all"><i class="fa-solid fa-check"></i> Todos los Tracks (34)</a>

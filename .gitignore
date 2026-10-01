@@ -11,4 +11,5 @@ temp_page_*.png
 .ignore
 docs/
 dist/
+scratch/
 *.pdf

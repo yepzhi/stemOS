@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>stemOS — Technical English Learning Platform for STEM & Engineering</title>
     <meta name="description"
-        content="stemOS is an AI-powered Technical English (ESP) learning platform engineered for STEM disciplines, coding, semiconductors, aerospace, and advanced manufacturing. Master engineering vocabulary, CEFR A2/B1 bilingual fluency, and Socratic AI evaluations.">
+        content="stemOS is an AI-powered Technical English (ESP) learning platform engineered for STEM disciplines, coding, semiconductors, aerospace, and advanced manufacturing. Master engineering vocabulary, CEFR B1 Technical Immersion, and Socratic AI evaluations.">
     <!-- Google Fonts: Instrument Serif, Inter, Outfit, Plus Jakarta Sans & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -123,10 +123,17 @@
                     </div>
 
                     <div class="ed-header-right">
-                        <!-- CEFR Level Indicator -->
-                        <div class="ed-level-indicator" title="Nivel de Inglés Técnico Activo">
+                        <!-- CEFR Level Indicator (Zero A2 Policy) -->
+                        <div class="ed-level-indicator" title="Technical English B1 Immersion Active">
                             <i class="fa-solid fa-language"></i>
-                            <span>Technical English · A2 / B1 Dual CEFR</span>
+                            <span>Technical English · CEFR B1 Industrial Immersion</span>
+                        </div>
+
+                        <!-- Curricular XP & Engineering Rank HUD (Fase 53) -->
+                        <div class="ed-level-indicator" id="header-xp-hud" title="Curricular XP & Engineering Level" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.3); color:#d97706; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-bolt" style="color:#f59e0b;"></i>
+                            <span id="header-xp-val">3,450 XP</span>
+                            <span id="header-rank-badge" style="background:#f59e0b; color:#fff; border-radius:999px; padding:1px 7px; font-size:0.68rem; font-weight:800;">L5 Senior</span>
                         </div>
 
                         <!-- Voice TTS Audio Status -->
@@ -150,11 +157,11 @@
                 </header>
             </div>
 
-            <!-- Scenic Mountain Hero Banner with 3 KPI Cards (English Discoveries Reference) -->
+            <!-- Scenic Mountain Hero Banner with 4 KPI Cards (English Discoveries Reference) -->
             <section class="ed-hero-banner">
                 <div class="ed-hero-scenery-overlay"></div>
 
-                <!-- 3 Floating White KPI Stat Cards -->
+                <!-- 4 Floating White KPI Stat Cards (Fase 53) -->
                 <div class="ed-kpi-cards-grid">
                     <!-- KPI 1: Course Completion -->
                     <div class="ed-kpi-card">
@@ -187,6 +194,17 @@
                             <div class="ed-kpi-value"><span id="kpi-time-hours">41</span> : <span
                                     id="kpi-time-mins">53</span> <span class="ed-kpi-unit">HR MIN</span></div>
                             <div class="ed-kpi-label">Time on Task</div>
+                        </div>
+                    </div>
+
+                    <!-- KPI 4: Curricular XP & Rank (Fase 53) -->
+                    <div class="ed-kpi-card" id="kpi-card-xp">
+                        <div class="ed-kpi-icon-col">
+                            <i class="fa-solid fa-bolt ed-kpi-icon" style="color:#f59e0b;"></i>
+                        </div>
+                        <div class="ed-kpi-info-col">
+                            <div class="ed-kpi-value"><span id="kpi-total-xp">3,450</span> <span class="ed-kpi-unit">XP</span></div>
+                            <div class="ed-kpi-label" id="kpi-student-rank">L5 · Senior Engineer</div>
                         </div>
                     </div>
                 </div>
@@ -273,7 +291,7 @@
                         <div class="ed-hero-content">
                             <div class="ed-specialty-badges">
                                 <span class="ed-category-pill" id="detail-category-pill">🔵 TECHNOLOGY</span>
-                                <span class="ed-level-pill" id="detail-level-pill">Nivel CEFR A2-B1</span>
+                                <span class="ed-level-pill" id="detail-level-pill">CEFR B1 Technical Immersion</span>
                                 <span class="ed-standard-pill" id="detail-standard-pill">Estándar CompTIA /
                                     CONOCER</span>
                             </div>
@@ -773,7 +791,8 @@
     </dialog>
 
     <script>window.NEOSYS_SITE_ID = 'stemos';</script>
-    <script src="https://yepzhi.com/visitors/tracker.js" defer></script>
+    <script src="content/career_tracks.js?v=2.0.0" defer></script>
+    <script src="content/career_paths.js?v=2.0.0" defer></script>
     <script src="content/courses.js" defer></script>
     <script src="content/phrases_library.js" defer></script>
     <script src="app.js" defer></script>
