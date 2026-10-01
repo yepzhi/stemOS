@@ -1623,7 +1623,28 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 
 ---
 
-## Resumen de Archivos Creados/Modificados (Fases 48–57)
+### ✅ FASE 58 (Dev Studio Institutional Academic Command Center & 25-Career Explorer)
+
+#### 58.1 Integración en Superficie de Desarrollo (`dev.html` & `dev/index.html`)
+
+- [x] **Comando de los 4 Portales Académicos Institucionales**:
+  - `admin.html` (School Manager & Matrícula)
+  - `teacher.html` (Portal Docente & Grupos)
+  - `register.html` (Onboarding de Alumno de 7 Pasos)
+  - `app.html` (Campus Estudiantil LXP 3D con Mundo Determinista)
+- [x] **Explorador Interactivo de 25 Carreras de 60 Horas**:
+  - Filtrado dinámico por subsistema: *TecNM (10)*, *Universidades Tecnológicas (6)*, *Universidades Estatales (6)*, *Universidades LATAM (3)*.
+  - Búsqueda en tiempo real por nombre de carrera, estándar industrial aplicable o cluster.
+  - Barra visual de entreverado pedagógico de 16 segmentos (*Theory ➔ English B1 ➔ Lab ➔ Milestone* × 4 Hitos).
+  - Modal interactivo de inspección con desglose de las 16 estaciones deterministas (`window.STEMOS_CAREER_PATHS.getPathForCareer(id)`), horas y XP.
+  - Enlace directo a inscripción preseleccionada (`/register.html?career=<id>`).
+- [x] **Dock Pill & Navegación**:
+  - Acceso directo en el hero dock (`#hero-academic-btn`) y menú principal de navegación.
+  - Suite de pruebas de verificación automatizada: `scripts/test_dev_institutional_section.cjs` (100% aprobada).
+
+---
+
+## Resumen de Archivos Creados/Modificados (Fases 48–58)
 
 | Archivo | Acción | Fase | Estado |
 |---------|--------|------|--------|
@@ -1639,10 +1660,14 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 | `/Users/yepz/stemOS/firebase.json` | **CREAR** | 56 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/firestore.rules` | **CREAR** | 56 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/scripts/test_academic_system.cjs` | **CREAR** | 57 | ✅ 100% Completado (50/50 Tests Pass) |
+| `/Users/yepz/stemOS/dev.html` & `dev/index.html` | **MODIFICAR** | 58 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/dev.js` & `dev/index.js` | **MODIFICAR** | 58 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/dev.css` & `dev/index.css` | **MODIFICAR** | 58 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/scripts/test_dev_institutional_section.cjs` | **CREAR** | 58 | ✅ 100% Completado (14/14 Tests Pass) |
 
 ---
 
-*Estado del Proyecto: Fases 1 a 57 COMPLETADAS y 100% validadas. Master test suite `scripts/test_academic_system.cjs` ejecutado con éxito (Exit Code 0, 50/50 pruebas superadas). stemOS Institutional Ecosystem desplegado y operativo.*
+*Estado del Proyecto: Fases 1 a 58 COMPLETADAS y 100% validadas. Master test suites `scripts/test_academic_system.cjs`, `scripts/test_dom_simulation.cjs` y `scripts/test_dev_institutional_section.cjs` ejecutados con éxito (Exit Code 0). stemOS Institutional Ecosystem & Dev Workbench 100% operativos.*
 
 
 

@@ -24041,3 +24041,265 @@ if (document.readyState === 'loading') {
 }
 
 
+
+/* ══════════════════════════════════════════════════════════════════
+   INSTITUTIONAL ACADEMIC ECOSYSTEM & 60H CAREER PATH EXPLORER
+   ══════════════════════════════════════════════════════════════════ */
+window.initInstitutionalAcademicSection = function() {
+  const container = document.getElementById('inst-careers-grid');
+  const filterBtns = document.querySelectorAll('#inst-subsystem-filters .inst-filter-btn');
+  const searchInput = document.getElementById('inst-career-search');
+  const modal = document.getElementById('inst-career-stations-modal');
+  const modalClose = document.getElementById('inst-modal-close-btn');
+
+  if (!container) return;
+
+  let currentSubsystem = 'all';
+  let searchQuery = '';
+
+  const getCareers = () => {
+    if (typeof window.STEMOS_CAREER_TRACKS !== 'undefined' && Array.isArray(window.STEMOS_CAREER_TRACKS.CAREERS)) {
+      return window.STEMOS_CAREER_TRACKS.CAREERS;
+    }
+    return [];
+  };
+
+  const getSubsystemLabel = (sub) => {
+    switch (sub) {
+      case 'tecnm': return 'TecNM';
+      case 'ut': return 'Univ. Tecnológica';
+      case 'estatales': return 'Univ. Estatal';
+      case 'latam': return 'LATAM';
+      default: return sub ? sub.toUpperCase() : 'GENERAL';
+    }
+  };
+
+  const render = () => {
+    const allCareers = getCareers();
+    const filtered = allCareers.filter(c => {
+      const matchSub = currentSubsystem === 'all' || c.subsystem === currentSubsystem;
+      const q = searchQuery.toLowerCase().trim();
+      const matchSearch = !q || 
+        c.name.toLowerCase().includes(q) ||
+        (c.standards && c.standards.some(s => s.toLowerCase().includes(q))) ||
+        (c.cluster && c.cluster.toLowerCase().includes(q)) ||
+        (c.subsystem && c.subsystem.toLowerCase().includes(q));
+      return matchSub && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #94a3b8; background: rgba(15,23,42,0.4); border-radius: 16px; border: 1px dashed rgba(255,255,255,0.1);">
+          <i class="fa-solid fa-graduation-cap" style="font-size: 2rem; margin-bottom: 12px; color: #38bdf8;"></i>
+          <p style="font-size: 0.95rem; font-weight: 600; color: #ffffff;">No se encontraron carreras con el criterio de búsqueda.</p>
+          <p style="font-size: 0.8rem; color: #64748b;">Intenta seleccionar otro subsistema o limpiar el buscador.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = filtered.map(c => {
+      const standardBadge = c.standards && c.standards[0] ? c.standards[0] : 'ISO Standard';
+      return `
+        <div class="inst-career-card" data-career-id="${c.id}">
+          <div>
+            <div class="inst-career-top-row">
+              <span class="inst-subsystem-tag">${getSubsystemLabel(c.subsystem)}</span>
+              <span class="inst-standard-tag"><i class="fa-solid fa-award"></i> ${standardBadge}</span>
+            </div>
+            <h4 class="inst-career-title">${c.name}</h4>
+            <div class="inst-career-meta-strip">
+              <span><i class="fa-solid fa-clock"></i> 60.0h</span>
+              <span>&bull;</span>
+              <span><i class="fa-solid fa-layer-group"></i> 4 Hitos (16 Módulos)</span>
+              <span>&bull;</span>
+              <span><i class="fa-solid fa-bolt"></i> 5,600 XP</span>
+            </div>
+            
+            <!-- 16-Segment Interleaving Visual Bar (Theory -> B1 -> Lab -> Milestone repeated 4x) -->
+            <div class="inst-interleaving-bar" title="Interleaving Curricular: 4 Estaciones de Teoría, 4 de Inglés B1, 4 de Laboratorio Práctico y 4 Hitos de Evaluación">
+              <div class="inst-bar-segment inst-bar-theory" title="Hito 1: Technical Theory"></div>
+              <div class="inst-bar-segment inst-bar-english" title="Hito 1: Technical English B1"></div>
+              <div class="inst-bar-segment inst-bar-lab" title="Hito 1: Practical Lab Sim"></div>
+              <div class="inst-bar-segment inst-bar-milestone" title="Hito 1: Milestone Checkpoint"></div>
+
+              <div class="inst-bar-segment inst-bar-theory" title="Hito 2: Technical Theory"></div>
+              <div class="inst-bar-segment inst-bar-english" title="Hito 2: Technical English B1"></div>
+              <div class="inst-bar-segment inst-bar-lab" title="Hito 2: Practical Lab Sim"></div>
+              <div class="inst-bar-segment inst-bar-milestone" title="Hito 2: Milestone Checkpoint"></div>
+
+              <div class="inst-bar-segment inst-bar-theory" title="Hito 3: Technical Theory"></div>
+              <div class="inst-bar-segment inst-bar-english" title="Hito 3: Technical English B1"></div>
+              <div class="inst-bar-segment inst-bar-lab" title="Hito 3: Practical Lab Sim"></div>
+              <div class="inst-bar-segment inst-bar-milestone" title="Hito 3: Milestone Checkpoint"></div>
+
+              <div class="inst-bar-segment inst-bar-theory" title="Hito 4: Technical Theory"></div>
+              <div class="inst-bar-segment inst-bar-english" title="Hito 4: Technical English B1"></div>
+              <div class="inst-bar-segment inst-bar-lab" title="Hito 4: Practical Lab Sim"></div>
+              <div class="inst-bar-segment inst-bar-milestone" title="Hito 4: Milestone Checkpoint"></div>
+            </div>
+          </div>
+
+          <div class="inst-career-actions">
+            <button type="button" class="btn-inspect-stations" onclick="window.inspectCareerStations('${c.id}')">
+              <i class="fa-solid fa-list-check"></i>
+              <span>Ver 16 Estaciones</span>
+            </button>
+            <a href="/register.html?career=${c.id}" target="_blank" class="btn-enroll-career" title="Iniciar Onboarding de Alumno">
+              <span>Inscribir</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      `;
+    }).join('');
+  };
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentSubsystem = btn.getAttribute('data-subsystem') || 'all';
+      render();
+    });
+  });
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      render();
+    });
+  }
+
+  if (modalClose && modal) {
+    modalClose.addEventListener('click', () => {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+    });
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+      }
+    });
+  }
+
+  // Initial render
+  render();
+};
+
+window.inspectCareerStations = function(careerId) {
+  const modal = document.getElementById('inst-career-stations-modal');
+  const titleEl = document.getElementById('inst-modal-career-name');
+  const subEl = document.getElementById('inst-modal-career-sub');
+  const bodyEl = document.getElementById('inst-modal-stations-body');
+
+  if (!modal || !bodyEl) return;
+
+  let career = null;
+  if (typeof window.STEMOS_CAREER_TRACKS !== 'undefined') {
+    career = window.STEMOS_CAREER_TRACKS.getCareerById(careerId);
+  }
+
+  let path = null;
+  if (typeof window.STEMOS_CAREER_PATHS !== 'undefined') {
+    path = window.STEMOS_CAREER_PATHS.getPathForCareer(careerId);
+  }
+
+  if (!career && path) {
+    career = { name: path.careerName, subsystem: path.subsystem || 'TecNM' };
+  }
+
+  if (titleEl && career) {
+    titleEl.textContent = `${career.name} (60.0 Horas Auditables)`;
+  }
+  if (subEl && career) {
+    const subName = career.subsystem ? career.subsystem.toUpperCase() : 'TECNM';
+    subEl.textContent = `Subsistema: ${subName} • 16 Estaciones Deterministas • 5,600 XP • Zero A2`;
+  }
+
+  if (path && Array.isArray(path.stations)) {
+    let currentHito = 0;
+    let html = '<div class="inst-stations-timeline">';
+
+    path.stations.forEach((st, idx) => {
+      const hitoNumber = Math.floor(idx / 4) + 1;
+      if (hitoNumber !== currentHito) {
+        currentHito = hitoNumber;
+        html += `
+          <div class="inst-hito-divider">
+            <i class="fa-solid fa-flag-checkered"></i>
+            <span>Hito ${currentHito} &bull; ${currentHito * 15}.0 Horas Acumuladas &bull; 1,400 XP</span>
+          </div>
+        `;
+      }
+
+      let typeBadgeColor = '#38bdf8';
+      let typeLabel = 'Technical Theory';
+      let typeIcon = 'fa-book-open';
+
+      switch (st.type) {
+        case 'theory':
+          typeBadgeColor = '#38bdf8';
+          typeLabel = 'Technical Theory';
+          typeIcon = 'fa-book-open';
+          break;
+        case 'english-b1':
+          typeBadgeColor = '#2dd4bf';
+          typeLabel = 'Technical English B1 (Zero A2)';
+          typeIcon = 'fa-language';
+          break;
+        case 'practical-lab':
+          typeBadgeColor = '#f59e0b';
+          typeLabel = 'Practical Lab Sim';
+          typeIcon = 'fa-flask';
+          break;
+        case 'milestone':
+          typeBadgeColor = '#10b981';
+          typeLabel = 'Milestone Checkpoint & W3C Credential';
+          typeIcon = 'fa-award';
+          break;
+      }
+
+      html += `
+        <div class="inst-station-item">
+          <div class="inst-station-idx" style="background:${typeBadgeColor};">
+            ${idx + 1}
+          </div>
+          <div class="inst-station-details">
+            <div class="inst-station-name">${st.title}</div>
+            <div class="inst-station-tags">
+              <span style="color:${typeBadgeColor}; font-weight:700;"><i class="fa-solid ${typeIcon}"></i> ${typeLabel}</span>
+              <span>&bull;</span>
+              <span><i class="fa-solid fa-clock"></i> ${st.durationHours}h</span>
+              <span>&bull;</span>
+              <span><i class="fa-solid fa-bolt"></i> ${st.xp} XP</span>
+              ${st.standard ? `<span>&bull;</span><span style="color:#fbbf24;"><i class="fa-solid fa-shield"></i> ${st.standard}</span>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    html += '</div>';
+    bodyEl.innerHTML = html;
+  } else {
+    bodyEl.innerHTML = '<p style="color:#94a3b8; text-align:center;">No se encontró el mapa de estaciones para esta carrera.</p>';
+  }
+
+  modal.classList.add('active');
+  modal.setAttribute('aria-hidden', 'false');
+};
+
+// Auto-initialize institutional section
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof window.initInstitutionalAcademicSection === 'function') {
+      window.initInstitutionalAcademicSection();
+    }
+  });
+} else {
+  if (typeof window.initInstitutionalAcademicSection === 'function') {
+    window.initInstitutionalAcademicSection();
+  }
+}
