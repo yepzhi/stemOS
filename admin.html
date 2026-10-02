@@ -2553,6 +2553,7 @@
     </div>
 
     <!-- Career Tracks & Deterministic Paths Catalogs (Required) -->
+    <script src="content/firebase_adapter.js?v=6.1.0"></script>
     <script src="content/career_tracks.js?v=2.0.0"></script>
     <script src="content/career_paths.js?v=2.0.0"></script>
 
@@ -2666,6 +2667,50 @@
                     state.campuses = parsed.campuses || state.campuses;
                     state.periods = parsed.periods || state.periods;
                     state.activities = parsed.activities || state.activities;
+                }
+
+                // Sync registered students & classes from universal Firebase adapter (Phase 59)
+                if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.getStudents === 'function') {
+                    const fbStudents = window.STEMOS_FIREBASE.getStudents();
+                    fbStudents.forEach(fbs => {
+                        if (!state.students.some(s => s.id === fbs.id || (s.studentId && s.studentId === fbs.matricula))) {
+                            state.students.unshift({
+                                id: fbs.id,
+                                name: fbs.name,
+                                studentId: fbs.matricula || '22050144',
+                                career: fbs.careerName || 'Engineering Track',
+                                classId: fbs.classId || 'c1',
+                                className: fbs.className || 'Independent Study',
+                                progress: fbs.progress || 0,
+                                xp: fbs.xp || 0,
+                                modules: fbs.modulesCompleted || 0,
+                                lastActive: 'Just now'
+                            });
+                        }
+                    });
+                }
+                if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.getClasses === 'function') {
+                    const fbClasses = window.STEMOS_FIREBASE.getClasses();
+                    fbClasses.forEach(fbc => {
+                        const existing = state.classes.find(c => c.id === fbc.id || (c.code && fbc.inviteCode && c.code === fbc.inviteCode));
+                        if (!existing) {
+                            state.classes.unshift({
+                                id: fbc.id,
+                                name: fbc.name,
+                                code: fbc.inviteCode || fbc.code,
+                                teacherId: fbc.teacherId || 't1',
+                                teacherName: fbc.teacherName || 'Assigned Faculty',
+                                careerId: fbc.careerId || 'it-mecatronica',
+                                careerName: fbc.careerName || 'Engineering Track',
+                                studentsCount: fbc.studentsCount || 0,
+                                avgProgress: fbc.avgProgress || 0,
+                                avgXp: fbc.avgXp || 0,
+                                status: fbc.status || 'active'
+                            });
+                        } else {
+                            existing.studentsCount = Math.max(existing.studentsCount, fbc.studentsCount || 0);
+                        }
+                    });
                 }
             } catch (err) {
                 console.warn('Error reading stored state:', err);
@@ -3524,6 +3569,22 @@
             };
 
             state.classes.unshift(newClass);
+
+            // Register in universal Firebase adapter
+            if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.createClass === 'function') {
+                try {
+                    window.STEMOS_FIREBASE.createClass({
+                        name: name,
+                        careerId: careerId,
+                        careerName: careerName,
+                        teacherId: teacherId,
+                        teacherName: teacherName,
+                        maxCapacity: studentsCount
+                    });
+                } catch(err) {
+                    console.warn('[stemOS Admin] Firebase adapter createClass sync error:', err);
+                }
+            }
 
             // Add activity stream event
             state.activities.unshift({

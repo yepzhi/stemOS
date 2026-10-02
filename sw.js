@@ -3,7 +3,7 @@
  * Full offline PWA caching for 4 Portals (Student, Admin, Teacher, Register), 25 Career Paths (60h), Interleaved Curricula, XP HUD, and 3D World Map.
  */
 
-const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
+const CACHE_NAME = 'stemos-lxp-v6.1.0-firebase-sync';
 
 const ASSETS_TO_CACHE = [
   '/',
@@ -19,6 +19,7 @@ const ASSETS_TO_CACHE = [
   '/content/courses.js',
   '/content/career_tracks.js',
   '/content/career_paths.js',
+  '/content/firebase_adapter.js',
   '/content/phrases_library.js',
   '/dev',
   '/dev/',

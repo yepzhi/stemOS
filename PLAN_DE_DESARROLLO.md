@@ -1644,30 +1644,71 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 
 ---
 
-## Resumen de Archivos Creados/Modificados (Fases 48–58)
+### ✅ FASE 59 (Universal Firebase Cloud & Offline Hybrid Adapter, Cross-Portal Roster Sync & Student Profile Bridge)
 
-| Archivo | Acción | Fase | Estado |
-|---------|--------|------|--------|
-| `/Users/yepz/stemOS/admin.html` | **CREAR** | 48, 54 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/teacher.html` | **CREAR** | 49, 54 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/register.html` | **REFACTOR TOTAL** | 50 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/content/career_paths.js` | **CREAR** | 51, 52 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/app.html` | **MODIFICAR** (XP HUD) | 53, 55 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/app.js` | **MODIFICAR** (XP engine, 8 tiers) | 53 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/world-map.js` | **MODIFICAR** (interleaving, gating) | 52 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/styles.css` | **MODIFICAR** (4-col KPI grid) | 53 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/sw.js` | **MODIFICAR** (cache v6.0.0) | 57 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/firebase.json` | **CREAR** | 56 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/firestore.rules` | **CREAR** | 56 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/scripts/test_academic_system.cjs` | **CREAR** | 57 | ✅ 100% Completado (50/50 Tests Pass) |
-| `/Users/yepz/stemOS/dev.html` & `dev/index.html` | **MODIFICAR** | 58 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/dev.js` & `dev/index.js` | **MODIFICAR** | 58 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/dev.css` & `dev/index.css` | **MODIFICAR** | 58 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/scripts/test_dev_institutional_section.cjs` | **CREAR** | 58 | ✅ 100% Completado (14/14 Tests Pass) |
+#### 59.1 Adaptador Universal de Datos Firebase & Fallback Offline Híbrido (`content/firebase_adapter.js`)
+- [x] **Arquitectura de Persistencia Híbrida v6.1.0**:
+  - Conector universal que detecta automáticamente si el SDK de Firebase Web está activo para conmutar entre `Cloud Firestore` y `Air-Gapped Offline LocalStorage Cache`.
+  - Alineado con las reglas de seguridad multi-tenant de `firestore.rules` y la arquitectura por institución (`/institutions/{institutionId}/classes`, `/students`, `/teachers`, `/audit_logs`).
+  - Gestor de sesión y autenticación unificada (`getAuthUser`, `setAuthUser`, `logout`).
+  - Motor de resolución y verificación de códigos de invitación (`getClassByCode`, `createClass`) con formato estandarizado `STEM-[CAREER_PREFIX]-[RANDOM6]`.
+  - Generador de bitácora inmutable de auditoría (`createAuditLog`) con sello de tiempo ISO 8601 conforme a **ISO 9001:2015 Cláusula 7.2**.
+
+#### 59.2 Puente Dinámico de Identidad del Alumno & Credencial Digital (`app.html` & `app.js`)
+- [x] **HUD de Identidad del Estudiante Activo**:
+  - Saludo reactivo en el top header con el nombre del alumno registrado (`#header-student-name`).
+  - Badge de subsistema educativo oficial (`#header-student-subsystem`: TecNM, UT, Univ. Estatal, LATAM) con estilo visual glassmorphic.
+  - Iniciales del avatar dinámicas extraídas del nombre del estudiante.
+  - Inicializador `window.initStudentProfileBridge()` y puente con `stemos_student_profile`.
+- [x] **Modal de Credencial Digital del Alumno (`#student-profile-modal`)**:
+  - Interfaz emergente accesible mediante clic en el saludo o avatar del estudiante.
+  - Desglose institucional: Nombre completo, Matrícula / Folio, Carrera de 60 horas, Hub Industrial (Saltillo, Monterrey, Tijuana, etc.), Grupo / Cohorte asignada y Nivel de Ingeniería actual con XP.
+  - Indicador de estado de sincronización en la nube (`#sp-modal-conn`) con badge visual (`Hybrid Sync Active` o `Firestore Connected`).
+  - Enlace rápido para cambiar de carrera o re-inscribirse mediante `/register.html`.
+
+#### 59.3 Sincronización de Roster y Matrícula Cross-Portal (`register.html`, `teacher.html`, `admin.html`)
+- [x] **Onboarding con Alta en Base de Datos Unificada**:
+  - Al completar el registro en `register.html`, la función `STEMOS_FIREBASE.registerStudent(...)` registra al alumno, incrementa la matrícula del grupo correspondiente, actualiza la bitácora de auditoría e inyecta la actividad en el feed en tiempo real.
+- [x] **Reflejo Inmediato en Portales Docente y Administrativo**:
+  - `teacher.html` sincroniza automáticamente los nuevos alumnos matriculados en `INITIAL_STUDENT_ROSTERS[classId]`.
+  - `admin.html` incorpora alumnos y clases creadas en la base central, actualizando KPIs globales y tablas institucionales.
+
+#### 59.4 Caché PWA v6.1.0 & Suite de Pruebas Automatizadas
+- [x] **Actualización de Service Worker (`sw.js`)**:
+  - `CACHE_NAME` actualizado a `stemos-lxp-v6.1.0-firebase-sync`.
+  - Inclusión de `/content/firebase_adapter.js` en la lista de recursos críticos para funcionamiento 100% offline.
+- [x] **Suite de Verificación E2E (`scripts/test_phase59_firebase_sync.cjs`)**:
+  - 42/42 pruebas unitarias y de integración aprobadas al 100% cubriendo: integridad del adaptador, resolución de códigos de clase, creación de grupos, registro de alumnos, recálculo de métricas, marcado HTML de portales y Service Worker.
 
 ---
 
-*Estado del Proyecto: Fases 1 a 58 COMPLETADAS y 100% validadas. Master test suites `scripts/test_academic_system.cjs`, `scripts/test_dom_simulation.cjs` y `scripts/test_dev_institutional_section.cjs` ejecutados con éxito (Exit Code 0). stemOS Institutional Ecosystem & Dev Workbench 100% operativos.*
+## Resumen de Archivos Creados/Modificados (Fases 48–59)
+
+| Archivo | Acción | Fase | Estado |
+|---------|--------|------|--------|
+| `/Users/yepz/stemOS/admin.html` | **CREAR / MODIFICAR** | 48, 54, 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/teacher.html` | **CREAR / MODIFICAR** | 49, 54, 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/register.html` | **REFACTOR / MODIFICAR** | 50, 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/content/career_paths.js` | **CREAR** | 51, 52 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/content/firebase_adapter.js` | **CREAR** | 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/app.html` | **MODIFICAR** (XP HUD & Pass Modal) | 53, 55, 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/app.js` | **MODIFICAR** (XP engine, Profile Bridge) | 53, 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/world-map.js` | **MODIFICAR** (interleaving, gating) | 52 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/styles.css` | **MODIFICAR** (4-col KPI grid) | 53 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/sw.js` | **MODIFICAR** (cache v6.1.0) | 57, 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/firebase.json` | **CREAR** | 56 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/firestore.rules` | **CREAR** | 56 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/scripts/test_academic_system.cjs` | **CREAR / MODIFICAR** | 57, 59 | ✅ 100% Completado (50/50 Tests Pass) |
+| `/Users/yepz/stemOS/scripts/test_dev_institutional_section.cjs` | **CREAR** | 58 | ✅ 100% Completado (14/14 Tests Pass) |
+| `/Users/yepz/stemOS/scripts/test_phase59_firebase_sync.cjs` | **CREAR** | 59 | ✅ 100% Completado (42/42 Tests Pass) |
+| `/Users/yepz/stemOS/dev.html` & `dev/index.html` | **MODIFICAR** | 58, 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/dev.js` & `dev/index.js` | **MODIFICAR** | 58 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/dev.css` & `dev/index.css` | **MODIFICAR** | 58 | ✅ 100% Completado |
+
+---
+
+*Estado del Proyecto: Fases 1 a 59 COMPLETADAS y 100% validadas. Master test suites `scripts/test_academic_system.cjs`, `scripts/test_dom_simulation.cjs`, `scripts/test_dev_institutional_section.cjs` y `scripts/test_phase59_firebase_sync.cjs` ejecutados con éxito (Exit Code 0). stemOS Institutional Ecosystem & Dev Workbench 100% operativos.*
+
 
 
 

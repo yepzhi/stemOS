@@ -1318,6 +1318,7 @@
     </main>
 
     <!-- Career Tracks Database & Wizard Controller Scripts -->
+    <script src="content/firebase_adapter.js?v=6.1.0"></script>
     <script src="content/career_tracks.js?v=2.0.0"></script>
     <script>
         'use strict';
@@ -1560,7 +1561,11 @@
             const details = document.getElementById('verified-class-details');
 
             // Look up in known demo classes or stored classes
-            let matchedClass = DEMO_CLASSES[code];
+            let matchedClass = null;
+            if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.getClassByCode === 'function') {
+                matchedClass = window.STEMOS_FIREBASE.getClassByCode(code);
+            }
+            if (!matchedClass) matchedClass = DEMO_CLASSES[code];
             if (!matchedClass) {
                 try {
                     const stored = JSON.parse(localStorage.getItem('stemos_teacher_classes') || '[]');
@@ -1806,6 +1811,27 @@
                 progressPercent: 0,
                 xp: 0
             };
+
+            // Register in universal ecosystem adapter
+            if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.registerStudent === 'function') {
+                try {
+                    window.STEMOS_FIREBASE.registerStudent({
+                        studentId: d.folio || d.matricula,
+                        matricula: d.matricula,
+                        name: d.fullName,
+                        email: d.email,
+                        system: d.subsystem,
+                        careerId: d.careerId,
+                        careerName: d.careerName || profile.careerName,
+                        hub: d.hub,
+                        classCode: d.classCode,
+                        classId: d.classId,
+                        className: d.className
+                    });
+                } catch(e) {
+                    console.warn('[stemOS Register] Firebase adapter sync failed:', e);
+                }
+            }
 
             localStorage.setItem('stemos_student_profile', JSON.stringify(profile));
             localStorage.setItem('stemos_active_career', d.careerId);

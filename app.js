@@ -2428,6 +2428,134 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial HUD update
     window.updateStudentXPHUD();
 
+    /* --- 6.1 STUDENT IDENTITY & INSTITUTIONAL PASS BRIDGE (FASE 59) --- */
+    window.initStudentProfileBridge = function() {
+        let profile = null;
+        try {
+            const raw = localStorage.getItem('stemos_student_profile');
+            if (raw) profile = JSON.parse(raw);
+            else if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.getAuthUser === 'function') {
+                profile = window.STEMOS_FIREBASE.getAuthUser();
+            }
+        } catch (e) {}
+
+        if (!profile) {
+            profile = {
+                name: 'Diana Laura Morales',
+                matricula: '22050144',
+                careerId: localStorage.getItem('stemos_active_career') || 'it-mecatronica',
+                careerName: 'Ingeniería Mecatrónica',
+                subsystem: 'it',
+                system: 'it',
+                hub: 'Saltillo',
+                className: 'Mecatrónica 4°A — Matutino',
+                classCode: 'STEM-MECA-A7X3K2'
+            };
+        }
+
+        const elName = document.getElementById('header-student-name');
+        if (elName && profile.name) {
+            const firstName = profile.name.split(' ')[0] || profile.name;
+            elName.textContent = firstName;
+        }
+
+        const elSubsystem = document.getElementById('header-student-subsystem');
+        if (elSubsystem) {
+            const sys = (profile.subsystem || profile.system || 'it').toLowerCase();
+            const sysLabels = {
+                'it': 'TecNM',
+                'tecnm': 'TecNM',
+                'ut': 'UT',
+                'estatal': 'Univ. Estatal',
+                'univ-estatal': 'Univ. Estatal',
+                'latam': 'LATAM'
+            };
+            elSubsystem.textContent = sysLabels[sys] || 'TecNM';
+        }
+
+        const elAvatarInitials = document.querySelector('.avatar-initials-mini');
+        if (elAvatarInitials && profile.name) {
+            const parts = profile.name.trim().split(/\s+/);
+            const initials = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : parts[0].substring(0, 2).toUpperCase();
+            elAvatarInitials.textContent = initials;
+        }
+
+        // Set up click on greeting or avatar
+        const elGreeting = document.getElementById('student-greeting-wrapper');
+        if (elGreeting) {
+            elGreeting.onclick = window.openStudentProfileModal;
+        }
+        const elAvatar = document.getElementById('header-user-avatar');
+        if (elAvatar) {
+            elAvatar.onclick = window.openStudentProfileModal;
+        }
+    };
+
+    window.openStudentProfileModal = function() {
+        const modal = document.getElementById('student-profile-modal');
+        if (!modal) return;
+
+        // Populate modal data
+        let profile = null;
+        try {
+            const raw = localStorage.getItem('stemos_student_profile');
+            if (raw) profile = JSON.parse(raw);
+        } catch(e) {}
+
+        const activeCareerId = localStorage.getItem('stemos_active_career') || 'it-mecatronica';
+        const currentXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+        const level = window.getStudentLevelForXP(currentXP);
+
+        const nameEl = document.getElementById('sp-modal-name');
+        const matriculaEl = document.getElementById('sp-modal-matricula');
+        const careerEl = document.getElementById('sp-modal-career');
+        const hubEl = document.getElementById('sp-modal-hub');
+        const classEl = document.getElementById('sp-modal-class');
+        const xpEl = document.getElementById('sp-modal-xp');
+        const rankEl = document.getElementById('sp-modal-rank');
+        const connEl = document.getElementById('sp-modal-conn');
+
+        if (nameEl) nameEl.textContent = (profile && profile.name) ? profile.name : 'Diana Laura Morales';
+        if (matriculaEl) matriculaEl.textContent = (profile && (profile.matricula || profile.folio)) ? (profile.matricula || profile.folio) : '22050144';
+        if (careerEl) {
+            let cName = (profile && profile.careerName) ? profile.careerName : 'Ingeniería Mecatrónica';
+            if (window.STEMOS_CAREER_TRACKS && window.STEMOS_CAREER_TRACKS.CAREERS) {
+                const cObj = window.STEMOS_CAREER_TRACKS.CAREERS.find(c => c.id === activeCareerId);
+                if (cObj) cName = cObj.name;
+            }
+            careerEl.textContent = cName;
+        }
+        if (hubEl) hubEl.textContent = (profile && profile.hub) ? profile.hub : 'Saltillo (Nearshoring Hub)';
+        if (classEl) classEl.textContent = (profile && (profile.className || profile.classCode)) ? `${profile.className || ''} [${profile.classCode || 'Code'}]` : 'Mecatrónica 4°A [STEM-MECA-A7X3K2]';
+        if (xpEl) xpEl.textContent = `${currentXP.toLocaleString()} XP`;
+        if (rankEl) rankEl.textContent = `L${level.level} · ${level.title}`;
+
+        if (connEl && window.STEMOS_FIREBASE) {
+            const status = window.STEMOS_FIREBASE.getConnectionStatus();
+            connEl.innerHTML = `<span class="badge ${status.badgeClass}"><i class="fa-solid ${status.icon}"></i> ${status.label}</span>`;
+        }
+
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeStudentProfileModal = function() {
+        const modal = document.getElementById('student-profile-modal');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    };
+
+    window.handleStudentProfileBackdrop = function(e) {
+        if (e.target.id === 'student-profile-modal') {
+            window.closeStudentProfileModal();
+        }
+    };
+
+    // Auto-initialize profile bridge on load
+    window.initStudentProfileBridge();
+
     /* --- 7. GLOSSARY / PHRASES VIEW --- */
     let activeGlossaryCat = 'all';
     let activeGlossarySearchQuery = '';

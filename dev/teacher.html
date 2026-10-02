@@ -1678,6 +1678,7 @@
     </div>
 
     <!-- Career Tracks Catalogs (Required) -->
+    <script src="content/firebase_adapter.js?v=6.1.0"></script>
     <script src="content/career_tracks.js?v=2.0.0"></script>
     <script src="content/career_paths.js?v=2.0.0"></script>
 
@@ -1768,6 +1769,31 @@
                 } else {
                     // Default to t1 for instant testing
                     state.auth = DEMO_TEACHERS.t1;
+                }
+
+                // Sync registered students from universal Firebase adapter (Phase 59)
+                if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.getStudents === 'function') {
+                    const fbStudents = window.STEMOS_FIREBASE.getStudents();
+                    fbStudents.forEach(fbs => {
+                        const targetClassId = fbs.classId || 'c1';
+                        if (!INITIAL_STUDENT_ROSTERS[targetClassId]) {
+                            INITIAL_STUDENT_ROSTERS[targetClassId] = [];
+                        }
+                        const roster = INITIAL_STUDENT_ROSTERS[targetClassId];
+                        if (!roster.some(s => s.id === fbs.id || (s.matricula && s.matricula === fbs.matricula))) {
+                            roster.unshift({
+                                id: fbs.id,
+                                name: fbs.name,
+                                matricula: fbs.matricula || '22050144',
+                                progress: fbs.progress || 0,
+                                xp: fbs.xp || 0,
+                                modulesDone: fbs.modulesCompleted || 0,
+                                currentModule: 'M01: Industry SOPs & Safety Protocols',
+                                lastActive: 'Just now',
+                                daysInactive: 0
+                            });
+                        }
+                    });
                 }
             } catch (err) {
                 console.warn('Error reading stored state:', err);
