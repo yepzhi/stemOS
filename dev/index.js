@@ -24440,3 +24440,401 @@ window.toggleSandboxFullscreen = function() {
     document.body.style.overflow = '';
   }
 };
+
+// ══════════════════════════════════════════════════════════════════
+// FASE 61: Live Telemetry Inspector, Persona Switcher & Cross-Portal Synchronizer
+// ══════════════════════════════════════════════════════════════════
+
+const _stemosMemStorage = {};
+function _stemosGetItem(k) {
+  try { return localStorage.getItem(k); } catch(e) { return _stemosMemStorage[k] || null; }
+}
+function _stemosSetItem(k, v) {
+  try { localStorage.setItem(k, v); } catch(e) { _stemosMemStorage[k] = v; }
+}
+function _stemosRemoveItem(k) {
+  try { localStorage.removeItem(k); } catch(e) { delete _stemosMemStorage[k]; }
+}
+
+window.INSTITUTIONAL_PERSONAS = {
+  admin_rector: {
+    id: 'admin_rector',
+    displayName: 'Dr. Alejandro Villarreal',
+    role: 'admin',
+    roleLabel: 'Rector / High Admin',
+    email: 'a.villarreal@saltillo.tecnm.mx',
+    institutionId: 'tecnm-saltillo',
+    institutionName: 'TecNM Saltillo (Campus Poniente)',
+    subsystem: 'tecnm',
+    targetPortal: 'admin',
+    queryParams: ''
+  },
+  faculty_docente: {
+    id: 'faculty_docente',
+    displayName: 'Dra. Elena Morales',
+    role: 'teacher',
+    roleLabel: 'Faculty / Titular Docente',
+    email: 'elena.morales@saltillo.tecnm.mx',
+    institutionId: 'tecnm-saltillo',
+    institutionName: 'TecNM Saltillo',
+    subsystem: 'tecnm',
+    classId: 'class-meca-4a',
+    classCode: 'STEM-MECA-A7X3K2',
+    targetPortal: 'teacher',
+    queryParams: '?group=class-meca-4a'
+  },
+  student_advanced: {
+    id: 'student_advanced',
+    displayName: 'Carlos Mendoza',
+    role: 'student',
+    roleLabel: 'Estudiante LXP (Activo)',
+    matricula: '2026-TECNM-0412',
+    email: 'carlos.mendoza@alumnos.saltillo.tecnm.mx',
+    institutionId: 'tecnm-saltillo',
+    institutionName: 'TecNM Saltillo',
+    subsystem: 'tecnm',
+    classId: 'class-meca-4a',
+    classCode: 'STEM-MECA-A7X3K2',
+    careerId: 'it-mecatronica',
+    careerName: 'Ingeniería Mecatrónica Industrial',
+    totalXp: 3450,
+    currentLevel: 5,
+    currentLevelTitle: 'Senior Engineer',
+    currentLevelIcon: '🔴',
+    currentHito: 3,
+    modulesCompleted: 11,
+    modulesTotal: 16,
+    progressPercent: 68.75,
+    hoursCompleted: 38.5,
+    streak: 5,
+    targetPortal: 'app',
+    queryParams: ''
+  },
+  student_new: {
+    id: 'student_new',
+    displayName: 'Aspirante Sin Registro',
+    role: 'guest',
+    roleLabel: 'Aspirante Nuevo Ingreso',
+    email: '',
+    institutionId: '',
+    institutionName: 'Sin Asignar',
+    subsystem: '',
+    classId: null,
+    classCode: null,
+    careerId: null,
+    careerName: 'Sin Seleccionar',
+    totalXp: 0,
+    currentLevel: 1,
+    currentLevelTitle: 'Intern',
+    currentLevelIcon: '🟢',
+    currentHito: 1,
+    modulesCompleted: 0,
+    modulesTotal: 16,
+    progressPercent: 0,
+    hoursCompleted: 0,
+    streak: 0,
+    targetPortal: 'register',
+    queryParams: ''
+  }
+};
+
+window.currentInstitutionalPersonaId = 'admin_rector';
+
+window.selectInstitutionalPersona = function(personaKey) {
+  const persona = window.INSTITUTIONAL_PERSONAS[personaKey];
+  if (!persona) return;
+
+  window.currentInstitutionalPersonaId = personaKey;
+
+  // Update UI chips
+  const personaBtns = document.querySelectorAll('.inst-persona-btn');
+  personaBtns.forEach(btn => {
+    if (btn.getAttribute('data-persona') === personaKey) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  try {
+    if (personaKey === 'student_new') {
+      _stemosRemoveItem('stemos_student_profile');
+      _stemosRemoveItem('stemos_active_career');
+      _stemosRemoveItem('stemos_auth_user');
+      _stemosRemoveItem('stemos_admin_auth');
+      _stemosRemoveItem('stemos_teacher_auth');
+    } else if (persona.role === 'admin') {
+      const adminUser = {
+        uid: 'admin-1',
+        displayName: persona.displayName,
+        role: 'admin',
+        email: persona.email,
+        institutionId: persona.institutionId,
+        subsystem: persona.subsystem
+      };
+      _stemosSetItem('stemos_auth_user', JSON.stringify(adminUser));
+      _stemosSetItem('stemos_admin_auth', JSON.stringify({
+        authenticated: true,
+        name: persona.displayName,
+        institutionId: persona.institutionId,
+        email: persona.email
+      }));
+    } else if (persona.role === 'teacher') {
+      const teacherUser = {
+        uid: 'teacher-1',
+        displayName: persona.displayName,
+        role: 'teacher',
+        email: persona.email,
+        institutionId: persona.institutionId,
+        subsystem: persona.subsystem,
+        classId: persona.classId,
+        classCode: persona.classCode
+      };
+      _stemosSetItem('stemos_auth_user', JSON.stringify(teacherUser));
+      _stemosSetItem('stemos_teacher_auth', JSON.stringify({
+        authenticated: true,
+        id: 'teacher-1',
+        name: persona.displayName,
+        institutionId: persona.institutionId,
+        email: persona.email
+      }));
+    } else if (persona.role === 'student') {
+      const studentProfile = {
+        studentId: 'std-' + persona.matricula,
+        name: persona.displayName,
+        matricula: persona.matricula,
+        email: persona.email,
+        institutionId: persona.institutionId,
+        system: persona.subsystem === 'tecnm' ? 'it' : persona.subsystem,
+        hub: 'Saltillo',
+        careerId: persona.careerId,
+        careerName: persona.careerName,
+        classId: persona.classId,
+        classCode: persona.classCode,
+        totalXp: persona.totalXp,
+        currentLevel: persona.currentLevel,
+        currentLevelTitle: persona.currentLevelTitle,
+        modulesCompleted: persona.modulesCompleted,
+        modulesTotal: persona.modulesTotal,
+        currentHito: persona.currentHito,
+        progressPercent: persona.progressPercent,
+        hoursCompleted: persona.hoursCompleted,
+        streak: persona.streak,
+        registeredAt: new Date().toISOString()
+      };
+      _stemosSetItem('stemos_student_profile', JSON.stringify(studentProfile));
+      _stemosSetItem('stemos_active_career', persona.careerId);
+      _stemosSetItem('stemos_auth_user', JSON.stringify({
+        uid: studentProfile.studentId,
+        displayName: studentProfile.name,
+        role: 'student',
+        email: studentProfile.email,
+        institutionId: studentProfile.institutionId,
+        classId: studentProfile.classId,
+        classCode: studentProfile.classCode,
+        careerId: studentProfile.careerId
+      }));
+    }
+  } catch (e) {
+    console.warn('[stemOS Persona Switcher] Error saving state:', e);
+  }
+
+  // Switch to target portal in embedded sandbox
+  window.switchEmbeddedPortal(persona.targetPortal, null, persona.queryParams);
+
+  // Refresh Telemetry Display
+  window.refreshSandboxTelemetry();
+};
+
+window.refreshSandboxTelemetry = function() {
+  const nameEl = document.getElementById('inst-telem-name');
+  const roleEl = document.getElementById('inst-telem-role');
+  const instEl = document.getElementById('inst-telem-inst');
+  const careerEl = document.getElementById('inst-telem-career');
+  const classCodeEl = document.getElementById('inst-telem-classcode');
+  const xpEl = document.getElementById('inst-telem-xp');
+  const levelEl = document.getElementById('inst-telem-level');
+  const progressPercentEl = document.getElementById('inst-telem-progress-pct');
+  const progressModulesEl = document.getElementById('inst-telem-progress-modules');
+  const progressBarEl = document.getElementById('inst-telem-progress-bar');
+  const auditListEl = document.getElementById('inst-telem-audit-list');
+
+  let auth = null;
+  let student = null;
+  try {
+    const rawAuth = _stemosGetItem('stemos_auth_user');
+    if (rawAuth) auth = JSON.parse(rawAuth);
+    const rawStudent = _stemosGetItem('stemos_student_profile');
+    if (rawStudent) student = JSON.parse(rawStudent);
+  } catch (e) {}
+
+  if (nameEl) {
+    nameEl.textContent = (auth && auth.displayName) || (student && student.name) || 'Invitado (Sin Sesión)';
+  }
+
+  if (roleEl) {
+    const role = (auth && auth.role) || (student ? 'student' : 'guest');
+    roleEl.textContent = role.toUpperCase();
+    roleEl.className = 'inst-telem-badge ' + (role === 'admin' ? 'role-admin' : role === 'teacher' ? 'role-teacher' : role === 'student' ? 'role-student' : 'role-guest');
+  }
+
+  if (instEl) {
+    instEl.textContent = (auth && auth.institutionId ? auth.institutionId.toUpperCase() : (student && student.institutionId ? student.institutionId.toUpperCase() : 'TECNM-SALTILLO'));
+  }
+
+  if (careerEl) {
+    careerEl.textContent = (student && student.careerName) || (student && student.careerId) || 'Mecatrónica Industrial 60h';
+  }
+
+  if (classCodeEl) {
+    classCodeEl.textContent = (student && student.classCode) || (auth && auth.classCode) || 'STEM-MECA-A7X3K2';
+  }
+
+  if (xpEl) {
+    xpEl.textContent = `${(student && student.totalXp) || 0} XP`;
+  }
+
+  if (levelEl) {
+    levelEl.textContent = (student && student.currentLevelTitle) || 'Intern';
+  }
+
+  const pct = (student && student.progressPercent) || 0;
+  const mods = (student && student.modulesCompleted) || 0;
+  if (progressPercentEl) progressPercentEl.textContent = `${pct}%`;
+  if (progressModulesEl) progressModulesEl.textContent = `${mods}/16 Módulos`;
+  if (progressBarEl) progressBarEl.style.width = `${pct}%`;
+
+  if (auditListEl) {
+    let logs = [];
+    try {
+      const rawLogs = _stemosGetItem('stemos_audit_logs');
+      if (rawLogs) logs = JSON.parse(rawLogs);
+    } catch (e) {}
+
+    if (!Array.isArray(logs) || logs.length === 0) {
+      logs = [
+        { action: 'PORTAL_BOOT', detail: 'Dev Studio Zero-Navigation Sandbox Initialized', timestamp: new Date().toISOString() },
+        { action: 'HYBRID_SYNC', detail: 'Universal Firebase Adapter active in Local-Airgapped mode', timestamp: new Date().toISOString() }
+      ];
+    }
+
+    auditListEl.innerHTML = logs.slice(0, 4).map(l => `
+      <div class="inst-audit-pill">
+        <span class="inst-audit-tag">${l.action || 'EVENT'}</span>
+        <span class="inst-audit-desc">${l.detail || l.action}</span>
+        <span class="inst-audit-time">${new Date(l.timestamp || Date.now()).toLocaleTimeString()}</span>
+      </div>
+    `).join('');
+  }
+};
+
+window.seedInstitutionalDemoData = function() {
+  const demoStudent = {
+    studentId: 'std-2026-TECNM-0412',
+    name: 'Carlos Mendoza',
+    matricula: '2026-TECNM-0412',
+    email: 'carlos.mendoza@alumnos.saltillo.tecnm.mx',
+    institutionId: 'tecnm-saltillo',
+    system: 'it',
+    hub: 'Saltillo',
+    careerId: 'it-mecatronica',
+    careerName: 'Ingeniería Mecatrónica Industrial',
+    classId: 'class-meca-4a',
+    classCode: 'STEM-MECA-A7X3K2',
+    totalXp: 3450,
+    currentLevel: 5,
+    currentLevelTitle: 'Senior Engineer',
+    modulesCompleted: 11,
+    modulesTotal: 16,
+    currentHito: 3,
+    progressPercent: 68.75,
+    hoursCompleted: 38.5,
+    streak: 5,
+    registeredAt: '2026-08-20T10:00:00.000Z'
+  };
+
+  const demoAuditLogs = [
+    { id: 'log-1', action: 'STUDENT_ENROLLED', detail: 'Carlos Mendoza matriculado en IT Mecatrónica', timestamp: new Date(Date.now() - 3600000).toISOString() },
+    { id: 'log-2', action: 'MILESTONE_AWARD', detail: 'Hito 2 Checkpoint completado (1,400 XP)', timestamp: new Date(Date.now() - 1800000).toISOString() },
+    { id: 'log-3', action: 'AUDIT_EXPORT', detail: 'Reporte ISO 9001:2015 cohorte Saltillo generado', timestamp: new Date(Date.now() - 600000).toISOString() }
+  ];
+
+  try {
+    _stemosSetItem('stemos_student_profile', JSON.stringify(demoStudent));
+    _stemosSetItem('stemos_active_career', 'it-mecatronica');
+    _stemosSetItem('stemos_audit_logs', JSON.stringify(demoAuditLogs));
+  } catch (e) {}
+
+  window.selectInstitutionalPersona('student_advanced');
+};
+
+window.resetInstitutionalSandboxState = function() {
+  try {
+    _stemosRemoveItem('stemos_student_profile');
+    _stemosRemoveItem('stemos_active_career');
+    _stemosRemoveItem('stemos_auth_user');
+    _stemosRemoveItem('stemos_admin_auth');
+    _stemosRemoveItem('stemos_teacher_auth');
+    _stemosRemoveItem('stemos_audit_logs');
+  } catch (e) {}
+
+  window.selectInstitutionalPersona('student_new');
+};
+
+window.exportInstitutionalState = function() {
+  const snapshot = {
+    version: '6.1.0-phase61',
+    exportedAt: new Date().toISOString(),
+    auth: _stemosGetItem('stemos_auth_user'),
+    student: _stemosGetItem('stemos_student_profile'),
+    career: _stemosGetItem('stemos_active_career'),
+    classes: _stemosGetItem('stemos_classes'),
+    auditLogs: _stemosGetItem('stemos_audit_logs')
+  };
+
+  const json = JSON.stringify(snapshot, null, 2);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(json).then(() => {
+      alert('Snapshot de Estado copiado al portapapeles con éxito');
+    }).catch(() => {
+      prompt('Copia el JSON de estado:', json);
+    });
+  } else {
+    prompt('Copia el JSON de estado:', json);
+  }
+};
+
+window.toggleTelemetryDrawer = function() {
+  const telem = document.getElementById('inst-sandbox-telemetry');
+  const btn = document.getElementById('btn-toggle-telemetry');
+  if (!telem) return;
+
+  telem.classList.toggle('active');
+  const isOpen = telem.classList.contains('active');
+  if (btn) {
+    btn.classList.toggle('active', isOpen);
+    const icon = btn.querySelector('.fa-chevron-down, .fa-chevron-up');
+    if (icon) {
+      icon.className = isOpen ? 'fa-solid fa-chevron-up' : 'fa-solid fa-chevron-down';
+    }
+  }
+};
+
+// Global listener for cross-frame sync
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', () => {
+    if (typeof window.refreshSandboxTelemetry === 'function') {
+      window.refreshSandboxTelemetry();
+    }
+  });
+
+  window.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'STEMOS_TELEMETRY_UPDATE') {
+      if (typeof window.refreshSandboxTelemetry === 'function') {
+        window.refreshSandboxTelemetry();
+      }
+    }
+  });
+}
+
+

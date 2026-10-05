@@ -1229,6 +1229,110 @@
           </div>
         </div>
 
+        <!-- Persona Quick Switcher & Telemetry Bar (Fase 61) -->
+        <div class="inst-sandbox-personas-bar">
+          <div class="inst-personas-left">
+            <span class="inst-personas-label"><i class="fa-solid fa-users-gear" style="color:#38bdf8;"></i> Persona Activa:</span>
+            <div class="inst-persona-chips" id="inst-persona-chips">
+              <button type="button" class="inst-persona-btn active" id="btn-persona-admin" data-persona="admin_rector" onclick="window.selectInstitutionalPersona('admin_rector')">
+                <i class="fa-solid fa-shield-halved" style="color:#0ea5e9;"></i>
+                <span>Dr. Villarreal (Rector Admin)</span>
+              </button>
+              <button type="button" class="inst-persona-btn" id="btn-persona-teacher" data-persona="faculty_docente" onclick="window.selectInstitutionalPersona('faculty_docente')">
+                <i class="fa-solid fa-chalkboard-user" style="color:#10b981;"></i>
+                <span>Dra. Morales (Docente Meca)</span>
+              </button>
+              <button type="button" class="inst-persona-btn" id="btn-persona-student" data-persona="student_advanced" onclick="window.selectInstitutionalPersona('student_advanced')">
+                <i class="fa-solid fa-user-graduate" style="color:#8b5cf6;"></i>
+                <span>Carlos M. (Alumno 3,450 XP)</span>
+              </button>
+              <button type="button" class="inst-persona-btn" id="btn-persona-guest" data-persona="student_new" onclick="window.selectInstitutionalPersona('student_new')">
+                <i class="fa-solid fa-id-card" style="color:#f59e0b;"></i>
+                <span>Nuevo Aspirante (Registro)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="inst-personas-right">
+            <button type="button" class="btn-toggle-telemetry" id="btn-toggle-telemetry" onclick="window.toggleTelemetryDrawer()" title="Abrir Inspector de Telemetría y Estado">
+              <i class="fa-solid fa-gauge-high"></i>
+              <span>Telemetry &amp; State</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Telemetry & State Inspector Drawer (Fase 61) -->
+        <div class="inst-sandbox-telemetry" id="inst-sandbox-telemetry">
+          <div class="inst-telem-grid">
+            
+            <!-- Card 1: Identity & Role -->
+            <div class="inst-telem-card">
+              <div class="inst-telem-card-header">
+                <span class="inst-telem-card-title"><i class="fa-solid fa-id-badge"></i> Identidad Activa</span>
+                <span class="inst-telem-badge role-admin" id="inst-telem-role">ADMIN</span>
+              </div>
+              <div class="inst-telem-value" id="inst-telem-name">Dr. Alejandro Villarreal</div>
+              <div class="inst-telem-sub">
+                <span id="inst-telem-inst">TECNM-SALTILLO</span> &bull; 
+                <span style="color:#10b981;"><i class="fa-solid fa-circle-check"></i> Hybrid Storage v6.1.0</span>
+              </div>
+            </div>
+
+            <!-- Card 2: Academic Program & Class -->
+            <div class="inst-telem-card">
+              <div class="inst-telem-card-header">
+                <span class="inst-telem-card-title"><i class="fa-solid fa-graduation-cap"></i> Carrera &amp; Código de Clase</span>
+                <span class="inst-telem-badge badge-code" id="inst-telem-classcode">STEM-MECA-A7X3K2</span>
+              </div>
+              <div class="inst-telem-value" id="inst-telem-career">Ingeniería Mecatrónica Industrial 60h</div>
+              <div class="inst-telem-sub">
+                <span>Determinismo Curricular:</span> <strong style="color:#38bdf8;">16 Estaciones Fijas</strong>
+              </div>
+            </div>
+
+            <!-- Card 3: Gamification & Progress -->
+            <div class="inst-telem-card">
+              <div class="inst-telem-card-header">
+                <span class="inst-telem-card-title"><i class="fa-solid fa-bolt"></i> Gamificación &amp; Nivel</span>
+                <span class="inst-telem-badge badge-xp" id="inst-telem-xp">3,450 XP</span>
+              </div>
+              <div class="inst-telem-value" id="inst-telem-level">Senior Engineer</div>
+              <div class="inst-telem-progress-wrap">
+                <div class="inst-telem-progress-bar-bg">
+                  <div class="inst-telem-progress-bar-fill" id="inst-telem-progress-bar" style="width: 68.75%;"></div>
+                </div>
+                <div class="inst-telem-progress-labels">
+                  <span id="inst-telem-progress-pct">68.8%</span>
+                  <span id="inst-telem-progress-modules">11/16 Módulos</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4: Audit Feed & State Controls -->
+            <div class="inst-telem-card inst-telem-card-wide">
+              <div class="inst-telem-card-header">
+                <span class="inst-telem-card-title"><i class="fa-solid fa-clock-rotate-left"></i> Bitácora ISO 9001:2015 Cl. 7.2 (En Vivo)</span>
+                <div class="inst-telem-actions">
+                  <button type="button" class="btn-telem-action" id="btn-seed-data" onclick="window.seedInstitutionalDemoData()" title="Inyectar Datos Demo">
+                    <i class="fa-solid fa-seedling"></i> <span>Seed</span>
+                  </button>
+                  <button type="button" class="btn-telem-action" id="btn-reset-data" onclick="window.resetInstitutionalSandboxState()" title="Limpiar Estado">
+                    <i class="fa-solid fa-broom"></i> <span>Reset</span>
+                  </button>
+                  <button type="button" class="btn-telem-action" id="btn-export-data" onclick="window.exportInstitutionalState()" title="Exportar JSON">
+                    <i class="fa-solid fa-file-export"></i> <span>Export</span>
+                  </button>
+                </div>
+              </div>
+              <div class="inst-telem-audit-list" id="inst-telem-audit-list">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
         <!-- Frame Viewport & Iframe Canvas -->
         <div class="inst-sandbox-viewport-wrapper inst-device-desktop" id="inst-sandbox-viewport-wrapper">
           <!-- Loading overlay -->

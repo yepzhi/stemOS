@@ -1729,7 +1729,39 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 
 ---
 
-## Resumen de Archivos Creados/Modificados (Fases 48–60)
+### ✅ FASE 61 (Institutional Live Telemetry Inspector, Multi-Role Persona Switcher & Cross-Portal Synchronizer)
+
+#### 61.1 Barra de Conmutación de Personas Institucionales (`.inst-sandbox-personas-bar`)
+- [x] **4 Roles / Personas de Simulación Instantánea**:
+  - 👨‍💼 **Dr. Alejandro Villarreal (Rector Admin)**: Autentica al usuario como administrador institucional de TecNM Saltillo, conmuta el sandbox a `/admin.html`, y actualiza métricas de rectoría e indicadores ISO 9001.
+  - 👩‍🏫 **Dra. Elena Morales (Docente Mecatrónica)**: Asigna sesión docente con grupo activo `class-meca-4a` e invite code `STEM-MECA-A7X3K2`, conmutando a `/teacher.html?group=class-meca-4a`.
+  - 👨‍🎓 **Carlos Mendoza (Estudiante Avanzado)**: Inyecta perfil de alumno activo con 3,450 XP, Nivel 5 (Senior Engineer), 11 módulos completados (68.8% de avance), conmutando directamente a `/app.html` (LXP 3D).
+  - 🧑‍🎓 **Nuevo Aspirante (Onboarding)**: Limpia la sesión local y conmuta a `/register.html` para permitir evaluar el wizard de 7 pasos desde cero.
+
+#### 61.2 Inspector de Telemetría y Estado en Tiempo Real (`#inst-sandbox-telemetry`)
+- [x] **Cajón de Diagnóstico Desplegable con 4 Tarjetas de Estado**:
+  - **Identidad Activa**: Nombre de usuario, badge dinámico de rol (`ADMIN`, `TEACHER`, `STUDENT`, `GUEST`), subsistema e ID institucional con estado de persistencia híbrida.
+  - **Carrera & Código de Clase**: Nombre del programa de 60 horas, código de invitación con estilo monospace y confirmación de determinismo (16 estaciones).
+  - **Gamificación & Progreso**: Puntos XP en vivo, nivel y rango de ingeniería, barra de progreso porcentual y conteo de módulos acumulados.
+  - **Bitácora ISO 9001:2015 Cl. 7.2 (Live Feed)**: Visualizador en tiempo real de los últimos eventos emitidos en el sandbox (matrícula, desbloqueos, premios de hito, exportaciones).
+- [x] **Herramientas de Gestión de Datos de Prueba**:
+  - 🌱 **Seed Demo Data** (`window.seedInstitutionalDemoData()`): Inyecta un ecosistema de prueba completo con estudiante avanzado, registros de auditoría y clases.
+  - 🧹 **Reset State** (`window.resetInstitutionalSandboxState()`): Limpia el estado de prueba de forma controlada sin afectar configuraciones globales.
+  - 📥 **Export State JSON** (`window.exportInstitutionalState()`): Genera un snapshot completo de sesión en formato JSON para portapapeles.
+
+#### 61.3 Suite de Verificación Automatizada & Paridad en `dev/`
+- [x] **Suite de Auditoría (`scripts/test_phase61_telemetry_personas.cjs`)**:
+  - 89/89 pruebas unitarias y de simulación aprobadas al 100%:
+    - Estructura HTML en `dev.html` y `dev/index.html`.
+    - Definición y firma de personas institucionales y funciones en `dev.js` y `dev/index.js`.
+    - Reglas de estilo en `dev.css` y `dev/index.css`.
+    - Simulación DOM interactiva: conmutación de las 4 personas, despliegue del drawer de telemetría, inyección de datos semilla y reseteo.
+- [x] **Paridad Absoluta de Archivos**:
+  - Espejeo sincronizado de `dev.html` a `dev/index.html`, `dev.js` a `dev/dev.js` y `dev/index.js`, y `dev.css` a `dev/dev.css` y `dev/index.css`.
+
+---
+
+## Resumen de Archivos Creados/Modificados (Fases 48–61)
 
 | Archivo | Acción | Fase | Estado |
 |---------|--------|------|--------|
@@ -1749,13 +1781,15 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 | `/Users/yepz/stemOS/scripts/test_dev_institutional_section.cjs` | **CREAR** | 58 | ✅ 100% Completado (14/14 Tests Pass) |
 | `/Users/yepz/stemOS/scripts/test_phase59_firebase_sync.cjs` | **CREAR** | 59 | ✅ 100% Completado (42/42 Tests Pass) |
 | `/Users/yepz/stemOS/scripts/test_phase60_embedded_dev.cjs` | **CREAR** | 60 | ✅ 100% Completado (112/112 Tests Pass) |
-| `/Users/yepz/stemOS/dev.html` & `dev/index.html` | **MODIFICAR** | 58, 59, 60 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/dev.js` & `dev/index.js` & `dev/dev.js` | **MODIFICAR** | 58, 60 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/dev.css` & `dev/index.css` & `dev/dev.css` | **MODIFICAR** | 58, 60 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/scripts/test_phase61_telemetry_personas.cjs` | **CREAR** | 61 | ✅ 100% Completado (89/89 Tests Pass) |
+| `/Users/yepz/stemOS/dev.html` & `dev/index.html` | **MODIFICAR** | 58, 59, 60, 61 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/dev.js` & `dev/index.js` & `dev/dev.js` | **MODIFICAR** | 58, 60, 61 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/dev.css` & `dev/index.css` & `dev/dev.css` | **MODIFICAR** | 58, 60, 61 | ✅ 100% Completado |
 
 ---
 
-*Estado del Proyecto: Fases 1 a 60 COMPLETADAS y 100% validadas. Master test suites `scripts/test_academic_system.cjs`, `scripts/test_dev_institutional_section.cjs`, `scripts/test_phase59_firebase_sync.cjs` y `scripts/test_phase60_embedded_dev.cjs` ejecutados con éxito (Exit Code 0). stemOS Institutional Ecosystem & Dev Workbench Zero-Navigation 100% operativos.*
+*Estado del Proyecto: Fases 1 a 61 COMPLETADAS y 100% validadas. Master test suites `scripts/test_academic_system.cjs`, `scripts/test_dev_institutional_section.cjs`, `scripts/test_phase59_firebase_sync.cjs`, `scripts/test_phase60_embedded_dev.cjs` y `scripts/test_phase61_telemetry_personas.cjs` ejecutados con éxito (Exit Code 0). stemOS Institutional Ecosystem & Dev Workbench Zero-Navigation 100% operativos.*
+
 
 
 
