@@ -24145,7 +24145,7 @@ window.initInstitutionalAcademicSection = function() {
               <i class="fa-solid fa-list-check"></i>
               <span>Ver 16 Estaciones</span>
             </button>
-            <a href="/register.html?career=${c.id}" target="_blank" class="btn-enroll-career" title="Iniciar Onboarding de Alumno">
+            <a href="/register.html?career=${c.id}" class="btn-enroll-career" onclick="window.enrollCareerInEmbeddedSandbox('${c.id}', event); return false;" title="Iniciar Onboarding de Alumno en Dev Studio">
               <span>Inscribir</span>
               <i class="fa-solid fa-arrow-right"></i>
             </a>
@@ -24303,3 +24303,140 @@ if (document.readyState === 'loading') {
     window.initInstitutionalAcademicSection();
   }
 }
+
+// ══════════════════════════════════════════════════════════════════
+// FASE 60: Institutional All-In-One Embedded Dev Portal Studio & Live Sandbox (Zero-Page-Navigation Workstation)
+// ══════════════════════════════════════════════════════════════════
+
+window.PORTAL_URLS = {
+  admin: '/admin.html',
+  teacher: '/teacher.html',
+  register: '/register.html',
+  app: '/app.html'
+};
+
+window.switchEmbeddedPortal = function(portalKey, event, queryParams) {
+  if (event) {
+    if (typeof event.preventDefault === 'function') event.preventDefault();
+    if (typeof event.stopPropagation === 'function') event.stopPropagation();
+  }
+
+  // Close mobile drawer if active
+  const mobileDrawer = document.getElementById('mobile-drawer');
+  if (mobileDrawer && mobileDrawer.classList.contains('active')) {
+    mobileDrawer.classList.remove('active');
+  }
+
+  const iframe = document.getElementById('inst-sandbox-iframe');
+  const urlDisplay = document.getElementById('inst-sandbox-url-display');
+  const loader = document.getElementById('inst-sandbox-loader');
+  const tabs = document.querySelectorAll('.inst-tab-btn');
+  const sandbox = document.getElementById('inst-embedded-sandbox');
+
+  if (!iframe) return false;
+
+  const basePath = window.PORTAL_URLS[portalKey] || '/admin.html';
+  let targetUrl = basePath;
+  if (queryParams) {
+    targetUrl += queryParams.startsWith('?') ? queryParams : '?' + queryParams;
+  }
+
+  // Update tabs active state
+  tabs.forEach(tab => {
+    if (tab.getAttribute('data-portal') === portalKey) {
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+    } else {
+      tab.classList.remove('active');
+      tab.setAttribute('aria-selected', 'false');
+    }
+  });
+
+  // Show loader while iframe loads
+  if (loader) {
+    loader.classList.add('active');
+  }
+
+  // Set URL display
+  if (urlDisplay) {
+    urlDisplay.textContent = targetUrl;
+  }
+
+  // Update iframe source
+  iframe.src = targetUrl;
+
+  iframe.onload = () => {
+    if (loader) {
+      loader.classList.remove('active');
+    }
+  };
+
+  // Smooth scroll to sandbox if not already nicely in view
+  if (sandbox) {
+    const rect = sandbox.getBoundingClientRect();
+    if (rect.top < 0 || rect.top > window.innerHeight * 0.65) {
+      sandbox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  return false;
+};
+
+window.enrollCareerInEmbeddedSandbox = function(careerId, event) {
+  if (event) {
+    if (typeof event.preventDefault === 'function') event.preventDefault();
+    if (typeof event.stopPropagation === 'function') event.stopPropagation();
+  }
+  return window.switchEmbeddedPortal('register', null, `?career=${encodeURIComponent(careerId)}`);
+};
+
+window.setSandboxViewport = function(deviceMode) {
+  const wrapper = document.getElementById('inst-sandbox-viewport-wrapper');
+  const btns = document.querySelectorAll('.inst-device-btn');
+
+  if (!wrapper) return;
+
+  wrapper.classList.remove('inst-device-desktop', 'inst-device-tablet', 'inst-device-mobile');
+  wrapper.classList.add(`inst-device-${deviceMode}`);
+
+  btns.forEach(b => {
+    if (b.getAttribute('data-vp') === deviceMode) {
+      b.classList.add('active');
+    } else {
+      b.classList.remove('active');
+    }
+  });
+};
+
+window.reloadSandbox = function() {
+  const iframe = document.getElementById('inst-sandbox-iframe');
+  const loader = document.getElementById('inst-sandbox-loader');
+  if (!iframe) return;
+
+  if (loader) loader.classList.add('active');
+  const currentSrc = iframe.src;
+  iframe.src = currentSrc;
+  iframe.onload = () => {
+    if (loader) loader.classList.remove('active');
+  };
+};
+
+window.toggleSandboxFullscreen = function() {
+  const sandbox = document.getElementById('inst-embedded-sandbox');
+  const btn = document.getElementById('inst-sandbox-fullscreen');
+  if (!sandbox) return;
+
+  sandbox.classList.toggle('inst-sandbox-fullscreen-mode');
+  const isFull = sandbox.classList.contains('inst-sandbox-fullscreen-mode');
+
+  if (btn) {
+    btn.innerHTML = isFull ? '<i class="fa-solid fa-compress"></i>' : '<i class="fa-solid fa-expand"></i>';
+    btn.setAttribute('title', isFull ? 'Restaurar Vista' : 'Pantalla Completa Dev Studio');
+  }
+
+  if (isFull) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+};

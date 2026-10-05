@@ -1682,7 +1682,54 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 
 ---
 
-## Resumen de Archivos Creados/Modificados (Fases 48–59)
+### ✅ FASE 60 (Institutional All-In-One Embedded Dev Portal Studio & Cross-Portal Live Testbed — Zero-Page-Navigation Workstation)
+
+#### 60.1 Workstation Integrado en `dev.html` (Política Estricta Zero-Page-Navigation)
+- [x] **Contenedor Maestro de Simulación `#inst-embedded-sandbox`**:
+  - Emplazado directamente en la sección `#institutional-academic-section` de `dev.html`.
+  - Permite evaluar, alternar y probar en vivo los 4 portales institucionales (`/admin.html`, `/teacher.html`, `/register.html`, `/app.html`) sin abandonar la página `dev.html` y sin abrir pestañas externas (`target="_blank"` removido de todos los enlaces y tarjetas).
+- [x] **Barra de Control de Simulación & Switcher de Portales**:
+  - Pestañas conmutables interactivas con estados activos visuales:
+    - 🛡️ `Admin Manager` (`/admin.html`)
+    - 👨‍🏫 `Portal Docente` (`/teacher.html`)
+    - 🪪 `Onboarding Wizard` (`/register.html`)
+    - 🌐 `Campus LXP 3D` (`/app.html`)
+  - Indicador de pulso reactivo en vivo: `● Dev Studio • Zero-Navigation Active`.
+- [x] **Simulador Responsive de Dispositivos (Device Viewport Switcher)**:
+  - 💻 **Desktop Fluid** (100% ancho, 1440px fluid, bordes estilizados).
+  - 📱 **Tablet / iPad Pro** (1024px centrado, marco de tablet de 8px con sombra profunda).
+  - 📲 **Mobile / iPhone 16 Pro** (430px centrado, marco de smartphone con bisel de 10px y esquinas redondeadas de 36px).
+- [x] **Herramientas de Diagnóstico & Barra de Dirección Simulada**:
+  - Barra de dirección con candado SSL verde, dominio institucional y ruta activa en tiempo real (`#inst-sandbox-url-display`).
+  - Chips de prueba rápida (*Quick Test Scenarios*):
+    - *Mecatrónica Onboarding* (`/register.html?career=it-mecatronica`)
+    - *Invite Code Auto-Fill* (`/register.html?class=STEM-MECA-A7X3K2`)
+    - *Grupo Mecatrónica 4A* (`/teacher.html?group=class-meca-4a`)
+  - Botón de recarga de frame actual (`#inst-sandbox-reload`).
+  - Modo pantalla completa (*Fullscreen Studio*) con alternancia modal fija (`#inst-sandbox-fullscreen`).
+  - Overlay de carga animado (`#inst-sandbox-loader`) durante transiciones de portal.
+
+#### 60.2 Intercepción Transversal de Eventos & Puente Directo de Matrícula
+- [x] **Tarjetas de Portales Institucionales Interceptadas**:
+  - Las 4 tarjetas de mando institucional (`.inst-portal-card`) ejecutan `window.switchEmbeddedPortal(...)`, realizan scroll suave hacia el sandbox y actualizan el iframe instantáneamente.
+- [x] **Navegación Principal & Drawer Móvil Sincronizados**:
+  - Los enlaces de portales en el menú superior y en el cajón móvil navegan directamente al sandbox dentro de `dev.html` cerrando el drawer móvil de manera reactiva.
+- [x] **Puente de Matrícula Directa en Explorador de 25 Carreras**:
+  - El botón "Inscribir" (`.btn-enroll-career`) de cada una de las 25 carreras ejecuta `window.enrollCareerInEmbeddedSandbox(careerId)`, precargando el Onboarding Wizard con la carrera seleccionada (`/register.html?career=...`) y enfocando el sandbox.
+
+#### 60.3 Suite de Verificación Automatizada & Paridad en `dev/`
+- [x] **Suite de Auditoría (`scripts/test_phase60_embedded_dev.cjs`)**:
+  - 112/112 pruebas unitarias y de integración aprobadas al 100%:
+    - Presencia del sandbox, iframe, tabs, viewports, herramientas y loader.
+    - Ausencia total de `target="_blank"` en tarjetas y navegación institucional.
+    - Exportación y firma de funciones globales en `dev.js`.
+    - Simulación DOM interactiva: conmutación de portales, paso de parámetros de consulta, puente de inscripción de carreras, cambio de vistas de dispositivo y modo pantalla completa.
+- [x] **Paridad Absoluta de Archivos**:
+  - Espejeo sincronizado de `dev.html` a `dev/index.html`, `dev.js` a `dev/dev.js` y `dev/index.js`, y `dev.css` a `dev/dev.css` y `dev/index.css`.
+
+---
+
+## Resumen de Archivos Creados/Modificados (Fases 48–60)
 
 | Archivo | Acción | Fase | Estado |
 |---------|--------|------|--------|
@@ -1701,13 +1748,15 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 | `/Users/yepz/stemOS/scripts/test_academic_system.cjs` | **CREAR / MODIFICAR** | 57, 59 | ✅ 100% Completado (50/50 Tests Pass) |
 | `/Users/yepz/stemOS/scripts/test_dev_institutional_section.cjs` | **CREAR** | 58 | ✅ 100% Completado (14/14 Tests Pass) |
 | `/Users/yepz/stemOS/scripts/test_phase59_firebase_sync.cjs` | **CREAR** | 59 | ✅ 100% Completado (42/42 Tests Pass) |
-| `/Users/yepz/stemOS/dev.html` & `dev/index.html` | **MODIFICAR** | 58, 59 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/dev.js` & `dev/index.js` | **MODIFICAR** | 58 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/dev.css` & `dev/index.css` | **MODIFICAR** | 58 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/scripts/test_phase60_embedded_dev.cjs` | **CREAR** | 60 | ✅ 100% Completado (112/112 Tests Pass) |
+| `/Users/yepz/stemOS/dev.html` & `dev/index.html` | **MODIFICAR** | 58, 59, 60 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/dev.js` & `dev/index.js` & `dev/dev.js` | **MODIFICAR** | 58, 60 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/dev.css` & `dev/index.css` & `dev/dev.css` | **MODIFICAR** | 58, 60 | ✅ 100% Completado |
 
 ---
 
-*Estado del Proyecto: Fases 1 a 59 COMPLETADAS y 100% validadas. Master test suites `scripts/test_academic_system.cjs`, `scripts/test_dom_simulation.cjs`, `scripts/test_dev_institutional_section.cjs` y `scripts/test_phase59_firebase_sync.cjs` ejecutados con éxito (Exit Code 0). stemOS Institutional Ecosystem & Dev Workbench 100% operativos.*
+*Estado del Proyecto: Fases 1 a 60 COMPLETADAS y 100% validadas. Master test suites `scripts/test_academic_system.cjs`, `scripts/test_dev_institutional_section.cjs`, `scripts/test_phase59_firebase_sync.cjs` y `scripts/test_phase60_embedded_dev.cjs` ejecutados con éxito (Exit Code 0). stemOS Institutional Ecosystem & Dev Workbench Zero-Navigation 100% operativos.*
+
 
 
 
