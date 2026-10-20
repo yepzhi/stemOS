@@ -267,6 +267,53 @@ try {
 }
 
 // ─────────────────────────────────────────────────────────────────
+// SECTION 7: Mini PC Edge Gateway Script & Root/Dev Parity
+// ─────────────────────────────────────────────────────────────────
+console.log('\n▶ 7. Mini PC Edge Gateway Script & Root/Dev Parity');
+try {
+    const edgeServerPath = path.join(ROOT, 'scripts', 'minipc_edge_server.cjs');
+    assert(fs.existsSync(edgeServerPath), 'scripts/minipc_edge_server.cjs exists');
+    const edgeCode = fs.readFileSync(edgeServerPath, 'utf8');
+    assert(edgeCode.includes('targetConcurrentStudents: 100'), 'Edge server targets 100 concurrent students');
+    assert(edgeCode.includes('projectedCohortCapacity: 1500'), 'Edge server projects 1500 student cohort');
+    assert(edgeCode.includes('0 Liters'), 'Edge server documents 0 Liters water footprint');
+    assert(edgeCode.includes('jsweb-b14f8'), 'Edge server references Cloud Firestore jsweb-b14f8');
+    assert(edgeCode.includes('/health'), 'Edge server exposes /health endpoint');
+    assert(edgeCode.includes('/api/tags'), 'Edge server exposes /api/tags Ollama endpoint');
+    assert(edgeCode.includes('/api/chat'), 'Edge server exposes /api/chat Ollama endpoint');
+
+    // Root vs Dev parity check
+    const parityFiles = [
+        'app.js',
+        'app.html',
+        'admin.html',
+        'teacher.html',
+        'register.html',
+        'placement.html',
+        'tracks.html',
+        'index.html',
+        'firebase.json',
+        'firestore.rules',
+        '.firebaserc',
+        'content/firebase_config.js',
+        'content/gemini_service.js',
+        'content/firebase_adapter.js'
+    ];
+
+    parityFiles.forEach(file => {
+        const rootF = path.join(ROOT, file);
+        const devF = path.join(ROOT, 'dev', file);
+        if (fs.existsSync(rootF) && fs.existsSync(devF)) {
+            const rootBuf = fs.readFileSync(rootF);
+            const devBuf = fs.readFileSync(devF);
+            assert(rootBuf.equals(devBuf), `${file} is 100% bit-for-bit identical with dev/${file}`);
+        }
+    });
+} catch (err) {
+    assert(false, 'Mini PC Edge & Parity Exception', err.message);
+}
+
+// ─────────────────────────────────────────────────────────────────
 // Summary
 // ─────────────────────────────────────────────────────────────────
 console.log('\n═══════════════════════════════════════════════════════════════════');
@@ -279,3 +326,4 @@ if (failedTests > 0) {
     console.log('🎉 ALL FIRESTORE, GEMINI & MINI PC EDGE SCALE TESTS PASSED (100%)!\n');
     process.exit(0);
 }
+

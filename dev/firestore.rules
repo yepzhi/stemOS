@@ -1,0 +1,108 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions for authentication & role verification
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isUser(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function getUserRole() {
+      return request.auth.token.role;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (getUserRole() == 'admin' || request.auth.token.admin == true);
+    }
+
+    function isTeacher() {
+      return isAuthenticated() && (getUserRole() == 'teacher' || isAdmin());
+    }
+
+    function isStudent() {
+      return isAuthenticated() && getUserRole() == 'student';
+    }
+
+    function belongsToInstitution(institutionId) {
+      return isAuthenticated() && (request.auth.token.institutionId == institutionId || isAdmin());
+    }
+
+    // Public / Curricular Catalogs (Read-only for all, write for admin)
+    match /careers/{careerId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /career_paths/{careerId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Multi-tenant Institution Scope
+    match /institutions/{institutionId} {
+      allow read: if belongsToInstitution(institutionId);
+      allow write: if isAdmin();
+
+      // Classes & Cohorts
+      match /classes/{classId} {
+        allow read: if belongsToInstitution(institutionId);
+        allow create: if isTeacher() && belongsToInstitution(institutionId);
+        allow update: if (isTeacher() && (resource.data.teacherId == request.auth.uid || isAdmin())) ||
+                         (isAuthenticated() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['studentsCount', 'updatedAt']));
+        allow delete: if isAdmin();
+
+        // Submissions & Hito Milestones
+        match /submissions/{submissionId} {
+          allow read: if isUser(resource.data.studentId) ||
+                         (isTeacher() && belongsToInstitution(institutionId)) ||
+                         isAdmin();
+          allow create: if isAuthenticated() &&
+                           request.resource.data.studentId == request.auth.uid &&
+                           request.resource.data.institutionId == institutionId;
+          allow update: if (isTeacher() && belongsToInstitution(institutionId)) || isAdmin();
+          allow delete: if isAdmin();
+        }
+      }
+
+      // Teachers Roster
+      match /teachers/{teacherId} {
+        allow read: if belongsToInstitution(institutionId);
+        allow create, update: if isUser(teacherId) || isAdmin();
+        allow delete: if isAdmin();
+      }
+
+      // Students & Learning Portfolios
+      match /students/{studentId} {
+        allow read: if isUser(studentId) ||
+                       (isTeacher() && belongsToInstitution(institutionId)) ||
+                       isAdmin();
+        allow create: if isUser(studentId) || isTeacher() || isAdmin();
+        allow update: if isUser(studentId) ||
+                         (isTeacher() && belongsToInstitution(institutionId)) ||
+                         isAdmin();
+        allow delete: if isAdmin();
+
+        // Student station progress subcollection
+        match /station_progress/{stationId} {
+          allow read: if isUser(studentId) ||
+                         (isTeacher() && belongsToInstitution(institutionId)) ||
+                         isAdmin();
+          allow write: if isUser(studentId) ||
+                          (isTeacher() && belongsToInstitution(institutionId)) ||
+                          isAdmin();
+        }
+      }
+
+      // Audit Logs & ISO 9001 Compliance Records
+      match /audit_logs/{logId} {
+        allow read: if isTeacher() || isAdmin();
+        allow create: if isAuthenticated() && belongsToInstitution(institutionId);
+        allow update, delete: if false; // Immutable audit log
+      }
+    }
+  }
+}

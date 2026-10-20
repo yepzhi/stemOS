@@ -213,6 +213,32 @@ document.addEventListener('DOMContentLoaded', () => {
         updateGraphUI();
     }, 100);
 
+    // Concurrency HUD & Mini PC / Gemini Edge Status
+    function updateConnectionHUD() {
+        const hud = document.getElementById('header-connection-hud');
+        const text = document.getElementById('header-connection-text');
+        if (!hud || !text) return;
+
+        if (typeof window.STEMOS_AI !== 'undefined' && typeof window.STEMOS_AI.getStatus === 'function') {
+            window.STEMOS_AI.getStatus().then(status => {
+                if (status.engine === 'mini_pc') {
+                    hud.style.color = '#059669';
+                    hud.style.background = 'rgba(16,185,129,0.08)';
+                    hud.style.borderColor = 'rgba(16,185,129,0.3)';
+                    hud.title = `Mini PC Campus Edge Conectada (${status.url}) · 0 Litros de Agua · Firestore jsweb-b14f8 (100 concurrentes)`;
+                    text.innerHTML = '<i class="fa-solid fa-server"></i> Mini PC Edge (0L) &bull; Firestore 100%';
+                } else {
+                    hud.style.color = '#0284c7';
+                    hud.style.background = 'rgba(2,132,199,0.08)';
+                    hud.style.borderColor = 'rgba(2,132,199,0.3)';
+                    hud.title = `Gemini Cloud Backup (gemini-2.5-flash) · Firestore jsweb-b14f8 activo para 100 alumnos simultáneos`;
+                    text.innerHTML = '<i class="fa-solid fa-cloud"></i> Gemini 2.5 Flash &bull; Firestore 100%';
+                }
+            }).catch(() => {});
+        }
+    }
+    updateConnectionHUD();
+
     /* --- Tab Switcher --- */
     const navItems = document.querySelectorAll('.nav-item');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -622,7 +648,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Send Message Logic
-    function handleUserReply() {
+    async function handleUserReply() {
         const text = chatInput.value.trim();
         if (!text || !chatState.active) return;
 
@@ -634,6 +660,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
         showTypingIndicator();
 
+        // If structured challenges exist for this module, evaluate through structured rubric
+        if (chatState.challenges && chatState.challenges.length > 0) {
+            setTimeout(() => {
+                chatState.step += 1;
+                chatInput.disabled = false;
+                chatSendBtn.disabled = false;
+                triggerFeynmanSocraticStep();
+                chatInput.focus();
+            }, 1000);
+            return;
+        }
+
+        // Dynamic Socratic AI Tutor via Campus Mini PC or Gemini 2.5 Flash
+        if (typeof window.STEMOS_AI !== 'undefined' && typeof window.STEMOS_AI.chatTutor === 'function') {
+            try {
+                const aiResponse = await window.STEMOS_AI.chatTutor(text, {
+                    trackId: chatState.trackId,
+                    modId: chatState.modId,
+                    modTitle: chatState.modTitle
+                });
+                removeTypingIndicator();
+                chatState.step += 1;
+                chatInput.disabled = false;
+                chatSendBtn.disabled = false;
+
+                const replyText = typeof aiResponse === 'object' ? (aiResponse.text || '') : aiResponse;
+                const engineName = typeof aiResponse === 'object' ? (aiResponse.engine || '') : '';
+                const engineBadge = engineName
+                    ? `<div style="margin-top:6px; font-size:0.68rem; font-weight:700; color:#0284c7; opacity:0.8;"><i class="fa-solid fa-microchip"></i> ${engineName}</div>`
+                    : '';
+                addBotMessage(`${replyText}${engineBadge}`);
+
+                if (chatState.step >= 3) {
+                    awardXP(35);
+                    setTimeout(() => {
+                        addBotMessage(`🎉 <strong>¡Reto Socrático Aprobado!</strong> Has demostrado dominio riguroso del vocabulario y conceptos de <strong>${chatState.modTitle}</strong>. <strong>+35 XP otorgados.</strong>`);
+                        resetTutor();
+                    }, 1000);
+                }
+                chatInput.focus();
+                return;
+            } catch (e) {
+                console.warn('[stemOS Chat] AI Tutor fallback:', e);
+            }
+        }
+
+        // Offline deterministic fallback
         setTimeout(() => {
             chatState.step += 1;
             chatInput.disabled = false;

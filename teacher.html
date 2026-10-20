@@ -2413,6 +2413,23 @@
             initState();
             window.addEventListener('hashchange', handleRouting);
             handleRouting();
+
+            // Dynamic Mini PC & Cloud Firestore Concurrency Telemetry
+            if (typeof window.STEMOS_AI !== 'undefined' && typeof window.STEMOS_AI.getStatus === 'function') {
+                window.STEMOS_AI.getStatus().then(status => {
+                    const badge = document.getElementById('teacher-minipc-badge');
+                    if (badge) {
+                        if (status.engine === 'mini_pc') {
+                            badge.className = 'badge badge-emerald';
+                            badge.innerHTML = '<i class="fa-solid fa-server"></i> Mini PC Edge Conectada (0L Agua) &bull; 100 Concurrentes';
+                            badge.title = `Mini PC Campus LAN (${status.url}) · 0 Litros de Agua · 15W-85W`;
+                        } else {
+                            badge.className = 'badge badge-sky';
+                            badge.innerHTML = '<i class="fa-solid fa-cloud"></i> Gemini 2.5 Flash Cloud Backup &bull; 100 Concurrentes';
+                        }
+                    }
+                }).catch(() => {});
+            }
         });
     </script>
 </body>

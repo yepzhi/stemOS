@@ -28,6 +28,12 @@
         miniPcCandidates: [
             'http://localhost:8080/api/gemini',
             'http://localhost:8080',
+            'http://localhost:8089',
+            'http://localhost:8096',
+            'http://localhost:8099',
+            'http://127.0.0.1:8080',
+            'http://127.0.0.1:8089',
+            'http://127.0.0.1:8099',
             'https://yzai.yepzhi.com',
             'http://localhost:11434',
             'http://127.0.0.1:11434'
@@ -150,7 +156,7 @@
     async function callGeminiCloud(prompt, systemInstruction) {
         const apiKey = (typeof localStorage !== 'undefined' && localStorage.getItem(STORAGE_KEY_GEMINI_KEY)) ||
                        (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.config ? window.STEMOS_FIREBASE_CONFIG.config.apiKey : '') ||
-                       '';
+                       'AIzaSyCMlLMpHf7IS53etjhLO2D1Y8MfXCUcSuc';
 
         const contents = [];
         if (systemInstruction) {
@@ -174,7 +180,7 @@
             }
         };
 
-        // Try direct Gemini API or fallback proxy
+        // 1. Try direct Gemini API
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
         try {
@@ -197,6 +203,28 @@
             }
         } catch (e) {
             console.warn('[stemOS AI] Gemini Cloud direct call failed:', e.message || e);
+        }
+
+        // 2. Try Local / Worker Proxy (/api/gemini or /api/tutor)
+        const proxyEndpoints = ['/api/gemini', '/api/tutor'];
+        for (const ep of proxyEndpoints) {
+            try {
+                const pRes = await fetch(ep, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt, systemInstruction: systemInstruction })
+                });
+                if (pRes.ok) {
+                    const pData = await pRes.json();
+                    const text = pData.text || pData.message?.content || pData.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (text) {
+                        return {
+                            text: text.trim(),
+                            engine: 'Gemini Edge Proxy (gemini-2.5-flash)'
+                        };
+                    }
+                }
+            } catch (_) {}
         }
 
         return null;
