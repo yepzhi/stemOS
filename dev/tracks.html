@@ -238,6 +238,10 @@
         <i class="fa-solid fa-user-tie" style="color:#f59e0b;"></i>
         <span>Nearshoring Talent Hub</span>
       </button>
+      <button type="button" class="tracks-tab-btn" id="tab-btn-careers" onclick="switchTracksWorkspaceView('careers')">
+        <i class="fa-solid fa-graduation-cap" style="color:#38bdf8;"></i>
+        <span>36 Carreras (60.0h)</span>
+      </button>
       <button type="button" class="tracks-tab-btn" id="tab-btn-labs" onclick="switchTracksWorkspaceView('labs')">
         <i class="fa-solid fa-microchip" style="color:#10b981;"></i>
         <span>Crucíbulos &amp; Simuladores</span>
@@ -413,6 +417,60 @@
 
     </div>
   </section>
+
+  <!-- ── 60-HOUR INSTITUTIONAL ACADEMIC CAREER PATHS EXPLORER ── -->
+  <section class="catalog-section institutional-academic-section" id="institutional-academic-section" style="padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+    <div class="studio-container">
+      <div class="catalog-header-bar" style="margin-bottom: 24px;">
+        <div class="catalog-header-left">
+          <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(14,165,233,0.15); border:1px solid rgba(14,165,233,0.35); border-radius:9999px; padding:4px 14px; font-size:0.75rem; font-weight:700; color:#38bdf8; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:10px;">
+            <i class="fa-solid fa-graduation-cap"></i> CATÁLOGO CURRICULAR INSTITUCIONAL • 60 HORAS AUDITABLES
+          </div>
+          <h2 class="catalog-main-title">36 Carreras y Rutas Deterministas (A1–B2)</h2>
+          <p class="catalog-main-desc">
+            Ecosistema curricular de <strong>60.0 horas cronológicas</strong> para TecNM, Universidades Tecnológicas (TSU e Ing.), UABC y LATAM. 16 estaciones intercaladas (<em>Theory → English B1 → Lab → Milestone</em>) con normativas internacionales (ISO, SEMI, IEEE, ASME) y acreditación CACEI / DGUTyP.
+          </p>
+        </div>
+      </div>
+
+      <!-- 25/36 Career Paths Interactive Explorer Controls -->
+      <div class="inst-controls-panel">
+        <div class="inst-subsystem-filters" id="inst-subsystem-filters">
+          <button type="button" class="inst-filter-btn active" data-subsystem="all"><i class="fa-solid fa-layer-group"></i> <span>Todas las Carreras (36)</span></button>
+          <button type="button" class="inst-filter-btn" data-subsystem="tecnm"><i class="fa-solid fa-microchip"></i> <span>TecNM (10)</span></button>
+          <button type="button" class="inst-filter-btn" data-subsystem="ut"><i class="fa-solid fa-gears"></i> <span>Univ. Tecnológicas (6)</span></button>
+          <button type="button" class="inst-filter-btn" data-subsystem="estatales"><i class="fa-solid fa-landmark"></i> <span>Univ. Estatales / UPBC (11)</span></button>
+          <button type="button" class="inst-filter-btn" data-subsystem="latam"><i class="fa-solid fa-earth-americas"></i> <span>LATAM (3)</span></button>
+        </div>
+
+        <div class="inst-search-wrapper">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="inst-career-search" class="inst-search-input" placeholder="Buscar carrera, norma o tecnología...">
+        </div>
+      </div>
+
+      <!-- Dynamic Cards Grid -->
+      <div class="inst-careers-grid" id="inst-careers-grid">
+        <!-- Rendered dynamically by dev.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal for Inspecting 16 Stations -->
+  <div class="inst-modal-overlay" id="inst-career-stations-modal" aria-hidden="true">
+    <div class="inst-modal-content">
+      <div class="inst-modal-header">
+        <div>
+          <h3 id="inst-modal-career-name" style="font-size:1.15rem; color:#ffffff; font-weight:800; margin-bottom:4px;">Career Path 60h</h3>
+          <p id="inst-modal-career-sub" style="font-size:0.78rem; color:#38bdf8;">16 Estaciones Deterministas • Interleaving: Theory → English B1 → Lab → Milestone</p>
+        </div>
+        <button type="button" id="inst-modal-close-btn" style="background:transparent; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer; padding:6px;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="inst-modal-body" id="inst-modal-stations-body">
+        <!-- Injected via dev.js -->
+      </div>
+    </div>
+  </div>
 
   <!-- ── 11. TECHNICAL OUTPUT LAB: 8D PROBLEM SOLVING & ESCALATION EMAIL STUDIO ── -->
   <section class="output-lab-section" id="output-engine-section">
@@ -10564,6 +10622,7 @@
 
       const catalogSec = document.getElementById("catalog-section");
       const talentHubSec = document.getElementById("nearshoring-talent-hub-section");
+      const instAcademicSec = document.getElementById("institutional-academic-section");
       const labSections = [
         "output-engine-section",
         "sm2-review-section",
@@ -10580,22 +10639,32 @@
 
       if (view === "catalog") {
         if (catalogSec) catalogSec.style.display = "block";
+        if (instAcademicSec) instAcademicSec.style.display = "none";
         if (talentHubSec) talentHubSec.style.display = "none";
         labSections.forEach(s => s.style.display = "none");
         catalogSec.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (view === "careers") {
+        if (catalogSec) catalogSec.style.display = "none";
+        if (instAcademicSec) instAcademicSec.style.display = "block";
+        if (talentHubSec) talentHubSec.style.display = "none";
+        labSections.forEach(s => s.style.display = "none");
+        instAcademicSec.scrollIntoView({ behavior: "smooth", block: "start" });
       } else if (view === "talent-hub") {
         if (catalogSec) catalogSec.style.display = "none";
+        if (instAcademicSec) instAcademicSec.style.display = "none";
         if (talentHubSec) talentHubSec.style.display = "block";
         labSections.forEach(s => s.style.display = "none");
         talentHubSec.scrollIntoView({ behavior: "smooth", block: "start" });
       } else if (view === "labs") {
         if (catalogSec) catalogSec.style.display = "none";
+        if (instAcademicSec) instAcademicSec.style.display = "none";
         if (talentHubSec) talentHubSec.style.display = "none";
         labSections.forEach(s => s.style.display = "block");
         if (labSections[0]) labSections[0].scrollIntoView({ behavior: "smooth", block: "start" });
       } else {
         // all
         if (catalogSec) catalogSec.style.display = "block";
+        if (instAcademicSec) instAcademicSec.style.display = "block";
         if (talentHubSec) talentHubSec.style.display = "block";
         labSections.forEach(s => s.style.display = "block");
       }
