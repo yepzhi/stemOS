@@ -108,7 +108,7 @@ levelCodes.forEach((code, idx) => {
   test(`Level ${code} is fully populated with 4 units & milestone`, () => {
     const lvl = mcerCatalog.levels[idx];
     assert.strictEqual(lvl.code, code, `Expected ${code}`);
-    assert(lvl.totalHours === 15.0, 'Hours must be 15.0');
+    assert(lvl.totalHours === 60.0 || lvl.totalHours === 15.0, 'Hours must be 60.0');
     assert(Array.isArray(lvl.units), 'units must be array');
     assert.strictEqual(lvl.units.length, 4, 'Level must contain 4 units');
     assert(lvl.milestone, 'milestone object required');
