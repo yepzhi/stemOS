@@ -96,6 +96,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* --- Speech Synthesis (TTS) Helper --- */
     function speakText(text, lang = 'en-US') {
+        if (window.STEMOS_TTS) {
+            window.STEMOS_TTS.speak(text, {
+                lang: lang,
+                speed: 0.93
+            });
+            return;
+        }
         if (!('speechSynthesis' in window)) {
             console.warn("SpeechSynthesis not supported");
             return;
@@ -110,6 +117,13 @@ document.addEventListener('DOMContentLoaded', () => {
         window.speechSynthesis.speak(utterance);
     }
     window.speakText = speakText;
+
+    const btnHeaderVoice = document.getElementById('btn-header-voice');
+    if (btnHeaderVoice) {
+        btnHeaderVoice.addEventListener('click', () => {
+            speakText("stemOS Studio Audio Engine active. Piper Neural voice connected.");
+        });
+    }
 
     /* --- State Management and Progress Persistence --- */
     let userProgress = {

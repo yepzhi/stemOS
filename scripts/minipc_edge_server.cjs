@@ -28,6 +28,7 @@ const HOST = process.env.HOST || '0.0.0.0';
 const ROOT_DIR = path.resolve(__dirname, '..');
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyCMlLMpHf7IS53etjhLO2D1Y8MfXCUcSuc';
 const OLLAMA_URL = process.env.OLLAMA_URL || 'http://127.0.0.1:11434';
+const PIPER_URL = process.env.PIPER_URL || 'http://127.0.0.1:5000';
 const DEFAULT_MODEL = 'gemini-2.5-flash';
 
 // MIME Types Map
@@ -217,6 +218,127 @@ function fallbackGeminiChat(res, bodyData) {
 }
 
 /**
+ * Handle Piper Neural TTS on Mini PC Edge
+ */
+function handlePiperTTS(req, res, parsedUrl) {
+    function processRequest(text, voice, speed) {
+        if (!text || !text.trim()) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Missing text parameter' }));
+            return;
+        }
+
+        const cleanedText = text.trim();
+        const norm = cleanedText.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+        // Static zero-latency pre-rendered neural cleanroom audio
+        if (norm.includes('photolithography') && (norm.includes('isoclass1') || norm.includes('cleanrooms'))) {
+            const staticAudioPath = path.join(ROOT_DIR, 'content', 'audio', 'cleanroom_photolithography.wav');
+            if (fs.existsSync(staticAudioPath)) {
+                res.writeHead(200, {
+                    'Content-Type': 'audio/wav',
+                    'Cache-Control': 'public, max-age=86400',
+                    'X-TTS-Engine': 'stemOS-PreRendered-Neural'
+                });
+                fs.createReadStream(staticAudioPath).pipe(res);
+                return;
+            }
+        } else if (norm.includes('cleanroomsuits') && norm.includes('microchips')) {
+            const staticAudioPath = path.join(ROOT_DIR, 'content', 'audio', 'cleanroom_basic_a2.wav');
+            if (fs.existsSync(staticAudioPath)) {
+                res.writeHead(200, {
+                    'Content-Type': 'audio/wav',
+                    'Cache-Control': 'public, max-age=86400',
+                    'X-TTS-Engine': 'stemOS-PreRendered-Neural'
+                });
+                fs.createReadStream(staticAudioPath).pipe(res);
+                return;
+            }
+        }
+
+        // Proxy to local Piper HTTP daemon (port 5000)
+        let piperHost = '127.0.0.1';
+        let piperPort = 5000;
+        try {
+            const pUrl = new URL(PIPER_URL);
+            piperHost = pUrl.hostname;
+            piperPort = parseInt(pUrl.port || '5000', 10);
+        } catch (_) {}
+
+        const piperReq = http.request({
+            hostname: piperHost,
+            port: piperPort,
+            path: `/?text=${encodeURIComponent(cleanedText)}`,
+            method: 'GET',
+            timeout: 2500
+        }, (piperRes) => {
+            if (piperRes.statusCode === 200) {
+                res.writeHead(200, {
+                    'Content-Type': piperRes.headers['content-type'] || 'audio/wav',
+                    'X-TTS-Engine': 'Piper-Neural-MiniPC'
+                });
+                piperRes.pipe(res);
+            } else {
+                res.writeHead(503, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({
+                    error: 'piper_service_error',
+                    message: 'Piper TTS returned non-200 status code',
+                    fallback: 'speechSynthesis'
+                }));
+            }
+        });
+
+        piperReq.on('error', () => {
+            res.writeHead(503, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+                error: 'piper_offline',
+                message: 'Piper TTS daemon offline on Mini PC (port 5000). Falling back to Web Speech API.',
+                fallback: 'speechSynthesis'
+            }));
+        });
+
+        piperReq.on('timeout', () => {
+            piperReq.destroy();
+            res.writeHead(503, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+                error: 'piper_timeout',
+                message: 'Piper TTS daemon timeout. Falling back to Web Speech API.',
+                fallback: 'speechSynthesis'
+            }));
+        });
+
+        piperReq.end();
+    }
+
+    if (req.method === 'GET') {
+        const text = parsedUrl.searchParams.get('text') || parsedUrl.searchParams.get('input') || '';
+        const voice = parsedUrl.searchParams.get('voice') || 'en_US-lessac-medium';
+        const speed = parseFloat(parsedUrl.searchParams.get('speed') || '0.93');
+        processRequest(text, voice, speed);
+    } else if (req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => body += chunk);
+        req.on('end', () => {
+            let text = '';
+            let voice = 'en_US-lessac-medium';
+            let speed = 0.93;
+            try {
+                const parsed = JSON.parse(body);
+                text = parsed.input || parsed.text || '';
+                voice = parsed.voice || voice;
+                speed = parsed.speed || speed;
+            } catch (_) {
+                text = body;
+            }
+            processRequest(text, voice, speed);
+        });
+    } else {
+        res.writeHead(405, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Method Not Allowed' }));
+    }
+}
+
+/**
  * Handle HTTP Requests
  */
 const server = http.createServer((req, res) => {
@@ -312,6 +434,12 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // ── 3.5. API: Piper Neural TTS (Campus Mini PC Edge) ──
+    if (pathname === '/api/tts' || pathname === '/api/speech') {
+        handlePiperTTS(req, res, parsedUrl);
+        return;
+    }
+
     // ── 4. Static Asset Serving (Campus LAN Offline-First) ──
     if (pathname === '/' || pathname === '') {
         pathname = '/index.html';
@@ -379,6 +507,7 @@ function startServer(targetPort) {
   ✓ Health Check:     http://localhost:${targetPort}/health
   ✓ Ollama Discovery: http://localhost:${targetPort}/api/tags
   ✓ AI Chat Proxy:    http://localhost:${targetPort}/api/chat
+  ✓ Piper Neural TTS: http://localhost:${targetPort}/api/tts
   ══════════════════════════════════════════════════════════════════════
 `);
     });

@@ -357,7 +357,7 @@ try {
 console.log('\n▶ TEST 62: PWA Service Worker Cache (sw.js)');
 try {
   const swCode = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
-  assert(swCode.includes("v6.0.0-academic-portals") || swCode.includes("v6.1.0-firebase-sync"), 'sw.js defines valid CACHE_NAME (v6.0.0 or v6.1.0)');
+  assert(swCode.includes("v6.0.0-academic-portals") || swCode.includes("v6.1.0-firebase-sync") || swCode.includes("v6.2.0-piper-neural"), 'sw.js defines valid CACHE_NAME (v6.0.0, v6.1.0, or v6.2.0)');
 
   // Verify required portal assets are cached
   const requiredCaches = [

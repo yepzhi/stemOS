@@ -1522,8 +1522,16 @@ let currentActiveTrackId = null;
 let currentActiveModId = null;
 let isPlayingDialogueAudio = false;
 
-// Web Speech API Voice Synthesis helper
+// Web Speech & Piper Neural TTS helper
 function speakEnglishText(text, rate = 0.95, onEnd = null) {
+  if (window.STEMOS_TTS) {
+    window.STEMOS_TTS.speak(text, {
+      speed: rate,
+      lang: 'en-US',
+      onEnd: onEnd
+    });
+    return;
+  }
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
@@ -1535,6 +1543,9 @@ function speakEnglishText(text, rate = 0.95, onEnd = null) {
 
 function stopEnglishSpeech() {
   isPlayingDialogueAudio = false;
+  if (window.STEMOS_TTS) {
+    window.STEMOS_TTS.stop();
+  }
   if (window.speechSynthesis) {
     window.speechSynthesis.cancel();
   }
@@ -2888,13 +2899,34 @@ function setupSupasteInteractions(tracks, phrases) {
       if (stagePlayerPill) stagePlayerPill.classList.add('playing');
       if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-pause';
 
-      if ('speechSynthesis' in window) {
+      const currentLevel = localStorage.getItem('stemos_cefr_level') || 'B1';
+      const sampleText = currentLevel === 'A2' 
+        ? "In computer chip factories, workers wear white cleanroom suits. They keep the air pure so microchips do not have dust damage. Silicon wafers are washed with special chemical liquids."
+        : "In extreme ultraviolet (EUV) photolithography, wafer steppers operate inside ISO Class 1 cleanrooms with laminar airflow. Photoresist deposition requires precise chemical handling to prevent sub-micron yield defects.";
+
+      if (window.STEMOS_TTS) {
+        window.STEMOS_TTS.speak(sampleText, {
+          speed: 0.93,
+          lang: 'en-US',
+          voice: 'en_US-lessac-medium',
+          onStart: () => {
+            isPlayingHeroAudio = true;
+            if (stagePlayerPill) stagePlayerPill.classList.add('playing');
+            if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-pause';
+          },
+          onEnd: () => {
+            isPlayingHeroAudio = false;
+            if (stagePlayerPill) stagePlayerPill.classList.remove('playing');
+            if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-play';
+          },
+          onError: () => {
+            isPlayingHeroAudio = false;
+            if (stagePlayerPill) stagePlayerPill.classList.remove('playing');
+            if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-play';
+          }
+        });
+      } else if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        const currentLevel = localStorage.getItem('stemos_cefr_level') || 'A2';
-        const sampleText = currentLevel === 'A2' 
-          ? "In computer chip factories, workers wear white cleanroom suits. They keep the air pure so microchips do not have dust damage. Silicon wafers are washed with special chemical liquids."
-          : "In extreme ultraviolet photolithography, wafer steppers operate inside ISO Class 1 cleanrooms with laminar airflow. Photoresist deposition requires precise chemical handling to prevent sub-micron yield defects.";
-        
         const utter = new SpeechSynthesisUtterance(sampleText);
         utter.lang = 'en-US';
         utter.rate = 0.93; // 93% speed requested by user
@@ -2918,6 +2950,7 @@ function setupSupasteInteractions(tracks, phrases) {
       }
     } else {
       isPlayingHeroAudio = false;
+      if (window.STEMOS_TTS) window.STEMOS_TTS.stop();
       if ('speechSynthesis' in window) window.speechSynthesis.cancel();
       if (stagePlayerPill) stagePlayerPill.classList.remove('playing');
       if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-play';

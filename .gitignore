@@ -13,3 +13,4 @@ docs/
 dist/
 scratch/
 *.pdf
+.firebase/
