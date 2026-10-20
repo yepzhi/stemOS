@@ -770,7 +770,6 @@ if (dockOld) {
             </a>
           </div>
         </div>
-      </div>
   `;
   hero = hero.replace(dockOld[0], dockNew.trim());
 }
