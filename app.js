@@ -3234,22 +3234,29 @@ document.addEventListener('DOMContentLoaded', () => {
         // Header info
         document.getElementById('mcer-unit-level-badge').textContent = `CEFR ${unit.cefr}`;
         document.getElementById('mcer-unit-title').textContent = `Unit ${String(unit.unitNumber).padStart(2, '0')} · ${unit.title}`;
-        document.getElementById('mcer-unit-cando').textContent = `${unit.titleES} — ${unit.canDo}`;
+        document.getElementById('mcer-unit-cando').textContent = `${unit.titleES || ''} — ${unit.canDo || ''}`;
+
+        // Normalize dialogue lines (handles array or object with lines)
+        const dialogueLines = Array.isArray(unit.dialogue)
+            ? unit.dialogue
+            : (unit.dialogue && Array.isArray(unit.dialogue.lines) ? unit.dialogue.lines : []);
 
         // Tab 1: Dialogue
         const bubblesContainer = document.getElementById('mcer-dialogue-bubbles');
         bubblesContainer.innerHTML = '';
-        if (unit.dialogue) {
-            unit.dialogue.forEach(d => {
+        if (dialogueLines.length > 0) {
+            dialogueLines.forEach(d => {
+                const speakerName = d.speaker || 'Speaker';
+                const textContent = d.text || '';
                 const bubble = document.createElement('div');
                 bubble.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:10px 14px; display:flex; align-items:flex-start; gap:10px;';
                 bubble.innerHTML = `
                     <div style="width:32px; height:32px; border-radius:50%; background:#e0f2fe; color:#0284c7; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.8rem; flex-shrink:0;">
-                        ${d.speaker.charAt(0)}
+                        ${speakerName.charAt(0)}
                     </div>
                     <div style="flex:1;">
-                        <div style="font-size:0.75rem; font-weight:800; color:#0284c7; text-transform:uppercase;">${d.speaker}</div>
-                        <div style="font-size:0.92rem; color:#0f172a; margin-top:2px;">${d.text}</div>
+                        <div style="font-size:0.75rem; font-weight:800; color:#0284c7; text-transform:uppercase;">${speakerName}</div>
+                        <div style="font-size:0.92rem; color:#0f172a; margin-top:2px;">${textContent}</div>
                     </div>
                     <button class="btn-play-turn-audio" style="background:none; border:none; color:#0284c7; cursor:pointer; font-size:1rem; padding:4px;" title="Escuchar">
                         <i class="fa-solid fa-volume-high"></i>
@@ -3258,7 +3265,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 bubble.querySelector('.btn-play-turn-audio').addEventListener('click', (e) => {
                     e.stopPropagation();
                     if (window.STEMOS_PLACEMENT_TEST) {
-                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(d.audioScript || d.text);
+                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(d.audioScript || textContent);
                     }
                 });
                 bubblesContainer.appendChild(bubble);
@@ -3269,26 +3276,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const btnPlayAll = document.getElementById('btn-mcer-play-all-dialogue');
         if (btnPlayAll) {
             btnPlayAll.onclick = () => {
-                if (!unit.dialogue || !window.STEMOS_PLACEMENT_TEST) return;
-                const fullScript = unit.dialogue.map(d => `${d.speaker} says: ${d.text}`).join('. ');
+                if (dialogueLines.length === 0 || !window.STEMOS_PLACEMENT_TEST) return;
+                const fullScript = dialogueLines.map(d => `${d.speaker || ''} says: ${d.text || ''}`).join('. ');
                 window.STEMOS_PLACEMENT_TEST.playAudioPrompt(fullScript);
             };
         }
 
         // Tab 2: Vocab & Grammar
-        document.getElementById('mcer-grammar-focus-text').textContent = unit.grammarFocus;
+        document.getElementById('mcer-grammar-focus-text').textContent = unit.grammarFocus || 'Standard Technical Grammar Patterns';
         const vocabGrid = document.getElementById('mcer-vocab-cards-grid');
         vocabGrid.innerHTML = '';
-        if (unit.vocabulary) {
-            unit.vocabulary.forEach(v => {
+        const vocabList = Array.isArray(unit.vocabulary) ? unit.vocabulary : [];
+        if (vocabList.length > 0) {
+            vocabList.forEach(v => {
+                const termStr = v.term || v.en || '';
+                const sampleStr = v.sample || v.example || '';
                 const vCard = document.createElement('div');
                 vCard.style.cssText = 'background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; box-shadow:0 2px 4px rgba(0,0,0,0.02); display:flex; justify-content:space-between; align-items:flex-start;';
                 vCard.innerHTML = `
                     <div>
-                        <strong style="color:#0f172a; font-size:0.95rem;">${v.term}</strong>
+                        <strong style="color:#0f172a; font-size:0.95rem;">${termStr}</strong>
                         <span style="font-family:var(--font-mono); font-size:0.75rem; color:#64748b; margin-left:6px;">${v.ipa || ''}</span>
-                        <div style="font-size:0.8rem; color:#0284c7; font-weight:600; margin-top:2px;">${v.es}</div>
-                        <div style="font-size:0.75rem; color:#64748b; margin-top:4px; font-style:italic;">"${v.sample}"</div>
+                        <div style="font-size:0.8rem; color:#0284c7; font-weight:600; margin-top:2px;">${v.es || ''}</div>
+                        <div style="font-size:0.75rem; color:#64748b; margin-top:4px; font-style:italic;">"${sampleStr}"</div>
                     </div>
                     <button class="btn-play-vocab-audio" style="background:#e0f2fe; color:#0284c7; border:none; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;" title="Escuchar pronunciación">
                         <i class="fa-solid fa-volume-high" style="font-size:0.75rem;"></i>
@@ -3296,7 +3306,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 vCard.querySelector('.btn-play-vocab-audio').addEventListener('click', () => {
                     if (window.STEMOS_PLACEMENT_TEST) {
-                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(`${v.term}. ${v.sample}`);
+                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(`${termStr}. ${sampleStr}`);
                     }
                 });
                 vocabGrid.appendChild(vCard);
@@ -3305,28 +3315,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Tab 3: Reading
         if (unit.reading) {
-            document.getElementById('mcer-reading-passage-title').textContent = unit.reading.title;
-            document.getElementById('mcer-reading-passage-text').textContent = unit.reading.passage;
+            const rTitle = unit.reading.title || 'Technical Standard Documentation';
+            const rPassage = unit.reading.passage || unit.reading.text || '';
+            document.getElementById('mcer-reading-passage-title').textContent = rTitle;
+            document.getElementById('mcer-reading-passage-text').textContent = rPassage;
+
+            const rQuestions = unit.reading.questions || (unit.reading.question ? [{
+                q: unit.reading.question,
+                options: unit.reading.options || [],
+                answer: unit.reading.correct !== undefined ? unit.reading.correct : (unit.reading.answer || 0)
+            }] : []);
+
             const rQContainer = document.getElementById('mcer-reading-questions-container');
             rQContainer.innerHTML = '';
-            if (unit.reading.questions) {
-                unit.reading.questions.forEach((rq, rqIdx) => {
-                    const block = document.createElement('div');
-                    block.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px;';
-                    block.innerHTML = `
-                        <div style="font-weight:700; font-size:0.88rem; color:#0f172a; margin-bottom:8px;">${rqIdx + 1}. ${rq.q}</div>
-                        <div style="display:flex; flex-direction:column; gap:6px;">
-                            ${rq.options.map((opt, optIdx) => `
-                                <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; padding:8px 10px; background:#fff; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
-                                    <input type="radio" name="mcer-rq-${rqIdx}" value="${optIdx}">
-                                    <span>${opt}</span>
-                                </label>
-                            `).join('')}
-                        </div>
-                    `;
-                    rQContainer.appendChild(block);
-                });
-            }
+            rQuestions.forEach((rq, rqIdx) => {
+                const block = document.createElement('div');
+                block.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px;';
+                block.innerHTML = `
+                    <div style="font-weight:700; font-size:0.88rem; color:#0f172a; margin-bottom:8px;">${rqIdx + 1}. ${rq.q}</div>
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        ${(rq.options || []).map((opt, optIdx) => `
+                            <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; padding:8px 10px; background:#fff; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
+                                <input type="radio" name="mcer-rq-${rqIdx}" value="${optIdx}">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                rQContainer.appendChild(block);
+            });
         }
 
         // Tab 4: Unit Quiz
@@ -3335,8 +3352,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const quizResultsBox = document.getElementById('mcer-quiz-results-box');
         if (quizResultsBox) quizResultsBox.style.display = 'none';
 
-        if (unit.unitQuiz) {
-            unit.unitQuiz.forEach((uq, uqIdx) => {
+        const quizList = unit.unitQuiz || (unit.quiz ? unit.quiz.map(q => ({
+            question: q.q || q.question,
+            options: q.opts || q.options || [],
+            answer: q.ans !== undefined ? q.ans : (q.answer !== undefined ? q.answer : 0),
+            explanation: q.exp || q.explanation || ''
+        })) : []);
+
+        if (quizList.length > 0) {
+            quizList.forEach((uq, uqIdx) => {
                 const qBlock = document.createElement('div');
                 qBlock.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px;';
                 qBlock.innerHTML = `
@@ -3358,9 +3382,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const btnSubmitQuiz = document.getElementById('btn-submit-mcer-quiz');
         if (btnSubmitQuiz) {
             btnSubmitQuiz.onclick = () => {
-                if (!unit.unitQuiz) return;
+                if (quizList.length === 0) return;
                 let correctCount = 0;
-                unit.unitQuiz.forEach((uq, uqIdx) => {
+                quizList.forEach((uq, uqIdx) => {
                     const selected = document.querySelector(`input[name="mcer-quiz-q-${uqIdx}"]:checked`);
                     const labels = document.querySelectorAll(`input[name="mcer-quiz-q-${uqIdx}"]`);
                     labels.forEach(input => {
@@ -3378,12 +3402,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
-                const pct = Math.round((correctCount / unit.unitQuiz.length) * 100);
+                const pct = Math.round((correctCount / quizList.length) * 100);
                 if (quizResultsBox) {
                     quizResultsBox.style.display = 'block';
-                    document.getElementById('mcer-quiz-score-val').textContent = `${pct}% (${correctCount}/${unit.unitQuiz.length})`;
+                    document.getElementById('mcer-quiz-score-val').textContent = `${pct}% (${correctCount}/${quizList.length})`;
                 }
             };
+        }
+
+        // Tab 5: Plant Floor Crucible Simulation
+        const crucibleTitle = document.getElementById('mcer-crucible-title');
+        const crucibleContext = document.getElementById('mcer-crucible-context');
+        const crucibleScenario = document.getElementById('mcer-crucible-scenario');
+        if (crucibleTitle && unit.crucible) {
+            crucibleTitle.textContent = unit.crucible.title || 'Plant Crucible Simulation';
+            if (crucibleContext) crucibleContext.textContent = unit.crucible.context || '';
+            if (crucibleScenario) crucibleScenario.textContent = unit.crucible.scenario || '';
         }
 
         // Reset to first tab
@@ -3400,7 +3434,7 @@ document.addEventListener('DOMContentLoaded', () => {
             b.style.borderBottom = isActive ? '2px solid #0284c7' : 'none';
         });
 
-        const screens = ['dialogue', 'vocab', 'reading', 'quiz'];
+        const screens = ['dialogue', 'vocab', 'reading', 'crucible', 'quiz'];
         screens.forEach(s => {
             const el = document.getElementById(`mcer-screen-${s}`);
             if (el) el.style.display = (s === tabKey) ? 'block' : 'none';

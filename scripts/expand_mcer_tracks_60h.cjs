@@ -1083,6 +1083,58 @@ const fileContent = `/**
 
   const MCER_LEVELS = ${JSON.stringify(MCER_LEVELS, null, 2)};
 
+  function normalizeUnit(u, lvl) {
+    const lines = (u.dialogue && u.dialogue.lines) ? u.dialogue.lines : (Array.isArray(u.dialogue) ? u.dialogue : []);
+    const dialogueArr = [...lines];
+    dialogueArr.title = (u.dialogue && u.dialogue.title) || u.title;
+    dialogueArr.speakers = (u.dialogue && u.dialogue.speakers) || [];
+    dialogueArr.lines = lines;
+
+    const vocab = (u.vocabulary || []).map(v => Object.assign({}, v, {
+      term: v.term || v.en,
+      en: v.en || v.term,
+      sample: v.sample || v.example,
+      example: v.example || v.sample
+    }));
+
+    const readingObj = Object.assign({}, u.reading, {
+      passage: (u.reading && (u.reading.passage || u.reading.text)) || '',
+      text: (u.reading && (u.reading.text || u.reading.passage)) || '',
+      questions: (u.reading && u.reading.questions) || (u.reading && u.reading.question ? [{
+        q: u.reading.question,
+        options: u.reading.options || [],
+        answer: u.reading.correct !== undefined ? u.reading.correct : (u.reading.answer || 0),
+        correct: u.reading.correct !== undefined ? u.reading.correct : (u.reading.answer || 0)
+      }] : [])
+    });
+
+    const quizArr = (u.unitQuiz || u.quiz || []).map(q => ({
+      q: q.q || q.question,
+      question: q.question || q.q,
+      opts: q.opts || q.options,
+      options: q.options || q.opts,
+      ans: q.ans !== undefined ? q.ans : q.answer,
+      answer: q.answer !== undefined ? q.answer : q.ans,
+      exp: q.exp || q.explanation,
+      explanation: q.explanation || q.exp
+    }));
+
+    return Object.assign({}, u, {
+      levelCode: lvl.code,
+      levelName: lvl.name,
+      levelColor: lvl.color,
+      cefr: lvl.code,
+      assignedLevel: lvl.code,
+      unitNumber: u.unitNum || u.unitNumber,
+      canDo: u.cefrDescriptor || u.canDo,
+      dialogue: dialogueArr,
+      vocabulary: vocab,
+      reading: readingObj,
+      quiz: quizArr,
+      unitQuiz: quizArr
+    });
+  }
+
   return {
     version: '2.0.0-60h-accredited',
     title: 'stemOS MCER Core — 60h Accredited Courses (A1-B2)',
@@ -1094,14 +1146,7 @@ const fileContent = `/**
       const allUnits = [];
       MCER_LEVELS.forEach(lvl => {
         lvl.units.forEach(u => {
-          allUnits.push(Object.assign({}, u, {
-            levelCode: lvl.code,
-            levelName: lvl.name,
-            levelColor: lvl.color,
-            cefr: lvl.code,
-            unitNumber: u.unitNum || u.unitNumber,
-            canDo: u.cefrDescriptor || u.canDo
-          }));
+          allUnits.push(normalizeUnit(u, lvl));
         });
       });
       return allUnits;
@@ -1110,14 +1155,7 @@ const fileContent = `/**
       for (const lvl of MCER_LEVELS) {
         const found = lvl.units.find(u => u.id === unitId);
         if (found) {
-          return Object.assign({}, found, {
-            levelCode: lvl.code,
-            levelName: lvl.name,
-            levelColor: lvl.color,
-            cefr: lvl.code,
-            unitNumber: found.unitNum || found.unitNumber,
-            canDo: found.cefrDescriptor || found.canDo
-          });
+          return normalizeUnit(found, lvl);
         }
       }
       return null;

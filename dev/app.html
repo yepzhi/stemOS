@@ -920,6 +920,9 @@
                 <button class="mcer-tab-btn" data-mcer-tab="reading" style="padding:8px 16px; border:none; background:transparent; font-weight:700; font-size:0.88rem; color:#64748b; cursor:pointer;">
                     <i class="fa-solid fa-file-lines"></i> Lectura de Planta
                 </button>
+                <button class="mcer-tab-btn" data-mcer-tab="crucible" style="padding:8px 16px; border:none; background:transparent; font-weight:700; font-size:0.88rem; color:#64748b; cursor:pointer;">
+                    <i class="fa-solid fa-industry"></i> Simulación de Planta
+                </button>
                 <button class="mcer-tab-btn" data-mcer-tab="quiz" style="padding:8px 16px; border:none; background:transparent; font-weight:700; font-size:0.88rem; color:#64748b; cursor:pointer;">
                     <i class="fa-solid fa-circle-check"></i> Mastery Quiz
                 </button>
@@ -958,7 +961,22 @@
                     <div id="mcer-reading-questions-container" style="display:flex; flex-direction:column; gap:14px;"></div>
                 </div>
 
-                <!-- Tab 4: Unit Quiz -->
+                <!-- Tab 4: Crucible Simulation -->
+                <div id="mcer-screen-crucible" class="mcer-screen" style="display:none;">
+                    <div style="background: linear-gradient(135deg, rgba(2, 132, 199, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%); border: 1.5px solid #38bdf8; border-radius: 14px; padding: 20px; margin-bottom: 16px;">
+                        <div style="display:flex; align-items:center; gap:8px; font-size:0.75rem; font-weight:800; color:#0284c7; text-transform:uppercase; letter-spacing:0.05em;">
+                            <i class="fa-solid fa-bolt"></i> Industrial Crucible Challenge (4.0 Horas Activas)
+                        </div>
+                        <h4 id="mcer-crucible-title" style="font-size:1.15rem; font-weight:800; color:#0f172a; margin: 8px 0 6px 0;"></h4>
+                        <div style="font-size:0.88rem; color:#475569; line-height:1.5; margin-bottom:12px;" id="mcer-crucible-context"></div>
+                        <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:14px 16px; font-size:0.88rem; color:#0f172a; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+                            <strong style="color:#0284c7; display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-bullseye"></i> Misión del Turno:</strong>
+                            <div id="mcer-crucible-scenario" style="margin-top:6px; line-height:1.5;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 5: Unit Quiz -->
                 <div id="mcer-screen-quiz" class="mcer-screen" style="display:none;">
                     <div id="mcer-quiz-questions-container" style="display:flex; flex-direction:column; gap:16px;"></div>
                     <div id="mcer-quiz-results-box" style="display:none; text-align:center; padding:16px; background:#f0fdf4; border:1px solid #86efac; border-radius:14px; margin-top:16px;">
