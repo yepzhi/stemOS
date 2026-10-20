@@ -82,10 +82,10 @@
   let isPlaying = false;
   let isPiperActive = true;
 
-  // Static pre-rendered cleanroom audio for instantaneous zero-latency playback
+  // Static pre-rendered cleanroom audio for instantaneous zero-latency playback (Piper Neural Lessac High)
   const STATIC_AUDIO_MAP = {
-    cleanroom_photolithography_b1: '/content/audio/cleanroom_photolithography.wav',
-    cleanroom_basic_a2: '/content/audio/cleanroom_basic_a2.wav'
+    cleanroom_photolithography_b1: '/content/audio/cleanroom_photolithography.wav?v=2.1.0-piper-neural',
+    cleanroom_basic_a2: '/content/audio/cleanroom_basic_a2.wav?v=2.1.0-piper-neural'
   };
 
   function normalizeKey(str) {

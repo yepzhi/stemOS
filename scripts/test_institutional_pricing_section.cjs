@@ -41,6 +41,10 @@ const indexContent = fs.readFileSync(indexHtmlPath, 'utf8');
 const dom = new JSDOM(indexContent, { runScripts: "dangerously" });
 const { document, window } = dom.window;
 
+if (typeof window.setPlatformLanguage === 'function') {
+  window.setPlatformLanguage('es');
+}
+
 // ── 1. Backup Verification ──
 console.log('▶ 1. Backup File Verification');
 const backupPath = path.join(rootDir, 'index.landing-backup.html');
