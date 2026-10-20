@@ -1,0 +1,2613 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stemOS — Technical English Learning Platform for STEM & Engineering</title>
+    <meta name="description"
+        content="stemOS is an AI-powered Technical English (ESP) learning platform engineered for STEM disciplines, coding, semiconductors, aerospace, and advanced manufacturing. Master engineering vocabulary, CEFR A2/B1 bilingual fluency, and Socratic AI evaluations.">
+    <!-- Google Fonts: Instrument Serif, Inter, Outfit, Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css?v=1.0.3">
+    <link rel="stylesheet" href="dev.css?v=4.0.3">
+    <link rel="stylesheet" href="world-map.css?v=1.0.0">
+
+    <!-- Local Backdoor Initializer script to prevent screen flash -->
+    <script>
+        if (localStorage.getItem('stemos_backdoor') === 'true') {
+            document.documentElement.classList.add('backdoor-unlocked');
+        }
+    </script>
+
+    <!-- Premium Glassmorphic Coming Soon Page styles -->
+    <style>
+        :root {
+            --cs-bg-color: #ffffff;
+            --cs-card-bg: rgba(255, 255, 255, 0.92);
+            --cs-border-color: rgba(0, 0, 0, 0.08);
+            --cs-text-primary: #0f172a;
+            --cs-text-secondary: #475569;
+            --cs-blue-glow: rgba(14, 165, 233, 0.15);
+            --cs-cyan-glow: rgba(2, 132, 199, 0.12);
+        }
+
+        /* ─── COMING SOON WRAPPER ─────────────────────────────────── */
+        #coming-soon-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: transparent;
+            color: var(--cs-text-primary);
+            z-index: 999999;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .backdoor-unlocked #coming-soon-screen {
+            display: none !important;
+        }
+
+        .backdoor-unlocked .dashboard-container {
+            display: flex !important;
+        }
+
+        html:not(.backdoor-unlocked) .dashboard-container {
+            display: none !important;
+        }
+
+        /* ─── AURORA & DEV BLUE ATMOSPHERIC BACKGROUND ───────────── */
+        .cs-aurora-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+            background: linear-gradient(180deg,
+                    #061a70 0%,
+                    #0d2b99 12%,
+                    #0056e0 26%,
+                    #0284c7 48%,
+                    #38bdf8 68%,
+                    #7dd3fc 84%,
+                    #e0f2fe 95%,
+                    #ffffff 100%);
+        }
+
+        .cs-sky-dome {
+            position: absolute;
+            inset: -60px;
+            background-image: linear-gradient(180deg,
+                    rgba(6, 26, 112, 0.92) 0%,
+                    rgba(13, 43, 153, 0.90) 15%,
+                    rgba(0, 86, 224, 0.88) 32%,
+                    rgba(2, 132, 199, 0.85) 52%,
+                    rgba(56, 189, 248, 0.80) 72%,
+                    rgba(125, 211, 252, 0.60) 88%,
+                    rgba(255, 255, 255, 0) 100%);
+            filter: blur(45px);
+            pointer-events: none;
+        }
+
+        .cs-sky-dome::after {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1200px;
+            height: 600px;
+            background: radial-gradient(ellipse 60% 45% at 50% 30%,
+                    #7dd3fc 0%,
+                    #38bdf8 30%,
+                    #0284c7 60%,
+                    transparent 100%);
+            filter: blur(50px);
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        .cs-aurora-orb {
+            position: absolute;
+            filter: blur(80px);
+            border-radius: 50%;
+            opacity: 0.35;
+            animation: cs-float 22s infinite alternate ease-in-out;
+        }
+
+        .cs-orb-1 {
+            width: 650px;
+            height: 650px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, transparent 70%);
+            top: -10%;
+            left: -15%;
+        }
+
+        .cs-orb-2 {
+            width: 580px;
+            height: 580px;
+            background: radial-gradient(circle, rgba(125, 211, 252, 0.3) 0%, transparent 70%);
+            bottom: -10%;
+            right: -10%;
+            animation-delay: -7s;
+        }
+
+        .cs-orb-3 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, transparent 70%);
+            top: 35%;
+            left: 55%;
+            animation-delay: -12s;
+        }
+
+        @keyframes cs-float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(28px, -38px) scale(1.06);
+            }
+
+            100% {
+                transform: translate(-14px, 18px) scale(0.97);
+            }
+        }
+
+        /* ─── SCROLL SECTIONS ────────────────────────────────────── */
+        .cs-scroll-wrapper {
+            z-index: 10;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.5rem;
+            padding: 0 0 3.5rem 0;
+        }
+
+        /* Each "page" section fills the viewport */
+        .cs-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0;
+            position: relative;
+            scroll-margin-top: 2rem;
+        }
+
+        /* ─── GLASSMORPHIC CARD ─────────────────────────────────── */
+        .cs-container {
+            width: 95%;
+            max-width: 800px;
+            padding: 2.2rem 1.6rem 1.8rem;
+            border-radius: 26px;
+            background: var(--cs-card-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--cs-border-color);
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.8) inset,
+                0 25px 60px -15px rgba(14, 165, 233, 0.12),
+                0 4px 20px rgba(0, 0, 0, 0.04);
+            text-align: center;
+            animation: cs-fadeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @media (min-width: 768px) {
+            .cs-container {
+                padding: 3rem 2.8rem 2.6rem;
+                border-radius: 32px;
+            }
+        }
+
+        @keyframes cs-fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ─── BRAND ─────────────────────────────────────────────── */
+        .cs-brand {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cs-dev-signal-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #0284c7;
+            padding: 4px 14px;
+            border-radius: 9999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+        }
+
+        .cs-pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #0284c7;
+            box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.7);
+            animation: cs-pulse 2s infinite;
+        }
+
+        @keyframes cs-pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 8px rgba(2, 132, 199, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(2, 132, 199, 0);
+            }
+        }
+
+        .cs-logo-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2.4rem, 7vw, 3.4rem);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        /* ─── HERO BRAND LOCKUP & EMBLEM (STEMOS) ─────────────────── */
+        .hero-brand-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .hero-logo-lockup {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            position: relative;
+            padding: 6px 12px;
+            user-select: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-logo-aura {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 360px;
+            height: 130px;
+            background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.48) 0%, rgba(2, 132, 199, 0.25) 45%, rgba(13, 43, 153, 0) 75%);
+            filter: blur(28px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.9;
+            animation: auraPulse 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes auraPulse {
+            0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.7; }
+            100% { transform: translate(-50%, -50%) scale(1.08); opacity: 1; }
+        }
+
+        .hero-logo-emblem {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-emblem-squircle {
+            width: 66px;
+            height: 66px;
+            border-radius: 22px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.96) 0%, rgba(224, 242, 254, 0.88) 55%, rgba(186, 230, 253, 0.75) 100%);
+            border: 1.5px solid rgba(255, 255, 255, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.8) inset,
+                0 16px 36px -4px rgba(13, 43, 153, 0.38),
+                0 4px 16px rgba(2, 132, 199, 0.3);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: emblemFloat 4.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes emblemFloat {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-5px) rotate(1.5deg); }
+        }
+
+        .hero-logo-lockup:hover .hero-emblem-squircle {
+            transform: translateY(-5px) scale(1.06) rotate(-2deg);
+            box-shadow:
+                0 0 0 2px #ffffff inset,
+                0 22px 45px -4px rgba(13, 43, 153, 0.5),
+                0 0 32px rgba(56, 189, 248, 0.65);
+        }
+
+        .hero-logo-text {
+            position: relative;
+            z-index: 1;
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(3.2rem, 8vw, 4.8rem);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        /* "stem" in luminous ice-diamond to sky-blue gradient */
+        .hero-brand-stem {
+            background: linear-gradient(180deg, #ffffff 10%, #f0f9ff 40%, #bae6fd 75%, #7dd3fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 4px 18px rgba(13, 43, 153, 0.45));
+            transition: all 0.3s ease;
+        }
+
+        /* "OS" in rich vibrant electric blue to deep sapphire gradient with specular edge */
+        .hero-brand-os {
+            background: linear-gradient(135deg, #e0f2fe 0%, #38bdf8 30%, #0284c7 65%, #1d4ed8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 4px 18px rgba(2, 132, 199, 0.6)) drop-shadow(0 0 12px rgba(56, 189, 248, 0.4));
+            transition: all 0.3s ease;
+            margin-left: 2px;
+        }
+
+        .hero-logo-lockup:hover .hero-brand-stem {
+            filter: drop-shadow(0 8px 28px rgba(13, 43, 153, 0.65));
+        }
+
+        .hero-logo-lockup:hover .hero-brand-os {
+            filter: drop-shadow(0 8px 32px rgba(56, 189, 248, 0.85));
+        }
+
+        @media (max-width: 640px) {
+            .hero-logo-lockup {
+                gap: 12px;
+            }
+            .hero-emblem-squircle {
+                width: 52px;
+                height: 52px;
+                border-radius: 16px;
+            }
+            .hero-emblem-squircle svg {
+                width: 32px;
+                height: 32px;
+            }
+            .hero-logo-text {
+                font-size: clamp(2.4rem, 10vw, 3.4rem);
+            }
+            .hero-logo-aura {
+                width: 260px;
+                height: 90px;
+            }
+        }
+
+        .cs-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(14, 165, 233, 0.08);
+            border: 1px solid rgba(14, 165, 233, 0.25);
+            color: #0284c7;
+            padding: 6px 18px;
+            border-radius: 9999px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        /* ─── HEADLINE WITH SERIF ITALIC ────────────────────────── */
+        .cs-container h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.75rem, 4.4vw, 2.55rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 0.85rem;
+            letter-spacing: -0.025em;
+            color: #0f172a;
+        }
+
+        .cs-serif-italic {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            color: #0284c7;
+        }
+
+        .cs-highlight {
+            background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ─── DESCRIPTION ───────────────────────────────────────── */
+        .cs-description {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--cs-text-secondary);
+            margin-bottom: 0;
+            max-width: 660px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+        }
+
+        .cs-description strong {
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        /* ─── METRICS STRIP (Matches dev.html ESP Stats) ─────────── */
+        .cs-metrics-strip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 8px 22px;
+            border-radius: 9999px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            margin: 1.3rem auto 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .metric-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .metric-val {
+            font-family: 'JetBrains Mono', monospace, sans-serif;
+            font-weight: 700;
+            color: #0284c7;
+            font-size: 0.94rem;
+        }
+
+        .metric-lbl {
+            color: #475569;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .metric-dot {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+        }
+
+        /* ─── DIVIDER ───────────────────────────────────────────── */
+        .cs-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.06) 30%, rgba(14, 165, 233, 0.22) 50%, rgba(0, 0, 0, 0.06) 70%, transparent);
+            margin: 1.25rem 0;
+        }
+
+        /* ─── FEATURES GRID (second section card) ───────────────── */
+        .cs-features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 0;
+        }
+
+        @media (min-width: 480px) {
+            .cs-features-grid {
+                grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+                gap: 1rem;
+            }
+        }
+
+        .cs-feature-item {
+            background: rgba(248, 250, 252, 0.88);
+            border: 1px solid rgba(0, 0, 0, 0.07);
+            border-radius: 18px;
+            padding: 1.2rem 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .cs-feature-item:hover {
+            background: rgba(240, 249, 255, 0.95);
+            border-color: rgba(14, 165, 233, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.12);
+        }
+
+        .cs-feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.6rem;
+            color: #0284c7;
+        }
+
+        .cs-feature-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #0f172a;
+            display: block;
+            letter-spacing: 0.01em;
+        }
+
+        .cs-feature-desc {
+            font-size: 0.72rem;
+            color: #64748b;
+            margin-top: 0.2rem;
+            display: block;
+            line-height: 1.4;
+        }
+
+        /* ─── LXP GRAPH PREVIEW ─────────────────────────────────── */
+        .cs-graph-preview {
+            width: 100%;
+            height: 140px;
+            background: rgba(248, 250, 252, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.07);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 8px;
+        }
+
+        .cs-graph-preview::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, transparent 60%, rgba(8, 17, 31, 0.6) 100%);
+            pointer-events: none;
+        }
+
+        .cs-graph-preview svg {
+            max-width: 440px;
+            height: auto;
+        }
+
+        /* ─── BUTTONS ───────────────────────────────────────────── */
+        .cs-btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.875rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cs-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 12px 28px;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .cs-btn-primary {
+            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 4px 18px rgba(2, 132, 199, 0.28);
+        }
+
+        .cs-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 26px rgba(2, 132, 199, 0.42);
+        }
+
+        .cs-btn-secondary {
+            background: #ffffff;
+            color: #0f172a;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .cs-btn-secondary:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+            color: #0284c7;
+        }
+
+        /* ─── FOOTER ────────────────────────────────────────────── */
+        .cs-footer {
+            padding: 2.5rem 1rem 3rem;
+            z-index: 10;
+            text-align: center;
+            font-size: 0.72rem;
+            color: #64748b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cs-dev-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 20px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-decoration: none;
+            background: linear-gradient(135deg, rgba(0, 210, 255, 0.07) 0%, rgba(39, 126, 255, 0.07) 100%);
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            color: #7dd3fc;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+        }
+
+        .cs-dev-btn:hover {
+            background: linear-gradient(135deg, #00d2ff 0%, #277eff 100%);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
+            transform: translateY(-1.5px);
+        }
+
+        /* ─── SCROLL PROGRESS BAR ──────────────────────────── */
+        .cs-scroll-dots {
+            position: fixed;
+            right: 1.4rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 10px 6px;
+            border-radius: 999px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .cs-dot {
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .cs-dot-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* The circle shape */
+        .cs-dot-circle {
+            fill: rgba(255, 255, 255, 0.45);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: center;
+        }
+
+        /* The heart path shape */
+        .cs-dot-heart-path {
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: 0;
+            transform: scale(0);
+            transform-origin: center;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Tooltip label hidden to prevent visual clutter */
+        .cs-dot::after {
+            display: none !important;
+        }
+
+        /* HOVER state */
+        .cs-dot:hover {
+            transform: scale(1.25);
+        }
+
+        .cs-dot:hover .cs-dot-circle {
+            fill: #ffffff;
+        }
+
+        /* ACTIVE state */
+        .cs-dot.active {
+            transform: scale(1.3);
+        }
+
+        .cs-dot.active .cs-dot-circle {
+            fill: #ffffff;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
+        }
+
+        @keyframes lovelace-heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1.2);
+                filter: drop-shadow(0 0 6px rgba(0, 210, 255, 0.7));
+            }
+
+            14% {
+                transform: scale(1.4);
+                filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.9));
+            }
+
+            28% {
+                transform: scale(1.2);
+                filter: drop-shadow(0 0 6px rgba(0, 210, 255, 0.7));
+            }
+
+            42% {
+                transform: scale(1.3);
+                filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.8));
+            }
+        }
+
+        /* Click ripple */
+        .cs-dot.clicked .cs-dot-heart-path {
+            animation: heart-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes heart-pop {
+            0% {
+                transform: scale(1.2);
+            }
+
+            50% {
+                transform: scale(1.8);
+            }
+
+            100% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* ─── TRIGGER ──────────────────────────────────────────── */
+        #backdoor-trigger {
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-block;
+        }
+
+        #backdoor-trigger:hover {
+            filter: drop-shadow(0 0 14px rgba(0, 210, 255, 0.8));
+            transform: scale(1.1);
+        }
+
+        /* ─── MODAL POPUP: UNDER DEVELOPMENT ────────────────────── */
+        .cs-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .cs-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .cs-modal-card {
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 28px;
+            max-width: 480px;
+            width: 100%;
+            padding: 2.2rem 2rem;
+            text-align: center;
+            box-shadow: 0 25px 65px -15px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            transform: translateY(20px) scale(0.96);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cs-modal-overlay.active .cs-modal-card {
+            transform: translateY(0) scale(1);
+        }
+
+        .cs-modal-icon-wrap {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            background: rgba(14, 165, 233, 0.1);
+            color: #0284c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin: 0 auto 1.2rem;
+        }
+
+        .cs-modal-tag {
+            display: inline-block;
+            background: #f1f5f9;
+            color: #0284c7;
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+
+        .cs-modal-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .cs-modal-text {
+            font-size: 0.92rem;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 1.4rem;
+        }
+
+        .cs-modal-btn {
+            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+            color: #ffffff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(2, 132, 199, 0.3);
+            transition: all 0.25s ease;
+            width: 100%;
+        }
+
+        .cs-modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(2, 132, 199, 0.45);
+        }
+
+        /* ── SOFT APPEAR & CONSTRUCTION REVEAL (Supaste Editorial Physics) ── */
+        .soft-word {
+            display: inline-block;
+            margin-right: 0.22em;
+            opacity: 0;
+            transform: translateY(28px) scale(0.96);
+            filter: blur(14px);
+            animation: softConstruct 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: var(--delay, 0.13s);
+        }
+
+        .soft-word.supaste-serif-italic {
+            margin-right: 0.2em;
+        }
+
+        .soft-word:last-child {
+            margin-right: 0;
+        }
+
+        .soft-element {
+            opacity: 0;
+            transform: translateY(22px);
+            filter: blur(10px);
+            animation: softConstruct 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: var(--delay, 0.26s);
+        }
+
+        @keyframes softConstruct {
+            0% {
+                opacity: 0;
+                transform: translateY(28px) scale(0.96);
+                filter: blur(14px);
+            }
+            50% {
+                opacity: 0.8;
+                filter: blur(3px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0px);
+            }
+        }
+        /* ─── LANGUAGE SWITCHER CAPSULE (ES | EN) ───────────────── */
+        .supaste-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lang-switch-capsule {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.38);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 9999px;
+            padding: 3px 6px;
+            box-shadow: 0 4px 16px rgba(6, 26, 112, 0.18);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+        }
+
+        .lang-switch-capsule:hover {
+            background: rgba(255, 255, 255, 0.24);
+            border-color: rgba(255, 255, 255, 0.55);
+            box-shadow: 0 6px 20px rgba(6, 26, 112, 0.25);
+        }
+
+        .lang-icon {
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0 2px 0 4px;
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.85);
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            padding: 4px 8px;
+            border-radius: 9999px;
+            cursor: pointer;
+            line-height: 1;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .lang-btn.active {
+            background: #ffffff;
+            color: #0284c7;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            font-weight: 800;
+        }
+
+        body.lang-transitioning [data-i18n] {
+            opacity: 0.75;
+            transition: opacity 0.15s ease-in-out;
+        }
+
+        @media (max-width: 1024px) {
+            .supaste-nav {
+                justify-content: space-between !important;
+                padding: 8px 16px !important;
+            }
+            .supaste-nav-right {
+                display: flex !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--   COMING SOON SCREEN                           -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div id="coming-soon-screen">
+
+        <!-- Fixed Aurora orbs -->
+        <div class="cs-aurora-bg">
+            <div class="cs-sky-dome"></div>
+            <div class="cs-aurora-orb cs-orb-1"></div>
+            <div class="cs-aurora-orb cs-orb-2"></div>
+            <div class="cs-aurora-orb cs-orb-3"></div>
+        </div>
+
+        <!-- Scroll progress dots (fixed sidebar) -->
+        <nav class="cs-scroll-dots" id="cs-scroll-dots" aria-label="Page sections">
+            <div class="cs-dot active" data-section="0" data-label="Home" title="Home">
+                <svg viewBox="0 0 24 24" class="cs-dot-svg">
+                    <circle cx="12" cy="12" r="5" class="cs-dot-circle" />
+                    <path
+                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                        class="cs-dot-heart-path" />
+                </svg>
+            </div>
+            <div class="cs-dot" data-section="1" data-label="About" title="About stemOS">
+                <svg viewBox="0 0 24 24" class="cs-dot-svg">
+                    <circle cx="12" cy="12" r="5" class="cs-dot-circle" />
+                    <path
+                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                        class="cs-dot-heart-path" />
+                </svg>
+            </div>
+            <div class="cs-dot" data-section="2" data-label="Features" title="Features">
+                <svg viewBox="0 0 24 24" class="cs-dot-svg">
+                    <circle cx="12" cy="12" r="5" class="cs-dot-circle" />
+                    <path
+                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                        class="cs-dot-heart-path" />
+                </svg>
+            </div>
+        </nav>
+
+        <!-- ── Top-Docked Supaste Navigation Capsule (Fused with top of screen) ── -->
+        <header class="supaste-nav-wrapper">
+            <nav class="supaste-nav" id="supaste-nav" aria-label="Main Navigation">
+                <div class="supaste-nav-left">
+                    <a href="#" class="supaste-brand-link" id="brand-home-link">
+                        <div class="supaste-squircle-logo">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linejoin="round" />
+                                <path d="M12 22V12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                                <path d="M21 7l-9 5-9-5" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linejoin="round" />
+                                <circle cx="12" cy="12" r="2.5" fill="currentColor" opacity="0.7" />
+                            </svg>
+                        </div>
+                        <div class="supaste-brand-name">
+                            <span class="brand-stem">stem</span><span class="brand-os">OS</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="supaste-nav-links">
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('ESP Catalog')" class="nav-link active" data-i18n="nav_catalog">ESP Catalog</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Technology')" class="nav-link" data-i18n="nav_tech">Technology</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Engineering')" class="nav-link" data-i18n="nav_eng">Engineering</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Science')" class="nav-link" data-i18n="nav_sci">Science</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Aviation')" class="nav-link" data-i18n="nav_avia">Aviation</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Native Idioms')" class="nav-link" data-i18n="nav_idioms">Native Idioms</a>
+                    <a href="placement.html" class="nav-link" style="color:#7dd3fc; font-weight:700;" data-i18n="nav_placement"><i class="fa-solid fa-graduation-cap"></i> Placement Test (30m)</a>
+                </div>
+
+                <!-- ── Language Toggle Capsule (ES | EN) ── -->
+                <div class="supaste-nav-right">
+                    <div class="lang-switch-capsule" id="lang-switch-capsule" role="group" aria-label="Selector de Idioma / Language Selector">
+                        <i class="fa-solid fa-globe lang-icon" aria-hidden="true"></i>
+                        <button type="button" class="lang-btn" id="lang-btn-es" data-lang="es" aria-pressed="false">ES</button>
+                        <button type="button" class="lang-btn" id="lang-btn-en" data-lang="en" aria-pressed="false">EN</button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Scrollable content wrapper -->
+        <div class="cs-scroll-wrapper">
+
+            <!-- ══ SECTION 1 — HERO (Supaste Radiant Sky Atmosphere) ═════════════════════════════ -->
+            <section class="cs-section" id="cs-section-0" style="padding-top:76px; width:100%;">
+                <div class="supaste-hero-container">
+
+                    <!-- Pill / Brand Header -->
+                    <div class="hero-brand-section soft-element" style="--delay: 0.05s;">
+                        <div class="cs-dev-signal-pill"
+                            style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.4); color:#ffffff; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 4px 16px rgba(13,43,153,0.2); font-size:0.75rem; font-weight:700; padding:5px 16px;">
+                            <span class="cs-pulse-dot" style="background:#ffffff; box-shadow:0 0 10px #ffffff;"></span>
+                            <span data-i18n="hero_pill_dev">Under Active Development</span>
+                        </div>
+
+                        <!-- ── Premium Hero Brand Lockup (stemOS Text Only) ── -->
+                        <div class="hero-logo-lockup" id="hero-logo-lockup">
+                            <div class="hero-logo-aura" aria-hidden="true"></div>
+                            <div class="hero-logo-text">
+                                <span class="hero-brand-stem">stem</span><span class="hero-brand-os"><span id="backdoor-trigger" style="cursor:pointer;" title="stemOS">O</span>S</span>
+                            </div>
+                        </div>
+
+                        <div class="cs-badge"
+                            style="background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.38); color:#ffffff; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); font-size:0.88rem; font-weight:600; padding:7px 22px; border-radius:999px; box-shadow:0 4px 20px rgba(13,43,153,0.15);">
+                            <span data-i18n="hero_badge_lxp">LXP, Learning Experience Platform for Technical English</span>
+                        </div>
+                    </div>
+
+                    <!-- Editorial Headline in Pure White -->
+                    <h1 class="supaste-hero-title" data-i18n="hero_title_html">
+                        <span class="soft-word" style="--delay: 0.14s">Mastering</span>
+                        <span class="soft-word" style="--delay: 0.22s">Technical</span>
+                        <span class="soft-word" style="--delay: 0.30s">English</span> <br>
+                        <span class="soft-word" style="--delay: 0.38s">for</span>
+                        <span class="soft-word supaste-serif-italic" style="--delay: 0.48s">Advanced</span>
+                        <span class="soft-word supaste-serif-italic" style="--delay: 0.56s">Industry</span>
+                        <span class="soft-word supaste-serif-italic" style="--delay: 0.64s">&amp;</span>
+                        <span class="soft-word supaste-serif-italic" style="--delay: 0.72s">Nearshoring</span>
+                    </h1>
+
+                    <!-- Refined Subtitle in Crisp White -->
+                    <p class="supaste-hero-subtitle soft-element" style="--delay: 0.82s" data-i18n="hero_subtitle">
+                        <strong>27 specialized industry tracks</strong> of English for Specific Purposes (ESP) &mdash;
+                        engineered for semiconductor fabrication, aerospace avionics, industrial robotics, and advanced
+                        manufacturing teams. Aligned with IEEE, SEMI, ISO, and OACI standards.
+                    </p>
+
+                    <!-- CTAs -->
+                    <div class="supaste-hero-actions soft-element" style="--delay: 0.95s">
+                        <button type="button" id="cs-btn-enter-world" class="supaste-btn-primary" style="background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); box-shadow: 0 4px 20px rgba(56, 189, 248, 0.5);">
+                            <i class="fa-solid fa-earth-americas"></i>
+                            <span data-i18n="btn_world_3d">Mundo stemOS 3D</span>
+                            <i class="fa-solid fa-arrow-right btn-arrow"></i>
+                        </button>
+                        <button type="button" onclick="openUnderDevModal('27 Modules')" class="supaste-btn-secondary">
+                            <span data-i18n="btn_modules_27">27 Módulos ESP</span>
+                        </button>
+                        <button type="button" onclick="openUnderDevModal('Interactive Demo')"
+                            class="supaste-btn-secondary">
+                            <i class="fa-solid fa-laptop-code"></i>
+                            <span data-i18n="btn_demo">Demo Interactiva</span>
+                        </button>
+                        <a href="https://jovenesstem.com" class="supaste-btn-secondary" target="_blank" rel="noopener">
+                            <i class="fa-solid fa-seedling"></i>
+                            <span data-i18n="btn_ecosystem">JóvenesSTEM Ecosystem</span>
+                        </a>
+                        <a href="placement.html" class="supaste-btn-secondary" style="background: rgba(56, 189, 248, 0.18); border-color: rgba(56, 189, 248, 0.45); color: #ffffff;" title="Placement Test CEFR (30 min)">
+                            <i class="fa-solid fa-graduation-cap" style="color: #38bdf8;"></i>
+                            <span data-i18n="btn_take_placement">Placement Test (30 min)</span>
+                        </a>
+                    </div>
+
+                    <!-- Key Metrics Strip -->
+                    <div class="supaste-metrics-strip soft-element" style="--delay: 1.08s">
+                        <div class="metric-pill">
+                            <span class="metric-val">27</span>
+                            <span class="metric-lbl" data-i18n="metric_tracks_lbl">Tracks ESP</span>
+                        </div>
+                        <span class="metric-dot">&bull;</span>
+                        <div class="metric-pill">
+                            <span class="metric-val">146</span>
+                            <span class="metric-lbl" data-i18n="metric_modules_lbl">Modules</span>
+                        </div>
+                        <span class="metric-dot">&bull;</span>
+                        <div class="metric-pill">
+                            <span class="metric-val">58</span>
+                            <span class="metric-lbl" data-i18n="metric_readings_lbl">Readings</span>
+                        </div>
+                        <span class="metric-dot">&bull;</span>
+                        <div class="metric-pill">
+                            <span class="metric-val">45</span>
+                            <span class="metric-lbl" data-i18n="metric_idioms_lbl">Native Idioms</span>
+                        </div>
+                        <span class="metric-dot">&bull;</span>
+                        <div class="metric-pill">
+                            <span class="metric-val">100%</span>
+                            <span class="metric-lbl" data-i18n="metric_standards_lbl">Standards Aligned</span>
+                        </div>
+                    </div>
+
+                    <!-- Supaste macOS Stage Window Live Preview -->
+                    <div class="supaste-stage-window soft-element" id="hero-showcase-window"
+                        style="--delay: 1.20s; margin-top:14px; margin-bottom:10px;">
+                        <div class="window-titlebar">
+                            <div class="traffic-lights">
+                                <span class="dot dot-close"></span>
+                                <span class="dot dot-min"></span>
+                                <span class="dot dot-max"></span>
+                            </div>
+                            <div class="window-title">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" stroke="currentColor" stroke-width="1.8"
+                                        stroke-linejoin="round" />
+                                    <path d="M12 22V12" stroke="currentColor" stroke-width="1.8"
+                                        stroke-linecap="round" />
+                                    <path d="M21 7l-9 5-9-5" stroke="currentColor" stroke-width="1.8"
+                                        stroke-linejoin="round" />
+                                    <circle cx="12" cy="12" r="2.5" fill="currentColor" opacity="0.7" />
+                                </svg>
+                                <span data-i18n="win_title">stemOS Studio &mdash; Semiconductors: Photolithography Cleanroom Protocols</span>
+                            </div>
+                            <div class="window-right-tags">
+                                <span class="win-tag win-tag-cefr" data-i18n="win_tag_level">Level B1</span>
+                                <span class="win-tag win-tag-conocer"><i class="fa-solid fa-award"></i> <span data-i18n="win_tag_standard">IEEE Standard</span></span>
+                            </div>
+                        </div>
+
+                        <div class="window-content-area">
+                            <div class="stage-player-pill">
+                                <button type="button" onclick="openUnderDevModal('Technical Audio')"
+                                    class="stage-play-btn" aria-label="Play pronunciation">
+                                    <i class="fa-solid fa-play"></i>
+                                </button>
+                                <div class="stage-wave-bars">
+                                    <span class="w-bar"></span><span class="w-bar"></span><span
+                                        class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span><span
+                                        class="w-bar"></span><span class="w-bar"></span>
+                                </div>
+                                <div class="stage-track-info">
+                                    <span class="stage-speaker"><i class="fa-solid fa-headphones"></i> <span data-i18n="stage_speaker_lbl">Technical Pronunciation (Native Audio)</span></span>
+                                    <span class="stage-reading-title" data-i18n="stage_reading_title">Cleanroom ISO Class 1 Protocols</span>
+                                </div>
+                                <div class="stage-speed-pill" data-i18n="stage_speed_pill">Audio EN</div>
+                            </div>
+
+                            <p class="stage-reading-quote" data-i18n="stage_quote">
+                                &ldquo;In extreme ultraviolet (EUV) photolithography, wafer steppers operate inside ISO
+                                Class 1 cleanrooms with laminar airflow. Photoresist deposition requires precise
+                                chemical handling to prevent sub-micron yield defects.&rdquo;
+                            </p>
+
+                            <div class="stage-bottom-bar">
+                                <div class="stage-socratic-badge">
+                                    <i class="fa-solid fa-brain"></i>
+                                    <span data-i18n="stage_socratic_text"><strong>Socratic Bot:</strong> &ldquo;Why does uniform photoresist deposition prevent defects at 3nm nodes?&rdquo;</span>
+                                </div>
+                                <button type="button" onclick="openUnderDevModal('Open Module')"
+                                    class="stage-action-btn">
+                                    <span data-i18n="stage_open_module">Open Module</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ══ SECTION 2 — ABOUT ════════════════════════════ -->
+            <section class="cs-section" id="cs-section-1">
+                <div class="cs-container">
+                    <div class="cs-brand" style="margin-bottom:1rem">
+                        <div class="cs-badge"><i class="fa-solid fa-book-bookmark"></i>&nbsp;<span data-i18n="about_badge">Specialized ESP Methodology</span>
+                        </div>
+                    </div>
+                    <h1 style="font-size:clamp(1.6rem,4vw,2.2rem); margin-bottom:1.25rem;" data-i18n="about_heading">Why <span
+                            class="cs-highlight">Technical English</span> for Industry?</h1>
+
+                    <p class="cs-description" style="margin-bottom:0;" data-i18n="about_desc">
+                        High-tech manufacturing, semiconductor cleanrooms, avionics engineering, and industrial robotics
+                        operate 100% in specialized English. <strong>stemOS</strong> is a <strong>LATAM + US native
+                            Learning Platform</strong> that transforms general English into precise, industry-ready
+                        technical fluency. Master IEEE, SEMI, and ISO vocabulary, technical documentation, and real
+                        workplace communication with our Socratic <em>Feynman Engine</em>.
+                    </p>
+
+                    <div class="cs-divider"></div>
+
+                    <!-- Skills graph preview -->
+                    <div class="cs-graph-preview">
+                        <svg width="100%" height="100%" viewBox="0 0 400 130">
+                            <line x1="80" y1="65" x2="200" y2="65" stroke="#277eff" stroke-width="1.8"
+                                stroke-dasharray="5 3" opacity="0.7" />
+                            <line x1="200" y1="65" x2="320" y2="65" stroke="#00d2ff" stroke-width="1.8"
+                                stroke-dasharray="5 3" opacity="0.7" />
+                            <line x1="200" y1="65" x2="200" y2="28" stroke="rgba(255,255,255,0.12)"
+                                stroke-width="1.2" />
+                            <!-- Node 1 -->
+                            <g transform="translate(80,65)">
+                                <circle r="19" fill="rgba(8,17,31,0.9)" stroke="#277eff" stroke-width="2"
+                                    filter="url(#glow-blue)" />
+                                <path d="M-5.5 -1.5 L-1.5 2.5 L5.5 -4.5" fill="none" stroke="#277eff" stroke-width="2.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <text y="32" font-family="'Outfit',sans-serif" font-size="9"
+                                    fill="rgba(255,255,255,0.7)" font-weight="600" text-anchor="middle" data-i18n="graph_node_lexicon">Technical
+                                    Lexicon</text>
+                            </g>
+                            <!-- Node 2 -->
+                            <g transform="translate(200,65)">
+                                <circle r="23" fill="rgba(8,17,31,0.9)" stroke="#00d2ff" stroke-width="2.5"
+                                    filter="url(#glow-cyan)" />
+                                <path d="M-1 -10 L5 -2 L1 -2 L3 10 L-5 2 L-1 2 Z" fill="#00d2ff" />
+                                <text y="36" font-family="'Outfit',sans-serif" font-size="9.5" fill="#ffffff"
+                                    font-weight="700" text-anchor="middle" data-i18n="graph_node_core">stemOS ESP Core</text>
+                            </g>
+                            <!-- Node 3 -->
+                            <g transform="translate(320,65)">
+                                <circle r="19" fill="rgba(8,17,31,0.9)" stroke="#00d2ff" stroke-width="2"
+                                    filter="url(#glow-cyan)" />
+                                <path
+                                    d="M-8 -6 h16 a4 4 0 0 1 4 4 v5 a4 4 0 0 1 -4 4 h-7 l-5 4 v-4 h-4 a4 4 0 0 1 -4 -4 v-5 a4 4 0 0 1 4 -4 z"
+                                    fill="#00d2ff" transform="scale(0.7) translate(-1, -1)" />
+                                <text y="32" font-family="'Outfit',sans-serif" font-size="9"
+                                    fill="rgba(255,255,255,0.7)" font-weight="600" text-anchor="middle" data-i18n="graph_node_ai">Feynman English
+                                    AI</text>
+                            </g>
+                            <!-- Node 4 Locked -->
+                            <g transform="translate(200,28)">
+                                <circle r="14" fill="rgba(8,17,31,0.9)" stroke="rgba(0,210,255,0.4)"
+                                    stroke-width="1.2" />
+                                <text y="3.5" font-family="'Outfit',sans-serif" font-size="8" fill="#38bdf8"
+                                    font-weight="700" text-anchor="middle">A2/B1</text>
+                            </g>
+                            <defs>
+                                <filter id="glow-blue">
+                                    <feGaussianBlur stdDeviation="3" result="blur" />
+                                    <feMerge>
+                                        <feMergeNode in="blur" />
+                                        <feMergeNode in="SourceGraphic" />
+                                    </feMerge>
+                                </filter>
+                                <filter id="glow-cyan">
+                                    <feGaussianBlur stdDeviation="4" result="blur" />
+                                    <feMerge>
+                                        <feMergeNode in="blur" />
+                                        <feMergeNode in="SourceGraphic" />
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ══ SECTION 3 — FEATURES ═════════════════════════ -->
+            <section class="cs-section" id="cs-section-2">
+                <div class="cs-container">
+                    <div class="cs-brand" style="margin-bottom:1rem">
+                        <div class="cs-badge"><i class="fa-solid fa-layer-group"></i>&nbsp;<span data-i18n="features_badge">Learning Architecture</span></div>
+                    </div>
+                    <h1 style="font-size:clamp(1.6rem,4vw,2.2rem); margin-bottom:1.5rem;" data-i18n="features_heading">Engineered for <span
+                            class="cs-highlight">Industry Fluency</span></h1>
+
+                    <div class="cs-features-grid">
+                        <div class="cs-feature-item">
+                            <div class="cs-feature-icon"><i class="fa-solid fa-microchip"></i></div>
+                            <span class="cs-feature-title" data-i18n="feat_1_title">27 Industry Tracks</span>
+                            <span class="cs-feature-desc" data-i18n="feat_1_desc">English for semiconductors, avionics, cleanrooms, robotics
+                                &amp; AI</span>
+                        </div>
+                        <div class="cs-feature-item">
+                            <div class="cs-feature-icon"><i class="fa-solid fa-brain"></i></div>
+                            <span class="cs-feature-title" data-i18n="feat_2_title">Feynman English Tutor</span>
+                            <span class="cs-feature-desc" data-i18n="feat_2_desc">Socratic AI voice coach evaluating technical
+                                explanations</span>
+                        </div>
+                        <div class="cs-feature-item">
+                            <div class="cs-feature-icon"><i class="fa-solid fa-language"></i></div>
+                            <span class="cs-feature-title" data-i18n="feat_3_title">45+ Native Idioms</span>
+                            <span class="cs-feature-desc" data-i18n="feat_3_desc">Real engineering idioms, collocations &amp; nearshoring
+                                workplace jargon</span>
+                        </div>
+                        <div class="cs-feature-item">
+                            <div class="cs-feature-icon"><i class="fa-solid fa-award"></i></div>
+                            <span class="cs-feature-title" data-i18n="feat_4_title">Open Badges 3.0</span>
+                            <span class="cs-feature-desc" data-i18n="feat_4_desc">Verifiable W3C credentials in Technical English for
+                                nearshoring jobs</span>
+                        </div>
+                    </div>
+
+                    <div class="cs-divider"></div>
+
+                    <div class="cs-btn-group">
+                        <button type="button" onclick="openUnderDevModal('27 Modules')" class="cs-btn cs-btn-primary">
+                            <i class="fa-solid fa-layer-group"></i> <span data-i18n="feat_btn_modules">27 Modules</span>
+                        </button>
+                        <button type="button" onclick="openUnderDevModal('Interactive Demo')"
+                            class="cs-btn cs-btn-secondary">
+                            <i class="fa-solid fa-laptop-code"></i> <span data-i18n="feat_btn_demo">Interactive Demo</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer at end of last section -->
+                <div class="cs-footer">
+                    <p data-i18n="footer_copy">&copy; 2026 Lovelace Feynman Technologies SAPI de CV. All rights reserved.</p>
+                    <a href="https://yepzhi.com" class="cs-dev-btn">
+                        <i class="fa-solid fa-code"></i>&nbsp;<span data-i18n="footer_dev">Developed by @yepzhi</span>
+                    </a>
+                </div>
+            </section>
+
+        </div><!-- /cs-scroll-wrapper -->
+    </div><!-- /coming-soon-screen -->
+
+
+    <!-- Main LXP Dashboard Container (English Discoveries Layout) -->
+    <div class="dashboard-container ed-theme-container">
+
+        <!-- ── 1. Vertical Icon Rail Sidebar ── -->
+        <aside class="ed-rail-sidebar" id="ed-sidebar">
+            <div class="ed-sidebar-top">
+                <button class="ed-rail-btn ed-toggle-btn" id="ed-sidebar-toggle" title="Menu stemOS" aria-label="Menu">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <nav class="ed-rail-nav">
+                <button class="ed-rail-btn active" data-view="all-units" id="nav-btn-home"
+                    title="All Units / Dashboard">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="ed-rail-tooltip">All Units (Catálogo)</span>
+                </button>
+                <button class="ed-rail-btn" data-view="world-map" id="nav-btn-world"
+                    title="Mundo stemOS 3D & Camino Gamificado">
+                    <i class="fa-solid fa-earth-americas"></i>
+                    <span class="ed-rail-tooltip">Mundo stemOS (3D & Gamificado)</span>
+                </button>
+                <button class="ed-rail-btn" data-view="skills-graph" id="nav-btn-graph" title="Grafo de Competencias">
+                    <i class="fa-solid fa-network-wired"></i>
+                    <span class="ed-rail-tooltip">Skills Graph</span>
+                </button>
+                <button class="ed-rail-btn" data-view="feynman-tutor" id="nav-btn-tutor"
+                    title="Tutor Socrático Feynman">
+                    <i class="fa-solid fa-brain"></i>
+                    <span class="ed-rail-tooltip">Feynman AI Tutor</span>
+                </button>
+                <button class="ed-rail-btn" data-view="micro-badges" id="nav-btn-badges"
+                    title="Insignias y Certificados">
+                    <i class="fa-solid fa-award"></i>
+                    <span class="ed-rail-tooltip">Open Badges 3.0</span>
+                </button>
+                <button class="ed-rail-btn" data-view="glossary" id="nav-btn-glossary" title="Glosario Técnico ESP">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                    <span class="ed-rail-tooltip">Vocabulario & Frases</span>
+                </button>
+            </nav>
+
+            <div class="ed-sidebar-bottom">
+                <a href="/dev.html" class="ed-rail-btn" title="Explorador Dev Studio" target="_blank" rel="noopener">
+                    <i class="fa-solid fa-code"></i>
+                    <span class="ed-rail-tooltip">Dev Studio Hub</span>
+                </a>
+                <button class="ed-rail-btn" id="btn-lock-backdoor" title="Bloquear / Salir al Coming Soon">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span class="ed-rail-tooltip">Bloquear / Salir</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- ── EXAM MODAL OVERLAY ── -->
+        <div class="cs-modal-overlay" id="exam-modal-overlay" style="z-index: 10000000; overflow-y: auto;">
+            <div class="cs-modal-card" style="max-width: 680px; text-align: left; padding: 2rem;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.5rem;">
+                    <div>
+                        <span class="cs-modal-tag" id="exam-track-tag">AEROSPACE</span>
+                        <h2 class="cs-modal-title" id="exam-track-title" style="margin-bottom:0.2rem;">Track Certification Exam</h2>
+                        <p class="cs-modal-text" style="margin-bottom:0; font-size:0.85rem;">CEFR B1 · 10 Questions · 80% passing grade required.</p>
+                    </div>
+                    <button id="btn-close-exam" style="background:none; border:none; color:#94a3b8; font-size:1.5rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                
+                <div id="exam-questions-container" style="max-height: 50vh; overflow-y:auto; padding-right:10px; margin-bottom:1.5rem;">
+                    <!-- Questions injected here -->
+                </div>
+
+                <div id="exam-results-box" style="display:none; text-align:center; padding:1.5rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; margin-bottom:1.5rem;">
+                    <div id="exam-score-display" style="font-size:2.5rem; font-weight:900; color:#0284c7; font-family:'Outfit',sans-serif; line-height:1;">90%</div>
+                    <div id="exam-feedback-msg" style="font-size:0.9rem; color:#475569; margin-top:0.5rem; font-weight:600;">PASSED! Open Badge Unlocked.</div>
+                </div>
+
+                <button class="cs-modal-btn" id="btn-submit-exam" style="width:100%;"><i class="fa-solid fa-check"></i> Submit Exam</button>
+                <button class="cs-modal-btn" id="btn-claim-badge" style="width:100%; display:none; background:linear-gradient(135deg, #10b981 0%, #059669 100%);"><i class="fa-solid fa-award"></i> Claim Open Badge</button>
+            </div>
+        </div>
+
+        <!-- ── 2. Main Workspace Area ── -->
+        <main class="ed-main-area">
+            <!-- Top Floating Header Bar (JSweb Floating Glass Island Style) -->
+            <div class="ed-top-header-wrapper">
+                <header class="ed-top-header">
+                    <div class="ed-header-left">
+                        <div class="ed-brand-badge" id="dashboard-brand-logo" title="stemOS LXP">
+                            <span class="ed-brand-logo-icon">st</span>
+                            <div class="ed-brand-text">
+                                <span class="ed-brand-title">stem<span class="ed-brand-accent">OS</span></span>
+                                <span class="ed-brand-sub">Technical English for STEM & Industry</span>
+                            </div>
+                        </div>
+                        <div class="ed-student-greeting">
+                            Hello <strong id="header-student-name">Alberto</strong>
+                        </div>
+                    </div>
+
+                    <div class="ed-header-right">
+                        <!-- CEFR Level Indicator -->
+                        <div class="ed-level-indicator" title="Nivel de Inglés Técnico Activo">
+                            <i class="fa-solid fa-language"></i>
+                            <span>Technical English · A2 / B1 Dual CEFR</span>
+                        </div>
+
+                        <!-- Voice TTS Audio Status -->
+                        <button class="ed-header-icon-btn" id="btn-header-voice"
+                            title="Piper Neural TTS (es_MX / en_US Activo)">
+                            <i class="fa-solid fa-volume-high"></i>
+                            <span class="voice-status-dot"></span>
+                        </button>
+
+                        <!-- Help / Info -->
+                        <button class="ed-header-icon-btn" id="btn-header-help" title="Ayuda & Guía del Estudiante">
+                            <i class="fa-solid fa-circle-question"></i>
+                        </button>
+
+                        <!-- User Profile Avatar -->
+                        <div class="ed-user-avatar" id="header-user-avatar" title="Perfil del Estudiante">
+                            <div class="avatar-initials-mini">AY</div>
+                            <i class="fa-solid fa-circle-check user-check-icon"></i>
+                        </div>
+                    </div>
+                </header>
+            </div>
+
+            <!-- Scenic Mountain Hero Banner with 3 KPI Cards (English Discoveries Reference) -->
+            <section class="ed-hero-banner">
+                <div class="ed-hero-scenery-overlay"></div>
+
+                <!-- 3 Floating White KPI Stat Cards -->
+                <div class="ed-kpi-cards-grid">
+                    <!-- KPI 1: Course Completion -->
+                    <div class="ed-kpi-card">
+                        <div class="ed-kpi-icon-col">
+                            <i class="fa-solid fa-flag ed-kpi-icon"></i>
+                        </div>
+                        <div class="ed-kpi-info-col">
+                            <div class="ed-kpi-value" id="kpi-course-completion">81%</div>
+                            <div class="ed-kpi-label">Course Completion</div>
+                        </div>
+                    </div>
+
+                    <!-- KPI 2: Average Test Score -->
+                    <div class="ed-kpi-card">
+                        <div class="ed-kpi-icon-col">
+                            <i class="fa-solid fa-chart-line ed-kpi-icon"></i>
+                        </div>
+                        <div class="ed-kpi-info-col">
+                            <div class="ed-kpi-value" id="kpi-avg-score">84%</div>
+                            <div class="ed-kpi-label">Average Test Score</div>
+                        </div>
+                    </div>
+
+                    <!-- KPI 3: Time on Task -->
+                    <div class="ed-kpi-card">
+                        <div class="ed-kpi-icon-col">
+                            <i class="fa-solid fa-hourglass-half ed-kpi-icon"></i>
+                        </div>
+                        <div class="ed-kpi-info-col">
+                            <div class="ed-kpi-value"><span id="kpi-time-hours">41</span> : <span
+                                    id="kpi-time-mins">53</span> <span class="ed-kpi-unit">HR MIN</span></div>
+                            <div class="ed-kpi-label">Time on Task</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── 3. Content Views Container ── -->
+            <div class="ed-views-container">
+
+                <!-- ════ VIEW 0: MUNDO STEMOS 3D & CAMINO GAMIFICADO ════ -->
+                <section class="ed-view" id="view-world-map" style="display: none;">
+                    <div id="world-map-container" style="width: 100%; min-height: 80vh;">
+                        <!-- Injected dynamically by world-map.js -->
+                    </div>
+                </section>
+
+                <!-- ════ VIEW 1: ALL UNITS (The requested grid of Unit cards!) ════ -->
+                <section class="ed-view active" id="view-all-units">
+                    <!-- Section Header with Multi-Color Segmented Progress Bar -->
+                    <div class="ed-units-header-row">
+                        <div class="ed-units-title-box">
+                            <h2 class="ed-section-heading">All Units</h2>
+                            <span class="ed-units-subheading">27 Specialized Technical English (ESP) Tracks</span>
+                        </div>
+                        <div class="ed-segmented-progress-wrapper" title="Progreso de Unidades Aprobadas en stemOS">
+                            <div class="ed-segmented-bar" id="ed-segmented-bar">
+                                <!-- 12 colorful segments dynamically rendered -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Search & Category Filter Toolbar -->
+                    <div class="ed-units-toolbar-row">
+                        <div class="ed-category-filter-bar">
+                            <button class="ed-filter-chip active" data-cat="all">
+                                <i class="fa-solid fa-border-all"></i> All Units (<span id="count-cat-all">27</span>)
+                            </button>
+                            <button class="ed-filter-chip" data-cat="technology">
+                                <span class="cat-dot dot-tech"></span> Technology (7)
+                            </button>
+                            <button class="ed-filter-chip" data-cat="engineering">
+                                <span class="cat-dot dot-eng"></span> Engineering & Industry (8)
+                            </button>
+                            <button class="ed-filter-chip" data-cat="science">
+                                <span class="cat-dot dot-sci"></span> Science & Future Tech (6)
+                            </button>
+                            <button class="ed-filter-chip" data-cat="career">
+                                <span class="cat-dot dot-career"></span> Aviation & Career (6)
+                            </button>
+                        </div>
+                        <div class="ed-search-wrapper">
+                            <i class="fa-solid fa-magnifying-glass ed-search-icon"></i>
+                            <input type="text" id="ed-units-search" class="ed-search-input" placeholder="Buscar por tema, estándar (IEEE, ISO, NIST)...">
+                            <button id="ed-units-search-clear" class="ed-search-clear" style="display: none;" title="Limpiar búsqueda"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- The 3-Column Responsive Grid of Unit Cards (Cuadros) -->
+                    <div class="ed-units-grid" id="ed-units-grid">
+                        <!-- Dynamic Unit Cards generated by app.js -->
+                    </div>
+                </section>
+
+
+                <!-- ════ VIEW 2: UNIT DRILL-DOWN (Despliegue de cursos de esa especialidad) ════ -->
+                <section class="ed-view" id="view-unit-detail" style="display: none;">
+                    <!-- Top Breadcrumb & Back Bar -->
+                    <div class="ed-detail-top-nav">
+                        <button class="ed-back-btn" id="btn-back-to-all-units">
+                            <i class="fa-solid fa-arrow-left"></i> Volver a Todas las Unidades
+                        </button>
+                        <div class="ed-breadcrumbs" id="unit-detail-breadcrumb">
+                            <span class="crumb-root" id="breadcrumb-home-link">All Units</span>
+                            <i class="fa-solid fa-chevron-right crumb-sep"></i>
+                            <span class="crumb-current" id="breadcrumb-unit-name">Unit 1: Smart Networks &
+                                Cybersecurity</span>
+                        </div>
+                    </div>
+
+                    <!-- Unit Specialty Hero Banner -->
+                    <div class="ed-specialty-hero" id="unit-detail-hero">
+                        <div class="ed-hero-content">
+                            <div class="ed-specialty-badges">
+                                <span class="ed-category-pill" id="detail-category-pill">🔵 TECHNOLOGY</span>
+                                <span class="ed-level-pill" id="detail-level-pill">Nivel CEFR A2-B1</span>
+                                <span class="ed-standard-pill" id="detail-standard-pill">Estándar CompTIA /
+                                    CONOCER</span>
+                            </div>
+                            <h2 class="ed-specialty-title" id="detail-unit-title">Smart Networks & Cybersecurity</h2>
+                            <p class="ed-specialty-subtitle" id="detail-unit-desc">
+                                Redes avanzadas, defensa perimetral zero-trust, modelos Purdue y protocolos
+                                industriales.
+                            </p>
+                            <div class="ed-specialty-stats">
+                                <div class="ed-spec-stat">
+                                    <i class="fa-solid fa-cubes-stacked"></i>
+                                    <span id="detail-module-count">6 Módulos</span>
+                                </div>
+                                <div class="ed-spec-stat">
+                                    <i class="fa-solid fa-book-open"></i>
+                                    <span id="detail-reading-count">10 Lecturas</span>
+                                </div>
+                                <div class="ed-spec-stat">
+                                    <i class="fa-solid fa-clock"></i>
+                                    <span id="detail-est-time">~70 min</span>
+                                </div>
+                                <div class="ed-spec-stat">
+                                    <i class="fa-solid fa-award"></i>
+                                    <span id="detail-xp-count">+350 XP</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ed-hero-visual" id="detail-unit-image-box">
+                            <img id="detail-unit-img" src="" alt="Specialty preview" />
+                        </div>
+                    </div>
+
+                    <!-- Deployed Courses / Modules List Section -->
+                    <div class="ed-deployed-modules-wrapper">
+                        <div class="ed-section-subheading-row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                            <h3 class="ed-section-subheading" style="margin: 0;">
+                                <i class="fa-solid fa-graduation-cap"></i> Cursos y Módulos de la Especialidad ESP
+                            </h3>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <span class="ed-modules-progress-badge" id="detail-progress-summary">2 de 6
+                                    Completados</span>
+                                <button id="btn-take-exam" style="display: none; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; padding: 6px 14px; border-radius: 8px; color: white; font-size: 0.8rem; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);"><i class="fa-solid fa-award"></i> Take Certification Exam</button>
+                            </div>
+                        </div>
+
+                        <div class="ed-modules-list" id="detail-modules-container">
+                            <!-- Injected dynamically: cards with module info, status, and button to open reader/tutor -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ════ VIEW 3: SKILLS GRAPH TAB (Preserved for full capability) ════ -->
+                <section class="ed-view" id="view-skills-graph" style="display: none;">
+                    <div class="lxp-grid">
+                        <!-- Skills Graph Visor -->
+                        <div class="glass-panel graph-panel">
+                            <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                                <div>
+                                    <h2 class="panel-title"><i class="fa-solid fa-network-wired text-indigo" aria-hidden="true"></i> Mapa de Competencias Técnicas</h2>
+                                    <p style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">Rutas de aprendizaje y constelación de habilidades industriales ESP.</p>
+                                </div>
+                                <div class="graph-header-controls" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                                    <div class="graph-view-switcher" style="display: inline-flex; background: #f1f5f9; padding: 3px; border-radius: 10px; border: 1px solid #cbd5e1;">
+                                        <button class="graph-toggle-btn active" id="btn-graph-trunk" type="button" style="border: none; background: #ffffff; color: #0f172a; font-size: 0.76rem; font-weight: 700; padding: 6px 12px; border-radius: 8px; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: all 0.2s;">
+                                            <i class="fa-solid fa-route text-indigo"></i> Ruta Troncal (7)
+                                        </button>
+                                        <button class="graph-toggle-btn" id="btn-graph-constellation" type="button" style="border: none; background: transparent; color: #64748b; font-size: 0.76rem; font-weight: 700; padding: 6px 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                                            <i class="fa-solid fa-circle-nodes text-cyan"></i> Constelación 27 Tracks
+                                        </button>
+                                    </div>
+                                    <div class="graph-legend">
+                                        <span class="legend-item"><span class="legend-dot completed"></span>Completada</span>
+                                        <span class="legend-item"><span class="legend-dot active"></span>En Progreso</span>
+                                        <span class="legend-item"><span class="legend-dot locked"></span>Bloqueada</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="graph-viewport">
+                                <svg class="skills-svg" viewBox="0 0 800 450" id="skills-graph-svg">
+                                    <line data-from="lxp-foundation" data-to="semiconductors" x1="100" y1="225" x2="250"
+                                        y2="120" class="line completed" />
+                                    <line data-from="lxp-foundation" data-to="cybersecurity" x1="100" y1="225" x2="250"
+                                        y2="330" class="line completed" />
+                                    <line data-from="semiconductors" data-to="electromobility" x1="250" y1="120"
+                                        x2="420" y2="120" class="line active" />
+                                    <line data-from="cybersecurity" data-to="it-innovation" x1="250" y1="330" x2="420"
+                                        y2="330" class="line active" />
+                                    <line data-from="electromobility" data-to="aerospace" x1="420" y1="120" x2="600"
+                                        y2="225" class="line locked" />
+                                    <line data-from="it-innovation" data-to="aerospace" x1="420" y2="330" x2="600"
+                                        y2="225" class="line locked" />
+                                    <line data-from="aerospace" data-to="socratic-capstone" x1="600" y2="225" x2="720"
+                                        y2="225" class="line locked" />
+
+                                    <g class="node node-completed" data-node="lxp-foundation"
+                                        transform="translate(100, 225)">
+                                        <circle r="30" class="node-circle" />
+                                        <foreignObject x="-24" y="-24" width="48" height="48" class="node-icon-wrapper">
+                                            <i class="fa-solid fa-graduation-cap node-icon"></i>
+                                        </foreignObject>
+                                        <text y="48" class="node-text">Introducción</text>
+                                    </g>
+                                    <g class="node node-completed" data-node="semiconductors"
+                                        transform="translate(250, 120)">
+                                        <circle r="26" class="node-circle" />
+                                        <foreignObject x="-20" y="-20" width="40" height="40" class="node-icon-wrapper">
+                                            <i class="fa-solid fa-microchip node-icon"></i>
+                                        </foreignObject>
+                                        <text y="44" class="node-text">Semiconductores</text>
+                                    </g>
+                                    <g class="node node-active" data-node="cybersecurity"
+                                        transform="translate(250, 330)">
+                                        <circle r="26" class="node-circle" />
+                                        <foreignObject x="-20" y="-20" width="40" height="40" class="node-icon-wrapper">
+                                            <i class="fa-solid fa-shield-halved node-icon"></i>
+                                        </foreignObject>
+                                        <text y="44" class="node-text">Ciberseguridad</text>
+                                    </g>
+                                    <g class="node node-active" data-node="electromobility"
+                                        transform="translate(420, 120)">
+                                        <circle r="26" class="node-circle" />
+                                        <foreignObject x="-20" y="-20" width="40" height="40" class="node-icon-wrapper">
+                                            <i class="fa-solid fa-car-battery node-icon"></i>
+                                        </foreignObject>
+                                        <text y="44" class="node-text">Electromovilidad</text>
+                                    </g>
+                                    <g class="node node-active" data-node="it-innovation"
+                                        transform="translate(420, 330)">
+                                        <circle r="26" class="node-circle" />
+                                        <foreignObject x="-20" y="-20" width="40" height="40" class="node-icon-wrapper">
+                                            <i class="fa-solid fa-cloud node-icon"></i>
+                                        </foreignObject>
+                                        <text y="44" class="node-text">Innovación TI</text>
+                                    </g>
+                                    <g class="node node-locked" data-node="aerospace" transform="translate(600, 225)">
+                                        <circle r="28" class="node-circle" />
+                                        <foreignObject x="-20" y="-20" width="40" height="40" class="node-icon-wrapper">
+                                            <i class="fa-solid fa-plane-up node-icon"></i>
+                                        </foreignObject>
+                                        <text y="46" class="node-text">Aeronáutica</text>
+                                    </g>
+                                    <g class="node node-locked" data-node="socratic-capstone"
+                                        transform="translate(720, 225)">
+                                        <circle r="24" class="node-circle" />
+                                        <foreignObject x="-20" y="-20" width="40" height="40" class="node-icon-wrapper">
+                                            <i class="fa-solid fa-comments node-icon"></i>
+                                        </foreignObject>
+                                        <text y="40" class="node-text">Feynman Capstone</text>
+                                    </g>
+                                </svg>
+                                <svg class="skills-svg constellation-svg" viewBox="0 0 880 560" id="skills-graph-constellation-svg" style="display: none; width: 100%; height: 100%;">
+                                    <!-- 26 Tracks Constellation injected dynamically -->
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Skills Info Panel -->
+                        <div class="glass-panel info-panel" id="skills-info-panel">
+                            <div class="info-empty-state">
+                                <i class="fa-solid fa-circle-info text-muted" aria-hidden="true"></i>
+                                <p>Selecciona una habilidad del mapa para ver los detalles y comenzar tu diálogo de
+                                    aprendizaje.</p>
+                            </div>
+                            <div class="info-content hidden" id="info-content">
+                                <div class="info-header">
+                                    <span class="badge-status" id="node-status-badge">Completado</span>
+                                    <h3 class="info-node-title" id="node-title">Cosmología</h3>
+                                </div>
+                                <p class="info-node-desc" id="node-desc">
+                                    Estudio del origen del universo a través del Big Bang, radiación de fondo y
+                                    expansión cosmológica.
+                                </p>
+                                <div class="info-meta">
+                                    <div class="meta-item">
+                                        <span class="meta-lbl">Prerrequisito:</span>
+                                        <span class="meta-val" id="node-prereq">Ninguno (Origen)</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-lbl">Estándar SEP:</span>
+                                        <span class="meta-val" id="node-standard">CONOCER EC1290</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-lbl">Puntos de Habilidad:</span>
+                                        <span class="meta-val" id="node-points">150 XP</span>
+                                    </div>
+                                </div>
+                                <div class="info-actions">
+                                    <button id="btn-start-tutor" class="btn btn-primary btn-block">
+                                        <i class="fa-solid fa-comments" aria-hidden="true"></i> Evaluar con Feynman
+                                        Engine
+                                    </button>
+                                </div>
+                                <div class="info-modules-section" id="info-modules-section">
+                                    <h4 class="modules-title"><i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                                        Módulos de Aprendizaje</h4>
+                                    <div class="modules-list" id="modules-list">
+                                        <!-- Creados dinámicamente -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ════ VIEW 4: FEYNMAN CHAT TUTOR ════ -->
+                <section class="ed-view" id="view-feynman-tutor" style="display: none;">
+                    <div class="glass-panel tutor-panel" id="tutor-section"
+                        style="max-width: 960px; margin: 0 auto; width: 100%;">
+                        <div class="panel-header">
+                            <h2 class="panel-title"><i class="fa-solid fa-brain text-amber" aria-hidden="true"></i>
+                                Tutor Feynman <span class="engine-badge">Feynman Engine v2 · Socratic Multi-Track</span></h2>
+                            <div class="tutor-status" id="tutor-status-text">Tema: Esperando selección...</div>
+                        </div>
+
+                        <!-- Socratic Track & Module Selection Bar -->
+                        <div class="tutor-controls-bar">
+                            <div class="tutor-selector-group">
+                                <label for="tutor-track-select"><i class="fa-solid fa-graduation-cap"></i> Especialidad / Unidad:</label>
+                                <select id="tutor-track-select" class="ed-select">
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
+                            <div class="tutor-selector-group">
+                                <label for="tutor-mod-select"><i class="fa-solid fa-layer-group"></i> Módulo / Reto:</label>
+                                <select id="tutor-mod-select" class="ed-select">
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
+                            <button id="btn-launch-socratic" class="btn btn-primary tutor-launch-btn">
+                                <i class="fa-solid fa-bolt" aria-hidden="true"></i> Iniciar Reto Socrático
+                            </button>
+                        </div>
+
+                        <!-- Active Challenge Metadata Pill -->
+                        <div class="tutor-challenge-meta" id="tutor-challenge-meta" style="display: none;">
+                            <span class="tutor-meta-badge" id="tutor-challenge-step-badge">Paso 1 de 2</span>
+                            <span class="tutor-meta-concept" id="tutor-challenge-concept">Concepto: Purdue Model</span>
+                            <span class="tutor-meta-xp" id="tutor-challenge-xp">+25 XP por paso</span>
+                        </div>
+
+                        <div class="chat-area" id="chat-messages">
+                            <div class="chat-message bot">
+                                <div class="avatar">F</div>
+                                <div class="message-bubble">
+                                    <p>¡Hola, Alberto! Soy tu tutor <strong>Feynman</strong>.</p>
+                                    <p>Mi misión es ayudarte a dominar el inglés técnico y STEM con rigor conceptual. Te haré preguntas socráticas estructuradas basadas en escenarios industriales reales para pulir tu precisión técnica.</p>
+                                    <p class="tutor-prompt-tip">Selecciona una Especialidad y Módulo arriba, o haz clic en <strong>Iniciar Reto Socrático</strong> para comenzar.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-inputs">
+                            <input type="text" id="chat-input" placeholder="Escribe tu explicación técnica aquí..." disabled>
+                            <button id="chat-send-btn" class="btn btn-primary" disabled><i
+                                    class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ════ VIEW 5: MICRO-CREDENTIALS BADGES ════ -->
+                <section class="ed-view" id="view-micro-badges" style="display: none;">
+                    <div class="glass-panel badge-panel" style="max-width: 1080px; margin: 0 auto; width: 100%;">
+                        <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                            <div>
+                                <h2 class="panel-title"><i class="fa-solid fa-award text-pink" aria-hidden="true"></i>
+                                    Credenciales Verificables (Open Badges 3.0)</h2>
+                                <p style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">
+                                    Insignias y constancias digitales criptográficamente verificables para los 27 tracks de inglés técnico y estándares de la industria.
+                                </p>
+                            </div>
+                            <div class="badge-filter-bar">
+                                <button class="badge-filter-btn active" data-badge-filter="all">Todas (27)</button>
+                                <button class="badge-filter-btn" data-badge-filter="unlocked">Aprobadas</button>
+                                <button class="badge-filter-btn" data-badge-filter="in-progress">En Curso</button>
+                            </div>
+                        </div>
+                        <div class="badge-wall" id="dynamic-badge-wall">
+                            <!-- Injected dynamically for all 26 tracks -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ════ VIEW 6: TECHNICAL GLOSSARY & PHRASES ════ -->
+                <section class="ed-view" id="view-glossary" style="display: none;">
+                    <div class="glass-panel" style="max-width: 1080px; margin: 0 auto; width: 100%; padding: 24px;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 16px;">
+                            <div>
+                                <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 4px; color: #0f172a;"><i
+                                        class="fa-solid fa-book-bookmark text-indigo"></i> Biblioteca de Fraseología Técnica & Native Idioms</h2>
+                                <p style="font-size: 0.88rem; color: #64748b;">Glosario bilingüe de ingeniería, manufactura avanzada y expresiones nativas de reuniones de trabajo (115 Native Phrases con pronunciación y síntesis de audio).</p>
+                            </div>
+                            <div class="glossary-search-wrapper">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="glossary-search-input" class="ed-search-input" placeholder="Buscar frase, traducción o ejemplo...">
+                            </div>
+                        </div>
+
+                        <!-- Category Filter Chips for Phrases (All 8 Dimensions) -->
+                        <div class="glossary-cat-filter-bar" id="glossary-cat-filters">
+                            <button class="glossary-filter-chip active" data-phrase-cat="all">Todas (115)</button>
+                            <button class="glossary-filter-chip" data-phrase-cat="workplace">Workplace & Ops</button>
+                            <button class="glossary-filter-chip" data-phrase-cat="meetings">Meetings & Strategy</button>
+                            <button class="glossary-filter-chip" data-phrase-cat="technical_debate">Technical Debate</button>
+                            <button class="glossary-filter-chip" data-phrase-cat="conflict_resolution">Diplomacy & Conflict</button>
+                            <button class="glossary-filter-chip" data-phrase-cat="problem_solving">Problem Solving (RCA)</button>
+                            <button class="glossary-filter-chip" data-phrase-cat="soft_skills">Soft Skills & Leadership</button>
+                            <button class="glossary-filter-chip" data-phrase-cat="metrics">Metrics & Yield</button>
+                            <button class="glossary-filter-chip" data-phrase-cat="small_talk">Small Talk</button>
+                        </div>
+
+                        <div id="quick-glossary-container"
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-top: 18px;">
+                            <!-- Injected dynamically -->
+                        </div>
+                    </div>
+                </section>
+
+            </div><!-- /ed-views-container -->
+
+            <!-- Footer Info -->
+            <footer class="lxp-footer"
+                style="padding: 24px 32px; background: #ffffff; border-top: 1px solid #e2e8f0; margin-top: auto;">
+                <div>
+                    <strong>stemOS LXP</strong> &copy; 2026. All rights reserved.
+                </div>
+                <div class="lxp-footer-right">
+                    <i class="fa-solid fa-circle-nodes" style="color: var(--accent-indigo); font-size: 0.95rem;"></i>
+                    <span>
+                        <strong>International Open Badges 3.0 Standard:</strong> Emisión de micro-credenciales
+                        verificables alineadas al estándar W3C/1EdTech.
+                        <span class="lxp-footer-chips-inspired">
+                            "Inspired by the CHIPS Act-funded workforce development ecosystem emerging across the U.S.
+                            semiconductor industry."
+                        </span>
+                    </span>
+                </div>
+            </footer>
+
+        </main>
+    </div><!-- /dashboard-container -->
+
+    <!-- Certificate Mockup Modal -->
+    <dialog class="modal-dialog" id="cert-modal">
+        <div class="modal-card">
+            <button class="modal-close" id="cert-modal-close"><i class="fa-solid fa-xmark"
+                    aria-hidden="true"></i></button>
+            <div class="certificate-canvas">
+                <div class="cert-border-outer">
+                    <div class="cert-border-inner">
+                        <div class="cert-decor-top"></div>
+                        <div class="cert-header">
+                            <span class="cert-org">Lovelace Feynman Technologies & JóvenesSTEM</span>
+                            <h2 class="cert-main-title">CONSTANCIA DE COMPETENCIA</h2>
+                        </div>
+
+                        <div class="cert-body">
+                            <p class="cert-body-text">Se otorga la presente constancia a:</p>
+                            <h3 class="cert-recipient">Alberto Yépiz</h3>
+                            <p class="cert-body-text">Por haber demostrado fehacientemente y mediante evaluación
+                                conversacional socrática sus competencias en la habilidad de:</p>
+                            <h4 class="cert-skill-name" id="modal-cert-skill">Ciencia Nivel 1 (Orígenes & Cosmología)
+                            </h4>
+                            <p class="cert-body-text">Alineado con los estándares internacionales **NGSS HS-PS4** y del
+                                marco **CONOCER SEP EC1290**.</p>
+                        </div>
+
+                        <div class="cert-footer">
+                            <div class="cert-sign">
+                                <div class="signature-line"></div>
+                                <span class="signer">Alberto Yépiz</span>
+                                <span class="signer-title">Comité Evaluador stemOS</span>
+                            </div>
+                            <div class="cert-verification">
+                                <span class="verification-lbl">Sello de Verificación Digital</span>
+                                <span class="verification-code" id="modal-cert-id">MD5: 8085-L1-SCI-987B2405</span>
+                                <span class="verification-date">Hermosillo, Sonora, a 11 de Junio de 2026</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions" style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-secondary" id="btn-print-cert"><i class="fa-solid fa-print" aria-hidden="true"></i> Imprimir Constancia</button>
+                <button class="btn btn-primary" id="btn-export-badge-json"><i class="fa-solid fa-file-code" aria-hidden="true"></i> Descargar Credencial W3C (JSON-LD)</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Academic Reader & Quiz Modal -->
+    <dialog class="modal-dialog" id="academic-modal">
+        <div class="modal-card academic-card">
+            <!-- Modal Header -->
+            <div class="academic-modal-header">
+                <div class="academic-header-info">
+                    <span class="academic-track-badge" id="acad-track-title">LXP Track</span>
+                    <h3 class="academic-module-title" id="acad-module-title">Cargando Lección...</h3>
+                </div>
+                <button class="modal-close" id="academic-modal-close" aria-label="Cerrar"><i class="fa-solid fa-xmark"
+                        aria-hidden="true"></i></button>
+            </div>
+
+            <!-- Steps Timeline Breadcrumbs -->
+            <div class="academic-timeline">
+                <div class="timeline-step active" id="step-btn-read">
+                    <span class="step-num">1</span>
+                    <span class="step-lbl">Lectura</span>
+                </div>
+                <div class="timeline-line"></div>
+                <div class="timeline-step" id="step-btn-vocab">
+                    <span class="step-num">2</span>
+                    <span class="step-lbl">Vocabulario</span>
+                </div>
+                <div class="timeline-line"></div>
+                <div class="timeline-step" id="step-btn-quiz">
+                    <span class="step-num">3</span>
+                    <span class="step-lbl">Cuestionario</span>
+                </div>
+            </div>
+
+            <!-- Modal Content Screens -->
+            <div class="academic-body">
+                <!-- Screen 1: Reading Reader -->
+                <div class="academic-screen active" id="screen-reading">
+                    <div class="reader-scrollable-content" id="reading-content-area">
+                        <!-- Content injected dynamically -->
+                    </div>
+                    <div class="screen-footer">
+                        <button class="btn btn-primary" id="btn-to-vocab">
+                            Continuar al Glosario <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Screen 2: Vocabulary Glossary -->
+                <div class="academic-screen" id="screen-vocabulary">
+                    <div class="vocabulary-scrollable-content">
+                        <h4 class="section-title-accent">Vocabulary (Glosario Técnico)</h4>
+                        <p class="section-subtitle-accent">Haz clic en las tarjetas para repasar el término en inglés,
+                            su traducción y definición.</p>
+                        <div class="vocab-grid" id="vocab-grid-area">
+                            <!-- Vocab cards injected dynamically -->
+                        </div>
+                    </div>
+                    <div class="screen-footer">
+                        <button class="btn btn-secondary" id="btn-back-to-read">
+                            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Regresar a Lectura
+                        </button>
+                        <button class="btn btn-primary" id="btn-to-quiz">
+                            Comenzar Cuestionario <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Screen 3: Comprehension Quiz -->
+                <div class="academic-screen" id="screen-quiz">
+                    <div class="quiz-scrollable-content">
+                        <h4 class="section-title-accent">Comprehension Quiz (Prueba de Comprensión)</h4>
+                        <p class="section-subtitle-accent">Completa la evaluación para validar tu comprensión y ganar
+                            XP.</p>
+                        <form id="academic-quiz-form" class="quiz-form" onsubmit="return false;">
+                            <div id="quiz-feedback-banner" style="display: none; margin-bottom: 16px;"></div>
+                            <div class="quiz-questions-list" id="quiz-questions-area">
+                                <!-- Questions injected dynamically -->
+                            </div>
+                        </form>
+                    </div>
+                    <div class="screen-footer">
+                        <button class="btn btn-secondary" id="btn-back-to-vocab">
+                            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Regresar al Glosario
+                        </button>
+                        <button class="btn btn-primary" id="btn-submit-quiz">
+                            Enviar Evaluación <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Screen 4: Congratulations Result -->
+                <div class="academic-screen" id="screen-congrats">
+                    <div class="congrats-container">
+                        <div class="success-icon-wrapper">
+                            <i class="fa-solid fa-circle-check text-green animate-bounce-custom" aria-hidden="true"></i>
+                        </div>
+                        <h4 class="congrats-title">¡Evaluación Aprobada!</h4>
+                        <p class="congrats-desc">Has demostrado un excelente entendimiento del vocabulario y conceptos
+                            técnicos de este módulo.</p>
+                        <div class="xp-award-box">
+                            <span class="xp-val" id="xp-award-val">+25 XP</span>
+                            <span class="xp-lbl">Puntos de Habilidad Ganados</span>
+                        </div>
+                        <button class="btn btn-primary btn-block" id="btn-close-academic-success">
+                            Volver al Dashboard
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <script>window.NEOSYS_SITE_ID = 'stemos';</script>
+    <script src="https://yepzhi.com/visitors/tracker.js" defer></script>
+    <script src="content/courses.js" defer></script>
+    <script src="content/phrases_library.js" defer></script>
+    <script src="app.js" defer></script>
+    <script src="world-map.js" defer></script>
+
+    <!-- Service Worker PWA Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('stemOS SW Registered:', reg.scope))
+                    .catch(err => console.warn('stemOS SW Registration failed:', err));
+            });
+        }
+    </script>
+
+    <!-- Backdoor + Scroll Dots Controller -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // ── Backdoor trigger (click the "O" in stemOS) ──────────────
+            const trigger = document.getElementById('backdoor-trigger');
+            if (trigger) {
+                trigger.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.documentElement.classList.add('backdoor-unlocked');
+                    localStorage.setItem('stemos_backdoor', 'true');
+                });
+            }
+
+            // ── Direct Enter via 3D World Button on Coming Soon ────────
+            const csBtnWorld = document.getElementById('cs-btn-enter-world');
+            if (csBtnWorld) {
+                csBtnWorld.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.documentElement.classList.add('backdoor-unlocked');
+                    localStorage.setItem('stemos_backdoor', 'true');
+                    if (typeof switchDashboardView === 'function') {
+                        switchDashboardView('world-map');
+                    } else {
+                        setTimeout(() => {
+                            const btnW = document.getElementById('nav-btn-world');
+                            if (btnW) btnW.click();
+                        }, 100);
+                    }
+                });
+            }
+
+            // ── Lock back by double-clicking the dashboard logo ─────────
+            const dbBrand = document.getElementById('dashboard-brand-logo');
+            if (dbBrand) {
+                dbBrand.addEventListener('dblclick', () => {
+                    localStorage.removeItem('stemos_backdoor');
+                    document.documentElement.classList.remove('backdoor-unlocked');
+                    window.location.reload();
+                });
+            }
+
+            // ── Scroll-progress hearts ─────────────────────────────────
+            const screen = document.getElementById('coming-soon-screen');
+            const dots = document.querySelectorAll('.cs-dot');
+            const sections = [
+                document.getElementById('cs-section-0'),
+                document.getElementById('cs-section-1'),
+                document.getElementById('cs-section-2'),
+            ];
+
+            function getActiveSection() {
+                const scrollMid = screen.scrollTop + screen.clientHeight / 2;
+                let best = 0;
+                sections.forEach((sec, i) => {
+                    if (!sec) return;
+                    const top = sec.offsetTop;
+                    const bot = top + sec.offsetHeight;
+                    if (scrollMid >= top && scrollMid < bot) best = i;
+                });
+                return best;
+            }
+
+            function updateDots() {
+                const active = getActiveSection();
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === active);
+                });
+            }
+
+            if (screen) {
+                screen.addEventListener('scroll', updateDots, { passive: true });
+                updateDots();
+
+                // Click on heart → scroll to section + pop animation
+                dots.forEach((dot, i) => {
+                    dot.addEventListener('click', () => {
+                        dot.classList.add('clicked');
+                        setTimeout(() => dot.classList.remove('clicked'), 450);
+                        if (sections[i]) {
+                            sections[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+
+    <!-- Under Development Modal Popup -->
+    <div id="under-dev-modal" class="cs-modal-overlay" onclick="handleBackdropClick(event)">
+        <div class="cs-modal-card">
+            <div class="cs-modal-icon-wrap">
+                <i class="fa-solid fa-compass-drafting"></i>
+            </div>
+            <div class="cs-modal-tag" data-i18n="modal_tag">Platform Preview</div>
+            <h2 class="cs-modal-title" data-i18n="modal_title">Under Active Development</h2>
+            <p class="cs-modal-text" data-i18n="modal_desc">
+                Our <strong>27 specialized industry tracks</strong> (Semiconductors, Aerospace Avionics, Industrial
+                Robotics, Cleanrooms, and AI Engineering) alongside our Socratic S&P <em>Feynman Engine</em> are
+                currently in calibration.
+                <br><br>
+                Public interactive access will be unlocked shortly. Thank you for your interest!
+            </p>
+            <button type="button" class="cs-modal-btn" onclick="closeUnderDevModal()" data-i18n="modal_btn">Got it, thank you</button>
+        </div>
+    </div>
+
+    <script>
+        function openUnderDevModal(actionLabel) {
+            const modal = document.getElementById("under-dev-modal");
+            if (modal) {
+                modal.classList.add("active");
+                document.body.style.overflow = "hidden";
+            }
+        }
+        function closeUnderDevModal() {
+            const modal = document.getElementById("under-dev-modal");
+            if (modal) {
+                modal.classList.remove("active");
+                document.body.style.overflow = "";
+            }
+        }
+        function handleBackdropClick(e) {
+            if (e.target.id === "under-dev-modal") {
+                closeUnderDevModal();
+            }
+        }
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") closeUnderDevModal();
+        });
+    </script>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!--  STEMOS BILINGUAL ENGINE (ES | EN) — INDEX LANDING ONLY    -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <script>
+        const STEMOS_I18N = {
+            en: {
+                nav_catalog: 'ESP Catalog',
+                nav_tech: 'Technology',
+                nav_eng: 'Engineering',
+                nav_sci: 'Science',
+                nav_avia: 'Aviation',
+                nav_idioms: 'Native Idioms',
+                nav_placement: '<i class="fa-solid fa-graduation-cap"></i> Placement Test (30m)',
+
+                hero_pill_dev: 'Under Active Development',
+                hero_badge_lxp: 'LXP, Learning Experience Platform for Technical English',
+                hero_title_html: '<span class="soft-word" style="--delay: 0.14s">Mastering</span> ' +
+                    '<span class="soft-word" style="--delay: 0.22s">Technical</span> ' +
+                    '<span class="soft-word" style="--delay: 0.30s">English</span> <br> ' +
+                    '<span class="soft-word" style="--delay: 0.38s">for</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.48s">Advanced</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.56s">Industry</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.64s">&amp;</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.72s">Nearshoring</span>',
+                hero_subtitle: '<strong>27 specialized industry tracks</strong> of English for Specific Purposes (ESP) &mdash; engineered for semiconductor fabrication, aerospace avionics, industrial robotics, and advanced manufacturing teams. Aligned with IEEE, SEMI, ISO, and OACI standards.',
+                btn_world_3d: 'stemOS 3D World',
+                btn_modules_27: '27 ESP Modules',
+                btn_demo: 'Interactive Demo',
+                btn_ecosystem: 'JóvenesSTEM Ecosystem',
+                btn_take_placement: 'Placement Test (30 min)',
+
+                metric_tracks_lbl: 'ESP Tracks',
+                metric_modules_lbl: 'Modules',
+                metric_readings_lbl: 'Readings',
+                metric_idioms_lbl: 'Native Idioms',
+                metric_standards_lbl: 'Standards Aligned',
+
+                win_title: 'stemOS Studio &mdash; Semiconductors: Photolithography Cleanroom Protocols',
+                win_tag_level: 'Level B1',
+                win_tag_standard: 'IEEE Standard',
+                stage_speaker_lbl: 'Technical Pronunciation (Native Audio)',
+                stage_reading_title: 'Cleanroom ISO Class 1 Protocols',
+                stage_speed_pill: 'Audio EN',
+                stage_quote: '&ldquo;In extreme ultraviolet (EUV) photolithography, wafer steppers operate inside ISO Class 1 cleanrooms with laminar airflow. Photoresist deposition requires precise chemical handling to prevent sub-micron yield defects.&rdquo;',
+                stage_socratic_text: '<strong>Socratic Bot:</strong> &ldquo;Why does uniform photoresist deposition prevent defects at 3nm nodes?&rdquo;',
+                stage_open_module: 'Open Module',
+
+                about_badge: 'Specialized ESP Methodology',
+                about_heading: 'Why <span class="cs-highlight">Technical English</span> for Industry?',
+                about_desc: 'High-tech manufacturing, semiconductor cleanrooms, avionics engineering, and industrial robotics operate 100% in specialized English. <strong>stemOS</strong> is a <strong>LATAM + US native Learning Platform</strong> that transforms general English into precise, industry-ready technical fluency. Master IEEE, SEMI, and ISO vocabulary, technical documentation, and real workplace communication with our Socratic <em>Feynman Engine</em>.',
+                graph_node_lexicon: 'Technical Lexicon',
+                graph_node_core: 'stemOS ESP Core',
+                graph_node_ai: 'Feynman English AI',
+
+                features_badge: 'Learning Architecture',
+                features_heading: 'Engineered for <span class="cs-highlight">Industry Fluency</span>',
+                feat_1_title: '27 Industry Tracks',
+                feat_1_desc: 'English for semiconductors, avionics, cleanrooms, robotics &amp; AI',
+                feat_2_title: 'Feynman English Tutor',
+                feat_2_desc: 'Socratic AI voice coach evaluating technical explanations',
+                feat_3_title: '45+ Native Idioms',
+                feat_3_desc: 'Real engineering idioms, collocations &amp; nearshoring workplace jargon',
+                feat_4_title: 'Open Badges 3.0',
+                feat_4_desc: 'Verifiable W3C credentials in Technical English for nearshoring jobs',
+                feat_btn_modules: '27 Modules',
+                feat_btn_demo: 'Interactive Demo',
+
+                footer_copy: '&copy; 2026 Lovelace Feynman Technologies SAPI de CV. All rights reserved.',
+                footer_dev: 'Developed by @yepzhi',
+
+                modal_tag: 'Platform Preview',
+                modal_title: 'Under Active Development',
+                modal_desc: 'Our <strong>27 specialized industry tracks</strong> (Semiconductors, Aerospace Avionics, Industrial Robotics, Cleanrooms, and AI Engineering) alongside our Socratic S&P <em>Feynman Engine</em> are currently in calibration.<br><br>Public interactive access will be unlocked shortly. Thank you for your interest!',
+                modal_btn: 'Got it, thank you'
+            },
+            es: {
+                nav_catalog: 'Catálogo ESP',
+                nav_tech: 'Tecnología',
+                nav_eng: 'Ingeniería',
+                nav_sci: 'Ciencias',
+                nav_avia: 'Aviación',
+                nav_idioms: 'Modismos Nativos',
+                nav_placement: '<i class="fa-solid fa-graduation-cap"></i> Test de Ubicación (30m)',
+
+                hero_pill_dev: 'En Desarrollo Activo',
+                hero_badge_lxp: 'LXP, Plataforma de Experiencia de Aprendizaje para Inglés Técnico',
+                hero_title_html: '<span class="soft-word" style="--delay: 0.14s">Dominio</span> ' +
+                    '<span class="soft-word" style="--delay: 0.22s">del Inglés</span> ' +
+                    '<span class="soft-word" style="--delay: 0.30s">Técnico</span> <br> ' +
+                    '<span class="soft-word" style="--delay: 0.38s">para la</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.48s">Industria</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.56s">Avanzada</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.64s">y</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.72s">Nearshoring</span>',
+                hero_subtitle: '<strong>27 tracks especializados de industria</strong> de Inglés para Fines Específicos (ESP) &mdash; diseñados para la fabricación de semiconductores, aviónica aeroespacial, robótica industrial y manufactura avanzada. Alineados con estándares IEEE, SEMI, ISO y OACI.',
+                btn_world_3d: 'Mundo stemOS 3D',
+                btn_modules_27: '27 Módulos ESP',
+                btn_demo: 'Demo Interactiva',
+                btn_ecosystem: 'Ecosistema JóvenesSTEM',
+                btn_take_placement: 'Test de Ubicación (30 min)',
+
+                metric_tracks_lbl: 'Tracks ESP',
+                metric_modules_lbl: 'Módulos',
+                metric_readings_lbl: 'Lecturas',
+                metric_idioms_lbl: 'Modismos Nativos',
+                metric_standards_lbl: 'Alineado a Estándares',
+
+                win_title: 'stemOS Studio &mdash; Semiconductores: Protocolos de Cuarto Limpio en Fotolitografía',
+                win_tag_level: 'Nivel B1',
+                win_tag_standard: 'Estándar IEEE',
+                stage_speaker_lbl: 'Pronunciación Técnica (Audio Nativo)',
+                stage_reading_title: 'Protocolos de Cuarto Limpio ISO Clase 1',
+                stage_speed_pill: 'Audio EN',
+                stage_quote: '&ldquo;En la fotolitografía ultravioleta extrema (EUV), los wafer steppers operan dentro de cuartos limpios ISO Clase 1 con flujo de aire laminar. La deposición de fotoresina requiere manejo químico preciso para evitar defectos submicrónicos.&rdquo;',
+                stage_socratic_text: '<strong>Bot Socrático:</strong> &ldquo;¿Por qué la deposición uniforme de fotoresina previene defectos en nodos de 3nm?&rdquo;',
+                stage_open_module: 'Abrir Módulo',
+
+                about_badge: 'Metodología ESP Especializada',
+                about_heading: '¿Por qué <span class="cs-highlight">Inglés Técnico</span> para la Industria?',
+                about_desc: 'La manufactura de alta tecnología, los cuartos limpios de semiconductores, la ingeniería en aviónica y la robótica industrial operan 100% en inglés técnico especializado. <strong>stemOS</strong> es la <strong>Plataforma de Aprendizaje nativa LATAM + US</strong> que transforma el inglés general en fluidez técnica precisa y lista para la industria. Domina vocabulario IEEE, SEMI e ISO, documentación técnica y comunicación laboral real con nuestro <em>Motor Socrático Feynman</em>.',
+                graph_node_lexicon: 'Léxico Técnico',
+                graph_node_core: 'Núcleo ESP stemOS',
+                graph_node_ai: 'IA Feynman en Inglés',
+
+                features_badge: 'Arquitectura de Aprendizaje',
+                features_heading: 'Diseñado para la <span class="cs-highlight">Fluidez Industrial</span>',
+                feat_1_title: '27 Tracks Industriales',
+                feat_1_desc: 'Inglés para semiconductores, aviónica, cuartos limpios, robótica e IA',
+                feat_2_title: 'Tutor de Inglés Feynman',
+                feat_2_desc: 'Entrenador de voz socrático con IA que evalúa explicaciones técnicas',
+                feat_3_title: '45+ Modismos Nativos',
+                feat_3_desc: 'Modismos reales de ingeniería, colocaciones y jerga laboral de nearshoring',
+                feat_4_title: 'Open Badges 3.0',
+                feat_4_desc: 'Credenciales W3C verificables en inglés técnico para empleos de nearshoring',
+                feat_btn_modules: '27 Módulos',
+                feat_btn_demo: 'Demo Interactiva',
+
+                footer_copy: '&copy; 2026 Lovelace Feynman Technologies SAPI de CV. Todos los derechos reservados.',
+                footer_dev: 'Desarrollado por @yepzhi',
+
+                modal_tag: 'Vista Previa de Plataforma',
+                modal_title: 'En Desarrollo Activo',
+                modal_desc: 'Nuestros <strong>27 tracks especializados de industria</strong> (Semiconductores, Aviónica Aeroespacial, Robótica Industrial, Cuartos Limpios e Ingeniería de IA) junto con nuestro <em>Motor Socrático Feynman</em> se encuentran en calibración.<br><br>El acceso interactivo público se habilitará en breve. ¡Gracias por tu interés!',
+                modal_btn: 'Entendido, gracias'
+            }
+        };
+
+        function setPlatformLanguage(lang) {
+            if (!STEMOS_I18N[lang]) lang = 'es';
+            try {
+                localStorage.setItem('stemos_lang', lang);
+            } catch (e) { }
+
+            document.documentElement.lang = lang;
+
+            // Update language switcher buttons
+            const btnEs = document.getElementById('lang-btn-es');
+            const btnEn = document.getElementById('lang-btn-en');
+            if (btnEs && btnEn) {
+                btnEs.classList.toggle('active', lang === 'es');
+                btnEs.setAttribute('aria-pressed', lang === 'es' ? 'true' : 'false');
+                btnEn.classList.toggle('active', lang === 'en');
+                btnEn.setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
+            }
+
+            // Update scroll dot tooltips
+            const dotHome = document.querySelector('.cs-dot[data-section="0"]');
+            const dotAbout = document.querySelector('.cs-dot[data-section="1"]');
+            const dotFeat = document.querySelector('.cs-dot[data-section="2"]');
+            if (dotHome) {
+                dotHome.setAttribute('data-label', lang === 'es' ? 'Inicio' : 'Home');
+                dotHome.setAttribute('title', lang === 'es' ? 'Inicio' : 'Home');
+            }
+            if (dotAbout) {
+                dotAbout.setAttribute('data-label', lang === 'es' ? 'Acerca de' : 'About');
+                dotAbout.setAttribute('title', lang === 'es' ? 'Acerca de stemOS' : 'About stemOS');
+            }
+            if (dotFeat) {
+                dotFeat.setAttribute('data-label', lang === 'es' ? 'Características' : 'Features');
+                dotFeat.setAttribute('title', lang === 'es' ? 'Características' : 'Features');
+            }
+
+            // Update all registered i18n text elements
+            const dict = STEMOS_I18N[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key] !== undefined) {
+                    el.innerHTML = dict[key];
+                }
+            });
+
+            // Smooth transition animation feedback
+            document.body.classList.add('lang-transitioning');
+            setTimeout(() => document.body.classList.remove('lang-transitioning'), 180);
+        }
+
+        window.STEMOS_I18N = STEMOS_I18N;
+        window.setPlatformLanguage = setPlatformLanguage;
+
+        // Initialize language
+        (function initLanguageEngine() {
+            let initialLang = 'es';
+            try {
+                const stored = localStorage.getItem('stemos_lang');
+                if (stored && (stored === 'es' || stored === 'en')) {
+                    initialLang = stored;
+                } else if (navigator.language && navigator.language.toLowerCase().startsWith('en')) {
+                    initialLang = 'en';
+                }
+            } catch (e) { }
+
+            function setupButtons() {
+                setPlatformLanguage(initialLang);
+                const btnEs = document.getElementById('lang-btn-es');
+                const btnEn = document.getElementById('lang-btn-en');
+                if (btnEs) {
+                    btnEs.onclick = function (e) {
+                        e.preventDefault();
+                        setPlatformLanguage('es');
+                    };
+                }
+                if (btnEn) {
+                    btnEn.onclick = function (e) {
+                        e.preventDefault();
+                        setPlatformLanguage('en');
+                    };
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupButtons);
+            } else {
+                setupButtons();
+            }
+        })();
+    </script>
+</body>
+
+</html>
