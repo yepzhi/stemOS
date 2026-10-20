@@ -155,7 +155,7 @@ try {
   assert(!!engine, 'STEMOS_CAREER_PATHS initialized');
 
   const allCareers = tracks.CAREERS;
-  assert(allCareers.length === 25, 'Total career count matches exact 25 careers', `Found ${allCareers.length}`);
+  assert(allCareers.length === 36, 'Total career count matches exact 36 careers (25 legacy + 11 UPBC)', `Found ${allCareers.length}`);
 
   let allCareersValid = true;
   allCareers.forEach(c => {
@@ -165,7 +165,7 @@ try {
       console.error(`Invalid career path for ${c.id}:`, pathObj);
     }
   });
-  assert(allCareersValid, 'All 25 careers have exactly 16 modules, 60.0h, 5,600 XP, and 4 Hitos');
+  assert(allCareersValid, 'All 36 careers have exactly 16 modules, 60.0h, 5,600 XP, and 4 Hitos');
 
   // Test deterministic lookup
   const testPath = engine.getPathForCareer('it-mecatronica');
@@ -200,7 +200,7 @@ try {
     }
   });
 
-  assert(interleavingPass, 'All 400 stations across 25 careers follow 100% strict Theory -> English B1 -> Lab -> Milestone order');
+  assert(interleavingPass, 'All 576 stations across 36 careers follow 100% strict Theory -> English B1 -> Lab -> Milestone order');
 } catch (err) {
   assert(false, 'TEST 57 Exception', err.message);
 }

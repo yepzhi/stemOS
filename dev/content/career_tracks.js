@@ -51,6 +51,12 @@
   }
 
   const INSTITUTION_TYPES = {
+    UPBC: {
+      id: 'upbc',
+      name: 'Universidad Politécnica de Baja California (UPBC)',
+      badge: 'UP Mexicali (Cliente Fundador)',
+      desc: 'Universidad Politécnica de Baja California — Campus Mexicali. 11 Carreras de Ingeniería/Licenciatura y 25 especialidades TSU con path personalizado de 60 horas.'
+    },
     UT: {
       id: 'ut',
       name: 'Universidades Tecnológicas & Politécnicas',
@@ -78,6 +84,475 @@
   };
 
   const CAREERS = [
+    // ════════════════════════════════════════════════════════════════════════
+    // 0. UNIVERSIDAD POLITÉCNICA DE BAJA CALIFORNIA (UPBC MEXICALI)
+    // ════════════════════════════════════════════════════════════════════════
+    {
+      id: 'upbc-animacion',
+      name: 'Ingeniería en Animación y Efectos Visuales',
+      system: 'upbc',
+      hub: 'tijuana-mxi',
+      systemLabel: 'UPBC Mexicali',
+      area: 'Animación, diseño digital y medios',
+      cluster: 'Animación, Diseño Digital & Medios Tech',
+      degreeType: 'Ingeniería',
+      tsuPrograms: [
+        { id: 'tsu-animacion-2d', name: 'TSU en Producción Audiovisual y Animación 2D' }
+      ],
+      typicalCampuses: ['UPBC Campus Mexicali'],
+      primaryTrackId: 'web-dev-agentic',
+      secondaryTrackId: 'ai-ml',
+      totalHours: 60.0,
+      standards: ['VES (Visual Effects Society)', 'OpenUSD 23.11', 'ACES 1.3 Color Management', 'SMPTE 2110'],
+      defaultHub: 'Tijuana / Mexicali Creative Media Corridor',
+      description: 'Pipeline de renderizado 3D en tiempo real, efectos visuales digitales (VFX), animación 2D/3D, gestión de assets digitales y postproducción de medios para estudios internacionales.',
+      milestones: [
+        { hito: 1, hours: 15.0, title: 'Real-Time 3D Rendering & VFX Asset Pipelines', focus: 'SOPs en inglés para Unreal Engine/Blender, USD scene graph, texturizado PBR y convenciones de nomenclatura en producción.' },
+        { hito: 2, hours: 15.0, title: 'Post-Production Telemetry & Render Farm Diagnostics', focus: 'Análisis de cuellos de botella de render (VRAM, shader compile times), perfiles de color ACES y reportes 8D de anomalías de pipeline.' },
+        { hito: 3, hours: 15.0, title: 'Studio Dailies, Creative Change Orders & Pitching', focus: 'Negociación de notas de dirección de arte, estimaciones de entrega de planos VFX y llamadas de sincronización con estudios de California.' },
+        { hito: 4, hours: 15.0, title: 'Socratic AI Capstone: Global Media Technical Defense', focus: 'Defensa oral técnica de arquitectura de pipeline transfronteriza y entrega final en W3C Open Badge.' }
+      ],
+      aiMentor: {
+        name: 'Dir. Maya Lin',
+        title: 'Lead VFX & 3D Pipeline Technical Director',
+        voicePersona: 'en-US-Neural2-F',
+        contextPrompt: 'Eres Maya Lin, directora técnica de pipelines de VFX y animación en Vancouver y Los Ángeles. Evalúas la precisión técnica en terminología de renderizado, shaders, grafos USD y comunicación profesional en dailies.'
+      },
+      worldTheme: {
+        biomeName: 'Holographic Media & Virtual Production Soundstage',
+        primaryColor: '#ec4899',
+        secondaryColor: '#db2777',
+        glowColor: 'rgba(236, 72, 153, 0.45)',
+        atmosphereGradient: ['#18031e', '#3b0764', '#701a75', '#db2777'],
+        gridColor: 'rgba(244, 114, 182, 0.35)',
+        starfieldTint: '#fbcfe8'
+      }
+    },
+    {
+      id: 'upbc-energia',
+      name: 'Ingeniería en Energía y Desarrollo Sostenible',
+      system: 'upbc',
+      hub: 'tijuana-mxi',
+      systemLabel: 'UPBC Mexicali',
+      area: 'Energía y sustentabilidad',
+      cluster: 'Energía, Sustentabilidad & Turbomaquinaria',
+      degreeType: 'Ingeniería',
+      tsuPrograms: [
+        { id: 'tsu-energia-solar', name: 'TSU en Energía Solar' },
+        { id: 'tsu-energia-turbo-solar', name: 'TSU en Energía Turbo Solar' },
+        { id: 'tsu-turbo-energia', name: 'TSU en Turbo Energía' }
+      ],
+      typicalCampuses: ['UPBC Campus Mexicali'],
+      primaryTrackId: 'energy-renewables',
+      secondaryTrackId: 'energy-data-centers',
+      totalHours: 60.0,
+      standards: ['IEC 61215 / 61730 Solar PV', 'ASME PTC 22 Gas Turbines', 'IEEE 1547 Grid Interconnect', 'CFE Código de Red 2.0'],
+      defaultHub: 'Mexicali Geothermal & Clean Energy Hub',
+      description: 'Parques solares fotovoltaicos a escala utility en el desierto de Mexicali, turbomaquinaria de vapor/gas en plantas geotérmicas y de ciclo combinado, y bancos BESS de almacenamiento masivo.',
+      milestones: [
+        { hito: 1, hours: 15.0, title: 'Utility-Scale Solar PV & Turbomachinery SOPs', focus: 'Vocabulario operativo de inversores centrales, curvas I-V, turbinas de gas/vapor y protocolos LOTO de alta tensión.' },
+        { hito: 2, hours: 15.0, title: 'Turbine Thermography & Grid Harmonics Telemetry', focus: 'Diagnóstico de vibración en cojinetes de turbinas, factor de potencia, armónicos de red y reportes de causa raíz 8D.' },
+        { hito: 3, hours: 15.0, title: 'CENACE Grid Code & Power Purchase Negotiations', focus: 'Negociación contractual PPA y despacho eléctrico transfronterizo con CAISO e inspectores de red.' },
+        { hito: 4, hours: 15.0, title: 'Socratic AI Capstone: Microgrid Black-Start & Resilience Defense', focus: 'Defensa oral de protocolo de isla eléctrica ante contingencia de red regional.' }
+      ],
+      aiMentor: {
+        name: 'Dr. Julian Thorne',
+        title: 'Lead Renewable Power & Turbomachinery Specialist',
+        voicePersona: 'en-US-Neural2-D',
+        contextPrompt: 'Eres el Dr. Julian Thorne, especialista en interconexión eléctrica y turbinas de ciclo combinado en Mexicali y California. Evalúas el rigor técnico en Código de Red, frecuencia eléctrica y mantenimiento termodinámico.'
+      },
+      worldTheme: {
+        biomeName: 'Desert Solar Geothermal & Turbomachinery Basin',
+        primaryColor: '#10b981',
+        secondaryColor: '#059669',
+        glowColor: 'rgba(16, 185, 129, 0.45)',
+        atmosphereGradient: ['#022c22', '#064e3b', '#047857', '#059669'],
+        gridColor: 'rgba(52, 211, 153, 0.35)',
+        starfieldTint: '#a7f3d0'
+      }
+    },
+    {
+      id: 'upbc-mecatronica',
+      name: 'Ingeniería Mecatrónica',
+      system: 'upbc',
+      hub: 'tijuana-mxi',
+      systemLabel: 'UPBC Mexicali',
+      area: 'Automatización y robótica',
+      cluster: 'Automatización, Robótica & Sistemas Ciberfísicos',
+      degreeType: 'Ingeniería',
+      tsuPrograms: [
+        { id: 'tsu-automatizacion', name: 'TSU en Automatización' },
+        { id: 'tsu-instalaciones-electricas', name: 'TSU en Instalaciones Eléctricas' },
+        { id: 'tsu-mantenimiento-lineas', name: 'TSU en Mantenimiento en Líneas de Producción' },
+        { id: 'tsu-optomecatronica', name: 'TSU en Optomecatrónica' },
+        { id: 'tsu-robotica', name: 'TSU en Robótica' },
+        { id: 'tsu-sistemas-manufactura-flexible', name: 'TSU en Sistemas de Manufactura Flexible' }
+      ],
+      typicalCampuses: ['UPBC Campus Mexicali'],
+      primaryTrackId: 'robotics-automation',
+      secondaryTrackId: 'embedded-firmware-edge-ai',
+      totalHours: 60.0,
+      standards: ['ISO 10218-1/2 Industrial Robots', 'IEC 61131-3 PLC Standards', 'NFPA 70E Arc Flash Safety', 'OSHA 1910.147 LOTO'],
+      defaultHub: 'Mexicali-Tijuana Industrial Robotics & Advanced Assembly Hub',
+      description: 'Robótica articulada de 6 ejes, programación de PLCs Allen-Bradley/Siemens, sistemas optomecatrónicos de inspección óptica, mantenimiento de líneas automáticas y celdas FMS.',
+      milestones: [
+        { hito: 1, hours: 15.0, title: 'Robotic Cell Commissioning & Safety Circuit SOPs', focus: 'Dual-channel safety circuits, cinemática inversa, rutinas de relevo de turno y bloqueo LOTO de energía cero.' },
+        { hito: 2, hours: 15.0, title: 'Industrial Fieldbus Telemetry & Sensor Calibration', focus: 'Monitoreo SCADA, diagnósticos Profinet/EtherNet/IP, jitter de paquetes y análisis 8D de fallas intermitentes.' },
+        { hito: 3, hours: 15.0, title: 'OEM Line-Stop Containment & Engineering Change Orders', focus: 'Coordinación de contingencias en paros no programados ($5k/min) y llamadas de soporte con proveedores de EE.UU.' },
+        { hito: 4, hours: 15.0, title: 'Socratic AI Capstone: Multi-Axis Automated Cell Defense', focus: 'Defensa socrática de tiempo de ciclo, seguridad funcional PL d y resolución de averías combinadas.' }
+      ],
+      aiMentor: {
+        name: 'Ing. Marcus Vance',
+        title: 'Lead Robotics & Automation Commissioning Specialist',
+        voicePersona: 'en-US-Neural2-D',
+        contextPrompt: 'Eres Marcus Vance, especialista de comisionamiento de robótica en plantas de Baja California. Evalúas ladder logic, seguridad funcional y vocabulario de mantenimiento industrial sin rodeos.'
+      },
+      worldTheme: {
+        biomeName: 'Kinematic Robotic Cell & Optomechatronics Foundry',
+        primaryColor: '#f97316',
+        secondaryColor: '#ea580c',
+        glowColor: 'rgba(249, 115, 22, 0.45)',
+        atmosphereGradient: ['#1c1917', '#431407', '#7c2d12', '#ea580c'],
+        gridColor: 'rgba(251, 146, 60, 0.35)',
+        starfieldTint: '#fdba74'
+      }
+    },
+    {
+      id: 'upbc-ti',
+      name: 'Ingeniería en Tecnologías de la Información e Innovación Digital',
+      system: 'upbc',
+      hub: 'tijuana-mxi',
+      systemLabel: 'UPBC Mexicali',
+      area: 'Software, datos e inteligencia artificial',
+      cluster: 'Software, Datos, IA & Redes Digitales',
+      degreeType: 'Ingeniería',
+      tsuPrograms: [
+        { id: 'tsu-ciencia-datos', name: 'TSU en Ciencia de Datos' },
+        { id: 'tsu-desarrollo-software', name: 'TSU en Desarrollo de Software' },
+        { id: 'tsu-entornos-virtuales', name: 'TSU en Entornos Virtuales y Negocios' },
+        { id: 'tsu-redes-digitales', name: 'TSU en Infraestructura de Redes Digitales' },
+        { id: 'tsu-ia', name: 'TSU en Inteligencia Artificial' }
+      ],
+      typicalCampuses: ['UPBC Campus Mexicali'],
+      primaryTrackId: 'software-dev',
+      secondaryTrackId: 'ai-ml',
+      totalHours: 60.0,
+      standards: ['IEEE 829 Software Test Documentation', 'ISO 27001 Information Security', 'NIST AI Risk Management Framework', 'OpenTelemetry Tracing'],
+      defaultHub: 'Baja California Silicon Border & Cloud Computing Corridor',
+      description: 'Ingeniería de software en la nube, pipelines de datos e IA generativa, infraestructura de redes industriales OT/IT, ciberseguridad y entornos virtuales de negocio.',
+      milestones: [
+        { hito: 1, hours: 15.0, title: 'Cloud Architecture, Clean APIs & Industrial Data Flow', focus: 'Vocabulario de microservicios, latencia P99, streaming MQTT/Kafka y estándares de código limpio.' },
+        { hito: 2, hours: 15.0, title: 'Model Telemetry, Network Observability & Incident Reports', focus: 'Métricas de inferencia de IA, monitoreo de redes con OpenTelemetry y postmortems técnicos de producción.' },
+        { hito: 3, hours: 15.0, title: 'Agile Standups, Code Reviews & Cloud Vendor SLA Defense', focus: 'Discusión de deuda técnica en pull requests en inglés, priorización de sprints y negociación de SLAs.' },
+        { hito: 4, hours: 15.0, title: 'Socratic AI Capstone: Fault-Tolerant Edge AI Architecture', focus: 'Defensa oral de despliegue de modelos en el borde industrial con resiliencia offline-first.' }
+      ],
+      aiMentor: {
+        name: 'Arct. Alex Chen',
+        title: 'Principal Cloud Systems & Observability Architect',
+        voicePersona: 'en-US-Neural2-A',
+        contextPrompt: 'Eres Alex Chen, arquitecto principal de sistemas de alta escala y datos en San Diego y Silicon Valley. Evalúas concisión en revisiones de código, pipelines de datos y precisión arquitectónica.'
+      },
+      worldTheme: {
+        biomeName: 'Edge AI & Distributed Cloud Computing Matrix',
+        primaryColor: '#3b82f6',
+        secondaryColor: '#2563eb',
+        glowColor: 'rgba(59, 130, 246, 0.45)',
+        atmosphereGradient: ['#030712', '#0f172a', '#1e3a8a', '#2563eb'],
+        gridColor: 'rgba(96, 165, 250, 0.35)',
+        starfieldTint: '#bfdbfe'
+      }
+    },
+    {
+      id: 'upbc-manufactura',
+      name: 'Ingeniería en Manufactura Avanzada',
+      system: 'upbc',
+      hub: 'tijuana-mxi',
+      systemLabel: 'UPBC Mexicali',
+      area: 'Manufactura y procesos industriales',
+      cluster: 'Manufactura Avanzada & Procesos Industriales',
+      degreeType: 'Ingeniería',
+      tsuPrograms: [
+        { id: 'tsu-procesos-fabricacion', name: 'TSU en Procesos de Fabricación' }
+      ],
+      typicalCampuses: ['UPBC Campus Mexicali'],
+      primaryTrackId: 'advanced-manufacturing',
+      secondaryTrackId: 'materials-nanotech',
+      totalHours: 60.0,
+      standards: ['ASME Y14.5 GD&T Standards', 'ISO 9001:2015 Quality Systems', 'IATF 16949 Automotive Quality', 'OSHA 1910 Machine Guarding'],
+      defaultHub: 'Mexicali Aerospace & Precision Tooling Cluster',
+      description: 'Mecanizado CNC de 5 ejes para componentes aeroespaciales y automotrices, manufactura aditiva metálica, metrología CMM con GD&T y optimización de procesos de fabricación.',
+      milestones: [
+        { hito: 1, hours: 15.0, title: 'CNC Machine Tooling, G-Code & GD&T Datum Frameworks', focus: 'Configuración de herramientas, compensación de desgaste de cortador, datum de ensamble y planos según ASME Y14.5.' },
+        { hito: 2, hours: 15.0, title: 'CMM Coordinate Metrology & SPC Process Stability', focus: 'Medición tridimensional de piezas críticas, estudios de capacidad Cpk/Ppk y reportes de discrepancia dimensional 8D.' },
+        { hito: 3, hours: 15.0, title: 'First Article Inspection (FAI) & Cross-Border OEM Buy-Off', focus: 'Negociación de desviaciones de tolerancia con auditores de calidad aeronáutica y automotriz.' },
+        { hito: 4, hours: 15.0, title: 'Socratic AI Capstone: Multi-Axis Precision Machining Defense', focus: 'Defensa técnica del ciclo de mecanizado, balanceo de línea de ensamble y minimización de scrap.' }
+      ],
+      aiMentor: {
+        name: 'Chief Eng. Robert Sterling',
+        title: 'Director of Advanced Machining & Tooling Systems',
+        voicePersona: 'en-US-Standard-B',
+        contextPrompt: 'Eres Robert Sterling, director de mecanizado de precisión aeroespacial en Mexicali. Exiges exactitud micrométrica en tolerancias GD&T, lenguaje de taller y análisis de desgaste de herramientas.'
+      },
+      worldTheme: {
+        biomeName: '5-Axis Aerospace Machining & Precision Tooling Vault',
+        primaryColor: '#0ea5e9',
+        secondaryColor: '#0284c7',
+        glowColor: 'rgba(14, 165, 233, 0.45)',
+        atmosphereGradient: ['#082f49', '#0c4a6e', '#0369a1', '#0284c7'],
+        gridColor: 'rgba(56, 189, 248, 0.35)',
+        starfieldTint: '#bae6fd'
+      }
+    },
+    {
+      id: 'upbc-administracion',
+      name: 'Licenciatura en Administración',
+      system: 'upbc',
+      hub: 'tijuana-mxi',
+      systemLabel: 'UPBC Mexicali',
+      area: 'Administración y negocios',
+      cluster: 'Administración, Capital Humano & Negocios',
+      degreeType: 'Licenciatura',
+      tsuPrograms: [
+        { id: 'tsu-capital-humano', name: 'TSU en Gestión del Capital Humano' },
+        { id: 'tsu-proyectos', name: 'TSU en Emprendimiento, Formulación y Evaluación de Proyectos' }
+      ],
+      typicalCampuses: ['UPBC Campus Mexicali'],
+      primaryTrackId: 'business-leadership',
+      secondaryTrackId: 'project-management',
+      totalHours: 60.0,
+      standards: ['PMI PMBOK 7th Edition', 'ISO 30414 Human Resource Mgmt', 'USMCA / T-MEC Labor Chapter 23', 'GAAP / IFRS Financial Standards'],
+      defaultHub: 'Mexicali-Calexico Binational Commerce & Corporate Hub',
+      description: 'Gestión estratégica del capital humano bilingüe en empresas de nearshoring, formulación y evaluación de proyectos de inversión (CapEx/OpEx, ROI, TIR), y cumplimiento laboral transfronterizo.',
+      milestones: [
+        { hito: 1, hours: 15.0, title: 'Talent Acquisition & Cross-Border Organizational Policy', focus: 'Elaboración de descripciones de puestos para ingenieros bilingües, contratos laborales y manuales de compliance.' },
+        { hito: 2, hours: 15.0, title: 'Project Financial Feasibility & CapEx Variance Analysis', focus: 'Modelos financieros en inglés (NPV, IRR, Payback), dashboards de productividad y reportes de varianza presupuestal.' },
+        { hito: 3, hours: 15.0, title: 'Executive Board Presentations & Cross-Border Labor Defense', focus: 'Presentación de planes de retención de talento y cumplimiento del Capítulo Laboral T-MEC ante directivos.' },
+        { hito: 4, hours: 15.0, title: 'Socratic AI Capstone: Nearshoring Plant Expansion Feasibility', focus: 'Defensa ejecutiva socrática de plan maestro de expansión industrial y asignación de capital.' }
+      ],
+      aiMentor: {
+        name: 'Dir. Victoria Sterling',
+        title: 'Executive VP of Nearshoring Talent & Corporate Strategy',
+        voicePersona: 'en-US-Neural2-C',
+        contextPrompt: 'Eres Victoria Sterling, ejecutiva de recursos humanos y desarrollo corporativo en maquiladoras binacionales. Evalúas la elocuencia ejecutiva, métricas de retención y análisis financiero de proyectos.'
+      },
+      worldTheme: {
+        biomeName: 'Corporate Strategy & Binational Executive Boardroom',
+        primaryColor: '#8b5cf6',
+        secondaryColor: '#7c3aed',
+        glowColor: 'rgba(139, 92, 246, 0.45)',
+        atmosphereGradient: ['#1e1b4b', '#2e1065', '#4c1d95', '#7c3aed'],
+        gridColor: 'rgba(167, 139, 250, 0.35)',
+        starfieldTint: '#ddd6fe'
+      }
+    },
+    {
+      id: 'upbc-semiconductores',
+      name: 'Ingeniería en Semiconductores',
+      system: 'upbc',
+      hub: 'tijuana-mxi',
+      systemLabel: 'UPBC Mexicali',
+      area: 'Microelectrónica y semiconductores',
+      cluster: 'Microelectrónica & Semiconductores',
+      degreeType: 'Ingeniería',
+      tsuPrograms: [
+        { id: 'tsu-semiconductores', name: 'TSU en Semiconductores' }
+      ],
+      typicalCampuses: ['UPBC Campus Mexicali'],
+      primaryTrackId: 'semiconductors',
+      secondaryTrackId: 'embedded-firmware-edge-ai',
+      totalHours: 60.0,
+      standards: ['SEMI S2 / S8 Environmental & Ergonomic Safety', 'ISO 14644 Cleanroom Classification', 'JEDEC Solid State Standards', 'MIL-STD-883 Test Methods'],
+      defaultHub: 'Mexicali Silicon Border & Semiconductor Assembly/Test (OSAT) Corridor',
+      description: 'Fabricación y empaquetado avanzado de microchips (OSAT) en el clúster Silicon Border de Mexicali, fotolitografía DUV/EUV, cuartos limpios Clase 1/100, y pruebas eléctricas automáticas de wafers.',
+      milestones: [
+        { hito: 1, hours: 15.0, title: 'ISO Cleanroom Protocols, Gowning & DUV Photolithography', focus: 'Protocolos de entrada a cleanroom, terminología de obleas de silicio de 300mm, fotomáscaras y grabado químico/plasma.' },
+        { hito: 2, hours: 15.0, title: 'Wafer Yield Diagnostics, Defect Inspection & SEM Imaging', focus: 'Detección de partículas en escaneo SEM, análisis de rendimiento de oblea (yield loss) y reporte 8D de contaminación.' },
+        { hito: 3, hours: 15.0, title: 'Advanced Packaging (OSAT) & Fab Tool Maintenance Escalations', focus: 'Escalación de paros de herramientas ASML/Applied Materials con ingenieros de EE.UU. y Taiwán.' },
+        { hito: 4, hours: 15.0, title: 'Socratic AI Capstone: Fab Yield Optimization & Zero-Defect Defense', focus: 'Defensa oral de protocolos de control de contaminación molecular aerotransportada (AMC) ante panel fab.' }
+      ],
+      aiMentor: {
+        name: 'Dr. Kenji Sato',
+        title: 'Senior Semiconductor Lithography & Fab Director',
+        voicePersona: 'en-US-Neural2-A',
+        contextPrompt: 'Eres el Dr. Kenji Sato, director de operaciones de fabricación de obleas y empaquetado avanzado en Mexicali y Phoenix. Eres metódico y riguroso en protocolos de cuarto limpio, rendimientos de oblea y defectos a nivel nanométrico.'
+      },
+      worldTheme: {
+        biomeName: 'Sub-Nanometer Silicon Fab & ISO Class 1 Cleanroom',
+        primaryColor: '#38bdf8',
+        secondaryColor: '#0284c7',
+        glowColor: 'rgba(56, 189, 248, 0.45)',
+        atmosphereGradient: ['#082f49', '#075985', '#0284c7', '#38bdf8'],
+        gridColor: 'rgba(56, 189, 248, 0.35)',
+        starfieldTint: '#e0f2fe'
+      }
+    },
+    {
+      id: 'upbc-industrial',
+      name: 'Ingeniería Industrial',
+      system: 'upbc',
+      hub: 'tijuana-mxi',
+      systemLabel: 'UPBC Mexicali',
+      area: 'Procesos y calidad',
+      cluster: 'Calidad, Lean Six Sigma & Procesos Industriales',
+      degreeType: 'Ingeniería',
+      tsuPrograms: [
+        { id: 'tsu-gestion-calidad', name: 'TSU en Sistemas de Gestión de Calidad' },
+        { id: 'tsu-moldeo-plasticos', name: 'TSU en Moldeo de Plásticos' },
+        { id: 'tsu-maquinados-precision', name: 'TSU en Maquinados de Precisión' }
+      ],
+      typicalCampuses: ['UPBC Campus Mexicali'],
+      primaryTrackId: 'quality-ehs',
+      secondaryTrackId: 'automotive-lean',
+      totalHours: 60.0,
+      standards: ['IATF 16949 / ISO 9001:2015', 'AIAG Core Tools (APQP, PPAP, FMEA, SPC, MSA)', 'ASQ Six Sigma Black Belt', 'OSHA General Industry Standards'],
+      defaultHub: 'Mexicali Industrial & Medical Device Manufacturing Corridor',
+      description: 'Ingeniería de calidad industrial, sistemas de gestión ISO/IATF, optimización de moldeo por inyección de polímeros técnicos, maquinados de precisión, y proyectos de reducción de scrap Six Sigma.',
+      milestones: [
+        { hito: 1, hours: 15.0, title: 'Standardized Work, Value Stream Mapping (VSM) & 5S Audits', focus: 'Mapeo de flujo de valor, identificación de 8 desperdicios (muda), balanceo de líneas y auditorías de trabajo estándar.' },
+        { hito: 2, hours: 15.0, title: 'SPC Statistical Control, Gage R&R & 8D Containment', focus: 'Estudios de repetibilidad y reproducibilidad de sistemas de medición, cartas de control X-bar R y contención inmediata de no conformidades.' },
+        { hito: 3, hours: 15.0, title: 'Customer Quality Audits, PPAP Level 3 & Supplier Scorecards', focus: 'Defensa de paquetes PPAP ante inspectores de calidad de clientes multinacionales automotrices y médicos.' },
+        { hito: 4, hours: 15.0, title: 'Socratic AI Capstone: Six Sigma DMAIC Yield Defense', focus: 'Presentación y defensa oral de proyecto DMAIC de reducción de defectos con justificación estadística en inglés.' }
+      ],
+      aiMentor: {
+        name: 'Dir. Carlos Mendoza',
+        title: 'Quality Assurance & Nearshoring Plant Director',
+        voicePersona: 'en-US-Standard-B',
+        contextPrompt: 'Eres Carlos Mendoza, director de calidad de planta en Mexicali. Exiges precisión en datos numéricos, índices de capacidad de proceso (Cp, Cpk) y estructura impecable en reportes 8D.'
+      },
+      worldTheme: {
+        biomeName: 'Six Sigma Lean Crucible & Quality Assurance Vault',
+        primaryColor: '#eab308',
+        secondaryColor: '#ca8a04',
+        glowColor: 'rgba(234, 179, 8, 0.45)',
+        atmosphereGradient: ['#1c1917', '#422006', '#713f12', '#ca8a04'],
+        gridColor: 'rgba(250, 204, 21, 0.35)',
+        starfieldTint: '#fef08a'
+      }
+    },
+    {
+      id: 'upbc-educacion',
+      name: 'Licenciatura en Educación',
+      system: 'upbc',
+      hub: 'tijuana-mxi',
+      systemLabel: 'UPBC Mexicali',
+      area: 'Educación y enseñanza',
+      cluster: 'Educación, Enseñanza & Pedagogía ESP',
+      degreeType: 'Licenciatura',
+      tsuPrograms: [
+        { id: 'tsu-ensenanza-ingles', name: 'TSU en Enseñanza del Idioma Inglés' }
+      ],
+      typicalCampuses: ['UPBC Campus Mexicali'],
+      primaryTrackId: 'business-leadership',
+      secondaryTrackId: 'project-management',
+      totalHours: 60.0,
+      standards: ['CEFR / MCER Companion Volume', 'TESOL International Standards', 'Cambridge English Teaching Framework', 'Bloom Revised Taxonomy'],
+      defaultHub: 'Baja California Binational Educational & Language Sciences Hub',
+      description: 'Pedagogía contemporánea y diseño curricular de Inglés para Fines Específicos (ESP) en áreas STEM, evaluación diagnóstica basada en el MCER, diseño de rubricas técnicas y formación de talento bilingüe.',
+      milestones: [
+        { hito: 1, hours: 15.0, title: 'Communicative Language Teaching & ESP Curriculum Design', focus: 'Principios de adquisición de segundas lenguas, análisis de necesidades de vocabulario técnico en ingeniería y objetivos de aprendizaje.' },
+        { hito: 2, hours: 15.0, title: 'Formative Assessment & CEFR Rubric Calibration', focus: 'Calibración de descriptores MCER (A1-B2), diseño de pruebas de diagnóstico automatizadas y retroalimentación pedagógica accionable.' },
+        { hito: 3, hours: 15.0, title: 'Academic Accreditation Defense & Faculty Development', focus: 'Presentación de planes de estudio ante comités de acreditación institucional y talleres de capacitación docente.' },
+        { hito: 4, hours: 15.0, title: 'Socratic AI Capstone: Institutional Bilingual Strategy Defense', focus: 'Defensa oral del modelo pedagógico bilingüe para elevar la empleabilidad transfronteriza de los graduados.' }
+      ],
+      aiMentor: {
+        name: 'Prof. Elizabeth Montgomery',
+        title: 'Lead Technical English & ESP Curriculum Director',
+        voicePersona: 'en-US-Neural2-F',
+        contextPrompt: 'Eres la Prof. Elizabeth Montgomery, especialista internacional en diseño curricular de ESP para ingeniería. Evalúas la precisión metodológica, aplicación de descriptores MCER y pedagogía comunicativa orientada a la industria.'
+      },
+      worldTheme: {
+        biomeName: 'Socratic Language Academy & Educational Design Atrium',
+        primaryColor: '#06b6d4',
+        secondaryColor: '#0891b2',
+        glowColor: 'rgba(6, 182, 212, 0.45)',
+        atmosphereGradient: ['#042f2e', '#134e4a', '#0f766e', '#0891b2'],
+        gridColor: 'rgba(34, 211, 238, 0.35)',
+        starfieldTint: '#a5f3fc'
+      }
+    },
+    {
+      id: 'upbc-gastronomia',
+      name: 'Licenciatura en Gastronomía',
+      system: 'upbc',
+      hub: 'tijuana-mxi',
+      systemLabel: 'UPBC Mexicali',
+      area: 'Artes culinarias y servicios',
+      cluster: 'Artes Culinarias, Inocuidad & Servicios',
+      degreeType: 'Licenciatura',
+      tsuPrograms: [
+        { id: 'tsu-gastronomia', name: 'TSU en Gastronomía' }
+      ],
+      typicalCampuses: ['UPBC Campus Mexicali'],
+      primaryTrackId: 'hospitality-food',
+      secondaryTrackId: 'food-science',
+      totalHours: 60.0,
+      standards: ['HACCP Codex Alimentarius', 'ServSafe Food Protection Manager', 'FDA Food Code 2022', 'ISO 22000 Food Safety'],
+      defaultHub: 'Baja California Culinary Capital & Wine Country Corridor',
+      description: 'Gestión de brigadas de cocina profesional en hoteles y restaurantes internacionales, inocuidad alimentaria según HACCP/FDA, costeo y diseño de menús (menu engineering), y servicio de sala de alta gama en inglés.',
+      milestones: [
+        { hito: 1, hours: 15.0, title: 'Professional Kitchen Brigade Commands & HACCP Sanitization', focus: 'Terminología culinaria clásica y moderna, control de temperaturas críticas (Danger Zone), FIFO y protocolos de higiene ServSafe.' },
+        { hito: 2, hours: 15.0, title: 'Food Cost Analysis, Menu Engineering & Supplier Audits', focus: 'Cálculo de costo de recetas (recipe costing), márgenes de contribución, selección de proveedores y recepción de insumos perecederos.' },
+        { hito: 3, hours: 15.0, title: 'High-End Dining Service, Wine Pairing & Customer Recovery', focus: 'Protocolos de servicio de salón en inglés, maridaje de vinos de Baja California y resolución de quejas de comensales VIP.' },
+        { hito: 4, hours: 15.0, title: 'Socratic AI Capstone: Restaurant Concept & Food Safety Defense', focus: 'Defensa integral del concepto gastronómico, plan HACCP y viabilidad operativa ante panel de chefs ejecutivos.' }
+      ],
+      aiMentor: {
+        name: 'Chef Antoine Laurent',
+        title: 'Executive Chef & Culinary Operations Director',
+        voicePersona: 'en-US-Neural2-D',
+        contextPrompt: 'Eres el Chef Antoine Laurent, chef ejecutivo y consultor de restaurantes en San Diego y el Valle de Guadalupe. Evalúas la disciplina en la cocina, precisión en terminología culinaria internacional y riguroso apego a normas de inocuidad alimentaria.'
+      },
+      worldTheme: {
+        biomeName: 'Grand Culinary Pavilion & Molecular Gastronomy Lab',
+        primaryColor: '#f43f5e',
+        secondaryColor: '#e11d48',
+        glowColor: 'rgba(244, 63, 94, 0.45)',
+        atmosphereGradient: ['#1f0b12', '#4c0519', '#881337', '#e11d48'],
+        gridColor: 'rgba(251, 113, 133, 0.35)',
+        starfieldTint: '#fecdd3'
+      }
+    },
+    {
+      id: 'upbc-negocios',
+      name: 'Licenciatura en Negocios y Mercadotecnia',
+      system: 'upbc',
+      hub: 'tijuana-mxi',
+      systemLabel: 'UPBC Mexicali',
+      area: 'Marketing y negocios',
+      cluster: 'Marketing, Comercio Internacional & Negocios Digitales',
+      degreeType: 'Licenciatura',
+      tsuPrograms: [
+        { id: 'tsu-mercadotecnia', name: 'TSU en Mercadotecnia' }
+      ],
+      typicalCampuses: ['UPBC Campus Mexicali'],
+      primaryTrackId: 'business-leadership',
+      secondaryTrackId: 'entrepreneurship',
+      totalHours: 60.0,
+      standards: ['AMA Code of Marketing Ethics', 'Incoterms 2020 Commercial Terms', 'USMCA Rules of Origin', 'Google / Meta Digital Marketing Standards'],
+      defaultHub: 'Mexicali-Calexico Binational Commercial Corridor',
+      description: 'Estrategias de mercadotecnia digital y comercio transfronterizo, investigación de mercados internacionales (EE.UU.-México), negociación comercial B2B, métricas de adquisición (CAC/LTV) y branding corporativo.',
+      milestones: [
+        { hito: 1, hours: 15.0, title: 'Cross-Border Market Research & Digital Branding SOPs', focus: 'Segmentación de mercados en California y Baja California, posicionamiento de marca, buyer personas y vocabulario comercial en inglés.' },
+        { hito: 2, hours: 15.0, title: 'Campaign Analytics, Conversion Funnels & CAC/LTV Telemetry', focus: 'Análisis de métricas digitales (ROAS, CTR, conversiones), pruebas A/B y reportes ejecutivos de rendimiento de campaña.' },
+        { hito: 3, hours: 15.0, title: 'B2B Sales Pitch, Contract Terms & Agency Retainer Negotiations', focus: 'Presentación de propuestas comerciales B2B a clientes transfronterizos y negociación de contratos y acuerdos de confidencialidad.' },
+        { hito: 4, hours: 15.0, title: 'Socratic AI Capstone: International Go-to-Market Strategy Defense', focus: 'Defensa socrática de la estrategia de lanzamiento de producto al mercado norteamericano ante tribunal de negocios.' }
+      ],
+      aiMentor: {
+        name: 'Dir. Sophia Vance',
+        title: 'Chief Marketing Officer & Cross-Border Brand Strategist',
+        voicePersona: 'en-US-Neural2-C',
+        contextPrompt: 'Eres Sophia Vance, directora de mercadotecnia internacional y estratega de marcas transfronterizas. Evalúas la persuasión comercial en inglés, métricas financieras de mercadotecnia y solidez en la propuesta de valor.'
+      },
+      worldTheme: {
+        biomeName: 'Binational Trade Center & Digital Marketing Command Nexus',
+        primaryColor: '#a855f7',
+        secondaryColor: '#9333ea',
+        glowColor: 'rgba(168, 85, 247, 0.45)',
+        atmosphereGradient: ['#1e1b4b', '#3b0764', '#581c87', '#9333ea'],
+        gridColor: 'rgba(192, 132, 252, 0.35)',
+        starfieldTint: '#f3e8ff'
+      }
+    },
+
     // ════════════════════════════════════════════════════════════════════════
     // 1. UNIVERSIDADES TECNOLÓGICAS (UT)
     // ════════════════════════════════════════════════════════════════════════
@@ -1006,10 +1481,35 @@
     INSTITUTION_TYPES: INSTITUTION_TYPES,
     CAREERS: CAREERS,
     getCareerById: function(id) {
-      return CAREERS.find(c => c.id === id) || CAREERS[0];
+      if (!id) return CAREERS[0];
+      const direct = CAREERS.find(c => c.id === id);
+      if (direct) return direct;
+      // Search inside tsuPrograms
+      for (const c of CAREERS) {
+        if (Array.isArray(c.tsuPrograms)) {
+          const tsu = c.tsuPrograms.find(t => t.id === id);
+          if (tsu) {
+            return {
+              ...c,
+              id: tsu.id,
+              parentCareerId: c.id,
+              name: `${tsu.name} (${c.name})`,
+              tsuSpecialty: tsu.name
+            };
+          }
+        }
+      }
+      return CAREERS[0];
     },
     getCareersBySystem: function(system) {
       return CAREERS.filter(c => c.system === system);
+    },
+    getTsuSpecialtiesForCareer: function(careerId) {
+      const c = this.getCareerById(careerId);
+      return (c && Array.isArray(c.tsuPrograms)) ? c.tsuPrograms : [];
+    },
+    getAllUpbcCareers: function() {
+      return CAREERS.filter(c => c.system === 'upbc');
     },
     // Garantiza que dos alumnos de la misma carrera vean exactamente el mismo mundo
     getSharedWorldTheme: function(careerId) {

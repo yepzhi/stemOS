@@ -914,6 +914,59 @@
             color: var(--fg-secondary);
         }
 
+        .modality-pill {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glass);
+            color: var(--fg-secondary);
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modality-pill:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--fg-primary);
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+        .modality-pill.active {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.22), rgba(16, 185, 129, 0.22));
+            border-color: #38bdf8;
+            color: #38bdf8;
+            box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+        }
+        .tsu-pill {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            color: var(--fg-secondary);
+            padding: 7px 13px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tsu-pill:hover {
+            border-color: #38bdf8;
+            color: #fff;
+            background: rgba(14, 165, 233, 0.25);
+            transform: translateY(-1px);
+        }
+        .tsu-pill.active {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: #fff;
+            border-color: #38bdf8;
+            font-weight: 700;
+            box-shadow: 0 4px 14px rgba(14, 165, 233, 0.45);
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
@@ -1008,19 +1061,30 @@
                 <p class="question-subtitle">Select your academic subsystem. Curricula are calibrated to meet national industry standards across Mexico and Latin America.</p>
 
                 <div class="selection-grid-2">
+                    <div class="selection-card selected" data-subsystem="upbc" onclick="selectSubsystem('upbc')" style="grid-column: 1 / -1; border-color: rgba(14, 165, 233, 0.45); background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);">
+                        <div class="card-icon-box" style="background: linear-gradient(135deg, #0284c7, #10b981); color:#fff;"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <div class="card-content">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <h4>Universidad Politécnica de Baja California <span class="card-sub-badge" style="background:linear-gradient(135deg, #0284c7, #10b981); color:#fff; font-weight:700;">UPBC Mexicali</span></h4>
+                                <span style="font-size:0.68rem; background:rgba(16, 185, 129, 0.2); color:#10b981; border:1px solid rgba(16, 185, 129, 0.4); padding:2px 8px; border-radius:99px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;"><i class="fa-solid fa-star"></i> Primer Cliente</span>
+                            </div>
+                            <p>Campus Mexicali: 11 Carreras de Ingeniería/Licenciatura y 25 especialidades TSU con path personalizado 60h.</p>
+                        </div>
+                    </div>
+
+                    <div class="selection-card" data-subsystem="it" onclick="selectSubsystem('it')">
+                        <div class="card-icon-box"><i class="fa-solid fa-gear"></i></div>
+                        <div class="card-content">
+                            <h4>TecNM Nacional <span class="card-sub-badge">TecNM</span></h4>
+                            <p>Mexico's largest STEM network with 254 engineering campuses and professional residencies.</p>
+                        </div>
+                    </div>
+
                     <div class="selection-card" data-subsystem="ut" onclick="selectSubsystem('ut')">
                         <div class="card-icon-box"><i class="fa-solid fa-microchip"></i></div>
                         <div class="card-content">
                             <h4>Universidades Tecnológicas <span class="card-sub-badge">UT</span></h4>
                             <p>Dual Model, TSU & Technological Engineering. Intensive 70% shopfloor / 30% theory training.</p>
-                        </div>
-                    </div>
-
-                    <div class="selection-card selected" data-subsystem="it" onclick="selectSubsystem('it')">
-                        <div class="card-icon-box"><i class="fa-solid fa-gear"></i></div>
-                        <div class="card-content">
-                            <h4>TecNM Nacional <span class="card-sub-badge">TecNM</span></h4>
-                            <p>Mexico's largest STEM network with 254 engineering campuses and professional residencies.</p>
                         </div>
                     </div>
 
@@ -1045,7 +1109,7 @@
                     <label class="input-label" for="inp-campus">Campus or Plantel Name <span class="req">*</span></label>
                     <div class="text-input-wrapper">
                         <i class="fa-solid fa-location-dot"></i>
-                        <input type="text" id="inp-campus" class="text-input" placeholder="e.g. Instituto Tecnológico de Saltillo (TecNM Saltillo)">
+                        <input type="text" id="inp-campus" class="text-input" value="Universidad Politécnica de Baja California (UPBC Mexicali)" placeholder="e.g. Universidad Politécnica de Baja California (UPBC Mexicali)">
                     </div>
                 </div>
             </section>
@@ -1053,8 +1117,29 @@
             <!-- ================= STEP 3: CAREER TRACK ================= -->
             <section class="question-step" id="step-3">
                 <span class="step-tag"><i class="fa-solid fa-compass-drafting"></i> Question 03</span>
-                <h2 class="question-title">What is your engineering career track?</h2>
-                <p class="question-subtitle">Select your degree program. Invariant Rule: <strong>All students in the same career receive an identical 60-hour deterministic path</strong>.</p>
+                <h2 class="question-title">What is your degree program & career track?</h2>
+                <p class="question-subtitle">Select your career and modality. Invariant Rule: <strong>All students in the same career receive an identical 60-hour deterministic path</strong>.</p>
+
+                <!-- Program Modality Toggle (Ingeniería/Licenciatura vs. TSU) -->
+                <div id="degree-modality-wrapper" style="margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                    <span style="font-size: 0.8rem; font-weight: 600; color: var(--fg-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Nivel Académico:</span>
+                    <button type="button" class="modality-pill active" id="pill-degree-lic" onclick="setDegreeModality('lic')">
+                        <i class="fa-solid fa-graduation-cap"></i> Ingeniería / Licenciatura (Profesional)
+                    </button>
+                    <button type="button" class="modality-pill" id="pill-degree-tsu" onclick="setDegreeModality('tsu')">
+                        <i class="fa-solid fa-certificate"></i> Técnico Superior Universitario (TSU - Convocatoria 2026)
+                    </button>
+                </div>
+
+                <!-- TSU Specialty Selector (Dynamic when TSU is selected) -->
+                <div id="tsu-specialty-picker" style="display: none; margin-bottom: 16px; padding: 14px 18px; border-radius: 12px; background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.3);">
+                    <div style="font-size: 0.78rem; font-weight: 700; color: var(--sky-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display:flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-route"></i> Especialidad Oficial de TSU (Convocatoria UPBC 2026):
+                    </div>
+                    <div id="tsu-specialty-pills" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        <!-- Injected dynamically based on selected career -->
+                    </div>
+                </div>
 
                 <div class="search-filter-bar">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -1066,7 +1151,7 @@
                 </div>
 
                 <div id="career-selected-summary" style="font-size: 0.8rem; color: var(--sky-400); font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-circle-check"></i> <span id="career-summary-text">Selected: Ing. Mecatrónica (it-mecatronica) • 60.0h Curricular Path</span>
+                    <i class="fa-solid fa-circle-check"></i> <span id="career-summary-text">Selected: Ing. Mecatrónica (upbc-mecatronica) • 60.0h Curricular Path</span>
                 </div>
             </section>
 
@@ -1331,11 +1416,14 @@
                 fullName: '',
                 email: '',
                 matricula: '',
-                subsystem: 'it',
-                campus: '',
-                careerId: 'it-mecatronica',
+                subsystem: 'upbc',
+                campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
+                degreeModality: 'lic',
+                tsuSpecialtyId: '',
+                tsuSpecialtyName: '',
+                careerId: 'upbc-mecatronica',
                 stage: 'mid',
-                hub: 'saltillo-mty',
+                hub: 'tijuana-mxi',
                 hasCode: false,
                 classCode: '',
                 classId: '',
@@ -1358,6 +1446,34 @@
 
         // Known Demo Classes for instant code validation
         const DEMO_CLASSES = {
+            'UPBC-MECA-2026': {
+                id: 'c-upbc-1',
+                name: 'Ing. Mecatrónica 4°A — UPBC Mexicali',
+                instructor: 'Mtro. José Luis Castro',
+                institution: 'Universidad Politécnica de Baja California',
+                careerId: 'upbc-mecatronica'
+            },
+            'UPBC-SEMI-2026': {
+                id: 'c-upbc-2',
+                name: 'Ing. Semiconductores 2°A — UPBC Mexicali',
+                instructor: 'Dra. Gabriela Fuentes',
+                institution: 'Universidad Politécnica de Baja California',
+                careerId: 'upbc-semiconductores'
+            },
+            'UPBC-TI-2026': {
+                id: 'c-upbc-3',
+                name: 'Ing. TI e Innovación Digital 6°B — UPBC Mexicali',
+                instructor: 'Ing. Martín Solís',
+                institution: 'Universidad Politécnica de Baja California',
+                careerId: 'upbc-ti'
+            },
+            'UPBC-ENERGIA-2026': {
+                id: 'c-upbc-4',
+                name: 'Ing. Energía y Desarrollo Sostenible 4°A — UPBC Mexicali',
+                instructor: 'Dra. Sofía Valenzuela',
+                institution: 'Universidad Politécnica de Baja California',
+                careerId: 'upbc-energia'
+            },
             'STEM-MECA-A7X3K2': {
                 id: 'c1',
                 name: 'Mecatrónica 4°A',
@@ -1393,6 +1509,8 @@
             renderCareerCatalog();
             checkUrlQueryParams();
             attachKeyboardListeners();
+            selectHub(wizardState.data.hub);
+            updateCareerSummaryText();
         });
 
         // ── Check URL Query Params (e.g. ?class=STEM-MECA-A7X3K2) ──
@@ -1439,6 +1557,7 @@
             } else {
                 // Fallback default careers
                 careers = [
+                    { id: 'upbc-mecatronica', name: 'Ingeniería Mecatrónica', cluster: 'Automatización y robótica', system: 'upbc' },
                     { id: 'it-mecatronica', name: 'Ingeniería Mecatrónica', cluster: 'Advanced Manufacturing & Robotics', institutionType: 'it' },
                     { id: 'it-industrial', name: 'Ingeniería Industrial', cluster: 'Logistics, Supply Chain & Lean', institutionType: 'it' },
                     { id: 'it-automotriz', name: 'Ingeniería en Sistemas Automotrices', cluster: 'Electric Vehicles & Powertrain', institutionType: 'it' },
@@ -1494,14 +1613,130 @@
             renderCareerCatalog(val);
         }
 
+        // ── Degree Modality Handlers (Ingeniería/Licenciatura vs TSU) ──
+        function setDegreeModality(modality) {
+            wizardState.data.degreeModality = modality;
+            const btnLic = document.getElementById('pill-degree-lic');
+            const btnTsu = document.getElementById('pill-degree-tsu');
+            const picker = document.getElementById('tsu-specialty-picker');
+
+            if (btnLic) btnLic.classList.toggle('active', modality === 'lic');
+            if (btnTsu) btnTsu.classList.toggle('active', modality === 'tsu');
+
+            if (picker) {
+                picker.style.display = (modality === 'tsu') ? 'block' : 'none';
+            }
+
+            if (modality === 'tsu') {
+                updateTsuSpecialtiesUI();
+            } else {
+                wizardState.data.tsuSpecialtyId = '';
+                wizardState.data.tsuSpecialtyName = '';
+                updateCareerSummaryText();
+            }
+        }
+
+        function updateTsuSpecialtiesUI() {
+            const container = document.getElementById('tsu-specialty-pills');
+            if (!container) return;
+
+            let specialties = [];
+            if (typeof window.STEMOS_CAREER_TRACKS !== 'undefined' && typeof window.STEMOS_CAREER_TRACKS.getTsuSpecialtiesForCareer === 'function') {
+                specialties = window.STEMOS_CAREER_TRACKS.getTsuSpecialtiesForCareer(wizardState.data.careerId);
+            }
+
+            if (!specialties || specialties.length === 0) {
+                container.innerHTML = `
+                    <div style="font-size: 0.8rem; color: var(--fg-muted); padding: 4px 0;">
+                        <i class="fa-solid fa-circle-info"></i> Esta carrera no cuenta con programas TSU específicos registrados. Se aplicará la ruta técnica del programa.
+                    </div>
+                `;
+                wizardState.data.tsuSpecialtyId = '';
+                wizardState.data.tsuSpecialtyName = '';
+                updateCareerSummaryText();
+                return;
+            }
+
+            const existingMatch = specialties.find(s => s.id === wizardState.data.tsuSpecialtyId);
+            if (!existingMatch && specialties.length > 0) {
+                wizardState.data.tsuSpecialtyId = specialties[0].id;
+                wizardState.data.tsuSpecialtyName = specialties[0].name;
+            }
+
+            container.innerHTML = specialties.map(s => {
+                const isSelected = s.id === wizardState.data.tsuSpecialtyId;
+                const safeName = (s.name || '').replace(/'/g, "\\'");
+                return `
+                    <button type="button" class="tsu-pill ${isSelected ? 'selected' : ''}" data-tsu-id="${s.id}" onclick="selectTsuSpecialty('${s.id}', '${safeName}')">
+                        <i class="fa-solid ${isSelected ? 'fa-circle-check' : 'fa-certificate'}"></i> ${s.name}
+                    </button>
+                `;
+            }).join('');
+
+            updateCareerSummaryText();
+        }
+
+        function selectTsuSpecialty(tsuId, tsuName) {
+            wizardState.data.tsuSpecialtyId = tsuId;
+            wizardState.data.tsuSpecialtyName = tsuName;
+            document.querySelectorAll('#tsu-specialty-pills .tsu-pill').forEach(btn => {
+                const match = btn.dataset.tsuId === tsuId;
+                btn.classList.toggle('selected', match);
+                const icon = btn.querySelector('i');
+                if (icon) {
+                    icon.className = match ? 'fa-solid fa-circle-check' : 'fa-solid fa-certificate';
+                }
+            });
+            updateCareerSummaryText();
+        }
+
+        function updateCareerSummaryText() {
+            let careerName = wizardState.data.careerId;
+            if (typeof window.STEMOS_CAREER_TRACKS !== 'undefined') {
+                const c = window.STEMOS_CAREER_TRACKS.getCareerById(wizardState.data.careerId);
+                if (c) careerName = c.name;
+            }
+
+            const summaryEl = document.getElementById('career-summary-text');
+            if (!summaryEl) return;
+
+            if (wizardState.data.degreeModality === 'tsu' && wizardState.data.tsuSpecialtyName) {
+                summaryEl.textContent = `Selected: ${careerName} [TSU: ${wizardState.data.tsuSpecialtyName}] • 60.0h Deterministic Path`;
+            } else {
+                summaryEl.textContent = `Selected: ${careerName} • 60.0h Deterministic Path`;
+            }
+        }
+
         // ── Selection Handlers ──
         function selectSubsystem(subId) {
             wizardState.data.subsystem = subId;
             document.querySelectorAll('#step-2 .selection-card').forEach(el => {
                 el.classList.toggle('selected', el.dataset.subsystem === subId);
             });
+
+            const campusInput = document.getElementById('inp-campus');
+            if (subId === 'upbc') {
+                if (campusInput) campusInput.value = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
+                wizardState.data.campus = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
+                selectHub('tijuana-mxi');
+                if (!wizardState.data.careerId.startsWith('upbc-')) {
+                    wizardState.data.careerId = 'upbc-mecatronica';
+                }
+            } else if (subId === 'it') {
+                if (campusInput && campusInput.value.includes('UPBC')) campusInput.value = 'TecNM Campus Saltillo';
+                selectHub('saltillo-mty');
+                if (wizardState.data.careerId.startsWith('upbc-')) {
+                    wizardState.data.careerId = 'it-mecatronica';
+                }
+            }
+
             // Re-render careers filtered by subsystem
             renderCareerCatalog();
+            if (wizardState.data.degreeModality === 'tsu') {
+                updateTsuSpecialtiesUI();
+            } else {
+                updateCareerSummaryText();
+            }
         }
 
         function selectCareer(careerId) {
@@ -1510,13 +1745,11 @@
                 el.classList.toggle('selected', el.dataset.careerId === careerId);
             });
 
-            // Update summary chip
-            let careerName = careerId;
-            if (typeof window.STEMOS_CAREER_TRACKS !== 'undefined') {
-                const c = window.STEMOS_CAREER_TRACKS.getCareerById(careerId);
-                if (c) careerName = c.name;
+            if (wizardState.data.degreeModality === 'tsu') {
+                updateTsuSpecialtiesUI();
+            } else {
+                updateCareerSummaryText();
             }
-            document.getElementById('career-summary-text').textContent = `Selected: ${careerName} • 60.0h Deterministic Path`;
         }
 
         function selectStage(stageKey) {
@@ -1727,6 +1960,9 @@
                     if (c.aiMentor) mentorTitle = c.aiMentor.name;
                 }
             }
+            if (d.degreeModality === 'tsu' && d.tsuSpecialtyName) {
+                careerTitle = `${careerTitle} — TSU: ${d.tsuSpecialtyName}`;
+            }
             document.getElementById('pass-career-display').textContent = careerTitle;
             document.getElementById('pass-mentor-display').textContent = mentorTitle;
 
@@ -1752,7 +1988,7 @@
                 'latam-regional': 'LATAM Regional Nodes',
                 'national-remote': 'National Remote Cohort'
             };
-            document.getElementById('pass-hub-display').textContent = hubMap[d.hub] || 'Saltillo-Ramos / Mty';
+            document.getElementById('pass-hub-display').textContent = hubMap[d.hub] || 'Tijuana / Mexicali';
 
             // Cohort Title
             if (d.className) {
@@ -1791,6 +2027,8 @@
                 } catch(e) {}
             }
 
+            const activeCareerKey = (d.degreeModality === 'tsu' && d.tsuSpecialtyId) ? d.tsuSpecialtyId : d.careerId;
+
             // Persist to localStorage for app.html consumption
             const profile = {
                 name: d.fullName,
@@ -1798,7 +2036,11 @@
                 matricula: d.matricula,
                 campus: d.campus,
                 subsystem: d.subsystem,
-                careerId: d.careerId,
+                degreeModality: d.degreeModality || 'lic',
+                tsuSpecialtyId: d.tsuSpecialtyId || '',
+                tsuSpecialtyName: d.tsuSpecialtyName || '',
+                careerId: activeCareerKey,
+                baseCareerId: d.careerId,
                 stage: d.stage,
                 hub: d.hub,
                 classId: d.classId || 'class-independent',
@@ -1821,7 +2063,9 @@
                         name: d.fullName,
                         email: d.email,
                         system: d.subsystem,
-                        careerId: d.careerId,
+                        degreeModality: d.degreeModality || 'lic',
+                        tsuSpecialtyId: d.tsuSpecialtyId || '',
+                        careerId: activeCareerKey,
                         careerName: d.careerName || profile.careerName,
                         hub: d.hub,
                         classCode: d.classCode,
@@ -1834,7 +2078,7 @@
             }
 
             localStorage.setItem('stemos_student_profile', JSON.stringify(profile));
-            localStorage.setItem('stemos_active_career', d.careerId);
+            localStorage.setItem('stemos_active_career', activeCareerKey);
             localStorage.setItem('stemos_current_user', JSON.stringify({
                 name: d.fullName,
                 email: d.email,
