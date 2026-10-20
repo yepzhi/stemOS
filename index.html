@@ -996,6 +996,81 @@
                 filter: blur(0px);
             }
         }
+        /* ─── LANGUAGE SWITCHER CAPSULE (ES | EN) ───────────────── */
+        .supaste-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lang-switch-capsule {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.38);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 9999px;
+            padding: 3px 6px;
+            box-shadow: 0 4px 16px rgba(6, 26, 112, 0.18);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+        }
+
+        .lang-switch-capsule:hover {
+            background: rgba(255, 255, 255, 0.24);
+            border-color: rgba(255, 255, 255, 0.55);
+            box-shadow: 0 6px 20px rgba(6, 26, 112, 0.25);
+        }
+
+        .lang-icon {
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0 2px 0 4px;
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.85);
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            padding: 4px 8px;
+            border-radius: 9999px;
+            cursor: pointer;
+            line-height: 1;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .lang-btn.active {
+            background: #ffffff;
+            color: #0284c7;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            font-weight: 800;
+        }
+
+        body.lang-transitioning [data-i18n] {
+            opacity: 0.75;
+            transition: opacity 0.15s ease-in-out;
+        }
+
+        @media (max-width: 1024px) {
+            .supaste-nav {
+                justify-content: space-between !important;
+                padding: 8px 16px !important;
+            }
+            .supaste-nav-right {
+                display: flex !important;
+            }
+        }
     </style>
 </head>
 
@@ -1064,16 +1139,22 @@
                 </div>
 
                 <div class="supaste-nav-links">
-                    <a href="javascript:void(0)" onclick="openUnderDevModal('ESP Catalog')" class="nav-link active">ESP
-                        Catalog</a>
-                    <a href="javascript:void(0)" onclick="openUnderDevModal('Technology')"
-                        class="nav-link">Technology</a>
-                    <a href="javascript:void(0)" onclick="openUnderDevModal('Engineering')"
-                        class="nav-link">Engineering</a>
-                    <a href="javascript:void(0)" onclick="openUnderDevModal('Science')" class="nav-link">Science</a>
-                    <a href="javascript:void(0)" onclick="openUnderDevModal('Aviation')" class="nav-link">Aviation</a>
-                    <a href="javascript:void(0)" onclick="openUnderDevModal('Native Idioms')" class="nav-link">Native
-                        Idioms</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('ESP Catalog')" class="nav-link active" data-i18n="nav_catalog">ESP Catalog</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Technology')" class="nav-link" data-i18n="nav_tech">Technology</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Engineering')" class="nav-link" data-i18n="nav_eng">Engineering</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Science')" class="nav-link" data-i18n="nav_sci">Science</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Aviation')" class="nav-link" data-i18n="nav_avia">Aviation</a>
+                    <a href="javascript:void(0)" onclick="openUnderDevModal('Native Idioms')" class="nav-link" data-i18n="nav_idioms">Native Idioms</a>
+                    <a href="placement.html" class="nav-link" style="color:#7dd3fc; font-weight:700;" data-i18n="nav_placement"><i class="fa-solid fa-graduation-cap"></i> Placement Test (30m)</a>
+                </div>
+
+                <!-- ── Language Toggle Capsule (ES | EN) ── -->
+                <div class="supaste-nav-right">
+                    <div class="lang-switch-capsule" id="lang-switch-capsule" role="group" aria-label="Selector de Idioma / Language Selector">
+                        <i class="fa-solid fa-globe lang-icon" aria-hidden="true"></i>
+                        <button type="button" class="lang-btn" id="lang-btn-es" data-lang="es" aria-pressed="false">ES</button>
+                        <button type="button" class="lang-btn" id="lang-btn-en" data-lang="en" aria-pressed="false">EN</button>
+                    </div>
                 </div>
             </nav>
         </header>
@@ -1090,7 +1171,7 @@
                         <div class="cs-dev-signal-pill"
                             style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.4); color:#ffffff; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 4px 16px rgba(13,43,153,0.2); font-size:0.75rem; font-weight:700; padding:5px 16px;">
                             <span class="cs-pulse-dot" style="background:#ffffff; box-shadow:0 0 10px #ffffff;"></span>
-                            Under Active Development
+                            <span data-i18n="hero_pill_dev">Under Active Development</span>
                         </div>
 
                         <!-- ── Premium Hero Brand Lockup (stemOS Text Only) ── -->
@@ -1103,12 +1184,12 @@
 
                         <div class="cs-badge"
                             style="background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.38); color:#ffffff; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); font-size:0.88rem; font-weight:600; padding:7px 22px; border-radius:999px; box-shadow:0 4px 20px rgba(13,43,153,0.15);">
-                            LXP, Learning Experience Platform for Technical English
+                            <span data-i18n="hero_badge_lxp">LXP, Learning Experience Platform for Technical English</span>
                         </div>
                     </div>
 
                     <!-- Editorial Headline in Pure White -->
-                    <h1 class="supaste-hero-title">
+                    <h1 class="supaste-hero-title" data-i18n="hero_title_html">
                         <span class="soft-word" style="--delay: 0.14s">Mastering</span>
                         <span class="soft-word" style="--delay: 0.22s">Technical</span>
                         <span class="soft-word" style="--delay: 0.30s">English</span> <br>
@@ -1120,7 +1201,7 @@
                     </h1>
 
                     <!-- Refined Subtitle in Crisp White -->
-                    <p class="supaste-hero-subtitle soft-element" style="--delay: 0.82s">
+                    <p class="supaste-hero-subtitle soft-element" style="--delay: 0.82s" data-i18n="hero_subtitle">
                         <strong>27 specialized industry tracks</strong> of English for Specific Purposes (ESP) &mdash;
                         engineered for semiconductor fabrication, aerospace avionics, industrial robotics, and advanced
                         manufacturing teams. Aligned with IEEE, SEMI, ISO, and OACI standards.
@@ -1130,20 +1211,24 @@
                     <div class="supaste-hero-actions soft-element" style="--delay: 0.95s">
                         <button type="button" id="cs-btn-enter-world" class="supaste-btn-primary" style="background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); box-shadow: 0 4px 20px rgba(56, 189, 248, 0.5);">
                             <i class="fa-solid fa-earth-americas"></i>
-                            <span>Mundo stemOS 3D</span>
+                            <span data-i18n="btn_world_3d">Mundo stemOS 3D</span>
                             <i class="fa-solid fa-arrow-right btn-arrow"></i>
                         </button>
                         <button type="button" onclick="openUnderDevModal('27 Modules')" class="supaste-btn-secondary">
-                            <span>27 Módulos ESP</span>
+                            <span data-i18n="btn_modules_27">27 Módulos ESP</span>
                         </button>
                         <button type="button" onclick="openUnderDevModal('Interactive Demo')"
                             class="supaste-btn-secondary">
                             <i class="fa-solid fa-laptop-code"></i>
-                            <span>Demo Interactiva</span>
+                            <span data-i18n="btn_demo">Demo Interactiva</span>
                         </button>
                         <a href="https://jovenesstem.com" class="supaste-btn-secondary" target="_blank" rel="noopener">
                             <i class="fa-solid fa-seedling"></i>
-                            <span>JóvenesSTEM Ecosystem</span>
+                            <span data-i18n="btn_ecosystem">JóvenesSTEM Ecosystem</span>
+                        </a>
+                        <a href="placement.html" class="supaste-btn-secondary" style="background: rgba(56, 189, 248, 0.18); border-color: rgba(56, 189, 248, 0.45); color: #ffffff;" title="Placement Test CEFR (30 min)">
+                            <i class="fa-solid fa-graduation-cap" style="color: #38bdf8;"></i>
+                            <span data-i18n="btn_take_placement">Placement Test (30 min)</span>
                         </a>
                     </div>
 
@@ -1151,27 +1236,27 @@
                     <div class="supaste-metrics-strip soft-element" style="--delay: 1.08s">
                         <div class="metric-pill">
                             <span class="metric-val">27</span>
-                            <span class="metric-lbl">Tracks ESP</span>
+                            <span class="metric-lbl" data-i18n="metric_tracks_lbl">Tracks ESP</span>
                         </div>
                         <span class="metric-dot">&bull;</span>
                         <div class="metric-pill">
                             <span class="metric-val">146</span>
-                            <span class="metric-lbl">Modules</span>
+                            <span class="metric-lbl" data-i18n="metric_modules_lbl">Modules</span>
                         </div>
                         <span class="metric-dot">&bull;</span>
                         <div class="metric-pill">
                             <span class="metric-val">58</span>
-                            <span class="metric-lbl">Readings</span>
+                            <span class="metric-lbl" data-i18n="metric_readings_lbl">Readings</span>
                         </div>
                         <span class="metric-dot">&bull;</span>
                         <div class="metric-pill">
                             <span class="metric-val">45</span>
-                            <span class="metric-lbl">Native Idioms</span>
+                            <span class="metric-lbl" data-i18n="metric_idioms_lbl">Native Idioms</span>
                         </div>
                         <span class="metric-dot">&bull;</span>
                         <div class="metric-pill">
                             <span class="metric-val">100%</span>
-                            <span class="metric-lbl">Standards Aligned</span>
+                            <span class="metric-lbl" data-i18n="metric_standards_lbl">Standards Aligned</span>
                         </div>
                     </div>
 
@@ -1195,12 +1280,11 @@
                                         stroke-linejoin="round" />
                                     <circle cx="12" cy="12" r="2.5" fill="currentColor" opacity="0.7" />
                                 </svg>
-                                <span>stemOS Studio &mdash; Semiconductors: Photolithography Cleanroom Protocols</span>
+                                <span data-i18n="win_title">stemOS Studio &mdash; Semiconductors: Photolithography Cleanroom Protocols</span>
                             </div>
                             <div class="window-right-tags">
-                                <span class="win-tag win-tag-cefr">Level B1</span>
-                                <span class="win-tag win-tag-conocer"><i class="fa-solid fa-award"></i> IEEE
-                                    Standard</span>
+                                <span class="win-tag win-tag-cefr" data-i18n="win_tag_level">Level B1</span>
+                                <span class="win-tag win-tag-conocer"><i class="fa-solid fa-award"></i> <span data-i18n="win_tag_standard">IEEE Standard</span></span>
                             </div>
                         </div>
 
@@ -1216,14 +1300,13 @@
                                         class="w-bar"></span><span class="w-bar"></span>
                                 </div>
                                 <div class="stage-track-info">
-                                    <span class="stage-speaker"><i class="fa-solid fa-headphones"></i> Technical
-                                        Pronunciation (Native Audio)</span>
-                                    <span class="stage-reading-title">Cleanroom ISO Class 1 Protocols</span>
+                                    <span class="stage-speaker"><i class="fa-solid fa-headphones"></i> <span data-i18n="stage_speaker_lbl">Technical Pronunciation (Native Audio)</span></span>
+                                    <span class="stage-reading-title" data-i18n="stage_reading_title">Cleanroom ISO Class 1 Protocols</span>
                                 </div>
-                                <div class="stage-speed-pill">Audio EN</div>
+                                <div class="stage-speed-pill" data-i18n="stage_speed_pill">Audio EN</div>
                             </div>
 
-                            <p class="stage-reading-quote">
+                            <p class="stage-reading-quote" data-i18n="stage_quote">
                                 &ldquo;In extreme ultraviolet (EUV) photolithography, wafer steppers operate inside ISO
                                 Class 1 cleanrooms with laminar airflow. Photoresist deposition requires precise
                                 chemical handling to prevent sub-micron yield defects.&rdquo;
@@ -1232,12 +1315,11 @@
                             <div class="stage-bottom-bar">
                                 <div class="stage-socratic-badge">
                                     <i class="fa-solid fa-brain"></i>
-                                    <span><strong>Socratic Bot:</strong> &ldquo;Why does uniform photoresist deposition
-                                        prevent defects at 3nm nodes?&rdquo;</span>
+                                    <span data-i18n="stage_socratic_text"><strong>Socratic Bot:</strong> &ldquo;Why does uniform photoresist deposition prevent defects at 3nm nodes?&rdquo;</span>
                                 </div>
                                 <button type="button" onclick="openUnderDevModal('Open Module')"
                                     class="stage-action-btn">
-                                    <span>Open Module</span>
+                                    <span data-i18n="stage_open_module">Open Module</span>
                                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 </button>
                             </div>
@@ -1251,13 +1333,13 @@
             <section class="cs-section" id="cs-section-1">
                 <div class="cs-container">
                     <div class="cs-brand" style="margin-bottom:1rem">
-                        <div class="cs-badge"><i class="fa-solid fa-book-bookmark"></i>&nbsp;Specialized ESP Methodology
+                        <div class="cs-badge"><i class="fa-solid fa-book-bookmark"></i>&nbsp;<span data-i18n="about_badge">Specialized ESP Methodology</span>
                         </div>
                     </div>
-                    <h1 style="font-size:clamp(1.6rem,4vw,2.2rem); margin-bottom:1.25rem;">Why <span
+                    <h1 style="font-size:clamp(1.6rem,4vw,2.2rem); margin-bottom:1.25rem;" data-i18n="about_heading">Why <span
                             class="cs-highlight">Technical English</span> for Industry?</h1>
 
-                    <p class="cs-description" style="margin-bottom:0;">
+                    <p class="cs-description" style="margin-bottom:0;" data-i18n="about_desc">
                         High-tech manufacturing, semiconductor cleanrooms, avionics engineering, and industrial robotics
                         operate 100% in specialized English. <strong>stemOS</strong> is a <strong>LATAM + US native
                             Learning Platform</strong> that transforms general English into precise, industry-ready
@@ -1283,7 +1365,7 @@
                                 <path d="M-5.5 -1.5 L-1.5 2.5 L5.5 -4.5" fill="none" stroke="#277eff" stroke-width="2.5"
                                     stroke-linecap="round" stroke-linejoin="round" />
                                 <text y="32" font-family="'Outfit',sans-serif" font-size="9"
-                                    fill="rgba(255,255,255,0.7)" font-weight="600" text-anchor="middle">Technical
+                                    fill="rgba(255,255,255,0.7)" font-weight="600" text-anchor="middle" data-i18n="graph_node_lexicon">Technical
                                     Lexicon</text>
                             </g>
                             <!-- Node 2 -->
@@ -1292,7 +1374,7 @@
                                     filter="url(#glow-cyan)" />
                                 <path d="M-1 -10 L5 -2 L1 -2 L3 10 L-5 2 L-1 2 Z" fill="#00d2ff" />
                                 <text y="36" font-family="'Outfit',sans-serif" font-size="9.5" fill="#ffffff"
-                                    font-weight="700" text-anchor="middle">stemOS ESP Core</text>
+                                    font-weight="700" text-anchor="middle" data-i18n="graph_node_core">stemOS ESP Core</text>
                             </g>
                             <!-- Node 3 -->
                             <g transform="translate(320,65)">
@@ -1302,7 +1384,7 @@
                                     d="M-8 -6 h16 a4 4 0 0 1 4 4 v5 a4 4 0 0 1 -4 4 h-7 l-5 4 v-4 h-4 a4 4 0 0 1 -4 -4 v-5 a4 4 0 0 1 4 -4 z"
                                     fill="#00d2ff" transform="scale(0.7) translate(-1, -1)" />
                                 <text y="32" font-family="'Outfit',sans-serif" font-size="9"
-                                    fill="rgba(255,255,255,0.7)" font-weight="600" text-anchor="middle">Feynman English
+                                    fill="rgba(255,255,255,0.7)" font-weight="600" text-anchor="middle" data-i18n="graph_node_ai">Feynman English
                                     AI</text>
                             </g>
                             <!-- Node 4 Locked -->
@@ -1337,34 +1419,34 @@
             <section class="cs-section" id="cs-section-2">
                 <div class="cs-container">
                     <div class="cs-brand" style="margin-bottom:1rem">
-                        <div class="cs-badge"><i class="fa-solid fa-layer-group"></i>&nbsp;Learning Architecture</div>
+                        <div class="cs-badge"><i class="fa-solid fa-layer-group"></i>&nbsp;<span data-i18n="features_badge">Learning Architecture</span></div>
                     </div>
-                    <h1 style="font-size:clamp(1.6rem,4vw,2.2rem); margin-bottom:1.5rem;">Engineered for <span
+                    <h1 style="font-size:clamp(1.6rem,4vw,2.2rem); margin-bottom:1.5rem;" data-i18n="features_heading">Engineered for <span
                             class="cs-highlight">Industry Fluency</span></h1>
 
                     <div class="cs-features-grid">
                         <div class="cs-feature-item">
                             <div class="cs-feature-icon"><i class="fa-solid fa-microchip"></i></div>
-                            <span class="cs-feature-title">27 Industry Tracks</span>
-                            <span class="cs-feature-desc">English for semiconductors, avionics, cleanrooms, robotics
+                            <span class="cs-feature-title" data-i18n="feat_1_title">27 Industry Tracks</span>
+                            <span class="cs-feature-desc" data-i18n="feat_1_desc">English for semiconductors, avionics, cleanrooms, robotics
                                 &amp; AI</span>
                         </div>
                         <div class="cs-feature-item">
                             <div class="cs-feature-icon"><i class="fa-solid fa-brain"></i></div>
-                            <span class="cs-feature-title">Feynman English Tutor</span>
-                            <span class="cs-feature-desc">Socratic AI voice coach evaluating technical
+                            <span class="cs-feature-title" data-i18n="feat_2_title">Feynman English Tutor</span>
+                            <span class="cs-feature-desc" data-i18n="feat_2_desc">Socratic AI voice coach evaluating technical
                                 explanations</span>
                         </div>
                         <div class="cs-feature-item">
                             <div class="cs-feature-icon"><i class="fa-solid fa-language"></i></div>
-                            <span class="cs-feature-title">45+ Native Idioms</span>
-                            <span class="cs-feature-desc">Real engineering idioms, collocations &amp; nearshoring
+                            <span class="cs-feature-title" data-i18n="feat_3_title">45+ Native Idioms</span>
+                            <span class="cs-feature-desc" data-i18n="feat_3_desc">Real engineering idioms, collocations &amp; nearshoring
                                 workplace jargon</span>
                         </div>
                         <div class="cs-feature-item">
                             <div class="cs-feature-icon"><i class="fa-solid fa-award"></i></div>
-                            <span class="cs-feature-title">Open Badges 3.0</span>
-                            <span class="cs-feature-desc">Verifiable W3C credentials in Technical English for
+                            <span class="cs-feature-title" data-i18n="feat_4_title">Open Badges 3.0</span>
+                            <span class="cs-feature-desc" data-i18n="feat_4_desc">Verifiable W3C credentials in Technical English for
                                 nearshoring jobs</span>
                         </div>
                     </div>
@@ -1373,20 +1455,20 @@
 
                     <div class="cs-btn-group">
                         <button type="button" onclick="openUnderDevModal('27 Modules')" class="cs-btn cs-btn-primary">
-                            <i class="fa-solid fa-layer-group"></i> 27 Modules
+                            <i class="fa-solid fa-layer-group"></i> <span data-i18n="feat_btn_modules">27 Modules</span>
                         </button>
                         <button type="button" onclick="openUnderDevModal('Interactive Demo')"
                             class="cs-btn cs-btn-secondary">
-                            <i class="fa-solid fa-laptop-code"></i> Interactive Demo
+                            <i class="fa-solid fa-laptop-code"></i> <span data-i18n="feat_btn_demo">Interactive Demo</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Footer at end of last section -->
                 <div class="cs-footer">
-                    <p>&copy; 2026 Lovelace Feynman Technologies SAPI de CV. All rights reserved.</p>
+                    <p data-i18n="footer_copy">&copy; 2026 Lovelace Feynman Technologies SAPI de CV. All rights reserved.</p>
                     <a href="https://yepzhi.com" class="cs-dev-btn">
-                        <i class="fa-solid fa-code"></i>&nbsp;Developed by @yepzhi
+                        <i class="fa-solid fa-code"></i>&nbsp;<span data-i18n="footer_dev">Developed by @yepzhi</span>
                     </a>
                 </div>
             </section>
@@ -2252,16 +2334,16 @@
             <div class="cs-modal-icon-wrap">
                 <i class="fa-solid fa-compass-drafting"></i>
             </div>
-            <div class="cs-modal-tag">Platform Preview</div>
-            <h2 class="cs-modal-title">Under Active Development</h2>
-            <p class="cs-modal-text">
+            <div class="cs-modal-tag" data-i18n="modal_tag">Platform Preview</div>
+            <h2 class="cs-modal-title" data-i18n="modal_title">Under Active Development</h2>
+            <p class="cs-modal-text" data-i18n="modal_desc">
                 Our <strong>27 specialized industry tracks</strong> (Semiconductors, Aerospace Avionics, Industrial
                 Robotics, Cleanrooms, and AI Engineering) alongside our Socratic S&P <em>Feynman Engine</em> are
                 currently in calibration.
                 <br><br>
                 Public interactive access will be unlocked shortly. Thank you for your interest!
             </p>
-            <button type="button" class="cs-modal-btn" onclick="closeUnderDevModal()">Got it, thank you</button>
+            <button type="button" class="cs-modal-btn" onclick="closeUnderDevModal()" data-i18n="modal_btn">Got it, thank you</button>
         </div>
     </div>
 
@@ -2288,6 +2370,243 @@
         document.addEventListener("keydown", function (e) {
             if (e.key === "Escape") closeUnderDevModal();
         });
+    </script>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!--  STEMOS BILINGUAL ENGINE (ES | EN) — INDEX LANDING ONLY    -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <script>
+        const STEMOS_I18N = {
+            en: {
+                nav_catalog: 'ESP Catalog',
+                nav_tech: 'Technology',
+                nav_eng: 'Engineering',
+                nav_sci: 'Science',
+                nav_avia: 'Aviation',
+                nav_idioms: 'Native Idioms',
+                nav_placement: '<i class="fa-solid fa-graduation-cap"></i> Placement Test (30m)',
+
+                hero_pill_dev: 'Under Active Development',
+                hero_badge_lxp: 'LXP, Learning Experience Platform for Technical English',
+                hero_title_html: '<span class="soft-word" style="--delay: 0.14s">Mastering</span> ' +
+                    '<span class="soft-word" style="--delay: 0.22s">Technical</span> ' +
+                    '<span class="soft-word" style="--delay: 0.30s">English</span> <br> ' +
+                    '<span class="soft-word" style="--delay: 0.38s">for</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.48s">Advanced</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.56s">Industry</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.64s">&amp;</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.72s">Nearshoring</span>',
+                hero_subtitle: '<strong>27 specialized industry tracks</strong> of English for Specific Purposes (ESP) &mdash; engineered for semiconductor fabrication, aerospace avionics, industrial robotics, and advanced manufacturing teams. Aligned with IEEE, SEMI, ISO, and OACI standards.',
+                btn_world_3d: 'stemOS 3D World',
+                btn_modules_27: '27 ESP Modules',
+                btn_demo: 'Interactive Demo',
+                btn_ecosystem: 'JóvenesSTEM Ecosystem',
+                btn_take_placement: 'Placement Test (30 min)',
+
+                metric_tracks_lbl: 'ESP Tracks',
+                metric_modules_lbl: 'Modules',
+                metric_readings_lbl: 'Readings',
+                metric_idioms_lbl: 'Native Idioms',
+                metric_standards_lbl: 'Standards Aligned',
+
+                win_title: 'stemOS Studio &mdash; Semiconductors: Photolithography Cleanroom Protocols',
+                win_tag_level: 'Level B1',
+                win_tag_standard: 'IEEE Standard',
+                stage_speaker_lbl: 'Technical Pronunciation (Native Audio)',
+                stage_reading_title: 'Cleanroom ISO Class 1 Protocols',
+                stage_speed_pill: 'Audio EN',
+                stage_quote: '&ldquo;In extreme ultraviolet (EUV) photolithography, wafer steppers operate inside ISO Class 1 cleanrooms with laminar airflow. Photoresist deposition requires precise chemical handling to prevent sub-micron yield defects.&rdquo;',
+                stage_socratic_text: '<strong>Socratic Bot:</strong> &ldquo;Why does uniform photoresist deposition prevent defects at 3nm nodes?&rdquo;',
+                stage_open_module: 'Open Module',
+
+                about_badge: 'Specialized ESP Methodology',
+                about_heading: 'Why <span class="cs-highlight">Technical English</span> for Industry?',
+                about_desc: 'High-tech manufacturing, semiconductor cleanrooms, avionics engineering, and industrial robotics operate 100% in specialized English. <strong>stemOS</strong> is a <strong>LATAM + US native Learning Platform</strong> that transforms general English into precise, industry-ready technical fluency. Master IEEE, SEMI, and ISO vocabulary, technical documentation, and real workplace communication with our Socratic <em>Feynman Engine</em>.',
+                graph_node_lexicon: 'Technical Lexicon',
+                graph_node_core: 'stemOS ESP Core',
+                graph_node_ai: 'Feynman English AI',
+
+                features_badge: 'Learning Architecture',
+                features_heading: 'Engineered for <span class="cs-highlight">Industry Fluency</span>',
+                feat_1_title: '27 Industry Tracks',
+                feat_1_desc: 'English for semiconductors, avionics, cleanrooms, robotics &amp; AI',
+                feat_2_title: 'Feynman English Tutor',
+                feat_2_desc: 'Socratic AI voice coach evaluating technical explanations',
+                feat_3_title: '45+ Native Idioms',
+                feat_3_desc: 'Real engineering idioms, collocations &amp; nearshoring workplace jargon',
+                feat_4_title: 'Open Badges 3.0',
+                feat_4_desc: 'Verifiable W3C credentials in Technical English for nearshoring jobs',
+                feat_btn_modules: '27 Modules',
+                feat_btn_demo: 'Interactive Demo',
+
+                footer_copy: '&copy; 2026 Lovelace Feynman Technologies SAPI de CV. All rights reserved.',
+                footer_dev: 'Developed by @yepzhi',
+
+                modal_tag: 'Platform Preview',
+                modal_title: 'Under Active Development',
+                modal_desc: 'Our <strong>27 specialized industry tracks</strong> (Semiconductors, Aerospace Avionics, Industrial Robotics, Cleanrooms, and AI Engineering) alongside our Socratic S&P <em>Feynman Engine</em> are currently in calibration.<br><br>Public interactive access will be unlocked shortly. Thank you for your interest!',
+                modal_btn: 'Got it, thank you'
+            },
+            es: {
+                nav_catalog: 'Catálogo ESP',
+                nav_tech: 'Tecnología',
+                nav_eng: 'Ingeniería',
+                nav_sci: 'Ciencias',
+                nav_avia: 'Aviación',
+                nav_idioms: 'Modismos Nativos',
+                nav_placement: '<i class="fa-solid fa-graduation-cap"></i> Test de Ubicación (30m)',
+
+                hero_pill_dev: 'En Desarrollo Activo',
+                hero_badge_lxp: 'LXP, Plataforma de Experiencia de Aprendizaje para Inglés Técnico',
+                hero_title_html: '<span class="soft-word" style="--delay: 0.14s">Dominio</span> ' +
+                    '<span class="soft-word" style="--delay: 0.22s">del Inglés</span> ' +
+                    '<span class="soft-word" style="--delay: 0.30s">Técnico</span> <br> ' +
+                    '<span class="soft-word" style="--delay: 0.38s">para la</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.48s">Industria</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.56s">Avanzada</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.64s">y</span> ' +
+                    '<span class="soft-word supaste-serif-italic" style="--delay: 0.72s">Nearshoring</span>',
+                hero_subtitle: '<strong>27 tracks especializados de industria</strong> de Inglés para Fines Específicos (ESP) &mdash; diseñados para la fabricación de semiconductores, aviónica aeroespacial, robótica industrial y manufactura avanzada. Alineados con estándares IEEE, SEMI, ISO y OACI.',
+                btn_world_3d: 'Mundo stemOS 3D',
+                btn_modules_27: '27 Módulos ESP',
+                btn_demo: 'Demo Interactiva',
+                btn_ecosystem: 'Ecosistema JóvenesSTEM',
+                btn_take_placement: 'Test de Ubicación (30 min)',
+
+                metric_tracks_lbl: 'Tracks ESP',
+                metric_modules_lbl: 'Módulos',
+                metric_readings_lbl: 'Lecturas',
+                metric_idioms_lbl: 'Modismos Nativos',
+                metric_standards_lbl: 'Alineado a Estándares',
+
+                win_title: 'stemOS Studio &mdash; Semiconductores: Protocolos de Cuarto Limpio en Fotolitografía',
+                win_tag_level: 'Nivel B1',
+                win_tag_standard: 'Estándar IEEE',
+                stage_speaker_lbl: 'Pronunciación Técnica (Audio Nativo)',
+                stage_reading_title: 'Protocolos de Cuarto Limpio ISO Clase 1',
+                stage_speed_pill: 'Audio EN',
+                stage_quote: '&ldquo;En la fotolitografía ultravioleta extrema (EUV), los wafer steppers operan dentro de cuartos limpios ISO Clase 1 con flujo de aire laminar. La deposición de fotoresina requiere manejo químico preciso para evitar defectos submicrónicos.&rdquo;',
+                stage_socratic_text: '<strong>Bot Socrático:</strong> &ldquo;¿Por qué la deposición uniforme de fotoresina previene defectos en nodos de 3nm?&rdquo;',
+                stage_open_module: 'Abrir Módulo',
+
+                about_badge: 'Metodología ESP Especializada',
+                about_heading: '¿Por qué <span class="cs-highlight">Inglés Técnico</span> para la Industria?',
+                about_desc: 'La manufactura de alta tecnología, los cuartos limpios de semiconductores, la ingeniería en aviónica y la robótica industrial operan 100% en inglés técnico especializado. <strong>stemOS</strong> es la <strong>Plataforma de Aprendizaje nativa LATAM + US</strong> que transforma el inglés general en fluidez técnica precisa y lista para la industria. Domina vocabulario IEEE, SEMI e ISO, documentación técnica y comunicación laboral real con nuestro <em>Motor Socrático Feynman</em>.',
+                graph_node_lexicon: 'Léxico Técnico',
+                graph_node_core: 'Núcleo ESP stemOS',
+                graph_node_ai: 'IA Feynman en Inglés',
+
+                features_badge: 'Arquitectura de Aprendizaje',
+                features_heading: 'Diseñado para la <span class="cs-highlight">Fluidez Industrial</span>',
+                feat_1_title: '27 Tracks Industriales',
+                feat_1_desc: 'Inglés para semiconductores, aviónica, cuartos limpios, robótica e IA',
+                feat_2_title: 'Tutor de Inglés Feynman',
+                feat_2_desc: 'Entrenador de voz socrático con IA que evalúa explicaciones técnicas',
+                feat_3_title: '45+ Modismos Nativos',
+                feat_3_desc: 'Modismos reales de ingeniería, colocaciones y jerga laboral de nearshoring',
+                feat_4_title: 'Open Badges 3.0',
+                feat_4_desc: 'Credenciales W3C verificables en inglés técnico para empleos de nearshoring',
+                feat_btn_modules: '27 Módulos',
+                feat_btn_demo: 'Demo Interactiva',
+
+                footer_copy: '&copy; 2026 Lovelace Feynman Technologies SAPI de CV. Todos los derechos reservados.',
+                footer_dev: 'Desarrollado por @yepzhi',
+
+                modal_tag: 'Vista Previa de Plataforma',
+                modal_title: 'En Desarrollo Activo',
+                modal_desc: 'Nuestros <strong>27 tracks especializados de industria</strong> (Semiconductores, Aviónica Aeroespacial, Robótica Industrial, Cuartos Limpios e Ingeniería de IA) junto con nuestro <em>Motor Socrático Feynman</em> se encuentran en calibración.<br><br>El acceso interactivo público se habilitará en breve. ¡Gracias por tu interés!',
+                modal_btn: 'Entendido, gracias'
+            }
+        };
+
+        function setPlatformLanguage(lang) {
+            if (!STEMOS_I18N[lang]) lang = 'es';
+            try {
+                localStorage.setItem('stemos_lang', lang);
+            } catch (e) { }
+
+            document.documentElement.lang = lang;
+
+            // Update language switcher buttons
+            const btnEs = document.getElementById('lang-btn-es');
+            const btnEn = document.getElementById('lang-btn-en');
+            if (btnEs && btnEn) {
+                btnEs.classList.toggle('active', lang === 'es');
+                btnEs.setAttribute('aria-pressed', lang === 'es' ? 'true' : 'false');
+                btnEn.classList.toggle('active', lang === 'en');
+                btnEn.setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
+            }
+
+            // Update scroll dot tooltips
+            const dotHome = document.querySelector('.cs-dot[data-section="0"]');
+            const dotAbout = document.querySelector('.cs-dot[data-section="1"]');
+            const dotFeat = document.querySelector('.cs-dot[data-section="2"]');
+            if (dotHome) {
+                dotHome.setAttribute('data-label', lang === 'es' ? 'Inicio' : 'Home');
+                dotHome.setAttribute('title', lang === 'es' ? 'Inicio' : 'Home');
+            }
+            if (dotAbout) {
+                dotAbout.setAttribute('data-label', lang === 'es' ? 'Acerca de' : 'About');
+                dotAbout.setAttribute('title', lang === 'es' ? 'Acerca de stemOS' : 'About stemOS');
+            }
+            if (dotFeat) {
+                dotFeat.setAttribute('data-label', lang === 'es' ? 'Características' : 'Features');
+                dotFeat.setAttribute('title', lang === 'es' ? 'Características' : 'Features');
+            }
+
+            // Update all registered i18n text elements
+            const dict = STEMOS_I18N[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key] !== undefined) {
+                    el.innerHTML = dict[key];
+                }
+            });
+
+            // Smooth transition animation feedback
+            document.body.classList.add('lang-transitioning');
+            setTimeout(() => document.body.classList.remove('lang-transitioning'), 180);
+        }
+
+        window.STEMOS_I18N = STEMOS_I18N;
+        window.setPlatformLanguage = setPlatformLanguage;
+
+        // Initialize language
+        (function initLanguageEngine() {
+            let initialLang = 'es';
+            try {
+                const stored = localStorage.getItem('stemos_lang');
+                if (stored && (stored === 'es' || stored === 'en')) {
+                    initialLang = stored;
+                } else if (navigator.language && navigator.language.toLowerCase().startsWith('en')) {
+                    initialLang = 'en';
+                }
+            } catch (e) { }
+
+            function setupButtons() {
+                setPlatformLanguage(initialLang);
+                const btnEs = document.getElementById('lang-btn-es');
+                const btnEn = document.getElementById('lang-btn-en');
+                if (btnEs) {
+                    btnEs.onclick = function (e) {
+                        e.preventDefault();
+                        setPlatformLanguage('es');
+                    };
+                }
+                if (btnEn) {
+                    btnEn.onclick = function (e) {
+                        e.preventDefault();
+                        setPlatformLanguage('en');
+                    };
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupButtons);
+            } else {
+                setupButtons();
+            }
+        })();
     </script>
 </body>
 
