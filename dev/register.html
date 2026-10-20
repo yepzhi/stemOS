@@ -1329,6 +1329,25 @@
                     </div>
                 </div>
 
+                <!-- Independent Student Subscription Fast-Track Banner -->
+                <div id="solo-subscription-banner" style="background:rgba(16,185,129,0.1); border:1.5px solid rgba(16,185,129,0.35); border-radius:14px; padding:16px 20px; margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                    <div>
+                        <div style="font-size:0.75rem; color:#34d399; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; display:flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-bolt"></i> Plan Individual &bull; $49 MXN / mes
+                        </div>
+                        <div style="font-size:0.86rem; color:#f1f5f9; font-weight:700; margin-top:2px;">
+                            ¿Quieres acceso ilimitado a los 34 Tracks sin esperar código escolar?
+                        </div>
+                        <div style="font-size:0.78rem; color:#94a3b8; margin-top:2px;">
+                            Paga en línea con Transferencia SPEI, Tarjeta o Beca y activa tu suscripción al instante.
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm" onclick="if(window.openStemosPaymentModal){openStemosPaymentModal(49);}" style="background:linear-gradient(135deg, #10b981, #0284c7); color:#fff; font-weight:800; font-size:0.82rem; border:none; padding:10px 18px; border-radius:10px; cursor:pointer; box-shadow:0 4px 14px rgba(16,185,129,0.3); display:inline-flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-credit-card"></i>
+                        <span>Activar por $49/mes</span>
+                    </button>
+                </div>
+
                 <div class="class-code-box" id="class-code-input-panel" style="display: none;">
                     <label class="input-label" for="inp-class-code">Enter Class Invitation Token</label>
                     <div class="text-input-wrapper">
@@ -1430,6 +1449,7 @@
     <script src="content/firebase_adapter.js?v=6.1.0"></script>
     <script src="content/gemini_service.js?v=6.2.0"></script>
     <script src="content/career_tracks.js?v=2.0.0"></script>
+    <script src="content/stemos_payments.js?v=1.0.0"></script>
     <script>
         'use strict';
 

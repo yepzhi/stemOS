@@ -453,18 +453,46 @@
       border-radius: 6px;
     }
 
-    /* 3 Pricing Cards Grid */
+    /* 4 Pricing Cards Grid (Individual Plan + 3 Institutional Plans) */
     .pricing-cards-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      max-width: 1240px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 1360px;
       margin: 0 auto 50px auto;
     }
-    @media (max-width: 980px) {
+    @media (max-width: 1200px) {
+      .pricing-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 680px) {
       .pricing-cards-grid {
         grid-template-columns: 1fr;
       }
+    }
+    .pricing-card.individual-plan {
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.14) 0%, rgba(15, 23, 42, 0.92) 100%);
+      border: 1.5px solid rgba(52, 211, 153, 0.55);
+      box-shadow: 0 16px 40px rgba(16, 185, 129, 0.22);
+    }
+    .pricing-card.individual-plan:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 50px rgba(16, 185, 129, 0.32);
+    }
+    .pricing-card-badge-individual {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      padding: 3px 10px;
+      border-radius: 9999px;
+      width: fit-content;
+      margin-bottom: 12px;
     }
     .pricing-card {
       background: rgba(15, 23, 42, 0.75);
@@ -2569,9 +2597,71 @@
         </div>
       </div>
 
-      <!-- 3 Pricing Cards Grid -->
+      <!-- 4 Pricing Cards Grid (Individual Plan + 3 Institutional Plans) -->
       <div class="pricing-cards-grid">
         
+        <!-- Individual Option: Suscripción Mensual Estudiante ($49 MXN/mes) -->
+        <div class="pricing-card individual-plan">
+          <div class="pricing-card-badge-individual">
+            <i class="fa-solid fa-bolt"></i> ACCESO INMEDIATO &bull; $49 MXN / MES
+          </div>
+          <div class="pricing-card-header">
+            <span class="pricing-plan-tag">Plan Individual &bull; Pago en Línea</span>
+            <h3 class="pricing-plan-name" data-i18n="plan_individual_name">Estudiante Individual</h3>
+            <p class="pricing-plan-summary" data-i18n="plan_individual_summary">Acceso personal en línea con activación instantánea. Regístrate gratis ahora y desbloquea todos los beneficios.</p>
+          </div>
+
+          <div class="pricing-price-box">
+            <div class="pricing-amount-row">
+              <span class="pricing-currency">$</span>
+              <span class="pricing-value">49</span>
+              <span class="pricing-term">MXN / mes</span>
+            </div>
+            <div class="pricing-period">Facturación mensual recurrente &bull; Cancela cuando quieras</div>
+            <div class="pricing-unit-metric" style="color:#34d399; background:rgba(16,185,129,0.1);">
+              <i class="fa-solid fa-circle-check"></i>
+              <span><strong>Todos los beneficios incluidos</strong> &bull; Pago SPEI / Tarjeta</span>
+            </div>
+          </div>
+
+          <ul class="pricing-features-list">
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span><strong>Acceso total e ilimitado</strong> a los 34 Tracks ESP + Nivelación MCER</span>
+            </li>
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span><strong>Tutor Socrático Feynman con IA:</strong> práctica interactiva de resolución técnica</span>
+            </li>
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span><strong>Pago en línea inmediato:</strong> Tarjetas, Transferencia SPEI, Apple Pay o Google Pay</span>
+            </li>
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span><strong>Simuladores y laboratorios de planta:</strong> LOTO, GD&T, P&ID y auditorías virtuales</span>
+            </li>
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span><strong>Emisión de Certificados Digitales y Open Badges 3.0</strong> verificables con código QR</span>
+            </li>
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span><strong>Registro gratis ahora:</strong> crea tu cuenta en 1 minuto y empieza a practicar</span>
+            </li>
+          </ul>
+
+          <div class="pricing-card-action">
+            <button type="button" class="btn-pricing-primary btn-trigger-payment" data-amount="49" onclick="if(window.openStemosPaymentModal){openStemosPaymentModal(49);}else{window.location.href='/register.html?plan=individual';}" style="width:100%; cursor:pointer; background:linear-gradient(135deg, #10b981 0%, #0284c7 100%); border:none; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+              <i class="fa-solid fa-credit-card"></i>
+              <span data-i18n="btn_pay_individual">Suscribirme por $49/mes</span>
+            </button>
+            <a href="/register.html?plan=individual" class="pricing-card-sublink" style="display:block; text-align:center; margin-top:10px; font-size:0.78rem; color:#94a3b8; text-decoration:none;">
+              <span data-i18n="sublink_register_free">¿Aún no tienes cuenta? <strong>Regístrate gratis aquí</strong></span>
+            </a>
+          </div>
+        </div>
+
         <!-- Option 1: Piloto Cuatrimestral (Recommended / Most Complete) -->
         <div class="pricing-card featured-plan">
           <div class="pricing-card-badge-glow">
@@ -2908,6 +2998,9 @@
     </div>
   </div>
 
+  <!-- ── Universal Online Payments & SPEI Checkout Modal ── -->
+  <div class="stemos-payment-modal-overlay" id="stemos-payment-modal" style="display:none;" aria-hidden="true"></div>
+
   <script src="/content/firebase_config.js?v=6.2.0"></script>
   <script src="/content/firebase_adapter.js?v=6.1.0"></script>
   <script src="/content/gemini_service.js?v=6.2.0"></script>
@@ -2917,6 +3010,7 @@
   <script src="/content/career_paths.js?v=2.0.0"></script>
   <script src="/content/mcer_tracks.js?v=1.0.0"></script>
   <script src="/content/placement_test.js?v=1.0.0"></script>
+  <script src="/content/stemos_payments.js?v=1.0.0"></script>
   <script src="/world-map.js?v=2.0.0"></script>
   <script src="/dev.js?v=5.12.0"></script>
 
@@ -3101,6 +3195,10 @@
 
         memo_quote: '&ldquo;<strong>Mario, thank you for your trust.</strong> Based on your context (<strong>≈1,500 students</strong>, unlimited student usage, and no book purchases), I propose a <strong>flat institutional license</strong>: a single invoice for the University and zero cost to the students.<br><br>All options include <strong>unlimited access for the ~1,500 students</strong> and a <strong>faculty dashboard for English teachers</strong> to monitor group practice.&rdquo;',
         memo_tag: 'Special Attention: University &bull; Cohort ≈1,500 Students',
+        plan_individual_name: 'Individual Student',
+        plan_individual_summary: 'Instant online monthly subscription. Register for free now and unlock all premium benefits.',
+        btn_pay_individual: 'Subscribe for $49 MXN/mo',
+        sublink_register_free: 'No account yet? <strong>Register free here</strong>',
         plan_1_name: 'Semester Pilot',
         plan_1_summary: 'Covers on-campus computer labs plus remote mobile and home access at no extra cost.',
         plan_2_name: 'Annual Campus License',
@@ -3172,6 +3270,10 @@
 
         memo_quote: '&ldquo;<strong>Mario, gracias por la confianza.</strong> Con lo que me cuentas (<strong>≈1,500 alumnos</strong>, sin límite de uso por estudiante y sin compra de libros), te propongo una <strong>licencia institucional plana</strong>: una sola factura para la Universidad y cero cobro a los alumnos.<br><br>Todas las opciones incluyen <strong>acceso ilimitado para los ~1,500 alumnos</strong> y un <strong>panel para que los docentes de inglés</strong> vean la práctica de cada grupo.&rdquo;',
         memo_tag: 'Atención Especial: Universidad &bull; Cohorte ≈1,500 Alumnos',
+        plan_individual_name: 'Estudiante Individual',
+        plan_individual_summary: 'Acceso personal en línea con activación instantánea. Regístrate gratis ahora y desbloquea todos los beneficios.',
+        btn_pay_individual: 'Suscribirme por $49/mes',
+        sublink_register_free: '¿Aún no tienes cuenta? <strong>Regístrate gratis aquí</strong>',
         plan_1_name: 'Piloto Cuatrimestral',
         plan_1_summary: 'Cubre los laboratorios y además el acceso desde casa o celular sin costo extra.',
         plan_2_name: 'Licencia Anual de Campus',

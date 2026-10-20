@@ -2603,6 +2603,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (xpEl) xpEl.textContent = `${currentXP.toLocaleString()} XP`;
         if (rankEl) rankEl.textContent = `L${level.level} · ${level.title}`;
 
+        const subStatusEl = document.getElementById('sp-modal-sub-status');
+        if (subStatusEl) {
+            let sub = null;
+            if (window.getStemosSubscription) sub = window.getStemosSubscription();
+            if (sub && sub.active) {
+                subStatusEl.innerHTML = `<span style="color:#34d399; font-weight:800;"><i class="fa-solid fa-circle-check"></i> Suscripción Activa</span> &bull; Plan Individual ($${sub.amount || 49} MXN/mes)`;
+            } else {
+                subStatusEl.innerHTML = `Acceso ilimitado a 34 Tracks y Tutor Socrático ($49 MXN/mes)`;
+            }
+        }
+
         if (connEl && window.STEMOS_FIREBASE) {
             const status = window.STEMOS_FIREBASE.getConnectionStatus();
             connEl.innerHTML = `<span class="badge ${status.badgeClass}"><i class="fa-solid ${status.icon}"></i> ${status.label}</span>`;

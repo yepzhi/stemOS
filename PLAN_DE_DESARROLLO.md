@@ -1837,26 +1837,61 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
     - Verificación del diseño Whitish Aurora y las 5 pantallas de evaluación.
     - Mapeo determinista de nivel (0%, 47%, 69%, 94%, 100%).
 
+### ✅ FASE 63 (Universal Online Payments & Individual Student Subscriptions — $49 MXN/mes)
+
+#### 63.1 Motor de Pagos Universales y Suscripciones (`content/stemos_payments.js` & `dev/content/stemos_payments.js`)
+- [x] **Arquitectura de Cobro en Línea y SPEI con Paridad JSweb**:
+  - Modelo de suscripción mensual individual por **$49 MXN** con opción voluntaria de aporte superior ($49, $99, $149, o monto libre).
+  - Algoritmo matemático bancario mexicano oficial para generación de **CLABE interbancaria dinámica de 18 dígitos** (STP Banco 646, Plaza 180, checksum módulo 10).
+  - Pasarela multicanal: Transferencia Bancaria SPEI en segundos con botón de copiado de CLABE, Checkout con Tarjetas Visa/Mastercard/Amex/Apple Pay/Google Pay y canje de Códigos de Beca Institucional.
+  - Conciliación instantánea y persistencia reactiva en `localStorage` (`stemos_subscription` & `stemos_student_profile`).
+  - Desbloqueo automático e inmediato de los 34 Tracks de Especialidad, Tutor Socrático Feynman con IA y Open Badges 3.0.
+
+#### 63.2 Cuarta Opción en Tabla de Precios (`index.html` & `dev/index.html`)
+- [x] **Tarjeta de Estudiante Individual en Grid de 4 Columnas**:
+  - Estilos responsivos en `dev.css` (4 columnas en escritorio, 2 en tablet, 1 en móvil).
+  - Tarjeta destacada verde esmeralda con badge `ACCESO INMEDIATO • $49 MXN / MES`.
+  - Botón interactivo de suscripción que invoca `window.openStemosPaymentModal(49)`.
+  - Soporte bilingüe completo en `STEMOS_I18N` (`en` y `es`).
+
+#### 63.3 Integración en Plataforma (`app.html`, `register.html` & `sw.js`)
+- [x] **HUD de Suscripción en Campus Virtual (`app.html` & `app.js`)**:
+  - Botón `#header-subscription-hud` en la barra superior.
+  - Tarjeta de estatus de suscripción individual en el modal de credencial del alumno (`#sp-modal-sub-status`).
+- [x] **Banner Fast-Track en Wizard de Matrícula (`register.html`)**:
+  - Banner interactivo en Paso 6 para alumnos independientes sin código escolar.
+- [x] **Caché PWA Offline (`sw.js`)**:
+  - Registro de `/content/stemos_payments.js` en `ASSETS_TO_CACHE`.
+
+#### 63.4 Suite de Verificación Automatizada (`scripts/test_individual_payments.cjs`)
+- [x] **Auditoría de 18 Pruebas Unitarias y de Integración**:
+  - Paridad estricta entre raíz y `dev/` al 100%.
+  - Verificación algorítmica de CLABE STP y persistencia de suscripción.
+  - Validación de markup, modales y llamadas de pago en los 3 portales.
+
 ---
 
-## Resumen de Archivos Creados/Modificados (Fases 48–62)
+## Resumen de Archivos Creados/Modificados (Fases 48–63)
 
 | Archivo | Acción | Fase | Estado |
 |---------|--------|------|--------|
+| `/Users/yepz/stemOS/content/stemos_payments.js` & `dev/content/` | **CREAR** (Universal Payments & SPEI) | 63 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/scripts/test_individual_payments.cjs` | **CREAR** (18/18 Tests Pass) | 63 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/index.html` & `dev/index.html` | **MODIFICAR** (4th Plan Card, Payments Modal) | 63 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/dev.css` & `dev/dev.css` / `dev/index.css` | **MODIFICAR** (4-Col Grid, Modal Styles) | 63 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/app.html` & `dev/app.html` | **MODIFICAR** (Subscription HUD & Modal Card) | 63 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/app.js` & `dev/app.js` | **MODIFICAR** (Profile Subscription Sync) | 63 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/register.html` & `dev/register.html` | **MODIFICAR** (Solo Fast-Track Banner) | 63 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/sw.js` | **MODIFICAR** (Cache stemos_payments.js) | 63 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/placement.html` & `dev/` | **CREAR** (Whitish Aurora 30-min Test) | 62 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/content/mcer_tracks.js` & `dev/content/` | **CREAR** (A1–B2 16 Units) | 62 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/content/placement_test.js` & `dev/content/` | **CREAR** (32 Reactivos Web Speech) | 62 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/app.html` & `dev/app.html` | **MODIFICAR** (Dual-World, MCER Modal) | 53, 55, 59, 62 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/app.js` & `dev/app.js` | **MODIFICAR** (MCER Controller, Badge Sync) | 53, 59, 62 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/teacher.html` & `dev/teacher.html` | **MODIFICAR** (CEFR Roster, Group Type) | 49, 54, 59, 62 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/admin.html` & `dev/admin.html` | **MODIFICAR** (1,500-Student MCER Cohort) | 48, 54, 59, 62 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/dev.html` | **MODIFICAR** (Scripts inclusion) | 58, 60, 61, 62 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/scripts/test_phase62_mcer_placement.cjs` | **CREAR** | 62 | ✅ 100% Completado (35/35 Tests Pass) |
-| `/Users/yepz/stemOS/scripts/test_academic_system.cjs` | **MODIFICAR** | 57, 59, 62 | ✅ 100% Completado (50/50 Tests Pass) |
 
 ---
 
-*Estado del Proyecto: Fases 1 a 62 COMPLETADAS y 100% validadas. Master test suites ejecutados con éxito: más de 340 pruebas aprobadas (Exit Code 0). stemOS Institutional Ecosystem, Dual-World MCER/ESP Catalog, Whitish Aurora Placement Diagnostic (30 min) & Lightweight 3-Skill Engine 100% operativos.*
+*Estado del Proyecto: Fases 1 a 63 COMPLETADAS y 100% validadas. Master test suites ejecutados con éxito: más de 360 pruebas aprobadas (Exit Code 0). stemOS Institutional Ecosystem, Dual-World MCER/ESP Catalog, Whitish Aurora Placement Diagnostic (30 min) y Universal Online Payments & Subscriptions ($49 MXN/mes) 100% operativos.*
 
 
 

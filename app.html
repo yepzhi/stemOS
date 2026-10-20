@@ -148,6 +148,12 @@
                             <span id="header-connection-text">Mini PC Edge &bull; Firestore 100%</span>
                         </div>
 
+                        <!-- Individual Subscription Status & Quick Payment Trigger -->
+                        <button type="button" class="ed-level-indicator" id="header-subscription-hud" title="Plan Individual ($49 MXN/mes): Acceso ilimitado a 34 Tracks" onclick="if(window.openStemosPaymentModal){openStemosPaymentModal(49);}" style="background:rgba(16,185,129,0.08); border-color:rgba(16,185,129,0.3); color:#10b981; font-weight:700; display:inline-flex; align-items:center; gap:6px; cursor:pointer;">
+                            <i class="fa-solid fa-credit-card" style="color:#34d399;"></i>
+                            <span id="header-subscription-text">Plan Individual &bull; $49/mes</span>
+                        </button>
+
                         <!-- Voice TTS Audio Status -->
                         <button class="ed-header-icon-btn" id="btn-header-voice"
                             title="Piper Neural TTS (es_MX / en_US Activo)">
@@ -980,6 +986,7 @@
     <script src="content/phrases_library.js" defer></script>
     <script src="content/mcer_tracks.js?v=1.0.0" defer></script>
     <script src="content/placement_test.js?v=1.0.0" defer></script>
+    <script src="content/stemos_payments.js?v=1.0.0" defer></script>
     <script src="app.js" defer></script>
     <script src="world-map.js" defer></script>
 
@@ -1118,6 +1125,21 @@
                     <div style="font-size:0.72rem; color:#64748b; text-transform:uppercase; font-weight:700;">Curricular Level & XP</div>
                     <div style="font-size:0.86rem; color:#f59e0b; font-weight:700; margin-top:2px;" id="sp-modal-rank">L5 · Senior Engineer (3,450 XP)</div>
                 </div>
+            </div>
+
+            <!-- Subscription & Online Payment Status (Individual Plan $49/mo) -->
+            <div style="background:rgba(3,7,18,0.6); padding:12px 14px; border-radius:12px; border:1px solid rgba(16,185,129,0.3); margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div style="font-size:0.72rem; color:#34d399; text-transform:uppercase; font-weight:800; display:flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-bolt"></i> Plan Individual &bull; $49 MXN / mes
+                    </div>
+                    <div style="font-size:0.82rem; color:#cbd5e1; margin-top:2px;" id="sp-modal-sub-status">
+                        Acceso ilimitado a 34 Tracks y Tutor Socrático
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm" style="background:linear-gradient(135deg, #10b981, #0284c7); color:#fff; font-weight:800; font-size:0.75rem; border:none; padding:7px 14px; border-radius:8px; cursor:pointer;" onclick="if(window.openStemosPaymentModal){openStemosPaymentModal(49);}">
+                    <i class="fa-solid fa-credit-card"></i> Pagar / Renovar
+                </button>
             </div>
 
             <!-- Sync Connection Status -->

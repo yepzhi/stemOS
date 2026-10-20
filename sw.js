@@ -24,6 +24,7 @@ const ASSETS_TO_CACHE = [
   '/content/gemini_service.js',
   '/content/mcer_tracks.js',
   '/content/placement_test.js',
+  '/content/stemos_payments.js',
   '/content/phrases_library.js',
   '/dev',
   '/dev/',

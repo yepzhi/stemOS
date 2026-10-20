@@ -62,19 +62,28 @@ assert(memoQuote.textContent.includes('cero cobro a los alumnos'), 'Guarantees z
 assert(memoQuote.textContent.includes('panel para que los docentes de inglés'), 'Includes faculty practice dashboard');
 
 // ── 3. Three Pricing Options Verification ──
-console.log('\n▶ 3. Three University Options Audit');
+console.log('\n▶ 3. Individual Plan & University Options Audit (4 Cards Total)');
 const cards = pricingSec.querySelectorAll('.pricing-card');
-assert(cards.length === 3, `Found exactly 3 pricing option cards (Found: ${cards.length})`);
+assert(cards.length === 4, `Found exactly 4 pricing option cards (Found: ${cards.length})`);
+
+// Individual Plan Card
+const indCard = pricingSec.querySelector('.pricing-card.individual-plan');
+assert(!!indCard, 'Individual Student Plan card present');
+const indText = indCard.textContent;
+assert(indText.includes('Estudiante Individual'), 'Individual Plan: Estudiante Individual title present');
+assert(indText.includes('49'), 'Individual Plan: $49 MXN price present');
+assert(indText.includes('Todos los beneficios incluidos'), 'Individual Plan: All benefits included badge present');
+assert(indText.includes('Suscribirme por $49/mes'), 'Individual Plan: Subscribe CTA button present');
 
 // Option 1
-const op1Text = cards[0].textContent;
+const op1Text = cards[1].textContent;
 assert(op1Text.includes('Piloto Cuatrimestral'), 'Option 1: Piloto Cuatrimestral title present');
 assert(op1Text.includes('95,000'), 'Option 1: $95,000 MXN price present');
 assert(op1Text.includes('63'), 'Option 1: ~$63 pesos per student metric present');
 assert(op1Text.includes('casa o celular'), 'Option 1: Mobile/remote access included');
 
 // Option 2
-const op2Text = cards[1].textContent;
+const op2Text = cards[2].textContent;
 assert(op2Text.includes('Licencia Anual de Campus'), 'Option 2: Licencia Anual title present');
 assert(op2Text.includes('240,000'), 'Option 2: $240,000 MXN price present');
 assert(op2Text.includes('80,000'), 'Option 2: ($80,000 por cuatrimestre) rate present');
@@ -82,7 +91,7 @@ assert(op2Text.includes('precio congelado') || op2Text.includes('Precio congelad
 assert(op2Text.includes('soporte técnico docente') || op2Text.includes('Soporte técnico y pedagógico'), 'Option 2: Faculty support included');
 
 // Option 3
-const op3Text = cards[2].textContent;
+const op3Text = cards[3].textContent;
 assert(op3Text.includes('Solo Laboratorio'), 'Option 3: Solo Laboratorio title present');
 assert(op3Text.includes('1,000'), 'Option 3: $1,000 MXN per computer rate present');
 assert(op3Text.includes('80 computadoras = $80,000'), 'Option 3: Example 80 computers calculation present');
