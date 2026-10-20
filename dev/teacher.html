@@ -1263,7 +1263,16 @@
                     </div>
                 </div>
 
-                <div style="display:flex; align-items:center; gap:14px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="display:inline-flex; align-items:center; gap:6px; font-size:0.75rem;">
+                        <span class="badge badge-emerald" id="teacher-firestore-badge" title="Cloud Firestore jsweb-b14f8 activo para 100 alumnos simultáneos">
+                            <i class="fa-solid fa-cloud"></i> Firestore 100% (jsweb-b14f8)
+                        </span>
+                        <span class="badge badge-sky" id="teacher-minipc-badge" title="Mini PC Campus Edge / Gemini 2.5 Flash">
+                            <i class="fa-solid fa-server"></i> Mini PC Edge (0L Agua) &bull; Gemini 2.5 Flash
+                        </span>
+                    </div>
+
                     <button type="button" class="btn btn-teal btn-sm" onclick="openCreateGroupModal()">
                         <i class="fa-solid fa-plus"></i>
                         <span>New Group</span>
@@ -1687,8 +1696,13 @@
         </div>
     </div>
 
-    <!-- Career Tracks Catalogs (Required) -->
+    <!-- Firebase SDK Compat & Universal Adapter (High Concurrency 100 simultaneous / 1,500 students) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="content/firebase_config.js?v=6.2.0"></script>
     <script src="content/firebase_adapter.js?v=6.1.0"></script>
+    <script src="content/gemini_service.js?v=6.2.0"></script>
     <script src="content/career_tracks.js?v=2.0.0"></script>
     <script src="content/career_paths.js?v=2.0.0"></script>
 

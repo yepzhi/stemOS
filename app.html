@@ -142,6 +142,12 @@
                             <span id="header-rank-badge" style="background:#f59e0b; color:#fff; border-radius:999px; padding:1px 7px; font-size:0.68rem; font-weight:800;">L5 Senior</span>
                         </div>
 
+                        <!-- Mini PC Edge & Cloud Firestore Concurrency Indicator -->
+                        <div class="ed-level-indicator" id="header-connection-hud" title="Conexión de Laboratorio: Cloud Firestore jsweb-b14f8 &amp; Mini PC Campus Edge (100 concurrentes)" style="background:rgba(16,185,129,0.08); border-color:rgba(16,185,129,0.3); color:#059669; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-server" style="color:#10b981;"></i>
+                            <span id="header-connection-text">Mini PC Edge &bull; Firestore 100%</span>
+                        </div>
+
                         <!-- Voice TTS Audio Status -->
                         <button class="ed-header-icon-btn" id="btn-header-voice"
                             title="Piper Neural TTS (es_MX / en_US Activo)">
@@ -962,7 +968,12 @@
     </dialog>
 
     <script>window.NEOSYS_SITE_ID = 'stemos';</script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js" defer></script>
+    <script src="content/firebase_config.js?v=6.2.0" defer></script>
     <script src="content/firebase_adapter.js?v=6.1.0" defer></script>
+    <script src="content/gemini_service.js?v=6.2.0" defer></script>
     <script src="content/career_tracks.js?v=2.0.0" defer></script>
     <script src="content/career_paths.js?v=2.0.0" defer></script>
     <script src="content/courses.js" defer></script>

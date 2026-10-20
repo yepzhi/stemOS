@@ -2310,6 +2310,22 @@
                 }
             }
 
+            // Sync with STEMOS_FIREBASE Multi-Tenant Adapter
+            if (typeof window.STEMOS_FIREBASE !== 'undefined') {
+                const completedCount = Object.values(prog.modules || {}).filter(m => m.status === 'completed').length;
+                const calcProgress = Math.min(100, Math.round((completedCount / 16) * 100));
+                const studentUser = window.STEMOS_FIREBASE.getAuthUser() || {};
+                window.STEMOS_FIREBASE.updateStudentProgress(
+                    studentUser.uid,
+                    {
+                        xp: isNowCompleted ? xpReward : 0,
+                        progress: calcProgress,
+                        modulesCompleted: completedCount,
+                        activityText: isNowCompleted ? `Completó estación ${moduleId} (+${xpReward} XP)` : null
+                    }
+                );
+            }
+
             // Re-render
             const careerPath = (typeof window.STEMOS_CAREER_PATHS !== 'undefined')
                 ? window.STEMOS_CAREER_PATHS.getPathForCareer(careerId)

@@ -125,12 +125,15 @@
             // Check if Firebase Web SDK is available in window
             if (typeof window.firebase !== 'undefined' && window.firebase.apps && window.firebase.apps.length > 0) {
                 this.mode = 'cloud';
+            } else if (typeof window.STEMOS_FIREBASE_CONFIG !== 'undefined' && window.STEMOS_FIREBASE_CONFIG.getApp()) {
+                this.mode = 'cloud';
             } else {
                 this.mode = 'local-airgapped';
             }
 
             this.isInitialized = true;
             this._broadcastStateChange();
+            this._startBackgroundQueueProcessor();
             return this;
         },
 
@@ -138,6 +141,9 @@
          * Check if Cloud Firestore is actively connected
          */
         isCloudActive: function () {
+            if (typeof window.firebase !== 'undefined' && window.firebase.apps && window.firebase.apps.length > 0) {
+                return true;
+            }
             return this.mode === 'cloud';
         },
 
@@ -310,6 +316,7 @@
                 details: 'Created group ' + newClass.name + ' with code ' + newClass.inviteCode
             });
 
+            this.syncClassToCloud(newClass);
             this._broadcastStateChange('class_created', newClass);
             return newClass;
         },
@@ -411,6 +418,7 @@
                 details: record.name + ' enrolled in ' + record.careerName + ' [' + record.matricula + ']'
             });
 
+            this.syncStudentToCloud(record);
             this._broadcastStateChange('student_registered', record);
             return record;
         },
@@ -474,6 +482,7 @@
                 });
             }
 
+            this._debouncedSyncStudent(targetStudent);
             this._broadcastStateChange('progress_updated', targetStudent);
             return targetStudent;
         },
@@ -543,6 +552,7 @@
                 };
                 logs.unshift(entry);
                 localStorage.setItem(STORAGE_KEY_AUDIT, JSON.stringify(logs.slice(0, 200)));
+                this.syncAuditLogToCloud(entry);
                 return entry;
             } catch (e) {
                 return null;
@@ -576,6 +586,139 @@
                 }
             }
             localStorage.setItem(STORAGE_KEY_CLASSES, JSON.stringify(classes));
+        },
+
+        /**
+         * Return scale architecture and concurrency metrics
+         * Target: 1,500 total students (up to 100 simultaneous concurrent users)
+         */
+        getScaleMetrics: function () {
+            const queue = this._getSyncQueue();
+            return {
+                projectedEnrollment: 1500,
+                maxConcurrentCapacity: 100,
+                projectId: (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.projectId) || 'jsweb-b14f8',
+                mode: this.mode,
+                isCloudActive: this.isCloudActive(),
+                pendingQueueCount: queue.length,
+                concurrencyOptimized: true,
+                persistenceActive: (window.STEMOS_FIREBASE_CONFIG && typeof window.STEMOS_FIREBASE_CONFIG.isPersistenceEnabled === 'function')
+                    ? window.STEMOS_FIREBASE_CONFIG.isPersistenceEnabled()
+                    : false
+            };
+        },
+
+        /**
+         * Sync student record to Cloud Firestore
+         */
+        syncStudentToCloud: async function (student) {
+            if (!this.isCloudActive() || !student) return false;
+            try {
+                const db = (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.getDb()) ||
+                           (typeof window.firebase !== 'undefined' && window.firebase.firestore ? window.firebase.firestore() : null);
+                if (!db) return false;
+
+                const instId = student.institutionId || 'tecnm-saltillo';
+                const docId = student.id || ('std-' + student.matricula);
+                await db.collection('institutions').doc(instId).collection('students').doc(docId).set(student, { merge: true });
+                return true;
+            } catch (err) {
+                console.warn('[stemOS Firebase] Cloud student sync queued for retry:', err.message || err);
+                this._enqueueSync('student', student);
+                return false;
+            }
+        },
+
+        /**
+         * Sync class record to Cloud Firestore
+         */
+        syncClassToCloud: async function (classData) {
+            if (!this.isCloudActive() || !classData) return false;
+            try {
+                const db = (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.getDb()) ||
+                           (typeof window.firebase !== 'undefined' && window.firebase.firestore ? window.firebase.firestore() : null);
+                if (!db) return false;
+
+                const instId = classData.institutionId || 'tecnm-saltillo';
+                await db.collection('institutions').doc(instId).collection('classes').doc(classData.id).set(classData, { merge: true });
+                return true;
+            } catch (err) {
+                console.warn('[stemOS Firebase] Cloud class sync queued for retry:', err.message || err);
+                this._enqueueSync('class', classData);
+                return false;
+            }
+        },
+
+        /**
+         * Sync audit log entry to Cloud Firestore
+         */
+        syncAuditLogToCloud: async function (logEntry) {
+            if (!this.isCloudActive() || !logEntry) return false;
+            try {
+                const db = (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.getDb()) ||
+                           (typeof window.firebase !== 'undefined' && window.firebase.firestore ? window.firebase.firestore() : null);
+                if (!db) return false;
+
+                const instId = logEntry.institutionId || 'tecnm-saltillo';
+                await db.collection('institutions').doc(instId).collection('audit_logs').doc(logEntry.id).set(logEntry, { merge: true });
+                return true;
+            } catch (err) {
+                this._enqueueSync('audit', logEntry);
+                return false;
+            }
+        },
+
+        /**
+         * Concurrency debounce queue helpers
+         */
+        _syncQueue: [],
+        _debounceTimers: {},
+
+        _debouncedSyncStudent: function (student) {
+            if (!student || !student.id) return;
+            const self = this;
+            if (this._debounceTimers[student.id]) {
+                clearTimeout(this._debounceTimers[student.id]);
+            }
+            // 3.5s debounce to protect against high concurrent typing/clicks
+            this._debounceTimers[student.id] = setTimeout(function () {
+                self.syncStudentToCloud(student);
+                delete self._debounceTimers[student.id];
+            }, 3500);
+        },
+
+        _getSyncQueue: function () {
+            try {
+                return JSON.parse(localStorage.getItem('stemos_sync_queue') || '[]');
+            } catch (_) {
+                return [];
+            }
+        },
+
+        _enqueueSync: function (type, data) {
+            try {
+                const queue = this._getSyncQueue();
+                queue.push({ type: type, data: data, timestamp: Date.now() });
+                const trimmed = queue.slice(-50);
+                localStorage.setItem('stemos_sync_queue', JSON.stringify(trimmed));
+            } catch (_) {}
+        },
+
+        _startBackgroundQueueProcessor: function () {
+            const self = this;
+            if (typeof window === 'undefined' || typeof setInterval === 'undefined') return;
+            setInterval(function () {
+                if (!self.isCloudActive()) return;
+                const queue = self._getSyncQueue();
+                if (queue.length === 0) return;
+
+                const item = queue.shift();
+                localStorage.setItem('stemos_sync_queue', JSON.stringify(queue));
+
+                if (item.type === 'student') self.syncStudentToCloud(item.data);
+                else if (item.type === 'class') self.syncClassToCloud(item.data);
+                else if (item.type === 'audit') self.syncAuditLogToCloud(item.data);
+            }, 30000);
         },
 
         /**

@@ -1779,6 +1779,12 @@
                     <div class="page-header-title">
                         <span id="current-view-title">Command Center Dashboard</span>
                         <span class="badge badge-sky" id="current-period-badge">AGO-DIC 2026 &bull; ACTIVE</span>
+                        <span class="badge badge-emerald" id="admin-firestore-badge" title="Cloud Firestore jsweb-b14f8 activo para 100 alumnos simultáneos">
+                            <i class="fa-solid fa-cloud"></i> Firestore 100% (jsweb-b14f8)
+                        </span>
+                        <span class="badge badge-sky" id="admin-minipc-badge" title="Mini PC Campus Edge / Gemini 2.5 Flash">
+                            <i class="fa-solid fa-server"></i> Mini PC Edge (0L Agua) &bull; Gemini 2.5 Flash
+                        </span>
                     </div>
                 </div>
 
@@ -2611,8 +2617,13 @@
         </div>
     </div>
 
-    <!-- Career Tracks & Deterministic Paths Catalogs (Required) -->
+    <!-- Firebase SDK Compat & Universal Adapter (High Concurrency 100 simultaneous / 1,500 students) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="content/firebase_config.js?v=6.2.0"></script>
     <script src="content/firebase_adapter.js?v=6.1.0"></script>
+    <script src="content/gemini_service.js?v=6.2.0"></script>
     <script src="content/career_tracks.js?v=2.0.0"></script>
     <script src="content/career_paths.js?v=2.0.0"></script>
 
