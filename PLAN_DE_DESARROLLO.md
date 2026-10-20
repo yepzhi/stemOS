@@ -1782,13 +1782,72 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 | `/Users/yepz/stemOS/scripts/test_phase59_firebase_sync.cjs` | **CREAR** | 59 | ✅ 100% Completado (42/42 Tests Pass) |
 | `/Users/yepz/stemOS/scripts/test_phase60_embedded_dev.cjs` | **CREAR** | 60 | ✅ 100% Completado (112/112 Tests Pass) |
 | `/Users/yepz/stemOS/scripts/test_phase61_telemetry_personas.cjs` | **CREAR** | 61 | ✅ 100% Completado (89/89 Tests Pass) |
+### ✅ FASE 62 (Ecosistema Curricular MCER Core & Placement Test Engine)
+
+#### 62.1 División Curricular MCER Core (Standard American English A1–B2)
+- [x] **Arquitectura Curricular Separada (`content/mcer_tracks.js` & `dev/content/mcer_tracks.js`)**:
+  - Estructuración en 4 niveles canónicos del Marco Común Europeo de Referencia (A1 Breakthrough, A2 Waystage, B1 Threshold, B2 Vantage) con 15.0 horas curriculares y 1,400 XP por nivel (60 horas totales).
+  - 16 unidades de aprendizaje completamente pobladas con Standard American English:
+    - Descriptores canónicos oficiales del MCER (*Can-Do Statements*).
+    - Metas comunicativas funcionales sin gramática abstracta de pizarrón.
+    - Banco de vocabulario con pronunciación fonética IPA, traducción al español y ejemplos contextuales.
+    - Guiones de diálogo para audio nativo y lecturas laborales funcionales con preguntas de comprensión.
+    - Quizes de unidad con retroalimentación inmediata y hitos evaluativos con Insignias W3C Open Badges 3.0.
+
+#### 62.2 Motor de Examen Diagnóstico Ligero (Placement Test Engine)
+- [x] **Motor Determinista de Bajo Costo Computacional (`content/placement_test.js` & `dev/content/placement_test.js`)**:
+  - Evaluación integral de 32 reactivos calibrados divididos en 3 competencias clave (sin costos de inferencia ni dependencias de APIs pesadas):
+    - **Grammar & Structure (12 reactivos / 35%)**: Tiempos verbales, voz pasiva, comparativos, condicionales e inversión sintáctica.
+    - **Listening Comprehension (10 reactivos / 35%)**: Diálogos y anuncios laborales con reproductor Web Speech API nativo (`en-US`).
+    - **Reading Comprehension (10 reactivos / 30%)**: Comprensión de avisos de planta, bitácoras de mantenimiento, especificaciones y memorándums ejecutivos.
+  - **Algoritmo de Ubicación Diagnóstica Automatizada**:
+    - < 40% (0–12 pts): Nivel **A1 Breakthrough** (`mcer-a1-foundations`).
+    - 40% – 59% (13–19 pts): Nivel **A2 Waystage** (`mcer-a2-workplace`).
+    - 60% – 79% (20–25 pts): Nivel **B1 Threshold** (`mcer-b1-professional`).
+    - >= 80% (26–32 pts): Nivel **B2 Vantage** (`mcer-b2-fluency`) con recomendación de salto a Tracks de Especialidad ESP.
+
+#### 62.3 Suite de Verificación Automatizada & Paridad en `dev/`
+- [x] **Suite de Auditoría (`scripts/test_phase62_mcer_placement.cjs`)**:
+  - 19/19 pruebas unitarias y de simulación diagnóstica aprobadas al 100%:
+    - Paridad estricta entre `content/` y `dev/content/`.
+    - Integridad de 16 unidades curriculares y 4 niveles MCER.
+    - Validación de los 32 reactivos (12 Grammar, 10 Listening, 10 Reading).
+    - Simulación de rangos de puntaje y mapeo determinista de nivel (0%, 47%, 69%, 94%, 100%).
+
+---
+
+## Resumen de Archivos Creados/Modificados (Fases 48–62)
+
+| Archivo | Acción | Fase | Estado |
+|---------|--------|------|--------|
+| `/Users/yepz/stemOS/admin.html` | **CREAR / MODIFICAR** | 48, 54, 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/teacher.html` | **CREAR / MODIFICAR** | 49, 54, 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/register.html` | **REFACTOR / MODIFICAR** | 50, 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/content/career_paths.js` | **CREAR** | 51, 52 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/content/firebase_adapter.js` | **CREAR** | 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/content/mcer_tracks.js` & `dev/content/` | **CREAR** | 62 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/content/placement_test.js` & `dev/content/` | **CREAR** | 62 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/app.html` | **MODIFICAR** (XP HUD & Pass Modal) | 53, 55, 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/app.js` | **MODIFICAR** (XP engine, Profile Bridge) | 53, 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/world-map.js` | **MODIFICAR** (interleaving, gating) | 52 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/styles.css` | **MODIFICAR** (4-col KPI grid) | 53 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/sw.js` | **MODIFICAR** (cache v6.1.0) | 57, 59 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/firebase.json` | **CREAR** | 56 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/firestore.rules` | **CREAR** | 56 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/scripts/test_academic_system.cjs` | **CREAR / MODIFICAR** | 57, 59 | ✅ 100% Completado (50/50 Tests Pass) |
+| `/Users/yepz/stemOS/scripts/test_dev_institutional_section.cjs` | **CREAR** | 58 | ✅ 100% Completado (14/14 Tests Pass) |
+| `/Users/yepz/stemOS/scripts/test_phase59_firebase_sync.cjs` | **CREAR** | 59 | ✅ 100% Completado (42/42 Tests Pass) |
+| `/Users/yepz/stemOS/scripts/test_phase60_embedded_dev.cjs` | **CREAR** | 60 | ✅ 100% Completado (112/112 Tests Pass) |
+| `/Users/yepz/stemOS/scripts/test_phase61_telemetry_personas.cjs` | **CREAR** | 61 | ✅ 100% Completado (89/89 Tests Pass) |
+| `/Users/yepz/stemOS/scripts/test_phase62_mcer_placement.cjs` | **CREAR** | 62 | ✅ 100% Completado (19/19 Tests Pass) |
 | `/Users/yepz/stemOS/dev.html` & `dev/index.html` | **MODIFICAR** | 58, 59, 60, 61 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/dev.js` & `dev/index.js` & `dev/dev.js` | **MODIFICAR** | 58, 60, 61 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/dev.css` & `dev/index.css` & `dev/dev.css` | **MODIFICAR** | 58, 60, 61 | ✅ 100% Completado |
 
 ---
 
-*Estado del Proyecto: Fases 1 a 61 COMPLETADAS y 100% validadas. Master test suites `scripts/test_academic_system.cjs`, `scripts/test_dev_institutional_section.cjs`, `scripts/test_phase59_firebase_sync.cjs`, `scripts/test_phase60_embedded_dev.cjs` y `scripts/test_phase61_telemetry_personas.cjs` ejecutados con éxito (Exit Code 0). stemOS Institutional Ecosystem & Dev Workbench Zero-Navigation 100% operativos.*
+*Estado del Proyecto: Fases 1 a 62 COMPLETADAS y 100% validadas. Master test suites ejecutados con éxito: 326/326 pruebas aprobadas (Exit Code 0). stemOS Institutional Ecosystem, Dual-World MCER/ESP Catalog & Lightweight Placement Test Engine 100% operativos.*
+
 
 
 
