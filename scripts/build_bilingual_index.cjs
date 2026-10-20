@@ -152,7 +152,7 @@ const STEMOS_I18N = {
     std_stat4_lbl: 'Operational Plant Integration Time',
 
     inst_badge: '<i class="fa-solid fa-graduation-cap"></i> INSTITUTIONAL ACADEMIC SYSTEM &bull; 60 AUDITABLE HOURS',
-    inst_title: 'Curricular Ecosystem for Technological Universities, <br><span style="background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 50%, #2dd4bf 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TecNM, State Universities, and Latin American Institutions</span>',
+    inst_title: '<span style="color:#ffffff; text-shadow:0 2px 16px rgba(0,0,0,0.7);">Curricular Ecosystem for Technological Universities,</span> <br><span style="background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 50%, #2dd4bf 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TecNM, State Universities, and Latin American Institutions</span>',
     inst_subtitle: 'Curricular structure of <strong>60.0 auditable chronological hours</strong> (4 milestones of 15h = 5,600 XP) distributed across 25 master career tracks. Each track implements a <strong>unified deterministic path</strong> with strict pedagogical interleaving (<em>Theory &rarr; English B1 &rarr; Lab &rarr; Milestone</em>) under the <strong>Zero A2</strong> directive (100% Industrial B1 Technical English).',
 
     inst_portal_admin_title: 'School Manager &amp; Admin',
@@ -425,7 +425,7 @@ const STEMOS_I18N = {
     std_stat4_lbl: 'Tiempo de Integración Operativa en Planta',
 
     inst_badge: '<i class="fa-solid fa-graduation-cap"></i> SISTEMA ACADÉMICO INSTITUCIONAL &bull; 60 HORAS AUDITABLES',
-    inst_title: 'Ecosistema Curricular para Universidades Tecnológicas, <br><span style="background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 50%, #2dd4bf 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TecNM, Estatales de México y Universidades LATAM</span>',
+    inst_title: '<span style="color:#ffffff; text-shadow:0 2px 16px rgba(0,0,0,0.7);">Ecosistema Curricular para Universidades Tecnológicas,</span> <br><span style="background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 50%, #2dd4bf 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TecNM, Estatales de México y Universidades LATAM</span>',
     inst_subtitle: 'Estructura curricular de <strong>60.0 horas cronológicas auditables</strong> (4 hitos de 15h = 5,600 XP) distribuida en 25 carreras maestras. Cada carrera implementa un <strong>camino determinista unificado</strong> con entreverado pedagógico estricto (<em>Theory &rarr; English B1 &rarr; Lab &rarr; Milestone</em>) bajo la directriz de <strong>Zero A2</strong> (100% Inglés B1 Técnico Industrial).',
 
     inst_portal_admin_title: 'School Manager &amp; Admin',

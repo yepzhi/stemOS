@@ -2807,10 +2807,11 @@ body.supaste-theme {
   font-family: var(--font-head);
   font-size: 2.3rem;
   font-weight: 800;
-  color: var(--text-main);
+  color: #ffffff;
   letter-spacing: -0.03em;
   line-height: 1.2;
   margin-bottom: 16px;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
 }
 
 .section-subtitle {
@@ -20580,6 +20581,19 @@ body.supaste-theme {
   color: #38bdf8 !important;
   border: 1px solid rgba(14, 165, 233, 0.35) !important;
   box-shadow: 0 0 15px rgba(14, 165, 233, 0.2);
+}
+
+.institutional-academic-section .section-title {
+  color: #ffffff !important;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7);
+}
+
+.institutional-academic-section .section-subtitle {
+  color: #cbd5e1 !important;
+}
+
+.institutional-academic-section .section-subtitle strong {
+  color: #38bdf8 !important;
 }
 
 /* 4 Institutional Portals Command Grid */
