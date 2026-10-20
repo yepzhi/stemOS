@@ -3522,10 +3522,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('mcer-reading-passage-title').textContent = rTitle;
             document.getElementById('mcer-reading-passage-text').textContent = rPassage;
 
+            // Tab 3: Reading Comprehension
             const rQuestions = unit.reading.questions || (unit.reading.question ? [{
                 q: unit.reading.question,
                 options: unit.reading.options || [],
-                answer: unit.reading.correct !== undefined ? unit.reading.correct : (unit.reading.answer || 0)
+                answer: unit.reading.correct !== undefined ? unit.reading.correct : (unit.reading.answer || 0),
+                exp: unit.reading.exp || 'Verifica el texto para confirmar los parámetros normativos.'
             }] : []);
 
             const rQContainer = document.getElementById('mcer-reading-questions-container');
@@ -3537,18 +3539,57 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div style="font-weight:700; font-size:0.88rem; color:#0f172a; margin-bottom:8px;">${rqIdx + 1}. ${rq.q}</div>
                     <div style="display:flex; flex-direction:column; gap:6px;">
                         ${(rq.options || []).map((opt, optIdx) => `
-                            <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; padding:8px 10px; background:#fff; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
+                            <label class="mcer-rq-label-${rqIdx}" style="display:flex; align-items:center; gap:8px; font-size:0.85rem; padding:8px 10px; background:#fff; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
                                 <input type="radio" name="mcer-rq-${rqIdx}" value="${optIdx}">
                                 <span>${opt}</span>
                             </label>
                         `).join('')}
                     </div>
+                    <div class="mcer-rq-exp-${rqIdx}" style="display:none; margin-top:8px; font-size:0.8rem; background:#eff6ff; border-left:3px solid #0284c7; padding:6px 10px; border-radius:4px; color:#1e40af;">
+                        <strong>Fundamento Técnico:</strong> ${rq.exp || ''}
+                    </div>
                 `;
                 rQContainer.appendChild(block);
             });
+
+            // Reading Check Listener
+            const btnSubmitReading = document.getElementById('btn-submit-mcer-reading');
+            const rResultsBox = document.getElementById('mcer-reading-results-box');
+            if (rResultsBox) rResultsBox.style.display = 'none';
+            if (btnSubmitReading) {
+                btnSubmitReading.onclick = () => {
+                    if (rQuestions.length === 0) return;
+                    let rCorrect = 0;
+                    rQuestions.forEach((rq, rqIdx) => {
+                        const selected = document.querySelector(`input[name="mcer-rq-${rqIdx}"]:checked`);
+                        const labels = document.querySelectorAll(`.mcer-rq-label-${rqIdx}`);
+                        const expBox = document.querySelector(`.mcer-rq-exp-${rqIdx}`);
+                        if (expBox) expBox.style.display = 'block';
+
+                        labels.forEach(lbl => {
+                            const input = lbl.querySelector('input');
+                            if (parseInt(input.value) === rq.answer) {
+                                lbl.style.background = '#dcfce7';
+                                lbl.style.borderColor = '#86efac';
+                            } else if (input.checked && parseInt(input.value) !== rq.answer) {
+                                lbl.style.background = '#fee2e2';
+                                lbl.style.borderColor = '#fca5a5';
+                            }
+                        });
+                        if (selected && parseInt(selected.value) === rq.answer) {
+                            rCorrect++;
+                        }
+                    });
+                    if (rResultsBox) {
+                        rResultsBox.style.display = 'block';
+                        const rPct = Math.round((rCorrect / rQuestions.length) * 100);
+                        document.getElementById('mcer-reading-score-val').textContent = `${rCorrect}/${rQuestions.length} (${rPct}%)`;
+                    }
+                };
+            }
         }
 
-        // Tab 4: Unit Quiz
+        // Tab 4: Unit Quiz (8 Standardized MCQs + Socratic AI Hints)
         const quizContainer = document.getElementById('mcer-quiz-questions-container');
         quizContainer.innerHTML = '';
         const quizResultsBox = document.getElementById('mcer-quiz-results-box');
@@ -3558,24 +3599,64 @@ document.addEventListener('DOMContentLoaded', () => {
             question: q.q || q.question,
             options: q.opts || q.options || [],
             answer: q.ans !== undefined ? q.ans : (q.answer !== undefined ? q.answer : 0),
-            explanation: q.exp || q.explanation || ''
+            explanation: q.exp || q.explanation || '',
+            socraticHint: q.socraticHint || '',
+            category: q.category || 'General'
         })) : []);
 
         if (quizList.length > 0) {
             quizList.forEach((uq, uqIdx) => {
                 const qBlock = document.createElement('div');
-                qBlock.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px;';
+                qBlock.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px; position:relative;';
                 qBlock.innerHTML = `
-                    <div style="font-weight:700; font-size:0.9rem; color:#0f172a; margin-bottom:8px;">${uqIdx + 1}. ${uq.question}</div>
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px;">
+                        <div style="font-weight:700; font-size:0.92rem; color:#0f172a; flex:1;">
+                            ${uqIdx + 1}. ${uq.question}
+                        </div>
+                        <span style="font-size:0.68rem; font-weight:800; color:#0284c7; background:#e0f2fe; padding:2px 8px; border-radius:6px; text-transform:uppercase; letter-spacing:0.03em; flex-shrink:0;">
+                            ${uq.category}
+                        </span>
+                    </div>
+
+                    ${uq.socraticHint ? `
+                        <div style="margin-bottom:10px;">
+                            <button type="button" class="btn-toggle-socratic-hint" style="background:none; border:none; color:#d97706; font-size:0.78rem; font-weight:700; cursor:pointer; padding:0; display:inline-flex; align-items:center; gap:5px;">
+                                <i class="fa-solid fa-lightbulb"></i> ¿Dudas? Ver Pista Socrática (AI Mentor)
+                            </button>
+                            <div class="socratic-hint-box" style="display:none; margin-top:6px; background:#fffbeb; border:1px solid #fde68a; border-left:3px solid #f59e0b; padding:8px 12px; border-radius:6px; font-size:0.8rem; color:#92400e; line-height:1.45;">
+                                <strong style="display:flex; align-items:center; gap:4px; margin-bottom:2px;"><i class="fa-solid fa-brain"></i> Guía Mayéutica:</strong>
+                                ${uq.socraticHint}
+                            </div>
+                        </div>
+                    ` : ''}
+
                     <div style="display:flex; flex-direction:column; gap:6px;">
                         ${uq.options.map((opt, optIdx) => `
-                            <label class="mcer-quiz-opt-label" style="display:flex; align-items:center; gap:8px; font-size:0.85rem; padding:8px 12px; background:#fff; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
+                            <label class="mcer-quiz-opt-label-${uqIdx}" style="display:flex; align-items:center; gap:8px; font-size:0.85rem; padding:8px 12px; background:#fff; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; transition:background 0.2s ease;">
                                 <input type="radio" name="mcer-quiz-q-${uqIdx}" value="${optIdx}">
                                 <span>${opt}</span>
                             </label>
                         `).join('')}
                     </div>
+
+                    <div class="mcer-quiz-exp-box-${uqIdx}" style="display:none; margin-top:10px; background:#f1f5f9; border-left:3px solid #3b82f6; padding:8px 12px; border-radius:6px; font-size:0.8rem; color:#1e293b; line-height:1.4;">
+                        <strong>Fundamento:</strong> ${uq.explanation}
+                    </div>
                 `;
+
+                // Bind Socratic hint toggle
+                const btnHint = qBlock.querySelector('.btn-toggle-socratic-hint');
+                const hintBox = qBlock.querySelector('.socratic-hint-box');
+                if (btnHint && hintBox) {
+                    btnHint.onclick = () => {
+                        const isHidden = hintBox.style.display === 'none';
+                        hintBox.style.display = isHidden ? 'block' : 'none';
+                        btnHint.innerHTML = isHidden
+                            ? '<i class="fa-solid fa-lightbulb"></i> Ocultar Pista Socrática'
+                            : '<i class="fa-solid fa-lightbulb"></i> ¿Dudas? Ver Pista Socrática (AI Mentor)';
+                    };
+                }
+
                 quizContainer.appendChild(qBlock);
             });
         }
@@ -3588,12 +3669,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 let correctCount = 0;
                 quizList.forEach((uq, uqIdx) => {
                     const selected = document.querySelector(`input[name="mcer-quiz-q-${uqIdx}"]:checked`);
-                    const labels = document.querySelectorAll(`input[name="mcer-quiz-q-${uqIdx}"]`);
-                    labels.forEach(input => {
-                        const lbl = input.closest('label');
+                    const labels = document.querySelectorAll(`.mcer-quiz-opt-label-${uqIdx}`);
+                    const expBox = document.querySelector(`.mcer-quiz-exp-box-${uqIdx}`);
+                    if (expBox) expBox.style.display = 'block';
+
+                    labels.forEach(lbl => {
+                        const input = lbl.querySelector('input');
                         if (parseInt(input.value) === uq.answer) {
                             lbl.style.background = '#dcfce7';
                             lbl.style.borderColor = '#86efac';
+                            lbl.style.fontWeight = '700';
                         } else if (input.checked && parseInt(input.value) !== uq.answer) {
                             lbl.style.background = '#fee2e2';
                             lbl.style.borderColor = '#fca5a5';
@@ -3608,6 +3693,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (quizResultsBox) {
                     quizResultsBox.style.display = 'block';
                     document.getElementById('mcer-quiz-score-val').textContent = `${pct}% (${correctCount}/${quizList.length})`;
+                    const msgEl = quizResultsBox.querySelector('div:last-child');
+                    if (pct >= 70) {
+                        if (msgEl) msgEl.innerHTML = '🎉 ¡Unidad MCER Aprobada! +300 XP Acreditados · Micro-credencial verificada.';
+                        localStorage.setItem(`stemos_mcer_unit_${unit.id}`, 'passed');
+                        // Update banner hours and badges
+                        if (window.renderMcerUnitsGrid) window.renderMcerUnitsGrid();
+                    } else {
+                        if (msgEl) msgEl.innerHTML = '⚠️ Calificación insuficiente (mínimo 70%). Revisa las pistas socráticas y vuelve a intentarlo.';
+                    }
                 }
             };
         }

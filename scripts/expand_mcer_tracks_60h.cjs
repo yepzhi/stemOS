@@ -1052,23 +1052,43 @@ const MCER_LEVELS = [
 ];
 
 // Enrich MCER_LEVELS with Pedagogical Modules (False Cognates, Pronunciation Lab, Crucible Model Transcripts)
+// and Comprehensive Standardized Questions Bank (176 MCQs across 16 units)
 try {
   const { ENRICHMENT_MAP } = require('./enrich_mcer_pedagogical_modules.cjs');
-  if (ENRICHMENT_MAP) {
-    MCER_LEVELS.forEach(lvl => {
-      lvl.units.forEach(u => {
+  const { MCER_QUESTIONS_BANK } = require('./build_mcer_questions_bank_complete.cjs');
+
+  MCER_LEVELS.forEach(lvl => {
+    lvl.units.forEach(u => {
+      // 1. Pedagogical modules
+      if (ENRICHMENT_MAP && ENRICHMENT_MAP[u.id]) {
         const enrichment = ENRICHMENT_MAP[u.id];
-        if (enrichment) {
-          if (enrichment.falseCognates) u.falseCognates = enrichment.falseCognates;
-          if (enrichment.pronunciationLab) u.pronunciationLab = enrichment.pronunciationLab;
-          if (enrichment.crucible) {
-            u.crucible = Object.assign({}, u.crucible, enrichment.crucible);
-          }
+        if (enrichment.falseCognates) u.falseCognates = enrichment.falseCognates;
+        if (enrichment.pronunciationLab) u.pronunciationLab = enrichment.pronunciationLab;
+        if (enrichment.crucible) {
+          u.crucible = Object.assign({}, u.crucible, enrichment.crucible);
         }
-      });
+      }
+
+      // 2. Comprehensive Standardized Questions Bank
+      if (MCER_QUESTIONS_BANK && MCER_QUESTIONS_BANK[u.id]) {
+        const qBank = MCER_QUESTIONS_BANK[u.id];
+        if (qBank.readingQuestions && qBank.readingQuestions.length > 0) {
+          u.reading = Object.assign({}, u.reading, {
+            questions: qBank.readingQuestions,
+            question: qBank.readingQuestions[0].q,
+            options: qBank.readingQuestions[0].options,
+            correct: qBank.readingQuestions[0].correct,
+            answer: qBank.readingQuestions[0].answer
+          });
+        }
+        if (qBank.unitQuiz && qBank.unitQuiz.length > 0) {
+          u.quiz = qBank.unitQuiz;
+          u.unitQuiz = qBank.unitQuiz;
+        }
+      }
     });
-    console.log('✓ Injected pedagogical modules into all 16 MCER units.');
-  }
+  });
+  console.log('✓ Injected pedagogical modules and comprehensive 176-item questions bank into all 16 MCER units.');
 } catch (e) {
   console.warn('Pedagogical enrichment warning:', e.message);
 }
@@ -1138,7 +1158,9 @@ const fileContent = `/**
       ans: q.ans !== undefined ? q.ans : q.answer,
       answer: q.answer !== undefined ? q.answer : q.ans,
       exp: q.exp || q.explanation,
-      explanation: q.explanation || q.exp
+      explanation: q.explanation || q.exp,
+      socraticHint: q.socraticHint || '',
+      category: q.category || 'General'
     }));
 
     const crucibleObj = Object.assign({

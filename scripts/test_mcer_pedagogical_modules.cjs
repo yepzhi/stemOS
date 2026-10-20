@@ -94,7 +94,44 @@ allUnits.forEach((u, idx) => {
     assert(u.crucible.modelResponse && u.crucible.modelResponse.length > 30, `Crucible model response required in ${u.id}`);
     assert(Array.isArray(u.crucible.keywords) && u.crucible.keywords.length >= 3, `Crucible keywords (>=3) required in ${u.id}`);
     assert(u.crucible.rubric, `Crucible rubric criteria required in ${u.id}`);
+
+    // Standardized Reading Questions (>= 3 per unit)
+    const rQuestions = (u.reading && u.reading.questions) || [];
+    assert(rQuestions.length >= 3, `Unit ${u.id} must have >= 3 reading questions (found ${rQuestions.length})`);
+    rQuestions.forEach((rq, rqIdx) => {
+      assert(rq.q, `Reading question stem required in ${u.id} Q${rqIdx + 1}`);
+      assert(Array.isArray(rq.options) && rq.options.length === 4, `Reading Q${rqIdx + 1} in ${u.id} must have 4 options`);
+      assert(typeof rq.correct === 'number' && rq.correct >= 0 && rq.correct < 4, `Valid correct index required in ${u.id} Q${rqIdx + 1}`);
+      assert(rq.exp, `Explanation required in reading Q${rqIdx + 1} in ${u.id}`);
+    });
+
+    // Standardized Unit Mastery Quiz (>= 8 items per unit)
+    const quizItems = u.quiz || u.unitQuiz || [];
+    assert(quizItems.length >= 8, `Unit ${u.id} must have >= 8 quiz questions (found ${quizItems.length})`);
+    quizItems.forEach((qi, qIdx) => {
+      assert(qi.q || qi.question, `Quiz question stem required in ${u.id} Q${qIdx + 1}`);
+      const opts = qi.opts || qi.options;
+      assert(Array.isArray(opts) && opts.length === 4, `Quiz Q${qIdx + 1} in ${u.id} must have 4 options`);
+      const ans = qi.ans !== undefined ? qi.ans : qi.answer;
+      assert(typeof ans === 'number' && ans >= 0 && ans < 4, `Valid answer index required in ${u.id} Q${qIdx + 1}`);
+      assert(qi.exp || qi.explanation, `Explanation required in ${u.id} Q${qIdx + 1}`);
+      assert(qi.socraticHint && qi.socraticHint.length > 10, `Socratic hint required in ${u.id} Q${qIdx + 1}`);
+      assert(qi.category, `Category required in ${u.id} Q${qIdx + 1}`);
+    });
   });
+});
+
+test('Total Questions Bank across 16 units has at least 176 items (48 Reading + 128 Quiz)', () => {
+  let totalReading = 0;
+  let totalQuiz = 0;
+  allUnits.forEach(u => {
+    totalReading += (u.reading && u.reading.questions ? u.reading.questions.length : 0);
+    totalQuiz += (u.quiz ? u.quiz.length : 0);
+  });
+  console.log(`  [INFO] Total Reading MCQs: ${totalReading} | Total Unit Quiz MCQs: ${totalQuiz} (Total: ${totalReading + totalQuiz})`);
+  assert(totalReading >= 48, `Expected >= 48 reading questions, got ${totalReading}`);
+  assert(totalQuiz >= 128, `Expected >= 128 quiz questions, got ${totalQuiz}`);
+  assert(totalReading + totalQuiz >= 176, `Expected >= 176 total questions, got ${totalReading + totalQuiz}`);
 });
 
 // 3. HTML & JS Component Wiring
@@ -102,11 +139,13 @@ console.log('\n▶ 3. Interactive UI Elements in app.html & app.js');
 const appHtml = fs.readFileSync(path.join(ROOT, 'app.html'), 'utf8');
 const appJs = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8');
 
-test('app.html contains False Cognates and Pronunciation Lab containers', () => {
+test('app.html contains False Cognates, Stress, Reading verification and Quiz containers', () => {
   assert(appHtml.includes('id="mcer-false-cognates-section"'), 'mcer-false-cognates-section missing');
   assert(appHtml.includes('id="mcer-false-cognates-grid"'), 'mcer-false-cognates-grid missing');
   assert(appHtml.includes('id="mcer-pronunciation-lab-section"'), 'mcer-pronunciation-lab-section missing');
   assert(appHtml.includes('id="mcer-pronunciation-lab-grid"'), 'mcer-pronunciation-lab-grid missing');
+  assert(appHtml.includes('id="btn-submit-mcer-reading"'), 'btn-submit-mcer-reading missing');
+  assert(appHtml.includes('id="mcer-reading-results-box"'), 'mcer-reading-results-box missing');
 });
 
 test('app.html contains Interactive Crucible Input & AI Rubric Dashboard', () => {
@@ -121,9 +160,11 @@ test('app.html contains Interactive Crucible Input & AI Rubric Dashboard', () =>
   assert(appHtml.includes('id="mcer-rubric-pragmatics-score"'), 'mcer-rubric-pragmatics-score missing');
 });
 
-test('app.js implements rendering and AI grading for crucible', () => {
+test('app.js implements rendering, Socratic hints, and AI grading', () => {
   assert(appJs.includes('mcer-false-cognates-grid'), 'app.js must populate false cognates grid');
   assert(appJs.includes('mcer-pronunciation-lab-grid'), 'app.js must populate pronunciation lab grid');
+  assert(appJs.includes('btn-toggle-socratic-hint'), 'app.js must bind Socratic hint toggles');
+  assert(appJs.includes('btn-submit-mcer-reading'), 'app.js must bind reading verification');
   assert(appJs.includes('btn-mcer-crucible-play-model'), 'app.js must bind model audio player');
   assert(appJs.includes('btn-mcer-crucible-dictate'), 'app.js must bind speech dictation');
   assert(appJs.includes('btn-mcer-crucible-submit'), 'app.js must bind crucible evaluation');
