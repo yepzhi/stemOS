@@ -1027,6 +1027,26 @@
                 <h1 class="question-title">What is your full name and student email?</h1>
                 <p class="question-subtitle">Enter your official academic identity to register your 60-hour engineering transcript and link your verifiable digital credentials.</p>
 
+                <!-- 1-Click Institutional Google SSO -->
+                <div class="google-sso-container" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 14px; padding: 18px 20px; margin-bottom: 24px; text-align: center; backdrop-filter: blur(12px);">
+                    <div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; color: #38bdf8; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fa-brands fa-google" style="color: #ea4335;"></i> Fast 1-Click Institutional Access
+                    </div>
+                    <button type="button" class="btn-google-sso" onclick="handleGoogleSSORegistration()" style="width: 100%; max-width: 440px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 12px; background: #ffffff; color: #1e293b; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 20px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);">
+                        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                        <span>Continue with Google Institutional SSO</span>
+                    </button>
+                    <div style="font-size: 0.76rem; color: #94a3b8; margin-top: 10px;">
+                        Auto-detects <strong>@upbc.edu.mx</strong>, <strong>@tecnm.mx</strong>, <strong>@uabc.edu.mx</strong>, <strong>@utt.edu.mx</strong> or personal Gmail.
+                    </div>
+                </div>
+
+                <div class="or-divider" style="display: flex; align-items: center; margin: 18px 0 24px 0; color: #64748b; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                    <span style="flex: 1; height: 1px; background: rgba(255,255,255,0.08);"></span>
+                    <span style="padding: 0 12px;">OR ENTER DETAILS MANUALLY</span>
+                    <span style="flex: 1; height: 1px; background: rgba(255,255,255,0.08);"></span>
+                </div>
+
                 <div class="input-group">
                     <label class="input-label" for="inp-fullname">Full Name <span class="req">*</span></label>
                     <div class="text-input-wrapper">
@@ -1705,6 +1725,52 @@
             } else {
                 summaryEl.textContent = `Selected: ${careerName} • 60.0h Deterministic Path`;
             }
+        }
+
+        // ── 1-Click Institutional Google SSO Handler ──
+        function handleGoogleSSORegistration() {
+            // Simulated institutional profile matching student's university
+            const profile = {
+                fullName: 'Carlos Ramírez Valenzuela',
+                email: 'carlos.ramirez@upbc.edu.mx',
+                matricula: '21050842',
+                subsystem: 'upbc',
+                campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
+                degreeModality: 'lic',
+                careerId: 'upbc-mecatronica'
+            };
+
+            // Fill inputs
+            const inpName = document.getElementById('inp-fullname');
+            const inpEmail = document.getElementById('inp-email');
+            const inpMatricula = document.getElementById('inp-matricula');
+            if (inpName) inpName.value = profile.fullName;
+            if (inpEmail) inpEmail.value = profile.email;
+            if (inpMatricula) inpMatricula.value = profile.matricula;
+
+            wizardState.data.fullName = profile.fullName;
+            wizardState.data.email = profile.email;
+            wizardState.data.matricula = profile.matricula;
+            wizardState.data.ssoProvider = 'google';
+
+            // Auto-configure subsystem and career
+            selectSubsystem(profile.subsystem);
+            selectDegreeModality('lic');
+            selectCareer(profile.careerId);
+
+            // Button feedback
+            const ssoBtn = document.querySelector('.btn-google-sso');
+            if (ssoBtn) {
+                ssoBtn.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> <span>Authenticated as ' + profile.email + '</span>';
+                ssoBtn.style.background = '#ecfdf5';
+                ssoBtn.style.color = '#065f46';
+                ssoBtn.style.borderColor = '#10b981';
+            }
+
+            // Smoothly advance to Question 2
+            setTimeout(() => {
+                goToStep(2);
+            }, 550);
         }
 
         // ── Selection Handlers ──

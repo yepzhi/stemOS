@@ -119,6 +119,273 @@
       color: #ffffff;
     }
 
+    /* ─── STUDENT CX JOURNEY SECTION (4-STEP EXPERIENCE) ─── */
+    .student-cx-journey-section {
+      padding: 90px 0 80px 0;
+      position: relative;
+      background: radial-gradient(circle at 50% 20%, rgba(14, 165, 233, 0.08) 0%, transparent 60%);
+    }
+    .badge-cx-journey {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+    }
+    .cx-journey-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      margin-top: 48px;
+    }
+    @media (max-width: 900px) {
+      .cx-journey-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .cx-step-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.75) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      border-radius: 20px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 22px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(16px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .cx-step-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(56, 189, 248, 0.5);
+      box-shadow: 0 20px 48px rgba(14, 165, 233, 0.22);
+    }
+    .cx-step-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #0ea5e9, #10b981);
+      opacity: 0.8;
+    }
+    .cx-step-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .cx-step-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: rgba(14, 165, 233, 0.16);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .cx-step-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      background: rgba(14, 165, 233, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .cx-step-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.35;
+      margin: 12px 0 8px 0;
+    }
+    .cx-step-desc {
+      font-size: 0.93rem;
+      line-height: 1.6;
+      color: #94a3b8;
+      margin: 0;
+    }
+    
+    /* Interactive CX Mockups & Widgets */
+    .cx-widget-box {
+      background: rgba(3, 7, 18, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .cx-sso-preview-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    }
+    .cx-sso-chip-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #64748b;
+      padding-top: 4px;
+    }
+    
+    /* Interleaving Policy Rows */
+    .cx-interleaving-rule {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 0.84rem;
+      line-height: 1.45;
+      color: #cbd5e1;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(15, 23, 42, 0.7);
+      border-left: 3px solid #38bdf8;
+    }
+    .cx-interleaving-rule.rule-a1 {
+      border-left-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.07);
+    }
+    .cx-interleaving-rule.rule-a2 {
+      border-left-color: #0ea5e9;
+      background: rgba(14, 165, 233, 0.07);
+    }
+    .cx-interleaving-rule.rule-b1 {
+      border-left-color: #10b981;
+      background: rgba(16, 185, 129, 0.07);
+    }
+    .cx-interleaving-rule.rule-b2 {
+      border-left-color: #a855f7;
+      background: rgba(168, 85, 247, 0.07);
+    }
+    .cx-badge-level {
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .cx-badge-level.lvl-a1 { background: #f59e0b; color: #0f172a; }
+    .cx-badge-level.lvl-a2 { background: #0ea5e9; color: #ffffff; }
+    .cx-badge-level.lvl-b1 { background: #10b981; color: #0f172a; }
+    .cx-badge-level.lvl-b2 { background: #a855f7; color: #ffffff; }
+    
+    /* Cert & Career widgets */
+    .cx-cert-preview {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 12px;
+      border: 1px dashed rgba(245, 158, 11, 0.4);
+      border-radius: 10px;
+      background: rgba(245, 158, 11, 0.05);
+    }
+    .cx-cert-qr {
+      width: 44px;
+      height: 44px;
+      background: #ffffff;
+      padding: 4px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0f172a;
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+    .cx-spec-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .cx-spec-chip {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Step Action Buttons */
+    .cx-step-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+    .cx-step-btn:hover {
+      background: linear-gradient(135deg, #0ea5e9, #2563eb);
+      border-color: #0ea5e9;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
+    }
+
+    /* Summary Bar */
+    .cx-journey-summary-bar {
+      margin-top: 40px;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(16, 185, 129, 0.1) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: 16px;
+      padding: 24px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .cx-summary-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .cx-summary-icon {
+      font-size: 2rem;
+      color: #34d399;
+      flex-shrink: 0;
+    }
+    .cx-summary-title {
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0 0 4px 0;
+    }
+    .cx-summary-desc {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      margin: 0;
+      max-width: 780px;
+    }
+
     /* ─── INSTITUTIONAL PRICING SECTION ─── */
     .pricing-institutional-section {
       padding: 80px 0 100px 0;
@@ -661,6 +928,10 @@
           <i class="fa-solid fa-graduation-cap" style="color:#38bdf8;"></i>
           <span>Sistema Académico 60h</span>
         </a>
+        <a href="#student-cx-journey-section" class="nav-link" data-i18n="nav_student_journey">
+          <i class="fa-solid fa-route" style="color:#38bdf8;"></i>
+          <span>Ruta del Alumno (CX)</span>
+        </a>
         <a href="/tracks.html" class="nav-link" data-i18n="nav_catalog">
           <i class="fa-solid fa-layer-group" style="color:#10b981;"></i>
           <span>Catálogo ESP</span>
@@ -755,6 +1026,10 @@
             </span>
           </div>
           <div class="dock-pills-row">
+            <a href="#student-cx-journey-section" class="dock-pill highlight-pill" id="hero-cx-btn" title="Ruta del Alumno (CX): Registro Google SSO, Placement, Interleaving, Certificados y ESP" style="background:rgba(56,189,248,0.18); border-color:rgba(56,189,248,0.5); color:#38bdf8; font-weight:800;">
+              <i class="fa-solid fa-route" style="color:#38bdf8;"></i>
+              <span data-i18n="dock_cx">Ruta del Alumno (CX)</span>
+            </a>
             <a href="#institutional-academic-section" class="dock-pill highlight-pill" id="hero-academic-btn" title="Sistema Académico Institucional (TecNM, UT, Estatales) &amp; 25 Carreras 60h" style="background:rgba(14,165,233,0.16); border-color:rgba(56,189,248,0.45); color:#38bdf8; font-weight:800;">
               <i class="fa-solid fa-graduation-cap" style="color:#0ea5e9;"></i>
               <span data-i18n="dock_academic">Sistema Académico 60h (25)</span>
@@ -1728,6 +2003,214 @@
   </div>
 
 
+  <!-- ── 4-STEP STUDENT CUSTOMER EXPERIENCE (CX) JOURNEY SECTION ── -->
+  <section class="promo-section student-cx-journey-section" id="student-cx-journey-section">
+    <div class="promo-container">
+      
+      <!-- Section Header -->
+      <div class="section-header-center">
+        <span class="section-badge badge-cx-journey" data-i18n="badge_cx_journey">
+          <i class="fa-solid fa-route"></i> EXPERIENCIA DEL ALUMNO &bull; 4 PASOS HACIA EL EMPLEO GLOBAL
+        </span>
+        <h2 class="section-title" data-i18n="title_cx_journey">
+          De Cero a Ingeniero Bilingüe Certificado en 4 Pasos: <br>
+          <span style="background: linear-gradient(135deg, #38bdf8 0%, #10b981 50%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+            El Customer Experience (CX) de stemOS
+          </span>
+        </h2>
+        <p class="section-subtitle" data-i18n="subtitle_cx_journey">
+          Un recorrido pedagógico sin fricción que entrelaza la nivelación MCER con la especialización técnica de tu carrera, culminando en certificaciones verificables y empleabilidad directa en la industria de nearshoring.
+        </p>
+      </div>
+
+      <!-- 4-Step Cards Grid -->
+      <div class="cx-journey-grid">
+
+        <!-- STEP 1: REGISTER WITH GOOGLE SSO -->
+        <div class="cx-step-card" id="cx-card-step-1">
+          <div>
+            <div class="cx-step-header">
+              <span class="cx-step-tag" data-i18n="cx_step1_badge">PASO 01 &bull; ACCESO CERO FRICCIÓN</span>
+              <div class="cx-step-icon">
+                <i class="fa-brands fa-google" style="color:#ea4335;"></i>
+              </div>
+            </div>
+            <h3 class="cx-step-title" data-i18n="cx_step1_title">1. Registro con Google SSO Institucional en 1 Clic</h3>
+            <p class="cx-step-desc" data-i18n="cx_step1_desc">
+              Acceso instantáneo con el correo de tu universidad (@upbc.edu.mx, @tecnm.mx, @uabc.edu.mx). Sin contraseñas que olvidar ni formularios tediosos: stemOS auto-detecta tu universidad, campus, carrera y modalidad (Ingeniería / TSU).
+            </p>
+          </div>
+
+          <!-- Interactive Mockup Box -->
+          <div class="cx-widget-box">
+            <div class="cx-sso-preview-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+              <span>Continuar con Google Workspace Institucional</span>
+            </div>
+            <div class="cx-sso-chip-row">
+              <span><i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Detección: UPBC Mexicali</span>
+              <span><i class="fa-solid fa-id-badge" style="color:#38bdf8;"></i> Matrícula 21050842</span>
+            </div>
+          </div>
+
+          <a href="/register.html" class="cx-step-btn" data-i18n="cx_step1_btn">
+            <span>Registrarse con Google SSO</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- STEP 2: PLACEMENT & CURRICULAR INTERLEAVING -->
+        <div class="cx-step-card" id="cx-card-step-2">
+          <div>
+            <div class="cx-step-header">
+              <span class="cx-step-tag" data-i18n="cx_step2_badge">PASO 02 &bull; INTERLEAVING ADAPTATIVO</span>
+              <div class="cx-step-icon" style="color:#f59e0b; background:rgba(245, 158, 11, 0.15); border-color:rgba(245, 158, 11, 0.3);">
+                <i class="fa-solid fa-sliders"></i>
+              </div>
+            </div>
+            <h3 class="cx-step-title" data-i18n="cx_step2_title">2. Placement Test &amp; Entrelazado Curricular (MCER + ESP)</h3>
+            <p class="cx-step-desc" data-i18n="cx_step2_desc">
+              Diagnóstico de 30 minutos (Gramática, Escucha industrial y Lectura técnica). El algoritmo aplica la regla estricta de entrelazado cognitivo:
+            </p>
+          </div>
+
+          <!-- Dynamic Interleaving Rules Box -->
+          <div class="cx-widget-box" style="gap:8px;">
+            <div class="cx-interleaving-rule rule-a1">
+              <span class="cx-badge-level lvl-a1">&lt; A2 (A1)</span>
+              <span data-i18n="cx_step2_rule_a1">
+                <strong>Menor a A2 (Nivel A1):</strong> Cursa <em>exclusivamente</em> el Track Base MCER A1. Protege al alumno de frustración técnica temprana, consolidando gramática y pronunciación básica antes de ver terminología de ingeniería.
+              </span>
+            </div>
+            <div class="cx-interleaving-rule rule-a2">
+              <span class="cx-badge-level lvl-a2">Nivel A2</span>
+              <span data-i18n="cx_step2_rule_a2">
+                <strong>Nivel A2 alcanzado:</strong> Desbloquea MCER A2 y <em>comienza a incluir labs ESP</em> (Vocabulario de seguridad industrial, normas OSHA/EHS y herramientas de taller).
+              </span>
+            </div>
+            <div class="cx-interleaving-rule rule-b1">
+              <span class="cx-badge-level lvl-b1">Nivel B1</span>
+              <span data-i18n="cx_step2_rule_b1">
+                <strong>Nivel B1 (Umbral Técnico):</strong> Inmersión total en la <em>Ruta Determinista de 60.0h de su Carrera</em> (16 estaciones: fundamentos, simuladores, reporte 8D e hitos).
+              </span>
+            </div>
+            <div class="cx-interleaving-rule rule-b2">
+              <span class="cx-badge-level lvl-b2">B2 / C1</span>
+              <span data-i18n="cx_step2_rule_b2">
+                <strong>Nivel B2 / C1 (Senior):</strong> Negociación con clientes de EE. UU., órdenes de cambio de ingeniería (ECO), auditorías internacionales y defensa de Capstone con IA Socrática.
+              </span>
+            </div>
+          </div>
+
+          <a href="/placement.html" class="cx-step-btn" data-i18n="cx_step2_btn">
+            <span>Hacer Placement Test Diagnóstico</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- STEP 3: GET CERTIFICATES -->
+        <div class="cx-step-card" id="cx-card-step-3">
+          <div>
+            <div class="cx-step-header">
+              <span class="cx-step-tag" data-i18n="cx_step3_badge">PASO 03 &bull; CREDENCIALES W3C</span>
+              <div class="cx-step-icon" style="color:#10b981; background:rgba(16, 185, 129, 0.15); border-color:rgba(16, 185, 129, 0.3);">
+                <i class="fa-solid fa-award"></i>
+              </div>
+            </div>
+            <h3 class="cx-step-title" data-i18n="cx_step3_title">3. Obtén Certificados Oficiales &amp; Insignias Verificables</h3>
+            <p class="cx-step-desc" data-i18n="cx_step3_desc">
+              Cada hito superado (4 hitos de 15h cada uno en la ruta de 60h) otorga una insignia digital auditable bajo W3C Open Badges 3.0 e ISO 9001:2015. Al graduarse, el alumno recibe su certificado con QR criptográfico para verificación inmediata por reclutadores internacionales.
+            </p>
+          </div>
+
+          <!-- Certificate Mockup Box -->
+          <div class="cx-widget-box">
+            <div class="cx-cert-preview">
+              <div class="cx-cert-qr">
+                <i class="fa-solid fa-qrcode"></i>
+              </div>
+              <div style="flex:1;">
+                <div style="font-size:0.72rem; text-transform:uppercase; color:#f59e0b; font-weight:800; letter-spacing:0.5px;">Credencial Verificable W3C</div>
+                <div style="font-size:0.9rem; font-weight:800; color:#ffffff;">Ingeniería Mecatrónica &bull; ESP B1+</div>
+                <div style="font-size:0.75rem; color:#94a3b8; font-family:monospace;">Folio: STEMOS-UPBC-2026-MEC-A94F</div>
+              </div>
+              <span style="font-size:0.75rem; background:rgba(16,185,129,0.2); color:#10b981; padding:4px 8px; border-radius:6px; font-weight:800; border:1px solid rgba(16,185,129,0.4);">
+                <i class="fa-solid fa-shield-check"></i> Válido
+              </span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:#64748b; padding-top:4px;">
+              <span><i class="fa-brands fa-linkedin" style="color:#0a66c2;"></i> 1-Clic Add to LinkedIn Profile</span>
+              <span><i class="fa-solid fa-lock"></i> SHA-256 Verificado</span>
+            </div>
+          </div>
+
+          <a href="/app.html" class="cx-step-btn" data-i18n="cx_step3_btn">
+            <span>Ver Portal de Certificación</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- STEP 4: MASTER ESP ENGLISH FOR YOUR CAREER -->
+        <div class="cx-step-card" id="cx-card-step-4">
+          <div>
+            <div class="cx-step-header">
+              <span class="cx-step-tag" data-i18n="cx_step4_badge">PASO 04 &bull; INGENIERÍA GLOBAL</span>
+              <div class="cx-step-icon" style="color:#a855f7; background:rgba(168, 85, 247, 0.15); border-color:rgba(168, 85, 247, 0.3);">
+                <i class="fa-solid fa-user-astronaut"></i>
+              </div>
+            </div>
+            <h3 class="cx-step-title" data-i18n="cx_step4_title">4. Domina el Inglés Técnico (ESP) de tu Carrera de por Vida</h3>
+            <p class="cx-step-desc" data-i18n="cx_step4_desc">
+              No aprendes inglés general genérico; dominas la terminología exacta de tu especialidad: Mecatrónica, Semiconductores, TI, Energía Renovable o Manufactura Médica. Preparado para entrevistas de trabajo en inglés (método STAR) y equipos globales de nearshoring.
+            </p>
+          </div>
+
+          <!-- Career Specialties Showcase Box -->
+          <div class="cx-widget-box">
+            <div style="font-size:0.75rem; color:#94a3b8; font-weight:700; margin-bottom:4px;">Vocabulario Técnico Calibrado a la Industria:</div>
+            <div class="cx-spec-chips-row">
+              <span class="cx-spec-chip"><i class="fa-solid fa-robot" style="color:#0ea5e9;"></i> Mecatrónica: PLC &amp; HMI</span>
+              <span class="cx-spec-chip"><i class="fa-solid fa-microchip" style="color:#10b981;"></i> Semiconductores: Wafer Fab</span>
+              <span class="cx-spec-chip"><i class="fa-solid fa-code" style="color:#a855f7;"></i> Software TI: Cloud &amp; CI/CD</span>
+              <span class="cx-spec-chip"><i class="fa-solid fa-solar-panel" style="color:#f59e0b;"></i> Energía: Inverters &amp; Grid</span>
+              <span class="cx-spec-chip"><i class="fa-solid fa-truck-ramp-box" style="color:#ec4899;"></i> Logística: USMCA &amp; SCM</span>
+              <span class="cx-spec-chip"><i class="fa-solid fa-heart-pulse" style="color:#14b8a6;"></i> Médica: Cleanroom 21 CFR</span>
+            </div>
+          </div>
+
+          <a href="/tracks.html" class="cx-step-btn" data-i18n="cx_step4_btn">
+            <span>Explorar 34 Tracks Curriculares</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Bottom Summary Banner -->
+      <div class="cx-journey-summary-bar">
+        <div class="cx-summary-left">
+          <i class="fa-solid fa-graduation-cap cx-summary-icon"></i>
+          <div>
+            <h4 class="cx-summary-title" data-i18n="cx_banner_title">El Ciclo Completo de Formación de Talento de Alta Demanda</h4>
+            <p class="cx-summary-desc" data-i18n="cx_banner_desc">
+              Diseñado para que las universidades mexicanas cumplan con los requisitos de acreditación CACEI, ABET e ISO 9001:2015, elevando el índice de inserción laboral en empresas transnacionales.
+            </p>
+          </div>
+        </div>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <a href="/placement.html" class="btn-signup-pill" style="border-color:rgba(56,189,248,0.5); background:rgba(14,165,233,0.2); color:#38bdf8; font-weight:800; text-decoration:none; padding:10px 18px; border-radius:999px; font-size:0.86rem; display:inline-flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-vial"></i> Iniciar Placement Test
+          </a>
+          <a href="/register.html" class="btn-signup-pill" style="border-color:rgba(16,185,129,0.5); background:rgba(16,185,129,0.2); color:#34d399; font-weight:800; text-decoration:none; padding:10px 18px; border-radius:999px; font-size:0.86rem; display:inline-flex; align-items:center; gap:8px;">
+            <i class="fa-brands fa-google"></i> Probar Google SSO
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
   <!-- ── Institutional Pricing & Commercial Proposal Section ── -->
   <section class="promo-section pricing-institutional-section" id="pricing-institutional-section">
     <div class="promo-container">
@@ -2239,6 +2722,7 @@
       en: {
         nav_standards: 'Standards vs Academia',
         nav_academic: '60h Academic System',
+        nav_student_journey: 'Student Journey (CX)',
         nav_catalog: 'ESP Catalog',
         nav_placement: 'Placement Test (30m)',
         nav_pricing: 'Pricing &amp; Licenses',
@@ -2250,12 +2734,39 @@
         btn_zoom_nav: 'Schedule Zoom 15m',
 
         dock_title: 'Nearshoring Simulation &amp; Accreditation:',
+        dock_cx: 'Student Journey (CX)',
         dock_academic: '60h Academic System (25)',
         dock_standards: 'Standards vs. Academia',
         dock_pricing: 'Proposal &amp; Pricing',
         dock_catalog: '34 Tracks &amp; Labs ↗',
         dock_placement: 'Placement Test A1–C1',
         dock_lxp: 'Campus LXP 3D',
+
+        badge_cx_journey: '<i class="fa-solid fa-route"></i> STUDENT CX JOURNEY &bull; 4 STEPS TO GLOBAL CAREERS',
+        title_cx_journey: 'From Zero to Certified Bilingual Engineer in 4 Steps: <br><span style="background: linear-gradient(135deg, #38bdf8 0%, #10b981 50%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">The stemOS Student Experience (CX)</span>',
+        subtitle_cx_journey: 'A frictionless pedagogical journey interleaving CEFR leveling with career-specific technical specialization, culminating in verifiable credentials and direct nearshoring employability.',
+        cx_step1_badge: 'STEP 01 &bull; ZERO-FRICTION ACCESS',
+        cx_step1_title: '1. Instant Institutional Registration via Google SSO',
+        cx_step1_desc: 'Instant 1-click access with your university email (@upbc.edu.mx, @tecnm.mx, @uabc.edu.mx). No forgotten passwords or tedious forms: stemOS auto-detects your university, campus, career, and degree modality (Engineering / TSU).',
+        cx_step1_btn: 'Register with Google SSO',
+        cx_step2_badge: 'STEP 02 &bull; ADAPTIVE INTERLEAVING',
+        cx_step2_title: '2. Placement Test &amp; Dynamic Interleaving (CEFR + ESP)',
+        cx_step2_desc: '30-minute diagnostic test (Grammar, Industrial Listening, Technical Reading). The algorithm enforces the strict cognitive interleaving rule:',
+        cx_step2_rule_a1: '<strong>Below A2 (Level A1):</strong> Only takes the foundational CEFR A1 Track. Protects students from cognitive overload, consolidating grammar and pronunciation before technical terms.',
+        cx_step2_rule_a2: '<strong>At Level A2:</strong> Unlocks CEFR A2 and <em>begins introducing ESP labs</em> (Safety vocabulary, OSHA/EHS standards, and basic shopfloor tools).',
+        cx_step2_rule_b1: '<strong>At Level B1 (Technical Threshold):</strong> Full immersion into the <em>60.0h Career Deterministic Path</em> (16 stations: theory, technical labs, 8D incident reports, milestones).',
+        cx_step2_rule_b2: '<strong>At Level B2 / C1 (Senior):</strong> Nearshore negotiations with US engineering clients, ECO changes, international audits, and Socratic AI Capstone defense.',
+        cx_step2_btn: 'Take Placement Diagnostic Test',
+        cx_step3_badge: 'STEP 03 &bull; W3C CREDENTIALS',
+        cx_step3_title: '3. Earn Official Verifiable Certificates &amp; Badges',
+        cx_step3_desc: 'Every milestone completed (4 milestones of 15h each in the 60h path) grants an auditable digital badge under W3C Open Badges 3.0 and ISO 9001:2015. Upon completion, students receive an institutional certificate with cryptographic QR for instant verification by international recruiters.',
+        cx_step3_btn: 'View Certification Portal',
+        cx_step4_badge: 'STEP 04 &bull; GLOBAL ENGINEERING',
+        cx_step4_title: '4. Master Career-Specific ESP English for Life',
+        cx_step4_desc: 'No generic tourist English; you master the exact technical terminology of your engineering field: Mechatronics, Semiconductors, IT, Clean Energy, or Medical Devices. Ready for STAR technical interviews and global nearshoring teams.',
+        cx_step4_btn: 'Explore 34 Career Tracks',
+        cx_banner_title: 'The Complete High-Demand Engineering Talent Pipeline',
+        cx_banner_desc: 'Engineered so Mexican and Latin American universities meet CACEI, ABET, and ISO 9001:2015 bilingual accreditation goals, maximizing student placement in global high-tech companies.',
 
         memo_quote: '&ldquo;<strong>Mario, thank you for your trust.</strong> Based on your context (<strong>≈1,500 students</strong>, unlimited student usage, and no book purchases), I propose a <strong>flat institutional license</strong>: a single invoice for the University and zero cost to the students.<br><br>All options include <strong>unlimited access for the ~1,500 students</strong> and a <strong>faculty dashboard for English teachers</strong> to monitor group practice.&rdquo;',
         memo_tag: 'Special Attention: University &bull; Cohort ≈1,500 Students',
@@ -2282,6 +2793,7 @@
       es: {
         nav_standards: 'Estándares vs Academia',
         nav_academic: 'Sistema Académico 60h',
+        nav_student_journey: 'Ruta del Alumno (CX)',
         nav_catalog: 'Catálogo ESP',
         nav_placement: 'Test de Ubicación (30m)',
         nav_pricing: 'Precios &amp; Licencias',
@@ -2293,12 +2805,39 @@
         btn_zoom_nav: 'Agendar Zoom 15m',
 
         dock_title: 'Simuladores &amp; Labs de Nearshoring:',
+        dock_cx: 'Ruta del Alumno (CX)',
         dock_academic: 'Sistema Académico 60h (25)',
         dock_standards: 'Estándares vs. Academia',
         dock_pricing: 'Propuesta &amp; Precios',
         dock_catalog: '34 Tracks &amp; Labs ↗',
         dock_placement: 'Placement Test A1–C1',
         dock_lxp: 'Campus LXP 3D',
+
+        badge_cx_journey: '<i class="fa-solid fa-route"></i> EXPERIENCIA DEL ALUMNO &bull; 4 PASOS HACIA EL EMPLEO GLOBAL',
+        title_cx_journey: 'De Cero a Ingeniero Bilingüe Certificado en 4 Pasos: <br><span style="background: linear-gradient(135deg, #38bdf8 0%, #10b981 50%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">El Customer Experience (CX) de stemOS</span>',
+        subtitle_cx_journey: 'Un recorrido pedagógico sin fricción que entrelaza la nivelación MCER con la especialización técnica de tu carrera, culminando en certificaciones verificables y empleabilidad directa en la industria de nearshoring.',
+        cx_step1_badge: 'PASO 01 &bull; ACCESO CERO FRICCIÓN',
+        cx_step1_title: '1. Registro con Google SSO Institucional en 1 Clic',
+        cx_step1_desc: 'Acceso instantáneo con el correo de tu universidad (@upbc.edu.mx, @tecnm.mx, @uabc.edu.mx). Sin contraseñas que olvidar ni formularios tediosos: stemOS auto-detecta tu universidad, campus, carrera y modalidad (Ingeniería / TSU).',
+        cx_step1_btn: 'Registrarse con Google SSO',
+        cx_step2_badge: 'PASO 02 &bull; INTERLEAVING ADAPTATIVO',
+        cx_step2_title: '2. Placement Test &amp; Entrelazado Curricular (MCER + ESP)',
+        cx_step2_desc: 'Diagnóstico de 30 minutos (Gramática, Escucha industrial y Lectura técnica). El algoritmo aplica la regla estricta de entrelazado cognitivo:',
+        cx_step2_rule_a1: '<strong>Menor a A2 (Nivel A1):</strong> Cursa <em>exclusivamente</em> el Track Base MCER A1. Protege al alumno de frustración técnica temprana, consolidando gramática y pronunciación básica antes de ver terminología de ingeniería.',
+        cx_step2_rule_a2: '<strong>Nivel A2 alcanzado:</strong> Desbloquea MCER A2 y <em>comienza a incluir labs ESP</em> (Vocabulario de seguridad industrial, normas OSHA/EHS y herramientas de taller).',
+        cx_step2_rule_b1: '<strong>Nivel B1 (Umbral Técnico):</strong> Inmersión total en la <em>Ruta Determinista de 60.0h de su Carrera</em> (16 estaciones: fundamentos, simuladores, reporte 8D e hitos).',
+        cx_step2_rule_b2: '<strong>Nivel B2 / C1 (Senior):</strong> Negociación con clientes de EE. UU., órdenes de cambio de ingeniería (ECO), auditorías internacionales y defensa de Capstone con IA Socrática.',
+        cx_step2_btn: 'Hacer Placement Test Diagnóstico',
+        cx_step3_badge: 'PASO 03 &bull; CREDENCIALES W3C',
+        cx_step3_title: '3. Obtén Certificados Oficiales &amp; Insignias Verificables',
+        cx_step3_desc: 'Cada hito superado (4 hitos de 15h cada uno en la ruta de 60h) otorga una insignia digital auditable bajo W3C Open Badges 3.0 e ISO 9001:2015. Al graduarse, el alumno recibe su certificado con QR criptográfico para verificación inmediata por reclutadores internacionales.',
+        cx_step3_btn: 'Ver Portal de Certificación',
+        cx_step4_badge: 'PASO 04 &bull; INGENIERÍA GLOBAL',
+        cx_step4_title: '4. Domina el Inglés Técnico (ESP) de tu Carrera de por Vida',
+        cx_step4_desc: 'No aprendes inglés general genérico; dominas la terminología exacta de tu especialidad: Mecatrónica, Semiconductores, TI, Energía Renovable o Manufactura Médica. Preparado para entrevistas de trabajo en inglés (método STAR) y equipos globales de nearshoring.',
+        cx_step4_btn: 'Explorar 34 Tracks Curriculares',
+        cx_banner_title: 'El Ciclo Completo de Formación de Talento de Alta Demanda',
+        cx_banner_desc: 'Diseñado para que las universidades mexicanas cumplan con los requisitos de acreditación CACEI, ABET e ISO 9001:2015, elevando el índice de inserción laboral en empresas transnacionales.',
 
         memo_quote: '&ldquo;<strong>Mario, gracias por la confianza.</strong> Con lo que me cuentas (<strong>≈1,500 alumnos</strong>, sin límite de uso por estudiante y sin compra de libros), te propongo una <strong>licencia institucional plana</strong>: una sola factura para la Universidad y cero cobro a los alumnos.<br><br>Todas las opciones incluyen <strong>acceso ilimitado para los ~1,500 alumnos</strong> y un <strong>panel para que los docentes de inglés</strong> vean la práctica de cada grupo.&rdquo;',
         memo_tag: 'Atención Especial: Universidad &bull; Cohorte ≈1,500 Alumnos',

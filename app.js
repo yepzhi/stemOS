@@ -3323,19 +3323,119 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Sync Placement Result to Header
+    // 5. Sync Placement Result & Curricular Interleaving Status
     function syncUserPlacementBadge() {
-        const stored = localStorage.getItem('stemos_placement_test');
-        if (stored) {
-            try {
-                const parsed = JSON.parse(stored);
-                const badgePill = document.getElementById('user-placement-badge-pill');
-                const badgeText = document.getElementById('user-placement-badge-text');
-                if (badgePill && badgeText && parsed.result) {
-                    badgeText.textContent = `Nivel MCER ${parsed.result.level} Asignado`;
-                    badgePill.style.display = 'inline-flex';
+        let userLevel = localStorage.getItem('stemos_user_level') || '';
+        if (!userLevel) {
+            const stored = localStorage.getItem('stemos_placement_test');
+            if (stored) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    if (parsed.result && (parsed.result.assignedLevel || parsed.result.level)) {
+                        userLevel = parsed.result.assignedLevel || parsed.result.level;
+                    }
+                } catch(e) {}
+            }
+        }
+
+        const badgePill = document.getElementById('user-placement-badge-pill');
+        const badgeText = document.getElementById('user-placement-badge-text');
+        const calloutEl = document.getElementById('ed-placement-level-callout');
+        const calloutLevel = document.getElementById('ed-placement-callout-level');
+        const calloutTitle = document.getElementById('ed-placement-callout-title');
+        const calloutDesc = document.getElementById('ed-placement-callout-desc');
+        const calloutIcon = document.getElementById('ed-placement-callout-icon');
+
+        if (!userLevel) {
+            if (badgePill && badgeText) {
+                badgeText.textContent = 'Placement Pendiente';
+                badgePill.style.background = '#f1f5f9';
+                badgePill.style.color = '#475569';
+                badgePill.style.borderColor = '#cbd5e1';
+                badgePill.style.display = 'inline-flex';
+            }
+            if (calloutEl && calloutTitle && calloutDesc) {
+                calloutEl.style.display = 'block';
+                if (calloutLevel) {
+                    calloutLevel.textContent = 'Placement Pendiente';
+                    calloutLevel.style.background = '#64748b';
                 }
-            } catch(e) {}
+                calloutTitle.textContent = 'Realiza tu Placement Test Diagnóstico (30 min)';
+                calloutDesc.textContent = 'Para calibrar el entrelazado adaptativo entre tus tracks MCER y los laboratorios técnicos de tu carrera, realiza tu evaluación estandarizada.';
+                if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-vial" style="color:#64748b;"></i>';
+            }
+            return;
+        }
+
+        // Student has a calibrated level: A1, A2, B1, B2, C1
+        if (badgePill && badgeText) {
+            badgePill.style.display = 'inline-flex';
+            if (userLevel === 'A1') {
+                badgeText.textContent = 'Nivel MCER A1 Asignado (Base)';
+                badgePill.style.background = '#fef3c7';
+                badgePill.style.color = '#b45309';
+                badgePill.style.borderColor = '#fde68a';
+            } else if (userLevel === 'A2') {
+                badgeText.textContent = 'Nivel MCER A2 Asignado (Interleaving)';
+                badgePill.style.background = '#e0f2fe';
+                badgePill.style.color = '#0369a1';
+                badgePill.style.borderColor = '#bae6fd';
+            } else if (userLevel === 'B1') {
+                badgeText.textContent = 'Nivel MCER B1 Asignado (Carrera 60h)';
+                badgePill.style.background = '#ecfdf5';
+                badgePill.style.color = '#047857';
+                badgePill.style.borderColor = '#a7f3d0';
+            } else {
+                badgeText.textContent = `Nivel MCER ${userLevel} Asignado (Senior)`;
+                badgePill.style.background = '#f3e8ff';
+                badgePill.style.color = '#7e22ce';
+                badgePill.style.borderColor = '#e9d5ff';
+            }
+        }
+
+        if (calloutEl && calloutTitle && calloutDesc) {
+            calloutEl.style.display = 'block';
+            if (userLevel === 'A1') {
+                if (calloutLevel) {
+                    calloutLevel.textContent = 'Nivel A1 Activo · Tronco Común MCER';
+                    calloutLevel.style.background = '#f59e0b';
+                }
+                calloutTitle.textContent = 'Ruta de Fundamentos: Track Base MCER A1';
+                calloutDesc.textContent = 'Por diseño pedagógico para evitar sobrecarga cognitiva, cursas exclusivamente el Track Base A1. Los laboratorios técnicos avanzados de tu especialidad se desbloquean al alcanzar Nivel A2.';
+                if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-shield-halved" style="color:#f59e0b;"></i>';
+                calloutEl.style.background = 'linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0.03) 100%)';
+                calloutEl.style.borderColor = 'rgba(245, 158, 11, 0.3)';
+            } else if (userLevel === 'A2') {
+                if (calloutLevel) {
+                    calloutLevel.textContent = 'Nivel A2 Activo · Interleaving Inicial';
+                    calloutLevel.style.background = '#0284c7';
+                }
+                calloutTitle.textContent = 'MCER A2 + Laboratorios Técnicos Introductorios Desbloqueados';
+                calloutDesc.textContent = '¡Entrelazado activo! Cursas el Track Base MCER A2 y se desbloquean tus primeros laboratorios técnicos de carrera (Vocabulario de Seguridad, EHS y Herramientas Industriales).';
+                if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-sliders" style="color:#0284c7;"></i>';
+                calloutEl.style.background = 'linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(14, 165, 233, 0.03) 100%)';
+                calloutEl.style.borderColor = 'rgba(14, 165, 233, 0.3)';
+            } else if (userLevel === 'B1') {
+                if (calloutLevel) {
+                    calloutLevel.textContent = 'Nivel B1 Activo · Inmersión de Carrera';
+                    calloutLevel.style.background = '#10b981';
+                }
+                calloutTitle.textContent = 'Ruta Determinista de 60.0h de tu Carrera 100% Desbloqueada';
+                calloutDesc.textContent = 'Inmersión total: Cursas las 16 estaciones de tu especialidad de ingeniería con simuladores de incidentes, reportes 8D y 4 hitos de certificación.';
+                if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-graduation-cap" style="color:#10b981;"></i>';
+                calloutEl.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.03) 100%)';
+                calloutEl.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+            } else {
+                if (calloutLevel) {
+                    calloutLevel.textContent = `Nivel ${userLevel} · Senior Nearshoring`;
+                    calloutLevel.style.background = '#a855f7';
+                }
+                calloutTitle.textContent = 'Nearshoring Avanzado, ECOs & Capstone Socrático con IA';
+                calloutDesc.textContent = 'Nivel superior de acreditación: Órdenes de cambio de ingeniería (ECO), auditorías internacionales y defensa de Capstone con IA Socrática.';
+                if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-user-astronaut" style="color:#a855f7;"></i>';
+                calloutEl.style.background = 'linear-gradient(135deg, rgba(168, 85, 247, 0.08) 0%, rgba(168, 85, 247, 0.03) 100%)';
+                calloutEl.style.borderColor = 'rgba(168, 85, 247, 0.3)';
+            }
         }
     }
 

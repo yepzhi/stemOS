@@ -414,13 +414,14 @@
     const totalQuestions = PLACEMENT_QUESTIONS.length; // 32
     const percentage = Math.round((totalScore / totalQuestions) * 100);
 
-    // Mapeo Determinista de Nivel MCER
+    // Mapeo Determinista de Nivel MCER & Regla de Entrelazado (Interleaving)
     let assignedLevel = 'A1';
     let levelName = 'Breakthrough / Novice';
     let levelTitle = 'CEFR A1: Foundations';
     let recommendedTrack = 'mcer-a1-foundations';
     let color = '#10b981';
-    let nextStep = 'Iniciar con Fundamentos del Idioma (A1), saludos laborales, horarios y ubicación en planta.';
+    let nextStep = 'Iniciar con Fundamentos del Idioma (A1), saludos laborales, horarios y ubicación en planta. Regla pedagógica: Cursas exclusivamente el Track Base MCER A1 para afianzar bases sólidas; los laboratorios técnicos de carrera (ESP) se desbloquean al alcanzar Nivel A2.';
+    let interleavingRule = 'Nivel A1: Solo Track Base MCER A1 (Protección cognitiva • Labs ESP bloqueados hasta Nivel A2)';
 
     if (totalScore >= 26) {
       // 26 - 32 (>= 80%)
@@ -429,7 +430,8 @@
       levelTitle = 'CEFR B2: Executive Fluency';
       recommendedTrack = 'mcer-b2-fluency';
       color = '#a855f7';
-      nextStep = '¡Nivel Avanzado! Acreditas tronco común. Estás listo para cursar los Tracks de Especialidad Técnica ESP (Nearshoring).';
+      nextStep = '¡Nivel Avanzado B2! Acreditas tronco común. Estás listo para liderar órdenes de cambio de ingeniería (ECO), negociaciones con clientes en EE. UU., auditorías internacionales y defensa de Capstone Socrático con IA.';
+      interleavingRule = 'Nivel B2/C1: Nearshoring Senior, ECO & Capstone Socrático con IA';
     } else if (totalScore >= 20) {
       // 20 - 25 (60% - 79%)
       assignedLevel = 'B1';
@@ -437,7 +439,8 @@
       levelTitle = 'CEFR B1: Professional Independence';
       recommendedTrack = 'mcer-b1-professional';
       color = '#f59e0b';
-      nextStep = 'Iniciar en Nivel B1: Procedimientos SOPs, correos ejecutivos, llamadas de seguimiento y defensa técnica.';
+      nextStep = 'Iniciar en Nivel B1: Procedimientos SOPs, correos ejecutivos, llamadas de seguimiento y defensa técnica. Inmersión total en las 60.0h de Ruta Determinista de tu Carrera con simuladores de incidentes y reporte 8D.';
+      interleavingRule = 'Nivel B1: Inmersión Total en Ruta Determinista de 60h (16 Estaciones)';
     } else if (totalScore >= 13) {
       // 13 - 19 (40% - 59%)
       assignedLevel = 'A2';
@@ -445,7 +448,8 @@
       levelTitle = 'CEFR A2: Practical Workplace';
       recommendedTrack = 'mcer-a2-workplace';
       color = '#38bdf8';
-      nextStep = 'Iniciar en Nivel A2: Registro de incidentes pasados, comparación de materiales y reportes de falla.';
+      nextStep = 'Iniciar en Nivel A2: Registro de incidentes pasados, comparación de materiales y reportes de falla. ¡Entrelazado activo! Cursas MCER A2 y se desbloquean tus primeros laboratorios técnicos de carrera (Seguridad, EHS y Herramientas Industriales).';
+      interleavingRule = 'Nivel A2: MCER A2 + Labs ESP Iniciales Desbloqueados';
     }
 
     return {
@@ -458,6 +462,7 @@
       recommendedTrack: recommendedTrack,
       color: color,
       nextStep: nextStep,
+      interleavingRule: interleavingRule,
       sectionScores: {
         grammar: { score: grammarScore, total: 12, pct: Math.round((grammarScore / 12) * 100) },
         listening: { score: listeningScore, total: 10, pct: Math.round((listeningScore / 10) * 100) },
