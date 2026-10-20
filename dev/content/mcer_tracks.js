@@ -3570,6 +3570,9 @@
     getLevelById: function(levelId) {
       return MCER_LEVELS.find(l => l.id === levelId || l.code.toLowerCase() === levelId.toLowerCase());
     },
+    getLevel: function(levelId) {
+      return this.getLevelById(levelId);
+    },
     getAllUnits: function() {
       const allUnits = [];
       MCER_LEVELS.forEach(lvl => {

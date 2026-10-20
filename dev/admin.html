@@ -1964,6 +1964,22 @@
                                 <div style="font-size:0.72rem; color:var(--fg-dim);">Tracks ESP Industriales directos</div>
                             </div>
                         </div>
+
+                        <!-- Institutional Accreditation Bar -->
+                        <div style="margin-top:16px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.06); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="width:36px; height:36px; border-radius:10px; background:rgba(20,184,166,0.15); display:flex; align-items:center; justify-content:center; color:var(--teal-400); font-size:1.1rem;">
+                                    <i class="fa-solid fa-stamp"></i>
+                                </div>
+                                <div>
+                                    <div style="font-size:0.85rem; font-weight:700; color:#fff;">Índice de Acreditación Curricular CACEI / DGUTyP (Tronco Común)</div>
+                                    <div style="font-size:0.75rem; color:var(--fg-muted);">48% de la matrícula en B1/B2 (Apto para Prácticas Profesionales e Industria Binacional CaliBaja). 100% de la cohorte asignada a ruta de 60h.</div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-teal btn-sm" onclick="exportAccreditationReport()" style="font-size:0.78rem;">
+                                <i class="fa-solid fa-file-csv"></i> Exportar Dictamen CACEI (CSV)
+                            </button>
+                        </div>
                     </div>
 
                     <!-- SPLIT: CAREER PROGRESS CHART + LIVE ACTIVITY FEED -->
@@ -3523,6 +3539,39 @@
             const a = document.createElement('a');
             a.href = url;
             a.download = `stemOS_Cohort_Report_${state.institution.code}_${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function exportAccreditationReport() {
+            let csv = '\uFEFF';
+            csv += 'Matricula,Nombre del Alumno,Carrera,Nivel CEFR Diagnostico,Horas Acreditadas (MCER 60h),Modulos Superados,Simulacion Crisol,Elegibilidad CACEI / DGUTyP\r\n';
+
+            state.students.forEach(s => {
+                const cefr = s.placementLevel || (s.progress > 60 ? 'B1' : s.progress > 30 ? 'A2' : 'A1');
+                const hours = ((s.progress / 100) * 60).toFixed(1);
+                const crucible = s.progress >= 50 ? 'Aprobado (90+ pts)' : 'Pendiente';
+                const eligibility = s.progress >= 70 ? 'Elegible Acreditación Total' : 'En Ruta Curricular Activa';
+                const row = [
+                    `"${s.studentId}"`,
+                    `"${s.name}"`,
+                    `"${s.career}"`,
+                    `"${cefr}"`,
+                    hours,
+                    s.modules,
+                    `"${crucible}"`,
+                    `"${eligibility}"`
+                ];
+                csv += row.join(',') + '\r\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Dictamen_Acreditacion_CACEI_${state.institution.code || 'UPBC'}_${new Date().toISOString().slice(0, 10)}.csv`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);

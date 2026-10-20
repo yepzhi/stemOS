@@ -766,17 +766,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openCertificateModal(trackId) {
         currentCertTrackId = trackId || 'semiconductors';
-        const track = coursesData[currentCertTrackId] || (typeof LXP_COURSES !== 'undefined' && LXP_COURSES[currentCertTrackId]) || { title: 'stemOS Specialization' };
+
         const modalCertSkill = document.getElementById('modal-cert-skill');
         const modalCertId = document.getElementById('modal-cert-id');
-        const hashCode = `STEMOS-${currentCertTrackId.toUpperCase().replace(/[^A-Z0-9]/g, '')}-${(currentCertTrackId.length * 1337).toString(16).toUpperCase()}`;
+        const modalCertRecipient = document.getElementById('modal-cert-recipient');
+        const modalCertAccreditation = document.getElementById('modal-cert-accreditation');
+        const modalCertDemonstration = document.getElementById('modal-cert-demonstration');
+        const modalCertDate = document.getElementById('modal-cert-date');
 
-        if (modalCertSkill) {
-            modalCertSkill.textContent = `${track.titleEN || track.title} — ${track.badgeName || 'Technical Specialization'}`;
+        // Dynamic Student Name
+        let studentName = 'Alberto Yépiz';
+        try {
+            const profile = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
+            if (profile && profile.name) studentName = profile.name;
+            else if (localStorage.getItem('stemos_user_name')) studentName = localStorage.getItem('stemos_user_name');
+        } catch(e) {}
+        if (modalCertRecipient) modalCertRecipient.textContent = studentName;
+
+        // Current Date Formatted
+        const todayStr = new Intl.DateTimeFormat('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date());
+        if (modalCertDate) modalCertDate.textContent = `Hermosillo, Sonora / Mexicali, B.C., a ${todayStr}`;
+
+        // Check if MCER level
+        let isMcer = false;
+        let mcerLevelObj = null;
+        const mcerMatch = currentCertTrackId.match(/^mcer-([ab][12])$/i);
+        if (mcerMatch && window.STEMOS_MCER_TRACKS) {
+            const code = mcerMatch[1].toUpperCase();
+            mcerLevelObj = window.STEMOS_MCER_TRACKS.getLevel(code);
+            isMcer = !!mcerLevelObj;
         }
-        if (modalCertId) {
-            modalCertId.textContent = `VERIFIED: ${hashCode}`;
+
+        if (isMcer && mcerLevelObj) {
+            const hashCode = `CACEI-DGUTYP-${mcerLevelObj.code}-${Math.abs((mcerLevelObj.code.charCodeAt(0) * 8191 + studentName.length * 1337)).toString(16).toUpperCase()}`;
+            if (modalCertSkill) {
+                modalCertSkill.textContent = `Marco MCER ${mcerLevelObj.code}: ${mcerLevelObj.name} (60.0 Horas Acreditadas)`;
+            }
+            if (modalCertId) {
+                modalCertId.textContent = `VERIFIED: ${hashCode}`;
+            }
+            if (modalCertDemonstration) {
+                modalCertDemonstration.textContent = 'Por haber demostrado fehacientemente mediante evaluación conversacional socrática, simulación de crisol industrial y lectura de normas técnicas sus competencias comunicativas en:';
+            }
+            if (modalCertAccreditation) {
+                modalCertAccreditation.innerHTML = `Acreditación Curricular Universitaria <strong>60.0 Horas Activas</strong> conforme al <strong>Marco Común Europeo de Referencia (CEFR/MCER Council of Europe)</strong> e indicadores de acreditación <strong>CACEI / DGUTyP (${mcerLevelObj.milestone ? mcerLevelObj.milestone.accreditation : 'Tronco Común'})</strong>.`;
+            }
+        } else {
+            const track = coursesData[currentCertTrackId] || (typeof LXP_COURSES !== 'undefined' && LXP_COURSES[currentCertTrackId]) || { title: 'stemOS Specialization' };
+            const hashCode = `STEMOS-${currentCertTrackId.toUpperCase().replace(/[^A-Z0-9]/g, '')}-${(currentCertTrackId.length * 1337).toString(16).toUpperCase()}`;
+
+            if (modalCertSkill) {
+                modalCertSkill.textContent = `${track.titleEN || track.title} — ${track.badgeName || 'Technical Specialization'}`;
+            }
+            if (modalCertId) {
+                modalCertId.textContent = `VERIFIED: ${hashCode}`;
+            }
+            if (modalCertDemonstration) {
+                modalCertDemonstration.textContent = 'Por haber demostrado fehacientemente y mediante evaluación conversacional socrática sus competencias en la habilidad de:';
+            }
+            if (modalCertAccreditation) {
+                modalCertAccreditation.innerHTML = 'Alineado con los estándares internacionales <strong>NGSS HS-PS4</strong> y del marco <strong>CONOCER SEP EC1290</strong>.';
+            }
         }
+
         if (modal) modal.showModal();
     }
     window.openCertificateModal = openCertificateModal;
@@ -813,51 +865,113 @@ document.addEventListener('DOMContentLoaded', () => {
     // W3C Verifiable Credentials / Open Badges 3.0 JSON-LD Export
     if (exportBadgeBtn) {
         exportBadgeBtn.addEventListener('click', () => {
-            const track = coursesData[currentCertTrackId] || (typeof LXP_COURSES !== 'undefined' && LXP_COURSES[currentCertTrackId]) || { title: 'stemOS Specialization', id: currentCertTrackId };
-            const hashCode = `STEMOS-${(track.id || currentCertTrackId).toUpperCase().replace(/[^A-Z0-9]/g, '')}-${((track.id || currentCertTrackId).length * 1337).toString(16).toUpperCase()}`;
+            let studentName = 'Alberto Yépiz';
+            try {
+                const profile = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
+                if (profile && profile.name) studentName = profile.name;
+                else if (localStorage.getItem('stemos_user_name')) studentName = localStorage.getItem('stemos_user_name');
+            } catch(e) {}
 
-            const badgeJson = {
-                "@context": [
-                    "https://www.w3.org/2018/credentials/v1",
-                    "https://purl.imsglobal.org/spec/ob/v3p0/context.json"
-                ],
-                "id": `urn:uuid:stemos-cert-${currentCertTrackId}-${Date.now()}`,
-                "type": ["VerifiableCredential", "OpenBadgeCredential"],
-                "issuer": {
-                    "id": "https://stemos.dev/issuers/stemos-foundation",
-                    "type": "Profile",
-                    "name": "stemOS LXP — JóvenesSTEM & Lovelace Tech",
-                    "url": "https://stemos.dev",
-                    "email": "credentials@stemos.dev"
-                },
-                "issuanceDate": new Date().toISOString(),
-                "credentialSubject": {
-                    "id": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
-                    "type": "AchievementSubject",
-                    "name": "Alberto Yépiz",
-                    "achievement": {
-                        "id": `https://stemos.dev/achievements/${currentCertTrackId}`,
-                        "type": "Achievement",
-                        "name": track.badgeName || track.titleEN || track.title,
-                        "description": `Demostró competencia técnica y socrática en el track ${track.titleEN || track.title} (${track.category || 'STEM'}).`,
-                        "criteria": {
-                            "narrative": "Aprobación del 100% de los módulos de vocabulario técnico, lecturas de manufactura avanzada y desafío socrático evaluado por el motor Feynman."
-                        },
-                        "alignment": [
-                            {
-                                "targetName": track.badgeStandard || track.standard || "SEP CONOCER EC1290 / ISO Standard",
-                                "targetUrl": "https://conocer.gob.mx"
-                            }
-                        ]
+            const mcerMatch = currentCertTrackId.match(/^mcer-([ab][12])$/i);
+            let badgeJson;
+            if (mcerMatch && window.STEMOS_MCER_TRACKS) {
+                const code = mcerMatch[1].toUpperCase();
+                const mcerLevelObj = window.STEMOS_MCER_TRACKS.getLevel(code);
+                const hashCode = `CACEI-DGUTYP-${code}-${Math.abs((code.charCodeAt(0) * 8191 + studentName.length * 1337)).toString(16).toUpperCase()}`;
+
+                badgeJson = {
+                    "@context": [
+                        "https://www.w3.org/2018/credentials/v1",
+                        "https://purl.imsglobal.org/spec/ob/v3p0/context.json"
+                    ],
+                    "id": `urn:uuid:stemos-mcer-${code.toLowerCase()}-${Date.now()}`,
+                    "type": ["VerifiableCredential", "OpenBadgeCredential"],
+                    "issuer": {
+                        "id": "https://stemos.org/issuers/mcer-cacei-accreditation",
+                        "type": "Profile",
+                        "name": "stemOS Platform — CACEI & DGUTyP Standard American English Accreditation",
+                        "url": "https://stemos.org",
+                        "email": "credentials@stemos.org"
+                    },
+                    "issuanceDate": new Date().toISOString(),
+                    "credentialSubject": {
+                        "id": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
+                        "type": "AchievementSubject",
+                        "name": studentName,
+                        "achievement": {
+                            "id": `https://stemos.org/achievements/mcer-${code.toLowerCase()}`,
+                            "type": "Achievement",
+                            "name": `CEFR ${code}: ${mcerLevelObj ? mcerLevelObj.name : 'Curricular English'} (60.0h Course)`,
+                            "description": `Acreditación formal de 60.0 horas de inglés técnico estándar bajo el Marco Común Europeo de Referencia (CEFR/MCER).`,
+                            "criteria": {
+                                "narrative": "Aprobación de 4 unidades de 15.0h, simulación de crisol industrial con evaluación por rúbrica AI y Milestone Checkpoint superior al 80%."
+                            },
+                            "alignment": [
+                                {
+                                    "targetName": `CACEI / DGUTyP ${mcerLevelObj && mcerLevelObj.milestone ? mcerLevelObj.milestone.accreditation : 'Inglés I'}`,
+                                    "targetUrl": "http://cacei.org.mx"
+                                },
+                                {
+                                    "targetName": `Council of Europe CEFR Level ${code}`,
+                                    "targetUrl": "https://www.coe.int/en/web/common-european-framework-reference-languages"
+                                }
+                            ]
+                        }
+                    },
+                    "proof": {
+                        "type": "Ed25519Signature2020",
+                        "created": new Date().toISOString(),
+                        "verificationMethod": "https://stemos.org/issuers/mcer-cacei-accreditation#key-1",
+                        "proofValue": hashCode
                     }
-                },
-                "proof": {
-                    "type": "Ed25519Signature2020",
-                    "created": new Date().toISOString(),
-                    "verificationMethod": "https://stemos.dev/issuers/stemos-foundation#key-1",
-                    "proofValue": hashCode
-                }
-            };
+                };
+            } else {
+                const track = coursesData[currentCertTrackId] || (typeof LXP_COURSES !== 'undefined' && LXP_COURSES[currentCertTrackId]) || { title: 'stemOS Specialization', id: currentCertTrackId };
+                const hashCode = `STEMOS-${(track.id || currentCertTrackId).toUpperCase().replace(/[^A-Z0-9]/g, '')}-${((track.id || currentCertTrackId).length * 1337).toString(16).toUpperCase()}`;
+
+                badgeJson = {
+                    "@context": [
+                        "https://www.w3.org/2018/credentials/v1",
+                        "https://purl.imsglobal.org/spec/ob/v3p0/context.json"
+                    ],
+                    "id": `urn:uuid:stemos-cert-${currentCertTrackId}-${Date.now()}`,
+                    "type": ["VerifiableCredential", "OpenBadgeCredential"],
+                    "issuer": {
+                        "id": "https://stemos.dev/issuers/stemos-foundation",
+                        "type": "Profile",
+                        "name": "stemOS LXP — JóvenesSTEM & Lovelace Tech",
+                        "url": "https://stemos.dev",
+                        "email": "credentials@stemos.dev"
+                    },
+                    "issuanceDate": new Date().toISOString(),
+                    "credentialSubject": {
+                        "id": "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
+                        "type": "AchievementSubject",
+                        "name": studentName,
+                        "achievement": {
+                            "id": `https://stemos.dev/achievements/${currentCertTrackId}`,
+                            "type": "Achievement",
+                            "name": track.badgeName || track.titleEN || track.title,
+                            "description": `Demostró competencia técnica y socrática en el track ${track.titleEN || track.title} (${track.category || 'STEM'}).`,
+                            "criteria": {
+                                "narrative": "Aprobación del 100% de los módulos de vocabulario técnico, lecturas de manufactura avanzada y desafío socrático evaluado por el motor Feynman."
+                            },
+                            "alignment": [
+                                {
+                                    "targetName": track.badgeStandard || track.standard || "SEP CONOCER EC1290 / ISO Standard",
+                                    "targetUrl": "https://conocer.gob.mx"
+                                }
+                            ]
+                        }
+                    },
+                    "proof": {
+                        "type": "Ed25519Signature2020",
+                        "created": new Date().toISOString(),
+                        "verificationMethod": "https://stemos.dev/issuers/stemos-foundation#key-1",
+                        "proofValue": hashCode
+                    }
+                };
+            }
 
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(badgeJson, null, 2));
             const dlAnchor = document.createElement('a');
@@ -3160,6 +3274,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // 2.1 MCER 60.0h Credential Action
+    const btnMcerAccreditCert = document.getElementById('btn-mcer-accredit-cert');
+    if (btnMcerAccreditCert) {
+        btnMcerAccreditCert.addEventListener('click', () => {
+            const userLvl = (localStorage.getItem('stemos_user_level') || (activeMcerLevelFilter !== 'all' ? activeMcerLevelFilter : 'A1')).toLowerCase();
+            openCertificateModal('mcer-' + userLvl);
+        });
+    }
+
     // 3. Render MCER Units Grid
     function renderMcerUnitsGrid(levelFilter) {
         const grid = document.getElementById('ed-mcer-units-grid');
@@ -3178,33 +3301,45 @@ document.addEventListener('DOMContentLoaded', () => {
             'B1': { color: '#f59e0b', label: 'Threshold', icon: 'fa-stairs' },
             'B2': { color: '#8b5cf6', label: 'Vantage', icon: 'fa-award' }
         };
+        const userLevel = localStorage.getItem('stemos_user_level') || '';
 
         units.forEach(unit => {
             const meta = levelColors[unit.cefr] || levelColors.A1;
             const gradientBg = `linear-gradient(135deg, ${meta.color}18 0%, ${meta.color}06 50%, #f8fafc 100%)`;
+            const isCrucibleDone = localStorage.getItem('stemos_crucible_' + unit.id) === 'completed';
+            const isActiveLevel = userLevel && unit.cefr === userLevel;
 
             const card = document.createElement('div');
             card.className = 'ed-unit-card';
             card.dataset.unitId = unit.id;
             card.dataset.cefr = unit.cefr;
+            if (isActiveLevel) {
+                card.style.border = `1.5px solid ${meta.color}`;
+                card.style.boxShadow = `0 4px 14px ${meta.color}25`;
+            }
 
             card.innerHTML = `
-                <div class="ed-unit-card-img-wrapper" style="background: ${gradientBg}; display:flex; align-items:center; justify-content:center;">
+                <div class="ed-unit-card-img-wrapper" style="background: ${gradientBg}; display:flex; align-items:center; justify-content:center; position:relative;">
                     <i class="fa-solid ${meta.icon}" style="font-size: 3.5rem; color: ${meta.color}; opacity: 0.5;"></i>
                     <span class="ed-unit-card-cat-badge" style="border-left: 3px solid ${meta.color}; color:${meta.color};">CEFR ${unit.cefr} · ${meta.label}</span>
+                    ${isActiveLevel ? `<span style="position:absolute; top:8px; right:8px; background:${meta.color}; color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><i class="fa-solid fa-play"></i> En Curso</span>` : ''}
+                    ${isCrucibleDone ? '<span style="position:absolute; bottom:8px; right:8px; background:#dcfce7; color:#15803d; border:1px solid #86efac; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:6px;"><i class="fa-solid fa-check"></i> Crisol ✓</span>' : ''}
                 </div>
                 <div class="ed-unit-card-body">
-                    <div class="ed-unit-number">Unit ${String(unit.unitNumber).padStart(2, '0')}</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div class="ed-unit-number">Unit ${String(unit.unitNumber).padStart(2, '0')}</div>
+                        <span style="font-size:0.7rem; font-weight:700; color:#64748b; background:#f1f5f9; padding:2px 6px; border-radius:4px;">15.0h Acreditadas</span>
+                    </div>
                     <div class="ed-unit-title">${unit.title}</div>
                     <div style="font-size:0.8rem; color:#64748b; margin-top:4px; line-height:1.4;">${unit.canDo}</div>
                     <div style="display:inline-flex; align-items:center; gap:6px; font-size:0.72rem; font-weight:700; color:${meta.color}; background:${meta.color}15; padding:2px 8px; border-radius:999px; margin-top:8px;">
                         <i class="fa-solid fa-wand-magic-sparkles"></i> ${unit.grammarFocus}
                     </div>
-                    <div class="ed-unit-progress-container" style="margin-top:12px;">
-                        <span class="ed-unit-progress-text" style="color:#0284c7; font-weight:700;">
+                    <div class="ed-unit-progress-container" style="margin-top:12px; display:flex; flex-direction:column; gap:4px;">
+                        <span class="ed-unit-progress-text" style="color:#0284c7; font-weight:700; font-size:0.75rem;">
                             <i class="fa-solid fa-book-open"></i> ${unit.vocabulary ? unit.vocabulary.length : 8} Vocab · 
-                            <i class="fa-solid fa-headphones"></i> Audio Dialogue · 
-                            <i class="fa-solid fa-circle-check"></i> Mastery Quiz
+                            <i class="fa-solid fa-triangle-exclamation" style="color:#dc2626;"></i> Falsos Amigos · 
+                            <i class="fa-solid fa-industry" style="color:#10b981;"></i> Crisol
                         </span>
                     </div>
                 </div>
@@ -3793,6 +3928,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-user-astronaut" style="color:#a855f7;"></i>';
                 calloutEl.style.background = 'linear-gradient(135deg, rgba(168, 85, 247, 0.08) 0%, rgba(168, 85, 247, 0.03) 100%)';
                 calloutEl.style.borderColor = 'rgba(168, 85, 247, 0.3)';
+            }
+        }
+
+        // Sync MCER Active Track Banner
+        const bannerPill = document.getElementById('mcer-banner-level-pill');
+        const bannerTitle = document.getElementById('mcer-banner-title');
+        const bannerDesc = document.getElementById('mcer-banner-desc');
+        if (bannerPill && bannerTitle) {
+            const troncoMap = { 'A1': 'Inglés I', 'A2': 'Inglés II', 'B1': 'Inglés III', 'B2': 'Inglés IV' };
+            bannerPill.textContent = `CEFR ${userLevel}`;
+            bannerTitle.textContent = `${troncoMap[userLevel] || 'Tronco Común'} · 60.0 Horas Acreditadas`;
+            if (bannerDesc) {
+                bannerDesc.textContent = `Nivel calibrado según tu evaluación diagnóstica. Tu plan semestral contiene 4 unidades de 15.0h de trabajo activo (60h total), con diálogos técnicos, lectura de normas y simulación de despacho industrial.`;
             }
         }
     }

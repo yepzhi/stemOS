@@ -298,6 +298,32 @@
                             </div>
                         </div>
 
+                        <!-- MCER Diagnostic Placement & Active Level Banner -->
+                        <div id="mcer-active-track-banner" style="background:linear-gradient(135deg, rgba(2, 132, 199, 0.08) 0%, rgba(16, 185, 129, 0.06) 100%); border:1.5px solid rgba(2, 132, 199, 0.25); border-radius:14px; padding:16px 20px; margin-bottom:18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
+                            <div style="display:flex; align-items:center; gap:14px;">
+                                <div style="width:44px; height:44px; border-radius:12px; background:#e0f2fe; color:#0284c7; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0;">
+                                    <i class="fa-solid fa-graduation-cap"></i>
+                                </div>
+                                <div>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span id="mcer-banner-level-pill" style="font-family:var(--font-mono); font-size:0.75rem; font-weight:800; padding:2px 8px; border-radius:6px; background:#0284c7; color:#fff;">CEFR A1</span>
+                                        <strong id="mcer-banner-title" style="font-size:0.95rem; color:#0f172a;">Tronco Común Universitario · 60.0 Horas Acreditadas</strong>
+                                    </div>
+                                    <div id="mcer-banner-desc" style="font-size:0.8rem; color:#475569; margin-top:3px;">
+                                        Tu currículo MCER activo consta de 4 unidades de 15.0h de trabajo activo (60h total), con diálogos industriales, lectura de normas y simulaciones de crisol.
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:10px; align-items:center;">
+                                <button type="button" id="btn-mcer-accredit-cert" class="btn" style="background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#fff; font-size:0.78rem; font-weight:700; padding:6px 14px; border-radius:8px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                                    <i class="fa-solid fa-award"></i> Credencial 60.0h (W3C)
+                                </button>
+                                <a href="placement.html" class="btn" style="background:#fff; border:1px solid #cbd5e1; color:#0f172a; font-size:0.78rem; font-weight:700; padding:6px 12px; border-radius:8px; text-decoration:none;" title="Revaluar Diagnóstico">
+                                    <i class="fa-solid fa-vial"></i> Placement Test
+                                </a>
+                            </div>
+                        </div>
+
                         <!-- MCER Level Filter Bar -->
                         <div class="ed-units-toolbar-row" style="margin-bottom:20px;">
                             <div class="ed-category-filter-bar" id="mcer-level-filter-bar">
@@ -750,18 +776,18 @@
                     <div class="cert-border-inner">
                         <div class="cert-decor-top"></div>
                         <div class="cert-header">
-                            <span class="cert-org">Lovelace Feynman Technologies & JóvenesSTEM</span>
-                            <h2 class="cert-main-title">CONSTANCIA DE COMPETENCIA</h2>
+                            <span class="cert-org" id="modal-cert-org">Lovelace Feynman Technologies & JóvenesSTEM</span>
+                            <h2 class="cert-main-title" id="modal-cert-title">CONSTANCIA DE COMPETENCIA</h2>
                         </div>
 
                         <div class="cert-body">
                             <p class="cert-body-text">Se otorga la presente constancia a:</p>
-                            <h3 class="cert-recipient">Alberto Yépiz</h3>
-                            <p class="cert-body-text">Por haber demostrado fehacientemente y mediante evaluación
+                            <h3 class="cert-recipient" id="modal-cert-recipient">Alberto Yépiz</h3>
+                            <p class="cert-body-text" id="modal-cert-demonstration">Por haber demostrado fehacientemente y mediante evaluación
                                 conversacional socrática sus competencias en la habilidad de:</p>
                             <h4 class="cert-skill-name" id="modal-cert-skill">Ciencia Nivel 1 (Orígenes & Cosmología)
                             </h4>
-                            <p class="cert-body-text">Alineado con los estándares internacionales **NGSS HS-PS4** y del
+                            <p class="cert-body-text" id="modal-cert-accreditation">Alineado con los estándares internacionales **NGSS HS-PS4** y del
                                 marco **CONOCER SEP EC1290**.</p>
                         </div>
 
@@ -774,7 +800,7 @@
                             <div class="cert-verification">
                                 <span class="verification-lbl">Sello de Verificación Digital</span>
                                 <span class="verification-code" id="modal-cert-id">MD5: 8085-L1-SCI-987B2405</span>
-                                <span class="verification-date">Hermosillo, Sonora, a 11 de Junio de 2026</span>
+                                <span class="verification-date" id="modal-cert-date">Hermosillo, Sonora, a 11 de Junio de 2026</span>
                             </div>
                         </div>
                     </div>
