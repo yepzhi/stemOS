@@ -1806,13 +1806,36 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
     - 60% – 79% (20–25 pts): Nivel **B1 Threshold** (`mcer-b1-professional`).
     - >= 80% (26–32 pts): Nivel **B2 Vantage** (`mcer-b2-fluency`) con recomendación de salto a Tracks de Especialidad ESP.
 
-#### 62.3 Suite de Verificación Automatizada & Paridad en `dev/`
+#### 62.3 Aplicación Web Diagnóstica Aurora Whitish (`placement.html`)
+- [x] **Diseño Whitish Aurora & Ergonomía para Centros de Cómputo / Móvil**:
+  - Paleta clara y luminosa (base `#f8fafc`, orbes suaves difuminados con animación `@keyframes aurora-drift`, tarjetas de cristal blanco esmerilado `backdrop-filter: blur(28px)`).
+  - Cronómetro regresivo oficial de 30 minutos (`30:00`) con advertencia visual al alcanzar los últimos 5 minutos.
+  - Flujo secuencial de 5 pantallas con micro-transiciones fluidas:
+    1. `screen-welcome`: Estadísticas del diagnóstico (32 reactivos, 30 min, A1–B2), hardware check de audio y reanudación por folio.
+    2. `screen-survey`: Formulario de registro institucional (Nombre, Apellidos, Correo, Matrícula, Campus/UPMXL, Especialidad y Audio check).
+    3. `screen-instructions`: Generación de folio único (`STEMOS-MCER-XXXXX`) y reglas oficiales.
+    4. `screen-quiz`: Barra de progreso dinámica, reproductor de audio Web Speech API (`en-US`) con animación de barras de onda, tarjetas de lectura técnica y opciones táctiles amplias.
+    5. `screen-results`: Círculo de puntaje, insignia oficial CEFR asignada (A1, A2, B1 o B2), desglose por competencia (Grammar, Listening, Reading), recomendación de inscripción y botón directo de ingreso a stemOS.
+
+#### 62.4 Integración de Plataforma Dual-World (MCER Tracks vs ESP Industry Hub)
+- [x] **Navegación Dual-World en `app.html` & `app.js`**:
+  - Barra de cambio de programa curricular (`#btn-world-mcer` vs `#btn-world-esp`).
+  - Catálogo de 16 Unidades Canónicas MCER con selector de nivel (A1, A2, B1, B2).
+  - Modal Interactivo de Estudio MCER (`#modal-mcer-unit`) con 4 pestañas: Diálogo con audio nativo americano, Vocabulario técnico con transcripción IPA, Lectura de planta con preguntas de comprensión y Quiz de dominio de unidad con Open Badges 3.0.
+  - Sincronización del badge de diagnóstico en el encabezado del alumno (`#user-placement-badge-pill`).
+- [x] **Integración Docente (`teacher.html`) & Rectoría (`admin.html`)**:
+  - Selector de tipo de programa en creación de grupos (MCER Tracks, ESP Career Track, Hybrid Lab).
+  - Columna de nivel CEFR asignado en la lista de alumnos.
+  - Tarjeta de línea base diagnóstica para cohorte institucional de 1,500 alumnos en `admin.html`.
+
+#### 62.5 Suite de Verificación Automatizada & Paridad en `dev/`
 - [x] **Suite de Auditoría (`scripts/test_phase62_mcer_placement.cjs`)**:
-  - 19/19 pruebas unitarias y de simulación diagnóstica aprobadas al 100%:
-    - Paridad estricta entre `content/` y `dev/content/`.
+  - 35/35 pruebas unitarias y de simulación diagnóstica aprobadas al 100%:
+    - Paridad estricta entre raíz y `dev/` (`placement.html`, `app.html`, `app.js`, `teacher.html`, `admin.html`, `mcer_tracks.js`, `placement_test.js`).
     - Integridad de 16 unidades curriculares y 4 niveles MCER.
-    - Validación de los 32 reactivos (12 Grammar, 10 Listening, 10 Reading).
-    - Simulación de rangos de puntaje y mapeo determinista de nivel (0%, 47%, 69%, 94%, 100%).
+    - Validación de los 32 reactivos y tiempos de examen (30 min).
+    - Verificación del diseño Whitish Aurora y las 5 pantallas de evaluación.
+    - Mapeo determinista de nivel (0%, 47%, 69%, 94%, 100%).
 
 ---
 
@@ -1820,33 +1843,20 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 
 | Archivo | Acción | Fase | Estado |
 |---------|--------|------|--------|
-| `/Users/yepz/stemOS/admin.html` | **CREAR / MODIFICAR** | 48, 54, 59 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/teacher.html` | **CREAR / MODIFICAR** | 49, 54, 59 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/register.html` | **REFACTOR / MODIFICAR** | 50, 59 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/content/career_paths.js` | **CREAR** | 51, 52 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/content/firebase_adapter.js` | **CREAR** | 59 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/content/mcer_tracks.js` & `dev/content/` | **CREAR** | 62 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/content/placement_test.js` & `dev/content/` | **CREAR** | 62 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/app.html` | **MODIFICAR** (XP HUD & Pass Modal) | 53, 55, 59 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/app.js` | **MODIFICAR** (XP engine, Profile Bridge) | 53, 59 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/world-map.js` | **MODIFICAR** (interleaving, gating) | 52 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/styles.css` | **MODIFICAR** (4-col KPI grid) | 53 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/sw.js` | **MODIFICAR** (cache v6.1.0) | 57, 59 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/firebase.json` | **CREAR** | 56 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/firestore.rules` | **CREAR** | 56 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/scripts/test_academic_system.cjs` | **CREAR / MODIFICAR** | 57, 59 | ✅ 100% Completado (50/50 Tests Pass) |
-| `/Users/yepz/stemOS/scripts/test_dev_institutional_section.cjs` | **CREAR** | 58 | ✅ 100% Completado (14/14 Tests Pass) |
-| `/Users/yepz/stemOS/scripts/test_phase59_firebase_sync.cjs` | **CREAR** | 59 | ✅ 100% Completado (42/42 Tests Pass) |
-| `/Users/yepz/stemOS/scripts/test_phase60_embedded_dev.cjs` | **CREAR** | 60 | ✅ 100% Completado (112/112 Tests Pass) |
-| `/Users/yepz/stemOS/scripts/test_phase61_telemetry_personas.cjs` | **CREAR** | 61 | ✅ 100% Completado (89/89 Tests Pass) |
-| `/Users/yepz/stemOS/scripts/test_phase62_mcer_placement.cjs` | **CREAR** | 62 | ✅ 100% Completado (19/19 Tests Pass) |
-| `/Users/yepz/stemOS/dev.html` & `dev/index.html` | **MODIFICAR** | 58, 59, 60, 61 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/dev.js` & `dev/index.js` & `dev/dev.js` | **MODIFICAR** | 58, 60, 61 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/dev.css` & `dev/index.css` & `dev/dev.css` | **MODIFICAR** | 58, 60, 61 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/placement.html` & `dev/` | **CREAR** (Whitish Aurora 30-min Test) | 62 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/content/mcer_tracks.js` & `dev/content/` | **CREAR** (A1–B2 16 Units) | 62 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/content/placement_test.js` & `dev/content/` | **CREAR** (32 Reactivos Web Speech) | 62 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/app.html` & `dev/app.html` | **MODIFICAR** (Dual-World, MCER Modal) | 53, 55, 59, 62 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/app.js` & `dev/app.js` | **MODIFICAR** (MCER Controller, Badge Sync) | 53, 59, 62 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/teacher.html` & `dev/teacher.html` | **MODIFICAR** (CEFR Roster, Group Type) | 49, 54, 59, 62 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/admin.html` & `dev/admin.html` | **MODIFICAR** (1,500-Student MCER Cohort) | 48, 54, 59, 62 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/dev.html` | **MODIFICAR** (Scripts inclusion) | 58, 60, 61, 62 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/scripts/test_phase62_mcer_placement.cjs` | **CREAR** | 62 | ✅ 100% Completado (35/35 Tests Pass) |
+| `/Users/yepz/stemOS/scripts/test_academic_system.cjs` | **MODIFICAR** | 57, 59, 62 | ✅ 100% Completado (50/50 Tests Pass) |
 
 ---
 
-*Estado del Proyecto: Fases 1 a 62 COMPLETADAS y 100% validadas. Master test suites ejecutados con éxito: 326/326 pruebas aprobadas (Exit Code 0). stemOS Institutional Ecosystem, Dual-World MCER/ESP Catalog & Lightweight Placement Test Engine 100% operativos.*
+*Estado del Proyecto: Fases 1 a 62 COMPLETADAS y 100% validadas. Master test suites ejecutados con éxito: más de 340 pruebas aprobadas (Exit Code 0). stemOS Institutional Ecosystem, Dual-World MCER/ESP Catalog, Whitish Aurora Placement Diagnostic (30 min) & Lightweight 3-Skill Engine 100% operativos.*
 
 
 

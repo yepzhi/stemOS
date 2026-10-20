@@ -41,6 +41,11 @@
                     <i class="fa-solid fa-house"></i>
                     <span class="ed-rail-tooltip">All Units (Catálogo)</span>
                 </button>
+                <a href="placement.html" class="ed-rail-btn" id="nav-btn-placement"
+                    title="Placement Test Diagnóstico MCER (A1–B2 · 30 min)">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                    <span class="ed-rail-tooltip">MCER Placement Test</span>
+                </a>
                 <button class="ed-rail-btn" data-view="world-map" id="nav-btn-world"
                     title="Mundo stemOS 3D & Camino Gamificado">
                     <i class="fa-solid fa-earth-americas"></i>
@@ -221,54 +226,121 @@
                     </div>
                 </section>
 
-                <!-- ════ VIEW 1: ALL UNITS (The requested grid of Unit cards!) ════ -->
+                <!-- ════ VIEW 1: ALL UNITS & CURRICULUM (MCER Tracks vs ESP Industry Hub) ════ -->
                 <section class="ed-view active" id="view-all-units">
-                    <!-- Section Header with Multi-Color Segmented Progress Bar -->
-                    <div class="ed-units-header-row">
-                        <div class="ed-units-title-box">
-                            <h2 class="ed-section-heading">All Units</h2>
-                            <span class="ed-units-subheading">27 Specialized Technical English (ESP) Tracks</span>
-                            <a href="/dev/#industry-standards-section" style="display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; font-weight:700; color:#0284c7; background:rgba(2,132,199,0.08); border:1px solid rgba(2,132,199,0.25); border-radius:999px; padding:3px 10px; text-decoration:none; margin-top:6px; width:fit-content;" title="Ver Comparativa con Estándares Internacionales">
-                                <i class="fa-solid fa-scale-balanced"></i> Alineado a Estándares Industriales Globales vs. Planes Académicos &rarr;
-                            </a>
+
+                    <!-- Dual-World Program Switcher Bar (Fase 62) -->
+                    <div class="ed-program-world-bar" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-bottom:20px; padding:12px 18px; background:linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border:1px solid #e2e8f0; border-radius:18px; box-shadow:0 4px 16px rgba(15,23,42,0.04);">
+                        <div style="display:inline-flex; background:#e2e8f0; padding:4px; border-radius:14px; gap:4px;">
+                            <button class="ed-world-tab-btn active" id="btn-world-mcer" style="padding:9px 20px; border-radius:10px; border:none; font-weight:800; font-size:0.92rem; display:inline-flex; align-items:center; gap:8px; cursor:pointer; background:#ffffff; color:#0f172a; box-shadow:0 2px 8px rgba(0,0,0,0.08); transition:all 0.2s;">
+                                <i class="fa-solid fa-earth-americas" style="color:#0284c7;"></i>
+                                <span>MCER Tracks <span style="font-size:0.72rem; font-weight:800; background:rgba(2,132,199,0.12); color:#0284c7; padding:2px 8px; border-radius:999px;">A1–B2</span></span>
+                            </button>
+                            <button class="ed-world-tab-btn" id="btn-world-esp" style="padding:9px 20px; border-radius:10px; border:none; font-weight:700; font-size:0.92rem; display:inline-flex; align-items:center; gap:8px; cursor:pointer; background:transparent; color:#64748b; transition:all 0.2s;">
+                                <i class="fa-solid fa-microchip" style="color:#64748b;"></i>
+                                <span>ESP Industry Hub <span style="font-size:0.72rem; font-weight:800; background:rgba(100,116,139,0.15); color:#475569; padding:2px 8px; border-radius:999px;">34 Tracks</span></span>
+                            </button>
                         </div>
-                        <div class="ed-segmented-progress-wrapper" title="Progreso de Unidades Aprobadas en stemOS">
-                            <div class="ed-segmented-bar" id="ed-segmented-bar">
-                                <!-- 12 colorful segments dynamically rendered -->
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <a href="placement.html" class="btn btn-primary" id="btn-hero-launch-placement" style="padding:8px 16px; font-size:0.85rem; font-weight:700; border-radius:12px; background:linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); color:#ffffff; border:none; box-shadow:0 4px 12px rgba(2,132,199,0.25); text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+                                <i class="fa-solid fa-clipboard-check"></i> Tomar Placement Test (30 min)
+                            </a>
+                            <div id="user-placement-badge-pill" style="display:none; align-items:center; gap:6px; font-size:0.75rem; font-weight:800; padding:6px 12px; border-radius:999px; background:#ecfdf5; color:#059669; border:1px solid #a7f3d0;">
+                                <i class="fa-solid fa-circle-check"></i> <span id="user-placement-badge-text">Nivel B1 Asignado</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Live Search & Category Filter Toolbar -->
-                    <div class="ed-units-toolbar-row">
-                        <div class="ed-category-filter-bar">
-                            <button class="ed-filter-chip active" data-cat="all">
-                                <i class="fa-solid fa-border-all"></i> All Units (<span id="count-cat-all">27</span>)
-                            </button>
-                            <button class="ed-filter-chip" data-cat="technology">
-                                <span class="cat-dot dot-tech"></span> Technology (7)
-                            </button>
-                            <button class="ed-filter-chip" data-cat="engineering">
-                                <span class="cat-dot dot-eng"></span> Engineering & Industry (8)
-                            </button>
-                            <button class="ed-filter-chip" data-cat="science">
-                                <span class="cat-dot dot-sci"></span> Science & Future Tech (6)
-                            </button>
-                            <button class="ed-filter-chip" data-cat="career">
-                                <span class="cat-dot dot-career"></span> Aviation & Career (6)
-                            </button>
+                    <!-- ════ WORLD A: MCER TRACKS (General American English A1–B2) ════ -->
+                    <div id="section-world-mcer">
+                        <!-- MCER Header Row -->
+                        <div class="ed-units-header-row" style="margin-bottom:18px;">
+                            <div class="ed-units-title-box">
+                                <h2 class="ed-section-heading">MCER Tracks (Standard American English)</h2>
+                                <span class="ed-units-subheading">16 Unidades Curriculares Canónicas · Alineadas al Marco Común Europeo (A1 a B2)</span>
+                                <div style="display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; font-weight:700; color:#059669; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:999px; padding:3px 10px; margin-top:6px; width:fit-content;">
+                                    <i class="fa-solid fa-shield-halved"></i> Programa Institucional Estandarizado · Laboratorio de Idiomas UPMXL / TecNM
+                                </div>
+                            </div>
                         </div>
-                        <div class="ed-search-wrapper">
-                            <i class="fa-solid fa-magnifying-glass ed-search-icon"></i>
-                            <input type="text" id="ed-units-search" class="ed-search-input" placeholder="Buscar por tema, estándar (IEEE, ISO, NIST)...">
-                            <button id="ed-units-search-clear" class="ed-search-clear" style="display: none;" title="Limpiar búsqueda"><i class="fa-solid fa-xmark"></i></button>
+
+                        <!-- MCER Level Filter Bar -->
+                        <div class="ed-units-toolbar-row" style="margin-bottom:20px;">
+                            <div class="ed-category-filter-bar" id="mcer-level-filter-bar">
+                                <button class="ed-filter-chip active" data-mcer-level="all">
+                                    <i class="fa-solid fa-layer-group"></i> Todos los Niveles (16)
+                                </button>
+                                <button class="ed-filter-chip" data-mcer-level="A1">
+                                    <span class="cat-dot" style="background:#10b981;"></span> A1 · Foundations (4)
+                                </button>
+                                <button class="ed-filter-chip" data-mcer-level="A2">
+                                    <span class="cat-dot" style="background:#0284c7;"></span> A2 · Waystage (4)
+                                </button>
+                                <button class="ed-filter-chip" data-mcer-level="B1">
+                                    <span class="cat-dot" style="background:#f59e0b;"></span> B1 · Threshold (4)
+                                </button>
+                                <button class="ed-filter-chip" data-mcer-level="B2">
+                                    <span class="cat-dot" style="background:#8b5cf6;"></span> B2 · Vantage (4)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- MCER Units Grid -->
+                        <div class="ed-units-grid" id="ed-mcer-units-grid">
+                            <!-- Populated dynamically by app.js from STEMOS_MCER_TRACKS -->
                         </div>
                     </div>
 
-                    <!-- The 3-Column Responsive Grid of Unit Cards (Cuadros) -->
-                    <div class="ed-units-grid" id="ed-units-grid">
-                        <!-- Dynamic Unit Cards generated by app.js -->
+                    <!-- ════ WORLD B: ESP INDUSTRY HUB (34 Tracks de Especialidad) ════ -->
+                    <div id="section-world-esp" style="display: none;">
+                        <!-- Section Header with Multi-Color Segmented Progress Bar -->
+                        <div class="ed-units-header-row">
+                            <div class="ed-units-title-box">
+                                <h2 class="ed-section-heading">ESP Industry Hub</h2>
+                                <span class="ed-units-subheading">34 Specialized Technical English (ESP) Tracks</span>
+                                <a href="/dev/#industry-standards-section" style="display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; font-weight:700; color:#0284c7; background:rgba(2,132,199,0.08); border:1px solid rgba(2,132,199,0.25); border-radius:999px; padding:3px 10px; text-decoration:none; margin-top:6px; width:fit-content;" title="Ver Comparativa con Estándares Internacionales">
+                                    <i class="fa-solid fa-scale-balanced"></i> Alineado a Estándares Industriales Globales vs. Planes Académicos &rarr;
+                                </a>
+                            </div>
+                            <div class="ed-segmented-progress-wrapper" title="Progreso de Unidades Aprobadas en stemOS">
+                                <div class="ed-segmented-bar" id="ed-segmented-bar">
+                                    <!-- 12 colorful segments dynamically rendered -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Search & Category Filter Toolbar -->
+                        <div class="ed-units-toolbar-row">
+                            <div class="ed-category-filter-bar">
+                                <button class="ed-filter-chip active" data-cat="all">
+                                    <i class="fa-solid fa-border-all"></i> All Units (<span id="count-cat-all">27</span>)
+                                </button>
+                                <button class="ed-filter-chip" data-cat="technology">
+                                    <span class="cat-dot dot-tech"></span> Technology (7)
+                                </button>
+                                <button class="ed-filter-chip" data-cat="engineering">
+                                    <span class="cat-dot dot-eng"></span> Engineering & Industry (8)
+                                </button>
+                                <button class="ed-filter-chip" data-cat="science">
+                                    <span class="cat-dot dot-sci"></span> Science & Future Tech (6)
+                                </button>
+                                <button class="ed-filter-chip" data-cat="career">
+                                    <span class="cat-dot dot-career"></span> Aviation & Career (6)
+                                </button>
+                            </div>
+                            <div class="ed-search-wrapper">
+                                <i class="fa-solid fa-magnifying-glass ed-search-icon"></i>
+                                <input type="text" id="ed-units-search" class="ed-search-input" placeholder="Buscar por tema, estándar (IEEE, ISO, NIST)...">
+                                <button id="ed-units-search-clear" class="ed-search-clear" style="display: none;" title="Limpiar búsqueda"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- The 3-Column Responsive Grid of ESP Unit Cards -->
+                        <div class="ed-units-grid" id="ed-units-grid">
+                            <!-- Dynamic Unit Cards generated by app.js -->
+                        </div>
                     </div>
+
                 </section>
 
 
@@ -791,12 +863,90 @@
         </div>
     </dialog>
 
+    <!-- MCER Unit Interactive Study Dialog (Fase 62) -->
+    <dialog class="modal-dialog" id="modal-mcer-unit">
+        <div class="modal-card academic-card" style="max-width:880px;">
+            <div class="academic-modal-header" style="border-bottom:1px solid #e2e8f0; padding-bottom:14px; margin-bottom:14px;">
+                <div class="academic-header-info">
+                    <span class="academic-track-badge" id="mcer-unit-level-badge" style="background:#0284c7; color:#fff;">CEFR A1</span>
+                    <h3 class="academic-module-title" id="mcer-unit-title" style="margin-top:4px;">Unit 01 · Introductions & Personal Info</h3>
+                    <p style="font-size:0.84rem; color:#64748b; margin-top:2px;" id="mcer-unit-cando">Can introduce self and others...</p>
+                </div>
+                <button class="modal-close" id="mcer-unit-close" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div style="display:flex; border-bottom:1px solid #e2e8f0; gap:8px; margin-bottom:18px;">
+                <button class="mcer-tab-btn active" data-mcer-tab="dialogue" style="padding:8px 16px; border:none; background:transparent; font-weight:700; font-size:0.88rem; color:#0284c7; border-bottom:2px solid #0284c7; cursor:pointer;">
+                    <i class="fa-solid fa-comments"></i> Diálogo & Audio
+                </button>
+                <button class="mcer-tab-btn" data-mcer-tab="vocab" style="padding:8px 16px; border:none; background:transparent; font-weight:700; font-size:0.88rem; color:#64748b; cursor:pointer;">
+                    <i class="fa-solid fa-book"></i> Vocabulario & Gramática
+                </button>
+                <button class="mcer-tab-btn" data-mcer-tab="reading" style="padding:8px 16px; border:none; background:transparent; font-weight:700; font-size:0.88rem; color:#64748b; cursor:pointer;">
+                    <i class="fa-solid fa-file-lines"></i> Lectura de Planta
+                </button>
+                <button class="mcer-tab-btn" data-mcer-tab="quiz" style="padding:8px 16px; border:none; background:transparent; font-weight:700; font-size:0.88rem; color:#64748b; cursor:pointer;">
+                    <i class="fa-solid fa-circle-check"></i> Mastery Quiz
+                </button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="mcer-tab-content-area" style="max-height:60vh; overflow-y:auto; padding-right:8px;">
+                <!-- Tab 1: Dialogue -->
+                <div id="mcer-screen-dialogue" class="mcer-screen active">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:#f8fafc; padding:10px 14px; border-radius:12px; border:1px solid #e2e8f0;">
+                        <span style="font-size:0.82rem; font-weight:700; color:#475569;"><i class="fa-solid fa-headphones"></i> American English Dialogue (Web Speech API)</span>
+                        <button class="btn btn-primary" id="btn-mcer-play-all-dialogue" style="width:auto; padding:6px 14px; font-size:0.8rem; border-radius:8px;">
+                            <i class="fa-solid fa-play"></i> Reproducir Diálogo Completo
+                        </button>
+                    </div>
+                    <div id="mcer-dialogue-bubbles" style="display:flex; flex-direction:column; gap:12px;"></div>
+                </div>
+
+                <!-- Tab 2: Vocab & Grammar -->
+                <div id="mcer-screen-vocab" class="mcer-screen" style="display:none;">
+                    <div style="background:rgba(2,132,199,0.06); border:1px solid rgba(2,132,199,0.25); border-radius:12px; padding:12px 16px; margin-bottom:16px;">
+                        <strong style="color:#0284c7; font-size:0.85rem;"><i class="fa-solid fa-wand-magic-sparkles"></i> Patrón Gramatical:</strong>
+                        <div id="mcer-grammar-focus-text" style="font-weight:700; font-size:0.95rem; color:#0f172a; margin-top:2px;"></div>
+                    </div>
+                    <h4 style="font-size:0.9rem; font-weight:800; color:#0f172a; margin-bottom:10px;">Vocabulario Clave con Pronunciación (IPA)</h4>
+                    <div id="mcer-vocab-cards-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:12px;"></div>
+                </div>
+
+                <!-- Tab 3: Reading -->
+                <div id="mcer-screen-reading" class="mcer-screen" style="display:none;">
+                    <div style="background:#ffffff; border:1px solid #cbd5e1; border-left:4px solid #0284c7; border-radius:12px; padding:16px; margin-bottom:16px;">
+                        <h4 id="mcer-reading-passage-title" style="font-size:0.95rem; font-weight:800; color:#0284c7; margin-bottom:8px;"></h4>
+                        <p id="mcer-reading-passage-text" style="font-size:0.9rem; color:#334155; line-height:1.6;"></p>
+                    </div>
+                    <h4 style="font-size:0.9rem; font-weight:800; color:#0f172a; margin-bottom:10px;">Preguntas de Comprensión</h4>
+                    <div id="mcer-reading-questions-container" style="display:flex; flex-direction:column; gap:14px;"></div>
+                </div>
+
+                <!-- Tab 4: Unit Quiz -->
+                <div id="mcer-screen-quiz" class="mcer-screen" style="display:none;">
+                    <div id="mcer-quiz-questions-container" style="display:flex; flex-direction:column; gap:16px;"></div>
+                    <div id="mcer-quiz-results-box" style="display:none; text-align:center; padding:16px; background:#f0fdf4; border:1px solid #86efac; border-radius:14px; margin-top:16px;">
+                        <div id="mcer-quiz-score-val" style="font-size:2rem; font-weight:900; color:#16a34a;">100%</div>
+                        <div style="font-size:0.85rem; font-weight:700; color:#15803d; margin-top:4px;">¡Unidad MCER Aprobada! Micro-credencial verificada.</div>
+                    </div>
+                    <button class="btn btn-primary" id="btn-submit-mcer-quiz" style="margin-top:16px;">
+                        <i class="fa-solid fa-check"></i> Calificar Quiz de Unidad
+                    </button>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
     <script>window.NEOSYS_SITE_ID = 'stemos';</script>
     <script src="content/firebase_adapter.js?v=6.1.0" defer></script>
     <script src="content/career_tracks.js?v=2.0.0" defer></script>
     <script src="content/career_paths.js?v=2.0.0" defer></script>
     <script src="content/courses.js" defer></script>
     <script src="content/phrases_library.js" defer></script>
+    <script src="content/mcer_tracks.js?v=1.0.0" defer></script>
+    <script src="content/placement_test.js?v=1.0.0" defer></script>
     <script src="app.js" defer></script>
     <script src="world-map.js" defer></script>
 

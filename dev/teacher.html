@@ -1491,6 +1491,7 @@
                                 <thead>
                                     <tr>
                                         <th onclick="sortTable('name')">Student <i class="fa-solid fa-sort"></i></th>
+                                        <th>CEFR Level</th>
                                         <th onclick="sortTable('progress')">Progress <i class="fa-solid fa-sort"></i></th>
                                         <th onclick="sortTable('xp')">XP Earned <i class="fa-solid fa-sort"></i></th>
                                         <th onclick="sortTable('modules')">Modules Done <i class="fa-solid fa-sort"></i></th>
@@ -1526,6 +1527,15 @@
                     <div class="form-group">
                         <label class="form-label" for="new-group-name">Group Name</label>
                         <input type="text" id="new-group-name" class="form-input" style="padding-left:14px;" placeholder="e.g. Mecatrónica 6°C — Robótica de Planta" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="new-group-program"><i class="fa-solid fa-shapes"></i> Program Curricular Type</label>
+                        <select id="new-group-program" class="form-select" style="padding-left:14px;" required>
+                            <option value="mcer">MCER Tracks (Standard American English · A1–B2)</option>
+                            <option value="esp" selected>ESP Career Track (34 Specialized Technical Industries)</option>
+                            <option value="hybrid">Hybrid Lab (MCER Core + ESP Track Focus)</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -1742,14 +1752,14 @@
 
         const INITIAL_STUDENT_ROSTERS = {
             c1: [
-                { id: 's1', name: 'Diana Laura Morales', matricula: '22050144', progress: 72, xp: 3450, modulesDone: 11, currentModule: 'M07: LOTO Zero-Energy Isolation', lastActive: '23 min ago', daysInactive: 0 },
-                { id: 's2', name: 'Alejandro Morales Ríos', matricula: '22050182', progress: 85, xp: 4200, modulesDone: 13, currentModule: 'M13: Cross-Border Vendor Escalation', lastActive: '14 min ago', daysInactive: 0 },
-                { id: 's3', name: 'Héctor Eduardo Torres', matricula: '20050015', progress: 95, xp: 5100, modulesDone: 15, currentModule: 'M16: Capstone SCADA Defense', lastActive: '1 hour ago', daysInactive: 0 },
-                { id: 's4', name: 'Sofía Cantú Villarreal', matricula: '22050210', progress: 68, xp: 3120, modulesDone: 10, currentModule: 'M06: P&ID Blueprint Symbols', lastActive: '4 hours ago', daysInactive: 0 },
-                { id: 's5', name: 'David Rocha Salazar', matricula: '21050091', progress: 42, xp: 1980, modulesDone: 6, currentModule: 'M05: Shopfloor 5S English Protocols', lastActive: '2 days ago', daysInactive: 2 },
-                { id: 's6', name: 'Valeria Gómez Ortiz', matricula: '22050302', progress: 24, xp: 950, modulesDone: 3, currentModule: 'M03: Digital Caliper GD&T Tolerances', lastActive: '8 days ago', daysInactive: 8 },
-                { id: 's7', name: 'Carlos Daniel Mendoza', matricula: '21050119', progress: 88, xp: 4350, modulesDone: 14, currentModule: 'M14: 8D Root Cause Analysis', lastActive: '5 hours ago', daysInactive: 0 },
-                { id: 's8', name: 'Jimena Patricia Delgado', matricula: '22050412', progress: 18, xp: 720, modulesDone: 2, currentModule: 'M02: PPE & Arc Flash Standard SOP', lastActive: '11 days ago', daysInactive: 11 }
+                { id: 's1', name: 'Diana Laura Morales', matricula: '22050144', placementLevel: 'B1', progress: 72, xp: 3450, modulesDone: 11, currentModule: 'M07: LOTO Zero-Energy Isolation', lastActive: '23 min ago', daysInactive: 0 },
+                { id: 's2', name: 'Alejandro Morales Ríos', matricula: '22050182', placementLevel: 'B2', progress: 85, xp: 4200, modulesDone: 13, currentModule: 'M13: Cross-Border Vendor Escalation', lastActive: '14 min ago', daysInactive: 0 },
+                { id: 's3', name: 'Héctor Eduardo Torres', matricula: '20050015', placementLevel: 'B2', progress: 95, xp: 5100, modulesDone: 15, currentModule: 'M16: Capstone SCADA Defense', lastActive: '1 hour ago', daysInactive: 0 },
+                { id: 's4', name: 'Sofía Cantú Villarreal', matricula: '22050210', placementLevel: 'B1', progress: 68, xp: 3120, modulesDone: 10, currentModule: 'M06: P&ID Blueprint Symbols', lastActive: '4 hours ago', daysInactive: 0 },
+                { id: 's5', name: 'David Rocha Salazar', matricula: '21050091', placementLevel: 'A2', progress: 42, xp: 1980, modulesDone: 6, currentModule: 'M05: Shopfloor 5S English Protocols', lastActive: '2 days ago', daysInactive: 2 },
+                { id: 's6', name: 'Valeria Gómez Ortiz', matricula: '22050302', placementLevel: 'A2', progress: 24, xp: 950, modulesDone: 3, currentModule: 'M03: Digital Caliper GD&T Tolerances', lastActive: '8 days ago', daysInactive: 8 },
+                { id: 's7', name: 'Carlos Daniel Mendoza', matricula: '21050119', placementLevel: 'B2', progress: 88, xp: 4350, modulesDone: 14, currentModule: 'M14: 8D Root Cause Analysis', lastActive: '5 hours ago', daysInactive: 0 },
+                { id: 's8', name: 'Jimena Patricia Delgado', matricula: '22050412', placementLevel: 'A1', progress: 18, xp: 720, modulesDone: 2, currentModule: 'M02: PPE & Arc Flash Standard SOP', lastActive: '11 days ago', daysInactive: 11 }
             ]
         };
 
@@ -2173,11 +2183,24 @@
 
             tbody.innerHTML = roster.map(s => {
                 const isInactiveAlert = s.daysInactive >= 7;
+                const lvl = s.placementLevel || 'A2';
+                const lvlColors = {
+                    'A1': 'background:rgba(16,185,129,0.15); color:var(--emerald-400); border:1px solid rgba(16,185,129,0.3);',
+                    'A2': 'background:rgba(2,132,199,0.15); color:#38bdf8; border:1px solid rgba(56,189,248,0.3);',
+                    'B1': 'background:rgba(245,158,11,0.15); color:var(--amber-400); border:1px solid rgba(245,158,11,0.3);',
+                    'B2': 'background:rgba(139,92,246,0.15); color:#c084fc; border:1px solid rgba(192,132,252,0.3);'
+                };
+                const lvlStyle = lvlColors[lvl] || lvlColors.A2;
                 return `
                     <tr style="${isInactiveAlert ? 'background:rgba(244, 63, 94, 0.05);' : ''}">
                         <td>
                             <strong style="color:#ffffff;">${s.name}</strong><br>
                             <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--teal-400);">${s.matricula}</span>
+                        </td>
+                        <td>
+                            <span style="font-family:var(--font-mono); font-size:0.75rem; font-weight:800; padding:3px 8px; border-radius:999px; ${lvlStyle}">
+                                CEFR ${lvl}
+                            </span>
                         </td>
                         <td>
                             <div style="display:flex; align-items:center; gap:8px;">

@@ -295,7 +295,14 @@ try {
   ];
 
   auditFiles.forEach(f => {
-    const content = fs.readFileSync(path.join(ROOT, f), 'utf8');
+    let content = fs.readFileSync(path.join(ROOT, f), 'utf8');
+    // Phase 62: Strip dedicated MCER Tracks and Placement sections before evaluating ESP Zero A2 policy
+    content = content.replace(/<!-- ════ WORLD A: MCER TRACKS[\s\S]*?<!-- ════ WORLD B: ESP INDUSTRY HUB/i, '');
+    content = content.replace(/<!-- COHORT MCER PLACEMENT DIAGNOSTIC BANNER[\s\S]*?<!-- SPLIT:/i, '<!-- SPLIT:');
+    content = content.replace(/<!-- MCER Unit Interactive Study Dialog[\s\S]*?<\/dialog>/i, '');
+    content = content.replace(/MCER Tracks \(Standard American English[\s\S]*?<\/option>/i, '');
+    content = content.replace(/CEFR \${lvl}/g, '');
+
     illegalPatterns.forEach(pat => {
       if (pat.test(content)) {
         zeroA2Clean = false;

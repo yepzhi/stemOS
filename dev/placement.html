@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stemOS | MCER English Placement Diagnostic (A1–B2)</title>
+    <meta name="description" content="Evaluación diagnóstica institucional estandarizada de 3 habilidades (Grammar, Listening, Reading) calibrada bajo el Marco Común Europeo (MCER/CEFR).">
+    
+    <!-- Google Fonts: Outfit & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-base: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --card-border: rgba(255, 255, 255, 0.95);
+            --card-shadow: 0 24px 50px -12px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
+            
+            --primary: #0284c7;
+            --primary-glow: rgba(2, 132, 199, 0.3);
+            --secondary: #4f46e5;
+            --accent: #10b981;
+            
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --text-dim: #94a3b8;
+            --glass-border: #e2e8f0;
+            
+            --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        /* ─── Ambient Whitish Aurora Background ─── */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .aurora-mesh {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(at 0% 0%, rgba(224, 242, 254, 0.9) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(238, 242, 255, 0.85) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(236, 253, 245, 0.8) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(253, 242, 248, 0.75) 0px, transparent 50%);
+        }
+
+        .aurora-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.38;
+            animation: aurora-drift 18s ease-in-out infinite alternate;
+        }
+
+        .orb-1 {
+            width: 550px;
+            height: 550px;
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            top: -150px;
+            left: -100px;
+        }
+
+        .orb-2 {
+            width: 480px;
+            height: 480px;
+            background: linear-gradient(135deg, #34d399 0%, #38bdf8 100%);
+            bottom: -120px;
+            right: -100px;
+            animation-duration: 22s;
+            animation-delay: -4s;
+        }
+
+        .orb-3 {
+            width: 360px;
+            height: 360px;
+            background: linear-gradient(135deg, #c084fc 0%, #f472b6 100%);
+            top: 40%;
+            left: 55%;
+            transform: translate(-50%, -50%);
+            opacity: 0.22;
+            animation-duration: 26s;
+            animation-delay: -8s;
+        }
+
+        @keyframes aurora-drift {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(35px, -30px) scale(1.08); }
+            100% { transform: translate(-25px, 25px) scale(0.95); }
+        }
+
+        /* ─── Top Floating Glass Bar ─── */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 900px;
+            padding: 12px 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .brand-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+
+        .brand-logo-pill {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+        }
+
+        .brand-text-col {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+        }
+
+        .brand-title {
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-accent {
+            color: var(--primary);
+        }
+
+        .brand-subtitle {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .timer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        }
+
+        .timer-badge.warning {
+            border-color: #fca5a5;
+            background: #fef2f2;
+            color: #ef4444;
+            animation: pulse-warn 1s infinite;
+        }
+
+        @keyframes pulse-warn {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .timer-digits {
+            font-family: var(--font-mono);
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .timer-badge.warning .timer-digits {
+            color: #ef4444;
+        }
+
+        .btn-audio-test {
+            background: rgba(2, 132, 199, 0.08);
+            border: 1px solid rgba(2, 132, 199, 0.25);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-audio-test:hover {
+            background: rgba(2, 132, 199, 0.15);
+            transform: translateY(-1px);
+        }
+
+        /* ─── App Container ─── */
+        #app {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 95px 16px 40px;
+        }
+
+        /* ─── Screen Transitions (Inspired by entrytest) ─── */
+        .screen {
+            display: none;
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .screen.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── Whitish Aurora Glass Card ─── */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid var(--card-border);
+            border-radius: clamp(20px, 4vw, 28px);
+            padding: clamp(20px, 5vw, 42px);
+            box-shadow: var(--card-shadow);
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* ─── Headings & Badges ─── */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(2, 132, 199, 0.08);
+            color: var(--primary);
+            border: 1px solid rgba(2, 132, 199, 0.22);
+            padding: 5px 14px;
+            border-radius: 999px;
+            font-size: clamp(0.72rem, 2vw, 0.82rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 14px;
+        }
+
+        h1 {
+            font-size: clamp(1.6rem, 5.5vw, 2.7rem);
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: clamp(0.9rem, 2.4vw, 1.05rem);
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            line-height: 1.55;
+        }
+
+        /* ─── Intro Stats Grid ─── */
+        .intro-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        @media (max-width: 600px) {
+            .intro-stats-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 16px 14px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+        }
+
+        .stat-val {
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            font-weight: 900;
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            line-height: 1.1;
+        }
+
+        .stat-label {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-top: 4px;
+        }
+
+        /* ─── Hardware Notice Box ─── */
+        .notice-box {
+            background: rgba(2, 132, 199, 0.05);
+            border: 1px solid rgba(2, 132, 199, 0.2);
+            border-radius: 16px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 26px;
+        }
+
+        .notice-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .notice-text {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        /* ─── Buttons ─── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: clamp(12px, 3vw, 16px) clamp(20px, 4vw, 32px);
+            border-radius: 14px;
+            font-size: clamp(0.9rem, 2.4vw, 1rem);
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+            color: #ffffff;
+            box-shadow: 0 10px 24px -6px rgba(2, 132, 199, 0.4);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px -6px rgba(2, 132, 199, 0.55);
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: var(--text-main);
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #f8fafc;
+            border-color: #94a3b8;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* ─── Resume Folio Box ─── */
+        .resume-container {
+            margin-top: 20px;
+            background: #ffffff;
+            border: 1px dashed #cbd5e1;
+            padding: 16px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .resume-prompt {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .resume-row {
+            display: flex;
+            gap: 8px;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        .resume-input {
+            flex: 1;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            padding: 10px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            outline: none;
+            background: #f8fafc;
+        }
+
+        .resume-input:focus {
+            border-color: var(--primary);
+            background: #ffffff;
+        }
+
+        .resume-btn {
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 0 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .resume-btn:hover {
+            background: #0369a1;
+        }
+
+        /* ─── Student Registration Form (Survey) ─── */
+        .survey-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        @media (max-width: 650px) {
+            .survey-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-input, .form-select {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            color: var(--text-main);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .form-input:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+        }
+
+        /* ─── Toggle Options ─── */
+        .toggle-group {
+            display: flex;
+            background: #e2e8f0;
+            padding: 3px;
+            border-radius: 12px;
+            gap: 4px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 10px 14px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            border-radius: 9px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .toggle-btn.active {
+            background: #ffffff;
+            color: var(--text-main);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        /* ─── Instructions Screen ─── */
+        .folio-hero-card {
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.08) 0%, rgba(79, 70, 229, 0.06) 100%);
+            border: 1.5px solid rgba(2, 132, 199, 0.25);
+            padding: 22px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 26px;
+        }
+
+        .folio-number {
+            font-family: var(--font-mono);
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .instructions-list {
+            text-align: left;
+            margin-bottom: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .instruction-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            background: #ffffff;
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .instruction-icon {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        /* ─── Quiz Runner (Screen 4) ─── */
+        .quiz-progress-bar-wrap {
+            margin-bottom: 22px;
+        }
+
+        .quiz-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .quiz-progress-track {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .quiz-progress-fill {
+            height: 100%;
+            width: 3%;
+            background: linear-gradient(90deg, #0284c7 0%, #4f46e5 100%);
+            border-radius: 999px;
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 12px rgba(2, 132, 199, 0.5);
+        }
+
+        .skill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .skill-badge.grammar {
+            background: #ecfdf5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+
+        .skill-badge.listening {
+            background: #e0f2fe;
+            color: #0284c7;
+            border: 1px solid #bae6fd;
+        }
+
+        .skill-badge.reading {
+            background: #f5f3ff;
+            color: #7c3aed;
+            border: 1px solid #ddd6fe;
+        }
+
+        /* Audio Player Card for Listening */
+        .audio-player-card {
+            background: linear-gradient(135deg, #0284c70f 0%, #4f46e508 100%);
+            border: 1.5px solid rgba(2, 132, 199, 0.3);
+            border-radius: 18px;
+            padding: 18px 22px;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .audio-wave-anim {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            height: 24px;
+        }
+
+        .audio-bar {
+            width: 4px;
+            height: 8px;
+            background: #0284c7;
+            border-radius: 2px;
+            transition: height 0.2s;
+        }
+
+        .audio-wave-anim.playing .audio-bar:nth-child(1) { animation: wave 0.8s infinite 0.1s; }
+        .audio-wave-anim.playing .audio-bar:nth-child(2) { animation: wave 0.8s infinite 0.3s; }
+        .audio-wave-anim.playing .audio-bar:nth-child(3) { animation: wave 0.8s infinite 0.2s; }
+        .audio-wave-anim.playing .audio-bar:nth-child(4) { animation: wave 0.8s infinite 0.4s; }
+        .audio-wave-anim.playing .audio-bar:nth-child(5) { animation: wave 0.8s infinite 0.2s; }
+
+        @keyframes wave {
+            0%, 100% { height: 6px; }
+            50% { height: 24px; }
+        }
+
+        .btn-play-audio {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+            transition: all 0.2s;
+        }
+
+        .btn-play-audio:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(2, 132, 199, 0.45);
+        }
+
+        /* Reading Passage Card */
+        .reading-passage-box {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-left: 4px solid #7c3aed;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 22px;
+            text-align: left;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .passage-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #7c3aed;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .passage-text {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        /* Question prompt */
+        .question-prompt {
+            font-size: clamp(1.1rem, 3.5vw, 1.35rem);
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 24px;
+            line-height: 1.35;
+            text-align: left;
+        }
+
+        /* Options Grid */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .option-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 16px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: left;
+            position: relative;
+        }
+
+        .option-card:hover {
+            border-color: #94a3b8;
+            background: #f8fafc;
+            transform: translateX(4px);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary);
+            background: rgba(2, 132, 199, 0.06);
+            box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
+        }
+
+        .option-indicator {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            flex-shrink: 0;
+            transition: all 0.2s;
+            font-family: var(--font-mono);
+        }
+
+        .option-card.selected .option-indicator {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35);
+        }
+
+        .option-label {
+            font-size: clamp(0.9rem, 2.5vw, 1.02rem);
+            font-weight: 600;
+            color: var(--text-main);
+            flex: 1;
+        }
+
+        .quiz-actions-row {
+            display: flex;
+            gap: 12px;
+            justify-content: space-between;
+        }
+
+        /* ─── Results Screen (Screen 5) ─── */
+        .score-circle-wrap {
+            margin: 20px auto 26px;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 16px 36px -6px rgba(2, 132, 199, 0.45);
+        }
+
+        .score-number {
+            font-size: 2.8rem;
+            font-weight: 900;
+            line-height: 1;
+            font-family: var(--font-mono);
+        }
+
+        .score-denom {
+            font-size: 0.82rem;
+            font-weight: 700;
+            opacity: 0.85;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cefr-level-badge {
+            display: inline-block;
+            font-size: 1.3rem;
+            font-weight: 900;
+            padding: 8px 24px;
+            border-radius: 999px;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .cefr-level-badge.level-A1 { background: #ecfdf5; color: #059669; border: 2px solid #a7f3d0; }
+        .cefr-level-badge.level-A2 { background: #e0f2fe; color: #0284c7; border: 2px solid #bae6fd; }
+        .cefr-level-badge.level-B1 { background: #fef3c7; color: #d97706; border: 2px solid #fde68a; }
+        .cefr-level-badge.level-B2 { background: #f3e8ff; color: #9333ea; border: 2px solid #e9d5ff; }
+
+        .breakdown-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 22px;
+            margin-bottom: 26px;
+            text-align: left;
+        }
+
+        .breakdown-row {
+            margin-bottom: 16px;
+        }
+
+        .breakdown-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .breakdown-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 0.88rem;
+            font-weight: 700;
+        }
+
+        .breakdown-bar-bg {
+            height: 10px;
+            background: #f1f5f9;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .breakdown-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 1s ease-out;
+        }
+
+        .fill-grammar { background: linear-gradient(90deg, #10b981, #059669); }
+        .fill-listening { background: linear-gradient(90deg, #0284c7, #0369a1); }
+        .fill-reading { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+
+        .recommendation-box {
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.08) 0%, rgba(79, 70, 229, 0.05) 100%);
+            border: 1px solid rgba(2, 132, 199, 0.25);
+            border-radius: 18px;
+            padding: 18px 22px;
+            margin-bottom: 28px;
+            text-align: left;
+        }
+
+        .rec-tag {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 4px;
+        }
+
+        .rec-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .rec-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ─── Footer ─── */
+        .lxp-footer {
+            margin-top: 36px;
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Ambient Whitish Aurora Background ── -->
+    <div class="aurora-bg">
+        <div class="aurora-mesh"></div>
+        <div class="aurora-orb orb-1"></div>
+        <div class="aurora-orb orb-2"></div>
+        <div class="aurora-orb orb-3"></div>
+    </div>
+
+    <!-- ── Top Floating Glass Header ── -->
+    <header class="top-bar">
+        <a href="app.html" class="brand-link" title="Volver a stemOS">
+            <div class="brand-logo-pill">st</div>
+            <div class="brand-text-col">
+                <span class="brand-title">stem<span class="brand-accent">OS</span></span>
+                <span class="brand-subtitle">MCER Placement Engine</span>
+            </div>
+        </a>
+
+        <div class="top-actions">
+            <button class="btn-audio-test" id="btn-audio-test" title="Probar Sintetizador de Audio Web Speech API en-US">
+                <i class="fa-solid fa-volume-high"></i> Audio Check
+            </button>
+            <div class="timer-badge" id="timer-badge" style="display: none;">
+                <i class="fa-solid fa-stopwatch"></i>
+                <span id="timer-val" class="timer-digits">30:00</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ── Main App Container ── -->
+    <main id="app">
+
+        <!-- ════ SCREEN 1: WELCOME SCREEN ════ -->
+        <section id="screen-welcome" class="screen active">
+            <div class="glass-card">
+                <div class="badge"><i class="fa-solid fa-graduation-cap"></i> Institutional Placement · 30 Min</div>
+                <h1>stemOS <span class="highlight">MCER Placement Test</span></h1>
+                <p class="subtitle">Evaluación diagnóstica estandarizada en 3 competencias clave (Grammar, Listening & Reading) calibrada bajo el Marco Común Europeo de Referencia (A1 a B2). Diseñada para centros de cómputo y dispositivos móviles con cero latencia.</p>
+
+                <div class="intro-stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-val">32</div>
+                        <div class="stat-label">Reactivos Calibrados</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val">30m</div>
+                        <div class="stat-label">Tiempo Estimado</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val">A1–B2</div>
+                        <div class="stat-label">Nivel MCER / CEFR</div>
+                    </div>
+                </div>
+
+                <div class="notice-box">
+                    <i class="fa-solid fa-headphones notice-icon"></i>
+                    <div class="notice-text">
+                        <strong>Audio Requerido en Sección 2:</strong> Este examen incluye 10 reactivos de comprensión auditiva con hablantes nativos en inglés americano. Conecta tus audífonos o verifica el volumen de tu equipo.
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" id="btn-welcome-start">
+                    <span>Comenzar Registro y Evaluación</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+                <div class="resume-container">
+                    <div class="resume-prompt">¿Ya realizaste tu evaluación y tienes un folio previo?</div>
+                    <div class="resume-row">
+                        <input type="text" id="input-resume-folio" class="resume-input" placeholder="STEMOS-MCER-XXXX" maxlength="17">
+                        <button class="resume-btn" id="btn-resume-folio"><i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════ SCREEN 2: STUDENT REGISTRATION (SURVEY) ════ -->
+        <section id="screen-survey" class="screen">
+            <div class="glass-card">
+                <div class="badge"><i class="fa-solid fa-id-card"></i> Paso 1 de 3 · Perfil Oficial</div>
+                <h1>Registro del <span class="highlight">Estudiante</span></h1>
+                <p class="subtitle">Captura tus datos institucionales para generar tu folio único de examen, guardar tus resultados en la base de datos y asignar tu cohorte curricular.</p>
+
+                <form id="form-student-registration" onsubmit="event.preventDefault(); goToInstructions();">
+                    <div class="survey-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="reg-first-name"><i class="fa-solid fa-user"></i> Nombre(s)</label>
+                            <input type="text" id="reg-first-name" class="form-input" placeholder="e.g. Diana Laura" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg-last-name"><i class="fa-solid fa-user-group"></i> Apellidos</label>
+                            <input type="text" id="reg-last-name" class="form-input" placeholder="e.g. Morales Ríos" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg-email"><i class="fa-solid fa-envelope"></i> Correo Institucional</label>
+                            <input type="email" id="reg-email" class="form-input" placeholder="e.g. diana.morales@upmxl.edu.mx" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg-matricula"><i class="fa-solid fa-hashtag"></i> Matrícula / No. de Control</label>
+                            <input type="text" id="reg-matricula" class="form-input" placeholder="e.g. 22050144" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg-institution"><i class="fa-solid fa-building-columns"></i> Institución / Campus</label>
+                            <select id="reg-institution" class="form-select" required>
+                                <option value="UPMXL">Universidad Politécnica de Baja California (UPMXL)</option>
+                                <option value="TecNM">Tecnológico Nacional de México (TecNM)</option>
+                                <option value="UTT">Universidad Tecnológica de Tijuana (UTT)</option>
+                                <option value="UABC">Universidad Autónoma de Baja California (UABC)</option>
+                                <option value="UNISON">Universidad de Sonora (UNISON)</option>
+                                <option value="OTHER">Otra Universidad Politécnica / Tecnológica</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg-career"><i class="fa-solid fa-microchip"></i> Carrera / Especialidad</label>
+                            <select id="reg-career" class="form-select" required>
+                                <option value="Ingeniería Mecatrónica">Ingeniería Mecatrónica & Robótica</option>
+                                <option value="Ingeniería en Software">Ingeniería en Tecnologías de la Información / Software</option>
+                                <option value="Ingeniería Industrial">Ingeniería Industrial & Manufactura</option>
+                                <option value="Ingeniería en Semiconductores">Ingeniería en Semiconductores & Microelectrónica</option>
+                                <option value="Ingeniería Biomédica">Ingeniería Biomédica & Dispositivos Médicos</option>
+                                <option value="Ingeniería Aeroespacial">Ingeniería Aeroespacial / Aeronáutica</option>
+                                <option value="Ingeniería en Energía">Ingeniería en Energía & Baterías Eléctricas</option>
+                                <option value="Otra">Otra Carrera STEM</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label class="form-label"><i class="fa-solid fa-headphones"></i> ¿Cuentas con audífonos o audio habilitado en esta computadora?</label>
+                            <div class="toggle-group" id="toggle-audio-check">
+                                <button type="button" class="toggle-btn active" data-val="yes"><i class="fa-solid fa-check"></i> Sí, audio listo</button>
+                                <button type="button" class="toggle-btn" data-val="no"><i class="fa-solid fa-volume-xmark"></i> No (Solo lectura)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:12px;">
+                        <button type="button" class="btn btn-secondary" onclick="switchScreen('screen-welcome')">
+                            <i class="fa-solid fa-arrow-left"></i> Volver
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="btn-survey-continue">
+                            <span>Guardar Perfil y Continuar</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ════ SCREEN 3: INSTRUCTIONS & FOLIO SCREEN ════ -->
+        <section id="screen-instructions" class="screen">
+            <div class="glass-card">
+                <div class="badge"><i class="fa-solid fa-circle-info"></i> Paso 2 de 3 · Instrucciones</div>
+                <h1>Identificador y <span class="highlight">Reglas del Test</span></h1>
+                <p class="subtitle">Guarda tu folio generado. Es tu identificación oficial de diagnóstico ante tu institución.</p>
+
+                <div class="folio-hero-card">
+                    <span style="font-size:0.82rem; font-weight:700; color:var(--text-dim); text-transform:uppercase;">Tu Folio Único Institucional:</span>
+                    <div class="folio-number" id="display-folio-number">STEMOS-MCER-XXXXX</div>
+                    <span style="font-size:0.75rem; color:var(--text-muted); margin-top:4px; display:block;">Registrado a nombre de: <strong id="display-student-name">Estudiante</strong></span>
+                </div>
+
+                <div class="instructions-list">
+                    <div class="instruction-item">
+                        <i class="fa-solid fa-stopwatch instruction-icon"></i>
+                        <div>
+                            <strong>Tiempo Límite de 30 Minutos:</strong> El cronómetro oficial correrá en la barra superior. Si concluye el tiempo, el sistema enviará automáticamente las respuestas capturadas.
+                        </div>
+                    </div>
+                    <div class="instruction-item">
+                        <i class="fa-solid fa-list-check instruction-icon"></i>
+                        <div>
+                            <strong>32 Reactivos Estandarizados:</strong> 12 de Gramática & Estructura, 10 de Comprensión Auditiva (Listening con acento americano nativo) y 10 de Comprensión Lectora de Planta.
+                        </div>
+                    </div>
+                    <div class="instruction-item">
+                        <i class="fa-solid fa-user-shield instruction-icon"></i>
+                        <div>
+                            <strong>Diagnóstico Individual:</strong> Responde de forma honesta. Este examen ubicará tu nivel real para que no comiences con contenidos demasiado básicos ni excesivamente frustrantes.
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" id="btn-start-quiz" style="font-size:1.05rem; padding:16px;">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>¡INICIAR EVALUACIÓN DIAGNÓSTICA! (30 MIN)</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ════ SCREEN 4: QUIZ SCREEN ════ -->
+        <section id="screen-quiz" class="screen">
+            <div class="glass-card">
+                <!-- Progress Header -->
+                <div class="quiz-progress-bar-wrap">
+                    <div class="quiz-meta-row">
+                        <span class="skill-badge grammar" id="quiz-skill-badge">Grammar & Structure</span>
+                        <span style="font-family:var(--font-mono); font-size:0.85rem; font-weight:700; color:var(--text-dim);">
+                            Pregunta <strong id="quiz-current-num" style="color:var(--text-main);">1</strong> / 32
+                        </span>
+                    </div>
+                    <div class="quiz-progress-track">
+                        <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+                    </div>
+                </div>
+
+                <!-- Listening Audio Player Box (Hidden if not listening) -->
+                <div class="audio-player-card" id="listening-audio-box" style="display: none;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <button class="btn-play-audio" id="btn-play-prompt">
+                            <i class="fa-solid fa-play" id="audio-play-icon"></i>
+                            <span id="audio-play-text">Escuchar Audio (en-US)</span>
+                        </button>
+                        <div class="audio-wave-anim" id="audio-wave-anim">
+                            <div class="audio-bar"></div>
+                            <div class="audio-bar"></div>
+                            <div class="audio-bar"></div>
+                            <div class="audio-bar"></div>
+                            <div class="audio-bar"></div>
+                        </div>
+                    </div>
+                    <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">
+                        <i class="fa-solid fa-headphones"></i> American English Native Voice
+                    </span>
+                </div>
+
+                <!-- Reading Passage Box (Hidden if not reading) -->
+                <div class="reading-passage-box" id="reading-passage-box" style="display: none;">
+                    <div class="passage-title" id="reading-passage-title"><i class="fa-solid fa-file-lines"></i> Maintenance Memo</div>
+                    <div class="passage-text" id="reading-passage-text">Plant reading text goes here...</div>
+                </div>
+
+                <!-- Question Prompt -->
+                <h2 class="question-prompt" id="quiz-question-text">Loading question prompt...</h2>
+
+                <!-- Options List -->
+                <div class="options-list" id="quiz-options-list">
+                    <!-- Injected dynamically -->
+                </div>
+
+                <!-- Quiz Navigation Actions -->
+                <div class="quiz-actions-row">
+                    <button type="button" class="btn btn-secondary" id="btn-quiz-prev" style="width:auto; min-width:120px;" disabled>
+                        <i class="fa-solid fa-arrow-left"></i> Anterior
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn-quiz-next" style="width:auto; min-width:180px;" disabled>
+                        <span>Siguiente</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════ SCREEN 5: RESULTS SCORECARD SCREEN ════ -->
+        <section id="screen-results" class="screen">
+            <div class="glass-card" style="text-align: center;">
+                <div class="badge"><i class="fa-solid fa-award"></i> Diagnóstico Oficial stemOS</div>
+                <h1>Resultado del <span class="highlight">Placement Test</span></h1>
+                <p class="subtitle" style="margin-bottom:16px;">Evaluación diagnóstica concluida con éxito. Este resultado determina tu nivel de ingreso curricular.</p>
+
+                <div class="score-circle-wrap">
+                    <span class="score-number" id="res-score-number">24</span>
+                    <span class="score-denom">de 32 (<span id="res-score-pct">75%</span>)</span>
+                </div>
+
+                <div>
+                    <span class="cefr-level-badge level-B1" id="res-cefr-badge">CEFR B1 · Threshold</span>
+                </div>
+
+                <!-- 3-Skill Breakdown Card -->
+                <div class="breakdown-card">
+                    <h3 style="font-size:0.95rem; font-weight:800; color:var(--text-main); margin-bottom:14px; text-transform:uppercase; letter-spacing:0.5px;">
+                        <i class="fa-solid fa-chart-simple" style="color:var(--primary); margin-right:6px;"></i> Desglose por Competencia
+                    </h3>
+
+                    <div class="breakdown-row">
+                        <div class="breakdown-info">
+                            <span><i class="fa-solid fa-book" style="color:#10b981; margin-right:6px;"></i> Grammar & Syntax</span>
+                            <span id="res-grammar-score">10 / 12 (83%)</span>
+                        </div>
+                        <div class="breakdown-bar-bg">
+                            <div class="breakdown-bar-fill fill-grammar" id="res-grammar-bar" style="width: 83%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="breakdown-row">
+                        <div class="breakdown-info">
+                            <span><i class="fa-solid fa-headphones" style="color:#0284c7; margin-right:6px;"></i> Listening Comprehension</span>
+                            <span id="res-listening-score">7 / 10 (70%)</span>
+                        </div>
+                        <div class="breakdown-bar-bg">
+                            <div class="breakdown-bar-fill fill-listening" id="res-listening-bar" style="width: 70%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="breakdown-row">
+                        <div class="breakdown-info">
+                            <span><i class="fa-solid fa-file-lines" style="color:#8b5cf6; margin-right:6px;"></i> Reading Comprehension</span>
+                            <span id="res-reading-score">7 / 10 (70%)</span>
+                        </div>
+                        <div class="breakdown-bar-bg">
+                            <div class="breakdown-bar-fill fill-reading" id="res-reading-bar" style="width: 70%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendation Enrollment Box -->
+                <div class="recommendation-box">
+                    <div class="rec-tag"><i class="fa-solid fa-compass"></i> Ruta Curricular Recomendada</div>
+                    <div class="rec-title" id="res-rec-title">Nivel B1 (Threshold) — MCER Tracks</div>
+                    <div class="rec-desc" id="res-rec-desc">
+                        Cuentas con bases sólidas para comprender instrucciones de planta, resolución de problemas técnicos y comunicación fluida en inglés estándar. Tu cohorte iniciará directamente en la Unidad 09.
+                    </div>
+                </div>
+
+                <!-- Student Folio Card -->
+                <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:14px; padding:12px 16px; margin-bottom:24px; font-size:0.82rem; color:var(--text-dim); display:flex; justify-content:space-around; flex-wrap:wrap; gap:8px;">
+                    <div>Estudiante: <strong style="color:var(--text-main);" id="res-student-name">Diana Laura Morales</strong></div>
+                    <div>Folio: <strong style="color:var(--primary); font-family:var(--font-mono);" id="res-folio-val">STEMOS-MCER-1234</strong></div>
+                    <div>Fecha: <strong style="color:var(--text-main);" id="res-date-val">20 Octubre 2026</strong></div>
+                </div>
+
+                <!-- Actions -->
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                    <a href="app.html" class="btn btn-primary" id="btn-enter-stemos">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                        <span>Ingresar a stemOS en mi Nivel Asignado</span>
+                    </a>
+                    <button type="button" class="btn btn-secondary" id="btn-retake-test">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Reintentar Diagnóstico</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="lxp-footer">
+            <p><strong>stemOS LXP</strong> · Institutional Language Placement Engine · MCER / CEFR Standard A1–B2</p>
+            <p style="margin-top:4px;">Alineado a los estándares de titulación de universidades politécnicas y tecnológicas (UPMXL, TecNM, UTT).</p>
+        </footer>
+
+    </main>
+
+    <!-- ── Scripts ── -->
+    <script src="content/placement_test.js?v=1.0.0"></script>
+    <script>
+        // ── State Management ──
+        const state = {
+            currentScreen: 'screen-welcome',
+            currentIndex: 0,
+            answers: new Array(32).fill(null),
+            timeRemainingSeconds: 30 * 60, // 30 minutes
+            timerInterval: null,
+            student: {
+                firstName: '',
+                lastName: '',
+                email: '',
+                matricula: '',
+                institution: 'UPMXL',
+                career: 'Ingeniería Mecatrónica',
+                audioCheck: 'yes',
+                folio: ''
+            },
+            evaluationResult: null,
+            isPlayingAudio: false
+        };
+
+        // ── Screen Navigation ──
+        function switchScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => {
+                s.classList.remove('active');
+            });
+            const target = document.getElementById(screenId);
+            if (target) {
+                target.classList.add('active');
+                state.currentScreen = screenId;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Top Bar Timer Visibility
+            const timerBadge = document.getElementById('timer-badge');
+            if (timerBadge) {
+                timerBadge.style.display = (screenId === 'screen-quiz') ? 'inline-flex' : 'none';
+            }
+        }
+
+        // ── Folio Generator ──
+        function generateFolio() {
+            const randomCode = Math.floor(10000 + Math.random() * 90000);
+            return `STEMOS-MCER-${randomCode}`;
+        }
+
+        // ── Audio Check / SpeechSynthesis Test ──
+        document.getElementById('btn-audio-test').addEventListener('click', () => {
+            const testText = "Welcome to stemOS. Audio check complete. Your speakers and speech synthesis are working perfectly.";
+            if (window.STEMOS_PLACEMENT_TEST && window.STEMOS_PLACEMENT_TEST.playAudioPrompt) {
+                window.STEMOS_PLACEMENT_TEST.playAudioPrompt(testText, 
+                    () => { document.getElementById('btn-audio-test').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Testing...'; },
+                    () => { document.getElementById('btn-audio-test').innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Audio OK'; }
+                );
+            } else {
+                alert('Audio SpeechSynthesis Ready: Web Speech API available.');
+            }
+        });
+
+        // ── Screen 1 Handlers ──
+        document.getElementById('btn-welcome-start').addEventListener('click', () => {
+            switchScreen('screen-survey');
+        });
+
+        document.getElementById('btn-resume-folio').addEventListener('click', () => {
+            const input = document.getElementById('input-resume-folio').value.trim().toUpperCase();
+            if (!input) {
+                alert('Por favor ingresa un folio válido.');
+                return;
+            }
+            const stored = localStorage.getItem(`stemos_diag_${input}`);
+            if (stored) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    state.student = parsed.student;
+                    state.evaluationResult = parsed.result;
+                    renderResultsScreen();
+                    switchScreen('screen-results');
+                    return;
+                } catch(e) {}
+            }
+            alert(`Folio ${input} no encontrado en este dispositivo. Puedes comenzar un nuevo diagnóstico en 30 minutos.`);
+        });
+
+        // ── Survey Screen Handlers ──
+        document.querySelectorAll('#toggle-audio-check .toggle-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#toggle-audio-check .toggle-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                state.student.audioCheck = btn.dataset.val;
+            });
+        });
+
+        function goToInstructions() {
+            state.student.firstName = document.getElementById('reg-first-name').value.trim();
+            state.student.lastName = document.getElementById('reg-last-name').value.trim();
+            state.student.email = document.getElementById('reg-email').value.trim();
+            state.student.matricula = document.getElementById('reg-matricula').value.trim();
+            state.student.institution = document.getElementById('reg-institution').value;
+            state.student.career = document.getElementById('reg-career').value;
+            state.student.folio = generateFolio();
+
+            document.getElementById('display-folio-number').textContent = state.student.folio;
+            document.getElementById('display-student-name').textContent = `${state.student.firstName} ${state.student.lastName}`;
+
+            switchScreen('screen-instructions');
+        }
+
+        // ── Timer Runner ──
+        function startTimer() {
+            const timerVal = document.getElementById('timer-val');
+            const timerBadge = document.getElementById('timer-badge');
+            
+            if (state.timerInterval) clearInterval(state.timerInterval);
+
+            state.timerInterval = setInterval(() => {
+                state.timeRemainingSeconds--;
+
+                if (state.timeRemainingSeconds <= 0) {
+                    clearInterval(state.timerInterval);
+                    timerVal.textContent = '00:00';
+                    alert('El tiempo límite de 30 minutos ha concluido. Calificando tus reactivos completados...');
+                    finishQuiz();
+                    return;
+                }
+
+                const mins = Math.floor(state.timeRemainingSeconds / 60);
+                const secs = state.timeRemainingSeconds % 60;
+                timerVal.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+                if (state.timeRemainingSeconds < 300) { // 5 minutes warning
+                    timerBadge.classList.add('warning');
+                }
+            }, 1000);
+        }
+
+        // ── Start Quiz Handler ──
+        document.getElementById('btn-start-quiz').addEventListener('click', () => {
+            state.currentIndex = 0;
+            state.answers = new Array(32).fill(null);
+            switchScreen('screen-quiz');
+            startTimer();
+            renderQuestion(0);
+        });
+
+        // ── Render Question ──
+        function renderQuestion(index) {
+            state.currentIndex = index;
+            const questions = window.STEMOS_PLACEMENT_TEST.questions;
+            const q = questions[index];
+
+            // Progress Bar & Meta
+            document.getElementById('quiz-current-num').textContent = index + 1;
+            const progressPct = Math.round(((index + 1) / questions.length) * 100);
+            document.getElementById('quiz-progress-fill').style.width = `${progressPct}%`;
+
+            // Skill Badge
+            const skillBadge = document.getElementById('quiz-skill-badge');
+            skillBadge.className = `skill-badge ${q.section}`;
+            skillBadge.textContent = q.sectionLabel || q.section.toUpperCase();
+
+            // Sections UI switches
+            const listeningBox = document.getElementById('listening-audio-box');
+            const readingBox = document.getElementById('reading-passage-box');
+
+            if (q.section === 'listening') {
+                listeningBox.style.display = 'flex';
+                readingBox.style.display = 'none';
+
+                // Setup Audio button
+                const playBtn = document.getElementById('btn-play-prompt');
+                const playIcon = document.getElementById('audio-play-icon');
+                const playText = document.getElementById('audio-play-text');
+                const waveAnim = document.getElementById('audio-wave-anim');
+
+                playBtn.onclick = () => {
+                    if (state.isPlayingAudio) {
+                        window.speechSynthesis.cancel();
+                        state.isPlayingAudio = false;
+                        playIcon.className = 'fa-solid fa-play';
+                        playText.textContent = 'Escuchar Audio';
+                        waveAnim.classList.remove('playing');
+                        return;
+                    }
+
+                    state.isPlayingAudio = true;
+                    playIcon.className = 'fa-solid fa-stop';
+                    playText.textContent = 'Detener Audio';
+                    waveAnim.classList.add('playing');
+
+                    window.STEMOS_PLACEMENT_TEST.playAudioPrompt(
+                        q.audioScript,
+                        () => {},
+                        () => {
+                            state.isPlayingAudio = false;
+                            playIcon.className = 'fa-solid fa-rotate-right';
+                            playText.textContent = 'Repetir Audio';
+                            waveAnim.classList.remove('playing');
+                        }
+                    );
+                };
+            } else if (q.section === 'reading') {
+                listeningBox.style.display = 'none';
+                readingBox.style.display = 'block';
+                document.getElementById('reading-passage-title').innerHTML = `<i class="fa-solid fa-file-lines"></i> ${q.passageTitle || 'Workplace Notice'}`;
+                document.getElementById('reading-passage-text').textContent = q.passageText || '';
+            } else {
+                listeningBox.style.display = 'none';
+                readingBox.style.display = 'none';
+            }
+
+            // Question prompt
+            document.getElementById('quiz-question-text').textContent = q.question;
+
+            // Options List
+            const optionsList = document.getElementById('quiz-options-list');
+            optionsList.innerHTML = '';
+
+            const optionLetters = ['A', 'B', 'C', 'D'];
+            q.options.forEach((optText, optIdx) => {
+                const card = document.createElement('div');
+                card.className = `option-card ${state.answers[index] === optIdx ? 'selected' : ''}`;
+                card.innerHTML = `
+                    <div class="option-indicator">${optionLetters[optIdx]}</div>
+                    <div class="option-label">${optText}</div>
+                `;
+
+                card.addEventListener('click', () => {
+                    state.answers[index] = optIdx;
+                    renderQuestion(index);
+                });
+
+                optionsList.appendChild(card);
+            });
+
+            // Action Buttons
+            const btnPrev = document.getElementById('btn-quiz-prev');
+            const btnNext = document.getElementById('btn-quiz-next');
+
+            btnPrev.disabled = (index === 0);
+            btnNext.disabled = (state.answers[index] === null);
+
+            if (index === questions.length - 1) {
+                btnNext.innerHTML = '<span>Finalizar Evaluación</span> <i class="fa-solid fa-check-double"></i>';
+            } else {
+                btnNext.innerHTML = '<span>Siguiente</span> <i class="fa-solid fa-arrow-right"></i>';
+            }
+        }
+
+        // ── Next & Previous Handlers ──
+        document.getElementById('btn-quiz-prev').addEventListener('click', () => {
+            if (state.currentIndex > 0) {
+                if (window.speechSynthesis) window.speechSynthesis.cancel();
+                renderQuestion(state.currentIndex - 1);
+            }
+        });
+
+        document.getElementById('btn-quiz-next').addEventListener('click', () => {
+            if (window.speechSynthesis) window.speechSynthesis.cancel();
+            const total = window.STEMOS_PLACEMENT_TEST.questions.length;
+            if (state.currentIndex < total - 1) {
+                renderQuestion(state.currentIndex + 1);
+            } else {
+                finishQuiz();
+            }
+        });
+
+        // ── Finish Quiz & Scorecard ──
+        function finishQuiz() {
+            if (state.timerInterval) clearInterval(state.timerInterval);
+            if (window.speechSynthesis) window.speechSynthesis.cancel();
+
+            const result = window.STEMOS_PLACEMENT_TEST.evaluateAnswers(state.answers);
+            state.evaluationResult = result;
+
+            // Persist to localStorage
+            const payload = {
+                student: state.student,
+                result: result,
+                answers: state.answers,
+                completedAt: new Date().toISOString()
+            };
+
+            localStorage.setItem(`stemos_diag_${state.student.folio}`, JSON.stringify(payload));
+            localStorage.setItem('stemos_placement_test', JSON.stringify(payload));
+            
+            // Also store student profile credentials for direct entry into stemOS
+            localStorage.setItem('stemos_user_name', `${state.student.firstName} ${state.student.lastName}`);
+            localStorage.setItem('stemos_user_email', state.student.email);
+            localStorage.setItem('stemos_user_level', result.level);
+
+            renderResultsScreen();
+            switchScreen('screen-results');
+        }
+
+        // ── Render Results ──
+        function renderResultsScreen() {
+            const res = state.evaluationResult;
+            if (!res) return;
+
+            document.getElementById('res-score-number').textContent = res.score;
+            document.getElementById('res-score-pct').textContent = `${res.percentage}%`;
+
+            // Badge
+            const badge = document.getElementById('res-cefr-badge');
+            badge.className = `cefr-level-badge level-${res.level}`;
+            badge.textContent = `CEFR ${res.level} · ${res.levelTitle}`;
+
+            // Scores
+            const g = res.sectionScores.grammar;
+            const l = res.sectionScores.listening;
+            const r = res.sectionScores.reading;
+
+            document.getElementById('res-grammar-score').textContent = `${g.score} / ${g.total} (${g.pct}%)`;
+            document.getElementById('res-grammar-bar').style.width = `${g.pct}%`;
+
+            document.getElementById('res-listening-score').textContent = `${l.score} / ${l.total} (${l.pct}%)`;
+            document.getElementById('res-listening-bar').style.width = `${l.pct}%`;
+
+            document.getElementById('res-reading-score').textContent = `${r.score} / ${r.total} (${r.pct}%)`;
+            document.getElementById('res-reading-bar').style.width = `${r.pct}%`;
+
+            // Recommendation
+            document.getElementById('res-rec-title').textContent = `Inscripción Recomendada: Nivel MCER ${res.level}`;
+            document.getElementById('res-rec-desc').textContent = `${res.summary} ${res.nextStep}`;
+
+            // Meta
+            document.getElementById('res-student-name').textContent = `${state.student.firstName} ${state.student.lastName}`;
+            document.getElementById('res-folio-val').textContent = state.student.folio || 'STEMOS-MCER-VALID';
+            document.getElementById('res-date-val').textContent = new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        // ── Retake Handler ──
+        document.getElementById('btn-retake-test').addEventListener('click', () => {
+            if (confirm('¿Deseas reiniciar la evaluación diagnóstica? Tus respuestas anteriores se reiniciarán.')) {
+                state.timeRemainingSeconds = 30 * 60;
+                state.answers = new Array(32).fill(null);
+                state.currentIndex = 0;
+                switchScreen('screen-welcome');
+            }
+        });
+
+        // Auto-check speech synthesis on load
+        window.addEventListener('load', () => {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.getVoices();
+            }
+        });
+    </script>
+</body>
+</html>

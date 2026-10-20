@@ -1,6 +1,7 @@
 /**
- * stemOS — Phase 62 Audit Test Suite
- * Validates MCER Core Catalog (A1–B2) & Lightweight Placement Test Engine
+ * stemOS — Phase 62 Master Audit Test Suite
+ * Validates MCER Core Catalog (A1–B2), Lightweight 3-Skill Placement Test Engine,
+ * Whitish Aurora Placement Web App, and Dual-World UI Integrations.
  */
 
 const fs = require('fs');
@@ -8,7 +9,7 @@ const path = require('path');
 const assert = require('assert');
 
 console.log('═══════════════════════════════════════════════════════════════════');
-console.log('🔬 stemOS Phase 62: MCER Core Catalog & Placement Test Audit');
+console.log('🔬 stemOS Phase 62: MCER Core Catalog, Whitish Aurora Placement & UI Audit');
 console.log('═══════════════════════════════════════════════════════════════════\n');
 
 let passed = 0;
@@ -36,6 +37,17 @@ const pMcerDev = path.join(__dirname, '../dev/content/mcer_tracks.js');
 const pPtRoot = path.join(__dirname, '../content/placement_test.js');
 const pPtDev = path.join(__dirname, '../dev/content/placement_test.js');
 
+const pPlaceHtmlRoot = path.join(__dirname, '../placement.html');
+const pPlaceHtmlDev = path.join(__dirname, '../dev/placement.html');
+const pAppHtmlRoot = path.join(__dirname, '../app.html');
+const pAppHtmlDev = path.join(__dirname, '../dev/app.html');
+const pAppJsRoot = path.join(__dirname, '../app.js');
+const pAppJsDev = path.join(__dirname, '../dev/app.js');
+const pTeacherHtmlRoot = path.join(__dirname, '../teacher.html');
+const pTeacherHtmlDev = path.join(__dirname, '../dev/teacher.html');
+const pAdminHtmlRoot = path.join(__dirname, '../admin.html');
+const pAdminHtmlDev = path.join(__dirname, '../dev/admin.html');
+
 test('content/mcer_tracks.js exists and is non-empty', () => {
   assert(fs.existsSync(pMcerRoot), 'File missing');
   assert(fs.statSync(pMcerRoot).size > 1000, 'File too small');
@@ -54,6 +66,28 @@ test('content/placement_test.js exists and is non-empty', () => {
 test('dev/content/placement_test.js is identical to root content', () => {
   assert(fs.existsSync(pPtDev), 'dev mirror missing');
   assert.strictEqual(fs.readFileSync(pPtRoot, 'utf8'), fs.readFileSync(pPtDev, 'utf8'), 'Parity mismatch');
+});
+
+test('placement.html exists and matches dev/placement.html', () => {
+  assert(fs.existsSync(pPlaceHtmlRoot), 'placement.html missing');
+  assert(fs.existsSync(pPlaceHtmlDev), 'dev/placement.html missing');
+  assert.strictEqual(fs.readFileSync(pPlaceHtmlRoot, 'utf8'), fs.readFileSync(pPlaceHtmlDev, 'utf8'), 'Parity mismatch');
+});
+
+test('app.html parity with dev/app.html', () => {
+  assert.strictEqual(fs.readFileSync(pAppHtmlRoot, 'utf8'), fs.readFileSync(pAppHtmlDev, 'utf8'), 'Parity mismatch in app.html');
+});
+
+test('app.js parity with dev/app.js', () => {
+  assert.strictEqual(fs.readFileSync(pAppJsRoot, 'utf8'), fs.readFileSync(pAppJsDev, 'utf8'), 'Parity mismatch in app.js');
+});
+
+test('teacher.html parity with dev/teacher.html', () => {
+  assert.strictEqual(fs.readFileSync(pTeacherHtmlRoot, 'utf8'), fs.readFileSync(pTeacherHtmlDev, 'utf8'), 'Parity mismatch in teacher.html');
+});
+
+test('admin.html parity with dev/admin.html', () => {
+  assert.strictEqual(fs.readFileSync(pAdminHtmlRoot, 'utf8'), fs.readFileSync(pAdminHtmlDev, 'utf8'), 'Parity mismatch in admin.html');
 });
 
 // ─────────────────────────────────────────────────────────────────
@@ -198,6 +232,105 @@ test('Evaluation Simulation: 32/32 correct -> 100% Perfect B2', () => {
   assert.strictEqual(res.sectionScores.listening.score, 10);
   assert.strictEqual(res.sectionScores.reading.score, 10);
   assert.strictEqual(res.assignedLevel, 'B2');
+});
+
+// ─────────────────────────────────────────────────────────────────
+// 5. WHITISH AURORA PLACEMENT APP & USER FLOW AUDIT
+// ─────────────────────────────────────────────────────────────────
+console.log('\n▶ 5. Whitish Aurora Placement App (placement.html) Audit');
+
+const placementHtml = fs.readFileSync(pPlaceHtmlRoot, 'utf8');
+
+test('placement.html incorporates Whitish Aurora styling & orbs', () => {
+  assert(placementHtml.includes('aurora-bg'), 'aurora-bg required');
+  assert(placementHtml.includes('aurora-mesh'), 'aurora-mesh required');
+  assert(placementHtml.includes('aurora-orb orb-1'), 'aurora orbs required');
+  assert(placementHtml.includes('--bg-base: #f8fafc'), 'whitish base background required');
+  assert(!placementHtml.includes('--bg-dark: #050505'), 'black glow background must be absent');
+});
+
+test('placement.html has 30-minute timer configured', () => {
+  assert(placementHtml.includes('30:00'), '30:00 countdown badge required');
+  assert(placementHtml.includes('30 * 60'), '30 minutes time limit calculation required');
+});
+
+test('placement.html implements all 5 sequential screens', () => {
+  assert(placementHtml.includes('id="screen-welcome"'), 'screen-welcome required');
+  assert(placementHtml.includes('id="screen-survey"'), 'screen-survey required');
+  assert(placementHtml.includes('id="screen-instructions"'), 'screen-instructions required');
+  assert(placementHtml.includes('id="screen-quiz"'), 'screen-quiz required');
+  assert(placementHtml.includes('id="screen-results"'), 'screen-results required');
+});
+
+test('placement.html includes institutional registration fields', () => {
+  assert(placementHtml.includes('id="reg-first-name"'), 'first name field required');
+  assert(placementHtml.includes('id="reg-last-name"'), 'last name field required');
+  assert(placementHtml.includes('id="reg-email"'), 'email field required');
+  assert(placementHtml.includes('id="reg-matricula"'), 'matricula field required');
+  assert(placementHtml.includes('id="reg-institution"'), 'institution field required');
+  assert(placementHtml.includes('id="reg-career"'), 'career field required');
+  assert(placementHtml.includes('id="toggle-audio-check"'), 'audio check toggle required');
+});
+
+test('placement.html includes Web Speech API audio player & animated waveform', () => {
+  assert(placementHtml.includes('id="listening-audio-box"'), 'listening audio box required');
+  assert(placementHtml.includes('id="audio-wave-anim"'), 'audio waveform animation required');
+  assert(placementHtml.includes('id="btn-play-prompt"'), 'play audio button required');
+});
+
+// ─────────────────────────────────────────────────────────────────
+// 6. DUAL-WORLD & PLATFORM UI INTEGRATION AUDIT
+// ─────────────────────────────────────────────────────────────────
+console.log('\n▶ 6. Dual-World & Platform UI Integration Audit');
+
+const appHtml = fs.readFileSync(pAppHtmlRoot, 'utf8');
+const appJs = fs.readFileSync(pAppJsRoot, 'utf8');
+const teacherHtml = fs.readFileSync(pTeacherHtmlRoot, 'utf8');
+const adminHtml = fs.readFileSync(pAdminHtmlRoot, 'utf8');
+
+test('app.html has Dual-World navigation bar (MCER vs ESP)', () => {
+  assert(appHtml.includes('id="btn-world-mcer"'), 'btn-world-mcer button required');
+  assert(appHtml.includes('id="btn-world-esp"'), 'btn-world-esp button required');
+  assert(appHtml.includes('id="section-world-mcer"'), 'section-world-mcer container required');
+  assert(appHtml.includes('id="section-world-esp"'), 'section-world-esp container required');
+  assert(appHtml.includes('id="ed-mcer-units-grid"'), 'ed-mcer-units-grid required');
+});
+
+test('app.html includes MCER Unit Interactive Study modal with 4 tabs', () => {
+  assert(appHtml.includes('id="modal-mcer-unit"'), 'modal-mcer-unit dialog required');
+  assert(appHtml.includes('data-mcer-tab="dialogue"'), 'dialogue tab required');
+  assert(appHtml.includes('data-mcer-tab="vocab"'), 'vocab tab required');
+  assert(appHtml.includes('data-mcer-tab="reading"'), 'reading tab required');
+  assert(appHtml.includes('data-mcer-tab="quiz"'), 'quiz tab required');
+});
+
+test('app.html links to placement.html in rail and hero', () => {
+  assert(appHtml.includes('id="nav-btn-placement"'), 'nav rail button required');
+  assert(appHtml.includes('href="placement.html"'), 'placement.html link required');
+  assert(appHtml.includes('id="btn-hero-launch-placement"'), 'hero launch button required');
+});
+
+test('app.js includes MCER rendering and placement badge sync methods', () => {
+  assert(appJs.includes('renderMcerUnitsGrid'), 'renderMcerUnitsGrid function required');
+  assert(appJs.includes('openMcerUnitModal'), 'openMcerUnitModal function required');
+  assert(appJs.includes('syncUserPlacementBadge'), 'syncUserPlacementBadge function required');
+});
+
+test('teacher.html includes Program Curricular Type in group modal and CEFR in roster', () => {
+  assert(teacherHtml.includes('id="new-group-program"'), 'new-group-program select required');
+  assert(teacherHtml.includes('MCER Tracks (Standard American English · A1–B2)'), 'MCER track option required');
+  assert(teacherHtml.includes('<th>CEFR Level</th>'), 'CEFR Level column in roster required');
+  assert(teacherHtml.includes('placementLevel'), 'placementLevel data field required');
+});
+
+test('admin.html includes Cohort Placement Diagnostic Baseline Card', () => {
+  assert(adminHtml.includes('Evaluación Diagnóstica MCER de Ingreso (A1–B2)'), 'MCER banner heading required');
+  assert(adminHtml.includes('1,500 alumnos'), '1,500 students cohort capacity noted');
+  assert(adminHtml.includes('href="placement.html"'), 'link to placement.html in admin required');
+  assert(adminHtml.includes('CEFR A1 · Foundations'), 'A1 card required');
+  assert(adminHtml.includes('CEFR A2 · Waystage'), 'A2 card required');
+  assert(adminHtml.includes('CEFR B1 · Threshold'), 'B1 card required');
+  assert(adminHtml.includes('CEFR B2 · Vantage'), 'B2 card required');
 });
 
 console.log('\n═══════════════════════════════════════════════════════════════════');

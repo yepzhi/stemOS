@@ -2999,6 +2999,344 @@ document.addEventListener('DOMContentLoaded', () => {
         renderConstellationGraph();
         renderBadgesWall('all');
         renderGlossaryView('all');
+        renderMcerUnitsGrid('all');
+        syncUserPlacementBadge();
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       FASE 62: MCER TRACKS (STANDARD AMERICAN ENGLISH) & PLACEMENT INTEGRATION
+       ══════════════════════════════════════════════════════════════════════════ */
+
+    let activeMcerLevelFilter = 'all';
+
+    // 1. Dual-World Program Switcher
+    const btnWorldMcer = document.getElementById('btn-world-mcer');
+    const btnWorldEsp = document.getElementById('btn-world-esp');
+    const sectionWorldMcer = document.getElementById('section-world-mcer');
+    const sectionWorldEsp = document.getElementById('section-world-esp');
+
+    if (btnWorldMcer && btnWorldEsp) {
+        btnWorldMcer.addEventListener('click', () => {
+            btnWorldMcer.classList.add('active');
+            btnWorldMcer.style.background = '#ffffff';
+            btnWorldMcer.style.color = '#0f172a';
+            btnWorldMcer.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+
+            btnWorldEsp.classList.remove('active');
+            btnWorldEsp.style.background = 'transparent';
+            btnWorldEsp.style.color = '#64748b';
+            btnWorldEsp.style.boxShadow = 'none';
+
+            if (sectionWorldMcer) sectionWorldMcer.style.display = 'block';
+            if (sectionWorldEsp) sectionWorldEsp.style.display = 'none';
+
+            renderMcerUnitsGrid(activeMcerLevelFilter);
+        });
+
+        btnWorldEsp.addEventListener('click', () => {
+            btnWorldEsp.classList.add('active');
+            btnWorldEsp.style.background = '#ffffff';
+            btnWorldEsp.style.color = '#0f172a';
+            btnWorldEsp.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+
+            btnWorldMcer.classList.remove('active');
+            btnWorldMcer.style.background = 'transparent';
+            btnWorldMcer.style.color = '#64748b';
+            btnWorldMcer.style.boxShadow = 'none';
+
+            if (sectionWorldMcer) sectionWorldMcer.style.display = 'none';
+            if (sectionWorldEsp) sectionWorldEsp.style.display = 'block';
+
+            renderAllUnitsGrid(activeFilterCategory);
+        });
+    }
+
+    // 2. MCER Level Filter Chips
+    const mcerLevelChips = document.querySelectorAll('#mcer-level-filter-bar .ed-filter-chip');
+    mcerLevelChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            mcerLevelChips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            activeMcerLevelFilter = chip.dataset.mcerLevel || 'all';
+            renderMcerUnitsGrid(activeMcerLevelFilter);
+        });
+    });
+
+    // 3. Render MCER Units Grid
+    function renderMcerUnitsGrid(levelFilter) {
+        const grid = document.getElementById('ed-mcer-units-grid');
+        if (!grid || !window.STEMOS_MCER_TRACKS) return;
+
+        grid.innerHTML = '';
+        let units = window.STEMOS_MCER_TRACKS.getAllUnits();
+
+        if (levelFilter && levelFilter !== 'all') {
+            units = units.filter(u => u.cefr === levelFilter);
+        }
+
+        const levelColors = {
+            'A1': { color: '#10b981', label: 'Foundations', icon: 'fa-seedling' },
+            'A2': { color: '#0284c7', label: 'Waystage', icon: 'fa-route' },
+            'B1': { color: '#f59e0b', label: 'Threshold', icon: 'fa-stairs' },
+            'B2': { color: '#8b5cf6', label: 'Vantage', icon: 'fa-award' }
+        };
+
+        units.forEach(unit => {
+            const meta = levelColors[unit.cefr] || levelColors.A1;
+            const gradientBg = `linear-gradient(135deg, ${meta.color}18 0%, ${meta.color}06 50%, #f8fafc 100%)`;
+
+            const card = document.createElement('div');
+            card.className = 'ed-unit-card';
+            card.dataset.unitId = unit.id;
+            card.dataset.cefr = unit.cefr;
+
+            card.innerHTML = `
+                <div class="ed-unit-card-img-wrapper" style="background: ${gradientBg}; display:flex; align-items:center; justify-content:center;">
+                    <i class="fa-solid ${meta.icon}" style="font-size: 3.5rem; color: ${meta.color}; opacity: 0.5;"></i>
+                    <span class="ed-unit-card-cat-badge" style="border-left: 3px solid ${meta.color}; color:${meta.color};">CEFR ${unit.cefr} · ${meta.label}</span>
+                </div>
+                <div class="ed-unit-card-body">
+                    <div class="ed-unit-number">Unit ${String(unit.unitNumber).padStart(2, '0')}</div>
+                    <div class="ed-unit-title">${unit.title}</div>
+                    <div style="font-size:0.8rem; color:#64748b; margin-top:4px; line-height:1.4;">${unit.canDo}</div>
+                    <div style="display:inline-flex; align-items:center; gap:6px; font-size:0.72rem; font-weight:700; color:${meta.color}; background:${meta.color}15; padding:2px 8px; border-radius:999px; margin-top:8px;">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> ${unit.grammarFocus}
+                    </div>
+                    <div class="ed-unit-progress-container" style="margin-top:12px;">
+                        <span class="ed-unit-progress-text" style="color:#0284c7; font-weight:700;">
+                            <i class="fa-solid fa-book-open"></i> ${unit.vocabulary ? unit.vocabulary.length : 8} Vocab · 
+                            <i class="fa-solid fa-headphones"></i> Audio Dialogue · 
+                            <i class="fa-solid fa-circle-check"></i> Mastery Quiz
+                        </span>
+                    </div>
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                openMcerUnitModal(unit.id);
+            });
+
+            grid.appendChild(card);
+        });
+    }
+    window.renderMcerUnitsGrid = renderMcerUnitsGrid;
+
+    // 4. MCER Unit Study Modal
+    let activeMcerUnit = null;
+
+    function openMcerUnitModal(unitId) {
+        if (!window.STEMOS_MCER_TRACKS) return;
+        const unit = window.STEMOS_MCER_TRACKS.getUnitById(unitId);
+        if (!unit) return;
+
+        activeMcerUnit = unit;
+        const modal = document.getElementById('modal-mcer-unit');
+        if (!modal) return;
+
+        // Header info
+        document.getElementById('mcer-unit-level-badge').textContent = `CEFR ${unit.cefr}`;
+        document.getElementById('mcer-unit-title').textContent = `Unit ${String(unit.unitNumber).padStart(2, '0')} · ${unit.title}`;
+        document.getElementById('mcer-unit-cando').textContent = `${unit.titleES} — ${unit.canDo}`;
+
+        // Tab 1: Dialogue
+        const bubblesContainer = document.getElementById('mcer-dialogue-bubbles');
+        bubblesContainer.innerHTML = '';
+        if (unit.dialogue) {
+            unit.dialogue.forEach(d => {
+                const bubble = document.createElement('div');
+                bubble.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:10px 14px; display:flex; align-items:flex-start; gap:10px;';
+                bubble.innerHTML = `
+                    <div style="width:32px; height:32px; border-radius:50%; background:#e0f2fe; color:#0284c7; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.8rem; flex-shrink:0;">
+                        ${d.speaker.charAt(0)}
+                    </div>
+                    <div style="flex:1;">
+                        <div style="font-size:0.75rem; font-weight:800; color:#0284c7; text-transform:uppercase;">${d.speaker}</div>
+                        <div style="font-size:0.92rem; color:#0f172a; margin-top:2px;">${d.text}</div>
+                    </div>
+                    <button class="btn-play-turn-audio" style="background:none; border:none; color:#0284c7; cursor:pointer; font-size:1rem; padding:4px;" title="Escuchar">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                `;
+                bubble.querySelector('.btn-play-turn-audio').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (window.STEMOS_PLACEMENT_TEST) {
+                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(d.audioScript || d.text);
+                    }
+                });
+                bubblesContainer.appendChild(bubble);
+            });
+        }
+
+        // Play All Dialogue
+        const btnPlayAll = document.getElementById('btn-mcer-play-all-dialogue');
+        if (btnPlayAll) {
+            btnPlayAll.onclick = () => {
+                if (!unit.dialogue || !window.STEMOS_PLACEMENT_TEST) return;
+                const fullScript = unit.dialogue.map(d => `${d.speaker} says: ${d.text}`).join('. ');
+                window.STEMOS_PLACEMENT_TEST.playAudioPrompt(fullScript);
+            };
+        }
+
+        // Tab 2: Vocab & Grammar
+        document.getElementById('mcer-grammar-focus-text').textContent = unit.grammarFocus;
+        const vocabGrid = document.getElementById('mcer-vocab-cards-grid');
+        vocabGrid.innerHTML = '';
+        if (unit.vocabulary) {
+            unit.vocabulary.forEach(v => {
+                const vCard = document.createElement('div');
+                vCard.style.cssText = 'background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; box-shadow:0 2px 4px rgba(0,0,0,0.02); display:flex; justify-content:space-between; align-items:flex-start;';
+                vCard.innerHTML = `
+                    <div>
+                        <strong style="color:#0f172a; font-size:0.95rem;">${v.term}</strong>
+                        <span style="font-family:var(--font-mono); font-size:0.75rem; color:#64748b; margin-left:6px;">${v.ipa || ''}</span>
+                        <div style="font-size:0.8rem; color:#0284c7; font-weight:600; margin-top:2px;">${v.es}</div>
+                        <div style="font-size:0.75rem; color:#64748b; margin-top:4px; font-style:italic;">"${v.sample}"</div>
+                    </div>
+                    <button class="btn-play-vocab-audio" style="background:#e0f2fe; color:#0284c7; border:none; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;" title="Escuchar pronunciación">
+                        <i class="fa-solid fa-volume-high" style="font-size:0.75rem;"></i>
+                    </button>
+                `;
+                vCard.querySelector('.btn-play-vocab-audio').addEventListener('click', () => {
+                    if (window.STEMOS_PLACEMENT_TEST) {
+                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(`${v.term}. ${v.sample}`);
+                    }
+                });
+                vocabGrid.appendChild(vCard);
+            });
+        }
+
+        // Tab 3: Reading
+        if (unit.reading) {
+            document.getElementById('mcer-reading-passage-title').textContent = unit.reading.title;
+            document.getElementById('mcer-reading-passage-text').textContent = unit.reading.passage;
+            const rQContainer = document.getElementById('mcer-reading-questions-container');
+            rQContainer.innerHTML = '';
+            if (unit.reading.questions) {
+                unit.reading.questions.forEach((rq, rqIdx) => {
+                    const block = document.createElement('div');
+                    block.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px;';
+                    block.innerHTML = `
+                        <div style="font-weight:700; font-size:0.88rem; color:#0f172a; margin-bottom:8px;">${rqIdx + 1}. ${rq.q}</div>
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            ${rq.options.map((opt, optIdx) => `
+                                <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; padding:8px 10px; background:#fff; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
+                                    <input type="radio" name="mcer-rq-${rqIdx}" value="${optIdx}">
+                                    <span>${opt}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                    `;
+                    rQContainer.appendChild(block);
+                });
+            }
+        }
+
+        // Tab 4: Unit Quiz
+        const quizContainer = document.getElementById('mcer-quiz-questions-container');
+        quizContainer.innerHTML = '';
+        const quizResultsBox = document.getElementById('mcer-quiz-results-box');
+        if (quizResultsBox) quizResultsBox.style.display = 'none';
+
+        if (unit.unitQuiz) {
+            unit.unitQuiz.forEach((uq, uqIdx) => {
+                const qBlock = document.createElement('div');
+                qBlock.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px;';
+                qBlock.innerHTML = `
+                    <div style="font-weight:700; font-size:0.9rem; color:#0f172a; margin-bottom:8px;">${uqIdx + 1}. ${uq.question}</div>
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        ${uq.options.map((opt, optIdx) => `
+                            <label class="mcer-quiz-opt-label" style="display:flex; align-items:center; gap:8px; font-size:0.85rem; padding:8px 12px; background:#fff; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
+                                <input type="radio" name="mcer-quiz-q-${uqIdx}" value="${optIdx}">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                quizContainer.appendChild(qBlock);
+            });
+        }
+
+        // Quiz Submit Listener
+        const btnSubmitQuiz = document.getElementById('btn-submit-mcer-quiz');
+        if (btnSubmitQuiz) {
+            btnSubmitQuiz.onclick = () => {
+                if (!unit.unitQuiz) return;
+                let correctCount = 0;
+                unit.unitQuiz.forEach((uq, uqIdx) => {
+                    const selected = document.querySelector(`input[name="mcer-quiz-q-${uqIdx}"]:checked`);
+                    const labels = document.querySelectorAll(`input[name="mcer-quiz-q-${uqIdx}"]`);
+                    labels.forEach(input => {
+                        const lbl = input.closest('label');
+                        if (parseInt(input.value) === uq.answer) {
+                            lbl.style.background = '#dcfce7';
+                            lbl.style.borderColor = '#86efac';
+                        } else if (input.checked && parseInt(input.value) !== uq.answer) {
+                            lbl.style.background = '#fee2e2';
+                            lbl.style.borderColor = '#fca5a5';
+                        }
+                    });
+                    if (selected && parseInt(selected.value) === uq.answer) {
+                        correctCount++;
+                    }
+                });
+
+                const pct = Math.round((correctCount / unit.unitQuiz.length) * 100);
+                if (quizResultsBox) {
+                    quizResultsBox.style.display = 'block';
+                    document.getElementById('mcer-quiz-score-val').textContent = `${pct}% (${correctCount}/${unit.unitQuiz.length})`;
+                }
+            };
+        }
+
+        // Reset to first tab
+        switchMcerModalTab('dialogue');
+        modal.showModal();
+    }
+    window.openMcerUnitModal = openMcerUnitModal;
+
+    function switchMcerModalTab(tabKey) {
+        document.querySelectorAll('.mcer-tab-btn').forEach(b => {
+            const isActive = b.dataset.mcerTab === tabKey;
+            b.classList.toggle('active', isActive);
+            b.style.color = isActive ? '#0284c7' : '#64748b';
+            b.style.borderBottom = isActive ? '2px solid #0284c7' : 'none';
+        });
+
+        const screens = ['dialogue', 'vocab', 'reading', 'quiz'];
+        screens.forEach(s => {
+            const el = document.getElementById(`mcer-screen-${s}`);
+            if (el) el.style.display = (s === tabKey) ? 'block' : 'none';
+        });
+    }
+
+    document.querySelectorAll('.mcer-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            switchMcerModalTab(btn.dataset.mcerTab);
+        });
+    });
+
+    const mcerUnitCloseBtn = document.getElementById('mcer-unit-close');
+    if (mcerUnitCloseBtn) {
+        mcerUnitCloseBtn.addEventListener('click', () => {
+            if (window.speechSynthesis) window.speechSynthesis.cancel();
+            document.getElementById('modal-mcer-unit').close();
+        });
+    }
+
+    // 5. Sync Placement Result to Header
+    function syncUserPlacementBadge() {
+        const stored = localStorage.getItem('stemos_placement_test');
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                const badgePill = document.getElementById('user-placement-badge-pill');
+                const badgeText = document.getElementById('user-placement-badge-text');
+                if (badgePill && badgeText && parsed.result) {
+                    badgeText.textContent = `Nivel MCER ${parsed.result.level} Asignado`;
+                    badgePill.style.display = 'inline-flex';
+                }
+            } catch(e) {}
+        }
     }
 
     /* --- 9. KEYBOARD ACCESSIBILITY (WCAG A11Y) --- */
