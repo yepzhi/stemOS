@@ -3284,6 +3284,73 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Tab 2: Vocab & Grammar
         document.getElementById('mcer-grammar-focus-text').textContent = unit.grammarFocus || 'Standard Technical Grammar Patterns';
+        
+        // Render Alertas de Falsos Amigos (False Cognates)
+        const fcSection = document.getElementById('mcer-false-cognates-section');
+        const fcGrid = document.getElementById('mcer-false-cognates-grid');
+        if (fcSection && fcGrid) {
+            fcGrid.innerHTML = '';
+            const falseCognates = unit.falseCognates || [];
+            if (falseCognates.length > 0) {
+                fcSection.style.display = 'block';
+                falseCognates.forEach(fc => {
+                    const fcCard = document.createElement('div');
+                    fcCard.style.cssText = 'background:#ffffff; border:1px solid #fecaca; border-radius:10px; padding:10px 12px; box-shadow:0 1px 3px rgba(220,38,38,0.05);';
+                    fcCard.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <strong style="color:#b91c1c; font-size:0.9rem;">${fc.term}</strong>
+                            <span style="font-size:0.7rem; color:#dc2626; background:#fef2f2; padding:2px 6px; border-radius:4px; font-weight:700;">≠ ${fc.mistake}</span>
+                        </div>
+                        <div style="font-size:0.8rem; color:#15803d; font-weight:700; margin-top:4px;">
+                            <i class="fa-solid fa-check"></i> Significado Real: ${fc.correct}
+                        </div>
+                        <div style="font-size:0.75rem; color:#64748b; margin-top:4px; line-height:1.4;">
+                            ${fc.tip}
+                        </div>
+                    `;
+                    fcGrid.appendChild(fcCard);
+                });
+            } else {
+                fcSection.style.display = 'none';
+            }
+        }
+
+        // Render Laboratorio Fonético & Acentuación (Syllable Stress)
+        const plSection = document.getElementById('mcer-pronunciation-lab-section');
+        const plGrid = document.getElementById('mcer-pronunciation-lab-grid');
+        if (plSection && plGrid) {
+            plGrid.innerHTML = '';
+            const pronList = unit.pronunciationLab || [];
+            if (pronList.length > 0) {
+                plSection.style.display = 'block';
+                pronList.forEach(pl => {
+                    const plCard = document.createElement('div');
+                    plCard.style.cssText = 'background:#ffffff; border:1px solid #bfdbfe; border-radius:10px; padding:10px 12px; display:flex; justify-content:space-between; align-items:flex-start;';
+                    plCard.innerHTML = `
+                        <div>
+                            <div style="display:flex; align-items:baseline; gap:6px;">
+                                <strong style="color:#1d4ed8; font-size:0.92rem;">${pl.term}</strong>
+                                <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#0284c7; background:#eff6ff; padding:1px 6px; border-radius:4px;">${pl.stress}</span>
+                            </div>
+                            <div style="font-family:var(--font-mono); font-size:0.72rem; color:#64748b; margin-top:2px;">${pl.ipa || ''}</div>
+                            <div style="font-size:0.75rem; color:#334155; margin-top:4px; line-height:1.35;">${pl.rule || ''}</div>
+                        </div>
+                        <button class="btn-play-pl-audio" style="background:#eff6ff; color:#1d4ed8; border:none; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; margin-left:6px;" title="Escuchar">
+                            <i class="fa-solid fa-volume-high" style="font-size:0.75rem;"></i>
+                        </button>
+                    `;
+                    plCard.querySelector('.btn-play-pl-audio').addEventListener('click', () => {
+                        if (window.STEMOS_PLACEMENT_TEST) {
+                            window.STEMOS_PLACEMENT_TEST.playAudioPrompt(pl.term);
+                        }
+                    });
+                    plGrid.appendChild(plCard);
+                });
+            } else {
+                plSection.style.display = 'none';
+            }
+        }
+
         const vocabGrid = document.getElementById('mcer-vocab-cards-grid');
         vocabGrid.innerHTML = '';
         const vocabList = Array.isArray(unit.vocabulary) ? unit.vocabulary : [];
@@ -3418,6 +3485,165 @@ document.addEventListener('DOMContentLoaded', () => {
             crucibleTitle.textContent = unit.crucible.title || 'Plant Crucible Simulation';
             if (crucibleContext) crucibleContext.textContent = unit.crucible.context || '';
             if (crucibleScenario) crucibleScenario.textContent = unit.crucible.scenario || '';
+        }
+
+        // Model Audio & Transcript Handlers
+        const btnPlayCrucibleModel = document.getElementById('btn-mcer-crucible-play-model');
+        const crucibleModelText = document.getElementById('mcer-crucible-model-text');
+        const btnToggleCrucibleModel = document.getElementById('btn-mcer-crucible-toggle-model');
+        if (crucibleModelText && unit.crucible) {
+            crucibleModelText.textContent = unit.crucible.modelResponse || 'Report model ready.';
+            crucibleModelText.style.display = 'none';
+        }
+        if (btnPlayCrucibleModel && unit.crucible) {
+            btnPlayCrucibleModel.onclick = () => {
+                const modelSpeech = unit.crucible.modelResponse || '';
+                if (modelSpeech && window.STEMOS_PLACEMENT_TEST) {
+                    window.STEMOS_PLACEMENT_TEST.playAudioPrompt(modelSpeech);
+                }
+            };
+        }
+        if (btnToggleCrucibleModel && crucibleModelText) {
+            btnToggleCrucibleModel.onclick = () => {
+                const isHidden = crucibleModelText.style.display === 'none';
+                crucibleModelText.style.display = isHidden ? 'block' : 'none';
+                btnToggleCrucibleModel.textContent = isHidden ? 'Ocultar Modelo de Referencia' : 'Ver Modelo de Referencia';
+            };
+        }
+
+        // Interactive Dispatch Input & Live Word Count
+        const crucibleInput = document.getElementById('mcer-crucible-input');
+        const crucibleWordCount = document.getElementById('mcer-crucible-word-count');
+        const crucibleResultsBox = document.getElementById('mcer-crucible-results-box');
+        if (crucibleResultsBox) crucibleResultsBox.style.display = 'none';
+
+        if (crucibleInput && crucibleWordCount) {
+            crucibleInput.value = '';
+            crucibleWordCount.textContent = '0 palabras';
+            crucibleInput.oninput = () => {
+                const words = crucibleInput.value.trim().split(/\s+/).filter(Boolean).length;
+                crucibleWordCount.textContent = `${words} palabras`;
+            };
+        }
+
+        // Native Browser Voice Dictation (Speech-to-Text)
+        const btnDictate = document.getElementById('btn-mcer-crucible-dictate');
+        if (btnDictate && crucibleInput) {
+            btnDictate.onclick = () => {
+                const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (!SpeechRec) {
+                    alert('Tu navegador no soporta dictado de voz nativo en este momento. Puedes escribir tu reporte directamente.');
+                    return;
+                }
+                const recognition = new SpeechRec();
+                recognition.lang = 'en-US';
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+                btnDictate.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color:#ef4444;"></i> Escuchando...';
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    crucibleInput.value = (crucibleInput.value ? crucibleInput.value + ' ' : '') + transcript;
+                    crucibleInput.dispatchEvent(new Event('input'));
+                    btnDictate.innerHTML = '<i class="fa-solid fa-microphone"></i> Dictar por Voz';
+                };
+                recognition.onerror = () => {
+                    btnDictate.innerHTML = '<i class="fa-solid fa-microphone"></i> Dictar por Voz';
+                };
+                recognition.onend = () => {
+                    btnDictate.innerHTML = '<i class="fa-solid fa-microphone"></i> Dictar por Voz';
+                };
+                recognition.start();
+            };
+        }
+
+        // AI / Multi-Dimensional Heuristic Rubric Evaluator
+        const btnSubmitCrucible = document.getElementById('btn-mcer-crucible-submit');
+        if (btnSubmitCrucible && crucibleInput) {
+            btnSubmitCrucible.onclick = () => {
+                const text = crucibleInput.value.trim();
+                if (!text || text.length < 10) {
+                    alert('Por favor redacta o dicta al menos una oración completa en inglés antes de solicitar la evaluación.');
+                    return;
+                }
+
+                const words = text.split(/\s+/).filter(Boolean);
+                const wordCount = words.length;
+                const cefr = (unit.cefr || 'A1').toUpperCase();
+                let minWords = 15;
+                if (cefr === 'A2') minWords = 25;
+                if (cefr === 'B1') minWords = 35;
+                if (cefr === 'B2') minWords = 45;
+
+                // 1. Grammatical Accuracy (up to 40 pts)
+                let grammarScore = 22;
+                if (wordCount >= minWords) grammarScore += 10;
+                if (wordCount >= minWords * 1.3) grammarScore += 4;
+                if (/^[A-Z]/.test(text) && /[.?!]$/.test(text)) grammarScore += 4;
+                grammarScore = Math.min(40, grammarScore);
+
+                // 2. Technical Lexicon (up to 30 pts)
+                let lexiconScore = 15;
+                const keywords = (unit.crucible && unit.crucible.keywords) || [];
+                const lower = text.toLowerCase();
+                let matched = 0;
+                keywords.forEach(kw => {
+                    if (lower.includes(kw.toLowerCase())) matched++;
+                });
+                if (keywords.length > 0) {
+                    lexiconScore = Math.min(30, Math.round(15 + (matched / keywords.length) * 15));
+                } else {
+                    lexiconScore = wordCount >= minWords ? 28 : 20;
+                }
+
+                // 3. American Workplace Pragmatics (up to 30 pts)
+                let pragmaticsScore = 18;
+                const polite = ['good morning', 'good afternoon', 'hello', 'excuse me', 'team', 'hi', 'regards'];
+                if (polite.some(g => lower.includes(g))) pragmaticsScore += 6;
+                if (lower.includes('please') || lower.includes('thank you') || lower.includes('report') || lower.includes('recommend') || lower.includes('confirm')) {
+                    pragmaticsScore += 6;
+                }
+                pragmaticsScore = Math.min(30, pragmaticsScore);
+
+                const totalScore = Math.min(100, grammarScore + lexiconScore + pragmaticsScore);
+
+                // Display in Rubric Card
+                if (crucibleResultsBox) {
+                    crucibleResultsBox.style.display = 'block';
+                    document.getElementById('mcer-crucible-score-badge').textContent = `${totalScore}%`;
+                    
+                    document.getElementById('mcer-rubric-grammar-score').textContent = `${grammarScore}/40`;
+                    document.getElementById('mcer-rubric-grammar-bar').style.width = `${Math.round((grammarScore / 40) * 100)}%`;
+                    
+                    document.getElementById('mcer-rubric-lexicon-score').textContent = `${lexiconScore}/30`;
+                    document.getElementById('mcer-rubric-lexicon-bar').style.width = `${Math.round((lexiconScore / 30) * 100)}%`;
+                    
+                    document.getElementById('mcer-rubric-pragmatics-score').textContent = `${pragmaticsScore}/30`;
+                    document.getElementById('mcer-rubric-pragmatics-bar').style.width = `${Math.round((pragmaticsScore / 30) * 100)}%`;
+
+                    let feedback = '';
+                    if (totalScore >= 85) {
+                        feedback = `<strong>¡Excelente despacho técnico!</strong> Tu reporte cumple con el estándar de comunicación operativa CEFR ${cefr}. Has demostrado precisión léxica y protocolo estadounidense de planta.`;
+                    } else if (totalScore >= 70) {
+                        feedback = `<strong>Despacho funcional aprobado (${totalScore}%).</strong> Tu mensaje es claro para supervisores de turno. Para alcanzar nivel senior, incorpora más términos específicos (${keywords.slice(0, 3).join(', ')}) y expande la descripción.`;
+                    } else {
+                        feedback = `<strong>Despacho en desarrollo (${totalScore}%).</strong> Se recomienda escuchar el modelo de referencia del ingeniero líder e incluir al menos ${minWords} palabras técnicas.`;
+                    }
+                    document.getElementById('mcer-crucible-feedback-text').innerHTML = feedback;
+
+                    // Award +500 XP if passing
+                    if (totalScore >= 70) {
+                        try {
+                            const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+                            const newXP = prevXP + 500;
+                            localStorage.setItem('stemos_student_xp', String(newXP));
+                            localStorage.setItem(`stemos_crucible_${unit.id}`, 'completed');
+                            if (typeof window.updateStudentXPHUD === 'function') {
+                                window.updateStudentXPHUD(newXP);
+                            }
+                        } catch (e) {}
+                    }
+                }
+            };
         }
 
         // Reset to first tab

@@ -1051,6 +1051,28 @@ const MCER_LEVELS = [
   }
 ];
 
+// Enrich MCER_LEVELS with Pedagogical Modules (False Cognates, Pronunciation Lab, Crucible Model Transcripts)
+try {
+  const { ENRICHMENT_MAP } = require('./enrich_mcer_pedagogical_modules.cjs');
+  if (ENRICHMENT_MAP) {
+    MCER_LEVELS.forEach(lvl => {
+      lvl.units.forEach(u => {
+        const enrichment = ENRICHMENT_MAP[u.id];
+        if (enrichment) {
+          if (enrichment.falseCognates) u.falseCognates = enrichment.falseCognates;
+          if (enrichment.pronunciationLab) u.pronunciationLab = enrichment.pronunciationLab;
+          if (enrichment.crucible) {
+            u.crucible = Object.assign({}, u.crucible, enrichment.crucible);
+          }
+        }
+      });
+    });
+    console.log('✓ Injected pedagogical modules into all 16 MCER units.');
+  }
+} catch (e) {
+  console.warn('Pedagogical enrichment warning:', e.message);
+}
+
 // Generate final clean JS file
 const fileContent = `/**
  * ==============================================================================
@@ -1119,6 +1141,15 @@ const fileContent = `/**
       explanation: q.explanation || q.exp
     }));
 
+    const crucibleObj = Object.assign({
+      title: 'Plant Crucible Simulation',
+      context: '',
+      scenario: '',
+      role: 'Engineering Specialist',
+      modelResponse: '',
+      keywords: []
+    }, u.crucible || {});
+
     return Object.assign({}, u, {
       levelCode: lvl.code,
       levelName: lvl.name,
@@ -1131,7 +1162,10 @@ const fileContent = `/**
       vocabulary: vocab,
       reading: readingObj,
       quiz: quizArr,
-      unitQuiz: quizArr
+      unitQuiz: quizArr,
+      falseCognates: u.falseCognates || [],
+      pronunciationLab: u.pronunciationLab || [],
+      crucible: crucibleObj
     });
   }
 
