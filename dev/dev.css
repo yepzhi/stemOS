@@ -106,14 +106,14 @@ body.supaste-theme {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: 22px;
+  gap: 16px;
   background: #000000;
   border-radius: 0 0 18px 18px;
   padding: 8px 18px;
   height: 52px;
   border: none;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.32);
-  max-width: 860px;
+  max-width: 1260px;
   width: auto;
   transition: all 0.3s var(--ease-spring);
 }
@@ -405,6 +405,21 @@ body.supaste-theme {
 .supaste-mobile-nav-toggle.is-active .hamburger-bar:nth-child(3) {
   transform: translateY(-6px) rotate(-45deg);
   background: #38bdf8 !important;
+}
+
+@media (min-width: 1025px) and (max-width: 1260px) {
+  .supaste-nav {
+    gap: 10px !important;
+    padding: 8px 12px !important;
+  }
+  .supaste-nav-links {
+    gap: 2px !important;
+  }
+  .supaste-nav-links .nav-link,
+  .nav-link {
+    font-size: 0.78rem !important;
+    padding: 5px 8px !important;
+  }
 }
 
 @media (max-width: 1024px) {

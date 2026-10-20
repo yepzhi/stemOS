@@ -1210,62 +1210,58 @@
     <nav class="supaste-nav" id="supaste-nav" aria-label="Main Navigation">
       <div class="supaste-nav-left" style="display:flex; align-items:center;">
         <a href="/" class="supaste-brand-link" id="brand-home-link" style="display:inline-flex; align-items:center;">
-          <div class="supaste-brand-name" style="font-size: 1.18rem; font-weight: 800; letter-spacing: -0.025em; line-height: 1; display:flex; align-items:center;">
+          <div class="supaste-brand-name" style="font-size: 1.2rem; font-weight: 800; letter-spacing: -0.025em; line-height: 1; display:flex; align-items:center;">
             <span class="brand-stem">stem</span><span class="brand-os">OS</span>
           </div>
         </a>
-        <a href="/register.html" class="btn-signup-pill" onclick="window.switchEmbeddedPortal('register', event); return false;" data-starborder data-sb-color="#38bdf8" data-sb-speed="2.5" title="Registro de Alumno & Path Personalizado" style="margin-left:12px;">
-          <i class="fa-solid fa-user-graduate"></i>
-          <span class="shiny-text">Registro Alumno</span>
-          <i class="fa-solid fa-arrow-right"></i>
-        </a>
       </div>
 
-      
       <div class="supaste-nav-links">
         <a href="#industry-standards-section" class="nav-link" data-i18n="nav_standards">
           <i class="fa-solid fa-scale-balanced" style="color:#0ea5e9;"></i>
-          <span>Estándares vs Academia</span>
+          <span>Standards</span>
         </a>
         <a href="#institutional-academic-section" class="nav-link" data-i18n="nav_academic">
           <i class="fa-solid fa-graduation-cap" style="color:#38bdf8;"></i>
-          <span>Sistema Académico 60h</span>
+          <span>Academic</span>
         </a>
         <a href="#student-cx-journey-section" class="nav-link" data-i18n="nav_student_journey">
           <i class="fa-solid fa-route" style="color:#38bdf8;"></i>
-          <span>Ruta del Alumno (CX)</span>
+          <span>Student CX</span>
         </a>
         <a href="/tracks.html" class="nav-link" data-i18n="nav_catalog">
           <i class="fa-solid fa-layer-group" style="color:#10b981;"></i>
-          <span>Catálogo ESP</span>
+          <span>ESP Tracks</span>
           <span class="nav-badge" style="background:#10b981; color:#0f172a; font-weight:800; font-size:0.65rem; padding:2px 6px; border-radius:9999px; margin-left:4px;">34</span>
         </a>
         <a href="/placement.html" class="nav-link" data-i18n="nav_placement">
           <i class="fa-solid fa-vial" style="color:#f59e0b;"></i>
-          <span>Placement Test (30m)</span>
+          <span>Placement</span>
         </a>
         <a href="#pricing-institutional-section" class="nav-link highlight-link" data-i18n="nav_pricing" style="color:#34d399; font-weight:700;">
           <i class="fa-solid fa-file-invoice-dollar"></i>
-          <span>Precios &amp; Licencias</span>
+          <span>Pricing</span>
         </a>
       </div>
-<a href="javascript:void(0)" class="nav-profile-badge" id="header-student-profile-badge" style="display:none; align-items:center; gap:6px; padding:6px 12px; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); border-radius:8px; color:#34d399; font-size:0.8rem; font-weight:700; text-decoration:none;" onclick="openStudentRegistrationModal()">
+
+      <a href="javascript:void(0)" class="nav-profile-badge" id="header-student-profile-badge" style="display:none; align-items:center; gap:6px; padding:6px 12px; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); border-radius:8px; color:#34d399; font-size:0.8rem; font-weight:700; text-decoration:none;" onclick="openStudentRegistrationModal()">
         <i class="fa-solid fa-user-graduate"></i>
         <span id="header-student-badge-text">Profile</span>
       </a>
 
-      <!-- Mobile Hamburger Button -->
-      
+      <!-- Mobile Hamburger Button & Right Actions -->
       <div class="supaste-nav-right">
-        <!-- Bilingual Language Switcher (Index ONLY) -->
-        <div class="lang-switch-capsule" role="group" aria-label="Selector de idioma">
-          <button type="button" class="lang-btn active" id="lang-btn-es" onclick="window.setPlatformLanguage('es')">ES</button>
+        <!-- Minimalist Language Switcher (EN | ES) without globe icon -->
+        <div class="lang-switch-capsule" role="group" aria-label="Language Selector">
           <button type="button" class="lang-btn" id="lang-btn-en" onclick="window.setPlatformLanguage('en')">EN</button>
+          <span class="lang-divider" style="color:rgba(255,255,255,0.25); font-size:0.7rem; user-select:none;">|</span>
+          <button type="button" class="lang-btn active" id="lang-btn-es" onclick="window.setPlatformLanguage('es')">ES</button>
         </div>
 
-        <a href="https://calendly.com/yepzhi/30min" target="_blank" rel="noopener noreferrer" class="btn-signup-pill nav-btn-zoom-header" style="border-color:rgba(16,185,129,0.5); background:rgba(16,185,129,0.15); color:#34d399; font-weight:800; margin-left:8px;" title="Agendar Zoom 15m vía Calendly">
-          <i class="fa-solid fa-video"></i>
-          <span data-i18n="btn_zoom_nav">Agendar Zoom 15m</span>
+        <!-- Single Primary Action on Right: Sign Up -->
+        <a href="/register.html" class="btn-signup-pill btn-signup-nav-primary" onclick="window.switchEmbeddedPortal('register', event); return false;" data-starborder data-sb-color="#38bdf8" data-sb-speed="2.5" title="Student Registration" style="margin-left:8px; padding: 6px 14px;">
+          <span class="shiny-text" data-i18n="btn_signup_nav">Sign Up</span>
+          <i class="fa-solid fa-arrow-right" style="font-size:0.7rem;"></i>
         </a>
       </div>
 <button id="supaste-nav-mobile-toggle" class="supaste-mobile-nav-toggle" aria-label="Abrir Menú Móvil" onclick="toggleMobileNav()">
@@ -1295,16 +1291,12 @@
         <div style="padding:14px; background:rgba(255,255,255,0.04); border-radius:14px; margin-bottom:16px; border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:10px;">
           <a href="/register.html" class="btn-signup-pill" style="width:100%; justify-content:center; padding:12px 16px; font-size:0.88rem; box-sizing:border-box;">
             <i class="fa-solid fa-user-graduate"></i>
-            <span>Registro Alumno (60h)</span>
+            <span class="shiny-text" data-i18n="btn_signup_nav">Sign Up</span>
             <i class="fa-solid fa-arrow-right"></i>
-          </a>
-          <a href="https://calendly.com/yepzhi/30min" target="_blank" rel="noopener noreferrer" style="display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.45); color:#34d399; padding:11px 16px; border-radius:99px; font-size:0.84rem; font-weight:700; text-decoration:none; box-sizing:border-box;">
-            <i class="fa-solid fa-video"></i>
-            <span>Agendar 15 min por Zoom</span>
           </a>
           <a href="/placement.html" style="display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(56,189,248,0.14); border:1px solid rgba(56,189,248,0.35); color:#38bdf8; padding:11px 16px; border-radius:99px; font-size:0.84rem; font-weight:700; text-decoration:none; box-sizing:border-box;">
             <i class="fa-solid fa-vial"></i>
-            <span>Placement Test (30 min)</span>
+            <span data-i18n="nav_placement">Placement Test</span>
           </a>
         </div>
 
@@ -3145,12 +3137,13 @@
     // ─── BILINGUAL I18N CONTROLLER (ES | EN) ───
     var STEMOS_I18N = {
       en: {
-        nav_standards: 'Standards vs Academia',
-        nav_academic: '60h Academic System',
-        nav_student_journey: 'Student Journey (CX)',
-        nav_catalog: 'ESP Catalog',
-        nav_placement: 'Placement Test (30m)',
-        nav_pricing: 'Pricing &amp; Licenses',
+        nav_standards: 'Standards',
+        nav_academic: 'Academic',
+        nav_student_journey: 'Student CX',
+        nav_catalog: 'ESP Tracks',
+        nav_placement: 'Placement',
+        nav_pricing: 'Pricing',
+        btn_signup_nav: 'Sign Up',
 
         hero_subtitle: '<strong>34 specialized industry tracks</strong> of English for Specific Purposes (ESP) &amp; CEFR leveling tracks (A1 to C1) &mdash; engineered for semiconductor fabrication, aerospace avionics, industrial robotics, automotive engineering, medical devices, cross-border trade logistics, quality &amp; EHS, mission-critical energy &amp; data centers, AUTOSAR embedded firmware &amp; Edge AI, and nearshoring supply chain SCM. Aligned with IEEE, SEMI, ISO, IATF, FDA, OSHA, and USMCA standards.',
         btn_take_placement: 'Placement Test (30 min)',
@@ -3220,12 +3213,13 @@
         footer_dev: 'Developed by @yepzhi'
       },
       es: {
-        nav_standards: 'Estándares vs Academia',
-        nav_academic: 'Sistema Académico 60h',
-        nav_student_journey: 'Ruta del Alumno (CX)',
-        nav_catalog: 'Catálogo ESP',
-        nav_placement: 'Test de Ubicación (30m)',
-        nav_pricing: 'Precios &amp; Licencias',
+        nav_standards: 'Estándares',
+        nav_academic: 'Académico',
+        nav_student_journey: 'Ruta CX',
+        nav_catalog: 'Tracks ESP',
+        nav_placement: 'Placement',
+        nav_pricing: 'Precios',
+        btn_signup_nav: 'Regístrate',
 
         hero_subtitle: '<strong>34 tracks especializados de industria</strong> (ESP) y tracks de nivelación MCER (A1 a C1) &mdash; diseñados para fabricación de semiconductores, aviónica aeroespacial, robótica industrial, ingeniería automotriz, dispositivos médicos, logística internacional, calidad y EHS, centros de datos y nearshoring. Alineados con estándares IEEE, SEMI, ISO, IATF, FDA, OSHA y T-MEC.',
         btn_take_placement: 'Placement Test (30 min)',

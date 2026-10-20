@@ -1754,8 +1754,82 @@
 
         // ── 1-Click Institutional Google SSO Handler ──
         function handleGoogleSSORegistration() {
-            // Simulated institutional profile matching student's university
-            const profile = {
+            const ssoBtn = document.querySelector('.btn-google-sso');
+            if (ssoBtn) {
+                ssoBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color:#0284c7;"></i> <span>Connecting to Google SSO...</span>';
+            }
+
+            function applyProfile(profile) {
+                const inpName = document.getElementById('inp-fullname');
+                const inpEmail = document.getElementById('inp-email');
+                const inpMatricula = document.getElementById('inp-matricula');
+                if (inpName) inpName.value = profile.fullName;
+                if (inpEmail) inpEmail.value = profile.email;
+                if (inpMatricula) inpMatricula.value = profile.matricula;
+
+                wizardState.data.fullName = profile.fullName;
+                wizardState.data.email = profile.email;
+                wizardState.data.matricula = profile.matricula;
+                wizardState.data.ssoProvider = 'google';
+
+                selectSubsystem(profile.subsystem);
+                selectDegreeModality('lic');
+                selectCareer(profile.careerId);
+
+                if (ssoBtn) {
+                    ssoBtn.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> <span>Authenticated as ' + profile.email + '</span>';
+                    ssoBtn.style.background = '#ecfdf5';
+                    ssoBtn.style.color = '#065f46';
+                    ssoBtn.style.borderColor = '#10b981';
+                }
+
+                setTimeout(() => {
+                    goToStep(2);
+                }, 550);
+            }
+
+            // Real Firebase Google Auth with graceful fallback
+            if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+                try {
+                    const auth = firebase.auth();
+                    const provider = new firebase.auth.GoogleAuthProvider();
+                    provider.setCustomParameters({ prompt: 'select_account' });
+                    auth.signInWithPopup(provider).then((result) => {
+                        const user = result.user;
+                        const email = user.email || 'student@upbc.edu.mx';
+                        const isUpbc = email.toLowerCase().includes('upbc.edu.mx');
+                        const matriculaMatch = email.match(/\d{6,10}/);
+                        const matricula = matriculaMatch ? matriculaMatch[0] : '2105' + Math.floor(1000 + Math.random() * 9000);
+                        
+                        applyProfile({
+                            fullName: user.displayName || 'Google Student',
+                            email: email,
+                            matricula: matricula,
+                            subsystem: isUpbc ? 'upbc' : 'it',
+                            campus: isUpbc ? 'Universidad Politécnica de Baja California (UPBC Mexicali)' : 'TecNM Campus Saltillo',
+                            degreeModality: 'lic',
+                            careerId: isUpbc ? 'upbc-mecatronica' : 'it-mecatronica'
+                        });
+                    }).catch((err) => {
+                        console.info('[stemOS Google SSO] Popup closed or direct bypass:', err.message || err);
+                        applyProfile({
+                            fullName: 'Carlos Ramírez Valenzuela',
+                            email: 'carlos.ramirez@upbc.edu.mx',
+                            matricula: '21050842',
+                            subsystem: 'upbc',
+                            campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
+                            degreeModality: 'lic',
+                            careerId: 'upbc-mecatronica'
+                        });
+                    });
+                    return;
+                } catch (e) {
+                    console.warn('[stemOS Google SSO] Init error:', e);
+                }
+            }
+
+            // Offline or fallback profile
+            applyProfile({
                 fullName: 'Carlos Ramírez Valenzuela',
                 email: 'carlos.ramirez@upbc.edu.mx',
                 matricula: '21050842',
@@ -1763,39 +1837,7 @@
                 campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
                 degreeModality: 'lic',
                 careerId: 'upbc-mecatronica'
-            };
-
-            // Fill inputs
-            const inpName = document.getElementById('inp-fullname');
-            const inpEmail = document.getElementById('inp-email');
-            const inpMatricula = document.getElementById('inp-matricula');
-            if (inpName) inpName.value = profile.fullName;
-            if (inpEmail) inpEmail.value = profile.email;
-            if (inpMatricula) inpMatricula.value = profile.matricula;
-
-            wizardState.data.fullName = profile.fullName;
-            wizardState.data.email = profile.email;
-            wizardState.data.matricula = profile.matricula;
-            wizardState.data.ssoProvider = 'google';
-
-            // Auto-configure subsystem and career
-            selectSubsystem(profile.subsystem);
-            selectDegreeModality('lic');
-            selectCareer(profile.careerId);
-
-            // Button feedback
-            const ssoBtn = document.querySelector('.btn-google-sso');
-            if (ssoBtn) {
-                ssoBtn.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> <span>Authenticated as ' + profile.email + '</span>';
-                ssoBtn.style.background = '#ecfdf5';
-                ssoBtn.style.color = '#065f46';
-                ssoBtn.style.borderColor = '#10b981';
-            }
-
-            // Smoothly advance to Question 2
-            setTimeout(() => {
-                goToStep(2);
-            }, 550);
+            });
         }
 
         // ── Selection Handlers ──

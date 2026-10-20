@@ -1872,6 +1872,15 @@
             }));
             localStorage.setItem('stemos_backdoor', 'true');
 
+            // Sync to universal ecosystem adapter & Cloud Firestore
+            if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.savePlacementDiagnostic === 'function') {
+                try {
+                    window.STEMOS_FIREBASE.savePlacementDiagnostic(payload);
+                } catch (e) {
+                    console.warn('[stemOS Placement] Firestore diagnostic sync failed:', e);
+                }
+            }
+
             renderResultsScreen();
             switchScreen('screen-results');
         }

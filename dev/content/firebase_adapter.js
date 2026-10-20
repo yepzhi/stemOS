@@ -669,6 +669,75 @@
         },
 
         /**
+         * Save diagnostic test results (MCER Placement) and sync to Cloud Firestore
+         */
+        savePlacementDiagnostic: function (diagnosticPayload) {
+            if (!diagnosticPayload) return null;
+            const folio = (diagnosticPayload.student && diagnosticPayload.student.folio) || ('STEMOS-DIAG-' + Date.now().toString(36).toUpperCase());
+            try {
+                localStorage.setItem('stemos_diag_' + folio, JSON.stringify(diagnosticPayload));
+                localStorage.setItem('stemos_placement_test', JSON.stringify(diagnosticPayload));
+            } catch (_) {}
+
+            // Sync to student profile in local storage & cloud
+            if (diagnosticPayload.student) {
+                const std = diagnosticPayload.student;
+                const res = diagnosticPayload.result || {};
+                const studentId = std.folio || ('std-' + (std.matricula || Date.now().toString(36)));
+                const studentRecord = {
+                    id: studentId,
+                    studentId: studentId,
+                    name: (std.firstName && std.lastName) ? (std.firstName + ' ' + std.lastName) : (std.fullName || 'Student'),
+                    matricula: std.matricula || '',
+                    email: std.email || '',
+                    institutionId: (std.institution === 'UPMXL') ? 'upbc-mexicali' : (std.institution || 'tecnm-saltillo'),
+                    careerId: std.careerId || 'upbc-mecatronica',
+                    careerName: std.career || 'Ingeniería Mecatrónica',
+                    cefrLevel: res.assignedLevel || res.level || 'A1',
+                    cefrScore: res.totalScore || res.score || 0,
+                    cefrPercentage: res.percentage || 0,
+                    placementCompletedAt: diagnosticPayload.completedAt || new Date().toISOString()
+                };
+                this.registerStudent(studentRecord);
+            }
+
+            this.syncDiagnosticToCloud(diagnosticPayload);
+            this._broadcastStateChange('diagnostic_saved', diagnosticPayload);
+            return diagnosticPayload;
+        },
+
+        /**
+         * Sync diagnostic result to Cloud Firestore
+         */
+        syncDiagnosticToCloud: async function (diagnosticPayload) {
+            if (!this.isCloudActive() || !diagnosticPayload) return false;
+            try {
+                const db = (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.getDb()) ||
+                           (typeof window.firebase !== 'undefined' && window.firebase.firestore ? window.firebase.firestore() : null);
+                if (!db) return false;
+
+                const student = diagnosticPayload.student || {};
+                const instId = (student.institution === 'UPMXL') ? 'upbc-mexicali' : (student.institution || 'tecnm-saltillo');
+                const docId = student.folio || ('diag-' + Date.now().toString(36));
+                await db.collection('institutions').doc(instId).collection('placement_tests').doc(docId).set(diagnosticPayload, { merge: true });
+
+                if (student.matricula || student.folio) {
+                    const stdDocId = student.folio || ('std-' + student.matricula);
+                    await db.collection('institutions').doc(instId).collection('students').doc(stdDocId).set({
+                        cefrLevel: (diagnosticPayload.result && (diagnosticPayload.result.assignedLevel || diagnosticPayload.result.level)) || 'A1',
+                        cefrScore: (diagnosticPayload.result && (diagnosticPayload.result.totalScore || diagnosticPayload.result.score)) || 0,
+                        lastDiagnosticAt: diagnosticPayload.completedAt || new Date().toISOString()
+                    }, { merge: true });
+                }
+                return true;
+            } catch (err) {
+                console.warn('[stemOS Firebase] Diagnostic sync queued for retry:', err.message || err);
+                this._enqueueSync('diagnostic', diagnosticPayload);
+                return false;
+            }
+        },
+
+        /**
          * Concurrency debounce queue helpers
          */
         _syncQueue: [],
