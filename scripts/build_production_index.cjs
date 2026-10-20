@@ -688,7 +688,7 @@ const navRightBlock = `
           <button type="button" class="lang-btn" id="lang-btn-en" onclick="window.setPlatformLanguage('en')">EN</button>
         </div>
 
-        <a href="#pricing-institutional-section" class="btn-signup-pill" style="border-color:rgba(16,185,129,0.5); background:rgba(16,185,129,0.15); color:#34d399; font-weight:800; margin-left:8px;">
+        <a href="https://calendly.com/yepzhi/30min" target="_blank" rel="noopener noreferrer" class="btn-signup-pill" style="border-color:rgba(16,185,129,0.5); background:rgba(16,185,129,0.15); color:#34d399; font-weight:800; margin-left:8px;" title="Agendar Zoom 15m vía Calendly">
           <i class="fa-solid fa-video"></i>
           <span data-i18n="btn_zoom_nav">Agendar Zoom 15m</span>
         </a>
@@ -1101,10 +1101,10 @@ const pricingSection = `
             <span data-i18n="btn_whatsapp">Contactar por WhatsApp Directo</span>
           </a>
 
-          <button type="button" class="btn-hub-zoom" onclick="openZoomDemoModal()">
+          <a href="https://calendly.com/yepzhi/30min" target="_blank" rel="noopener noreferrer" class="btn-hub-zoom" id="btn-hub-zoom-link" title="Agendar sesión de 15 min en Zoom vía Calendly">
             <i class="fa-solid fa-video"></i>
             <span data-i18n="btn_zoom">Agendar 15 min por Zoom</span>
-          </button>
+          </a>
 
           <a href="mailto:director@stemos.org?subject=Propuesta%20Institucional%20stemOS%20-%20Reuni%C3%B3n%20Zoom&body=Hola%20Mario,%20recibimos%20la%20propuesta%20institucional.%20Nos%20gustar%C3%ADa%20coordinar%20los%2015%20min%20por%20Zoom." class="btn-hub-email">
             <i class="fa-solid fa-envelope"></i>

@@ -830,11 +830,13 @@
       box-shadow: 0 6px 20px rgba(11, 92, 255, 0.35);
       transition: all 0.25s ease;
       font-family: inherit;
+      text-decoration: none;
     }
     .btn-hub-zoom:hover {
       background: #004ee6;
       transform: translateY(-2px);
       box-shadow: 0 10px 25px rgba(11, 92, 255, 0.5);
+      color: #ffffff;
     }
     .btn-hub-email {
       display: inline-flex;
@@ -952,7 +954,7 @@
           <button type="button" class="lang-btn" id="lang-btn-en" onclick="window.setPlatformLanguage('en')">EN</button>
         </div>
 
-        <a href="#pricing-institutional-section" class="btn-signup-pill" style="border-color:rgba(16,185,129,0.5); background:rgba(16,185,129,0.15); color:#34d399; font-weight:800; margin-left:8px;">
+        <a href="https://calendly.com/yepzhi/30min" target="_blank" rel="noopener noreferrer" class="btn-signup-pill" style="border-color:rgba(16,185,129,0.5); background:rgba(16,185,129,0.15); color:#34d399; font-weight:800; margin-left:8px;" title="Agendar Zoom 15m vía Calendly">
           <i class="fa-solid fa-video"></i>
           <span data-i18n="btn_zoom_nav">Agendar Zoom 15m</span>
         </a>
@@ -2459,10 +2461,10 @@
             <span data-i18n="btn_whatsapp">Contactar por WhatsApp Directo</span>
           </a>
 
-          <button type="button" class="btn-hub-zoom" onclick="openZoomDemoModal()">
+          <a href="https://calendly.com/yepzhi/30min" target="_blank" rel="noopener noreferrer" class="btn-hub-zoom" id="btn-hub-zoom-link" title="Agendar sesión de 15 min en Zoom vía Calendly">
             <i class="fa-solid fa-video"></i>
             <span data-i18n="btn_zoom">Agendar 15 min por Zoom</span>
-          </button>
+          </a>
 
           <a href="mailto:director@stemos.org?subject=Propuesta%20Institucional%20stemOS%20-%20Reuni%C3%B3n%20Zoom&body=Hola%20Mario,%20recibimos%20la%20propuesta%20institucional.%20Nos%20gustar%C3%ADa%20coordinar%20los%2015%20min%20por%20Zoom." class="btn-hub-email">
             <i class="fa-solid fa-envelope"></i>
@@ -2526,9 +2528,18 @@
         </div>
         <h3 style="font-size:1.25rem; color:#fff; font-weight:800; margin:0;">Agendar Sesión de 15 min en Zoom</h3>
       </div>
-      <p style="font-size:0.88rem; color:#94a3b8; line-height:1.5; margin:0 0 20px 0;">
+      <p style="font-size:0.88rem; color:#94a3b8; line-height:1.5; margin:0 0 16px 0;">
         Demostración ejecutiva del portal stemOS, recorrido por las 25 carreras de 60 horas y revisión del panel docente de seguimiento de grupos.
       </p>
+
+      <div style="margin-bottom:16px; padding:12px 14px; background:rgba(11,92,255,0.12); border:1px solid rgba(11,92,255,0.3); border-radius:10px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+        <div style="font-size:0.85rem; color:#93c5fd;">
+          <i class="fa-solid fa-calendar-check" style="margin-right:6px;"></i> Agenda inmediata disponible vía <strong>Calendly</strong>
+        </div>
+        <a href="https://calendly.com/yepzhi/30min" target="_blank" rel="noopener noreferrer" style="background:#0b5cff; color:#fff; padding:6px 14px; border-radius:8px; font-weight:700; font-size:0.82rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+          Abrir Calendly <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.7rem;"></i>
+        </a>
+      </div>
       
       <form id="zoom-demo-form" onsubmit="submitZoomRequest(event)" style="display:flex; flex-direction:column; gap:12px;">
         <div>
@@ -2686,8 +2697,9 @@
       if (calcEl) calcEl.textContent = formatted;
     }
 
-    // ─── ZOOM MODAL CONTROLS ───
+    // ─── ZOOM MODAL & CALENDLY CONTROLS ───
     function openZoomDemoModal() {
+      window.open('https://calendly.com/yepzhi/30min', '_blank', 'noopener,noreferrer');
       var modal = document.getElementById('stemos-zoom-modal');
       if (modal) modal.style.display = 'flex';
     }
@@ -2702,10 +2714,11 @@
       if (form) form.style.display = 'none';
       if (success) success.style.display = 'block';
       setTimeout(function() {
+        window.open('https://calendly.com/yepzhi/30min', '_blank', 'noopener,noreferrer');
         closeZoomDemoModal();
         if (form) form.style.display = 'flex';
         if (success) success.style.display = 'none';
-      }, 3500);
+      }, 1500);
     }
 
     // ─── BILINGUAL I18N CONTROLLER (ES | EN) ───
