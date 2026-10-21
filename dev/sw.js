@@ -3,7 +3,7 @@
  * Full offline PWA caching for 4 Portals (Student, Admin, Teacher, Register), 25 Career Paths (60h), Interleaved Curricula, XP HUD, and 3D World Map.
  */
 
-const CACHE_NAME = 'stemos-lxp-v6.2.0-piper-neural';
+const CACHE_NAME = 'stemos-lxp-v6.3.0-campus-diadema-offline';
 
 const ASSETS_TO_CACHE = [
   '/',
@@ -11,6 +11,9 @@ const ASSETS_TO_CACHE = [
   '/styles.css',
   '/app.html',
   '/app.js',
+  '/placement.html',
+  '/tracks.html',
+  '/privacy.html',
   '/register.html',
   '/admin.html',
   '/teacher.html',
@@ -29,6 +32,17 @@ const ASSETS_TO_CACHE = [
   '/content/stemos_tts.js',
   '/content/audio/cleanroom_photolithography.wav',
   '/content/audio/cleanroom_basic_a2.wav',
+  '/content/audio/pt-test-audio.mp3',
+  '/content/audio/pt-l01.mp3',
+  '/content/audio/pt-l02.mp3',
+  '/content/audio/pt-l03.mp3',
+  '/content/audio/pt-l04.mp3',
+  '/content/audio/pt-l05.mp3',
+  '/content/audio/pt-l06.mp3',
+  '/content/audio/pt-l07.mp3',
+  '/content/audio/pt-l08.mp3',
+  '/content/audio/pt-l09.mp3',
+  '/content/audio/pt-l10.mp3',
   '/dev',
   '/dev/',
   '/dev.html',
