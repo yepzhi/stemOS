@@ -105,6 +105,20 @@
     "In computer chip factories, workers wear white cleanroom suits. They keep the air pure so microchips do not have dust damage. Silicon wafers are washed with special chemical liquids."
   );
 
+  const PLACEMENT_STATIC_AUDIO = {
+    [normalizeKey("Good morning, my name is Robert. My employee badge number is 4-2-9-0.")]: '/content/audio/pt-l01.mp3',
+    [normalizeKey("Attention all operators. The cafeteria will be closed for cleaning from two o'clock to three o'clock this afternoon.")]: '/content/audio/pt-l02.mp3',
+    [normalizeKey("Please place the calibrated torque wrench in Cabinet B on the top shelf.")]: '/content/audio/pt-l03.mp3',
+    [normalizeKey("Station four experienced twenty minutes of unexpected downtime yesterday because an optical sensor became loose.")]: '/content/audio/pt-l04.mp3',
+    [normalizeKey("The delivery of raw stainless steel brackets was rescheduled from Monday morning to Wednesday afternoon.")]: '/content/audio/pt-l05.mp3',
+    [normalizeKey("The pneumatic clamp cylinder is leaking compressed air behind the manifold. We must shut the air valve before replacing the seal.")]: '/content/audio/pt-l06.mp3',
+    [normalizeKey("If the hole diameter exceeds zero point zero five millimeters from the CAD specification, the automated robot will segregate the part into the red quarantine bin.")]: '/content/audio/pt-l07.mp3',
+    [normalizeKey("I understand your concern about delivery lead times; however, switching to an unverified local vendor poses a significant quality risk.")]: '/content/audio/pt-l08.mp3',
+    [normalizeKey("We are running short on time during this engineering review. Let's table the discussion regarding the secondary filtration bracket until Friday's morning sync.")]: '/content/audio/pt-l09.mp3',
+    [normalizeKey("Our containment action was fully effective: all fifteen hundred finished subassemblies in transit were placed on electronic hold in warehouse quarantine, confirming zero defect escapes to the customer.")]: '/content/audio/pt-l10.mp3',
+    [normalizeKey("Welcome to stemOS. Audio check complete. Your speakers and speech synthesis are working perfectly.")]: '/content/audio/pt-test-audio.mp3'
+  };
+
   function cleanText(text) {
     if (!text) return '';
     return text
@@ -175,7 +189,7 @@
       const voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
       const bestVoice = voices.find(v => 
         (v.lang && (v.lang.startsWith('en') || v.lang === 'en-US')) &&
-        (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Aaron') || v.name.includes('Daniel') || v.name.includes('Jenny') || v.name.includes('Ava'))
+        (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Aaron') || v.name.includes('Daniel') || v.name.includes('Jenny') || v.name.includes('Ava') || v.name.includes('Guy'))
       );
       if (bestVoice) utterance.voice = bestVoice;
 
@@ -226,6 +240,12 @@
     }
     if (normKey === CLEANROOM_A2_KEY) {
       playAudioUrl(STATIC_AUDIO_MAP.cleanroom_basic_a2, sessionId, { ...options, rawText: cleaned });
+      return;
+    }
+
+    // 1b. Check pre-rendered Placement Test US Neural Audio
+    if (PLACEMENT_STATIC_AUDIO[normKey]) {
+      playAudioUrl(PLACEMENT_STATIC_AUDIO[normKey], sessionId, { ...options, rawText: cleaned });
       return;
     }
 

@@ -1051,13 +1051,61 @@ const MCER_LEVELS = [
   }
 ];
 
-// Enrich MCER_LEVELS with Pedagogical Modules (False Cognates, Pronunciation Lab, Crucible Model Transcripts)
-// and Comprehensive Standardized Questions Bank (176 MCQs across 16 units)
+// Enrich MCER_LEVELS with Pedagogical Modules (False Cognates, Pronunciation Lab, Crucible Model Transcripts),
+// Comprehensive Standardized Questions Bank (176 MCQs across 16 units),
+// Interactive Listening Labs, Applied Grammar Drills, Vocabulary Exercises, and Level Milestone Certification Exams (288 additional items)
 try {
   const { ENRICHMENT_MAP } = require('./enrich_mcer_pedagogical_modules.cjs');
   const { MCER_QUESTIONS_BANK } = require('./build_mcer_questions_bank_complete.cjs');
+  const { MCER_INTERACTIVE_EXERCISES } = require('./build_mcer_interactive_exercises_complete.cjs');
+  const { MCER_LEVEL_CERTIFICATION_EXAMS } = require('./build_mcer_level_certification_exams.cjs');
 
   MCER_LEVELS.forEach(lvl => {
+    // Inject Level Milestone Certification Exam (20 items per level)
+    if (MCER_LEVEL_CERTIFICATION_EXAMS && (MCER_LEVEL_CERTIFICATION_EXAMS[lvl.id] || MCER_LEVEL_CERTIFICATION_EXAMS[lvl.code.toLowerCase()])) {
+      const rawExam = MCER_LEVEL_CERTIFICATION_EXAMS[lvl.id] || MCER_LEVEL_CERTIFICATION_EXAMS[lvl.code.toLowerCase()];
+      const normExam = {
+        id: rawExam.id,
+        level: rawExam.level,
+        title: rawExam.title,
+        titleEN: rawExam.titleEN || rawExam.title,
+        timeLimitMinutes: rawExam.timeLimitMinutes || rawExam.timeMinutes || 40,
+        timeMinutes: rawExam.timeLimitMinutes || rawExam.timeMinutes || 40,
+        passingScore: rawExam.passingScore || 15,
+        passScorePct: 75,
+        totalQuestions: rawExam.totalQuestions || rawExam.totalItems || 20,
+        totalItems: rawExam.totalQuestions || rawExam.totalItems || 20,
+        badgeId: rawExam.badgeId,
+        accreditationDossier: rawExam.accreditationDossier || rawExam.dossier,
+        dossier: rawExam.accreditationDossier || rawExam.dossier,
+        questions: (rawExam.questions || []).map((eq, qIdx) => {
+          let sec = eq.section;
+          if (!sec) {
+            if (qIdx < 5) sec = 'listening';
+            else if (qIdx < 10) sec = 'grammar';
+            else if (qIdx < 15) sec = 'reading';
+            else sec = 'pragmatics';
+          }
+          return {
+            id: eq.id || `${rawExam.level}-ex-${String(qIdx + 1).padStart(2, '0')}`,
+            section: sec,
+            category: eq.category || (sec === 'listening' ? 'Listening Lab' : sec === 'grammar' ? 'Grammar & Syntax' : sec === 'reading' ? 'Reading SOPs' : 'Workplace Pragmatics'),
+            audioScript: eq.audioScript,
+            passage: eq.passage,
+            q: eq.q,
+            opts: eq.opts || eq.options,
+            options: eq.options || eq.opts,
+            ans: eq.ans !== undefined ? eq.ans : eq.answer,
+            answer: eq.answer !== undefined ? eq.answer : eq.ans,
+            correct: eq.correct !== undefined ? eq.correct : (eq.ans !== undefined ? eq.ans : eq.answer),
+            exp: eq.exp
+          };
+        })
+      };
+      lvl.certificationExam = normExam;
+      lvl.milestoneExam = normExam;
+    }
+
     lvl.units.forEach(u => {
       // 1. Pedagogical modules
       if (ENRICHMENT_MAP && ENRICHMENT_MAP[u.id]) {
@@ -1074,7 +1122,7 @@ try {
         const qBank = MCER_QUESTIONS_BANK[u.id];
         if (qBank.readingQuestions && qBank.readingQuestions.length > 0) {
           u.reading = Object.assign({}, u.reading, {
-            questions: qBank.readingQuestions,
+            questions: [...qBank.readingQuestions],
             question: qBank.readingQuestions[0].q,
             options: qBank.readingQuestions[0].options,
             correct: qBank.readingQuestions[0].correct,
@@ -1086,9 +1134,70 @@ try {
           u.unitQuiz = qBank.unitQuiz;
         }
       }
+
+      // 3. Interactive Exercises (Listening Lab, Grammar Drills, Vocabulary Exercises, 4th Reading MCQ)
+      if (MCER_INTERACTIVE_EXERCISES && MCER_INTERACTIVE_EXERCISES[u.id]) {
+        const ie = MCER_INTERACTIVE_EXERCISES[u.id];
+        if (ie.listeningLab) {
+          u.listeningLab = {
+            title: ie.listeningLab.title,
+            speaker: ie.listeningLab.speaker,
+            audioScenario: ie.listeningLab.audioScenario,
+            audioScript: ie.listeningLab.audioScenario || ie.listeningLab.audioScript,
+            questions: (ie.listeningLab.questions || []).map(lq => ({
+              q: lq.q,
+              opts: lq.opts || lq.options,
+              options: lq.options || lq.opts,
+              ans: lq.ans !== undefined ? lq.ans : lq.answer,
+              answer: lq.answer !== undefined ? lq.answer : lq.ans,
+              exp: lq.exp,
+              socraticHint: lq.socraticHint,
+              category: lq.category || 'Comprensión Auditiva'
+            }))
+          };
+        }
+        if (ie.grammarDrills) {
+          u.grammarDrills = (ie.grammarDrills || []).map(gq => ({
+            q: gq.q,
+            opts: gq.opts || gq.options,
+            options: gq.options || gq.opts,
+            ans: gq.ans !== undefined ? gq.ans : gq.answer,
+            answer: gq.answer !== undefined ? gq.answer : gq.ans,
+            exp: gq.exp,
+            socraticHint: gq.socraticHint,
+            category: gq.category || 'Gramática Aplicada',
+            rule: gq.rule || ''
+          }));
+        }
+        if (ie.vocabularyExercises) {
+          u.vocabularyExercises = (ie.vocabularyExercises || []).map(vq => ({
+            q: vq.q,
+            opts: vq.opts || vq.options,
+            options: vq.options || vq.opts,
+            ans: vq.ans !== undefined ? vq.ans : vq.answer,
+            answer: vq.answer !== undefined ? vq.answer : vq.ans,
+            exp: vq.exp,
+            socraticHint: vq.socraticHint,
+            category: vq.category || 'Vocabulario Técnico',
+            falseCognateRef: vq.falseCognateRef || false
+          }));
+        }
+        if (ie.fourthReadingQuestion && u.reading && Array.isArray(u.reading.questions)) {
+          if (u.reading.questions.length === 3) {
+            const fq = Object.assign({}, ie.fourthReadingQuestion, {
+              options: ie.fourthReadingQuestion.options || ie.fourthReadingQuestion.opts,
+              opts: ie.fourthReadingQuestion.opts || ie.fourthReadingQuestion.options,
+              answer: ie.fourthReadingQuestion.answer !== undefined ? ie.fourthReadingQuestion.answer : ie.fourthReadingQuestion.correct,
+              correct: ie.fourthReadingQuestion.correct !== undefined ? ie.fourthReadingQuestion.correct : ie.fourthReadingQuestion.answer,
+              exp: ie.fourthReadingQuestion.exp || ie.fourthReadingQuestion.explanation || 'Technical standard verification.'
+            });
+            u.reading.questions.push(fq);
+          }
+        }
+      }
     });
   });
-  console.log('✓ Injected pedagogical modules and comprehensive 176-item questions bank into all 16 MCER units.');
+  console.log('✓ Injected pedagogical modules, 176 baseline MCQs, listening labs, grammar drills, vocabulary exercises, and 4 level certification exams (464 total MCQs across catalog).');
 } catch (e) {
   console.warn('Pedagogical enrichment warning:', e.message);
 }
@@ -1104,6 +1213,7 @@ const fileContent = `/**
  * - Standard American English (Spelling, Pronunciation IPA & Workplace Pragmatics)
  * - Acreditación de Tronco Común Universitario (Inglés I, II, III, IV — 60.0h / nivel)
  * - W3C Open Badges 3.0 & Descriptor Mapping (Can-Do Statements)
+ * - 464 Reactivos de Opción Múltiple Estandarizados (Listening, Grammar, Reading, Vocab, Quizzes & Level Milestone Exams)
  * ==============================================================================
  */
 
@@ -1139,15 +1249,27 @@ const fileContent = `/**
       example: v.example || v.sample
     }));
 
+    const rawReadingQs = (u.reading && u.reading.questions) || (u.reading && u.reading.question ? [{
+      q: u.reading.question,
+      options: u.reading.options || u.reading.opts || [],
+      answer: u.reading.correct !== undefined ? u.reading.correct : (u.reading.answer || 0),
+      correct: u.reading.correct !== undefined ? u.reading.correct : (u.reading.answer || 0),
+      exp: u.reading.exp || 'Technical standard verification.'
+    }] : []);
+
+    const normalizedReadingQs = rawReadingQs.map(rq => ({
+      q: rq.q,
+      options: rq.options || rq.opts || [],
+      opts: rq.opts || rq.options || [],
+      answer: rq.answer !== undefined ? rq.answer : (rq.correct !== undefined ? rq.correct : 0),
+      correct: rq.correct !== undefined ? rq.correct : (rq.answer !== undefined ? rq.answer : 0),
+      exp: rq.exp || rq.explanation || 'Technical standard verification.'
+    }));
+
     const readingObj = Object.assign({}, u.reading, {
       passage: (u.reading && (u.reading.passage || u.reading.text)) || '',
       text: (u.reading && (u.reading.text || u.reading.passage)) || '',
-      questions: (u.reading && u.reading.questions) || (u.reading && u.reading.question ? [{
-        q: u.reading.question,
-        options: u.reading.options || [],
-        answer: u.reading.correct !== undefined ? u.reading.correct : (u.reading.answer || 0),
-        correct: u.reading.correct !== undefined ? u.reading.correct : (u.reading.answer || 0)
-      }] : [])
+      questions: normalizedReadingQs
     });
 
     const quizArr = (u.unitQuiz || u.quiz || []).map(q => ({
@@ -1187,12 +1309,15 @@ const fileContent = `/**
       unitQuiz: quizArr,
       falseCognates: u.falseCognates || [],
       pronunciationLab: u.pronunciationLab || [],
-      crucible: crucibleObj
+      crucible: crucibleObj,
+      listeningLab: u.listeningLab || null,
+      grammarDrills: u.grammarDrills || [],
+      vocabularyExercises: u.vocabularyExercises || []
     });
   }
 
   return {
-    version: '2.0.0-60h-accredited',
+    version: '2.5.0-comprehensive-accredited',
     title: 'stemOS MCER Core — 60h Accredited Courses (A1-B2)',
     levels: MCER_LEVELS,
     getLevelById: function(levelId) {
@@ -1200,6 +1325,13 @@ const fileContent = `/**
     },
     getLevel: function(levelId) {
       return this.getLevelById(levelId);
+    },
+    getLevelExam: function(levelId) {
+      const lvl = this.getLevelById(levelId);
+      return lvl ? (lvl.certificationExam || lvl.milestoneExam || null) : null;
+    },
+    getAllExams: function() {
+      return MCER_LEVELS.map(lvl => lvl.certificationExam).filter(Boolean);
     },
     getAllUnits: function() {
       const allUnits = [];
@@ -1221,6 +1353,7 @@ const fileContent = `/**
     }
   };
 }));
+
 `;
 
 fs.writeFileSync(outRoot, fileContent, 'utf8');

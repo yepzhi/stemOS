@@ -473,8 +473,108 @@
     };
   }
 
-  // Reproductor de Audio Web Speech API (en-US)
-  function playAudioPrompt(scriptText, onStart, onEnd) {
+  // Pre-rendered Studio-Quality US Neural Audio Assets (Edge/Piper Neural)
+  const PLACEMENT_AUDIO_FILES = {
+    'pt-test-audio': '/content/audio/pt-test-audio.mp3',
+    'pt-l01': '/content/audio/pt-l01.mp3',
+    'pt-l02': '/content/audio/pt-l02.mp3',
+    'pt-l03': '/content/audio/pt-l03.mp3',
+    'pt-l04': '/content/audio/pt-l04.mp3',
+    'pt-l05': '/content/audio/pt-l05.mp3',
+    'pt-l06': '/content/audio/pt-l06.mp3',
+    'pt-l07': '/content/audio/pt-l07.mp3',
+    'pt-l08': '/content/audio/pt-l08.mp3',
+    'pt-l09': '/content/audio/pt-l09.mp3',
+    'pt-l10': '/content/audio/pt-l10.mp3'
+  };
+
+  const SCRIPT_AUDIO_LOOKUP = {
+    'good morning, my name is robert': '/content/audio/pt-l01.mp3',
+    'attention all operators': '/content/audio/pt-l02.mp3',
+    'please place the calibrated torque wrench': '/content/audio/pt-l03.mp3',
+    'station four experienced twenty minutes': '/content/audio/pt-l04.mp3',
+    'the delivery of raw stainless steel': '/content/audio/pt-l05.mp3',
+    'the pneumatic clamp cylinder': '/content/audio/pt-l06.mp3',
+    'if the hole diameter exceeds': '/content/audio/pt-l07.mp3',
+    'i understand your concern about delivery': '/content/audio/pt-l08.mp3',
+    'we are running short on time': '/content/audio/pt-l09.mp3',
+    'our containment action was fully effective': '/content/audio/pt-l10.mp3',
+    'welcome to stemos': '/content/audio/pt-test-audio.mp3'
+  };
+
+  let activePlacementAudio = null;
+
+  function stopAudioPrompt() {
+    if (activePlacementAudio) {
+      try {
+        activePlacementAudio.pause();
+        activePlacementAudio.currentTime = 0;
+      } catch (_) {}
+      activePlacementAudio = null;
+    }
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      try { window.speechSynthesis.cancel(); } catch (_) {}
+    }
+  }
+
+  // Reproductor de Audio: US Neural Audio Directo (Primario) -> Piper TTS -> Web Speech API (Fallback)
+  function playAudioPrompt(scriptText, onStart, onEnd, qId) {
+    stopAudioPrompt();
+
+    // 1. Check exact question ID or text match in pre-rendered US Neural Audio assets
+    let matchedUrl = null;
+    if (qId && PLACEMENT_AUDIO_FILES[qId]) {
+      matchedUrl = PLACEMENT_AUDIO_FILES[qId];
+    } else if (scriptText) {
+      const lower = scriptText.toLowerCase();
+      for (const [snippet, url] of Object.entries(SCRIPT_AUDIO_LOOKUP)) {
+        if (lower.includes(snippet)) {
+          matchedUrl = url;
+          break;
+        }
+      }
+    }
+
+    if (matchedUrl && typeof Audio !== 'undefined') {
+      try {
+        const audio = new Audio(matchedUrl);
+        activePlacementAudio = audio;
+        audio.onplay = () => { if (onStart) onStart(); };
+        audio.onended = () => {
+          activePlacementAudio = null;
+          if (onEnd) onEnd();
+        };
+        audio.onerror = () => {
+          activePlacementAudio = null;
+          fallbackToSpeechSynthesis(scriptText, onStart, onEnd);
+        };
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => fallbackToSpeechSynthesis(scriptText, onStart, onEnd));
+        }
+        return;
+      } catch (_) {
+        // Fall through
+      }
+    }
+
+    // 2. Check STEMOS_TTS Piper Neural engine
+    if (typeof window !== 'undefined' && window.STEMOS_TTS && typeof window.STEMOS_TTS.speak === 'function') {
+      window.STEMOS_TTS.speak(scriptText, {
+        speed: 0.95,
+        lang: 'en-US',
+        onStart: onStart,
+        onEnd: onEnd,
+        onError: () => fallbackToSpeechSynthesis(scriptText, onStart, onEnd)
+      });
+      return;
+    }
+
+    // 3. Fallback
+    fallbackToSpeechSynthesis(scriptText, onStart, onEnd);
+  }
+
+  function fallbackToSpeechSynthesis(scriptText, onStart, onEnd) {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
       console.warn('SpeechSynthesis not supported in this environment');
       if (onEnd) onEnd();
@@ -483,12 +583,11 @@
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(scriptText);
     utterance.lang = 'en-US';
-    utterance.rate = 0.95; // Cadencia clara y comprensible para examen
+    utterance.rate = 0.95;
     utterance.pitch = 1.0;
 
-    // Buscar voz nativa estadounidense si está disponible
     const voices = window.speechSynthesis.getVoices();
-    const usVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Aaron')));
+    const usVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Aaron') || v.name.includes('Jenny') || v.name.includes('Guy')));
     if (usVoice) utterance.voice = usVoice;
 
     if (onStart) utterance.onstart = onStart;
@@ -503,6 +602,7 @@
     title: 'stemOS Institutional Placement Test (Grammar, Listening, Reading)',
     questions: PLACEMENT_QUESTIONS,
     evaluateAnswers: evaluateAnswers,
-    playAudioPrompt: playAudioPrompt
+    playAudioPrompt: playAudioPrompt,
+    stopAudioPrompt: stopAudioPrompt
   };
 }));

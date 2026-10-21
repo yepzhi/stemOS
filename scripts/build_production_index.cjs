@@ -1,7 +1,7 @@
 /**
  * stemOS — Build Production index.html
  * Merges the best of dev.html (Hero, Value Proposition, Constructive Standards, Institutional 60h Ecosystem)
- * with the new Institutional Pricing & Commercial Proposal Section (Mario's 1500 students flat license),
+ * with the new Institutional Pricing & Commercial Proposal Section (institutional flat license),
  * interactive lab calculator, WhatsApp and Zoom CTAs, and bilingual ES | EN controller.
  */
 
@@ -870,9 +870,9 @@ const pricingSection = `
         </div>
         <div class="pricing-memo-content">
           <p class="pricing-memo-quote" data-i18n="memo_quote">
-            &ldquo;<strong>Mario, gracias por la confianza.</strong> Con lo que me cuentas (<strong>≈1,500 alumnos</strong>, sin límite de uso por estudiante y sin compra de libros), te propongo una <strong>licencia institucional plana</strong>: una sola factura para la Universidad y cero cobro a los alumnos.
+            &ldquo;<strong>Modelo Institucional stemOS.</strong> Diseñado para facultades de ingeniería y universidades tecnológicas (cobertura institucional de hasta 2,000 estudiantes con acceso ilimitado 24/7 y cero compra obligatoria de libros de texto). Una sola factura para la Universidad y cero costo directo para los alumnos.
             <br><br>
-            Todas las opciones incluyen <strong>acceso ilimitado para los ~1,500 alumnos</strong> y un <strong>panel para que los docentes de inglés</strong> vean la práctica de cada grupo.&rdquo;
+            Todos los planes institucionales incluyen <strong>acceso total en campus y remoto para hasta 2,000 estudiantes</strong> y un <strong>panel docente en tiempo real para coordinadores y profesores de inglés</strong>.&rdquo;
           </p>
           <div class="pricing-memo-meta">
             <span class="pricing-memo-author"><i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Propuesta Institucional stemOS</span>
@@ -936,7 +936,7 @@ const pricingSection = `
           </ul>
 
           <div class="pricing-card-action">
-            <a href="https://wa.me/5216621147374?text=Hola%20Alberto%2C%20soy%20Mario%2C%20me%20interesa%20iniciar%20con%20la%20Opci%C3%B3n%201%20(Piloto%20cuatrimestral%20%2495%2C000%20MXN)%20para%20nuestros%20~1%2C500%20alumnos." target="_blank" class="btn-pricing-primary">
+            <a href="https://wa.me/5216621147374?text=Hola%20Alberto%2C%20nos%20interesa%20iniciar%20con%20la%20Opci%C3%B3n%201%20(Piloto%20cuatrimestral%20%2495%2C000%20MXN)%20para%20nuestros%20alumnos." target="_blank" class="btn-pricing-primary">
               <i class="fa-brands fa-whatsapp"></i>
               <span>Elegir Piloto Cuatrimestral</span>
             </a>
@@ -991,7 +991,7 @@ const pricingSection = `
           </ul>
 
           <div class="pricing-card-action">
-            <a href="https://wa.me/5216621147374?text=Hola%20Alberto%2C%20soy%20Mario%2C%20nos%20interesa%20la%20Opci%C3%B3n%202%20(Licencia%20anual%20de%20campus%20%24240%2C000%20MXN)%20con%20precio%20congelado%20para%20la%20universidad." target="_blank" class="btn-pricing-secondary">
+            <a href="https://wa.me/5216621147374?text=Hola%20Alberto%2C%20nos%20interesa%20la%20Opci%C3%B3n%202%20(Licencia%20anual%20de%20campus%20%24240%2C000%20MXN)%20con%20precio%20congelado%20para%20la%20universidad." target="_blank" class="btn-pricing-secondary">
               <i class="fa-brands fa-whatsapp"></i>
               <span>Solicitar Licencia Anual</span>
             </a>
@@ -1095,7 +1095,7 @@ const pricingSection = `
 
         <!-- Action Callout Buttons -->
         <div class="pricing-actions-bar">
-          <a href="https://wa.me/5216621147374?text=Hola%20Alberto%2C%20soy%20Mario%2C%20gracias%20por%20la%20propuesta.%20Nos%20gustar%C3%ADa%20agendar%20la%20sesi%C3%B3n%20de%2015%20min%20por%20Zoom%20para%20revisar%20el%20portal%20de%20stemOS%20y%20el%20panel%20docente%20para%20la%20universidad." target="_blank" class="btn-hub-whatsapp">
+          <a href="https://wa.me/5216621147374?text=Hola%20Alberto%2C%20gracias%20por%20la%20propuesta.%20Nos%20gustar%C3%ADa%20agendar%20la%20sesi%C3%B3n%20de%2015%20min%20por%20Zoom%20para%20revisar%20el%20portal%20de%20stemOS%20y%20el%20panel%20docente%20para%20la%20universidad." target="_blank" class="btn-hub-whatsapp">
             <i class="fa-brands fa-whatsapp"></i>
             <span data-i18n="btn_whatsapp">Contactar por WhatsApp Directo</span>
           </a>
@@ -1105,7 +1105,7 @@ const pricingSection = `
             <span data-i18n="btn_zoom">Agendar 15 min por Zoom</span>
           </a>
 
-          <a href="mailto:director@stemos.org?subject=Propuesta%20Institucional%20stemOS%20-%20Reuni%C3%B3n%20Zoom&body=Hola%20Mario,%20recibimos%20la%20propuesta%20institucional.%20Nos%20gustar%C3%ADa%20coordinar%20los%2015%20min%20por%20Zoom." class="btn-hub-email">
+          <a href="mailto:director@stemos.org?subject=Propuesta%20Institucional%20stemOS%20-%20Reuni%C3%B3n%20Zoom&body=Hola%20Alberto,%20recibimos%20la%20propuesta%20institucional.%20Nos%20gustar%C3%ADa%20coordinar%20los%2015%20min%20por%20Zoom." class="btn-hub-email">
             <i class="fa-solid fa-envelope"></i>
             <span>Enviar Correo Oficial</span>
           </a>
@@ -1141,7 +1141,7 @@ const zoomModal = `
       <form id="zoom-demo-form" onsubmit="submitZoomRequest(event)" style="display:flex; flex-direction:column; gap:12px;">
         <div>
           <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">Nombre y Cargo:</label>
-          <input type="text" id="zoom-input-name" required placeholder="Ej. Dr. Mario González — Director de Carrera" style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px 12px; color:#fff; font-family:inherit;">
+          <input type="text" id="zoom-input-name" required placeholder="Ej. Director de Carrera / Decano" style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px 12px; color:#fff; font-family:inherit;">
         </div>
         <div>
           <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">Institución / Universidad:</label>
@@ -1150,7 +1150,7 @@ const zoomModal = `
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
           <div>
             <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">Correo Institucional:</label>
-            <input type="email" id="zoom-input-email" required placeholder="mario@universidad.edu.mx" style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px 12px; color:#fff; font-family:inherit;">
+            <input type="email" id="zoom-input-email" required placeholder="contacto@universidad.edu.mx" style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px 12px; color:#fff; font-family:inherit;">
           </div>
           <div>
             <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">WhatsApp / Teléfono:</label>
@@ -1244,7 +1244,7 @@ const i18nAndCalcScript = `
         dock_placement: 'Placement Test A1–C1',
         dock_lxp: 'Campus LXP 3D',
 
-        memo_quote: '&ldquo;<strong>Mario, thank you for your trust.</strong> Based on your context (<strong>≈1,500 students</strong>, unlimited student usage, and no book purchases), I propose a <strong>flat institutional license</strong>: a single invoice for the University and zero cost to the students.<br><br>All options include <strong>unlimited access for the ~1,500 students</strong> and a <strong>faculty dashboard for English teachers</strong> to monitor group practice.&rdquo;',
+        memo_quote: '&ldquo;<strong>stemOS Institutional Model.</strong> Engineered for engineering faculties and technological universities (institutional coverage for up to 2,000 students with 24/7 unlimited access and zero mandatory textbook purchases). A single invoice for the University and zero direct student fee.<br><br>All institutional plans include full on-campus and remote access for up to 2,000 students and a real-time faculty dashboard for coordinators and English professors.&rdquo;',
         memo_tag: 'Special Attention: University &bull; Cohort ≈1,500 Students',
         plan_1_name: 'Semester Pilot',
         plan_1_summary: 'Covers on-campus computer labs plus remote mobile and home access at no extra cost.',
@@ -1287,7 +1287,7 @@ const i18nAndCalcScript = `
         dock_placement: 'Placement Test A1–C1',
         dock_lxp: 'Campus LXP 3D',
 
-        memo_quote: '&ldquo;<strong>Mario, gracias por la confianza.</strong> Con lo que me cuentas (<strong>≈1,500 alumnos</strong>, sin límite de uso por estudiante y sin compra de libros), te propongo una <strong>licencia institucional plana</strong>: una sola factura para la Universidad y cero cobro a los alumnos.<br><br>Todas las opciones incluyen <strong>acceso ilimitado para los ~1,500 alumnos</strong> y un <strong>panel para que los docentes de inglés</strong> vean la práctica de cada grupo.&rdquo;',
+        memo_quote: '&ldquo;<strong>Modelo Institucional stemOS.</strong> Diseñado para facultades de ingeniería y universidades tecnológicas (cobertura institucional de hasta 2,000 estudiantes con acceso ilimitado 24/7 y cero compra obligatoria de libros de texto). Una sola factura para la Universidad y cero costo directo para los alumnos.<br><br>Todos los planes institucionales incluyen acceso total en campus y remoto para hasta 2,000 estudiantes y un panel docente en tiempo real para coordinadores y profesores de inglés.&rdquo;',
         memo_tag: 'Atención Especial: Universidad &bull; Cohorte ≈1,500 Alumnos',
         plan_1_name: 'Piloto Cuatrimestral',
         plan_1_summary: 'Cubre los laboratorios y además el acceso desde casa o celular sin costo extra.',

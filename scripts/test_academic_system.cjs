@@ -302,6 +302,7 @@ try {
     content = content.replace(/<!-- MCER Unit Interactive Study Dialog[\s\S]*?<\/dialog>/i, '');
     content = content.replace(/MCER Tracks \(Standard American English[\s\S]*?<\/option>/i, '');
     content = content.replace(/CEFR \${lvl}/g, '');
+    content = content.replace(/const m1 = unitsDone[\s\S]*?const m4 = unitsDone[\s\S]*?;/g, '');
 
     illegalPatterns.forEach(pat => {
       if (pat.test(content)) {

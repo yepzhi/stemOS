@@ -1779,6 +1779,9 @@
                     <div class="page-header-title">
                         <span id="current-view-title">Command Center Dashboard</span>
                         <span class="badge badge-sky" id="current-period-badge">AGO-DIC 2026 &bull; ACTIVE</span>
+                        <span class="badge badge-emerald" id="admin-campus-edge-sync-hud" title="Campus Edge Sync: Nodo LAN Central Sincronizado">
+                            <i class="fa-solid fa-tower-broadcast"></i> Campus Node LAN
+                        </span>
                         <span class="badge badge-emerald" id="admin-firestore-badge" title="Cloud Firestore jsweb-b14f8 activo para 100 alumnos simultáneos">
                             <i class="fa-solid fa-cloud"></i> Firestore 100% (jsweb-b14f8)
                         </span>
@@ -1789,6 +1792,16 @@
                 </div>
 
                 <div class="top-header-actions">
+                    <!-- Multi-Campus Federation Selector (Fase 70) -->
+                    <select id="admin-campus-federation-select" class="campus-select-dropdown" title="Campus Universitario Federado" style="font-size:0.75rem; background:#0f172a; color:#38bdf8; border:1px solid #0284c7; padding:4px 10px; border-radius:8px; font-weight:700; cursor:pointer;" onchange="handleAdminCampusSwitch(this.value)">
+                        <option value="tecnm-tijuana">TecNM Tijuana (ITT)</option>
+                        <option value="tecnm-saltillo">TecNM Saltillo (ITS)</option>
+                        <option value="utt-tijuana">UTT Tijuana</option>
+                        <option value="upbc-mexicali">UPBC Mexicali</option>
+                        <option value="uacj-juarez">UACJ Cd. Juárez</option>
+                        <option value="tecnm-queretaro">TecNM Querétaro (ITQ)</option>
+                    </select>
+
                     <div class="header-search-box">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" class="header-search-input" id="global-search-input" placeholder="Search cohorts, classes, teachers..." onkeyup="handleGlobalSearch(event)">
@@ -1907,16 +1920,16 @@
                         </div>
                     </div>
 
-                    <!-- COHORT MCER PLACEMENT DIAGNOSTIC BANNER (Fase 62) -->
-                    <div class="glass-card" style="margin-bottom:24px; padding:20px 24px; background:linear-gradient(135deg, rgba(2,132,199,0.08) 0%, rgba(79,70,229,0.04) 100%); border:1px solid rgba(2,132,199,0.25);">
+                    <!-- COHORT MCER PLACEMENT DIAGNOSTIC BANNER (Fase 62 & 65) -->
+                    <div class="glass-card" id="admin-mcer-diagnostic-card" style="margin-bottom:24px; padding:20px 24px; background:linear-gradient(135deg, rgba(2,132,199,0.08) 0%, rgba(79,70,229,0.04) 100%); border:1px solid rgba(2,132,199,0.25);">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; margin-bottom:14px;">
                             <div>
-                                <span class="badge" style="background:#0284c718; color:var(--sky-400); border:1px solid rgba(2,132,199,0.3);"><i class="fa-solid fa-clipboard-check"></i> Institutional Diagnostic Baseline</span>
+                                <span class="badge" style="background:#0284c718; color:var(--sky-400); border:1px solid rgba(2,132,199,0.3);"><i class="fa-solid fa-clipboard-check"></i> Institutional Diagnostic Baseline &amp; 240.0h MCER Funnel</span>
                                 <h3 style="font-size:1.2rem; font-weight:800; color:#ffffff; margin-top:4px;">
                                     Evaluación Diagnóstica MCER de Ingreso (A1–B2)
                                 </h3>
                                 <p style="font-size:0.85rem; color:var(--fg-muted); margin-top:2px;">
-                                    Resultados de los 32 reactivos de Grammar, Listening y Reading aplicados en centros de cómputo y dispositivos móviles. Capacidad contratada: <strong>1,500 alumnos</strong>.
+                                    Monitoreo institucional de los 32 reactivos diagnósticos y progresión curricular de 240.0h acreditadas ante CACEI y DGUTyP. Capacidad contratada: <strong>1,500 alumnos</strong>.
                                 </p>
                             </div>
                             <div style="display:flex; gap:10px;">
@@ -1934,7 +1947,7 @@
                                     <span style="font-family:var(--font-mono); font-weight:800; color:#fff;">270 Alumnos</span>
                                 </div>
                                 <div style="font-size:1.4rem; font-weight:900; color:var(--emerald-400); margin:4px 0;">18%</div>
-                                <div style="font-size:0.72rem; color:var(--fg-dim);">Unidades 01–04 asignadas</div>
+                                <div style="font-size:0.72rem; color:var(--fg-dim);">Unidades 01–04 asignadas (60.0h)</div>
                             </div>
 
                             <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(2,132,199,0.3); border-radius:14px; padding:12px 16px;">
@@ -1943,7 +1956,7 @@
                                     <span style="font-family:var(--font-mono); font-weight:800; color:#fff;">510 Alumnos</span>
                                 </div>
                                 <div style="font-size:1.4rem; font-weight:900; color:var(--sky-400); margin:4px 0;">34%</div>
-                                <div style="font-size:0.72rem; color:var(--fg-dim);">Unidades 05–08 asignadas</div>
+                                <div style="font-size:0.72rem; color:var(--fg-dim);">Unidades 05–08 asignadas (120.0h)</div>
                             </div>
 
                             <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(245,158,11,0.3); border-radius:14px; padding:12px 16px;">
@@ -1952,7 +1965,7 @@
                                     <span style="font-family:var(--font-mono); font-weight:800; color:#fff;">570 Alumnos</span>
                                 </div>
                                 <div style="font-size:1.4rem; font-weight:900; color:var(--amber-400); margin:4px 0;">38%</div>
-                                <div style="font-size:0.72rem; color:var(--fg-dim);">Unidades 09–12 asignadas</div>
+                                <div style="font-size:0.72rem; color:var(--fg-dim);">Unidades 09–12 asignadas (180.0h)</div>
                             </div>
 
                             <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(139,92,246,0.3); border-radius:14px; padding:12px 16px;">
@@ -1961,7 +1974,41 @@
                                     <span style="font-family:var(--font-mono); font-weight:800; color:#fff;">150 Alumnos</span>
                                 </div>
                                 <div style="font-size:1.4rem; font-weight:900; color:#c084fc; margin:4px 0;">10%</div>
-                                <div style="font-size:0.72rem; color:var(--fg-dim);">Tracks ESP Industriales directos</div>
+                                <div style="font-size:0.72rem; color:var(--fg-dim);">Unidades 13–16 Capstone (240.0h)</div>
+                            </div>
+                        </div>
+
+                        <!-- 240.0H COHORT COMPLETION FUNNEL & VALUE-ADDED PROGRESSION (Fase 65) -->
+                        <div style="margin-top:16px; background:rgba(15,23,42,0.4); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:14px 18px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                <span style="font-size:0.8rem; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;">
+                                    <i class="fa-solid fa-filter" style="color:var(--teal-400);"></i> Embudo Institucional de Acreditación 240.0h (CACEI Criterio 4)
+                                </span>
+                                <span style="font-size:0.75rem; font-family:var(--font-mono); color:var(--emerald-400); font-weight:700;">
+                                    Tasa de Avance Valor Agregado: +42.6% vs Diagnóstico Inicial
+                                </span>
+                            </div>
+                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; text-align:center;">
+                                <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:8px; padding:8px;">
+                                    <div style="font-size:0.68rem; font-weight:800; color:var(--emerald-400);">HITO 1 · A1 (60.0h)</div>
+                                    <div style="font-size:1.05rem; font-weight:900; color:#fff; margin:2px 0;">100%</div>
+                                    <div style="font-size:0.68rem; color:var(--fg-dim);">1,500 acreditados</div>
+                                </div>
+                                <div style="background:rgba(2,132,199,0.08); border:1px solid rgba(2,132,199,0.25); border-radius:8px; padding:8px;">
+                                    <div style="font-size:0.68rem; font-weight:800; color:var(--sky-400);">HITO 2 · A2 (120.0h)</div>
+                                    <div style="font-size:1.05rem; font-weight:900; color:#fff; margin:2px 0;">82%</div>
+                                    <div style="font-size:0.68rem; color:var(--fg-dim);">1,230 acreditados</div>
+                                </div>
+                                <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:8px; padding:8px;">
+                                    <div style="font-size:0.68rem; font-weight:800; color:var(--amber-400);">HITO 3 · B1 (180.0h)</div>
+                                    <div style="font-size:1.05rem; font-weight:900; color:#fff; margin:2px 0;">64%</div>
+                                    <div style="font-size:0.68rem; color:var(--fg-dim);">960 acreditados</div>
+                                </div>
+                                <div style="background:rgba(139,92,246,0.08); border:1px solid rgba(139,92,246,0.25); border-radius:8px; padding:8px;">
+                                    <div style="font-size:0.68rem; font-weight:800; color:#c084fc;">HITO 4 · B2 (240.0h)</div>
+                                    <div style="font-size:1.05rem; font-weight:900; color:#fff; margin:2px 0;">48%</div>
+                                    <div style="font-size:0.68rem; color:var(--fg-dim);">720 titulables CACEI</div>
+                                </div>
                             </div>
                         </div>
 
@@ -1973,7 +2020,7 @@
                                 </div>
                                 <div>
                                     <div style="font-size:0.85rem; font-weight:700; color:#fff;">Índice de Acreditación Curricular CACEI / DGUTyP (Tronco Común)</div>
-                                    <div style="font-size:0.75rem; color:var(--fg-muted);">48% de la matrícula en B1/B2 (Apto para Prácticas Profesionales e Industria Binacional CaliBaja). 100% de la cohorte asignada a ruta de 60h.</div>
+                                    <div style="font-size:0.75rem; color:var(--fg-muted);">48% de la matrícula en B1/B2 (Apto para Prácticas Profesionales e Industria Binacional CaliBaja). 100% de la cohorte asignada a ruta de 240.0h.</div>
                                 </div>
                             </div>
                             <button type="button" class="btn btn-teal btn-sm" onclick="exportAccreditationReport()" style="font-size:0.78rem;">
@@ -3547,21 +3594,24 @@
 
         function exportAccreditationReport() {
             let csv = '\uFEFF';
-            csv += 'Matricula,Nombre del Alumno,Carrera,Nivel CEFR Diagnostico,Horas Acreditadas (MCER 60h),Modulos Superados,Simulacion Crisol,Elegibilidad CACEI / DGUTyP\r\n';
+            csv += 'Matricula,Nombre del Alumno,Carrera,Nivel CEFR Diagnostico,Horas Acreditadas MCER (240.0h max),Unidades A1-B2 Superadas (0-16),Simulacion Crisol Industrial,Hito de Nivel Certificado,Dictamen CACEI Criterio 4 / DGUTyP\r\n';
 
             state.students.forEach(s => {
                 const cefr = s.placementLevel || (s.progress > 60 ? 'B1' : s.progress > 30 ? 'A2' : 'A1');
-                const hours = ((s.progress / 100) * 60).toFixed(1);
+                const unitsDone = Math.min(16, Math.max(1, Math.round((s.progress / 100) * 16)));
+                const hours = (unitsDone * 15.0).toFixed(1);
                 const crucible = s.progress >= 50 ? 'Aprobado (90+ pts)' : 'Pendiente';
-                const eligibility = s.progress >= 70 ? 'Elegible Acreditación Total' : 'En Ruta Curricular Activa';
+                const certMilestone = unitsDone >= 16 ? 'B2 Vantage (240h)' : unitsDone >= 12 ? 'B1 Threshold (180h)' : unitsDone >= 8 ? 'A2 Waystage (120h)' : 'A1 Foundations (60h)';
+                const eligibility = unitsDone >= 8 || s.progress >= 50 ? 'Elegible Acreditación CACEI Criterio 4' : 'En Ruta Curricular Activa';
                 const row = [
                     `"${s.studentId}"`,
                     `"${s.name}"`,
                     `"${s.career}"`,
                     `"${cefr}"`,
                     hours,
-                    s.modules,
+                    `"${unitsDone}/16"`,
                     `"${crucible}"`,
+                    `"${certMilestone}"`,
                     `"${eligibility}"`
                 ];
                 csv += row.join(',') + '\r\n';
@@ -3571,7 +3621,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `Dictamen_Acreditacion_CACEI_${state.institution.code || 'UPBC'}_${new Date().toISOString().slice(0, 10)}.csv`;
+            a.download = `Dictamen_Acreditacion_CACEI_${state.institution.code || 'UPBC'}_240h_${new Date().toISOString().slice(0, 10)}.csv`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -3870,6 +3920,36 @@
                     filterTeacher.appendChild(opt);
                 });
             }
+
+            /* ══════════════════════════════════════════════════════════════
+               MULTI-CAMPUS INSTITUTIONAL FEDERATION (FASE 70)
+               ══════════════════════════════════════════════════════════════ */
+            function handleAdminCampusSwitch(campusId) {
+                try {
+                    localStorage.setItem('stemos_active_campus', campusId);
+                } catch (e) {}
+                const sel = document.getElementById('admin-campus-federation-select');
+                if (sel) sel.value = campusId;
+                const names = {
+                    'tecnm-tijuana': 'TecNM Campus Tijuana',
+                    'tecnm-saltillo': 'TecNM Campus Saltillo',
+                    'utt-tijuana': 'UTT Campus Valle de las Palmas',
+                    'upbc-mexicali': 'UPBC Campus Mexicali',
+                    'uacj-juarez': 'UACJ Campus Cd. Juárez',
+                    'tecnm-queretaro': 'TecNM Campus Querétaro'
+                };
+                const printSub = document.getElementById('print-header-sub');
+                if (printSub) {
+                    printSub.textContent = `${names[campusId] || 'TecNM Campus Tijuana'} &bull; Curricular 240-Hour MCER Track & CACEI Criterio 4`;
+                }
+            }
+            window.handleAdminCampusSwitch = handleAdminCampusSwitch;
+
+            // Initialize Campus Federation
+            try {
+                const savedCampus = localStorage.getItem('stemos_active_campus') || 'tecnm-tijuana';
+                handleAdminCampusSwitch(savedCampus);
+            } catch (e) {}
 
             // Listen to Hash Changes
             window.addEventListener('hashchange', handleRouting);

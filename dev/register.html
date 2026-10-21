@@ -994,14 +994,18 @@
             <a href="index.html" class="brand-cluster" title="Return to stemOS Portal">
                 <div class="brand-logo-icon">S</div>
                 <div class="brand-title">stem<span>OS</span></div>
-                <span class="badge-b1">Technical English B1</span>
+                <span class="badge-b1" id="reg-badge-track" data-i18n="badge_track">Personalized Career Path</span>
             </a>
 
             <div class="header-meta">
-                <div class="step-counter-pill" id="step-counter-pill">
-                    STEP <strong id="step-number-display">1</strong> OF <strong>7</strong>
+                <div class="reg-lang-switch-capsule" style="display:inline-flex; align-items:center; background:rgba(15,23,42,0.6); border:1px solid rgba(56,189,248,0.25); border-radius:9999px; padding:2px 4px; gap:2px; margin-right:10px;">
+                    <button type="button" class="lang-btn active" id="btn-lang-en" onclick="setRegisterLanguage('en')" style="background:#0284c7; border:none; color:#ffffff; font-size:0.72rem; font-weight:800; padding:3px 9px; border-radius:9999px; cursor:pointer; font-family:inherit;">EN</button>
+                    <button type="button" class="lang-btn" id="btn-lang-es" onclick="setRegisterLanguage('es')" style="background:transparent; border:none; color:#94a3b8; font-size:0.72rem; font-weight:800; padding:3px 9px; border-radius:9999px; cursor:pointer; font-family:inherit;">ES</button>
                 </div>
-                <a href="index.html" class="nav-back-link">
+                <div class="step-counter-pill" id="step-counter-pill">
+                    <span id="lbl-step-prefix">STEP</span> <strong id="step-number-display">1</strong> <span id="lbl-step-of">OF</span> <strong>7</strong>
+                </div>
+                <a href="index.html" class="nav-back-link" id="link-exit-wizard">
                     <i class="fa-solid fa-xmark"></i> Exit Wizard
                 </a>
             </div>
@@ -1020,7 +1024,7 @@
             <div class="progress-segment" id="seg-7"></div>
         </div>
         <div class="progress-meta-row">
-            <span>CURRENT SECTION: <strong class="progress-stage-name" id="current-stage-title">STUDENT IDENTITY</strong></span>
+            <span><span id="lbl-curr-sec">CURRENT SECTION:</span> <strong class="progress-stage-name" id="current-stage-title">STUDENT IDENTITY</strong></span>
             <span id="progress-percentage-display">14% COMPLETED</span>
         </div>
     </div>
@@ -1031,50 +1035,50 @@
 
             <!-- ================= STEP 1: IDENTITY ================= -->
             <section class="question-step active" id="step-1">
-                <span class="step-tag"><i class="fa-solid fa-user-astronaut"></i> Question 01</span>
-                <h1 class="question-title">What is your full name and student email?</h1>
-                <p class="question-subtitle">Enter your official academic identity to register your 60-hour engineering transcript and link your verifiable digital credentials.</p>
+                <span class="step-tag" id="tag-step-1"><i class="fa-solid fa-user-astronaut"></i> Question 01</span>
+                <h1 class="question-title" id="title-step-1">What is your full name and student email?</h1>
+                <p class="question-subtitle" id="subtitle-step-1">Register to get your personalized path depending on your career and engineering specialization.</p>
 
                 <!-- 1-Click Institutional Google SSO -->
                 <div class="google-sso-container" style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 14px; padding: 18px 20px; margin-bottom: 24px; text-align: center; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);">
                     <div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; color: #0284c7; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fa-brands fa-google" style="color: #ea4335;"></i> Fast 1-Click Institutional Access
+                        <i class="fa-brands fa-google" style="color: #ea4335;"></i> <span id="lbl-sso-badge">Fast 1-Click Institutional Access</span>
                     </div>
                     <button type="button" class="btn-google-sso" onclick="handleGoogleSSORegistration()" style="width: 100%; max-width: 440px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 12px; background: #ffffff; color: #0f172a; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px 20px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);">
                         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
-                        <span>Continue with Google Institutional SSO</span>
+                        <span id="lbl-google-sso">Continue with Google Institutional SSO</span>
                     </button>
-                    <div style="font-size: 0.76rem; color: #64748b; margin-top: 10px;">
+                    <div id="lbl-sso-hint" style="font-size: 0.76rem; color: #64748b; margin-top: 10px;">
                         Auto-detects <strong>@upbc.edu.mx</strong>, <strong>@tecnm.mx</strong>, <strong>@uabc.edu.mx</strong>, <strong>@utt.edu.mx</strong> or personal Gmail.
                     </div>
                 </div>
 
                 <div class="or-divider" style="display: flex; align-items: center; margin: 18px 0 24px 0; color: #64748b; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
                     <span style="flex: 1; height: 1px; background: #e2e8f0;"></span>
-                    <span style="padding: 0 12px;">OR ENTER DETAILS MANUALLY</span>
+                    <span id="lbl-or-divider" style="padding: 0 12px;">OR ENTER DETAILS MANUALLY</span>
                     <span style="flex: 1; height: 1px; background: #e2e8f0;"></span>
                 </div>
 
                 <div class="input-group">
-                    <label class="input-label" for="inp-fullname">Full Name <span class="req">*</span></label>
+                    <label class="input-label" id="lbl-fullname" for="inp-fullname">Full Name <span class="req">*</span></label>
                     <div class="text-input-wrapper">
                         <i class="fa-regular fa-id-card"></i>
                         <input type="text" id="inp-fullname" class="text-input" placeholder="e.g. Diana Laura Morales" autocomplete="name" autofocus>
                     </div>
-                    <div class="input-hint"><i class="fa-solid fa-circle-info"></i> Enter your legal first and last names as registered with your university.</div>
+                    <div class="input-hint" id="hint-fullname"><i class="fa-solid fa-circle-info"></i> Enter your legal first and last names as registered with your university.</div>
                 </div>
 
                 <div class="input-group">
-                    <label class="input-label" for="inp-email">Institutional or Academic Email <span class="req">*</span></label>
+                    <label class="input-label" id="lbl-email" for="inp-email">Institutional or Academic Email <span class="req">*</span></label>
                     <div class="text-input-wrapper">
                         <i class="fa-regular fa-envelope"></i>
                         <input type="email" id="inp-email" class="text-input" placeholder="e.g. diana.morales@saltillo.tecnm.mx" autocomplete="email">
                     </div>
-                    <div class="input-hint"><i class="fa-solid fa-shield-halved"></i> Used for cohort progress synchronization and official ISO/ABET audit reports.</div>
+                    <div class="input-hint" id="hint-email"><i class="fa-solid fa-shield-halved"></i> Used for cohort progress synchronization and official ISO/ABET audit reports.</div>
                 </div>
 
                 <div class="input-group" style="margin-bottom: 0;">
-                    <label class="input-label" for="inp-matricula">Student ID / Enrollment Number (Optional)</label>
+                    <label class="input-label" id="lbl-matricula" for="inp-matricula">Student ID / Enrollment Number (Optional)</label>
                     <div class="text-input-wrapper">
                         <i class="fa-solid fa-fingerprint"></i>
                         <input type="text" id="inp-matricula" class="text-input" placeholder="e.g. 21050842">
@@ -1084,9 +1088,9 @@
 
             <!-- ================= STEP 2: SUBSYSTEM ================= -->
             <section class="question-step" id="step-2">
-                <span class="step-tag"><i class="fa-solid fa-building-columns"></i> Question 02</span>
-                <h2 class="question-title">Which higher education system are you enrolled in?</h2>
-                <p class="question-subtitle">Select your academic subsystem. Curricula are calibrated to meet national industry standards across Mexico and Latin America.</p>
+                <span class="step-tag" id="tag-step-2"><i class="fa-solid fa-building-columns"></i> Question 02</span>
+                <h2 class="question-title" id="title-step-2">Which higher education system are you enrolled in?</h2>
+                <p class="question-subtitle" id="subtitle-step-2">Select your academic subsystem. Curricula are calibrated to meet national industry standards across Mexico and Latin America.</p>
 
                 <div class="selection-grid-2">
                     <div class="selection-card selected" data-subsystem="upbc" onclick="selectSubsystem('upbc')" style="grid-column: 1 / -1; border-color: rgba(2, 132, 199, 0.45); background: linear-gradient(135deg, rgba(2, 132, 199, 0.06) 0%, rgba(16, 185, 129, 0.06) 100%);">
@@ -1096,7 +1100,7 @@
                                 <h4>Universidad Politécnica de Baja California <span class="card-sub-badge" style="background:linear-gradient(135deg, #0284c7, #10b981); color:#fff; font-weight:700;">UPBC Mexicali</span></h4>
                                 <span style="font-size:0.68rem; background:rgba(16, 185, 129, 0.15); color:#059669; border:1px solid rgba(16, 185, 129, 0.35); padding:2px 8px; border-radius:99px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;"><i class="fa-solid fa-star"></i> Primer Cliente</span>
                             </div>
-                            <p>Campus Mexicali: 11 Carreras de Ingeniería/Licenciatura y 25 especialidades TSU con path personalizado 60h.</p>
+                            <p id="desc-subsystem-upbc">Campus Mexicali: 11 Carreras de Ingeniería/Licenciatura y 25 especialidades TSU con path personalizado modular.</p>
                         </div>
                     </div>
 
@@ -1134,7 +1138,7 @@
                 </div>
 
                 <div class="input-group" style="margin-bottom: 0;">
-                    <label class="input-label" for="inp-campus">Campus or Plantel Name <span class="req">*</span></label>
+                    <label class="input-label" id="lbl-campus" for="inp-campus">Campus or Plantel Name <span class="req">*</span></label>
                     <div class="text-input-wrapper">
                         <i class="fa-solid fa-location-dot"></i>
                         <input type="text" id="inp-campus" class="text-input" value="Universidad Politécnica de Baja California (UPBC Mexicali)" placeholder="e.g. Universidad Politécnica de Baja California (UPBC Mexicali)">
@@ -1144,25 +1148,25 @@
 
             <!-- ================= STEP 3: CAREER TRACK ================= -->
             <section class="question-step" id="step-3">
-                <span class="step-tag"><i class="fa-solid fa-compass-drafting"></i> Question 03</span>
-                <h2 class="question-title">What is your degree program & career track?</h2>
-                <p class="question-subtitle">Select your career and modality. Invariant Rule: <strong>All students in the same career receive an identical 60-hour deterministic path</strong>.</p>
+                <span class="step-tag" id="tag-step-3"><i class="fa-solid fa-compass-drafting"></i> Question 03</span>
+                <h2 class="question-title" id="title-step-3">What is your degree program & career track?</h2>
+                <p class="question-subtitle" id="subtitle-step-3">Select your career and modality. Your academic transcript adapts dynamically to your engineering specialization and elective tracks.</p>
 
                 <!-- Program Modality Toggle (Ingeniería/Licenciatura vs. TSU) -->
                 <div id="degree-modality-wrapper" style="margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-                    <span style="font-size: 0.8rem; font-weight: 600; color: var(--fg-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Nivel Académico:</span>
+                    <span id="lbl-degree-modality" style="font-size: 0.8rem; font-weight: 600; color: var(--fg-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Nivel Académico:</span>
                     <button type="button" class="modality-pill active" id="pill-degree-lic" onclick="setDegreeModality('lic')">
-                        <i class="fa-solid fa-graduation-cap"></i> Ingeniería / Licenciatura (Profesional)
+                        <i class="fa-solid fa-graduation-cap"></i> <span id="lbl-pill-lic">Ingeniería / Licenciatura (Profesional)</span>
                     </button>
                     <button type="button" class="modality-pill" id="pill-degree-tsu" onclick="setDegreeModality('tsu')">
-                        <i class="fa-solid fa-certificate"></i> Técnico Superior Universitario (TSU - Convocatoria 2026)
+                        <i class="fa-solid fa-certificate"></i> <span id="lbl-pill-tsu">Técnico Superior Universitario (TSU - Convocatoria 2026)</span>
                     </button>
                 </div>
 
                 <!-- TSU Specialty Selector (Dynamic when TSU is selected) -->
                 <div id="tsu-specialty-picker" style="display: none; margin-bottom: 16px; padding: 14px 18px; border-radius: 12px; background: rgba(2, 132, 199, 0.06); border: 1px solid rgba(2, 132, 199, 0.25);">
                     <div style="font-size: 0.78rem; font-weight: 700; color: var(--sky-600); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display:flex; align-items:center; gap:6px;">
-                        <i class="fa-solid fa-route"></i> Especialidad Oficial de TSU (Convocatoria UPBC 2026):
+                        <i class="fa-solid fa-route"></i> <span id="lbl-tsu-specialty-title">Especialidad Oficial de TSU (Convocatoria UPBC 2026):</span>
                     </div>
                     <div id="tsu-specialty-pills" style="display: flex; flex-wrap: wrap; gap: 8px;">
                         <!-- Injected dynamically based on selected career -->
@@ -1179,15 +1183,15 @@
                 </div>
 
                 <div id="career-selected-summary" style="font-size: 0.8rem; color: var(--sky-600); font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-circle-check"></i> <span id="career-summary-text">Selected: Ing. Mecatrónica (upbc-mecatronica) • 60.0h Curricular Path</span>
+                    <i class="fa-solid fa-circle-check"></i> <span id="career-summary-text">Selected: Ing. Mecatrónica (upbc-mecatronica) • Modular Career Path</span>
                 </div>
             </section>
 
             <!-- ================= STEP 4: ACADEMIC STAGE ================= -->
             <section class="question-step" id="step-4">
-                <span class="step-tag"><i class="fa-solid fa-graduation-cap"></i> Question 04</span>
-                <h2 class="question-title">What academic stage are you currently in?</h2>
-                <p class="question-subtitle">This calibrates simulation diagnostic baselines, SCADA problem complexity, and industrial case studies.</p>
+                <span class="step-tag" id="tag-step-4"><i class="fa-solid fa-graduation-cap"></i> Question 04</span>
+                <h2 class="question-title" id="title-step-4">What academic stage are you currently in?</h2>
+                <p class="question-subtitle" id="subtitle-step-4">This calibrates simulation diagnostic baselines, SCADA problem complexity, and industrial case studies.</p>
 
                 <div class="selection-grid-2" style="margin-bottom: 0;">
                     <div class="selection-card" data-stage="early" onclick="selectStage('early')">
@@ -1226,9 +1230,9 @@
 
             <!-- ================= STEP 5: REGIONAL INDUSTRIAL HUB ================= -->
             <section class="question-step" id="step-5">
-                <span class="step-tag"><i class="fa-solid fa-map-location-dot"></i> Question 05</span>
-                <h2 class="question-title">Where is your regional industrial nearshoring hub?</h2>
-                <p class="question-subtitle">Select the manufacturing corridor linked to your campus to contextualize plant floor simulations and supply chain scenarios.</p>
+                <span class="step-tag" id="tag-step-5"><i class="fa-solid fa-map-location-dot"></i> Question 05</span>
+                <h2 class="question-title" id="title-step-5">Where is your regional industrial nearshoring hub?</h2>
+                <p class="question-subtitle" id="subtitle-step-5">Select the manufacturing corridor linked to your campus to contextualize plant floor simulations and supply chain scenarios.</p>
 
                 <div class="hubs-grid" id="hubs-container">
                     <div class="hub-card selected" data-hub="saltillo-mty" onclick="selectHub('saltillo-mty')">
@@ -1315,24 +1319,24 @@
 
             <!-- ================= STEP 6: CLASS ENROLLMENT CODE ================= -->
             <section class="question-step" id="step-6">
-                <span class="step-tag"><i class="fa-solid fa-key"></i> Question 06</span>
-                <h2 class="question-title">Do you have an instructor-provided class code?</h2>
-                <p class="question-subtitle">If your professor assigned you a cohort code (e.g. <code>STEM-MECA-A7X3K2</code>), enter it below to join their class roster directly.</p>
+                <span class="step-tag" id="tag-step-6"><i class="fa-solid fa-key"></i> Question 06</span>
+                <h2 class="question-title" id="title-step-6">Do you have an instructor-provided class code?</h2>
+                <p class="question-subtitle" id="subtitle-step-6">If your professor assigned you a cohort code (e.g. <code>STEM-MECA-A7X3K2</code>), enter it below to join their class roster directly.</p>
 
                 <div class="selection-grid-2">
                     <div class="selection-card" id="card-choice-code" onclick="setClassEnrollmentMode(true)">
                         <div class="card-icon-box"><i class="fa-solid fa-chalkboard-user"></i></div>
                         <div class="card-content">
-                            <h4>Yes, I have an instructor code</h4>
-                            <p>Link your profile to your teacher's class roster for live heatmap tracking and grading.</p>
+                            <h4 id="title-choice-code">Yes, I have an instructor code</h4>
+                            <p id="desc-choice-code">Link your profile to your teacher's class roster for live heatmap tracking and grading.</p>
                         </div>
                     </div>
 
                     <div class="selection-card selected" id="card-choice-solo" onclick="setClassEnrollmentMode(false)">
                         <div class="card-icon-box"><i class="fa-solid fa-user-graduate"></i></div>
                         <div class="card-content">
-                            <h4>No, I am enrolling independently</h4>
-                            <p>Study at your own pace along the deterministic 60-hour career path as an independent student.</p>
+                            <h4 id="title-choice-solo">No, I am enrolling independently</h4>
+                            <p id="desc-choice-solo">Study at your own pace along your personalized career path as an independent student.</p>
                         </div>
                     </div>
                 </div>
@@ -1357,16 +1361,16 @@
                 </div>
 
                 <div class="class-code-box" id="class-code-input-panel" style="display: none;">
-                    <label class="input-label" for="inp-class-code">Enter Class Invitation Token</label>
+                    <label class="input-label" id="lbl-inp-class-code" for="inp-class-code">Enter Class Invitation Token</label>
                     <div class="text-input-wrapper">
                         <i class="fa-solid fa-qrcode"></i>
                         <input type="text" id="inp-class-code" class="text-input" placeholder="e.g. STEM-MECA-A7X3K2" oninput="handleClassCodeInput(this.value)">
                     </div>
-                    <div class="input-hint"><i class="fa-solid fa-bolt"></i> Supported format: STEM-[CAREER]-[6CHARS] (Case-insensitive)</div>
+                    <div class="input-hint" id="hint-class-code"><i class="fa-solid fa-bolt"></i> Supported format: STEM-[CAREER]-[6CHARS] (Case-insensitive)</div>
 
                     <!-- Verified Class Badge -->
                     <div class="class-verified-badge" id="class-verified-badge">
-                        <strong><i class="fa-solid fa-circle-check"></i> Cohort Verified & Synchronized</strong>
+                        <strong><i class="fa-solid fa-circle-check"></i> <span id="lbl-cohort-sync">Cohort Verified & Synchronized</span></strong>
                         <div id="verified-class-details" style="font-size: 0.85rem; margin-top: 4px; line-height: 1.4;">
                             Mecatrónica 4°A — Ing. Roberto Hernández (TecNM Saltillo)<br>
                             <span style="color: var(--teal-500); font-family: 'JetBrains Mono', monospace;">Career Track automatically locked to: Ing. Mecatrónica</span>
@@ -1377,9 +1381,9 @@
 
             <!-- ================= STEP 7: AUTHORIZE PASS ================= -->
             <section class="question-step" id="step-7">
-                <span class="step-tag"><i class="fa-solid fa-shield-halved"></i> Question 07</span>
-                <h2 class="question-title">Authorization Granted: Your Student Credential is Ready!</h2>
-                <p class="question-subtitle">Review your official enrollment summary. Your deterministic 60.0-hour technical English B1 curriculum is provisioned and ready to launch.</p>
+                <span class="step-tag" id="tag-step-7"><i class="fa-solid fa-shield-halved"></i> Question 07</span>
+                <h2 class="question-title" id="title-step-7">Authorization Granted: Your Student Credential is Ready!</h2>
+                <p class="question-subtitle" id="subtitle-step-7">Review your official enrollment summary. Your personalized technical English curriculum is provisioned and ready to launch.</p>
 
                 <!-- Holographic Pass Card -->
                 <div class="credential-pass-card">
@@ -1404,7 +1408,7 @@
                         </div>
                         <div>
                             <div class="pass-metric-label">CURRICULAR HOURS</div>
-                            <div class="pass-metric-value highlight">60.0 Hours (16 Modules)</div>
+                            <div class="pass-metric-value highlight" id="pass-hours-display">Modular Path (60h – 240h)</div>
                         </div>
                         <div>
                             <div class="pass-metric-label">ACADEMIC STAGE</div>
@@ -1487,15 +1491,304 @@
             }
         };
 
-        const STAGE_TITLES = {
-            1: "STUDENT IDENTITY",
-            2: "ACADEMIC SUBSYSTEM",
-            3: "ENGINEERING CAREER TRACK",
-            4: "ACADEMIC STAGE",
-            5: "REGIONAL INDUSTRIAL HUB",
-            6: "CLASS ENROLLMENT CODE",
-            7: "LAUNCH AUTHORIZATION"
+        let currentRegisterLang = 'es';
+        try {
+            const saved = localStorage.getItem('stemos_lang');
+            if (saved === 'en' || saved === 'es') currentRegisterLang = saved;
+        } catch(e) {}
+
+        const REGISTER_I18N = {
+            en: {
+                badge_track: "Personalized Career Path",
+                step_prefix: "STEP",
+                step_of: "OF",
+                exit_wizard: '<i class="fa-solid fa-xmark"></i> Exit Wizard',
+                curr_sec: "CURRENT SECTION:",
+                completed_suffix: "COMPLETED",
+                prev_question: '<i class="fa-solid fa-arrow-left"></i> Previous Question',
+                continue_btn: 'Continue <i class="fa-solid fa-arrow-right"></i>',
+                launch_btn: '<i class="fa-solid fa-rocket"></i> Authorize & Launch World',
+                enter_hint_continue: 'Press <span class="enter-key-badge">Enter ↵</span> to continue',
+                enter_hint_launch: 'Press <span class="enter-key-badge">Enter ↵</span> to launch',
+                stages: {
+                    1: "STUDENT IDENTITY",
+                    2: "ACADEMIC SUBSYSTEM",
+                    3: "ENGINEERING CAREER TRACK",
+                    4: "ACADEMIC STAGE",
+                    5: "REGIONAL INDUSTRIAL HUB",
+                    6: "CLASS ENROLLMENT CODE",
+                    7: "LAUNCH AUTHORIZATION"
+                },
+                step1: {
+                    tag: '<i class="fa-solid fa-user-astronaut"></i> Question 01',
+                    title: "What is your full name and student email?",
+                    subtitle: "Register to get your personalized path depending on your career and engineering specialization.",
+                    sso_badge: "Fast 1-Click Institutional Access",
+                    sso_btn: "Continue with Google Institutional SSO",
+                    sso_hint: "Auto-detects <strong>@upbc.edu.mx</strong>, <strong>@tecnm.mx</strong>, <strong>@uabc.edu.mx</strong>, <strong>@utt.edu.mx</strong> or personal Gmail.",
+                    or_divider: "OR ENTER DETAILS MANUALLY",
+                    lbl_name: 'Full Name <span class="req">*</span>',
+                    hint_name: '<i class="fa-solid fa-circle-info"></i> Enter your legal first and last names as registered with your university.',
+                    lbl_email: 'Institutional or Academic Email <span class="req">*</span>',
+                    hint_email: '<i class="fa-solid fa-shield-halved"></i> Used for cohort progress synchronization and official ISO/ABET audit reports.',
+                    lbl_matricula: "Student ID / Enrollment Number (Optional)",
+                    ph_name: "e.g. Diana Laura Morales",
+                    ph_email: "e.g. diana.morales@saltillo.tecnm.mx"
+                },
+                step2: {
+                    tag: '<i class="fa-solid fa-building-columns"></i> Question 02',
+                    title: "Which higher education system are you enrolled in?",
+                    subtitle: "Select your academic subsystem. Curricula are calibrated to meet national industry standards across Mexico and Latin America.",
+                    lbl_campus: 'Campus or Plantel Name <span class="req">*</span>',
+                    ph_campus: "e.g. Universidad Politécnica de Baja California (UPBC Mexicali)"
+                },
+                step3: {
+                    tag: '<i class="fa-solid fa-compass-drafting"></i> Question 03',
+                    title: "What is your degree program & career track?",
+                    subtitle: "Select your career and modality. Your academic transcript adapts dynamically to your engineering specialization and elective tracks.",
+                    lbl_modality: "Academic Level:",
+                    pill_lic: "Engineering / Bachelor's (Professional)",
+                    pill_tsu: "Associate Degree / TSU (2026 Intake)",
+                    tsu_specialty_title: "Official TSU Specialty (UPBC 2026 Intake):",
+                    ph_filter: "Search career tracks by title, cluster, or specialization..."
+                },
+                step4: {
+                    tag: '<i class="fa-solid fa-graduation-cap"></i> Question 04',
+                    title: "What academic stage are you currently in?",
+                    subtitle: "This calibrates simulation diagnostic baselines, SCADA problem complexity, and industrial case studies."
+                },
+                step5: {
+                    tag: '<i class="fa-solid fa-map-location-dot"></i> Question 05',
+                    title: "Where is your regional industrial nearshoring hub?",
+                    subtitle: "Select the manufacturing corridor linked to your campus to contextualize plant floor simulations and supply chain scenarios."
+                },
+                step6: {
+                    tag: '<i class="fa-solid fa-key"></i> Question 06',
+                    title: "Do you have an instructor-provided class code?",
+                    subtitle: "If your professor assigned you a cohort code (e.g. <code>STEM-MECA-A7X3K2</code>), enter it below to join their class roster directly.",
+                    choice_code_title: "Yes, I have an instructor code",
+                    choice_code_desc: "Link your profile to your teacher's class roster for live heatmap tracking and grading.",
+                    choice_solo_title: "No, I am enrolling independently",
+                    choice_solo_desc: "Study at your own pace along your personalized career path as an independent student.",
+                    lbl_class_code: "Enter Class Invitation Token",
+                    ph_class_code: "e.g. STEM-MECA-A7X3K2",
+                    hint_class_code: '<i class="fa-solid fa-bolt"></i> Supported format: STEM-[CAREER]-[6CHARS] (Case-insensitive)',
+                    cohort_sync: "Cohort Verified & Synchronized"
+                },
+                step7: {
+                    tag: '<i class="fa-solid fa-shield-halved"></i> Question 07',
+                    title: "Authorization Granted: Your Student Credential is Ready!",
+                    subtitle: "Review your official enrollment summary. Your personalized technical English curriculum is provisioned and ready to launch.",
+                    hours_display: "Modular Path (60h – 240h)"
+                }
+            },
+            es: {
+                badge_track: "Ruta Profesional Personalizada",
+                step_prefix: "PASO",
+                step_of: "DE",
+                exit_wizard: '<i class="fa-solid fa-xmark"></i> Salir del Registro',
+                curr_sec: "SECCIÓN ACTUAL:",
+                completed_suffix: "COMPLETADO",
+                prev_question: '<i class="fa-solid fa-arrow-left"></i> Pregunta Anterior',
+                continue_btn: 'Continuar <i class="fa-solid fa-arrow-right"></i>',
+                launch_btn: '<i class="fa-solid fa-rocket"></i> Autorizar e Iniciar Mundo',
+                enter_hint_continue: 'Presiona <span class="enter-key-badge">Enter ↵</span> para continuar',
+                enter_hint_launch: 'Presiona <span class="enter-key-badge">Enter ↵</span> para iniciar',
+                stages: {
+                    1: "IDENTIDAD ESTUDIANTIL",
+                    2: "SUBSISTEMA ACADÉMICO",
+                    3: "CARRERA DE INGENIERÍA",
+                    4: "ETAPA ACADÉMICA",
+                    5: "HUB INDUSTRIAL REGIONAL",
+                    6: "CÓDIGO DE CLASE",
+                    7: "AUTORIZACIÓN DE ACCESO"
+                },
+                step1: {
+                    tag: '<i class="fa-solid fa-user-astronaut"></i> Pregunta 01',
+                    title: "¿Cuál es tu nombre completo y correo institucional?",
+                    subtitle: "Regístrate para obtener tu ruta personalizada según tu carrera y especialidad de ingeniería.",
+                    sso_badge: "Acceso Institucional Rápido en 1 Clic",
+                    sso_btn: "Continuar con Google Institucional SSO",
+                    sso_hint: "Auto-detecta <strong>@upbc.edu.mx</strong>, <strong>@tecnm.mx</strong>, <strong>@uabc.edu.mx</strong>, <strong>@utt.edu.mx</strong> o Gmail personal.",
+                    or_divider: "O INGRESA TUS DATOS MANUALMENTE",
+                    lbl_name: 'Nombre Completo <span class="req">*</span>',
+                    hint_name: '<i class="fa-solid fa-circle-info"></i> Ingresa tus nombres y apellidos oficiales registrados en tu universidad.',
+                    lbl_email: 'Correo Institucional o Académico <span class="req">*</span>',
+                    hint_email: '<i class="fa-solid fa-shield-halved"></i> Utilizado para sincronización de progreso y reportes auditables ISO/ABET.',
+                    lbl_matricula: "Matrícula / Número de Control (Opcional)",
+                    ph_name: "ej. Diana Laura Morales",
+                    ph_email: "ej. diana.morales@saltillo.tecnm.mx"
+                },
+                step2: {
+                    tag: '<i class="fa-solid fa-building-columns"></i> Pregunta 02',
+                    title: "¿En qué sistema de educación superior estás inscrito?",
+                    subtitle: "Selecciona tu subsistema académico. Los planes están calibrados para cumplir con estándares industriales internacionales.",
+                    lbl_campus: 'Nombre del Campus o Plantel <span class="req">*</span>',
+                    ph_campus: "ej. Universidad Politécnica de Baja California (UPBC Mexicali)"
+                },
+                step3: {
+                    tag: '<i class="fa-solid fa-compass-drafting"></i> Pregunta 03',
+                    title: "¿Cuál es tu programa educativo y carrera?",
+                    subtitle: "Selecciona tu carrera y modalidad. Tu historial académico se adapta dinámicamente a tu especialidad de ingeniería y materias optativas.",
+                    lbl_modality: "Nivel Académico:",
+                    pill_lic: "Ingeniería / Licenciatura (Profesional)",
+                    pill_tsu: "Técnico Superior Universitario (TSU - Convocatoria 2026)",
+                    tsu_specialty_title: "Especialidad Oficial de TSU (Convocatoria UPBC 2026):",
+                    ph_filter: "Buscar carreras por nombre, clúster o especialidad..."
+                },
+                step4: {
+                    tag: '<i class="fa-solid fa-graduation-cap"></i> Pregunta 04',
+                    title: "¿En qué etapa académica te encuentras actualmente?",
+                    subtitle: "Calibra la línea base diagnóstica, complejidad de fallas SCADA y casos de estudio industriales."
+                },
+                step5: {
+                    tag: '<i class="fa-solid fa-map-location-dot"></i> Pregunta 05',
+                    title: "¿Cuál es tu hub industrial y clúster nearshoring regional?",
+                    subtitle: "Selecciona el corredor manufacturero vinculado a tu campus para contextualizar simulaciones de planta."
+                },
+                step6: {
+                    tag: '<i class="fa-solid fa-key"></i> Pregunta 06',
+                    title: "¿Cuentas con un código de clase proporcionado por tu profesor?",
+                    subtitle: "Si tu profesor te asignó un código de cohorte (ej. <code>STEM-MECA-A7X3K2</code>), ingrésalo abajo para unirte a su grupo.",
+                    choice_code_title: "Sí, tengo código de profesor",
+                    choice_code_desc: "Enlaza tu perfil a la lista de clase para seguimiento en vivo en mapa de calor y calificaciones.",
+                    choice_solo_title: "No, me inscribo de forma independiente",
+                    choice_solo_desc: "Avanza a tu propio ritmo con tu ruta profesional personalizada como estudiante independiente.",
+                    lbl_class_code: "Ingresar Token de Invitación de Clase",
+                    ph_class_code: "ej. STEM-MECA-A7X3K2",
+                    hint_class_code: '<i class="fa-solid fa-bolt"></i> Formato admitido: STEM-[CARRERA]-[6CARACTERES]',
+                    cohort_sync: "Cohorte Verificada y Sincronizada"
+                },
+                step7: {
+                    tag: '<i class="fa-solid fa-shield-halved"></i> Pregunta 07',
+                    title: "¡Autorización Concedida: Tu Credencial Estudiantil está Lista!",
+                    subtitle: "Revisa tu resumen oficial de registro. Tu plan de inglés técnico personalizado está aprovisionado y listo para iniciar.",
+                    hours_display: "Ruta Modular (60h – 240h)"
+                }
+            }
         };
+
+        const STAGE_TITLES = REGISTER_I18N[currentRegisterLang].stages;
+
+        function setRegisterLanguage(lang) {
+            if (!REGISTER_I18N[lang]) lang = 'es';
+            currentRegisterLang = lang;
+            try {
+                localStorage.setItem('stemos_lang', lang);
+            } catch(e) {}
+
+            const btnEn = document.getElementById('btn-lang-en');
+            const btnEs = document.getElementById('btn-lang-es');
+            if (btnEn && btnEs) {
+                if (lang === 'en') {
+                    btnEn.style.background = '#0284c7';
+                    btnEn.style.color = '#ffffff';
+                    btnEs.style.background = 'transparent';
+                    btnEs.style.color = '#94a3b8';
+                } else {
+                    btnEs.style.background = '#0284c7';
+                    btnEs.style.color = '#ffffff';
+                    btnEn.style.background = 'transparent';
+                    btnEn.style.color = '#94a3b8';
+                }
+            }
+
+            const t = REGISTER_I18N[lang];
+            const setHtml = (id, html) => { const el = document.getElementById(id); if (el && html !== undefined) el.innerHTML = html; };
+            const setText = (id, txt) => { const el = document.getElementById(id); if (el && txt !== undefined) el.textContent = txt; };
+            const setAttr = (id, attr, val) => { const el = document.getElementById(id); if (el && val !== undefined) el.setAttribute(attr, val); };
+
+            setText('reg-badge-track', t.badge_track);
+            setText('lbl-step-prefix', t.step_prefix);
+            setText('lbl-step-of', t.step_of);
+            setHtml('link-exit-wizard', t.exit_wizard);
+            setText('lbl-curr-sec', t.curr_sec);
+
+            // Step 1
+            setHtml('tag-step-1', t.step1.tag);
+            setText('title-step-1', t.step1.title);
+            setText('subtitle-step-1', t.step1.subtitle);
+            setText('lbl-sso-badge', t.step1.sso_badge);
+            setText('lbl-google-sso', t.step1.sso_btn);
+            setHtml('lbl-sso-hint', t.step1.sso_hint);
+            setText('lbl-or-divider', t.step1.or_divider);
+            setHtml('lbl-fullname', t.step1.lbl_name);
+            setHtml('hint-fullname', t.step1.hint_name);
+            setHtml('lbl-email', t.step1.lbl_email);
+            setHtml('hint-email', t.step1.hint_email);
+            setText('lbl-matricula', t.step1.lbl_matricula);
+            setAttr('inp-fullname', 'placeholder', t.step1.ph_name);
+            setAttr('inp-email', 'placeholder', t.step1.ph_email);
+
+            // Step 2
+            setHtml('tag-step-2', t.step2.tag);
+            setText('title-step-2', t.step2.title);
+            setText('subtitle-step-2', t.step2.subtitle);
+            setHtml('lbl-campus', t.step2.lbl_campus);
+            setAttr('inp-campus', 'placeholder', t.step2.ph_campus);
+
+            // Step 3
+            setHtml('tag-step-3', t.step3.tag);
+            setText('title-step-3', t.step3.title);
+            setText('subtitle-step-3', t.step3.subtitle);
+            setText('lbl-degree-modality', t.step3.lbl_modality);
+            setText('lbl-pill-lic', t.step3.pill_lic);
+            setText('lbl-pill-tsu', t.step3.pill_tsu);
+            setText('lbl-tsu-specialty-title', t.step3.tsu_specialty_title);
+            setAttr('inp-career-filter', 'placeholder', t.step3.ph_filter);
+
+            // Step 4
+            setHtml('tag-step-4', t.step4.tag);
+            setText('title-step-4', t.step4.title);
+            setText('subtitle-step-4', t.step4.subtitle);
+
+            // Step 5
+            setHtml('tag-step-5', t.step5.tag);
+            setText('title-step-5', t.step5.title);
+            setText('subtitle-step-5', t.step5.subtitle);
+
+            // Step 6
+            setHtml('tag-step-6', t.step6.tag);
+            setText('title-step-6', t.step6.title);
+            setText('subtitle-step-6', t.step6.subtitle);
+            setText('title-choice-code', t.step6.choice_code_title);
+            setText('desc-choice-code', t.step6.choice_code_desc);
+            setText('title-choice-solo', t.step6.choice_solo_title);
+            setText('desc-choice-solo', t.step6.choice_solo_desc);
+            setText('lbl-inp-class-code', t.step6.lbl_class_code);
+            setAttr('inp-class-code', 'placeholder', t.step6.ph_class_code);
+            setHtml('hint-class-code', t.step6.hint_class_code);
+            setText('lbl-cohort-sync', t.step6.cohort_sync);
+
+            // Step 7
+            setHtml('tag-step-7', t.step7.tag);
+            setText('title-step-7', t.step7.title);
+            setText('subtitle-step-7', t.step7.subtitle);
+            setText('pass-hours-display', t.step7.hours_display);
+
+            // Current Stage in progress header
+            const currentStep = wizardState.currentStep || 1;
+            const stageName = t.stages[currentStep] || "ONBOARDING";
+            setText('current-stage-title', stageName);
+
+            // Buttons
+            const btnBack = document.getElementById('btn-back');
+            if (btnBack) btnBack.innerHTML = t.prev_question;
+
+            const btnNext = document.getElementById('btn-next');
+            const hint = document.getElementById('enter-key-hint');
+            if (btnNext && hint) {
+                if (currentStep === 7) {
+                    btnNext.innerHTML = t.launch_btn;
+                    hint.innerHTML = t.enter_hint_launch;
+                } else {
+                    btnNext.innerHTML = t.continue_btn;
+                    hint.innerHTML = t.enter_hint_continue;
+                }
+            }
+        }
+        window.setRegisterLanguage = setRegisterLanguage;
+        window.REGISTER_I18N = REGISTER_I18N;
 
         // Known Demo Classes for instant code validation
         const DEMO_CLASSES = {
@@ -1564,6 +1857,7 @@
             attachKeyboardListeners();
             selectHub(wizardState.data.hub);
             updateCareerSummaryText();
+            setRegisterLanguage(currentRegisterLang);
         });
 
         // ── Check URL Query Params (e.g. ?class=STEM-MECA-A7X3K2) ──
@@ -1641,7 +1935,7 @@
 
             container.innerHTML = filtered.map(c => {
                 const isSelected = c.id === wizardState.data.careerId;
-                const subBadge = (c.system || c.institutionType || '60H').toUpperCase();
+                const subBadge = (c.system || c.institutionType || 'PATH').toUpperCase();
                 return `
                     <div class="career-item-card ${isSelected ? 'selected' : ''}" data-career-id="${c.id}" onclick="selectCareer('${c.id}')">
                         <div>
@@ -1654,7 +1948,7 @@
                             </div>
                         </div>
                         <div class="career-milestone-preview">
-                            <i class="fa-solid fa-route"></i> 60.0h Path (4 Hitos / 16 Modules)
+                            <i class="fa-solid fa-route"></i> Modular Path (4 Hitos / 16 Modules)
                         </div>
                     </div>
                 `;
@@ -1688,6 +1982,8 @@
                 updateCareerSummaryText();
             }
         }
+        window.setDegreeModality = setDegreeModality;
+        window.selectDegreeModality = setDegreeModality;
 
         function updateTsuSpecialtiesUI() {
             const container = document.getElementById('tsu-specialty-pills');
@@ -1754,9 +2050,9 @@
             if (!summaryEl) return;
 
             if (wizardState.data.degreeModality === 'tsu' && wizardState.data.tsuSpecialtyName) {
-                summaryEl.textContent = `Selected: ${careerName} [TSU: ${wizardState.data.tsuSpecialtyName}] • 60.0h Deterministic Path`;
+                summaryEl.textContent = `Selected: ${careerName} [TSU: ${wizardState.data.tsuSpecialtyName}] • Modular Career Path`;
             } else {
-                summaryEl.textContent = `Selected: ${careerName} • 60.0h Deterministic Path`;
+                summaryEl.textContent = `Selected: ${careerName} • Modular Career Path`;
             }
         }
 
@@ -1781,7 +2077,7 @@
                 wizardState.data.ssoProvider = 'google';
 
                 selectSubsystem(profile.subsystem);
-                selectDegreeModality('lic');
+                setDegreeModality(profile.degreeModality || 'lic');
                 selectCareer(profile.careerId);
 
                 if (ssoBtn) {

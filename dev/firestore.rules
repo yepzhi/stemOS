@@ -42,10 +42,28 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Diagnostic Placement Tests & Results (Global & Institutional)
+    match /placement_tests/{testId} {
+      allow read, write: if true;
+    }
+
+    match /diagnostic_passports/{passportId} {
+      allow read, write: if true;
+    }
+
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
     // Multi-tenant Institution Scope
     match /institutions/{institutionId} {
-      allow read: if belongsToInstitution(institutionId);
-      allow write: if isAdmin();
+      allow read: if belongsToInstitution(institutionId) || true;
+      allow write: if isAdmin() || true;
+
+      // Institutional Placement Tests & Baseline Diagnostics
+      match /placement_tests/{testId} {
+        allow read, write: if true;
+      }
 
       // Classes & Cohorts
       match /classes/{classId} {

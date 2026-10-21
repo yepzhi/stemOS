@@ -1,16 +1,17 @@
 /**
  * stemOS — Institutional Pricing & Commercial Proposal Verification Suite
  * Validates:
- * 1. #pricing-institutional-section exists in index.html with all 3 university options.
- * 2. Executive memorandum (Mario proposal context, 1500 students, zero student cost, flat university invoice).
- * 3. All pricing figures and inclusions:
- *    - Opción 1: $95,000 MXN + IVA / cuatrimestre (~$63 pesos/alumno, campus + casa/móvil).
+ * 1. #pricing-institutional-section exists in index.html with exactly 3 options.
+ * 2. Executive memorandum: Institutional alignment, up to 2,000 students, zero book purchases, zero cost to students.
+ * 3. NO occurrences of "Mario" anywhere in the page or CTAs.
+ * 4. Exactly 3 pricing cards:
+ *    - Individual: $49 MXN / mes
+ *    - Opción 1: $95,000 MXN + IVA / cuatrimestre (hasta 2,000 alumnos, campus + casa/móvil).
  *    - Opción 2: $240,000 MXN + IVA / 3 cuatrimestres ($80,000/cuatrimestre, precio congelado, soporte docente).
- *    - Opción 3: $1,000 MXN + IVA por equipo / cuatrimestre (ej. 80 equipos = $80,000 MXN).
- * 4. Interactive equipment calculator & "¿Cuántos equipos tienen entre todos sus laboratorios?".
- * 5. Direct CTAs: WhatsApp button, Zoom 15-min demo modal, and official email.
- * 6. Preview banner linking to tracks.html.
- * 7. Dedicated tracks.html tab page integrity with 34 tracks and industrial simulation crucibles.
+ * 5. Option 3 ("Solo Laboratorio") and interactive equipment calculator safely retired.
+ * 6. Direct CTAs: WhatsApp button, Zoom 15-min demo modal, and official email.
+ * 7. Preview banner linking to tracks.html.
+ * 8. Dedicated tracks.html tab page integrity with 34 tracks and industrial simulation crucibles.
  */
 
 const fs = require('fs');
@@ -58,19 +59,19 @@ assert(!!pricingSec, '#pricing-institutional-section exists in index.html');
 
 const memoQuote = pricingSec.querySelector('.pricing-memo-quote');
 assert(!!memoQuote, 'Executive memorandum quote exists');
-assert(memoQuote.textContent.includes('Mario, gracias por la confianza'), 'Contains "Mario, gracias por la confianza"');
-assert(memoQuote.textContent.includes('1,500 alumnos'), 'References ≈1,500 students cohort');
-assert(memoQuote.textContent.includes('sin compra de libros'), 'Specifies zero book purchase requirement');
-assert(memoQuote.textContent.includes('licencia institucional plana'), 'Specifies flat institutional license');
-assert(memoQuote.textContent.includes('cero cobro a los alumnos'), 'Guarantees zero cost to students');
-assert(memoQuote.textContent.includes('panel para que los docentes de inglés'), 'Includes faculty practice dashboard');
+assert(!memoQuote.textContent.includes('Mario'), 'Strictly ZERO occurrences of "Mario" in memo quote');
+assert(memoQuote.textContent.includes('2,000') || memoQuote.textContent.includes('2000'), 'References up to 2,000 students cohort');
+assert(memoQuote.textContent.includes('sin compra de libros') || memoQuote.textContent.includes('libros de texto'), 'Specifies zero book purchase requirement');
+assert(memoQuote.textContent.includes('factura') || memoQuote.textContent.includes('institucional') || memoQuote.textContent.includes('Institucional'), 'Specifies single institutional invoice / model');
+assert(memoQuote.textContent.includes('cero costo') || memoQuote.textContent.includes('cero cobro') || memoQuote.textContent.includes('zero direct student fee'), 'Guarantees zero cost to students');
+assert(memoQuote.textContent.includes('panel') || memoQuote.textContent.includes('docentes'), 'Includes faculty practice dashboard');
 
-// ── 3. Three Pricing Options Verification ──
-console.log('\n▶ 3. Individual Plan & University Options Audit (4 Cards Total)');
+// ── 3. Exactly 3 Pricing Cards Audit ──
+console.log('\n▶ 3. Individual Plan & University Options Audit (Exactly 3 Cards)');
 const cards = pricingSec.querySelectorAll('.pricing-card');
-assert(cards.length === 4, `Found exactly 4 pricing option cards (Found: ${cards.length})`);
+assert(cards.length === 3, `Found exactly 3 pricing option cards (Found: ${cards.length})`);
 
-// Individual Plan Card
+// Card 0: Individual Plan Card
 const indCard = pricingSec.querySelector('.pricing-card.individual-plan');
 assert(!!indCard, 'Individual Student Plan card present');
 const indText = indCard.textContent;
@@ -79,63 +80,42 @@ assert(indText.includes('49'), 'Individual Plan: $49 MXN price present');
 assert(indText.includes('Todos los beneficios incluidos'), 'Individual Plan: All benefits included badge present');
 assert(indText.includes('Suscribirme por $49/mes'), 'Individual Plan: Subscribe CTA button present');
 
-// Option 1
+// Card 1: Option 1 - Piloto Cuatrimestral
 const op1Text = cards[1].textContent;
 assert(op1Text.includes('Piloto Cuatrimestral'), 'Option 1: Piloto Cuatrimestral title present');
 assert(op1Text.includes('95,000'), 'Option 1: $95,000 MXN price present');
-assert(op1Text.includes('63'), 'Option 1: ~$63 pesos per student metric present');
-assert(op1Text.includes('casa o celular'), 'Option 1: Mobile/remote access included');
+assert(op1Text.includes('2,000 alumnos') || op1Text.includes('2000 alumnos'), 'Option 1: Up to 2,000 students metric present');
+assert(op1Text.includes('casa o celular') || op1Text.includes('Casa/Celular'), 'Option 1: Mobile/remote access included');
 
-// Option 2
+// Card 2: Option 2 - Licencia Anual
 const op2Text = cards[2].textContent;
-assert(op2Text.includes('Licencia Anual de Campus'), 'Option 2: Licencia Anual title present');
+assert(op2Text.includes('Licencia Anual'), 'Option 2: Licencia Anual title present');
 assert(op2Text.includes('240,000'), 'Option 2: $240,000 MXN price present');
 assert(op2Text.includes('80,000'), 'Option 2: ($80,000 por cuatrimestre) rate present');
 assert(op2Text.includes('precio congelado') || op2Text.includes('Precio congelado'), 'Option 2: Locked price feature present');
 assert(op2Text.includes('soporte técnico docente') || op2Text.includes('Soporte técnico y pedagógico'), 'Option 2: Faculty support included');
 
-// Option 3
-const op3Text = cards[3].textContent;
-assert(op3Text.includes('Solo Laboratorio'), 'Option 3: Solo Laboratorio title present');
-assert(op3Text.includes('1,000'), 'Option 3: $1,000 MXN per computer rate present');
-assert(op3Text.includes('80 computadoras = $80,000'), 'Option 3: Example 80 computers calculation present');
-assert(op3Text.includes('distintos turnos'), 'Option 3: Covers all rotating shifts');
+// Option 3 ("Solo Laboratorio") must NOT exist
+const op3Card = pricingSec.querySelector('.pricing-card:nth-child(4)');
+assert(!op3Card, 'Option 3 ("Solo Laboratorio") successfully removed');
+const labCalc = document.getElementById('slider-lab-equipos');
+assert(!labCalc, 'Interactive lab equipment calculator retired');
 
-// ── 4. Interactive Lab Calculator & Zoom Scheduling Hub ──
-console.log('\n▶ 4. Interactive Calculator & Direct Action CTAs');
-const hubTitle = pricingSec.querySelector('.pricing-hub-title');
-assert(hubTitle && hubTitle.textContent.includes('¿Cuántos equipos tienen entre todos sus laboratorios?'), 
-  'Hub title contains "¿Cuántos equipos tienen entre todos sus laboratorios?"');
-
-const hubDesc = pricingSec.querySelector('.pricing-hub-desc');
-assert(hubDesc && hubDesc.textContent.includes('15 min por Zoom'), 
-  'Hub description proposes 15-min Zoom walkthrough');
-
-const slider = document.getElementById('slider-lab-equipos');
-const numInput = document.getElementById('input-lab-equipos');
-assert(!!slider, 'Lab equipment range slider exists');
-assert(!!numInput, 'Lab equipment number input exists');
-
-// Simulate calculator runtime
-assert(typeof window.updateLabCalc === 'function', 'window.updateLabCalc function exists');
-window.updateLabCalc(100);
-const calcResult = document.getElementById('calc-val-op3').textContent;
-assert(calcResult.includes('100,000'), `Calculator correctly computes 100 equipments = $100,000 MXN (Result: ${calcResult})`);
-
-// ── 5. WhatsApp & Zoom CTAs ──
-console.log('\n▶ 5. Conversion Action Triggers');
+// ── 4. WhatsApp, Email & Zoom CTAs ──
+console.log('\n▶ 4. Conversion Action Triggers (No Mario Mentions)');
 const waBtn = pricingSec.querySelector('a[href*="wa.me"]');
 assert(!!waBtn, 'Direct WhatsApp button with wa.me link exists');
-assert(waBtn.getAttribute('href').includes('Mario'), 'WhatsApp link contains prefilled proposal message for Mario');
+assert(!waBtn.getAttribute('href').includes('Mario'), 'WhatsApp link does NOT contain "Mario"');
 
 const zoomBtn = pricingSec.querySelector('.btn-hub-zoom');
 assert(!!zoomBtn, 'Zoom 15-minute demo booking button exists');
 
 const zoomModal = document.getElementById('stemos-zoom-modal');
 assert(!!zoomModal, '#stemos-zoom-modal scheduling dialog exists');
+assert(!zoomModal.textContent.includes('Mario'), 'Zoom modal does NOT contain "Mario"');
 
-// ── 6. Preview Banner & tracks.html Tab Integrity ──
-console.log('\n▶ 6. Catalog Callout Banner & tracks.html Tab');
+// ── 5. Preview Banner & tracks.html Tab Integrity ──
+console.log('\n▶ 5. Catalog Callout Banner & tracks.html Tab');
 const previewBanner = document.getElementById('catalog-preview-banner');
 assert(!!previewBanner, '#catalog-preview-banner exists');
 assert(previewBanner.querySelector('a[href="/tracks.html"]'), 'Preview banner links directly to /tracks.html');

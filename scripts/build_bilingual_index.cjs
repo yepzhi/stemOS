@@ -209,8 +209,8 @@ const STEMOS_I18N = {
     pricing_badge: '<i class="fa-solid fa-file-invoice-dollar"></i> FLAT INSTITUTIONAL LICENSE &bull; UNIVERSITY PROPOSAL',
     pricing_title: 'Institutional Higher Education Investment, <br><span style="background: linear-gradient(135deg, #10b981 0%, #38bdf8 50%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Single University Invoice &amp; Zero Cost to Students</span>',
     pricing_subtitle: 'Transparent institutional model: no mandatory textbooks, no student out-of-pocket fees, and unlimited 24/7 access for your entire engineering enrollment.',
-    memo_quote: '&ldquo;<strong>Mario, thank you for your trust.</strong> Based on your requirements (<strong>≈1,500 students</strong>, unlimited access per student, and zero textbook purchases), I propose a <strong>flat institutional license</strong>: a single invoice for the University and zero cost to students.<br><br>All options include <strong>unlimited access for all ~1,500 students</strong> and a <strong>faculty dashboard for English professors</strong> to monitor group practice in real time.&rdquo;',
-    memo_tag: 'Special Attention: University &bull; Cohort ≈1,500 Students',
+    memo_quote: '&ldquo;<strong>stemOS Institutional Model.</strong> Engineered for engineering faculties and technological universities (institutional coverage for up to 2,000 students with 24/7 unlimited access and zero mandatory textbook purchases). A single invoice for the University and zero direct student fee.<br><br>All institutional plans include full on-campus and remote access for up to 2,000 students and a real-time faculty dashboard for coordinators and English professors.&rdquo;',
+    memo_tag: 'Institutional Proposal &bull; Engineering Faculties &bull; Up to 2,000 Students',
 
     plan_indiv_badge: '<i class="fa-solid fa-bolt"></i> INSTANT ACCESS &bull; $49 MXN / MO',
     plan_indiv_tag: 'Individual Plan &bull; Online Payment',
@@ -482,8 +482,8 @@ const STEMOS_I18N = {
     pricing_badge: '<i class="fa-solid fa-file-invoice-dollar"></i> LICENCIA INSTITUCIONAL PLANA &bull; PROPUESTA UNIVERSITARIA',
     pricing_title: 'Inversión Institucional para Universidades, <br><span style="background: linear-gradient(135deg, #10b981 0%, #38bdf8 50%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Una Sola Factura y Cero Cobro a los Alumnos</span>',
     pricing_subtitle: 'Modelo transparente sin compra obligatoria de libros, sin cobro individual a los estudiantes y con acceso ilimitado para toda la matrícula de ingeniería.',
-    memo_quote: '&ldquo;<strong>Mario, gracias por la confianza.</strong> Con lo que me cuentas (<strong>≈1,500 alumnos</strong>, sin límite de uso por estudiante y sin compra de libros), te propongo una <strong>licencia institucional plana</strong>: una sola factura para la Universidad y cero cobro a los alumnos.<br><br>Todas las opciones incluyen <strong>acceso ilimitado para los ~1,500 alumnos</strong> y un <strong>panel para que los docentes de inglés</strong> vean la práctica de cada grupo.&rdquo;',
-    memo_tag: 'Atención Especial: Universidad &bull; Cohorte ≈1,500 Alumnos',
+    memo_quote: '&ldquo;<strong>Modelo Institucional stemOS.</strong> Diseñado para facultades de ingeniería y universidades tecnológicas (cobertura institucional de hasta 2,000 estudiantes con acceso ilimitado 24/7 y cero compra obligatoria de libros de texto). Una sola factura para la Universidad y cero costo directo para los alumnos.<br><br>Todos los planes institucionales incluyen acceso total en campus y remoto para hasta 2,000 estudiantes y un panel docente en tiempo real para coordinadores y profesores de inglés.&rdquo;',
+    memo_tag: 'Atención Institucional &bull; Universidades Tecnológicas y Politécnicas &bull; Hasta 2,000 Alumnos',
 
     plan_indiv_badge: '<i class="fa-solid fa-bolt"></i> ACCESO INMEDIATO &bull; $49 MXN / MES',
     plan_indiv_tag: 'Plan Individual &bull; Pago en Línea',

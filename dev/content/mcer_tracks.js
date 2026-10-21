@@ -8,6 +8,7 @@
  * - Standard American English (Spelling, Pronunciation IPA & Workplace Pragmatics)
  * - Acreditación de Tronco Común Universitario (Inglés I, II, III, IV — 60.0h / nivel)
  * - W3C Open Badges 3.0 & Descriptor Mapping (Can-Do Statements)
+ * - 464 Reactivos de Opción Múltiple Estandarizados (Listening, Grammar, Reading, Vocab, Quizzes & Level Milestone Exams)
  * ==============================================================================
  */
 
@@ -192,6 +193,24 @@
               "correct": 0,
               "answer": 0,
               "exp": "The standard safety protocol mandates: \"Personal cell phones must remain inside your locker during active machine operations.\""
+            },
+            {
+              "q": "What is the primary security consequence if an intern brings an unapproved personal smartphone onto the active factory floor?",
+              "opts": [
+                "It violates the cleanroom and safety policy prohibiting uninspected mobile devices near operating machinery",
+                "They receive a promotion to line manager",
+                "The phone battery charges automatically",
+                "It is required for recording TikTok videos"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "The safety notice explicitly mandates that personal cell phones remain inside lockers during active machine operations to prevent distractions and safety hazards.",
+              "options": [
+                "It violates the cleanroom and safety policy prohibiting uninspected mobile devices near operating machinery",
+                "They receive a promotion to line manager",
+                "The phone battery charges automatically",
+                "It is required for recording TikTok videos"
+              ]
             }
           ],
           "answer": 1
@@ -467,6 +486,267 @@
             "socraticHint": "Si estás seleccionando un departamento entre las opciones disponibles de una fábrica, ¿qué palabra interrogativa se emplea?",
             "category": "Léxico Técnico"
           }
+        ],
+        "listeningLab": {
+          "title": "Plant Security Gate & Badging Dispatch",
+          "speaker": "Officer Davis (Main Security Desk)",
+          "audioScenario": "Good morning. All incoming engineering interns must step to Window 2. Please state your full legal name, spelling your last name clearly, and provide your university affiliate identification number. Remember that visitor badges are temporary and expire daily at seventeen hundred hours.",
+          "audioScript": "Good morning. All incoming engineering interns must step to Window 2. Please state your full legal name, spelling your last name clearly, and provide your university affiliate identification number. Remember that visitor badges are temporary and expire daily at seventeen hundred hours.",
+          "questions": [
+            {
+              "q": "Where must incoming engineering interns report according to Officer Davis?",
+              "opts": [
+                "To Window 2",
+                "To the main cafeteria",
+                "To Line 3 assembly station",
+                "To the loading dock"
+              ],
+              "options": [
+                "To Window 2",
+                "To the main cafeteria",
+                "To Line 3 assembly station",
+                "To the loading dock"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Officer Davis explicitly directs interns: \"All incoming engineering interns must step to Window 2.\"",
+              "socraticHint": "Escucha con atención la primera directiva del oficial: ¿a qué ventanilla les pide acercarse?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What information must the interns state and spell out clearly?",
+              "opts": [
+                "Their email password",
+                "Their full legal name, spelling their last name",
+                "Their locker combination",
+                "Their home address"
+              ],
+              "options": [
+                "Their email password",
+                "Their full legal name, spelling their last name",
+                "Their locker combination",
+                "Their home address"
+              ],
+              "ans": 1,
+              "answer": 1,
+              "exp": "The officer instructs: \"Please state your full legal name, spelling your last name clearly.\"",
+              "socraticHint": "¿Qué dato personal y de deletreo solicita el guardia antes de imprimir la credencial?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "At what time do temporary visitor badges expire?",
+              "opts": [
+                "At 12:00 PM",
+                "At 15:30 PM",
+                "At 17:00 hours (5:00 PM)",
+                "They do not expire"
+              ],
+              "options": [
+                "At 12:00 PM",
+                "At 15:30 PM",
+                "At 17:00 hours (5:00 PM)",
+                "They do not expire"
+              ],
+              "ans": 2,
+              "answer": 2,
+              "exp": "\"Visitor badges are temporary and expire daily at seventeen hundred hours (17:00 hrs).",
+              "socraticHint": "En formato militar o de 24 horas, ¿qué hora corresponde a \"seventeen hundred hours\"?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "Good morning. I _____ Carlos Gomez and I _____ the new robotics technician.",
+            "opts": [
+              "am / am",
+              "is / are",
+              "are / is",
+              "be / be"
+            ],
+            "options": [
+              "am / am",
+              "is / are",
+              "are / is",
+              "be / be"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The first person singular pronoun \"I\" always takes the verb \"am\" in present simple.",
+            "socraticHint": "El pronombre sujeto es \"I\" (primera persona singular). ¿Cuál es la única conjugación correcta de \"to be\"?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "This is Diana. _____ employee ID badge is registered for the cleanroom.",
+            "opts": [
+              "Her",
+              "His",
+              "She",
+              "Hers"
+            ],
+            "options": [
+              "Her",
+              "His",
+              "She",
+              "Hers"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Diana\" is female; the corresponding possessive adjective before the noun \"employee ID badge\" is \"Her\".",
+            "socraticHint": "Diana es femenino singular y necesitas un adjetivo posesivo antes de \"employee ID badge\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "_____ are the calibration tools stored on the first floor?",
+            "opts": [
+              "Where",
+              "Who",
+              "When",
+              "What"
+            ],
+            "options": [
+              "Where",
+              "Who",
+              "When",
+              "What"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Where\" asks about spatial location or storage position.",
+            "socraticHint": "La pregunta se refiere a un lugar o ubicación física (\"stored on the first floor\"). ¿Qué interrogativo usas?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Mark and Steve are shift supervisors. _____ office is located next to assembly line 1.",
+            "opts": [
+              "Their",
+              "There",
+              "They",
+              "Theirs"
+            ],
+            "options": [
+              "Their",
+              "There",
+              "They",
+              "Theirs"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Use the possessive adjective \"Their\" to indicate possession for third person plural (Mark and Steve).",
+            "socraticHint": "Se trata de la oficina perteneciente a Mark y Steve (ellos). ¿Cuál es el adjetivo posesivo plural?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Which sentence correctly uses the verb \"to be\" in an interrogative form?",
+            "opts": [
+              "Is your workstation ready for operation?",
+              "Your workstation is ready for operation?",
+              "Are your workstation ready?",
+              "Be your workstation ready?"
+            ],
+            "options": [
+              "Is your workstation ready for operation?",
+              "Your workstation is ready for operation?",
+              "Are your workstation ready?",
+              "Be your workstation ready?"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Inversion of \"to be\" + subject: \"Is [third person singular] your workstation ready...?\"",
+            "socraticHint": "Para formular una pregunta con \"to be\", ¿el verbo auxiliar se coloca antes o después del sujeto singular \"your workstation\"?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "All personnel must tap their _____ at the turnstile gate to log arrival time.",
+            "opts": [
+              "Employee ID Badge",
+              "Screwdriver",
+              "Safety Eyewear",
+              "Lunch Tray"
+            ],
+            "options": [
+              "Employee ID Badge",
+              "Screwdriver",
+              "Safety Eyewear",
+              "Lunch Tray"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "An employee identification badge is scanned at facility turnstiles for electronic time attendance.",
+            "socraticHint": "¿Qué credencial electrónica se pasa por el lector del torniquete para registrar tu asistencia?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "A person who works alongside you in the same engineering department is your _____.",
+            "opts": [
+              "coworker",
+              "supplier",
+              "competitor",
+              "landlord"
+            ],
+            "options": [
+              "coworker",
+              "supplier",
+              "competitor",
+              "landlord"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Coworker\" (or colleague) denotes a peer working within the same organization.",
+            "socraticHint": "¿Cuál es el término en inglés para designar a un colega o compañero de trabajo en la misma planta?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The industrial area designated for a specific technician to assemble parts is a _____.",
+            "opts": [
+              "workstation",
+              "turnstile",
+              "auditorium",
+              "corridor"
+            ],
+            "options": [
+              "workstation",
+              "turnstile",
+              "auditorium",
+              "corridor"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A \"workstation\" is the designated physical setup where an operator or engineer carries out their shift tasks.",
+            "socraticHint": "¿Cómo se llama el puesto o estación asignada donde realizas tus tareas de ensamble?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct prepositional collocation: \"Please report _____ your team lead before the morning briefing.\"",
+            "opts": [
+              "to",
+              "at",
+              "on",
+              "with"
+            ],
+            "options": [
+              "to",
+              "at",
+              "on",
+              "with"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The standard technical English verb phrase is \"report to [supervisor/lead]\".",
+            "socraticHint": "¿Qué preposición acompaña al verbo \"report\" cuando te presentas ante un superior jerárquico?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       },
       {
@@ -611,6 +891,24 @@
               "correct": 2,
               "answer": 2,
               "exp": "The safety directive mandates: \"Operators must never leave active conveyor lines unattended during break handoffs.\""
+            },
+            {
+              "q": "According to industrial 5S shift standards, why must scrap bins be emptied and audited before 15:00 hours?",
+              "opts": [
+                "To ensure raw material reconciliation and maintain clear aisle pathways for the oncoming crew",
+                "To throw away good components without inspection",
+                "Because the cafeteria closes at 15:00",
+                "To hide defects from the quality department"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "Emptying scrap bins and reconciling counts ensures traceability and maintains clean, compliant work cells under 5S visual factory guidelines.",
+              "options": [
+                "To ensure raw material reconciliation and maintain clear aisle pathways for the oncoming crew",
+                "To throw away good components without inspection",
+                "Because the cafeteria closes at 15:00",
+                "To hide defects from the quality department"
+              ]
             }
           ],
           "answer": 1
@@ -886,6 +1184,267 @@
             "socraticHint": "A diferencia del verbo \"to be\", ¿dónde se sitúa el adverbio \"always\" frente a verbos de acción como \"update\"?",
             "category": "Gramática y Sintaxis"
           }
+        ],
+        "listeningLab": {
+          "title": "Shift Handover Voice Note: Cycle Counts",
+          "speaker": "Supervisor Morales (Shift 1 Lead)",
+          "audioScenario": "Attention team. First shift concluded with four hundred and twenty inspected power supplies. Sub-assembly line four requires preventative belt lubrication at fifteen thirty. The second shift technician must log the maintenance entry before seventeen hundred hours.",
+          "audioScript": "Attention team. First shift concluded with four hundred and twenty inspected power supplies. Sub-assembly line four requires preventative belt lubrication at fifteen thirty. The second shift technician must log the maintenance entry before seventeen hundred hours.",
+          "questions": [
+            {
+              "q": "How many inspected power supplies did the first shift produce?",
+              "opts": [
+                "420 units",
+                "150 units",
+                "300 units",
+                "520 units"
+              ],
+              "options": [
+                "420 units",
+                "150 units",
+                "300 units",
+                "520 units"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "The supervisor states: \"First shift concluded with four hundred and twenty (420) inspected power supplies.\"",
+              "socraticHint": "Identifica el conteo de producción mencionado: \"four hundred and twenty\".",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What maintenance activity is scheduled for Line 4 at 15:30?",
+              "opts": [
+                "Preventative belt lubrication",
+                "Full motor replacement",
+                "Floor painting",
+                "Software uninstallation"
+              ],
+              "options": [
+                "Preventative belt lubrication",
+                "Full motor replacement",
+                "Floor painting",
+                "Software uninstallation"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "The audio explicitly notes: \"Sub-assembly line four requires preventative belt lubrication at fifteen thirty.\"",
+              "socraticHint": "¿Qué acción de mantenimiento preventivo se realizará a las 15:30 en la banda transportadora?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "By what time must the second shift technician log the maintenance entry?",
+              "opts": [
+                "Before 17:00 hours",
+                "Before 12:00 PM",
+                "Tomorrow morning",
+                "At midnight"
+              ],
+              "options": [
+                "Before 17:00 hours",
+                "Before 12:00 PM",
+                "Tomorrow morning",
+                "At midnight"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "\"The second shift technician must log the maintenance entry before seventeen hundred hours (17:00 hrs).\"",
+              "socraticHint": "¿Cuál es la hora límite para registrar la bitácora técnica?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "The maintenance team _____ the conveyor belts every Tuesday morning.",
+            "opts": [
+              "inspects",
+              "inspect",
+              "inspecting",
+              "is inspect"
+            ],
+            "options": [
+              "inspects",
+              "inspect",
+              "inspecting",
+              "is inspect"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"The maintenance team\" is treated as a collective third-person singular entity in American English, taking \"inspects\".",
+            "socraticHint": "El sujeto es singular (\"The maintenance team\") y expresa una rutina semanal. ¿Lleva terminación en -s?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Technicians _____ use uncalibrated digital multimeters during final QA validation.",
+            "opts": [
+              "never",
+              "always not",
+              "ever",
+              "not never"
+            ],
+            "options": [
+              "never",
+              "always not",
+              "ever",
+              "not never"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The frequency adverb \"never\" precedes the main verb \"use\" to denote complete prohibition or zero occurrence.",
+            "socraticHint": "¿Qué adverbio de frecuencia se usa antes del verbo para expresar \"nunca\" en una rutina de calidad?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Shift change occurs _____ 07:00 AM and our briefing starts _____ Monday.",
+            "opts": [
+              "at / on",
+              "in / at",
+              "on / in",
+              "at / in"
+            ],
+            "options": [
+              "at / on",
+              "in / at",
+              "on / in",
+              "at / in"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Use preposition \"at\" for precise clock times and \"on\" for days of the week.",
+            "socraticHint": "Recuerda las preposiciones temporales: ¿qué preposición va con las horas en punto (07:00 AM) y cuál con los días (Monday)?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Does your production station _____ high-pressure pneumatic tools?",
+            "opts": [
+              "require",
+              "requires",
+              "requiring",
+              "to require"
+            ],
+            "options": [
+              "require",
+              "requires",
+              "requiring",
+              "to require"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "After the auxiliary \"Does\", the main verb returns to its base/infinitive form without -s: \"require\".",
+            "socraticHint": "En una pregunta en presente simple con el auxiliar \"Does\", ¿el verbo principal conserva la -s o queda en forma base?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "We _____ update the digital ERP log before departing the production cell.",
+            "opts": [
+              "always",
+              "yesterday",
+              "rare",
+              "never did"
+            ],
+            "options": [
+              "always",
+              "yesterday",
+              "rare",
+              "never did"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Always\" is an adverb of frequency correctly placed between the subject \"We\" and the verb \"update\".",
+            "socraticHint": "¿Qué adverbio de frecuencia describe una práctica que se hace el 100% de las veces antes de salir de turno?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "The transfer of shift responsibility and machinery logs to the incoming crew is called a _____.",
+            "opts": [
+              "handover (or turnover)",
+              "layoff",
+              "takeoff",
+              "breakout"
+            ],
+            "options": [
+              "handover (or turnover)",
+              "layoff",
+              "takeoff",
+              "breakout"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Shift handover\" is the standardized term for delivering station status to the next operator.",
+            "socraticHint": "¿Cómo se le llama en inglés industrial al cambio de turno o entrega de guardia?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The official digital or paper system where operational readings are noted is the _____.",
+            "opts": [
+              "shift log",
+              "lunch ticket",
+              "visitor badge",
+              "floor mop"
+            ],
+            "options": [
+              "shift log",
+              "lunch ticket",
+              "visitor badge",
+              "floor mop"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A \"shift log\" (bitácora de turno) records machine output, downtime, and operational notes.",
+            "socraticHint": "¿Qué documento o sistema digital almacena los registros de operación de un turno?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Routine tasks performed to preserve machine functionality before failures occur are _____.",
+            "opts": [
+              "preventative maintenance",
+              "reactive scrap",
+              "emergency evacuation",
+              "manual disassembly"
+            ],
+            "options": [
+              "preventative maintenance",
+              "reactive scrap",
+              "emergency evacuation",
+              "manual disassembly"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Preventative maintenance\" (PM) prevents unexpected machine downtime.",
+            "socraticHint": "¿Cómo se denomina el mantenimiento planeado que se ejecuta antes de que ocurra una falla?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct technical collocation: \"Our line operates _____ a three-shift schedule around the clock.\"",
+            "opts": [
+              "on",
+              "over",
+              "by",
+              "through"
+            ],
+            "options": [
+              "on",
+              "over",
+              "by",
+              "through"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The correct prepositional idiom is \"to operate on a schedule\".",
+            "socraticHint": "¿Qué preposición se asocia con \"operate ... a schedule\"?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       },
       {
@@ -1030,6 +1589,24 @@
               "correct": 1,
               "answer": 1,
               "exp": "The text strictly warns: \"Never leave loose hand tools on top of active machine guards or electrical enclosures.\""
+            },
+            {
+              "q": "Why are precision measurement instruments like micrometers prohibited from resting directly on vibrating conveyor frames?",
+              "opts": [
+                "Mechanical vibration causes drift in zero-point calibration and can distort delicate carbide measuring faces",
+                "They look less shiny on metal frames",
+                "Conveyors only carry food items",
+                "The tool crib dispatcher prefers keeping them in personal pockets"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "Precision metrology tools must be placed on anti-vibration ESD surfaces to prevent shock-induced calibration drift.",
+              "options": [
+                "Mechanical vibration causes drift in zero-point calibration and can distort delicate carbide measuring faces",
+                "They look less shiny on metal frames",
+                "Conveyors only carry food items",
+                "The tool crib dispatcher prefers keeping them in personal pockets"
+              ]
             }
           ],
           "answer": 1
@@ -1305,6 +1882,267 @@
             "socraticHint": "Para formular una pregunta sobre la existencia de objetos en plural, ¿cómo se invierte la estructura?",
             "category": "Gramática y Sintaxis"
           }
+        ],
+        "listeningLab": {
+          "title": "Tool Crib Technician Radio Request",
+          "speaker": "Frank (Tool Crib Dispatcher)",
+          "audioScenario": "Frank to Cell 5. I have the digital torque wrenches and two sets of vernier calipers ready at the South tool crib counter. Please present your signed calibration request slip and confirm serial numbers before moving equipment past the yellow demarcation line.",
+          "audioScript": "Frank to Cell 5. I have the digital torque wrenches and two sets of vernier calipers ready at the South tool crib counter. Please present your signed calibration request slip and confirm serial numbers before moving equipment past the yellow demarcation line.",
+          "questions": [
+            {
+              "q": "Which tools are ready for pickup at the South tool crib counter?",
+              "opts": [
+                "Digital torque wrenches and vernier calipers",
+                "Safety boots and earplugs",
+                "Oscilloscopes and soldering irons",
+                "Hydraulic fluid drums"
+              ],
+              "options": [
+                "Digital torque wrenches and vernier calipers",
+                "Safety boots and earplugs",
+                "Oscilloscopes and soldering irons",
+                "Hydraulic fluid drums"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Frank specifically mentions: \"digital torque wrenches and two sets of vernier calipers\".",
+              "socraticHint": "¿Qué dos instrumentos de metrología y apriete están listos en el mostrador del tool crib?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What document must the technician present before collecting the tools?",
+              "opts": [
+                "A signed calibration request slip",
+                "A university transcript",
+                "A driver license",
+                "A cashier receipt"
+              ],
+              "options": [
+                "A signed calibration request slip",
+                "A university transcript",
+                "A driver license",
+                "A cashier receipt"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Frank instructs: \"Please present your signed calibration request slip.\"",
+              "socraticHint": "¿Qué formato firmado de solicitud de calibración pide presentar Frank?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "Where is the designated tool crib counter located?",
+              "opts": [
+                "South tool crib counter",
+                "North cafeteria",
+                "West chemical warehouse",
+                "East parking bay"
+              ],
+              "options": [
+                "South tool crib counter",
+                "North cafeteria",
+                "West chemical warehouse",
+                "East parking bay"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "The radio dispatch says: \"at the South tool crib counter.\"",
+              "socraticHint": "¿Cuál es la orientación cardinal del tool crib mencionado (North, South, East, West)?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "_____ is a digital micrometer on the workbench, and _____ are replacement Allen keys in the bin.",
+            "opts": [
+              "There is / there are",
+              "There are / there is",
+              "It is / they is",
+              "There be / there are"
+            ],
+            "options": [
+              "There is / there are",
+              "There are / there is",
+              "It is / they is",
+              "There be / there are"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Use \"There is\" for singular nouns (\"a digital micrometer\") and \"There are\" for plural nouns (\"replacement Allen keys\").",
+            "socraticHint": "El primer elemento es singular (\"a digital micrometer\") y el segundo es plural (\"Allen keys\").",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Please place the torque wrench _____ the charging dock and the ESD mat.",
+            "opts": [
+              "between",
+              "among",
+              "through",
+              "underneath of"
+            ],
+            "options": [
+              "between",
+              "among",
+              "through",
+              "underneath of"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Between\" is used for spatial position situated in the middle of two distinct objects.",
+            "socraticHint": "Cuando un objeto se ubica en medio de dos puntos de referencia específicos, ¿qué preposición se usa?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Look at _____ CNC milling machine over there across Corridor C.",
+            "opts": [
+              "that",
+              "this",
+              "these",
+              "those"
+            ],
+            "options": [
+              "that",
+              "this",
+              "these",
+              "those"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"That\" is the singular demonstrative for an object located at a distance from the speaker (\"over there\").",
+            "socraticHint": "La máquina es singular y se encuentra lejos del hablante (\"over there across Corridor C\").",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Store _____ precision calipers inside their velvet-lined protective cases.",
+            "opts": [
+              "these",
+              "this",
+              "that",
+              "an"
+            ],
+            "options": [
+              "these",
+              "this",
+              "that",
+              "an"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Calipers\" is grammatically plural in English; use the plural demonstrative \"these\".",
+            "socraticHint": "La palabra \"calipers\" es plural en inglés. ¿Qué demostrativo plural de proximidad le corresponde?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Where are the master Lockout/Tagout padlocks? — They are located _____ Shelf 4.",
+            "opts": [
+              "on",
+              "at",
+              "in to",
+              "between of"
+            ],
+            "options": [
+              "on",
+              "at",
+              "in to",
+              "between of"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Items rest \"on\" a shelf or surface.",
+            "socraticHint": "Los objetos colocados sobre la superficie de un estante o repisa llevan la preposición \"on\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "A high-precision instrument used to measure internal and external dimensions with sliding jaws is a _____.",
+            "opts": [
+              "caliper",
+              "hammer",
+              "sledge",
+              "crowbar"
+            ],
+            "options": [
+              "caliper",
+              "hammer",
+              "sledge",
+              "crowbar"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A vernier or digital caliper measures thickness and diameter with high accuracy.",
+            "socraticHint": "¿Qué instrumento de metrología con mordazas deslizantes se usa para medir espesores y diámetros?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The secure storage room where specialized tools, dies, and measuring devices are checked out is the _____.",
+            "opts": [
+              "tool crib",
+              "auditorium",
+              "kitchenette",
+              "locker room"
+            ],
+            "options": [
+              "tool crib",
+              "auditorium",
+              "kitchenette",
+              "locker room"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The \"tool crib\" is the centralized industrial inventory room for tooling checkout.",
+            "socraticHint": "¿Cómo se llama en inglés el almacén o cuarto de herramientas de una nave industrial?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Safety equipment designed to flush chemicals out of an operator's face immediately after contact is the _____.",
+            "opts": [
+              "eyewash station",
+              "coffee machine",
+              "water fountain",
+              "air conditioner"
+            ],
+            "options": [
+              "eyewash station",
+              "coffee machine",
+              "water fountain",
+              "air conditioner"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "An emergency \"eyewash station\" is mandatory near chemical handling zones under OSHA rules.",
+            "socraticHint": "¿Qué equipo de seguridad para ojos se utiliza ante una salpicadura de químicos?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The acronym LOTO stands for _____.",
+            "opts": [
+              "Lockout / Tagout",
+              "Line Output / Team Order",
+              "Local Operational Tool Office",
+              "Low Oxidation Thermal Output"
+            ],
+            "options": [
+              "Lockout / Tagout",
+              "Line Output / Team Order",
+              "Local Operational Tool Office",
+              "Low Oxidation Thermal Output"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "LOTO (Lockout/Tagout) is the OSHA standard for de-energizing machinery during service.",
+            "socraticHint": "¿Qué significa el acrónimo de seguridad industrial LOTO en el protocolo de bloqueo de energía?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       },
       {
@@ -1453,6 +2291,24 @@
               "correct": 1,
               "answer": 1,
               "exp": "OSHA standard 1910.95 requires approved hearing protection in continuous noise environments above 85 dBA."
+            },
+            {
+              "q": "Under OSHA Lockout/Tagout regulations, who is authorized to remove a personal safety padlock from an electrical breaker panel?",
+              "opts": [
+                "Only the designated technician who originally placed the lock, after verifying the area is clear",
+                "Any passing worker with a crowbar",
+                "The cafeteria cook",
+                "The security guard on night patrol"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "OSHA 1910.147 strictly states that each lockout device shall be removed only by the authorized employee who applied it.",
+              "options": [
+                "Only the designated technician who originally placed the lock, after verifying the area is clear",
+                "Any passing worker with a crowbar",
+                "The cafeteria cook",
+                "The security guard on night patrol"
+              ]
             }
           ],
           "answer": 1
@@ -1728,6 +2584,267 @@
             "socraticHint": "¿Cuál es el código de color internacional estándar para estaciones de primeros auxilios y lavaojos?",
             "category": "Seguridad y Protocolo"
           }
+        ],
+        "listeningLab": {
+          "title": "Facility Evacuation & Intercom Directives",
+          "speaker": "EHS Manager Chen (Emergency PA System)",
+          "audioScenario": "May I have your attention please. An audible sensor alert was triggered in Chemical Storage Bay B. All personnel must stop machine operations immediately. Do not use the elevators. Walk calmly along the green evacuation route toward Assembly Point Four outside Gate Three.",
+          "audioScript": "May I have your attention please. An audible sensor alert was triggered in Chemical Storage Bay B. All personnel must stop machine operations immediately. Do not use the elevators. Walk calmly along the green evacuation route toward Assembly Point Four outside Gate Three.",
+          "questions": [
+            {
+              "q": "Where was the sensor alert triggered?",
+              "opts": [
+                "In Chemical Storage Bay B",
+                "In the administrative offices",
+                "In the main parking lot",
+                "In the employee gym"
+              ],
+              "options": [
+                "In Chemical Storage Bay B",
+                "In the administrative offices",
+                "In the main parking lot",
+                "In the employee gym"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "EHS Manager Chen announces: \"An audible sensor alert was triggered in Chemical Storage Bay B.\"",
+              "socraticHint": "¿En qué área de la planta se disparó la alarma del sensor?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What is the immediate directive regarding machine operations?",
+              "opts": [
+                "Stop machine operations immediately",
+                "Increase production speed",
+                "Ignore the alarm for ten minutes",
+                "Disassemble the electrical motors"
+              ],
+              "options": [
+                "Stop machine operations immediately",
+                "Increase production speed",
+                "Ignore the alarm for ten minutes",
+                "Disassemble the electrical motors"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "The announcement orders: \"All personnel must stop machine operations immediately.\"",
+              "socraticHint": "¿Qué acción inmediata deben tomar los operadores con la maquinaria en funcionamiento?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "Which evacuation destination must personnel proceed toward?",
+              "opts": [
+                "Assembly Point Four outside Gate Three",
+                "The roof of Building A",
+                "The basement cafeteria",
+                "Their personal vehicles"
+              ],
+              "options": [
+                "Assembly Point Four outside Gate Three",
+                "The roof of Building A",
+                "The basement cafeteria",
+                "Their personal vehicles"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "\"Walk calmly along the green evacuation route toward Assembly Point Four outside Gate Three.\"",
+              "socraticHint": "¿Hacia qué punto de reunión exterior (Assembly Point) se debe caminar?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "_____ the red emergency stop push-button in the event of an automated cell jam.",
+            "opts": [
+              "Press",
+              "Pressing",
+              "To press",
+              "You are press"
+            ],
+            "options": [
+              "Press",
+              "Pressing",
+              "To press",
+              "You are press"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Imperatives in English use the base form of the verb without subject pronoun: \"Press the button.\"",
+            "socraticHint": "Para dar una instrucción u orden técnica directa en imperativo, ¿cómo debe iniciar la oración?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "_____ touch the exposed high-voltage wiring under any operational circumstances.",
+            "opts": [
+              "Do not",
+              "No",
+              "Not to",
+              "Never to"
+            ],
+            "options": [
+              "Do not",
+              "No",
+              "Not to",
+              "Never to"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Negative imperatives use \"Do not\" (or \"Don't\") + base form of the verb: \"Do not touch\".",
+            "socraticHint": "Para una prohibición imperativa negativa formal en señalética industrial, ¿qué auxiliar negativo se antepone?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "All visitors _____ wear steel-toed safety boots past this demarcation threshold.",
+            "opts": [
+              "must",
+              "might to",
+              "can should",
+              "must to"
+            ],
+            "options": [
+              "must",
+              "might to",
+              "can should",
+              "must to"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The modal \"must\" expresses mandatory safety regulation and is followed directly by a base verb without \"to\".",
+            "socraticHint": "¿Qué verbo modal expresa obligación regulatoria estricta y se combina con verbo base sin \"to\"?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "First, isolate the power source; _____, attach your personal safety padlock to the clasp.",
+            "opts": [
+              "next",
+              "at first",
+              "finally of",
+              "lastly before"
+            ],
+            "options": [
+              "next",
+              "at first",
+              "finally of",
+              "lastly before"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Next\" or \"then\" is the standard sequential linker following \"First\" in standard operating procedures.",
+            "socraticHint": "En una secuencia de pasos (\"First, ...\"), ¿qué conector de proceso continúa la instrucción?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "_____ your safety glasses clean and inspect them for surface scratches daily.",
+            "opts": [
+              "Keep",
+              "Keeping",
+              "To keep",
+              "You keeped"
+            ],
+            "options": [
+              "Keep",
+              "Keeping",
+              "To keep",
+              "You keeped"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Standard imperative directive using base verb: \"Keep your safety glasses clean\".",
+            "socraticHint": "Instrucción imperativa afirmativa de mantenimiento preventivo: usa la forma base del verbo.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "The prominent mushroom-shaped red switch designed to halt equipment instantly during emergencies is the _____.",
+            "opts": [
+              "E-Stop (Emergency Stop) button",
+              "Toggle light switch",
+              "Volume knob",
+              "Thermostat dial"
+            ],
+            "options": [
+              "E-Stop (Emergency Stop) button",
+              "Toggle light switch",
+              "Volume knob",
+              "Thermostat dial"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The E-Stop (Emergency Stop) is standard safety equipment on all industrial machines.",
+            "socraticHint": "¿Cómo se le llama comúnmente al botón rojo tipo hongo de paro de emergencia en una máquina?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Protective gear worn to shield eyes, hearing, head, and feet in industrial plants is collectively termed _____.",
+            "opts": [
+              "PPE (Personal Protective Equipment)",
+              "ERP",
+              "BOM",
+              "MES"
+            ],
+            "options": [
+              "PPE (Personal Protective Equipment)",
+              "ERP",
+              "BOM",
+              "MES"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "PPE stands for Personal Protective Equipment (Equipo de Protección Personal).",
+            "socraticHint": "¿Qué acrónimo en inglés engloba lentes, tapones, casco y botas de seguridad?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "A marked exterior outdoor location where all evacuated personnel gather during a fire drill is an _____.",
+            "opts": [
+              "assembly point",
+              "inspection booth",
+              "electrical substation",
+              "airlock"
+            ],
+            "options": [
+              "assembly point",
+              "inspection booth",
+              "electrical substation",
+              "airlock"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "An \"assembly point\" (punto de reunión) is the designated outdoor muster area during emergencies.",
+            "socraticHint": "¿Cómo se denomina en inglés el punto de reunión exterior en caso de evacuación de planta?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct safety phrase: \"Keep aisles _____ of tripping hazards at all times.\"",
+            "opts": [
+              "clear",
+              "cluttered",
+              "packed",
+              "jammed"
+            ],
+            "options": [
+              "clear",
+              "cluttered",
+              "packed",
+              "jammed"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The standard OSHA safety slogan is \"keep aisles clear of hazards\".",
+            "socraticHint": "¿Qué adjetivo significa \"despejado\" o libre de obstáculos en pasillos peatonales?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       }
     ],
@@ -1739,6 +2856,928 @@
       "badgeName": "CEFR A1: Foundations in Standard American English (60.0h Course)",
       "totalHours": 60,
       "accreditation": "CACEI / DGUTyP Inglés I"
+    },
+    "certificationExam": {
+      "id": "exam-mcer-a1",
+      "level": "A1",
+      "title": "Examen de Certificación Integral Nivel A1 (Breakthrough • 60.0h)",
+      "titleEN": "CEFR A1 Comprehensive Milestone Certification Exam",
+      "timeLimitMinutes": 40,
+      "timeMinutes": 40,
+      "passingScore": 15,
+      "passScorePct": 75,
+      "totalQuestions": 20,
+      "totalItems": 20,
+      "badgeId": "stemos-mcer-a1-credential",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés I (CACEI / DGUTyP / SEP).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés I (CACEI / DGUTyP / SEP).",
+      "questions": [
+        {
+          "id": "A1-ex-01",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Good morning team. Welcome to Line 2. Please verify that your security badges are scanned before 07:15. Workstation assignments are posted on Wall Board C.",
+          "q": "[AUDIO] Listen to Shift Supervisor Miller: \"Good morning team. Welcome to Line 2. Please verify that your security badges are scanned before 07:15. Workstation assignments are posted on Wall Board C.\" — By what time must badges be scanned?",
+          "opts": [
+            "Before 07:15 AM",
+            "At 08:30 AM",
+            "At midday",
+            "At shift end"
+          ],
+          "options": [
+            "Before 07:15 AM",
+            "At 08:30 AM",
+            "At midday",
+            "At shift end"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Supervisor Miller explicitly mandates scanning before 07:15 AM."
+        },
+        {
+          "id": "A1-ex-02",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Technician Alex, your replacement digital caliper is in Locker 14 next to the charging station.",
+          "q": "[AUDIO] Listen to Tool Crib Dispatcher: \"Technician Alex, your replacement digital caliper is in Locker 14 next to the charging station.\" — Where is the digital caliper located?",
+          "opts": [
+            "In Locker 14 next to the charging station",
+            "On Conveyor 3",
+            "In the cafeteria",
+            "Inside the manager office"
+          ],
+          "options": [
+            "In Locker 14 next to the charging station",
+            "On Conveyor 3",
+            "In the cafeteria",
+            "Inside the manager office"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The dispatcher clearly directs: \"in Locker 14 next to the charging station.\""
+        },
+        {
+          "id": "A1-ex-03",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Attention plant floor: Stop all manual assembly. Proceed through Exit Door 4 immediately.",
+          "q": "[AUDIO] Listen to EHS Emergency Broadcast: \"Attention plant floor: Stop all manual assembly. Proceed through Exit Door 4 immediately.\" — What must workers do?",
+          "opts": [
+            "Stop assembly and proceed through Exit Door 4",
+            "Continue working normally",
+            "Turn off the lights and sleep",
+            "Eat lunch at Station 2"
+          ],
+          "options": [
+            "Stop assembly and proceed through Exit Door 4",
+            "Continue working normally",
+            "Turn off the lights and sleep",
+            "Eat lunch at Station 2"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The broadcast gives the imperative: \"Stop all manual assembly. Proceed through Exit Door 4 immediately.\""
+        },
+        {
+          "id": "A1-ex-04",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Sample Batch 8 has zero dimensional defects. Great job.",
+          "q": "[AUDIO] Listen to Quality Coordinator: \"Sample Batch 8 has zero dimensional defects. Great job.\" — What is the status of Sample Batch 8?",
+          "opts": [
+            "It has zero dimensional defects",
+            "It is completely defective",
+            "It was lost in transit",
+            "It needs full rework"
+          ],
+          "options": [
+            "It has zero dimensional defects",
+            "It is completely defective",
+            "It was lost in transit",
+            "It needs full rework"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The coordinator confirms: \"Sample Batch 8 has zero dimensional defects.\""
+        },
+        {
+          "id": "A1-ex-05",
+          "section": "listening",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Good morning. My name is Daniel and I _____ the morning electrical intern.",
+          "opts": [
+            "am",
+            "is",
+            "are",
+            "be"
+          ],
+          "options": [
+            "am",
+            "is",
+            "are",
+            "be"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Pronoun \"I\" requires first-person singular \"am\"."
+        },
+        {
+          "id": "A1-ex-06",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "This is Engineer Diana. _____ employee badge grants access to Cleanroom 1.",
+          "opts": [
+            "Her",
+            "His",
+            "Its",
+            "Their"
+          ],
+          "options": [
+            "Her",
+            "His",
+            "Its",
+            "Their"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Diana is feminine singular; possessive adjective is \"Her\"."
+        },
+        {
+          "id": "A1-ex-07",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "The quality team _____ vibration readings every two hours.",
+          "opts": [
+            "records",
+            "record",
+            "is record",
+            "recording"
+          ],
+          "options": [
+            "records",
+            "record",
+            "is record",
+            "recording"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Third-person singular subject \"The quality team\" takes \"records\" in the simple present."
+        },
+        {
+          "id": "A1-ex-08",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "_____ there any replacement pneumatic hoses in the tool cabinet?",
+          "opts": [
+            "Are",
+            "Is",
+            "Be",
+            "Do"
+          ],
+          "options": [
+            "Are",
+            "Is",
+            "Be",
+            "Do"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Pneumatic hoses\" is plural; requires \"Are there...?\""
+        },
+        {
+          "id": "A1-ex-09",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "_____ touch the rotating drill spindle with unapproved fabric gloves.",
+          "opts": [
+            "Do not",
+            "No to",
+            "Not",
+            "Never to"
+          ],
+          "options": [
+            "Do not",
+            "No to",
+            "Not",
+            "Never to"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Negative imperative begins with \"Do not\" + base verb."
+        },
+        {
+          "id": "A1-ex-10",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Our production line operates _____ Monday to Friday _____ 07:00 AM.",
+          "opts": [
+            "from / at",
+            "in / on",
+            "at / in",
+            "on / of"
+          ],
+          "options": [
+            "from / at",
+            "in / on",
+            "at / in",
+            "on / of"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"From Monday to Friday\" and \"at 07:00 AM\"."
+        },
+        {
+          "id": "A1-ex-11",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "According to OSHA plant signage: \"CAUTION: Hearing protection mandatory past yellow floor stripe.\" — What is required past the stripe?",
+          "opts": [
+            "Approved hearing protection (earplugs or earmuffs)",
+            "High heels",
+            "Sunglasses",
+            "Removing your shoes"
+          ],
+          "options": [
+            "Approved hearing protection (earplugs or earmuffs)",
+            "High heels",
+            "Sunglasses",
+            "Removing your shoes"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The safety sign explicitly mandates approved hearing protection."
+        },
+        {
+          "id": "A1-ex-12",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "A safety bulletin states: \"Lockout/Tagout padlocks must remain locked until maintenance service is 100% completed.\" — When may padlocks be removed?",
+          "opts": [
+            "Only after maintenance service is 100% completed",
+            "During lunch breaks",
+            "When the operator is tired",
+            "Anytime someone asks"
+          ],
+          "options": [
+            "Only after maintenance service is 100% completed",
+            "During lunch breaks",
+            "When the operator is tired",
+            "Anytime someone asks"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Padlocks must remain engaged until service is fully completed."
+        },
+        {
+          "id": "A1-ex-13",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "In an assembly notice: \"ESD wrist straps must be plugged into grounded terminals before touching PCB components.\" — What does ESD stand for?",
+          "opts": [
+            "Electrostatic Discharge",
+            "Emergency Stop Device",
+            "Engine Speed Dial",
+            "Electronic Standard Document"
+          ],
+          "options": [
+            "Electrostatic Discharge",
+            "Emergency Stop Device",
+            "Engine Speed Dial",
+            "Electronic Standard Document"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "ESD stands for Electrostatic Discharge."
+        },
+        {
+          "id": "A1-ex-14",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "A workstation checklist states: \"Calibrate micrometer zero-point using standard gauge block before shift start.\" — What tool is used to verify zero-point?",
+          "opts": [
+            "A standard gauge block",
+            "A wooden stick",
+            "A metal coin",
+            "A rubber band"
+          ],
+          "options": [
+            "A standard gauge block",
+            "A wooden stick",
+            "A metal coin",
+            "A rubber band"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Standard gauge blocks are certified metrology standards."
+        },
+        {
+          "id": "A1-ex-15",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "An SDS label reads: \"Flammable Liquid: Store away from direct heat and ignition sources.\" — Where should this liquid NOT be stored?",
+          "opts": [
+            "Near furnaces or open flames",
+            "In a cool ventilated chemical cabinet",
+            "In designated drums",
+            "In safety cans"
+          ],
+          "options": [
+            "Near furnaces or open flames",
+            "In a cool ventilated chemical cabinet",
+            "In designated drums",
+            "In safety cans"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Flammable materials must never be stored near heat or ignition sources."
+        },
+        {
+          "id": "A1-ex-16",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "How do you politely introduce yourself to a new plant manager in an American manufacturing facility?",
+          "opts": [
+            "Good morning, I am Carlos Mendez, new mechatronics intern on Line 3. Pleasure to meet you.",
+            "Hey you, look at me right now.",
+            "My name is Carlos and you must listen.",
+            "I am the boss here."
+          ],
+          "options": [
+            "Good morning, I am Carlos Mendez, new mechatronics intern on Line 3. Pleasure to meet you.",
+            "Hey you, look at me right now.",
+            "My name is Carlos and you must listen.",
+            "I am the boss here."
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Standard American workplace protocol uses polite greeting + full name + role + polite closing."
+        },
+        {
+          "id": "A1-ex-17",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "Cuidado con el falso amigo: \"Actually, my shift starts at 07:00.\" — ¿Qué significa \"Actually\"?",
+          "opts": [
+            "De hecho / En realidad",
+            "Actualmente en este mes",
+            "Con acciones rápidas",
+            "Ocasionalmente"
+          ],
+          "options": [
+            "De hecho / En realidad",
+            "Actualmente en este mes",
+            "Con acciones rápidas",
+            "Ocasionalmente"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Actually\" means \"in reality\" or \"as a matter of fact\". \"Currently\" means actualmente."
+        },
+        {
+          "id": "A1-ex-18",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "Which syllable carries the primary stress in the noun \"COLLEAGUE\"?",
+          "opts": [
+            "First syllable: COL-league",
+            "Second syllable: col-LEAGUE",
+            "Both equal",
+            "The silent final -ue"
+          ],
+          "options": [
+            "First syllable: COL-league",
+            "Second syllable: col-LEAGUE",
+            "Both equal",
+            "The silent final -ue"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Stressed on first syllable /ˈkɑːliːɡ/; the ending \"-ue\" is completely silent."
+        },
+        {
+          "id": "A1-ex-19",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "When an auditor asks for your employee ID number, how should you respond?",
+          "opts": [
+            "My employee ID is 4-0-9-2-1, assigned to Quality Inspection.",
+            "I don't know numbers.",
+            "Ask someone else.",
+            "It is secret."
+          ],
+          "options": [
+            "My employee ID is 4-0-9-2-1, assigned to Quality Inspection.",
+            "I don't know numbers.",
+            "Ask someone else.",
+            "It is secret."
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Clear, concise stating of ID numbers with department designation reflects professional plant literacy."
+        },
+        {
+          "id": "A1-ex-20",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "When concluding a shift handover with the incoming operator, what is the professional sign-off?",
+          "opts": [
+            "\"All machines are running on schedule. Here is the shift logbook. Have a safe shift.\"",
+            "\"I am leaving now, deal with it.\"",
+            "\"Whatever happens is your problem.\"",
+            "\"Goodbye forever.\""
+          ],
+          "options": [
+            "\"All machines are running on schedule. Here is the shift logbook. Have a safe shift.\"",
+            "\"I am leaving now, deal with it.\"",
+            "\"Whatever happens is your problem.\"",
+            "\"Goodbye forever.\""
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Professional handovers confirm operating status, deliver physical logs, and wish a safe shift."
+        }
+      ]
+    },
+    "milestoneExam": {
+      "id": "exam-mcer-a1",
+      "level": "A1",
+      "title": "Examen de Certificación Integral Nivel A1 (Breakthrough • 60.0h)",
+      "titleEN": "CEFR A1 Comprehensive Milestone Certification Exam",
+      "timeLimitMinutes": 40,
+      "timeMinutes": 40,
+      "passingScore": 15,
+      "passScorePct": 75,
+      "totalQuestions": 20,
+      "totalItems": 20,
+      "badgeId": "stemos-mcer-a1-credential",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés I (CACEI / DGUTyP / SEP).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés I (CACEI / DGUTyP / SEP).",
+      "questions": [
+        {
+          "id": "A1-ex-01",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Good morning team. Welcome to Line 2. Please verify that your security badges are scanned before 07:15. Workstation assignments are posted on Wall Board C.",
+          "q": "[AUDIO] Listen to Shift Supervisor Miller: \"Good morning team. Welcome to Line 2. Please verify that your security badges are scanned before 07:15. Workstation assignments are posted on Wall Board C.\" — By what time must badges be scanned?",
+          "opts": [
+            "Before 07:15 AM",
+            "At 08:30 AM",
+            "At midday",
+            "At shift end"
+          ],
+          "options": [
+            "Before 07:15 AM",
+            "At 08:30 AM",
+            "At midday",
+            "At shift end"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Supervisor Miller explicitly mandates scanning before 07:15 AM."
+        },
+        {
+          "id": "A1-ex-02",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Technician Alex, your replacement digital caliper is in Locker 14 next to the charging station.",
+          "q": "[AUDIO] Listen to Tool Crib Dispatcher: \"Technician Alex, your replacement digital caliper is in Locker 14 next to the charging station.\" — Where is the digital caliper located?",
+          "opts": [
+            "In Locker 14 next to the charging station",
+            "On Conveyor 3",
+            "In the cafeteria",
+            "Inside the manager office"
+          ],
+          "options": [
+            "In Locker 14 next to the charging station",
+            "On Conveyor 3",
+            "In the cafeteria",
+            "Inside the manager office"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The dispatcher clearly directs: \"in Locker 14 next to the charging station.\""
+        },
+        {
+          "id": "A1-ex-03",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Attention plant floor: Stop all manual assembly. Proceed through Exit Door 4 immediately.",
+          "q": "[AUDIO] Listen to EHS Emergency Broadcast: \"Attention plant floor: Stop all manual assembly. Proceed through Exit Door 4 immediately.\" — What must workers do?",
+          "opts": [
+            "Stop assembly and proceed through Exit Door 4",
+            "Continue working normally",
+            "Turn off the lights and sleep",
+            "Eat lunch at Station 2"
+          ],
+          "options": [
+            "Stop assembly and proceed through Exit Door 4",
+            "Continue working normally",
+            "Turn off the lights and sleep",
+            "Eat lunch at Station 2"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The broadcast gives the imperative: \"Stop all manual assembly. Proceed through Exit Door 4 immediately.\""
+        },
+        {
+          "id": "A1-ex-04",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Sample Batch 8 has zero dimensional defects. Great job.",
+          "q": "[AUDIO] Listen to Quality Coordinator: \"Sample Batch 8 has zero dimensional defects. Great job.\" — What is the status of Sample Batch 8?",
+          "opts": [
+            "It has zero dimensional defects",
+            "It is completely defective",
+            "It was lost in transit",
+            "It needs full rework"
+          ],
+          "options": [
+            "It has zero dimensional defects",
+            "It is completely defective",
+            "It was lost in transit",
+            "It needs full rework"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The coordinator confirms: \"Sample Batch 8 has zero dimensional defects.\""
+        },
+        {
+          "id": "A1-ex-05",
+          "section": "listening",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Good morning. My name is Daniel and I _____ the morning electrical intern.",
+          "opts": [
+            "am",
+            "is",
+            "are",
+            "be"
+          ],
+          "options": [
+            "am",
+            "is",
+            "are",
+            "be"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Pronoun \"I\" requires first-person singular \"am\"."
+        },
+        {
+          "id": "A1-ex-06",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "This is Engineer Diana. _____ employee badge grants access to Cleanroom 1.",
+          "opts": [
+            "Her",
+            "His",
+            "Its",
+            "Their"
+          ],
+          "options": [
+            "Her",
+            "His",
+            "Its",
+            "Their"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Diana is feminine singular; possessive adjective is \"Her\"."
+        },
+        {
+          "id": "A1-ex-07",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "The quality team _____ vibration readings every two hours.",
+          "opts": [
+            "records",
+            "record",
+            "is record",
+            "recording"
+          ],
+          "options": [
+            "records",
+            "record",
+            "is record",
+            "recording"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Third-person singular subject \"The quality team\" takes \"records\" in the simple present."
+        },
+        {
+          "id": "A1-ex-08",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "_____ there any replacement pneumatic hoses in the tool cabinet?",
+          "opts": [
+            "Are",
+            "Is",
+            "Be",
+            "Do"
+          ],
+          "options": [
+            "Are",
+            "Is",
+            "Be",
+            "Do"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Pneumatic hoses\" is plural; requires \"Are there...?\""
+        },
+        {
+          "id": "A1-ex-09",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "_____ touch the rotating drill spindle with unapproved fabric gloves.",
+          "opts": [
+            "Do not",
+            "No to",
+            "Not",
+            "Never to"
+          ],
+          "options": [
+            "Do not",
+            "No to",
+            "Not",
+            "Never to"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Negative imperative begins with \"Do not\" + base verb."
+        },
+        {
+          "id": "A1-ex-10",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Our production line operates _____ Monday to Friday _____ 07:00 AM.",
+          "opts": [
+            "from / at",
+            "in / on",
+            "at / in",
+            "on / of"
+          ],
+          "options": [
+            "from / at",
+            "in / on",
+            "at / in",
+            "on / of"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"From Monday to Friday\" and \"at 07:00 AM\"."
+        },
+        {
+          "id": "A1-ex-11",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "According to OSHA plant signage: \"CAUTION: Hearing protection mandatory past yellow floor stripe.\" — What is required past the stripe?",
+          "opts": [
+            "Approved hearing protection (earplugs or earmuffs)",
+            "High heels",
+            "Sunglasses",
+            "Removing your shoes"
+          ],
+          "options": [
+            "Approved hearing protection (earplugs or earmuffs)",
+            "High heels",
+            "Sunglasses",
+            "Removing your shoes"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The safety sign explicitly mandates approved hearing protection."
+        },
+        {
+          "id": "A1-ex-12",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "A safety bulletin states: \"Lockout/Tagout padlocks must remain locked until maintenance service is 100% completed.\" — When may padlocks be removed?",
+          "opts": [
+            "Only after maintenance service is 100% completed",
+            "During lunch breaks",
+            "When the operator is tired",
+            "Anytime someone asks"
+          ],
+          "options": [
+            "Only after maintenance service is 100% completed",
+            "During lunch breaks",
+            "When the operator is tired",
+            "Anytime someone asks"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Padlocks must remain engaged until service is fully completed."
+        },
+        {
+          "id": "A1-ex-13",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "In an assembly notice: \"ESD wrist straps must be plugged into grounded terminals before touching PCB components.\" — What does ESD stand for?",
+          "opts": [
+            "Electrostatic Discharge",
+            "Emergency Stop Device",
+            "Engine Speed Dial",
+            "Electronic Standard Document"
+          ],
+          "options": [
+            "Electrostatic Discharge",
+            "Emergency Stop Device",
+            "Engine Speed Dial",
+            "Electronic Standard Document"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "ESD stands for Electrostatic Discharge."
+        },
+        {
+          "id": "A1-ex-14",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "A workstation checklist states: \"Calibrate micrometer zero-point using standard gauge block before shift start.\" — What tool is used to verify zero-point?",
+          "opts": [
+            "A standard gauge block",
+            "A wooden stick",
+            "A metal coin",
+            "A rubber band"
+          ],
+          "options": [
+            "A standard gauge block",
+            "A wooden stick",
+            "A metal coin",
+            "A rubber band"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Standard gauge blocks are certified metrology standards."
+        },
+        {
+          "id": "A1-ex-15",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "An SDS label reads: \"Flammable Liquid: Store away from direct heat and ignition sources.\" — Where should this liquid NOT be stored?",
+          "opts": [
+            "Near furnaces or open flames",
+            "In a cool ventilated chemical cabinet",
+            "In designated drums",
+            "In safety cans"
+          ],
+          "options": [
+            "Near furnaces or open flames",
+            "In a cool ventilated chemical cabinet",
+            "In designated drums",
+            "In safety cans"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Flammable materials must never be stored near heat or ignition sources."
+        },
+        {
+          "id": "A1-ex-16",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "How do you politely introduce yourself to a new plant manager in an American manufacturing facility?",
+          "opts": [
+            "Good morning, I am Carlos Mendez, new mechatronics intern on Line 3. Pleasure to meet you.",
+            "Hey you, look at me right now.",
+            "My name is Carlos and you must listen.",
+            "I am the boss here."
+          ],
+          "options": [
+            "Good morning, I am Carlos Mendez, new mechatronics intern on Line 3. Pleasure to meet you.",
+            "Hey you, look at me right now.",
+            "My name is Carlos and you must listen.",
+            "I am the boss here."
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Standard American workplace protocol uses polite greeting + full name + role + polite closing."
+        },
+        {
+          "id": "A1-ex-17",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "Cuidado con el falso amigo: \"Actually, my shift starts at 07:00.\" — ¿Qué significa \"Actually\"?",
+          "opts": [
+            "De hecho / En realidad",
+            "Actualmente en este mes",
+            "Con acciones rápidas",
+            "Ocasionalmente"
+          ],
+          "options": [
+            "De hecho / En realidad",
+            "Actualmente en este mes",
+            "Con acciones rápidas",
+            "Ocasionalmente"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Actually\" means \"in reality\" or \"as a matter of fact\". \"Currently\" means actualmente."
+        },
+        {
+          "id": "A1-ex-18",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "Which syllable carries the primary stress in the noun \"COLLEAGUE\"?",
+          "opts": [
+            "First syllable: COL-league",
+            "Second syllable: col-LEAGUE",
+            "Both equal",
+            "The silent final -ue"
+          ],
+          "options": [
+            "First syllable: COL-league",
+            "Second syllable: col-LEAGUE",
+            "Both equal",
+            "The silent final -ue"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Stressed on first syllable /ˈkɑːliːɡ/; the ending \"-ue\" is completely silent."
+        },
+        {
+          "id": "A1-ex-19",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "When an auditor asks for your employee ID number, how should you respond?",
+          "opts": [
+            "My employee ID is 4-0-9-2-1, assigned to Quality Inspection.",
+            "I don't know numbers.",
+            "Ask someone else.",
+            "It is secret."
+          ],
+          "options": [
+            "My employee ID is 4-0-9-2-1, assigned to Quality Inspection.",
+            "I don't know numbers.",
+            "Ask someone else.",
+            "It is secret."
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Clear, concise stating of ID numbers with department designation reflects professional plant literacy."
+        },
+        {
+          "id": "A1-ex-20",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "When concluding a shift handover with the incoming operator, what is the professional sign-off?",
+          "opts": [
+            "\"All machines are running on schedule. Here is the shift logbook. Have a safe shift.\"",
+            "\"I am leaving now, deal with it.\"",
+            "\"Whatever happens is your problem.\"",
+            "\"Goodbye forever.\""
+          ],
+          "options": [
+            "\"All machines are running on schedule. Here is the shift logbook. Have a safe shift.\"",
+            "\"I am leaving now, deal with it.\"",
+            "\"Whatever happens is your problem.\"",
+            "\"Goodbye forever.\""
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Professional handovers confirm operating status, deliver physical logs, and wish a safe shift."
+        }
+      ]
     }
   },
   {
@@ -1899,6 +3938,24 @@
               "correct": 1,
               "answer": 1,
               "exp": "Under standard NFPA 79 tower light conventions, yellow indicates a warning, manual mode, or hopper reload condition."
+            },
+            {
+              "q": "In an ISO 9001 post-incident root cause report, why is recording the exact timestamp of machine stoppage critical?",
+              "opts": [
+                "It allows quality engineers to cross-reference sensor telemetry and isolate the suspect production batch",
+                "It is required so workers know when to take lunch",
+                "It makes the paper look longer",
+                "It resets the plant clocks automatically"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "Accurate stoppage timestamps allow traceability systems to identify all parts manufactured immediately before the failure occurred.",
+              "options": [
+                "It allows quality engineers to cross-reference sensor telemetry and isolate the suspect production batch",
+                "It is required so workers know when to take lunch",
+                "It makes the paper look longer",
+                "It resets the plant clocks automatically"
+              ]
             }
           ],
           "answer": 1
@@ -2174,6 +4231,267 @@
             "socraticHint": "¿Cuál es la unidad de presión manométrica estándar en la industria estadounidense?",
             "category": "Léxico Técnico"
           }
+        ],
+        "listeningLab": {
+          "title": "Shift Incident Log Audio Report",
+          "speaker": "Lead Technician Ramos (Cell 2)",
+          "audioScenario": "This is technician Ramos logging past shift actions. At 14:15 yesterday, conveyor belt three stalled because an aluminum bracket jammed the feeder gear. We de-energized the motor, replaced the sheared shear pin, and restarted operations at 15:00. The line ran smoothly for the remainder of the afternoon.",
+          "audioScript": "This is technician Ramos logging past shift actions. At 14:15 yesterday, conveyor belt three stalled because an aluminum bracket jammed the feeder gear. We de-energized the motor, replaced the sheared shear pin, and restarted operations at 15:00. The line ran smoothly for the remainder of the afternoon.",
+          "questions": [
+            {
+              "q": "Why did conveyor belt three stall yesterday at 14:15?",
+              "opts": [
+                "An aluminum bracket jammed the feeder gear",
+                "The power grid suffered a citywide blackout",
+                "The operator forgot to turn on the switch",
+                "A software bug erased the operating system"
+              ],
+              "options": [
+                "An aluminum bracket jammed the feeder gear",
+                "The power grid suffered a citywide blackout",
+                "The operator forgot to turn on the switch",
+                "A software bug erased the operating system"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Ramos reports: \"conveyor belt three stalled because an aluminum bracket jammed the feeder gear.\"",
+              "socraticHint": "¿Cuál fue la causa mecánica del atascamiento de la banda tres?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "Which component did the maintenance team replace before restarting the motor?",
+              "opts": [
+                "The sheared shear pin",
+                "The main PLC computer",
+                "The pneumatic compressor",
+                "The emergency exit door"
+              ],
+              "options": [
+                "The sheared shear pin",
+                "The main PLC computer",
+                "The pneumatic compressor",
+                "The emergency exit door"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Ramos specifies: \"We de-energized the motor, replaced the sheared shear pin, and restarted operations.\"",
+              "socraticHint": "¿Qué pieza mecánica de sacrificio reemplazó el equipo técnico?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "At what time did the line resume normal operations?",
+              "opts": [
+                "At 15:00 hours",
+                "At 17:30 hours",
+                "At midnight",
+                "The following morning"
+              ],
+              "options": [
+                "At 15:00 hours",
+                "At 17:30 hours",
+                "At midnight",
+                "The following morning"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "The audio confirms: \"...and restarted operations at fifteen hundred hours (15:00).\"",
+              "socraticHint": "¿A qué hora se reanudó la operación?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "The quality inspector _____ all fifty hydraulic fittings yesterday afternoon.",
+            "opts": [
+              "inspected",
+              "inspects",
+              "was inspect",
+              "inspecting"
+            ],
+            "options": [
+              "inspected",
+              "inspects",
+              "was inspect",
+              "inspecting"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Simple past tense of regular verb \"inspect\" is formed by adding -ed: \"inspected\".",
+            "socraticHint": "La oración tiene la expresión de tiempo pasado \"yesterday afternoon\". ¿Cuál es el pasado simple regular?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "We _____ the spindle motor when we detected the irregular high-frequency vibration.",
+            "opts": [
+              "shut down",
+              "shutdowned",
+              "did shutted down",
+              "shuts down"
+            ],
+            "options": [
+              "shut down",
+              "shutdowned",
+              "did shutted down",
+              "shuts down"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The irregular verb \"shut\" has identical base and past forms: \"shut down\".",
+            "socraticHint": "El verbo irregular \"shut down\" no cambia en pasado. No existe la forma terminada en \"-ed\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The technicians _____ monitoring telemetry readings while the test bench was operating.",
+            "opts": [
+              "were",
+              "was",
+              "did be",
+              "are"
+            ],
+            "options": [
+              "were",
+              "was",
+              "did be",
+              "are"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The subject \"The technicians\" is plural; past continuous requires auxiliary \"were\".",
+            "socraticHint": "El sujeto es plural (\"The technicians\") en pasado continuo. ¿Qué forma de \"to be\" en pasado corresponde?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "How much downtime _____ the extrusion cell experience during third shift?",
+            "opts": [
+              "did",
+              "was",
+              "does",
+              "had been"
+            ],
+            "options": [
+              "did",
+              "was",
+              "does",
+              "had been"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Past simple questions with main action verbs use the auxiliary \"did\": \"did [subject] experience...?\"",
+            "socraticHint": "Para formular una pregunta en pasado simple con un verbo de acción (\"experience\"), ¿qué auxiliar utilizas?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Two hours ago, the maintenance crew _____ the primary coolant filter.",
+            "opts": [
+              "replaced",
+              "replaces",
+              "is replacing",
+              "was replaced"
+            ],
+            "options": [
+              "replaced",
+              "replaces",
+              "is replacing",
+              "was replaced"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Two hours ago\" specifies completed past action requiring simple past \"replaced\".",
+            "socraticHint": "La frase \"Two hours ago\" señala una acción concluida en el pasado. Elige el verbo en pasado simple activo.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "Unplanned machine stoppage that halts line production is termed _____.",
+            "opts": [
+              "downtime",
+              "overtime",
+              "lifetime",
+              "meantime"
+            ],
+            "options": [
+              "downtime",
+              "overtime",
+              "lifetime",
+              "meantime"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Downtime\" (tiempo muerto o paro no programado) represents lost production time due to malfunctions.",
+            "socraticHint": "¿Cuál es el término industrial para el tiempo en que una máquina permanece detenida por falla?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "A physical blockage preventing gears or robotic joints from moving freely is a _____.",
+            "opts": [
+              "jam",
+              "toast",
+              "spread",
+              "slice"
+            ],
+            "options": [
+              "jam",
+              "toast",
+              "spread",
+              "slice"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A mechanical \"jam\" occurs when foreign material obstructs kinetic movement.",
+            "socraticHint": "¿Cómo se le dice en inglés a un atascamiento o traba mecánica en un alimentador?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The sacrificial pin engineered to break under excessive torque to protect an expensive shaft is a _____.",
+            "opts": [
+              "shear pin",
+              "hair pin",
+              "safety pin",
+              "bowling pin"
+            ],
+            "options": [
+              "shear pin",
+              "hair pin",
+              "safety pin",
+              "bowling pin"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A \"shear pin\" (perno de seguridad o perno fusible) shears off intentionally to prevent catastrophic drivetrain failure.",
+            "socraticHint": "¿Cómo se llama el perno diseñado para romperse por sobrecarga y proteger el motor?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct technical collocation: \"The operators _____ an incident report immediately after the stoppage.\"",
+            "opts": [
+              "filed",
+              "drank",
+              "shuffled",
+              "folded"
+            ],
+            "options": [
+              "filed",
+              "drank",
+              "shuffled",
+              "folded"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "In professional English, one \"files a report\" (levantar o radicar un reporte formal).",
+            "socraticHint": "¿Qué verbo en inglés se asocia formalmente con redactar o ingresar un reporte oficial?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       },
       {
@@ -2312,6 +4630,24 @@
               "correct": 1,
               "answer": 1,
               "exp": "The downtime log shows the press stopped at 10:14 AM and restarted at 10:56 AM, totaling 42 minutes."
+            },
+            {
+              "q": "When an engineer specifies an engineering change from Aluminum 6061-T6 to Stainless Steel 316 for a marine subsea sensor, what trade-off is accepted?",
+              "opts": [
+                "Gaining superior pitting corrosion resistance at the cost of significantly increased component mass",
+                "Reducing the product lifespan to save paper",
+                "Making the sensor dissolve in seawater",
+                "Eliminating the need for electrical batteries"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "Upgrading to 316 stainless steel provides molybdenum-enhanced chloride pitting resistance but adds density compared to lightweight aluminum.",
+              "options": [
+                "Gaining superior pitting corrosion resistance at the cost of significantly increased component mass",
+                "Reducing the product lifespan to save paper",
+                "Making the sensor dissolve in seawater",
+                "Eliminating the need for electrical batteries"
+              ]
             }
           ],
           "answer": 1
@@ -2587,6 +4923,267 @@
             "socraticHint": "¿Cómo se le llama al formato formal para solicitar una reparación mecánica en planta?",
             "category": "Léxico Técnico"
           }
+        ],
+        "listeningLab": {
+          "title": "Material Evaluation Technical Briefing",
+          "speaker": "Materials Engineer Sarah Jenkins",
+          "audioScenario": "Comparing our housing options: Aluminum 6061 is significantly lighter than 304 stainless steel, but stainless steel exhibits higher corrosion resistance in saltwater spray environments. For our aerospace brackets, titanium is the most durable alloy, though its machining cycle time is noticeably longer.",
+          "audioScript": "Comparing our housing options: Aluminum 6061 is significantly lighter than 304 stainless steel, but stainless steel exhibits higher corrosion resistance in saltwater spray environments. For our aerospace brackets, titanium is the most durable alloy, though its machining cycle time is noticeably longer.",
+          "questions": [
+            {
+              "q": "Which material is lighter according to engineer Sarah Jenkins?",
+              "opts": [
+                "Aluminum 6061 is lighter than 304 stainless steel",
+                "304 stainless steel is lighter than aluminum",
+                "Titanium is lighter than everything",
+                "They have identical densities"
+              ],
+              "options": [
+                "Aluminum 6061 is lighter than 304 stainless steel",
+                "304 stainless steel is lighter than aluminum",
+                "Titanium is lighter than everything",
+                "They have identical densities"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Jenkins states: \"Aluminum 6061 is significantly lighter than 304 stainless steel.\"",
+              "socraticHint": "¿Qué metal tiene menor peso según la comparativa directa?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What is the main operational advantage of 304 stainless steel over aluminum?",
+              "opts": [
+                "Higher corrosion resistance in saltwater spray environments",
+                "It melts at room temperature",
+                "It is cheaper than plastic",
+                "It conducts electricity faster than pure copper"
+              ],
+              "options": [
+                "Higher corrosion resistance in saltwater spray environments",
+                "It melts at room temperature",
+                "It is cheaper than plastic",
+                "It conducts electricity faster than pure copper"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "\"...stainless steel exhibits higher corrosion resistance in saltwater spray environments.\"",
+              "socraticHint": "¿Qué propiedad de resistencia química destaca en el acero inoxidable 304?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "Which alloy is described as \"the most durable\" for aerospace brackets?",
+              "opts": [
+                "Titanium",
+                "Cast iron",
+                "Polycarbonate",
+                "Brass"
+              ],
+              "options": [
+                "Titanium",
+                "Cast iron",
+                "Polycarbonate",
+                "Brass"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Jenkins affirms: \"titanium is the most durable alloy...\".",
+              "socraticHint": "¿Qué aleación recibe el superlativo de máxima durabilidad en aplicaciones aeroespaciales?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "The brushless servo motor is _____ than the legacy stepper motor.",
+            "opts": [
+              "faster and more efficient",
+              "more fast and efficienter",
+              "fastest and efficient",
+              "as fast than"
+            ],
+            "options": [
+              "faster and more efficient",
+              "more fast and efficienter",
+              "fastest and efficient",
+              "as fast than"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "One-syllable adjectives add -er (\"faster\"), while multi-syllable adjectives take \"more\" (\"more efficient\").",
+            "socraticHint": "Revisa las reglas de comparativos: \"fast\" es de una sílaba y \"efficient\" de tres sílabas.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "This carbon-fiber chassis provides _____ tensile strength among all tested prototypes.",
+            "opts": [
+              "the highest",
+              "higher than",
+              "as high as",
+              "most high"
+            ],
+            "options": [
+              "the highest",
+              "higher than",
+              "as high as",
+              "most high"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Superlatives comparing one item among a whole group use \"the\" + adjective + \"-est\": \"the highest\".",
+            "socraticHint": "Se compara una pieza frente a todo el grupo evaluado (\"among all tested prototypes\"). ¿Qué superlativo corresponde?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The new CNC lathe is _____ accurate as the German grinding station.",
+            "opts": [
+              "as",
+              "more",
+              "so",
+              "than"
+            ],
+            "options": [
+              "as",
+              "more",
+              "so",
+              "than"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The comparative of equality uses the formula \"as + adjective + as\": \"as accurate as\".",
+            "socraticHint": "Fórmula de igualdad: \"as [adjetivo] as\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Titanium is considerably _____ expensive than standard mild carbon steel.",
+            "opts": [
+              "more",
+              "much",
+              "most",
+              "as"
+            ],
+            "options": [
+              "more",
+              "much",
+              "most",
+              "as"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Multi-syllable adjective \"expensive\" forms its comparative with \"more\": \"more expensive than\".",
+            "socraticHint": "¿Cómo se forma el comparativo de superioridad para adjetivos largos como \"expensive\"?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Which machine operates _____ on the assembly floor?",
+            "opts": [
+              "the most quietly",
+              "more quieter",
+              "quieter than",
+              "most quietest"
+            ],
+            "options": [
+              "the most quietly",
+              "more quieter",
+              "quieter than",
+              "most quietest"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Superlative of the adverb \"quietly\" is \"the most quietly\".",
+            "socraticHint": "Superlativo de un adverbio terminado en -ly: \"the most quietly\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "The maximum dimensional deviation allowed from a nominal engineering drawing value is the _____.",
+            "opts": [
+              "tolerance",
+              "weight",
+              "texture",
+              "color"
+            ],
+            "options": [
+              "tolerance",
+              "weight",
+              "texture",
+              "color"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "In engineering GD&T (Geometric Dimensioning and Tolerancing), \"tolerance\" is the allowable variation.",
+            "socraticHint": "¿Qué término define el margen de variación dimensional permisible respecto a la medida nominal de plano?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The property of a material to withstand mechanical pulling forces without fracturing is its _____.",
+            "opts": [
+              "tensile strength",
+              "optical clarity",
+              "thermal conductivity",
+              "acoustic damping"
+            ],
+            "options": [
+              "tensile strength",
+              "optical clarity",
+              "thermal conductivity",
+              "acoustic damping"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Tensile strength\" (resistencia a la tracción) measures resistance to breaking under tension.",
+            "socraticHint": "¿Cómo se llama la resistencia mecánica de un material al ser estirado o jalado en un ensayo universal?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "A metallic substance composed of two or more combined elements is an _____.",
+            "opts": [
+              "alloy",
+              "aggregate",
+              "isotope",
+              "insulator"
+            ],
+            "options": [
+              "alloy",
+              "aggregate",
+              "isotope",
+              "insulator"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "An \"alloy\" (aleación) combines metals or elements (e.g. steel is iron and carbon).",
+            "socraticHint": "¿Qué término define una mezcla homogénea de dos o más metales (como bronce, latón o acero)?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct technical collocation: \"The titanium bracket has a high strength-to-weight _____.\"",
+            "opts": [
+              "ratio",
+              "fraction",
+              "division",
+              "percentage"
+            ],
+            "options": [
+              "ratio",
+              "fraction",
+              "division",
+              "percentage"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The standard aerospace engineering metric is \"strength-to-weight ratio\" (relación resistencia-peso).",
+            "socraticHint": "¿Qué palabra acompaña a \"strength-to-weight\" para expresar la relación matemática en ingeniería aeroespacial?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       },
       {
@@ -2725,6 +5322,24 @@
               "correct": 1,
               "answer": 1,
               "exp": "NFPA and OSHA standards require flammable solvents in certified FM fireproof cabinets with ground wire dissipation."
+            },
+            {
+              "q": "Why does an Advanced Product Quality Planning (APQP) gateway review require sign-off from both Design and Manufacturing leads before tooling fabrication begins?",
+              "opts": [
+                "To ensure Design for Manufacturability (DFM) issues are resolved and prevent expensive tooling rework",
+                "To satisfy personal curiosity",
+                "Because machines cannot read drawings without a signature",
+                "To delay the launch intentionally"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "Cross-functional gateway sign-offs verify that dimensional tolerances and draft angles can be reliably molded without tool modification.",
+              "options": [
+                "To ensure Design for Manufacturability (DFM) issues are resolved and prevent expensive tooling rework",
+                "To satisfy personal curiosity",
+                "Because machines cannot read drawings without a signature",
+                "To delay the launch intentionally"
+              ]
             }
           ],
           "answer": 1
@@ -3000,6 +5615,267 @@
             "socraticHint": "Para sustantivos contables en plural (\"resistors\"), ¿se utiliza \"fewer\" o \"less\"?",
             "category": "Gramática y Sintaxis"
           }
+        ],
+        "listeningLab": {
+          "title": "Project Milestone Conference Call",
+          "speaker": "Program Manager Liam Wright",
+          "audioScenario": "Liam speaking. I am confirming our delivery timeline. We are going to ship the forty pre-production prototype enclosures by Friday afternoon. The customer engineering team will review the dimensional CMM inspection report on Monday morning. Please ensure all shipping manifests are signed by Thursday at five.",
+          "audioScript": "Liam speaking. I am confirming our delivery timeline. We are going to ship the forty pre-production prototype enclosures by Friday afternoon. The customer engineering team will review the dimensional CMM inspection report on Monday morning. Please ensure all shipping manifests are signed by Thursday at five.",
+          "questions": [
+            {
+              "q": "By what deadline is the team going to ship the pre-production prototype enclosures?",
+              "opts": [
+                "By Friday afternoon",
+                "Next month",
+                "Immediately this morning",
+                "In two weeks"
+              ],
+              "options": [
+                "By Friday afternoon",
+                "Next month",
+                "Immediately this morning",
+                "In two weeks"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Liam states: \"We are going to ship the forty pre-production prototype enclosures by Friday afternoon.\"",
+              "socraticHint": "¿Cuál es la fecha y momento de entrega acordada para los gabinetes prototipo?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "When will the customer engineering team review the CMM inspection report?",
+              "opts": [
+                "On Monday morning",
+                "On Sunday night",
+                "During Christmas break",
+                "Never"
+              ],
+              "options": [
+                "On Monday morning",
+                "On Sunday night",
+                "During Christmas break",
+                "Never"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "\"The customer engineering team will review the dimensional CMM inspection report on Monday morning.\"",
+              "socraticHint": "¿Qué día de la semana revisará el cliente los reportes de medición CMM?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "When must all shipping manifests be signed?",
+              "opts": [
+                "By Thursday at five (17:00)",
+                "On Friday night",
+                "Next Wednesday",
+                "After shipment arrives"
+              ],
+              "options": [
+                "By Thursday at five (17:00)",
+                "On Friday night",
+                "Next Wednesday",
+                "After shipment arrives"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Liam confirms: \"Please ensure all shipping manifests are signed by Thursday at five.\"",
+              "socraticHint": "¿Cuál es la fecha límite para firmar los manifiestos de embarque?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "Look at the depleted inventory levels; the assembly line _____ run out of microcontrollers before Friday.",
+            "opts": [
+              "is going to",
+              "will to",
+              "going to",
+              "shall be to"
+            ],
+            "options": [
+              "is going to",
+              "will to",
+              "going to",
+              "shall be to"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Be going to\" expresses future predictions based on present observable physical evidence.",
+            "socraticHint": "Hay evidencia física visible en el presente (\"Look at the depleted inventory\"). ¿Qué estructura de futuro corresponde?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The lead engineer _____ present the PPAP documentation during tomorrow's customer audit.",
+            "opts": [
+              "will",
+              "is will",
+              "wills",
+              "going to"
+            ],
+            "options": [
+              "will",
+              "is will",
+              "wills",
+              "going to"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Modal future \"will\" is followed directly by the base verb \"present\" without \"to\".",
+            "socraticHint": "El auxiliar modal de futuro simple \"will\" no lleva -s ni requiere \"to\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Our quality team _____ meeting with the ISO auditor next Tuesday at 09:00 AM.",
+            "opts": [
+              "is",
+              "are",
+              "will be to",
+              "going"
+            ],
+            "options": [
+              "is",
+              "are",
+              "will be to",
+              "going"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Present continuous for fixed future calendar arrangements: \"Our quality team is meeting...\".",
+            "socraticHint": "Para eventos agendados con fecha y hora fija en calendario, se emplea el presente continuo con valor de futuro.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "All supplier corrective actions must be submitted _____ Friday at 17:00.",
+            "opts": [
+              "by",
+              "until",
+              "since",
+              "for"
+            ],
+            "options": [
+              "by",
+              "until",
+              "since",
+              "for"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"By\" indicates a strict deadline (no later than that specific point in time).",
+            "socraticHint": "¿Qué preposición indica \"a más tardar a las\" al fijar una fecha límite estricta (deadline)?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The tooling supplier promised they _____ deliver the replacement injection mold within ten business days.",
+            "opts": [
+              "would",
+              "will to",
+              "are to will",
+              "woulded"
+            ],
+            "options": [
+              "would",
+              "will to",
+              "are to will",
+              "woulded"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "In reported speech with past reporting verb \"promised\", \"will\" shifts to conditional \"would\".",
+            "socraticHint": "En estilo indirecto subordinado a un verbo en pasado (\"promised\"), ¿en qué cambia \"will\"?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "The final date or time by which an engineering task or delivery must be completed is the _____.",
+            "opts": [
+              "deadline",
+              "guideline",
+              "baseline",
+              "punchline"
+            ],
+            "options": [
+              "deadline",
+              "guideline",
+              "baseline",
+              "punchline"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A \"deadline\" (fecha límite de entrega) represents non-negotiable project timing.",
+            "socraticHint": "¿Cuál es el término en inglés para la fecha límite improrrogable de entrega de un proyecto?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The list of scheduled topics to be discussed in a formal technical meeting is the _____.",
+            "opts": [
+              "agenda",
+              "roster",
+              "manifest",
+              "blueprint"
+            ],
+            "options": [
+              "agenda",
+              "roster",
+              "manifest",
+              "blueprint"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "An \"agenda\" outlines the sequence and time slots for meeting topics.",
+            "socraticHint": "¿Cómo se le llama al orden del día o temario estructurado de una junta de trabajo?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "A major strategic event marking significant progress in a project timeline is a _____.",
+            "opts": [
+              "milestone",
+              "tombstone",
+              "flagstone",
+              "cobblestone"
+            ],
+            "options": [
+              "milestone",
+              "tombstone",
+              "flagstone",
+              "cobblestone"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A \"milestone\" (hito de proyecto) marks critical gate reviews and delivery completions.",
+            "socraticHint": "¿Qué palabra se usa en gestión de proyectos para designar un hito o entrega intermedia clave?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct technical collocation: \"We need to _____ the kickoff meeting for Wednesday morning.\"",
+            "opts": [
+              "schedule",
+              "invent",
+              "bake",
+              "erase"
+            ],
+            "options": [
+              "schedule",
+              "invent",
+              "bake",
+              "erase"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "In business operations, one \"schedules a meeting\" (agendar o programar una reunión).",
+            "socraticHint": "¿Qué verbo significa programar o agendar formalmente una junta en el calendario corporativo?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       },
       {
@@ -3138,6 +6014,24 @@
               "correct": 1,
               "answer": 1,
               "exp": "Standard escalation protocols require copying both the incoming supervisor and the maintenance technician on unresolved anomalies."
+            },
+            {
+              "q": "During root cause analysis of intermittent optical sensor trip failures, why should wiring insulation and electrical grounding be checked before replacing the sensor unit?",
+              "opts": [
+                "Because electromagnetic interference (EMI) and loose grounding can produce false triggering without any hardware defect in the sensor itself",
+                "Because sensors cannot be purchased online",
+                "Because grounds are always painted yellow",
+                "To avoid completing maintenance logs"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "Verifying signal shielding and common grounds rules out induced electrical noise before condemning expensive optical transceivers.",
+              "options": [
+                "Because electromagnetic interference (EMI) and loose grounding can produce false triggering without any hardware defect in the sensor itself",
+                "Because sensors cannot be purchased online",
+                "Because grounds are always painted yellow",
+                "To avoid completing maintenance logs"
+              ]
             }
           ],
           "answer": 1
@@ -3414,6 +6308,267 @@
             "socraticHint": "Identifica el sujeto: \"The quality inspector\" es singular. ¿Qué auxiliar de presente perfecto requiere?",
             "category": "Gramática y Sintaxis"
           }
+        ],
+        "listeningLab": {
+          "title": "Robotic Cell Diagnostic Radio Dispatch",
+          "speaker": "Robotics Specialist Keller",
+          "audioScenario": "Keller reporting to maintenance lead. Robot Arm Number 2 has halted unexpectedly during the welding cycle. The servo drive displayed Fault Code 44, indicating an axis motor overheat. I have already inspected the cooling fan and reset the breaker, but the enclosure temperature remains slightly above normal operating threshold.",
+          "audioScript": "Keller reporting to maintenance lead. Robot Arm Number 2 has halted unexpectedly during the welding cycle. The servo drive displayed Fault Code 44, indicating an axis motor overheat. I have already inspected the cooling fan and reset the breaker, but the enclosure temperature remains slightly above normal operating threshold.",
+          "questions": [
+            {
+              "q": "Which fault code was displayed on Robot Arm 2's servo drive?",
+              "opts": [
+                "Fault Code 44",
+                "Error Code 100",
+                "Warning 9",
+                "Code Blue"
+              ],
+              "options": [
+                "Fault Code 44",
+                "Error Code 100",
+                "Warning 9",
+                "Code Blue"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Keller states: \"The servo drive displayed Fault Code 44, indicating an axis motor overheat.\"",
+              "socraticHint": "¿Qué código numérico de falla apareció en el display del servo drive?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What physical condition does Fault Code 44 indicate?",
+              "opts": [
+                "An axis motor overheat",
+                "A low battery voltage",
+                "An empty wire feeder",
+                "A broken safety cage window"
+              ],
+              "options": [
+                "An axis motor overheat",
+                "A low battery voltage",
+                "An empty wire feeder",
+                "A broken safety cage window"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "The dispatch clarifies: \"...Fault Code 44, indicating an axis motor overheat.\"",
+              "socraticHint": "¿Qué condición térmica anómala causó el código de falla?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What actions has technician Keller already performed?",
+              "opts": [
+                "Inspected the cooling fan and reset the breaker",
+                "Replaced the robot completely",
+                "Painted the enclosure white",
+                "Deleted the robot firmware"
+              ],
+              "options": [
+                "Inspected the cooling fan and reset the breaker",
+                "Replaced the robot completely",
+                "Painted the enclosure white",
+                "Deleted the robot firmware"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Keller reports: \"I have already inspected the cooling fan and reset the breaker...\"",
+              "socraticHint": "¿Cuáles fueron las dos acciones preliminares de diagnóstico que ya ejecutó Keller?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "The maintenance team _____ already _____ the pneumatic line for pressure leaks.",
+            "opts": [
+              "has / checked",
+              "have / check",
+              "is / checking",
+              "was / check"
+            ],
+            "options": [
+              "has / checked",
+              "have / check",
+              "is / checking",
+              "was / check"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Present perfect with third-person singular collective noun (\"maintenance team\") uses \"has\" + past participle \"checked\".",
+            "socraticHint": "Sujeto singular colectivo con adverbio \"already\". ¿Qué auxiliar y participio requiere el presente perfecto?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The hydraulic pressure in Reservoir B is _____ below the recommended 150 PSI threshold.",
+            "opts": [
+              "slightly",
+              "slight",
+              "more slight",
+              "most slightly"
+            ],
+            "options": [
+              "slightly",
+              "slight",
+              "more slight",
+              "most slightly"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Use the adverb of degree \"slightly\" to modify the prepositional phrase \"below the threshold\".",
+            "socraticHint": "Necesitas un adverbio de grado (\"ligeramente\") para modificar la posición respecto al umbral.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Have you _____ calibrated the digital pressure transducer this morning?",
+            "opts": [
+              "already",
+              "yet",
+              "yesterday",
+              "ago"
+            ],
+            "options": [
+              "already",
+              "yet",
+              "yesterday",
+              "ago"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "In questions expecting an affirmative operational confirmation, \"already\" is used: \"Have you already calibrated...?\"",
+            "socraticHint": "¿Qué adverbio en presente perfecto indaga si una acción ya se ejecutó con antelación?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The conveyor motor was vibrating violently while the line _____ running at maximum capacity.",
+            "opts": [
+              "was",
+              "is",
+              "were",
+              "has been"
+            ],
+            "options": [
+              "was",
+              "is",
+              "were",
+              "has been"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Past continuous subordinate clause with singular subject \"the line\": \"while the line was running\".",
+            "socraticHint": "Cláusula de acción simultánea en pasado con \"while\" y sujeto singular (\"the line\").",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The sensor _____ not responded to optical triggers since the shift started at 07:00.",
+            "opts": [
+              "has",
+              "have",
+              "is",
+              "did"
+            ],
+            "options": [
+              "has",
+              "have",
+              "is",
+              "did"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Present perfect with time anchor \"since\": singular subject \"The sensor has not responded...\".",
+            "socraticHint": "La presencia de \"since\" conecta el pasado con el presente. Sujeto singular requiere \"has not\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "The systematic process of identifying, diagnosing, and resolving the root cause of an engineering malfunction is _____.",
+            "opts": [
+              "troubleshooting",
+              "daydreaming",
+              "freewheeling",
+              "tailgating"
+            ],
+            "options": [
+              "troubleshooting",
+              "daydreaming",
+              "freewheeling",
+              "tailgating"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Troubleshooting\" (diagnóstico de fallas o resolución de problemas) is the core technical skill of diagnosing anomalies.",
+            "socraticHint": "¿Cuál es el término en inglés para el proceso sistemático de detección y corrección de fallas en maquinaria?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "An abnormal, excessive physical shaking of rotating mechanical equipment is _____.",
+            "opts": [
+              "vibration",
+              "lubrication",
+              "ventilation",
+              "insulation"
+            ],
+            "options": [
+              "vibration",
+              "lubrication",
+              "ventilation",
+              "insulation"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Excessive \"vibration\" indicates bearing wear, misalignment, or dynamic unbalance.",
+            "socraticHint": "¿Cómo se le llama a la oscilación mecánica anormal en motores o flechas que advierte desgaste de baleros?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "An automated safety switch designed to trip and interrupt electrical flow during overcurrent events is a _____.",
+            "opts": [
+              "circuit breaker",
+              "light dimmer",
+              "wall socket",
+              "mouse pad"
+            ],
+            "options": [
+              "circuit breaker",
+              "light dimmer",
+              "wall socket",
+              "mouse pad"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A \"circuit breaker\" (pastilla termomagnética o disyuntor) trips automatically under fault conditions.",
+            "socraticHint": "¿Cómo se llama el interruptor termomagnético que se bota para proteger un circuito contra sobrecargas?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct technical collocation: \"The pressure valve began to _____ hydraulic fluid around the seal.\"",
+            "opts": [
+              "leak",
+              "sneeze",
+              "yawn",
+              "shout"
+            ],
+            "options": [
+              "leak",
+              "sneeze",
+              "yawn",
+              "shout"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "To \"leak fluid\" (fugar líquido o tener una fuga de fluido hidráulico) is standard engineering phraseology.",
+            "socraticHint": "¿Qué verbo significa fugar o gotear un fluido presurizado a través de un sello dañado?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       }
     ],
@@ -3425,6 +6580,928 @@
       "badgeName": "CEFR A2: Practical Workplace English (60.0h Course)",
       "totalHours": 60,
       "accreditation": "CACEI / DGUTyP Inglés II"
+    },
+    "certificationExam": {
+      "id": "exam-mcer-a2",
+      "level": "A2",
+      "title": "Examen de Certificación Integral Nivel A2 (Waystage • 60.0h)",
+      "titleEN": "CEFR A2 Comprehensive Milestone Certification Exam",
+      "timeLimitMinutes": 45,
+      "timeMinutes": 45,
+      "passingScore": 15,
+      "passScorePct": 75,
+      "totalQuestions": 20,
+      "totalItems": 20,
+      "badgeId": "stemos-mcer-a2-credential",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés II (CACEI / DGUTyP / SEP).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés II (CACEI / DGUTyP / SEP).",
+      "questions": [
+        {
+          "id": "A2-ex-01",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "At 14:20 yesterday, Robot 3 stopped because the proximity sensor detected foreign metal shavings. Technician Ramos cleaned the sensor optic and resumed cycle testing at 14:50.",
+          "q": "[AUDIO] Listen to Maintenance Dispatcher: \"At 14:20 yesterday, Robot 3 stopped because the proximity sensor detected foreign metal shavings. Technician Ramos cleaned the sensor optic and resumed cycle testing at 14:50.\" — What caused Robot 3 to stop?",
+          "opts": [
+            "The proximity sensor detected foreign metal shavings",
+            "A software virus erased the PLC",
+            "The robot ran out of hydraulic oil",
+            "The main power was cut by lightning"
+          ],
+          "options": [
+            "The proximity sensor detected foreign metal shavings",
+            "A software virus erased the PLC",
+            "The robot ran out of hydraulic oil",
+            "The main power was cut by lightning"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The audio explicitly notes: \"the proximity sensor detected foreign metal shavings.\""
+        },
+        {
+          "id": "A2-ex-02",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Aluminum 6061 is forty percent lighter than stainless steel, making it ideal for our drone motor arms.",
+          "q": "[AUDIO] Listen to Materials Engineer: \"Aluminum 6061 is forty percent lighter than stainless steel, making it ideal for our drone motor arms.\" — Why is Aluminum 6061 preferred for drone arms?",
+          "opts": [
+            "It is 40% lighter than stainless steel",
+            "It is magnetic",
+            "It glows in the dark",
+            "It costs zero dollars"
+          ],
+          "options": [
+            "It is 40% lighter than stainless steel",
+            "It is magnetic",
+            "It glows in the dark",
+            "It costs zero dollars"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The engineer confirms: \"Aluminum 6061 is forty percent lighter than stainless steel...\""
+        },
+        {
+          "id": "A2-ex-03",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "We are going to ship the pilot batch by Thursday afternoon. The customer will review CMM data on Friday.",
+          "q": "[AUDIO] Listen to Project Lead: \"We are going to ship the pilot batch by Thursday afternoon. The customer will review CMM data on Friday.\" — When will CMM data be reviewed?",
+          "opts": [
+            "On Friday",
+            "On Thursday afternoon",
+            "Next year",
+            "Immediately on Monday"
+          ],
+          "options": [
+            "On Friday",
+            "On Thursday afternoon",
+            "Next year",
+            "Immediately on Monday"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The customer will review data on Friday."
+        },
+        {
+          "id": "A2-ex-04",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Cell 4 has produced 520 units today without any scrap. The line is operating at peak efficiency.",
+          "q": "[AUDIO] Listen to Production Lead: \"Cell 4 has produced 520 units today without any scrap. The line is operating at peak efficiency.\" — How many scrap units were generated in Cell 4 today?",
+          "opts": [
+            "Zero scrap units",
+            "520 scrap units",
+            "10 scrap units",
+            "50 scrap units"
+          ],
+          "options": [
+            "Zero scrap units",
+            "520 scrap units",
+            "10 scrap units",
+            "50 scrap units"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"...without any scrap\" indicates zero rejected units."
+        },
+        {
+          "id": "A2-ex-05",
+          "section": "listening",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "The technician _____ the broken drive belt yesterday afternoon.",
+          "opts": [
+            "replaced",
+            "replace",
+            "was replaced",
+            "is replacing"
+          ],
+          "options": [
+            "replaced",
+            "replace",
+            "was replaced",
+            "is replacing"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Regular simple past with \"yesterday afternoon\": \"replaced\"."
+        },
+        {
+          "id": "A2-ex-06",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Titanium alloys are significantly _____ than standard structural aluminum.",
+          "opts": [
+            "more durable",
+            "durabler",
+            "most durable",
+            "durable than"
+          ],
+          "options": [
+            "more durable",
+            "durabler",
+            "most durable",
+            "durable than"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Multi-syllable adjective \"durable\" takes \"more durable\"."
+        },
+        {
+          "id": "A2-ex-07",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "The quality team _____ already calibrated all pressure transmitters this morning.",
+          "opts": [
+            "has",
+            "have",
+            "is",
+            "did"
+          ],
+          "options": [
+            "has",
+            "have",
+            "is",
+            "did"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Present perfect with third-person singular collective noun: \"has already calibrated\"."
+        },
+        {
+          "id": "A2-ex-08",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Look at those dark smoke fumes; the conveyor motor _____ overheat.",
+          "opts": [
+            "is going to",
+            "will to",
+            "shall be",
+            "going to"
+          ],
+          "options": [
+            "is going to",
+            "will to",
+            "shall be",
+            "going to"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Be going to\" expresses future prediction based on immediate physical evidence (smoke)."
+        },
+        {
+          "id": "A2-ex-09",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "While the robotic arm _____ welding, the vision system detected an arc fault.",
+          "opts": [
+            "was",
+            "is",
+            "were",
+            "has been"
+          ],
+          "options": [
+            "was",
+            "is",
+            "were",
+            "has been"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Past continuous: \"was welding\" for an ongoing past background action interrupted by an event."
+        },
+        {
+          "id": "A2-ex-10",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "The CNC spindle runs _____ than the manual milling machine.",
+          "opts": [
+            "more quietly",
+            "quietlier",
+            "most quiet",
+            "quiet as"
+          ],
+          "options": [
+            "more quietly",
+            "quietlier",
+            "most quiet",
+            "quiet as"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Comparative of adverb \"quietly\" is \"more quietly\"."
+        },
+        {
+          "id": "A2-ex-11",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "A shift maintenance report notes: \"Total downtime: 45 minutes due to sheared pin in gearbox 2. MTTR was 22 minutes.\" — What does MTTR mean?",
+          "opts": [
+            "Mean Time to Repair",
+            "Maximum Tool Temperature Rate",
+            "Machine Total Turnover Record",
+            "Motor Testing Transit Rule"
+          ],
+          "options": [
+            "Mean Time to Repair",
+            "Maximum Tool Temperature Rate",
+            "Machine Total Turnover Record",
+            "Motor Testing Transit Rule"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "MTTR stands for Mean Time to Repair (Tiempo Medio de Reparación)."
+        },
+        {
+          "id": "A2-ex-12",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "In an equipment comparison datasheet: \"Model X features IP67 ingress protection, whereas Model Y is rated IP20.\" — Which model is protected against temporary water submersion?",
+          "opts": [
+            "Model X (IP67 is dust-tight and submersible up to 1 meter)",
+            "Model Y",
+            "Neither model",
+            "Both models equally"
+          ],
+          "options": [
+            "Model X (IP67 is dust-tight and submersible up to 1 meter)",
+            "Model Y",
+            "Neither model",
+            "Both models equally"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "IP67 protects against dust ingress and immersion in water up to 1 meter."
+        },
+        {
+          "id": "A2-ex-13",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "A technical drawing tolerance note reads: \"Shaft diameter: 25.00 mm ± 0.05 mm.\" — What is the maximum acceptable diameter?",
+          "opts": [
+            "25.05 mm",
+            "25.50 mm",
+            "24.95 mm",
+            "25.00 mm"
+          ],
+          "options": [
+            "25.05 mm",
+            "25.50 mm",
+            "24.95 mm",
+            "25.00 mm"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "25.00 + 0.05 = 25.05 mm maximum allowable material condition."
+        },
+        {
+          "id": "A2-ex-14",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "An operational directive states: \"All prototype tooling must be certified under PPAP Level 3 before mass production launch.\" — What does PPAP Level 3 require?",
+          "opts": [
+            "Submission of full design records, dimensional results, and material test certificates with sample parts",
+            "Only an oral confirmation by phone",
+            "A single photograph",
+            "Nothing in writing"
+          ],
+          "options": [
+            "Submission of full design records, dimensional results, and material test certificates with sample parts",
+            "Only an oral confirmation by phone",
+            "A single photograph",
+            "Nothing in writing"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "PPAP Level 3 is the standard submission level requiring full dimensional, material, and capability documentation."
+        },
+        {
+          "id": "A2-ex-15",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "A technical calibration label reads: \"CALIBRATION DUE: NOV 2026.\" — What must happen if the date is passed?",
+          "opts": [
+            "The tool must be removed from service and recalibrated before further use",
+            "The tool can be used without restrictions",
+            "The label should be erased",
+            "The tool should be thrown into the trash"
+          ],
+          "options": [
+            "The tool must be removed from service and recalibrated before further use",
+            "The tool can be used without restrictions",
+            "The label should be erased",
+            "The tool should be thrown into the trash"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Expired calibration requires immediate quarantine and recalibration."
+        },
+        {
+          "id": "A2-ex-16",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "Cuidado con el falso amigo: \"We need to check the facility layout.\" — ¿Qué significa \"facility\"?",
+          "opts": [
+            "Instalación física / Nave industrial",
+            "Facilidad de hacer una tarea",
+            "Dificultad de operación",
+            "Herramienta manual"
+          ],
+          "options": [
+            "Instalación física / Nave industrial",
+            "Facilidad de hacer una tarea",
+            "Dificultad de operación",
+            "Herramienta manual"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Facility\" means industrial plant, building, or campus. \"Ease\" means facilidad."
+        },
+        {
+          "id": "A2-ex-17",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "Where does the primary stress fall when pronouncing \"MAINTENANCE\"?",
+          "opts": [
+            "MAIN-te-nance (accent on first syllable)",
+            "main-TE-nance",
+            "main-te-NANCE",
+            "All syllables equal"
+          ],
+          "options": [
+            "MAIN-te-nance (accent on first syllable)",
+            "main-TE-nance",
+            "main-te-NANCE",
+            "All syllables equal"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Primary stress is firmly on the first syllable /ˈmeɪntənəns/."
+        },
+        {
+          "id": "A2-ex-18",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "How do you professionally notify your lead about an unexpected machine stoppage?",
+          "opts": [
+            "\"Lead, Station 4 halted due to an optical jam. We isolated the breaker and are troubleshooting now.\"",
+            "\"Station 4 broke, not my problem.\"",
+            "\"Everything is ruined forever.\"",
+            "\"I am going home early.\""
+          ],
+          "options": [
+            "\"Lead, Station 4 halted due to an optical jam. We isolated the breaker and are troubleshooting now.\"",
+            "\"Station 4 broke, not my problem.\"",
+            "\"Everything is ruined forever.\"",
+            "\"I am going home early.\""
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Professional escalation states line, failure symptom, containment action, and active troubleshooting."
+        },
+        {
+          "id": "A2-ex-19",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "When participating in an American workplace meeting, how do you politely request clarification?",
+          "opts": [
+            "\"Could you please clarify the target cycle time for Cell 2?\"",
+            "\"Speak louder now.\"",
+            "\"What did you say? Speak better.\"",
+            "\"I do not understand you at all.\""
+          ],
+          "options": [
+            "\"Could you please clarify the target cycle time for Cell 2?\"",
+            "\"Speak louder now.\"",
+            "\"What did you say? Speak better.\"",
+            "\"I do not understand you at all.\""
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Polite request formula: \"Could you please clarify [topic]?\""
+        },
+        {
+          "id": "A2-ex-20",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "In industrial handover, what does \"The line ran smoothly\" imply?",
+          "opts": [
+            "The production line operated without unexpected stoppages or quality anomalies",
+            "The conveyor was covered in grease",
+            "The floor was slippery",
+            "The line was running in reverse"
+          ],
+          "options": [
+            "The production line operated without unexpected stoppages or quality anomalies",
+            "The conveyor was covered in grease",
+            "The floor was slippery",
+            "The line was running in reverse"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Ran smoothly\" is an idiomatic phrase meaning trouble-free continuous operation."
+        }
+      ]
+    },
+    "milestoneExam": {
+      "id": "exam-mcer-a2",
+      "level": "A2",
+      "title": "Examen de Certificación Integral Nivel A2 (Waystage • 60.0h)",
+      "titleEN": "CEFR A2 Comprehensive Milestone Certification Exam",
+      "timeLimitMinutes": 45,
+      "timeMinutes": 45,
+      "passingScore": 15,
+      "passScorePct": 75,
+      "totalQuestions": 20,
+      "totalItems": 20,
+      "badgeId": "stemos-mcer-a2-credential",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés II (CACEI / DGUTyP / SEP).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés II (CACEI / DGUTyP / SEP).",
+      "questions": [
+        {
+          "id": "A2-ex-01",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "At 14:20 yesterday, Robot 3 stopped because the proximity sensor detected foreign metal shavings. Technician Ramos cleaned the sensor optic and resumed cycle testing at 14:50.",
+          "q": "[AUDIO] Listen to Maintenance Dispatcher: \"At 14:20 yesterday, Robot 3 stopped because the proximity sensor detected foreign metal shavings. Technician Ramos cleaned the sensor optic and resumed cycle testing at 14:50.\" — What caused Robot 3 to stop?",
+          "opts": [
+            "The proximity sensor detected foreign metal shavings",
+            "A software virus erased the PLC",
+            "The robot ran out of hydraulic oil",
+            "The main power was cut by lightning"
+          ],
+          "options": [
+            "The proximity sensor detected foreign metal shavings",
+            "A software virus erased the PLC",
+            "The robot ran out of hydraulic oil",
+            "The main power was cut by lightning"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The audio explicitly notes: \"the proximity sensor detected foreign metal shavings.\""
+        },
+        {
+          "id": "A2-ex-02",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Aluminum 6061 is forty percent lighter than stainless steel, making it ideal for our drone motor arms.",
+          "q": "[AUDIO] Listen to Materials Engineer: \"Aluminum 6061 is forty percent lighter than stainless steel, making it ideal for our drone motor arms.\" — Why is Aluminum 6061 preferred for drone arms?",
+          "opts": [
+            "It is 40% lighter than stainless steel",
+            "It is magnetic",
+            "It glows in the dark",
+            "It costs zero dollars"
+          ],
+          "options": [
+            "It is 40% lighter than stainless steel",
+            "It is magnetic",
+            "It glows in the dark",
+            "It costs zero dollars"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The engineer confirms: \"Aluminum 6061 is forty percent lighter than stainless steel...\""
+        },
+        {
+          "id": "A2-ex-03",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "We are going to ship the pilot batch by Thursday afternoon. The customer will review CMM data on Friday.",
+          "q": "[AUDIO] Listen to Project Lead: \"We are going to ship the pilot batch by Thursday afternoon. The customer will review CMM data on Friday.\" — When will CMM data be reviewed?",
+          "opts": [
+            "On Friday",
+            "On Thursday afternoon",
+            "Next year",
+            "Immediately on Monday"
+          ],
+          "options": [
+            "On Friday",
+            "On Thursday afternoon",
+            "Next year",
+            "Immediately on Monday"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The customer will review data on Friday."
+        },
+        {
+          "id": "A2-ex-04",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Cell 4 has produced 520 units today without any scrap. The line is operating at peak efficiency.",
+          "q": "[AUDIO] Listen to Production Lead: \"Cell 4 has produced 520 units today without any scrap. The line is operating at peak efficiency.\" — How many scrap units were generated in Cell 4 today?",
+          "opts": [
+            "Zero scrap units",
+            "520 scrap units",
+            "10 scrap units",
+            "50 scrap units"
+          ],
+          "options": [
+            "Zero scrap units",
+            "520 scrap units",
+            "10 scrap units",
+            "50 scrap units"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"...without any scrap\" indicates zero rejected units."
+        },
+        {
+          "id": "A2-ex-05",
+          "section": "listening",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "The technician _____ the broken drive belt yesterday afternoon.",
+          "opts": [
+            "replaced",
+            "replace",
+            "was replaced",
+            "is replacing"
+          ],
+          "options": [
+            "replaced",
+            "replace",
+            "was replaced",
+            "is replacing"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Regular simple past with \"yesterday afternoon\": \"replaced\"."
+        },
+        {
+          "id": "A2-ex-06",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Titanium alloys are significantly _____ than standard structural aluminum.",
+          "opts": [
+            "more durable",
+            "durabler",
+            "most durable",
+            "durable than"
+          ],
+          "options": [
+            "more durable",
+            "durabler",
+            "most durable",
+            "durable than"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Multi-syllable adjective \"durable\" takes \"more durable\"."
+        },
+        {
+          "id": "A2-ex-07",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "The quality team _____ already calibrated all pressure transmitters this morning.",
+          "opts": [
+            "has",
+            "have",
+            "is",
+            "did"
+          ],
+          "options": [
+            "has",
+            "have",
+            "is",
+            "did"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Present perfect with third-person singular collective noun: \"has already calibrated\"."
+        },
+        {
+          "id": "A2-ex-08",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Look at those dark smoke fumes; the conveyor motor _____ overheat.",
+          "opts": [
+            "is going to",
+            "will to",
+            "shall be",
+            "going to"
+          ],
+          "options": [
+            "is going to",
+            "will to",
+            "shall be",
+            "going to"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Be going to\" expresses future prediction based on immediate physical evidence (smoke)."
+        },
+        {
+          "id": "A2-ex-09",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "While the robotic arm _____ welding, the vision system detected an arc fault.",
+          "opts": [
+            "was",
+            "is",
+            "were",
+            "has been"
+          ],
+          "options": [
+            "was",
+            "is",
+            "were",
+            "has been"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Past continuous: \"was welding\" for an ongoing past background action interrupted by an event."
+        },
+        {
+          "id": "A2-ex-10",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "The CNC spindle runs _____ than the manual milling machine.",
+          "opts": [
+            "more quietly",
+            "quietlier",
+            "most quiet",
+            "quiet as"
+          ],
+          "options": [
+            "more quietly",
+            "quietlier",
+            "most quiet",
+            "quiet as"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Comparative of adverb \"quietly\" is \"more quietly\"."
+        },
+        {
+          "id": "A2-ex-11",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "A shift maintenance report notes: \"Total downtime: 45 minutes due to sheared pin in gearbox 2. MTTR was 22 minutes.\" — What does MTTR mean?",
+          "opts": [
+            "Mean Time to Repair",
+            "Maximum Tool Temperature Rate",
+            "Machine Total Turnover Record",
+            "Motor Testing Transit Rule"
+          ],
+          "options": [
+            "Mean Time to Repair",
+            "Maximum Tool Temperature Rate",
+            "Machine Total Turnover Record",
+            "Motor Testing Transit Rule"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "MTTR stands for Mean Time to Repair (Tiempo Medio de Reparación)."
+        },
+        {
+          "id": "A2-ex-12",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "In an equipment comparison datasheet: \"Model X features IP67 ingress protection, whereas Model Y is rated IP20.\" — Which model is protected against temporary water submersion?",
+          "opts": [
+            "Model X (IP67 is dust-tight and submersible up to 1 meter)",
+            "Model Y",
+            "Neither model",
+            "Both models equally"
+          ],
+          "options": [
+            "Model X (IP67 is dust-tight and submersible up to 1 meter)",
+            "Model Y",
+            "Neither model",
+            "Both models equally"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "IP67 protects against dust ingress and immersion in water up to 1 meter."
+        },
+        {
+          "id": "A2-ex-13",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "A technical drawing tolerance note reads: \"Shaft diameter: 25.00 mm ± 0.05 mm.\" — What is the maximum acceptable diameter?",
+          "opts": [
+            "25.05 mm",
+            "25.50 mm",
+            "24.95 mm",
+            "25.00 mm"
+          ],
+          "options": [
+            "25.05 mm",
+            "25.50 mm",
+            "24.95 mm",
+            "25.00 mm"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "25.00 + 0.05 = 25.05 mm maximum allowable material condition."
+        },
+        {
+          "id": "A2-ex-14",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "An operational directive states: \"All prototype tooling must be certified under PPAP Level 3 before mass production launch.\" — What does PPAP Level 3 require?",
+          "opts": [
+            "Submission of full design records, dimensional results, and material test certificates with sample parts",
+            "Only an oral confirmation by phone",
+            "A single photograph",
+            "Nothing in writing"
+          ],
+          "options": [
+            "Submission of full design records, dimensional results, and material test certificates with sample parts",
+            "Only an oral confirmation by phone",
+            "A single photograph",
+            "Nothing in writing"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "PPAP Level 3 is the standard submission level requiring full dimensional, material, and capability documentation."
+        },
+        {
+          "id": "A2-ex-15",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "A technical calibration label reads: \"CALIBRATION DUE: NOV 2026.\" — What must happen if the date is passed?",
+          "opts": [
+            "The tool must be removed from service and recalibrated before further use",
+            "The tool can be used without restrictions",
+            "The label should be erased",
+            "The tool should be thrown into the trash"
+          ],
+          "options": [
+            "The tool must be removed from service and recalibrated before further use",
+            "The tool can be used without restrictions",
+            "The label should be erased",
+            "The tool should be thrown into the trash"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Expired calibration requires immediate quarantine and recalibration."
+        },
+        {
+          "id": "A2-ex-16",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "Cuidado con el falso amigo: \"We need to check the facility layout.\" — ¿Qué significa \"facility\"?",
+          "opts": [
+            "Instalación física / Nave industrial",
+            "Facilidad de hacer una tarea",
+            "Dificultad de operación",
+            "Herramienta manual"
+          ],
+          "options": [
+            "Instalación física / Nave industrial",
+            "Facilidad de hacer una tarea",
+            "Dificultad de operación",
+            "Herramienta manual"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Facility\" means industrial plant, building, or campus. \"Ease\" means facilidad."
+        },
+        {
+          "id": "A2-ex-17",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "Where does the primary stress fall when pronouncing \"MAINTENANCE\"?",
+          "opts": [
+            "MAIN-te-nance (accent on first syllable)",
+            "main-TE-nance",
+            "main-te-NANCE",
+            "All syllables equal"
+          ],
+          "options": [
+            "MAIN-te-nance (accent on first syllable)",
+            "main-TE-nance",
+            "main-te-NANCE",
+            "All syllables equal"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Primary stress is firmly on the first syllable /ˈmeɪntənəns/."
+        },
+        {
+          "id": "A2-ex-18",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "How do you professionally notify your lead about an unexpected machine stoppage?",
+          "opts": [
+            "\"Lead, Station 4 halted due to an optical jam. We isolated the breaker and are troubleshooting now.\"",
+            "\"Station 4 broke, not my problem.\"",
+            "\"Everything is ruined forever.\"",
+            "\"I am going home early.\""
+          ],
+          "options": [
+            "\"Lead, Station 4 halted due to an optical jam. We isolated the breaker and are troubleshooting now.\"",
+            "\"Station 4 broke, not my problem.\"",
+            "\"Everything is ruined forever.\"",
+            "\"I am going home early.\""
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Professional escalation states line, failure symptom, containment action, and active troubleshooting."
+        },
+        {
+          "id": "A2-ex-19",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "When participating in an American workplace meeting, how do you politely request clarification?",
+          "opts": [
+            "\"Could you please clarify the target cycle time for Cell 2?\"",
+            "\"Speak louder now.\"",
+            "\"What did you say? Speak better.\"",
+            "\"I do not understand you at all.\""
+          ],
+          "options": [
+            "\"Could you please clarify the target cycle time for Cell 2?\"",
+            "\"Speak louder now.\"",
+            "\"What did you say? Speak better.\"",
+            "\"I do not understand you at all.\""
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Polite request formula: \"Could you please clarify [topic]?\""
+        },
+        {
+          "id": "A2-ex-20",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "In industrial handover, what does \"The line ran smoothly\" imply?",
+          "opts": [
+            "The production line operated without unexpected stoppages or quality anomalies",
+            "The conveyor was covered in grease",
+            "The floor was slippery",
+            "The line was running in reverse"
+          ],
+          "options": [
+            "The production line operated without unexpected stoppages or quality anomalies",
+            "The conveyor was covered in grease",
+            "The floor was slippery",
+            "The line was running in reverse"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Ran smoothly\" is an idiomatic phrase meaning trouble-free continuous operation."
+        }
+      ]
     }
   },
   {
@@ -3575,6 +7652,24 @@
               "correct": 0,
               "answer": 0,
               "exp": "Under QMS protocols, obsolete revisions are quarantined/destroyed and personnel must be retrained with sign-off records."
+            },
+            {
+              "q": "Why does IPC-A-610 Class 3 electronics manufacturing require nitrogen inerting inside the reflow tunnel?",
+              "opts": [
+                "To prevent solder oxidation, minimize intermetallic voiding, and ensure superior solder wetting on critical aerospace avionics",
+                "To make the factory smell like fresh pine",
+                "Because nitrogen cools the boards to freezing temperatures",
+                "To reduce the electricity bill of the cafeteria"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "Inert nitrogen blankets reduce oxygen levels below 50 PPM, preventing surface oxidation on micro-scale ball grid array (BGA) interconnects.",
+              "options": [
+                "To prevent solder oxidation, minimize intermetallic voiding, and ensure superior solder wetting on critical aerospace avionics",
+                "To make the factory smell like fresh pine",
+                "Because nitrogen cools the boards to freezing temperatures",
+                "To reduce the electricity bill of the cafeteria"
+              ]
             }
           ],
           "answer": 1
@@ -3851,6 +7946,267 @@
             "socraticHint": "En mecánica y ensamble automotriz, ¿qué magnitud física representa el torque aplicado a un perno?",
             "category": "Léxico Técnico"
           }
+        ],
+        "listeningLab": {
+          "title": "Automated Surface Mount Technology (SMT) Workflow Briefing",
+          "speaker": "Process Engineer Elena Torres",
+          "audioScenario": "Welcome to Line 1 SMT workflow overview. First, solder paste is automatically applied to bare printed circuit boards via a high-precision stencil printer. Next, passive components are placed by dual-head pick-and-place robots at fifty thousand components per hour. Finally, assemblies are conveyed through a ten-zone convection reflow oven where solder joints are formed under a nitrogen atmosphere.",
+          "audioScript": "Welcome to Line 1 SMT workflow overview. First, solder paste is automatically applied to bare printed circuit boards via a high-precision stencil printer. Next, passive components are placed by dual-head pick-and-place robots at fifty thousand components per hour. Finally, assemblies are conveyed through a ten-zone convection reflow oven where solder joints are formed under a nitrogen atmosphere.",
+          "questions": [
+            {
+              "q": "How is solder paste applied to bare circuit boards in the first step?",
+              "opts": [
+                "Automatically via a high-precision stencil printer",
+                "Manually using a hand paintbrush",
+                "By dipping the board into a liquid bucket",
+                "It is not applied at all"
+              ],
+              "options": [
+                "Automatically via a high-precision stencil printer",
+                "Manually using a hand paintbrush",
+                "By dipping the board into a liquid bucket",
+                "It is not applied at all"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Torres states: \"First, solder paste is automatically applied to bare printed circuit boards via a high-precision stencil printer.\"",
+              "socraticHint": "¿Qué equipo automatizado de serigrafía o esténcil aplica la soldadura en pasta al inicio del proceso?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What placement speed is achieved by the dual-head pick-and-place robotics?",
+              "opts": [
+                "50,000 components per hour",
+                "1,000 components per hour",
+                "100 components per day",
+                "500,000 components per minute"
+              ],
+              "options": [
+                "50,000 components per hour",
+                "1,000 components per hour",
+                "100 components per day",
+                "500,000 components per minute"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "The audio specifies: \"...placed by dual-head pick-and-place robots at fifty thousand (50,000) components per hour.\"",
+              "socraticHint": "¿Qué velocidad numérica de colocación de componentes SMD se menciona?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "Under what chemical atmosphere are solder joints formed in the reflow oven?",
+              "opts": [
+                "Under a nitrogen atmosphere",
+                "Under pure oxygen",
+                "Under underwater submersion",
+                "In open exhaust air"
+              ],
+              "options": [
+                "Under a nitrogen atmosphere",
+                "Under pure oxygen",
+                "Under underwater submersion",
+                "In open exhaust air"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Torres emphasizes: \"...solder joints are formed under a nitrogen atmosphere.\"",
+              "socraticHint": "¿Qué gas inerte se inyecta en el horno de reflujo para evitar la oxidación?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "After thermal reflow, all solder joints _____ by an automated optical inspection (AOI) camera.",
+            "opts": [
+              "are inspected",
+              "are inspect",
+              "inspected",
+              "have inspecting"
+            ],
+            "options": [
+              "are inspected",
+              "are inspect",
+              "inspected",
+              "have inspecting"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Passive voice in present simple: \"are\" + past participle \"inspected\" (the focus is on the action performed on the solder joints).",
+            "socraticHint": "La voz pasiva técnica requiere el verbo \"to be\" + participio pasado. El sujeto son las uniones (plural).",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Production was halted temporarily _____ a sensor calibration drift on Station 3.",
+            "opts": [
+              "due to",
+              "because",
+              "therefore",
+              "consequently"
+            ],
+            "options": [
+              "due to",
+              "because",
+              "therefore",
+              "consequently"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Due to\" is followed by a noun phrase (\"a sensor calibration drift\"); \"because\" requires a full clause with subject and verb.",
+            "socraticHint": "Observa lo que sigue al conector: es una frase nominal (\"a sensor calibration drift\"), no una oración con verbo conjugado.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The firmware _____ successfully _____ into the microcontroller flash memory.",
+            "opts": [
+              "has been / flashed",
+              "have been / flashed",
+              "is been / flashing",
+              "was been / flash"
+            ],
+            "options": [
+              "has been / flashed",
+              "have been / flashed",
+              "is been / flashing",
+              "was been / flash"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Present perfect passive: \"has been flashed\" for third-person singular noun \"firmware\".",
+            "socraticHint": "Voz pasiva en presente perfecto para sujeto singular (\"firmware\"): \"has been [participio]\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The raw aluminum billets are pre-heated; _____, dimensional extrusion can proceed without cracking.",
+            "opts": [
+              "therefore",
+              "although",
+              "despite",
+              "because of"
+            ],
+            "options": [
+              "therefore",
+              "although",
+              "despite",
+              "because of"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Therefore\" indicates logical cause-and-effect transition between two independent clauses separated by a semicolon.",
+            "socraticHint": "¿Qué conector de causa-efecto une dos oraciones independientes separadas por punto y coma (\"therefore\")?",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Every sub-assembly must _____ prior to final packaging and serialization.",
+            "opts": [
+              "be validated",
+              "validate",
+              "validated",
+              "is validated"
+            ],
+            "options": [
+              "be validated",
+              "validate",
+              "validated",
+              "is validated"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Passive voice with modal verb: \"must be + past participle\" -> \"must be validated\".",
+            "socraticHint": "Estructura pasiva con verbo modal: \"must be\" + participio pasado.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "A formal documented instruction that outlines exact sequential steps for completing an industrial operation is an _____.",
+            "opts": [
+              "SOP (Standard Operating Procedure)",
+              "NDF",
+              "ROI",
+              "IPO"
+            ],
+            "options": [
+              "SOP (Standard Operating Procedure)",
+              "NDF",
+              "ROI",
+              "IPO"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "An SOP (Procedimiento Operativo Estandarizado) ensures repeatability and ISO compliance.",
+            "socraticHint": "¿Qué acrónimo de tres letras designa el procedimiento operativo estandarizado de trabajo?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "A specialized perforated foil or sheet used to deposit precise amounts of solder paste onto PCB pads is a _____.",
+            "opts": [
+              "stencil",
+              "protractor",
+              "spatula",
+              "funnel"
+            ],
+            "options": [
+              "stencil",
+              "protractor",
+              "spatula",
+              "funnel"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "An SMT \"stencil\" (esténcil de pasta) controls paste deposit volume and aperture registration.",
+            "socraticHint": "¿Cómo se llama la lámina metálica cortada por láser que dosifica la soldadura en pasta en SMT?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The thermal process where solder alloy melts, wets copper traces, and solidifies into mechanical bonds is _____.",
+            "opts": [
+              "reflow",
+              "evaporation",
+              "condensation",
+              "sublimation"
+            ],
+            "options": [
+              "reflow",
+              "evaporation",
+              "condensation",
+              "sublimation"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Reflow\" soldering melts solder paste progressively across controlled temperature heating zones.",
+            "socraticHint": "¿Cómo se le llama al proceso térmico de refundición de soldadura en ensamble electrónico?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct technical collocation: \"The mechanical press must undergo rigorous _____ before commissioning.\"",
+            "opts": [
+              "testing and validation",
+              "sleeping and dreaming",
+              "shredding and tearing",
+              "tasting and chewing"
+            ],
+            "options": [
+              "testing and validation",
+              "sleeping and dreaming",
+              "shredding and tearing",
+              "tasting and chewing"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Standard industrial engineering pairs \"testing and validation\" as a formal verification milestone.",
+            "socraticHint": "¿Qué frase técnica describe la etapa formal de pruebas y validación previa a la liberación de línea?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       },
       {
@@ -3985,6 +8341,24 @@
               "correct": 0,
               "answer": 0,
               "exp": "The engineering action plan corrected stencil aperture dimensions and optimized thermal ramp-up rates."
+            },
+            {
+              "q": "Why must an interim containment action (D3 in 8D methodology) achieve 100% defect isolation before the root cause investigation (D4) is completed?",
+              "opts": [
+                "To protect customer production lines from assembly disruptions while the engineering team investigates the underlying mechanism",
+                "Because companies are not allowed to think and act at the same time",
+                "To make competitors happy",
+                "Because containment replaces the need for any corrective action"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "Containment acts as a temporary firewall protecting the end customer while rigorous 5-Why and Ishikawa investigations proceed in parallel.",
+              "options": [
+                "To protect customer production lines from assembly disruptions while the engineering team investigates the underlying mechanism",
+                "Because companies are not allowed to think and act at the same time",
+                "To make competitors happy",
+                "Because containment replaces the need for any corrective action"
+              ]
             }
           ],
           "answer": 1
@@ -4261,6 +8635,267 @@
             "socraticHint": "La obstrucción con polvo metálico ocurrió con anterioridad al sobrecalentamiento. ¿Qué tiempo verbal conecta ambas acciones pasadas?",
             "category": "Gramática y Sintaxis"
           }
+        ],
+        "listeningLab": {
+          "title": "Customer Quality Engineering Voicemail",
+          "speaker": "David Miller (North American Supplier Quality Lead)",
+          "audioScenario": "Hello quality team. Following up on my email regarding the plastic injection batch 402. We noticed minor sink marks near the structural rib bosses. Could you please provide an official 8D containment report by tomorrow midday? We also request that you place remaining warehouse inventory on quarantine hold until corrective tooling inserts arrive.",
+          "audioScript": "Hello quality team. Following up on my email regarding the plastic injection batch 402. We noticed minor sink marks near the structural rib bosses. Could you please provide an official 8D containment report by tomorrow midday? We also request that you place remaining warehouse inventory on quarantine hold until corrective tooling inserts arrive.",
+          "questions": [
+            {
+              "q": "What visual defect was identified on plastic injection batch 402?",
+              "opts": [
+                "Minor sink marks near the structural rib bosses",
+                "Large electrical scorch burns",
+                "Missing serial numbers",
+                "Excessive paint overspray"
+              ],
+              "options": [
+                "Minor sink marks near the structural rib bosses",
+                "Large electrical scorch burns",
+                "Missing serial numbers",
+                "Excessive paint overspray"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Miller states: \"We noticed minor sink marks near the structural rib bosses.\"",
+              "socraticHint": "¿Qué defecto estético de hundimiento (\"sink marks\") se detectó en las piezas inyectadas?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What official report does David Miller request by tomorrow midday?",
+              "opts": [
+                "An official 8D containment report",
+                "An invoice payment receipt",
+                "A company vacation schedule",
+                "A patent defense filing"
+              ],
+              "options": [
+                "An official 8D containment report",
+                "An invoice payment receipt",
+                "A company vacation schedule",
+                "A patent defense filing"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Miller requests: \"Could you please provide an official 8D containment report by tomorrow midday?\"",
+              "socraticHint": "¿Qué metodología automotriz de 8 disciplinas solicita enviar como reporte de contención?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What action must be taken immediately with remaining warehouse inventory?",
+              "opts": [
+                "Place it on quarantine hold",
+                "Ship it immediately to customers",
+                "Discard it into the city landfill",
+                "Sell it at a discounted price"
+              ],
+              "options": [
+                "Place it on quarantine hold",
+                "Ship it immediately to customers",
+                "Discard it into the city landfill",
+                "Sell it at a discounted price"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "The voicemail orders: \"...place remaining warehouse inventory on quarantine hold...\"",
+              "socraticHint": "¿En qué estatus de aislamiento preventivo de calidad (cuarentena) se deben retener las piezas en almacén?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "Could you please _____ the revised CAD models before our design review teleconference?",
+            "opts": [
+              "forward",
+              "forwarded",
+              "forwarding",
+              "to forward"
+            ],
+            "options": [
+              "forward",
+              "forwarded",
+              "forwarding",
+              "to forward"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Polite request with modal \"Could you please\" requires the base form of the verb: \"forward\".",
+            "socraticHint": "Fórmula de cortesía formal: \"Could you please\" se acompaña del verbo en su forma base.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "We _____ inform you that shipment delivery has been delayed by customs clearance.",
+            "opts": [
+              "regret to",
+              "are regret of",
+              "regret of",
+              "regretting to"
+            ],
+            "options": [
+              "regret to",
+              "are regret of",
+              "regret of",
+              "regretting to"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Standard formal corporate correspondence formula: \"We regret to inform you that...\".",
+            "socraticHint": "Fórmula estándar de cortesía corporativa en correos formales: \"We regret to inform you that...\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Suppliers _____ ensure that all pallets comply with ISPM 15 heat treatment standards.",
+            "opts": [
+              "should",
+              "ought",
+              "may to",
+              "can to"
+            ],
+            "options": [
+              "should",
+              "ought",
+              "may to",
+              "can to"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Should\" expresses professional obligation and requirement without requiring \"to\".",
+            "socraticHint": "Verbo modal de recomendación y requisito normativo que se usa directamente sin \"to\": \"should\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Please find _____ the updated engineering change matrix for your executive review.",
+            "opts": [
+              "attached",
+              "attaching",
+              "attachment",
+              "to attach"
+            ],
+            "options": [
+              "attached",
+              "attaching",
+              "attachment",
+              "to attach"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Standard business correspondence formula: \"Please find attached [document]\".",
+            "socraticHint": "Fórmula clásica para indicar que se adjunta un documento en un correo electrónico profesional: \"Please find attached...\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "I would appreciate it if you _____ confirm receipt of the quarantined RMA tracking number.",
+            "opts": [
+              "could",
+              "can to",
+              "shall may",
+              "are able to will"
+            ],
+            "options": [
+              "could",
+              "can to",
+              "shall may",
+              "are able to will"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Polite conditional structure in formal emails: \"I would appreciate it if you could [verb]...\".",
+            "socraticHint": "Estructura de cortesía condicional formal: \"I would appreciate it if you could...\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "A standardized quality problem-solving methodology comprising eight structured disciplines is the _____.",
+            "opts": [
+              "8D Report (Eight Disciplines)",
+              "Six Sigma Black Belt",
+              "FMEA Worksheet",
+              "Gantt Chart"
+            ],
+            "options": [
+              "8D Report (Eight Disciplines)",
+              "Six Sigma Black Belt",
+              "FMEA Worksheet",
+              "Gantt Chart"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The 8D methodology resolves chronic quality issues systematically from D1 team formation to D8 celebration.",
+            "socraticHint": "¿Qué metodología automotriz de 8 disciplinas estructuradas se utiliza para resolver fallas de calidad?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Immediate operational actions taken to isolate defective parts and prevent them from reaching customers are _____ actions.",
+            "opts": [
+              "containment",
+              "entertainment",
+              "abandonment",
+              "punishment"
+            ],
+            "options": [
+              "containment",
+              "entertainment",
+              "abandonment",
+              "punishment"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Containment actions\" (acciones de contención D3) quarantine suspect lots immediately.",
+            "socraticHint": "¿Cómo se le llama a las acciones de contención inmediata para frenar el flujo de piezas no conformes?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The formal number authorized by a supplier to return defective products for warranty evaluation is an _____.",
+            "opts": [
+              "RMA (Return Material Authorization)",
+              "SSN",
+              "ATM",
+              "VIN"
+            ],
+            "options": [
+              "RMA (Return Material Authorization)",
+              "SSN",
+              "ATM",
+              "VIN"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "An RMA (Autorización de Devolución de Material) tracks customer returns.",
+            "socraticHint": "¿Qué código comercial autoriza el retorno de mercancía defectuosa hacia el proveedor?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct email closing for a formal engineering letter: \"Sincerely _____, David Miller.\"",
+            "opts": [
+              "yours",
+              "you",
+              "your",
+              "yourself"
+            ],
+            "options": [
+              "yours",
+              "you",
+              "your",
+              "yourself"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Sincerely yours\" or \"Sincerely\" is the standard American formal closing formula.",
+            "socraticHint": "¿Cuál es la fórmula formal de despedida en correspondencia profesional estadounidense (\"Sincerely yours\")?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       },
       {
@@ -4399,6 +9034,24 @@
               "correct": 1,
               "answer": 1,
               "exp": "CMMs (Coordinate Measuring Machines) inside thermal stabilization labs provide high-precision 3D dimensional metrology."
+            },
+            {
+              "q": "During an asynchronous standup across three international time zones (California, Mexico, and Germany), why is writing concise blocker descriptions with ticket IDs superior to vague voice messages?",
+              "opts": [
+                "It provides permanent searchable traceability in project Jira/Azure DevOps backlogs and allows immediate engineering triage without timezone lag",
+                "It uses fewer battery cycles on phones",
+                "It is required by federal postal law",
+                "To prevent coworkers from speaking English"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "Structured asynchronous blocker reporting with ticket IDs allows overseas shift leads to reproduce bugs and push commits while the other team sleeps.",
+              "options": [
+                "It provides permanent searchable traceability in project Jira/Azure DevOps backlogs and allows immediate engineering triage without timezone lag",
+                "It uses fewer battery cycles on phones",
+                "It is required by federal postal law",
+                "To prevent coworkers from speaking English"
+              ]
             }
           ],
           "answer": 1
@@ -4675,6 +9328,267 @@
             "socraticHint": "¿Cuál es el significado formal de la sigla \"USL\" en las cartas de control estadístico de calidad?",
             "category": "Léxico Técnico"
           }
+        ],
+        "listeningLab": {
+          "title": "Daily Cross-Border Scrum Standup",
+          "speaker": "Scrum Master Jason Campbell (San Diego / Mexicali Bridge)",
+          "audioScenario": "Morning everyone. Let us start our 15-minute cross-border standup. Yesterday, the embedded software sprint completed the CAN bus communication stack. Today, we are validating telemetry packets over the wireless gateway. Our sole blocker is that we are waiting for updated pinout schematics from the hardware hardware team in Austin. Could someone clarify who owns that deliverable?",
+          "audioScript": "Morning everyone. Let us start our 15-minute cross-border standup. Yesterday, the embedded software sprint completed the CAN bus communication stack. Today, we are validating telemetry packets over the wireless gateway. Our sole blocker is that we are waiting for updated pinout schematics from the hardware hardware team in Austin. Could someone clarify who owns that deliverable?",
+          "questions": [
+            {
+              "q": "What milestone did the embedded software sprint complete yesterday?",
+              "opts": [
+                "The CAN bus communication stack",
+                "The marketing website design",
+                "The human resources handbook",
+                "The cafeteria payment app"
+              ],
+              "options": [
+                "The CAN bus communication stack",
+                "The marketing website design",
+                "The human resources handbook",
+                "The cafeteria payment app"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Campbell reports: \"Yesterday, the embedded software sprint completed the CAN bus communication stack.\"",
+              "socraticHint": "¿Qué desarrollo de software embebido para red de comunicación automotriz CAN bus se concluyó ayer?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What is the sole active blocker reported during the standup?",
+              "opts": [
+                "Waiting for updated pinout schematics from the hardware team in Austin",
+                "A broken coffee machine in San Diego",
+                "Lack of internet connectivity across Mexico",
+                "The team forgot how to code"
+              ],
+              "options": [
+                "Waiting for updated pinout schematics from the hardware team in Austin",
+                "A broken coffee machine in San Diego",
+                "Lack of internet connectivity across Mexico",
+                "The team forgot how to code"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "\"Our sole blocker is that we are waiting for updated pinout schematics from the hardware team in Austin.\"",
+              "socraticHint": "¿Cuál es el impedimento o \"blocker\" que detiene el avance de la tarea?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What is the planned maximum duration for this daily standup?",
+              "opts": [
+                "15 minutes",
+                "Two hours",
+                "All afternoon",
+                "Three minutes"
+              ],
+              "options": [
+                "15 minutes",
+                "Two hours",
+                "All afternoon",
+                "Three minutes"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Campbell introduces: \"Let us start our 15-minute cross-border standup.\"",
+              "socraticHint": "¿Cuál es la duración reglamentaria del standup ágil mencionado?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "Could you tell me _____ the firmware update was deployed to the test bench?",
+            "opts": [
+              "when",
+              "when was",
+              "when did",
+              "when was it"
+            ],
+            "options": [
+              "when",
+              "when was",
+              "when did",
+              "when was it"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "In embedded / indirect questions, sentence order returns to subject + verb: \"Could you tell me when [subject] [verb]...\".",
+            "socraticHint": "En preguntas indirectas (\"Could you tell me...\"), el orden gramatical no se invierte; sigue la estructura afirmativa.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "I am not sure _____ the optical sensor is compatible with 24-volt industrial logic.",
+            "opts": [
+              "whether",
+              "what",
+              "which",
+              "who"
+            ],
+            "options": [
+              "whether",
+              "what",
+              "which",
+              "who"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Whether\" (or \"if\") is used to introduce indirect yes/no inquiry conditions.",
+            "socraticHint": "Para introducir una duda o interrogante de sí/no en una oración indirecta, se utiliza \"whether\" o \"if\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The telemetry gateway is transmitting UDP packets correctly, _____ it?",
+            "opts": [
+              "isn't",
+              "doesn't",
+              "is",
+              "wasn't"
+            ],
+            "options": [
+              "isn't",
+              "doesn't",
+              "is",
+              "wasn't"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Tag questions match the auxiliary verb and reverse polarity: positive statement (\"is\") takes negative tag (\"isn't it?\").",
+            "socraticHint": "La oración principal es afirmativa con el verbo \"is\". La pregunta de confirmación (tag question) debe ser negativa: \"isn't it?\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Do you know who _____ the lead harness architect on the avionics project?",
+            "opts": [
+              "is",
+              "is he",
+              "does be",
+              "be"
+            ],
+            "options": [
+              "is",
+              "is he",
+              "does be",
+              "be"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Indirect question structure: \"Do you know who [subject] is?\".",
+            "socraticHint": "En la pregunta indirecta después de \"who\", el verbo \"is\" se coloca al final sin inversión adicional.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Sorry to interrupt, but could you _____ that last CAN bus baud rate figure?",
+            "opts": [
+              "repeat",
+              "repeated",
+              "repeating",
+              "to repeat"
+            ],
+            "options": [
+              "repeat",
+              "repeated",
+              "repeating",
+              "to repeat"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Polite active listening clarification formula: \"could you repeat [detail]?\".",
+            "socraticHint": "Fórmula de interrupción cortés para clarificar datos técnicos: \"could you repeat...\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "A short daily meeting where Agile team members state yesterday's achievements, today's plan, and roadblocks is a _____.",
+            "opts": [
+              "standup (scrum meeting)",
+              "board banquet",
+              "press conference",
+              "shareholders vote"
+            ],
+            "options": [
+              "standup (scrum meeting)",
+              "board banquet",
+              "press conference",
+              "shareholders vote"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A daily \"standup\" keeps distributed engineering teams synchronized with brief status updates.",
+            "socraticHint": "¿Cómo se le llama a la reunión diaria ágil de 15 minutos de sincronización técnica de equipo?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Any impediment or dependency that prevents an engineer from completing their sprint backlog task is a _____.",
+            "opts": [
+              "blocker",
+              "accelerator",
+              "propeller",
+              "booster"
+            ],
+            "options": [
+              "blocker",
+              "accelerator",
+              "propeller",
+              "booster"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A \"blocker\" (or impediment) halts progress until resolved by the team or Scrum Master.",
+            "socraticHint": "¿Qué palabra se utiliza en metodología ágil para referirse a un impedimento u obstáculo que frena el avance?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "A technical document showing the specific function and electrical signal assigned to each pin of a connector is a _____.",
+            "opts": [
+              "pinout schematic",
+              "color palette",
+              "price tag",
+              "warranty card"
+            ],
+            "options": [
+              "pinout schematic",
+              "color palette",
+              "price tag",
+              "warranty card"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A \"pinout\" diagram maps electrical signals to connector terminals.",
+            "socraticHint": "¿Cómo se llama el diagrama que especifica las señales y voltajes de cada terminal o pin de un conector?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct conversational phrase for active listening: \"Just to make sure we are on the same _____, you will ship the prototypes tomorrow.\"",
+            "opts": [
+              "page",
+              "train",
+              "cloud",
+              "shoe"
+            ],
+            "options": [
+              "page",
+              "train",
+              "cloud",
+              "shoe"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The American business idiom is \"to be on the same page\" (estar en la misma sintonía o alineados).",
+            "socraticHint": "¿Qué modismo corporativo estadounidense se completa con \"on the same page\" para indicar entendimiento mutuo?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       },
       {
@@ -4813,6 +9727,24 @@
               "correct": 0,
               "answer": 0,
               "exp": "The action matrix records the automation deliverable: PLC code deployment and safety sign-off."
+            },
+            {
+              "q": "In an engineering conflict between the Design team (requesting tight tolerances) and Manufacturing (requesting looser tolerances), what empirical tool provides definitive objective resolution?",
+              "opts": [
+                "Process Capability Analysis calculating Cpk and Ppk values from statistical sample runs",
+                "Flipping a coin in the hallway",
+                "Asking the oldest person in the building",
+                "Ignoring the drawing completely"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "Statistical Process Capability indices (Cpk >= 1.33 or 1.67) mathematically demonstrate whether factory machinery can reliably meet proposed tolerances without generating excessive scrap.",
+              "options": [
+                "Process Capability Analysis calculating Cpk and Ppk values from statistical sample runs",
+                "Flipping a coin in the hallway",
+                "Asking the oldest person in the building",
+                "Ignoring the drawing completely"
+              ]
             }
           ],
           "answer": 0
@@ -5089,6 +10021,267 @@
             "socraticHint": "¿Cuál es el propósito medular de la minuta de compromisos (Action Items) tras una junta de ingeniería?",
             "category": "Léxico Técnico"
           }
+        ],
+        "listeningLab": {
+          "title": "Engineering Review: Disagreement on Tolerance Tightening",
+          "speaker": "Senior Lead Mechanical Engineer Marcus Vance",
+          "audioScenario": "I appreciate your proposal to tighten shaft tolerances to five microns, but if we adopt that specification, machining cycle times will increase by forty percent. Furthermore, tool wear will escalate significantly. It seems to me that we could achieve identical structural concentricity by improving our fixture clamping rigidity instead.",
+          "audioScript": "I appreciate your proposal to tighten shaft tolerances to five microns, but if we adopt that specification, machining cycle times will increase by forty percent. Furthermore, tool wear will escalate significantly. It seems to me that we could achieve identical structural concentricity by improving our fixture clamping rigidity instead.",
+          "questions": [
+            {
+              "q": "What negative production impact would occur if shaft tolerances were tightened to 5 microns?",
+              "opts": [
+                "Machining cycle times would increase by 40% and tool wear would escalate",
+                "The factory roof would collapse",
+                "Operators would earn twice as much money",
+                "Electricity would turn off immediately"
+              ],
+              "options": [
+                "Machining cycle times would increase by 40% and tool wear would escalate",
+                "The factory roof would collapse",
+                "Operators would earn twice as much money",
+                "Electricity would turn off immediately"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Vance explains: \"...if we adopt that specification, machining cycle times will increase by forty percent. Furthermore, tool wear will escalate significantly.\"",
+              "socraticHint": "¿Qué dos costos operativos y de tiempo se dispararían si se aprieta la tolerancia a 5 micras?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What alternative solution does Marcus Vance propose to achieve identical concentricity?",
+              "opts": [
+                "Improving fixture clamping rigidity instead",
+                "Using plastic shafts instead of steel",
+                "Eliminating all quality inspections",
+                "Shutting down the plant for two months"
+              ],
+              "options": [
+                "Improving fixture clamping rigidity instead",
+                "Using plastic shafts instead of steel",
+                "Eliminating all quality inspections",
+                "Shutting down the plant for two months"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Vance suggests: \"...we could achieve identical structural concentricity by improving our fixture clamping rigidity instead.\"",
+              "socraticHint": "¿Qué alternativa técnica de sujeción (fixturing) plantea Marcus para lograr la misma concentricidad?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "How does Marcus introduce his constructive disagreement professionally?",
+              "opts": [
+                "With diplomatic hedging: \"I appreciate your proposal... but it seems to me that we could...\"",
+                "By shouting angrily at the intern",
+                "By walking out of the conference room",
+                "By sending an anonymous complaint"
+              ],
+              "options": [
+                "With diplomatic hedging: \"I appreciate your proposal... but it seems to me that we could...\"",
+                "By shouting angrily at the intern",
+                "By walking out of the conference room",
+                "By sending an anonymous complaint"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Vance uses diplomatic professional American phrasing: \"I appreciate your proposal..., but... It seems to me that we could...\".",
+              "socraticHint": "¿Qué fórmula de cortesía y diplomacia técnica (\"hedging\") utiliza para disentir sin ser agresivo?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "If the hydraulic pump pressure _____ 200 bar, the automated relief valve trips immediately.",
+            "opts": [
+              "exceeds",
+              "will exceed",
+              "exceeded",
+              "is exceeding"
+            ],
+            "options": [
+              "exceeds",
+              "will exceed",
+              "exceeded",
+              "is exceeding"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "First conditional / zero conditional scientific statement: \"If + present simple, present simple / future will\".",
+            "socraticHint": "En una regla física o condición técnica causa-efecto (\"If [sujeto singular]...\"), se usa el presente simple con -s.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "If we _____ the clamping fixture, we would reduce machining deflection significantly.",
+            "opts": [
+              "redesigned",
+              "redesign",
+              "will redesign",
+              "are redesigning"
+            ],
+            "options": [
+              "redesigned",
+              "redesign",
+              "will redesign",
+              "are redesigning"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Second conditional (hypothetical technical counterfactual): \"If + simple past (redesigned), would + base verb\".",
+            "socraticHint": "Oración condicional de segundo grado (hipótesis técnica futura con \"would reduce\"). La cláusula \"if\" debe ir en pasado simple.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The sensor telemetry data _____ to indicate a progressive thermal breakdown in Bearing 4.",
+            "opts": [
+              "appears",
+              "is appearing to",
+              "appear",
+              "appearing"
+            ],
+            "options": [
+              "appears",
+              "is appearing to",
+              "appear",
+              "appearing"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Hedging verb \"appears to indicate\": third-person singular pronoun/noun agreement.",
+            "socraticHint": "Verbo de atenuación o diplomacia técnica (\"hedging\"): \"appears to indicate\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "I see your point regarding cost; _____, we cannot compromise on ISO safety compliance.",
+            "opts": [
+              "however",
+              "furthermore",
+              "besides",
+              "in addition"
+            ],
+            "options": [
+              "however",
+              "furthermore",
+              "besides",
+              "in addition"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"However\" introduces a contrast or constructive disagreement following an acknowledgement of the other party's point.",
+            "socraticHint": "Conector de contraste y objeción profesional tras reconocer el punto de la contraparte: \"however\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Unless the supplier _____ an updated material test report, we will not release the quarantine hold.",
+            "opts": [
+              "provides",
+              "will provide",
+              "provided",
+              "is providing"
+            ],
+            "options": [
+              "provides",
+              "will provide",
+              "provided",
+              "is providing"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Unless\" means \"if not\" and is followed by the simple present: \"Unless the supplier provides...\".",
+            "socraticHint": "La conjunción condicional \"Unless\" equivale a \"si no\" y se construye con presente simple en su cláusula.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "Using cautious, diplomatic phrasing (such as \"it appears that\" or \"findings suggest\") to avoid making premature absolute claims is called _____.",
+            "opts": [
+              "hedging",
+              "boasting",
+              "yelling",
+              "bargaining"
+            ],
+            "options": [
+              "hedging",
+              "boasting",
+              "yelling",
+              "bargaining"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Hedging\" is the linguistic strategy of using cautious language to express technical uncertainty or diplomatic disagreement.",
+            "socraticHint": "¿Cómo se le llama en pragmática lingüística al uso de lenguaje cauteloso y diplomático para no ser tajante?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The geometric condition where two or more cylindrical features share the exact same rotational center axis is _____.",
+            "opts": [
+              "concentricity",
+              "porosity",
+              "viscosity",
+              "elasticity"
+            ],
+            "options": [
+              "concentricity",
+              "porosity",
+              "viscosity",
+              "elasticity"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Concentricity\" is the GD&T tolerance controlling the alignment of circular features sharing a common datum axis.",
+            "socraticHint": "¿Qué propiedad geométrica de alineación indica que dos cilindros comparten exactamente el mismo eje central?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "A tooling apparatus designed to securely hold, support, and locate a workpiece during high-speed machining is a _____.",
+            "opts": [
+              "fixture",
+              "furniture",
+              "fracture",
+              "fissure"
+            ],
+            "options": [
+              "fixture",
+              "furniture",
+              "fracture",
+              "fissure"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A machining \"fixture\" (dispositivo de sujeción o ensamble) maintains accurate workpiece orientation.",
+            "socraticHint": "¿Cómo se le llama en manufactura al dispositivo o mordaza rígida que sujeta una pieza durante el maquinado?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct technical phrase: \"We need to find an acceptable _____ between production speed and surface roughness.\"",
+            "opts": [
+              "trade-off",
+              "trade-in",
+              "trade-mark",
+              "trade-wind"
+            ],
+            "options": [
+              "trade-off",
+              "trade-in",
+              "trade-mark",
+              "trade-wind"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "An engineering \"trade-off\" (compromiso o balance entre dos variables en conflicto) balances conflicting specs.",
+            "socraticHint": "¿Qué sustantivo compuesto en inglés designa el balance o compromiso óptimo entre dos requerimientos opuestos?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       }
     ],
@@ -5100,6 +10293,928 @@
       "badgeName": "CEFR B1: Professional Independence (60.0h Course)",
       "totalHours": 60,
       "accreditation": "CACEI / DGUTyP Inglés III"
+    },
+    "certificationExam": {
+      "id": "exam-mcer-b1",
+      "level": "B1",
+      "title": "Examen de Certificación Integral Nivel B1 (Threshold • 60.0h)",
+      "titleEN": "CEFR B1 Comprehensive Milestone Certification Exam",
+      "timeLimitMinutes": 50,
+      "timeMinutes": 50,
+      "passingScore": 15,
+      "passScorePct": 75,
+      "totalQuestions": 20,
+      "totalItems": 20,
+      "badgeId": "stemos-mcer-b1-credential",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés III (CACEI / DGUTyP / SEP).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés III (CACEI / DGUTyP / SEP).",
+      "questions": [
+        {
+          "id": "B1-ex-01",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "In our 8D investigation, D3 containment verified that all 250 suspect valve bodies were quarantined. Root cause analysis under D4 isolated insufficient nitrogen pressure during automated brazing.",
+          "q": "[AUDIO] Listen to Quality Engineer: \"In our 8D investigation, D3 containment verified that all 250 suspect valve bodies were quarantined. Root cause analysis under D4 isolated insufficient nitrogen pressure during automated brazing.\" — What was the verified root cause in D4?",
+          "opts": [
+            "Insufficient nitrogen pressure during automated brazing",
+            "The operator arrived late",
+            "The CAD drawing was deleted",
+            "The shipping boxes were the wrong color"
+          ],
+          "options": [
+            "Insufficient nitrogen pressure during automated brazing",
+            "The operator arrived late",
+            "The CAD drawing was deleted",
+            "The shipping boxes were the wrong color"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "D4 root cause analysis specifically isolated insufficient nitrogen pressure during automated brazing."
+        },
+        {
+          "id": "B1-ex-02",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "First, boards are screen-printed with lead-free solder paste. Next, components are placed at forty thousand per hour. Finally, assemblies are soldered in a ten-zone reflow oven.",
+          "q": "[AUDIO] Listen to Lead Process Engineer: \"First, boards are screen-printed with lead-free solder paste. Next, components are placed at forty thousand per hour. Finally, assemblies are soldered in a ten-zone reflow oven.\" — What type of solder paste is used?",
+          "opts": [
+            "Lead-free solder paste",
+            "Pure lead solder",
+            "Epoxy glue",
+            "Silver paint"
+          ],
+          "options": [
+            "Lead-free solder paste",
+            "Pure lead solder",
+            "Epoxy glue",
+            "Silver paint"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The audio explicitly specifies: \"lead-free solder paste.\""
+        },
+        {
+          "id": "B1-ex-03",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Our team completed the CAN bus communication driver yesterday. Our sole active blocker is waiting for updated pinout schematics from Austin.",
+          "q": "[AUDIO] Listen to Scrum Master: \"Our team completed the CAN bus communication driver yesterday. Our sole active blocker is waiting for updated pinout schematics from Austin.\" — What is the current team blocker?",
+          "opts": [
+            "Waiting for updated pinout schematics from Austin",
+            "Lack of coffee",
+            "Broken computer monitors",
+            "Testing is finished"
+          ],
+          "options": [
+            "Waiting for updated pinout schematics from Austin",
+            "Lack of coffee",
+            "Broken computer monitors",
+            "Testing is finished"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The blocker is waiting for updated pinout schematics from the Austin hardware team."
+        },
+        {
+          "id": "B1-ex-04",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "If we tighten shaft tolerances to five microns, machining cycle times will increase by forty percent. I suggest improving fixture rigidity instead.",
+          "q": "[AUDIO] Listen to Marcus Vance: \"If we tighten shaft tolerances to five microns, machining cycle times will increase by forty percent. I suggest improving fixture rigidity instead.\" — What alternative does Vance propose?",
+          "opts": [
+            "Improving fixture clamping rigidity instead",
+            "Accepting forty percent higher cycle times",
+            "Using plastic shafts",
+            "Closing the line permanently"
+          ],
+          "options": [
+            "Improving fixture clamping rigidity instead",
+            "Accepting forty percent higher cycle times",
+            "Using plastic shafts",
+            "Closing the line permanently"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Vance proposes improving fixture clamping rigidity instead of expensive tolerance tightening."
+        },
+        {
+          "id": "B1-ex-05",
+          "section": "listening",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "All printed circuit assemblies _____ by automated optical inspection prior to final functional testing.",
+          "opts": [
+            "are inspected",
+            "are inspect",
+            "inspected",
+            "have inspecting"
+          ],
+          "options": [
+            "are inspected",
+            "are inspect",
+            "inspected",
+            "have inspecting"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Present simple passive: \"are\" + past participle \"inspected\"."
+        },
+        {
+          "id": "B1-ex-06",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Could you please tell me _____ the firmware update was uploaded to the cloud repository?",
+          "opts": [
+            "when",
+            "when was",
+            "when did",
+            "when was it"
+          ],
+          "options": [
+            "when",
+            "when was",
+            "when did",
+            "when was it"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Indirect/embedded question retains normal subject-verb word order: \"when the firmware update was uploaded\"."
+        },
+        {
+          "id": "B1-ex-07",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "If hydraulic pressure _____ 200 bar, the secondary relief valve trips automatically.",
+          "opts": [
+            "exceeds",
+            "will exceed",
+            "exceeded",
+            "is exceeding"
+          ],
+          "options": [
+            "exceeds",
+            "will exceed",
+            "exceeded",
+            "is exceeding"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Zero / first conditional scientific cause-and-effect: present simple with singular subject."
+        },
+        {
+          "id": "B1-ex-08",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "If we _____ the cooling jacket design, thermal dissipation would improve by twenty percent.",
+          "opts": [
+            "redesigned",
+            "redesign",
+            "will redesign",
+            "are redesigning"
+          ],
+          "options": [
+            "redesigned",
+            "redesign",
+            "will redesign",
+            "are redesigning"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Second conditional (hypothetical proposal): \"If + simple past (redesigned), would + base verb\"."
+        },
+        {
+          "id": "B1-ex-09",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "The line was shut down temporarily _____ an intermittent encoder signal loss.",
+          "opts": [
+            "due to",
+            "because",
+            "therefore",
+            "consequently"
+          ],
+          "options": [
+            "due to",
+            "because",
+            "therefore",
+            "consequently"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Due to\" is followed by a noun phrase (\"an intermittent encoder signal loss\")."
+        },
+        {
+          "id": "B1-ex-10",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "I would appreciate it if you _____ confirm receipt of the quarantined RMA tracking number.",
+          "opts": [
+            "could",
+            "can to",
+            "shall may",
+            "are able to will"
+          ],
+          "options": [
+            "could",
+            "can to",
+            "shall may",
+            "are able to will"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Polite formal correspondence conditional formula: \"I would appreciate it if you could...\"."
+        },
+        {
+          "id": "B1-ex-11",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "In an 8D quality methodology, what is the primary purpose of Discipline 3 (D3 Containment)?",
+          "opts": [
+            "To immediately quarantine suspect parts and prevent defects from escaping to the customer",
+            "To celebrate the team success",
+            "To punish the operator",
+            "To write an invoice"
+          ],
+          "options": [
+            "To immediately quarantine suspect parts and prevent defects from escaping to the customer",
+            "To celebrate the team success",
+            "To punish the operator",
+            "To write an invoice"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "D3 establishes immediate containment barriers isolating suspect product."
+        },
+        {
+          "id": "B1-ex-12",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "A technical email begins: \"Further to our teleconference this morning, please find attached the revised FMEA.\" — What is an FMEA?",
+          "opts": [
+            "Failure Mode and Effects Analysis",
+            "Factory Management Education Association",
+            "Final Machine Energy Audit",
+            "Fast Manufacturing Engineering Award"
+          ],
+          "options": [
+            "Failure Mode and Effects Analysis",
+            "Factory Management Education Association",
+            "Final Machine Energy Audit",
+            "Fast Manufacturing Engineering Award"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "FMEA is Failure Mode and Effects Analysis (Análisis de Modo y Efecto de Falla)."
+        },
+        {
+          "id": "B1-ex-13",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "In standard technical writing, why is the passive voice extensively utilized in SOP documents?",
+          "opts": [
+            "Because the technical process and object are more important than who performs the action",
+            "Because engineers forget their names",
+            "To make sentences longer",
+            "Because passive verbs are cheaper"
+          ],
+          "options": [
+            "Because the technical process and object are more important than who performs the action",
+            "Because engineers forget their names",
+            "To make sentences longer",
+            "Because passive verbs are cheaper"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Passive voice places objective emphasis on the workpiece and procedure rather than individual human actors."
+        },
+        {
+          "id": "B1-ex-14",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "An engineering memo states: \"Preliminary findings suggest that solder joint embrittlement was caused by excessive intermetallic thickness.\" — What linguistic technique is \"suggest that\"?",
+          "opts": [
+            "Hedging (diplomatic cautious scientific assertion)",
+            "Aggressive shouting",
+            "Informal slang",
+            "Sarcasm"
+          ],
+          "options": [
+            "Hedging (diplomatic cautious scientific assertion)",
+            "Aggressive shouting",
+            "Informal slang",
+            "Sarcasm"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Suggest that\" is hedging, used in scientific reports to present evidence-based conclusions cautiously."
+        },
+        {
+          "id": "B1-ex-15",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "An RMA form specifies: \"Non-conforming items must be tagged with red disposition cards and moved to Cage 2.\" — What do red disposition cards designate?",
+          "opts": [
+            "Quarantined / rejected parts awaiting engineering disposition",
+            "Rush customer orders",
+            "Approved clean parts",
+            "Personal belongings"
+          ],
+          "options": [
+            "Quarantined / rejected parts awaiting engineering disposition",
+            "Rush customer orders",
+            "Approved clean parts",
+            "Personal belongings"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Red tags universally designate non-conforming, quarantined, or rejected inventory in visual factories."
+        },
+        {
+          "id": "B1-ex-16",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "How do you professionally express constructive disagreement in an engineering design review?",
+          "opts": [
+            "\"I see your point regarding speed; however, empirical telemetry indicates that thermal dissipation will be compromised.\"",
+            "\"Your idea is completely stupid.\"",
+            "\"Nobody cares about your opinion.\"",
+            "\"I refuse to talk to you.\""
+          ],
+          "options": [
+            "\"I see your point regarding speed; however, empirical telemetry indicates that thermal dissipation will be compromised.\"",
+            "\"Your idea is completely stupid.\"",
+            "\"Nobody cares about your opinion.\"",
+            "\"I refuse to talk to you.\""
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Professional constructive disagreement acknowledges the counter-argument politely, then presents empirical data with \"however\"."
+        },
+        {
+          "id": "B1-ex-17",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "What is the professional email closing for formal correspondence with international suppliers?",
+          "opts": [
+            "Sincerely yours, / Best regards,",
+            "See ya later,",
+            "Bye bye,",
+            "Cheers buddy,"
+          ],
+          "options": [
+            "Sincerely yours, / Best regards,",
+            "See ya later,",
+            "Bye bye,",
+            "Cheers buddy,"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Sincerely yours\" or \"Best regards\" are formal and appropriate professional sign-offs."
+        },
+        {
+          "id": "B1-ex-18",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "In an Agile standup, what does it mean when an engineer says \"I have a blocker on Ticket 302\"?",
+          "opts": [
+            "They are impeded by an external dependency and cannot make progress without assistance",
+            "They are blocking the hallway",
+            "They want to play video games",
+            "They deleted the ticket"
+          ],
+          "options": [
+            "They are impeded by an external dependency and cannot make progress without assistance",
+            "They are blocking the hallway",
+            "They want to play video games",
+            "They deleted the ticket"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "A blocker is an impediment requiring resolution to resume sprint progress."
+        },
+        {
+          "id": "B1-ex-19",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "What is the meaning of the technical idiom \"trade-off\" in systems engineering?",
+          "opts": [
+            "A balance achieved between two competing or conflicting design parameters",
+            "Exchanging baseball cards",
+            "Trading employees between departments",
+            "Selling old machines at an auction"
+          ],
+          "options": [
+            "A balance achieved between two competing or conflicting design parameters",
+            "Exchanging baseball cards",
+            "Trading employees between departments",
+            "Selling old machines at an auction"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "A trade-off balances opposing engineering requirements (e.g., speed vs. accuracy)."
+        },
+        {
+          "id": "B1-ex-20",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "Cuidado con el falso amigo: \"We attended the supplier audit yesterday.\" — ¿Qué significa \"attended\"?",
+          "opts": [
+            "Asistimos físicamente a la auditoría",
+            "Atendimos a un cliente en mostrador",
+            "Intentamos hacer la auditoría",
+            "Esperamos sentados"
+          ],
+          "options": [
+            "Asistimos físicamente a la auditoría",
+            "Atendimos a un cliente en mostrador",
+            "Intentamos hacer la auditoría",
+            "Esperamos sentados"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Attend\" means to be present at an event. \"Tend to\" means atender operativamente."
+        }
+      ]
+    },
+    "milestoneExam": {
+      "id": "exam-mcer-b1",
+      "level": "B1",
+      "title": "Examen de Certificación Integral Nivel B1 (Threshold • 60.0h)",
+      "titleEN": "CEFR B1 Comprehensive Milestone Certification Exam",
+      "timeLimitMinutes": 50,
+      "timeMinutes": 50,
+      "passingScore": 15,
+      "passScorePct": 75,
+      "totalQuestions": 20,
+      "totalItems": 20,
+      "badgeId": "stemos-mcer-b1-credential",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés III (CACEI / DGUTyP / SEP).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés III (CACEI / DGUTyP / SEP).",
+      "questions": [
+        {
+          "id": "B1-ex-01",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "In our 8D investigation, D3 containment verified that all 250 suspect valve bodies were quarantined. Root cause analysis under D4 isolated insufficient nitrogen pressure during automated brazing.",
+          "q": "[AUDIO] Listen to Quality Engineer: \"In our 8D investigation, D3 containment verified that all 250 suspect valve bodies were quarantined. Root cause analysis under D4 isolated insufficient nitrogen pressure during automated brazing.\" — What was the verified root cause in D4?",
+          "opts": [
+            "Insufficient nitrogen pressure during automated brazing",
+            "The operator arrived late",
+            "The CAD drawing was deleted",
+            "The shipping boxes were the wrong color"
+          ],
+          "options": [
+            "Insufficient nitrogen pressure during automated brazing",
+            "The operator arrived late",
+            "The CAD drawing was deleted",
+            "The shipping boxes were the wrong color"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "D4 root cause analysis specifically isolated insufficient nitrogen pressure during automated brazing."
+        },
+        {
+          "id": "B1-ex-02",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "First, boards are screen-printed with lead-free solder paste. Next, components are placed at forty thousand per hour. Finally, assemblies are soldered in a ten-zone reflow oven.",
+          "q": "[AUDIO] Listen to Lead Process Engineer: \"First, boards are screen-printed with lead-free solder paste. Next, components are placed at forty thousand per hour. Finally, assemblies are soldered in a ten-zone reflow oven.\" — What type of solder paste is used?",
+          "opts": [
+            "Lead-free solder paste",
+            "Pure lead solder",
+            "Epoxy glue",
+            "Silver paint"
+          ],
+          "options": [
+            "Lead-free solder paste",
+            "Pure lead solder",
+            "Epoxy glue",
+            "Silver paint"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The audio explicitly specifies: \"lead-free solder paste.\""
+        },
+        {
+          "id": "B1-ex-03",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Our team completed the CAN bus communication driver yesterday. Our sole active blocker is waiting for updated pinout schematics from Austin.",
+          "q": "[AUDIO] Listen to Scrum Master: \"Our team completed the CAN bus communication driver yesterday. Our sole active blocker is waiting for updated pinout schematics from Austin.\" — What is the current team blocker?",
+          "opts": [
+            "Waiting for updated pinout schematics from Austin",
+            "Lack of coffee",
+            "Broken computer monitors",
+            "Testing is finished"
+          ],
+          "options": [
+            "Waiting for updated pinout schematics from Austin",
+            "Lack of coffee",
+            "Broken computer monitors",
+            "Testing is finished"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "The blocker is waiting for updated pinout schematics from the Austin hardware team."
+        },
+        {
+          "id": "B1-ex-04",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "If we tighten shaft tolerances to five microns, machining cycle times will increase by forty percent. I suggest improving fixture rigidity instead.",
+          "q": "[AUDIO] Listen to Marcus Vance: \"If we tighten shaft tolerances to five microns, machining cycle times will increase by forty percent. I suggest improving fixture rigidity instead.\" — What alternative does Vance propose?",
+          "opts": [
+            "Improving fixture clamping rigidity instead",
+            "Accepting forty percent higher cycle times",
+            "Using plastic shafts",
+            "Closing the line permanently"
+          ],
+          "options": [
+            "Improving fixture clamping rigidity instead",
+            "Accepting forty percent higher cycle times",
+            "Using plastic shafts",
+            "Closing the line permanently"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Vance proposes improving fixture clamping rigidity instead of expensive tolerance tightening."
+        },
+        {
+          "id": "B1-ex-05",
+          "section": "listening",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "All printed circuit assemblies _____ by automated optical inspection prior to final functional testing.",
+          "opts": [
+            "are inspected",
+            "are inspect",
+            "inspected",
+            "have inspecting"
+          ],
+          "options": [
+            "are inspected",
+            "are inspect",
+            "inspected",
+            "have inspecting"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Present simple passive: \"are\" + past participle \"inspected\"."
+        },
+        {
+          "id": "B1-ex-06",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Could you please tell me _____ the firmware update was uploaded to the cloud repository?",
+          "opts": [
+            "when",
+            "when was",
+            "when did",
+            "when was it"
+          ],
+          "options": [
+            "when",
+            "when was",
+            "when did",
+            "when was it"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Indirect/embedded question retains normal subject-verb word order: \"when the firmware update was uploaded\"."
+        },
+        {
+          "id": "B1-ex-07",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "If hydraulic pressure _____ 200 bar, the secondary relief valve trips automatically.",
+          "opts": [
+            "exceeds",
+            "will exceed",
+            "exceeded",
+            "is exceeding"
+          ],
+          "options": [
+            "exceeds",
+            "will exceed",
+            "exceeded",
+            "is exceeding"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Zero / first conditional scientific cause-and-effect: present simple with singular subject."
+        },
+        {
+          "id": "B1-ex-08",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "If we _____ the cooling jacket design, thermal dissipation would improve by twenty percent.",
+          "opts": [
+            "redesigned",
+            "redesign",
+            "will redesign",
+            "are redesigning"
+          ],
+          "options": [
+            "redesigned",
+            "redesign",
+            "will redesign",
+            "are redesigning"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Second conditional (hypothetical proposal): \"If + simple past (redesigned), would + base verb\"."
+        },
+        {
+          "id": "B1-ex-09",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "The line was shut down temporarily _____ an intermittent encoder signal loss.",
+          "opts": [
+            "due to",
+            "because",
+            "therefore",
+            "consequently"
+          ],
+          "options": [
+            "due to",
+            "because",
+            "therefore",
+            "consequently"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Due to\" is followed by a noun phrase (\"an intermittent encoder signal loss\")."
+        },
+        {
+          "id": "B1-ex-10",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "I would appreciate it if you _____ confirm receipt of the quarantined RMA tracking number.",
+          "opts": [
+            "could",
+            "can to",
+            "shall may",
+            "are able to will"
+          ],
+          "options": [
+            "could",
+            "can to",
+            "shall may",
+            "are able to will"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Polite formal correspondence conditional formula: \"I would appreciate it if you could...\"."
+        },
+        {
+          "id": "B1-ex-11",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "In an 8D quality methodology, what is the primary purpose of Discipline 3 (D3 Containment)?",
+          "opts": [
+            "To immediately quarantine suspect parts and prevent defects from escaping to the customer",
+            "To celebrate the team success",
+            "To punish the operator",
+            "To write an invoice"
+          ],
+          "options": [
+            "To immediately quarantine suspect parts and prevent defects from escaping to the customer",
+            "To celebrate the team success",
+            "To punish the operator",
+            "To write an invoice"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "D3 establishes immediate containment barriers isolating suspect product."
+        },
+        {
+          "id": "B1-ex-12",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "A technical email begins: \"Further to our teleconference this morning, please find attached the revised FMEA.\" — What is an FMEA?",
+          "opts": [
+            "Failure Mode and Effects Analysis",
+            "Factory Management Education Association",
+            "Final Machine Energy Audit",
+            "Fast Manufacturing Engineering Award"
+          ],
+          "options": [
+            "Failure Mode and Effects Analysis",
+            "Factory Management Education Association",
+            "Final Machine Energy Audit",
+            "Fast Manufacturing Engineering Award"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "FMEA is Failure Mode and Effects Analysis (Análisis de Modo y Efecto de Falla)."
+        },
+        {
+          "id": "B1-ex-13",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "In standard technical writing, why is the passive voice extensively utilized in SOP documents?",
+          "opts": [
+            "Because the technical process and object are more important than who performs the action",
+            "Because engineers forget their names",
+            "To make sentences longer",
+            "Because passive verbs are cheaper"
+          ],
+          "options": [
+            "Because the technical process and object are more important than who performs the action",
+            "Because engineers forget their names",
+            "To make sentences longer",
+            "Because passive verbs are cheaper"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Passive voice places objective emphasis on the workpiece and procedure rather than individual human actors."
+        },
+        {
+          "id": "B1-ex-14",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "An engineering memo states: \"Preliminary findings suggest that solder joint embrittlement was caused by excessive intermetallic thickness.\" — What linguistic technique is \"suggest that\"?",
+          "opts": [
+            "Hedging (diplomatic cautious scientific assertion)",
+            "Aggressive shouting",
+            "Informal slang",
+            "Sarcasm"
+          ],
+          "options": [
+            "Hedging (diplomatic cautious scientific assertion)",
+            "Aggressive shouting",
+            "Informal slang",
+            "Sarcasm"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Suggest that\" is hedging, used in scientific reports to present evidence-based conclusions cautiously."
+        },
+        {
+          "id": "B1-ex-15",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "An RMA form specifies: \"Non-conforming items must be tagged with red disposition cards and moved to Cage 2.\" — What do red disposition cards designate?",
+          "opts": [
+            "Quarantined / rejected parts awaiting engineering disposition",
+            "Rush customer orders",
+            "Approved clean parts",
+            "Personal belongings"
+          ],
+          "options": [
+            "Quarantined / rejected parts awaiting engineering disposition",
+            "Rush customer orders",
+            "Approved clean parts",
+            "Personal belongings"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Red tags universally designate non-conforming, quarantined, or rejected inventory in visual factories."
+        },
+        {
+          "id": "B1-ex-16",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "How do you professionally express constructive disagreement in an engineering design review?",
+          "opts": [
+            "\"I see your point regarding speed; however, empirical telemetry indicates that thermal dissipation will be compromised.\"",
+            "\"Your idea is completely stupid.\"",
+            "\"Nobody cares about your opinion.\"",
+            "\"I refuse to talk to you.\""
+          ],
+          "options": [
+            "\"I see your point regarding speed; however, empirical telemetry indicates that thermal dissipation will be compromised.\"",
+            "\"Your idea is completely stupid.\"",
+            "\"Nobody cares about your opinion.\"",
+            "\"I refuse to talk to you.\""
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Professional constructive disagreement acknowledges the counter-argument politely, then presents empirical data with \"however\"."
+        },
+        {
+          "id": "B1-ex-17",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "What is the professional email closing for formal correspondence with international suppliers?",
+          "opts": [
+            "Sincerely yours, / Best regards,",
+            "See ya later,",
+            "Bye bye,",
+            "Cheers buddy,"
+          ],
+          "options": [
+            "Sincerely yours, / Best regards,",
+            "See ya later,",
+            "Bye bye,",
+            "Cheers buddy,"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Sincerely yours\" or \"Best regards\" are formal and appropriate professional sign-offs."
+        },
+        {
+          "id": "B1-ex-18",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "In an Agile standup, what does it mean when an engineer says \"I have a blocker on Ticket 302\"?",
+          "opts": [
+            "They are impeded by an external dependency and cannot make progress without assistance",
+            "They are blocking the hallway",
+            "They want to play video games",
+            "They deleted the ticket"
+          ],
+          "options": [
+            "They are impeded by an external dependency and cannot make progress without assistance",
+            "They are blocking the hallway",
+            "They want to play video games",
+            "They deleted the ticket"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "A blocker is an impediment requiring resolution to resume sprint progress."
+        },
+        {
+          "id": "B1-ex-19",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "What is the meaning of the technical idiom \"trade-off\" in systems engineering?",
+          "opts": [
+            "A balance achieved between two competing or conflicting design parameters",
+            "Exchanging baseball cards",
+            "Trading employees between departments",
+            "Selling old machines at an auction"
+          ],
+          "options": [
+            "A balance achieved between two competing or conflicting design parameters",
+            "Exchanging baseball cards",
+            "Trading employees between departments",
+            "Selling old machines at an auction"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "A trade-off balances opposing engineering requirements (e.g., speed vs. accuracy)."
+        },
+        {
+          "id": "B1-ex-20",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "Cuidado con el falso amigo: \"We attended the supplier audit yesterday.\" — ¿Qué significa \"attended\"?",
+          "opts": [
+            "Asistimos físicamente a la auditoría",
+            "Atendimos a un cliente en mostrador",
+            "Intentamos hacer la auditoría",
+            "Esperamos sentados"
+          ],
+          "options": [
+            "Asistimos físicamente a la auditoría",
+            "Atendimos a un cliente en mostrador",
+            "Intentamos hacer la auditoría",
+            "Esperamos sentados"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Attend\" means to be present at an event. \"Tend to\" means atender operativamente."
+        }
+      ]
     }
   },
   {
@@ -5250,6 +11365,24 @@
               "correct": 0,
               "answer": 0,
               "exp": "Configuration management requires physical segregation and disposition (scrap, rework, or use-as-is) of legacy stock."
+            },
+            {
+              "q": "In an aerospace Engineering Change Order (ECO) workflow, why must \"interchangeability\" (Form, Fit, and Function) be evaluated before assigning a new part number versus a revision dash number?",
+              "opts": [
+                "If a modified part can no longer replace the legacy part in existing field assemblies without modification, it violates interchangeability and mandates a brand-new part number",
+                "Because part numbers must never exceed six digits",
+                "To confuse the warehouse inventory software",
+                "Because engineers enjoy memorizing new numbers"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "Configuration management standards (MIL-STD-973 / EIA-649) dictate that any change affecting Form, Fit, Function, or field interchangeability requires a new base part number.",
+              "options": [
+                "If a modified part can no longer replace the legacy part in existing field assemblies without modification, it violates interchangeability and mandates a brand-new part number",
+                "Because part numbers must never exceed six digits",
+                "To confuse the warehouse inventory software",
+                "Because engineers enjoy memorizing new numbers"
+              ]
             }
           ],
           "answer": 1
@@ -5526,6 +11659,267 @@
             "socraticHint": "¿Cuál es la tríada de ingeniería (FFF) que define la intercambiabilidad total de una pieza sin alterar el ensamble?",
             "category": "Léxico Técnico"
           }
+        ],
+        "listeningLab": {
+          "title": "Engineering Change Review Board (ECRB) Executive Hearing",
+          "speaker": "Chief Technology Officer Dr. Robert Hayes",
+          "audioScenario": "Members of the board: ECO-2026-88 requests a transition from FR-4 substrate to high-frequency Rogers laminate for our 5G transceiver modules. Had we conducted thermal dissipation simulations earlier in Q2, the dielectric breakdown issue would have been mitigated without halting pre-production. I move that we approve the ECO subject to supplier PPAP re-certification by October thirty-first.",
+          "audioScript": "Members of the board: ECO-2026-88 requests a transition from FR-4 substrate to high-frequency Rogers laminate for our 5G transceiver modules. Had we conducted thermal dissipation simulations earlier in Q2, the dielectric breakdown issue would have been mitigated without halting pre-production. I move that we approve the ECO subject to supplier PPAP re-certification by October thirty-first.",
+          "questions": [
+            {
+              "q": "What material transition is requested under ECO-2026-88?",
+              "opts": [
+                "From FR-4 substrate to high-frequency Rogers laminate",
+                "From aluminum to cardboard",
+                "From copper to plastic wire",
+                "From steel to wood"
+              ],
+              "options": [
+                "From FR-4 substrate to high-frequency Rogers laminate",
+                "From aluminum to cardboard",
+                "From copper to plastic wire",
+                "From steel to wood"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Dr. Hayes specifies: \"...requests a transition from FR-4 substrate to high-frequency Rogers laminate for our 5G transceiver modules.\"",
+              "socraticHint": "¿Qué cambio de sustrato dieléctrico de circuito impreso para alta frecuencia se solicita en la orden ECO?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "According to Dr. Hayes, what past action would have mitigated the dielectric breakdown earlier?",
+              "opts": [
+                "Conducting thermal dissipation simulations earlier in Q2",
+                "Hiring fifty more assembly workers",
+                "Shutting down the company email server",
+                "Reducing employee lunch breaks"
+              ],
+              "options": [
+                "Conducting thermal dissipation simulations earlier in Q2",
+                "Hiring fifty more assembly workers",
+                "Shutting down the company email server",
+                "Reducing employee lunch breaks"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "\"Had we conducted thermal dissipation simulations earlier in Q2, the dielectric breakdown issue would have been mitigated...\"",
+              "socraticHint": "¿Qué estudio de simulación térmica previo en el segundo trimestre habría evitado la falla dieléctrica?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What condition is attached to the board approval of the ECO?",
+              "opts": [
+                "Subject to supplier PPAP re-certification by October 31",
+                "No conditions; immediate unrestricted launch",
+                "The supplier must pay a cash penalty",
+                "The product must be sold at half price"
+              ],
+              "options": [
+                "Subject to supplier PPAP re-certification by October 31",
+                "No conditions; immediate unrestricted launch",
+                "The supplier must pay a cash penalty",
+                "The product must be sold at half price"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Dr. Hayes concludes: \"...approve the ECO subject to supplier PPAP re-certification by October thirty-first.\"",
+              "socraticHint": "¿Qué requerimiento automotriz de aprobación de partes (PPAP) condiciona la aprobación de la orden?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "If the development team _____ the stress analysis earlier, the chassis would not have cracked during vibration testing.",
+            "opts": [
+              "had executed",
+              "would execute",
+              "has executed",
+              "executed"
+            ],
+            "options": [
+              "had executed",
+              "would execute",
+              "has executed",
+              "executed"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Third conditional (past unreal condition and past unreal result): \"If + past perfect (had executed), would not have + past participle\".",
+            "socraticHint": "Condicional de tercer grado sobre una situación del pasado que no ocurrió: la cláusula \"if\" requiere past perfect.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Had the firmware _____ tested under cryogenic operating conditions, the memory leak would have been detected in the lab.",
+            "opts": [
+              "been",
+              "being",
+              "be",
+              "to be"
+            ],
+            "options": [
+              "been",
+              "being",
+              "be",
+              "to be"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Inversion of third conditional without \"if\": \"Had [subject] been [past participle]...\".",
+            "socraticHint": "Inversión formal de tercer condicional que reemplaza a \"If the firmware had been tested\": \"Had the firmware been tested\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "It is imperative that the supplier _____ updated compliance certificates prior to shipment.",
+            "opts": [
+              "submit",
+              "submits",
+              "submitted",
+              "will submit"
+            ],
+            "options": [
+              "submit",
+              "submits",
+              "submitted",
+              "will submit"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Formal American English subjunctive mood following expressions of necessity (\"imperative that [subject] + base verb\"): \"submit\".",
+            "socraticHint": "En inglés estadounidense formal, las oraciones con \"It is imperative that...\" rigen modo subjuntivo con verbo en forma base.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The engineering change order _____ currently _____ reviewed by the cross-functional quality board.",
+            "opts": [
+              "is / being",
+              "was / been",
+              "has / been",
+              "is / been"
+            ],
+            "options": [
+              "is / being",
+              "was / been",
+              "has / been",
+              "is / been"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Present continuous passive: \"is being reviewed\" indicates an ongoing action in the present.",
+            "socraticHint": "Voz pasiva en presente continuo para una acción en desarrollo ahora mismo: \"is being [participio]\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "If the sensor _____ calibrated yesterday, the line would be operating smoothly right now.",
+            "opts": [
+              "had been",
+              "was",
+              "would be",
+              "is"
+            ],
+            "options": [
+              "had been",
+              "was",
+              "would be",
+              "is"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Mixed conditional (past action affecting present condition): \"If + past perfect (had been), would be + ing (right now)\".",
+            "socraticHint": "Condicional mixto: una acción no realizada en el pasado (\"yesterday\") que tiene impacto en el presente (\"right now\").",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "A formal document that authorizes, details, and tracks approved modifications to an engineered component or process is an _____.",
+            "opts": [
+              "ECO (Engineering Change Order)",
+              "IPO",
+              "NDA",
+              "EULA"
+            ],
+            "options": [
+              "ECO (Engineering Change Order)",
+              "IPO",
+              "NDA",
+              "EULA"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "An ECO (Orden de Cambio de Ingeniería) manages configuration revisions under ISO/AS9100 quality systems.",
+            "socraticHint": "¿Qué documento oficial de ingeniería gestiona y autoriza cambios a planos, listas de materiales o procesos?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The dielectric constant and insulating base plate upon which electronic circuit traces are printed is the _____.",
+            "opts": [
+              "substrate",
+              "substation",
+              "substitute",
+              "subsidy"
+            ],
+            "options": [
+              "substrate",
+              "substation",
+              "substitute",
+              "subsidy"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A PCB \"substrate\" (sustrato dieléctrico) provides mechanical support and electrical insulation.",
+            "socraticHint": "¿Cómo se le llama a la base o sustrato aislante sobre el que se graban las pistas de cobre de una tarjeta electrónica?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The automotive and aerospace validation dossier demonstrating that a manufacturing process can consistently produce conforming parts is the _____.",
+            "opts": [
+              "PPAP (Production Part Approval Process)",
+              "GPS",
+              "P&L",
+              "HRM"
+            ],
+            "options": [
+              "PPAP (Production Part Approval Process)",
+              "GPS",
+              "P&L",
+              "HRM"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "PPAP (Proceso de Aprobación de Partes para Producción) is the golden standard across AIAG/IATF 16949.",
+            "socraticHint": "¿Qué dossier documental estandarizado IATF aprueba las partes para su corrida en producción en masa?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct formal technical collocation: \"The board approved the design change _____ to successful environmental testing.\"",
+            "opts": [
+              "subject",
+              "object",
+              "reject",
+              "inject"
+            ],
+            "options": [
+              "subject",
+              "object",
+              "reject",
+              "inject"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The executive legal/technical phrase is \"approved subject to [condition]\" (aprobado sujeto a cumplimiento de condición).",
+            "socraticHint": "¿Qué adjetivo formal acompaña a \"approved ... to\" para indicar una aprobación condicionada al éxito de pruebas?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       },
       {
@@ -5660,6 +12054,24 @@
               "correct": 1,
               "answer": 1,
               "exp": "Automotive and aerospace standards strictly mandate the 24h/14d/30d resolution cadence for audit findings."
+            },
+            {
+              "q": "Why do multinational original equipment manufacturers (OEMs) negotiating long-term agreements (LTAs) require indexation clauses tied to public raw material commodity indices (such as the London Metal Exchange)?",
+              "opts": [
+                "To establish transparent, automated price adjustment mechanisms that protect both buyer and supplier against volatile raw material swings",
+                "Because OEMs do not know the price of copper",
+                "To make contracts legally invalid in court",
+                "To avoid using computers for billing"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "Commodity indexation clauses (LME/Platts) remove speculative risk by adjusting contract part costs strictly when published commodity markets fluctuate beyond negotiated bands.",
+              "options": [
+                "To establish transparent, automated price adjustment mechanisms that protect both buyer and supplier against volatile raw material swings",
+                "Because OEMs do not know the price of copper",
+                "To make contracts legally invalid in court",
+                "To avoid using computers for billing"
+              ]
             }
           ],
           "answer": 1
@@ -5936,6 +12348,267 @@
             "socraticHint": "¿Cómo se le denomina en auditorías ISO a una observación constructiva que no constituye una no-conformidad formal?",
             "category": "Léxico Técnico"
           }
+        ],
+        "listeningLab": {
+          "title": "Executive Contract Negotiation: Supplier Volume Pricing",
+          "speaker": "Procurement Director Victoria Stone",
+          "audioScenario": "Thank you for joining this executive commercial session. While we appreciate your proposal for an eight percent price rebate at three hundred thousand units, our nearshoring volume projections indicate five hundred thousand units for Q1. On condition that you commit to guaranteed four-week lead times and localized buffer warehousing in Tijuana, we are prepared to sign a two-year exclusive supply agreement.",
+          "audioScript": "Thank you for joining this executive commercial session. While we appreciate your proposal for an eight percent price rebate at three hundred thousand units, our nearshoring volume projections indicate five hundred thousand units for Q1. On condition that you commit to guaranteed four-week lead times and localized buffer warehousing in Tijuana, we are prepared to sign a two-year exclusive supply agreement.",
+          "questions": [
+            {
+              "q": "What volume projection does Victoria Stone state for Q1?",
+              "opts": [
+                "500,000 units",
+                "300,000 units",
+                "50,000 units",
+                "1,000,000 units"
+              ],
+              "options": [
+                "500,000 units",
+                "300,000 units",
+                "50,000 units",
+                "1,000,000 units"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Stone states: \"...our nearshoring volume projections indicate five hundred thousand (500,000) units for Q1.\"",
+              "socraticHint": "¿Cuál es el volumen de producción proyectado para el primer trimestre en la planta de nearshoring?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What two contractual commitments does Director Stone require from the supplier?",
+              "opts": [
+                "Guaranteed 4-week lead times and localized buffer warehousing in Tijuana",
+                "Free catering and holiday gifts",
+                "Relocating their headquarters to London",
+                "Signing daily NDAs"
+              ],
+              "options": [
+                "Guaranteed 4-week lead times and localized buffer warehousing in Tijuana",
+                "Free catering and holiday gifts",
+                "Relocating their headquarters to London",
+                "Signing daily NDAs"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "\"On condition that you commit to guaranteed four-week lead times and localized buffer warehousing in Tijuana...\"",
+              "socraticHint": "¿Cuáles son las dos condiciones operativas que exige la directora comercial para firmar la exclusividad?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What is the duration of the proposed exclusive supply agreement?",
+              "opts": [
+                "Two years",
+                "Six months",
+                "Ten years",
+                "One month"
+              ],
+              "options": [
+                "Two years",
+                "Six months",
+                "Ten years",
+                "One month"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Stone proposes: \"...we are prepared to sign a two-year exclusive supply agreement.\"",
+              "socraticHint": "¿Por cuántos años de vigencia se ofrece el contrato de suministro exclusivo?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "The board recommended that the procurement team _____ negotiations with the secondary vendor.",
+            "opts": [
+              "reopen",
+              "reopens",
+              "reopened",
+              "will reopen"
+            ],
+            "options": [
+              "reopen",
+              "reopens",
+              "reopened",
+              "will reopen"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Subjunctive mood following mandative verb \"recommended that [subject] + base verb\": \"reopen\".",
+            "socraticHint": "Oración subordinada con verbo mandativo (\"recommended that\"). En inglés formal se usa el subjuntivo con forma base.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "We will accept the revised tooling fee _____ that you guarantee four-week lead times.",
+            "opts": [
+              "provided",
+              "providing of",
+              "unless",
+              "despite"
+            ],
+            "options": [
+              "provided",
+              "providing of",
+              "unless",
+              "despite"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Provided that\" (or \"providing that\") introduces a contractual condition equivalent to \"on the condition that\".",
+            "socraticHint": "Conector condicional formal que equivale a \"siempre y cuando\" o \"bajo la condición de que\": \"provided that\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "_____ our production volume projections materialize, the amortized cost per unit will drop significantly.",
+            "opts": [
+              "Should",
+              "Had",
+              "Would",
+              "Were"
+            ],
+            "options": [
+              "Should",
+              "Had",
+              "Would",
+              "Were"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Formal conditional inversion replacing \"If our projections should materialize\": \"Should our production volume projections materialize...\".",
+            "socraticHint": "Inversión formal de primer condicional con \"Should\" al inicio de la oración sustituyendo a \"If\": \"Should our projections materialize...\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Not only _____ agree to the revised pricing structure, but they also guaranteed localized inventory.",
+            "opts": [
+              "did the supplier",
+              "the supplier did",
+              "was the supplier",
+              "the supplier was"
+            ],
+            "options": [
+              "did the supplier",
+              "the supplier did",
+              "was the supplier",
+              "the supplier was"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Inversion following negative correlative conjunction \"Not only did [subject] [base verb]...\".",
+            "socraticHint": "Estructura invertida tras la frase correlativa negativa \"Not only\": requiere auxiliar \"did\" antes del sujeto.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The executive committee insists that every contract _____ verified by legal counsel.",
+            "opts": [
+              "be",
+              "is",
+              "was",
+              "are"
+            ],
+            "options": [
+              "be",
+              "is",
+              "was",
+              "are"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Mandative subjunctive with \"insists that [subject] be [past participle]\": \"be verified\".",
+            "socraticHint": "Subjuntivo mandativo con \"insists that\": el verbo \"to be\" se mantiene en su forma base \"be\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "The elapsed time between the initial placement of an order and the physical receipt of goods at the dock is the _____.",
+            "opts": [
+              "lead time",
+              "lunch time",
+              "closing time",
+              "play time"
+            ],
+            "options": [
+              "lead time",
+              "lunch time",
+              "closing time",
+              "play time"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Lead time\" (tiempo de entrega o ciclo de suministro) is a critical KPI in supply chain logistics.",
+            "socraticHint": "¿Cuál es el término en inglés para el lapso entre la emisión de la orden de compra y la recepción de piezas?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "A reserve inventory strategically stored near a manufacturing facility to absorb supply fluctuations is a _____.",
+            "opts": [
+              "buffer stock (or safety stock)",
+              "penny stock",
+              "dead stock",
+              "junk stock"
+            ],
+            "options": [
+              "buffer stock (or safety stock)",
+              "penny stock",
+              "dead stock",
+              "junk stock"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Buffer stock\" mitigates supply disruption and transportation delays.",
+            "socraticHint": "¿Cómo se le llama al inventario de seguridad o amortiguador ubicado cerca de la planta para evitar desabastos?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The commercial practice of relocating manufacturing and supply chains to a geographically proximate country is _____.",
+            "opts": [
+              "nearshoring",
+              "offshoring",
+              "outsourcing",
+              "downsizing"
+            ],
+            "options": [
+              "nearshoring",
+              "offshoring",
+              "outsourcing",
+              "downsizing"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"Nearshoring\" relocates manufacturing closer to target markets (e.g., US companies expanding in Mexico).",
+            "socraticHint": "¿Qué concepto define la relocalización de cadenas de suministro a países geográficamente cercanos?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct executive negotiation collocation: \"Both teams reached a _____ agreement after intense commercial mediation.\"",
+            "opts": [
+              "mutually beneficial",
+              "wildly destructive",
+              "carelessly forgotten",
+              "hastily discarded"
+            ],
+            "options": [
+              "mutually beneficial",
+              "wildly destructive",
+              "carelessly forgotten",
+              "hastily discarded"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A \"mutually beneficial agreement\" (win-win agreement) represents optimal corporate diplomacy.",
+            "socraticHint": "¿Qué colocación ejecutiva describe un acuerdo donde ambas partes obtienen beneficios mutuos (\"win-win\")?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       },
       {
@@ -6074,6 +12747,24 @@
               "correct": 1,
               "answer": 1,
               "exp": "ISO 13849-1 mandates Category 4 redundant safety architectures for high-severity mechanical entrapment zones."
+            },
+            {
+              "q": "Why does an executive escalation memo require concise \"BLUF\" (Bottom Line Up Front) framing when communicating systemic recalls to a Chief Executive Officer?",
+              "opts": [
+                "C-level executives require immediate situational clarity on financial exposure, safety liabilities, and containment status within the first thirty seconds of reading",
+                "Because CEOs only read three words per day",
+                "To prevent the document from being translated into Spanish",
+                "Because long paragraphs use too much printer ink"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "Executive communication protocols mandate the BLUF structure so decision-makers can instantly grasp operational risk, capital impact, and decisive containment actions.",
+              "options": [
+                "C-level executives require immediate situational clarity on financial exposure, safety liabilities, and containment status within the first thirty seconds of reading",
+                "Because CEOs only read three words per day",
+                "To prevent the document from being translated into Spanish",
+                "Because long paragraphs use too much printer ink"
+              ]
             }
           ],
           "answer": 0
@@ -6350,6 +13041,267 @@
             "socraticHint": "Bajo los estándares de AIAG/VDA, cuando la severidad es 9 o 10 (riesgo a la vida), ¿qué acción es obligatoria?",
             "category": "Seguridad y Protocolo"
           }
+        ],
+        "listeningLab": {
+          "title": "Executive Quality Escalation Briefing",
+          "speaker": "Vice President of Operations Arthur Sterling",
+          "audioScenario": "Good afternoon. This briefing addresses our customer escalation regarding field inverter failures. Under no circumstances should non-conforming batch units be re-certified without an exhaustive metallurgical failure analysis. Preliminary scans indicate inter-granular stress corrosion cracking on the copper busbars. I am establishing an executive war room effective immediately to oversee containment across all North American service centers.",
+          "audioScript": "Good afternoon. This briefing addresses our customer escalation regarding field inverter failures. Under no circumstances should non-conforming batch units be re-certified without an exhaustive metallurgical failure analysis. Preliminary scans indicate inter-granular stress corrosion cracking on the copper busbars. I am establishing an executive war room effective immediately to oversee containment across all North American service centers.",
+          "questions": [
+            {
+              "q": "What is Vice President Sterling's strict directive regarding the non-conforming batch units?",
+              "opts": [
+                "Under no circumstances should they be re-certified without an exhaustive metallurgical analysis",
+                "Ship them to discount retailers immediately",
+                "Ignore the customer complaint",
+                "Throw them into the ocean"
+              ],
+              "options": [
+                "Under no circumstances should they be re-certified without an exhaustive metallurgical analysis",
+                "Ship them to discount retailers immediately",
+                "Ignore the customer complaint",
+                "Throw them into the ocean"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Sterling directs: \"Under no circumstances should non-conforming batch units be re-certified without an exhaustive metallurgical failure analysis.\"",
+              "socraticHint": "¿Qué directiva categórica y prohibitiva dicta el vicepresidente sobre recertificar piezas sin análisis previo?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What physical failure mechanism do preliminary scans indicate on the copper busbars?",
+              "opts": [
+                "Inter-granular stress corrosion cracking",
+                "Paint discoloration",
+                "Software syntax error",
+                "Low battery charge"
+              ],
+              "options": [
+                "Inter-granular stress corrosion cracking",
+                "Paint discoloration",
+                "Software syntax error",
+                "Low battery charge"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "\"Preliminary scans indicate inter-granular stress corrosion cracking on the copper busbars.\"",
+              "socraticHint": "¿Qué mecanismo metalúrgico de falla por corrosión bajo esfuerzo se detectó en las barras colectoras de cobre?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What organizational measure does Sterling establish effective immediately?",
+              "opts": [
+                "An executive war room to oversee containment across all North American centers",
+                "A company holiday party",
+                "A 50% layoff of all workers",
+                "A marketing campaign on television"
+              ],
+              "options": [
+                "An executive war room to oversee containment across all North American centers",
+                "A company holiday party",
+                "A 50% layoff of all workers",
+                "A marketing campaign on television"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "Sterling announces: \"I am establishing an executive war room effective immediately to oversee containment...\"",
+              "socraticHint": "¿Qué unidad operativa de crisis (\"war room\") convoca el vicepresidente de forma inmediata?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "Under no circumstances _____ power be restored before the safety interlocks are verified.",
+            "opts": [
+              "should",
+              "should not",
+              "it should",
+              "should it not"
+            ],
+            "options": [
+              "should",
+              "should not",
+              "it should",
+              "should it not"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Negative inversion: following restrictive negative adverbial \"Under no circumstances\", auxiliary precedes subject: \"should power be restored...\".",
+            "socraticHint": "Inversión negativa formal con \"Under no circumstances\": el verbo auxiliar modal \"should\" precede al sujeto \"power\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Seldom _____ an engineering flaw triggered such an immediate executive intervention.",
+            "opts": [
+              "has",
+              "have",
+              "had been",
+              "did have"
+            ],
+            "options": [
+              "has",
+              "have",
+              "had been",
+              "did have"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Negative frequency inversion with \"Seldom\" + auxiliary \"has\" + singular subject \"an engineering flaw\" + past participle \"triggered\".",
+            "socraticHint": "Inversión con el adverbio restrictivo \"Seldom\" y sujeto singular (\"an engineering flaw\"): auxiliar \"has\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The executive memo recommended _____ of all suspect inventory to safeguard brand reputation.",
+            "opts": [
+              "immediate quarantine",
+              "to quarantine immediate",
+              "quarantine immediately",
+              "immediate to quarantine"
+            ],
+            "options": [
+              "immediate quarantine",
+              "to quarantine immediate",
+              "quarantine immediately",
+              "immediate to quarantine"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Nominalization (\"immediate quarantine\") is preferred in executive technical writing for conciseness and punch.",
+            "socraticHint": "En redacción ejecutiva de alto nivel se prefiere la nominalización concisa: adjetivo + sustantivo (\"immediate quarantine\").",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Little _____ the quality engineers realize how critical the thermal cycle testing would become.",
+            "opts": [
+              "did",
+              "do",
+              "were",
+              "have"
+            ],
+            "options": [
+              "did",
+              "do",
+              "were",
+              "have"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Negative inversion with \"Little\": \"Little did [subject] realize...\".",
+            "socraticHint": "Inversión enfática formal con \"Little\": requiere auxiliar \"did\" antes del sujeto en tiempo pasado.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Only after the metallurgical lab completed the SEM fractography _____ the true fracture mode confirmed.",
+            "opts": [
+              "was",
+              "is",
+              "did",
+              "had"
+            ],
+            "options": [
+              "was",
+              "is",
+              "did",
+              "had"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Inversion following \"Only after [clause]\": auxiliary \"was\" + subject + participle: \"was the true fracture mode confirmed\".",
+            "socraticHint": "Inversión condicionada con \"Only after...\": la cláusula principal invierte el auxiliar pasivo \"was\" antes del sujeto.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "The high-resolution microscopy technique that scans conductive surfaces with a focused electron beam to reveal fracture topology is a _____.",
+            "opts": [
+              "SEM (Scanning Electron Microscope)",
+              "Stethoscope",
+              "Telescope",
+              "Periscope"
+            ],
+            "options": [
+              "SEM (Scanning Electron Microscope)",
+              "Stethoscope",
+              "Telescope",
+              "Periscope"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "A Scanning Electron Microscope (SEM) produces micro-scale fractography imaging for root cause investigations.",
+            "socraticHint": "¿Qué instrumento de microscopía electrónica de barrido (SEM) analiza la superficie de fracturas metálicas a nivel micrométrico?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "A dedicated cross-functional emergency command center assembled to solve a critical corporate crisis rapidly is a _____.",
+            "opts": [
+              "war room",
+              "restroom",
+              "playroom",
+              "fitting room"
+            ],
+            "options": [
+              "war room",
+              "restroom",
+              "playroom",
+              "fitting room"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "An executive \"war room\" (cuarto de crisis o comando de operaciones) manages urgent escalations with maximum authority.",
+            "socraticHint": "¿Cómo se le llama en la industria al centro de comando de emergencia o cuarto de crisis montado para resolver un problema crítico?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The metallurgical degradation process where tensile stress and a corrosive environment combine to produce rapid cracking along metal grain boundaries is _____.",
+            "opts": [
+              "stress corrosion cracking (SCC)",
+              "electroplating",
+              "anodizing",
+              "galvanizing"
+            ],
+            "options": [
+              "stress corrosion cracking (SCC)",
+              "electroplating",
+              "anodizing",
+              "galvanizing"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Stress Corrosion Cracking (SCC) causes catastrophic component fractures under combined mechanical and chemical exposure.",
+            "socraticHint": "¿Qué fenómeno metalúrgico de agrietamiento ocurre por la combinación de esfuerzos mecánicos de tensión y un medio corrosivo?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct executive collocation: \"The board issued an _____ memo demanding immediate corrective actions.\"",
+            "opts": [
+              "executive",
+              "irresponsible",
+              "accidental",
+              "inattentive"
+            ],
+            "options": [
+              "executive",
+              "irresponsible",
+              "accidental",
+              "inattentive"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "An \"executive memo\" (memorando ejecutivo de alta dirección) carries binding corporate authority.",
+            "socraticHint": "¿Qué adjetivo califica formalmente a un memorándum emitido por la alta dirección corporativa (\"executive memo\")?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       },
       {
@@ -6488,6 +13440,24 @@
               "correct": 1,
               "answer": 1,
               "exp": "The concession-and-pivot framework demonstrates executive maturity, intellectual honesty, and composure under pressure."
+            },
+            {
+              "q": "In cross-cultural communication between Mexican engineers and American corporate directors, why can indirect polite vagueness (such as saying \"we will try our best\" when a deadline is impossible) be misinterpreted as a firm commitment?",
+              "opts": [
+                "American engineering culture values low-context directness and transparency regarding risks, interpreting ambiguous optimism as an affirmative deliverable promise",
+                "Because Americans don't understand the word \"best\"",
+                "Because Mexican engineers are not allowed to use calendars",
+                "Because clocks run faster in the United States"
+              ],
+              "correct": 0,
+              "answer": 0,
+              "exp": "Low-context American business communication expects direct, factual escalation of delays; indirect cultural politeness can lead to severe misalignment if risks are not stated assertively.",
+              "options": [
+                "American engineering culture values low-context directness and transparency regarding risks, interpreting ambiguous optimism as an affirmative deliverable promise",
+                "Because Americans don't understand the word \"best\"",
+                "Because Mexican engineers are not allowed to use calendars",
+                "Because clocks run faster in the United States"
+              ]
             }
           ],
           "answer": 1
@@ -6764,6 +13734,267 @@
             "socraticHint": "¿Cuál es el valor académico y profesional de la ronda de preguntas socráticas en una defensa de grado de ingeniería?",
             "category": "Léxico Técnico"
           }
+        ],
+        "listeningLab": {
+          "title": "Strategy Offsite: Executive Pragmatics & Cultural Idioms",
+          "speaker": "Managing Partner Carolyn Bennett",
+          "audioScenario": "Team, let us look at the big picture. We are in the final lap of the nearshoring transition. I want everyone to touch base with our supply chain partners before we pull the trigger on the expanded manufacturing facility. Remember to keep your ear to the ground regarding local regulatory shifts. Do not cut corners on quality, because what is on the line is our multi-year customer trust.",
+          "audioScript": "Team, let us look at the big picture. We are in the final lap of the nearshoring transition. I want everyone to touch base with our supply chain partners before we pull the trigger on the expanded manufacturing facility. Remember to keep your ear to the ground regarding local regulatory shifts. Do not cut corners on quality, because what is on the line is our multi-year customer trust.",
+          "questions": [
+            {
+              "q": "What does Carolyn Bennett mean when she instructs the team to \"touch base\" with partners?",
+              "opts": [
+                "To briefly establish contact and communicate status with them",
+                "To play baseball on the factory floor",
+                "To physically touch a metal baseplate",
+                "To ignore all incoming telephone calls"
+              ],
+              "options": [
+                "To briefly establish contact and communicate status with them",
+                "To play baseball on the factory floor",
+                "To physically touch a metal baseplate",
+                "To ignore all incoming telephone calls"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "The American business idiom \"to touch base\" means to make brief contact to update each other on progress.",
+              "socraticHint": "¿Qué significa el modismo corporativo \"touch base\" en el contexto de gestión de socios comerciales?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "What does the phrase \"pull the trigger\" mean in this operational context?",
+              "opts": [
+                "To formally initiate or commit to the major capital decision",
+                "To fire a weapon inside the plant",
+                "To cancel the project completely",
+                "To disassemble the machinery"
+              ],
+              "options": [
+                "To formally initiate or commit to the major capital decision",
+                "To fire a weapon inside the plant",
+                "To cancel the project completely",
+                "To disassemble the machinery"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "\"To pull the trigger\" is a standard executive idiom meaning to finalize a major operational or financial decision.",
+              "socraticHint": "¿Qué acción de compromiso o inicio de inversión significa la frase idiomática \"pull the trigger\"?",
+              "category": "Comprensión Auditiva"
+            },
+            {
+              "q": "Why does Carolyn warn the team \"not to cut corners\"?",
+              "opts": [
+                "Because cutting corners means doing something cheaply or carelessly, which jeopardizes multi-year customer trust",
+                "Because sharp corners on boxes are dangerous",
+                "Because squares have four corners",
+                "Because the scissors are missing"
+              ],
+              "options": [
+                "Because cutting corners means doing something cheaply or carelessly, which jeopardizes multi-year customer trust",
+                "Because sharp corners on boxes are dangerous",
+                "Because squares have four corners",
+                "Because the scissors are missing"
+              ],
+              "ans": 0,
+              "answer": 0,
+              "exp": "\"To cut corners\" means to take shortcuts that compromise standards or quality, leading to long-term reputational risk.",
+              "socraticHint": "¿Qué significa la expresión de alerta de calidad \"don't cut corners\" en los estándares de manufactura?",
+              "category": "Comprensión Auditiva"
+            }
+          ]
+        },
+        "grammarDrills": [
+          {
+            "q": "By the time the executive board convenes tomorrow, our engineering team _____ the root cause presentation.",
+            "opts": [
+              "will have finalized",
+              "will finalize",
+              "finalizes",
+              "finalized"
+            ],
+            "options": [
+              "will have finalized",
+              "will finalize",
+              "finalizes",
+              "finalized"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Future perfect tense (\"will have finalized\") denotes an action that will be completed before a designated future reference point.",
+            "socraticHint": "Estructura temporal \"By the time [evento futuro]\": la acción principal se completará antes, requiriendo el futuro perfecto (\"will have + participio\").",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The program director insisted that everyone _____ their ear to the ground regarding tariff modifications.",
+            "opts": [
+              "keep",
+              "keeps",
+              "kept",
+              "is keeping"
+            ],
+            "options": [
+              "keep",
+              "keeps",
+              "kept",
+              "is keeping"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Subjunctive mood with base form verb following mandative \"insisted that [subject] + base verb\": \"keep\".",
+            "socraticHint": "Subjuntivo mandativo tras \"insisted that\": el verbo se coloca en su forma base (\"keep\").",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Not only did we bring the project in under budget, but we _____ delivered it two weeks ahead of schedule.",
+            "opts": [
+              "also",
+              "too",
+              "either",
+              "neither"
+            ],
+            "options": [
+              "also",
+              "too",
+              "either",
+              "neither"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Correlative pair: \"Not only [inversion]... but [subject] also [verb]...\".",
+            "socraticHint": "Conector correlativo formal: \"Not only did we..., but we also...\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "Were we to lower our inspection frequency, the risk of undetected defects _____ multiply tenfold.",
+            "opts": [
+              "would",
+              "will",
+              "is to",
+              "shall"
+            ],
+            "options": [
+              "would",
+              "will",
+              "is to",
+              "shall"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Formal conditional inversion with \"Were we to [verb], [subject] would [base verb]...\".",
+            "socraticHint": "Inversión formal de segundo condicional con \"Were we to [verbo]\": la cláusula consecuente requiere \"would\".",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          },
+          {
+            "q": "The lead architect suggested that the sensor data _____ re-verified by an independent calibration laboratory.",
+            "opts": [
+              "be",
+              "is",
+              "was",
+              "been"
+            ],
+            "options": [
+              "be",
+              "is",
+              "was",
+              "been"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "Subjunctive passive: \"suggested that [subject] be re-verified\".",
+            "socraticHint": "Subjuntivo pasivo tras el verbo \"suggested that\": requiere la forma base \"be\" + participio.",
+            "category": "Gramática Aplicada & Sintaxis",
+            "rule": ""
+          }
+        ],
+        "vocabularyExercises": [
+          {
+            "q": "An American workplace idiom meaning to step back and evaluate the overall strategic situation rather than minute details is to look at the _____.",
+            "opts": [
+              "big picture",
+              "small pixel",
+              "dark tunnel",
+              "empty glass"
+            ],
+            "options": [
+              "big picture",
+              "small pixel",
+              "dark tunnel",
+              "empty glass"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The \"big picture\" refers to the broad macro-level overview of a business scenario.",
+            "socraticHint": "¿Qué modismo estadounidense de negocios alude a tener una visión panorámica y macroestratégica del negocio?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "When an engineer is instructed to \"get down to brass tacks\", they are being asked to _____.",
+            "opts": [
+              "focus immediately on the essential, practical, and factual details of a problem",
+              "pick up nails from the floor",
+              "polish copper fittings",
+              "purchase office stationery"
+            ],
+            "options": [
+              "focus immediately on the essential, practical, and factual details of a problem",
+              "pick up nails from the floor",
+              "polish copper fittings",
+              "purchase office stationery"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"To get down to brass tacks\" means focusing directly on the fundamental facts and practical realities.",
+            "socraticHint": "¿Qué modismo técnico-laboral significa ir directo al grano y enfocarse en los hechos esenciales y prácticos?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "The phrase \"to keep someone in the loop\" means to _____.",
+            "opts": [
+              "keep someone informed and updated about ongoing developments",
+              "tie someone with a rope",
+              "trap someone in a conveyor belt",
+              "lock someone in a room"
+            ],
+            "options": [
+              "keep someone informed and updated about ongoing developments",
+              "tie someone with a rope",
+              "trap someone in a conveyor belt",
+              "lock someone in a room"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "\"In the loop\" indicates being part of the communication channel and receiving regular progress updates.",
+            "socraticHint": "¿Qué modismo corporativo significa mantener a alguien debidamente informado y copiado en las actualizaciones del proyecto?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          },
+          {
+            "q": "Choose the correct idiomatic phrase: \"We need to ensure everyone is _____ the same page before presenting to executive leadership.\"",
+            "opts": [
+              "on",
+              "under",
+              "at",
+              "into"
+            ],
+            "options": [
+              "on",
+              "under",
+              "at",
+              "into"
+            ],
+            "ans": 0,
+            "answer": 0,
+            "exp": "The correct preposition is \"on the same page\" (alineados en el mismo entendimiento).",
+            "socraticHint": "¿Qué preposición acompaña a la frase idiomática \"on the same page\"?",
+            "category": "Léxico Técnico & Colocaciones",
+            "falseCognateRef": false
+          }
         ]
       }
     ],
@@ -6775,6 +14006,928 @@
       "badgeName": "CEFR B2: Executive Fluency & Advanced Pragmatics (60.0h Course)",
       "totalHours": 60,
       "accreditation": "CACEI / DGUTyP Inglés IV"
+    },
+    "certificationExam": {
+      "id": "exam-mcer-b2",
+      "level": "B2",
+      "title": "Examen de Certificación Integral Nivel B2 (Vantage Fluency • 60.0h)",
+      "titleEN": "CEFR B2 Comprehensive Milestone Certification Exam",
+      "timeLimitMinutes": 60,
+      "timeMinutes": 60,
+      "passingScore": 15,
+      "passScorePct": 75,
+      "totalQuestions": 20,
+      "totalItems": 20,
+      "badgeId": "stemos-mcer-b2-credential",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés IV (CACEI / DGUTyP / SEP).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés IV (CACEI / DGUTyP / SEP).",
+      "questions": [
+        {
+          "id": "B2-ex-01",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "ECO-2026-88 requests upgrading our high-speed transceiver to low-loss Rogers laminate. Had we conducted thermal dissipation simulations earlier in Q2, the dielectric breakdown issue would have been mitigated without halting pre-production.",
+          "q": "[AUDIO] Listen to CTO Dr. Robert Hayes: \"ECO-2026-88 requests upgrading our high-speed transceiver to low-loss Rogers laminate. Had we conducted thermal dissipation simulations earlier in Q2, the dielectric breakdown issue would have been mitigated without halting pre-production.\" — What would have mitigated the dielectric breakdown earlier?",
+          "opts": [
+            "Conducting thermal dissipation simulations earlier in Q2",
+            "Hiring more factory workers",
+            "Decreasing the warranty period",
+            "Ignoring the board failures"
+          ],
+          "options": [
+            "Conducting thermal dissipation simulations earlier in Q2",
+            "Hiring more factory workers",
+            "Decreasing the warranty period",
+            "Ignoring the board failures"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Dr. Hayes affirms: \"Had we conducted thermal dissipation simulations earlier in Q2, the dielectric breakdown issue would have been mitigated...\""
+        },
+        {
+          "id": "B2-ex-02",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "On condition that you commit to guaranteed four-week lead times and localized buffer warehousing in Tijuana, we are prepared to sign a two-year exclusive supply agreement.",
+          "q": "[AUDIO] Listen to Procurement Director Victoria Stone: \"On condition that you commit to guaranteed four-week lead times and localized buffer warehousing in Tijuana, we are prepared to sign a two-year exclusive supply agreement.\" — What lead time is demanded?",
+          "opts": [
+            "Guaranteed 4-week lead times",
+            "Twelve months",
+            "Six months",
+            "No lead time guarantee"
+          ],
+          "options": [
+            "Guaranteed 4-week lead times",
+            "Twelve months",
+            "Six months",
+            "No lead time guarantee"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Stone requires: \"guaranteed four-week lead times.\""
+        },
+        {
+          "id": "B2-ex-03",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Under no circumstances should non-conforming batch units be re-certified without an exhaustive metallurgical failure analysis.",
+          "q": "[AUDIO] Listen to VP Sterling: \"Under no circumstances should non-conforming batch units be re-certified without an exhaustive metallurgical failure analysis.\" — What is strictly prohibited?",
+          "opts": [
+            "Re-certifying non-conforming batch units without exhaustive metallurgical failure analysis",
+            "Running the factory on weekends",
+            "Conducting failure analysis",
+            "Paying employee salaries"
+          ],
+          "options": [
+            "Re-certifying non-conforming batch units without exhaustive metallurgical failure analysis",
+            "Running the factory on weekends",
+            "Conducting failure analysis",
+            "Paying employee salaries"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Sterling strictly prohibits re-certifying non-conforming batch units without exhaustive metallurgical analysis."
+        },
+        {
+          "id": "B2-ex-04",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Let us touch base with our supply chain partners before we pull the trigger on the expanded manufacturing facility.",
+          "q": "[AUDIO] Listen to Managing Partner Bennett: \"Let us touch base with our supply chain partners before we pull the trigger on the expanded manufacturing facility.\" — What does \"pull the trigger\" mean?",
+          "opts": [
+            "Finalize and commit to the major investment decision",
+            "Fire a weapon",
+            "Cancel the expansion permanently",
+            "Sell the machines"
+          ],
+          "options": [
+            "Finalize and commit to the major investment decision",
+            "Fire a weapon",
+            "Cancel the expansion permanently",
+            "Sell the machines"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Pull the trigger\" is an American executive idiom meaning to commit to a major strategic decision."
+        },
+        {
+          "id": "B2-ex-05",
+          "section": "listening",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Had the design team _____ the finite element analysis earlier, the chassis fatigue cracks would have been prevented.",
+          "opts": [
+            "conducted",
+            "conducting",
+            "conduct",
+            "was conducted"
+          ],
+          "options": [
+            "conducted",
+            "conducting",
+            "conduct",
+            "was conducted"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Inversion of third conditional: \"Had [subject] conducted [past participle]...\"."
+        },
+        {
+          "id": "B2-ex-06",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "The board of directors insisted that the supplier _____ ISO 14001 environmental certification before Q4.",
+          "opts": [
+            "provide",
+            "provides",
+            "provided",
+            "will provide"
+          ],
+          "options": [
+            "provide",
+            "provides",
+            "provided",
+            "will provide"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Subjunctive mood with mandative \"insisted that [subject] + base verb\": \"provide\"."
+        },
+        {
+          "id": "B2-ex-07",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Under no circumstances _____ the cleanroom airlock doors be opened simultaneously.",
+          "opts": [
+            "should",
+            "should not",
+            "they should",
+            "should they not"
+          ],
+          "options": [
+            "should",
+            "should not",
+            "they should",
+            "should they not"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Negative inversion: auxiliary \"should\" precedes the subject \"the cleanroom airlock doors\"."
+        },
+        {
+          "id": "B2-ex-08",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Seldom _____ a nearshoring facility achieved full automotive IATF certification within six months.",
+          "opts": [
+            "has",
+            "have",
+            "did have",
+            "having"
+          ],
+          "options": [
+            "has",
+            "have",
+            "did have",
+            "having"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Negative frequency inversion with \"Seldom\" + singular auxiliary \"has\" + subject + participle."
+        },
+        {
+          "id": "B2-ex-09",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "By the time the European audit team arrives next Monday, our facility _____ all containment audits.",
+          "opts": [
+            "will have completed",
+            "will complete",
+            "completes",
+            "completed"
+          ],
+          "options": [
+            "will have completed",
+            "will complete",
+            "completes",
+            "completed"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Future perfect tense: action completed prior to a designated future time reference."
+        },
+        {
+          "id": "B2-ex-10",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Were the tariff regulations to change unexpectedly, our localized supply chain _____ absorb the impact.",
+          "opts": [
+            "would",
+            "will",
+            "is to",
+            "shall"
+          ],
+          "options": [
+            "would",
+            "will",
+            "is to",
+            "shall"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Formal conditional inversion with \"Were [subject] to [verb], [subject] would...\"."
+        },
+        {
+          "id": "B2-ex-11",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "In an aerospace Engineering Change Order, what is the principle of \"Form, Fit, and Function\"?",
+          "opts": [
+            "The criteria determining whether a part modification preserves interchangeability without altering the higher assembly",
+            "A marketing slogan for office chairs",
+            "An exercise routine for pilots",
+            "A packaging guideline for shipping boxes"
+          ],
+          "options": [
+            "The criteria determining whether a part modification preserves interchangeability without altering the higher assembly",
+            "A marketing slogan for office chairs",
+            "An exercise routine for pilots",
+            "A packaging guideline for shipping boxes"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Form, Fit, and Function (FFF) governs whether a part change requires a brand-new part number."
+        },
+        {
+          "id": "B2-ex-12",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "What is the metallurgical mechanism of \"Inter-granular Stress Corrosion Cracking\" (IGSCC)?",
+          "opts": [
+            "Cracking that propagates along microscopic metal grain boundaries under simultaneous tensile stress and chemical corrosion",
+            "Surface rust caused by water puddles",
+            "Paint peeling off after three years",
+            "Metal melting under sunlight"
+          ],
+          "options": [
+            "Cracking that propagates along microscopic metal grain boundaries under simultaneous tensile stress and chemical corrosion",
+            "Surface rust caused by water puddles",
+            "Paint peeling off after three years",
+            "Metal melting under sunlight"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "IGSCC propagates along alloy grain boundaries due to sensitized microstructure and tensile stress."
+        },
+        {
+          "id": "B2-ex-13",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "In high-reliability semiconductor packaging, what is the advantage of using Rogers high-frequency laminates over standard FR-4?",
+          "opts": [
+            "Significantly lower dielectric loss (Df) and stable dielectric constant (Dk) at gigahertz frequencies",
+            "It is made of recycled plastic",
+            "It is cheaper than cardboard",
+            "It glows under ultraviolet lamps"
+          ],
+          "options": [
+            "Significantly lower dielectric loss (Df) and stable dielectric constant (Dk) at gigahertz frequencies",
+            "It is made of recycled plastic",
+            "It is cheaper than cardboard",
+            "It glows under ultraviolet lamps"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Rogers laminates minimize signal attenuation and dielectric dispersion in RF and 5G microwave circuits."
+        },
+        {
+          "id": "B2-ex-14",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "Why does an executive escalation memo employ the BLUF (Bottom Line Up Front) structural protocol?",
+          "opts": [
+            "To provide C-level decision-makers immediate clarity on financial risk, safety impact, and decisive containment in the opening paragraph",
+            "Because executives do not have computers",
+            "To hide the bad news at the bottom",
+            "To save paper ink"
+          ],
+          "options": [
+            "To provide C-level decision-makers immediate clarity on financial risk, safety impact, and decisive containment in the opening paragraph",
+            "Because executives do not have computers",
+            "To hide the bad news at the bottom",
+            "To save paper ink"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "BLUF delivers the most critical operational conclusions and requested actions immediately."
+        },
+        {
+          "id": "B2-ex-15",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "In supply chain contracts, what does an \"indexation clause\" linked to the London Metal Exchange (LME) accomplish?",
+          "opts": [
+            "Automatically adjusts unit prices based on transparent public market commodity movements, removing speculative raw material risk",
+            "Fixes the price forever without changes",
+            "Forces the supplier to pay the buyer cash",
+            "Cancels the contract if copper prices rise"
+          ],
+          "options": [
+            "Automatically adjusts unit prices based on transparent public market commodity movements, removing speculative raw material risk",
+            "Fixes the price forever without changes",
+            "Forces the supplier to pay the buyer cash",
+            "Cancels the contract if copper prices rise"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Commodity indexation clauses tie contract price revisions to objective global market movements."
+        },
+        {
+          "id": "B2-ex-16",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "What does the American business idiom \"to get down to brass tacks\" signify in a negotiation?",
+          "opts": [
+            "To focus directly on the essential, practical, and factual matters at hand",
+            "To hammer copper nails into the table",
+            "To buy office supplies",
+            "To polish metal hardware"
+          ],
+          "options": [
+            "To focus directly on the essential, practical, and factual matters at hand",
+            "To hammer copper nails into the table",
+            "To buy office supplies",
+            "To polish metal hardware"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Get down to brass tacks\" means stripping away pleasantries to address fundamental financial and technical realities."
+        },
+        {
+          "id": "B2-ex-17",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "When an executive advises \"Do not cut corners on the cleanroom HVAC validation\", what is their intent?",
+          "opts": [
+            "Do not compromise quality standards or skip regulatory steps to save time or cost",
+            "Do not make circular rooms",
+            "Avoid sharp table edges",
+            "Turn off the ventilation fans"
+          ],
+          "options": [
+            "Do not compromise quality standards or skip regulatory steps to save time or cost",
+            "Do not make circular rooms",
+            "Avoid sharp table edges",
+            "Turn off the ventilation fans"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Cut corners\" means doing something poorly or taking cheap shortcuts that jeopardize long-term compliance."
+        },
+        {
+          "id": "B2-ex-18",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "What does \"keeping someone in the loop\" entail in cross-border program management?",
+          "opts": [
+            "Keeping stakeholders continuously informed and copied on project developments and decisions",
+            "Wrapping a wire around someone",
+            "Locking someone in an assembly cell",
+            "Excluding someone from email threads"
+          ],
+          "options": [
+            "Keeping stakeholders continuously informed and copied on project developments and decisions",
+            "Wrapping a wire around someone",
+            "Locking someone in an assembly cell",
+            "Excluding someone from email threads"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"In the loop\" means maintaining transparent and timely communication with interested parties."
+        },
+        {
+          "id": "B2-ex-19",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "In high-stakes cross-cultural negotiations between Mexican suppliers and American OEMs, why is direct communication regarding schedule delays preferred over polite ambiguity?",
+          "opts": [
+            "American corporate culture relies on low-context transparency to trigger automated risk mitigations, whereas ambiguity can be misconstrued as lack of integrity",
+            "Americans dislike conversation",
+            "Clocks run slower in Mexico",
+            "Delays are illegal under federal law"
+          ],
+          "options": [
+            "American corporate culture relies on low-context transparency to trigger automated risk mitigations, whereas ambiguity can be misconstrued as lack of integrity",
+            "Americans dislike conversation",
+            "Clocks run slower in Mexico",
+            "Delays are illegal under federal law"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Low-context business environments value prompt, factual escalation so contingency plans can be executed immediately."
+        },
+        {
+          "id": "B2-ex-20",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "Cuidado con el falso amigo: \"We must defend our technical premises before the executive board.\" — ¿Qué significa \"premises\"?",
+          "opts": [
+            "Premisas lógicas y fundamentos teóricos / o las instalaciones físicas del edificio",
+            "Premios de la academia de ciencias",
+            "Promesas que no se pueden cumplir",
+            "Préstamos bancarios"
+          ],
+          "options": [
+            "Premisas lógicas y fundamentos teóricos / o las instalaciones físicas del edificio",
+            "Premios de la academia de ciencias",
+            "Promesas que no se pueden cumplir",
+            "Préstamos bancarios"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Premises\" can denote logical foundations/hypotheses or physical facilities. It never means \"premios\"."
+        }
+      ]
+    },
+    "milestoneExam": {
+      "id": "exam-mcer-b2",
+      "level": "B2",
+      "title": "Examen de Certificación Integral Nivel B2 (Vantage Fluency • 60.0h)",
+      "titleEN": "CEFR B2 Comprehensive Milestone Certification Exam",
+      "timeLimitMinutes": 60,
+      "timeMinutes": 60,
+      "passingScore": 15,
+      "passScorePct": 75,
+      "totalQuestions": 20,
+      "totalItems": 20,
+      "badgeId": "stemos-mcer-b2-credential",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés IV (CACEI / DGUTyP / SEP).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés IV (CACEI / DGUTyP / SEP).",
+      "questions": [
+        {
+          "id": "B2-ex-01",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "ECO-2026-88 requests upgrading our high-speed transceiver to low-loss Rogers laminate. Had we conducted thermal dissipation simulations earlier in Q2, the dielectric breakdown issue would have been mitigated without halting pre-production.",
+          "q": "[AUDIO] Listen to CTO Dr. Robert Hayes: \"ECO-2026-88 requests upgrading our high-speed transceiver to low-loss Rogers laminate. Had we conducted thermal dissipation simulations earlier in Q2, the dielectric breakdown issue would have been mitigated without halting pre-production.\" — What would have mitigated the dielectric breakdown earlier?",
+          "opts": [
+            "Conducting thermal dissipation simulations earlier in Q2",
+            "Hiring more factory workers",
+            "Decreasing the warranty period",
+            "Ignoring the board failures"
+          ],
+          "options": [
+            "Conducting thermal dissipation simulations earlier in Q2",
+            "Hiring more factory workers",
+            "Decreasing the warranty period",
+            "Ignoring the board failures"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Dr. Hayes affirms: \"Had we conducted thermal dissipation simulations earlier in Q2, the dielectric breakdown issue would have been mitigated...\""
+        },
+        {
+          "id": "B2-ex-02",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "On condition that you commit to guaranteed four-week lead times and localized buffer warehousing in Tijuana, we are prepared to sign a two-year exclusive supply agreement.",
+          "q": "[AUDIO] Listen to Procurement Director Victoria Stone: \"On condition that you commit to guaranteed four-week lead times and localized buffer warehousing in Tijuana, we are prepared to sign a two-year exclusive supply agreement.\" — What lead time is demanded?",
+          "opts": [
+            "Guaranteed 4-week lead times",
+            "Twelve months",
+            "Six months",
+            "No lead time guarantee"
+          ],
+          "options": [
+            "Guaranteed 4-week lead times",
+            "Twelve months",
+            "Six months",
+            "No lead time guarantee"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Stone requires: \"guaranteed four-week lead times.\""
+        },
+        {
+          "id": "B2-ex-03",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Under no circumstances should non-conforming batch units be re-certified without an exhaustive metallurgical failure analysis.",
+          "q": "[AUDIO] Listen to VP Sterling: \"Under no circumstances should non-conforming batch units be re-certified without an exhaustive metallurgical failure analysis.\" — What is strictly prohibited?",
+          "opts": [
+            "Re-certifying non-conforming batch units without exhaustive metallurgical failure analysis",
+            "Running the factory on weekends",
+            "Conducting failure analysis",
+            "Paying employee salaries"
+          ],
+          "options": [
+            "Re-certifying non-conforming batch units without exhaustive metallurgical failure analysis",
+            "Running the factory on weekends",
+            "Conducting failure analysis",
+            "Paying employee salaries"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Sterling strictly prohibits re-certifying non-conforming batch units without exhaustive metallurgical analysis."
+        },
+        {
+          "id": "B2-ex-04",
+          "section": "listening",
+          "category": "Comprensión Auditiva",
+          "audioScript": "Let us touch base with our supply chain partners before we pull the trigger on the expanded manufacturing facility.",
+          "q": "[AUDIO] Listen to Managing Partner Bennett: \"Let us touch base with our supply chain partners before we pull the trigger on the expanded manufacturing facility.\" — What does \"pull the trigger\" mean?",
+          "opts": [
+            "Finalize and commit to the major investment decision",
+            "Fire a weapon",
+            "Cancel the expansion permanently",
+            "Sell the machines"
+          ],
+          "options": [
+            "Finalize and commit to the major investment decision",
+            "Fire a weapon",
+            "Cancel the expansion permanently",
+            "Sell the machines"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Pull the trigger\" is an American executive idiom meaning to commit to a major strategic decision."
+        },
+        {
+          "id": "B2-ex-05",
+          "section": "listening",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Had the design team _____ the finite element analysis earlier, the chassis fatigue cracks would have been prevented.",
+          "opts": [
+            "conducted",
+            "conducting",
+            "conduct",
+            "was conducted"
+          ],
+          "options": [
+            "conducted",
+            "conducting",
+            "conduct",
+            "was conducted"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Inversion of third conditional: \"Had [subject] conducted [past participle]...\"."
+        },
+        {
+          "id": "B2-ex-06",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "The board of directors insisted that the supplier _____ ISO 14001 environmental certification before Q4.",
+          "opts": [
+            "provide",
+            "provides",
+            "provided",
+            "will provide"
+          ],
+          "options": [
+            "provide",
+            "provides",
+            "provided",
+            "will provide"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Subjunctive mood with mandative \"insisted that [subject] + base verb\": \"provide\"."
+        },
+        {
+          "id": "B2-ex-07",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Under no circumstances _____ the cleanroom airlock doors be opened simultaneously.",
+          "opts": [
+            "should",
+            "should not",
+            "they should",
+            "should they not"
+          ],
+          "options": [
+            "should",
+            "should not",
+            "they should",
+            "should they not"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Negative inversion: auxiliary \"should\" precedes the subject \"the cleanroom airlock doors\"."
+        },
+        {
+          "id": "B2-ex-08",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Seldom _____ a nearshoring facility achieved full automotive IATF certification within six months.",
+          "opts": [
+            "has",
+            "have",
+            "did have",
+            "having"
+          ],
+          "options": [
+            "has",
+            "have",
+            "did have",
+            "having"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Negative frequency inversion with \"Seldom\" + singular auxiliary \"has\" + subject + participle."
+        },
+        {
+          "id": "B2-ex-09",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "By the time the European audit team arrives next Monday, our facility _____ all containment audits.",
+          "opts": [
+            "will have completed",
+            "will complete",
+            "completes",
+            "completed"
+          ],
+          "options": [
+            "will have completed",
+            "will complete",
+            "completes",
+            "completed"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Future perfect tense: action completed prior to a designated future time reference."
+        },
+        {
+          "id": "B2-ex-10",
+          "section": "grammar",
+          "category": "Gramática Aplicada & Sintaxis",
+          "q": "Were the tariff regulations to change unexpectedly, our localized supply chain _____ absorb the impact.",
+          "opts": [
+            "would",
+            "will",
+            "is to",
+            "shall"
+          ],
+          "options": [
+            "would",
+            "will",
+            "is to",
+            "shall"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Formal conditional inversion with \"Were [subject] to [verb], [subject] would...\"."
+        },
+        {
+          "id": "B2-ex-11",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "In an aerospace Engineering Change Order, what is the principle of \"Form, Fit, and Function\"?",
+          "opts": [
+            "The criteria determining whether a part modification preserves interchangeability without altering the higher assembly",
+            "A marketing slogan for office chairs",
+            "An exercise routine for pilots",
+            "A packaging guideline for shipping boxes"
+          ],
+          "options": [
+            "The criteria determining whether a part modification preserves interchangeability without altering the higher assembly",
+            "A marketing slogan for office chairs",
+            "An exercise routine for pilots",
+            "A packaging guideline for shipping boxes"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Form, Fit, and Function (FFF) governs whether a part change requires a brand-new part number."
+        },
+        {
+          "id": "B2-ex-12",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "What is the metallurgical mechanism of \"Inter-granular Stress Corrosion Cracking\" (IGSCC)?",
+          "opts": [
+            "Cracking that propagates along microscopic metal grain boundaries under simultaneous tensile stress and chemical corrosion",
+            "Surface rust caused by water puddles",
+            "Paint peeling off after three years",
+            "Metal melting under sunlight"
+          ],
+          "options": [
+            "Cracking that propagates along microscopic metal grain boundaries under simultaneous tensile stress and chemical corrosion",
+            "Surface rust caused by water puddles",
+            "Paint peeling off after three years",
+            "Metal melting under sunlight"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "IGSCC propagates along alloy grain boundaries due to sensitized microstructure and tensile stress."
+        },
+        {
+          "id": "B2-ex-13",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "In high-reliability semiconductor packaging, what is the advantage of using Rogers high-frequency laminates over standard FR-4?",
+          "opts": [
+            "Significantly lower dielectric loss (Df) and stable dielectric constant (Dk) at gigahertz frequencies",
+            "It is made of recycled plastic",
+            "It is cheaper than cardboard",
+            "It glows under ultraviolet lamps"
+          ],
+          "options": [
+            "Significantly lower dielectric loss (Df) and stable dielectric constant (Dk) at gigahertz frequencies",
+            "It is made of recycled plastic",
+            "It is cheaper than cardboard",
+            "It glows under ultraviolet lamps"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Rogers laminates minimize signal attenuation and dielectric dispersion in RF and 5G microwave circuits."
+        },
+        {
+          "id": "B2-ex-14",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "Why does an executive escalation memo employ the BLUF (Bottom Line Up Front) structural protocol?",
+          "opts": [
+            "To provide C-level decision-makers immediate clarity on financial risk, safety impact, and decisive containment in the opening paragraph",
+            "Because executives do not have computers",
+            "To hide the bad news at the bottom",
+            "To save paper ink"
+          ],
+          "options": [
+            "To provide C-level decision-makers immediate clarity on financial risk, safety impact, and decisive containment in the opening paragraph",
+            "Because executives do not have computers",
+            "To hide the bad news at the bottom",
+            "To save paper ink"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "BLUF delivers the most critical operational conclusions and requested actions immediately."
+        },
+        {
+          "id": "B2-ex-15",
+          "section": "reading",
+          "category": "Lectura Técnica & Normas",
+          "q": "In supply chain contracts, what does an \"indexation clause\" linked to the London Metal Exchange (LME) accomplish?",
+          "opts": [
+            "Automatically adjusts unit prices based on transparent public market commodity movements, removing speculative raw material risk",
+            "Fixes the price forever without changes",
+            "Forces the supplier to pay the buyer cash",
+            "Cancels the contract if copper prices rise"
+          ],
+          "options": [
+            "Automatically adjusts unit prices based on transparent public market commodity movements, removing speculative raw material risk",
+            "Fixes the price forever without changes",
+            "Forces the supplier to pay the buyer cash",
+            "Cancels the contract if copper prices rise"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Commodity indexation clauses tie contract price revisions to objective global market movements."
+        },
+        {
+          "id": "B2-ex-16",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "What does the American business idiom \"to get down to brass tacks\" signify in a negotiation?",
+          "opts": [
+            "To focus directly on the essential, practical, and factual matters at hand",
+            "To hammer copper nails into the table",
+            "To buy office supplies",
+            "To polish metal hardware"
+          ],
+          "options": [
+            "To focus directly on the essential, practical, and factual matters at hand",
+            "To hammer copper nails into the table",
+            "To buy office supplies",
+            "To polish metal hardware"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Get down to brass tacks\" means stripping away pleasantries to address fundamental financial and technical realities."
+        },
+        {
+          "id": "B2-ex-17",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "When an executive advises \"Do not cut corners on the cleanroom HVAC validation\", what is their intent?",
+          "opts": [
+            "Do not compromise quality standards or skip regulatory steps to save time or cost",
+            "Do not make circular rooms",
+            "Avoid sharp table edges",
+            "Turn off the ventilation fans"
+          ],
+          "options": [
+            "Do not compromise quality standards or skip regulatory steps to save time or cost",
+            "Do not make circular rooms",
+            "Avoid sharp table edges",
+            "Turn off the ventilation fans"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Cut corners\" means doing something poorly or taking cheap shortcuts that jeopardize long-term compliance."
+        },
+        {
+          "id": "B2-ex-18",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "What does \"keeping someone in the loop\" entail in cross-border program management?",
+          "opts": [
+            "Keeping stakeholders continuously informed and copied on project developments and decisions",
+            "Wrapping a wire around someone",
+            "Locking someone in an assembly cell",
+            "Excluding someone from email threads"
+          ],
+          "options": [
+            "Keeping stakeholders continuously informed and copied on project developments and decisions",
+            "Wrapping a wire around someone",
+            "Locking someone in an assembly cell",
+            "Excluding someone from email threads"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"In the loop\" means maintaining transparent and timely communication with interested parties."
+        },
+        {
+          "id": "B2-ex-19",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "In high-stakes cross-cultural negotiations between Mexican suppliers and American OEMs, why is direct communication regarding schedule delays preferred over polite ambiguity?",
+          "opts": [
+            "American corporate culture relies on low-context transparency to trigger automated risk mitigations, whereas ambiguity can be misconstrued as lack of integrity",
+            "Americans dislike conversation",
+            "Clocks run slower in Mexico",
+            "Delays are illegal under federal law"
+          ],
+          "options": [
+            "American corporate culture relies on low-context transparency to trigger automated risk mitigations, whereas ambiguity can be misconstrued as lack of integrity",
+            "Americans dislike conversation",
+            "Clocks run slower in Mexico",
+            "Delays are illegal under federal law"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "Low-context business environments value prompt, factual escalation so contingency plans can be executed immediately."
+        },
+        {
+          "id": "B2-ex-20",
+          "section": "pragmatics",
+          "category": "Pragmática & Protocolo Laboral",
+          "q": "Cuidado con el falso amigo: \"We must defend our technical premises before the executive board.\" — ¿Qué significa \"premises\"?",
+          "opts": [
+            "Premisas lógicas y fundamentos teóricos / o las instalaciones físicas del edificio",
+            "Premios de la academia de ciencias",
+            "Promesas que no se pueden cumplir",
+            "Préstamos bancarios"
+          ],
+          "options": [
+            "Premisas lógicas y fundamentos teóricos / o las instalaciones físicas del edificio",
+            "Premios de la academia de ciencias",
+            "Promesas que no se pueden cumplir",
+            "Préstamos bancarios"
+          ],
+          "ans": 0,
+          "answer": 0,
+          "correct": 0,
+          "exp": "\"Premises\" can denote logical foundations/hypotheses or physical facilities. It never means \"premios\"."
+        }
+      ]
     }
   }
 ];
@@ -6793,15 +14946,27 @@
       example: v.example || v.sample
     }));
 
+    const rawReadingQs = (u.reading && u.reading.questions) || (u.reading && u.reading.question ? [{
+      q: u.reading.question,
+      options: u.reading.options || u.reading.opts || [],
+      answer: u.reading.correct !== undefined ? u.reading.correct : (u.reading.answer || 0),
+      correct: u.reading.correct !== undefined ? u.reading.correct : (u.reading.answer || 0),
+      exp: u.reading.exp || 'Technical standard verification.'
+    }] : []);
+
+    const normalizedReadingQs = rawReadingQs.map(rq => ({
+      q: rq.q,
+      options: rq.options || rq.opts || [],
+      opts: rq.opts || rq.options || [],
+      answer: rq.answer !== undefined ? rq.answer : (rq.correct !== undefined ? rq.correct : 0),
+      correct: rq.correct !== undefined ? rq.correct : (rq.answer !== undefined ? rq.answer : 0),
+      exp: rq.exp || rq.explanation || 'Technical standard verification.'
+    }));
+
     const readingObj = Object.assign({}, u.reading, {
       passage: (u.reading && (u.reading.passage || u.reading.text)) || '',
       text: (u.reading && (u.reading.text || u.reading.passage)) || '',
-      questions: (u.reading && u.reading.questions) || (u.reading && u.reading.question ? [{
-        q: u.reading.question,
-        options: u.reading.options || [],
-        answer: u.reading.correct !== undefined ? u.reading.correct : (u.reading.answer || 0),
-        correct: u.reading.correct !== undefined ? u.reading.correct : (u.reading.answer || 0)
-      }] : [])
+      questions: normalizedReadingQs
     });
 
     const quizArr = (u.unitQuiz || u.quiz || []).map(q => ({
@@ -6841,12 +15006,15 @@
       unitQuiz: quizArr,
       falseCognates: u.falseCognates || [],
       pronunciationLab: u.pronunciationLab || [],
-      crucible: crucibleObj
+      crucible: crucibleObj,
+      listeningLab: u.listeningLab || null,
+      grammarDrills: u.grammarDrills || [],
+      vocabularyExercises: u.vocabularyExercises || []
     });
   }
 
   return {
-    version: '2.0.0-60h-accredited',
+    version: '2.5.0-comprehensive-accredited',
     title: 'stemOS MCER Core — 60h Accredited Courses (A1-B2)',
     levels: MCER_LEVELS,
     getLevelById: function(levelId) {
@@ -6854,6 +15022,13 @@
     },
     getLevel: function(levelId) {
       return this.getLevelById(levelId);
+    },
+    getLevelExam: function(levelId) {
+      const lvl = this.getLevelById(levelId);
+      return lvl ? (lvl.certificationExam || lvl.milestoneExam || null) : null;
+    },
+    getAllExams: function() {
+      return MCER_LEVELS.map(lvl => lvl.certificationExam).filter(Boolean);
     },
     getAllUnits: function() {
       const allUnits = [];
@@ -6875,3 +15050,4 @@
     }
   };
 }));
+

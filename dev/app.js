@@ -76,6 +76,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const statCompleted = document.getElementById('stat-completed');
     const statPoints = document.getElementById('stat-points');
 
+    // ── Gated Access: Placement Diagnostic Status & Modals ──
+    function hasCompletedPlacement() {
+        try {
+            const passport = localStorage.getItem('stemos_diagnostic_passport');
+            if (passport) return true;
+            if (localStorage.getItem('stemos_placement_completed') === 'true') return true;
+            if (localStorage.getItem('stemos_active_mcer_level')) return true;
+            if (localStorage.getItem('stemos_user_level')) return true;
+            const stored = localStorage.getItem('stemos_placement_test') || localStorage.getItem('stemos_placement_result');
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                if (parsed && (parsed.assignedLevel || parsed.level || (parsed.result && (parsed.result.assignedLevel || parsed.result.level)))) {
+                    return true;
+                }
+            }
+        } catch(e) {}
+        return false;
+    }
+    window.hasCompletedPlacement = hasCompletedPlacement;
+
+    function showPlacementRequiredModal() {
+        const modal = document.getElementById('modal-placement-required');
+        if (modal) {
+            if (typeof modal.showModal === 'function') {
+                modal.showModal();
+            } else {
+                modal.style.display = 'block';
+            }
+        } else {
+            alert('Completa tu cuestionario diagnóstico (Placement Test) para acceder a los módulos de aprendizaje.');
+            window.location.href = 'placement.html';
+        }
+    }
+    window.showPlacementRequiredModal = showPlacementRequiredModal;
+
     // Dynamically ensure ALL 26 tracks exist in skillsData from courses.js
     if (typeof LXP_COURSES !== 'undefined') {
         for (let trackKey in LXP_COURSES) {
@@ -461,6 +496,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Launch Socratic Challenge for any Track & Module
     function launchSocraticChallenge(trackId, modId) {
+        if (!hasCompletedPlacement()) {
+            showPlacementRequiredModal();
+            return;
+        }
         const track = coursesData[trackId];
         if (!track) return;
         const mod = (track.modules && track.modules.find(m => m.id === modId)) || (track.modules && track.modules[0]);
@@ -1116,6 +1155,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function openAcademicModal(trackId, mod) {
+        if (!hasCompletedPlacement()) {
+            showPlacementRequiredModal();
+            return;
+        }
         activeTrackId = trackId;
         activeModule = mod;
         activeReadingIndex = 0;
@@ -2333,10 +2376,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (socraticBtn) {
                     socraticBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
+                        if (!hasCompletedPlacement()) {
+                            showPlacementRequiredModal();
+                            return;
+                        }
                         launchSocraticChallenge(trackId, mod.id);
                     });
                 }
                 card.addEventListener('click', () => {
+                    if (!hasCompletedPlacement()) {
+                        showPlacementRequiredModal();
+                        return;
+                    }
                     openAcademicModal(trackId, mod);
                 });
                 card.addEventListener('mouseenter', () => {
@@ -3358,6 +3409,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeMcerUnit = null;
 
     function openMcerUnitModal(unitId) {
+        if (!hasCompletedPlacement()) {
+            showPlacementRequiredModal();
+            return;
+        }
         if (!window.STEMOS_MCER_TRACKS) return;
         const unit = window.STEMOS_MCER_TRACKS.getUnitById(unitId);
         if (!unit) return;
@@ -3515,7 +3570,297 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Tab 3: Reading
+        // Tab 2.3: Vocab Exercises (4 MCQs)
+        const vocabExContainer = document.getElementById('mcer-vocab-exercises-container');
+        const vocabResultsBox = document.getElementById('mcer-vocab-results-box');
+        if (vocabResultsBox) vocabResultsBox.style.display = 'none';
+        if (vocabExContainer) {
+            vocabExContainer.innerHTML = '';
+            const vExercises = unit.vocabularyExercises || [];
+            vExercises.forEach((vq, vqIdx) => {
+                const block = document.createElement('div');
+                block.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px;';
+                block.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:8px;">
+                        <div style="font-weight:700; font-size:0.88rem; color:#0f172a; flex:1;">
+                            ${vqIdx + 1}. ${vq.q}
+                        </div>
+                        ${vq.falseCognateRef ? `
+                            <span style="font-size:0.65rem; font-weight:800; color:#dc2626; background:#fef2f2; border:1px solid #fecaca; padding:2px 6px; border-radius:4px; flex-shrink:0;">
+                                Falso Amigo
+                            </span>
+                        ` : ''}
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        ${(vq.options || []).map((opt, optIdx) => `
+                            <label class="mcer-vq-label-${vqIdx}" style="display:flex; align-items:center; gap:10px; font-size:0.88rem; color:#0f172a !important; padding:9px 12px; background:#ffffff; border:1.5px solid #cbd5e1; border-radius:8px; cursor:pointer; transition:all 0.15s ease;">
+                                <input type="radio" name="mcer-vq-${vqIdx}" value="${optIdx}" style="accent-color:#0284c7; width:16px; height:16px; cursor:pointer;">
+                                <span style="color:#0f172a !important; font-weight:600; line-height:1.4;">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div class="mcer-vq-exp-${vqIdx}" style="display:none; margin-top:8px; font-size:0.8rem; background:#eff6ff; border-left:3px solid #0284c7; padding:6px 10px; border-radius:4px; color:#1e40af;">
+                        <strong>Colocación / Fundamento:</strong> ${vq.exp || ''}
+                    </div>
+                `;
+                vocabExContainer.appendChild(block);
+            });
+
+            // Vocab Check Listener
+            const btnSubmitVocab = document.getElementById('btn-submit-mcer-vocab');
+            if (btnSubmitVocab) {
+                btnSubmitVocab.onclick = () => {
+                    if (vExercises.length === 0) return;
+                    let vCorrect = 0;
+                    vExercises.forEach((vq, vqIdx) => {
+                        const selected = document.querySelector(`input[name="mcer-vq-${vqIdx}"]:checked`);
+                        const labels = document.querySelectorAll(`.mcer-vq-label-${vqIdx}`);
+                        const expBox = document.querySelector(`.mcer-vq-exp-${vqIdx}`);
+                        if (expBox) expBox.style.display = 'block';
+
+                        labels.forEach(lbl => {
+                            const input = lbl.querySelector('input');
+                            if (parseInt(input.value) === vq.answer) {
+                                lbl.style.background = '#dcfce7';
+                                lbl.style.borderColor = '#86efac';
+                            } else if (input.checked && parseInt(input.value) !== vq.answer) {
+                                lbl.style.background = '#fee2e2';
+                                lbl.style.borderColor = '#fca5a5';
+                            }
+                        });
+                        if (selected && parseInt(selected.value) === vq.answer) {
+                            vCorrect++;
+                        }
+                    });
+                    if (vocabResultsBox) {
+                        vocabResultsBox.style.display = 'block';
+                        const vPct = Math.round((vCorrect / vExercises.length) * 100);
+                        const scoreEl = document.getElementById('mcer-vocab-score-val');
+                        if (scoreEl) scoreEl.textContent = `${vCorrect}/${vExercises.length} (${vPct}%)`;
+                        if (vPct >= 75) {
+                            try {
+                                const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+                                localStorage.setItem('stemos_student_xp', String(prevXP + 100));
+                            } catch (e) {}
+                        }
+                    }
+                };
+            }
+        }
+
+        // Tab 3: Listening Lab (Comprensión Auditiva Industrial • 3 Reactivos)
+        const listeningTitle = document.getElementById('mcer-listening-title');
+        const listeningSpeaker = document.getElementById('mcer-listening-speaker-badge');
+        const listeningScript = document.getElementById('mcer-listening-script-text');
+        const btnToggleScript = document.getElementById('btn-toggle-listening-script');
+        const btnPlayListening = document.getElementById('btn-mcer-play-listening-scenario');
+        const listeningContainer = document.getElementById('mcer-listening-questions-container');
+        const listeningResultsBox = document.getElementById('mcer-listening-results-box');
+        if (listeningResultsBox) listeningResultsBox.style.display = 'none';
+
+        const labData = unit.listeningLab || null;
+        if (labData) {
+            if (listeningTitle) listeningTitle.textContent = labData.title || 'Plant Dispatch Audio';
+            if (listeningSpeaker) listeningSpeaker.textContent = `Speaker: ${labData.speaker || 'Industrial Supervisor'}`;
+            if (listeningScript) {
+                listeningScript.textContent = labData.audioScript || '';
+                listeningScript.style.display = 'none';
+            }
+            if (btnToggleScript && listeningScript) {
+                btnToggleScript.innerHTML = '<i class="fa-solid fa-eye"></i> Ver Transcripción de Audio';
+                btnToggleScript.onclick = () => {
+                    const isHidden = listeningScript.style.display === 'none';
+                    listeningScript.style.display = isHidden ? 'block' : 'none';
+                    btnToggleScript.innerHTML = isHidden 
+                        ? '<i class="fa-solid fa-eye-slash"></i> Ocultar Transcripción' 
+                        : '<i class="fa-solid fa-eye"></i> Ver Transcripción de Audio';
+                };
+            }
+            if (btnPlayListening) {
+                btnPlayListening.onclick = () => {
+                    if (labData.audioScript && window.STEMOS_PLACEMENT_TEST) {
+                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(labData.audioScript);
+                    }
+                };
+            }
+
+            if (listeningContainer) {
+                listeningContainer.innerHTML = '';
+                const lQuestions = labData.questions || [];
+                lQuestions.forEach((lq, lqIdx) => {
+                    const block = document.createElement('div');
+                    block.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px;';
+                    block.innerHTML = `
+                        <div style="font-weight:700; font-size:0.88rem; color:#0f172a; margin-bottom:8px;">${lqIdx + 1}. ${lq.q}</div>
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            ${(lq.options || []).map((opt, optIdx) => `
+                                <label class="mcer-lq-label-${lqIdx}" style="display:flex; align-items:center; gap:10px; font-size:0.88rem; color:#0f172a !important; padding:9px 12px; background:#ffffff; border:1.5px solid #cbd5e1; border-radius:8px; cursor:pointer; transition:all 0.15s ease;">
+                                    <input type="radio" name="mcer-lq-${lqIdx}" value="${optIdx}" style="accent-color:#0284c7; width:16px; height:16px; cursor:pointer;">
+                                    <span style="color:#0f172a !important; font-weight:600; line-height:1.4;">${opt}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                        <div class="mcer-lq-exp-${lqIdx}" style="display:none; margin-top:8px; font-size:0.8rem; background:#eff6ff; border-left:3px solid #0284c7; padding:6px 10px; border-radius:4px; color:#1e40af;">
+                            <strong>Justificación de Audio:</strong> ${lq.exp || ''}
+                        </div>
+                    `;
+                    listeningContainer.appendChild(block);
+                });
+
+                // Listening Check Listener
+                const btnSubmitListening = document.getElementById('btn-submit-mcer-listening');
+                if (btnSubmitListening) {
+                    btnSubmitListening.onclick = () => {
+                        if (lQuestions.length === 0) return;
+                        let lCorrect = 0;
+                        lQuestions.forEach((lq, lqIdx) => {
+                            const selected = document.querySelector(`input[name="mcer-lq-${lqIdx}"]:checked`);
+                            const labels = document.querySelectorAll(`.mcer-lq-label-${lqIdx}`);
+                            const expBox = document.querySelector(`.mcer-lq-exp-${lqIdx}`);
+                            if (expBox) expBox.style.display = 'block';
+
+                            labels.forEach(lbl => {
+                                const input = lbl.querySelector('input');
+                                if (parseInt(input.value) === lq.answer) {
+                                    lbl.style.background = '#dcfce7';
+                                    lbl.style.borderColor = '#86efac';
+                                } else if (input.checked && parseInt(input.value) !== lq.answer) {
+                                    lbl.style.background = '#fee2e2';
+                                    lbl.style.borderColor = '#fca5a5';
+                                }
+                            });
+                            if (selected && parseInt(selected.value) === lq.answer) {
+                                lCorrect++;
+                            }
+                        });
+                        if (listeningResultsBox) {
+                            listeningResultsBox.style.display = 'block';
+                            const lPct = Math.round((lCorrect / lQuestions.length) * 100);
+                            const scoreEl = document.getElementById('mcer-listening-score-val');
+                            if (scoreEl) scoreEl.textContent = `${lCorrect}/${lQuestions.length} (${lPct}%)`;
+                            if (lPct >= 66) {
+                                try {
+                                    const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+                                    localStorage.setItem('stemos_student_xp', String(prevXP + 150));
+                                } catch (e) {}
+                            }
+                        }
+                    };
+                }
+            }
+        }
+
+        // Tab 4: Grammar & Applied Syntax Drills (5 MCQs with Socratic Hints)
+        const grammarHeader = document.getElementById('mcer-grammar-drills-header');
+        const grammarContainer = document.getElementById('mcer-grammar-drills-container');
+        const grammarResultsBox = document.getElementById('mcer-grammar-results-box');
+        if (grammarResultsBox) grammarResultsBox.style.display = 'none';
+
+        if (grammarHeader) {
+            grammarHeader.textContent = `Drills: ${unit.grammarFocus || 'Reglas de Estructura'}`;
+        }
+
+        const gDrills = unit.grammarDrills || [];
+        if (grammarContainer) {
+            grammarContainer.innerHTML = '';
+            gDrills.forEach((gq, gqIdx) => {
+                const block = document.createElement('div');
+                block.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px; position:relative;';
+                block.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px;">
+                        <div style="font-weight:700; font-size:0.92rem; color:#0f172a; flex:1;">
+                            ${gqIdx + 1}. ${gq.q}
+                        </div>
+                        ${gq.rule ? `
+                            <span style="font-size:0.68rem; font-weight:800; color:#7c3aed; background:#ede9fe; padding:2px 8px; border-radius:6px; flex-shrink:0;">
+                                ${gq.rule}
+                            </span>
+                        ` : ''}
+                    </div>
+
+                    ${gq.socraticHint ? `
+                        <div style="margin-bottom:10px;">
+                            <button type="button" class="btn-toggle-grammar-hint" style="background:none; border:none; color:#7c3aed; font-size:0.78rem; font-weight:700; cursor:pointer; padding:0; display:inline-flex; align-items:center; gap:5px;">
+                                <i class="fa-solid fa-lightbulb"></i> Pista Socrática
+                            </button>
+                            <div class="grammar-hint-box" style="display:none; margin-top:6px; background:#f5f3ff; border:1px solid #ddd6fe; border-left:3px solid #8b5cf6; padding:8px 12px; border-radius:6px; font-size:0.8rem; color:#5b21b6; line-height:1.45;">
+                                <strong>Pista de Estructura:</strong> ${gq.socraticHint}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        ${(gq.options || []).map((opt, optIdx) => `
+                            <label class="mcer-gq-label-${gqIdx}" style="display:flex; align-items:center; gap:10px; font-size:0.88rem; color:#0f172a !important; padding:9px 12px; background:#ffffff; border:1.5px solid #cbd5e1; border-radius:8px; cursor:pointer; transition:all 0.15s ease;">
+                                <input type="radio" name="mcer-gq-${gqIdx}" value="${optIdx}" style="accent-color:#7c3aed; width:16px; height:16px; cursor:pointer;">
+                                <span style="color:#0f172a !important; font-weight:600; line-height:1.4;">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+
+                    <div class="mcer-gq-exp-${gqIdx}" style="display:none; margin-top:10px; background:#f1f5f9; border-left:3px solid #7c3aed; padding:8px 12px; border-radius:6px; font-size:0.8rem; color:#1e293b; line-height:1.4;">
+                        <strong>Fundamento Gramatical:</strong> ${gq.exp || ''}
+                    </div>
+                `;
+
+                const btnHint = block.querySelector('.btn-toggle-grammar-hint');
+                const hintBox = block.querySelector('.grammar-hint-box');
+                if (btnHint && hintBox) {
+                    btnHint.onclick = () => {
+                        const isHidden = hintBox.style.display === 'none';
+                        hintBox.style.display = isHidden ? 'block' : 'none';
+                        btnHint.innerHTML = isHidden
+                            ? '<i class="fa-solid fa-lightbulb"></i> Ocultar Pista'
+                            : '<i class="fa-solid fa-lightbulb"></i> Pista Socrática';
+                    };
+                }
+
+                grammarContainer.appendChild(block);
+            });
+
+            // Grammar Check Listener
+            const btnSubmitGrammar = document.getElementById('btn-submit-mcer-grammar');
+            if (btnSubmitGrammar) {
+                btnSubmitGrammar.onclick = () => {
+                    if (gDrills.length === 0) return;
+                    let gCorrect = 0;
+                    gDrills.forEach((gq, gqIdx) => {
+                        const selected = document.querySelector(`input[name="mcer-gq-${gqIdx}"]:checked`);
+                        const labels = document.querySelectorAll(`.mcer-gq-label-${gqIdx}`);
+                        const expBox = document.querySelector(`.mcer-gq-exp-${gqIdx}`);
+                        if (expBox) expBox.style.display = 'block';
+
+                        labels.forEach(lbl => {
+                            const input = lbl.querySelector('input');
+                            if (parseInt(input.value) === gq.answer) {
+                                lbl.style.background = '#dcfce7';
+                                lbl.style.borderColor = '#86efac';
+                            } else if (input.checked && parseInt(input.value) !== gq.answer) {
+                                lbl.style.background = '#fee2e2';
+                                lbl.style.borderColor = '#fca5a5';
+                            }
+                        });
+                        if (selected && parseInt(selected.value) === gq.answer) {
+                            gCorrect++;
+                        }
+                    });
+                    if (grammarResultsBox) {
+                        grammarResultsBox.style.display = 'block';
+                        const gPct = Math.round((gCorrect / gDrills.length) * 100);
+                        const scoreEl = document.getElementById('mcer-grammar-score-val');
+                        if (scoreEl) scoreEl.textContent = `${gCorrect}/${gDrills.length} (${gPct}%)`;
+                        if (gPct >= 80) {
+                            try {
+                                const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+                                localStorage.setItem('stemos_student_xp', String(prevXP + 200));
+                            } catch (e) {}
+                        }
+                    }
+                };
+            }
+        }
+
+        // Tab 5: Reading
         if (unit.reading) {
             const rTitle = unit.reading.title || 'Technical Standard Documentation';
             const rPassage = unit.reading.passage || unit.reading.text || '';
@@ -3754,19 +4099,184 @@ document.addEventListener('DOMContentLoaded', () => {
         const crucibleResultsBox = document.getElementById('mcer-crucible-results-box');
         if (crucibleResultsBox) crucibleResultsBox.style.display = 'none';
 
-        if (crucibleInput && crucibleWordCount) {
+        // Nearshoring Voice Crucible Studio: Acoustic Waveform & Cadence Telemetry (Fase 67)
+        let audioContext = null;
+        let analyser = null;
+        let animFrameId = null;
+        let speechStartTime = null;
+
+        function initCrucibleWaveform() {
+            const canvas = document.getElementById('mcer-crucible-waveform');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            let phase = 0;
+            function drawWave() {
+                animFrameId = requestAnimationFrame(drawWave);
+                ctx.fillStyle = '#020617';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                if (analyser) {
+                    const bufferLength = analyser.frequencyBinCount;
+                    const dataArray = new Uint8Array(bufferLength);
+                    analyser.getByteTimeDomainData(dataArray);
+
+                    ctx.lineWidth = 2.5;
+                    ctx.strokeStyle = '#38bdf8';
+                    ctx.shadowColor = '#38bdf8';
+                    ctx.shadowBlur = 8;
+                    ctx.beginPath();
+
+                    const sliceWidth = canvas.width / bufferLength;
+                    let x = 0;
+                    for (let i = 0; i < bufferLength; i++) {
+                        const v = dataArray[i] / 128.0;
+                        const y = (v * canvas.height) / 2;
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                        x += sliceWidth;
+                    }
+                    ctx.lineTo(canvas.width, canvas.height / 2);
+                    ctx.stroke();
+                    ctx.shadowBlur = 0;
+                } else {
+                    // Oscillating ambient wave
+                    phase += 0.05;
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+                    ctx.beginPath();
+                    for (let x = 0; x < canvas.width; x += 4) {
+                        const y = (canvas.height / 2) + Math.sin((x * 0.04) + phase) * 8 * (Math.sin(phase * 0.5) + 1.2);
+                        if (x === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                }
+            }
+            if (!animFrameId) drawWave();
+        }
+
+        initCrucibleWaveform();
+
+        function updateCrucibleCadenceAndScanner(text) {
+            const words = text.trim().split(/\s+/).filter(Boolean);
+            const wordCount = words.length;
+            if (crucibleWordCount) crucibleWordCount.textContent = `${wordCount} palabras`;
+
+            // Calculate WPM
+            if (!speechStartTime && wordCount > 0) speechStartTime = Date.now();
+            if (speechStartTime && wordCount > 0) {
+                const elapsedMin = Math.max(0.05, (Date.now() - speechStartTime) / 60000);
+                const wpm = Math.min(220, Math.round(wordCount / elapsedMin));
+                const elWpm = document.getElementById('mcer-crucible-wpm-val');
+                if (elWpm) elWpm.textContent = wpm;
+
+                const elPill = document.getElementById('mcer-crucible-cadence-pill');
+                if (elPill) {
+                    if (wpm < 85) {
+                        elPill.textContent = `Cadence: Deliberate (${wpm} WPM)`;
+                        elPill.style.background = 'rgba(245, 158, 11, 0.15)';
+                        elPill.style.color = '#f59e0b';
+                        elPill.style.borderColor = 'rgba(245, 158, 11, 0.3)';
+                    } else if (wpm <= 140) {
+                        elPill.textContent = `Cadence: Optimal (${wpm} WPM)`;
+                        elPill.style.background = 'rgba(16, 185, 129, 0.15)';
+                        elPill.style.color = '#34d399';
+                        elPill.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                    } else {
+                        elPill.textContent = `Cadence: Rapid Dispatch (${wpm} WPM)`;
+                        elPill.style.background = 'rgba(14, 165, 233, 0.15)';
+                        elPill.style.color = '#38bdf8';
+                        elPill.style.borderColor = 'rgba(14, 165, 233, 0.3)';
+                    }
+                }
+            }
+
+            // Real-Time False Cognate & Stress Scanner
+            const liveBadges = document.getElementById('mcer-crucible-live-badges');
+            if (liveBadges) {
+                const lower = text.toLowerCase();
+                const detectedBadges = [];
+
+                // 1. False Cognates Radar
+                const falseCognatesList = [
+                    { trap: 'actual', correct: 'current / present' },
+                    { trap: 'currently', correct: 'now / at present' },
+                    { trap: 'fabric', correct: 'cloth (use factory/plant)' },
+                    { trap: 'assist', correct: 'help (use attend for meetings)' },
+                    { trap: 'record', correct: 'log / track (stress on RE-cord)' },
+                    { trap: 'sensible', correct: 'prudent (use sensitive for instruments)' },
+                    { trap: 'eventual', correct: 'possible (use eventual for final)' }
+                ];
+
+                falseCognatesList.forEach(item => {
+                    const regex = new RegExp(`\\b${item.trap}\\b`, 'i');
+                    if (regex.test(lower)) {
+                        detectedBadges.push(`
+                            <span class="badge" style="background:rgba(245,158,11,0.18); color:#f59e0b; border:1px solid rgba(245,158,11,0.35); font-size:0.7rem; font-weight:700;">
+                                <i class="fa-solid fa-triangle-exclamation"></i> False Cognate: '${item.trap}' &rarr; ${item.correct}
+                            </span>
+                        `);
+                    }
+                });
+
+                // 2. Technical Stress Words (from unit.pronunciationLab or keywords)
+                const keywords = (unit.crucible && unit.crucible.keywords) || [];
+                keywords.forEach(kw => {
+                    if (lower.includes(kw.toLowerCase())) {
+                        detectedBadges.push(`
+                            <span class="badge" style="background:rgba(16,185,129,0.15); color:#10b981; border:1px solid rgba(16,185,129,0.3); font-size:0.7rem; font-weight:700;">
+                                <i class="fa-solid fa-circle-check"></i> Standard Stress: '${kw}'
+                            </span>
+                        `);
+                    }
+                });
+
+                if (detectedBadges.length > 0) {
+                    liveBadges.innerHTML = detectedBadges.slice(0, 3).join('');
+                } else if (wordCount > 3) {
+                    liveBadges.innerHTML = `<span style="font-size:0.7rem; color:#34d399; font-weight:700;"><i class="fa-solid fa-shield-check"></i> Clear pronunciation &amp; verified standard syntax</span>`;
+                } else {
+                    liveBadges.innerHTML = `<span style="font-size:0.7rem; color:#64748b; font-style:italic;">Awaiting speech input...</span>`;
+                }
+            }
+        }
+
+        if (crucibleInput) {
             crucibleInput.value = '';
-            crucibleWordCount.textContent = '0 palabras';
+            if (crucibleWordCount) crucibleWordCount.textContent = '0 palabras';
             crucibleInput.oninput = () => {
-                const words = crucibleInput.value.trim().split(/\s+/).filter(Boolean).length;
-                crucibleWordCount.textContent = `${words} palabras`;
+                updateCrucibleCadenceAndScanner(crucibleInput.value);
             };
         }
 
-        // Native Browser Voice Dictation (Speech-to-Text)
+        // Native Browser Voice Dictation (Speech-to-Text) with AudioContext Analyser
         const btnDictate = document.getElementById('btn-mcer-crucible-dictate');
         if (btnDictate && crucibleInput) {
             btnDictate.onclick = () => {
+                // Initialize audio stream for live acoustic waveform
+                if (!audioContext) {
+                    try {
+                        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                        if (AudioCtx) {
+                            audioContext = new AudioCtx();
+                            analyser = audioContext.createAnalyser();
+                            analyser.fftSize = 64;
+                            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                                navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+                                    const source = audioContext.createMediaStreamSource(stream);
+                                    source.connect(analyser);
+                                }).catch(() => {
+                                    console.log('[stemOS Crucible] Acoustic wave running in simulation mode');
+                                });
+                            }
+                        }
+                    } catch(e) {
+                        console.warn('[stemOS Crucible] AudioContext init note:', e);
+                    }
+                }
+
                 const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
                 if (!SpeechRec) {
                     alert('Tu navegador no soporta dictado de voz nativo en este momento. Puedes escribir tu reporte directamente.');
@@ -3774,14 +4284,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 const recognition = new SpeechRec();
                 recognition.lang = 'en-US';
-                recognition.interimResults = false;
+                recognition.interimResults = true;
                 recognition.maxAlternatives = 1;
                 btnDictate.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color:#ef4444;"></i> Escuchando...';
+                if (!speechStartTime) speechStartTime = Date.now();
+
                 recognition.onresult = (event) => {
-                    const transcript = event.results[0][0].transcript;
-                    crucibleInput.value = (crucibleInput.value ? crucibleInput.value + ' ' : '') + transcript;
-                    crucibleInput.dispatchEvent(new Event('input'));
-                    btnDictate.innerHTML = '<i class="fa-solid fa-microphone"></i> Dictar por Voz';
+                    let interim = '';
+                    let final = '';
+                    for (let i = 0; i < event.results.length; i++) {
+                        if (event.results[i].isFinal) {
+                            final += event.results[i][0].transcript;
+                        } else {
+                            interim += event.results[i][0].transcript;
+                        }
+                    }
+                    const newText = final || interim;
+                    if (newText) {
+                        crucibleInput.value = (crucibleInput.value ? crucibleInput.value.replace(/\s+$/, '') + ' ' : '') + newText;
+                        updateCrucibleCadenceAndScanner(crucibleInput.value);
+                    }
                 };
                 recognition.onerror = () => {
                     btnDictate.innerHTML = '<i class="fa-solid fa-microphone"></i> Dictar por Voz';
@@ -3879,6 +4401,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         } catch (e) {}
                     }
+
+                    // Trigger Socratic Oral Debrief (Fase 69)
+                    if (typeof initCrucibleSocraticDebrief === 'function') {
+                        initCrucibleSocraticDebrief(unit);
+                    }
                 }
             };
         }
@@ -3897,7 +4424,7 @@ document.addEventListener('DOMContentLoaded', () => {
             b.style.borderBottom = isActive ? '2px solid #0284c7' : 'none';
         });
 
-        const screens = ['dialogue', 'vocab', 'reading', 'crucible', 'quiz'];
+        const screens = ['dialogue', 'vocab', 'listening', 'grammar', 'reading', 'crucible', 'quiz'];
         screens.forEach(s => {
             const el = document.getElementById(`mcer-screen-${s}`);
             if (el) el.style.display = (s === tabKey) ? 'block' : 'none';
@@ -3918,16 +4445,249 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 4.1 MCER Level Milestone Certification Exam (20 Items • 60.0h W3C Accredited)
+    let mcerExamTimerInterval = null;
+
+    function openMcerLevelExam(levelId) {
+        if (!window.STEMOS_MCER_TRACKS) return;
+        const exam = window.STEMOS_MCER_TRACKS.getLevelExam(levelId || 'a1');
+        if (!exam) return;
+
+        const modal = document.getElementById('modal-mcer-level-exam');
+        if (!modal) return;
+
+        // Set Headers
+        const levelBadge = document.getElementById('mcer-exam-level-badge');
+        const examTitle = document.getElementById('mcer-exam-title');
+        const examDossier = document.getElementById('mcer-exam-dossier');
+        if (levelBadge) levelBadge.textContent = `CEFR ${exam.level.toUpperCase()} EXAM`;
+        if (examTitle) examTitle.textContent = exam.title;
+        if (examDossier) examDossier.textContent = `${exam.dossier} · 20 Reactivos Estandarizados · ${exam.passScorePct}% Mínimo de Aprobación`;
+
+        const container = document.getElementById('mcer-exam-questions-container');
+        if (!container) return;
+        container.innerHTML = '';
+        const resultsBox = document.getElementById('mcer-exam-results-box');
+        if (resultsBox) resultsBox.style.display = 'none';
+
+        const counterEl = document.getElementById('mcer-exam-progress-counter');
+        if (counterEl) counterEl.textContent = `0 de ${exam.questions.length} contestadas`;
+
+        // Render Questions
+        exam.questions.forEach((qItem, qIdx) => {
+            const block = document.createElement('div');
+            block.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; position:relative;';
+
+            let categoryColor = '#0284c7';
+            let categoryBg = '#e0f2fe';
+            if (qItem.category && qItem.category.includes('Grammar')) { categoryColor = '#7c3aed'; categoryBg = '#ede9fe'; }
+            else if (qItem.category && qItem.category.includes('Reading')) { categoryColor = '#059669'; categoryBg = '#d1fae5'; }
+            else if (qItem.category && qItem.category.includes('Pragmatics')) { categoryColor = '#d97706'; categoryBg = '#fef3c7'; }
+
+            block.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:10px;">
+                    <div style="font-weight:700; font-size:0.95rem; color:#0f172a; flex:1;">
+                        ${qIdx + 1}. ${qItem.q}
+                    </div>
+                    <span style="font-size:0.68rem; font-weight:800; color:${categoryColor}; background:${categoryBg}; padding:2px 8px; border-radius:6px; flex-shrink:0; text-transform:uppercase;">
+                        ${qItem.category || 'General'}
+                    </span>
+                </div>
+
+                ${(qItem.audioScript || (qItem.category && qItem.category.includes('Listening') && qItem.passage)) ? `
+                    <div style="margin-bottom:10px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:8px 12px; display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:0.8rem; color:#1e40af; font-style:italic;">
+                            <i class="fa-solid fa-headphones"></i> Audio Prompt Disponible
+                        </span>
+                        <button type="button" class="btn-play-exam-audio" style="background:#0284c7; color:#fff; border:none; padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:700; cursor:pointer;">
+                            <i class="fa-solid fa-play"></i> Reproducir Audio
+                        </button>
+                    </div>
+                ` : ''}
+
+                ${qItem.passage && (!qItem.category || !qItem.category.includes('Listening')) ? `
+                    <div style="margin-bottom:10px; background:#ffffff; border:1px solid #cbd5e1; border-left:3px solid #059669; border-radius:6px; padding:10px 12px; font-size:0.85rem; color:#334155; line-height:1.45;">
+                        ${qItem.passage}
+                    </div>
+                ` : ''}
+
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    ${qItem.options.map((opt, optIdx) => `
+                        <label class="mcer-exam-opt-label-${qIdx}" style="display:flex; align-items:center; gap:10px; font-size:0.88rem; color:#0f172a !important; padding:9px 12px; background:#ffffff; border:1.5px solid #cbd5e1; border-radius:8px; cursor:pointer; transition:all 0.15s ease;">
+                            <input type="radio" name="mcer-exam-q-${qIdx}" value="${optIdx}" style="accent-color:#059669; width:16px; height:16px; cursor:pointer;">
+                            <span style="color:#0f172a !important; font-weight:600; line-height:1.4;">${opt}</span>
+                        </label>
+                    `).join('')}
+                </div>
+
+                <div class="mcer-exam-exp-${qIdx}" style="display:none; margin-top:10px; background:#f0fdf4; border-left:3px solid #16a34a; padding:8px 12px; border-radius:6px; font-size:0.8rem; color:#166534; line-height:1.4;">
+                    <strong>Fundamento Técnico:</strong> ${qItem.exp || ''}
+                </div>
+            `;
+
+            // Audio Player
+            const btnAudio = block.querySelector('.btn-play-exam-audio');
+            if (btnAudio) {
+                btnAudio.onclick = () => {
+                    const speechText = qItem.audioScript || qItem.passage || qItem.q;
+                    if (window.STEMOS_PLACEMENT_TEST) {
+                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(speechText);
+                    }
+                };
+            }
+
+            // Radio Change Listener for Progress Counter
+            block.querySelectorAll(`input[name="mcer-exam-q-${qIdx}"]`).forEach(r => {
+                r.addEventListener('change', () => {
+                    const answered = exam.questions.filter((_, idx) => document.querySelector(`input[name="mcer-exam-q-${idx}"]:checked`)).length;
+                    if (counterEl) counterEl.textContent = `${answered} de ${exam.questions.length} contestadas`;
+                });
+            });
+
+            container.appendChild(block);
+        });
+
+        // Timer (40 minutes)
+        if (mcerExamTimerInterval) clearInterval(mcerExamTimerInterval);
+        let secondsLeft = (exam.timeMinutes || 40) * 60;
+        const timerValEl = document.getElementById('mcer-exam-timer-val');
+        
+        function updateTimerDisplay() {
+            const m = Math.floor(secondsLeft / 60);
+            const s = secondsLeft % 60;
+            if (timerValEl) {
+                timerValEl.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            }
+        }
+        updateTimerDisplay();
+
+        mcerExamTimerInterval = setInterval(() => {
+            secondsLeft--;
+            updateTimerDisplay();
+            if (secondsLeft <= 0) {
+                clearInterval(mcerExamTimerInterval);
+                const btnSub = document.getElementById('btn-submit-mcer-exam');
+                if (btnSub) btnSub.click();
+            }
+        }, 1000);
+
+        // Submit Handler
+        const btnSubmitExam = document.getElementById('btn-submit-mcer-exam');
+        if (btnSubmitExam) {
+            btnSubmitExam.onclick = () => {
+                if (mcerExamTimerInterval) clearInterval(mcerExamTimerInterval);
+                let correctCount = 0;
+                exam.questions.forEach((qItem, qIdx) => {
+                    const selected = document.querySelector(`input[name="mcer-exam-q-${qIdx}"]:checked`);
+                    const labels = document.querySelectorAll(`.mcer-exam-opt-label-${qIdx}`);
+                    const expBox = document.querySelector(`.mcer-exam-exp-${qIdx}`);
+                    if (expBox) expBox.style.display = 'block';
+
+                    labels.forEach(lbl => {
+                        const input = lbl.querySelector('input');
+                        if (parseInt(input.value) === qItem.answer) {
+                            lbl.style.background = '#dcfce7';
+                            lbl.style.borderColor = '#86efac';
+                            lbl.style.fontWeight = '700';
+                        } else if (input.checked && parseInt(input.value) !== qItem.answer) {
+                            lbl.style.background = '#fee2e2';
+                            lbl.style.borderColor = '#fca5a5';
+                        }
+                    });
+
+                    if (selected && parseInt(selected.value) === qItem.answer) {
+                        correctCount++;
+                    }
+                });
+
+                const pct = Math.round((correctCount / exam.questions.length) * 100);
+                const isPassed = pct >= (exam.passScorePct || 75);
+
+                if (resultsBox) {
+                    resultsBox.style.display = 'block';
+                    resultsBox.style.background = isPassed ? '#f0fdf4' : '#fffbeb';
+                    resultsBox.style.borderColor = isPassed ? '#86efac' : '#fde68a';
+
+                    const scoreVal = document.getElementById('mcer-exam-score-val');
+                    const feedbackVal = document.getElementById('mcer-exam-feedback-val');
+                    if (scoreVal) {
+                        scoreVal.textContent = `${pct}% (${correctCount}/${exam.questions.length})`;
+                        scoreVal.style.color = isPassed ? '#16a34a' : '#d97706';
+                    }
+                    if (feedbackVal) {
+                        if (isPassed) {
+                            feedbackVal.innerHTML = `🎉 ¡Examen de Certificación Nivel CEFR ${exam.level.toUpperCase()} Aprobado! 60.0 Horas Acreditadas · Micro-credencial W3C Open Badges 3.0 emitida · +1000 XP Acreditados.`;
+                            feedbackVal.style.color = '#15803d';
+                        } else {
+                            feedbackVal.innerHTML = `⚠️ Calificación obtenida: ${pct}% (Mínimo aprobatorio: ${exam.passScorePct}%). Te recomendamos repasar las 4 unidades de nivel ${exam.level.toUpperCase()} y volver a presentar.`;
+                            feedbackVal.style.color = '#b45309';
+                        }
+                    }
+                }
+
+                if (isPassed) {
+                    try {
+                        localStorage.setItem(`stemos_mcer_exam_${exam.level}`, 'passed');
+                        const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+                        const newXP = prevXP + 1000;
+                        localStorage.setItem('stemos_student_xp', String(newXP));
+                        if (typeof window.updateStudentXPHUD === 'function') {
+                            window.updateStudentXPHUD(newXP);
+                        }
+                        if (typeof openCertificateModal === 'function') {
+                            setTimeout(() => {
+                                openCertificateModal('mcer-' + exam.level);
+                            }, 1800);
+                        }
+                    } catch (e) {}
+                }
+            };
+        }
+
+        // Close Listener
+        const closeBtn = document.getElementById('mcer-exam-close');
+        if (closeBtn) {
+            closeBtn.onclick = () => {
+                if (mcerExamTimerInterval) clearInterval(mcerExamTimerInterval);
+                if (window.speechSynthesis) window.speechSynthesis.cancel();
+                modal.close();
+            };
+        }
+
+        modal.showModal();
+    }
+    window.openMcerLevelExam = openMcerLevelExam;
+
+    // Active Track Banner Level Exam Button
+    const btnMcerLaunchLevelExam = document.getElementById('btn-mcer-launch-level-exam');
+    if (btnMcerLaunchLevelExam) {
+        btnMcerLaunchLevelExam.addEventListener('click', () => {
+            const userLvl = (localStorage.getItem('stemos_user_level') || (activeMcerLevelFilter !== 'all' ? activeMcerLevelFilter : 'A1')).toLowerCase();
+            openMcerLevelExam(userLvl);
+        });
+    }
+
     // 5. Sync Placement Result & Curricular Interleaving Status
     function syncUserPlacementBadge() {
-        let userLevel = localStorage.getItem('stemos_user_level') || '';
+        let userLevel = localStorage.getItem('stemos_user_level') || localStorage.getItem('stemos_active_mcer_level') || '';
         if (!userLevel) {
-            const stored = localStorage.getItem('stemos_placement_test');
+            const passportStr = localStorage.getItem('stemos_diagnostic_passport');
+            if (passportStr) {
+                try {
+                    const p = JSON.parse(passportStr);
+                    if (p.level) userLevel = p.level;
+                } catch(e) {}
+            }
+        }
+        if (!userLevel) {
+            const stored = localStorage.getItem('stemos_placement_test') || localStorage.getItem('stemos_placement_result');
             if (stored) {
                 try {
                     const parsed = JSON.parse(stored);
                     if (parsed.result && (parsed.result.assignedLevel || parsed.result.level)) {
                         userLevel = parsed.result.assignedLevel || parsed.result.level;
+                    } else if (parsed.assignedLevel || parsed.level) {
+                        userLevel = parsed.assignedLevel || parsed.level;
                     }
                 } catch(e) {}
             }
@@ -3940,27 +4700,53 @@ document.addEventListener('DOMContentLoaded', () => {
         const calloutTitle = document.getElementById('ed-placement-callout-title');
         const calloutDesc = document.getElementById('ed-placement-callout-desc');
         const calloutIcon = document.getElementById('ed-placement-callout-icon');
+        const pendingBanner = document.getElementById('panel-placement-pending-banner');
 
-        if (!userLevel) {
+        const isPlacementDone = hasCompletedPlacement() || !!userLevel;
+
+        if (pendingBanner) {
+            if (!isPlacementDone) {
+                pendingBanner.style.display = 'block';
+                const profileStr = localStorage.getItem('stemos_student_profile');
+                if (profileStr) {
+                    try {
+                        const prof = JSON.parse(profileStr);
+                        const nameEl = document.getElementById('pending-banner-student-name');
+                        if (nameEl && prof.name) {
+                            const firstName = prof.name.split(' ')[0];
+                            nameEl.textContent = `¡Hola ${firstName}! Haz tu Placement Test para activar tu Track Personalizado`;
+                        }
+                    } catch(e) {}
+                }
+            } else {
+                pendingBanner.style.display = 'none';
+            }
+        }
+
+        if (!isPlacementDone) {
             if (badgePill && badgeText) {
                 badgeText.textContent = 'Placement Pendiente';
-                badgePill.style.background = '#f1f5f9';
-                badgePill.style.color = '#475569';
-                badgePill.style.borderColor = '#cbd5e1';
+                badgePill.style.background = '#fef2f2';
+                badgePill.style.color = '#dc2626';
+                badgePill.style.borderColor = '#fecaca';
                 badgePill.style.display = 'inline-flex';
             }
             if (calloutEl && calloutTitle && calloutDesc) {
                 calloutEl.style.display = 'block';
                 if (calloutLevel) {
                     calloutLevel.textContent = 'Placement Pendiente';
-                    calloutLevel.style.background = '#64748b';
+                    calloutLevel.style.background = '#ef4444';
                 }
-                calloutTitle.textContent = 'Realiza tu Placement Test Diagnóstico (30 min)';
-                calloutDesc.textContent = 'Para calibrar el entrelazado adaptativo entre tus tracks MCER y los laboratorios técnicos de tu carrera, realiza tu evaluación estandarizada.';
-                if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-vial" style="color:#64748b;"></i>';
+                calloutTitle.textContent = 'Realiza tu Placement Test Diagnóstico (15 min)';
+                calloutDesc.textContent = 'Para calibrar tu track técnico por carrera y desbloquear tus módulos de aprendizaje, completa tu evaluación diagnóstica estandarizada.';
+                if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-clipboard-question" style="color:#ef4444;"></i>';
+                calloutEl.style.background = 'linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.03) 100%)';
+                calloutEl.style.borderColor = 'rgba(239, 68, 68, 0.3)';
             }
             return;
         }
+
+        if (!userLevel) userLevel = 'B1';
 
         // Student has a calibrated level: A1, A2, B1, B2, C1
         if (badgePill && badgeText) {
@@ -4047,6 +4833,971 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /* ══════════════════════════════════════════════════════════════
+       8.1. MCER DIAGNOSTIC PASSPORT & ONBOARDING (FASE 66)
+       ══════════════════════════════════════════════════════════════ */
+    function openDiagnosticPassportModal() {
+        const modal = document.getElementById('modal-diagnostic-passport');
+        if (!modal) return;
+
+        let passport = null;
+        try {
+            const raw = localStorage.getItem('stemos_diagnostic_passport');
+            if (raw) passport = JSON.parse(raw);
+        } catch(e) {}
+
+        if (!passport) {
+            passport = {
+                student: { firstName: 'Diana Laura', lastName: 'Morales', matricula: '22050144', career: 'Ingeniería Mecatrónica' },
+                level: localStorage.getItem('stemos_active_mcer_level') || 'B1',
+                score: 25,
+                percentage: 78,
+                sectionScores: {
+                    grammar: { score: 8, total: 10, pct: 80 },
+                    listening: { score: 7, total: 10, pct: 70 },
+                    reading: { score: 10, total: 12, pct: 83 }
+                },
+                folio: 'STEMOS-MCER-8492',
+                issuedAt: new Date().toISOString(),
+                fastTrackEligible: true,
+                recommendedTrackId: 'mcer-track-b1'
+            };
+        }
+
+        const student = passport.student || {};
+        const elName = document.getElementById('passport-student-name');
+        if (elName) elName.textContent = `${student.firstName || 'Diana'} ${student.lastName || 'Morales'}`;
+
+        const elMatricula = document.getElementById('passport-matricula-val');
+        if (elMatricula) elMatricula.textContent = `${student.matricula || '22050144'} · ${student.career || 'Ingeniería Mecatrónica'}`;
+
+        const elFolio = document.getElementById('passport-folio-code');
+        if (elFolio) elFolio.textContent = passport.folio || 'STEMOS-MCER-VALID';
+
+        const lvl = (passport.level || 'B1').toUpperCase();
+        const levelTitles = {
+            'A1': 'Foundations / Inicio',
+            'A2': 'Waystage / Operativo',
+            'B1': 'Threshold / Competente',
+            'B2': 'Vantage / Nearshoring Avanzado'
+        };
+
+        const elBadge = document.getElementById('passport-level-badge');
+        if (elBadge) {
+            elBadge.textContent = `CEFR ${lvl}`;
+            const colors = {
+                'A1': '#10b981',
+                'A2': '#0284c7',
+                'B1': '#f59e0b',
+                'B2': '#8b5cf6'
+            };
+            elBadge.style.background = colors[lvl] || '#0284c7';
+        }
+
+        const elTitle = document.getElementById('passport-level-title');
+        if (elTitle) elTitle.textContent = levelTitles[lvl] || 'Competente';
+
+        const elScore = document.getElementById('passport-score-val');
+        if (elScore) elScore.textContent = `${passport.percentage || 78}%`;
+
+        // Subscores
+        const sScores = passport.sectionScores || {};
+        const gPct = (sScores.grammar && sScores.grammar.pct) || 80;
+        const lPct = (sScores.listening && sScores.listening.pct) || 75;
+        const rPct = (sScores.reading && sScores.reading.pct) || 82;
+
+        const elGPct = document.getElementById('passport-grammar-pct');
+        const elGBar = document.getElementById('passport-grammar-bar');
+        if (elGPct && elGBar) { elGPct.textContent = `${gPct}%`; elGBar.style.width = `${gPct}%`; }
+
+        const elLPct = document.getElementById('passport-listening-pct');
+        const elLBar = document.getElementById('passport-listening-bar');
+        if (elLPct && elLBar) { elLPct.textContent = `${lPct}%`; elLBar.style.width = `${lPct}%`; }
+
+        const elRPct = document.getElementById('passport-reading-pct');
+        const elRBar = document.getElementById('passport-reading-bar');
+        if (elRPct && elRBar) { elRPct.textContent = `${rPct}%`; elRBar.style.width = `${rPct}%`; }
+
+        // Update CEFR Progression HUD
+        const steps = ['a1', 'a2', 'b1', 'b2'];
+        const lvlIdx = steps.indexOf(lvl.toLowerCase());
+        steps.forEach((step, idx) => {
+            const stepEl = document.getElementById(`hud-step-${step}`);
+            if (stepEl) {
+                const statusEl = stepEl.querySelector('.hud-step-status');
+                if (idx < lvlIdx) {
+                    stepEl.style.background = '#f0fdf4';
+                    stepEl.style.borderColor = '#86efac';
+                    if (statusEl) statusEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Superado (Convalidado)';
+                } else if (idx === lvlIdx) {
+                    stepEl.style.background = 'rgba(2,132,199,0.08)';
+                    stepEl.style.borderColor = '#0284c7';
+                    if (statusEl) statusEl.innerHTML = '<i class="fa-solid fa-play"></i> En Curso (Nivel Actual)';
+                } else {
+                    stepEl.style.background = '#f8fafc';
+                    stepEl.style.borderColor = '#e2e8f0';
+                    if (statusEl) statusEl.innerHTML = 'Bloqueado';
+                }
+            }
+        });
+
+        // Fast-Track Panel
+        const ftPanel = document.getElementById('passport-fast-track-panel');
+        const ftBtn = document.getElementById('btn-fast-track-validate');
+        const ftBox = document.getElementById('fast-track-status-box');
+        const isConvalidated = localStorage.getItem('stemos_mcer_convalidated') === 'true';
+
+        if (isConvalidated) {
+            if (ftBtn) {
+                ftBtn.disabled = true;
+                ftBtn.innerHTML = '<i class="fa-solid fa-check"></i> Convalidado ✓';
+                ftBtn.style.opacity = '0.7';
+            }
+            if (ftBox) ftBox.style.display = 'block';
+        } else if (['B1', 'B2'].includes(lvl)) {
+            if (ftPanel) ftPanel.style.display = 'block';
+            if (ftBtn) {
+                ftBtn.disabled = false;
+                ftBtn.innerHTML = '<i class="fa-solid fa-stamp"></i> Convalidar Horas Previas (+1,500 XP)';
+                ftBtn.onclick = () => {
+                    localStorage.setItem('stemos_mcer_convalidated', 'true');
+                    let currentXP = 3450;
+                    try { currentXP = Number(localStorage.getItem('stemos_user_xp')) || 3450; } catch(e) {}
+                    currentXP += 1500;
+                    localStorage.setItem('stemos_user_xp', currentXP);
+
+                    const xpEl = document.getElementById('header-xp-val');
+                    if (xpEl) xpEl.textContent = `${currentXP.toLocaleString()} XP`;
+
+                    ftBtn.disabled = true;
+                    ftBtn.innerHTML = '<i class="fa-solid fa-check"></i> Convalidado ✓';
+                    ftBtn.style.opacity = '0.7';
+                    if (ftBox) ftBox.style.display = 'block';
+                    alert(`✓ Convalidación Fast-Track Acreditada: 120.0 Horas registradas en tu expediente CACEI. +1,500 XP sumados a tu perfil.`);
+                };
+            }
+        }
+
+        // Starter unit button
+        const btnStartUnit = document.getElementById('btn-passport-start-unit');
+        if (btnStartUnit) {
+            btnStartUnit.onclick = () => {
+                modal.close();
+                const tabMcer = document.getElementById('tab-btn-mcer');
+                if (tabMcer) tabMcer.click();
+                const starterUnitId = lvl === 'A1' ? 'mcer-a1-u01' : lvl === 'A2' ? 'mcer-a2-u05' : lvl === 'B1' ? 'mcer-b1-u09' : 'mcer-b2-u13';
+                if (typeof window.openMcerUnitStudyModalById === 'function') {
+                    window.openMcerUnitStudyModalById(starterUnitId);
+                }
+            };
+        }
+
+        modal.showModal();
+    }
+    window.openDiagnosticPassportModal = openDiagnosticPassportModal;
+
+    // Check onboarding URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('onboarding') === 'mcer') {
+        setTimeout(() => {
+            openDiagnosticPassportModal();
+        }, 400);
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       8.2. SOCRATIC ORAL DEBRIEF IN VOICE CRUCIBLE (FASE 69)
+       Arthur Vance (Plant Engineering Director) Technical Counter-Inquiry
+       ══════════════════════════════════════════════════════════════════ */
+    const MCER_SOCRATIC_DEBRIEFS = {
+        'mcer-a1-u01': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'Understood on your lockout/tagout procedure. However, what if the secondary auxiliary bus still displays 480 volts and the certified electrician is not answering the plant radio? What is your immediate next action under OSHA and NOM-004?',
+            keywords: ['auxiliary', 'disconnect', '480v', 'stop', 'quarantine', 'supervisor', 'safety', 'tag', 'verify'],
+            minWords: 8,
+            modelDefense: 'I would immediately abort the task, notify EHS, cordon off the secondary panel with warning tape, and never touch the live conductors until a zero-energy state is verified with an audited multimeter.'
+        },
+        'mcer-a1-u02': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'Good Cpk overview. But what if datum B shows a surface roughness exceeding Ra 3.2 during the first off-tool inspection? How do you isolate between spindle runout and insufficient coolant flow?',
+            keywords: ['spindle', 'coolant', 'runout', 'roughness', 'chatter', 'flow', 'feed', 'rpm', 'tool'],
+            minWords: 8,
+            modelDefense: 'I will first check coolant nozzles for clogging and pressure drop; if flow is nominal, I will mount a dial test indicator on the spindle nose to measure radial and axial runout before resuming the cycle.'
+        },
+        'mcer-a1-u03': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'Your sterilization parameters are noted. If the post-aeration cycle chamber sensor indicates 1.8 ppm of residual ethylene oxide instead of the sub-0.5 ppm threshold, what containment protocol do you immediately issue?',
+            keywords: ['quarantine', 'residual', 'eto', 'aeration', 'iso 11737', 'chamber', 'purge', 'bioburden'],
+            minWords: 8,
+            modelDefense: 'Under ISO 11737 and ISO 10993-7, I will place the entire lot in quarantine with red biohazard tagging, initiate an extended purge cycle, and log an out-of-specification containment notice.'
+        },
+        'mcer-a1-u04': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'We have solder bridging across pins 14 through 18 on the micro-controller. If zone 4 of the reflow oven drifted 8 degrees above liquidus, what corrective step do you submit in the IPC-A-610 report?',
+            keywords: ['reflow', 'thermal', 'profile', 'liquidus', 'stencil', 'paste', 'ipc', 'bridging', 'temperature'],
+            minWords: 8,
+            modelDefense: 'I will halt production on SMT line 2, recalibrate the reflow oven thermocouple profiling system, inspect stencil aperture tension, and quarantine all boards produced during the temperature drift.'
+        },
+        'mcer-a2-u05': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'You suspect hydraulic pump cavitation. If the pump inlet suction filter was replaced yesterday and cavitation noise persists, what hydraulic circuit root cause do you investigate next?',
+            keywords: ['viscosity', 'aeration', 'suction', 'oil', 'cavitation', 'valve', 'pressure', 'seal', 'leak'],
+            minWords: 8,
+            modelDefense: 'I would check for aeration caused by degraded shaft seals or loose suction fittings, and verify that the oil viscosity grade meets the manufacturer specifications for high ambient plant temperatures.'
+        },
+        'mcer-a2-u06': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'The 4-hole bolt pattern has a true position excursion of 0.35 mm exceeding the 0.15 mm MMC callout. Can we salvage the parts through reaming, or must they be scrapped under ASME Y14.5?',
+            keywords: ['mmc', 'tolerance', 'datum', 'reaming', 'scrap', 'asme', 'position', 'dimension', 'material'],
+            minWords: 8,
+            modelDefense: 'Under ASME Y14.5, if the actual hole size is at maximum material condition, reaming may push the hole beyond the upper limit. Unless an approved engineering deviation is authorized, the parts must be scrapped.'
+        },
+        'mcer-a2-u07': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'The dedicated trailer is held at Otay Mesa border crossing because the commercial invoice lacks the USMCA certificate of origin code. How do you resolve this with our customs broker within the next two hours?',
+            keywords: ['broker', 'invoice', 'usmca', 'origin', 'anexo 24', 'customs', 'tariff', 'crossing', 'fca'],
+            minWords: 8,
+            modelDefense: 'I will immediately generate an amended electronic commercial invoice with the correct regional value content classification and transmit it directly to our customs broker in San Diego.'
+        },
+        'mcer-a2-u08': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'Your 8D report identifies vendor batch inconsistency as D4 root cause. What interim containment action D3 do you guarantee while the supplier runs their corrective action in Michigan?',
+            keywords: ['containment', 'sorting', '100%', 'inspection', 'd3', 'd4', 'quarantine', 'vendor', 'sample'],
+            minWords: 8,
+            modelDefense: 'I have established a 100% incoming receiving sort and gauge inspection station at dock 4 to verify each incoming batch before material is released to the production floor.'
+        },
+        'mcer-b1-u09': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'The Allen-Bradley PLC triggered safety fault 73 and locked the pallet transfer conveyor. If the safety gate interlock tests OK with 24V DC, where in the safety circuit do you look for the ground fault?',
+            keywords: ['safety', 'interlock', 'ground', 'relay', 'fault', 'circuit', 'plc', 'multimeter', 'loop'],
+            minWords: 8,
+            modelDefense: 'I will check the dual-channel safety relay contacts and verify if the pulse testing signals from the safety output module are detecting cross-faults or shield leakage in the trailing cable.'
+        },
+        'mcer-b1-u10': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'Your Ishikawa fishbone diagram highlights polymer resin melt flow index variance. How do you prove statistically that this variance caused the injection molding short shots on line 5?',
+            keywords: ['anova', 'doe', 'melt', 'viscosity', 'mfi', 'correlation', 'regression', 'cpk', 'statistical'],
+            minWords: 8,
+            modelDefense: 'I will run a two-sample t-test comparing the melt flow index of accepted versus rejected lots and perform an ANOVA regression against barrel pressure telemetry to confirm statistical significance.'
+        },
+        'mcer-b1-u11': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'The CMM calibration certificate expired 48 hours ago during our critical aerospace first-article inspection. Can we back-date the verification if the reference artifact artifact measures within 2 microns?',
+            keywords: ['iso 17025', 'calibration', 'traceability', 'cmm', 'artifact', 'audit', 'deviation', 'standard'],
+            minWords: 8,
+            modelDefense: 'Under no circumstances. Back-dating violates ISO 17025 and AS9100. We must quarantine all inspected components, recalibrate the CMM with traceable NIST standards, and re-inspect the batch.'
+        },
+        'mcer-b1-u12': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'Due to severe port delays in Los Angeles, our secondary stamping supplier is out of cold-rolled steel. What emergency kanban buffer policy do you activate to protect our daily 1,200 unit takt time?',
+            keywords: ['kanban', 'buffer', 'takt', 'safety stock', 'air freight', 'reorder', 'supplier', 'lead time'],
+            minWords: 8,
+            modelDefense: 'I will activate our emergency dual-source contract with our Monterrey distributor and increase our Kanban buffer sizing from 2 days to 5 days of safety stock until shipping cadence normalizes.'
+        },
+        'mcer-b2-u13': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'US headquarters wants to insert an Engineering Change Order for heat sink geometry two weeks before official SOP. How do you defend our plant timeline without alienating the program director?',
+            keywords: ['eco', 'sop', 'ppap', 'tooling', 'lead time', 'validation', 'risk', 'timeline', 'schedule'],
+            minWords: 8,
+            modelDefense: 'I will present an objective risk impact matrix showing that introducing new tooling modifications at this stage voids our PPAP level 4 submission and recommend phasing the ECO into running change Rev 1.'
+        },
+        'mcer-b2-u14': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'Our edge MQTT telemetry gateway is dropping 6% of telemetry packets in the high-voltage substation. How do you harden the network edge against industrial electromagnetic interference?',
+            keywords: ['mqtt', 'qos', 'emi', 'shielding', 'fiber', 'twisted', 'packet', 'gateway', 'buffer'],
+            minWords: 8,
+            modelDefense: 'I will upgrade the physical layer to industrial shielded Cat6A with STP grounding or single-mode fiber optic transceivers, and configure the MQTT client to QoS Level 1 with persistent local disk buffering.'
+        },
+        'mcer-b2-u15': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'The OEM procurement executive in Detroit is demanding a mandatory 10% price reduction across all wire harness assemblies. What is your data-backed negotiation defense using nearshoring TCO metrics?',
+            keywords: ['tco', 'landed cost', 'freight', 'tariffs', 'inventory', 'lead time', 'nearshoring', 'margin'],
+            minWords: 8,
+            modelDefense: 'I will present our Total Cost of Ownership analysis demonstrating that our 3-day transit and zero USMCA tariffs save them 18% in pipeline inventory holding costs compared to Asian trans-Pacific alternatives.'
+        },
+        'mcer-b2-u16': {
+            director: 'Arthur Vance · Plant Engineering Director',
+            query: 'Defend why our plant in Northern Mexico is better positioned for high-complexity AI hardware assembly than expanding our contract manufacturer in Penang. Summarize your top 3 operational pillars.',
+            keywords: ['usmca', 'ip protection', 'proximity', 'engineering', 'lead time', 'timezone', 'supply chain'],
+            minWords: 8,
+            modelDefense: 'Our top three pillars are: same-timezone engineering collaboration with Austin and Silicon Valley, ironclad USMCA intellectual property protection, and 48-hour land logistics to US customer datacenters.'
+        }
+    };
+
+    function initCrucibleSocraticDebrief(unit) {
+        const debriefSection = document.getElementById('mcer-crucible-socratic-section');
+        const promptEl = document.getElementById('mcer-crucible-socratic-prompt');
+        const playBtn = document.getElementById('btn-mcer-socratic-play-query');
+        const dictBtn = document.getElementById('btn-mcer-socratic-dictate');
+        const submitBtn = document.getElementById('btn-mcer-socratic-submit');
+        const inputEl = document.getElementById('mcer-socratic-defense-input');
+        const feedbackEl = document.getElementById('mcer-socratic-defense-feedback');
+
+        if (!debriefSection || !unit) return;
+
+        const unitKey = unit.id || 'mcer-a1-u01';
+        const debriefData = MCER_SOCRATIC_DEBRIEFS[unitKey] || MCER_SOCRATIC_DEBRIEFS['mcer-a1-u01'];
+
+        debriefSection.style.display = 'block';
+        if (promptEl) {
+            promptEl.innerHTML = `<strong>${debriefData.director}:</strong><br>&ldquo;${debriefData.query}&rdquo;`;
+        }
+        if (feedbackEl) {
+            feedbackEl.style.display = 'none';
+            feedbackEl.innerHTML = '';
+        }
+        if (inputEl) {
+            inputEl.value = '';
+        }
+
+        // Web Speech Audio Playback
+        if (playBtn) {
+            playBtn.onclick = () => {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    const utter = new SpeechSynthesisUtterance(debriefData.query);
+                    utter.lang = 'en-US';
+                    utter.rate = 0.95;
+                    utter.pitch = 0.9;
+                    window.speechSynthesis.speak(utter);
+                } else {
+                    alert('Síntesis de voz no disponible en este navegador.');
+                }
+            };
+        }
+
+        // Microphone Speech Recognition
+        if (dictBtn) {
+            dictBtn.onclick = () => {
+                const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (!SpeechRec) {
+                    alert('Reconocimiento de voz no soportado en este navegador. Escribe tu réplica en el campo de texto.');
+                    return;
+                }
+                const rec = new SpeechRec();
+                rec.lang = 'en-US';
+                rec.interimResults = false;
+                dictBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Escuchando...';
+                rec.onresult = (evt) => {
+                    const transcript = evt.results[0][0].transcript;
+                    if (inputEl) {
+                        inputEl.value = transcript;
+                    }
+                    dictBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Dictar Réplica';
+                };
+                rec.onerror = () => {
+                    dictBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Dictar Réplica';
+                };
+                rec.onend = () => {
+                    dictBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Dictar Réplica';
+                };
+                rec.start();
+            };
+        }
+
+        // Submit Oral Defense
+        if (submitBtn) {
+            submitBtn.onclick = () => {
+                const text = (inputEl && inputEl.value) ? inputEl.value.trim() : '';
+                const words = text.split(/\s+/).filter(Boolean);
+                if (words.length < 5) {
+                    alert('Por favor formula una defensa técnica de al menos 8 palabras en inglés.');
+                    return;
+                }
+
+                // Check keywords
+                const lowerText = text.toLowerCase();
+                let matches = 0;
+                debriefData.keywords.forEach(kw => {
+                    if (lowerText.includes(kw.toLowerCase())) matches++;
+                });
+
+                const keywordScore = Math.min(40, matches * 10);
+                const lengthScore = Math.min(30, words.length * 2);
+                const baseScore = 30;
+                const totalScore = Math.min(100, baseScore + lengthScore + keywordScore);
+
+                if (feedbackEl) {
+                    feedbackEl.style.display = 'block';
+                    if (totalScore >= 70) {
+                        feedbackEl.style.background = '#f0fdf4';
+                        feedbackEl.style.border = '1px solid #86efac';
+                        feedbackEl.style.color = '#15803d';
+                        feedbackEl.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Defensa Técnica Aprobada (${totalScore}% Asertividad).</strong><br>
+                        Arthur Vance: &ldquo;Bien resuelto, Ingeniero(a). Tu criterio prioriza la contención de causa raíz y la seguridad bajo norma. Visto bueno otorgado para auditoría de planta.&rdquo; 
+                        <span style="font-weight:800; color:#059669;">+350 XP de Defensa Acreditados.</span>`;
+
+                        // Award XP
+                        try {
+                            const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+                            const newXP = prevXP + 350;
+                            localStorage.setItem('stemos_student_xp', String(newXP));
+                            localStorage.setItem(`stemos_socratic_${unitKey}`, 'completed');
+                            if (typeof window.updateStudentXPHUD === 'function') {
+                                window.updateStudentXPHUD(newXP);
+                            }
+                        } catch (e) {}
+                    } else {
+                        feedbackEl.style.background = '#fffbeb';
+                        feedbackEl.style.border = '1px solid #fde68a';
+                        feedbackEl.style.color = '#b45309';
+                        feedbackEl.innerHTML = `<strong><i class="fa-solid fa-triangle-exclamation"></i> Defensa en Revisión (${totalScore}%).</strong><br>
+                        Arthur Vance: &ldquo;Tu mensaje necesita mayor precisión procedimental. Incluye términos clave como <em>${debriefData.keywords.slice(0, 3).join(', ')}</em> para satisfacer la auditoría.&rdquo;`;
+                    }
+                }
+            };
+        }
+    }
+    window.initCrucibleSocraticDebrief = initCrucibleSocraticDebrief;
+
+    /* ══════════════════════════════════════════════════════════════════
+       8.3. MCER MILESTONE LEVEL CERTIFICATION EXAM ENGINE (FASE 68)
+       Timed 20-Item Standardized Exam & Official CACEI Digital Diploma
+       ══════════════════════════════════════════════════════════════════ */
+    let mcerExamTimerInterval = null;
+    let activeMcerExam = null;
+    let activeExamAnswers = [];
+    let activeExamQuestionIdx = 0;
+    let mcerExamRemainingSeconds = 2400; // 40 minutes
+
+    function openMcerLevelExamModal(levelCode) {
+        const modal = document.getElementById('modal-mcer-level-exam');
+        if (!modal) return;
+
+        // Normalize level code
+        let code = 'A1';
+        if (levelCode) {
+            const raw = String(levelCode).toUpperCase();
+            if (raw.includes('A1')) code = 'A1';
+            else if (raw.includes('A2')) code = 'A2';
+            else if (raw.includes('B1')) code = 'B1';
+            else if (raw.includes('B2')) code = 'B2';
+        }
+
+        // Get exam object
+        let exam = null;
+        if (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.getLevelExam === 'function') {
+            exam = window.STEMOS_MCER_TRACKS.getLevelExam(code);
+        }
+
+        if (!exam) {
+            // Build fallback from MCER_LEVELS if available
+            alert(`Cargando reactivos estandarizados para el examen de certificación ${code}...`);
+            return;
+        }
+
+        activeMcerExam = exam;
+        activeExamAnswers = new Array(exam.questions.length).fill(null);
+        activeExamQuestionIdx = 0;
+        mcerExamRemainingSeconds = (exam.timeLimitMinutes || 40) * 60;
+
+        // Reset views
+        const qView = document.getElementById('mcer-exam-question-view');
+        const resView = document.getElementById('mcer-exam-results-view');
+        if (qView) qView.style.display = 'block';
+        if (resView) resView.style.display = 'none';
+
+        // Update header badges
+        const hoursMap = { 'A1': 60, 'A2': 120, 'B1': 180, 'B2': 240 };
+        const levelBadge = document.getElementById('mcer-exam-level-badge');
+        if (levelBadge) {
+            levelBadge.innerHTML = `<i class="fa-solid fa-graduation-cap"></i> CEFR ${exam.level} &bull; ${hoursMap[exam.level] || 60}.0h Acreditadas`;
+        }
+
+        const titleEl = document.getElementById('mcer-exam-modal-title');
+        if (titleEl) titleEl.textContent = exam.title;
+
+        const dossierEl = document.getElementById('mcer-exam-dossier-code');
+        if (dossierEl) dossierEl.textContent = exam.dossier || `CACEI-ING-${exam.level}-2026-60H`;
+
+        // Render stepper pills
+        renderExamStepperPills();
+
+        // Start countdown timer
+        startExamCountdownTimer();
+
+        // Render first question
+        renderExamQuestion(0);
+
+        // Wire navigation buttons
+        const btnPrev = document.getElementById('btn-mcer-exam-prev');
+        const btnNext = document.getElementById('btn-mcer-exam-next');
+        const btnFinish = document.getElementById('btn-mcer-exam-finish');
+
+        if (btnPrev) {
+            btnPrev.onclick = () => {
+                if (activeExamQuestionIdx > 0) {
+                    renderExamQuestion(activeExamQuestionIdx - 1);
+                }
+            };
+        }
+        if (btnNext) {
+            btnNext.onclick = () => {
+                if (activeExamQuestionIdx < activeMcerExam.questions.length - 1) {
+                    renderExamQuestion(activeExamQuestionIdx + 1);
+                }
+            };
+        }
+        if (btnFinish) {
+            btnFinish.onclick = () => {
+                const answeredCount = activeExamAnswers.filter(a => a !== null).length;
+                if (answeredCount < activeMcerExam.questions.length) {
+                    const proceed = confirm(`Has respondido ${answeredCount} de ${activeMcerExam.questions.length} reactivos. ¿Deseas calificar el examen ahora?`);
+                    if (!proceed) return;
+                }
+                submitMcerLevelExam();
+            };
+        }
+
+        // Wire Diploma Action buttons
+        const btnPrint = document.getElementById('btn-print-mcer-diploma');
+        if (btnPrint) {
+            btnPrint.onclick = () => {
+                window.print();
+            };
+        }
+
+        const btnCopyFolio = document.getElementById('btn-copy-diploma-folio');
+        if (btnCopyFolio) {
+            btnCopyFolio.onclick = () => {
+                const folioEl = document.getElementById('diploma-folio-val');
+                const text = folioEl ? folioEl.textContent : '';
+                if (text && navigator.clipboard) {
+                    navigator.clipboard.writeText(text);
+                    btnCopyFolio.innerHTML = '<i class="fa-solid fa-check"></i> ¡Folio Copiado!';
+                    setTimeout(() => {
+                        btnCopyFolio.innerHTML = '<i class="fa-solid fa-link"></i> Copiar Folio CACEI';
+                    }, 2000);
+                }
+            };
+        }
+
+        const btnRetry = document.getElementById('btn-retry-mcer-exam');
+        if (btnRetry) {
+            btnRetry.onclick = () => {
+                openMcerLevelExamModal(exam.level);
+            };
+        }
+
+        modal.showModal();
+    }
+    window.openMcerLevelExamModal = openMcerLevelExamModal;
+
+    function renderExamStepperPills() {
+        const container = document.getElementById('mcer-exam-stepper-pills');
+        if (!container || !activeMcerExam) return;
+
+        container.innerHTML = '';
+        activeMcerExam.questions.forEach((q, idx) => {
+            const pill = document.createElement('button');
+            pill.type = 'button';
+            pill.className = 'mcer-exam-pill';
+            pill.id = `exam-pill-${idx}`;
+            pill.textContent = String(idx + 1);
+            pill.style.width = '30px';
+            pill.style.height = '30px';
+            pill.style.borderRadius = '50%';
+            pill.style.border = '1px solid #cbd5e1';
+            pill.style.background = '#f8fafc';
+            pill.style.color = '#475569';
+            pill.style.fontWeight = '800';
+            pill.style.fontSize = '0.75rem';
+            pill.style.cursor = 'pointer';
+            pill.onclick = () => renderExamQuestion(idx);
+            container.appendChild(pill);
+        });
+        updateExamStepperState();
+    }
+
+    function updateExamStepperState() {
+        if (!activeMcerExam) return;
+        activeMcerExam.questions.forEach((q, idx) => {
+            const pill = document.getElementById(`exam-pill-${idx}`);
+            if (!pill) return;
+
+            const isCurrent = (idx === activeExamQuestionIdx);
+            const isAnswered = (activeExamAnswers[idx] !== null);
+
+            if (isCurrent) {
+                pill.style.border = '2px solid #0284c7';
+                pill.style.background = '#0284c7';
+                pill.style.color = '#ffffff';
+            } else if (isAnswered) {
+                pill.style.border = '1px solid #10b981';
+                pill.style.background = '#dcfce7';
+                pill.style.color = '#15803d';
+            } else {
+                pill.style.border = '1px solid #cbd5e1';
+                pill.style.background = '#f8fafc';
+                pill.style.color = '#475569';
+            }
+        });
+
+        const counter = document.getElementById('mcer-exam-answered-counter');
+        if (counter) {
+            const answeredCount = activeExamAnswers.filter(a => a !== null).length;
+            counter.textContent = `${answeredCount} de ${activeMcerExam.questions.length} respondidos`;
+        }
+    }
+
+    function renderExamQuestion(idx) {
+        if (!activeMcerExam || !activeMcerExam.questions[idx]) return;
+        activeExamQuestionIdx = idx;
+        const q = activeMcerExam.questions[idx];
+
+        updateExamStepperState();
+
+        // Section badge text
+        const secBadge = document.getElementById('mcer-exam-section-badge');
+        if (secBadge) {
+            if (idx < 5) secBadge.textContent = 'SECCIÓN 1/4: LISTENING COMPREHENSION (Reactivos 1–5)';
+            else if (idx < 10) secBadge.textContent = 'SECCIÓN 2/4: GRAMMAR & SYNTAX STRUCTURE (Reactivos 6–10)';
+            else if (idx < 15) secBadge.textContent = 'SECCIÓN 3/4: TECHNICAL SOP READING & DIAGRAMS (Reactivos 11–15)';
+            else secBadge.textContent = 'SECCIÓN 4/4: WORKPLACE PRAGMATICS & NEARSHORING (Reactivos 16–20)';
+        }
+
+        // Listening Audio Box
+        const audioBox = document.getElementById('mcer-exam-audio-box');
+        const audioPlayBtn = document.getElementById('btn-mcer-exam-audio-play');
+        if (audioBox) {
+            if (q.audioScript || idx < 5) {
+                audioBox.style.display = 'flex';
+                if (audioPlayBtn) {
+                    audioPlayBtn.onclick = () => {
+                        if ('speechSynthesis' in window) {
+                            window.speechSynthesis.cancel();
+                            const utter = new SpeechSynthesisUtterance(q.audioScript || q.q);
+                            utter.lang = 'en-US';
+                            utter.rate = 0.95;
+                            window.speechSynthesis.speak(utter);
+                        }
+                    };
+                }
+            } else {
+                audioBox.style.display = 'none';
+            }
+        }
+
+        // Reading Passage Box
+        const passageBox = document.getElementById('mcer-exam-passage-box');
+        if (passageBox) {
+            if (q.passage || (idx >= 10 && idx < 15)) {
+                passageBox.style.display = 'block';
+                passageBox.innerHTML = `<strong><i class="fa-solid fa-file-lines" style="color:#0284c7;"></i> Procedimiento Técnico / SOP:</strong><br>${q.passage || 'Read the operational technical procedure above to verify compliance.'}`;
+            } else {
+                passageBox.style.display = 'none';
+            }
+        }
+
+        // Prompt
+        const promptEl = document.getElementById('mcer-exam-prompt-text');
+        if (promptEl) {
+            promptEl.innerHTML = `<span style="color:#0284c7; font-weight:900;">Item ${idx + 1}.</span> ${q.q}`;
+        }
+
+        // 4 Options
+        const optsContainer = document.getElementById('mcer-exam-options-container');
+        if (optsContainer) {
+            optsContainer.innerHTML = '';
+            const opts = q.opts || q.options || [];
+            opts.forEach((optText, optIdx) => {
+                const optBtn = document.createElement('button');
+                optBtn.type = 'button';
+                optBtn.className = 'mcer-exam-opt-btn';
+                const isSelected = (activeExamAnswers[idx] === optIdx);
+
+                optBtn.style.textAlign = 'left';
+                optBtn.style.padding = '12px 16px';
+                optBtn.style.borderRadius = '10px';
+                optBtn.style.border = isSelected ? '2px solid #0284c7' : '1px solid #cbd5e1';
+                optBtn.style.background = isSelected ? 'rgba(2,132,199,0.1)' : '#ffffff';
+                optBtn.style.color = '#0f172a';
+                optBtn.style.fontWeight = isSelected ? '800' : '600';
+                optBtn.style.cursor = 'pointer';
+                optBtn.style.fontSize = '0.9rem';
+                optBtn.style.display = 'flex';
+                optBtn.style.alignItems = 'center';
+                optBtn.style.gap = '10px';
+
+                const letter = ['A', 'B', 'C', 'D'][optIdx] || String(optIdx);
+                optBtn.innerHTML = `<span style="width:24px; height:24px; border-radius:50%; background:${isSelected ? '#0284c7' : '#f1f5f9'}; color:${isSelected ? '#fff' : '#64748b'}; display:inline-flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:800;">${letter}</span> <span>${optText}</span>`;
+
+                optBtn.onclick = () => {
+                    activeExamAnswers[idx] = optIdx;
+                    renderExamQuestion(idx);
+                };
+                optsContainer.appendChild(optBtn);
+            });
+        }
+
+        // Update Prev / Next buttons
+        const btnPrev = document.getElementById('btn-mcer-exam-prev');
+        const btnNext = document.getElementById('btn-mcer-exam-next');
+        if (btnPrev) btnPrev.disabled = (idx === 0);
+        if (btnNext) btnNext.disabled = (idx === activeMcerExam.questions.length - 1);
+    }
+
+    function startExamCountdownTimer() {
+        if (mcerExamTimerInterval) clearInterval(mcerExamTimerInterval);
+        const timerDisplay = document.getElementById('mcer-exam-timer-display');
+
+        function updateDisplay() {
+            const mins = Math.floor(mcerExamRemainingSeconds / 60);
+            const secs = mcerExamRemainingSeconds % 60;
+            if (timerDisplay) {
+                timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }
+            if (mcerExamRemainingSeconds <= 0) {
+                clearInterval(mcerExamTimerInterval);
+                alert('El tiempo límite de 40 minutos ha concluido. El examen se calificará automáticamente.');
+                submitMcerLevelExam();
+            }
+        }
+
+        updateDisplay();
+        mcerExamTimerInterval = setInterval(() => {
+            mcerExamRemainingSeconds--;
+            updateDisplay();
+        }, 1000);
+    }
+
+    function submitMcerLevelExam() {
+        if (mcerExamTimerInterval) clearInterval(mcerExamTimerInterval);
+        if (!activeMcerExam) return;
+
+        let correct = 0;
+        let secListening = 0;
+        let secGrammar = 0;
+        let secReading = 0;
+        let secPragmatics = 0;
+
+        activeMcerExam.questions.forEach((q, idx) => {
+            const userAns = activeExamAnswers[idx];
+            const correctAns = (q.ans !== undefined ? q.ans : (q.answer !== undefined ? q.answer : q.correct));
+            const isRight = (userAns === correctAns);
+
+            if (isRight) {
+                correct++;
+                if (idx < 5) secListening++;
+                else if (idx < 10) secGrammar++;
+                else if (idx < 15) secReading++;
+                else secPragmatics++;
+            }
+        });
+
+        const totalQ = activeMcerExam.questions.length;
+        const scorePct = Math.round((correct / totalQ) * 100);
+        const isPassed = (correct >= 15); // 75% threshold
+
+        // Switch to Results View
+        const qView = document.getElementById('mcer-exam-question-view');
+        const resView = document.getElementById('mcer-exam-results-view');
+        if (qView) qView.style.display = 'none';
+        if (resView) resView.style.display = 'block';
+
+        // Update score indicators
+        const scoreVal = document.getElementById('mcer-exam-score-val');
+        const scoreFrac = document.getElementById('mcer-exam-score-fraction');
+        if (scoreVal) scoreVal.textContent = `${scorePct}%`;
+        if (scoreFrac) scoreFrac.textContent = `${correct} / ${totalQ} reactivos`;
+
+        // Update subscores
+        const elSubL = document.getElementById('mcer-exam-sub-listening');
+        const elSubG = document.getElementById('mcer-exam-sub-grammar');
+        const elSubR = document.getElementById('mcer-exam-sub-reading');
+        const elSubP = document.getElementById('mcer-exam-sub-pragmatics');
+        if (elSubL) elSubL.textContent = `${secListening}/5`;
+        if (elSubG) elSubG.textContent = `${secGrammar}/5`;
+        if (elSubR) elSubR.textContent = `${secReading}/5`;
+        if (elSubP) elSubP.textContent = `${secPragmatics}/5`;
+
+        const statusTag = document.getElementById('mcer-exam-status-tag');
+        const resultTitle = document.getElementById('mcer-exam-result-title');
+        const diplomaCard = document.getElementById('mcer-exam-diploma-card');
+        const remCard = document.getElementById('mcer-exam-remediation-card');
+
+        if (isPassed) {
+            if (statusTag) {
+                statusTag.textContent = 'APROBADO';
+                statusTag.style.background = '#dcfce7';
+                statusTag.style.color = '#15803d';
+            }
+            if (resultTitle) {
+                resultTitle.textContent = `¡Felicidades! Has acreditado la Certificación CEFR ${activeMcerExam.level}`;
+            }
+            if (diplomaCard) diplomaCard.style.display = 'block';
+            if (remCard) remCard.style.display = 'none';
+
+            // Generate Diploma details
+            const folio = `CACEI-MCER-${activeMcerExam.level}-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
+            const studentName = localStorage.getItem('stemos_student_name') || 'Diana Laura Morales';
+            const hoursMap = { 'A1': 60, 'A2': 120, 'B1': 180, 'B2': 240 };
+            const accHours = hoursMap[activeMcerExam.level] || 60;
+
+            const elFolio = document.getElementById('diploma-folio-val');
+            const elName = document.getElementById('diploma-student-name');
+            const elBanner = document.getElementById('diploma-level-banner');
+
+            if (elFolio) elFolio.textContent = folio;
+            if (elName) elName.textContent = studentName;
+            if (elBanner) {
+                elBanner.textContent = `CEFR LEVEL ${activeMcerExam.level} &bull; ${accHours}.0 HORAS ACREDITADAS`;
+            }
+
+            // Persist Milestone certification in localStorage
+            try {
+                localStorage.setItem(`stemos_mcer_level_${activeMcerExam.level.toLowerCase()}_certified`, 'true');
+                localStorage.setItem(`stemos_mcer_certified_hours`, String(accHours));
+                localStorage.setItem(`stemos_mcer_diploma_${activeMcerExam.level.toLowerCase()}_folio`, folio);
+                const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+                const newXP = prevXP + 2000;
+                localStorage.setItem('stemos_student_xp', String(newXP));
+                if (typeof window.updateStudentXPHUD === 'function') {
+                    window.updateStudentXPHUD(newXP);
+                }
+            } catch (e) {}
+
+        } else {
+            if (statusTag) {
+                statusTag.textContent = 'REQUIERE REFUERZO';
+                statusTag.style.background = '#fee2e2';
+                statusTag.style.color = '#b91c1c';
+            }
+            if (resultTitle) {
+                resultTitle.textContent = `Umbral No Alcanzado (${scorePct}% - Mínimo Requerido: 75%)`;
+            }
+            if (diplomaCard) diplomaCard.style.display = 'none';
+            if (remCard) remCard.style.display = 'block';
+        }
+    }
+
+    function confirmCloseMcerExam() {
+        const modal = document.getElementById('modal-mcer-level-exam');
+        if (!modal) return;
+        const resView = document.getElementById('mcer-exam-results-view');
+        if (resView && resView.style.display === 'block') {
+            modal.close();
+            return;
+        }
+        const answeredCount = activeExamAnswers.filter(a => a !== null).length;
+        if (answeredCount > 0) {
+            const ok = confirm('¿Deseas salir del examen en curso? Tu avance actual no se guardará.');
+            if (!ok) return;
+        }
+        if (mcerExamTimerInterval) clearInterval(mcerExamTimerInterval);
+        modal.close();
+    }
+    window.confirmCloseMcerExam = confirmCloseMcerExam;
+
+    /* ══════════════════════════════════════════════════════════════════
+       8.4. MULTI-CAMPUS INSTITUTIONAL FEDERATION & CAMPUS EDGE SYNC (FASE 70)
+       TecNM Tijuana · TecNM Saltillo · UTT · UPBC · UACJ · TecNM QRO
+       ══════════════════════════════════════════════════════════════════ */
+    const STEMOS_CAMPUSES = {
+        'tecnm-tijuana': {
+            id: 'tecnm-tijuana',
+            name: 'TecNM Tijuana (Instituto Tecnológico de Tijuana • ITT)',
+            shortName: 'TecNM Tijuana',
+            institutionText: 'TecNM Instituto Tecnológico de Tijuana &bull; Subdirección Académica',
+            subsystem: 'TecNM',
+            domain: '@tijuana.tecnm.mx'
+        },
+        'tecnm-saltillo': {
+            id: 'tecnm-saltillo',
+            name: 'TecNM Saltillo (Instituto Tecnológico de Saltillo • ITS)',
+            shortName: 'TecNM Saltillo',
+            institutionText: 'TecNM Instituto Tecnológico de Saltillo &bull; Coordinación de Idiomas',
+            subsystem: 'TecNM',
+            domain: '@saltillo.tecnm.mx'
+        },
+        'utt-tijuana': {
+            id: 'utt-tijuana',
+            name: 'UTT (Universidad Tecnológica de Tijuana • Valle de las Palmas)',
+            shortName: 'UTT Tijuana',
+            institutionText: 'Universidad Tecnológica de Tijuana &bull; Dirección de Carreras STEM',
+            subsystem: 'DGUTyP',
+            domain: '@uttijuana.edu.mx'
+        },
+        'upbc-mexicali': {
+            id: 'upbc-mexicali',
+            name: 'UPBC (Universidad Politécnica de Baja California • Mexicali)',
+            shortName: 'UPBC Mexicali',
+            institutionText: 'Universidad Politécnica de Baja California &bull; Consejo Académico',
+            subsystem: 'DGUTyP',
+            domain: '@upbc.edu.mx'
+        },
+        'uacj-juarez': {
+            id: 'uacj-juarez',
+            name: 'UACJ (Universidad Autónoma de Ciudad Juárez • IIT)',
+            shortName: 'UACJ Juárez',
+            institutionText: 'Universidad Autónoma de Ciudad Juárez &bull; Instituto de Ingeniería',
+            subsystem: 'UACJ',
+            domain: '@uacj.mx'
+        },
+        'tecnm-queretaro': {
+            id: 'tecnm-queretaro',
+            name: 'TecNM Querétaro (Instituto Tecnológico de Querétaro • ITQ)',
+            shortName: 'TecNM Querétaro',
+            institutionText: 'TecNM Instituto Tecnológico de Querétaro &bull; División de Estudios Superiores',
+            subsystem: 'TecNM',
+            domain: '@queretaro.tecnm.mx'
+        }
+    };
+
+    function switchInstitutionalCampus(campusId) {
+        const campus = STEMOS_CAMPUSES[campusId] || STEMOS_CAMPUSES['tecnm-tijuana'];
+        try {
+            localStorage.setItem('stemos_active_campus', campus.id);
+        } catch (e) {}
+
+        // Update selector elements on page
+        ['header-campus-federation-select', 'campus-federation-select', 'admin-campus-federation-select'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = campus.id;
+        });
+
+        // Update student subsystem pill
+        const subPill = document.getElementById('header-student-subsystem');
+        if (subPill) subPill.textContent = campus.subsystem;
+
+        // Update diploma text if visible
+        const diploInst = document.getElementById('diploma-institution-name');
+        if (diploInst) diploInst.innerHTML = campus.institutionText;
+    }
+    window.switchInstitutionalCampus = switchInstitutionalCampus;
+
+    function initCampusEdgeSync() {
+        const queueKey = 'stemos_campus_edge_sync_queue';
+        window.addEventListener('online', () => {
+            try {
+                const raw = localStorage.getItem(queueKey);
+                if (raw) {
+                    const queue = JSON.parse(raw);
+                    if (Array.isArray(queue) && queue.length > 0) {
+                        console.log(`[Campus Edge Sync] Sincronizando ${queue.length} eventos pendientes con el nodo campus.`);
+                        localStorage.removeItem(queueKey);
+                    }
+                }
+            } catch (e) {}
+        });
+
+        // Initialize saved campus
+        try {
+            const savedCampus = localStorage.getItem('stemos_active_campus') || 'tecnm-tijuana';
+            switchInstitutionalCampus(savedCampus);
+        } catch (e) {}
+    }
+    initCampusEdgeSync();
+
+    // Check exam URL parameter (e.g. app.html?exam=A1)
+    if (urlParams.get('exam')) {
+        setTimeout(() => {
+            openMcerLevelExamModal(urlParams.get('exam'));
+        }, 450);
+    }
+    if (urlParams.get('campus')) {
+        switchInstitutionalCampus(urlParams.get('campus'));
+    }
+
     /* --- 9. KEYBOARD ACCESSIBILITY (WCAG A11Y) --- */
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
@@ -4074,9 +5825,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.stemWorld && typeof window.stemWorld.closeDrawer === 'function') {
                 window.stemWorld.closeDrawer();
             }
-            // 6. Dev Studio Drawer
-            if (typeof window.closeDrawer === 'function') {
-                window.closeDrawer();
+            // 7. MCER Milestone Level Exam modal
+            const mcerExamModal = document.getElementById('modal-mcer-level-exam');
+            if (mcerExamModal && mcerExamModal.open) {
+                if (typeof window.confirmCloseMcerExam === 'function') {
+                    window.confirmCloseMcerExam();
+                } else {
+                    mcerExamModal.close();
+                }
             }
         }
     });

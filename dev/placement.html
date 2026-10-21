@@ -751,30 +751,34 @@
 
         /* Reading Passage Card */
         .reading-passage-box {
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-left: 4px solid #7c3aed;
+            background: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            border-left: 5px solid #7c3aed;
             border-radius: 14px;
-            padding: 18px 20px;
+            padding: 18px 22px;
             margin-bottom: 22px;
             text-align: left;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.08);
         }
 
         .passage-title {
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             font-weight: 800;
-            color: #7c3aed;
+            color: #6d28d9;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .passage-text {
-            font-size: 0.92rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-            font-style: italic;
+            font-size: 0.98rem;
+            color: #1e293b;
+            line-height: 1.7;
+            font-style: normal;
+            font-weight: 500;
         }
 
         /* Question prompt */
@@ -1025,7 +1029,21 @@
             <div class="glass-card">
                 <div class="badge"><i class="fa-solid fa-graduation-cap"></i> Institutional Placement · 30 Min</div>
                 <h1>stemOS <span class="highlight">MCER Placement Test</span></h1>
-                <p class="subtitle">Evaluación diagnóstica estandarizada en 3 competencias clave (Grammar, Listening & Reading) calibrada bajo el Marco Común Europeo de Referencia (A1 a B2). Diseñada para centros de cómputo y dispositivos móviles con cero latencia.</p>
+                <!-- Announcement: Completa tu cuestionario para acceder a los módulos -->
+                <div class="diagnostic-access-notice" style="background: linear-gradient(135deg, rgba(2, 132, 199, 0.12) 0%, rgba(99, 102, 241, 0.08) 100%); border: 1.5px solid rgba(2, 132, 199, 0.35); border-radius: 16px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 14px; box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08);">
+                    <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3); margin-top: 2px;">
+                        <i class="fa-solid fa-lock-open"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px;">
+                            <span style="background: #0284c7; color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.5px;">Acceso Curricular Requerido</span>
+                            <strong style="color: #0f172a; font-size: 0.98rem;">Completa tu cuestionario para acceder a los módulos</strong>
+                        </div>
+                        <p style="margin: 0; font-size: 0.88rem; color: #475569; line-height: 1.5;">
+                            Para desbloquear el acceso a todos los módulos y activar tu <strong>Track Personalizado por Carrera</strong>, completa este cuestionario diagnóstico estandarizado de 15 minutos. Al finalizar, tu nivel MCER quedará calibrado en tu cuenta y podrás comenzar a cursar tus unidades de inmediato.
+                        </p>
+                    </div>
+                </div>
 
                 <div class="intro-stats-grid">
                     <div class="stat-card">
@@ -1374,6 +1392,7 @@
     <script src="content/firebase_adapter.js?v=6.1.0"></script>
     <script src="content/gemini_service.js?v=6.2.0"></script>
     <script src="content/career_tracks.js?v=2.1.0"></script>
+    <script src="content/stemos_tts.js?v=2.2.0"></script>
     <script src="content/placement_test.js?v=1.0.0"></script>
     <script>
         // ── State Management ──
@@ -1538,8 +1557,9 @@
             const testText = "Welcome to stemOS. Audio check complete. Your speakers and speech synthesis are working perfectly.";
             if (window.STEMOS_PLACEMENT_TEST && window.STEMOS_PLACEMENT_TEST.playAudioPrompt) {
                 window.STEMOS_PLACEMENT_TEST.playAudioPrompt(testText, 
-                    () => { document.getElementById('btn-audio-test').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Testing...'; },
-                    () => { document.getElementById('btn-audio-test').innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Audio OK'; }
+                    () => { document.getElementById('btn-audio-test').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Testing Audio...'; },
+                    () => { document.getElementById('btn-audio-test').innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Audio OK (Piper Neural)'; },
+                    'pt-test-audio'
                 );
             } else {
                 alert('Audio SpeechSynthesis Ready: Web Speech API available.');
@@ -1548,35 +1568,185 @@
 
         // ── 1-Click Institutional Google SSO for Placement ──
         function handlePlacementGoogleSSO() {
-            state.student.firstName = 'Carlos';
-            state.student.lastName = 'Ramírez Valenzuela';
-            state.student.email = 'carlos.ramirez@upbc.edu.mx';
-            state.student.matricula = '21050842';
-            state.student.institution = 'UPMXL';
-            state.student.degreeType = 'lic';
-            state.student.careerId = 'upbc-mecatronica';
-            state.student.career = 'Ingeniería Mecatrónica';
-            state.student.folio = generateFolio();
-
-            // Populate form fields
-            const fn = document.getElementById('reg-first-name');
-            const ln = document.getElementById('reg-last-name');
-            const em = document.getElementById('reg-email');
-            const mat = document.getElementById('reg-matricula');
-            const inst = document.getElementById('reg-institution');
-            const car = document.getElementById('reg-career');
-            if (fn) fn.value = state.student.firstName;
-            if (ln) ln.value = state.student.lastName;
-            if (em) em.value = state.student.email;
-            if (mat) mat.value = state.student.matricula;
-            if (inst) {
-                inst.value = 'UPMXL';
-                handleInstitutionChange();
+            const ssoBtn = document.querySelector('.btn-google-sso');
+            if (ssoBtn) {
+                ssoBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color:#0284c7;"></i> <span>Conectando con Google SSO...</span>';
             }
-            if (car) car.value = 'upbc-mecatronica';
 
-            // Advance straight to instructions screen
-            switchScreen('screen-instructions');
+            function applyStudentProfile(prof) {
+                state.student.firstName = prof.firstName || 'Carlos';
+                state.student.lastName = prof.lastName || 'Ramírez Valenzuela';
+                state.student.email = prof.email || 'carlos.ramirez@upbc.edu.mx';
+                state.student.matricula = prof.matricula || '21050842';
+                state.student.institution = prof.institution || 'UPMXL';
+                state.student.degreeType = prof.degreeType || 'lic';
+                state.student.careerId = prof.careerId || 'upbc-mecatronica';
+                state.student.career = prof.career || 'Ingeniería Mecatrónica';
+                state.student.folio = state.student.folio || generateFolio();
+
+                // Save profile locally
+                try {
+                    localStorage.setItem('stemos_student_profile', JSON.stringify({
+                        name: `${state.student.firstName} ${state.student.lastName}`,
+                        email: state.student.email,
+                        matricula: state.student.matricula,
+                        subsystem: (state.student.institution === 'UPMXL') ? 'upbc' : 'it',
+                        careerId: state.student.careerId,
+                        careerName: state.student.career,
+                        degreeModality: state.student.degreeType
+                    }));
+                } catch(e) {}
+
+                // Populate form fields
+                const fn = document.getElementById('reg-first-name');
+                const ln = document.getElementById('reg-last-name');
+                const em = document.getElementById('reg-email');
+                const mat = document.getElementById('reg-matricula');
+                const inst = document.getElementById('reg-institution');
+                const car = document.getElementById('reg-career');
+                if (fn) fn.value = state.student.firstName;
+                if (ln) ln.value = state.student.lastName;
+                if (em) em.value = state.student.email;
+                if (mat) mat.value = state.student.matricula;
+                if (inst) {
+                    inst.value = state.student.institution;
+                    handleInstitutionChange();
+                }
+                if (car) car.value = state.student.careerId;
+
+                if (ssoBtn) {
+                    ssoBtn.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> <span>Autenticado como ' + state.student.email + '</span>';
+                    ssoBtn.style.background = '#ecfdf5';
+                    ssoBtn.style.color = '#065f46';
+                }
+
+                setTimeout(() => {
+                    switchScreen('screen-instructions');
+                }, 450);
+            }
+
+            // Real Firebase Google Auth
+            if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+                try {
+                    const auth = firebase.auth();
+                    const provider = new firebase.auth.GoogleAuthProvider();
+                    provider.setCustomParameters({ prompt: 'select_account' });
+                    auth.signInWithPopup(provider).then((result) => {
+                        const user = result.user;
+                        const email = user.email || 'estudiante@universidad.edu.mx';
+                        const isUpbc = email.toLowerCase().includes('upbc.edu.mx');
+                        const isTecnm = email.toLowerCase().includes('tecnm.mx');
+                        const isUabc = email.toLowerCase().includes('uabc.edu.mx');
+                        const names = (user.displayName || 'Estudiante Google').split(' ');
+                        const firstName = names[0] || 'Estudiante';
+                        const lastName = names.slice(1).join(' ') || 'Universitario';
+                        const matriculaMatch = email.match(/\d{6,10}/);
+                        const matricula = matriculaMatch ? matriculaMatch[0] : '2105' + Math.floor(1000 + Math.random() * 9000);
+
+                        let inst = 'UPMXL';
+                        if (isTecnm) inst = 'IT';
+                        else if (isUabc) inst = 'UABC';
+                        else if (!isUpbc) inst = 'UPMXL';
+
+                        // Save Google user to Firestore
+                        if (firebase.firestore) {
+                            try {
+                                const db = firebase.firestore();
+                                db.collection('users').doc(user.uid).set({
+                                    uid: user.uid,
+                                    displayName: user.displayName || `${firstName} ${lastName}`,
+                                    email: email,
+                                    institution: inst,
+                                    matricula: matricula,
+                                    lastLogin: new Date().toISOString()
+                                }, { merge: true }).catch(() => {});
+                            } catch(e) {}
+                        }
+
+                        applyStudentProfile({
+                            firstName: firstName,
+                            lastName: lastName,
+                            email: email,
+                            matricula: matricula,
+                            institution: inst,
+                            degreeType: 'lic',
+                            careerId: isUpbc ? 'upbc-mecatronica' : 'it-mecatronica',
+                            career: 'Ingeniería Mecatrónica'
+                        });
+                    }).catch((err) => {
+                        console.info('[stemOS Placement Google SSO] Popup closed or direct bypass:', err.message || err);
+                        // Check if existing student profile exists in localStorage
+                        let existing = null;
+                        try {
+                            const raw = localStorage.getItem('stemos_student_profile');
+                            if (raw) existing = JSON.parse(raw);
+                        } catch(e) {}
+
+                        if (existing && existing.email) {
+                            const parts = (existing.name || 'Carlos Ramírez').split(' ');
+                            applyStudentProfile({
+                                firstName: parts[0] || 'Carlos',
+                                lastName: parts.slice(1).join(' ') || 'Ramírez Valenzuela',
+                                email: existing.email || 'carlos.ramirez@upbc.edu.mx',
+                                matricula: existing.matricula || '21050842',
+                                institution: (existing.subsystem === 'upbc') ? 'UPMXL' : 'IT',
+                                degreeType: existing.degreeModality || 'lic',
+                                careerId: existing.careerId || 'upbc-mecatronica',
+                                career: existing.careerName || 'Ingeniería Mecatrónica'
+                            });
+                        } else {
+                            if (ssoBtn) {
+                                ssoBtn.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#0284c7;"></i> <span>Continuar con Perfil de Alumno</span>';
+                            }
+                            switchScreen('screen-survey');
+                        }
+                    });
+                    return;
+                } catch(e) {
+                    console.warn('[stemOS Placement Google SSO] Auth error:', e);
+                }
+            }
+
+            // Fallback for offline environments
+            switchScreen('screen-survey');
+        }
+
+        // Auto pre-fill if student registered beforehand
+        function checkExistingStudentProfile() {
+            try {
+                const raw = localStorage.getItem('stemos_student_profile');
+                if (raw) {
+                    const prof = JSON.parse(raw);
+                    if (prof && prof.name) {
+                        const parts = prof.name.split(' ');
+                        state.student.firstName = parts[0] || '';
+                        state.student.lastName = parts.slice(1).join(' ') || '';
+                        state.student.email = prof.email || '';
+                        state.student.matricula = prof.matricula || '';
+                        state.student.institution = (prof.subsystem === 'upbc') ? 'UPMXL' : (prof.subsystem === 'it' ? 'IT' : 'UPMXL');
+                        state.student.degreeType = prof.degreeModality || 'lic';
+                        state.student.careerId = prof.careerId || 'upbc-mecatronica';
+                        state.student.career = prof.careerName || 'Ingeniería Mecatrónica';
+                        if (prof.folio) state.student.folio = prof.folio;
+
+                        const fn = document.getElementById('reg-first-name');
+                        const ln = document.getElementById('reg-last-name');
+                        const em = document.getElementById('reg-email');
+                        const mat = document.getElementById('reg-matricula');
+                        const inst = document.getElementById('reg-institution');
+                        const car = document.getElementById('reg-career');
+                        if (fn && !fn.value) fn.value = state.student.firstName;
+                        if (ln && !ln.value) ln.value = state.student.lastName;
+                        if (em && !em.value) em.value = state.student.email;
+                        if (mat && !mat.value) mat.value = state.student.matricula;
+                        if (inst) {
+                            inst.value = state.student.institution;
+                            handleInstitutionChange();
+                        }
+                        if (car && state.student.careerId) car.value = state.student.careerId;
+                    }
+                }
+            } catch(e) {}
         }
 
         // ── Screen 1 Handlers ──
@@ -1717,10 +1887,17 @@
 
                 playBtn.onclick = () => {
                     if (state.isPlayingAudio) {
-                        window.speechSynthesis.cancel();
+                        if (window.STEMOS_PLACEMENT_TEST && window.STEMOS_PLACEMENT_TEST.stopAudioPrompt) {
+                            window.STEMOS_PLACEMENT_TEST.stopAudioPrompt();
+                        } else if (window.STEMOS_TTS && typeof window.STEMOS_TTS.stop === 'function') {
+                            window.STEMOS_TTS.stop();
+                        }
+                        if ('speechSynthesis' in window) {
+                            window.speechSynthesis.cancel();
+                        }
                         state.isPlayingAudio = false;
                         playIcon.className = 'fa-solid fa-play';
-                        playText.textContent = 'Escuchar Audio';
+                        playText.textContent = 'Escuchar Audio (US Neural Voice)';
                         waveAnim.classList.remove('playing');
                         return;
                     }
@@ -1736,16 +1913,19 @@
                         () => {
                             state.isPlayingAudio = false;
                             playIcon.className = 'fa-solid fa-rotate-right';
-                            playText.textContent = 'Repetir Audio';
+                            playText.textContent = 'Repetir Audio (US Neural Voice)';
                             waveAnim.classList.remove('playing');
-                        }
+                        },
+                        q.id
                     );
                 };
             } else if (q.section === 'reading') {
                 listeningBox.style.display = 'none';
                 readingBox.style.display = 'block';
-                document.getElementById('reading-passage-title').innerHTML = `<i class="fa-solid fa-file-lines"></i> ${q.passageTitle || 'Workplace Notice'}`;
-                document.getElementById('reading-passage-text').textContent = q.passageText || '';
+                const pTitle = q.passageTitle || q.title || 'Workplace Notice / Technical Memo';
+                const pText = q.passage || q.passageText || '';
+                document.getElementById('reading-passage-title').innerHTML = `<i class="fa-solid fa-file-lines"></i> ${pTitle}`;
+                document.getElementById('reading-passage-text').innerHTML = `<p style="margin:0; font-size:1rem; line-height:1.7; color:#0f172a; font-style:normal;">${pText.replace(/\n/g, '<br>')}</p>`;
             } else {
                 listeningBox.style.display = 'none';
                 readingBox.style.display = 'none';
@@ -1862,7 +2042,12 @@
                 totalHours: 60.0,
                 modulesTotal: 16,
                 progressPercent: 0,
-                xp: 0
+                xp: 0,
+                cefrLevel: result.level,
+                cefrScore: result.score,
+                cefrPercentage: result.percentage,
+                placementCompleted: true,
+                diagnosticFolio: state.student.folio
             };
             localStorage.setItem('stemos_student_profile', JSON.stringify(profile));
             localStorage.setItem('stemos_current_user', JSON.stringify({
@@ -1871,6 +2056,21 @@
                 role: 'student'
             }));
             localStorage.setItem('stemos_backdoor', 'true');
+            localStorage.setItem('stemos_placement_completed', 'true');
+            localStorage.setItem('stemos_active_mcer_level', result.level);
+
+            const passport = {
+                student: state.student,
+                level: result.level,
+                score: result.score,
+                percentage: result.percentage,
+                sectionScores: result.sectionScores,
+                folio: state.student.folio || ('STEMOS-MCER-' + Math.floor(1000 + Math.random() * 9000)),
+                issuedAt: new Date().toISOString(),
+                fastTrackEligible: ['B1', 'B2'].includes(result.level),
+                recommendedTrackId: result.level === 'A1' ? 'mcer-track-a1' : result.level === 'A2' ? 'mcer-track-a2' : result.level === 'B1' ? 'mcer-track-b1' : 'mcer-track-b2'
+            };
+            localStorage.setItem('stemos_diagnostic_passport', JSON.stringify(passport));
 
             // Sync to universal ecosystem adapter & Cloud Firestore
             if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.savePlacementDiagnostic === 'function') {
@@ -1878,6 +2078,19 @@
                     window.STEMOS_FIREBASE.savePlacementDiagnostic(payload);
                 } catch (e) {
                     console.warn('[stemOS Placement] Firestore diagnostic sync failed:', e);
+                }
+            }
+
+            // Direct Cloud Firestore write
+            if (typeof firebase !== 'undefined' && firebase.firestore) {
+                try {
+                    const db = firebase.firestore();
+                    const docId = state.student.folio || ('diag-' + Date.now().toString(36));
+                    db.collection('placement_tests').doc(docId).set(payload, { merge: true }).catch(err => console.warn('[stemOS Placement] Direct Firestore set failed:', err));
+                    const instId = (state.student.institution === 'UPMXL') ? 'upbc-mexicali' : (state.student.institution || 'tecnm-saltillo');
+                    db.collection('institutions').doc(instId).collection('placement_tests').doc(docId).set(payload, { merge: true }).catch(() => {});
+                } catch (e) {
+                    console.warn('[stemOS Placement] Direct Firestore error:', e);
                 }
             }
 
@@ -1941,9 +2154,49 @@
             }
         });
 
+        // ── Enter stemOS Diagnostic Passport Routing (Fase 66) ──
+        const btnEnterStemos = document.getElementById('btn-enter-stemos');
+        if (btnEnterStemos) {
+            btnEnterStemos.addEventListener('click', (e) => {
+                e.preventDefault();
+                const res = state.evaluationResult || {
+                    level: 'A2',
+                    score: 18,
+                    percentage: 56,
+                    sectionScores: {
+                        grammar: { score: 6, total: 10, pct: 60 },
+                        listening: { score: 6, total: 10, pct: 60 },
+                        reading: { score: 6, total: 12, pct: 50 }
+                    }
+                };
+
+                const passport = {
+                    student: state.student,
+                    level: res.level,
+                    score: res.score,
+                    percentage: res.percentage,
+                    sectionScores: res.sectionScores,
+                    folio: state.student.folio || ('STEMOS-MCER-' + Math.floor(1000 + Math.random() * 9000)),
+                    issuedAt: new Date().toISOString(),
+                    fastTrackEligible: ['B1', 'B2'].includes(res.level),
+                    recommendedTrackId: res.level === 'A1' ? 'mcer-track-a1' : res.level === 'A2' ? 'mcer-track-a2' : res.level === 'B1' ? 'mcer-track-b1' : 'mcer-track-b2'
+                };
+
+                try {
+                    localStorage.setItem('stemos_diagnostic_passport', JSON.stringify(passport));
+                    localStorage.setItem('stemos_active_mcer_level', res.level);
+                } catch(err) {
+                    console.warn('Failed to store diagnostic passport:', err);
+                }
+
+                window.location.href = `app.html?onboarding=mcer&level=${res.level}&folio=${encodeURIComponent(passport.folio)}`;
+            });
+        }
+
         // ── Initialization Entry Point ──
         window.addEventListener('DOMContentLoaded', () => {
             populatePlacementCareers();
+            checkExistingStudentProfile();
         });
 
         // Auto-check speech synthesis on load

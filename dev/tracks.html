@@ -120,7 +120,7 @@
           </a>
           <div class="nav-dropdown-menu">
             <a href="#studio-grid" class="nav-link active" data-filter-jump="all"><i class="fa-solid fa-layer-group"></i> Todos los Tracks (34)</a>
-            <a href="#institutional-academic-section" class="nav-link"><i class="fa-solid fa-graduation-cap" style="color:#0ea5e9;"></i> Ecosistema Académico 60h (25)</a>
+            <a href="#institutional-academic-section" class="nav-link"><i class="fa-solid fa-graduation-cap" style="color:#0ea5e9;"></i> Sistema Académico por Carrera (25)</a>
             <a href="#industry-standards-section" class="nav-link"><i class="fa-solid fa-scale-balanced" style="color:#0284c7;"></i> Estándares vs. Academia</a>
             <a href="#group-technology" class="nav-link" data-filter-jump="cat-technology"><i class="fa-solid fa-microchip"></i> Technology</a>
             <a href="#group-engineering" class="nav-link" data-filter-jump="cat-engineering"><i class="fa-solid fa-gear"></i> Engineering</a>
@@ -233,6 +233,10 @@
       <button type="button" class="tracks-tab-btn active" id="tab-btn-catalog" onclick="switchTracksWorkspaceView('catalog')">
         <i class="fa-solid fa-layer-group" style="color:#0ea5e9;"></i>
         <span>34 Tracks &amp; Currículum</span>
+      </button>
+      <button type="button" class="tracks-tab-btn" id="tab-btn-mcer" onclick="switchTracksWorkspaceView('mcer')">
+        <i class="fa-solid fa-graduation-cap" style="color:#10b981;"></i>
+        <span>MCER Tracks A1–B2 (240.0h)</span>
       </button>
       <button type="button" class="tracks-tab-btn" id="tab-btn-talent-hub" onclick="switchTracksWorkspaceView('talent-hub')">
         <i class="fa-solid fa-user-tie" style="color:#f59e0b;"></i>
@@ -415,6 +419,104 @@
         <!-- Search results or legacy module cards injected here -->
       </main>
 
+    </div>
+  </section>
+
+  <!-- ── 240.0-HOUR COMPREHENSIVE MCER / CEFR TRACKS EXPLORER ── -->
+  <section class="catalog-section mcer-catalog-section" id="mcer-catalog-section" style="padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.08); display:none;">
+    <div class="studio-container">
+      <div class="catalog-header-bar" style="margin-bottom: 24px;">
+        <div class="catalog-header-left">
+          <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(2,132,199,0.15); border:1px solid rgba(2,132,199,0.35); border-radius:9999px; padding:4px 14px; font-size:0.75rem; font-weight:700; color:#38bdf8; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:10px;">
+            <i class="fa-solid fa-graduation-cap"></i> TRONCO COMÚN UNIVERSITARIO • 240.0 HORAS AUDITABLES (A1–B2)
+          </div>
+          <h2 class="catalog-main-title">Ecosistema Curricular MCER Completo</h2>
+          <p class="catalog-main-desc">
+            4 niveles acreditados (<strong>A1 Foundations, A2 Waystage, B1 Threshold, B2 Vantage</strong>), 16 unidades de dominio técnico, <strong>464 reactivos estandarizados</strong> y 4 exámenes de certificación integral de 20 reactivos (60.0h c/u) alineados a CACEI, W3C Open Badges 3.0 y estándares de planta nearshoring.
+          </p>
+        </div>
+        <div class="units-progress-container" style="min-width:280px;">
+          <div class="units-progress-meta">
+            <span class="units-progress-label">Acreditación MCER</span>
+            <span class="units-progress-score" style="color:#10b981;">240.0 Horas • 4 Niveles</span>
+          </div>
+          <div class="units-segmented-progress" aria-hidden="true">
+            <span class="seg" style="width: 25%; background:#10b981;" title="Nivel A1 (60.0h)"></span>
+            <span class="seg" style="width: 25%; background:#0284c7;" title="Nivel A2 (60.0h)"></span>
+            <span class="seg" style="width: 25%; background:#f59e0b;" title="Nivel B1 (60.0h)"></span>
+            <span class="seg" style="width: 25%; background:#8b5cf6;" title="Nivel B2 (60.0h)"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Level Milestone Certification Cards -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px; margin-bottom:24px;">
+        <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3); border-radius:14px; padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="background:#10b981; color:#fff; font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:6px;">CEFR A1</span>
+            <span style="font-size:0.75rem; color:#6ee7b7; font-weight:700;">60.0h Acreditadas</span>
+          </div>
+          <h4 style="color:#fff; font-size:0.95rem; font-weight:800; margin:8px 0 4px 0;">Tronco Común Inglés I</h4>
+          <p style="color:#94a3b8; font-size:0.78rem; line-height:1.4; margin-bottom:10px;">Fundamentos de planta, seguridad EHS, herramientas y comunicación básica.</p>
+          <a href="/app.html?exam=A1" class="btn btn-mcer-level-exam-btn" data-mcer-exam="A1" style="display:block; text-align:center; background:#10b981; color:#fff; font-size:0.78rem; font-weight:700; padding:6px 12px; border-radius:8px; text-decoration:none;">
+            <i class="fa-solid fa-play"></i> Presentar Examen A1 (20 Reactivos)
+          </a>
+        </div>
+        <div style="background:rgba(2,132,199,0.08); border:1px solid rgba(2,132,199,0.3); border-radius:14px; padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="background:#0284c7; color:#fff; font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:6px;">CEFR A2</span>
+            <span style="font-size:0.75rem; color:#7dd3fc; font-weight:700;">60.0h Acreditadas</span>
+          </div>
+          <h4 style="color:#fff; font-size:0.95rem; font-weight:800; margin:8px 0 4px 0;">Tronco Común Inglés II</h4>
+          <p style="color:#94a3b8; font-size:0.78rem; line-height:1.4; margin-bottom:10px;">Mantenimiento, manuales SOPs, reportes de turnos y procesos de taller.</p>
+          <a href="/app.html?exam=A2" class="btn btn-mcer-level-exam-btn" data-mcer-exam="A2" style="display:block; text-align:center; background:#0284c7; color:#fff; font-size:0.78rem; font-weight:700; padding:6px 12px; border-radius:8px; text-decoration:none;">
+            <i class="fa-solid fa-play"></i> Presentar Examen A2 (20 Reactivos)
+          </a>
+        </div>
+        <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius:14px; padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="background:#f59e0b; color:#fff; font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:6px;">CEFR B1</span>
+            <span style="font-size:0.75rem; color:#fde68a; font-weight:700;">60.0h Acreditadas</span>
+          </div>
+          <h4 style="color:#fff; font-size:0.95rem; font-weight:800; margin:8px 0 4px 0;">Tronco Común Inglés III</h4>
+          <p style="color:#94a3b8; font-size:0.78rem; line-height:1.4; margin-bottom:10px;">Troubleshooting SCADA, RCA 5-Why, auditorías de calidad y telecomunicaciones.</p>
+          <a href="/app.html?exam=B1" class="btn btn-mcer-level-exam-btn" data-mcer-exam="B1" style="display:block; text-align:center; background:#f59e0b; color:#fff; font-size:0.78rem; font-weight:700; padding:6px 12px; border-radius:8px; text-decoration:none;">
+            <i class="fa-solid fa-play"></i> Presentar Examen B1 (20 Reactivos)
+          </a>
+        </div>
+        <div style="background:rgba(139,92,246,0.08); border:1px solid rgba(139,92,246,0.3); border-radius:14px; padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="background:#8b5cf6; color:#fff; font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:6px;">CEFR B2</span>
+            <span style="font-size:0.75rem; color:#ddd6fe; font-weight:700;">60.0h Acreditadas</span>
+          </div>
+          <h4 style="color:#fff; font-size:0.95rem; font-weight:800; margin:8px 0 4px 0;">Tronco Común Inglés IV</h4>
+          <p style="color:#94a3b8; font-size:0.78rem; line-height:1.4; margin-bottom:10px;">Gestión de proyectos CAPEX/OPEX, ingeniería de datos, defensa técnica y nearshoring.</p>
+          <a href="/app.html?exam=B2" class="btn btn-mcer-level-exam-btn" data-mcer-exam="B2" style="display:block; text-align:center; background:#8b5cf6; color:#fff; font-size:0.78rem; font-weight:700; padding:6px 12px; border-radius:8px; text-decoration:none;">
+            <i class="fa-solid fa-play"></i> Presentar Examen B2 (20 Reactivos)
+          </a>
+        </div>
+      </div>
+
+      <!-- Controls Panel (Filter chips & search) -->
+      <div class="inst-controls-panel">
+        <div class="inst-subsystem-filters" id="mcer-tracks-level-filters">
+          <button type="button" class="inst-filter-btn active" data-mcer-level="all"><i class="fa-solid fa-layer-group"></i> <span>Todos los Niveles (16 Unidades)</span></button>
+          <button type="button" class="inst-filter-btn" data-mcer-level="A1"><i class="fa-solid fa-seedling" style="color:#10b981;"></i> <span>A1 Foundations (4)</span></button>
+          <button type="button" class="inst-filter-btn" data-mcer-level="A2"><i class="fa-solid fa-route" style="color:#0284c7;"></i> <span>A2 Waystage (4)</span></button>
+          <button type="button" class="inst-filter-btn" data-mcer-level="B1"><i class="fa-solid fa-stairs" style="color:#f59e0b;"></i> <span>B1 Threshold (4)</span></button>
+          <button type="button" class="inst-filter-btn" data-mcer-level="B2"><i class="fa-solid fa-award" style="color:#8b5cf6;"></i> <span>B2 Vantage (4)</span></button>
+        </div>
+
+        <div class="inst-search-wrapper">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="mcer-tracks-search" class="inst-search-input" placeholder="Buscar unidad, gramática o competencia MCER...">
+        </div>
+      </div>
+
+      <!-- MCER Units Grid -->
+      <div class="inst-careers-grid" id="tracks-mcer-units-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:16px;">
+        <!-- Injected dynamically via script -->
+      </div>
     </div>
   </section>
 
@@ -10623,6 +10725,7 @@
       const catalogSec = document.getElementById("catalog-section");
       const talentHubSec = document.getElementById("nearshoring-talent-hub-section");
       const instAcademicSec = document.getElementById("institutional-academic-section");
+      const mcerSec = document.getElementById("mcer-catalog-section");
       const labSections = [
         "output-engine-section",
         "sm2-review-section",
@@ -10641,24 +10744,35 @@
         if (catalogSec) catalogSec.style.display = "block";
         if (instAcademicSec) instAcademicSec.style.display = "none";
         if (talentHubSec) talentHubSec.style.display = "none";
+        if (mcerSec) mcerSec.style.display = "none";
         labSections.forEach(s => s.style.display = "none");
         catalogSec.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (view === "mcer") {
+        if (catalogSec) catalogSec.style.display = "none";
+        if (instAcademicSec) instAcademicSec.style.display = "none";
+        if (talentHubSec) talentHubSec.style.display = "none";
+        if (mcerSec) mcerSec.style.display = "block";
+        labSections.forEach(s => s.style.display = "none");
+        if (mcerSec) mcerSec.scrollIntoView({ behavior: "smooth", block: "start" });
       } else if (view === "careers") {
         if (catalogSec) catalogSec.style.display = "none";
         if (instAcademicSec) instAcademicSec.style.display = "block";
         if (talentHubSec) talentHubSec.style.display = "none";
+        if (mcerSec) mcerSec.style.display = "none";
         labSections.forEach(s => s.style.display = "none");
         instAcademicSec.scrollIntoView({ behavior: "smooth", block: "start" });
       } else if (view === "talent-hub") {
         if (catalogSec) catalogSec.style.display = "none";
         if (instAcademicSec) instAcademicSec.style.display = "none";
         if (talentHubSec) talentHubSec.style.display = "block";
+        if (mcerSec) mcerSec.style.display = "none";
         labSections.forEach(s => s.style.display = "none");
         talentHubSec.scrollIntoView({ behavior: "smooth", block: "start" });
       } else if (view === "labs") {
         if (catalogSec) catalogSec.style.display = "none";
         if (instAcademicSec) instAcademicSec.style.display = "none";
         if (talentHubSec) talentHubSec.style.display = "none";
+        if (mcerSec) mcerSec.style.display = "none";
         labSections.forEach(s => s.style.display = "block");
         if (labSections[0]) labSections[0].scrollIntoView({ behavior: "smooth", block: "start" });
       } else {
@@ -10666,9 +10780,109 @@
         if (catalogSec) catalogSec.style.display = "block";
         if (instAcademicSec) instAcademicSec.style.display = "block";
         if (talentHubSec) talentHubSec.style.display = "block";
+        if (mcerSec) mcerSec.style.display = "block";
         labSections.forEach(s => s.style.display = "block");
       }
     }
+
+    // Initialize MCER 16 Units Grid in tracks.html
+    function initTracksMcerGrid() {
+      if (!window.STEMOS_MCER_TRACKS) return;
+      const grid = document.getElementById('tracks-mcer-units-grid');
+      if (!grid) return;
+
+      const units = window.STEMOS_MCER_TRACKS.getAllUnits();
+      let activeFilter = 'all';
+      let searchQuery = '';
+
+      function render() {
+        grid.innerHTML = '';
+        let filtered = units;
+        if (activeFilter !== 'all') {
+          filtered = filtered.filter(u => u.cefr === activeFilter);
+        }
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          filtered = filtered.filter(u => 
+            u.title.toLowerCase().includes(q) || 
+            (u.titleES && u.titleES.toLowerCase().includes(q)) || 
+            (u.grammarFocus && u.grammarFocus.toLowerCase().includes(q)) ||
+            (u.canDo && u.canDo.toLowerCase().includes(q))
+          );
+        }
+
+        const levelColors = {
+          'A1': { color: '#10b981', label: 'Foundations' },
+          'A2': { color: '#0284c7', label: 'Waystage' },
+          'B1': { color: '#f59e0b', label: 'Threshold' },
+          'B2': { color: '#8b5cf6', label: 'Vantage' }
+        };
+
+        filtered.forEach(u => {
+          const meta = levelColors[u.cefr] || levelColors.A1;
+          const card = document.createElement('div');
+          card.style.cssText = `background:rgba(15,23,42,0.65); border:1px solid rgba(255,255,255,0.08); border-top:3px solid ${meta.color}; border-radius:14px; padding:18px; display:flex; flex-direction:column; justify-content:space-between; transition:all 0.2s ease;`;
+          card.innerHTML = `
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <span style="background:${meta.color}; color:#fff; font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:6px;">
+                  CEFR ${u.cefr} · ${meta.label}
+                </span>
+                <span style="color:#94a3b8; font-size:0.75rem; font-weight:700;">15.0h Acreditadas</span>
+              </div>
+              <h4 style="color:#f8fafc; font-size:1.05rem; font-weight:800; margin:0 0 4px 0;">Unit ${String(u.unitNumber).padStart(2, '0')} · ${u.title}</h4>
+              <div style="font-size:0.8rem; color:#38bdf8; margin-bottom:8px; font-weight:600;">${u.titleES || ''}</div>
+              <p style="font-size:0.82rem; color:#94a3b8; line-height:1.45; margin-bottom:12px;">${u.canDo || ''}</p>
+              
+              <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:8px 10px; margin-bottom:12px;">
+                <span style="font-size:0.7rem; color:${meta.color}; font-weight:800; text-transform:uppercase; letter-spacing:0.04em;">Enfoque Gramatical:</span>
+                <div style="font-size:0.82rem; color:#e2e8f0; font-weight:700; margin-top:2px;">${u.grammarFocus || 'Standard Technical Syntax'}</div>
+              </div>
+
+              <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; font-size:0.72rem; color:#cbd5e1;">
+                <span style="background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px;"><i class="fa-solid fa-comments"></i> Diálogo</span>
+                <span style="background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px;"><i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;"></i> Falsos Amigos</span>
+                <span style="background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px;"><i class="fa-solid fa-headphones"></i> Listening (3)</span>
+                <span style="background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px;"><i class="fa-solid fa-wand-magic-sparkles"></i> Grammar (5)</span>
+                <span style="background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px;"><i class="fa-solid fa-file-lines"></i> SOPs (4)</span>
+                <span style="background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px;"><i class="fa-solid fa-industry" style="color:#10b981;"></i> Crisol IA</span>
+                <span style="background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px;"><i class="fa-solid fa-circle-check"></i> Quiz (8)</span>
+              </div>
+            </div>
+
+            <a href="/app.html" style="display:flex; align-items:center; justify-content:center; gap:8px; background:${meta.color}; color:#fff; font-size:0.82rem; font-weight:800; padding:9px 14px; border-radius:10px; text-decoration:none; transition:opacity 0.2s ease;">
+              <span>Estudiar en stemOS Studio</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      render();
+
+      // Listeners
+      document.querySelectorAll('#mcer-tracks-level-filters .inst-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#mcer-tracks-level-filters .inst-filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeFilter = btn.dataset.mcerLevel || 'all';
+          render();
+        });
+      });
+
+      const searchInput = document.getElementById('mcer-tracks-search');
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          searchQuery = e.target.value.trim();
+          render();
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initTracksMcerGrid();
+    });
   </script>
 
 </body>
