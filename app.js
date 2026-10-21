@@ -4446,18 +4446,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 4.1 MCER Level Milestone Certification Exam (20 Items • 60.0h W3C Accredited)
-    let mcerExamTimerInterval = null;
+    let legacyMcerExamTimerInterval = null;
 
     function openMcerLevelExam(levelId) {
         if (!window.STEMOS_MCER_TRACKS) return;
         const exam = window.STEMOS_MCER_TRACKS.getLevelExam(levelId || 'a1');
         if (!exam) return;
 
-        const modal = document.getElementById('modal-mcer-level-exam');
+        const modal = document.getElementById('legacy-modal-mcer-level-exam');
         if (!modal) return;
 
         // Set Headers
-        const levelBadge = document.getElementById('mcer-exam-level-badge');
+        const levelBadge = document.getElementById('legacy-mcer-exam-level-badge');
         const examTitle = document.getElementById('mcer-exam-title');
         const examDossier = document.getElementById('mcer-exam-dossier');
         if (levelBadge) levelBadge.textContent = `CEFR ${exam.level.toUpperCase()} EXAM`;
@@ -4548,7 +4548,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Timer (40 minutes)
-        if (mcerExamTimerInterval) clearInterval(mcerExamTimerInterval);
+        if (legacyMcerExamTimerInterval) clearInterval(legacyMcerExamTimerInterval);
         let secondsLeft = (exam.timeMinutes || 40) * 60;
         const timerValEl = document.getElementById('mcer-exam-timer-val');
         
@@ -4561,11 +4561,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updateTimerDisplay();
 
-        mcerExamTimerInterval = setInterval(() => {
+        legacyMcerExamTimerInterval = setInterval(() => {
             secondsLeft--;
             updateTimerDisplay();
             if (secondsLeft <= 0) {
-                clearInterval(mcerExamTimerInterval);
+                clearInterval(legacyMcerExamTimerInterval);
                 const btnSub = document.getElementById('btn-submit-mcer-exam');
                 if (btnSub) btnSub.click();
             }
@@ -4575,7 +4575,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const btnSubmitExam = document.getElementById('btn-submit-mcer-exam');
         if (btnSubmitExam) {
             btnSubmitExam.onclick = () => {
-                if (mcerExamTimerInterval) clearInterval(mcerExamTimerInterval);
+                if (legacyMcerExamTimerInterval) clearInterval(legacyMcerExamTimerInterval);
                 let correctCount = 0;
                 exam.questions.forEach((qItem, qIdx) => {
                     const selected = document.querySelector(`input[name="mcer-exam-q-${qIdx}"]:checked`);
@@ -4608,7 +4608,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     resultsBox.style.background = isPassed ? '#f0fdf4' : '#fffbeb';
                     resultsBox.style.borderColor = isPassed ? '#86efac' : '#fde68a';
 
-                    const scoreVal = document.getElementById('mcer-exam-score-val');
+                    const scoreVal = document.getElementById('legacy-mcer-exam-score-val');
                     const feedbackVal = document.getElementById('mcer-exam-feedback-val');
                     if (scoreVal) {
                         scoreVal.textContent = `${pct}% (${correctCount}/${exam.questions.length})`;
@@ -4648,7 +4648,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const closeBtn = document.getElementById('mcer-exam-close');
         if (closeBtn) {
             closeBtn.onclick = () => {
-                if (mcerExamTimerInterval) clearInterval(mcerExamTimerInterval);
+                if (legacyMcerExamTimerInterval) clearInterval(legacyMcerExamTimerInterval);
                 if (window.speechSynthesis) window.speechSynthesis.cancel();
                 modal.close();
             };
@@ -5838,4 +5838,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
-

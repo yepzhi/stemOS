@@ -22478,6 +22478,149 @@ body.supaste-theme {
   margin-right: 6px;
 }
 
+/* ── Landing page readability pass ───────────────────────────────────
+   The hero establishes a crisp dark-blue contrast system.  The sections
+   below it used several semi-transparent surfaces and muted grays, which
+   made body copy fade into the background.  These rules keep the depth but
+   use opaque enough surfaces and a single, accessible text scale. */
+.promo-section {
+  background: radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.13) 0%, #091426 52%, #030712 100%);
+}
+
+.industry-standards-section,
+.institutional-academic-section,
+.student-cx-journey-section,
+.pricing-institutional-section {
+  isolation: isolate;
+}
+
+.promo-section .section-subtitle,
+.promo-section .promo-card-desc,
+.promo-section .methodology-intro,
+.promo-section .pillar-desc,
+.promo-section .reality-col-desc,
+.promo-section .reality-point-body p,
+.promo-section .standards-clusters-desc,
+.promo-section .std-cluster-text,
+.promo-section .pricing-plan-summary,
+.promo-section .pricing-features-list li,
+.promo-section .pricing-memo-quote,
+.promo-section .inst-portal-desc,
+.promo-section .inst-career-meta-strip,
+.promo-section .cx-step-desc {
+  color: #dbeafe !important;
+}
+
+.promo-section [style*="color:#64748b"],
+.promo-section [style*="color: #64748b"],
+.promo-section [style*="color:#94a3b8"],
+.promo-section [style*="color: #94a3b8"] {
+  color: #cbd5e1 !important;
+}
+
+.promo-section .promo-card,
+.promo-section .methodology-card,
+.promo-section .std-cluster-card,
+.promo-section .pricing-card,
+.promo-section .pricing-memo-card,
+.promo-section .inst-portal-card,
+.promo-section .inst-career-card,
+.promo-section .cx-step-card {
+  background-color: rgba(15, 23, 42, 0.92);
+}
+
+.promo-section :is(a, button, input, textarea, select):focus-visible {
+  outline: 3px solid #7dd3fc;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promo-section *,
+  .promo-section *::before,
+  .promo-section *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Small-screen safety net for the catalog, landing page, and LXP overlays. */
+@media (max-width: 640px) {
+  .promo-section {
+    padding-inline: 16px;
+  }
+
+  .promo-section .section-header-center {
+    margin-bottom: 36px;
+  }
+
+  .promo-section .section-title {
+    font-size: clamp(1.75rem, 8vw, 2.25rem);
+  }
+
+  #pricing-institutional-section .pricing-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .cx-journey-summary-bar,
+  .pricing-memo-card,
+  .methodology-header,
+  .reality-gap-grid {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cx-journey-summary-bar > div:last-child,
+  .pricing-memo-meta {
+    width: 100%;
+  }
+
+  .cx-journey-summary-bar a,
+  .pricing-memo-tag {
+    justify-content: center;
+  }
+
+  .stemos-zoom-modal-overlay,
+  .cs-modal-overlay,
+  .inst-modal-overlay {
+    padding: 12px;
+  }
+
+  .cs-modal-card,
+  .modal-card,
+  .inst-modal-content {
+    max-width: calc(100vw - 24px) !important;
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
+  }
+
+  .walkthrough-telemetry-strip,
+  .esg-telemetry-grid,
+  .sc-telemetry-grid,
+  .cyber-telemetry-grid,
+  .pdm-telemetry-grid,
+  .grid-telemetry-grid,
+  .chiplet-telemetry-grid,
+  .battery-telemetry-grid,
+  .immersion-telemetry-grid,
+  .bioprocess-telemetry-grid,
+  .hydrogen-telemetry-grid,
+  .upw-telemetry-grid,
+  .avionics-telemetry-grid,
+  .subsea-telemetry-grid,
+  .smr-telemetry-grid,
+  .dac-telemetry-grid,
+  .mcs-telemetry-grid,
+  .qkd-telemetry-grid,
+  .euv-telemetry-grid,
+  .hvdc-telemetry-grid,
+  .sensing-telemetry-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
 @keyframes speiPulse {
   0% {
     box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
@@ -22489,6 +22632,4 @@ body.supaste-theme {
     box-shadow: 0 0 0 0 rgba(52, 211, 153, 0);
   }
 }
-
-
 

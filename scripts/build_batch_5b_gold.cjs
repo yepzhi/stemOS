@@ -40,13 +40,13 @@ Guaranteeing food safety requires understanding the growth kinetics of foodborne
 
 Food microbiology categorizes biological threats according to cell structure, spore formation capability, and physiological growth limits:
 
-```
+\`\`\`
 Key Foodborne Pathogens Taxonomy:
 - Salmonella enterica:        Gram-negative, non-spore-forming rod. Cross-contamination in poultry/produce.
 - Listeria monocytogenes:     Gram-positive psychrotroph. Multiplies at refrigeration temps (down to -0.4°C).
 - Clostridium botulinum:      Gram-positive obligate anaerobic spore-former. Produces lethal neurotoxin.
 - Shiga toxin E. coli (STEC): Enterohemorrhagic rod. Causes severe hemolytic uremic syndrome (HUS).
-```
+\`\`\`
 
 ### The Unique Danger of Listeria monocytogenes
 Unlike most mesophilic bacteria whose growth halts under $4.0^\\circ\\text{C}$, *Listeria monocytogenes* is a **psychrotroph** capable of slow metabolic multiplication inside industrial cold storage rooms ($0^\\circ\\text{C}\\text{--}4^\\circ\\text{C}$). Furthermore, *Listeria* forms resilient **biofilms**—complex multicellular matrices anchored to wet stainless steel drains, conveyor rollers, and slicing blades that resist standard quaternary ammonium sanitizers.
@@ -60,12 +60,12 @@ Unlike most mesophilic bacteria whose growth halts under $4.0^\\circ\\text{C}$, 
 
 Originally engineered by the Pillsbury Company and NASA to ensure $100\\%$ contamination-free food for human spaceflight missions, **HACCP** is the mandatory global foundation of food quality systems (GFSI, SQF, BRCGS):
 
-```
+\`\`\`
 The 7 HACCP Principles Lifecycle:
 [1. Hazard Analysis] ---> [2. Identify CCPs] ---> [3. Establish Critical Limits]
                                                                 |
 [7. Documentation]  <--- [6. Verification]  <--- [5. Corrective Actions] <-- [4. Monitoring]
-```
+\`\`\`
 
 1. **Conduct a Hazard Analysis**: Identify all potential biological (pathogens), chemical (cleaning chemicals, mycotoxins, undeclared allergens), and physical (metal shavings, glass shards) hazards across every processing step.
 2. **Determine Critical Control Points (CCPs)**: A step at which control can be applied and is essential to prevent, eliminate, or reduce a food safety hazard to an acceptable level. CCPs are determined using standard **Codex Decision Trees** (e.g., continuous in-line pasteurization heater or in-line metal detector).
@@ -83,13 +83,13 @@ The 7 HACCP Principles Lifecycle:
 
 Traditional food manufacturing inspected the finished product right before shipping. Modern quality systems recognize that finished product testing alone is statistically incapable of catching low-level, sporadic contamination. Plants enforce **Environmental Monitoring Programs (EMP)** structured around **Four Cleanliness Zones**:
 
-```
+\`\`\`
 Industrial Cleanliness Zoning Architecture:
 [ Zone 1: Direct Product Contact ]     Conveyor belts, slicer blades, filler nozzles, hopper chutes.
 [ Zone 2: Non-Contact Adjacent ]       Equipment frames, motor housings, operator control buttons.
 [ Zone 3: Surrounding Facility ]       Cleanroom walls, floor drains, overhead catwalks, air handling vents.
 [ Zone 4: Remote Outer Areas ]         Warehouse corridors, employee locker rooms, loading docks.
-```
+\`\`\`
 
 ### Pathogen Swabbing & Rapid ATP Bioluminescence
 - **ATP Swabbing**: Measures total organic matter via luciferin-luciferase bioluminescence within 15 seconds. An RLU (Relative Light Unit) reading $<30$ confirms physical cleaning before chemical sanitization is applied.

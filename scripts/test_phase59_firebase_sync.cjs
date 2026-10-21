@@ -185,7 +185,7 @@ try {
     assert(teacherHtml.includes('STEMOS_FIREBASE.getStudents'), 'teacher.html syncs students via STEMOS_FIREBASE');
 
     const swJs = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
-    assert(swJs.includes('v6.1.0-firebase-sync'), 'sw.js cache name updated to v6.1.0-firebase-sync');
+    assert(swJs.includes('v6.3.1-sso-mobile-fixes'), 'sw.js cache name updated for the latest SSO and mobile fixes');
     assert(swJs.includes('/content/firebase_adapter.js'), 'sw.js pre-caches /content/firebase_adapter.js');
 } catch (e) {
     assert(false, 'Portal integration verification failed', e.message);
