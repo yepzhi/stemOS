@@ -3,10 +3,28 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Student Onboarding Wizard — stemOS</title>
     <meta name="description" content="Official student onboarding and 60-hour deterministic engineering curricular path registration for Technological Universities, TecNM, and State Autonomous Systems. Technical English B1 immersion.">
+
+    <!-- PWA & Mobile Web App Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="stemOS">
+    <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
+    <link rel="apple-touch-icon" href="/icon-192.svg">
+    <script src="/content/stemos_pwa.js" defer></script>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230284c7'/%3E%3Cstop offset='100%25' stop-color='%2314b8a6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ctext x='50' y='64' font-family='system-ui, -apple-system, sans-serif' font-weight='900' font-size='48' fill='white' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+
+    <!-- Resource Hints & DNS Prefetch (Phase 84 CWV Engine) -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://www.gstatic.com">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +33,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Canvas Confetti CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
 
     <style>
         *, *::before, *::after {
@@ -979,6 +997,265 @@
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* ═══════════════════════════════════════════════════
+           PHASE 81 — COMPREHENSIVE MOBILE RESPONSIVE OVERHAUL
+           Modern CSS: dvh units, safe-area-inset, container queries,
+           44px touch targets, fluid type with clamp(), sticky bottom bar
+           ═══════════════════════════════════════════════════ */
+
+        /* --- Base: Use dynamic viewport height to prevent address-bar overlap --- */
+        html {
+            box-sizing: border-box;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* --- Touch target enforcement (WCAG 2.5.8 / ui-navigation-hierarchy: min 44px) --- */
+        button, .selection-card, .hub-card, .career-item-card, .modality-pill, .tsu-pill {
+            min-height: 44px;
+        }
+
+        /* --- Fluid typography: prevent giant headings on narrow screens --- */
+        .question-title {
+            font-size: clamp(1.25rem, 5vw, 1.95rem);
+        }
+        .question-subtitle {
+            font-size: clamp(0.85rem, 3vw, 0.95rem);
+        }
+
+        /* --- Wizard header: stack on tiny screens --- */
+        @media (max-width: 480px) {
+            .wizard-header {
+                padding: 10px 14px;
+            }
+            .header-inner {
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+            .brand-title {
+                font-size: 1.05rem;
+            }
+            .badge-b1 {
+                display: none;
+            }
+            .step-counter-pill {
+                font-size: 0.72rem;
+                padding: 5px 10px;
+            }
+        }
+
+        /* --- Progress tracker: prevent horizontal overflow on small screens --- */
+        .progress-segment-wrapper {
+            padding: 0 14px;
+        }
+        @media (max-width: 480px) {
+            .progress-segments {
+                gap: 4px;
+            }
+            .progress-meta-row {
+                font-size: 0.68rem;
+            }
+        }
+
+        /* --- Main wizard padding: respect safe area on notched phones --- */
+        .wizard-main {
+            padding: 16px 14px calc(90px + env(safe-area-inset-bottom, 0px)) 14px;
+            align-items: flex-start;
+        }
+        @media (min-width: 768px) {
+            .wizard-main {
+                padding: 24px 20px 80px;
+                align-items: center;
+            }
+        }
+
+        /* --- Wizard card: full-width on mobile, respect safe-area sides --- */
+        .wizard-stage-card {
+            padding-left: max(22px, env(safe-area-inset-left, 14px));
+            padding-right: max(22px, env(safe-area-inset-right, 14px));
+        }
+        @media (max-width: 480px) {
+            .wizard-stage-card {
+                padding: 22px 14px;
+                border-radius: 16px;
+                margin: 0;
+            }
+        }
+
+        /* --- Selection grid: always 1 col on very small screens --- */
+        @media (max-width: 400px) {
+            .selection-grid-2 {
+                grid-template-columns: 1fr !important;
+                gap: 10px;
+            }
+            .selection-card {
+                padding: 14px;
+                gap: 10px;
+            }
+            .card-icon-box {
+                width: 38px;
+                height: 38px;
+            }
+        }
+
+        /* --- Career scroll container: full-height on mobile, single col --- */
+        @media (max-width: 480px) {
+            .careers-scroll-container {
+                grid-template-columns: 1fr;
+                max-height: 55dvh;
+            }
+        }
+
+        /* --- Hubs grid: 1 col on mobile --- */
+        @media (max-width: 480px) {
+            .hubs-grid {
+                grid-template-columns: 1fr;
+                max-height: 55dvh;
+            }
+            .hub-card {
+                padding: 12px 14px;
+            }
+        }
+
+        /* --- Modality pills wrap nicely --- */
+        #degree-modality-wrapper {
+            flex-wrap: wrap;
+        }
+        @media (max-width: 540px) {
+            .modality-pill {
+                font-size: 0.78rem;
+                padding: 6px 12px;
+            }
+        }
+
+        /* --- Credential pass card: stack on mobile --- */
+        .pass-header {
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        @media (max-width: 540px) {
+            .credential-pass-card {
+                padding: 20px 16px;
+            }
+            .pass-student-name {
+                font-size: 1.25rem;
+            }
+            .pass-grid {
+                grid-template-columns: 1fr 1fr;
+                padding: 14px;
+                gap: 12px;
+            }
+            .pass-footer {
+                flex-direction: column;
+                gap: 6px;
+                align-items: flex-start;
+            }
+            .pass-folio {
+                font-size: 0.68rem;
+            }
+        }
+        @media (max-width: 360px) {
+            .pass-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- Bottom action bar: sticky fixed bar on mobile --- */
+        .wizard-actions {
+            position: sticky;
+            bottom: 0;
+        }
+        @media (max-width: 640px) {
+            .wizard-actions {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 100;
+                margin: 0;
+                padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-top: 1px solid var(--border-glass);
+                box-shadow: 0 -8px 30px rgba(15, 23, 42, 0.06);
+                border-radius: 0;
+            }
+            .btn-wizard-back {
+                padding: 12px 18px;
+                font-size: 0.86rem;
+            }
+            .btn-wizard-next, .btn-wizard-launch {
+                padding: 13px 22px;
+                font-size: 0.9rem;
+                flex: 1;
+                justify-content: center;
+                max-width: 220px;
+            }
+            .enter-key-hint {
+                display: none;
+            }
+        }
+
+        /* --- Google SSO button: always full width with good padding --- */
+        @media (max-width: 540px) {
+            .google-sso-container {
+                padding: 14px;
+            }
+            .btn-google-sso {
+                padding: 12px 14px !important;
+                font-size: 0.88rem !important;
+            }
+        }
+
+        /* --- Text inputs: larger touch areas on mobile --- */
+        @media (max-width: 640px) {
+            .text-input {
+                padding: 14px 16px 14px 44px;
+                font-size: 1rem;
+                /* Prevents iOS zoom on focus (must be ≥16px on iOS) */
+                font-size: max(1rem, 16px);
+            }
+            .search-input {
+                font-size: max(0.92rem, 16px);
+            }
+        }
+
+        /* --- Solo subscription banner: stack vertically on mobile --- */
+        @media (max-width: 540px) {
+            #solo-subscription-banner {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            #solo-subscription-banner button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* --- Class code box: better padding --- */
+        @media (max-width: 540px) {
+            .class-code-box {
+                padding: 18px 14px;
+            }
+        }
+
+        /* --- Step tag: smaller on mobile --- */
+        @media (max-width: 400px) {
+            .step-tag {
+                font-size: 0.65rem;
+                padding: 3px 10px;
+            }
+        }
+
+        /* --- Ambient glows: scale down on small screens for performance --- */
+        @media (max-width: 640px) {
+            .ambient-glow-1, .ambient-glow-2 {
+                width: 350px;
+                height: 350px;
+                opacity: 0.7;
+            }
+        }
     </style>
 </head>
 
@@ -1543,14 +1820,14 @@
     </div>
 
     <!-- Firebase SDK Compat & Universal Adapter (High Concurrency 100 simultaneous / 1,500 students) -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="content/firebase_config.js?v=6.2.0"></script>
-    <script src="content/firebase_adapter.js?v=6.1.0"></script>
-    <script src="content/gemini_service.js?v=6.2.0"></script>
-    <script src="content/career_tracks.js?v=2.0.0"></script>
-    <script src="content/stemos_payments.js?v=1.0.0"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js" defer></script>
+    <script src="content/firebase_config.js?v=6.2.0" defer></script>
+    <script src="content/firebase_adapter.js?v=6.1.0" defer></script>
+    <script src="content/gemini_service.js?v=6.2.0" defer></script>
+    <script src="content/career_tracks.js?v=2.0.0" defer></script>
+    <script src="content/stemos_payments.js?v=1.0.0" defer></script>
     <script>
         'use strict';
 

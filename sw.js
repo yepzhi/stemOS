@@ -3,11 +3,17 @@
  * Full offline PWA caching for 4 Portals (Student, Admin, Teacher, Register), 25 Career Paths (60h), Interleaved Curricula, XP HUD, and 3D World Map.
  */
 
-const CACHE_NAME = 'stemos-lxp-v6.3.1-sso-mobile-fixes';
+const CACHE_NAME = 'stemos-lxp-v6.5.0-cwv-speed-tier';
 
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
+  '/manifest.json',
+  '/manifest.webmanifest',
+  '/icon-192.svg',
+  '/icon-512.svg',
+  '/icon-maskable.svg',
+  '/favicon.ico',
   '/styles.css',
   '/app.html',
   '/app.js',
@@ -17,6 +23,7 @@ const ASSETS_TO_CACHE = [
   '/register.html',
   '/admin.html',
   '/teacher.html',
+  '/404.html',
   '/world-map.css',
   '/world-map.js',
   '/content/courses.js',
@@ -30,6 +37,7 @@ const ASSETS_TO_CACHE = [
   '/content/stemos_payments.js',
   '/content/phrases_library.js',
   '/content/stemos_tts.js',
+  '/content/stemos_pwa.js',
   '/content/audio/cleanroom_photolithography.wav',
   '/content/audio/cleanroom_basic_a2.wav',
   '/content/audio/pt-test-audio.mp3',
@@ -53,15 +61,19 @@ const ASSETS_TO_CACHE = [
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
 ];
 
-// Install Event: Cache all essential assets
+// Install Event: Cache all essential assets with resilient fallback
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[Service Worker v5.10.0] Pre-caching all studio assets and courses');
-      return cache.addAll(ASSETS_TO_CACHE).catch((err) => {
-        console.warn('[Service Worker] Pre-caching partial warning:', err);
-      });
+      console.log('[Service Worker v6.5.0] Pre-caching PWA assets and curricula');
+      return Promise.allSettled(
+        ASSETS_TO_CACHE.map((url) =>
+          cache.add(url).catch((err) => {
+            console.warn('[Service Worker] Non-fatal cache failure for:', url, err.message);
+          })
+        )
+      );
     })
   );
 });
@@ -98,10 +110,39 @@ self.addEventListener('message', (event) => {
   }
 });
 
-// Fetch Event: Network First with Instant Cache Fallback
+// Fetch Event: Two-Tier High-Performance Strategy (Phase 84 CWV Engine)
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
+  const url = new URL(event.request.url);
+  const isStaticOrMedia = (
+    url.pathname.match(/\.(svg|png|ico|jpg|jpeg|webp|gif|woff2|woff|ttf|wav|mp3)$/i) ||
+    url.hostname.includes('fonts.gstatic.com') ||
+    url.pathname.includes('/content/courses.js') ||
+    url.pathname.includes('/content/career_tracks.js') ||
+    url.pathname.includes('/content/career_paths.js') ||
+    url.pathname.includes('/content/phrases_library.js')
+  );
+
+  if (isStaticOrMedia) {
+    // TIER 1: Stale-While-Revalidate (Instant response from cache + background revalidation)
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        const fetchPromise = fetch(event.request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200 && (networkResponse.type === 'basic' || networkResponse.type === 'cors')) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return networkResponse;
+        }).catch(() => {/* Ignore background network errors */});
+
+        return cachedResponse || fetchPromise;
+      })
+    );
+    return;
+  }
+
+  // TIER 2: Network-First with Instant Cache Fallback (HTML Documents & Dynamic Scripts)
   event.respondWith(
     fetch(event.request)
       .then((networkResponse) => {
@@ -114,14 +155,13 @@ self.addEventListener('fetch', (event) => {
         return networkResponse;
       })
       .catch(() => {
-        // Network unavailable: Fallback to local cache
         return caches.match(event.request).then((cachedResponse) => {
           if (cachedResponse) {
             return cachedResponse;
           }
           // If HTML request failed, return cached index.html or dev.html
           if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
-            return caches.match('/index.html') || caches.match('./index.html') || caches.match('/dev.html') || caches.match('/dev/index.html');
+            return caches.match('/index.html') || caches.match('/app.html') || caches.match('/dev.html');
           }
         });
       })

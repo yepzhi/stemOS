@@ -98,6 +98,9 @@ body.supaste-theme {
   z-index: 1000;
   pointer-events: none;
   padding: 0 16px;
+  padding-top: env(safe-area-inset-top);
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
 }
 
 .supaste-nav {
@@ -445,12 +448,20 @@ body.supaste-theme {
 
 @media (max-width: 520px) {
   .btn-signup-pill {
-    padding: 5px 10px !important;
+    padding: 6px 12px !important;
     font-size: 0.74rem !important;
     gap: 5px !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
   }
   .supaste-nav-left {
     gap: 8px !important;
+  }
+  .supaste-mobile-nav-toggle {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    touch-action: manipulation !important;
   }
 }
 

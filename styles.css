@@ -3194,16 +3194,38 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
 @media (max-width: 768px) {
     .dashboard-container.ed-theme-container {
         flex-direction: column;
+        height: auto;
+        min-height: 100dvh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
     .ed-rail-sidebar {
         width: 100%;
-        height: 60px;
+        height: auto;
+        min-height: 56px;
         flex-direction: row;
-        padding: 0 16px;
+        padding: 6px 16px;
+        padding-top: max(6px, env(safe-area-inset-top));
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(10, 15, 29, 0.95);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
     }
     .ed-rail-nav {
         flex-direction: row;
         justify-content: center;
+        gap: 6px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .ed-rail-btn {
+        min-width: 44px;
+        min-height: 44px;
+        touch-action: manipulation;
     }
     .ed-sidebar-bottom {
         display: none;
@@ -3216,7 +3238,7 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
     }
     .ed-hero-banner {
         height: auto;
-        padding: 24px 0;
+        padding: 24px 14px;
     }
     .ed-specialty-hero {
         flex-direction: column;

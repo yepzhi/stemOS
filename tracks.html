@@ -3,13 +3,28 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>stemOS — Catálogo de 34 Tracks & Laboratorios de Especialización Industrial</title>
-  <meta name="description" content="stemOS is an ESP (English for Specific Purposes) platform with 34 specialized industry tracks for semiconductor, aerospace, robotics, automotive, medical device, logistics, quality engineering & EHS, energy & data centers, embedded firmware & Edge AI, and advanced supply chain reshoring.">
+  <meta name="description" content="stemOS is an ESP (English for Specific Purposes) platform with 34 specialized industry tracks for semiconductor, aerospace, robotics, automotive, medical device, logistics, quality engineering &amp; EHS, energy &amp; data centers, embedded firmware &amp; Edge AI, and advanced supply chain reshoring.">
 
-  <!-- Fonts & Icons: Plus Jakarta Sans, Inter, Instrument Serif (for authentic Apple-editorial italic accents), JetBrains Mono -->
+  <!-- PWA & Mobile Web App Manifest -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0284c7">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="stemOS">
+  <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
+  <link rel="apple-touch-icon" href="/icon-192.svg">
+  <script src="/content/stemos_pwa.js" defer></script>
+
+  <!-- Resource Hints & DNS Prefetch (Phase 84 CWV Engine) -->
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="/dev.css?v=5.12.0" as="style">
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
@@ -84,6 +99,38 @@
       border-color: #38bdf8;
       color: #ffffff;
       transform: translateY(-1px);
+    }
+
+    /* ─── Mobile-First Responsive Overhaul (Phase 82) ─── */
+    .tracks-tab-btn, .tracks-home-link {
+      min-height: 44px;
+      touch-action: manipulation;
+    }
+
+    @media (max-width: 768px) {
+      .tracks-workspace-bar {
+        top: 0;
+        padding: 10px 14px;
+        padding-top: max(10px, env(safe-area-inset-top));
+        padding-left: max(14px, env(safe-area-inset-left));
+        padding-right: max(14px, env(safe-area-inset-right));
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .tracks-tabs-group {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+        padding: 4px 6px;
+        white-space: nowrap;
+        justify-content: flex-start;
+      }
+      .tracks-tab-btn {
+        flex-shrink: 0;
+        padding: 8px 14px;
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
@@ -10614,17 +10661,17 @@
     </div>
   </div>
 
-  <script src="/content/firebase_config.js?v=6.2.0"></script>
-  <script src="/content/firebase_adapter.js?v=6.1.0"></script>
-  <script src="/content/gemini_service.js?v=6.2.0"></script>
-  <script src="/content/courses.js?v=5.12.0"></script>
-  <script src="/content/phrases_library.js?v=5.12.0"></script>
-  <script src="/content/career_tracks.js?v=2.0.0"></script>
-  <script src="/content/career_paths.js?v=2.0.0"></script>
-  <script src="/content/mcer_tracks.js?v=1.0.0"></script>
-  <script src="/content/placement_test.js?v=1.0.0"></script>
-  <script src="/world-map.js?v=2.0.0"></script>
-  <script src="/dev.js?v=5.12.0"></script>
+  <script src="/content/firebase_config.js?v=6.2.0" defer></script>
+  <script src="/content/firebase_adapter.js?v=6.1.0" defer></script>
+  <script src="/content/gemini_service.js?v=6.2.0" defer></script>
+  <script src="/content/courses.js?v=5.12.0" defer></script>
+  <script src="/content/phrases_library.js?v=5.12.0" defer></script>
+  <script src="/content/career_tracks.js?v=2.0.0" defer></script>
+  <script src="/content/career_paths.js?v=2.0.0" defer></script>
+  <script src="/content/mcer_tracks.js?v=1.0.0" defer></script>
+  <script src="/content/placement_test.js?v=1.0.0" defer></script>
+  <script src="/world-map.js?v=2.0.0" defer></script>
+  <script src="/dev.js?v=5.12.0" defer></script>
 
   <script>
     // ── Mobile Navigation Drawer Toggle ──

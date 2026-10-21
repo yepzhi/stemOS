@@ -2127,23 +2127,200 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 
 *Estado del Proyecto: Fases 1 a 80 COMPLETADAS y 100% validadas. Todos los master test suites ejecutados con éxito: 24 suites y más de 332 pruebas aprobadas (Exit Code 0). stemOS Institutional Ecosystem, Dual-World MCER/ESP Catalog, Ecosistema Curricular MCER (240.0h, 464 Reactivos Estandarizados, 16 Crisoles IA, 4 Exámenes de Certificación Milestone de 20 reactivos con Diploma Oficial CACEI Criterio 4), Whitish Aurora Placement Diagnostic (30 min con US Neural Pre-rendered Audio Assets), Google Sign-In Selector & Resilient Fallback (Cero "SSO"), Pasaporte Diagnóstico en Perfil Estudiantil, Analíticas de Cohorte en Vivo para Profesores y Administradores, Universal Online Payments & Subscriptions ($49 MXN/mes), Teacher MCER Gradebook Matrix & Acta CACEI Criterio 4, Diagnostic Passport & Fast-Track Convalidation, Nearshoring Voice Crucible Studio con Captura de Audio en Vivo, VU Level Meter y Despacho Demo, Motor de Credenciales Verificables W3C Open Badges 3.0 con Código QR y Huella SHA-256, Sincronizador de Tema y Modo de Alto Contraste WCAG 2.1 AA en los 7 Portales, Federación Multi-Campus (TecNM, UTT, UPBC, UACJ) con Campus Edge Sync, Generador de Propuesta & Convenio CACEI en PDF, PWA Offline v6.3.1 con Diadema en Campus y Auditoría E2E en Navegador Real 100% operativos y desplegados en producción en Firebase Hosting (`https://jsweb-b14f8.web.app`) y Cloudflare Pages/Workers (`https://stemos.yepzhi.workers.dev`).*
 
+---
 
+### FASE 81: Comprehensive Mobile-First Responsive Design Overhaul — Modern CSS Phase
 
+**Objetivo:** Corregir todos los problemas de vista, desbordamiento y tamaños en móvil detectados en `register.html` y garantizar que la experiencia del wizard de 7 pasos funcione impecablemente en dispositivos de 320px hasta 2560px de ancho, incluyendo soporte para notch (iPhone 14/15/16 Pro), barra de dirección dinámica de iOS/Android, y tablets de 10" en centros de cómputo.
 
+#### 81.1 Problemas Resueltos
 
+- [x] **Viewport fit para notch**: `meta viewport` actualizado con `viewport-fit=cover` → habilita `env(safe-area-inset-*)` en iPhone X+.
+- [x] **Fluid typography con `clamp()`**: `.question-title` y `.question-subtitle` escalan entre 1.25rem–1.95rem sin desbordamiento.
+- [x] **Touch targets ≥44px** (WCAG 2.5.8): `button`, `.selection-card`, `.hub-card`, `.career-item-card`, `.modality-pill`, `.tsu-pill` reforzados con `min-height: 44px`.
+- [x] **Unidad `dvh`**: `.careers-scroll-container` y `.hubs-grid` usan `55dvh` para evitar overflow en Safari iOS con barra de dirección visible.
+- [x] **Barra de acción fija en móvil**: `.wizard-actions` → `position: fixed; bottom: 0` con `padding-bottom: calc(12px + env(safe-area-inset-bottom))` para no solapar el indicador de inicio.
+- [x] **Glass blur en barra de acción móvil**: `backdrop-filter: blur(20px)` con fondo semi-transparente.
+- [x] **Safe-area padding lateral**: `.wizard-stage-card` usa `max(22px, env(safe-area-inset-left/right))` para iPhone 14 Pro en landscape.
+- [x] **Prevención de zoom automático en iOS**: Inputs con `font-size: max(1rem, 16px)`.
+- [x] **Header comprimido en ≤480px**: Badge oculto, título reducido, pill de pasos compactado.
+- [x] **Grids responsive**: `.selection-grid-2` → 1 columna en ≤400px; grids de hubs y carreras → 1 col en ≤480px.
+- [x] **Solo subscription banner**: columna en ≤540px con botón a ancho completo.
+- [x] **Credential pass card (Step 7)**: `pass-grid` → 2 col en ≤540px, 1 col en ≤360px.
+- [x] **Ambient glows reducidos**: 350px / 0.7 opacidad en ≤640px para performance.
+- [x] **`-webkit-text-size-adjust: 100%`**: Previene zoom de Safari iOS al rotar.
 
+#### 81.2 APIs Modernas CSS Utilizadas
 
+- `env(safe-area-inset-*)`, `dvh`, `clamp()`, `max()`, `viewport-fit=cover`, `backdrop-filter`
 
+---
 
+### FASE 82: Cross-Platform Mobile Hardening, Cloudflare Production Security Headers & Deployment
 
+**Objetivo:** Extender la resiliencia móvil y ergonomía de pantalla táctil a todos los portales y vistas activas del sistema (`index.html`, `app.html`, `dev.html`, `placement.html`, `tracks.html`, `teacher.html`, `admin.html`, `privacy.html`, `404.html`), configurar políticas de seguridad de producción de alto nivel en Cloudflare (`_headers`), y realizar el despliegue directo a producción Cloudflare Workers / Static Assets.
 
+#### 82.1 Seguridad Web de Producción (Modern Web Guidance & Security Audit)
 
+- [x] **Headers de Seguridad Cloudflare (`_headers`)**:
+  - `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload` (HSTS de 1 año).
+  - `Content-Security-Policy (CSP)` estricto con `default-src 'self'`, `object-src 'none'`, `base-uri 'self'`, `frame-ancestors 'self'`, permitiendo CDNs verificados de Google Fonts, FontAwesome, jsDelivr, Firebase y APIs institucionales.
+  - `Cross-Origin-Opener-Policy: same-origin-allow-popups` (necesario para el popup de autenticación OAuth de Google).
+  - `X-Frame-Options: SAMEORIGIN` (prevención de Clickjacking).
+  - `X-Content-Type-Options: nosniff` (prevención de MIME-sniffing).
+  - `Referrer-Policy: strict-origin-when-cross-origin`.
+  - `Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()`.
+  - Política de cache HTTP: `max-age=86400` para assets estáticos (`.js`, `.css`, imágenes) y `max-age=0, must-revalidate` para documentos HTML.
+- [x] **Higiene de Assets (`.assetsignore`)**: Exclusión de carpetas de desarrollo (`scripts/`, `scratch/`, `.git/`, `.wrangler/`, `.firebase/`, configs sensibles y documentos `.md`/`.pdf`).
+- [x] **Enrutamiento 404 (`wrangler.jsonc`)**: Configurado `"not_found_handling": "404-page"` para la arquitectura de assets estáticos de Cloudflare Workers.
 
+#### 82.2 Ergonomía Móvil y Safe-Area Inset Multi-Portal
 
+- [x] **Auditoría Universal `viewport-fit=cover`**: Implementado en el 100% de los archivos HTML activos (`404.html`, `admin.html`, `app.html`, `dev.html`, `index.html`, `placement.html`, `privacy.html`, `register.html`, `teacher.html`, `tracks.html`).
+- [x] **Desbloqueo de Scroll Vertical en `app.html`**:
+  - Eliminado el bloqueo inline `overflow: hidden; height: 100vh` en mobile.
+  - Implementado `@media (max-width: 768px)` con `overflow-y: auto !important`, `height: auto !important`, `min-height: 100dvh` y scroll inercial `-webkit-overflow-scrolling: touch`.
+  - Sticky nav y safe area insets en `.ed-rail-sidebar`.
+- [x] **Hardening Móvil de `placement.html`**:
+  - Safe-area insets en `.top-bar` y `#app` (`env(safe-area-inset-top)` / `env(safe-area-inset-bottom)`).
+  - Touch targets de opciones de quiz con `min-height: 48px` y `touch-action: manipulation`.
+  - Botones de acción apilables en móvil con ancho completo.
+- [x] **Hardening Móvil de `tracks.html`**:
+  - Scroll horizontal táctil para `.tracks-tabs-group`.
+  - Safe area insets en barra de workspace pegajosa.
+- [x] **Hardening Móvil de `teacher.html` y `admin.html`**:
+  - Breakpoint `@media (max-width: 600px)`.
+  - Contenedores de tablas con scroll horizontal `-webkit-overflow-scrolling: touch`.
+  - Modales adaptados a `95vw` para evitar recortes en celulares.
+- [x] **Hardening Global en `styles.css` y `dev.css`**:
+  - `.supaste-nav-wrapper` respeta `env(safe-area-inset-top)` para Dynamic Island y cámaras frontales.
+  - Botones principales y toggles con `min-height: 44px` (WCAG 2.5.8) y `touch-action: manipulation`.
 
+#### 82.3 Suites de Pruebas Automatizadas
 
+- [x] **`scripts/test_phase81_mobile_responsive.cjs`**: 37/37 pruebas PASADAS.
+- [x] **`scripts/test_phase82_production_security_and_mobile.cjs`**: 66/66 pruebas PASADAS.
 
+#### 82.4 Despliegue a Producción Cloudflare
 
+- [x] **Target**: Cloudflare Workers with Static Assets (`stemos.yepzhi.workers.dev`).
+- [x] **Estado en vivo**: `HTTP/2 200 OK` con todos los headers de seguridad HSTS, CSP, COOP, XFO, nosniff y cache validados vía curl.
+
+---
+
+### FASE 83: Progressive Web App (PWA) Enterprise Installability, Offline Resiliency Engine & App Manifest Architecture
+
+**Objetivo:** Dotar a stemOS de capacidades de instalación PWA completas (Standalone Desktop/Mobile), soporte offline resiliente para laboratorios de cómputo universitarios con conectividad intermitente, y un controlador de ciclo de vida de red en tiempo real.
+
+#### 83.1 Web App Manifest W3C & Identidad Visual Vectorial
+
+- [x] **Manifest Oficial (`manifest.json` y `manifest.webmanifest`)**:
+  - `name`: "stemOS — Technical English Operating System"
+  - `short_name`: "stemOS"
+  - `start_url`: `/?source=pwa` con `scope: "/"`
+  - `display`: `standalone` (experiencia nativa sin barra de direcciones)
+  - Paleta: `background_color: "#030712"`, `theme_color: "#0284c7"`
+  - Accesos directos rápidos (`shortcuts`) a: Registro de Alumno (`/register.html`), Placement Test MCER (`/placement.html`), Catálogo de Tracks (`/tracks.html`), y Learning Platform (`/app.html`).
+- [x] **Iconografía Vectorial SVG Dinámica**:
+  - `icon-192.svg`: Icono de 192x192px con prisma isométrico stemOS, red técnica y gradiente `#0284c7` a `#38bdf8`.
+  - `icon-512.svg`: Icono de alta resolución 512x512px.
+  - `icon-maskable.svg`: Icono adaptativo con márgenes de seguridad 80% para máscaras en Android 13+.
+
+#### 83.2 Motor de Resiliencia Offline (Service Worker v6.4.0)
+
+- [x] **Actualización de `sw.js` a `v6.4.0`**:
+  - Pre-caché ampliado con `manifest.json`, iconos SVG, `404.html` y script controlador PWA.
+  - Migración a `Promise.allSettled` para que fallas transitorias de red en recursos individuales no interrumpan la instalación del Service Worker.
+  - Estrategia *Network First con Cache Fallback* instantáneo para navegación offline en campus.
+  - Soporte de mensaje `CACHE_EVERYTHING` para sincronización manual de laboratorio.
+
+#### 83.3 Controlador PWA de Cliente (`content/stemos_pwa.js`)
+
+- [x] **Registro Universal de Service Worker** integrado en todos los portales.
+- [x] **HUD de Estado de Red en Tiempo Real**:
+  - Toast flotante glassmórfico activado con eventos `offline` y `online`.
+  - Muestra `"⚡ Modo Sin Conexión — Contenido en caché disponible"` al perder señal.
+- [x] **Experiencia de Instalación Personalizada**:
+  - Captura del evento `beforeinstallprompt`.
+  - Banner glassmórfico no invasivo para invitar a instalar stemOS en el dispositivo, con memoria de descarte en `localStorage`.
+- [x] **API Global `window.stemOS_PWA`** con utilidades `triggerOfflineSync()` y `isStandalone()`.
+
+#### 83.4 Integración Multi-Portal y Cabeceras de Servidor
+
+- [x] **Cabeceras Cloudflare (`_headers`)**:
+  - Reglas MIME dedicadas: `Content-Type: application/manifest+json; charset=utf-8` para `/manifest.json` y `/manifest.webmanifest`.
+- [x] **Integración en 9 Portals HTML**:
+  - Enlace al manifest, `theme-color`, metas de Apple iOS standalone (`apple-mobile-web-app-capable`, `apple-mobile-web-app-status-bar-style`) y carga de `stemos_pwa.js`.
+
+#### 83.5 Suites de Pruebas Automatizadas
+
+- [x] **`scripts/test_phase81_mobile_responsive.cjs`**: 37/37 pruebas PASADAS.
+- [x] **`scripts/test_phase82_production_security_and_mobile.cjs`**: 66/66 pruebas PASADAS.
+- [x] **`scripts/test_phase83_pwa_offline_manifest.cjs`**: 74/74 pruebas PASADAS.
+- **Total acumulado:** 177 pruebas automatizadas pasando al 100%.
+
+#### 83.6 Despliegue a Producción Cloudflare
+
+- [x] **Versión**: `6d8d6a9d-1653-455e-ada4-5b99472bc59a`.
+- [x] **Verificación en Vivo**: `curl -sI https://stemos.yepzhi.workers.dev/manifest.json` devolviendo `HTTP/2 200`, `application/manifest+json; charset=utf-8` y CSP activo.
+
+---
+
+### FASE 84: Core Web Vitals (CWV) Hyper-Optimization, Two-Tier Cache Strategy & Critical Resource Hints
+
+**Objetivo:** Optimizar las métricas Core Web Vitals (LCP, INP, CLS y FCP) al máximo estándar web moderno en todos los portales de stemOS, eliminando scripts que bloquean el parser del navegador mediante carga diferida (`defer`), implementando pistas tempranas de recursos (`dns-prefetch`, `preconnect`, `preload`), cabeceras HTTP Link / Early Hints en Cloudflare, y un motor de caché de dos niveles en el Service Worker `sw.js` (v6.5.0).
+
+#### 84.1 Pistas Críticas de Recursos (Resource Hints & DNS Prefetch)
+- [x] **Inclusión en los 8 Portales Principales (`index.html`, `dev.html`, `tracks.html`, `app.html`, `placement.html`, `teacher.html`, `admin.html`, `register.html`)**:
+  - `<link rel="dns-prefetch" href="https://fonts.googleapis.com">`
+  - `<link rel="dns-prefetch" href="https://fonts.gstatic.com">`
+  - `<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">`
+  - `<link rel="dns-prefetch" href="https://www.gstatic.com">`
+  - `<link rel="preconnect" href="https://fonts.googleapis.com">`
+  - `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>`
+- [x] **Preload de Hojas de Estilo Críticas**:
+  - `<link rel="preload" href="/dev.css?v=5.12.0" as="style">` en `index.html`, `dev.html` y `tracks.html` para reducir First Contentful Paint (FCP) y Largest Contentful Paint (LCP).
+
+#### 84.2 Eliminación de Scripts Bloqueantes del Parser (Carga Diferida `defer`)
+- [x] **Migración Universal a `defer`**:
+  - `index.html`: 13 scripts curriculares y de motor diferidos sin bloqueo de renderizado.
+  - `dev.html`: 9 scripts curriculares y utilitarios diferidos.
+  - `tracks.html`: 11 scripts de base de datos y catálogo industrial diferidos.
+  - `app.html`: 17 scripts de Firebase SDK, Gemini y cursos diferidos.
+  - `placement.html`: Scripts de evaluación diagnóstica MCER y compatibilidad Firebase diferidos.
+  - `teacher.html` & `admin.html`: Firebase SDK compat, adaptadores y catálogos diferidos.
+  - `register.html`: Wizard institucional y dependencias diferidas.
+  - Cero scripts externos en `<body>` bloqueando la construcción del DOM.
+
+#### 84.3 Service Worker v6.5.0: Motor de Caché de Dos Niveles (Speed Tier)
+- [x] **Bump de versión a `stemos-lxp-v6.5.0-cwv-speed-tier`**:
+  - **Tier 1 (Stale-While-Revalidate)**: Para multimedia pesada (`.wav`, `.mp3`, `.svg`, `.png`, `.webp`), tipografías y catálogos estáticos pesados (`courses.js`, `career_tracks.js`, `career_paths.js`, `phrases_library.js`). Provee respuesta instantánea desde caché y actualización asíncrona en segundo plano sin penalizar LCP.
+  - **Tier 2 (Network-First con Fallback Inmediato)**: Para documentos HTML (`index.html`, `app.html`, `dev.html`) y llamadas dinámicas a APIs, garantizando que el usuario siempre obtenga la versión más reciente del sistema.
+  - Pre-caching resiliente mediante `Promise.allSettled`.
+
+#### 84.4 Cabeceras Cloudflare HTTP Link & Política de Revalidación (`_headers`)
+- [x] **HTTP Link / Early Hints**:
+  - `Link: <https://fonts.googleapis.com>; rel="preconnect", <https://fonts.gstatic.com>; rel="preconnect"; crossorigin, <https://cdnjs.cloudflare.com>; rel="dns-prefetch"`
+- [x] **Política Instantánea para Service Worker**:
+  - Regla dedicada `/sw.js` con `Cache-Control: public, max-age=0, must-revalidate` para propagar actualizaciones de Service Worker sin retrasos por caché del navegador.
+- [x] **Caché Agresivo con Stale-While-Revalidate**:
+  - `Cache-Control: public, max-age=86400, stale-while-revalidate=604800` para `.js` y `.css`.
+  - `Cache-Control: public, max-age=604800` para imágenes y assets binarios.
+
+#### 84.5 Suites de Pruebas Automatizadas
+- [x] **`scripts/test_phase81_mobile_responsive.cjs`**: 37/37 pruebas PASADAS.
+- [x] **`scripts/test_phase82_production_security_and_mobile.cjs`**: 66/66 pruebas PASADAS.
+- [x] **`scripts/test_phase83_pwa_offline_manifest.cjs`**: 74/74 pruebas PASADAS.
+- [x] **`scripts/test_phase84_core_web_vitals_performance.cjs`**: 97/97 pruebas PASADAS.
+- **Total acumulado:** 274 pruebas automatizadas pasando al 100%.
+
+#### 84.6 Despliegue a Producción Cloudflare
+- [x] **Versión**: `a336dbe9-a32b-4035-a8b6-991bb49c8620`.
+- [x] **Verificación en Vivo**: `curl -sI https://stemos.yepzhi.workers.dev` y `/sw.js` devolviendo `HTTP/2 200`, cabeceras `link` preconnect activas, CSP, HSTS y cache-control correctos.
+
+---
+
+*Estado del Proyecto: Fases 1 a 84 COMPLETADAS y DESPLEGADAS A PRODUCCIÓN CLOUDFLARE.*
 
 
 

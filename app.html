@@ -3,10 +3,28 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>stemOS — Technical English Learning Platform for STEM & Engineering</title>
     <meta name="description"
         content="stemOS is an AI-powered Technical English (ESP) learning platform engineered for STEM disciplines, coding, semiconductors, aerospace, and advanced manufacturing. Master engineering vocabulary, CEFR B1 Technical Immersion, and Socratic AI evaluations.">
+
+    <!-- PWA & Mobile Web App Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="stemOS">
+    <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
+    <link rel="apple-touch-icon" href="/icon-192.svg">
+    <script src="/content/stemos_pwa.js" defer></script>
+    
+    <!-- Resource Hints & DNS Prefetch (Phase 84 CWV Engine) -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://www.gstatic.com">
+
     <!-- Google Fonts: Instrument Serif, Inter, Outfit, Plus Jakarta Sans & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,12 +37,76 @@
     <link rel="stylesheet" href="dev.css?v=4.0.3">
     <link rel="stylesheet" href="world-map.css?v=1.0.0">
 
-    <!-- Local Backdoor Initializer script to prevent screen flash -->
-    <link rel="stylesheet" href="styles.css?v=1.0.3">
-    <link rel="stylesheet" href="world-map.css?v=1.0.0">
-    <link rel="stylesheet" href="dev.css?v=4.0.3">
+    <style>
+        html {
+            box-sizing: border-box;
+            -webkit-text-size-adjust: 100%;
+        }
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #030712;
+            color: #f8fafc;
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-x: hidden;
+        }
+        @media (min-width: 769px) {
+            body {
+                overflow: hidden;
+                height: 100vh;
+                height: 100dvh;
+            }
+        }
+        @media (max-width: 768px) {
+            body {
+                overflow-y: auto !important;
+                height: auto !important;
+                min-height: 100dvh;
+                -webkit-overflow-scrolling: touch;
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: max(16px, env(safe-area-inset-bottom));
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+            .dashboard-container.ed-theme-container {
+                height: auto !important;
+                min-height: 100dvh;
+                overflow-y: visible !important;
+                width: 100% !important;
+                max-width: 100vw !important;
+            }
+            .ed-rail-sidebar {
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+                background: rgba(10, 15, 29, 0.95);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .ed-rail-btn {
+                min-height: 44px;
+                min-width: 44px;
+                touch-action: manipulation;
+            }
+            .ed-main-workspace {
+                padding: 16px !important;
+                overflow-x: hidden !important;
+            }
+            .ed-hero-banner {
+                padding: 18px 14px !important;
+            }
+            .ed-hero-title {
+                font-size: clamp(1.4rem, 5vw, 2.2rem) !important;
+            }
+        }
+    </style>
 </head>
-<body class="backdoor-unlocked" style="overflow: hidden; height: 100vh;">
+<body class="backdoor-unlocked">
     <div class="dashboard-container ed-theme-container">
 
         <!-- ── 1. Vertical Icon Rail Sidebar ── -->

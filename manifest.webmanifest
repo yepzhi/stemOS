@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+  "name": "stemOS — Technical English Operating System",
+  "short_name": "stemOS",
+  "description": "The Technical English Operating System for Advanced Industry & Nearshoring. 34 specialized tracks for semiconductor, aerospace, robotics, automotive, medical device, and smart logistics.",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#030712",
+  "theme_color": "#0284c7",
+  "orientation": "any",
+  "lang": "es-MX",
+  "dir": "ltr",
+  "categories": [
+    "education",
+    "productivity",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Registro Alumno",
+      "short_name": "Registro",
+      "description": "Registro de Alumno y Career Path Personalizado",
+      "url": "/register.html",
+      "icons": [
+        {
+          "src": "/icon-192.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Placement Test MCER",
+      "short_name": "Diagnóstico",
+      "description": "Diagnóstico Institucional A1-B2",
+      "url": "/placement.html",
+      "icons": [
+        {
+          "src": "/icon-192.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Catálogo de Tracks",
+      "short_name": "Tracks",
+      "description": "Catálogo de 34 Tracks & Laboratorios Industriales",
+      "url": "/tracks.html",
+      "icons": [
+        {
+          "src": "/icon-192.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Learning Platform",
+      "short_name": "Estudiante",
+      "description": "Portal Estudiantil y Laboratorio ESP",
+      "url": "/app.html",
+      "icons": [
+        {
+          "src": "/icon-192.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+}
