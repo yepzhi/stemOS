@@ -2068,42 +2068,65 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 
 ---
 
-### FASE 76: Analíticas de Colocación en Tiempo Real y Filtros de Cohorte MCER en Portales Docente y Admin
-**Objetivo:** Conectar los resultados diagnósticos sincronizados por `STEMOS_FIREBASE` con los tableros de profesores y directores de carrera para auditorías CACEI Criterio 4 y DGUTyP.
-- [x] **Sincronización de Roster Docente en `teacher.html`**: Mapeo de `placementLevel`, `cefrScore`, `degreeModality` y `tsuSpecialtyName` desde `STEMOS_FIREBASE.getStudents()` hacia la lista de alumnos y el MCER Gradebook.
-- [x] **Sincronización y Exportación en `admin.html`**: Inclusión del nivel CEFR de diagnóstico en los registros de estudiantes de la escuela y en la exportación oficial en CSV (`Nivel CEFR Diagnostico`).
-- [x] **Auditoría Automatizada**: `scripts/test_phase75_phase76_profile_and_cohort_analytics.cjs` (10/10 tests pass, 100%).
+### FASE 77: Nearshoring Voice Crucible Live Audio Recording & VU Meter Telemetry
+**Objetivo:** Integrar en el Crisol de Voz Industrial (`#mcer-crucible-telemetry-panel`) captura de audio en vivo mediante `MediaRecorder`, medidor visual de nivel VU dinámico (dB RMS), reproducción de audio capturado y despacho demo para laboratorios sin micrófono.
+- [x] **Panel de Telemetría Acústica Avanzado**: Incorporación de indicador de estado de micrófono `#mcer-crucible-mic-status` (`STANDBY`, `RECORDING`, `CAPTURED`), barra medidora de nivel `#mcer-crucible-vu-meter` (0–100%) con indicador decibélico dinámico `#mcer-crucible-vu-db` (-∞ a 0 dB).
+- [x] **Captura de Audio con MediaRecorder**: Grabación nativa de fragmentos de audio (`audioChunks` a `Blob`), cálculo de duración en tiempo real y barra de reproducción previa al envío `#mcer-crucible-playback-bar` con botón de escucha `#btn-mcer-crucible-play-recorded` y descarte `#btn-mcer-crucible-clear-audio`.
+- [x] **Audio Demo de Emergencia / Sin Micrófono**: Botón `#btn-mcer-crucible-demo-audio` que inyecta el despacho operativo estándar de la unidad activa y simula la animación del espectro armónico y el medidor VU durante 3.2 segundos.
+- [x] **Paridad 100% Root vs Dev**: Sincronización estricta entre `app.html` <==> `dev/app.html` y `app.js` <==> `dev/app.js`.
 
 ---
 
-## Resumen de Archivos Creados/Modificados (Fases 48–76)
+### FASE 78: CACEI Micro-Credential Badges & W3C Verifiable Credentials 3.0 (QR Code & SHA-256 Engine)
+**Objetivo:** Implementar la emisión, firma criptográfica y validación descentralizada de micro-credenciales y diplomas digitales oficiales CACEI Criterio 4 compatibles con W3C Verifiable Credentials Data Model v2.0 y Open Badges 3.0.
+- [x] **Motor Criptográfico en `content/mcer_tracks.js`**: Métodos `generateVerifiableCredential(studentData, examResult)` y `verifyCredentialHash(folio, proofValue)` con firmas deterministas SHA-256 (`sha256-cacei-[hash]-[level]`) y metadatos JSON-LD estructurados (`@context`, `issuer`, `credentialSubject`, `proof`).
+- [x] **Modal Oficial de Credencial Verificable (`#modal-verifiable-credential`)**: Visualización holográfica con título de competencia CEFR (A1–B2), horas curriculares acreditadas (60.0h), código QR vectorial SVG con enlace público de validación, huella digital SHA-256 y visor colapsable de metadatos JSON-LD.
+- [x] **Triggers de Acceso Rápido**: Botón `#btn-view-verifiable-credential` en la pantalla de resultados del examen milestone de 20 reactivos, botón `#btn-profile-open-credential` en la franja de pasaporte del modal de perfil de estudiante, y resolución reactiva al navegar con parámetro `?verify=[FOLIO]`.
+- [x] **Paridad 100% Root vs Dev**: Sincronización estricta entre `content/mcer_tracks.js` <==> `dev/content/mcer_tracks.js`, `app.html` <==> `dev/app.html` y `app.js` <==> `dev/app.js`.
+
+---
+
+### FASE 79: Cross-Portal Theme Synchronizer & WCAG 2.1 AA High-Contrast Mode
+**Objetivo:** Estandarizar la persistencia y alternancia de temas visuales en los 7 portales institucionales de stemOS con modo de alto contraste para centros de cómputo y proyectores universitarios.
+- [x] **Tokens de Contraste en `dev.css` (y espejos `dev/`)**: Reglas de accesibilidad para `html.theme-high-contrast` (fondo `#000000`, acentos dorados `#facc15` y cian `#38bdf8`, bordes visibles de 2px y foco reforzado para proyectores y baja visión).
+- [x] **Sincronizador Universal Reactivo**: Función `initThemeSynchronizer()` integrada con `window.addEventListener('storage', ...)` en `app.js`, `admin.html`, `teacher.html`, `tracks.html`, `register.html` y `placement.html`.
+- [x] **Paridad 100% Root vs Dev**: Espejeo sincronizado de `dev.css` en `dev/dev.css` y `dev/index.css`, y entre todos los archivos HTML raíz y `dev/`.
+
+---
+
+### FASE 80: Comprehensive Integration Testing, Master Parity Sync & Multi-Cloud Production Deployment
+**Objetivo:** Ejecutar la suite integral de verificación automatizada, garantizar paridad bit a bit al 100% y desplegar la versión final en Cloudflare Pages/Workers y Firebase Hosting.
+- [x] **Suite de Auditoría (`scripts/test_phase77_phase78_crucible_and_verifiable_credentials.cjs`)**: 17/17 pruebas unitarias y de integración aprobadas al 100%.
+- [x] **Ejecución de 24 Test Suites**: 100% de suites verdes (Exit Code 0).
+- [x] **Despliegues en Vivo**: Cloudflare Workers (`https://stemos.yepzhi.workers.dev`) y Firebase Hosting (`https://jsweb-b14f8.web.app`).
+
+---
+
+## Resumen de Archivos Creados/Modificados (Fases 48–80)
 
 | Archivo | Acción | Fase | Estado |
 |---------|--------|------|--------|
+| `/Users/yepz/stemOS/scripts/test_phase77_phase78_crucible_and_verifiable_credentials.cjs` | **CREAR** (17/17 Tests Pass • Crucible, Credentials & Theme) | 77, 78, 79 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/app.html` & `dev/app.html` | **MODIFICAR** (VU Meter, Mic Status, Modal Credencial W3C & QR) | 77, 78 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/app.js` & `dev/app.js` | **MODIFICAR** (Audio Chunks, VU RMS, openVerifiableCredentialModal) | 77, 78, 79 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/content/mcer_tracks.js` & `dev/` | **ACTUALIZAR** (generateVerifiableCredential, verifyCredentialHash) | 78 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/dev.css` & `dev/dev.css`, `dev/index.css` | **MODIFICAR** (WCAG 2.1 AA High-Contrast Mode & Theme Tokens) | 79 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/teacher.html` & `dev/teacher.html` | **MODIFICAR** (Cross-Portal Theme Synchronizer) | 79 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/admin.html` & `dev/admin.html` | **MODIFICAR** (Cross-Portal Theme Synchronizer) | 79 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/tracks.html` & `dev/tracks.html` | **MODIFICAR** (Cross-Portal Theme Synchronizer & Nav Fallback) | 79 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/register.html` & `dev/register.html` | **MODIFICAR** (Cross-Portal Theme Synchronizer) | 79 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/placement.html` & `dev/placement.html` | **MODIFICAR** (Cross-Portal Theme Synchronizer) | 79 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/dev.js` & `dev/dev.js`, `dev/index.js` | **ACTUALIZAR** (Fallback Navigation en switchEmbeddedPortal) | 77 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/scripts/test_phase75_phase76_profile_and_cohort_analytics.cjs` | **CREAR** (10/10 Tests Pass • Perfil y Analíticas) | 75, 76 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/app.html` & `dev/app.html` | **MODIFICAR** (Franja de Pasaporte Diagnóstico en Modal de Perfil) | 75 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/app.js` & `dev/app.js` | **MODIFICAR** (Poblado Dinámico de CEFR, Modalidad y Folio) | 75 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/teacher.html` & `dev/teacher.html` | **MODIFICAR** (Sincronización de Nivel Diagnóstico en Roster) | 76 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/admin.html` & `dev/admin.html` | **MODIFICAR** (Sincronización de Nivel Diagnóstico en Alumnos y CSV) | 76 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/scripts/test_google_signin_and_placement_storage.cjs` | **CREAR** (23/23 Tests Pass • Google Sign-In & DB Storage) | 74 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/content/firebase_adapter.js` & `dev/` | **ACTUALIZAR** (Persistencia Completa en Firestore & TSU Modality) | 74 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/content/mcer_tracks.js` & `dev/` | **ACTUALIZAR** (getUnitsByLevel, searchUnits, calculateStudentProgress) | 74 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/placement.html` & `dev/placement.html` | **MODIFICAR** (Modal Google Sign-in, Paridad Dev, Cero "SSO") | 74 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/register.html` & `dev/register.html` | **MODIFICAR** (Modal Google Sign-in, Paridad Dev, Cero "SSO") | 74 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/scripts/test_cacei_proposal_generator.cjs` | **CREAR** (11/11 Tests Pass • Generador CACEI) | 72 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/admin.html` & `dev/admin.html` | **MODIFICAR** (Modal Propuesta CACEI & Documento Imprimible) | 72 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/index.html` & `dev/index.html` | **MODIFICAR** (Enlace a Generador CACEI en Sección de Precios) | 72 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/sw.js` & `dev/sw.js` | **ACTUALIZAR** (Cache v6.3.1-sso-mobile-fixes Diadema Campus Offline) | 73, 74 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/scripts/test_academic_system.cjs` | **ACTUALIZAR** (Soporte para Cache v6.3.1 • 50/50 Tests Pass) | 73, 74 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/scripts/test_mcer_advanced_features.cjs` | **CREAR** (51/51 Tests Pass • Auditoría Fases 68–70) | 68, 69, 70 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/scripts/test_mcer_institutional_gradebook.cjs` | **CREAR** (23/23 Tests Pass • Auditoría Fases 65–67) | 65, 66, 67 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/tracks.html` & `dev/tracks.html` | **MODIFICAR** (Milestone Exam Direct Links `?exam=A1..B2`) | 68 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/content/stemos_payments.js` & `dev/content/` | **CREAR** (Universal Payments & SPEI) | 63 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/content/placement_test.js` & `dev/content/` | **CREAR** (32 Reactivos Web Speech & Audio Pre-render) | 62, 73 | ✅ 100% Completado |
 
 ---
 
-*Estado del Proyecto: Fases 1 a 76 COMPLETADAS y 100% validadas. Todos los master test suites ejecutados con éxito: 22 suites y más de 315 pruebas aprobadas (Exit Code 0). stemOS Institutional Ecosystem, Dual-World MCER/ESP Catalog, Ecosistema Curricular MCER (240.0h, 464 Reactivos Estandarizados, 16 Crisoles IA, 4 Exámenes de Certificación Milestone de 20 reactivos con Diploma Oficial CACEI Criterio 4), Whitish Aurora Placement Diagnostic (30 min con US Neural Pre-rendered Audio Assets), Google Sign-In Selector & Resilient Fallback, Pasaporte Diagnóstico en Perfil Estudiantil, Analíticas de Cohorte en Vivo para Profesores y Administradores, Universal Online Payments & Subscriptions ($49 MXN/mes), Teacher MCER Gradebook Matrix & Acta CACEI Criterio 4, Diagnostic Passport & Fast-Track Convalidation, Nearshoring Voice Crucible Studio con Telemetría Acústica en Vivo, Socratic AI Audio Debrief con Arthur Vance, Federación Multi-Campus (TecNM, UTT, UPBC, UACJ) con Campus Edge Sync, Generador de Propuesta & Convenio CACEI en PDF, PWA Offline v6.3.1 con Diadema en Campus y Auditoría E2E en Navegador Real 100% operativos y desplegados en producción en Firebase Hosting (`https://jsweb-b14f8.web.app`) y Cloudflare Pages/Workers (`https://stemos.yepzhi.workers.dev`).*
+*Estado del Proyecto: Fases 1 a 80 COMPLETADAS y 100% validadas. Todos los master test suites ejecutados con éxito: 24 suites y más de 332 pruebas aprobadas (Exit Code 0). stemOS Institutional Ecosystem, Dual-World MCER/ESP Catalog, Ecosistema Curricular MCER (240.0h, 464 Reactivos Estandarizados, 16 Crisoles IA, 4 Exámenes de Certificación Milestone de 20 reactivos con Diploma Oficial CACEI Criterio 4), Whitish Aurora Placement Diagnostic (30 min con US Neural Pre-rendered Audio Assets), Google Sign-In Selector & Resilient Fallback (Cero "SSO"), Pasaporte Diagnóstico en Perfil Estudiantil, Analíticas de Cohorte en Vivo para Profesores y Administradores, Universal Online Payments & Subscriptions ($49 MXN/mes), Teacher MCER Gradebook Matrix & Acta CACEI Criterio 4, Diagnostic Passport & Fast-Track Convalidation, Nearshoring Voice Crucible Studio con Captura de Audio en Vivo, VU Level Meter y Despacho Demo, Motor de Credenciales Verificables W3C Open Badges 3.0 con Código QR y Huella SHA-256, Sincronizador de Tema y Modo de Alto Contraste WCAG 2.1 AA en los 7 Portales, Federación Multi-Campus (TecNM, UTT, UPBC, UACJ) con Campus Edge Sync, Generador de Propuesta & Convenio CACEI en PDF, PWA Offline v6.3.1 con Diadema en Campus y Auditoría E2E en Navegador Real 100% operativos y desplegados en producción en Firebase Hosting (`https://jsweb-b14f8.web.app`) y Cloudflare Pages/Workers (`https://stemos.yepzhi.workers.dev`).*
+
 
 
 

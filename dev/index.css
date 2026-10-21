@@ -22633,3 +22633,38 @@ body.supaste-theme {
   }
 }
 
+/* ==========================================================================
+   FASE 79: WCAG 2.1 AA Cross-Portal Accessibility & High-Contrast Mode
+   ========================================================================== */
+html.theme-high-contrast {
+  --bg-primary: #000000 !important;
+  --bg-secondary: #0a0a0a !important;
+  --text-primary: #ffffff !important;
+  --text-secondary: #fef08a !important;
+  --accent-color: #38bdf8 !important;
+  --border-color: #facc15 !important;
+}
+
+html.theme-high-contrast body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+html.theme-high-contrast a,
+html.theme-high-contrast button {
+  outline-color: #facc15 !important;
+}
+
+html.theme-high-contrast .cs-modal-card,
+html.theme-high-contrast .modal-dialog {
+  border: 2px solid #facc15 !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+html.theme-light body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+

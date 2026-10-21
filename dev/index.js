@@ -24366,12 +24366,15 @@ window.switchEmbeddedPortal = function(portalKey, event, queryParams) {
   const tabs = document.querySelectorAll('.inst-tab-btn');
   const sandbox = document.getElementById('inst-embedded-sandbox');
 
-  if (!iframe) return false;
-
-  const basePath = window.PORTAL_URLS[portalKey] || '/admin.html';
+  const basePath = (window.PORTAL_URLS && window.PORTAL_URLS[portalKey]) || ('/' + portalKey + '.html');
   let targetUrl = basePath;
   if (queryParams) {
     targetUrl += queryParams.startsWith('?') ? queryParams : '?' + queryParams;
+  }
+
+  if (!iframe) {
+    window.location.href = targetUrl;
+    return true;
   }
 
   // Update tabs active state

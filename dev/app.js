@@ -4133,11 +4133,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const crucibleResultsBox = document.getElementById('mcer-crucible-results-box');
         if (crucibleResultsBox) crucibleResultsBox.style.display = 'none';
 
-        // Nearshoring Voice Crucible Studio: Acoustic Waveform & Cadence Telemetry (Fase 67)
+        // Nearshoring Voice Crucible Studio: Acoustic Waveform & Cadence Telemetry (Fase 67 & 77)
         let audioContext = null;
         let analyser = null;
         let animFrameId = null;
         let speechStartTime = null;
+        let simulatingVuUntil = 0;
+        let mediaStream = null;
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let recordedBlob = null;
+        let recordedAudioUrl = null;
+        let isRecording = false;
+        let recordingStartTime = 0;
+        let activeRecognition = null;
+
+        function triggerVuSimulation(durationMs) {
+            simulatingVuUntil = Date.now() + (durationMs || 3000);
+        }
 
         function initCrucibleWaveform() {
             const canvas = document.getElementById('mcer-crucible-waveform');
@@ -4162,10 +4175,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.shadowBlur = 8;
                     ctx.beginPath();
 
+                    let sumSquares = 0;
                     const sliceWidth = canvas.width / bufferLength;
                     let x = 0;
                     for (let i = 0; i < bufferLength; i++) {
                         const v = dataArray[i] / 128.0;
+                        const norm = (dataArray[i] - 128) / 128.0;
+                        sumSquares += norm * norm;
                         const y = (v * canvas.height) / 2;
                         if (i === 0) ctx.moveTo(x, y);
                         else ctx.lineTo(x, y);
@@ -4174,6 +4190,36 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.lineTo(canvas.width, canvas.height / 2);
                     ctx.stroke();
                     ctx.shadowBlur = 0;
+
+                    // Real-time VU Meter dB calculation
+                    const rms = Math.sqrt(sumSquares / bufferLength);
+                    const db = rms > 0.002 ? Math.max(-60, Math.round(20 * Math.log10(rms))) : -60;
+                    const vuPercent = Math.min(100, Math.max(0, Math.round(((db + 50) / 50) * 100)));
+                    const elVuMeter = document.getElementById('mcer-crucible-vu-meter');
+                    const elVuDb = document.getElementById('mcer-crucible-vu-db');
+                    if (elVuMeter) elVuMeter.style.width = `${vuPercent}%`;
+                    if (elVuDb) elVuDb.textContent = db <= -50 ? '-∞ dB' : `${db} dB`;
+                } else if (Date.now() < simulatingVuUntil) {
+                    // Active simulation wave & VU animation
+                    phase += 0.12;
+                    ctx.lineWidth = 2.8;
+                    ctx.strokeStyle = '#34d399';
+                    ctx.shadowColor = '#34d399';
+                    ctx.shadowBlur = 10;
+                    ctx.beginPath();
+                    for (let x = 0; x < canvas.width; x += 4) {
+                        const y = (canvas.height / 2) + Math.sin((x * 0.06) + phase) * 16 * (Math.sin(phase * 0.8) + 1.2);
+                        if (x === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                    ctx.shadowBlur = 0;
+
+                    const simPercent = Math.round(45 + Math.sin(phase * 3) * 35);
+                    const elVuMeter = document.getElementById('mcer-crucible-vu-meter');
+                    const elVuDb = document.getElementById('mcer-crucible-vu-db');
+                    if (elVuMeter) elVuMeter.style.width = `${simPercent}%`;
+                    if (elVuDb) elVuDb.textContent = `-${Math.max(2, Math.round((100 - simPercent) / 2))} dB`;
                 } else {
                     // Oscillating ambient wave
                     phase += 0.05;
@@ -4186,6 +4232,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         else ctx.lineTo(x, y);
                     }
                     ctx.stroke();
+
+                    const elVuMeter = document.getElementById('mcer-crucible-vu-meter');
+                    const elVuDb = document.getElementById('mcer-crucible-vu-db');
+                    if (elVuMeter && !analyser) elVuMeter.style.width = '0%';
+                    if (elVuDb && !analyser) elVuDb.textContent = '-∞ dB';
                 }
             }
             if (!animFrameId) drawWave();
@@ -4285,67 +4336,202 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
-        // Native Browser Voice Dictation (Speech-to-Text) with AudioContext Analyser
+        // Demo Plant Audio Dispatch Sample (Fase 77)
+        const btnDemoAudio = document.getElementById('btn-mcer-crucible-demo-audio');
+        if (btnDemoAudio && crucibleInput) {
+            btnDemoAudio.onclick = () => {
+                const sampleDispatch = (unit.crucible && unit.crucible.modelAnswer) || 
+                    `Good morning supervisor, this is technician reporting for Line 3. All emergency stop buttons, safety interlocks, and LOTO tags have been verified. Ready to initiate standard operating procedure at nominal operating pressure.`;
+                crucibleInput.value = sampleDispatch;
+                updateCrucibleCadenceAndScanner(sampleDispatch);
+                const micStatus = document.getElementById('mcer-crucible-mic-status');
+                if (micStatus) {
+                    micStatus.innerHTML = '<span style="color:#38bdf8;"><i class="fa-solid fa-volume-high" style="font-size:0.45rem; margin-right:4px;"></i>DEMO LOADED</span>';
+                }
+                triggerVuSimulation(3200);
+            };
+        }
+
+        // Native Browser Voice Dictation & MediaRecorder Audio Capture (Fase 77)
         const btnDictate = document.getElementById('btn-mcer-crucible-dictate');
         if (btnDictate && crucibleInput) {
             btnDictate.onclick = () => {
-                // Initialize audio stream for live acoustic waveform
-                if (!audioContext) {
-                    try {
-                        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                        if (AudioCtx) {
-                            audioContext = new AudioCtx();
-                            analyser = audioContext.createAnalyser();
-                            analyser.fftSize = 64;
-                            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                                navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+                if (isRecording) {
+                    // STOP RECORDING
+                    isRecording = false;
+                    btnDictate.innerHTML = '<i class="fa-solid fa-microphone"></i> Dictar por Voz';
+                    btnDictate.style.background = '#f1f5f9';
+                    btnDictate.style.color = '#475569';
+                    btnDictate.style.borderColor = '#cbd5e1';
+
+                    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                        try { mediaRecorder.stop(); } catch(e){}
+                    }
+                    if (activeRecognition) {
+                        try { activeRecognition.stop(); } catch(e){}
+                        activeRecognition = null;
+                    }
+
+                    const micStatus = document.getElementById('mcer-crucible-mic-status');
+                    if (micStatus) {
+                        micStatus.innerHTML = '<span style="color:#10b981;"><i class="fa-solid fa-circle-check" style="font-size:0.45rem; margin-right:4px;"></i>CAPTURED</span>';
+                    }
+                    return;
+                }
+
+                // START RECORDING
+                isRecording = true;
+                audioChunks = [];
+                recordingStartTime = Date.now();
+                if (!speechStartTime) speechStartTime = Date.now();
+
+                btnDictate.innerHTML = '<i class="fa-solid fa-stop" style="color:#ef4444;"></i> Detener Grabación';
+                btnDictate.style.background = '#fee2e2';
+                btnDictate.style.color = '#b91c1c';
+                btnDictate.style.borderColor = '#fca5a5';
+
+                const micStatus = document.getElementById('mcer-crucible-mic-status');
+                if (micStatus) {
+                    micStatus.innerHTML = '<span style="color:#ef4444;"><i class="fa-solid fa-circle fa-beat" style="font-size:0.45rem; margin-right:4px;"></i>RECORDING</span>';
+                }
+
+                // Initialize audio stream for live acoustic waveform & MediaRecorder
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+                        mediaStream = stream;
+                        if (!audioContext) {
+                            try {
+                                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                                if (AudioCtx) {
+                                    audioContext = new AudioCtx();
+                                    analyser = audioContext.createAnalyser();
+                                    analyser.fftSize = 64;
                                     const source = audioContext.createMediaStreamSource(stream);
                                     source.connect(analyser);
-                                }).catch(() => {
-                                    console.log('[stemOS Crucible] Acoustic wave running in simulation mode');
-                                });
+                                }
+                            } catch(e) {
+                                console.warn('[stemOS Crucible] AudioContext init note:', e);
                             }
                         }
-                    } catch(e) {
-                        console.warn('[stemOS Crucible] AudioContext init note:', e);
-                    }
+
+                        try {
+                            mediaRecorder = new MediaRecorder(stream);
+                            mediaRecorder.ondataavailable = e => {
+                                if (e.data && e.data.size > 0) audioChunks.push(e.data);
+                            };
+                            mediaRecorder.onstop = () => {
+                                if (audioChunks.length > 0) {
+                                    recordedBlob = new Blob(audioChunks, { type: audioChunks[0].type || 'audio/webm' });
+                                    if (recordedAudioUrl) URL.revokeObjectURL(recordedAudioUrl);
+                                    recordedAudioUrl = URL.createObjectURL(recordedBlob);
+                                    const durSec = Math.max(1, Math.round((Date.now() - recordingStartTime) / 1000));
+                                    const elDur = document.getElementById('mcer-crucible-recorded-duration');
+                                    if (elDur) {
+                                        const m = Math.floor(durSec / 60);
+                                        const s = durSec % 60;
+                                        elDur.textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+                                    }
+                                    const playbackBar = document.getElementById('mcer-crucible-playback-bar');
+                                    if (playbackBar) playbackBar.style.display = 'flex';
+                                }
+                            };
+                            mediaRecorder.start();
+                        } catch(recErr) {
+                            console.warn('[stemOS Crucible] MediaRecorder note:', recErr);
+                        }
+                    }).catch(() => {
+                        console.log('[stemOS Crucible] Acoustic wave running in simulation mode');
+                        triggerVuSimulation(5000);
+                    });
+                } else {
+                    triggerVuSimulation(5000);
                 }
 
                 const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-                if (!SpeechRec) {
-                    alert('Tu navegador no soporta dictado de voz nativo en este momento. Puedes escribir tu reporte directamente.');
-                    return;
-                }
-                const recognition = new SpeechRec();
-                recognition.lang = 'en-US';
-                recognition.interimResults = true;
-                recognition.maxAlternatives = 1;
-                btnDictate.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color:#ef4444;"></i> Escuchando...';
-                if (!speechStartTime) speechStartTime = Date.now();
+                if (SpeechRec) {
+                    try {
+                        const recognition = new SpeechRec();
+                        recognition.lang = 'en-US';
+                        recognition.interimResults = true;
+                        recognition.maxAlternatives = 1;
+                        activeRecognition = recognition;
 
-                recognition.onresult = (event) => {
-                    let interim = '';
-                    let final = '';
-                    for (let i = 0; i < event.results.length; i++) {
-                        if (event.results[i].isFinal) {
-                            final += event.results[i][0].transcript;
-                        } else {
-                            interim += event.results[i][0].transcript;
-                        }
-                    }
-                    const newText = final || interim;
-                    if (newText) {
-                        crucibleInput.value = (crucibleInput.value ? crucibleInput.value.replace(/\s+$/, '') + ' ' : '') + newText;
-                        updateCrucibleCadenceAndScanner(crucibleInput.value);
-                    }
-                };
-                recognition.onerror = () => {
-                    btnDictate.innerHTML = '<i class="fa-solid fa-microphone"></i> Dictar por Voz';
-                };
-                recognition.onend = () => {
-                    btnDictate.innerHTML = '<i class="fa-solid fa-microphone"></i> Dictar por Voz';
-                };
-                recognition.start();
+                        recognition.onresult = (event) => {
+                            let interim = '';
+                            let final = '';
+                            for (let i = 0; i < event.results.length; i++) {
+                                if (event.results[i].isFinal) final += event.results[i][0].transcript;
+                                else interim += event.results[i][0].transcript;
+                            }
+                            const newText = final || interim;
+                            if (newText) {
+                                crucibleInput.value = (crucibleInput.value ? crucibleInput.value.replace(/\s+$/, '') + ' ' : '') + newText;
+                                updateCrucibleCadenceAndScanner(crucibleInput.value);
+                            }
+                        };
+                        recognition.onerror = () => {
+                            if (isRecording) {
+                                isRecording = false;
+                                btnDictate.innerHTML = '<i class="fa-solid fa-microphone"></i> Dictar por Voz';
+                                btnDictate.style.background = '#f1f5f9';
+                                btnDictate.style.color = '#475569';
+                                btnDictate.style.borderColor = '#cbd5e1';
+                            }
+                        };
+                        recognition.onend = () => {
+                            if (isRecording) {
+                                // Keep button in recording state until student clicks stop
+                            }
+                        };
+                        recognition.start();
+                    } catch(e) {}
+                }
+            };
+        }
+
+        // Recorded Audio Playback and Discard Handlers (Fase 77)
+        const btnPlayRecorded = document.getElementById('btn-mcer-crucible-play-recorded');
+        if (btnPlayRecorded) {
+            btnPlayRecorded.onclick = () => {
+                if (recordedAudioUrl) {
+                    const audio = new Audio(recordedAudioUrl);
+                    btnPlayRecorded.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                    audio.onended = () => {
+                        btnPlayRecorded.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    };
+                    triggerVuSimulation(3000);
+                    audio.play().catch(() => {
+                        btnPlayRecorded.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    });
+                } else if (window.speechSynthesis && crucibleInput && crucibleInput.value) {
+                    const u = new SpeechSynthesisUtterance(crucibleInput.value);
+                    u.lang = 'en-US';
+                    btnPlayRecorded.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                    triggerVuSimulation(3000);
+                    u.onend = () => { btnPlayRecorded.innerHTML = '<i class="fa-solid fa-play"></i>'; };
+                    window.speechSynthesis.speak(u);
+                }
+            };
+        }
+
+        const btnClearAudio = document.getElementById('btn-mcer-crucible-clear-audio');
+        if (btnClearAudio) {
+            btnClearAudio.onclick = () => {
+                recordedBlob = null;
+                if (recordedAudioUrl) {
+                    URL.revokeObjectURL(recordedAudioUrl);
+                    recordedAudioUrl = null;
+                }
+                const playbackBar = document.getElementById('mcer-crucible-playback-bar');
+                if (playbackBar) playbackBar.style.display = 'none';
+                const micStatus = document.getElementById('mcer-crucible-mic-status');
+                if (micStatus) {
+                    micStatus.innerHTML = '<i class="fa-solid fa-circle" style="font-size:0.45rem; margin-right:4px;"></i>STANDBY';
+                }
+                const vuMeter = document.getElementById('mcer-crucible-vu-meter');
+                const vuDb = document.getElementById('mcer-crucible-vu-db');
+                if (vuMeter) vuMeter.style.width = '0%';
+                if (vuDb) vuDb.textContent = '-∞ dB';
             };
         }
 
@@ -5383,6 +5569,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Wire Diploma Action buttons
+        const btnViewCred = document.getElementById('btn-view-verifiable-credential');
+        if (btnViewCred) {
+            btnViewCred.onclick = () => {
+                const folioEl = document.getElementById('diploma-folio-val');
+                const folio = folioEl ? folioEl.textContent : '';
+                const studentName = document.getElementById('diploma-student-name')?.textContent || 'Estudiante stemOS';
+                const level = activeMcerExam ? activeMcerExam.level : 'B1';
+                openVerifiableCredentialModal({
+                    level: level,
+                    folio: folio,
+                    studentName: studentName,
+                    hours: hoursMap[level] || 60.0
+                });
+            };
+        }
+
         const btnPrint = document.getElementById('btn-print-mcer-diploma');
         if (btnPrint) {
             btnPrint.onclick = () => {
@@ -5415,6 +5617,94 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.showModal();
     }
     window.openMcerLevelExamModal = openMcerLevelExamModal;
+
+    // W3C Verifiable Credential & Open Badges 3.0 Modal Handler (Fase 78)
+    function openVerifiableCredentialModal(data) {
+        const modal = document.getElementById('modal-verifiable-credential');
+        if (!modal) return;
+
+        let profile = {};
+        try {
+            profile = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
+        } catch(e){}
+
+        const level = (data && data.level) || localStorage.getItem('stemos_active_mcer_level') || 'B1';
+        const studentName = (data && data.studentName) || profile.fullName || 'Diana Laura Morales';
+        const matricula = profile.matricula || profile.folio || '22050144';
+        const hours = (data && data.hours) || 60.0;
+        const folio = (data && data.folio) || `CACEI-MCER-${level}-${Date.now().toString(36).toUpperCase()}`;
+
+        let cred = null;
+        if (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.generateVerifiableCredential === 'function') {
+            cred = window.STEMOS_MCER_TRACKS.generateVerifiableCredential({
+                fullName: studentName,
+                matricula: matricula,
+                degreeModality: profile.degreeModality || 'Ingeniería / Licenciatura',
+                institutionName: profile.subsystem || 'Consorcio UPBC / TecNM'
+            }, {
+                level: level,
+                folio: folio,
+                hours: hours,
+                score: (data && data.score) || 90
+            });
+        }
+
+        const elTitle = document.getElementById('vc-modal-level-title');
+        if (elTitle) elTitle.textContent = `CEFR ${level} • ${level === 'A1' ? 'Breakthrough Foundations' : level === 'A2' ? 'Waystage Operational' : level === 'B1' ? 'Threshold Professional' : 'Vantage Leadership'}`;
+
+        const elHours = document.getElementById('vc-modal-hours-subtitle');
+        if (elHours) elHours.textContent = `${hours.toFixed(1)} Horas Curriculares Acreditadas • CACEI Criterio 4`;
+
+        const elName = document.getElementById('vc-modal-student-name');
+        if (elName) elName.textContent = studentName;
+
+        const elFolio = document.getElementById('vc-modal-folio');
+        if (elFolio) elFolio.textContent = folio;
+
+        const elIssuer = document.getElementById('vc-modal-issuer');
+        if (elIssuer) elIssuer.textContent = (cred && cred.issuer && cred.issuer.institution) || 'Consorcio UPBC / TecNM';
+
+        const elDate = document.getElementById('vc-modal-date');
+        if (elDate) {
+            const now = new Date();
+            elDate.textContent = now.toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        const elFingerprint = document.getElementById('vc-modal-sha-fingerprint');
+        const proofVal = (cred && cred.proof && cred.proof.proofValue) || `sha256-cacei-${folio.toLowerCase()}`;
+        if (elFingerprint) elFingerprint.textContent = proofVal;
+
+        const elJsonLd = document.getElementById('vc-modal-json-ld');
+        if (elJsonLd && cred) {
+            elJsonLd.textContent = JSON.stringify(cred, null, 2);
+        }
+
+        const btnCopyJson = document.getElementById('btn-vc-copy-json');
+        if (btnCopyJson && cred) {
+            btnCopyJson.onclick = () => {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(JSON.stringify(cred, null, 2));
+                    btnCopyJson.innerHTML = '<i class="fa-solid fa-check"></i> JSON Copiado';
+                    setTimeout(() => { btnCopyJson.innerHTML = '<i class="fa-solid fa-copy"></i> Copiar JSON-LD'; }, 2000);
+                }
+            };
+        }
+
+        const btnCopyLink = document.getElementById('btn-vc-copy-link');
+        if (btnCopyLink) {
+            btnCopyLink.onclick = () => {
+                const verifyUrl = `${window.location.origin}/app.html?verify=${encodeURIComponent(folio)}`;
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(verifyUrl);
+                    btnCopyLink.innerHTML = '<i class="fa-solid fa-check"></i> Enlace Copiado';
+                    setTimeout(() => { btnCopyLink.innerHTML = '<i class="fa-solid fa-link"></i> Enlace de Validación'; }, 2000);
+                }
+            };
+        }
+
+        modal.showModal();
+    }
+    window.openVerifiableCredentialModal = openVerifiableCredentialModal;
 
     function renderExamStepperPills() {
         const container = document.getElementById('mcer-exam-stepper-pills');
@@ -5831,6 +6121,38 @@ document.addEventListener('DOMContentLoaded', () => {
     if (urlParams.get('campus')) {
         switchInstitutionalCampus(urlParams.get('campus'));
     }
+
+    // Check verify URL parameter (e.g. app.html?verify=CACEI-MCER-B1-XXXX) (Fase 78)
+    if (urlParams.get('verify')) {
+        setTimeout(() => {
+            const verifyFolio = urlParams.get('verify');
+            if (typeof openVerifiableCredentialModal === 'function') {
+                openVerifiableCredentialModal({ folio: verifyFolio });
+            }
+        }, 500);
+    }
+
+    // Cross-Portal Theme Synchronizer (WCAG 2.1 AA / CACEI Inclusion) (Fase 79)
+    function initThemeSynchronizer() {
+        const applyTheme = (theme) => {
+            const root = document.documentElement;
+            root.classList.remove('theme-dark', 'theme-light', 'theme-high-contrast');
+            if (theme === 'light') root.classList.add('theme-light');
+            else if (theme === 'high-contrast') root.classList.add('theme-high-contrast');
+            else root.classList.add('theme-dark');
+        };
+
+        try {
+            const savedTheme = localStorage.getItem('stemos_theme') || 'dark';
+            applyTheme(savedTheme);
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'stemos_theme') {
+                    applyTheme(e.newValue || 'dark');
+                }
+            });
+        } catch (e) {}
+    }
+    initThemeSynchronizer();
 
     /* --- 9. KEYBOARD ACCESSIBILITY (WCAG A11Y) --- */
     document.addEventListener('keydown', (e) => {

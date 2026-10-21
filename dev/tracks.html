@@ -10882,6 +10882,19 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       initTracksMcerGrid();
+
+      // Cross-Portal Theme Synchronizer (Fase 79)
+      try {
+        const applyTheme = (t) => {
+          const r = document.documentElement;
+          r.classList.remove('theme-dark', 'theme-light', 'theme-high-contrast');
+          if (t === 'light') r.classList.add('theme-light');
+          else if (t === 'high-contrast') r.classList.add('theme-high-contrast');
+          else r.classList.add('theme-dark');
+        };
+        applyTheme(localStorage.getItem('stemos_theme') || 'dark');
+        window.addEventListener('storage', (e) => { if (e.key === 'stemos_theme') applyTheme(e.newValue || 'dark'); });
+      } catch(e){}
     });
   </script>
 
