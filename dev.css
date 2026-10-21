@@ -22678,4 +22678,72 @@ html.theme-light body {
   color: #0f172a;
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   FASE 85: WCAG 2.1 AA ACCESSIBILITY, FOCUS-VISIBLE & SENSORY ERGONOMICS
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Enhanced Focus Appearance (WCAG 2.4.7 & WCAG 2.4.11) */
+:focus-visible {
+  outline: 2px solid #38bdf8 !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25) !important;
+}
+
+:focus:not(:focus-visible) {
+  outline: none !important;
+}
+
+/* Sensory Ergonomics: Vestibular Motion Disorder & Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .pulse-radar,
+  .ambient-glow,
+  .stemos-mesh-bg,
+  .fa-spin {
+    animation: none !important;
+  }
+}
+
+/* Screen Reader Only Utility */
+.sr-only,
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Skip to Main Content Navigation */
+.skip-to-main {
+  position: absolute;
+  left: -9999px;
+  top: 16px;
+  z-index: 999999;
+  padding: 12px 20px;
+  background: #0284c7;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 10px 25px rgba(2, 132, 199, 0.5);
+  transition: left 0.15s ease;
+}
+
+.skip-to-main:focus-visible {
+  left: 16px;
+}
+
+
 

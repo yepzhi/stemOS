@@ -115,7 +115,7 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
-  const isStaticOrMedia = (
+  const isSpeedAsset = (
     url.pathname.match(/\.(svg|png|ico|jpg|jpeg|webp|gif|woff2|woff|ttf|wav|mp3)$/i) ||
     url.hostname.includes('fonts.gstatic.com') ||
     url.pathname.includes('/content/courses.js') ||
@@ -123,8 +123,9 @@ self.addEventListener('fetch', (event) => {
     url.pathname.includes('/content/career_paths.js') ||
     url.pathname.includes('/content/phrases_library.js')
   );
+  const isStaticOrMedia = isSpeedAsset;
 
-  if (isStaticOrMedia) {
+  if (isSpeedAsset) {
     // TIER 1: Stale-While-Revalidate (Instant response from cache + background revalidation)
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {

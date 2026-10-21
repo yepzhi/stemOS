@@ -29,7 +29,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome 6 Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
     
     <style>
         :root {
@@ -1612,6 +1612,20 @@
             if (timerBadge) {
                 timerBadge.style.display = (screenId === 'screen-quiz') ? 'inline-flex' : 'none';
             }
+
+            // Screen Wake Lock & ARIA Live (Phase 85 Web Hardware)
+            if (screenId === 'screen-quiz') {
+                if (window.stemOS_PWA && window.stemOS_PWA.requestWakeLock) {
+                    window.stemOS_PWA.requestWakeLock();
+                }
+                if (window.stemOS_PWA && window.stemOS_PWA.announce) {
+                    window.stemOS_PWA.announce('Iniciando evaluación diagnóstica MCER de 30 minutos. Pantalla activa.');
+                }
+            } else if (screenId === 'screen-results' || screenId === 'screen-welcome') {
+                if (window.stemOS_PWA && window.stemOS_PWA.releaseWakeLock) {
+                    window.stemOS_PWA.releaseWakeLock();
+                }
+            }
         }
 
         // ── Career & Modality Catalog Helpers ──
@@ -2139,6 +2153,11 @@
             skillBadge.className = `skill-badge ${q.section}`;
             skillBadge.textContent = q.sectionLabel || q.section.toUpperCase();
 
+            // ARIA Screen Reader Announcement (Phase 85)
+            if (window.stemOS_PWA && window.stemOS_PWA.announce) {
+                window.stemOS_PWA.announce(`Pregunta ${index + 1} de ${questions.length}: Sección ${q.sectionLabel || q.section}`);
+            }
+
             // Sections UI switches
             const listeningBox = document.getElementById('listening-audio-box');
             const readingBox = document.getElementById('reading-passage-box');
@@ -2217,6 +2236,9 @@
 
                 card.addEventListener('click', () => {
                     state.answers[index] = optIdx;
+                    if (window.stemOS_PWA && window.stemOS_PWA.vibrate) {
+                        window.stemOS_PWA.vibrate(25);
+                    }
                     renderQuestion(index);
                 });
 

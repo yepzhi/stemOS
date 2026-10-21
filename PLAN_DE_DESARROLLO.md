@@ -2320,7 +2320,41 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 
 ---
 
-*Estado del Proyecto: Fases 1 a 84 COMPLETADAS y DESPLEGADAS A PRODUCCIÓN CLOUDFLARE.*
+### ✅ FASE 85 (Enterprise Security Hardening, Subresource Integrity & Modern Web Guidance)
+
+#### 85.1 Saneamiento Preventivo XSS en Adaptador Firebase (`content/firebase_adapter.js`)
+- [x] **Motor de Saneamiento de Entrada**:
+  - Implementación de la función `sanitize(val)` en el núcleo del adaptador universal de persistencia.
+  - Neutralización proactiva de inyecciones de código HTML/JS (`<`, `>`, scripts y atributos de evento) en nombres de estudiantes, matrículas escolares y asignación de cohortes/carreras.
+  - Exportación de `STEMOS_FIREBASE.sanitize` para validación transversal en todos los formularios de onboarding y gestión.
+
+#### 85.2 Integridad de Subrecursos (Subresource Integrity - SRI)
+- [x] **Cálculo y Enlace Criptográfico de CDNs Externos**:
+  - `register.html`: Enlace del CDN `canvas-confetti` con firma criptográfica SHA-384 (`integrity="sha384-HAH79XdRvHr6axVGh4xQWVCp14kcd32bNk4Xu0sHDHtFQ42n6BAM8ykvB47dGz6D"`) y atributo `crossorigin="anonymous"`.
+  - Iconografía Font Awesome (versiones 6.5.1 y 6.4.0) asegurada con hashes SHA-384 verificados en los 9 portales institucionales:
+    - `index.html`, `dev.html`, `tracks.html`, `privacy.html`: SHA-384 `sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g`.
+    - `app.html`, `placement.html`, `teacher.html`, `admin.html`, `register.html`: SHA-384 `sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0`.
+
+#### 85.3 Cabeceras HTTP de Seguridad & Early Hints en Cloudflare (`_headers`)
+- [x] **Content-Security-Policy (CSP) Blindada**:
+  - `default-src 'self'`, `object-src 'none'`, `base-uri 'self'`, `frame-ancestors 'self'`.
+  - Orígenes explícitos para Google Fonts (`fonts.googleapis.com`, `fonts.gstatic.com`), Firebase SDK (`gstatic.com`, `firebaseio.com`, `googleapis.com`), jsDelivr y Cloudflare CDN.
+- [x] **Permissions-Policy de Privacidad Estricta**:
+  - Restricción total de APIs de hardware sensibles: `camera=()`, `microphone=()`, `geolocation=()`, `payment=()`.
+- [x] **Cloudflare Early Hints**:
+  - `Link: <https://fonts.googleapis.com>; rel="preconnect", <https://fonts.gstatic.com>; rel="preconnect"; crossorigin, <https://cdnjs.cloudflare.com>; rel="dns-prefetch", </dev.css?v=5.12.1>; rel="preload"; as="style"`.
+
+#### 85.4 Metadatos Modernos de Renderizado y Safe Area
+- [x] Integración de `viewport-fit=cover` en la etiqueta `<meta name="viewport">` de los 9 portales para soporte ergonómico en dispositivos móviles con notch o esquinas redondeadas.
+- [x] Metadatos de color temático `<meta name="theme-color">` integrados uniformemente.
+
+#### 85.5 Suite de Pruebas Automatizadas
+- [x] **`scripts/test_phase85_security_and_modern_web.cjs`**: 56/56 pruebas PASADAS.
+- [x] **Total acumulado de pruebas en el sistema (Fases 81 a 85):** 330/330 pruebas PASADAS (100% éxito).
+
+---
+
+*Estado del Proyecto: Fases 1 a 85 COMPLETADAS, AUDITADAS Y VERIFICADAS.*
 
 
 

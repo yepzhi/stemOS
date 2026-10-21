@@ -30,10 +30,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
     
     <!-- Canvas Confetti CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" integrity="sha384-HAH79XdRvHr6axVGh4xQWVCp14kcd32bNk4Xu0sHDHtFQ42n6BAM8ykvB47dGz6D" crossorigin="anonymous" defer></script>
 
     <style>
         *, *::before, *::after {
@@ -2729,6 +2729,11 @@
             }
         }
 
+        // ── Input Sanitization Helper (Phase 85) ──
+        function sanitizeText(str) {
+            return String(str || '').replace(/[<>]/g, '').trim();
+        }
+
         // ── Step Navigation & Validation ──
         function nextStep() {
             const s = wizardState.currentStep;
@@ -2747,9 +2752,9 @@
                     document.getElementById('inp-email').focus();
                     return;
                 }
-                wizardState.data.fullName = name;
-                wizardState.data.email = email;
-                wizardState.data.matricula = document.getElementById('inp-matricula').value.trim();
+                wizardState.data.fullName = sanitizeText(name);
+                wizardState.data.email = sanitizeText(email);
+                wizardState.data.matricula = sanitizeText(document.getElementById('inp-matricula').value);
             }
 
             // Step 2 Validation
@@ -2760,7 +2765,7 @@
                     document.getElementById('inp-campus').focus();
                     return;
                 }
-                wizardState.data.campus = campus;
+                wizardState.data.campus = sanitizeText(campus);
             }
 
             // Step 6 Validation
@@ -2813,6 +2818,14 @@
             document.getElementById('current-stage-title').textContent = STAGE_TITLES[targetStep] || "ONBOARDING";
             const pct = Math.round((targetStep / wizardState.totalSteps) * 100);
             document.getElementById('progress-percentage-display').textContent = `${pct}% COMPLETED`;
+
+            // Haptic & ARIA live feedback (Phase 85)
+            if (window.stemOS_PWA && window.stemOS_PWA.vibrate) {
+                window.stemOS_PWA.vibrate(25);
+            }
+            if (window.stemOS_PWA && window.stemOS_PWA.announce) {
+                window.stemOS_PWA.announce(`Paso ${targetStep} de ${wizardState.totalSteps}: ${STAGE_TITLES[targetStep] || ''}`);
+            }
 
             // Back button visibility
             const btnBack = document.getElementById('btn-back');

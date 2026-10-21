@@ -181,7 +181,108 @@
     }
   }
 
-  // 4. Expose Global stemOS PWA Utility
+  // 4. Modern Web Hardware APIs (Phase 85)
+  let wakeLockSentinel = null;
+
+  async function requestWakeLock() {
+    if ('wakeLock' in navigator) {
+      try {
+        wakeLockSentinel = await navigator.wakeLock.request('screen');
+        wakeLockSentinel.addEventListener('release', () => {
+          console.log('[stemOS WakeLock] Screen wake lock released');
+          wakeLockSentinel = null;
+        });
+        console.log('[stemOS WakeLock] Screen wake lock acquired');
+        return true;
+      } catch (err) {
+        console.warn('[stemOS WakeLock] Could not acquire wake lock:', err.message);
+      }
+    }
+    return false;
+  }
+
+  async function releaseWakeLock() {
+    if (wakeLockSentinel) {
+      try {
+        await wakeLockSentinel.release();
+        wakeLockSentinel = null;
+      } catch (err) {}
+    }
+  }
+
+  // Re-acquire wake lock if page becomes visible again
+  document.addEventListener('visibilitychange', async () => {
+    if (wakeLockSentinel !== null && document.visibilityState === 'visible') {
+      await requestWakeLock();
+    }
+  });
+
+  // Haptic feedback helper
+  function vibrate(pattern) {
+    if ('vibrate' in navigator) {
+      try {
+        navigator.vibrate(pattern || 25);
+      } catch (e) {}
+    }
+  }
+
+  // Badging API
+  function setBadge(count) {
+    if ('setAppBadge' in navigator) {
+      navigator.setAppBadge(count).catch(() => {});
+    }
+  }
+
+  function clearBadge() {
+    if ('clearAppBadge' in navigator) {
+      navigator.clearAppBadge().catch(() => {});
+    }
+  }
+
+  // ARIA Live Announcer for Screen Readers
+  function announce(message, politeness) {
+    let announcer = document.getElementById('stemos-a11y-announcer');
+    if (!announcer) {
+      announcer = document.createElement('div');
+      announcer.id = 'stemos-a11y-announcer';
+      announcer.className = 'sr-only';
+      announcer.setAttribute('role', 'status');
+      announcer.setAttribute('aria-live', politeness || 'polite');
+      announcer.setAttribute('aria-atomic', 'true');
+      document.body.appendChild(announcer);
+    }
+    announcer.textContent = '';
+    setTimeout(() => {
+      announcer.textContent = message;
+    }, 50);
+  }
+
+  // 5. Universal Keyboard Accessibility: Escape key modal dismissal & Light-Dismiss
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      const openModals = document.querySelectorAll(
+        '.modal-overlay.active, .stemos-payment-modal-overlay[style*="display: block"], .cs-modal-overlay.active, [id*="modal"][style*="display: flex"], [id*="modal"][style*="display: block"]'
+      );
+      openModals.forEach((modal) => {
+        if (modal.id === 'modal-google-signin' && typeof window.closeGoogleModal === 'function') {
+          window.closeGoogleModal();
+        } else if (modal.id === 'stemos-payment-modal') {
+          modal.style.display = 'none';
+        } else if (modal.classList.contains('active')) {
+          modal.classList.remove('active');
+        } else {
+          modal.style.display = 'none';
+        }
+      });
+
+      const navPanel = document.getElementById('supaste-mobile-nav-panel');
+      if (navPanel && navPanel.classList.contains('open')) {
+        if (typeof window.toggleMobileNav === 'function') window.toggleMobileNav(false);
+      }
+    }
+  });
+
+  // 6. Expose Global stemOS PWA & Hardware Utility
   window.stemOS_PWA = {
     triggerOfflineSync: function() {
       if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
@@ -191,6 +292,13 @@
     },
     isStandalone: function() {
       return (window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone === true);
-    }
+    },
+    requestWakeLock: requestWakeLock,
+    releaseWakeLock: releaseWakeLock,
+    vibrate: vibrate,
+    setBadge: setBadge,
+    clearBadge: clearBadge,
+    announce: announce
   };
 })();
+
