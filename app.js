@@ -3539,9 +3539,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div style="font-weight:700; font-size:0.88rem; color:#0f172a; margin-bottom:8px;">${rqIdx + 1}. ${rq.q}</div>
                     <div style="display:flex; flex-direction:column; gap:6px;">
                         ${(rq.options || []).map((opt, optIdx) => `
-                            <label class="mcer-rq-label-${rqIdx}" style="display:flex; align-items:center; gap:8px; font-size:0.85rem; padding:8px 10px; background:#fff; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
-                                <input type="radio" name="mcer-rq-${rqIdx}" value="${optIdx}">
-                                <span>${opt}</span>
+                            <label class="mcer-rq-label-${rqIdx}" style="display:flex; align-items:center; gap:10px; font-size:0.88rem; color:#0f172a !important; padding:9px 12px; background:#ffffff; border:1.5px solid #cbd5e1; border-radius:8px; cursor:pointer; transition:all 0.15s ease;">
+                                <input type="radio" name="mcer-rq-${rqIdx}" value="${optIdx}" style="accent-color:#0284c7; width:16px; height:16px; cursor:pointer;">
+                                <span style="color:#0f172a !important; font-weight:600; line-height:1.4;">${opt}</span>
                             </label>
                         `).join('')}
                     </div>
@@ -3568,12 +3568,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         labels.forEach(lbl => {
                             const input = lbl.querySelector('input');
+                            const span = lbl.querySelector('span');
+                            if (span) span.style.color = '#0f172a';
                             if (parseInt(input.value) === rq.answer) {
                                 lbl.style.background = '#dcfce7';
                                 lbl.style.borderColor = '#86efac';
+                                lbl.style.color = '#0f172a';
                             } else if (input.checked && parseInt(input.value) !== rq.answer) {
                                 lbl.style.background = '#fee2e2';
                                 lbl.style.borderColor = '#fca5a5';
+                                lbl.style.color = '#0f172a';
                             }
                         });
                         if (selected && parseInt(selected.value) === rq.answer) {
@@ -3632,9 +3636,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     <div style="display:flex; flex-direction:column; gap:6px;">
                         ${uq.options.map((opt, optIdx) => `
-                            <label class="mcer-quiz-opt-label-${uqIdx}" style="display:flex; align-items:center; gap:8px; font-size:0.85rem; padding:8px 12px; background:#fff; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; transition:background 0.2s ease;">
-                                <input type="radio" name="mcer-quiz-q-${uqIdx}" value="${optIdx}">
-                                <span>${opt}</span>
+                            <label class="mcer-quiz-opt-label-${uqIdx}" style="display:flex; align-items:center; gap:10px; font-size:0.88rem; color:#0f172a !important; padding:9px 12px; background:#ffffff; border:1.5px solid #cbd5e1; border-radius:8px; cursor:pointer; transition:all 0.15s ease;">
+                                <input type="radio" name="mcer-quiz-q-${uqIdx}" value="${optIdx}" style="accent-color:#0284c7; width:16px; height:16px; cursor:pointer;">
+                                <span style="color:#0f172a !important; font-weight:600; line-height:1.4;">${opt}</span>
                             </label>
                         `).join('')}
                     </div>
@@ -3675,13 +3679,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     labels.forEach(lbl => {
                         const input = lbl.querySelector('input');
+                        const span = lbl.querySelector('span');
+                        if (span) span.style.color = '#0f172a';
                         if (parseInt(input.value) === uq.answer) {
                             lbl.style.background = '#dcfce7';
                             lbl.style.borderColor = '#86efac';
                             lbl.style.fontWeight = '700';
+                            lbl.style.color = '#0f172a';
                         } else if (input.checked && parseInt(input.value) !== uq.answer) {
                             lbl.style.background = '#fee2e2';
                             lbl.style.borderColor = '#fca5a5';
+                            lbl.style.color = '#0f172a';
                         }
                     });
                     if (selected && parseInt(selected.value) === uq.answer) {
