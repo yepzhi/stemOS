@@ -2782,6 +2782,40 @@ document.addEventListener('DOMContentLoaded', () => {
         if (xpEl) xpEl.textContent = `${currentXP.toLocaleString()} XP`;
         if (rankEl) rankEl.textContent = `L${level.level} · ${level.title}`;
 
+        const cefrBadgeEl = document.getElementById('sp-modal-cefr-badge');
+        const modalityEl = document.getElementById('sp-modal-modality');
+        const folioEl = document.getElementById('sp-modal-folio');
+
+        const userLvl = (profile && (profile.cefrLevel || profile.level)) || localStorage.getItem('stemos_user_level') || localStorage.getItem('stemos_active_mcer_level') || 'B1';
+        const userScore = (profile && (profile.cefrScore || profile.cefrPercentage)) ? `${profile.cefrPercentage || profile.cefrScore}%` : '75%';
+
+        if (cefrBadgeEl) {
+            cefrBadgeEl.textContent = `CEFR ${userLvl} · ${userScore}`;
+            if (userLvl === 'A1') {
+                cefrBadgeEl.style.background = '#059669';
+            } else if (userLvl === 'A2') {
+                cefrBadgeEl.style.background = '#0284c7';
+            } else if (userLvl === 'B1') {
+                cefrBadgeEl.style.background = '#d97706';
+            } else {
+                cefrBadgeEl.style.background = '#7c3aed';
+            }
+        }
+
+        if (modalityEl) {
+            if (profile && profile.degreeModality === 'tsu' && profile.tsuSpecialtyName) {
+                modalityEl.textContent = `TSU: ${profile.tsuSpecialtyName}`;
+            } else if (profile && profile.degreeModality === 'tsu') {
+                modalityEl.textContent = 'Técnico Superior Universitario (TSU)';
+            } else {
+                modalityEl.textContent = 'Ingeniería / Licenciatura Profesional';
+            }
+        }
+
+        if (folioEl) {
+            folioEl.textContent = (profile && (profile.folio || profile.diagnosticFolio)) || localStorage.getItem('stemos_diag_folio') || 'STEMOS-MCER-2026';
+        }
+
         const subStatusEl = document.getElementById('sp-modal-sub-status');
         if (subStatusEl) {
             let sub = null;

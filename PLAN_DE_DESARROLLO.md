@@ -2060,12 +2060,31 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 - [x] **Expansión Curricular MCER**: Incorporación en `STEMOS_MCER_TRACKS` de `getUnitsByLevel()`, `searchUnits()` con búsqueda extendida en vocabulario y descriptores, `getExamByLevel()`, `getPedagogicalDimensions()` con las 7 dimensiones formativas y `calculateStudentProgress()` para seguimiento de horas y diplomas CACEI.
 - [x] **Auditoría Automatizada**: `scripts/test_google_signin_and_placement_storage.cjs` (23/23 tests pass, 100%).
 
+### FASE 75: Pasaporte Diagnóstico y Credenciales Académicas en Modal de Perfil Estudiantil
+**Objetivo:** Integrar en el modal de perfil del estudiante (`#student-profile-modal`) el resumen oficial de credenciales diagnósticas MCER (nivel asignado, puntaje, modalidad de titulación Ingeniería vs TSU, y folio auditable).
+- [x] **Franja de Pasaporte Diagnóstico (`#sp-modal-cefr-badge`, `#sp-modal-modality`, `#sp-modal-folio`)**: Despliegue en tiempo real del nivel asignado (A1 Novice, A2 Waystage, B1 Threshold, B2 Vantage) con código de color dinámico y porcentaje de diagnóstico.
+- [x] **Enlace Rápido de Verificación / Reintento**: Acceso directo al test de colocación (`/placement.html`) y apertura del pasaporte integral W3C.
+- [x] **Paridad 100% Root vs Dev**: Sincronización bit a bit entre `app.html` <==> `dev/app.html` y `app.js` <==> `dev/app.js`.
+
 ---
 
-## Resumen de Archivos Creados/Modificados (Fases 48–74)
+### FASE 76: Analíticas de Colocación en Tiempo Real y Filtros de Cohorte MCER en Portales Docente y Admin
+**Objetivo:** Conectar los resultados diagnósticos sincronizados por `STEMOS_FIREBASE` con los tableros de profesores y directores de carrera para auditorías CACEI Criterio 4 y DGUTyP.
+- [x] **Sincronización de Roster Docente en `teacher.html`**: Mapeo de `placementLevel`, `cefrScore`, `degreeModality` y `tsuSpecialtyName` desde `STEMOS_FIREBASE.getStudents()` hacia la lista de alumnos y el MCER Gradebook.
+- [x] **Sincronización y Exportación en `admin.html`**: Inclusión del nivel CEFR de diagnóstico en los registros de estudiantes de la escuela y en la exportación oficial en CSV (`Nivel CEFR Diagnostico`).
+- [x] **Auditoría Automatizada**: `scripts/test_phase75_phase76_profile_and_cohort_analytics.cjs` (10/10 tests pass, 100%).
+
+---
+
+## Resumen de Archivos Creados/Modificados (Fases 48–76)
 
 | Archivo | Acción | Fase | Estado |
 |---------|--------|------|--------|
+| `/Users/yepz/stemOS/scripts/test_phase75_phase76_profile_and_cohort_analytics.cjs` | **CREAR** (10/10 Tests Pass • Perfil y Analíticas) | 75, 76 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/app.html` & `dev/app.html` | **MODIFICAR** (Franja de Pasaporte Diagnóstico en Modal de Perfil) | 75 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/app.js` & `dev/app.js` | **MODIFICAR** (Poblado Dinámico de CEFR, Modalidad y Folio) | 75 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/teacher.html` & `dev/teacher.html` | **MODIFICAR** (Sincronización de Nivel Diagnóstico en Roster) | 76 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/admin.html` & `dev/admin.html` | **MODIFICAR** (Sincronización de Nivel Diagnóstico en Alumnos y CSV) | 76 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/scripts/test_google_signin_and_placement_storage.cjs` | **CREAR** (23/23 Tests Pass • Google Sign-In & DB Storage) | 74 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/content/firebase_adapter.js` & `dev/` | **ACTUALIZAR** (Persistencia Completa en Firestore & TSU Modality) | 74 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/content/mcer_tracks.js` & `dev/` | **ACTUALIZAR** (getUnitsByLevel, searchUnits, calculateStudentProgress) | 74 | ✅ 100% Completado |
@@ -2079,17 +2098,12 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 | `/Users/yepz/stemOS/scripts/test_mcer_advanced_features.cjs` | **CREAR** (51/51 Tests Pass • Auditoría Fases 68–70) | 68, 69, 70 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/scripts/test_mcer_institutional_gradebook.cjs` | **CREAR** (23/23 Tests Pass • Auditoría Fases 65–67) | 65, 66, 67 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/tracks.html` & `dev/tracks.html` | **MODIFICAR** (Milestone Exam Direct Links `?exam=A1..B2`) | 68 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/app.html` & `dev/app.html` | **MODIFICAR** (Milestone Exam Modal, CACEI Diploma, Socratic Debrief, Campus Selector) | 68, 69, 70 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/app.js` & `dev/app.js` | **MODIFICAR** (Exam Engine, Socratic Debrief 16 Units, Campus Switcher & Edge Sync) | 68, 69, 70 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/teacher.html` & `dev/teacher.html` | **MODIFICAR** (Campus Federation Selector & Edge Sync LAN Badge) | 70 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/placement.html` & `dev/placement.html` | **MODIFICAR** (Diagnostic Passport Storage & Onboarding Routing) | 66 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/content/mcer_tracks.js` & `dev/content/` | **ACTUALIZAR** (464 Reactivos, 7 Dimensiones, 4 Exámenes) | 64 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/content/stemos_payments.js` & `dev/content/` | **CREAR** (Universal Payments & SPEI) | 63 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/content/placement_test.js` & `dev/content/` | **CREAR** (32 Reactivos Web Speech & Audio Pre-render) | 62, 73 | ✅ 100% Completado |
 
 ---
 
-*Estado del Proyecto: Fases 1 a 74 COMPLETADAS y 100% validadas. Todos los master test suites ejecutados con éxito: 21 suites y más de 300 pruebas aprobadas (Exit Code 0). stemOS Institutional Ecosystem, Dual-World MCER/ESP Catalog, Ecosistema Curricular MCER (240.0h, 464 Reactivos Estandarizados, 16 Crisoles IA, 4 Exámenes de Certificación Milestone de 20 reactivos con Diploma Oficial CACEI Criterio 4), Whitish Aurora Placement Diagnostic (30 min con US Neural Pre-rendered Audio Assets), Google Sign-In Selector & Resilient Fallback, Universal Online Payments & Subscriptions ($49 MXN/mes), Teacher MCER Gradebook Matrix & Acta CACEI Criterio 4, Diagnostic Passport & Fast-Track Convalidation, Nearshoring Voice Crucible Studio con Telemetría Acústica en Vivo, Socratic AI Audio Debrief con Arthur Vance, Federación Multi-Campus (TecNM, UTT, UPBC, UACJ) con Campus Edge Sync, Generador de Propuesta & Convenio CACEI en PDF, PWA Offline v6.3.1 con Diadema en Campus y Auditoría E2E en Navegador Real 100% operativos y desplegados en producción en Firebase Hosting (`https://jsweb-b14f8.web.app`) y Cloudflare Pages/Workers (`https://stemos.yepzhi.workers.dev`).*
+*Estado del Proyecto: Fases 1 a 76 COMPLETADAS y 100% validadas. Todos los master test suites ejecutados con éxito: 22 suites y más de 315 pruebas aprobadas (Exit Code 0). stemOS Institutional Ecosystem, Dual-World MCER/ESP Catalog, Ecosistema Curricular MCER (240.0h, 464 Reactivos Estandarizados, 16 Crisoles IA, 4 Exámenes de Certificación Milestone de 20 reactivos con Diploma Oficial CACEI Criterio 4), Whitish Aurora Placement Diagnostic (30 min con US Neural Pre-rendered Audio Assets), Google Sign-In Selector & Resilient Fallback, Pasaporte Diagnóstico en Perfil Estudiantil, Analíticas de Cohorte en Vivo para Profesores y Administradores, Universal Online Payments & Subscriptions ($49 MXN/mes), Teacher MCER Gradebook Matrix & Acta CACEI Criterio 4, Diagnostic Passport & Fast-Track Convalidation, Nearshoring Voice Crucible Studio con Telemetría Acústica en Vivo, Socratic AI Audio Debrief con Arthur Vance, Federación Multi-Campus (TecNM, UTT, UPBC, UACJ) con Campus Edge Sync, Generador de Propuesta & Convenio CACEI en PDF, PWA Offline v6.3.1 con Diadema en Campus y Auditoría E2E en Navegador Real 100% operativos y desplegados en producción en Firebase Hosting (`https://jsweb-b14f8.web.app`) y Cloudflare Pages/Workers (`https://stemos.yepzhi.workers.dev`).*
 
 
 
