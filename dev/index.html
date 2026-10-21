@@ -820,25 +820,44 @@
       gap: 14px;
       flex-wrap: wrap;
     }
-    .btn-hub-whatsapp {
+    .btn-hub-calendly {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: #25D366;
+      background: linear-gradient(135deg, #0b5cff, #004ee6);
       color: #ffffff;
       padding: 14px 24px;
       border-radius: 12px;
       font-weight: 800;
       font-size: 0.95rem;
       text-decoration: none;
-      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+      box-shadow: 0 6px 20px rgba(11, 92, 255, 0.35);
       transition: all 0.25s ease;
     }
-    .btn-hub-whatsapp:hover {
-      background: #20bd5a;
+    .btn-hub-calendly:hover {
+      background: linear-gradient(135deg, #004ee6, #003bb5);
       transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5);
+      box-shadow: 0 10px 25px rgba(11, 92, 255, 0.5);
       color: #ffffff;
+    }
+    .btn-hub-form {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .btn-hub-form:hover {
+      background: rgba(56, 189, 248, 0.22);
+      color: #ffffff;
+      transform: translateY(-2px);
     }
     .btn-hub-zoom {
       display: inline-flex;
@@ -2518,7 +2537,7 @@
           </ul>
 
           <div class="pricing-card-action">
-            <a href="https://wa.me/5216621147374?text=Hola%20Alberto%2C%20nos%20interesa%20iniciar%20con%20la%20Opci%C3%B3n%201%20(Piloto%20cuatrimestral%20%2495%2C000%20MXN)%20para%20nuestra%20instituci%C3%B3n." target="_blank" class="btn-pricing-primary" data-i18n="btn_plan_1"><i class="fa-brands fa-whatsapp"></i> <span>Choose 4-Month Pilot</span></a>
+            <a href="#contact-institutional" class="btn-pricing-primary" onclick="selectInstitutionalPlan('piloto')" data-i18n="btn_plan_1"><i class="fa-solid fa-file-signature"></i> <span>Choose 4-Month Pilot</span></a>
           </div>
         </div>
 
@@ -2565,35 +2584,104 @@
           </ul>
 
           <div class="pricing-card-action">
-            <a href="https://wa.me/5216621147374?text=Hola%20Alberto%2C%20nos%20interesa%20la%20Opci%C3%B3n%202%20(Licencia%20anual%20de%20campus%20%24240%2C000%20MXN)%20con%20precio%20congelado%20para%20la%20universidad." target="_blank" class="btn-pricing-secondary" data-i18n="btn_plan_2"><i class="fa-brands fa-whatsapp"></i> <span>Request Annual License</span></a>
+            <a href="#contact-institutional" class="btn-pricing-secondary" onclick="selectInstitutionalPlan('anual')" data-i18n="btn_plan_2"><i class="fa-solid fa-building-columns"></i> <span>Request Annual License</span></a>
           </div>
         </div>
 
       </div>
 
-      <!-- Direct Institutional Contact Hub -->
-      <div class="pricing-interactive-hub" style="margin-top:36px; padding:32px 28px; border-radius:22px; background:linear-gradient(135deg, rgba(15,23,42,0.85) 0%, rgba(30,41,59,0.7) 100%); border:1px solid rgba(56,189,248,0.25); box-shadow:0 12px 32px rgba(0,0,0,0.4); text-align:center;">
-        <div style="max-width:720px; margin:0 auto;">
+      <!-- Direct Institutional Contact Hub & Contact Form -->
+      <div class="pricing-interactive-hub" style="margin-top:36px; padding:36px 28px; border-radius:24px; background:linear-gradient(135deg, rgba(15,23,42,0.92) 0%, rgba(30,41,59,0.85) 100%); border:1px solid rgba(56,189,248,0.25); box-shadow:0 16px 40px rgba(0,0,0,0.45); text-align:center;">
+        <div style="max-width:760px; margin:0 auto;">
           <span class="pricing-hub-badge" style="background:rgba(56,189,248,0.12); color:#38bdf8; border:1px solid rgba(56,189,248,0.3); padding:4px 14px; border-radius:999px; font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; display:inline-flex; align-items:center; gap:6px; margin-bottom:12px;">
             <i class="fa-solid fa-handshake"></i> Atención Institucional Directa
           </span>
-          <h3 style="font-size:1.5rem; font-weight:800; color:#ffffff; margin:0 0 10px 0;">¿Deseas Coordinar una Demostración en Vivo para tu Institución?</h3>
-          <p style="font-size:0.92rem; color:#94a3b8; line-height:1.55; margin:0 0 24px 0;">
-            Te mostramos en una sesión ejecutiva de 15 minutos el portal en vivo, las 25 carreras universitarias, el entrelazado MCER y el panel docente para monitorear cohortes en tiempo real.
+          <h3 style="font-size:1.6rem; font-weight:800; color:#ffffff; margin:0 0 10px 0;">¿Deseas Coordinar una Demostración en Vivo para tu Institución?</h3>
+          <p style="font-size:0.92rem; color:#94a3b8; line-height:1.6; margin:0 0 24px 0;">
+            Te mostramos en una sesión ejecutiva de 15 minutos el portal en vivo, las 25 carreras universitarias, el entrelazado MCER y el panel docente para monitorear cohortes en tiempo real. Agenda directamente en Calendly o envíanos tus datos institucionales.
           </p>
-          <div class="pricing-actions-bar" style="display:flex; justify-content:center; align-items:center; gap:14px; flex-wrap:wrap;">
-            <a href="https://wa.me/5216621147374?text=Hola%20Alberto%2C%20nos%20gustar%C3%ADa%20agendar%20una%20sesi%C3%B3n%20de%2015%20min%20para%20conocer%20la%20plataforma%20stemOS%20y%20el%20panel%20docente%20para%20nuestra%20instituci%C3%B3n." target="_blank" class="btn-hub-whatsapp" style="display:inline-flex; align-items:center; gap:8px; padding:12px 22px; border-radius:12px; background:#25d366; color:#ffffff; font-weight:800; text-decoration:none; box-shadow:0 4px 14px rgba(37,211,102,0.3);">
-              <i class="fa-brands fa-whatsapp"></i>
-              <span data-i18n="btn_whatsapp">Contactar por WhatsApp Directo</span>
+          <div class="pricing-actions-bar" style="display:flex; justify-content:center; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:28px;">
+            <a href="https://calendly.com/yepzhi/30min" target="_blank" rel="noopener noreferrer" class="btn-hub-calendly" id="btn-hub-calendly-link" style="display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border-radius:12px; background:linear-gradient(135deg, #0b5cff, #004ee6); color:#ffffff; font-weight:800; text-decoration:none; box-shadow:0 6px 18px rgba(11,92,255,0.35);">
+              <i class="fa-solid fa-calendar-days"></i>
+              <span data-i18n="btn_calendly">Agendar Reunión Rápida (Calendly)</span>
             </a>
-            <a href="https://calendly.com/yepzhi/30min" target="_blank" rel="noopener noreferrer" class="btn-hub-zoom" id="btn-hub-zoom-link" style="display:inline-flex; align-items:center; gap:8px; padding:12px 22px; border-radius:12px; background:#0b5cff; color:#ffffff; font-weight:800; text-decoration:none; box-shadow:0 4px 14px rgba(11,92,255,0.3);">
-              <i class="fa-solid fa-video"></i>
-              <span data-i18n="btn_zoom">Agendar 15 min por Zoom</span>
+            <a href="#contact-institutional" class="btn-hub-form" style="display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border-radius:12px; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.35); color:#38bdf8; font-weight:800; text-decoration:none;">
+              <i class="fa-solid fa-file-signature"></i>
+              <span data-i18n="btn_contact_form">Formulario Institucional</span>
             </a>
-            <a href="mailto:director@stemos.org?subject=Propuesta%20Institucional%20stemOS%20-%20Reuni%C3%B3n%20Informativa&amp;body=Hola,%20recibimos%20la%20propuesta%20institucional%20de%20stemOS.%20Nos%20gustar%C3%ADa%20coordinar%20una%20sesi%C3%B3n%20informativa." class="btn-hub-email" style="display:inline-flex; align-items:center; gap:8px; padding:12px 22px; border-radius:12px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#f1f5f9; font-weight:700; text-decoration:none;">
+            <a href="mailto:director@stemos.org?subject=Propuesta%20Institucional%20stemOS%20-%20Reuni%C3%B3n%20Informativa&amp;body=Hola,%20recibimos%20la%20propuesta%20institucional%20de%20stemOS.%20Nos%20gustar%C3%ADa%20coordinar%20una%20sesi%C3%B3n%20informativa." class="btn-hub-email" style="display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.2); color:#f1f5f9; font-weight:700; text-decoration:none;">
               <i class="fa-solid fa-envelope"></i>
               <span data-i18n="btn_email">Enviar Correo Oficial</span>
             </a>
+          </div>
+        </div>
+
+        <!-- Embedded Institutional Contact Form (#contact-institutional) -->
+        <div id="contact-institutional" style="max-width:760px; margin:16px auto 0 auto; text-align:left; background:rgba(15,23,42,0.65); border:1px solid rgba(255,255,255,0.1); border-radius:18px; padding:28px 24px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:18px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:12px;">
+            <div>
+              <h4 style="font-size:1.15rem; font-weight:800; color:#ffffff; margin:0 0 4px 0;"><i class="fa-solid fa-building-columns" style="color:#38bdf8; margin-right:8px;"></i> Formulario de Contacto Institucional</h4>
+              <p style="font-size:0.82rem; color:#94a3b8; margin:0;">Atención a Universidades Tecnológicas, Politécnicas, TecNM y Facultades de Ingeniería.</p>
+            </div>
+            <a href="https://calendly.com/yepzhi/30min" target="_blank" rel="noopener noreferrer" style="font-size:0.8rem; font-weight:700; color:#38bdf8; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+              <i class="fa-solid fa-clock"></i> ¿Prefieres videollamada inmediata? Calendly ↗
+            </a>
+          </div>
+
+          <form id="institutional-contact-form" onsubmit="handleInstitutionalFormSubmit(event)" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div style="grid-column: span 1;">
+              <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">Nombre y Cargo:</label>
+              <input type="text" id="inst-contact-name" required placeholder="Ej. Dra. Carmen Morales — Directora Académica" style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); border-radius:10px; padding:11px 14px; color:#ffffff; font-family:inherit; font-size:0.9rem;">
+            </div>
+            <div style="grid-column: span 1;">
+              <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">Institución / Universidad:</label>
+              <input type="text" id="inst-contact-university" required placeholder="Ej. Instituto Tecnológico de Saltillo (TecNM)" style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); border-radius:10px; padding:11px 14px; color:#ffffff; font-family:inherit; font-size:0.9rem;">
+            </div>
+
+            <div style="grid-column: span 1;">
+              <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">Correo Institucional:</label>
+              <input type="email" id="inst-contact-email" required placeholder="direccion@universidad.edu.mx" style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); border-radius:10px; padding:11px 14px; color:#ffffff; font-family:inherit; font-size:0.9rem;">
+            </div>
+            <div style="grid-column: span 1;">
+              <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">Teléfono Institucional / Móvil:</label>
+              <input type="tel" id="inst-contact-phone" required placeholder="Ej. +52 844 123 4567" style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); border-radius:10px; padding:11px 14px; color:#ffffff; font-family:inherit; font-size:0.9rem;">
+            </div>
+
+            <div style="grid-column: span 1;">
+              <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">Esquema de Interés:</label>
+              <select id="inst-contact-plan" style="width:100%; box-sizing:border-box; background:#1e293b; border:1px solid rgba(255,255,255,0.18); border-radius:10px; padding:11px 14px; color:#ffffff; font-family:inherit; font-size:0.9rem;">
+                <option value="piloto">Opción 1: Piloto Cuatrimestral ($95,000 MXN + IVA)</option>
+                <option value="anual">Opción 2: Licencia Anual de Campus ($240,000 MXN + IVA)</option>
+                <option value="cacei">Acreditación CACEI Criterio 4 / Dossier Curricular</option>
+                <option value="demo">Demostración en Vivo para Directivos y Docentes</option>
+              </select>
+            </div>
+            <div style="grid-column: span 1;">
+              <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">Matrícula Estudiantil Estimada:</label>
+              <select id="inst-contact-students" style="width:100%; box-sizing:border-box; background:#1e293b; border:1px solid rgba(255,255,255,0.18); border-radius:10px; padding:11px 14px; color:#ffffff; font-family:inherit; font-size:0.9rem;">
+                <option value="500">Hasta 500 alumnos</option>
+                <option value="2000" selected>Hasta 2,000 alumnos (Cobertura Completa)</option>
+                <option value="5000">Más de 2,000 alumnos (Multi-campus)</option>
+              </select>
+            </div>
+
+            <div style="grid-column: span 2;">
+              <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">Mensaje o Requerimientos Específicos:</label>
+              <textarea id="inst-contact-message" rows="3" placeholder="Indícanos las carreras de ingeniería prioritarias, fechas de inicio de cuatrimestre o dudas sobre el servidor local Mini PC Campus LAN..." style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); border-radius:10px; padding:11px 14px; color:#ffffff; font-family:inherit; font-size:0.9rem; resize:vertical;"></textarea>
+            </div>
+
+            <div style="grid-column: span 2; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-top:6px;">
+              <button type="submit" style="background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#ffffff; border:none; border-radius:12px; padding:13px 28px; font-weight:800; font-size:0.95rem; cursor:pointer; box-shadow:0 6px 18px rgba(2,132,199,0.35); font-family:inherit; display:inline-flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-paper-plane"></i> Enviar Solicitud Institucional
+              </button>
+              <span style="font-size:0.78rem; color:#94a3b8;"><i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> Sin costo para los estudiantes &bull; Facturación CFDI Institucional</span>
+            </div>
+          </form>
+
+          <div id="inst-contact-success" style="display:none; text-align:center; padding:24px 20px; background:rgba(16,185,129,0.12); border:1.5px solid rgba(16,185,129,0.35); border-radius:14px; margin-top:16px; color:#34d399;">
+            <i class="fa-solid fa-circle-check" style="font-size:2rem; margin-bottom:8px; display:block;"></i>
+            <strong style="font-size:1.05rem; display:block; margin-bottom:4px;">¡Solicitud Institucional Recibida con Éxito!</strong>
+            <p style="margin:0; font-size:0.88rem; color:#cbd5e1; line-height:1.5;">Un director de vinculación técnica de stemOS se comunicará con tu institución a la brevedad para enviar la cotización formal y coordinar la sesión demostrativa.</p>
           </div>
         </div>
       </div>
@@ -2675,7 +2763,7 @@
             <input type="email" id="zoom-input-email" required="" placeholder="contacto@universidad.edu.mx" style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px 12px; color:#fff; font-family:inherit;">
           </div>
           <div>
-            <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">WhatsApp / Teléfono:</label>
+            <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">Teléfono Institucional / Móvil:</label>
             <input type="tel" id="zoom-input-phone" required="" placeholder="+52 844 123 4567" style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:10px 12px; color:#fff; font-family:inherit;">
           </div>
         </div>
@@ -2695,7 +2783,7 @@
       </form>
       <div id="zoom-success-msg" style="display:none; text-align:center; padding:20px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:12px; margin-top:14px; color:#34d399; font-weight:700;">
         <i class="fa-solid fa-circle-check" style="font-size:1.8rem; margin-bottom:8px; display:block;"></i>
-        ¡Sesión solicitada con éxito! Te contactaremos vía WhatsApp y correo con el enlace de Zoom.
+        ¡Sesión solicitada con éxito! Te contactaremos vía correo institucional con el enlace de la reunión.
       </div>
     </div>
   </div>
@@ -2843,10 +2931,46 @@
       }, 3500);
     }
 
+    function selectInstitutionalPlan(planId) {
+      var sel = document.getElementById('inst-contact-plan');
+      if (sel) sel.value = planId;
+      var formElem = document.getElementById('contact-institutional');
+      if (formElem) {
+        formElem.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    function handleInstitutionalFormSubmit(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      var form = document.getElementById('institutional-contact-form');
+      var success = document.getElementById('inst-contact-success');
+      
+      var name = document.getElementById('inst-contact-name') ? document.getElementById('inst-contact-name').value : '';
+      var university = document.getElementById('inst-contact-university') ? document.getElementById('inst-contact-university').value : '';
+      var email = document.getElementById('inst-contact-email') ? document.getElementById('inst-contact-email').value : '';
+      var phone = document.getElementById('inst-contact-phone') ? document.getElementById('inst-contact-phone').value : '';
+      var plan = document.getElementById('inst-contact-plan') ? document.getElementById('inst-contact-plan').value : '';
+      var students = document.getElementById('inst-contact-students') ? document.getElementById('inst-contact-students').value : '';
+      var message = document.getElementById('inst-contact-message') ? document.getElementById('inst-contact-message').value : '';
+
+      var data = {
+        name: name, university: university, email: email, phone: phone,
+        plan: plan, students: students, message: message,
+        createdAt: new Date().toISOString()
+      };
+      try {
+        localStorage.setItem('stemos_last_contact_request', JSON.stringify(data));
+      } catch (err) {}
+
+      if (form) form.style.display = 'none';
+      if (success) success.style.display = 'block';
+    }
+
     window.updateLabCalc = updateLabCalc;
     window.openZoomDemoModal = openZoomDemoModal;
     window.closeZoomDemoModal = closeZoomDemoModal;
     window.submitZoomRequest = submitZoomRequest;
+    window.selectInstitutionalPlan = selectInstitutionalPlan;
+    window.handleInstitutionalFormSubmit = handleInstitutionalFormSubmit;
 
     const STEMOS_I18N = {
       en: {
@@ -3045,7 +3169,7 @@
         plan_1_f4: '<strong>Faculty dashboard:</strong> real-time group tracking for English teachers',
         plan_1_f5: '<strong>Zero student cost:</strong> no mandatory textbook purchases',
         plan_1_f6: '<strong>34 ESP Tracks + CEFR Leveling</strong> and nearshoring simulators included',
-        btn_plan_1: '<i class="fa-brands fa-whatsapp"></i> <span>Choose 4-Month Pilot</span>',
+        btn_plan_1: '<i class="fa-solid fa-file-signature"></i> <span>Choose 4-Month Pilot</span>',
         plan_2_badge: '<i class="fa-solid fa-shield-halved"></i> BEST ANNUAL VALUE &bull; FROZEN PRICE',
         plan_2_tag: 'Option 2 &bull; Annual Guarantee',
         plan_2_name: 'Annual Campus License',
@@ -3057,7 +3181,7 @@
         plan_2_f3: '<strong>Priority technical &amp; pedagogical support</strong> for teaching faculty',
         plan_2_f4: '<strong>Continuous content updates</strong> by career track and industrial standards',
         plan_2_f5: '<strong>Institutional Certificates &amp; Open Badges 3.0</strong> with SHA-256 hash',
-        btn_plan_2: '<i class="fa-brands fa-whatsapp"></i> <span>Request Annual License</span>',
+        btn_plan_2: '<i class="fa-solid fa-building-columns"></i> <span>Request Annual License</span>',
         inv_badge: '<i class="fa-solid fa-boxes-stacked"></i> FORMAL CURRICULAR INVENTORY &bull; DGUTyP, CACEI &amp; USMCA ALIGNED',
         inv_title: 'Quantitative Summary of the stemOS Academic &amp; Technological Scope',
         inv_desc: 'Comprehensive curricular audit for computer centers, engineering laboratories, and university faculties.',
@@ -3080,6 +3204,8 @@
         inv_c9_title: 'Verifiable Credentials',
         inv_c9_sub: 'W3C Open Badges 3.0 with immutable SHA-256 hash',
         btn_whatsapp: 'Contact via Direct WhatsApp',
+        btn_calendly: 'Schedule Quick Meeting (Calendly)',
+        btn_contact_form: 'Institutional Form',
         btn_zoom: 'Schedule 15 min via Zoom',
         btn_email: 'Send Official Email',
         modal_zoom_title: 'Schedule 15-Minute Zoom Session',
@@ -3296,7 +3422,7 @@
         plan_1_f4: '<strong>Panel docente de inglés:</strong> seguimiento de práctica en vivo por grupo',
         plan_1_f5: '<strong>Cero cobro a los alumnos:</strong> sin compra obligatoria de libros',
         plan_1_f6: '<strong>34 Tracks ESP + Nivelación MCER</strong> y simuladores de nearshoring incluidos',
-        btn_plan_1: '<i class="fa-brands fa-whatsapp"></i> <span>Elegir Piloto Cuatrimestral</span>',
+        btn_plan_1: '<i class="fa-solid fa-file-signature"></i> <span>Elegir Piloto Cuatrimestral</span>',
         plan_2_badge: '<i class="fa-solid fa-shield-halved"></i> MEJOR VALOR ANUAL &bull; PRECIO CONGELADO',
         plan_2_tag: 'Opción 2 &bull; Garantía Anual',
         plan_2_name: 'Licencia Anual de Campus',
@@ -3308,7 +3434,7 @@
         plan_2_f3: '<strong>Soporte técnico y pedagógico prioritario</strong> para la plantilla docente',
         plan_2_f4: '<strong>Actualización continua de contenidos</strong> por carrera y normas industriales',
         plan_2_f5: '<strong>Emisión de certificados y Open Badges 3.0</strong> institucionales con hash SHA-256',
-        btn_plan_2: '<i class="fa-brands fa-whatsapp"></i> <span>Solicitar Licencia Anual</span>',
+        btn_plan_2: '<i class="fa-solid fa-building-columns"></i> <span>Solicitar Licencia Anual</span>',
         inv_badge: '<i class="fa-solid fa-boxes-stacked"></i> INVENTARIO CURRICULAR FORMAL &bull; ALINEACIÓN DGUTyP, CACEI &amp; T-MEC',
         inv_title: 'Resumen Cuantitativo del Acervo Académico y Tecnológico stemOS',
         inv_desc: 'Auditoría curricular exhaustiva para acreditación de laboratorios, centros de cómputo y facultades de ingeniería.',
@@ -3331,6 +3457,8 @@
         inv_c9_title: 'Credenciales Verificables',
         inv_c9_sub: 'W3C Open Badges 3.0 con hash SHA-256 inmutable',
         btn_whatsapp: 'Contactar por WhatsApp Directo',
+        btn_calendly: 'Agendar Reunión Rápida (Calendly)',
+        btn_contact_form: 'Formulario Institucional',
         btn_zoom: 'Agendar 15 min por Zoom',
         btn_email: 'Enviar Correo Oficial',
         modal_zoom_title: 'Agendar Sesión de 15 min en Zoom',

@@ -101,14 +101,21 @@ assert(!op3Card, 'Option 3 ("Solo Laboratorio") successfully removed');
 const labCalc = document.getElementById('slider-lab-equipos');
 assert(!labCalc, 'Interactive lab equipment calculator retired');
 
-// ── 4. WhatsApp, Email & Zoom CTAs ──
-console.log('\n▶ 4. Conversion Action Triggers (No Mario Mentions)');
+// ── 4. Calendly, Contact Form & Zero WhatsApp Verification ──
+console.log('\n▶ 4. Conversion Action Triggers (Calendly, Form, Zero WhatsApp & No Mario)');
 const waBtn = pricingSec.querySelector('a[href*="wa.me"]');
-assert(!!waBtn, 'Direct WhatsApp button with wa.me link exists');
-assert(!waBtn.getAttribute('href').includes('Mario'), 'WhatsApp link does NOT contain "Mario"');
+assert(!waBtn, 'WhatsApp buttons (wa.me) successfully removed from pricing and proposal hub');
+assert(!pricingSec.textContent.includes('WhatsApp'), 'Zero WhatsApp mentions in pricing section');
 
-const zoomBtn = pricingSec.querySelector('.btn-hub-zoom');
-assert(!!zoomBtn, 'Zoom 15-minute demo booking button exists');
+const calendlyBtn = pricingSec.querySelector('a[href*="calendly.com"]');
+assert(!!calendlyBtn, 'Calendly rapid meeting booking link exists');
+
+const contactForm = document.getElementById('institutional-contact-form');
+assert(!!contactForm, 'Institutional Contact Form (#institutional-contact-form) exists');
+assert(!!document.getElementById('inst-contact-name'), 'Contact form has name field');
+assert(!!document.getElementById('inst-contact-university'), 'Contact form has university field');
+assert(!!document.getElementById('inst-contact-email'), 'Contact form has email field');
+assert(!!document.getElementById('inst-contact-plan'), 'Contact form has plan selector');
 
 const zoomModal = document.getElementById('stemos-zoom-modal');
 assert(!!zoomModal, '#stemos-zoom-modal scheduling dialog exists');

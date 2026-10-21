@@ -1003,7 +1003,6 @@
     <!-- ── Top Floating Glass Header ── -->
     <header class="top-bar">
         <a href="app.html" class="brand-link" title="Volver a stemOS">
-            <div class="brand-logo-pill">st</div>
             <div class="brand-text-col">
                 <span class="brand-title">stem<span class="brand-accent">OS</span></span>
                 <span class="brand-subtitle">MCER Placement Engine</span>
@@ -1012,7 +1011,7 @@
 
         <div class="top-actions">
             <button class="btn-audio-test" id="btn-audio-test" title="Probar Sintetizador de Audio Web Speech API en-US">
-                <i class="fa-solid fa-volume-high"></i> Audio Check
+                <i class="fa-solid fa-volume-high"></i> Audio Test
             </button>
             <div class="timer-badge" id="timer-badge" style="display: none;">
                 <i class="fa-solid fa-stopwatch"></i>
@@ -1557,8 +1556,8 @@
             const testText = "Welcome to stemOS. Audio check complete. Your speakers and speech synthesis are working perfectly.";
             if (window.STEMOS_PLACEMENT_TEST && window.STEMOS_PLACEMENT_TEST.playAudioPrompt) {
                 window.STEMOS_PLACEMENT_TEST.playAudioPrompt(testText, 
-                    () => { document.getElementById('btn-audio-test').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Testing Audio...'; },
-                    () => { document.getElementById('btn-audio-test').innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Audio OK (Piper Neural)'; },
+                    () => { document.getElementById('btn-audio-test').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Audio Test...'; },
+                    () => { document.getElementById('btn-audio-test').innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Audio OK'; },
                     'pt-test-audio'
                 );
             } else {
