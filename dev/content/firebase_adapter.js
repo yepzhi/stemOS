@@ -693,9 +693,15 @@
                     institutionId: (std.institution === 'UPMXL') ? 'upbc-mexicali' : (std.institution || 'tecnm-saltillo'),
                     careerId: std.careerId || 'upbc-mecatronica',
                     careerName: std.career || 'Ingeniería Mecatrónica',
+                    degreeModality: std.degreeType || std.degreeModality || 'lic',
+                    tsuSpecialtyId: std.tsuSpecialtyId || '',
+                    tsuSpecialtyName: std.tsuSpecialtyName || '',
+                    folio: std.folio || '',
+                    diagnosticFolio: std.folio || '',
                     cefrLevel: res.assignedLevel || res.level || 'A1',
                     cefrScore: res.totalScore || res.score || 0,
                     cefrPercentage: res.percentage || 0,
+                    placementCompleted: true,
                     placementCompletedAt: diagnosticPayload.completedAt || new Date().toISOString()
                 };
                 this.registerStudent(studentRecord);
@@ -724,8 +730,19 @@
                 if (student.matricula || student.folio) {
                     const stdDocId = student.folio || ('std-' + student.matricula);
                     await db.collection('institutions').doc(instId).collection('students').doc(stdDocId).set({
+                        name: (student.firstName && student.lastName) ? (student.firstName + ' ' + student.lastName) : (student.fullName || 'Student'),
+                        matricula: student.matricula || '',
+                        email: student.email || '',
+                        careerId: student.careerId || 'upbc-mecatronica',
+                        careerName: student.career || 'Ingeniería Mecatrónica',
+                        degreeModality: student.degreeType || student.degreeModality || 'lic',
+                        tsuSpecialtyId: student.tsuSpecialtyId || '',
+                        tsuSpecialtyName: student.tsuSpecialtyName || '',
                         cefrLevel: (diagnosticPayload.result && (diagnosticPayload.result.assignedLevel || diagnosticPayload.result.level)) || 'A1',
                         cefrScore: (diagnosticPayload.result && (diagnosticPayload.result.totalScore || diagnosticPayload.result.score)) || 0,
+                        cefrPercentage: (diagnosticPayload.result && diagnosticPayload.result.percentage) || 0,
+                        placementCompleted: true,
+                        diagnosticFolio: student.folio || '',
                         lastDiagnosticAt: diagnosticPayload.completedAt || new Date().toISOString()
                     }, { merge: true });
                 }

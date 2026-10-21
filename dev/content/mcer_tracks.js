@@ -15047,6 +15047,57 @@
         }
       }
       return null;
+    },
+    getUnitsByLevel: function(levelId) {
+      const lvl = this.getLevelById(levelId);
+      if (!lvl) return [];
+      return lvl.units.map(u => normalizeUnit(u, lvl));
+    },
+    searchUnits: function(query) {
+      if (!query || typeof query !== 'string') return this.getAllUnits();
+      const q = query.toLowerCase().trim();
+      return this.getAllUnits().filter(u => {
+        const inVocab = (u.vocabulary || []).some(v => (v.term && v.term.toLowerCase().includes(q)) || (v.word && v.word.toLowerCase().includes(q)) || (v.definition && v.definition.toLowerCase().includes(q)));
+        return (u.title && u.title.toLowerCase().includes(q)) ||
+               (u.titleES && u.titleES.toLowerCase().includes(q)) ||
+               (u.canDo && u.canDo.toLowerCase().includes(q)) ||
+               (u.grammarFocus && u.grammarFocus.toLowerCase().includes(q)) ||
+               (u.cefr && u.cefr.toLowerCase() === q) ||
+               inVocab;
+      });
+    },
+    getExamByLevel: function(levelId) {
+      return this.getLevelExam(levelId);
+    },
+    getPedagogicalDimensions: function() {
+      return [
+        { id: 'listening', name: 'Listening Comprehension Lab', nameES: 'Laboratorio de Comprensión Auditiva (Audio Nativo)', icon: 'fa-headphones', target: 'Industrial SOPs & Spoken English' },
+        { id: 'grammar', name: 'Grammar & Syntax Drills', nameES: 'Gramática Aplicada & Sintaxis Técnica', icon: 'fa-spell-check', target: 'Grammar in Plant Context' },
+        { id: 'vocabulary', name: 'Vocabulary & False Cognates', nameES: 'Vocabulario Industrial & Falsos Amigos', icon: 'fa-book-bookmark', target: 'Technical Precision & Anti-Interference' },
+        { id: 'pronunciation', name: 'Pronunciation Lab & Stress Rules', nameES: 'Laboratorio de Pronunciación IPA & Acentuación', icon: 'fa-microphone-lines', target: 'Intelligible American English' },
+        { id: 'reading', name: 'Technical SOP Reading & Verification', nameES: 'Lectura Técnica & Protocolos Estandarizados', icon: 'fa-file-lines', target: 'Engineering Manuals & Work Instructions' },
+        { id: 'crucible', name: 'Nearshoring Voice Crucible & Socratic AI', nameES: 'Crisol de Voz Industrial & AI Socrática', icon: 'fa-fire-burner', target: 'Real-time Plant Troubleshooting Simulation' },
+        { id: 'quiz', name: 'Unit Mastery Certification Quiz', nameES: 'Evaluación de Maestría de Unidad (8 Reactivos)', icon: 'fa-graduation-cap', target: 'Continuous Assessment & Micro-Credentials' }
+      ];
+    },
+    calculateStudentProgress: function(userLevel, completedUnitIds, passedExamLevels) {
+      const allUnits = this.getAllUnits();
+      const completedSet = new Set(completedUnitIds || []);
+      const passedExamSet = new Set(passedExamLevels || []);
+      const targetLevel = userLevel ? userLevel.toUpperCase() : 'A1';
+      const levelUnits = allUnits.filter(u => u.cefr === targetLevel);
+      const completedInLevel = levelUnits.filter(u => completedSet.has(u.id)).length;
+      const levelPercent = levelUnits.length > 0 ? Math.round((completedInLevel / levelUnits.length) * 100) : 0;
+      const isExamPassed = passedExamSet.has(targetLevel);
+      return {
+        level: targetLevel,
+        totalUnits: levelUnits.length,
+        completedUnits: completedInLevel,
+        levelPercent: levelPercent,
+        examPassed: isExamPassed,
+        accreditedHours: isExamPassed ? 60.0 : (completedInLevel * 15.0),
+        caceiDiplomaEligible: isExamPassed && (completedInLevel >= 4)
+      };
     }
   };
 }));
