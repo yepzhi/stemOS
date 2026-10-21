@@ -2028,27 +2028,55 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 #### 70.2 Cola de Sincronización Local (`app.js` & `dev/app.js`)
 - [x] **Motor Edge Sync (`initCampusEdgeSync`)**: Detección de estados online/offline y procesamiento de eventos pendientes en cola local (`stemos_campus_edge_sync_queue`) para despliegues en centros de cómputo universitarios con huella de agua cero (Mini PC local).
 
+### FASE 71: Live Interactive Browser End-to-End Walkthrough & QA Audit
+**Objetivo:** Validar en entorno de producción real (`https://jsweb-b14f8.web.app`) mediante subagente de navegación autónomo: síntesis de voz US Piper / Neural, flujo de diagnóstico de colocación (Welcome, Survey, Instructions, Exam), navegación reactiva, e interfaz ejecutiva del Portal de Administración.
+- [x] **Placement Welcome & Audio Check**: Verificación del botón `#btn-audio-test` y reproducción con síntesis auditiva nativa.
+- [x] **Student Onboarding & Survey**: Validación de registro de carrera, semestre y datos institucionales en `placement.html`.
+- [x] **Live Exam Engine**: Validación de reproducción de audio prompts en ítems de escucha (`#btn-play-prompt`), avance entre reactivos y renderizado de textos técnicos.
+- [x] **Captura de Evidencias y Video**: Generación de capturas de pantalla (`placement_welcome`, `placement_question`, `admin_cacei_modal`) y grabación WebP de la sesión completa.
+
 ---
 
-## Resumen de Archivos Creados/Modificados (Fases 48–70)
+### FASE 72: Generador de Dossier Ejecutivo & Propuesta CACEI en PDF
+**Objetivo:** Dotar al Portal de Administración (`admin.html`) y a la sección de precios institucionales de `index.html` de un generador interactivo de convenios y propuestas oficiales en PDF para rectores, decanos y directores de carrera.
+- [x] **Modal Interactivo `#modal-cacei-proposal`**: Configuración de institución beneficiaria (TecNM, UT, Politécnica, etc.), rector(a), cohorte (hasta 2,000 alumnos), esquema (Piloto $95,000 MXN vs Licencia Anual $240,000 MXN) e inclusión del servidor local Mini PC Campus LAN (0L Agua).
+- [x] **Documento Imprimible `#print-cacei-proposal-document`**: Diseño editorial formal para `@media print` con folio oficial timbrado (`CONV-CACEI-2026-[HASH]`), justificación normativa CACEI Criterio 4 / DGUTyP / T-MEC Capítulo 23, desglose económico por alumno (~$47.50 MXN), política de cero costo para el estudiante y bloques de firma institucional.
+- [x] **Enrutador `#proposal`**: Apertura automática del modal desde enlaces externos o parámetro `action=proposal`.
+- [x] **Auditoría Automatizada**: `scripts/test_cacei_proposal_generator.cjs` (11/11 tests pass, 100%).
+
+---
+
+### FASE 73: PWA Offline Hardening & Cache de Audios para Diadema en Campus
+**Objetivo:** Garantizar la operación offline completa de la plataforma en centros de cómputo universitarios donde los alumnos utilizan diademas USB sin depender de ancho de banda externo.
+- [x] **Pre-caching Integral en `sw.js` (v6.3.0-campus-diadema-offline)**: Incorporación de `/placement.html`, `/tracks.html`, `/privacy.html` y los 11 archivos de audio MP3 en calidad estudio (`pt-test-audio.mp3`, `pt-l01.mp3` a `pt-l10.mp3`).
+- [x] **Paridad 100% Root vs Dev**: Sincronización bit a bit entre `sw.js` y `dev/sw.js`.
+- [x] **Verificación de Red & Fallback**: Compatibilidad validada con el servidor local Mini PC Edge LAN y el Service Worker.
+
+---
+
+## Resumen de Archivos Creados/Modificados (Fases 48–73)
 
 | Archivo | Acción | Fase | Estado |
 |---------|--------|------|--------|
+| `/Users/yepz/stemOS/scripts/test_cacei_proposal_generator.cjs` | **CREAR** (11/11 Tests Pass • Generador CACEI) | 72 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/admin.html` & `dev/admin.html` | **MODIFICAR** (Modal Propuesta CACEI & Documento Imprimible) | 72 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/index.html` & `dev/index.html` | **MODIFICAR** (Enlace a Generador CACEI en Sección de Precios) | 72 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/sw.js` & `dev/sw.js` | **ACTUALIZAR** (Cache v6.3.0 Diadema Campus Offline) | 73 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/scripts/test_academic_system.cjs` | **ACTUALIZAR** (Soporte para Cache v6.3.0 • 50/50 Tests Pass) | 73 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/scripts/test_mcer_advanced_features.cjs` | **CREAR** (51/51 Tests Pass • Auditoría Fases 68–70) | 68, 69, 70 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/scripts/test_mcer_institutional_gradebook.cjs` | **CREAR** (23/23 Tests Pass • Auditoría Fases 65–67) | 65, 66, 67 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/tracks.html` & `dev/tracks.html` | **MODIFICAR** (Milestone Exam Direct Links `?exam=A1..B2`) | 68 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/app.html` & `dev/app.html` | **MODIFICAR** (Milestone Exam Modal, CACEI Diploma, Socratic Debrief, Campus Selector) | 68, 69, 70 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/app.js` & `dev/app.js` | **MODIFICAR** (Exam Engine, Socratic Debrief 16 Units, Campus Switcher & Edge Sync) | 68, 69, 70 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/teacher.html` & `dev/teacher.html` | **MODIFICAR** (Campus Federation Selector & Edge Sync LAN Badge) | 70 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/admin.html` & `dev/admin.html` | **MODIFICAR** (Campus Federation Selector & Edge Sync LAN Badge) | 70 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/placement.html` & `dev/placement.html` | **MODIFICAR** (Diagnostic Passport Storage & Onboarding Routing) | 66 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/content/mcer_tracks.js` & `dev/content/` | **ACTUALIZAR** (464 Reactivos, 7 Dimensiones, 4 Exámenes) | 64 | ✅ 100% Completado |
 | `/Users/yepz/stemOS/content/stemos_payments.js` & `dev/content/` | **CREAR** (Universal Payments & SPEI) | 63 | ✅ 100% Completado |
-| `/Users/yepz/stemOS/content/placement_test.js` & `dev/content/` | **CREAR** (32 Reactivos Web Speech) | 62 | ✅ 100% Completado |
+| `/Users/yepz/stemOS/content/placement_test.js` & `dev/content/` | **CREAR** (32 Reactivos Web Speech & Audio Pre-render) | 62, 73 | ✅ 100% Completado |
 
 ---
 
-*Estado del Proyecto: Fases 1 a 70 COMPLETADAS y 100% validadas. Master test suites ejecutados con éxito: 230 pruebas aprobadas (Exit Code 0). stemOS Institutional Ecosystem, Dual-World MCER/ESP Catalog, Ecosistema Curricular MCER (240.0h, 464 Reactivos Estandarizados, 16 Crisoles IA, 4 Exámenes de Certificación Milestone de 20 reactivos con Diploma Oficial CACEI Criterio 4), Whitish Aurora Placement Diagnostic (30 min), Universal Online Payments & Subscriptions ($49 MXN/mes), Teacher MCER Gradebook Matrix & Acta CACEI Criterio 4, Diagnostic Passport & Fast-Track Convalidation, Nearshoring Voice Crucible Studio con Telemetría Acústica en Vivo, Socratic AI Audio Debrief con Arthur Vance, y Federación Multi-Campus (TecNM, UTT, UPBC, UACJ) con Campus Edge Sync 100% operativos.*
+*Estado del Proyecto: Fases 1 a 73 COMPLETADAS y 100% validadas. Todos los master test suites ejecutados con éxito: más de 240 pruebas aprobadas (Exit Code 0). stemOS Institutional Ecosystem, Dual-World MCER/ESP Catalog, Ecosistema Curricular MCER (240.0h, 464 Reactivos Estandarizados, 16 Crisoles IA, 4 Exámenes de Certificación Milestone de 20 reactivos con Diploma Oficial CACEI Criterio 4), Whitish Aurora Placement Diagnostic (30 min con US Neural Pre-rendered Audio Assets), Universal Online Payments & Subscriptions ($49 MXN/mes), Teacher MCER Gradebook Matrix & Acta CACEI Criterio 4, Diagnostic Passport & Fast-Track Convalidation, Nearshoring Voice Crucible Studio con Telemetría Acústica en Vivo, Socratic AI Audio Debrief con Arthur Vance, Federación Multi-Campus (TecNM, UTT, UPBC, UACJ) con Campus Edge Sync, Generador de Propuesta & Convenio CACEI en PDF, PWA Offline v6.3.0 con Diadema en Campus y Auditoría E2E en Navegador Real 100% operativos y desplegados en producción en Firebase Hosting (`https://jsweb-b14f8.web.app`).*
 
 
 
