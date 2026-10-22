@@ -726,10 +726,77 @@
                 padding: 14px 10px 80px !important;
             }
         }
-        @media (max-width: 480px) {
-            .ed-kpi-cards-grid {
-                grid-template-columns: 1fr !important;
-            }
+        /* ── STUDENT COHORT ASSIGNMENT BANNER & RUNNER (FASE 68) ── */
+        .stemos-asg-banner-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.96) 100%);
+            border: 1px solid rgba(14, 165, 233, 0.35);
+            border-radius: 16px;
+            padding: 18px 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 12px 30px -10px rgba(14, 165, 233, 0.22);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(16px);
+            color: #f8fafc;
+        }
+        .stemos-asg-banner-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #0ea5e9, #10b981, #f59e0b, #0ea5e9);
+            background-size: 200% 100%;
+            animation: asgGradientSlide 6s linear infinite;
+        }
+        @keyframes asgGradientSlide {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+        .asg-timer-pulse-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #fbbf24;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .asg-timer-pulse-badge.danger {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #f87171;
+            animation: asgPulseAlarm 1s infinite alternate;
+        }
+        @keyframes asgPulseAlarm {
+            from { transform: scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+            to { transform: scale(1.04); box-shadow: 0 0 12px 3px rgba(239,68,68,0.5); }
+        }
+        .asg-opt-radio {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 8px;
+        }
+        .asg-opt-radio:hover {
+            background: rgba(14, 165, 233, 0.08);
+            border-color: rgba(14, 165, 233, 0.35);
+        }
+        .asg-opt-radio.selected {
+            background: rgba(14, 165, 233, 0.15);
+            border-color: #0ea5e9;
+            box-shadow: 0 0 12px rgba(14, 165, 233, 0.25);
         }
     </style>
 </head>
@@ -943,6 +1010,9 @@
                     </div>
                 </header>
             </div>
+
+            <!-- Active Teacher Cohort Assignment Banner (Fase 68 / LXP Task Engine) -->
+            <div id="stemos-student-assignment-mount" style="max-width: 1400px; margin: 0 auto; padding: 0 24px;"></div>
 
             <!-- Scenic Mountain Hero Banner with 4 KPI Cards (English Discoveries Reference) -->
             <section class="ed-hero-banner">
@@ -2955,6 +3025,13 @@
                         Cerrar
                     </button>
                 </div>
+            </div>
+        </div>
+    <!-- Student Assignment Resolution Runner Modal (Fase 68) -->
+    <div id="modal-student-assignment-runner" class="cs-modal-overlay" style="z-index: 10000005; overflow-y: auto;" onclick="handleAssignmentRunnerBackdrop(event)">
+        <div class="cs-modal-card" style="max-width: 780px; text-align: left; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(24px); border: 1px solid rgba(14, 165, 233, 0.45); border-radius: 20px; padding: 26px; box-shadow: 0 30px 80px -15px rgba(0, 0, 0, 0.9); color: #f8fafc; max-height: 90vh; overflow-y: auto;">
+            <div id="asg-runner-content">
+                <!-- Dynamically populated by app.js: renderAssignmentRunnerModal() -->
             </div>
         </div>
     </div>

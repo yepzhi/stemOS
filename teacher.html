@@ -1141,6 +1141,53 @@
             touch-action: manipulation;
         }
 
+        /* ─── COHORT ASSIGNMENTS & TIME TRACKER (FASE 66) ─── */
+        .asg-item-card {
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+            transition: var(--transition);
+        }
+        .asg-item-card:hover {
+            border-color: rgba(45, 212, 191, 0.35);
+            background: rgba(15, 23, 42, 0.85);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+        }
+        .asg-progress-track {
+            height: 9px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            overflow: hidden;
+            display: flex;
+            margin: 10px 0 6px;
+        }
+        .asg-bar-done {
+            background: linear-gradient(90deg, #10b981, #14b8a6);
+            height: 100%;
+            transition: width 0.4s ease;
+        }
+        .asg-bar-prog {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+            height: 100%;
+            transition: width 0.4s ease;
+        }
+        .asg-live-pulse {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: asgPulse 1.6s infinite;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        @keyframes asgPulse {
+            0% { transform: scale(0.9); opacity: 0.7; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.9); opacity: 0.7; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
         @media (max-width: 600px) {
             .top-header {
                 padding-top: max(8px, env(safe-area-inset-top));
@@ -1497,6 +1544,10 @@
                                         <i class="fa-solid fa-bullhorn" style="color:var(--sky-400);"></i>
                                         <span>Broadcast Study Directive to Group</span>
                                     </button>
+                                    <button type="button" class="btn btn-teal btn-sm" id="btn-open-assign-task" style="width:100%; justify-content:flex-start; box-shadow:0 4px 14px rgba(20,184,166,0.3);" onclick="openAssignTaskModal()">
+                                        <i class="fa-solid fa-stopwatch" style="color:#ffffff;"></i>
+                                        <span>Assign Timed Task &amp; Set Timezone</span>
+                                    </button>
                                     <button type="button" class="btn btn-secondary btn-sm" id="btn-open-assign-mcer" style="width:100%; justify-content:flex-start;" onclick="openAssignMcerModal()">
                                         <i class="fa-solid fa-graduation-cap" style="color:var(--emerald-400);"></i>
                                         <span>Assign MCER Track / Exam to Cohort</span>
@@ -1516,6 +1567,34 @@
                                     3 students inactive for &gt;7 days. Automated English B1 study reminder dispatched.
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- FASE 66: COHORT ASSIGNED TASKS & TIME-BOUNDED HOMEWORK TRACKER -->
+                    <div class="glass-card" style="padding:22px; margin-bottom:24px; border:1px solid rgba(45,212,191,0.25); background:radial-gradient(circle at 92% 8%, rgba(20,184,166,0.08) 0%, rgba(15,23,42,0.85) 60%);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+                            <div>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <span class="badge badge-teal" style="font-size:0.7rem;"><i class="fa-solid fa-stopwatch"></i> TIME-BOUNDED HOMEWORK ENGINE</span>
+                                    <span class="badge badge-sky" id="tasks-active-tz-badge" style="font-size:0.7rem;"><i class="fa-solid fa-earth-americas"></i> Americas Timezones</span>
+                                </div>
+                                <h3 style="font-family:var(--font-display); font-size:1.18rem; font-weight:800; color:#fff; margin-top:4px;">
+                                    Cohort Assigned Tasks &amp; Resolution Time Tracking
+                                </h3>
+                                <p style="font-size:0.78rem; color:var(--fg-muted);">
+                                    Supervisa las tareas asignadas, límite de tiempo de resolución, huso horario oficial de entrega y avance de estudiantes en tiempo real.
+                                </p>
+                            </div>
+                            <div style="display:flex; gap:10px;">
+                                <button type="button" class="btn btn-teal btn-sm" onclick="openAssignTaskModal()">
+                                    <i class="fa-solid fa-plus"></i> Asignar Tarea con Tiempo Límite
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Active Assignments List / Cards -->
+                        <div id="cohort-assignments-container" style="display:flex; flex-direction:column; gap:14px;">
+                            <!-- Injected dynamically by renderClassAssignments() -->
                         </div>
                     </div>
 
@@ -2006,16 +2085,16 @@
     </div>
 
     <!-- ══════════════════════════════════════════════════════════════
-         MODAL: ASSIGN MCER TRACK / EXAM TO COHORT (Fase 65)
+         MODAL: ASSIGN MCER TRACK / TIMED TASK TO COHORT (Fase 65 & 66)
          ══════════════════════════════════════════════════════════════ -->
     <div class="modal-overlay" id="modal-assign-mcer" onclick="closeModalOnBackdrop(event, 'modal-assign-mcer')">
-        <div class="modal-box" style="max-width:540px;">
+        <div class="modal-box" style="max-width:580px;">
             <div class="modal-header">
                 <div>
-                    <span class="badge" style="background:rgba(16,185,129,0.15); color:var(--emerald-400); border:1px solid rgba(16,185,129,0.3); font-size:0.7rem; font-weight:800;">
-                        <i class="fa-solid fa-graduation-cap"></i> BATCH CURRICULAR ASSIGNMENT
+                    <span class="badge" style="background:rgba(20,184,166,0.15); color:var(--teal-400); border:1px solid rgba(20,184,166,0.3); font-size:0.7rem; font-weight:800;">
+                        <i class="fa-solid fa-stopwatch"></i> BATCH CURRICULAR ASSIGNMENT &amp; TIMING ENGINE
                     </span>
-                    <h3 class="modal-title" style="margin-top:4px;">Assign MCER Track / Exam to Cohort</h3>
+                    <h3 class="modal-title" style="margin-top:4px;">Asignar Tarea con Límite de Tiempo</h3>
                 </div>
                 <button type="button" class="modal-close-btn" onclick="closeModal('modal-assign-mcer')">
                     <i class="fa-solid fa-xmark"></i>
@@ -2024,24 +2103,93 @@
             <form id="form-assign-mcer" onsubmit="submitMcerAssignment(event)">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="form-label" for="assign-mcer-level">Target CEFR Level</label>
-                        <select id="assign-mcer-level" class="form-select" onchange="updateMcerAssignmentUnits()" required>
-                            <option value="ALL">All Levels (A1–B2 · 240.0 Hours)</option>
-                            <option value="A1">Level A1 — Foundations (Units 01–04 · 60.0h)</option>
-                            <option value="A2" selected>Level A2 — Waystage (Units 05–08 · 60.0h)</option>
-                            <option value="B1">Level B1 — Threshold (Units 09–12 · 60.0h)</option>
-                            <option value="B2">Level B2 — Vantage (Units 13–16 · 60.0h)</option>
-                        </select>
+                        <label class="form-label" for="assign-mcer-title">Título de la Tarea / Asignación</label>
+                        <input type="text" id="assign-mcer-title" class="form-input" placeholder="Ej. Unit 07: LOTO Safety Protocol &amp; Technical Shift Handover" value="Unit 07: LOTO Zero-Energy Isolation &amp; Technical Memo" style="padding-left:14px;" required>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div class="form-group">
+                            <label class="form-label" for="assign-mcer-level">Target CEFR Level</label>
+                            <select id="assign-mcer-level" class="form-select" onchange="updateMcerAssignmentUnits()" required>
+                                <option value="ALL">All Levels (A1–B2 · 240.0 Hours)</option>
+                                <option value="A1">Level A1 — Foundations (Units 01–04 · 60.0h)</option>
+                                <option value="A2">Level A2 — Waystage (Units 05–08 · 60.0h)</option>
+                                <option value="B1" selected>Level B1 — Threshold (Units 09–12 · 60.0h)</option>
+                                <option value="B2">Level B2 — Vantage (Units 13–16 · 60.0h)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="assign-mcer-scope">Assignment Scope / Milestone</label>
+                            <select id="assign-mcer-scope" class="form-select" required>
+                                <option value="full-level">Full Level Modules (4 Units + Level Exam)</option>
+                                <option value="exam-only">Milestone Certification Exam Only (20 Reactivos · 75% Pass)</option>
+                                <option value="unit-1" selected>Unit 1 of Level (Initial Diagnostic Immersion)</option>
+                                <option value="unit-4">Capstone Unit of Level</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="assign-mcer-scope">Assignment Scope / Milestone</label>
-                        <select id="assign-mcer-scope" class="form-select" required>
-                            <option value="full-level">Full Level Modules (4 Units + Level Exam)</option>
-                            <option value="exam-only">Milestone Certification Exam Only (20 Reactivos · 75% Pass)</option>
-                            <option value="unit-1">Unit 1 of Level (Initial Diagnostic Immersion)</option>
-                            <option value="unit-4">Capstone Unit of Level</option>
+                        <label class="form-label" for="assign-mcer-time-limit">
+                            <i class="fa-solid fa-stopwatch" style="color:var(--teal-400); margin-right:4px;"></i>
+                            Límite de Tiempo para Resolución (Time Limit)
+                        </label>
+                        <select id="assign-mcer-time-limit" class="form-select" required>
+                            <option value="20">20 minutos (Sprint técnico rápido)</option>
+                            <option value="30">30 minutos (Laboratorio interactivo estándar)</option>
+                            <option value="45" selected>45 minutos (Evaluación diagnóstica / Examen técnico)</option>
+                            <option value="60">60 minutos (1 Hora — Módulo completo o simulador)</option>
+                            <option value="90">90 minutos (1.5 Horas — Incident War Room)</option>
+                            <option value="120">120 minutos (2 Horas — Evaluación Sumativa CACEI)</option>
+                            <option value="0">Sin límite de tiempo (Resolución libre hasta la fecha límite)</option>
                         </select>
+                        <span style="font-size:0.72rem; color:var(--fg-dim); margin-top:3px; display:block;">El cronómetro iniciará automáticamente para cada estudiante en su terminal una vez que comience la resolución.</span>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:12px;">
+                        <div class="form-group">
+                            <label class="form-label" for="assign-mcer-deadline">Completion Due Date (Fecha)</label>
+                            <input type="date" id="assign-mcer-deadline" class="form-input" style="padding-left:14px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="assign-mcer-time">Due Time (Hora Límite)</label>
+                            <input type="time" id="assign-mcer-time" class="form-input" value="23:59" style="padding-left:14px;" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="assign-mcer-timezone">
+                            <i class="fa-solid fa-earth-americas" style="color:var(--sky-400); margin-right:4px;"></i>
+                            Zona Horaria de la Tarea (Only Americas Times: México, USA, LATAM)
+                        </label>
+                        <select id="assign-mcer-timezone" class="form-select" required>
+                            <optgroup label="🇲🇽 México">
+                                <option value="America/Mexico_City" selected>America/Mexico_City (Centro: CDMX, Guadalajara, Monterrey, Saltillo · UTC-6)</option>
+                                <option value="America/Tijuana">America/Tijuana (Noroeste / Pacífico: Tijuana, Mexicali, Ensenada · UTC-8 / PDT)</option>
+                                <option value="America/Ciudad_Juarez">America/Ciudad_Juarez (Frontera: Cd. Juárez, Chihuahua · UTC-6 / UTC-7)</option>
+                                <option value="America/Hermosillo">America/Hermosillo (Sonora: Hermosillo, Nogales · UTC-7 estándar)</option>
+                                <option value="America/Mazatlan">America/Mazatlan (Pacífico: Sinaloa, BCS, Nayarit · UTC-7)</option>
+                                <option value="America/Cancun">America/Cancun (Sureste: Quintana Roo · UTC-5)</option>
+                            </optgroup>
+                            <optgroup label="🇺🇸 United States (USA)">
+                                <option value="America/New_York">America/New_York (Eastern: NYC, Miami, Boston, Atlanta · UTC-5 / UTC-4)</option>
+                                <option value="America/Chicago">America/Chicago (Central: Chicago, Dallas, Houston, Austin · UTC-6 / UTC-5)</option>
+                                <option value="America/Denver">America/Denver (Mountain: Denver, Phoenix, Salt Lake · UTC-7 / UTC-6)</option>
+                                <option value="America/Los_Angeles">America/Los_Angeles (Pacific: Los Angeles, San Francisco, Seattle · UTC-8 / UTC-7)</option>
+                            </optgroup>
+                            <optgroup label="🌎 América Latina (LATAM)">
+                                <option value="America/Bogota">America/Bogota (Colombia: Bogotá, Medellín, Cali · UTC-5)</option>
+                                <option value="America/Lima">America/Lima (Perú: Lima, Arequipa · UTC-5)</option>
+                                <option value="America/Santiago">America/Santiago (Chile: Santiago, Valparaíso · UTC-4 / UTC-3)</option>
+                                <option value="America/Buenos_Aires">America/Buenos_Aires (Argentina: Buenos Aires, Córdoba · UTC-3)</option>
+                                <option value="America/Sao_Paulo">America/Sao_Paulo (Brasil: São Paulo, Rio de Janeiro · UTC-3)</option>
+                                <option value="America/Caracas">America/Caracas (Venezuela: Caracas · UTC-4)</option>
+                                <option value="America/Guatemala">America/Guatemala (Centroamérica: Guatemala, Costa Rica, El Salvador · UTC-6)</option>
+                                <option value="America/Panama">America/Panama (Panamá · UTC-5)</option>
+                                <option value="America/Santo_Domingo">America/Santo_Domingo (República Dominicana · UTC-4)</option>
+                            </optgroup>
+                        </select>
+                        <span style="font-size:0.72rem; color:var(--fg-dim); margin-top:3px; display:block;">La fecha y hora límite se calculan y sincronizan exactamente bajo este huso horario oficial.</span>
                     </div>
 
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
@@ -2051,12 +2199,21 @@
                                 <option value="70">70% (Standard Institutional Pass)</option>
                                 <option value="75" selected>75% (CACEI / DGUTyP Required)</option>
                                 <option value="80">80% (Nearshoring Industry Benchmark)</option>
+                                <option value="85">85% (Advanced Technical Mastery)</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="assign-mcer-deadline">Completion Due Date</label>
-                            <input type="date" id="assign-mcer-deadline" class="form-input" style="padding-left:14px;" required>
+                            <label class="form-label" for="assign-mcer-notify">Broadcast Notification</label>
+                            <select id="assign-mcer-notify" class="form-select">
+                                <option value="all" selected>All Student Terminals (Instant Push)</option>
+                                <option value="silent">Curricular Unlock Only (No sound)</option>
+                            </select>
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="assign-mcer-instructions">Instrucciones del Docente</label>
+                        <textarea id="assign-mcer-instructions" class="form-input" rows="2" style="resize:vertical;" placeholder="Instrucciones sobre criterios de entrega, rúbrica o materiales de consulta..."></textarea>
                     </div>
 
                     <div style="background:rgba(2,132,199,0.08); border:1px solid rgba(2,132,199,0.25); border-radius:10px; padding:12px; margin-top:4px;">
@@ -2064,7 +2221,7 @@
                             <i class="fa-solid fa-circle-info"></i> LXP Synchronization Notice
                         </div>
                         <div style="font-size:0.73rem; color:var(--fg-muted); margin-top:2px;">
-                            This assignment will immediately broadcast to all enrolled student terminals and unlock the corresponding units in their stemOS study track.
+                            This assignment will immediately broadcast to all enrolled student terminals and unlock the corresponding units in their stemOS study track with the configured time limit.
                         </div>
                     </div>
                 </div>
@@ -2532,6 +2689,9 @@
 
             // Render Leaderboard (Fase 54.1)
             renderClassLeaderboard();
+
+            // Render Cohort Assigned Tasks & Timers (Fase 66)
+            renderClassAssignments();
 
             // Render program according to active view
             if (state.classProgramView === 'mcer') {
@@ -3016,44 +3176,387 @@
             renderMcerGradebook();
         }
 
+        /* ══════════════════════════════════════════════════════════════
+           COHORT TASKS, TIME LIMITS & AMERICAS TIMEZONES (FASE 66)
+           ══════════════════════════════════════════════════════════════ */
+        function getCohortAssignments(classId) {
+            const key = `stemos_class_assignments_${classId}`;
+            try {
+                const stored = localStorage.getItem(key);
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch(e) {}
+
+            // Seed realistic demo assignments for this cohort
+            const seed = [
+                {
+                    id: 'asg-101',
+                    classId: classId,
+                    title: 'Unit 07: LOTO Zero-Energy Isolation & Shift Handover Memo',
+                    level: 'B1',
+                    scope: 'unit-1',
+                    timeLimitMinutes: 45,
+                    deadline: '2026-10-25',
+                    dueTime: '23:59',
+                    timezone: 'America/Mexico_City',
+                    threshold: 75,
+                    instructions: 'Completar la lectura técnica de aislamiento LOTO, redactar el memo de entrega de turno bajo norma OSHA 1910.147 y responder las preguntas de contingencia eléctrica.',
+                    assignedAt: new Date(Date.now() - 36*3600*1000).toISOString(),
+                    submissions: {
+                        's1': { status: 'completed', score: 88, xp: 450, timeSpentMinutes: 32, submittedAt: new Date(Date.now() - 14*3600*1000).toISOString() },
+                        's2': { status: 'completed', score: 94, xp: 520, timeSpentMinutes: 28, submittedAt: new Date(Date.now() - 18*3600*1000).toISOString() },
+                        's3': { status: 'completed', score: 98, xp: 600, timeSpentMinutes: 21, submittedAt: new Date(Date.now() - 24*3600*1000).toISOString() },
+                        's4': { status: 'in_progress', startedAt: new Date(Date.now() - 18*60000).toISOString(), timeSpentMinutes: 18 },
+                        's5': { status: 'pending' },
+                        's6': { status: 'pending' },
+                        's7': { status: 'completed', score: 91, xp: 480, timeSpentMinutes: 39, submittedAt: new Date(Date.now() - 6*3600*1000).toISOString() },
+                        's8': { status: 'pending' }
+                    }
+                },
+                {
+                    id: 'asg-102',
+                    classId: classId,
+                    title: 'MCER B1 Threshold Milestone Exam — Midterm Diagnostic',
+                    level: 'B1',
+                    scope: 'exam-only',
+                    timeLimitMinutes: 60,
+                    deadline: '2026-10-28',
+                    dueTime: '18:00',
+                    timezone: 'America/Tijuana',
+                    threshold: 75,
+                    instructions: 'Examen diagnóstico oficial MCER B1 de 20 reactivos contextualizados en manufactura avanzada. 60 minutos cronometrados una vez iniciado.',
+                    assignedAt: new Date(Date.now() - 12*3600*1000).toISOString(),
+                    submissions: {
+                        's1': { status: 'pending' },
+                        's2': { status: 'completed', score: 85, xp: 400, timeSpentMinutes: 48, submittedAt: new Date(Date.now() - 5*3600*1000).toISOString() },
+                        's3': { status: 'completed', score: 96, xp: 550, timeSpentMinutes: 39, submittedAt: new Date(Date.now() - 8*3600*1000).toISOString() },
+                        's7': { status: 'completed', score: 90, xp: 460, timeSpentMinutes: 52, submittedAt: new Date(Date.now() - 3*3600*1000).toISOString() }
+                    }
+                }
+            ];
+            saveCohortAssignments(classId, seed);
+            return seed;
+        }
+
+        function saveCohortAssignments(classId, list) {
+            try {
+                localStorage.setItem(`stemos_class_assignments_${classId}`, JSON.stringify(list));
+            } catch(e) {}
+        }
+
+        function openAssignTaskModal() {
+            openAssignMcerModal();
+        }
+
         function openAssignMcerModal() {
             const dateInput = document.getElementById('assign-mcer-deadline');
             if (dateInput) {
                 const d = new Date();
-                d.setDate(d.getDate() + 14);
+                d.setDate(d.getDate() + 7);
                 dateInput.value = d.toISOString().split('T')[0];
             }
-            document.getElementById('modal-assign-mcer').classList.add('is-active');
+            const modal = document.getElementById('modal-assign-mcer');
+            if (modal) modal.classList.add('is-active');
         }
 
         function updateMcerAssignmentUnits() {
-            // Dynamic label update hook
+            const level = document.getElementById('assign-mcer-level').value;
+            const titleInput = document.getElementById('assign-mcer-title');
+            if (titleInput && (!titleInput.value || titleInput.value.startsWith('Unit') || titleInput.value.startsWith('Level'))) {
+                titleInput.value = `Level ${level} Technical English Milestone Unit & Timed Evaluation`;
+            }
+        }
+
+        function formatAmericasTimezoneDate(dateStr, timeStr, tz) {
+            try {
+                const dt = new Date(`${dateStr}T${timeStr || '23:59'}:00`);
+                return new Intl.DateTimeFormat('es-MX', {
+                    timeZone: tz || 'America/Mexico_City',
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    timeZoneName: 'short'
+                }).format(dt);
+            } catch(err) {
+                return `${dateStr} ${timeStr || '23:59'} (${tz})`;
+            }
+        }
+
+        function formatTimestampInTz(isoStr, tz) {
+            try {
+                const dt = new Date(isoStr);
+                return new Intl.DateTimeFormat('es-MX', {
+                    timeZone: tz || 'America/Mexico_City',
+                    day: 'numeric',
+                    month: 'short',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }).format(dt);
+            } catch(err) {
+                return isoStr;
+            }
+        }
+
+        function renderClassAssignments() {
+            const container = document.getElementById('cohort-assignments-container');
+            if (!container) return;
+
+            const assignments = getCohortAssignments(state.activeClassId);
+            const roster = INITIAL_STUDENT_ROSTERS[state.activeClassId] || INITIAL_STUDENT_ROSTERS.c1 || [];
+            const totalRoster = roster.length || 1;
+
+            const tzBadge = document.getElementById('tasks-active-tz-badge');
+            if (tzBadge && assignments.length > 0) {
+                tzBadge.innerHTML = `<i class="fa-solid fa-earth-americas"></i> ${assignments[0].timezone}`;
+            }
+
+            if (assignments.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:32px; background:rgba(15,23,42,0.4); border:1px dashed rgba(255,255,255,0.1); border-radius:12px;">
+                        <i class="fa-solid fa-list-check" style="font-size:2rem; color:var(--fg-dim); margin-bottom:8px; display:block;"></i>
+                        <h4 style="color:#fff; font-size:1rem; margin-bottom:4px;">No hay tareas asignadas para esta cohorte</h4>
+                        <p style="font-size:0.8rem; color:var(--fg-muted); margin-bottom:14px;">Asigna una tarea con límite de tiempo y huso horario para que los alumnos comiencen a resolverla en sus terminales.</p>
+                        <button type="button" class="btn btn-teal btn-sm" onclick="openAssignTaskModal()">
+                            <i class="fa-solid fa-plus"></i> Asignar Primera Tarea
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = assignments.map(asg => {
+                const submissions = asg.submissions || {};
+                let completedCount = 0;
+                let inProgressCount = 0;
+
+                roster.forEach(st => {
+                    const sub = submissions[st.id];
+                    if (sub && sub.status === 'completed') completedCount++;
+                    else if (sub && sub.status === 'in_progress') inProgressCount++;
+                });
+
+                const pendingCount = Math.max(0, totalRoster - completedCount - inProgressCount);
+                const completedPct = Math.round((completedCount / totalRoster) * 100);
+                const inProgressPct = Math.round((inProgressCount / totalRoster) * 100);
+
+                const formattedDue = formatAmericasTimezoneDate(asg.deadline, asg.dueTime, asg.timezone);
+                const timeLimitPill = asg.timeLimitMinutes > 0
+                    ? `<span class="badge badge-amber"><i class="fa-solid fa-stopwatch"></i> Límite: ${asg.timeLimitMinutes} min para resolver</span>`
+                    : `<span class="badge badge-teal"><i class="fa-solid fa-infinity"></i> Sin límite de tiempo</span>`;
+
+                return `
+                    <div class="asg-item-card" id="asg-card-${asg.id}">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+                            <div>
+                                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:4px;">
+                                    <span class="badge badge-teal">${asg.level || 'B1'}</span>
+                                    ${timeLimitPill}
+                                    <span class="badge badge-sky" title="Huso Horario de Entrega">
+                                        <i class="fa-solid fa-earth-americas"></i> ${asg.timezone}
+                                    </span>
+                                    <span style="font-size:0.75rem; color:var(--emerald-400); font-family:var(--font-mono); font-weight:700;">
+                                        Mínimo ${asg.threshold || 75}% para aprobar
+                                    </span>
+                                </div>
+                                <h4 style="font-size:1.05rem; font-weight:800; color:#ffffff; margin:0 0 4px 0;">
+                                    ${asg.title}
+                                </h4>
+                                <div style="font-size:0.78rem; color:var(--fg-muted);">
+                                    <i class="fa-solid fa-calendar-check" style="color:var(--sky-400); margin-right:4px;"></i>
+                                    Fecha Límite: <strong style="color:#ffffff;">${formattedDue}</strong>
+                                    ${asg.instructions ? ` &bull; <span style="color:#cbd5e1;">"${asg.instructions}"</span>` : ''}
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="toggleAssignmentStudentDetail('${asg.id}')">
+                                    <i class="fa-solid fa-users-viewfinder"></i> Ver Avance de Alumnos (${completedCount}/${totalRoster})
+                                </button>
+                                <button type="button" class="btn btn-outline-teal btn-sm" onclick="broadcastAssignmentReminder('${asg.id}')" title="Enviar recordatorio a alumnos pendientes">
+                                    <i class="fa-solid fa-bullhorn"></i> Recordatorio (${pendingCount})
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="extendAssignmentTime('${asg.id}')" title="Extender 15 minutos al límite de tiempo">
+                                    <i class="fa-solid fa-clock-rotate-left"></i> +15 min
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Multi-color Progress Gauge -->
+                        <div class="asg-progress-track">
+                            <div class="asg-bar-done" style="width:${completedPct}%;" title="Entregadas: ${completedPct}%"></div>
+                            <div class="asg-bar-prog" style="width:${inProgressPct}%;" title="En resolución: ${inProgressPct}%"></div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:var(--fg-muted); font-family:var(--font-mono);">
+                            <div>
+                                <span style="color:var(--emerald-400); font-weight:700;">✓ ${completedCount} Entregadas (${completedPct}%)</span> &bull; 
+                                <span style="color:var(--amber-400); font-weight:700;"><span class="asg-live-pulse"></span>${inProgressCount} En resolución</span> &bull; 
+                                <span style="color:var(--fg-dim);">${pendingCount} Pendientes</span>
+                            </div>
+                            <div>
+                                Cohorte: <strong>${totalRoster} Alumnos</strong>
+                            </div>
+                        </div>
+
+                        <!-- Expandable Submissions Table -->
+                        <div id="asg-table-${asg.id}" style="display:none; margin-top:16px; border-top:1px solid rgba(255,255,255,0.08); padding-top:14px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                <span style="font-size:0.8rem; font-weight:700; color:#fff;">Detalle Individual de Entregas y Tiempos de Resolución:</span>
+                                <span style="font-size:0.72rem; color:var(--fg-dim); font-family:var(--font-mono);">Hora convertida en ${asg.timezone}</span>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table" style="font-size:0.8rem;">
+                                    <thead>
+                                        <tr>
+                                            <th>Estudiante</th>
+                                            <th>Matrícula</th>
+                                            <th>Estado de Entrega</th>
+                                            <th>Calificación</th>
+                                            <th>Tiempo Empleado</th>
+                                            <th>Fecha/Hora Entrega</th>
+                                            <th>Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${roster.map(st => {
+                                            const sub = submissions[st.id] || { status: 'pending' };
+                                            let statusPill = '';
+                                            let scoreText = '—';
+                                            let timeSpentText = '—';
+                                            let submittedText = 'Pendiente';
+
+                                            if (sub.status === 'completed') {
+                                                const passed = (sub.score || 0) >= (asg.threshold || 75);
+                                                statusPill = `<span class="badge ${passed ? 'badge-emerald' : 'badge-amber'}">✓ Entregada a Tiempo</span>`;
+                                                scoreText = `<strong style="color:${passed ? 'var(--emerald-400)' : 'var(--amber-400)'};">${sub.score}%</strong> (${sub.xp || 300} XP)`;
+                                                timeSpentText = `<span style="font-family:var(--font-mono);">${sub.timeSpentMinutes || 30} min</span> / ${asg.timeLimitMinutes || 45} min`;
+                                                submittedText = sub.submittedAt ? formatTimestampInTz(sub.submittedAt, asg.timezone) : 'Hoy';
+                                            } else if (sub.status === 'in_progress') {
+                                                statusPill = `<span class="badge badge-amber"><span class="asg-live-pulse"></span>En Resolución</span>`;
+                                                scoreText = '<span style="color:var(--amber-400);">Resolviendo...</span>';
+                                                timeSpentText = `<span style="font-family:var(--font-mono); color:var(--amber-400);">${sub.timeSpentMinutes || 15} min transcurridos</span>`;
+                                                submittedText = 'En curso';
+                                            } else {
+                                                statusPill = `<span class="badge badge-secondary" style="background:rgba(255,255,255,0.06); color:var(--fg-dim);">Pendiente</span>`;
+                                            }
+
+                                            return `
+                                                <tr>
+                                                    <td>
+                                                        <div style="font-weight:700; color:#fff;">${st.name}</div>
+                                                        <div style="font-size:0.72rem; color:var(--fg-dim);">${st.currentModule || 'Inglés B1'}</div>
+                                                    </td>
+                                                    <td style="font-family:var(--font-mono);">${st.matricula}</td>
+                                                    <td>${statusPill}</td>
+                                                    <td>${scoreText}</td>
+                                                    <td>${timeSpentText}</td>
+                                                    <td style="font-family:var(--font-mono); font-size:0.75rem;">${submittedText}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-secondary btn-sm" style="padding:4px 8px; font-size:0.72rem;" onclick="extendStudentTime('${asg.id}', '${st.id}', '${st.name}')">
+                                                            +15m
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleAssignmentStudentDetail(asgId) {
+            const tableElem = document.getElementById(`asg-table-${asgId}`);
+            if (tableElem) {
+                const isHidden = tableElem.style.display === 'none';
+                tableElem.style.display = isHidden ? 'block' : 'none';
+            }
+        }
+
+        function extendAssignmentTime(asgId) {
+            const assignments = getCohortAssignments(state.activeClassId);
+            const asg = assignments.find(a => a.id === asgId);
+            if (asg) {
+                asg.timeLimitMinutes = (asg.timeLimitMinutes || 45) + 15;
+                saveCohortAssignments(state.activeClassId, assignments);
+                renderClassAssignments();
+                alert(`✓ Límite de tiempo extendido a ${asg.timeLimitMinutes} minutos para la tarea: "${asg.title}".`);
+            }
+        }
+
+        function extendStudentTime(asgId, studentId, studentName) {
+            alert(`✓ Se han otorgado +15 minutos adicionales a ${studentName} para la resolución de la tarea.`);
+        }
+
+        function broadcastAssignmentReminder(asgId) {
+            const assignments = getCohortAssignments(state.activeClassId);
+            const asg = assignments.find(a => a.id === asgId);
+            if (asg) {
+                const roster = INITIAL_STUDENT_ROSTERS[state.activeClassId] || INITIAL_STUDENT_ROSTERS.c1 || [];
+                const submissions = asg.submissions || {};
+                const pendingCount = roster.filter(st => !submissions[st.id] || submissions[st.id].status === 'pending').length;
+                alert(`✓ Recordatorio enviado con éxito a los ${pendingCount} alumnos pendientes.\n• Tarea: ${asg.title}\n• Límite: ${asg.timeLimitMinutes} minutos\n• Vence: ${asg.deadline} ${asg.dueTime} (${asg.timezone})`);
+            }
         }
 
         function submitMcerAssignment(e) {
-            e.preventDefault();
-            const level = document.getElementById('assign-mcer-level').value;
-            const scope = document.getElementById('assign-mcer-scope').value;
-            const threshold = document.getElementById('assign-mcer-threshold').value;
-            const deadline = document.getElementById('assign-mcer-deadline').value;
+            if (e && e.preventDefault) e.preventDefault();
+            const title = document.getElementById('assign-mcer-title') ? document.getElementById('assign-mcer-title').value.trim() : 'Cohort Engineering Assignment';
+            const level = document.getElementById('assign-mcer-level') ? document.getElementById('assign-mcer-level').value : 'B1';
+            const scope = document.getElementById('assign-mcer-scope') ? document.getElementById('assign-mcer-scope').value : 'full-level';
+            const threshold = document.getElementById('assign-mcer-threshold') ? document.getElementById('assign-mcer-threshold').value : '75';
+            const deadline = document.getElementById('assign-mcer-deadline') ? document.getElementById('assign-mcer-deadline').value : '';
+            const dueTime = document.getElementById('assign-mcer-time') ? document.getElementById('assign-mcer-time').value : '23:59';
+            const timeLimit = document.getElementById('assign-mcer-time-limit') ? Number(document.getElementById('assign-mcer-time-limit').value) : 45;
+            const timezone = document.getElementById('assign-mcer-timezone') ? document.getElementById('assign-mcer-timezone').value : 'America/Mexico_City';
+            const instructions = document.getElementById('assign-mcer-instructions') ? document.getElementById('assign-mcer-instructions').value.trim() : '';
 
-            const assignment = {
+            const newAssignment = {
+                id: 'asg-' + Date.now(),
                 classId: state.activeClassId,
+                title: title || `Assignment ${level} - ${scope}`,
                 level,
                 scope,
                 threshold: Number(threshold),
                 deadline,
-                assignedAt: new Date().toISOString()
+                dueTime,
+                timeLimitMinutes: timeLimit,
+                timezone,
+                instructions,
+                assignedAt: new Date().toISOString(),
+                submissions: {}
             };
 
+            const roster = INITIAL_STUDENT_ROSTERS[state.activeClassId] || INITIAL_STUDENT_ROSTERS.c1 || [];
+            roster.forEach((st, idx) => {
+                if (idx === 0) {
+                    newAssignment.submissions[st.id] = { status: 'in_progress', startedAt: new Date(Date.now() - 10*60000).toISOString(), timeSpentMinutes: 10 };
+                } else if (idx === 1) {
+                    newAssignment.submissions[st.id] = { status: 'completed', score: 92, xp: 480, timeSpentMinutes: 26, submittedAt: new Date().toISOString() };
+                } else {
+                    newAssignment.submissions[st.id] = { status: 'pending' };
+                }
+            });
+
+            const list = getCohortAssignments(state.activeClassId);
+            list.unshift(newAssignment);
+            saveCohortAssignments(state.activeClassId, list);
+
             try {
-                localStorage.setItem(`stemos_class_mcer_assignment_${state.activeClassId}`, JSON.stringify(assignment));
+                localStorage.setItem(`stemos_class_mcer_assignment_${state.activeClassId}`, JSON.stringify(newAssignment));
+                localStorage.setItem('stemos_active_student_assignment', JSON.stringify(newAssignment));
             } catch(err) {
-                console.warn('LocalStorage assignment save failed:', err);
+                console.warn('LocalStorage save warning:', err);
             }
 
-            alert(`✓ Asignación MCER registrada con éxito para la cohorte (${level} · ${scope} · Mínimo ${threshold}% · Vence ${deadline}). Sincronizada con los 32 terminales de estudiantes.`);
+            renderClassAssignments();
             closeModal('modal-assign-mcer');
+            alert(`✓ Tarea asignada exitosamente para la cohorte:\n• Título: ${newAssignment.title}\n• Límite para resolver: ${timeLimit > 0 ? timeLimit + ' minutos' : 'Sin límite'}\n• Fecha límite: ${deadline} a las ${dueTime}\n• Zona horaria oficial: ${timezone}\n• Notificación sincronizada con los ${roster.length} terminales de estudiantes.`);
         }
 
         function openMcerCaceiActaModal() {

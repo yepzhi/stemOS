@@ -6430,9 +6430,586 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     initThemeSynchronizer();
 
+    /* --- 10. STUDENT COHORT ASSIGNMENT ENGINE (FASE 68) --- */
+    let assignmentTimerInterval = null;
+    let assignmentSecondsRemaining = 0;
+    let assignmentTimeLimitTotal = 0;
+
+    function getActiveStudentAssignment() {
+        try {
+            const raw = localStorage.getItem('stemos_active_student_assignment');
+            if (raw) return JSON.parse(raw);
+        } catch(e) {}
+
+        const defaultAssignment = {
+            id: 'asg-live-101',
+            classId: 'c1',
+            title: 'Technical Incident Report & PLC Diagnostics Briefing',
+            level: 'B1',
+            scope: 'Full Level Challenge',
+            threshold: 75,
+            deadline: '2026-10-25',
+            dueTime: '23:59',
+            timeLimitMinutes: 45,
+            timezone: 'America/Mexico_City',
+            instructions: 'Comprehend the industrial PLC fault log, formulate the root-cause analysis in technical B1 English, and verify safety interlock protocols.',
+            assignedAt: new Date(Date.now() - 3600000 * 4).toISOString(),
+            submissions: {}
+        };
+        try {
+            localStorage.setItem('stemos_active_student_assignment', JSON.stringify(defaultAssignment));
+        } catch(e) {}
+        return defaultAssignment;
+    }
+
+    function formatAmericasTzDate(dateStr, timeStr, tz) {
+        try {
+            const iso = `${dateStr}T${timeStr || '23:59'}:00`;
+            const d = new Date(iso);
+            return new Intl.DateTimeFormat('es-MX', {
+                timeZone: tz || 'America/Mexico_City',
+                weekday: 'short',
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZoneName: 'short'
+            }).format(d);
+        } catch(e) {
+            return `${dateStr} ${timeStr || '23:59'} (${tz || 'America/Mexico_City'})`;
+        }
+    }
+
+    function getStudentSubmissionRecord(asg) {
+        if (!asg || !asg.submissions) return null;
+        let profile = null;
+        try {
+            const raw = localStorage.getItem('stemos_user_profile');
+            if (raw) profile = JSON.parse(raw);
+        } catch(e) {}
+
+        const studentId = (profile && profile.studentId) || 'st-3';
+        const matricula = (profile && profile.matricula) || '20260403';
+        return asg.submissions[studentId] || asg.submissions[matricula] || null;
+    }
+
+    function initStudentAssignmentHUD() {
+        const mount = document.getElementById('stemos-student-assignment-mount');
+        if (!mount) return;
+
+        const asg = getActiveStudentAssignment();
+        if (!asg) {
+            mount.style.display = 'none';
+            return;
+        }
+
+        const sub = getStudentSubmissionRecord(asg) || { status: 'pending' };
+        const timeLimitText = asg.timeLimitMinutes > 0
+            ? `<span class="badge badge-amber" style="background:rgba(245,158,11,0.18); color:#f59e0b; border:1px solid rgba(245,158,11,0.35); padding:3px 9px; border-radius:999px; font-weight:700; font-size:0.75rem;"><i class="fa-solid fa-stopwatch"></i> ${asg.timeLimitMinutes} min para resolver</span>`
+            : `<span class="badge badge-teal" style="background:rgba(14,165,233,0.18); color:#38bdf8; border:1px solid rgba(14,165,233,0.35); padding:3px 9px; border-radius:999px; font-weight:700; font-size:0.75rem;"><i class="fa-solid fa-infinity"></i> Sin límite de tiempo</span>`;
+
+        const formattedDue = formatAmericasTzDate(asg.deadline, asg.dueTime, asg.timezone);
+
+        let actionAreaHtml = '';
+        if (sub.status === 'completed') {
+            const passed = (sub.score || 0) >= (asg.threshold || 75);
+            actionAreaHtml = `
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                    <div style="background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); padding:6px 14px; border-radius:10px;">
+                        <span style="font-size:0.75rem; color:#10b981; font-weight:700; display:block;">
+                            <i class="fa-solid fa-circle-check"></i> ${passed ? '✓ Tarea Entregada y Aprobada' : 'Tarea Entregada'}
+                        </span>
+                        <div style="font-size:0.85rem; font-weight:800; color:#ffffff;">
+                            Calificación: <span style="color:#34d399;">${sub.score}%</span> &bull; ${sub.timeSpentMinutes || 25} min empleados
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="reviewStudentAssignmentResults()" style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.2); padding:8px 16px; border-radius:8px; font-weight:700; cursor:pointer;">
+                        <i class="fa-solid fa-eye"></i> Revisar Entrega
+                    </button>
+                </div>
+            `;
+        } else if (sub.status === 'in_progress') {
+            actionAreaHtml = `
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                    <div class="asg-timer-pulse-badge" id="hud-timer-badge">
+                        <i class="fa-solid fa-hourglass-half"></i> <span id="hud-timer-countdown">Resolviendo...</span>
+                    </div>
+                    <button type="button" class="btn btn-teal btn-sm" onclick="openStudentAssignmentRunner()" style="background:#0ea5e9; color:#fff; border:none; padding:8px 18px; border-radius:8px; font-weight:800; cursor:pointer; box-shadow:0 0 15px rgba(14,165,233,0.4);">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Continuar Resolución
+                    </button>
+                </div>
+            `;
+        } else {
+            actionAreaHtml = `
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                    <button type="button" class="btn btn-teal btn-sm" onclick="openStudentAssignmentRunner()" style="background:linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color:#fff; border:none; padding:10px 20px; border-radius:10px; font-weight:800; cursor:pointer; box-shadow:0 4px 15px rgba(14,165,233,0.35); display:inline-flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-stopwatch"></i> Iniciar Resolución (${asg.timeLimitMinutes > 0 ? asg.timeLimitMinutes + 'm' : 'Sin Límite'})
+                    </button>
+                </div>
+            `;
+        }
+
+        mount.innerHTML = `
+            <div class="stemos-asg-banner-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px;">
+                    <div style="flex:1; min-width:280px;">
+                        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px;">
+                            <span style="font-size:0.7rem; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; color:#38bdf8; background:rgba(14,165,233,0.12); padding:2px 8px; border-radius:6px; border:1px solid rgba(14,165,233,0.3);">
+                                <i class="fa-solid fa-chalkboard-user"></i> Tarea Asignada por tu Profesor
+                            </span>
+                            <span style="font-size:0.75rem; font-weight:700; color:#f8fafc; background:rgba(255,255,255,0.08); padding:2px 8px; border-radius:6px;">
+                                ${asg.level || 'B1'}
+                            </span>
+                            ${timeLimitText}
+                            <span style="font-size:0.75rem; font-weight:700; color:#7dd3fc; background:rgba(14,165,233,0.1); border:1px solid rgba(14,165,233,0.25); padding:2px 8px; border-radius:6px;" title="Zona Horaria Oficial: Solo América (México, USA, LATAM)">
+                                <i class="fa-solid fa-earth-americas"></i> ${asg.timezone || 'America/Mexico_City'}
+                            </span>
+                        </div>
+                        <h3 style="font-size:1.15rem; font-weight:800; color:#ffffff; margin:0 0 6px 0;">
+                            ${asg.title}
+                        </h3>
+                        <p style="font-size:0.82rem; color:#94a3b8; margin:0 0 8px 0; line-height:1.4;">
+                            ${asg.instructions || 'Resuelve los retos técnicos industriales en el tiempo asignado bajo estándares CACEI / MCER B1.'}
+                        </p>
+                        <div style="font-size:0.76rem; color:#cbd5e1; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                            <span>
+                                <i class="fa-solid fa-calendar-check" style="color:#38bdf8; margin-right:4px;"></i>
+                                Fecha Límite Oficial: <strong style="color:#ffffff;">${formattedDue}</strong>
+                            </span>
+                            <span>&bull;</span>
+                            <span style="color:#34d399; font-weight:700;">
+                                Calificación mínima aprobatoria: ${asg.threshold || 75}%
+                            </span>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center;">
+                        ${actionAreaHtml}
+                    </div>
+                </div>
+            </div>
+        `;
+        mount.style.display = 'block';
+    }
+
+    const ASG_QUESTIONS = [
+        {
+            id: 'q1',
+            title: 'PLC Fault Diagnostics & Emergency Protocol',
+            scenario: 'During high-speed assembly, Sensor S-04 triggered an unexpected interrupt code E-208 on Line 3. The SCADA telemetry indicates intermittent voltage drop before the safety interlock tripped.',
+            prompt: 'Which immediate action is required by the manufacturing engineer according to ISO/B1 maintenance standard?',
+            options: [
+                'Override the safety interlock relay and immediately resume full-speed production.',
+                'Isolate the electrical power bus, execute Lockout/Tagout (LOTO), and measure line impedance with a calibrated multimeter.',
+                'Ignore the telemetry log because intermittent drops reset automatically after 60 seconds.',
+                'Replace the entire PLC backplane without reading the error register history.'
+            ],
+            correct: 1
+        },
+        {
+            id: 'q2',
+            title: 'Precision Calibration & Nearshoring Metric Tolerances',
+            scenario: 'The automotive client in Detroit requested a tolerance verification report for the CNC-machined transmission shafts (+/- 0.015 mm).',
+            prompt: 'Select the most professional technical statement to include in the engineering sign-off memorandum:',
+            options: [
+                'The shafts are probably okay since we calibrated the lathe a couple of weeks ago.',
+                'Dimensions comply with drawing spec within 0.012 mm variance; full CMM laser inspection certificates are attached for batch release.',
+                'We didn’t measure all parts because the calipers were misplaced in the inspection crib.',
+                'Dimensional tolerances are irrelevant as long as the shafts fit into the housing assembly.'
+            ],
+            correct: 1
+        },
+        {
+            id: 'q3',
+            title: 'Cross-Functional Engineering Handoff (B1 Technical)',
+            scenario: 'The night-shift quality supervisor must communicate a pending calibration task to the oncoming morning engineering crew.',
+            prompt: 'Choose the appropriate technical collocation to complete: "We have ______ the thermal sensors and ______ the baseline calibration matrix for shift handover."',
+            options: [
+                'zeroed / logged',
+                'destroyed / hidden',
+                'painted / forgotten',
+                'guessed / guessed'
+            ],
+            correct: 0
+        },
+        {
+            id: 'q4',
+            title: 'Root Cause & Failure Mode Analysis (FMEA)',
+            scenario: 'A robotic weld cell displayed excessive spatter and incomplete penetration on mild steel sub-assemblies.',
+            prompt: 'What root cause should the welding automation specialist investigate first?',
+            options: [
+                'Shielding gas flow rate, wire feed velocity, and shielding gas nozzle oxidation.',
+                'The ambient office temperature in the human resources department.',
+                'The color of the robot arm safety paint.',
+                'Switching from argon mix to pure oxygen without adjusting arc parameters.'
+            ],
+            correct: 0
+        }
+    ];
+
+    let userAssignmentAnswers = {};
+
+    function openStudentAssignmentRunner() {
+        const asg = getActiveStudentAssignment();
+        if (!asg) return;
+
+        let profile = null;
+        try {
+            const raw = localStorage.getItem('stemos_user_profile');
+            if (raw) profile = JSON.parse(raw);
+        } catch(e) {}
+        const studentId = (profile && profile.studentId) || 'st-3';
+        const studentName = (profile && (profile.fullName || profile.name)) || 'Diego Ramírez';
+
+        asg.submissions = asg.submissions || {};
+        if (!asg.submissions[studentId] || asg.submissions[studentId].status === 'pending') {
+            asg.submissions[studentId] = {
+                status: 'in_progress',
+                startedAt: new Date().toISOString(),
+                timeSpentMinutes: 0
+            };
+            saveActiveAssignmentSync(asg);
+        }
+
+        const sub = asg.submissions[studentId];
+        userAssignmentAnswers = sub.answers || {};
+
+        const timeLimitMinutes = asg.timeLimitMinutes || 45;
+        if (timeLimitMinutes > 0) {
+            const started = new Date(sub.startedAt).getTime();
+            const elapsedSeconds = Math.floor((Date.now() - started) / 1000);
+            const totalSeconds = timeLimitMinutes * 60;
+            assignmentSecondsRemaining = Math.max(0, totalSeconds - elapsedSeconds);
+            assignmentTimeLimitTotal = totalSeconds;
+        } else {
+            assignmentSecondsRemaining = 0;
+            assignmentTimeLimitTotal = 0;
+        }
+
+        renderAssignmentRunnerModal(asg, sub, studentName);
+
+        const modal = document.getElementById('modal-student-assignment-runner');
+        if (modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        startAssignmentTimerCountdown(asg, studentId);
+        initStudentAssignmentHUD();
+    }
+
+    function startAssignmentTimerCountdown(asg, studentId) {
+        if (assignmentTimerInterval) clearInterval(assignmentTimerInterval);
+
+        const updateTimerDisplay = () => {
+            const displayEl = document.getElementById('runner-timer-countdown');
+            const hudEl = document.getElementById('hud-timer-countdown');
+            const timerBadge = document.getElementById('runner-timer-badge');
+
+            if (asg.timeLimitMinutes > 0) {
+                if (assignmentSecondsRemaining <= 0) {
+                    clearInterval(assignmentTimerInterval);
+                    if (displayEl) displayEl.textContent = '00:00 (Tiempo expirado)';
+                    if (hudEl) hudEl.textContent = '00:00 (Tiempo expirado)';
+                    submitStudentAssignment(true);
+                    return;
+                }
+
+                const mins = Math.floor(assignmentSecondsRemaining / 60);
+                const secs = assignmentSecondsRemaining % 60;
+                const timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+                if (displayEl) displayEl.textContent = timeStr;
+                if (hudEl) hudEl.textContent = timeStr;
+
+                if (assignmentSecondsRemaining <= 300) {
+                    if (timerBadge) timerBadge.classList.add('danger');
+                } else {
+                    if (timerBadge) timerBadge.classList.remove('danger');
+                }
+
+                assignmentSecondsRemaining--;
+            } else {
+                assignmentSecondsRemaining++;
+                const mins = Math.floor(assignmentSecondsRemaining / 60);
+                const secs = assignmentSecondsRemaining % 60;
+                const timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (displayEl) displayEl.textContent = `${timeStr} (Sin límite)`;
+                if (hudEl) hudEl.textContent = timeStr;
+            }
+        };
+
+        updateTimerDisplay();
+        assignmentTimerInterval = setInterval(updateTimerDisplay, 1000);
+    }
+
+    function renderAssignmentRunnerModal(asg, sub, studentName) {
+        const container = document.getElementById('asg-runner-content');
+        if (!container) return;
+
+        const formattedDue = formatAmericasTzDate(asg.deadline, asg.dueTime, asg.timezone);
+        const timeLimitBadge = asg.timeLimitMinutes > 0
+            ? `<div class="asg-timer-pulse-badge" id="runner-timer-badge"><i class="fa-solid fa-stopwatch"></i> Tiempo Restante: <span id="runner-timer-countdown">--:--</span></div>`
+            : `<div class="asg-timer-pulse-badge"><i class="fa-solid fa-infinity"></i> Modo Práctica: <span id="runner-timer-countdown">00:00</span></div>`;
+
+        container.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:16px; flex-wrap:wrap; gap:12px;">
+                <div>
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                        <span style="font-size:0.75rem; background:rgba(14,165,233,0.2); color:#38bdf8; border:1px solid rgba(14,165,233,0.35); padding:2px 8px; border-radius:6px; font-weight:700;">
+                            ${asg.level || 'B1'}
+                        </span>
+                        <span style="font-size:0.75rem; background:rgba(255,255,255,0.06); color:#cbd5e1; padding:2px 8px; border-radius:6px;">
+                            ${studentName}
+                        </span>
+                        <span style="font-size:0.72rem; color:#94a3b8; font-family:'JetBrains Mono', monospace;">
+                            <i class="fa-solid fa-earth-americas"></i> ${asg.timezone}
+                        </span>
+                    </div>
+                    <h2 style="font-size:1.3rem; font-weight:800; color:#fff; margin:0 0 4px 0;">
+                        ${asg.title}
+                    </h2>
+                    <div style="font-size:0.78rem; color:#94a3b8;">
+                        Vence: <strong style="color:#ffffff;">${formattedDue}</strong> &bull; Mínimo aprobatorio: <span style="color:#34d399; font-weight:700;">${asg.threshold || 75}%</span>
+                    </div>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+                    ${timeLimitBadge}
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="closeStudentAssignmentRunner()" style="background:transparent; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer;" title="Pausar y Cerrar">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Instructions Box -->
+            <div style="background:rgba(14,165,233,0.08); border-left:3px solid #0ea5e9; padding:10px 14px; border-radius:6px; margin-bottom:20px; font-size:0.8rem; color:#cbd5e1;">
+                <strong>Instrucciones:</strong> ${asg.instructions || 'Lee detenidamente cada caso técnico de ingeniería y selecciona la respuesta técnica adecuada.'}
+            </div>
+
+            <!-- Questions Form -->
+            <div id="asg-questions-list">
+                ${ASG_QUESTIONS.map((q, idx) => {
+                    const selectedIdx = userAssignmentAnswers[q.id];
+                    return `
+                        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:16px; margin-bottom:18px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                <span style="font-size:0.75rem; font-weight:800; color:#38bdf8; text-transform:uppercase; letter-spacing:0.05em;">
+                                    Pregunta ${idx + 1} de ${ASG_QUESTIONS.length} &bull; ${q.title}
+                                </span>
+                            </div>
+                            <div style="font-size:0.85rem; color:#e2e8f0; line-height:1.45; margin-bottom:8px; background:rgba(0,0,0,0.25); padding:10px; border-radius:8px; border-left:2px solid #38bdf8;">
+                                <i class="fa-solid fa-industry" style="color:#38bdf8; margin-right:4px;"></i> ${q.scenario}
+                            </div>
+                            <div style="font-size:0.85rem; font-weight:700; color:#ffffff; margin-bottom:12px;">
+                                ${q.prompt}
+                            </div>
+                            <div>
+                                ${q.options.map((opt, oIdx) => {
+                                    const isSelected = selectedIdx === oIdx;
+                                    return `
+                                        <div class="asg-opt-radio ${isSelected ? 'selected' : ''}" onclick="selectAssignmentOption('${q.id}', ${oIdx})">
+                                            <input type="radio" name="opt-${q.id}" id="opt-${q.id}-${oIdx}" ${isSelected ? 'checked' : ''} style="margin-top:2px;">
+                                            <label for="opt-${q.id}-${oIdx}" style="font-size:0.82rem; color:${isSelected ? '#ffffff' : '#cbd5e1'}; cursor:pointer; flex:1;">
+                                                ${opt}
+                                            </label>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+
+            <!-- Footer Controls -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:24px; border-top:1px solid rgba(255,255,255,0.1); padding-top:16px; flex-wrap:wrap; gap:12px;">
+                <div style="font-size:0.78rem; color:#94a3b8;">
+                    <i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> Verificación biométrica / CACEI Criterio 4 activa
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="closeStudentAssignmentRunner()" style="background:rgba(255,255,255,0.08); color:#cbd5e1; border:1px solid rgba(255,255,255,0.15); padding:8px 16px; border-radius:8px; cursor:pointer;">
+                        Pausar
+                    </button>
+                    <button type="button" class="btn btn-teal btn-sm" onclick="submitStudentAssignment(false)" style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; border:none; padding:10px 22px; border-radius:8px; font-weight:800; cursor:pointer; box-shadow:0 0 15px rgba(16,185,129,0.35);">
+                        <i class="fa-solid fa-paper-plane"></i> Entregar Tarea al Profesor
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    function selectAssignmentOption(qId, oIdx) {
+        userAssignmentAnswers[qId] = oIdx;
+        const asg = getActiveStudentAssignment();
+        if (asg) {
+            let profile = null;
+            try {
+                const raw = localStorage.getItem('stemos_user_profile');
+                if (raw) profile = JSON.parse(raw);
+            } catch(e) {}
+            const studentId = (profile && profile.studentId) || 'st-3';
+            if (asg.submissions && asg.submissions[studentId]) {
+                asg.submissions[studentId].answers = userAssignmentAnswers;
+                saveActiveAssignmentSync(asg);
+            }
+            renderAssignmentRunnerModal(asg, asg.submissions[studentId], (profile && profile.name) || 'Diego Ramírez');
+        }
+    }
+
+    function submitStudentAssignment(isAuto) {
+        if (assignmentTimerInterval) clearInterval(assignmentTimerInterval);
+
+        const asg = getActiveStudentAssignment();
+        if (!asg) return;
+
+        let profile = null;
+        try {
+            const raw = localStorage.getItem('stemos_user_profile');
+            if (raw) profile = JSON.parse(raw);
+        } catch(e) {}
+        const studentId = (profile && profile.studentId) || 'st-3';
+        const studentName = (profile && (profile.fullName || profile.name)) || 'Diego Ramírez';
+
+        let correctCount = 0;
+        ASG_QUESTIONS.forEach(q => {
+            if (userAssignmentAnswers[q.id] === q.correct) correctCount++;
+        });
+
+        const score = Math.round((correctCount / ASG_QUESTIONS.length) * 100);
+        const passed = score >= (asg.threshold || 75);
+
+        let timeSpentMinutes = 15;
+        if (asg.timeLimitMinutes > 0 && assignmentTimeLimitTotal > 0) {
+            const remaining = Math.max(0, assignmentSecondsRemaining);
+            const usedSecs = assignmentTimeLimitTotal - remaining;
+            timeSpentMinutes = Math.max(1, Math.round(usedSecs / 60));
+        }
+
+        const submission = {
+            status: 'completed',
+            score: score,
+            correctCount: correctCount,
+            totalQuestions: ASG_QUESTIONS.length,
+            timeSpentMinutes: timeSpentMinutes,
+            submittedAt: new Date().toISOString(),
+            xp: passed ? 450 : 200,
+            answers: userAssignmentAnswers,
+            autoSubmitted: !!isAuto
+        };
+
+        asg.submissions = asg.submissions || {};
+        asg.submissions[studentId] = submission;
+        saveActiveAssignmentSync(asg);
+
+        if (typeof updateStudentXPHUD === 'function') {
+            updateStudentXPHUD(submission.xp);
+        }
+
+        const container = document.getElementById('asg-runner-content');
+        if (container) {
+            container.innerHTML = `
+                <div style="text-align:center; padding:24px 12px;">
+                    <div style="width:72px; height:72px; border-radius:50%; background:${passed ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)'}; border:2px solid ${passed ? '#10b981' : '#f59e0b'}; display:flex; align-items:center; justify-content:center; margin:0 auto 16px auto; font-size:2rem; color:${passed ? '#34d399' : '#fbbf24'};">
+                        <i class="fa-solid ${passed ? 'fa-circle-check' : 'fa-award'}"></i>
+                    </div>
+                    <h2 style="font-size:1.4rem; font-weight:800; color:#fff; margin:0 0 6px 0;">
+                        ${passed ? '¡Tarea Entregada y Aprobada!' : 'Tarea Entregada con Éxito'}
+                    </h2>
+                    <p style="font-size:0.85rem; color:#94a3b8; margin:0 0 20px 0;">
+                        ${isAuto ? 'El tiempo límite de resolución ha concluido. Tu reporte se sincronizó automáticamente con el panel del docente.' : 'Tu reporte técnico ha sido registrado y sincronizado en tiempo real con el panel del profesor.'}
+                    </p>
+
+                    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-bottom:24px; text-align:left;">
+                        <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); padding:14px; border-radius:10px;">
+                            <div style="font-size:0.72rem; color:#94a3b8; text-transform:uppercase;">Calificación</div>
+                            <div style="font-size:1.3rem; font-weight:800; color:${passed ? '#34d399' : '#fbbf24'};">${score}%</div>
+                            <div style="font-size:0.7rem; color:#cbd5e1;">${correctCount}/${ASG_QUESTIONS.length} correctas</div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); padding:14px; border-radius:10px;">
+                            <div style="font-size:0.72rem; color:#94a3b8; text-transform:uppercase;">Tiempo Empleado</div>
+                            <div style="font-size:1.3rem; font-weight:800; color:#38bdf8;">${timeSpentMinutes} min</div>
+                            <div style="font-size:0.7rem; color:#cbd5e1;">de ${asg.timeLimitMinutes || 45} min límite</div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); padding:14px; border-radius:10px;">
+                            <div style="font-size:0.72rem; color:#94a3b8; text-transform:uppercase;">Curricular XP</div>
+                            <div style="font-size:1.3rem; font-weight:800; color:#f59e0b;">+${submission.xp} XP</div>
+                            <div style="font-size:0.7rem; color:#cbd5e1;">CACEI Criterio 4</div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-teal" onclick="closeStudentAssignmentRunner()" style="background:#0ea5e9; color:#fff; border:none; padding:10px 24px; border-radius:8px; font-weight:800; cursor:pointer;">
+                        Cerrar y Volver al Dashboard
+                    </button>
+                </div>
+            `;
+        }
+
+        initStudentAssignmentHUD();
+    }
+
+    function saveActiveAssignmentSync(asg) {
+        try {
+            localStorage.setItem('stemos_active_student_assignment', JSON.stringify(asg));
+
+            const classId = asg.classId || 'c1';
+            const cohortKey = `stemos_cohort_assignments_${classId}`;
+            const existingRaw = localStorage.getItem(cohortKey);
+            let list = existingRaw ? JSON.parse(existingRaw) : [];
+            const idx = list.findIndex(a => a.id === asg.id);
+            if (idx >= 0) {
+                list[idx] = asg;
+            } else {
+                list.unshift(asg);
+            }
+            localStorage.setItem(cohortKey, JSON.stringify(list));
+        } catch(e) {
+            console.warn('Assignment sync error:', e);
+        }
+    }
+
+    function closeStudentAssignmentRunner() {
+        if (assignmentTimerInterval) clearInterval(assignmentTimerInterval);
+        const modal = document.getElementById('modal-student-assignment-runner');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        initStudentAssignmentHUD();
+    }
+
+    function reviewStudentAssignmentResults() {
+        openStudentAssignmentRunner();
+    }
+
+    function handleAssignmentRunnerBackdrop(e) {
+        if (e.target && e.target.id === 'modal-student-assignment-runner') {
+            closeStudentAssignmentRunner();
+        }
+    }
+
+    window.openStudentAssignmentRunner = openStudentAssignmentRunner;
+    window.closeStudentAssignmentRunner = closeStudentAssignmentRunner;
+    window.reviewStudentAssignmentResults = reviewStudentAssignmentResults;
+    window.selectAssignmentOption = selectAssignmentOption;
+    window.submitStudentAssignment = submitStudentAssignment;
+    window.handleAssignmentRunnerBackdrop = handleAssignmentRunnerBackdrop;
+    window.initStudentAssignmentHUD = initStudentAssignmentHUD;
+
+    // Cross-Tab and Storage Listener for Real-Time Teacher Assignment Sync
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'stemos_active_student_assignment') {
+            initStudentAssignmentHUD();
+        }
+    });
+
+    // Initialize Student Assignment HUD on load
+    initStudentAssignmentHUD();
+
     /* --- 9. KEYBOARD ACCESSIBILITY (WCAG A11Y) --- */
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
+            // 0. Assignment runner modal
+            closeStudentAssignmentRunner();
             // 1. Academic reader & quiz modal
             const academicModal = document.getElementById('academic-modal');
             if (academicModal && academicModal.open) {
