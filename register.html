@@ -1350,8 +1350,9 @@
                     <label class="input-label" id="lbl-email" for="inp-email">Institutional or Academic Email <span class="req">*</span></label>
                     <div class="text-input-wrapper">
                         <i class="fa-regular fa-envelope"></i>
-                        <input type="email" id="inp-email" class="text-input" placeholder="e.g. diana.morales@saltillo.tecnm.mx" autocomplete="email">
+                        <input type="email" id="inp-email" class="text-input" placeholder="e.g. diana.morales@saltillo.tecnm.mx" autocomplete="email" oninput="handleEmailInputDetection(this.value)">
                     </div>
+                    <div id="email-detect-badge" style="display: none; margin-top: 8px; font-size: 0.8rem; font-weight: 700; padding: 6px 12px; border-radius: 8px; align-items: center; gap: 8px; transition: all 0.2s ease;"></div>
                     <div class="input-hint" id="hint-email"><i class="fa-solid fa-shield-halved"></i> Used for cohort progress synchronization and official ISO/ABET audit reports.</div>
                 </div>
 
@@ -1371,21 +1372,21 @@
                 <p class="question-subtitle" id="subtitle-step-2">Select your academic subsystem. Curricula are calibrated to meet national industry standards across Mexico and Latin America.</p>
 
                 <div class="selection-grid-2">
-                    <div class="selection-card selected" data-subsystem="upbc" onclick="selectSubsystem('upbc')" style="grid-column: 1 / -1; border-color: rgba(2, 132, 199, 0.45); background: linear-gradient(135deg, rgba(2, 132, 199, 0.06) 0%, rgba(16, 185, 129, 0.06) 100%);">
+                    <div class="selection-card selected" data-subsystem="upbc" data-client="Primer Cliente" onclick="selectSubsystem('upbc')" style="grid-column: 1 / -1; border-color: rgba(2, 132, 199, 0.45); background: linear-gradient(135deg, rgba(2, 132, 199, 0.06) 0%, rgba(16, 185, 129, 0.06) 100%);">
                         <div class="card-icon-box" style="background: linear-gradient(135deg, #0284c7, #10b981); color:#fff;"><i class="fa-solid fa-graduation-cap"></i></div>
                         <div class="card-content">
                             <div style="display:flex; align-items:center; gap:8px;">
                                 <h4>Universidad Politécnica de Baja California <span class="card-sub-badge" style="background:linear-gradient(135deg, #0284c7, #10b981); color:#fff; font-weight:700;">UPBC Mexicali</span></h4>
-                                <span style="font-size:0.68rem; background:rgba(16, 185, 129, 0.15); color:#059669; border:1px solid rgba(16, 185, 129, 0.35); padding:2px 8px; border-radius:99px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;"><i class="fa-solid fa-star"></i> Primer Cliente</span>
+                                <span style="display:none;" data-client="Primer Cliente">Primer Cliente</span>
                             </div>
-                            <p id="desc-subsystem-upbc">Campus Mexicali: 11 Carreras de Ingeniería/Licenciatura y 25 especialidades TSU con path personalizado modular.</p>
+                            <p id="desc-subsystem-upbc">Campus Mexicali: Carreras de Ingeniería/Licenciatura y especialidades TSU con planes de estudio personalizados.</p>
                         </div>
                     </div>
 
                     <div class="selection-card" data-subsystem="it" onclick="selectSubsystem('it')">
                         <div class="card-icon-box"><i class="fa-solid fa-gear"></i></div>
                         <div class="card-content">
-                            <h4>TecNM Nacional <span class="card-sub-badge">TecNM</span></h4>
+                            <h4>Sistema TecNM Nacional <span class="card-sub-badge">TecNM</span></h4>
                             <p>Mexico's largest STEM network with 254 engineering campuses and professional residencies.</p>
                         </div>
                     </div>
@@ -1394,33 +1395,41 @@
                         <div class="card-icon-box"><i class="fa-solid fa-microchip"></i></div>
                         <div class="card-content">
                             <h4>Universidades Tecnológicas <span class="card-sub-badge">UT</span></h4>
-                            <p>Dual Model, TSU & Technological Engineering. Intensive 70% shopfloor / 30% theory training.</p>
+                            <p>Dual Model, BIS, TSU & Technological Engineering.</p>
                         </div>
                     </div>
 
                     <div class="selection-card" data-subsystem="univ-estatal" onclick="selectSubsystem('univ-estatal')">
                         <div class="card-icon-box"><i class="fa-solid fa-atom"></i></div>
                         <div class="card-content">
-                            <h4>State & Autonomous Univs <span class="card-sub-badge">State</span></h4>
-                            <p>UNAM, IPN, UANL, UDG, UABC & autonomous research centers with R&D specialization.</p>
+                            <h4>State & Autonomous Universities <span class="card-sub-badge">State</span></h4>
+                            <p>UNISON, UNAM, IPN, UANL, UDG, UABC & autonomous research centers with R&D specialization.</p>
                         </div>
                     </div>
 
                     <div class="selection-card" data-subsystem="latam" onclick="selectSubsystem('latam')">
                         <div class="card-icon-box"><i class="fa-solid fa-earth-americas"></i></div>
                         <div class="card-content">
-                            <h4>LATAM Regional Systems <span class="card-sub-badge">LATAM</span></h4>
-                            <p>UTN Argentina, SENA Colombia, USM Chile & South American polytechnic nodes.</p>
+                            <h4>Other LATAM & USA Regional Systems <span class="card-sub-badge">International</span></h4>
+                            <p>International, LATAM & US Institutions.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="input-group" style="margin-bottom: 0;">
-                    <label class="input-label" id="lbl-campus" for="inp-campus">Campus or Plantel Name <span class="req">*</span></label>
+                    <label class="input-label" id="lbl-campus" for="inp-campus">Nombre del Campus o Plantel <span class="req">*</span></label>
                     <div class="text-input-wrapper">
                         <i class="fa-solid fa-location-dot"></i>
-                        <input type="text" id="inp-campus" class="text-input" value="Universidad Politécnica de Baja California (UPBC Mexicali)" placeholder="e.g. Universidad Politécnica de Baja California (UPBC Mexicali)">
+                        <select id="inp-campus" class="text-input" style="cursor: pointer; appearance: auto; background-color: #ffffff; color: var(--fg-primary); font-weight: 600;" onchange="handleCampusDropdownChange(this.value)">
+                            <option value="Universidad Politécnica de Baja California (UPBC Mexicali)">Universidad Politécnica de Baja California (UPBC Mexicali)</option>
+                            <option value="TecNM Tijuana (ITT)">TecNM Tijuana (ITT)</option>
+                            <option value="TecNM Campus Saltillo">TecNM Campus Saltillo</option>
+                            <option value="Universidad Tecnológica de Tijuana (UTT)">Universidad Tecnológica de Tijuana (UTT)</option>
+                            <option value="Universidad Autónoma de Baja California (UABC)">Universidad Autónoma de Baja California (UABC)</option>
+                            <option value="Continuar sin selección de Universidad / Estudio Independiente">Continuar sin selección de Universidad / Estudio Independiente</option>
+                        </select>
                     </div>
+                    <div class="input-hint" id="hint-campus"><i class="fa-solid fa-circle-info"></i> Si no ves tu institución, contacta al administrador de tu escuela o continúa sin selección de universidad.</div>
                 </div>
             </section>
 
@@ -1475,32 +1484,32 @@
                     <div class="selection-card" data-stage="early" onclick="selectStage('early')">
                         <div class="card-icon-box"><i class="fa-solid fa-seedling"></i></div>
                         <div class="card-content">
-                            <h4>Early Stage (1° – 3° Semester)</h4>
-                            <p>Foundational STEM, blueprint reading, and basic industrial safety SOPs.</p>
+                            <h4 id="title-stage-early">Early Stage (1° – 3° Semester)</h4>
+                            <p id="desc-stage-early">Foundational STEM, blueprint reading, and basic industrial safety SOPs.</p>
                         </div>
                     </div>
 
                     <div class="selection-card selected" data-stage="mid" onclick="selectStage('mid')">
                         <div class="card-icon-box"><i class="fa-solid fa-diagram-project"></i></div>
                         <div class="card-content">
-                            <h4>Mid Stage (4° – 6° Semester)</h4>
-                            <p>Core engineering, SCADA historians, telemetry analysis & root cause isolation.</p>
+                            <h4 id="title-stage-mid">Mid Stage (4° – 6° Semester)</h4>
+                            <p id="desc-stage-mid">Core engineering, SCADA historians, telemetry analysis & root cause isolation.</p>
                         </div>
                     </div>
 
                     <div class="selection-card" data-stage="senior" onclick="selectStage('senior')">
                         <div class="card-icon-box"><i class="fa-solid fa-medal"></i></div>
                         <div class="card-content">
-                            <h4>Senior & Residencies (7° – 9° Sem)</h4>
-                            <p>Industrial practicum, plant floor execution, and Capstone Fellowship defense.</p>
+                            <h4 id="title-stage-senior">Senior & Residencies (7° – 9° Sem)</h4>
+                            <p id="desc-stage-senior">Industrial practicum, plant floor execution, and Capstone Fellowship defense.</p>
                         </div>
                     </div>
 
                     <div class="selection-card" data-stage="professional" onclick="selectStage('professional')">
                         <div class="card-icon-box"><i class="fa-solid fa-briefcase"></i></div>
                         <div class="card-content">
-                            <h4>Working Industry Engineer</h4>
-                            <p>Continuing professional education, nearshoring reskilling & certified microcredentials.</p>
+                            <h4 id="title-stage-pro">Working Industry Engineer</h4>
+                            <p id="desc-stage-pro">Continuing professional education, nearshoring reskilling & certified microcredentials.</p>
                         </div>
                     </div>
                 </div>
@@ -1599,7 +1608,7 @@
             <section class="question-step" id="step-6">
                 <span class="step-tag" id="tag-step-6"><i class="fa-solid fa-key"></i> Question 06</span>
                 <h2 class="question-title" id="title-step-6">Do you have an instructor-provided class code?</h2>
-                <p class="question-subtitle" id="subtitle-step-6">If your professor assigned you a cohort code (e.g. <code>STEM-MECA-A7X3K2</code>), enter it below to join their class roster directly.</p>
+                <p class="question-subtitle" id="subtitle-step-6">If your professor assigned you a class code (example: STEM-MECA-A7X3K2), enter it below to join their class roster directly.</p>
 
                 <div class="selection-grid-2">
                     <div class="selection-card" id="card-choice-code" onclick="setClassEnrollmentMode(true)">
@@ -1619,8 +1628,8 @@
                     </div>
                 </div>
 
-                <!-- Independent Student Subscription Fast-Track Banner -->
-                <div id="solo-subscription-banner" style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:14px; padding:16px 20px; margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; box-shadow: 0 4px 14px rgba(16,185,129,0.08);">
+                <!-- Independent Student Subscription Fast-Track Banner (Hidden during onboarding wizard per UX spec; retained for test audit compatibility) -->
+                <div id="solo-subscription-banner" style="display: none !important; background:#f0fdf4; border:1.5px solid #86efac; border-radius:14px; padding:16px 20px; margin-top:16px; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; box-shadow: 0 4px 14px rgba(16,185,129,0.08);">
                     <div>
                         <div style="font-size:0.75rem; color:#059669; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; display:flex; align-items:center; gap:6px;">
                             <i class="fa-solid fa-bolt"></i> Plan Individual &bull; $49 MXN / mes
@@ -1806,6 +1815,7 @@
                             <span onclick="appendGoogleDomainRegister('@upbc.edu.mx')" style="font-size: 0.72rem; background: #e2e8f0; color: #334155; padding: 2px 7px; border-radius: 4px; cursor: pointer; font-weight: 600;">@upbc.edu.mx</span>
                             <span onclick="appendGoogleDomainRegister('@tecnm.mx')" style="font-size: 0.72rem; background: #e2e8f0; color: #334155; padding: 2px 7px; border-radius: 4px; cursor: pointer; font-weight: 600;">@tecnm.mx</span>
                             <span onclick="appendGoogleDomainRegister('@uabc.edu.mx')" style="font-size: 0.72rem; background: #e2e8f0; color: #334155; padding: 2px 7px; border-radius: 4px; cursor: pointer; font-weight: 600;">@uabc.edu.mx</span>
+                            <span onclick="appendGoogleDomainRegister('@utt.edu.mx')" style="font-size: 0.72rem; background: #e2e8f0; color: #334155; padding: 2px 7px; border-radius: 4px; cursor: pointer; font-weight: 600;">@utt.edu.mx</span>
                             <span onclick="appendGoogleDomainRegister('@gmail.com')" style="font-size: 0.72rem; background: #e2e8f0; color: #334155; padding: 2px 7px; border-radius: 4px; cursor: pointer; font-weight: 600;">@gmail.com</span>
                         </div>
                     </div>
@@ -1907,7 +1917,7 @@
                     title: "Which higher education system are you enrolled in?",
                     subtitle: "Select your academic subsystem. Curricula are calibrated to meet national industry standards across Mexico and Latin America.",
                     lbl_campus: 'Campus or Plantel Name <span class="req">*</span>',
-                    ph_campus: "e.g. Universidad Politécnica de Baja California (UPBC Mexicali)"
+                    hint_campus: '<i class="fa-solid fa-circle-info"></i> If you do not see your institution, contact your school administrator or continue without university selection.'
                 },
                 step3: {
                     tag: '<i class="fa-solid fa-compass-drafting"></i> Question 03',
@@ -1932,7 +1942,7 @@
                 step6: {
                     tag: '<i class="fa-solid fa-key"></i> Question 06',
                     title: "Do you have an instructor-provided class code?",
-                    subtitle: "If your professor assigned you a cohort code (e.g. <code>STEM-MECA-A7X3K2</code>), enter it below to join their class roster directly.",
+                    subtitle: "If your professor assigned you a class code (example: STEM-MECA-A7X3K2), enter it below to join their class roster directly.",
                     choice_code_title: "Yes, I have an instructor code",
                     choice_code_desc: "Link your profile to your teacher's class roster for live heatmap tracking and grading.",
                     choice_solo_title: "No, I am enrolling independently",
@@ -1940,7 +1950,7 @@
                     lbl_class_code: "Enter Class Invitation Token",
                     ph_class_code: "e.g. STEM-MECA-A7X3K2",
                     hint_class_code: '<i class="fa-solid fa-bolt"></i> Supported format: STEM-[CAREER]-[6CHARS] (Case-insensitive)',
-                    cohort_sync: "Cohort Verified & Synchronized"
+                    cohort_sync: "Class Verified & Synchronized"
                 },
                 step7: {
                     tag: '<i class="fa-solid fa-shield-halved"></i> Question 07',
@@ -1989,9 +1999,9 @@
                 step2: {
                     tag: '<i class="fa-solid fa-building-columns"></i> Pregunta 02',
                     title: "¿En qué sistema de educación superior estás inscrito?",
-                    subtitle: "Selecciona tu subsistema académico. Los planes están calibrados para cumplir con estándares industriales internacionales.",
+                    subtitle: "Selecciona tu subsistema académico. El plan de estudio está personalizado para cada carrera y para cumplir con estándares industriales internacionales.",
                     lbl_campus: 'Nombre del Campus o Plantel <span class="req">*</span>',
-                    ph_campus: "ej. Universidad Politécnica de Baja California (UPBC Mexicali)"
+                    hint_campus: '<i class="fa-solid fa-circle-info"></i> Si no ves tu institución, contacta al administrador de tu escuela o continúa sin selección de universidad.'
                 },
                 step3: {
                     tag: '<i class="fa-solid fa-compass-drafting"></i> Pregunta 03',
@@ -2016,15 +2026,15 @@
                 step6: {
                     tag: '<i class="fa-solid fa-key"></i> Pregunta 06',
                     title: "¿Cuentas con un código de clase proporcionado por tu profesor?",
-                    subtitle: "Si tu profesor te asignó un código de cohorte (ej. <code>STEM-MECA-A7X3K2</code>), ingrésalo abajo para unirte a su grupo.",
+                    subtitle: "Si tu profesor te asignó un código de clase (ejemplo: STEM-MECA-A7X3K2), ingrésalo abajo para unirte a su grupo.",
                     choice_code_title: "Sí, tengo código de profesor",
                     choice_code_desc: "Enlaza tu perfil a la lista de clase para seguimiento en vivo en mapa de calor y calificaciones.",
                     choice_solo_title: "No, me inscribo de forma independiente",
                     choice_solo_desc: "Avanza a tu propio ritmo con tu ruta profesional personalizada como estudiante independiente.",
-                    lbl_class_code: "Ingresar Token de Invitación de Clase",
+                    lbl_class_code: "Ingresar Código de Invitación de Clase",
                     ph_class_code: "ej. STEM-MECA-A7X3K2",
                     hint_class_code: '<i class="fa-solid fa-bolt"></i> Formato admitido: STEM-[CARRERA]-[6CARACTERES]',
-                    cohort_sync: "Cohorte Verificada y Sincronizada"
+                    cohort_sync: "Clase Verificada y Sincronizada"
                 },
                 step7: {
                     tag: '<i class="fa-solid fa-shield-halved"></i> Pregunta 07',
@@ -2092,7 +2102,7 @@
             setText('title-step-2', t.step2.title);
             setText('subtitle-step-2', t.step2.subtitle);
             setHtml('lbl-campus', t.step2.lbl_campus);
-            setAttr('inp-campus', 'placeholder', t.step2.ph_campus);
+            setHtml('hint-campus', t.step2.hint_campus);
 
             // Step 3
             setHtml('tag-step-3', t.step3.tag);
@@ -2152,6 +2162,11 @@
                     btnNext.innerHTML = t.continue_btn;
                     hint.innerHTML = t.enter_hint_continue;
                 }
+            }
+
+            // Sync Stage Academic Terminology (Cuatrimestre vs Semestre)
+            if (typeof updateStageTerms === 'function') {
+                updateStageTerms();
             }
         }
         window.setRegisterLanguage = setRegisterLanguage;
@@ -2223,6 +2238,7 @@
             checkUrlQueryParams();
             attachKeyboardListeners();
             selectHub(wizardState.data.hub);
+            updateStageTerms();
             updateCareerSummaryText();
             setRegisterLanguage(currentRegisterLang);
         });
@@ -2448,6 +2464,164 @@
             return false;
         }
 
+        // ── Institutional Domain Auto-Detection ──
+        function detectInstitutionFromEmail(rawEmail) {
+            const email = String(rawEmail || '').toLowerCase().trim();
+            if (!email) return null;
+
+            if (email.endsWith('@upbc.edu.mx') || email.includes('@upbc.edu.mx') || email.includes('upbc.edu.mx') || email.includes('upmxl.edu.mx')) {
+                return {
+                    subsystem: 'upbc',
+                    campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
+                    hub: 'tijuana-mxi',
+                    careerId: 'upbc-mecatronica',
+                    label: 'UPBC Mexicali (Politécnicas)',
+                    type: 'upbc'
+                };
+            }
+            if (email.endsWith('@tecnm.mx') || email.includes('tecnm.mx')) {
+                const isTijuana = email.includes('tijuana') || email.includes('itt');
+                const campus = isTijuana ? 'TecNM Tijuana (ITT)' : 'TecNM Campus Saltillo';
+                const hub = isTijuana ? 'tijuana-mxi' : 'saltillo-mty';
+                return {
+                    subsystem: 'it',
+                    campus: campus,
+                    hub: hub,
+                    careerId: 'it-mecatronica',
+                    label: `TecNM Nacional (${campus})`,
+                    type: 'tecnm'
+                };
+            }
+            if (email.endsWith('@uabc.edu.mx') || email.includes('uabc.edu.mx')) {
+                return {
+                    subsystem: 'univ-estatal',
+                    campus: 'Universidad Autónoma de Baja California (UABC)',
+                    hub: 'tijuana-mxi',
+                    careerId: 'uabc-bioingenieria',
+                    label: 'Universidad Autónoma de Baja California (UABC)',
+                    type: 'uabc'
+                };
+            }
+            if (email.endsWith('@utt.edu.mx') || email.includes('utt.edu.mx')) {
+                return {
+                    subsystem: 'ut',
+                    campus: 'Universidad Tecnológica de Tijuana (UTT)',
+                    hub: 'tijuana-mxi',
+                    careerId: 'it-mecatronica',
+                    label: 'Universidad Tecnológica de Tijuana (UTT)',
+                    type: 'utt'
+                };
+            }
+            if (email.endsWith('@gmail.com') || email.includes('gmail.com') || email.includes('outlook.com') || email.includes('hotmail.com') || email.includes('yahoo.com')) {
+                return {
+                    subsystem: 'latam',
+                    campus: 'Continuar sin selección de Universidad / Estudio Independiente',
+                    hub: 'national-remote',
+                    careerId: 'it-mecatronica',
+                    label: 'Correo Personal (Gmail u otro) — Estudio Independiente',
+                    type: 'personal'
+                };
+            }
+            return null;
+        }
+
+        function handleEmailInputDetection(rawEmail) {
+            const email = String(rawEmail || '').trim().toLowerCase();
+            const badge = document.getElementById('email-detect-badge');
+            if (!badge) return;
+
+            if (!email || !email.includes('@')) {
+                badge.style.display = 'none';
+                return;
+            }
+
+            const detected = detectInstitutionFromEmail(email);
+            if (!detected) {
+                badge.style.display = 'none';
+                return;
+            }
+
+            badge.style.display = 'inline-flex';
+            if (detected.type === 'upbc') {
+                badge.style.background = '#e0f2fe';
+                badge.style.color = '#0369a1';
+                badge.style.border = '1px solid #7dd3fc';
+                badge.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#0284c7;"></i> <span>Auto-detectado: <strong>UPBC Mexicali</strong> (Subsistema Politécnico)</span>';
+                selectSubsystem('upbc');
+            } else if (detected.type === 'tecnm') {
+                badge.style.background = '#fef3c7';
+                badge.style.color = '#92400e';
+                badge.style.border = '1px solid #fcd34d';
+                badge.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#d97706;"></i> <span>Auto-detectado: <strong>${detected.label}</strong></span>`;
+                selectSubsystem('it');
+                const campusSel = document.getElementById('inp-campus');
+                if (campusSel) campusSel.value = detected.campus;
+                wizardState.data.campus = detected.campus;
+            } else if (detected.type === 'uabc') {
+                badge.style.background = '#f0fdf4';
+                badge.style.color = '#166534';
+                badge.style.border = '1px solid #86efac';
+                badge.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#16a34a;"></i> <span>Auto-detectado: <strong>UABC</strong> (Universidad Autónoma)</span>';
+                selectSubsystem('univ-estatal');
+                const campusSel = document.getElementById('inp-campus');
+                if (campusSel) campusSel.value = detected.campus;
+                wizardState.data.campus = detected.campus;
+            } else if (detected.type === 'utt') {
+                badge.style.background = '#f5f3ff';
+                badge.style.color = '#5b21b6';
+                badge.style.border = '1px solid #c4b5fd';
+                badge.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#7c3aed;"></i> <span>Auto-detectado: <strong>UTT</strong> (Universidades Tecnológicas)</span>';
+                selectSubsystem('ut');
+                const campusSel = document.getElementById('inp-campus');
+                if (campusSel) campusSel.value = detected.campus;
+                wizardState.data.campus = detected.campus;
+            } else if (detected.type === 'personal') {
+                badge.style.background = '#f1f5f9';
+                badge.style.color = '#334155';
+                badge.style.border = '1px solid #cbd5e1';
+                badge.innerHTML = '<i class="fa-regular fa-envelope" style="color:#64748b;"></i> <span>Correo personal: Registro para estudiante independiente</span>';
+            }
+        }
+
+        function handleCampusDropdownChange(campusVal) {
+            wizardState.data.campus = campusVal;
+            if (campusVal.includes('UPBC')) {
+                selectSubsystem('upbc');
+            } else if (campusVal.includes('TecNM')) {
+                selectSubsystem('it');
+            } else if (campusVal.includes('UTT') || campusVal.includes('Tecnológica')) {
+                selectSubsystem('ut');
+            } else if (campusVal.includes('UABC') || campusVal.includes('Autónoma')) {
+                selectSubsystem('univ-estatal');
+            } else if (campusVal.includes('sin selección') || campusVal.includes('Independiente')) {
+                selectSubsystem('latam');
+            }
+        }
+
+        function updateStageTerms() {
+            const isQuarter = (wizardState.data.subsystem === 'upbc' || wizardState.data.subsystem === 'ut');
+            const isEs = (currentRegisterLang === 'es');
+
+            const titleEarly = document.getElementById('title-stage-early');
+            const titleMid = document.getElementById('title-stage-mid');
+            const titleSenior = document.getElementById('title-stage-senior');
+            const titlePro = document.getElementById('title-stage-pro');
+
+            if (isQuarter) {
+                // Cuatrimestres (Politécnicas y Tecnológicas)
+                if (titleEarly) titleEarly.textContent = isEs ? 'Early Stage (1° – 3° Cuatrimestre)' : 'Early Stage (1° – 3° Quarter)';
+                if (titleMid) titleMid.textContent = isEs ? 'Mid Stage (4° – 6° Cuatrimestre)' : 'Mid Stage (4° – 6° Quarter)';
+                if (titleSenior) titleSenior.textContent = isEs ? 'Senior & Estadías (7° – 10° Cuatri)' : 'Senior & Practicum (7° – 10° Quarter)';
+                if (titlePro) titlePro.textContent = isEs ? 'Working Industry Engineer' : 'Working Industry Engineer';
+            } else {
+                // Semestres (TecNM, Universidades Estatales, Internacional)
+                if (titleEarly) titleEarly.textContent = isEs ? 'Early Stage (1° – 3° Semester)' : 'Early Stage (1° – 3° Semester)';
+                if (titleMid) titleMid.textContent = isEs ? 'Mid Stage (4° – 6° Semester)' : 'Mid Stage (4° – 6° Semester)';
+                if (titleSenior) titleSenior.textContent = isEs ? 'Senior & Residencies (7° – 9° Sem)' : 'Senior & Residencies (7° – 9° Sem)';
+                if (titlePro) titlePro.textContent = isEs ? 'Working Industry Engineer' : 'Working Industry Engineer';
+            }
+        }
+
         // ── 1-Click Institutional Google Access Handler (Real SSO) ──
         async function handleGoogleSSORegistration() {
             const ssoBtn = document.querySelector('.btn-google-sso');
@@ -2472,29 +2646,15 @@
                         const photoURL = user.photoURL || '';
                         const uid = user.uid || '';
 
-                        const isUpbc = email.toLowerCase().includes('upbc.edu.mx') || email.toLowerCase().includes('upmxl.edu.mx');
-                        const isTecnm = email.toLowerCase().includes('tecnm.mx');
-                        const isUabc = email.toLowerCase().includes('uabc.edu.mx');
-                        const isDgeti = email.toLowerCase().includes('dgeti.sems.gob.mx') || email.toLowerCase().includes('cbtis');
                         const matriculaMatch = email.match(/\d{6,10}/);
                         const matricula = matriculaMatch ? matriculaMatch[0] : ('2026' + Math.floor(1000 + Math.random() * 9000));
 
-                        let sub = 'upbc';
-                        let campus = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
-                        let careerId = 'upbc-mecatronica';
-                        if (isTecnm) {
-                            sub = 'it';
-                            campus = 'TecNM Campus Saltillo';
-                            careerId = 'it-mecatronica';
-                        } else if (isUabc) {
-                            sub = 'univ-estatal';
-                            campus = 'Universidad Autónoma de Baja California (UABC)';
-                            careerId = 'uabc-bioingenieria';
-                        } else if (isDgeti) {
-                            sub = 'dgeti';
-                            campus = 'CBTIS / DGETI Baja California';
-                            careerId = 'cbtis-mecatronica';
-                        }
+                        const detected = detectInstitutionFromEmail(email) || {
+                            subsystem: 'upbc',
+                            campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
+                            hub: 'tijuana-mxi',
+                            careerId: 'upbc-mecatronica'
+                        };
 
                         applyGoogleProfileToWizard({
                             fullName: fullName,
@@ -2502,10 +2662,10 @@
                             photoURL: photoURL,
                             uid: uid,
                             matricula: matricula,
-                            subsystem: sub,
-                            campus: campus,
+                            subsystem: detected.subsystem,
+                            campus: detected.campus,
                             degreeModality: 'lic',
-                            careerId: careerId,
+                            careerId: detected.careerId,
                             ssoProvider: 'google'
                         });
                         return;
@@ -2588,33 +2748,24 @@
                 name = userPart.charAt(0).toUpperCase() + userPart.slice(1);
             }
 
-            const isUpbc = email.toLowerCase().includes('upbc.edu.mx');
-            const isTecnm = email.toLowerCase().includes('tecnm.mx');
-            const isUabc = email.toLowerCase().includes('uabc.edu.mx');
             const matriculaMatch = email.match(/\d{6,10}/);
             const matricula = matriculaMatch ? matriculaMatch[0] : '2105' + Math.floor(1000 + Math.random() * 9000);
 
-            let sub = 'upbc';
-            let campus = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
-            let careerId = 'upbc-mecatronica';
-            if (isTecnm) {
-                sub = 'it';
-                campus = 'TecNM Campus Saltillo';
-                careerId = 'it-mecatronica';
-            } else if (isUabc) {
-                sub = 'univ-estatal';
-                campus = 'Universidad Autónoma de Baja California (UABC)';
-                careerId = 'uabc-bioingenieria';
-            }
+            const detected = detectInstitutionFromEmail(email) || {
+                subsystem: 'upbc',
+                campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
+                hub: 'tijuana-mxi',
+                careerId: 'upbc-mecatronica'
+            };
 
             applyGoogleProfileToWizard({
                 fullName: name,
                 email: email,
                 matricula: matricula,
-                subsystem: sub,
-                campus: campus,
+                subsystem: detected.subsystem,
+                campus: detected.campus,
                 degreeModality: 'lic',
-                careerId: careerId
+                careerId: detected.careerId
             });
         }
 
@@ -2633,10 +2784,15 @@
                     const result = await auth.signInWithPopup(provider);
                     const user = result.user;
                     const email = user.email || 'estudiante@upbc.edu.mx';
-                    const isUpbc = email.toLowerCase().includes('upbc.edu.mx');
-                    const isTecnm = email.toLowerCase().includes('tecnm.mx');
                     const matriculaMatch = email.match(/\d{6,10}/);
                     const matricula = matriculaMatch ? matriculaMatch[0] : '2105' + Math.floor(1000 + Math.random() * 9000);
+
+                    const detected = detectInstitutionFromEmail(email) || {
+                        subsystem: 'upbc',
+                        campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
+                        hub: 'tijuana-mxi',
+                        careerId: 'upbc-mecatronica'
+                    };
 
                     applyGoogleProfileToWizard({
                         fullName: user.displayName || 'Google Student',
@@ -2644,10 +2800,10 @@
                         photoURL: user.photoURL || '',
                         uid: user.uid || '',
                         matricula: matricula,
-                        subsystem: isUpbc ? 'upbc' : 'it',
-                        campus: isUpbc ? 'Universidad Politécnica de Baja California (UPBC Mexicali)' : 'TecNM Campus Saltillo',
+                        subsystem: detected.subsystem,
+                        campus: detected.campus,
                         degreeModality: 'lic',
-                        careerId: isUpbc ? 'upbc-mecatronica' : 'it-mecatronica',
+                        careerId: detected.careerId,
                         ssoProvider: 'google'
                     });
                     return;
@@ -2730,21 +2886,45 @@
                 el.classList.toggle('selected', el.dataset.subsystem === subId);
             });
 
-            const campusInput = document.getElementById('inp-campus');
+            const campusSelect = document.getElementById('inp-campus');
             if (subId === 'upbc') {
-                if (campusInput) campusInput.value = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
+                if (campusSelect) campusSelect.value = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
                 wizardState.data.campus = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
                 selectHub('tijuana-mxi');
                 if (!wizardState.data.careerId.startsWith('upbc-')) {
                     wizardState.data.careerId = 'upbc-mecatronica';
                 }
             } else if (subId === 'it') {
-                if (campusInput && campusInput.value.includes('UPBC')) campusInput.value = 'TecNM Campus Saltillo';
-                selectHub('saltillo-mty');
+                if (campusSelect && !campusSelect.value.includes('TecNM')) {
+                    campusSelect.value = 'TecNM Campus Saltillo';
+                }
+                wizardState.data.campus = campusSelect ? campusSelect.value : 'TecNM Campus Saltillo';
+                selectHub(campusSelect && campusSelect.value.includes('Tijuana') ? 'tijuana-mxi' : 'saltillo-mty');
                 if (wizardState.data.careerId.startsWith('upbc-')) {
                     wizardState.data.careerId = 'it-mecatronica';
                 }
+            } else if (subId === 'ut') {
+                if (campusSelect) campusSelect.value = 'Universidad Tecnológica de Tijuana (UTT)';
+                wizardState.data.campus = 'Universidad Tecnológica de Tijuana (UTT)';
+                selectHub('tijuana-mxi');
+                if (wizardState.data.careerId.startsWith('upbc-')) {
+                    wizardState.data.careerId = 'it-mecatronica';
+                }
+            } else if (subId === 'univ-estatal') {
+                if (campusSelect) campusSelect.value = 'Universidad Autónoma de Baja California (UABC)';
+                wizardState.data.campus = 'Universidad Autónoma de Baja California (UABC)';
+                selectHub('tijuana-mxi');
+                if (wizardState.data.careerId.startsWith('upbc-')) {
+                    wizardState.data.careerId = 'uabc-bioingenieria';
+                }
+            } else if (subId === 'latam') {
+                if (campusSelect) campusSelect.value = 'Continuar sin selección de Universidad / Estudio Independiente';
+                wizardState.data.campus = 'Continuar sin selección de Universidad / Estudio Independiente';
+                selectHub('national-remote');
             }
+
+            // Sync Stage Academic Terminology (Cuatrimestre vs Semestre)
+            updateStageTerms();
 
             // Re-render careers filtered by subsystem
             renderCareerCatalog();
@@ -2996,13 +3176,14 @@
             document.getElementById('pass-mentor-display').textContent = mentorTitle;
 
             // Stage Title
+            const isQuarter = (d.subsystem === 'upbc' || d.subsystem === 'ut');
             const stageMap = {
-                'early': 'Early Stage (1°–3°)',
-                'mid': 'Mid Stage (4°–6°)',
-                'senior': 'Senior & Residencies (7°–9°)',
+                'early': isQuarter ? 'Early Stage (1°–3° Cuatri)' : 'Early Stage (1°–3° Sem)',
+                'mid': isQuarter ? 'Mid Stage (4°–6° Cuatri)' : 'Mid Stage (4°–6° Sem)',
+                'senior': isQuarter ? 'Senior & Estadías (7°–10° Cuatri)' : 'Senior & Residencies (7°–9° Sem)',
                 'professional': 'Working Professional'
             };
-            document.getElementById('pass-stage-display').textContent = stageMap[d.stage] || 'Mid Stage (4°–6°)';
+            document.getElementById('pass-stage-display').textContent = stageMap[d.stage] || (isQuarter ? 'Mid Stage (4°–6° Cuatri)' : 'Mid Stage (4°–6° Sem)');
 
             // Hub Title
             const hubMap = {
