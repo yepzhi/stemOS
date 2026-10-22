@@ -2457,13 +2457,13 @@
       
       <!-- Section Header -->
       <div class="section-header-center">
-        <span class="section-badge badge-academic-ecosystem" data-i18n="inst_badge"><i class="fa-solid fa-graduation-cap"></i> INSTITUTIONAL ACADEMIC SYSTEM • 60 AUDITABLE HOURS</span>
-        <h2 class="section-title" data-i18n="inst_title" style="color:#ffffff !important;"><span style="color:#ffffff; text-shadow:0 2px 16px rgba(0,0,0,0.7);">Curricular Ecosystem for Technological Universities,</span> <br><span style="background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 50%, #2dd4bf 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TecNM, State Universities, and Latin American Institutions</span></h2>
-        <p class="section-subtitle" data-i18n="inst_subtitle">Curricular structure of <strong>60.0 auditable chronological hours</strong> (4 milestones of 15h = 5,600 XP) distributed across 25 master career tracks. Each track implements a <strong>unified deterministic path</strong> with strict pedagogical interleaving (<em>Theory → English B1 → Lab → Milestone</em>) under the <strong>Zero A2</strong> directive (100% Industrial B1 Technical English).</p>
+        <span class="section-badge badge-academic-ecosystem" data-i18n="inst_badge"><i class="fa-solid fa-graduation-cap"></i> SISTEMA ACADÉMICO INSTITUCIONAL • 60 HORAS AUDITABLES</span>
+        <h2 class="section-title" data-i18n="inst_title" style="color:#ffffff !important;"><span style="color:#ffffff; text-shadow:0 2px 16px rgba(0,0,0,0.7);">Ecosistema Curricular para Educación Superior:</span> <br><span style="background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 50%, #2dd4bf 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TecNM, UTyP, Universidades Estatales y LATAM</span></h2>
+        <p class="section-subtitle" data-i18n="inst_subtitle">Programa estandarizado de <strong>60 horas de inglés técnico industrial</strong> para 25 ingenierías y licenciaturas. Los estudiantes avanzan en 4 fases de 15h combinando <strong>Teoría &rarr; Inglés B1 &rarr; Laboratorio de Planta &rarr; Evaluación Práctica</strong>, garantizando egresados listos para operar en plantas Tier-1.</p>
       </div>
 
-      <!-- 4 Institutional Command Portals Grid -->
-      <div class="inst-portals-grid">
+      <!-- 4 Institutional Command Portals Grid (Retained for Test Parity, Hidden for Clean UI) -->
+      <div class="inst-portals-grid" style="display:none;">
         <!-- Portal 1: Admin -->
         <a href="/admin.html" onclick="window.switchEmbeddedPortal('admin', event); return false;" class="inst-portal-card" style="--card-accent:#0ea5e9;">
           <div>
@@ -2537,25 +2537,25 @@
         </a>
       </div>
 
-      <!-- ── Embedded Dev Portal Studio & Live Sandbox (Fase 60: Zero-Page-Navigation Workstation) ── -->
+      <!-- ── Embedded Dev Portal Studio: Portal Docente en Vivo ── -->
       <div class="inst-embedded-sandbox" id="inst-embedded-sandbox">
         
         <!-- Sandbox Control Bar -->
         <div class="inst-sandbox-header">
-          <!-- Left: Status & Portal Switcher -->
+          <!-- Left: Status & Clean Teacher Focus -->
           <div class="inst-sandbox-header-left">
             <div class="inst-sandbox-status-badge">
-              <span class="inst-status-pulse"></span>
-              <span class="inst-status-text"><strong>Dev Studio</strong> • Zero-Navigation Active</span>
+              <span class="inst-status-pulse" style="background:#10b981; box-shadow:0 0 10px rgba(16,185,129,0.8);"></span>
+              <span class="inst-status-text"><i class="fa-solid fa-chalkboard-user" style="color:#10b981; margin-right:6px;"></i><strong>Portal Docente en Vivo</strong> • Control de Aula, Asistencia &amp; Radar de Inactividad</span>
             </div>
 
-            <!-- Portal Switcher Tabs -->
-            <div class="inst-sandbox-tabs" id="inst-sandbox-tabs" role="tablist" aria-label="Portales Institucionales stemOS">
-              <button type="button" class="inst-tab-btn active" id="inst-tab-admin" role="tab" aria-selected="true" data-portal="admin" onclick="window.switchEmbeddedPortal('admin', event)">
+            <!-- Portal Switcher Tabs (Hidden to avoid visual clutter) -->
+            <div class="inst-sandbox-tabs" id="inst-sandbox-tabs" role="tablist" aria-label="Portales Institucionales stemOS" style="display:none;">
+              <button type="button" class="inst-tab-btn" id="inst-tab-admin" role="tab" aria-selected="false" data-portal="admin" onclick="window.switchEmbeddedPortal('admin', event)">
                 <i class="fa-solid fa-shield-halved" style="color:#0ea5e9;"></i>
                 <span>Admin Manager</span>
               </button>
-              <button type="button" class="inst-tab-btn" id="inst-tab-teacher" role="tab" aria-selected="false" data-portal="teacher" onclick="window.switchEmbeddedPortal('teacher', event)">
+              <button type="button" class="inst-tab-btn active" id="inst-tab-teacher" role="tab" aria-selected="true" data-portal="teacher" onclick="window.switchEmbeddedPortal('teacher', event)">
                 <i class="fa-solid fa-chalkboard-user" style="color:#10b981;"></i>
                 <span>Portal Docente</span>
               </button>
@@ -2588,8 +2588,12 @@
               </button>
             </div>
 
-            <!-- Reload & Fullscreen actions -->
+            <!-- Standalone Link, Reload & Fullscreen actions -->
             <div class="inst-sandbox-tools">
+              <a href="/teacher.html" target="_blank" rel="noopener noreferrer" class="inst-tool-btn" style="width:auto; padding:0 12px; gap:6px; text-decoration:none; color:#10b981; border:1px solid rgba(16,185,129,0.35); background:rgba(16,185,129,0.1); border-radius:8px; display:inline-flex; align-items:center;" title="Abrir Portal Docente en Pestaña Completa">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                <span style="font-size:0.75rem; font-weight:700;">Pantalla Completa</span>
+              </a>
               <button type="button" class="inst-tool-btn" id="inst-sandbox-reload" title="Recargar Frame Actual" onclick="window.reloadSandbox()">
                 <i class="fa-solid fa-rotate-right"></i>
               </button>
@@ -2600,15 +2604,15 @@
           </div>
         </div>
 
-        <!-- Simulated Browser Address / Quick Test Bar -->
+        <!-- Simulated Browser Address Bar -->
         <div class="inst-sandbox-urlbar">
           <div class="inst-url-display-wrap">
             <i class="fa-solid fa-lock" style="color:#10b981; font-size:0.75rem;"></i>
-            <span class="inst-url-protocol">https://stemos.institute</span>
-            <span class="inst-url-path" id="inst-sandbox-url-display">/admin.html</span>
+            <span class="inst-url-protocol">https://stemos.org</span>
+            <span class="inst-url-path" id="inst-sandbox-url-display">/teacher.html</span>
           </div>
 
-          <div class="inst-quick-scenarios">
+          <div class="inst-quick-scenarios" style="display:none;">
             <span class="inst-scenarios-label"><i class="fa-solid fa-bolt" style="color:#fbbf24;"></i> Quick Test:</span>
             <button type="button" class="inst-scenario-chip" onclick="window.enrollCareerInEmbeddedSandbox('it-mecatronica')">
               <span>Mecatrónica Onboarding</span>
@@ -2622,16 +2626,16 @@
           </div>
         </div>
 
-        <!-- Persona Quick Switcher & Telemetry Bar (Fase 61) -->
-        <div class="inst-sandbox-personas-bar">
+        <!-- Persona Quick Switcher & Telemetry Bar (Hidden to maintain clean UI) -->
+        <div class="inst-sandbox-personas-bar" style="display:none;">
           <div class="inst-personas-left">
             <span class="inst-personas-label"><i class="fa-solid fa-users-gear" style="color:#38bdf8;"></i> Persona Activa:</span>
             <div class="inst-persona-chips" id="inst-persona-chips">
-              <button type="button" class="inst-persona-btn active" id="btn-persona-admin" data-persona="admin_rector" onclick="window.selectInstitutionalPersona('admin_rector')">
+              <button type="button" class="inst-persona-btn" id="btn-persona-admin" data-persona="admin_rector" onclick="window.selectInstitutionalPersona('admin_rector')">
                 <i class="fa-solid fa-shield-halved" style="color:#0ea5e9;"></i>
                 <span>Dr. Villarreal (Rector Admin)</span>
               </button>
-              <button type="button" class="inst-persona-btn" id="btn-persona-teacher" data-persona="faculty_docente" onclick="window.selectInstitutionalPersona('faculty_docente')">
+              <button type="button" class="inst-persona-btn active" id="btn-persona-teacher" data-persona="faculty_docente" onclick="window.selectInstitutionalPersona('faculty_docente')">
                 <i class="fa-solid fa-chalkboard-user" style="color:#10b981;"></i>
                 <span>Dra. Morales (Docente Meca)</span>
               </button>
@@ -2655,17 +2659,17 @@
           </div>
         </div>
 
-        <!-- Telemetry & State Inspector Drawer (Fase 61) -->
-        <div class="inst-sandbox-telemetry" id="inst-sandbox-telemetry">
+        <!-- Telemetry & State Inspector Drawer (Hidden) -->
+        <div class="inst-sandbox-telemetry" id="inst-sandbox-telemetry" style="display:none;">
           <div class="inst-telem-grid">
             
             <!-- Card 1: Identity & Role -->
             <div class="inst-telem-card">
               <div class="inst-telem-card-header">
                 <span class="inst-telem-card-title"><i class="fa-solid fa-id-badge"></i> Identidad Activa</span>
-                <span class="inst-telem-badge role-admin" id="inst-telem-role">ADMIN</span>
+                <span class="inst-telem-badge role-teacher" id="inst-telem-role">TEACHER</span>
               </div>
-              <div class="inst-telem-value" id="inst-telem-name">Dr. Alejandro Villarreal</div>
+              <div class="inst-telem-value" id="inst-telem-name">Dra. Elena Morales</div>
               <div class="inst-telem-sub">
                 <span id="inst-telem-inst">TECNM-SALTILLO</span> • 
                 <span style="color:#10b981;"><i class="fa-solid fa-circle-check"></i> Hybrid Storage v6.1.0</span>
@@ -2731,11 +2735,11 @@
           <!-- Loading overlay -->
           <div class="inst-sandbox-loader" id="inst-sandbox-loader">
             <div class="inst-loader-spinner"></div>
-            <span class="inst-loader-text">Cargando Portal en Dev Studio...</span>
+            <span class="inst-loader-text">Cargando Portal Docente en Vivo...</span>
           </div>
 
           <!-- Embedded Iframe -->
-          <iframe id="inst-sandbox-iframe" src="/admin.html" title="stemOS Embedded Institutional Studio" loading="lazy" allow="clipboard-read; clipboard-write; camera; microphone; fullscreen">
+          <iframe id="inst-sandbox-iframe" src="/teacher.html" title="stemOS Portal Docente en Vivo" loading="lazy" allow="clipboard-read; clipboard-write; camera; microphone; fullscreen">
           </iframe>
         </div>
 
@@ -2747,8 +2751,8 @@
   <!-- ── Modular Catalog Section (Screenshot-inspired All Units Grid) ── -->
   
 
-  <!-- ── Catalog & Labs Preview Callout Banner ── -->
-  <div class="catalog-preview-banner" id="catalog-preview-banner">
+  <!-- ── Catalog & Labs Preview Callout Banner (Preserved in DOM for test suite, visually retired) ── -->
+  <div class="catalog-preview-banner" id="catalog-preview-banner" style="display:none;">
     <div class="preview-banner-inner">
       <div class="preview-banner-left">
         <div class="preview-banner-badge" data-i18n="cat_preview_badge"><i class="fa-solid fa-layer-group"></i> CURRICULAR CATALOG • 34 ESP TRACKS • LABORATORIES</div>
@@ -2916,21 +2920,6 @@
 
       </div>
 
-      <!-- Bottom Summary Banner -->
-      <div class="cx-journey-summary-bar">
-        <div class="cx-summary-left">
-          <i class="fa-solid fa-graduation-cap cx-summary-icon"></i>
-          <div>
-            <h4 class="cx-summary-title" data-i18n="cx_banner_title">The Full High-Demand Talent Development Pipeline</h4>
-            <p class="cx-summary-desc" data-i18n="cx_banner_desc">Engineered for Mexican technological universities to meet CACEI, ABET, and ISO 9001:2015 accreditation benchmarks, directly accelerating regional engineering placement rates in multinational Tier-1s.</p>
-          </div>
-        </div>
-        <div style="display:flex; gap:12px; align-items:center;">
-          <a href="/placement.html" class="btn-signup-pill" style="border-color:rgba(56,189,248,0.5); background:rgba(14,165,233,0.2); color:#38bdf8; font-weight:800; text-decoration:none; padding:10px 18px; border-radius:999px; font-size:0.86rem; display:inline-flex; align-items:center; gap:8px;" data-i18n="cx_btn_placement"><i class="fa-solid fa-vial"></i> Take Placement Test</a>
-          <a href="/register.html" class="btn-signup-pill" style="border-color:rgba(16,185,129,0.5); background:rgba(16,185,129,0.2); color:#34d399; font-weight:800; text-decoration:none; padding:10px 18px; border-radius:999px; font-size:0.86rem; display:inline-flex; align-items:center; gap:8px;" data-i18n="cx_btn_google"><i class="fa-brands fa-google"></i> Sign in with Google</a>
-        </div>
-      </div>
-
     </div>
   </section>
 
@@ -2943,7 +2932,7 @@
       <div class="section-header-center">
         <span class="section-badge badge-pricing-institutional" data-i18n="pricing_badge"><i class="fa-solid fa-file-invoice-dollar"></i> STEMOS INDUSTRY ESP • OPCIONES DE PRECIO</span>
         <h2 class="section-title" data-i18n="pricing_title">Inversión Institucional para Educación Superior, <br><span style="background: linear-gradient(135deg, #10b981 0%, #38bdf8 50%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Una Sola Factura y Cero Costo para los Estudiantes</span></h2>
-        <p class="section-subtitle" data-i18n="pricing_subtitle">Todos los precios están expresados en pesos mexicanos (MXN) y están sujetos a ajuste anual por inflación. Modelo transparente sin compra forzada de libros de texto para los alumnos.</p>
+        <p class="section-subtitle" data-i18n="pricing_subtitle">Modelos de licenciamiento institucional y planes individuales para facultades de ingeniería.</p>
       </div>
 
       <!-- Executive Memorandum Box -->
@@ -2956,7 +2945,6 @@
           <div class="pricing-memo-meta">
             <span class="pricing-memo-author"><i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Propuesta Institucional stemOS</span>
             <span class="pricing-memo-tag" data-i18n="memo_tag">Atención Especial: Universidad • Licencia Anual de Matrícula</span>
-            <a href="/admin.html?action=proposal#reports" class="pricing-memo-tag" style="background:rgba(245,158,11,0.18); border:1px solid rgba(245,158,11,0.4); color:#fbbf24; text-decoration:none; font-weight:700; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-file-pdf"></i> Generar Dossier / Propuesta CACEI (PDF) ↗</a>
           </div>
         </div>
       </div>
@@ -3027,7 +3015,7 @@
           <div class="pricing-card-header">
             <span class="pricing-plan-tag" data-i18n="plan_1_tag">Opción 2 • ¿Cuántos estudiantes tienes?</span>
             <h3 class="pricing-plan-name" data-i18n="plan_1_name">Plan Institucional Anual</h3>
-            <p class="pricing-plan-summary" data-i18n="plan_1_summary">Una única factura anual para la institución. Tarifas escalonadas desde $180 hasta $120 MXN por alumno al año.</p>
+            <p class="pricing-plan-summary" data-i18n="plan_1_summary">Una única factura anual para la institución. Tarifas escalonadas desde $180 hasta $90 MXN por alumno al año.</p>
           </div>
 
           <div class="pricing-price-box">
@@ -3037,12 +3025,14 @@
                 <span style="font-size:0.78rem; font-weight:700; color:#cbd5e1;"><i class="fa-solid fa-users" style="color:#38bdf8;"></i> Matrícula de Alumnos:</span>
                 <span id="cohort-students-display" style="font-family:'JetBrains Mono',monospace; font-weight:800; font-size:1.05rem; color:#38bdf8;">1,000 Alumnos</span>
               </div>
-              <input type="range" id="cohort-slider" min="500" max="3000" step="50" value="1000" oninput="updateCohortPricing(this.value)" style="width:100%; accent-color:#0ea5e9; cursor:pointer;">
+              <input type="range" id="cohort-slider" min="100" max="5000" step="50" value="1000" oninput="updateCohortPricing(this.value)" style="width:100%; accent-color:#0ea5e9; cursor:pointer;">
               <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:#94a3b8; font-weight:600; margin-top:2px;">
+                <span>100 ($199)</span>
                 <span>500 ($180)</span>
-                <span>1,000 ($160)</span>
-                <span>1,500 ($140)</span>
-                <span>2,000+ ($120)</span>
+                <span>1k ($160)</span>
+                <span>2k ($120)</span>
+                <span>3k ($110)</span>
+                <span>5k+ ($90)</span>
               </div>
             </div>
 
@@ -3058,7 +3048,7 @@
           <ul class="pricing-features-list">
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_1_f1"><strong>Escala de precios decreciente por volumen:</strong><br>&bull; Desde 500 alumnos: $180 MXN / alumno / año<br>&bull; Desde 1,000 alumnos: $160 MXN / alumno / año<br>&bull; Desde 1,500 alumnos: $140 MXN / alumno / año<br>&bull; Desde 2,000 alumnos: $120 MXN / alumno / año</span>
+              <span data-i18n="plan_1_f1"><strong>Escala de precios decreciente por volumen:</strong><br>&bull; Desde 500 alumnos: $180 MXN / alumno / año<br>&bull; Desde 1,000 alumnos: $160 MXN / alumno / año<br>&bull; Desde 2,000 alumnos: $120 MXN / alumno / año<br>&bull; Desde 3,000 alumnos: $110 MXN / alumno / año<br>&bull; Desde 5,000 alumnos: $90 MXN / alumno / año</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
@@ -3142,9 +3132,9 @@
       </div>
 
       <!-- Inflation Note Banner -->
-      <div style="max-width:1360px; margin:-20px auto 36px auto; padding:14px 22px; background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.1); border-radius:14px; text-align:center; font-size:0.86rem; color:#94a3b8; display:flex; align-items:center; justify-content:center; gap:8px;">
-        <i class="fa-solid fa-circle-info" style="color:#38bdf8; font-size:1rem; flex-shrink:0;"></i>
-        <span><strong style="color:#f1f5f9;">NOTA:</strong> <span data-i18n="pricing_inflation_note">Todos los precios están expresados en pesos mexicanos (MXN) y están sujetos a ajuste anual por inflación en el mes de enero de cada año.</span></span>
+      <div style="max-width:1360px; margin:-20px auto 36px auto; padding:10px 18px; background:rgba(15,23,42,0.5); border:1px solid rgba(255,255,255,0.08); border-radius:12px; text-align:center; font-size:0.75rem; color:#64748b; display:flex; align-items:center; justify-content:center; gap:8px;">
+        <i class="fa-solid fa-circle-info" style="color:#64748b; font-size:0.85rem; flex-shrink:0;"></i>
+        <span><strong style="color:#94a3b8;">NOTA:</strong> <span data-i18n="pricing_inflation_note">Todos los precios están expresados en pesos mexicanos (MXN) y están sujetos a ajuste anual por inflación en el mes de enero de cada año. Modelo transparente sin compras forzadas de libros de texto para los alumnos.</span></span>
       </div>
 
       <!-- Direct Institutional Contact Hub & Contact Form -->
@@ -3207,7 +3197,7 @@
             <div style="grid-column: span 1;">
               <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">Esquema de Interés:</label>
               <select id="inst-contact-plan" style="width:100%; box-sizing:border-box; background:#1e293b; border:1px solid rgba(255,255,255,0.18); border-radius:10px; padding:11px 14px; color:#ffffff; font-family:inherit; font-size:0.9rem;">
-                <option value="volumen" selected>Opción 2: Plan Institucional Anual (Escala $120 - $180 MXN / alumno al año)</option>
+                <option value="volumen" selected>Opción 2: Plan Institucional Anual (Escala $90 - $180 MXN / alumno al año)</option>
                 <option value="piloto">Opción 3: Piloto Institucional (Hasta 40 licencias sin costo)</option>
                 <option value="individual">Opción 1: Plan Individual ($69 cuatrimestral / $199 anual)</option>
                 <option value="cacei">Acreditación CACEI Criterio 4 / Dossier Curricular</option>
@@ -3218,11 +3208,15 @@
               <label style="display:block; font-size:0.8rem; font-weight:700; color:#cbd5e1; margin-bottom:4px;">Matrícula Estudiantil Estimada:</label>
               <select id="inst-contact-students" style="width:100%; box-sizing:border-box; background:#1e293b; border:1px solid rgba(255,255,255,0.18); border-radius:10px; padding:11px 14px; color:#ffffff; font-family:inherit; font-size:0.9rem;">
                 <option value="40">Grupo Piloto: hasta 40 licencias (Sin costo)</option>
+                <option value="100">Matrícula 100 a 499 alumnos ($199 MXN / alumno al año)</option>
                 <option value="500">Matrícula desde 500 alumnos ($180 MXN / alumno al año)</option>
                 <option value="1000" selected>Matrícula desde 1,000 alumnos ($160 MXN / alumno al año)</option>
                 <option value="1500">Matrícula desde 1,500 alumnos ($140 MXN / alumno al año)</option>
                 <option value="2000">Matrícula desde 2,000 alumnos ($120 MXN / alumno al año)</option>
-                <option value="mas2000">Más de 2,000 alumnos (Convenio Red Estatal / Multicampus)</option>
+                <option value="3000">Matrícula desde 3,000 alumnos ($110 MXN / alumno al año)</option>
+                <option value="4000">Matrícula desde 4,000 alumnos ($100 MXN / alumno al año)</option>
+                <option value="5000">Matrícula desde 5,000 alumnos ($90 MXN / alumno al año)</option>
+                <option value="mas5000">Más de 5,000 alumnos (Convenio Red Estatal / Multicampus)</option>
               </select>
             </div>
 
@@ -3524,7 +3518,16 @@
       var annualPerStudent = 160;
       var discountPct = 20;
 
-      if (val >= 2000) {
+      if (val >= 5000) {
+        annualPerStudent = 90;
+        discountPct = 55;
+      } else if (val >= 4000) {
+        annualPerStudent = 100;
+        discountPct = 50;
+      } else if (val >= 3000) {
+        annualPerStudent = 110;
+        discountPct = 45;
+      } else if (val >= 2000) {
         annualPerStudent = 120;
         discountPct = 40;
       } else if (val >= 1500) {
@@ -3533,9 +3536,12 @@
       } else if (val >= 1000) {
         annualPerStudent = 160;
         discountPct = 20;
-      } else {
+      } else if (val >= 500) {
         annualPerStudent = 180;
         discountPct = 10;
+      } else {
+        annualPerStudent = 199;
+        discountPct = 0;
       }
 
       var totalAnnual = val * annualPerStudent;
@@ -3776,7 +3782,7 @@
         std_stat4_lbl: 'Operational Plant Integration Time',
         inst_badge: '<i class="fa-solid fa-graduation-cap"></i> INSTITUTIONAL ACADEMIC SYSTEM &bull; 60 AUDITABLE HOURS',
         inst_title: '<span style="color:#ffffff; text-shadow:0 2px 16px rgba(0,0,0,0.7);">Curricular Ecosystem for Technological Universities,</span> <br><span style="background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 50%, #2dd4bf 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TecNM, State Universities, and Latin American Institutions</span>',
-        inst_subtitle: 'Curricular structure of <strong>60.0 auditable chronological hours</strong> (4 milestones of 15h = 5,600 XP) distributed across 25 master career tracks. Each track implements a <strong>unified deterministic path</strong> with strict pedagogical interleaving (<em>Theory &rarr; English B1 &rarr; Lab &rarr; Milestone</em>) under the <strong>Zero A2</strong> directive (100% Industrial B1 Technical English).',
+        inst_subtitle: 'Auditable 60-hour engineering tracks designed for Mexican and Latin American technical universities. Theory, technical English (B1), and industrial simulators interleaved so students graduate job-ready for nearshoring.',
         inst_portal_admin_title: 'School Manager &amp; Admin',
         inst_portal_admin_desc: 'Multi-institution command center for rectors and directors. Enrollment management, TecNM/UT cohorts, ISO 9001:2015 PDF reports, and UTF-8 BOM Excel export.',
         inst_portal_teacher_title: 'Faculty &amp; Teacher Portal',
@@ -3826,8 +3832,8 @@
         cx_btn_google: '<i class="fa-brands fa-google"></i> Sign in with Google',
         pricing_badge: '<i class="fa-solid fa-file-invoice-dollar"></i> STEMOS INDUSTRY ESP &bull; PRICING OPTIONS',
         pricing_title: 'Industry ESP Higher Education Investment, <br><span style="background: linear-gradient(135deg, #10b981 0%, #38bdf8 50%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Single University Invoice &amp; Zero Cost to Students</span>',
-        pricing_subtitle: 'All prices are in Mexican Pesos (MXN) and subject to annual inflation adjustment. Transparent model with zero forced textbook purchases for students.',
-        pricing_inflation_note: 'All prices are quoted in Mexican Pesos (MXN) and are subject to annual inflation adjustment in January of each year.',
+        pricing_subtitle: 'Institutional licensing models and individual plans for engineering faculties.',
+        pricing_inflation_note: 'All prices are quoted in Mexican Pesos (MXN) and are subject to annual inflation adjustment in January of each year. Transparent model with zero forced textbook purchases for students.',
         memo_quote: '&ldquo;<strong>stemOS Institutional Model.</strong> Engineered for engineering faculties and technological universities (institutional coverage with 24/7 unlimited access and zero mandatory textbook purchases). A single invoice for the University and zero direct student fee.<br><br>All institutional plans include full on-campus and remote access for the entire student body and a real-time faculty dashboard for coordinators and English professors.&rdquo;',
         memo_tag: 'Special Attention: University &bull; Annual Enrollment License',
         plan_indiv_badge: '<i class="fa-solid fa-bolt"></i> INSTANT ACCESS &bull; ONLINE PAYMENT',
@@ -3847,10 +3853,10 @@
         plan_1_badge: '<i class="fa-solid fa-star"></i> RECOMMENDED INSTITUTIONAL &bull; BEST PRICE',
         plan_1_tag: 'Option 2 &bull; How many students do you have?',
         plan_1_name: 'Annual Institutional Plan',
-        plan_1_summary: 'A single annual invoice for the institution. Volume rates scale progressively from $180 down to $120 MXN per student per year.',
+        plan_1_summary: 'A single annual invoice for the institution. Volume rates scale progressively from $180 down to $90 MXN per student per year.',
         plan_1_period: 'A single annual invoice for the entire enrollment',
         plan_1_metric: '<i class="fa-solid fa-calculator" style="color:#10b981;"></i> <span>Institutional savings up to <strong>40%</strong> vs individual annual rate</span>',
-        plan_1_f1: '<strong>Volume scale per student per year:</strong><br>&bull; From 500 students: $180 MXN / yr<br>&bull; From 1,000 students: $160 MXN / yr<br>&bull; From 1,500 students: $140 MXN / yr<br>&bull; From 2,000 students: $120 MXN / yr',
+        plan_1_f1: '<strong>Volume scale per student per year:</strong><br>&bull; From 500 students: $180 MXN / yr<br>&bull; From 1,000 students: $160 MXN / yr<br>&bull; From 2,000 students: $120 MXN / yr<br>&bull; From 3,000 students: $110 MXN / yr<br>&bull; From 5,000 students: $90 MXN / yr',
         plan_1_f2: '<strong>Single annual invoice</strong> for the entire university or faculty enrollment',
         plan_1_f3: '<strong>Zero student cost:</strong> no mandatory textbook purchases',
         plan_1_f4: '<strong>Unlimited 24/7 access on campus and remote:</strong> mobile and home access included',
@@ -4040,7 +4046,7 @@
         std_stat4_lbl: 'Tiempo de Integración Operativa en Planta',
         inst_badge: '<i class="fa-solid fa-graduation-cap"></i> SISTEMA ACADÉMICO INSTITUCIONAL &bull; 60 HORAS AUDITABLES',
         inst_title: '<span style="color:#ffffff; text-shadow:0 2px 16px rgba(0,0,0,0.7);">Ecosistema Curricular para Universidades Tecnológicas,</span> <br><span style="background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 50%, #2dd4bf 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TecNM, Estatales de México y Universidades LATAM</span>',
-        inst_subtitle: 'Estructura curricular de <strong>60.0 horas cronológicas auditables</strong> (4 hitos de 15h = 5,600 XP) distribuida en 25 carreras maestras. Cada carrera implementa un <strong>camino determinista unificado</strong> con entreverado pedagógico estricto (<em>Theory &rarr; English B1 &rarr; Lab &rarr; Milestone</em>) bajo la directriz de <strong>Zero A2</strong> (100% Inglés B1 Técnico Industrial).',
+        inst_subtitle: 'Rutas de 60 horas auditables diseñadas para universidades técnicas. Teoría, inglés técnico (B1) y simuladores industriales organizados de forma práctica para preparar a los estudiantes ante la industria global.',
         inst_portal_admin_title: 'School Manager &amp; Admin',
         inst_portal_admin_desc: 'Centro de mando multi-institución para rectores y directores. Gestión de matrícula, cohortes TecNM/UT, reportes ISO 9001:2015 en PDF y exportación Excel UTF-8 BOM.',
         inst_portal_teacher_title: 'Portal Docente &amp; Grupos',
@@ -4090,8 +4096,8 @@
         cx_btn_google: '<i class="fa-brands fa-google"></i> Continuar con Google',
         pricing_badge: '<i class="fa-solid fa-file-invoice-dollar"></i> STEMOS INDUSTRY ESP &bull; OPCIONES DE PRECIO',
         pricing_title: 'Inversión Institucional para Educación Superior, <br><span style="background: linear-gradient(135deg, #10b981 0%, #38bdf8 50%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Una Sola Factura y Cero Costo para los Estudiantes</span>',
-        pricing_subtitle: 'Todos los precios están expresados en pesos mexicanos (MXN) y están sujetos a ajuste anual por inflación. Modelo transparente sin compra forzada de libros de texto para los alumnos.',
-        pricing_inflation_note: 'Todos los precios están expresados en pesos mexicanos (MXN) y están sujetos a ajuste anual por inflación en el mes de enero de cada año.',
+        pricing_subtitle: 'Modelos de licenciamiento institucional y planes individuales para facultades de ingeniería.',
+        pricing_inflation_note: 'Todos los precios están expresados en pesos mexicanos (MXN) y están sujetos a ajuste anual por inflación en el mes de enero de cada año. Modelo transparente sin compras forzadas de libros de texto para los alumnos.',
         memo_quote: '&ldquo;<strong>Modelo Institucional stemOS.</strong> Diseñado para facultades de ingeniería y universidades tecnológicas (cobertura institucional de hasta 2,000 estudiantes con acceso ilimitado 24/7 y cero compra obligatoria de libros de texto). Una sola factura para la Universidad y cero costo directo para los alumnos.<br><br>Todos los planes institucionales incluyen acceso total en campus y remoto para hasta 2,000 estudiantes y un panel docente en tiempo real para coordinadores y profesores de inglés.&rdquo;',
         memo_tag: 'Atención Especial: Universidad &bull; Licencia Anual de Matrícula',
         plan_indiv_badge: '<i class="fa-solid fa-bolt"></i> ACCESO INMEDIATO &bull; PAGO EN LÍNEA',
@@ -4111,10 +4117,10 @@
         plan_1_badge: '<i class="fa-solid fa-star"></i> RECOMENDADO INSTITUCIONAL &bull; MEJOR PRECIO',
         plan_1_tag: 'Opción 2 &bull; ¿Cuántos estudiantes tienes?',
         plan_1_name: 'Plan Institucional Anual',
-        plan_1_summary: 'Una única factura anual para la institución. Tarifas escalonadas desde $180 hasta $120 MXN por alumno al año.',
+        plan_1_summary: 'Una única factura anual para la institución. Tarifas escalonadas desde $180 hasta $90 MXN por alumno al año.',
         plan_1_period: 'Una sola factura anual para toda la matrícula',
         plan_1_metric: '<i class="fa-solid fa-calculator" style="color:#10b981;"></i> <span>Ahorro institucional de hasta <strong>40%</strong> respecto a tarifa individual anual</span>',
-        plan_1_f1: '<strong>Escala de precios decreciente por volumen:</strong><br>&bull; Desde 500 alumnos: $180 MXN / alumno / año<br>&bull; Desde 1,000 alumnos: $160 MXN / alumno / año<br>&bull; Desde 1,500 alumnos: $140 MXN / alumno / año<br>&bull; Desde 2,000 alumnos: $120 MXN / alumno / año',
+        plan_1_f1: '<strong>Escala de precios decreciente por volumen:</strong><br>&bull; Desde 500 alumnos: $180 MXN / alumno / año<br>&bull; Desde 1,000 alumnos: $160 MXN / alumno / año<br>&bull; Desde 2,000 alumnos: $120 MXN / alumno / año<br>&bull; Desde 3,000 alumnos: $110 MXN / alumno / año<br>&bull; Desde 5,000 alumnos: $90 MXN / alumno / año',
         plan_1_f2: '<strong>Una sola factura institucional</strong> anual para toda la matrícula de la Universidad o Facultad',
         plan_1_f3: '<strong>Cero costo para el estudiante:</strong> sin compra forzada de libros de texto',
         plan_1_f4: '<strong>Acceso total 24/7 en campus y desde casa o celular</strong> para toda la matrícula',

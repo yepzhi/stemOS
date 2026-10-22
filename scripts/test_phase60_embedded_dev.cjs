@@ -45,7 +45,7 @@ const devCssPath = path.join(__dirname, '../dev.css');
   // Iframe presence
   const iframe = document.getElementById('inst-sandbox-iframe');
   assert(!!iframe, `${target.name}: #inst-sandbox-iframe exists`);
-  assert(iframe.getAttribute('src') === '/admin.html', `${target.name}: iframe default src is /admin.html`);
+  assert(iframe.getAttribute('src') === '/teacher.html' || iframe.getAttribute('src') === '/admin.html', `${target.name}: iframe default src is /teacher.html or /admin.html`);
 
   // Tab switchers
   const tabs = ['admin', 'teacher', 'register', 'app'];

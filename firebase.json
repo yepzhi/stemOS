@@ -51,6 +51,14 @@
     ],
     "rewrites": [
       {
+        "source": "/generator",
+        "destination": "/generator.html"
+      },
+      {
+        "source": "/generator/**",
+        "destination": "/generator.html"
+      },
+      {
         "source": "/admin",
         "destination": "/admin.html"
       },
