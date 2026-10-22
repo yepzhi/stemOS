@@ -32,7 +32,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome 6 Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
     
     <style>
         :root {
@@ -483,41 +483,58 @@
 
         .resume-row {
             display: flex;
-            gap: 8px;
-            max-width: 360px;
+            gap: 10px;
+            max-width: 440px;
             margin: 0 auto;
+            align-items: center;
         }
 
         .resume-input {
             flex: 1;
             font-family: var(--font-mono);
             text-transform: uppercase;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             padding: 10px 14px;
-            border: 1.5px solid #e2e8f0;
+            border: 1.5px solid #cbd5e1;
             border-radius: 10px;
             outline: none;
             background: #f8fafc;
+            color: #0f172a;
+            transition: all 0.2s;
         }
 
         .resume-input:focus {
             border-color: var(--primary);
             background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
         }
 
         .resume-btn {
-            background: var(--primary);
+            background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
             color: #ffffff;
             border: none;
-            padding: 0 16px;
+            padding: 10px 20px;
             border-radius: 10px;
+            font-size: 0.92rem;
             font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+            white-space: nowrap;
         }
 
         .resume-btn:hover {
-            background: #0369a1;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+            filter: brightness(1.05);
+        }
+
+        .resume-btn:active {
+            transform: translateY(0);
         }
 
         /* ─── Student Registration Form (Survey) ─── */
@@ -1116,15 +1133,23 @@
         <!-- ════ SCREEN 1: WELCOME SCREEN ════ -->
         <section id="screen-welcome" class="screen active">
             <div class="glass-card">
-                <div class="badge"><i class="fa-solid fa-bolt" style="color:#0ea5e9;"></i> RapidCheck, Placement Test · 30 Min</div>
+                <div class="badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#0ea5e9" stroke="#0ea5e9" stroke-width="1.5" style="margin-right: 6px; display: inline-block; vertical-align: -2px;" aria-hidden="true">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    RapidCheck, Placement Test · 30 Min
+                </div>
                 <h1>RapidCheck <span class="highlight">Placement Test</span></h1>
                 <p class="subtitle" style="font-size:1.02rem; color:#475569; margin-bottom:20px; line-height:1.6;">
                     <strong>30-Min Comprehensive Testing for Checking Leveling.</strong> Evaluación diagnóstica rotativa calibrada bajo el Marco Común Europeo (MCER/CEFR A1–B2) con reactivos anti-fraude y registro continuo en tu historial académico.
                 </p>
                 <!-- Announcement: Completa tu cuestionario para acceder a los módulos -->
                 <div class="diagnostic-access-notice" style="background: linear-gradient(135deg, rgba(2, 132, 199, 0.12) 0%, rgba(99, 102, 241, 0.08) 100%); border: 1.5px solid rgba(2, 132, 199, 0.35); border-radius: 16px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 14px; box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08);">
-                    <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3); margin-top: 2px;">
-                        <i class="fa-solid fa-shield-halved"></i>
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3); margin-top: 2px;" aria-hidden="true">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
                     </div>
                     <div style="flex: 1;">
                         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px;">
@@ -1153,7 +1178,10 @@
                 </div>
 
                 <div class="notice-box">
-                    <i class="fa-solid fa-headphones notice-icon"></i>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="notice-icon" style="flex-shrink: 0; margin-top: 2px;" aria-hidden="true">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                    </svg>
                     <div class="notice-text">
                         <strong>Audio Requerido en Sección 2:</strong> Este examen incluye 10 reactivos de comprensión auditiva con hablantes nativos en inglés americano. Conecta tus audífonos o verifica el volumen de tu equipo.
                     </div>
@@ -1167,14 +1195,23 @@
 
                 <button class="btn btn-primary" id="btn-welcome-start">
                     <span>Comenzar Registro Manual y Evaluación</span>
-                    <i class="fa-solid fa-arrow-right"></i>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-left: 8px;">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
                 </button>
 
                 <div class="resume-container">
                     <div class="resume-prompt">¿Ya realizaste tu evaluación y tienes un folio previo?</div>
                     <div class="resume-row">
-                        <input type="text" id="input-resume-folio" class="resume-input" placeholder="STEMOS-MCER-XXXX" maxlength="17">
-                        <button class="resume-btn" id="btn-resume-folio"><i class="fa-solid fa-arrow-right"></i></button>
+                        <input type="text" id="input-resume-folio" class="resume-input" placeholder="STEMOS-MCER-XXXX" maxlength="17" aria-label="Ingresa tu folio previo">
+                        <button class="resume-btn" id="btn-resume-folio" title="Ingresar con folio previo" type="button">
+                            <span>Entrar</span>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
