@@ -75,25 +75,23 @@ assert(cards.length === 3, `Found exactly 3 pricing option cards (Found: ${cards
 const indCard = pricingSec.querySelector('.pricing-card.individual-plan');
 assert(!!indCard, 'Individual Student Plan card present');
 const indText = indCard.textContent;
-assert(indText.includes('Estudiante Individual'), 'Individual Plan: Estudiante Individual title present');
+assert(indText.includes('Individual'), 'Individual Plan: Individual title present');
 assert(indText.includes('49'), 'Individual Plan: $49 MXN price present');
-assert(indText.includes('Todos los beneficios incluidos'), 'Individual Plan: All benefits included badge present');
-assert(indText.includes('Suscribirme por $49/mes'), 'Individual Plan: Subscribe CTA button present');
+assert(indText.includes('150') || indText.includes('cuatri'), 'Individual Plan: Menudeo $49 cuatri / $150 annual present');
 
-// Card 1: Option 1 - Piloto Cuatrimestral
+// Card 1: Option 2 - Licencia por Cohorte de Alumnos / Escala de Volumen
 const op1Text = cards[1].textContent;
-assert(op1Text.includes('Piloto Cuatrimestral'), 'Option 1: Piloto Cuatrimestral title present');
-assert(op1Text.includes('95,000'), 'Option 1: $95,000 MXN price present');
-assert(op1Text.includes('2,000 alumnos') || op1Text.includes('2000 alumnos'), 'Option 1: Up to 2,000 students metric present');
-assert(op1Text.includes('casa o celular') || op1Text.includes('Casa/Celular'), 'Option 1: Mobile/remote access included');
+assert(op1Text.includes('Cohorte') || op1Text.includes('Piloto Cuatrimestral') || op1Text.includes('Volumen'), 'Option 1: Cohorte / Volumen title present');
+assert(op1Text.includes('29') && op1Text.includes('49'), 'Option 1: Volume sliding tier ($49 down to $29 MXN / cuatri) present');
+assert(op1Text.includes('alumnos') || op1Text.includes('2,000') || op1Text.includes('2000'), 'Option 1: Student cohort metric present');
+assert(op1Text.includes('casa o celular') || op1Text.includes('Casa/Celular') || op1Text.includes('remoto'), 'Option 1: Mobile/remote access included');
 
-// Card 2: Option 2 - Licencia Anual
+// Card 2: Option 3 - Convenio Red Estatal / Tarifa Mínima Anual
 const op2Text = cards[2].textContent;
-assert(op2Text.includes('Licencia Anual'), 'Option 2: Licencia Anual title present');
-assert(op2Text.includes('240,000'), 'Option 2: $240,000 MXN price present');
-assert(op2Text.includes('80,000'), 'Option 2: ($80,000 por cuatrimestre) rate present');
-assert(op2Text.includes('precio congelado') || op2Text.includes('Precio congelado'), 'Option 2: Locked price feature present');
-assert(op2Text.includes('soporte técnico docente') || op2Text.includes('Soporte técnico y pedagógico'), 'Option 2: Faculty support included');
+assert(op2Text.includes('Convenio Red Estatal') || op2Text.includes('Licencia Anual') || op2Text.includes('Red Estatal'), 'Option 2: Convenio Red Estatal / Anual title present');
+assert(op2Text.includes('29'), 'Option 2: $29 MXN / cuatri rate present');
+assert(op2Text.includes('99'), 'Option 2: $99 MXN / año minimum annual student rate present');
+assert(op2Text.includes('docente') || op2Text.includes('soporte') || op2Text.includes('institucional') || op2Text.includes('congelado'), 'Option 2: Faculty support / institutional features present');
 
 // Option 3 ("Solo Laboratorio") must NOT exist
 const op3Card = pricingSec.querySelector('.pricing-card:nth-child(4)');

@@ -1094,8 +1094,8 @@
     <header class="top-bar">
         <a href="app.html" class="brand-link" title="Volver a stemOS">
             <div class="brand-text-col">
-                <span class="brand-title">stem<span class="brand-accent">OS</span></span>
-                <span class="brand-subtitle">MCER Placement Engine</span>
+                <span class="brand-title">Rapid<span class="brand-accent">Check</span></span>
+                <span class="brand-subtitle">Placement Test · 30m Leveling</span>
             </div>
         </a>
 
@@ -1116,20 +1116,23 @@
         <!-- ════ SCREEN 1: WELCOME SCREEN ════ -->
         <section id="screen-welcome" class="screen active">
             <div class="glass-card">
-                <div class="badge"><i class="fa-solid fa-graduation-cap"></i> Institutional Placement · 30 Min</div>
-                <h1>stemOS <span class="highlight">MCER Placement Test</span></h1>
+                <div class="badge"><i class="fa-solid fa-bolt" style="color:#0ea5e9;"></i> RapidCheck, Placement Test · 30 Min</div>
+                <h1>RapidCheck <span class="highlight">Placement Test</span></h1>
+                <p class="subtitle" style="font-size:1.02rem; color:#475569; margin-bottom:20px; line-height:1.6;">
+                    <strong>30-Min Comprehensive Testing for Checking Leveling.</strong> Evaluación diagnóstica rotativa calibrada bajo el Marco Común Europeo (MCER/CEFR A1–B2) con reactivos anti-fraude y registro continuo en tu historial académico.
+                </p>
                 <!-- Announcement: Completa tu cuestionario para acceder a los módulos -->
                 <div class="diagnostic-access-notice" style="background: linear-gradient(135deg, rgba(2, 132, 199, 0.12) 0%, rgba(99, 102, 241, 0.08) 100%); border: 1.5px solid rgba(2, 132, 199, 0.35); border-radius: 16px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 14px; box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08);">
                     <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3); margin-top: 2px;">
-                        <i class="fa-solid fa-lock-open"></i>
+                        <i class="fa-solid fa-shield-halved"></i>
                     </div>
                     <div style="flex: 1;">
                         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px;">
-                            <span style="background: #0284c7; color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.5px;">Acceso Curricular Requerido</span>
-                            <strong style="color: #0f172a; font-size: 0.98rem;">Completa tu cuestionario para acceder a los módulos</strong>
+                            <span style="background: #0284c7; color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.5px;">Evaluación Oficial Calibrada</span>
+                            <strong style="color: #0f172a; font-size: 0.98rem;">Diagnóstico Inicial RapidCheck</strong>
                         </div>
                         <p style="margin: 0; font-size: 0.88rem; color: #475569; line-height: 1.5;">
-                            Para desbloquear el acceso a todos los módulos y activar tu <strong>Track Personalizado por Carrera</strong>, completa este cuestionario diagnóstico estandarizado de 15 minutos. Al finalizar, tu nivel MCER quedará calibrado en tu cuenta y podrás comenzar a cursar tus unidades de inmediato.
+                            Esta sesión genera un conjunto de 32 reactivos rotativos seleccionados de nuestro banco calibrado para garantizar la autenticidad de tu resultado. Al finalizar, tu nivel MCER y tu historial quedarán registrados permanentemente en tu perfil de estudiante.
                         </p>
                     </div>
                 </div>
@@ -1758,30 +1761,97 @@
             }
         });
 
-        // ── 1-Click Institutional Google Access for Placement ──
-        function handlePlacementGoogleSSO() {
-            // Check if existing student profile exists in localStorage
-            let existing = null;
-            try {
-                const raw = localStorage.getItem('stemos_student_profile');
-                if (raw) existing = JSON.parse(raw);
-            } catch(e) {}
+        // Helper to ensure Firebase SDK and Auth are loaded
+        async function ensurePlacementFirebaseAuthReady() {
+            if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+                if (!firebase.apps || firebase.apps.length === 0) {
+                    if (window.STEMOS_FIREBASE_CONFIG && typeof window.STEMOS_FIREBASE_CONFIG.init === 'function') {
+                        window.STEMOS_FIREBASE_CONFIG.init();
+                    }
+                }
+                return true;
+            }
+            const startTime = Date.now();
+            while (Date.now() - startTime < 3500) {
+                await new Promise(r => setTimeout(r, 100));
+                if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+                    if (!firebase.apps || firebase.apps.length === 0) {
+                        if (window.STEMOS_FIREBASE_CONFIG && typeof window.STEMOS_FIREBASE_CONFIG.init === 'function') {
+                            window.STEMOS_FIREBASE_CONFIG.init();
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
 
-            if (existing && existing.email) {
-                const parts = (existing.name || 'Carlos Ramírez').split(' ');
-                applyPlacementStudentProfile({
-                    firstName: parts[0] || 'Carlos',
-                    lastName: parts.slice(1).join(' ') || 'Ramírez Valenzuela',
-                    email: existing.email || 'carlos.ramirez@upbc.edu.mx',
-                    matricula: existing.matricula || '21050842',
-                    institution: (existing.subsystem === 'upbc') ? 'UPMXL' : 'IT',
-                    degreeType: existing.degreeModality || 'lic',
-                    careerId: existing.careerId || 'upbc-mecatronica',
-                    career: existing.careerName || 'Ingeniería Mecatrónica'
-                });
-                return;
+        // ── 1-Click Institutional Google Access for Placement (Real SSO) ──
+        async function handlePlacementGoogleSSO() {
+            const btn = document.querySelector('.btn-google-sso');
+            const originalBtnHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Conectando con Google...</span>';
             }
 
+            const ready = await ensurePlacementFirebaseAuthReady();
+            if (ready && typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+                try {
+                    const auth = firebase.auth();
+                    const provider = new firebase.auth.GoogleAuthProvider();
+                    provider.setCustomParameters({ prompt: 'select_account' });
+
+                    const result = await auth.signInWithPopup(provider);
+                    const user = result && result.user;
+                    if (user) {
+                        const email = user.email || '';
+                        const names = (user.displayName || 'Estudiante Google').split(' ');
+                        const isUpbc = email.toLowerCase().includes('upbc.edu.mx') || email.toLowerCase().includes('upmxl.edu.mx');
+                        const isTecnm = email.toLowerCase().includes('tecnm.mx');
+                        const matriculaMatch = email.match(/\d{6,10}/);
+                        const matricula = matriculaMatch ? matriculaMatch[0] : ('2026' + Math.floor(1000 + Math.random() * 9000));
+
+                        let inst = 'UPMXL';
+                        if (isTecnm) inst = 'IT';
+
+                        applyPlacementStudentProfile({
+                            firstName: names[0] || 'Estudiante',
+                            lastName: names.slice(1).join(' ') || 'Google',
+                            email: email,
+                            photoURL: user.photoURL || '',
+                            uid: user.uid || '',
+                            matricula: matricula,
+                            institution: inst,
+                            degreeType: 'lic',
+                            careerId: isUpbc ? 'upbc-mecatronica' : 'it-mecatronica',
+                            career: 'Ingeniería Mecatrónica'
+                        });
+                        return;
+                    }
+                } catch(err) {
+                    console.info('[stemOS Placement Google Auth] Popup notice:', err.code || err);
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = originalBtnHtml;
+                    }
+                    if (err.code === 'auth/popup-closed-by-user') {
+                        return;
+                    }
+                    openGoogleSignInModal();
+                    const notice = document.getElementById('google-popup-notice');
+                    if (notice) {
+                        notice.style.display = 'block';
+                        notice.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#d97706;"></i> Google SSO no pudo abrir ventana emergente (' + (err.code || 'popup-blocked') + '). Puedes usar el acceso directo abajo:';
+                    }
+                    return;
+                }
+            }
+
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = originalBtnHtml;
+            }
             openGoogleSignInModal();
         }
 
@@ -2134,7 +2204,14 @@
         // ── Start Quiz Handler ──
         document.getElementById('btn-start-quiz').addEventListener('click', () => {
             state.currentIndex = 0;
-            state.answers = new Array(32).fill(null);
+            if (window.STEMOS_PLACEMENT_TEST && typeof window.STEMOS_PLACEMENT_TEST.createRapidCheckSession === 'function') {
+                state.rapidSession = window.STEMOS_PLACEMENT_TEST.createRapidCheckSession(state.student);
+                state.activeQuestions = state.rapidSession.questions;
+                state.sessionId = state.rapidSession.sessionId;
+            } else {
+                state.activeQuestions = window.STEMOS_PLACEMENT_TEST.questions;
+            }
+            state.answers = new Array(state.activeQuestions.length).fill(null);
             switchScreen('screen-quiz');
             startTimer();
             renderQuestion(0);
@@ -2143,7 +2220,7 @@
         // ── Render Question ──
         function renderQuestion(index) {
             state.currentIndex = index;
-            const questions = window.STEMOS_PLACEMENT_TEST.questions;
+            const questions = state.activeQuestions || window.STEMOS_PLACEMENT_TEST.questions;
             const q = questions[index];
 
             // Progress Bar & Meta
@@ -2272,7 +2349,8 @@
 
         document.getElementById('btn-quiz-next').addEventListener('click', () => {
             if (window.speechSynthesis) window.speechSynthesis.cancel();
-            const total = window.STEMOS_PLACEMENT_TEST.questions.length;
+            const questions = state.activeQuestions || window.STEMOS_PLACEMENT_TEST.questions;
+            const total = questions.length;
             if (state.currentIndex < total - 1) {
                 renderQuestion(state.currentIndex + 1);
             } else {
@@ -2285,8 +2363,14 @@
             if (state.timerInterval) clearInterval(state.timerInterval);
             if (window.speechSynthesis) window.speechSynthesis.cancel();
 
-            const result = window.STEMOS_PLACEMENT_TEST.evaluateAnswers(state.answers);
+            const questions = state.activeQuestions || window.STEMOS_PLACEMENT_TEST.questions;
+            const result = window.STEMOS_PLACEMENT_TEST.evaluateAnswers(state.answers, questions);
             state.evaluationResult = result;
+
+            // Persist full student test history
+            if (window.STEMOS_PLACEMENT_TEST && typeof window.STEMOS_PLACEMENT_TEST.recordStudentPlacementAttempt === 'function') {
+                window.STEMOS_PLACEMENT_TEST.recordStudentPlacementAttempt(state.student, result, state.answers);
+            }
 
             // Persist to localStorage
             const payload = {

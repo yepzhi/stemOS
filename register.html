@@ -2423,28 +2423,116 @@
             }
         }
 
-        // ── 1-Click Institutional Google Access Handler ──
-        function handleGoogleSSORegistration() {
-            // Check if existing student profile exists in localStorage
-            let existing = null;
-            try {
-                const raw = localStorage.getItem('stemos_student_profile');
-                if (raw) existing = JSON.parse(raw);
-            } catch(e) {}
+        // Helper to ensure Firebase SDK and Auth are loaded
+        async function ensureFirebaseAuthReady() {
+            if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+                if (!firebase.apps || firebase.apps.length === 0) {
+                    if (window.STEMOS_FIREBASE_CONFIG && typeof window.STEMOS_FIREBASE_CONFIG.init === 'function') {
+                        window.STEMOS_FIREBASE_CONFIG.init();
+                    }
+                }
+                return true;
+            }
+            const startTime = Date.now();
+            while (Date.now() - startTime < 3500) {
+                await new Promise(r => setTimeout(r, 100));
+                if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+                    if (!firebase.apps || firebase.apps.length === 0) {
+                        if (window.STEMOS_FIREBASE_CONFIG && typeof window.STEMOS_FIREBASE_CONFIG.init === 'function') {
+                            window.STEMOS_FIREBASE_CONFIG.init();
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
 
-            if (existing && existing.email) {
-                applyGoogleProfileToWizard({
-                    fullName: existing.name || 'Carlos Ramírez Valenzuela',
-                    email: existing.email || 'carlos.ramirez@upbc.edu.mx',
-                    matricula: existing.matricula || '21050842',
-                    subsystem: existing.subsystem || 'upbc',
-                    campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
-                    degreeModality: existing.degreeModality || 'lic',
-                    careerId: existing.careerId || 'upbc-mecatronica'
-                });
-                return;
+        // ── 1-Click Institutional Google Access Handler (Real SSO) ──
+        async function handleGoogleSSORegistration() {
+            const ssoBtn = document.querySelector('.btn-google-sso');
+            const originalBtnHtml = ssoBtn ? ssoBtn.innerHTML : '';
+            if (ssoBtn) {
+                ssoBtn.disabled = true;
+                ssoBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="lbl-google-sso">Conectando con Google...</span>';
             }
 
+            const ready = await ensureFirebaseAuthReady();
+            if (ready && typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+                try {
+                    const auth = firebase.auth();
+                    const provider = new firebase.auth.GoogleAuthProvider();
+                    provider.setCustomParameters({ prompt: 'select_account' });
+
+                    const result = await auth.signInWithPopup(provider);
+                    const user = result && result.user;
+                    if (user) {
+                        const email = user.email || '';
+                        const fullName = user.displayName || (email ? email.split('@')[0] : 'Estudiante');
+                        const photoURL = user.photoURL || '';
+                        const uid = user.uid || '';
+
+                        const isUpbc = email.toLowerCase().includes('upbc.edu.mx') || email.toLowerCase().includes('upmxl.edu.mx');
+                        const isTecnm = email.toLowerCase().includes('tecnm.mx');
+                        const isUabc = email.toLowerCase().includes('uabc.edu.mx');
+                        const isDgeti = email.toLowerCase().includes('dgeti.sems.gob.mx') || email.toLowerCase().includes('cbtis');
+                        const matriculaMatch = email.match(/\d{6,10}/);
+                        const matricula = matriculaMatch ? matriculaMatch[0] : ('2026' + Math.floor(1000 + Math.random() * 9000));
+
+                        let sub = 'upbc';
+                        let campus = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
+                        let careerId = 'upbc-mecatronica';
+                        if (isTecnm) {
+                            sub = 'it';
+                            campus = 'TecNM Campus Saltillo';
+                            careerId = 'it-mecatronica';
+                        } else if (isUabc) {
+                            sub = 'univ-estatal';
+                            campus = 'Universidad Autónoma de Baja California (UABC)';
+                            careerId = 'uabc-bioingenieria';
+                        } else if (isDgeti) {
+                            sub = 'dgeti';
+                            campus = 'CBTIS / DGETI Baja California';
+                            careerId = 'cbtis-mecatronica';
+                        }
+
+                        applyGoogleProfileToWizard({
+                            fullName: fullName,
+                            email: email,
+                            photoURL: photoURL,
+                            uid: uid,
+                            matricula: matricula,
+                            subsystem: sub,
+                            campus: campus,
+                            degreeModality: 'lic',
+                            careerId: careerId,
+                            ssoProvider: 'google'
+                        });
+                        return;
+                    }
+                } catch (err) {
+                    console.info('[stemOS Google Auth] Popup result or error:', err.code || err);
+                    if (ssoBtn) {
+                        ssoBtn.disabled = false;
+                        ssoBtn.innerHTML = originalBtnHtml;
+                    }
+                    if (err.code === 'auth/popup-closed-by-user') {
+                        return;
+                    }
+                    openGoogleSignInModalRegister();
+                    const notice = document.getElementById('google-popup-notice');
+                    if (notice) {
+                        notice.style.display = 'block';
+                        notice.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#d97706;"></i> Google SSO no pudo abrir ventana emergente (' + (err.code || 'popup-blocked') + '). Puedes usar el acceso directo abajo:';
+                    }
+                    return;
+                }
+            }
+
+            if (ssoBtn) {
+                ssoBtn.disabled = false;
+                ssoBtn.innerHTML = originalBtnHtml;
+            }
             openGoogleSignInModalRegister();
         }
 
@@ -2530,9 +2618,10 @@
             });
         }
 
-        function triggerNativeGooglePopupRegister() {
+        async function triggerNativeGooglePopupRegister() {
             const notice = document.getElementById('google-popup-notice');
-            if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+            const ready = await ensureFirebaseAuthReady();
+            if (ready && typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
                 try {
                     const auth = firebase.auth();
                     const provider = new firebase.auth.GoogleAuthProvider();
@@ -2541,33 +2630,34 @@
                         notice.style.display = 'block';
                         notice.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Conectando con Google...';
                     }
-                    auth.signInWithPopup(provider).then((result) => {
-                        const user = result.user;
-                        const email = user.email || 'estudiante@upbc.edu.mx';
-                        const isUpbc = email.toLowerCase().includes('upbc.edu.mx');
-                        const isTecnm = email.toLowerCase().includes('tecnm.mx');
-                        const matriculaMatch = email.match(/\d{6,10}/);
-                        const matricula = matriculaMatch ? matriculaMatch[0] : '2105' + Math.floor(1000 + Math.random() * 9000);
+                    const result = await auth.signInWithPopup(provider);
+                    const user = result.user;
+                    const email = user.email || 'estudiante@upbc.edu.mx';
+                    const isUpbc = email.toLowerCase().includes('upbc.edu.mx');
+                    const isTecnm = email.toLowerCase().includes('tecnm.mx');
+                    const matriculaMatch = email.match(/\d{6,10}/);
+                    const matricula = matriculaMatch ? matriculaMatch[0] : '2105' + Math.floor(1000 + Math.random() * 9000);
 
-                        applyGoogleProfileToWizard({
-                            fullName: user.displayName || 'Google Student',
-                            email: email,
-                            matricula: matricula,
-                            subsystem: isUpbc ? 'upbc' : 'it',
-                            campus: isUpbc ? 'Universidad Politécnica de Baja California (UPBC Mexicali)' : 'TecNM Campus Saltillo',
-                            degreeModality: 'lic',
-                            careerId: isUpbc ? 'upbc-mecatronica' : 'it-mecatronica'
-                        });
-                    }).catch((err) => {
-                        console.info('[stemOS Google Auth] Fallback to direct institutional access:', err.code || err);
-                        if (notice) {
-                            notice.style.display = 'block';
-                            notice.innerHTML = '<i class="fa-solid fa-circle-info" style="color:#0284c7;"></i> Modo institucional activo. Selecciona tu cuenta arriba para acceder inmediatamente sin bloqueos de ventana emergente.';
-                        }
+                    applyGoogleProfileToWizard({
+                        fullName: user.displayName || 'Google Student',
+                        email: email,
+                        photoURL: user.photoURL || '',
+                        uid: user.uid || '',
+                        matricula: matricula,
+                        subsystem: isUpbc ? 'upbc' : 'it',
+                        campus: isUpbc ? 'Universidad Politécnica de Baja California (UPBC Mexicali)' : 'TecNM Campus Saltillo',
+                        degreeModality: 'lic',
+                        careerId: isUpbc ? 'upbc-mecatronica' : 'it-mecatronica',
+                        ssoProvider: 'google'
                     });
                     return;
-                } catch(e) {
-                    console.warn('[stemOS Google Auth] Handler warning:', e);
+                } catch(err) {
+                    console.info('[stemOS Google Auth] Fallback to direct institutional access:', err.code || err);
+                    if (notice) {
+                        notice.style.display = 'block';
+                        notice.innerHTML = '<i class="fa-solid fa-circle-info" style="color:#0284c7;"></i> Modo institucional activo. Selecciona tu cuenta arriba para acceder inmediatamente sin bloqueos de ventana emergente.';
+                    }
+                    return;
                 }
             }
             if (notice) {
@@ -2580,14 +2670,35 @@
             const inpName = document.getElementById('inp-fullname');
             const inpEmail = document.getElementById('inp-email');
             const inpMatricula = document.getElementById('inp-matricula');
-            if (inpName) inpName.value = profile.fullName;
-            if (inpEmail) inpEmail.value = profile.email;
+            if (inpName) {
+                inpName.value = profile.fullName;
+                inpName.setAttribute('readonly', 'true');
+                inpName.style.background = '#f1f5f9';
+            }
+            if (inpEmail) {
+                inpEmail.value = profile.email;
+                inpEmail.setAttribute('readonly', 'true');
+                inpEmail.style.background = '#f1f5f9';
+            }
             if (inpMatricula) inpMatricula.value = profile.matricula;
 
             wizardState.data.fullName = profile.fullName;
             wizardState.data.email = profile.email;
             wizardState.data.matricula = profile.matricula;
+            wizardState.data.photoURL = profile.photoURL || '';
+            wizardState.data.uid = profile.uid || '';
             wizardState.data.ssoProvider = 'google';
+
+            if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.setAuthUser === 'function') {
+                window.STEMOS_FIREBASE.setAuthUser({
+                    uid: profile.uid || ('google_' + profile.matricula),
+                    email: profile.email,
+                    displayName: profile.fullName,
+                    photoURL: profile.photoURL || '',
+                    role: 'student',
+                    provider: 'google'
+                });
+            }
 
             selectSubsystem(profile.subsystem);
             setDegreeModality(profile.degreeModality || 'lic');
@@ -2598,7 +2709,10 @@
             const ssoBtn = document.querySelector('.btn-google-sso');
             if (ssoBtn) {
                 ssoBtn.disabled = false;
-                ssoBtn.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> <span>Autenticado como ' + profile.email + '</span>';
+                const avatarIcon = profile.photoURL 
+                    ? `<img src="${profile.photoURL}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;margin-right:6px;" alt="Avatar">`
+                    : `<i class="fa-solid fa-circle-check" style="color:#10b981;margin-right:6px;"></i>`;
+                ssoBtn.innerHTML = `${avatarIcon} <span>Autenticado como ${profile.email}</span>`;
                 ssoBtn.style.background = '#ecfdf5';
                 ssoBtn.style.color = '#065f46';
                 ssoBtn.style.borderColor = '#10b981';
@@ -2946,7 +3060,12 @@
 
             // Persist to localStorage for app.html consumption
             const profile = {
+                id: d.folio || ('std_' + d.matricula),
+                uid: d.uid || '',
+                photoURL: d.photoURL || '',
+                authProvider: d.ssoProvider || 'manual',
                 name: d.fullName,
+                fullName: d.fullName,
                 email: d.email,
                 matricula: d.matricula,
                 campus: d.campus,
@@ -2974,6 +3093,8 @@
                 try {
                     window.STEMOS_FIREBASE.registerStudent({
                         studentId: d.folio || d.matricula,
+                        uid: d.uid || '',
+                        photoURL: d.photoURL || '',
                         matricula: d.matricula,
                         name: d.fullName,
                         email: d.email,
@@ -2995,6 +3116,8 @@
             localStorage.setItem('stemos_student_profile', JSON.stringify(profile));
             localStorage.setItem('stemos_active_career', activeCareerKey);
             localStorage.setItem('stemos_current_user', JSON.stringify({
+                uid: d.uid || '',
+                photoURL: d.photoURL || '',
                 name: d.fullName,
                 email: d.email,
                 role: 'student'

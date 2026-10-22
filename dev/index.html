@@ -468,22 +468,18 @@
       border-radius: 6px;
     }
 
-    /* 4 Pricing Cards Grid (Individual Plan + 3 Institutional Plans) */
+    /* 3 Pricing Cards Grid (Individual Plan + Volume Scale + Statewide Agreement) */
     .pricing-cards-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
       max-width: 1360px;
       margin: 0 auto 50px auto;
     }
-    @media (max-width: 1200px) {
+    @media (max-width: 1024px) {
       .pricing-cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    @media (max-width: 680px) {
-      .pricing-cards-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
+        max-width: 540px;
       }
     }
     .pricing-card.individual-plan {
@@ -1387,16 +1383,16 @@
         <!-- Primary Action Triggers -->
         <div class="supaste-hero-actions">
           <a href="/placement.html" class="supaste-btn-secondary" id="hero-btn-take-placement" style="border-color: rgba(16, 185, 129, 0.6); background: rgba(16, 185, 129, 0.18); color: #34d399; font-weight: 700;">
-            <i class="fa-solid fa-vial" style="color:#10b981;"></i>
-            <span data-i18n="btn_take_placement">Placement Test (30 min)</span>
+            <i class="fa-solid fa-bolt" style="color:#10b981;"></i>
+            <span data-i18n="btn_take_placement">RapidCheck Placement Test (30 min)</span>
           </a>
           <a href="/tracks.html" class="supaste-btn-primary">
-            <span data-i18n="btn_tracks">Explore 34 Tracks &amp;amp; Labs</span>
+            <span data-i18n="btn_tracks">Explore 34 Tracks &amp; Labs</span>
             <i class="fa-solid fa-arrow-right btn-arrow"></i>
           </a>
           <a href="#pricing-institutional-section" class="supaste-btn-secondary" id="hero-btn-view-pricing" style="border-color: rgba(56, 189, 248, 0.4); background: rgba(14, 165, 233, 0.12); color: #38bdf8;">
             <i class="fa-solid fa-file-invoice-dollar"></i>
-            <span data-i18n="btn_pricing">View Proposal &amp;amp; Pricing</span>
+            <span data-i18n="btn_pricing">View Proposal &amp; Pricing</span>
           </a>
         </div>
 
@@ -1405,7 +1401,7 @@
           <div class="dock-header">
             <span class="dock-badge-title">
               <i class="fa-solid fa-bolt" style="color:#f59e0b;"></i>
-              <span data-i18n="dock_title">Nearshoring Simulators &amp;amp; Labs:</span>
+              <span data-i18n="dock_title">Nearshoring Simulators &amp; Labs:</span>
             </span>
           </div>
           <div class="dock-pills-row">
@@ -1485,7 +1481,7 @@
           </div>
           <div class="window-right-tags">
             <span class="win-tag win-tag-cefr" id="hero-stage-level" data-i18n="stage_level">Level B1</span>
-            <span class="win-tag win-tag-conocer"><i class="fa-solid fa-award"></i> <span data-i18n="stage_std"><span data-i18n="stage_std">IEEE Standard</span></span></span>
+            <span class="win-tag win-tag-conocer"><i class="fa-solid fa-award"></i> <span data-i18n="stage_std">IEEE Standard</span></span>
           </div>
         </div>
 
@@ -1797,7 +1793,7 @@
               <span class="std-spec-pill">ICAO Doc 9835</span>
               <span class="std-spec-pill">MIL-STD-1553B</span>
             </div>
-            <p class="std-cluster-text" data-i18n="std_c4_desc">Safety-critical fly-by-wire software assurance (DAL A), standardized ICAO aviation radiotelephony phraseology, and critical geometric dimensioning and tolerancing (GD&amp;amp;T).</p>
+            <p class="std-cluster-text" data-i18n="std_c4_desc">Safety-critical fly-by-wire software assurance (DAL A), standardized ICAO aviation radiotelephony phraseology, and critical geometric dimensioning and tolerancing (GD&amp;T).</p>
           </div>
 
           <!-- Cluster 5: Process Safety & LOTO -->
@@ -1813,7 +1809,7 @@
               <span class="std-spec-pill">ASME B31.3 &amp; BPVC Sec VIII</span>
               <span class="std-spec-pill">ISA-88 / ISA-95</span>
             </div>
-            <p class="std-cluster-text" data-i18n="std_c5_desc">Lockout/Tagout (LOTO) procedures for zero-energy verification, arc flash boundary calculations, shift handovers, and rigorous P&amp;amp;ID schematic walkthroughs.</p>
+            <p class="std-cluster-text" data-i18n="std_c5_desc">Lockout/Tagout (LOTO) procedures for zero-energy verification, arc flash boundary calculations, shift handovers, and rigorous P&amp;ID schematic walkthroughs.</p>
           </div>
 
           <!-- Cluster 6: Nearshoring & Quality -->
@@ -2448,161 +2444,175 @@
         </div>
       </div>
 
-      <!-- 3 Pricing Cards Grid (Individual Plan + 2 Institutional Plans) -->
-      <div class="pricing-cards-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <!-- 3 Pricing Cards Grid (Individual Retail + Volume Scale Option + State Agreement) -->
+      <div class="pricing-cards-grid">
         
-        <!-- Individual Option: Suscripción Mensual Estudiante ($49 MXN/mes) -->
+        <!-- Individual Option: Menudeo Regular ($49 MXN por cuatrimestre / $150 MXN anual) -->
         <div class="pricing-card individual-plan">
-          <div class="pricing-card-badge-individual" data-i18n="plan_indiv_badge"><i class="fa-solid fa-bolt"></i> INSTANT ACCESS • $49 MXN / MO</div>
+          <div class="pricing-card-badge-individual" data-i18n="plan_indiv_badge"><i class="fa-solid fa-bolt"></i> TARIFA MENUDEO • $49 MXN / CUATRI</div>
           <div class="pricing-card-header">
-            <span class="pricing-plan-tag" data-i18n="plan_indiv_tag">Individual Plan • Online Payment</span>
-            <h3 class="pricing-plan-name" data-i18n="plan_individual_name">Individual Student</h3>
-            <p class="pricing-plan-summary" data-i18n="plan_individual_summary">Personal online access with instant activation. Register free now and unlock all benefits.</p>
+            <span class="pricing-plan-tag" data-i18n="plan_indiv_tag">Estudiante Individual • Menudeo</span>
+            <h3 class="pricing-plan-name" data-i18n="plan_individual_name">Individual (Menudeo)</h3>
+            <p class="pricing-plan-summary" data-i18n="plan_individual_summary">Acceso personal para estudiantes independientes o sin convenio institucional activo. Cursa 1 cuatrimestre completo.</p>
           </div>
 
           <div class="pricing-price-box">
             <div class="pricing-amount-row">
               <span class="pricing-currency">$</span>
               <span class="pricing-value">49</span>
-              <span class="pricing-term">MXN / mes</span>
+              <span class="pricing-term">MXN / cuatri</span>
             </div>
-            <div class="pricing-period" data-i18n="plan_indiv_period">Recurring monthly billing • Cancel anytime</div>
-            <div class="pricing-unit-metric" style="color:#34d399; background:rgba(16,185,129,0.1);" data-i18n="plan_indiv_metric"><i class="fa-solid fa-circle-check"></i> <span><strong>All benefits included</strong> • Card / SPEI / Apple Pay</span></div>
+            <div class="pricing-period" data-i18n="plan_indiv_period">Tarifa regular por cuatrimestre • Tarifa Anual: $150 MXN (3 cuatrimestres)</div>
+            <div class="pricing-unit-metric" style="color:#34d399; background:rgba(16,185,129,0.1);" data-i18n="plan_indiv_metric"><i class="fa-solid fa-circle-check"></i> <span><strong>$49 MXN / cuatri</strong> · Menudeo anual: $150 MXN</span></div>
           </div>
 
           <ul class="pricing-features-list">
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_indiv_f1"><strong>Full unlimited access</strong> to all 34 ESP Tracks + CEFR Leveling</span>
+              <span data-i18n="plan_indiv_f1"><strong>Acceso ilimitado 24/7</strong> a todos los 34 Tracks ESP + Nivelación MCER</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_indiv_f2"><strong>Feynman AI Socratic Tutor:</strong> interactive technical troubleshooting practice</span>
+              <span data-i18n="plan_indiv_f2"><strong>Tutor Socrático Feynman IA:</strong> resolución guiada de problemas técnicos industriales</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_indiv_f3"><strong>Instant online payment:</strong> Cards, SPEI Transfer, Apple Pay or Google Pay</span>
+              <span data-i18n="plan_indiv_f3"><strong>Pago en línea inmediato:</strong> Tarjetas, Transferencia SPEI, Apple Pay o Google Pay</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_indiv_f4"><strong>Plant simulators and labs:</strong> LOTO, GD&amp;T, P&amp;ID and virtual audits</span>
+              <span data-i18n="plan_indiv_f4"><strong>Simuladores técnicos de planta:</strong> LOTO, GD&amp;T, P&amp;ID y auditorías virtuales</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_indiv_f5"><strong>Digital Certificates &amp; Open Badges 3.0</strong> verifiable via QR code</span>
+              <span data-i18n="plan_indiv_f5"><strong>Certificados y Open Badges 3.0</strong> verificables con código QR y hash SHA-256</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_indiv_f6"><strong>Free registration now:</strong> create your account in 1 minute and start practicing</span>
+              <span data-i18n="plan_indiv_f6"><strong>RapidCheck Placement Test incluido:</strong> diagnóstico de nivel en 30 minutos</span>
             </li>
           </ul>
 
           <div class="pricing-card-action">
             <button type="button" class="btn-pricing-primary btn-trigger-payment" data-amount="49" onclick="if(window.openStemosPaymentModal){openStemosPaymentModal(49);}else{window.location.href='/register.html?plan=individual';}" style="width:100%; cursor:pointer; background:linear-gradient(135deg, #10b981 0%, #0284c7 100%); border:none; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
               <i class="fa-solid fa-credit-card"></i>
-              <span data-i18n="btn_pay_individual">Subscribe for $49 MXN/mo</span>
+              <span data-i18n="btn_pay_individual">Inscribirme por $49 MXN / cuatri</span>
             </button>
             <a href="/register.html?plan=individual" class="pricing-card-sublink" style="display:block; text-align:center; margin-top:10px; font-size:0.78rem; color:#94a3b8; text-decoration:none;">
-              <span data-i18n="sublink_register_free">No account yet? <strong>Register free here</strong></span>
+              <span data-i18n="sublink_register_free">¿Aún no tienes cuenta? <strong>Regístrate gratis aquí</strong></span>
             </a>
           </div>
         </div>
 
-        <!-- Option 1: Piloto Cuatrimestral (Recommended / Most Complete) -->
+        <!-- Option 2: Licencia Institucional Escalonada por Volumen (¿Cuántos estudiantes tienes?) -->
         <div class="pricing-card featured-plan">
-          <div class="pricing-card-badge-glow" data-i18n="plan_1_badge"><i class="fa-solid fa-star"></i> MOST RECOMMENDED • MOST COMPLETE</div>
+          <div class="pricing-card-badge-glow" data-i18n="plan_1_badge"><i class="fa-solid fa-star"></i> RECOMENDADO INSTITUCIONAL • ESCALA DE VOLUMEN</div>
           <div class="pricing-card-header">
-            <span class="pricing-plan-tag" data-i18n="plan_1_tag">Option 1 • Full Coverage</span>
-            <h3 class="pricing-plan-name" data-i18n="plan_1_name">4-Month Campus Pilot</h3>
-            <p class="pricing-plan-summary" data-i18n="plan_1_summary">Covers computer labs plus remote access from home or mobile at no extra cost.</p>
+            <span class="pricing-plan-tag" data-i18n="plan_1_tag">Opción 2 • ¿Cuántos estudiantes tienes?</span>
+            <h3 class="pricing-plan-name" data-i18n="plan_1_name">Licencia por Cohorte de Alumnos</h3>
+            <p class="pricing-plan-summary" data-i18n="plan_1_summary">El precio baja progresivamente de $49 hasta $29 MXN por cuatrimestre por estudiante ($99 MXN anual).</p>
           </div>
 
           <div class="pricing-price-box">
+            <!-- Dynamic Volume Interactive Readout -->
+            <div style="background:rgba(15,23,42,0.8); border:1px solid rgba(56,189,248,0.35); border-radius:14px; padding:12px; margin-bottom:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <span style="font-size:0.78rem; font-weight:700; color:#cbd5e1;"><i class="fa-solid fa-users" style="color:#38bdf8;"></i> Matrícula de Alumnos:</span>
+                <span id="cohort-students-display" style="font-family:'JetBrains Mono',monospace; font-weight:800; font-size:1.05rem; color:#38bdf8;">1,000 Alumnos</span>
+              </div>
+              <input type="range" id="cohort-slider" min="100" max="3000" step="50" value="1000" oninput="updateCohortPricing(this.value)" style="width:100%; accent-color:#0ea5e9; cursor:pointer;">
+              <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:#94a3b8; font-weight:600; margin-top:2px;">
+                <span>100 alumnos</span>
+                <span>1,000 alumnos</span>
+                <span>2,000+ alumnos</span>
+              </div>
+            </div>
+
             <div class="pricing-amount-row">
               <span class="pricing-currency">$</span>
-              <span class="pricing-value">95,000</span>
-              <span class="pricing-term">MXN + IVA</span>
+              <span class="pricing-value" id="cohort-price-val">32</span>
+              <span class="pricing-term">MXN / cuatri / alumno</span>
             </div>
-            <div class="pricing-period" data-i18n="plan_1_period">per 4-month term</div>
-            <div class="pricing-unit-metric" data-i18n="plan_1_metric"><i class="fa-solid fa-calculator" style="color:#10b981;"></i> <span>Equivalent to <strong>~$47 MXN per student</strong> for up to 2,000 students</span></div>
+            <div class="pricing-period" id="cohort-annual-period">Costo Anual: $105 MXN por alumno (3 cuatrimestres)</div>
+            <div class="pricing-unit-metric" id="cohort-metric-pill" data-i18n="plan_1_metric"><i class="fa-solid fa-calculator" style="color:#10b981;"></i> <span>Ahorro institucional de <strong>35%</strong> respecto a tarifa menudeo</span></div>
           </div>
 
           <ul class="pricing-features-list">
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_1_f1"><strong>Unlimited access</strong> for up to 2,000 enrolled students</span>
+              <span><strong>Tarifa decreciente hasta $29 MXN / cuatri</strong> ($99 MXN anual mínimo) para 2,000+ alumnos</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_1_f2"><strong>Covers on-campus labs</strong> across all computer centers</span>
+              <span><strong>Cero costo para el estudiante:</strong> sin compra forzada de libros de texto</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_1_f3"><strong>Mobile and remote access:</strong> practice from home or phone at zero extra fee</span>
+              <span><strong>Acceso total 24/7 en campus y desde casa o celular</strong> para toda la matrícula</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_1_f4"><strong>Faculty dashboard:</strong> real-time group tracking for English teachers</span>
+              <span><strong>Panel Docente en tiempo real:</strong> analítica de grupos, calificaciones MCER y horas invertidas</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_1_f5"><strong>Zero student cost:</strong> no mandatory textbook purchases</span>
+              <span><strong>Una sola factura institucional</strong> para la Universidad o Facultad</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_1_f6"><strong>34 ESP Tracks + CEFR Leveling</strong> and nearshoring simulators included</span>
+              <span><strong>RapidCheck Placement masivo:</strong> diagnóstico simultáneo y rotativo de toda la cohorte</span>
             </li>
           </ul>
 
           <div class="pricing-card-action">
-            <a href="#contact-institutional" class="btn-pricing-primary" onclick="selectInstitutionalPlan('piloto')" data-i18n="btn_plan_1"><i class="fa-solid fa-file-signature"></i> <span>Choose 4-Month Pilot</span></a>
+            <a href="#contact-institutional" class="btn-pricing-primary" id="btn-request-cohort-quote" onclick="selectInstitutionalPlan('volumen')" data-i18n="btn_plan_1"><i class="fa-solid fa-file-signature"></i> <span>Solicitar Cotización por Volumen</span></a>
           </div>
         </div>
 
-        <!-- Option 2: Licencia Anual de Campus (Best Value) -->
+        <!-- Option 3: Convenio Red Estatal / Multicampus ($29 MXN / cuatri por alumno) -->
         <div class="pricing-card">
-          <div class="pricing-card-badge-normal" data-i18n="plan_2_badge"><i class="fa-solid fa-shield-halved"></i> BEST ANNUAL VALUE • FROZEN PRICE</div>
+          <div class="pricing-card-badge-normal" data-i18n="plan_2_badge"><i class="fa-solid fa-shield-halved"></i> TARIFA MÍNIMA ANUAL • RED Y ESTADOS</div>
           <div class="pricing-card-header">
-            <span class="pricing-plan-tag" data-i18n="plan_2_tag">Option 2 • Annual Guarantee</span>
-            <h3 class="pricing-plan-name" data-i18n="plan_2_name">Annual Campus License</h3>
-            <p class="pricing-plan-summary" data-i18n="plan_2_summary">Comprehensive institutional plan for 3 four-month terms with priority faculty support.</p>
+            <span class="pricing-plan-tag" data-i18n="plan_2_tag">Opción 3 • Red Estatal &amp; Gran Matrícula</span>
+            <h3 class="pricing-plan-name" data-i18n="plan_2_name">Convenio Red Estatal / Campus</h3>
+            <p class="pricing-plan-summary" data-i18n="plan_2_summary">Convenio macro para subsistemas tecnológicos (TecNM, UT, Estatales) con 2,000+ estudiantes.</p>
           </div>
 
           <div class="pricing-price-box">
             <div class="pricing-amount-row">
               <span class="pricing-currency">$</span>
-              <span class="pricing-value">240,000</span>
-              <span class="pricing-term">MXN + IVA</span>
+              <span class="pricing-value">29</span>
+              <span class="pricing-term">MXN / cuatri / alumno</span>
             </div>
-            <div class="pricing-period" data-i18n="plan_2_period">for 3 terms ($80,000 per term)</div>
-            <div class="pricing-unit-metric" style="color:#38bdf8; background:rgba(56,189,248,0.1);" data-i18n="plan_2_metric"><i class="fa-solid fa-piggy-bank"></i> <span><strong>$45,000 MXN savings</strong> compared to individual terms</span></div>
+            <div class="pricing-period" data-i18n="plan_2_period">Mínimo Anual: $99 MXN por estudiante al año (3 cuatrimestres)</div>
+            <div class="pricing-unit-metric" style="color:#38bdf8; background:rgba(56,189,248,0.1);" data-i18n="plan_2_metric"><i class="fa-solid fa-piggy-bank"></i> <span><strong>Ahorro del 40%:</strong> de $150 menudeo baja a $99 MXN anual</span></div>
           </div>
 
           <ul class="pricing-features-list">
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_2_f1"><strong>Everything in Option 1</strong> (Campus + Home/Mobile for up to 2,000 students)</span>
+              <span data-i18n="plan_2_f1"><strong>Tarifa institucional mínima de $29 MXN / cuatri</strong> ($99 MXN / año por alumno)</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_2_f2"><strong>Price locked for one full year</strong> (3 academic terms)</span>
+              <span data-i18n="plan_2_f2"><strong>Precio congelado durante todo el ciclo académico</strong> (3 cuatrimestres)</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_2_f3"><strong>Priority technical &amp; pedagogical support</strong> for teaching faculty</span>
+              <span data-i18n="plan_2_f3"><strong>Nodo Mini PC Campus Edge local opcional:</strong> laboratorios operables 100% sin internet</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_2_f4"><strong>Continuous content updates</strong> by career track and industrial standards</span>
+              <span data-i18n="plan_2_f4"><strong>Soporte curricular prioritario CACEI/ABET</strong> y capacitación a academia de inglés</span>
             </li>
             <li>
               <i class="fa-solid fa-check"></i>
-              <span data-i18n="plan_2_f5"><strong>Institutional Certificates &amp; Open Badges 3.0</strong> with SHA-256 hash</span>
+              <span data-i18n="plan_2_f5"><strong>Certificados Institucionales con hash SHA-256</strong> y portal de validación oficial</span>
             </li>
           </ul>
 
           <div class="pricing-card-action">
-            <a href="#contact-institutional" class="btn-pricing-secondary" onclick="selectInstitutionalPlan('anual')" data-i18n="btn_plan_2"><i class="fa-solid fa-building-columns"></i> <span>Request Annual License</span></a>
+            <a href="#contact-institutional" class="btn-pricing-secondary" onclick="selectInstitutionalPlan('anual')" data-i18n="btn_plan_2"><i class="fa-solid fa-building-columns"></i> <span>Solicitar Convenio Red Estatal</span></a>
           </div>
         </div>
 
@@ -2710,8 +2720,9 @@
 <footer class="supaste-footer">
     <div class="supaste-footer-inner">
       <div class="footer-brand-col">
-        <div class="footer-logo">
+        <div class="footer-logo" style="display:flex; align-items:center; gap:10px;">
           <span class="footer-brand-name" style="font-size: 1.35rem; font-weight: 800; letter-spacing: -0.03em;"><span class="brand-stem">stem</span><span class="brand-os">OS</span></span>
+          <span class="stemos-version-badge" style="font-size:0.75rem; font-family:'JetBrains Mono',monospace; color:#38bdf8; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3); padding:2px 8px; border-radius:999px; font-weight:700;">v1.1.1</span>
         </div>
         <p class="footer-desc" data-i18n="footer_brand_desc">Advanced English for Specific Purposes (ESP) platform built for semiconductor manufacturing, electromobility, aerospace, and high-precision strategic technologies.</p>
         <div class="footer-standards-chips">
@@ -2742,12 +2753,70 @@
       </div>
     </div>
     <div class="footer-bottom-row">
-      <span data-i18n="footer_copy">© 2026 stemOS • All rights reserved.</span>
+      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+        <span data-i18n="footer_copy">© 2026 stemOS • All rights reserved. • v1.1.1</span>
+        <button type="button" id="stemos-version-btn" class="stemos-version-badge-btn" onclick="openVersionDiagnosticsModal()" title="stemOS LXP Core Engine v1.1.1 — Click for System Health" style="display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; font-family:'JetBrains Mono',monospace; color:#38bdf8; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.3); padding:3px 10px; border-radius:999px; font-weight:700; cursor:pointer; transition:all 0.2s ease;">
+          <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#22c55e; box-shadow:0 0 8px #22c55e;"></span>
+          v1.1.1
+        </button>
+      </div>
       <div style="display:flex; align-items:center; gap:16px;">
         <a href="/privacy.html" style="color:#94a3b8; text-decoration:none; font-size:0.82rem; transition:color 0.2s;" onmouseenter="this.style.color='#38bdf8'" onmouseleave="this.style.color='#94a3b8'" data-i18n="footer_privacy_terms">Políticas de Privacidad y Términos</a>
       </div>
     </div>
   </footer>
+
+  <!-- ── Interactive System Version Diagnostics Modal (Phase 89) ── -->
+  <div class="stemos-diag-modal-overlay" id="stemos-version-modal" style="display:none; position:fixed; inset:0; z-index:999999; background:rgba(3,7,18,0.85); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); align-items:center; justify-content:center; padding:20px;" aria-hidden="true">
+    <div class="stemos-diag-card" style="background:linear-gradient(135deg, rgba(15,23,42,0.96) 0%, rgba(30,41,59,0.96) 100%); border:1px solid rgba(56,189,248,0.35); border-radius:24px; padding:32px; max-width:540px; width:100%; box-shadow:0 24px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1); color:#f8fafc; font-family:var(--font-primary, system-ui, sans-serif); position:relative;">
+      <button type="button" onclick="closeVersionDiagnosticsModal()" style="position:absolute; top:20px; right:20px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#94a3b8; width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1.1rem; transition:all 0.2s;" onmouseenter="this.style.color='#fff'; this.style.borderColor='#38bdf8'" onmouseleave="this.style.color='#94a3b8'; this.style.borderColor='rgba(255,255,255,0.15)'">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+        <span style="display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:14px; background:linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); box-shadow:0 8px 20px rgba(14,165,233,0.35);">
+          <i class="fa-solid fa-microchip" style="color:#ffffff; font-size:1.3rem;"></i>
+        </span>
+        <div>
+          <div style="font-size:1.25rem; font-weight:800; color:#ffffff; letter-spacing:-0.02em;">stemOS Enterprise LXP</div>
+          <div style="font-size:0.82rem; color:#38bdf8; font-family:'JetBrains Mono',monospace; font-weight:700;">Build Release v1.1.1</div>
+        </div>
+      </div>
+      <p style="font-size:0.88rem; color:#cbd5e1; line-height:1.6; margin:0 0 20px 0;">
+        Plataforma oficial de Inglés Técnico Industrial (ESP) para semiconductores, movilidad eléctrica y manufactura aeroespacial en América del Norte (T-MEC / CHIPS Act).
+      </p>
+      <div style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:10px; font-size:0.82rem; font-family:'JetBrains Mono',monospace;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#94a3b8;">Release Version:</span>
+          <span style="color:#38bdf8; font-weight:700;">v1.1.1</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#94a3b8;">Service Worker Cache:</span>
+          <span style="color:#22c55e; font-weight:700;">v6.8.0-enterprise-sync</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#94a3b8;">Offline Engine:</span>
+          <span style="color:#38bdf8; font-weight:700;">IndexedDB Multi-Strategy</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#94a3b8;">Acoustic Phonetics:</span>
+          <span style="color:#38bdf8; font-weight:700;">Web Audio FFT (Phase 87)</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#94a3b8;">RUM Telemetry:</span>
+          <span style="color:#38bdf8; font-weight:700;">W3C CWV Observer (Phase 86)</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#94a3b8;">Edge Infrastructure:</span>
+          <span style="color:#f59e0b; font-weight:700;">Cloudflare Workers Global CDN</span>
+        </div>
+      </div>
+      <div style="margin-top:24px; display:flex; justify-content:flex-end;">
+        <button type="button" onclick="closeVersionDiagnosticsModal()" style="padding:10px 22px; border-radius:12px; background:linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); color:#ffffff; font-weight:700; border:none; cursor:pointer; font-size:0.88rem; box-shadow:0 4px 14px rgba(14,165,233,0.4);">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- ── Interactive Zoom Demo Scheduling Modal ── -->
   <div class="stemos-zoom-modal-overlay" id="stemos-zoom-modal" style="display:none;" aria-hidden="true">
@@ -2818,7 +2887,7 @@
   <script src="/content/career_paths.js?v=2.0.0" defer></script>
   <script src="/content/mcer_tracks.js?v=1.0.0" defer></script>
   <script src="/content/placement_test.js?v=1.0.0" defer></script>
-  <script src="/content/stemos_payments.js?v=1.0.0" defer></script>
+  <script src="/content/stemos_payments.js?v=1.0.0"></script>
   <script src="/content/stemos_tts.js?v=1.2.0" defer></script>
   <script src="/world-map.js?v=2.0.0" defer></script>
   <script src="/dev.js?v=5.12.0" defer></script>
@@ -2914,6 +2983,63 @@
   </script>
 
   <script>
+    // ─── INTERACTIVE COHORT VOLUME CALCULATOR ───
+    function updateCohortPricing(val) {
+      val = parseInt(val, 10) || 1000;
+      var priceVal = document.getElementById('cohort-price-val');
+      var studentsDisplay = document.getElementById('cohort-students-display');
+      var annualPeriod = document.getElementById('cohort-annual-period');
+      var metricPill = document.getElementById('cohort-metric-pill');
+      var btnQuote = document.getElementById('btn-request-cohort-quote');
+
+      var perTerm = 49;
+      var annual = 150;
+      var discountPct = 0;
+
+      if (val >= 2000) {
+        perTerm = 29;
+        annual = 99;
+        discountPct = 40;
+      } else if (val >= 1000) {
+        perTerm = 32;
+        annual = 105;
+        discountPct = 35;
+      } else if (val >= 500) {
+        perTerm = 36;
+        annual = 115;
+        discountPct = 26;
+      } else if (val >= 250) {
+        perTerm = 42;
+        annual = 129;
+        discountPct = 14;
+      } else {
+        perTerm = 49;
+        annual = 150;
+        discountPct = 0;
+      }
+
+      if (studentsDisplay) {
+        studentsDisplay.textContent = val.toLocaleString('es-MX') + ' Alumnos';
+      }
+      if (priceVal) {
+        priceVal.textContent = perTerm;
+      }
+      if (annualPeriod) {
+        annualPeriod.textContent = 'Costo Anual: $' + annual + ' MXN por alumno (3 cuatrimestres)';
+      }
+      if (metricPill) {
+        if (discountPct > 0) {
+          metricPill.innerHTML = '<i class="fa-solid fa-calculator" style="color:#10b981;"></i> <span>Ahorro institucional de <strong>' + discountPct + '%</strong> respecto a tarifa menudeo</span>';
+        } else {
+          metricPill.innerHTML = '<i class="fa-solid fa-calculator" style="color:#10b981;"></i> <span>Tarifa base regular por cuatrimestre</span>';
+        }
+      }
+      if (btnQuote) {
+        btnQuote.innerHTML = '<i class="fa-solid fa-file-signature"></i> <span>Solicitar Cotización para ' + val.toLocaleString('es-MX') + ' Alumnos ($' + perTerm + ' MXN/cuatri)</span>';
+      }
+    }
+    window.updateCohortPricing = updateCohortPricing;
+
     // ─── INTERACTIVE LAB CALCULATOR ───
     function updateLabCalc(val) {
       val = parseInt(val, 10) || 0;
@@ -2983,6 +3109,25 @@
       if (success) success.style.display = 'block';
     }
 
+    // ─── VERSION DIAGNOSTICS CONTROLS (Phase 89) ───
+    function openVersionDiagnosticsModal() {
+      var modal = document.getElementById('stemos-version-modal');
+      if (modal) {
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+      }
+    }
+    function closeVersionDiagnosticsModal() {
+      var modal = document.getElementById('stemos-version-modal');
+      if (modal) {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+      }
+    }
+
+    window.STEMOS_VERSION = 'v1.1.1';
+    window.openVersionDiagnosticsModal = openVersionDiagnosticsModal;
+    window.closeVersionDiagnosticsModal = closeVersionDiagnosticsModal;
     window.updateLabCalc = updateLabCalc;
     window.openZoomDemoModal = openZoomDemoModal;
     window.closeZoomDemoModal = closeZoomDemoModal;
@@ -2998,7 +3143,7 @@
         nav_academic: 'Academic',
         nav_student_journey: 'Student CX',
         nav_catalog: 'ESP Catalog',
-        nav_placement: 'Placement',
+        nav_placement: 'RapidCheck',
         nav_pricing: 'Pricing',
         btn_signup_nav: 'Sign Up',
         mob_nav_portals: '<i class="fa-solid fa-graduation-cap"></i> Academic Portals',
@@ -3013,7 +3158,7 @@
         mob_nav_academic: 'Academic System by Career (25)',
         mob_nav_standards: 'Standards vs. Academia',
         hero_subtitle: '<strong>34 specialized industry tracks</strong> (ESP) and CEFR leveling tracks (A1 to C1) &mdash; engineered for semiconductor manufacturing, aerospace avionics, industrial robotics, automotive engineering, medical devices, global logistics, quality &amp; EHS, data centers, and nearshoring. Aligned with IEEE, SEMI, ISO, IATF, FDA, OSHA, and USMCA standards.',
-        btn_take_placement: 'Placement Test (30 min)',
+        btn_take_placement: 'RapidCheck Placement Test (30 min)',
         btn_tracks: 'Explore 34 Tracks &amp; Labs',
         btn_pricing: 'View Proposal &amp; Pricing',
         btn_zoom_nav: 'Schedule 15m Zoom',
@@ -3023,7 +3168,7 @@
         dock_standards: 'Standards vs. Academia',
         dock_pricing: 'Proposal &amp; Pricing',
         dock_catalog: '34 Tracks &amp; Labs ↗',
-        dock_placement: 'Placement Test A1–C1',
+        dock_placement: 'RapidCheck Leveling (30m)',
         dock_lxp: 'Campus LXP 3D',
         stat_lbl_tracks: 'ESP Tracks',
         stat_lbl_modules: 'Modules',
@@ -3175,31 +3320,31 @@
         plan_indiv_f6: '<strong>Free registration now:</strong> create your account in 1 minute and start practicing',
         btn_pay_individual: 'Subscribe for $49 MXN/mo',
         sublink_register_free: 'No account yet? <strong>Register free here</strong>',
-        plan_1_badge: '<i class="fa-solid fa-star"></i> MOST RECOMMENDED &bull; MOST COMPLETE',
-        plan_1_tag: 'Option 1 &bull; Full Coverage',
-        plan_1_name: '4-Month Campus Pilot',
-        plan_1_summary: 'Covers computer labs plus remote access from home or mobile at no extra cost.',
-        plan_1_period: 'per 4-month term',
-        plan_1_metric: '<i class="fa-solid fa-calculator" style="color:#10b981;"></i> <span>Equivalent to <strong>~$47 MXN per student</strong> for up to 2,000 students</span>',
-        plan_1_f1: '<strong>Unlimited access</strong> for up to 2,000 enrolled students',
-        plan_1_f2: '<strong>Covers on-campus labs</strong> across all computer centers',
-        plan_1_f3: '<strong>Mobile and remote access:</strong> practice from home or phone at zero extra fee',
+        plan_1_badge: '<i class="fa-solid fa-star"></i> INSTITUTIONAL RECOMMENDED &bull; VOLUME SCALE',
+        plan_1_tag: 'Option 2 &bull; How many students do you have?',
+        plan_1_name: 'Student Cohort Volume License',
+        plan_1_summary: 'Price scales progressively from $49 down to $29 MXN per term per student ($99 MXN annual).',
+        plan_1_period: 'scales from $49 down to $29 MXN / term / student',
+        plan_1_metric: '<i class="fa-solid fa-calculator" style="color:#10b981;"></i> <span>Institutional savings up to <strong>40%</strong> vs retail</span>',
+        plan_1_f1: '<strong>Tiered rate down to $29 MXN / term</strong> ($99 MXN annual minimum) for 2,000+ students',
+        plan_1_f2: '<strong>Zero student cost:</strong> no mandatory textbook purchases',
+        plan_1_f3: '<strong>Unlimited 24/7 access on campus and remote:</strong> practice from home or phone at zero extra fee',
         plan_1_f4: '<strong>Faculty dashboard:</strong> real-time group tracking for English teachers',
-        plan_1_f5: '<strong>Zero student cost:</strong> no mandatory textbook purchases',
-        plan_1_f6: '<strong>34 ESP Tracks + CEFR Leveling</strong> and nearshoring simulators included',
-        btn_plan_1: '<i class="fa-solid fa-file-signature"></i> <span>Choose 4-Month Pilot</span>',
-        plan_2_badge: '<i class="fa-solid fa-shield-halved"></i> BEST ANNUAL VALUE &bull; FROZEN PRICE',
-        plan_2_tag: 'Option 2 &bull; Annual Guarantee',
-        plan_2_name: 'Annual Campus License',
-        plan_2_summary: 'Comprehensive institutional plan for 3 four-month terms with priority faculty support.',
-        plan_2_period: 'for 3 terms ($80,000 per term)',
-        plan_2_metric: '<i class="fa-solid fa-piggy-bank"></i> <span><strong>$45,000 MXN savings</strong> compared to individual terms</span>',
-        plan_2_f1: '<strong>Everything in Option 1</strong> (Campus + Home/Mobile for up to 2,000 students)',
-        plan_2_f2: '<strong>Price locked for one full year</strong> (3 academic terms)',
+        plan_1_f5: '<strong>Single institutional invoice</strong> for the university faculty',
+        plan_1_f6: '<strong>RapidCheck Placement diagnostic</strong> for the entire student cohort',
+        btn_plan_1: '<i class="fa-solid fa-file-signature"></i> <span>Request Volume Quote</span>',
+        plan_2_badge: '<i class="fa-solid fa-shield-halved"></i> MINIMUM ANNUAL TARIFF &bull; NETWORK & STATES',
+        plan_2_tag: 'Option 3 &bull; State Network & Large Enrollment',
+        plan_2_name: 'Statewide Network / Campus Agreement',
+        plan_2_summary: 'Consortium agreement for technological university systems with 2,000+ students.',
+        plan_2_period: 'Annual Minimum: $99 MXN per student per year (3 terms, $29 MXN / term)',
+        plan_2_metric: '<i class="fa-solid fa-piggy-bank"></i> <span><strong>40% Savings:</strong> drops from $150 retail to $99 MXN annual</span>',
+        plan_2_f1: '<strong>Minimum institutional rate of $29 MXN / term</strong> ($99 MXN / year per student)',
+        plan_2_f2: '<strong>Price locked for full multi-year cycle</strong>',
         plan_2_f3: '<strong>Priority technical &amp; pedagogical support</strong> for teaching faculty',
         plan_2_f4: '<strong>Continuous content updates</strong> by career track and industrial standards',
         plan_2_f5: '<strong>Institutional Certificates &amp; Open Badges 3.0</strong> with SHA-256 hash',
-        btn_plan_2: '<i class="fa-solid fa-building-columns"></i> <span>Request Annual License</span>',
+        btn_plan_2: '<i class="fa-solid fa-building-columns"></i> <span>Request Network Agreement</span>',
         inv_badge: '<i class="fa-solid fa-boxes-stacked"></i> FORMAL CURRICULAR INVENTORY &bull; DGUTyP, CACEI &amp; USMCA ALIGNED',
         inv_title: 'Quantitative Summary of the stemOS Academic &amp; Technological Scope',
         inv_desc: 'Comprehensive curricular audit for computer centers, engineering laboratories, and university faculties.',
@@ -3242,7 +3387,7 @@
         cookie_accept: 'Accept &amp; Continue',
         cookie_more: 'Learn more',
         footer_link_cache: 'Refresh PWA Cache',
-        footer_copy: '&copy; 2026 stemOS &bull; All rights reserved.'
+        footer_copy: '&copy; 2026 stemOS &bull; All rights reserved. &bull; v1.1.1'
       },
       es: {
         head_title: 'stemOS — El Sistema Operativo de Inglés Técnico para la Industria de Alta Tecnología',
@@ -3251,7 +3396,7 @@
         nav_academic: 'Académico',
         nav_student_journey: 'Ruta CX',
         nav_catalog: 'Catálogo ESP',
-        nav_placement: 'Placement',
+        nav_placement: 'RapidCheck',
         nav_pricing: 'Precios',
         btn_signup_nav: 'Regístrate',
         mob_nav_portals: '<i class="fa-solid fa-graduation-cap"></i> Portales Académicos',
@@ -3266,7 +3411,7 @@
         mob_nav_academic: 'Sistema Académico por Carrera (25)',
         mob_nav_standards: 'Estándares vs. Academia',
         hero_subtitle: '<strong>34 tracks especializados de industria</strong> (ESP) y tracks de nivelación MCER (A1 a C1) &mdash; diseñados para fabricación de semiconductores, aviónica aeroespacial, robótica industrial, ingeniería automotriz, dispositivos médicos, logística internacional, calidad y EHS, centros de datos y nearshoring. Alineados con estándares IEEE, SEMI, ISO, IATF, FDA, OSHA y T-MEC.',
-        btn_take_placement: 'Test de Ubicación (30 min)',
+        btn_take_placement: 'RapidCheck Placement Test (30 min)',
         btn_tracks: 'Explorar 34 Tracks &amp; Labs',
         btn_pricing: 'Ver Propuesta &amp; Precios',
         btn_zoom_nav: 'Agendar Zoom 15m',
@@ -3276,7 +3421,7 @@
         dock_standards: 'Estándares vs. Academia',
         dock_pricing: 'Propuesta &amp; Precios',
         dock_catalog: '34 Tracks &amp; Labs ↗',
-        dock_placement: 'Placement Test A1–C1',
+        dock_placement: 'RapidCheck Diagnóstico (30m)',
         dock_lxp: 'Campus LXP 3D',
         stat_lbl_tracks: 'Tracks ESP',
         stat_lbl_modules: 'Módulos',
@@ -3428,31 +3573,31 @@
         plan_indiv_f6: '<strong>Registro gratis ahora:</strong> crea tu cuenta en 1 minuto y empieza a practicar',
         btn_pay_individual: 'Suscribirme por $49/mes',
         sublink_register_free: '¿Aún no tienes cuenta? <strong>Regístrate gratis aquí</strong>',
-        plan_1_badge: '<i class="fa-solid fa-star"></i> MÁS RECOMENDADA &bull; LA MÁS COMPLETA',
-        plan_1_tag: 'Opción 1 &bull; Cobertura Total',
-        plan_1_name: 'Piloto Cuatrimestral',
-        plan_1_summary: 'Cubre los laboratorios y además el acceso desde casa o celular sin costo extra.',
-        plan_1_period: 'por cuatrimestre',
-        plan_1_metric: '<i class="fa-solid fa-calculator" style="color:#10b981;"></i> <span>Equivale a <strong>~$47 pesos por alumno</strong> para hasta 2,000 alumnos</span>',
-        plan_1_f1: '<strong>Acceso ilimitado</strong> para hasta 2,000 alumnos matriculados',
-        plan_1_f2: '<strong>Cubre los laboratorios</strong> del centro de cómputo en campus',
-        plan_1_f3: '<strong>Acceso móvil y remoto:</strong> práctica desde casa o celular sin costo extra',
-        plan_1_f4: '<strong>Panel docente de inglés:</strong> seguimiento de práctica en vivo por grupo',
-        plan_1_f5: '<strong>Cero cobro a los alumnos:</strong> sin compra obligatoria de libros',
-        plan_1_f6: '<strong>34 Tracks ESP + Nivelación MCER</strong> y simuladores de nearshoring incluidos',
-        btn_plan_1: '<i class="fa-solid fa-file-signature"></i> <span>Elegir Piloto Cuatrimestral</span>',
-        plan_2_badge: '<i class="fa-solid fa-shield-halved"></i> MEJOR VALOR ANUAL &bull; PRECIO CONGELADO',
-        plan_2_tag: 'Opción 2 &bull; Garantía Anual',
-        plan_2_name: 'Licencia Anual de Campus',
-        plan_2_summary: 'Plan integral institucional para 3 cuatrimestres con soporte docente prioritario.',
-        plan_2_period: 'por 3 cuatrimestres ($80,000 por cuatrimestre)',
-        plan_2_metric: '<i class="fa-solid fa-piggy-bank"></i> <span><strong>Ahorro de $45,000 MXN</strong> respecto a cuatrimestres individuales</span>',
-        plan_2_f1: '<strong>Todo lo de la Opción 1</strong> (Campus + Casa/Celular para hasta 2,000 alumnos)',
-        plan_2_f2: '<strong>Precio congelado por un año completo</strong> (3 cuatrimestres)',
+        plan_1_badge: '<i class="fa-solid fa-star"></i> RECOMENDADO INSTITUCIONAL &bull; ESCALA DE VOLUMEN',
+        plan_1_tag: 'Opción 2 &bull; ¿Cuántos estudiantes tienes?',
+        plan_1_name: 'Licencia por Cohorte de Alumnos',
+        plan_1_summary: 'El precio baja progresivamente de $49 hasta $29 MXN por cuatrimestre por estudiante ($99 MXN anual).',
+        plan_1_period: 'escala de $49 a $29 MXN / cuatri / alumno',
+        plan_1_metric: '<i class="fa-solid fa-calculator" style="color:#10b981;"></i> <span>Ahorro institucional de hasta <strong>40%</strong> respecto a tarifa menudeo</span>',
+        plan_1_f1: '<strong>Tarifa decreciente hasta $29 MXN / cuatri</strong> ($99 MXN anual mínimo) para 2,000+ alumnos',
+        plan_1_f2: '<strong>Cero costo para el estudiante:</strong> sin compra forzada de libros de texto',
+        plan_1_f3: '<strong>Acceso total 24/7 en campus y desde casa o celular</strong> para toda la matrícula',
+        plan_1_f4: '<strong>Panel Docente en tiempo real:</strong> analítica de grupos, calificaciones MCER y horas invertidas',
+        plan_1_f5: '<strong>Una sola factura institucional</strong> para la Universidad o Facultad',
+        plan_1_f6: '<strong>RapidCheck Placement masivo:</strong> diagnóstico simultáneo y rotativo de toda la cohorte',
+        btn_plan_1: '<i class="fa-solid fa-file-signature"></i> <span>Solicitar Cotización por Volumen</span>',
+        plan_2_badge: '<i class="fa-solid fa-shield-halved"></i> TARIFA MÍNIMA ANUAL &bull; RED Y ESTADOS',
+        plan_2_tag: 'Opción 3 &bull; Red Estatal &amp; Gran Matrícula',
+        plan_2_name: 'Convenio Red Estatal / Campus',
+        plan_2_summary: 'Convenio macro para subsistemas tecnológicos (TecNM, UT, Estatales) con 2,000+ estudiantes.',
+        plan_2_period: 'Mínimo Anual: $99 MXN por estudiante al año (3 cuatrimestres, $29 MXN / cuatri)',
+        plan_2_metric: '<i class="fa-solid fa-piggy-bank"></i> <span><strong>Ahorro del 40%:</strong> de $150 menudeo baja a $99 MXN anual</span>',
+        plan_2_f1: '<strong>Tarifa institucional mínima de $29 MXN / cuatri</strong> ($99 MXN / año por alumno)',
+        plan_2_f2: '<strong>Precio congelado para ciclo multianual</strong>',
         plan_2_f3: '<strong>Soporte técnico y pedagógico prioritario</strong> para la plantilla docente',
         plan_2_f4: '<strong>Actualización continua de contenidos</strong> por carrera y normas industriales',
         plan_2_f5: '<strong>Emisión de certificados y Open Badges 3.0</strong> institucionales con hash SHA-256',
-        btn_plan_2: '<i class="fa-solid fa-building-columns"></i> <span>Solicitar Licencia Anual</span>',
+        btn_plan_2: '<i class="fa-solid fa-building-columns"></i> <span>Solicitar Convenio de Red</span>',
         inv_badge: '<i class="fa-solid fa-boxes-stacked"></i> INVENTARIO CURRICULAR FORMAL &bull; ALINEACIÓN DGUTyP, CACEI &amp; T-MEC',
         inv_title: 'Resumen Cuantitativo del Acervo Académico y Tecnológico stemOS',
         inv_desc: 'Auditoría curricular exhaustiva para acreditación de laboratorios, centros de cómputo y facultades de ingeniería.',
@@ -3495,7 +3640,7 @@
         cookie_accept: 'Aceptar y Continuar',
         cookie_more: 'Conocer más',
         footer_link_cache: 'Actualizar Caché PWA',
-        footer_copy: '&copy; 2026 stemOS &bull; Todos los derechos reservados.'
+        footer_copy: '&copy; 2026 stemOS &bull; Todos los derechos reservados. &bull; v1.1.1'
       }
     };
 

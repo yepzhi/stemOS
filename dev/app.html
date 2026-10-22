@@ -157,10 +157,6 @@
             </nav>
 
             <div class="ed-sidebar-bottom">
-                <a href="/dev.html" class="ed-rail-btn" title="Explorador Dev Studio" target="_blank" rel="noopener">
-                    <i class="fa-solid fa-code"></i>
-                    <span class="ed-rail-tooltip">Dev Studio Hub</span>
-                </a>
                 <button class="ed-rail-btn" id="btn-lock-backdoor" title="Bloquear / Salir al Coming Soon">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     <span class="ed-rail-tooltip">Bloquear / Salir</span>
@@ -200,17 +196,15 @@
             <div class="ed-top-header-wrapper">
                 <header class="ed-top-header">
                     <div class="ed-header-left">
-                        <div class="ed-brand-badge" id="dashboard-brand-logo" title="stemOS LXP">
-                            <span class="ed-brand-logo-icon">st</span>
-                            <div class="ed-brand-text">
-                                <span class="ed-brand-title">stem<span class="ed-brand-accent">OS</span></span>
-                                <span class="ed-brand-sub">Technical English for STEM & Industry</span>
-                            </div>
+                        <div class="ed-brand-badge" id="dashboard-brand-logo" title="stemOS LXP" style="cursor:default;">
+                            <span class="ed-brand-title" style="font-size:1.35rem; font-weight:800; letter-spacing:-0.03em;">stem<span class="ed-brand-accent">OS</span></span>
                         </div>
-                        <div class="ed-student-greeting" id="student-greeting-wrapper" style="cursor:pointer;" title="View Student Credentials & Profile">
-                            Hello <strong id="header-student-name">Diana</strong>
-                            <span class="ed-student-subsystem-pill" id="header-student-subsystem" style="font-size:0.75rem; background:rgba(14,165,233,0.15); color:var(--sky-400); border:1px solid rgba(14,165,233,0.3); padding:2px 8px; border-radius:999px; margin-left:6px; font-weight:600;">TecNM</span>
-                            <select id="header-campus-federation-select" class="campus-select-pill" title="Campus Universitario Federado" style="font-size:0.72rem; background:rgba(15,23,42,0.6); color:#7dd3fc; border:1px solid rgba(14,165,233,0.35); padding:2px 8px; border-radius:8px; margin-left:4px; font-weight:600; cursor:pointer;" onchange="if(window.switchInstitutionalCampus){switchInstitutionalCampus(this.value);}">
+                        <div class="ed-student-greeting" id="student-greeting-wrapper" style="cursor:pointer;" title="Ver Perfil y Credenciales del Estudiante">
+                            Hello <strong id="header-student-name">Estudiante</strong>
+                            <span class="ed-student-subsystem-pill" id="header-student-subsystem" style="font-size:0.75rem; background:rgba(14,165,233,0.15); color:var(--sky-400); border:1px solid rgba(14,165,233,0.3); padding:2px 8px; border-radius:999px; margin-left:6px; font-weight:600;">stemOS</span>
+                            <span class="ed-student-campus-badge" id="header-student-campus-badge" style="font-size:0.75rem; background:rgba(15,23,42,0.6); color:#7dd3fc; border:1px solid rgba(14,165,233,0.35); padding:2px 8px; border-radius:8px; margin-left:6px; font-weight:600;"><i class="fa-solid fa-building-columns" style="font-size:0.68rem; margin-right:4px;"></i>TecNM Tijuana (ITT)</span>
+                            <button type="button" id="btn-header-google-login" onclick="window.signInWithGoogleApp()" class="btn-header-google-pill" style="display:inline-flex; align-items:center; gap:6px; background:#ffffff; color:#0f172a; border:1px solid #cbd5e1; padding:3px 10px; border-radius:999px; font-size:0.75rem; font-weight:700; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.08); margin-left:8px;" title="Iniciar sesión con Google"><svg width="13" height="13" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg> Google Sign-In</button>
+                            <select id="header-campus-federation-select" class="campus-select-pill" style="display:none;" tabindex="-1" aria-hidden="true">
                                 <option value="tecnm-tijuana">TecNM Tijuana (ITT)</option>
                                 <option value="tecnm-saltillo">TecNM Saltillo (ITS)</option>
                                 <option value="utt-tijuana">UTT Tijuana</option>
@@ -225,14 +219,14 @@
                         <!-- CEFR Level Indicator & Diagnostic Passport Trigger (Fase 66) -->
                         <button type="button" class="ed-level-indicator" id="header-cefr-passport-hud" title="Ver Mi Pasaporte Diagnóstico MCER" onclick="if(window.openDiagnosticPassportModal){window.openDiagnosticPassportModal();}" style="cursor:pointer; background:rgba(2,132,199,0.08); border-color:rgba(2,132,199,0.3); color:#0284c7; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
                             <i class="fa-solid fa-passport" style="color:#38bdf8;"></i>
-                            <span id="header-cefr-passport-text">Passport: CEFR B1 · 180.0h</span>
+                            <span id="header-cefr-passport-text">Passport: Pending Placement</span>
                         </button>
 
                         <!-- Curricular XP & Engineering Rank HUD (Fase 53) -->
                         <div class="ed-level-indicator" id="header-xp-hud" title="Curricular XP & Engineering Level" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.3); color:#d97706; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
                             <i class="fa-solid fa-bolt" style="color:#f59e0b;"></i>
-                            <span id="header-xp-val">3,450 XP</span>
-                            <span id="header-rank-badge" style="background:#f59e0b; color:#fff; border-radius:999px; padding:1px 7px; font-size:0.68rem; font-weight:800;">L5 Senior</span>
+                            <span id="header-xp-val">0 XP</span>
+                            <span id="header-rank-badge" style="background:#0284c7; color:#fff; border-radius:999px; padding:1px 7px; font-size:0.68rem; font-weight:800;">L1 Intern</span>
                         </div>
 
                         <!-- Mini PC Edge & Cloud Firestore Concurrency Indicator -->
@@ -261,7 +255,7 @@
 
                         <!-- User Profile Avatar -->
                         <div class="ed-user-avatar" id="header-user-avatar" title="Perfil del Estudiante">
-                            <div class="avatar-initials-mini">AY</div>
+                            <div class="avatar-initials-mini">ST</div>
                             <i class="fa-solid fa-circle-check user-check-icon"></i>
                         </div>
                     </div>
@@ -280,7 +274,7 @@
                             <i class="fa-solid fa-flag ed-kpi-icon"></i>
                         </div>
                         <div class="ed-kpi-info-col">
-                            <div class="ed-kpi-value" id="kpi-course-completion">81%</div>
+                            <div class="ed-kpi-value" id="kpi-course-completion">0%</div>
                             <div class="ed-kpi-label">Course Completion</div>
                         </div>
                     </div>
@@ -291,7 +285,7 @@
                             <i class="fa-solid fa-chart-line ed-kpi-icon"></i>
                         </div>
                         <div class="ed-kpi-info-col">
-                            <div class="ed-kpi-value" id="kpi-avg-score">84%</div>
+                            <div class="ed-kpi-value" id="kpi-avg-score">--</div>
                             <div class="ed-kpi-label">Average Test Score</div>
                         </div>
                     </div>
@@ -302,8 +296,8 @@
                             <i class="fa-solid fa-hourglass-half ed-kpi-icon"></i>
                         </div>
                         <div class="ed-kpi-info-col">
-                            <div class="ed-kpi-value"><span id="kpi-time-hours">41</span> : <span
-                                    id="kpi-time-mins">53</span> <span class="ed-kpi-unit">HR MIN</span></div>
+                            <div class="ed-kpi-value"><span id="kpi-time-hours">00</span> : <span
+                                    id="kpi-time-mins">00</span> <span class="ed-kpi-unit">HR MIN</span></div>
                             <div class="ed-kpi-label">Time on Task</div>
                         </div>
                     </div>
@@ -314,8 +308,8 @@
                             <i class="fa-solid fa-bolt ed-kpi-icon" style="color:#f59e0b;"></i>
                         </div>
                         <div class="ed-kpi-info-col">
-                            <div class="ed-kpi-value"><span id="kpi-total-xp">3,450</span> <span class="ed-kpi-unit">XP</span></div>
-                            <div class="ed-kpi-label" id="kpi-student-rank">L5 · Senior Engineer</div>
+                            <div class="ed-kpi-value"><span id="kpi-total-xp">0</span> <span class="ed-kpi-unit">XP</span></div>
+                            <div class="ed-kpi-label" id="kpi-student-rank">L1 · Intern</div>
                         </div>
                     </div>
                 </div>
@@ -1501,9 +1495,78 @@
                     Cerrar
                 </button>
                 <a href="placement.html" class="btn btn-primary" style="padding:10px 22px; border-radius:10px; background:linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); color:#ffffff; font-weight:800; text-decoration:none; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 12px rgba(2,132,199,0.3);">
-                    <i class="fa-solid fa-play"></i> Realizar Placement Test
+                    <i class="fa-solid fa-play"></i> Realizar RapidCheck (30 min)
                 </a>
             </div>
+        </div>
+    </dialog>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         MODAL: STUDENT HELP & ONBOARDING GUIDE
+         ══════════════════════════════════════════════════════════════ -->
+    <dialog class="modal-dialog" id="modal-student-help" style="max-width:680px; width:92%; padding:0; border:none; border-radius:22px; background:#ffffff; color:#0f172a; box-shadow:0 25px 60px rgba(15,23,42,0.3); overflow:hidden;">
+        <div style="background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); padding:22px 26px; color:#ffffff; display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+                <span style="display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.2); padding:3px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:0.04em;">
+                    <i class="fa-solid fa-circle-question"></i> Centro de Ayuda &amp; Guía stemOS
+                </span>
+                <h3 style="margin:8px 0 2px 0; font-size:1.35rem; font-weight:800; color:#ffffff;">¿Cómo funciona tu Campus stemOS?</h3>
+                <p style="margin:0; font-size:0.86rem; color:rgba(255,255,255,0.85);">Guía rápida para cursar tu ruta técnica y certificar tus competencias industriales.</p>
+            </div>
+            <button type="button" onclick="window.closeStudentHelpModal()" style="background:rgba(255,255,255,0.15); border:none; color:#ffffff; width:34px; height:34px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1.1rem; transition:background 0.2s;" onmouseenter="this.style.background='rgba(255,255,255,0.3)'" onmouseleave="this.style.background='rgba(255,255,255,0.15)'">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div style="padding:24px 26px; max-height:68vh; overflow-y:auto;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px;">
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:16px;">
+                    <div style="width:36px; height:36px; border-radius:10px; background:#e0f2fe; color:#0284c7; display:flex; align-items:center; justify-content:center; font-size:1.1rem; margin-bottom:10px;">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                    </div>
+                    <h4 style="margin:0 0 6px 0; font-size:0.95rem; font-weight:800; color:#0f172a;">1. RapidCheck, Placement Test</h4>
+                    <p style="margin:0; font-size:0.82rem; color:#475569; line-height:1.45;">Evaluación diagnóstica de 30 min con banco rotativo de reactivos anti-trampas. Asigna tu nivel MCER (A1 a B2) y calibra la dificultad de vocabulario.</p>
+                </div>
+
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:16px;">
+                    <div style="width:36px; height:36px; border-radius:10px; background:#ecfdf5; color:#059669; display:flex; align-items:center; justify-content:center; font-size:1.1rem; margin-bottom:10px;">
+                        <i class="fa-solid fa-route"></i>
+                    </div>
+                    <h4 style="margin:0 0 6px 0; font-size:0.95rem; font-weight:800; color:#0f172a;">2. Ruta Intercalada (60h)</h4>
+                    <p style="margin:0; font-size:0.82rem; color:#475569; line-height:1.45;">16 estaciones canónicas que siguen el ciclo: <em>Teoría Técnica &rarr; Inglés B1 &rarr; Simulador (LOTO, GD&amp;T, P&amp;ID) &rarr; Hito Evaluativo</em>.</p>
+                </div>
+
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:16px;">
+                    <div style="width:36px; height:36px; border-radius:10px; background:#fef3c7; color:#d97706; display:flex; align-items:center; justify-content:center; font-size:1.1rem; margin-bottom:10px;">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h4 style="margin:0 0 6px 0; font-size:0.95rem; font-weight:800; color:#0f172a;">3. Voice Crucible &amp; Feynman IA</h4>
+                    <p style="margin:0; font-size:0.82rem; color:#475569; line-height:1.45;">Simulador socrático de audio para entrevistas técnicas, plantas industriales y resolución de fallas en vivo con medición VU de decibeles.</p>
+                </div>
+
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:16px;">
+                    <div style="width:36px; height:36px; border-radius:10px; background:#f3e8ff; color:#7c3aed; display:flex; align-items:center; justify-content:center; font-size:1.1rem; margin-bottom:10px;">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <h4 style="margin:0 0 6px 0; font-size:0.95rem; font-weight:800; color:#0f172a;">4. Credenciales W3C &amp; Badges</h4>
+                    <p style="margin:0; font-size:0.82rem; color:#475569; line-height:1.45;">Emisión de Open Badges 3.0 con folio institucional CACEI y firma criptográfica SHA-256 para añadir directamente a tu LinkedIn.</p>
+                </div>
+            </div>
+
+            <div style="background:rgba(2,132,199,0.06); border:1px solid rgba(2,132,199,0.25); border-radius:14px; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+                <div style="font-size:0.84rem; color:#0f172a;">
+                    <strong>¿Aún no calibras tu nivel?</strong> Toma tu RapidCheck Placement Test ahora mismo.
+                </div>
+                <a href="placement.html" class="btn btn-primary" style="padding:8px 16px; font-size:0.82rem; font-weight:800; border-radius:8px; background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#fff; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                    <i class="fa-solid fa-play"></i> Iniciar RapidCheck
+                </a>
+            </div>
+        </div>
+
+        <div style="padding:14px 26px; background:#f8fafc; border-top:1px solid #e2e8f0; display:flex; justify-content:flex-end; gap:10px;">
+            <button type="button" class="btn btn-secondary" onclick="window.closeStudentHelpModal()" style="padding:8px 20px; border-radius:8px; border:1px solid #cbd5e1; background:#ffffff; color:#475569; font-weight:700; cursor:pointer;">
+                Entendido
+            </button>
         </div>
     </dialog>
 
@@ -1534,7 +1597,7 @@
                 <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 16px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
                     <div>
                         <div style="font-size:0.75rem; color:#64748b; text-transform:uppercase; font-weight:700;">Estudiante Registrado</div>
-                        <div style="font-size:1.05rem; font-weight:800; color:#0f172a;" id="passport-student-name">Diana Laura Morales</div>
+                        <div style="font-size:1.05rem; font-weight:800; color:#0f172a;" id="passport-student-name">Estudiante stemOS</div>
                         <div style="font-size:0.75rem; color:#0284c7; font-family:var(--font-mono);" id="passport-matricula-val">22050144 · Ing. Mecatrónica</div>
                     </div>
                     <div style="text-align:right;">
@@ -1815,7 +1878,7 @@
 
                     <div style="text-align:center; padding:12px 0;">
                         <p style="font-size:0.88rem; color:#64748b; margin-bottom:4px;">Se hace constar que el(la) estudiante:</p>
-                        <h3 id="diploma-student-name" style="font-size:1.6rem; font-weight:900; color:#0f172a; margin:0; letter-spacing:-0.02em;">Diana Laura Morales</h3>
+                        <h3 id="diploma-student-name" style="font-size:1.6rem; font-weight:900; color:#0f172a; margin:0; letter-spacing:-0.02em;">Estudiante stemOS</h3>
                         <p id="diploma-student-id" style="font-family:var(--font-mono); font-size:0.82rem; color:#0284c7; font-weight:700; margin-top:2px;">Matrícula 22050144 &bull; Ing. Mecatrónica</p>
                         
                         <div style="margin:16px auto; max-width:540px; background:#ffffff; border:1px solid #bae6fd; border-radius:10px; padding:12px 18px;">
@@ -1917,7 +1980,7 @@
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; text-align:left; background:rgba(15,23,42,0.8); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:12px; margin-bottom:14px; font-size:0.82rem;">
                     <div>
                         <span style="color:#64748b; font-size:0.72rem; text-transform:uppercase; font-weight:700;">Estudiante:</span>
-                        <div id="vc-modal-student-name" style="color:#f8fafc; font-weight:700;">Diana Laura Morales</div>
+                        <div id="vc-modal-student-name" style="color:#f8fafc; font-weight:700;">Estudiante stemOS</div>
                     </div>
                     <div>
                         <span style="color:#64748b; font-size:0.72rem; text-transform:uppercase; font-weight:700;">Matrícula / Folio:</span>
@@ -2102,8 +2165,8 @@
                         <i class="fa-solid fa-id-card-clip"></i>
                     </div>
                     <div>
-                        <h3 style="margin:0; font-size:1.15rem; font-weight:800; color:#f8fafc;" id="sp-modal-name">Diana Laura Morales</h3>
-                        <div style="font-size:0.78rem; color:#94a3b8;" id="sp-modal-matricula">Matrícula: 22050144</div>
+                        <h3 style="margin:0; font-size:1.15rem; font-weight:800; color:#f8fafc;" id="sp-modal-name">Estudiante stemOS</h3>
+                        <div style="font-size:0.78rem; color:#94a3b8;" id="sp-modal-matricula">Matrícula: Pendiente</div>
                     </div>
                 </div>
                 <button type="button" onclick="closeStudentProfileModal()" style="background:transparent; border:none; color:#94a3b8; font-size:1.2rem; cursor:pointer;">
@@ -2119,15 +2182,15 @@
                 </div>
                 <div style="background:rgba(3,7,18,0.5); padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
                     <div style="font-size:0.72rem; color:#64748b; text-transform:uppercase; font-weight:700;">Industrial Hub</div>
-                    <div style="font-size:0.86rem; color:#f1f5f9; font-weight:700; margin-top:2px;" id="sp-modal-hub">Saltillo (Nearshoring Hub)</div>
+                    <div style="font-size:0.86rem; color:#f1f5f9; font-weight:700; margin-top:2px;" id="sp-modal-hub">Nearshoring Hub</div>
                 </div>
                 <div style="background:rgba(3,7,18,0.5); padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
                     <div style="font-size:0.72rem; color:#64748b; text-transform:uppercase; font-weight:700;">Enrolled Cohort / Class</div>
-                    <div style="font-size:0.86rem; color:#10b981; font-weight:700; margin-top:2px;" id="sp-modal-class">Mecatrónica 4°A [STEM-MECA-A7X3K2]</div>
+                    <div style="font-size:0.86rem; color:#10b981; font-weight:700; margin-top:2px;" id="sp-modal-class">Registro General</div>
                 </div>
                 <div style="background:rgba(3,7,18,0.5); padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
                     <div style="font-size:0.72rem; color:#64748b; text-transform:uppercase; font-weight:700;">Curricular Level & XP</div>
-                    <div style="font-size:0.86rem; color:#f59e0b; font-weight:700; margin-top:2px;" id="sp-modal-rank">L5 · Senior Engineer (3,450 XP)</div>
+                    <div style="font-size:0.86rem; color:#f59e0b; font-weight:700; margin-top:2px;" id="sp-modal-rank">L1 · Intern (0 XP)</div>
                 </div>
             </div>
 
@@ -2188,14 +2251,24 @@
                 </div>
             </div>
 
-            <!-- Modal Actions -->
-            <div style="display:flex; gap:10px; justify-content:flex-end;">
-                <a href="/register.html" class="btn btn-secondary btn-sm" style="font-size:0.8rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
-                    <i class="fa-solid fa-arrow-right-arrow-left"></i> Change Track / Re-Enroll
-                </a>
-                <button type="button" class="btn btn-primary btn-sm" onclick="closeStudentProfileModal()" style="font-size:0.8rem;">
-                    Close Pass
-                </button>
+            <!-- Modal Actions with Real Google Sign-In and Sign Out -->
+            <div style="display:flex; gap:10px; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                <div style="display:flex; gap:8px;">
+                    <button type="button" onclick="window.signInWithGoogleApp()" class="btn btn-sm" style="background:#ffffff; color:#0f172a; font-weight:700; font-size:0.8rem; border:1px solid #cbd5e1; display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:8px; cursor:pointer;">
+                        <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg> Iniciar con Google
+                    </button>
+                    <button type="button" onclick="window.signOutStudentApp()" class="btn btn-secondary btn-sm" style="font-size:0.8rem; color:#f87171; border-color:rgba(239,68,68,0.3); display:inline-flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
+                    </button>
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <a href="/register.html" class="btn btn-secondary btn-sm" style="font-size:0.8rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-user-plus"></i> Registro
+                    </a>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="closeStudentProfileModal()" style="font-size:0.8rem;">
+                        Cerrar
+                    </button>
+                </div>
             </div>
         </div>
     </div>

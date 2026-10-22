@@ -2963,7 +2963,12 @@ function setupSupasteInteractions(tracks, phrases) {
   const heroStageOpenBtn = document.getElementById('hero-stage-open-btn');
   if (heroStageOpenBtn) {
     heroStageOpenBtn.addEventListener('click', () => {
-      openDrawer('semiconductors', 'semiconductors_mod_01', tracks);
+      const backdrop = document.getElementById('drawer-backdrop');
+      if (backdrop && typeof openDrawer === 'function') {
+        openDrawer('semiconductors', 'semiconductors_mod_01', tracks);
+      } else {
+        window.location.href = '/tracks.html?track=semiconductors&mod=semiconductors_mod_01';
+      }
     });
   }
 
@@ -12265,6 +12270,18 @@ window.runPublicVerification = function() {
             window.openPublicVerifierModal(verifyCode);
           }
         }, 1200);
+      });
+    }
+
+    const trackParam = params.get('track');
+    const modParam = params.get('mod');
+    if (trackParam && modParam) {
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          if (typeof openDrawer === 'function' && typeof tracks !== 'undefined') {
+            openDrawer(trackParam, modParam, tracks);
+          }
+        }, 700);
       });
     }
   } catch (_) {}

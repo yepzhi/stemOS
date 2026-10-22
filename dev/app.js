@@ -2005,6 +2005,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const edViews = document.querySelectorAll('.ed-view');
 
     function switchDashboardView(viewName) {
+        // Map alias view names to actual section IDs
+        let targetId = `view-${viewName}`;
+        let scrollToCatalog = false;
+
+        if (viewName === 'dashboard' || viewName === 'all-units') {
+            targetId = 'view-all-units';
+        } else if (viewName === 'tracks') {
+            targetId = 'view-all-units';
+            scrollToCatalog = true;
+        } else if (viewName === 'lab') {
+            targetId = 'view-glossary';
+        } else if (viewName === 'eval') {
+            targetId = 'view-all-units';
+            setTimeout(() => {
+                if (typeof window.openDiagnosticPassportModal === 'function') {
+                    window.openDiagnosticPassportModal();
+                } else if (typeof window.openMcerLevelExamModal === 'function') {
+                    window.openMcerLevelExamModal('B1');
+                }
+            }, 100);
+        }
+
         // Hide all views
         edViews.forEach(v => {
             v.style.display = 'none';
@@ -2012,10 +2034,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Show target view
-        const targetView = document.getElementById(`view-${viewName}`);
+        const targetView = document.getElementById(targetId);
         if (targetView) {
             targetView.style.display = '';
             targetView.classList.add('active');
+            if (scrollToCatalog) {
+                setTimeout(() => {
+                    const catalogEl = document.getElementById('catalog-tracks-section') || document.querySelector('.ed-catalog-container') || document.querySelector('.ed-tracks-grid');
+                    if (catalogEl) {
+                        catalogEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 100);
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
 
         // Update active state on sidebar buttons
@@ -2602,10 +2634,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const kpiCourse = document.getElementById('kpi-course-completion');
         if (kpiCourse) kpiCourse.textContent = `${courseCompletion}%`;
 
-        // Average Test Score — simulated based on completion
-        const avgScore = completedReadings > 0 ? Math.min(100, Math.round(75 + (completedReadings / totalReadings) * 20)) : 0;
+        // Average Test Score — based on actual scores or --
+        const avgScore = completedReadings > 0 ? Math.min(100, Math.round(75 + (completedReadings / totalReadings) * 20)) : '--';
         const kpiAvg = document.getElementById('kpi-avg-score');
-        if (kpiAvg) kpiAvg.textContent = `${avgScore}%`;
+        if (kpiAvg) kpiAvg.textContent = (avgScore === '--') ? '--' : `${avgScore}%`;
 
         // Time on Task — estimated: each completed reading = ~10 minutes
         const totalMinutes = completedReadings * 10;
@@ -2646,7 +2678,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.updateStudentXPHUD = function(xp) {
-        let currentXP = (typeof xp === 'number') ? xp : parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+        let currentXP = (typeof xp === 'number') ? xp : parseInt(localStorage.getItem('stemos_student_xp') || '0', 10);
         // If active career has saved progress, compute real progress XP
         const activeCareerId = localStorage.getItem('stemos_active_career') || 'it-mecatronica';
         try {
@@ -2691,45 +2723,49 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (e) {}
 
-        if (!profile) {
-            profile = {
-                name: 'Diana Laura Morales',
-                matricula: '22050144',
-                careerId: localStorage.getItem('stemos_active_career') || 'it-mecatronica',
-                careerName: 'Ingeniería Mecatrónica',
-                subsystem: 'it',
-                system: 'it',
-                hub: 'Saltillo',
-                className: 'Mecatrónica 4°A — Matutino',
-                classCode: 'STEM-MECA-A7X3K2'
-            };
-        }
-
         const elName = document.getElementById('header-student-name');
-        if (elName && profile.name) {
-            const firstName = profile.name.split(' ')[0] || profile.name;
-            elName.textContent = firstName;
-        }
-
         const elSubsystem = document.getElementById('header-student-subsystem');
-        if (elSubsystem) {
+        const elCampus = document.getElementById('header-student-campus-badge');
+        const elAvatarInitials = document.querySelector('.avatar-initials-mini');
+        const btnGoogleLogin = document.getElementById('btn-header-google-login');
+
+        if (profile && (profile.name || profile.fullName)) {
+            const fullName = profile.name || profile.fullName;
+            const firstName = fullName.split(' ')[0] || fullName;
+            if (elName) elName.textContent = firstName;
+
             const sys = (profile.subsystem || profile.system || 'it').toLowerCase();
             const sysLabels = {
                 'it': 'TecNM',
                 'tecnm': 'TecNM',
+                'upbc': 'UPBC',
                 'ut': 'UT',
                 'estatal': 'Univ. Estatal',
                 'univ-estatal': 'Univ. Estatal',
                 'latam': 'LATAM'
             };
-            elSubsystem.textContent = sysLabels[sys] || 'TecNM';
-        }
+            if (elSubsystem) elSubsystem.textContent = sysLabels[sys] || 'TecNM';
 
-        const elAvatarInitials = document.querySelector('.avatar-initials-mini');
-        if (elAvatarInitials && profile.name) {
-            const parts = profile.name.trim().split(/\s+/);
-            const initials = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : parts[0].substring(0, 2).toUpperCase();
-            elAvatarInitials.textContent = initials;
+            if (elCampus && profile.campus) {
+                elCampus.innerHTML = `<i class="fa-solid fa-building-columns" style="font-size:0.68rem; margin-right:4px;"></i>${profile.campus}`;
+            }
+
+            if (elAvatarInitials) {
+                const parts = fullName.trim().split(/\s+/);
+                const initials = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : parts[0].substring(0, 2).toUpperCase();
+                elAvatarInitials.textContent = initials;
+            }
+
+            if (btnGoogleLogin) btnGoogleLogin.style.display = 'none';
+        } else {
+            // Clean un-mocked student state
+            if (elName) elName.textContent = 'Estudiante';
+            if (elSubsystem) elSubsystem.textContent = 'stemOS';
+            if (elCampus) {
+                elCampus.innerHTML = `<i class="fa-solid fa-building-columns" style="font-size:0.68rem; margin-right:4px;"></i>TecNM Tijuana (ITT)`;
+            }
+            if (elAvatarInitials) elAvatarInitials.textContent = 'ST';
+            if (btnGoogleLogin) btnGoogleLogin.style.display = 'inline-flex';
         }
 
         // Set up click on greeting or avatar
@@ -2740,6 +2776,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const elAvatar = document.getElementById('header-user-avatar');
         if (elAvatar) {
             elAvatar.onclick = window.openStudentProfileModal;
+        }
+        const elBtnHelp = document.getElementById('btn-header-help');
+        if (elBtnHelp) {
+            elBtnHelp.onclick = window.openStudentHelpModal;
+        }
+    };
+
+    window.openStudentHelpModal = function() {
+        const modal = document.getElementById('modal-student-help');
+        if (modal && typeof modal.showModal === 'function') {
+            modal.showModal();
+        } else if (modal) {
+            modal.setAttribute('open', '');
+        }
+    };
+
+    window.closeStudentHelpModal = function() {
+        const modal = document.getElementById('modal-student-help');
+        if (modal && typeof modal.close === 'function') {
+            modal.close();
+        } else if (modal) {
+            modal.removeAttribute('open');
         }
     };
 
@@ -2755,7 +2813,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch(e) {}
 
         const activeCareerId = localStorage.getItem('stemos_active_career') || 'it-mecatronica';
-        const currentXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+        const currentXP = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10);
         const level = window.getStudentLevelForXP(currentXP);
 
         const nameEl = document.getElementById('sp-modal-name');
@@ -2767,8 +2825,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const rankEl = document.getElementById('sp-modal-rank');
         const connEl = document.getElementById('sp-modal-conn');
 
-        if (nameEl) nameEl.textContent = (profile && profile.name) ? profile.name : 'Diana Laura Morales';
-        if (matriculaEl) matriculaEl.textContent = (profile && (profile.matricula || profile.folio)) ? (profile.matricula || profile.folio) : '22050144';
+        const studentFullName = (profile && (profile.name || profile.fullName)) ? (profile.name || profile.fullName) : 'Estudiante stemOS';
+        const studentMatricula = (profile && (profile.matricula || profile.folio)) ? (profile.matricula || profile.folio) : 'Pendiente';
+
+        if (nameEl) nameEl.textContent = studentFullName;
+        if (matriculaEl) matriculaEl.textContent = `Matrícula: ${studentMatricula}`;
         if (careerEl) {
             let cName = (profile && profile.careerName) ? profile.careerName : 'Ingeniería Mecatrónica';
             if (window.STEMOS_CAREER_TRACKS && window.STEMOS_CAREER_TRACKS.CAREERS) {
@@ -2777,10 +2838,157 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             careerEl.textContent = cName;
         }
-        if (hubEl) hubEl.textContent = (profile && profile.hub) ? profile.hub : 'Saltillo (Nearshoring Hub)';
-        if (classEl) classEl.textContent = (profile && (profile.className || profile.classCode)) ? `${profile.className || ''} [${profile.classCode || 'Code'}]` : 'Mecatrónica 4°A [STEM-MECA-A7X3K2]';
+        if (hubEl) hubEl.textContent = (profile && profile.hub) ? profile.hub : 'Tijuana / Frontera';
+        if (classEl) classEl.textContent = (profile && (profile.className || profile.classCode)) ? `${profile.className || ''} [${profile.classCode || 'Code'}]` : 'Registro General';
         if (xpEl) xpEl.textContent = `${currentXP.toLocaleString()} XP`;
         if (rankEl) rankEl.textContent = `L${level.level} · ${level.title}`;
+
+        const cefrBadgeEl = document.getElementById('sp-modal-cefr-badge');
+        const modalityEl = document.getElementById('sp-modal-modality');
+        const folioEl = document.getElementById('sp-modal-folio');
+
+        const userLvl = (profile && (profile.cefrLevel || profile.level)) || localStorage.getItem('stemos_user_level') || localStorage.getItem('stemos_active_mcer_level') || 'B1';
+        const userScore = (profile && (profile.cefrScore || profile.cefrPercentage)) ? `${profile.cefrPercentage || profile.cefrScore}%` : '75%';
+
+        if (cefrBadgeEl) {
+            cefrBadgeEl.textContent = `CEFR ${userLvl} · ${userScore}`;
+            if (userLvl === 'A1') {
+                cefrBadgeEl.style.background = '#059669';
+            } else if (userLvl === 'A2') {
+                cefrBadgeEl.style.background = '#0284c7';
+            } else if (userLvl === 'B1') {
+                cefrBadgeEl.style.background = '#d97706';
+            } else {
+                cefrBadgeEl.style.background = '#7c3aed';
+            }
+        }
+
+        if (modalityEl) {
+            if (profile && profile.degreeModality === 'tsu' && profile.tsuSpecialtyName) {
+                modalityEl.textContent = `TSU: ${profile.tsuSpecialtyName}`;
+            } else if (profile && profile.degreeModality === 'tsu') {
+                modalityEl.textContent = 'Técnico Superior Universitario (TSU)';
+            } else {
+                modalityEl.textContent = 'Ingeniería / Licenciatura Profesional';
+            }
+        }
+
+        if (folioEl) {
+            folioEl.textContent = (profile && profile.folio) ? profile.folio : 'STEMOS-MCER-2026';
+        }
+    };
+
+    window.closeStudentProfileModal = function() {
+        const modal = document.getElementById('student-profile-modal');
+        if (modal) modal.classList.remove('active');
+    };
+
+    window.handleStudentProfileBackdrop = function(e) {
+        if (e.target && e.target.id === 'student-profile-modal') {
+            window.closeStudentProfileModal();
+        }
+    };
+
+    window.signInWithGoogleApp = function() {
+        if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+            try {
+                const auth = firebase.auth();
+                const provider = new firebase.auth.GoogleAuthProvider();
+                provider.setCustomParameters({ prompt: 'select_account' });
+                auth.signInWithPopup(provider).then((result) => {
+                    const user = result.user;
+                    if (!user) return;
+                    const realEmail = user.email || '';
+                    const realName = user.displayName || (realEmail ? realEmail.split('@')[0] : 'Estudiante');
+                    const photoURL = user.photoURL || '';
+                    
+                    const isUpbc = realEmail.toLowerCase().includes('upbc.edu.mx');
+                    const isTecnm = realEmail.toLowerCase().includes('tecnm.mx');
+                    const isUabc = realEmail.toLowerCase().includes('uabc.edu.mx');
+                    const matriculaMatch = realEmail.match(/\d{6,10}/);
+                    const matricula = matriculaMatch ? matriculaMatch[0] : ('2026' + Math.floor(1000 + Math.random() * 9000));
+                    
+                    let sub = 'it';
+                    let campus = 'TecNM Tijuana (ITT)';
+                    let careerId = localStorage.getItem('stemos_active_career') || 'it-mecatronica';
+                    let careerName = 'Ingeniería Mecatrónica';
+                    if (isUpbc) {
+                        sub = 'upbc';
+                        campus = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
+                        careerId = 'upbc-mecatronica';
+                    } else if (isUabc) {
+                        sub = 'univ-estatal';
+                        campus = 'Universidad Autónoma de Baja California (UABC)';
+                        careerId = 'uabc-bioingenieria';
+                        careerName = 'Bioingeniería';
+                    }
+
+                    const profile = {
+                        name: realName,
+                        fullName: realName,
+                        email: realEmail,
+                        photoURL: photoURL,
+                        matricula: matricula,
+                        subsystem: sub,
+                        system: sub,
+                        campus: campus,
+                        careerId: careerId,
+                        careerName: careerName,
+                        hub: 'Tijuana / Frontera',
+                        className: 'Grupo General',
+                        classCode: ''
+                    };
+
+                    localStorage.setItem('stemos_student_profile', JSON.stringify(profile));
+                    localStorage.setItem('stemos_student_name', realName);
+                    localStorage.setItem('stemos_auth_user', JSON.stringify({
+                        uid: user.uid,
+                        email: realEmail,
+                        displayName: realName,
+                        photoURL: photoURL,
+                        role: 'student'
+                    }));
+
+                    if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.registerStudent === 'function') {
+                        window.STEMOS_FIREBASE.registerStudent({
+                            name: realName,
+                            email: realEmail,
+                            matricula: matricula,
+                            careerId: careerId,
+                            careerName: careerName,
+                            campus: campus
+                        });
+                    }
+
+                    window.initStudentProfileBridge();
+                    alert(`¡Bienvenido, ${realName}! Has iniciado sesión con tu cuenta de Google.`);
+                }).catch((err) => {
+                    console.warn('Google sign-in popup error:', err);
+                    if (err.code !== 'auth/popup-closed-by-user') {
+                        alert('No se pudo completar el inicio de sesión con Google: ' + (err.message || err.code));
+                    }
+                });
+            } catch(e) {
+                console.error('Google sign-in error:', e);
+            }
+        } else {
+            alert('El servicio de autenticación con Google no está listo aún. Intenta nuevamente.');
+        }
+    };
+
+    window.signOutStudentApp = function() {
+        if (confirm('¿Deseas cerrar tu sesión y limpiar los datos de este dispositivo?')) {
+            if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+                try { firebase.auth().signOut(); } catch(e) {}
+            }
+            localStorage.removeItem('stemos_student_profile');
+            localStorage.removeItem('stemos_student_name');
+            localStorage.removeItem('stemos_auth_user');
+            localStorage.removeItem('stemos_student_xp');
+            localStorage.removeItem('stemos_user_progress');
+            window.location.reload();
+        }
+    };
 
         const cefrBadgeEl = document.getElementById('sp-modal-cefr-badge');
         const modalityEl = document.getElementById('sp-modal-modality');
@@ -5629,8 +5837,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch(e){}
 
         const level = (data && data.level) || localStorage.getItem('stemos_active_mcer_level') || 'B1';
-        const studentName = (data && data.studentName) || profile.fullName || 'Diana Laura Morales';
-        const matricula = profile.matricula || profile.folio || '22050144';
+        const studentName = (data && data.studentName) || profile.fullName || profile.name || localStorage.getItem('stemos_student_name') || 'Estudiante stemOS';
+        const matricula = profile.matricula || profile.folio || 'Pendiente';
         const hours = (data && data.hours) || 60.0;
         const folio = (data && data.folio) || `CACEI-MCER-${level}-${Date.now().toString(36).toUpperCase()}`;
 
@@ -5953,7 +6161,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Generate Diploma details
             const folio = `CACEI-MCER-${activeMcerExam.level}-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
-            const studentName = localStorage.getItem('stemos_student_name') || 'Diana Laura Morales';
+            const studentName = localStorage.getItem('stemos_student_name') || 'Estudiante stemOS';
             const hoursMap = { 'A1': 60, 'A2': 120, 'B1': 180, 'B2': 240 };
             const accHours = hoursMap[activeMcerExam.level] || 60;
 
@@ -5972,7 +6180,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem(`stemos_mcer_level_${activeMcerExam.level.toLowerCase()}_certified`, 'true');
                 localStorage.setItem(`stemos_mcer_certified_hours`, String(accHours));
                 localStorage.setItem(`stemos_mcer_diploma_${activeMcerExam.level.toLowerCase()}_folio`, folio);
-                const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+                const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10);
                 const newXP = prevXP + 2000;
                 localStorage.setItem('stemos_student_xp', String(newXP));
                 if (typeof window.updateStudentXPHUD === 'function') {
@@ -6079,9 +6287,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el) el.value = campus.id;
         });
 
-        // Update student subsystem pill
+        // Update student subsystem pill and campus badge
         const subPill = document.getElementById('header-student-subsystem');
         if (subPill) subPill.textContent = campus.subsystem;
+
+        const campusBadge = document.getElementById('header-student-campus-badge');
+        if (campusBadge) {
+            campusBadge.innerHTML = `<i class="fa-solid fa-building-columns" style="font-size:0.68rem; margin-right:4px;"></i>${campus.name}`;
+        }
 
         // Update diploma text if visible
         const diploInst = document.getElementById('diploma-institution-name');

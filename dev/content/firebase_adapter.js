@@ -23,6 +23,12 @@
     const STORAGE_KEY_ACTIVITIES = 'stemos_activity_feed';
     const STORAGE_KEY_AUDIT = 'stemos_audit_logs';
 
+    // Input Sanitization Helper (Phase 85 Security Hardening)
+    function sanitize(val) {
+        if (typeof val !== 'string') return val;
+        return val.replace(/[<>]/g, '').trim();
+    }
+
     // Default Seed Institution
     const DEFAULT_INSTITUTION = {
         id: 'tecnm-saltillo',
@@ -336,11 +342,11 @@
 
             const record = {
                 id: studentId,
-                name: studentData.name || studentData.fullName || 'Student',
-                matricula: studentData.matricula || studentData.studentId || '2205' + Math.floor(1000 + Math.random() * 9000),
-                email: studentData.email || '',
+                name: sanitize(studentData.name || studentData.fullName || 'Student'),
+                matricula: sanitize(studentData.matricula || studentData.studentId || '2205' + Math.floor(1000 + Math.random() * 9000)),
+                email: sanitize(studentData.email || ''),
                 careerId: studentData.careerId || 'it-mecatronica',
-                careerName: studentData.careerName || 'Ingeniería Mecatrónica',
+                careerName: sanitize(studentData.careerName || 'Ingeniería Mecatrónica'),
                 cluster: studentData.cluster || 'STEM',
                 system: studentData.system || 'it',
                 hub: studentData.hub || 'Saltillo',
@@ -817,7 +823,12 @@
                 });
                 window.dispatchEvent(evt);
             } catch (e) {}
-        }
+        },
+
+        /**
+         * Input sanitization helper (Phase 85)
+         */
+        sanitize: sanitize
     };
 
     // Auto-initialize when script loads
