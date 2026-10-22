@@ -1265,6 +1265,270 @@
     .institutional-academic-section .section-title {
       color: #ffffff !important;
     }
+
+    /* ── Continuous Luminous Industrial Blue Theme (Coherent & Legible) ── */
+    body.supaste-theme {
+      background: #061a70 !important;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(2, 132, 199, 0.45) 0%, transparent 42%),
+        radial-gradient(circle at 85% 20%, rgba(14, 165, 233, 0.28) 0%, transparent 38%),
+        radial-gradient(circle at 15% 42%, rgba(0, 86, 224, 0.32) 0%, transparent 40%),
+        radial-gradient(circle at 82% 65%, rgba(2, 132, 199, 0.25) 0%, transparent 40%),
+        radial-gradient(circle at 20% 85%, rgba(13, 43, 153, 0.38) 0%, transparent 45%),
+        linear-gradient(180deg, 
+          #061a70 0%, 
+          #0d2b99 8%, 
+          #0056e0 18%, 
+          #0284c7 30%, 
+          #0369a1 42%, 
+          #0a2578 55%, 
+          #081d66 70%, 
+          #061752 85%, 
+          #051347 100%
+        ) !important;
+      background-attachment: fixed !important;
+      color: #f8fafc !important;
+    }
+
+    .supaste-hero-section {
+      background: transparent !important;
+    }
+
+    .supaste-hero-atmosphere {
+      display: none !important;
+    }
+
+    /* All sections flow continuously without pitch-black blocks */
+    .promo-section {
+      background: transparent !important;
+      border-top: 1px solid rgba(56, 189, 248, 0.18) !important;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.18) !important;
+      position: relative !important;
+    }
+
+    /* Stage Window Play Button - Vibrant Cyan / Sapphire High-Tech Active Player */
+    .stage-play-btn {
+      width: 40px !important;
+      height: 40px !important;
+      border-radius: 50% !important;
+      background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%) !important;
+      color: #041a3a !important;
+      border: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 14px !important;
+      cursor: pointer !important;
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+      flex-shrink: 0 !important;
+    }
+    .stage-play-btn:hover {
+      transform: scale(1.12) !important;
+      background: linear-gradient(135deg, #7dd3fc 0%, #38bdf8 100%) !important;
+      box-shadow: 0 0 26px rgba(56, 189, 248, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+      color: #02122b !important;
+    }
+    .stage-play-btn i {
+      margin-left: 2px !important;
+      color: #041a3a !important;
+    }
+
+    /* Reality Drill Hero Integration */
+    .reality-drill-widget.hero-drill-widget {
+      width: 100% !important;
+      max-width: 960px !important;
+      margin: 0 auto 60px auto !important;
+      background: rgba(8, 24, 68, 0.78) !important;
+      border: 1px solid rgba(56, 189, 248, 0.32) !important;
+      border-radius: 20px !important;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      text-align: left !important;
+      box-sizing: border-box !important;
+      padding: 24px 28px !important;
+    }
+
+    .drill-toggle-cluster {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      flex-wrap: wrap !important;
+    }
+
+    .drill-pulse-arrow {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      background: rgba(56, 189, 248, 0.15) !important;
+      border: 1px solid rgba(56, 189, 248, 0.35) !important;
+      padding: 5px 12px !important;
+      border-radius: 999px !important;
+      font-size: 0.8rem !important;
+      font-weight: 700 !important;
+      color: #38bdf8 !important;
+      animation: pulseArrowHint 2.2s infinite ease-in-out !important;
+    }
+
+    .drill-pulse-arrow .pulse-indicator {
+      font-size: 1.05rem !important;
+      display: inline-block !important;
+      animation: pointRight 1s infinite alternate ease-in-out !important;
+    }
+
+    @keyframes pointRight {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(5px); }
+    }
+
+    @keyframes pulseArrowHint {
+      0%, 100% { box-shadow: 0 0 0 rgba(56, 189, 248, 0); }
+      50% { box-shadow: 0 0 16px rgba(56, 189, 248, 0.5); }
+    }
+
+    .drill-toggle-buttons {
+      display: inline-flex !important;
+      gap: 8px !important;
+      background: rgba(4, 14, 45, 0.85) !important;
+      border: 1px solid rgba(56, 189, 248, 0.35) !important;
+      padding: 5px !important;
+      border-radius: 999px !important;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .drill-toggle-btn {
+      border: 1px solid transparent !important;
+      background: transparent !important;
+      padding: 9px 18px !important;
+      border-radius: 999px !important;
+      font-size: 0.85rem !important;
+      font-weight: 800 !important;
+      color: #cbd5e1 !important;
+      cursor: pointer !important;
+      transition: all 0.25s ease !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+    }
+
+    .drill-toggle-btn:hover {
+      color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .drill-toggle-btn.active#btn-drill-academic {
+      background: rgba(239, 68, 68, 0.25) !important;
+      border-color: rgba(239, 68, 68, 0.6) !important;
+      color: #fca5a5 !important;
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.35) !important;
+    }
+
+    .drill-toggle-btn.active#btn-drill-industry {
+      background: linear-gradient(135deg, #10b981 0%, #0284c7 100%) !important;
+      border-color: rgba(255, 255, 255, 0.4) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 22px rgba(16, 185, 129, 0.5) !important;
+    }
+
+    .reality-drill-widget.hero-drill-widget .drill-question-box {
+      background: rgba(4, 14, 45, 0.75) !important;
+      border: 1px solid rgba(56, 189, 248, 0.25) !important;
+      color: #f8fafc !important;
+    }
+
+    .reality-drill-widget.hero-drill-widget .drill-opt-item {
+      background: rgba(15, 23, 42, 0.65) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      color: #e2e8f0 !important;
+    }
+
+    .reality-drill-widget.hero-drill-widget .drill-opt-item[style*="border-color"] {
+      background: rgba(14, 165, 233, 0.18) !important;
+      border-color: rgba(56, 189, 248, 0.6) !important;
+      color: #ffffff !important;
+    }
+
+    .reality-drill-widget.hero-drill-widget .drill-analysis-note {
+      background: rgba(4, 14, 45, 0.85) !important;
+      border-left: 4px solid #f59e0b !important;
+      color: #f1f5f9 !important;
+    }
+
+    .reality-drill-widget.hero-drill-widget.industry .drill-analysis-note {
+      border-left-color: #10b981 !important;
+    }
+
+    /* Frosted High-Contrast Cards for ALL Sections */
+    .promo-card,
+    .reality-point-card,
+    .std-cluster-card,
+    .inv-cell,
+    .platform-formal-inventory-card,
+    .inst-card,
+    .inst-career-card,
+    .cx-step-card,
+    .pricing-plan-card,
+    .pricing-matrix-table {
+      background: rgba(8, 25, 70, 0.75) !important;
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
+      border: 1px solid rgba(56, 189, 248, 0.22) !important;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .promo-card:hover,
+    .std-cluster-card:hover,
+    .inst-career-card:hover,
+    .cx-step-card:hover,
+    .pricing-plan-card:hover {
+      border-color: rgba(56, 189, 248, 0.48) !important;
+      box-shadow: 0 16px 42px rgba(2, 132, 199, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+    }
+
+    /* Universal High Legibility Text Rules */
+    .section-title,
+    .promo-card-title,
+    .pillar-title,
+    .std-cluster-name,
+    .inv-title,
+    .inst-career-title,
+    .cx-step-title,
+    .pricing-plan-name,
+    .drill-title {
+      color: #ffffff !important;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35) !important;
+    }
+
+    .section-subtitle,
+    .promo-card-desc,
+    .pillar-desc,
+    .std-cluster-text,
+    .inv-sub,
+    .inst-career-desc,
+    .cx-step-desc,
+    .pricing-plan-summary,
+    .pricing-memo-quote,
+    .drill-scenario-tag {
+      color: #e2e8f0 !important;
+      line-height: 1.6 !important;
+    }
+
+    .section-badge,
+    .drill-tag,
+    .inventory-card-badge,
+    .cx-badge {
+      background: rgba(56, 189, 248, 0.16) !important;
+      border: 1px solid rgba(56, 189, 248, 0.38) !important;
+      color: #38bdf8 !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.05em !important;
+    }
+
+    .supaste-footer {
+      background: rgba(4, 14, 48, 0.96) !important;
+      border-top: 1px solid rgba(56, 189, 248, 0.25) !important;
+    }
   </style>
 </head>
 <body class="supaste-theme">
@@ -1484,13 +1748,55 @@
             “In extreme ultraviolet (EUV) photolithography, wafer steppers operate inside ISO Class 1 cleanrooms with laminar airflow. Photoresist deposition requires precise chemical handling to prevent sub-micron yield defects.”
           </p>
 
-          <div class="stage-bottom-bar">
-            <div class="stage-socratic-badge" data-i18n="stage_socratic"><i class="fa-solid fa-brain"></i> <span><strong>Socratic Bot:</strong> “Why does uniform photoresist deposition prevent defects at 3nm nodes?”</span></div>
-            <button class="stage-action-btn" id="hero-stage-open-btn" data-track-target="semiconductors" data-mod-target="semiconductors_mod_01">
-              <span data-i18n="stage_btn_open">Open Module</span>
-              <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            </button>
+          <div class="stage-bottom-bar" style="justify-content:center;">
+            <div class="stage-socratic-badge" data-i18n="stage_socratic" style="width:100%; max-width:100%; text-align:center;"><i class="fa-solid fa-brain"></i> <span><strong>Socratic Bot:</strong> “Why does uniform photoresist deposition prevent defects at 3nm nodes?”</span></div>
           </div>
+        </div>
+      </div>
+
+      <!-- ── Interactive Reality Gap Contrast Test (United with Stage Window Preview) ── -->
+      <div class="reality-drill-widget hero-drill-widget soft-element" id="reality-drill-widget" style="--delay: 1.25s">
+        <div class="reality-drill-header">
+          <div class="drill-header-left">
+            <span class="drill-tag" data-i18n="std_drill_tag"><i class="fa-solid fa-bolt"></i> PRUEBA INTERACTIVA DE CONTRASTE</span>
+            <h4 class="drill-title" data-i18n="std_drill_title">Compara en Tiempo Real: El Abismo de la Realidad</h4>
+          </div>
+          <div class="drill-toggle-cluster">
+            <div class="drill-pulse-arrow">
+              <span class="pulse-indicator">👉</span>
+              <span class="pulse-cue" data-i18n="drill_toggle_cue">Haz clic para contrastar métodos:</span>
+            </div>
+            <div class="drill-toggle-buttons">
+              <button type="button" class="drill-toggle-btn active" id="btn-drill-academic" onclick="switchRealityGapDrill('academic')" data-i18n="std_drill_btn_acad"><i class="fa-solid fa-graduation-cap"></i> Examen Universitario Típico</button>
+              <button type="button" class="drill-toggle-btn" id="btn-drill-industry" onclick="switchRealityGapDrill('industry')" data-i18n="std_drill_btn_ind"><i class="fa-solid fa-industry"></i> Desafío Técnico stemOS</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Drill Container -->
+        <div class="reality-drill-body mode-academic" id="reality-drill-body">
+          <span class="drill-scenario-tag">Examen de Inglés General en Facultad de Ingeniería (Syllabus Académico Teórico)</span>
+          <div style="font-size:0.86rem; color:#94a3b8; margin-bottom:8px; font-weight:600;">Pregunta típica de opción múltiple descontextualizada:</div>
+          <div class="drill-question-box">"Choose the correct option: When Mr. Smith arrives at the airport, he ______ a taxi to the international conference."</div>
+          <div class="drill-options-grid">
+            <div class="drill-opt-item" style="border-color:rgba(14,165,233,0.5); background:rgba(255,255,255,0.06);">
+              <i class="fa-solid fa-circle-check" style="color:#38bdf8;"></i>
+              <span>[A] takes (Opción gramatical de libro de texto)</span>
+            </div>
+            <div class="drill-opt-item">
+              <i class="fa-solid fa-circle" style="color:#64748b;"></i>
+              <span>[B] taking</span>
+            </div>
+            <div class="drill-opt-item">
+              <i class="fa-solid fa-circle" style="color:#64748b;"></i>
+              <span>[C] is took</span>
+            </div>
+            <div class="drill-opt-item">
+              <i class="fa-solid fa-circle" style="color:#64748b;"></i>
+              <span>[D] was take</span>
+            </div>
+          </div>
+          <div class="drill-analysis-note" data-i18n="std_drill_note">⚠️ <strong>Curricular Gap Diagnostic:</strong> Zero value in advanced manufacturing. This evaluation fails to test whether the engineer can read a P&amp;ID schematic, de-energize high-voltage equipment under OSHA 1910.147 LOTO, contain sub-micron wafer defects under SEMI S2, or defend an 8D root-cause report before Detroit or Silicon Valley auditors.</div>
         </div>
       </div>
 
@@ -1811,44 +2117,11 @@
         </div>
       </div>
 
-      <!-- ── Interactive Reality Gap Drill / Live Test Widget ── -->
-      <div class="reality-drill-widget">
-        <div class="reality-drill-header">
-          <div class="drill-header-left">
-            <span class="drill-tag" data-i18n="std_drill_tag"><i class="fa-solid fa-bolt"></i> INTERACTIVE CONTRAST TEST</span>
-            <h4 class="drill-title" data-i18n="std_drill_title">Compare in Real Time: The Reality Gap</h4>
-          </div>
-          <div class="drill-toggle-buttons">
-            <button type="button" class="drill-toggle-btn active" id="btn-drill-academic" onclick="switchRealityGapDrill('academic')" data-i18n="std_drill_btn_acad"><i class="fa-solid fa-graduation-cap"></i> Typical University Exam</button>
-            <button type="button" class="drill-toggle-btn" id="btn-drill-industry" onclick="switchRealityGapDrill('industry')" data-i18n="std_drill_btn_ind"><i class="fa-solid fa-industry"></i> stemOS Technical Challenge</button>
-          </div>
-        </div>
-
-        <!-- Dynamic Drill Container -->
-        <div class="reality-drill-body mode-academic" id="reality-drill-body">
-          <span class="drill-scenario-tag">Examen de Inglés General en Facultad de Ingeniería (Syllabus Académico Teórico)</span>
-          <div style="font-size:0.86rem; color:var(--text-muted); margin-bottom:8px; font-weight:600;">Pregunta típica de opción múltiple descontextualizada:</div>
-          <div class="drill-question-box">"Choose the correct option: When Mr. Smith arrives at the airport, he ______ a taxi to the international conference."</div>
-          <div class="drill-options-grid">
-            <div class="drill-opt-item" style="border-color:rgba(14,165,233,0.5); background:#ffffff;">
-              <i class="fa-solid fa-circle-check" style="color:#0284c7;"></i>
-              <span>[A] takes (Opción gramatical de libro de texto)</span>
-            </div>
-            <div class="drill-opt-item">
-              <i class="fa-solid fa-circle" style="color:#94a3b8;"></i>
-              <span>[B] taking</span>
-            </div>
-            <div class="drill-opt-item">
-              <i class="fa-solid fa-circle" style="color:#94a3b8;"></i>
-              <span>[C] is took</span>
-            </div>
-            <div class="drill-opt-item">
-              <i class="fa-solid fa-circle" style="color:#94a3b8;"></i>
-              <span>[D] was take</span>
-            </div>
-          </div>
-          <div class="drill-analysis-note" data-i18n="std_drill_note">⚠️ <strong>Curricular Gap Diagnostic:</strong> Zero value in advanced manufacturing. This evaluation fails to test whether the engineer can read a P&amp;ID schematic, de-energize high-voltage equipment under OSHA 1910.147 LOTO, contain sub-micron wafer defects under SEMI S2, or defend an 8D root-cause report before Detroit or Silicon Valley auditors.</div>
-        </div>
+      <!-- ── Direct Jump to Interactive Reality Gap Contrast Test ── -->
+      <div class="industry-reality-anchor-callout" style="text-align:center; margin: 30px auto 45px auto;">
+        <a href="#reality-drill-widget" style="display:inline-flex; align-items:center; gap:10px; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.35); color:#38bdf8; padding:12px 28px; border-radius:999px; font-weight:700; font-size:0.92rem; text-decoration:none; transition:all 0.25s ease;" onmouseenter="this.style.background='rgba(56,189,248,0.22)'; this.style.transform='translateY(-2px)'" onmouseleave="this.style.background='rgba(56,189,248,0.12)'; this.style.transform='translateY(0)'">
+          <i class="fa-solid fa-bolt"></i> <span data-i18n="std_drill_anchor_jump">Explorar Prueba de Contraste en Vivo (Abismo de la Realidad) ↑</span>
+        </a>
       </div>
 
       <!-- ── Curricular Scope & Formal Audit Inventory Grid ── -->
@@ -3229,6 +3502,8 @@
         std_drill_title: 'Compare in Real Time: The Reality Gap',
         std_drill_btn_acad: '<i class="fa-solid fa-graduation-cap"></i> Typical University Exam',
         std_drill_btn_ind: '<i class="fa-solid fa-industry"></i> stemOS Technical Challenge',
+        drill_toggle_cue: 'Click to contrast methods:',
+        std_drill_anchor_jump: 'Explore Live Contrast Test (The Reality Gap) ↑',
         std_drill_note: '⚠️ <strong>Curricular Gap Diagnostic:</strong> Zero value in advanced manufacturing. This evaluation fails to test whether the engineer can read a P&amp;ID schematic, de-energize high-voltage equipment under OSHA 1910.147 LOTO, contain sub-micron wafer defects under SEMI S2, or defend an 8D root-cause report before Detroit or Silicon Valley auditors.',
         std_stat1_lbl: 'Audited Tracks with Regulatory Mapping',
         std_stat2_lbl: 'Alignment with Global Standards (IEEE, SEMI, ISO)',
@@ -3485,6 +3760,8 @@
         std_drill_title: 'Compara en Tiempo Real: El Abismo de la Realidad',
         std_drill_btn_acad: '<i class="fa-solid fa-graduation-cap"></i> Examen Universitario Típico',
         std_drill_btn_ind: '<i class="fa-solid fa-industry"></i> Desafío Técnico stemOS',
+        drill_toggle_cue: 'Haz clic para contrastar métodos:',
+        std_drill_anchor_jump: 'Explorar Prueba de Contraste en Vivo (Abismo de la Realidad) ↑',
         std_drill_note: '⚠️ <strong>Diagnóstico de Desfase:</strong> Cero valor en planta de manufactura avanzada. Esta evaluación no mide si el ingeniero es capaz de leer un diagrama P&amp;ID, aislar una fuente de alta tensión bajo OSHA 1910.147 LOTO, reportar un defecto wafer sub-micrónico bajo SEMI S2, ni defender un reporte de causa raíz 8D ante un auditor de Detroit o Silicon Valley.',
         std_stat1_lbl: 'Tracks Auditados con Mapeo Normativo',
         std_stat2_lbl: 'Alineación con Estándares Globales (IEEE, SEMI, ISO)',
