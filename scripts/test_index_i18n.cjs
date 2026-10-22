@@ -37,12 +37,17 @@ assert(indexHtmlContent.includes('id="lang-btn-es"'), 'index.html contains #lang
 assert(indexHtmlContent.includes('id="lang-btn-en"'), 'index.html contains #lang-btn-en');
 assert(indexHtmlContent.includes('class="lang-switch-capsule"'), 'index.html contains .lang-switch-capsule');
 
-const subpages = ['app.html', 'placement.html', 'teacher.html', 'admin.html', 'register.html'];
+const subpages = ['app.html', 'placement.html', 'teacher.html', 'admin.html'];
 subpages.forEach(sub => {
   const content = fs.readFileSync(path.join(rootDir, sub), 'utf8');
   assert(!content.includes('id="lang-btn-es"'), `${sub} remains in English without #lang-btn-es`);
   assert(!content.includes('class="lang-switch-capsule"'), `${sub} remains in English without .lang-switch-capsule`);
 });
+
+// Verify register.html has standardized bilingual switcher aligned with index.html
+const regContent = fs.readFileSync(path.join(rootDir, 'register.html'), 'utf8');
+assert(regContent.includes('class="lang-switch-capsule"'), 'register.html contains standardized .lang-switch-capsule');
+assert(regContent.includes('class="lang-divider"'), 'register.html contains standardized .lang-divider');
 
 // ── 2. DOM & Dictionary Parity in index.html ──
 console.log('\n▶ 2. DOM & Translation Dictionary Completeness');
