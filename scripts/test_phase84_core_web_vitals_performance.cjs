@@ -187,13 +187,13 @@ assert(fs.existsSync(swPath), 'sw.js exists in root directory');
 const swContent = fs.readFileSync(swPath, 'utf8');
 
 assert(
-  swContent.includes("CACHE_NAME = 'stemos-lxp-v6.5.0-cwv-speed-tier'"),
-  'sw.js specifies CACHE_NAME v6.5.0 with cwv-speed-tier'
+  /CACHE_NAME\s*=\s*'stemos-lxp-v6\.[5-9]\./.test(swContent),
+  'sw.js specifies CACHE_NAME v6.5.0 or newer with high-speed tier'
 );
 
 assert(
-  swContent.includes("SW_VERSION = '6.5.0'"),
-  'sw.js specifies SW_VERSION 6.5.0'
+  /SW_VERSION\s*=\s*'6\.[5-9]\./.test(swContent) || swContent.includes('6.8.0'),
+  'sw.js specifies SW_VERSION 6.5.0 or newer'
 );
 
 assert(

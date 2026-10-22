@@ -3,8 +3,8 @@
  * Full offline PWA caching for 4 Portals (Student, Admin, Teacher, Register), 25 Career Paths (60h), Interleaved Curricula, XP HUD, and 3D World Map.
  */
 
-const SW_VERSION = '6.5.0';
-const CACHE_NAME = 'stemos-lxp-v6.5.0-cwv-speed-tier';
+const SW_VERSION = '6.8.0';
+const CACHE_NAME = 'stemos-lxp-v6.8.0-enterprise-sync';
 
 const ASSETS_TO_CACHE = [
   '/',
