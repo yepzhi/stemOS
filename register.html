@@ -1717,7 +1717,7 @@
 
                     <div class="pass-footer">
                         <span><i class="fa-solid fa-shield-cat"></i> AI MENTOR: <strong id="pass-mentor-display" style="color: #0f172a;">Chief Autonomous Systems Mentor</strong></span>
-                        <span>IMMERSION: <strong style="color: var(--sky-500);">100% ENGLISH B1</strong></span>
+                        <span>IMMERSION: <strong id="pass-immersion-display" style="color: #f59e0b;"><i class="fa-solid fa-clock"></i> PENDIENTE (Requiere Placement Test)</strong></span>
                     </div>
                 </div>
             </section>
@@ -3132,9 +3132,25 @@
 
             if (targetStep === 7) {
                 populateCredentialPass();
-                btnNext.innerHTML = '<i class="fa-solid fa-rocket"></i> Authorize & Launch World';
-                btnNext.className = 'btn-wizard-next btn-wizard-launch';
-                hint.innerHTML = 'Press <span class="enter-key-badge">Enter ↵</span> to launch';
+                let hasPlacement = false;
+                try {
+                    const diag = JSON.parse(localStorage.getItem('stemos_placement_test') || '{}');
+                    if (diag && diag.result && diag.result.level) hasPlacement = true;
+                    if (localStorage.getItem('stemos_placement_completed') === 'true') hasPlacement = true;
+                    const profileObj = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
+                    if (profileObj && profileObj.cefrLevel) hasPlacement = true;
+                } catch(e) {}
+
+                const isEs = (currentRegisterLang === 'es');
+                if (!hasPlacement) {
+                    btnNext.innerHTML = isEs ? '<i class="fa-solid fa-vial"></i> Iniciar Examen Diagnóstico (Placement Test)' : '<i class="fa-solid fa-vial"></i> Take Diagnostic Placement Test';
+                    btnNext.className = 'btn-wizard-next btn-wizard-launch';
+                    hint.innerHTML = isEs ? 'Presiona <span class="enter-key-badge">Enter ↵</span> para iniciar tu examen de nivel' : 'Press <span class="enter-key-badge">Enter ↵</span> to begin placement test';
+                } else {
+                    btnNext.innerHTML = isEs ? '<i class="fa-solid fa-rocket"></i> Autorizar e Iniciar Mundo' : '<i class="fa-solid fa-rocket"></i> Authorize & Launch World';
+                    btnNext.className = 'btn-wizard-next btn-wizard-launch';
+                    hint.innerHTML = isEs ? 'Presiona <span class="enter-key-badge">Enter ↵</span> para iniciar' : 'Press <span class="enter-key-badge">Enter ↵</span> to launch';
+                }
             } else {
                 btnNext.innerHTML = 'Continue <i class="fa-solid fa-arrow-right"></i>';
                 btnNext.className = 'btn-wizard-next';
@@ -3205,6 +3221,34 @@
                 document.getElementById('pass-cohort-display').textContent = `${d.className} (${d.instructorName || 'Assigned Instructor'})`;
             } else {
                 document.getElementById('pass-cohort-display').textContent = 'Independent Study Cohort';
+            }
+
+            // Immersion CEFR Level check
+            let cefrLevel = null;
+            try {
+                const diag = JSON.parse(localStorage.getItem('stemos_placement_test') || '{}');
+                if (diag && diag.result && diag.result.level) {
+                    cefrLevel = diag.result.level;
+                } else {
+                    const profileData = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
+                    if (profileData && profileData.cefrLevel) {
+                        cefrLevel = profileData.cefrLevel;
+                    }
+                }
+            } catch(e) {}
+
+            const immersionEl = document.getElementById('pass-immersion-display');
+            if (immersionEl) {
+                if (cefrLevel) {
+                    immersionEl.style.color = 'var(--sky-500)';
+                    immersionEl.innerHTML = `<i class="fa-solid fa-certificate"></i> 100% ENGLISH ${cefrLevel}`;
+                } else {
+                    const isEs = (currentRegisterLang === 'es');
+                    immersionEl.style.color = '#f59e0b';
+                    immersionEl.innerHTML = isEs 
+                        ? '<i class="fa-solid fa-clock"></i> PENDIENTE (Requiere Placement Test)'
+                        : '<i class="fa-solid fa-clock"></i> PENDING (Placement Test Required)';
+                }
             }
         }
 
@@ -3305,14 +3349,36 @@
             }));
             localStorage.setItem('stemos_backdoor', 'true');
 
-            // Button feedback
+            // Button feedback & routing
+            let hasPlacement = false;
+            try {
+                const diag = JSON.parse(localStorage.getItem('stemos_placement_test') || '{}');
+                if (diag && diag.result && diag.result.level) hasPlacement = true;
+                if (localStorage.getItem('stemos_placement_completed') === 'true') hasPlacement = true;
+                const profileObj = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
+                if (profileObj && profileObj.cefrLevel) hasPlacement = true;
+            } catch(e) {}
+
+            const isEs = (currentRegisterLang === 'es');
             const btn = document.getElementById('btn-next');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Launching World...';
+            if (!hasPlacement) {
+                btn.innerHTML = isEs 
+                    ? '<i class="fa-solid fa-spinner fa-spin"></i> Registro guardado... Abriendo Placement Test'
+                    : '<i class="fa-solid fa-spinner fa-spin"></i> Profile saved... Opening Placement Test';
+            } else {
+                btn.innerHTML = isEs 
+                    ? '<i class="fa-solid fa-spinner fa-spin"></i> Iniciando Mundo...'
+                    : '<i class="fa-solid fa-spinner fa-spin"></i> Launching World...';
+            }
             btn.disabled = true;
 
-            // Redirect to app.html
+            // Redirect: If student has not completed placement test yet, route directly to placement.html
             setTimeout(() => {
-                window.location.href = 'app.html';
+                if (!hasPlacement) {
+                    window.location.href = 'placement.html';
+                } else {
+                    window.location.href = 'app.html';
+                }
             }, 1200);
         }
 
