@@ -109,16 +109,16 @@
 
     const minPrice = 49;
     const currencyLabel = 'MXN';
-    let selectedAmount = Math.max(minPrice, Number(initialAmount) || minPrice);
+    let selectedAmount = Math.max(minPrice, Number(initialAmount) || 69);
 
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     renderStep1();
 
     function renderStep1() {
-      const pill1 = 49;
-      const pill2 = 99;
-      const pill3 = 149;
+      const pill1 = 69;
+      const pill2 = 199;
+      const pill3 = 49;
 
       modal.innerHTML = `
         <div class="stemos-payment-dialog" style="background:#0f172a; border:1px solid rgba(56,189,248,0.28); border-radius:24px; width:100%; max-width:540px; padding:32px; box-shadow:0 25px 70px rgba(0,0,0,0.7), 0 0 30px rgba(14,165,233,0.15); position:relative; max-height:92vh; overflow-y:auto; color:#f8fafc; font-family:'Inter',sans-serif; backdrop-filter:blur(20px);">
@@ -135,13 +135,13 @@
             </div>
             <div>
               <div style="font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:#38bdf8;">stemOS &bull; Acceso Individual Alumno</div>
-              <h2 style="font-family:'Outfit',sans-serif; font-size:1.35rem; font-weight:800; color:#ffffff; margin:2px 0 0;">Suscripción Mensual stemOS</h2>
+              <h2 style="font-family:'Outfit',sans-serif; font-size:1.35rem; font-weight:800; color:#ffffff; margin:2px 0 0;">Suscripción stemOS • Plan Individual</h2>
             </div>
           </div>
 
           <!-- Description -->
           <p style="font-size:0.86rem; color:#cbd5e1; line-height:1.55; margin-bottom:20px;">
-            El registro es <strong>100% gratuito</strong>. Con tu cuota de <strong>$49 MXN al mes</strong> desbloqueas acceso total e ilimitado a todos los beneficios de stemOS:
+            El registro es <strong>100% gratuito</strong>. Con tu plan cuatrimestral de <strong>$69 MXN</strong> (o anual de $199 MXN) desbloqueas acceso total e ilimitado a todos los beneficios de stemOS:
           </p>
 
           <!-- Benefits Checklist -->
@@ -169,17 +169,17 @@
           </div>
 
           <!-- Selector de Aporte / Presets -->
-          <label style="display:block; font-size:0.75rem; font-weight:800; color:#38bdf8; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Elige tu monto mensual:</label>
+          <label style="display:block; font-size:0.75rem; font-weight:800; color:#38bdf8; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">Elige tu plan:</label>
           
           <div style="display:flex; gap:10px; margin-bottom:16px;">
             <button type="button" class="spei-amount-pill ${selectedAmount === pill1 ? 'active' : ''}" onclick="window.setStemosPaymentAmount(${pill1})">
-              $${pill1} ${currencyLabel}<br><span style="font-size:0.65rem; opacity:0.75;">(Mínimo Mensual)</span>
+              $${pill1} ${currencyLabel}<br><span style="font-size:0.65rem; opacity:0.75;">(Cuatrimestral - 4 meses)</span>
             </button>
             <button type="button" class="spei-amount-pill ${selectedAmount === pill2 ? 'active' : ''}" onclick="window.setStemosPaymentAmount(${pill2})">
-              $${pill2} ${currencyLabel}<br><span style="font-size:0.65rem; opacity:0.75;">(Recomendado)</span>
+              $${pill2} ${currencyLabel}<br><span style="font-size:0.65rem; opacity:0.75;">(Anual - Mejor Valor)</span>
             </button>
             <button type="button" class="spei-amount-pill ${selectedAmount === pill3 ? 'active' : ''}" onclick="window.setStemosPaymentAmount(${pill3})">
-              $${pill3} ${currencyLabel}<br><span style="font-size:0.65rem; opacity:0.75;">(Impulsor STEM)</span>
+              $${pill3} ${currencyLabel}<br><span style="font-size:0.65rem; opacity:0.75;">(Aporte Mensual)</span>
             </button>
           </div>
 

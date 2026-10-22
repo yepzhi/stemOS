@@ -76,22 +76,26 @@ const indCard = pricingSec.querySelector('.pricing-card.individual-plan');
 assert(!!indCard, 'Individual Student Plan card present');
 const indText = indCard.textContent;
 assert(indText.includes('Individual'), 'Individual Plan: Individual title present');
-assert(indText.includes('49'), 'Individual Plan: $49 MXN price present');
-assert(indText.includes('150') || indText.includes('cuatri'), 'Individual Plan: Menudeo $49 cuatri / $150 annual present');
+assert(indText.includes('69'), 'Individual Plan: $69 MXN cuatrimestral price present');
+assert(indText.includes('199') || indText.includes('cuatri'), 'Individual Plan: Plan cuatrimestral $69 / Anual $199 present');
 
-// Card 1: Option 2 - Licencia por Cohorte de Alumnos / Escala de Volumen
+// Card 1: Option 2 - Plan Institucional Anual (Escala de Volumen)
 const op1Text = cards[1].textContent;
-assert(op1Text.includes('Cohorte') || op1Text.includes('Piloto Cuatrimestral') || op1Text.includes('Volumen'), 'Option 1: Cohorte / Volumen title present');
-assert(op1Text.includes('29') && op1Text.includes('49'), 'Option 1: Volume sliding tier ($49 down to $29 MXN / cuatri) present');
-assert(op1Text.includes('alumnos') || op1Text.includes('2,000') || op1Text.includes('2000'), 'Option 1: Student cohort metric present');
-assert(op1Text.includes('casa o celular') || op1Text.includes('Casa/Celular') || op1Text.includes('remoto'), 'Option 1: Mobile/remote access included');
+assert(op1Text.includes('Institucional Anual') || op1Text.includes('Institucional') || op1Text.includes('Volumen'), 'Option 2: Plan Institucional Anual title present');
+assert(op1Text.includes('180') && op1Text.includes('120'), 'Option 2: Volume scale ($180 down to $120 MXN / alumno / año) present');
+assert(op1Text.includes('alumnos') || op1Text.includes('2,000') || op1Text.includes('2000'), 'Option 2: Student cohort metric present');
+assert(op1Text.includes('casa o celular') || op1Text.includes('Casa/Celular') || op1Text.includes('remoto'), 'Option 2: Mobile/remote access included');
 
-// Card 2: Option 3 - Convenio Red Estatal / Tarifa Mínima Anual
+// Card 2: Option 3 - Piloto Institucional (Sin Costo)
 const op2Text = cards[2].textContent;
-assert(op2Text.includes('Convenio Red Estatal') || op2Text.includes('Licencia Anual') || op2Text.includes('Red Estatal'), 'Option 2: Convenio Red Estatal / Anual title present');
-assert(op2Text.includes('29'), 'Option 2: $29 MXN / cuatri rate present');
-assert(op2Text.includes('99'), 'Option 2: $99 MXN / año minimum annual student rate present');
-assert(op2Text.includes('docente') || op2Text.includes('soporte') || op2Text.includes('institucional') || op2Text.includes('congelado'), 'Option 2: Faculty support / institutional features present');
+assert(op2Text.includes('Piloto Institucional') || op2Text.includes('Piloto'), 'Option 3: Piloto Institucional title present');
+assert(op2Text.includes('0') || op2Text.includes('Sin Costo') || op2Text.includes('sin costo'), 'Option 3: Sin Costo present');
+assert(op2Text.includes('40'), 'Option 3: Hasta 40 licencias present');
+assert(op2Text.includes('docente') || op2Text.includes('soporte') || op2Text.includes('institucional') || op2Text.includes('evaluar'), 'Option 3: Academic evaluation / support features present');
+
+// Inflation note assertion
+const inflationNote = pricingSec.textContent;
+assert(inflationNote.includes('inflación') || inflationNote.includes('enero') || inflationNote.includes('inflation'), 'Inflation adjustment note in January of each year is present');
 
 // Option 3 ("Solo Laboratorio") must NOT exist
 const op3Card = pricingSec.querySelector('.pricing-card:nth-child(4)');
@@ -99,11 +103,16 @@ assert(!op3Card, 'Option 3 ("Solo Laboratorio") successfully removed');
 const labCalc = document.getElementById('slider-lab-equipos');
 assert(!labCalc, 'Interactive lab equipment calculator retired');
 
-// ── 4. Calendly, Contact Form & Zero WhatsApp Verification ──
-console.log('\n▶ 4. Conversion Action Triggers (Calendly, Form, Zero WhatsApp & No Mario)');
+// ── 4. Calendly, Contact Form, Email & Zero WhatsApp Verification ──
+console.log('\n▶ 4. Conversion Action Triggers (Calendly, Form, Email, Zero WhatsApp & No Mario)');
 const waBtn = pricingSec.querySelector('a[href*="wa.me"]');
 assert(!waBtn, 'WhatsApp buttons (wa.me) successfully removed from pricing and proposal hub');
 assert(!pricingSec.textContent.includes('WhatsApp'), 'Zero WhatsApp mentions in pricing section');
+
+const emailLink = pricingSec.querySelector('a[href^="mailto:"]');
+assert(!!emailLink, 'Official email contact link exists');
+assert(emailLink.getAttribute('href').includes('yepzhi@gmail.com'), 'Email link uses official address yepzhi@gmail.com');
+assert(!pricingSec.innerHTML.includes('director@stemos.org'), 'Strictly ZERO occurrences of director@stemos.org');
 
 const calendlyBtn = pricingSec.querySelector('a[href*="calendly.com"]');
 assert(!!calendlyBtn, 'Calendly rapid meeting booking link exists');

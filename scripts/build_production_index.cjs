@@ -1105,9 +1105,9 @@ const pricingSection = `
             <span data-i18n="btn_zoom">Agendar 15 min por Zoom</span>
           </a>
 
-          <a href="mailto:director@stemos.org?subject=Propuesta%20Institucional%20stemOS%20-%20Reuni%C3%B3n%20Zoom&body=Hola%20Alberto,%20recibimos%20la%20propuesta%20institucional.%20Nos%20gustar%C3%ADa%20coordinar%20los%2015%20min%20por%20Zoom." class="btn-hub-email">
+          <a href="mailto:yepzhi@gmail.com?subject=Propuesta%20Institucional%20stemOS%20-%20Reuni%C3%B3n%20Zoom&body=Hola%20Alberto,%20recibimos%20la%20propuesta%20institucional.%20Nos%20gustar%C3%ADa%20coordinar%20los%2015%20min%20por%20Zoom." class="btn-hub-email">
             <i class="fa-solid fa-envelope"></i>
-            <span>Enviar Correo Oficial</span>
+            <span>Enviar Correo Oficial (yepzhi@gmail.com)</span>
           </a>
         </div>
 

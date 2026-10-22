@@ -7,7 +7,7 @@
  * 2. Elimination of parser-blocking scripts with defer attribute across all primary portals
  * 3. Service Worker sw.js v6.5.0 two-tier caching engine (Stale-While-Revalidate for media/data, Network-First for HTML/APIs)
  * 4. Cloudflare _headers HTTP Early Hints & Link preconnect/preload directives
- * 5. Production version v1.1.4 synchronization and badge integration across portals
+ * 5. Production version v1.1.5 synchronization and badge integration across portals
  */
 
 const fs = require('fs');
@@ -263,17 +263,17 @@ assert(
 );
 
 // ─── SUITE 5: Global Version Synchronization & Badges ───
-console.log('\n🏷️ SUITE 5 — Global Version Synchronization (v1.1.4)');
+console.log('\n🏷️ SUITE 5 — Global Version Synchronization (v1.1.5)');
 
 ['index.html', 'dev.html', 'tracks.html'].forEach(portal => {
   const content = fs.readFileSync(path.join(ROOT_DIR, portal), 'utf8');
   assert(
-    content.includes('stemos-version-badge') && content.includes('v1.1.4'),
-    `${portal} includes visible v1.1.4 version badge in footer`
+    content.includes('stemos-version-badge') && content.includes('v1.1.5'),
+    `${portal} includes visible v1.1.5 version badge in footer`
   );
   assert(
-    content.includes("STEMOS_VERSION = 'v1.1.4'"),
-    `${portal} exposes global window.STEMOS_VERSION = 'v1.1.4'`
+    content.includes("STEMOS_VERSION = 'v1.1.5'"),
+    `${portal} exposes global window.STEMOS_VERSION = 'v1.1.5'`
   );
 });
 

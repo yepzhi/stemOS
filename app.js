@@ -129,6 +129,64 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    const coursesData = (typeof LXP_COURSES !== 'undefined') ? LXP_COURSES : {};
+    const phrasesData = (typeof STEMOS_PHRASES !== 'undefined') ? STEMOS_PHRASES : [];
+
+    // Category metadata for styling and labels
+    const CATEGORY_META = {
+        technology: { label: 'TECHNOLOGY', color: '#0ea5e9', icon: 'fa-microchip', emoji: '🔵' },
+        engineering: { label: 'ENGINEERING & INDUSTRY', color: '#f97316', icon: 'fa-gear', emoji: '🟠' },
+        science: { label: 'SCIENCE & FUTURE TECH', color: '#a855f7', icon: 'fa-flask', emoji: '🟣' },
+        career: { label: 'AVIATION & CAREER', color: '#22c55e', icon: 'fa-briefcase', emoji: '🟢' }
+    };
+
+    // Track icon mapping
+    const TRACK_ICONS = {
+        'cybersecurity': 'fa-shield-halved',
+        'it-innovation': 'fa-cloud',
+        'ai-ml': 'fa-brain',
+        'telecom-iot': 'fa-tower-cell',
+        'software-dev': 'fa-code',
+        'data-analytics': 'fa-chart-column',
+        'semiconductors': 'fa-microchip',
+        'electromobility': 'fa-car-battery',
+        'aerospace': 'fa-plane-up',
+        'robotics-automation': 'fa-robot',
+        'energy-renewables': 'fa-solar-panel',
+        'advanced-manufacturing': 'fa-industry',
+        'industrial-operations': 'fa-truck-fast',
+        'mechatronics': 'fa-gears',
+        'biotechnology': 'fa-dna',
+        'space-satellite': 'fa-satellite',
+        'environmental-sustainability': 'fa-leaf',
+        'healthcare-tech': 'fa-heart-pulse',
+        'materials-nanotech': 'fa-atom',
+        'food-science': 'fa-wheat-awn',
+        'aviation-english': 'fa-plane',
+        'airforce-aerospace': 'fa-jet-fighter',
+        'hospitality-food': 'fa-utensils',
+        'business-leadership': 'fa-chart-line',
+        'project-management': 'fa-diagram-project',
+        'entrepreneurship': 'fa-lightbulb',
+        'web-dev-agentic': 'fa-solid fa-code'
+    };
+
+    // Track order for consistent unit numbering
+    const TRACK_ORDER = [
+        'web-dev-agentic',
+        'cybersecurity', 'it-innovation', 'ai-ml', 'telecom-iot', 'software-dev', 'data-analytics',
+        'semiconductors', 'electromobility', 'aerospace', 'robotics-automation', 'energy-renewables',
+        'advanced-manufacturing', 'industrial-operations', 'mechatronics',
+        'biotechnology', 'space-satellite', 'environmental-sustainability', 'healthcare-tech',
+        'materials-nanotech', 'food-science',
+        'aviation-english', 'airforce-aerospace', 'hospitality-food', 'business-leadership',
+        'project-management', 'entrepreneurship'
+    ];
+
+    let activeFilterCategory = 'all';
+    let currentDetailTrackId = null;
+
+
     /* --- Speech Synthesis (TTS) Helper --- */
     function speakText(text, lang = 'en-US') {
         if (window.STEMOS_TTS) {
@@ -1614,8 +1672,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const percent = Math.min(100, Math.round(16.6 + (completedCount / totalModules) * 83.4));
         
-        document.getElementById('progress-percent').textContent = `${percent}%`;
-        document.getElementById('progress-fill-bar').style.width = `${percent}%`;
+        const elPercent = document.getElementById('progress-percent');
+        if (elPercent) elPercent.textContent = `${percent}%`;
+        const elFillBar = document.getElementById('progress-fill-bar');
+        if (elFillBar) elFillBar.style.width = `${percent}%`;
     }
 
     function updateGraphUI() {
@@ -1941,63 +2001,6 @@ document.addEventListener('DOMContentLoaded', () => {
        GLOSSARY, FILTERS & NAVIGATION
        ========================================== */
 
-    const coursesData = (typeof LXP_COURSES !== 'undefined') ? LXP_COURSES : {};
-    const phrasesData = (typeof STEMOS_PHRASES !== 'undefined') ? STEMOS_PHRASES : [];
-
-    // Category metadata for styling and labels
-    const CATEGORY_META = {
-        technology: { label: 'TECHNOLOGY', color: '#0ea5e9', icon: 'fa-microchip', emoji: '🔵' },
-        engineering: { label: 'ENGINEERING & INDUSTRY', color: '#f97316', icon: 'fa-gear', emoji: '🟠' },
-        science: { label: 'SCIENCE & FUTURE TECH', color: '#a855f7', icon: 'fa-flask', emoji: '🟣' },
-        career: { label: 'AVIATION & CAREER', color: '#22c55e', icon: 'fa-briefcase', emoji: '🟢' }
-    };
-
-    // Track icon mapping
-    const TRACK_ICONS = {
-        'cybersecurity': 'fa-shield-halved',
-        'it-innovation': 'fa-cloud',
-        'ai-ml': 'fa-brain',
-        'telecom-iot': 'fa-tower-cell',
-        'software-dev': 'fa-code',
-        'data-analytics': 'fa-chart-column',
-        'semiconductors': 'fa-microchip',
-        'electromobility': 'fa-car-battery',
-        'aerospace': 'fa-plane-up',
-        'robotics-automation': 'fa-robot',
-        'energy-renewables': 'fa-solar-panel',
-        'advanced-manufacturing': 'fa-industry',
-        'industrial-operations': 'fa-truck-fast',
-        'mechatronics': 'fa-gears',
-        'biotechnology': 'fa-dna',
-        'space-satellite': 'fa-satellite',
-        'environmental-sustainability': 'fa-leaf',
-        'healthcare-tech': 'fa-heart-pulse',
-        'materials-nanotech': 'fa-atom',
-        'food-science': 'fa-wheat-awn',
-        'aviation-english': 'fa-plane',
-        'airforce-aerospace': 'fa-jet-fighter',
-        'hospitality-food': 'fa-utensils',
-        'business-leadership': 'fa-chart-line',
-        'project-management': 'fa-diagram-project',
-        'entrepreneurship': 'fa-lightbulb',
-        'web-dev-agentic': 'fa-solid fa-code'
-    };
-
-    // Track order for consistent unit numbering
-    const TRACK_ORDER = [
-        'web-dev-agentic',
-        'cybersecurity', 'it-innovation', 'ai-ml', 'telecom-iot', 'software-dev', 'data-analytics',
-        'semiconductors', 'electromobility', 'aerospace', 'robotics-automation', 'energy-renewables',
-        'advanced-manufacturing', 'industrial-operations', 'mechatronics',
-        'biotechnology', 'space-satellite', 'environmental-sustainability', 'healthcare-tech',
-        'materials-nanotech', 'food-science',
-        'aviation-english', 'airforce-aerospace', 'hospitality-food', 'business-leadership',
-        'project-management', 'entrepreneurship'
-    ];
-
-    let activeFilterCategory = 'all';
-    let currentDetailTrackId = null;
-
     /* --- 1. SIDEBAR NAVIGATION VIEW SWITCHING --- */
     const edSidebar = document.getElementById('ed-sidebar');
     const edSidebarToggle = document.getElementById('ed-sidebar-toggle');
@@ -2050,8 +2053,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Update active state on sidebar buttons
+        // Update active state on sidebar buttons & mobile dock buttons
         edRailBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.view === viewName);
+        });
+        document.querySelectorAll('.ed-dock-btn[data-view]').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.view === viewName);
         });
 
@@ -2072,6 +2078,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     window.switchDashboardView = switchDashboardView;
+    window.STEMOS_VERSION = 'v1.1.5';
 
     edRailBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -2079,12 +2086,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Sidebar toggle (mobile collapse)
+    // Sidebar toggle (desktop expand/collapse & mobile toggle)
     if (edSidebarToggle) {
         edSidebarToggle.addEventListener('click', () => {
-            edSidebar.classList.toggle('collapsed');
+            edSidebar.classList.toggle('expanded');
+            const icon = edSidebarToggle.querySelector('i');
+            if (icon) {
+                if (edSidebar.classList.contains('expanded')) {
+                    icon.className = 'fa-solid fa-angles-left';
+                } else {
+                    icon.className = 'fa-solid fa-bars';
+                }
+            }
         });
     }
+
+    const btnMobileSidebarToggle = document.getElementById('btn-mobile-sidebar-toggle');
+    if (btnMobileSidebarToggle) {
+        btnMobileSidebarToggle.addEventListener('click', () => {
+            edSidebar.classList.toggle('mobile-open');
+        });
+    }
+
+    // Mobile Bottom Dock Buttons
+    const edDockBtns = document.querySelectorAll('.ed-dock-btn[data-view]');
+    edDockBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            switchDashboardView(btn.dataset.view);
+        });
+    });
 
     // Lock / Exit button
     const btnLockBackdoor = document.getElementById('btn-lock-backdoor');

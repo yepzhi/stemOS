@@ -120,8 +120,8 @@ test('index.html contains individual plan card in .pricing-cards-grid', () => {
   assert(indexHtml.includes('data-i18n="plan_individual_name"'), 'Missing data-i18n for plan_individual_name');
   assert(indexHtml.includes('data-i18n="plan_individual_summary"'), 'Missing data-i18n for plan_individual_summary');
   assert(indexHtml.includes('data-i18n="btn_pay_individual"'), 'Missing data-i18n for btn_pay_individual');
-  assert(indexHtml.includes('49'), 'Card displays $49 price');
-  assert(indexHtml.includes('openStemosPaymentModal(49)'), 'CTA triggers openStemosPaymentModal(49)');
+  assert(indexHtml.includes('69'), 'Card displays $69 price');
+  assert(indexHtml.includes('openStemosPaymentModal(69)'), 'CTA triggers openStemosPaymentModal(69)');
 });
 
 test('index.html includes stemos_payments.js and payment modal overlay', () => {
@@ -130,10 +130,10 @@ test('index.html includes stemos_payments.js and payment modal overlay', () => {
 });
 
 test('index.html STEMOS_I18N contains bilingual individual plan keys', () => {
-  assert(indexHtml.includes("plan_individual_name: 'Individual Student'"), 'Missing EN plan_individual_name');
-  assert(indexHtml.includes("plan_individual_name: 'Estudiante Individual'"), 'Missing ES plan_individual_name');
-  assert(indexHtml.includes("btn_pay_individual: 'Subscribe for $49 MXN/mo'"), 'Missing EN btn_pay_individual');
-  assert(indexHtml.includes("btn_pay_individual: 'Suscribirme por $49/mes'"), 'Missing ES btn_pay_individual');
+  assert(indexHtml.includes("plan_individual_name: 'Individual Student Plan'"), 'Missing EN plan_individual_name');
+  assert(indexHtml.includes("plan_individual_name: 'Plan Individual'"), 'Missing ES plan_individual_name');
+  assert(indexHtml.includes("btn_pay_individual: 'Subscribe from $69 cuatrimestral'"), 'Missing EN btn_pay_individual');
+  assert(indexHtml.includes("btn_pay_individual: 'Suscribirme desde $69 cuatrimestral'"), 'Missing ES btn_pay_individual');
 });
 
 // ── 4. app.html & app.js Integration Audit ──
