@@ -998,7 +998,7 @@
     }
 
     .supaste-hero-container {
-      max-width: 1100px !important;
+      max-width: 1240px !important;
       width: 100% !important;
       display: flex !important;
       flex-direction: column !important;
@@ -1076,20 +1076,43 @@
     }
 
     .supaste-metrics-strip {
-      display: flex !important;
+      display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      gap: 16px !important;
+      gap: 12px !important;
       background: rgba(255, 255, 255, 0.18) !important;
       border: 1px solid rgba(255, 255, 255, 0.32) !important;
       backdrop-filter: blur(16px) !important;
       -webkit-backdrop-filter: blur(16px) !important;
-      padding: 10px 28px !important;
+      padding: 8px 22px !important;
       border-radius: 999px !important;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
-      margin-bottom: 50px !important;
+      margin: 0 auto 50px auto !important;
+      max-width: 100% !important;
       flex-wrap: wrap !important;
       box-sizing: border-box !important;
+    }
+    .supaste-metrics-strip .metric-pill {
+      display: inline-flex !important;
+      align-items: baseline !important;
+      gap: 6px !important;
+      white-space: nowrap !important;
+    }
+    .supaste-metrics-strip .metric-val {
+      font-family: var(--font-mono, monospace) !important;
+      font-weight: 800 !important;
+      color: #38bdf8 !important;
+      font-size: 1rem !important;
+      letter-spacing: -0.01em !important;
+    }
+    .supaste-metrics-strip .metric-lbl {
+      color: rgba(255, 255, 255, 0.95) !important;
+      font-size: 0.81rem !important;
+      font-weight: 600 !important;
+    }
+    .supaste-metrics-strip .metric-dot {
+      color: rgba(255, 255, 255, 0.4) !important;
+      font-size: 0.95rem !important;
     }
 
     .supaste-stage-window {
@@ -1400,43 +1423,28 @@
       <!-- Key Metrics Strip with Soft Fade -->
       <div class="supaste-metrics-strip soft-element" style="--delay: 1.08s">
         <div class="metric-pill">
-          <span class="metric-val" id="stat-tracks">34</span>
-          <span class="metric-lbl" data-i18n="stat_lbl_tracks">ESP Tracks</span>
+          <span class="metric-val" id="stat-total-hours">2,280h</span>
+          <span class="metric-lbl" data-i18n="stat_lbl_total_hours">Total Active Hours</span>
         </div>
         <span class="metric-dot">•</span>
         <div class="metric-pill">
-          <span class="metric-val" id="stat-modules">196</span>
-          <span class="metric-lbl" data-i18n="stat_lbl_modules">Modules</span>
+          <span class="metric-val" id="stat-mcer-hours">240h</span>
+          <span class="metric-lbl" data-i18n="stat_lbl_mcer_hours">Base Tracks CEFR (A1–B2)</span>
         </div>
         <span class="metric-dot">•</span>
         <div class="metric-pill">
-          <span class="metric-val" id="stat-readings">266</span>
-          <span class="metric-lbl" data-i18n="stat_lbl_readings">Readings</span>
+          <span class="metric-val" id="stat-esp-hours">2,040h</span>
+          <span class="metric-lbl" data-i18n="stat_lbl_esp_hours">ESP Tracks (34 Careers)</span>
         </div>
         <span class="metric-dot">•</span>
         <div class="metric-pill">
-          <span class="metric-val" id="stat-questions">880</span>
+          <span class="metric-val" id="stat-questions">756+</span>
           <span class="metric-lbl" data-i18n="stat_lbl_questions">MCQ Questions</span>
         </div>
         <span class="metric-dot">•</span>
         <div class="metric-pill">
           <span class="metric-val" id="stat-phrases">162</span>
           <span class="metric-lbl" data-i18n="stat_lbl_phrases">Native Idioms</span>
-        </div>
-        <span class="metric-dot">•</span>
-        <div class="metric-pill">
-          <span class="metric-val" id="stat-cases">4</span>
-          <span class="metric-lbl" data-i18n="stat_lbl_cases">Case Studies B2/C1</span>
-        </div>
-        <span class="metric-dot">•</span>
-        <div class="metric-pill">
-          <span class="metric-val" id="stat-accents">5</span>
-          <span class="metric-lbl" data-i18n="stat_lbl_accents">Global Accents</span>
-        </div>
-        <span class="metric-dot">•</span>
-        <div class="metric-pill">
-          <span class="metric-val">100%</span>
-          <span class="metric-lbl" data-i18n="stat_lbl_offline">Offline PWA</span>
         </div>
       </div>
 
@@ -3142,6 +3150,9 @@
         dock_catalog: '34 Tracks &amp; Labs ↗',
         dock_placement: 'RapidCheck Leveling (30m)',
         dock_lxp: 'Campus LXP 3D',
+        stat_lbl_total_hours: 'Total Active Hours',
+        stat_lbl_mcer_hours: 'Base Tracks CEFR (A1–B2)',
+        stat_lbl_esp_hours: 'ESP Tracks (34 Careers)',
         stat_lbl_tracks: 'ESP Tracks',
         stat_lbl_modules: 'Modules',
         stat_lbl_readings: 'Readings',
@@ -3395,6 +3406,9 @@
         dock_catalog: '34 Tracks &amp; Labs ↗',
         dock_placement: 'RapidCheck Diagnóstico (30m)',
         dock_lxp: 'Campus LXP 3D',
+        stat_lbl_total_hours: 'Horas Totales de Aprendizaje Activo',
+        stat_lbl_mcer_hours: 'Base Tracks MCER (A1–B2)',
+        stat_lbl_esp_hours: 'Tracks ESP (34 Carreras)',
         stat_lbl_tracks: 'Tracks ESP',
         stat_lbl_modules: 'Módulos',
         stat_lbl_readings: 'Lecturas',
@@ -3402,7 +3416,7 @@
         stat_lbl_phrases: 'Modismos Nativos',
         stat_lbl_cases: 'Casos de Estudio B2/C1',
         stat_lbl_accents: 'Acentos Globales',
-        stat_lbl_offline: 'PWA Offline',
+        stat_lbl_offline: 'PWA 100% Offline',
         stage_title: 'stemOS Studio &mdash; Semiconductores: Protocolos de Fotolitografía en Cuarto Limpio',
         stage_level: 'Nivel B1',
         stage_std: 'Norma IEEE',

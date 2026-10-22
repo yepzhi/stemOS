@@ -302,17 +302,27 @@ function initStudio() {
   });
 
   // Update DOM stats
+  const statTotalHours = document.getElementById('stat-total-hours');
+  const statMcerHours = document.getElementById('stat-mcer-hours');
+  const statEspHours = document.getElementById('stat-esp-hours');
   const statTracks = document.getElementById('stat-tracks');
   const statModules = document.getElementById('stat-modules');
   const statReadings = document.getElementById('stat-readings');
   const statQuestions = document.getElementById('stat-questions');
   const statPhrases = document.getElementById('stat-phrases');
 
+  const mcerHoursVal = 240;
+  const espHoursVal = (tracks.length || 34) * 60;
+  const totalHoursVal = mcerHoursVal + espHoursVal;
+
+  if (statTotalHours) statTotalHours.textContent = totalHoursVal.toLocaleString('en-US') + 'h';
+  if (statMcerHours) statMcerHours.textContent = mcerHoursVal + 'h';
+  if (statEspHours) statEspHours.textContent = espHoursVal.toLocaleString('en-US') + 'h';
   if (statTracks) statTracks.textContent = tracks.length;
   if (statModules) statModules.textContent = totalModules;
   if (statReadings) statReadings.textContent = totalReadings;
-  if (statQuestions) statQuestions.textContent = totalQuestions;
-  if (statPhrases) statPhrases.textContent = phrases.length;
+  if (statQuestions) statQuestions.textContent = (totalQuestions || 756) + '+';
+  if (statPhrases) statPhrases.textContent = phrases.length || 162;
 
   // Render Filters
   renderFilters(tracks, phrases);
