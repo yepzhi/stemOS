@@ -1798,6 +1798,12 @@
                 </button>
             </div>
 
+            <!-- Footer Version Info -->
+            <footer style="margin-top: 28px; padding-top: 16px; border-top: 1px solid rgba(226, 232, 240, 0.6); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.75rem; color: #64748b; flex-wrap: wrap;">
+                <span>© 2026 stemOS &bull; All rights reserved.</span>
+                <span class="stemos-version-badge" style="display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; font-family:'JetBrains Mono',monospace; color:#38bdf8; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.3); padding:2px 8px; border-radius:999px; font-weight:700;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#22c55e;"></span>v1.1.4</span>
+            </footer>
+
         </div>
     </main>
 
@@ -1818,46 +1824,7 @@
 
             <!-- Modal Body -->
             <div style="padding: 24px 28px;">
-                <p style="margin: 0 0 16px; font-size: 0.85rem; color: #475569; line-height: 1.45;">Selecciona tu cuenta de estudiante o ingresa tu correo institucional para completar tu registro:</p>
-
-                <!-- Preset Institutional Accounts -->
-                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
-                    <!-- Option 1: Carlos Ramírez (UPBC) -->
-                    <button type="button" onclick="selectQuickGoogleAccountRegister('Carlos Ramírez Valenzuela', 'carlos.ramirez@upbc.edu.mx', '21050842', 'upbc', 'Universidad Politécnica de Baja California (UPBC Mexicali)', 'lic', 'upbc-mecatronica')" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; cursor: pointer; text-align: left; transition: all 0.2s;" onmouseover="this.style.borderColor='#38bdf8'; this.style.background='#f0f9ff';" onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='#f8fafc';">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="width: 36px; height: 36px; border-radius: 50%; background: #0284c7; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem;">CR</div>
-                            <div>
-                                <div style="font-weight: 700; font-size: 0.88rem; color: #0f172a;">Carlos Ramírez Valenzuela</div>
-                                <div style="font-size: 0.76rem; color: #64748b;">carlos.ramirez@upbc.edu.mx</div>
-                            </div>
-                        </div>
-                        <span style="font-size: 0.72rem; font-weight: 700; color: #0369a1; background: #e0f2fe; padding: 4px 8px; border-radius: 6px;">UPBC Mexicali</span>
-                    </button>
-
-                    <!-- Option 2: Diana Morales (UPBC / Politécnica) -->
-                    <button type="button" onclick="selectQuickGoogleAccountRegister('Diana Laura Morales Ríos', 'diana.morales@upmxl.edu.mx', '22050144', 'upbc', 'Universidad Politécnica de Baja California (UPBC Mexicali)', 'lic', 'upbc-it')" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; cursor: pointer; text-align: left; transition: all 0.2s;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#ecfdf5';" onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='#f8fafc';">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="width: 36px; height: 36px; border-radius: 50%; background: #059669; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem;">DM</div>
-                            <div>
-                                <div style="font-weight: 700; font-size: 0.88rem; color: #0f172a;">Diana Laura Morales Ríos</div>
-                                <div style="font-size: 0.76rem; color: #64748b;">diana.morales@upmxl.edu.mx</div>
-                            </div>
-                        </div>
-                        <span style="font-size: 0.72rem; font-weight: 700; color: #047857; background: #d1fae5; padding: 4px 8px; border-radius: 6px;">UPMXL</span>
-                    </button>
-
-                    <!-- Option 3: Alejandro Silva (TecNM) -->
-                    <button type="button" onclick="selectQuickGoogleAccountRegister('Alejandro Silva Garza', 'asilva@saltillo.tecnm.mx', '21051930', 'it', 'TecNM Campus Saltillo', 'lic', 'it-mecatronica')" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; cursor: pointer; text-align: left; transition: all 0.2s;" onmouseover="this.style.borderColor='#f59e0b'; this.style.background='#fffbeb';" onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='#f8fafc';">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="width: 36px; height: 36px; border-radius: 50%; background: #d97706; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem;">AS</div>
-                            <div>
-                                <div style="font-weight: 700; font-size: 0.88rem; color: #0f172a;">Alejandro Silva Garza</div>
-                                <div style="font-size: 0.76rem; color: #64748b;">asilva@saltillo.tecnm.mx</div>
-                            </div>
-                        </div>
-                        <span style="font-size: 0.72rem; font-weight: 700; color: #b45309; background: #fef3c7; padding: 4px 8px; border-radius: 6px;">TecNM Saltillo</span>
-                    </button>
-                </div>
+                <p style="margin: 0 0 16px; font-size: 0.85rem; color: #475569; line-height: 1.45;">Ingresa tu correo institucional o conecta vía Google OAuth para completar tu registro oficial:</p>
 
                 <!-- Custom Account Entry -->
                 <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 16px;">
@@ -3456,7 +3423,7 @@
             window.addEventListener('storage', (e) => { if (e.key === 'stemos_theme') applyTheme(e.newValue || 'dark'); });
         } catch(e){}
         // Global Portal Version
-        window.STEMOS_VERSION = 'v1.1.1';
+        window.STEMOS_VERSION = 'v1.1.4';
     </script>
 </body>
 

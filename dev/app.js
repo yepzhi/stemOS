@@ -274,13 +274,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     hud.style.color = '#059669';
                     hud.style.background = 'rgba(16,185,129,0.08)';
                     hud.style.borderColor = 'rgba(16,185,129,0.3)';
-                    hud.title = `Mini PC Campus Edge Conectada (${status.url}) · 0 Litros de Agua · Firestore jsweb-b14f8 (100 concurrentes)`;
+                    hud.title = `Mini PC Campus Edge Conectada (${status.url}) · 0 Litros de Agua · Firestore stemos-org (100 concurrentes)`;
                     text.innerHTML = '<i class="fa-solid fa-server"></i> Mini PC Edge (0L) &bull; Firestore 100%';
                 } else {
                     hud.style.color = '#0284c7';
                     hud.style.background = 'rgba(2,132,199,0.08)';
                     hud.style.borderColor = 'rgba(2,132,199,0.3)';
-                    hud.title = `Gemini Cloud Backup (gemini-2.5-flash) · Firestore jsweb-b14f8 activo para 100 alumnos simultáneos`;
+                    hud.title = `Gemini Cloud Backup (gemini-2.5-flash) · Firestore stemos-org activo para 100 alumnos simultáneos`;
                     text.innerHTML = '<i class="fa-solid fa-cloud"></i> Gemini 2.5 Flash &bull; Firestore 100%';
                 }
             }).catch(() => {});
@@ -2729,6 +2729,65 @@ document.addEventListener('DOMContentLoaded', () => {
         const elAvatarInitials = document.querySelector('.avatar-initials-mini');
         const btnGoogleLogin = document.getElementById('btn-header-google-login');
 
+        // Check for Google Auth Redirect Result on load
+        if (!window._stemos_redirect_checked && typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+            window._stemos_redirect_checked = true;
+            try {
+                firebase.auth().getRedirectResult().then((result) => {
+                    if (result && result.user) {
+                        const user = result.user;
+                        const realEmail = user.email || '';
+                        const realName = user.displayName || (realEmail ? realEmail.split('@')[0] : 'Estudiante');
+                        const photoURL = user.photoURL || '';
+                        const isUpbc = realEmail.toLowerCase().includes('upbc.edu.mx');
+                        const isTecnm = realEmail.toLowerCase().includes('tecnm.mx');
+                        const isUabc = realEmail.toLowerCase().includes('uabc.edu.mx');
+                        const matriculaMatch = realEmail.match(/\d{6,10}/);
+                        const matricula = matriculaMatch ? matriculaMatch[0] : ('2026' + Math.floor(1000 + Math.random() * 9000));
+                        let sub = 'it';
+                        let campus = 'TecNM Tijuana (ITT)';
+                        let careerId = localStorage.getItem('stemos_active_career') || 'it-mecatronica';
+                        let careerName = 'Ingeniería Mecatrónica';
+                        if (isUpbc) {
+                            sub = 'upbc';
+                            campus = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
+                            careerId = 'upbc-mecatronica';
+                        } else if (isUabc) {
+                            sub = 'univ-estatal';
+                            campus = 'Universidad Autónoma de Baja California (UABC)';
+                            careerId = 'uabc-bioingenieria';
+                            careerName = 'Bioingeniería';
+                        }
+                        const p = {
+                            name: realName,
+                            fullName: realName,
+                            email: realEmail,
+                            photoURL: photoURL,
+                            matricula: matricula,
+                            subsystem: sub,
+                            system: sub,
+                            campus: campus,
+                            careerId: careerId,
+                            careerName: careerName,
+                            hub: 'Tijuana / Frontera',
+                            className: 'Grupo General',
+                            classCode: ''
+                        };
+                        localStorage.setItem('stemos_student_profile', JSON.stringify(p));
+                        localStorage.setItem('stemos_student_name', realName);
+                        localStorage.setItem('stemos_auth_user', JSON.stringify({
+                            uid: user.uid,
+                            email: realEmail,
+                            displayName: realName,
+                            photoURL: photoURL,
+                            role: 'student'
+                        }));
+                        window.initStudentProfileBridge();
+                    }
+                }).catch(e => console.warn('Redirect auth result warning:', e));
+            } catch(e) {}
+        }
+
         if (profile && (profile.name || profile.fullName)) {
             const fullName = profile.name || profile.fullName;
             const firstName = fullName.split(' ')[0] || fullName;
@@ -2874,13 +2933,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (folioEl) {
-            folioEl.textContent = (profile && profile.folio) ? profile.folio : 'STEMOS-MCER-2026';
+            folioEl.textContent = (profile && (profile.folio || profile.diagnosticFolio)) || localStorage.getItem('stemos_diag_folio') || 'STEMOS-MCER-2026';
         }
+
+        const subStatusEl = document.getElementById('sp-modal-sub-status');
+        if (subStatusEl) {
+            let sub = null;
+            if (window.getStemosSubscription) sub = window.getStemosSubscription();
+            if (sub && sub.active) {
+                subStatusEl.innerHTML = `<span style="color:#34d399; font-weight:800;"><i class="fa-solid fa-circle-check"></i> Suscripción Activa</span> &bull; Plan Individual ($${sub.amount || 49} MXN/mes)`;
+            } else {
+                subStatusEl.innerHTML = `Acceso ilimitado a 34 Tracks y Tutor Socrático ($49 MXN/mes)`;
+            }
+        }
+
+        if (connEl && window.STEMOS_FIREBASE) {
+            const status = window.STEMOS_FIREBASE.getConnectionStatus();
+            connEl.innerHTML = `<span class="badge ${status.badgeClass}"><i class="fa-solid ${status.icon}"></i> ${status.label}</span>`;
+        }
+
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
     };
 
     window.closeStudentProfileModal = function() {
         const modal = document.getElementById('student-profile-modal');
-        if (modal) modal.classList.remove('active');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
     };
 
     window.handleStudentProfileBackdrop = function(e) {
@@ -2964,7 +3045,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(`¡Bienvenido, ${realName}! Has iniciado sesión con tu cuenta de Google.`);
                 }).catch((err) => {
                     console.warn('Google sign-in popup error:', err);
-                    if (err.code !== 'auth/popup-closed-by-user') {
+                    if (err.code === 'auth/popup-blocked') {
+                        try {
+                            auth.signInWithRedirect(provider);
+                        } catch(e) {
+                            alert('Las ventanas emergentes están bloqueadas en tu navegador. Por favor permite popups para stemos.org.');
+                        }
+                    } else if (err.code === 'auth/unauthorized-domain') {
+                        alert('Aviso de Configuración: El dominio actual no está en la lista de Dominios Autorizados de Firebase. Agrega stemos.org en Firebase Console > Authentication > Settings > Authorized Domains.');
+                    } else if (err.code !== 'auth/popup-closed-by-user') {
                         alert('No se pudo completar el inicio de sesión con Google: ' + (err.message || err.code));
                     }
                 });
@@ -2987,74 +3076,6 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem('stemos_student_xp');
             localStorage.removeItem('stemos_user_progress');
             window.location.reload();
-        }
-    };
-
-        const cefrBadgeEl = document.getElementById('sp-modal-cefr-badge');
-        const modalityEl = document.getElementById('sp-modal-modality');
-        const folioEl = document.getElementById('sp-modal-folio');
-
-        const userLvl = (profile && (profile.cefrLevel || profile.level)) || localStorage.getItem('stemos_user_level') || localStorage.getItem('stemos_active_mcer_level') || 'B1';
-        const userScore = (profile && (profile.cefrScore || profile.cefrPercentage)) ? `${profile.cefrPercentage || profile.cefrScore}%` : '75%';
-
-        if (cefrBadgeEl) {
-            cefrBadgeEl.textContent = `CEFR ${userLvl} · ${userScore}`;
-            if (userLvl === 'A1') {
-                cefrBadgeEl.style.background = '#059669';
-            } else if (userLvl === 'A2') {
-                cefrBadgeEl.style.background = '#0284c7';
-            } else if (userLvl === 'B1') {
-                cefrBadgeEl.style.background = '#d97706';
-            } else {
-                cefrBadgeEl.style.background = '#7c3aed';
-            }
-        }
-
-        if (modalityEl) {
-            if (profile && profile.degreeModality === 'tsu' && profile.tsuSpecialtyName) {
-                modalityEl.textContent = `TSU: ${profile.tsuSpecialtyName}`;
-            } else if (profile && profile.degreeModality === 'tsu') {
-                modalityEl.textContent = 'Técnico Superior Universitario (TSU)';
-            } else {
-                modalityEl.textContent = 'Ingeniería / Licenciatura Profesional';
-            }
-        }
-
-        if (folioEl) {
-            folioEl.textContent = (profile && (profile.folio || profile.diagnosticFolio)) || localStorage.getItem('stemos_diag_folio') || 'STEMOS-MCER-2026';
-        }
-
-        const subStatusEl = document.getElementById('sp-modal-sub-status');
-        if (subStatusEl) {
-            let sub = null;
-            if (window.getStemosSubscription) sub = window.getStemosSubscription();
-            if (sub && sub.active) {
-                subStatusEl.innerHTML = `<span style="color:#34d399; font-weight:800;"><i class="fa-solid fa-circle-check"></i> Suscripción Activa</span> &bull; Plan Individual ($${sub.amount || 49} MXN/mes)`;
-            } else {
-                subStatusEl.innerHTML = `Acceso ilimitado a 34 Tracks y Tutor Socrático ($49 MXN/mes)`;
-            }
-        }
-
-        if (connEl && window.STEMOS_FIREBASE) {
-            const status = window.STEMOS_FIREBASE.getConnectionStatus();
-            connEl.innerHTML = `<span class="badge ${status.badgeClass}"><i class="fa-solid ${status.icon}"></i> ${status.label}</span>`;
-        }
-
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    };
-
-    window.closeStudentProfileModal = function() {
-        const modal = document.getElementById('student-profile-modal');
-        if (modal) {
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    };
-
-    window.handleStudentProfileBackdrop = function(e) {
-        if (e.target.id === 'student-profile-modal') {
-            window.closeStudentProfileModal();
         }
     };
 
@@ -3523,14 +3544,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnWorldMcer && btnWorldEsp) {
         btnWorldMcer.addEventListener('click', () => {
             btnWorldMcer.classList.add('active');
-            btnWorldMcer.style.background = '#ffffff';
-            btnWorldMcer.style.color = '#0f172a';
-            btnWorldMcer.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+            btnWorldMcer.style.background = '';
+            btnWorldMcer.style.color = '';
+            btnWorldMcer.style.boxShadow = '';
 
             btnWorldEsp.classList.remove('active');
-            btnWorldEsp.style.background = 'transparent';
-            btnWorldEsp.style.color = '#64748b';
-            btnWorldEsp.style.boxShadow = 'none';
+            btnWorldEsp.style.background = '';
+            btnWorldEsp.style.color = '';
+            btnWorldEsp.style.boxShadow = '';
 
             if (sectionWorldMcer) sectionWorldMcer.style.display = 'block';
             if (sectionWorldEsp) sectionWorldEsp.style.display = 'none';
@@ -3540,14 +3561,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         btnWorldEsp.addEventListener('click', () => {
             btnWorldEsp.classList.add('active');
-            btnWorldEsp.style.background = '#ffffff';
-            btnWorldEsp.style.color = '#0f172a';
-            btnWorldEsp.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+            btnWorldEsp.style.background = '';
+            btnWorldEsp.style.color = '';
+            btnWorldEsp.style.boxShadow = '';
 
             btnWorldMcer.classList.remove('active');
-            btnWorldMcer.style.background = 'transparent';
-            btnWorldMcer.style.color = '#64748b';
-            btnWorldMcer.style.boxShadow = 'none';
+            btnWorldMcer.style.background = '';
+            btnWorldMcer.style.color = '';
+            btnWorldMcer.style.boxShadow = '';
 
             if (sectionWorldMcer) sectionWorldMcer.style.display = 'none';
             if (sectionWorldEsp) sectionWorldEsp.style.display = 'block';
@@ -3650,8 +3671,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. MCER Unit Study Modal
     let activeMcerUnit = null;
 
-    function openMcerUnitModal(unitId) {
-        if (!hasCompletedPlacement()) {
+    function openMcerUnitModal(unitId, isDemo = false) {
+        if (!isDemo && !hasCompletedPlacement()) {
+            window._pendingMcerUnitId = unitId;
             showPlacementRequiredModal();
             return;
         }
@@ -4840,9 +4862,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Reset to first tab
         switchMcerModalTab('dialogue');
-        modal.showModal();
+        if (typeof modal.showModal === 'function') modal.showModal();
+        else modal.setAttribute('open', '');
     }
     window.openMcerUnitModal = openMcerUnitModal;
+
+    window.exploreUnitDemoMode = function() {
+        const modal = document.getElementById('modal-placement-required');
+        if (modal) {
+            if (typeof modal.close === 'function') modal.close();
+            else modal.style.display = 'none';
+        }
+        const unitId = window._pendingMcerUnitId || 'a1-u01';
+        openMcerUnitModal(unitId, true);
+    };
 
     function switchMcerModalTab(tabKey) {
         document.querySelectorAll('.mcer-tab-btn').forEach(b => {

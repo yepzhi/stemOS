@@ -12,7 +12,7 @@
  *  3. AI Edge Gateway: Proxies Ollama (http://127.0.0.1:11434) and Google Gemini API
  *     (gemini-2.5-flash) with connection pooling and concurrency debouncing.
  *  4. Cloud Firestore Integration: Bridges local offline caches to Cloud
- *     Firestore (project: jsweb-b14f8).
+ *     Firestore (project: stemos-org).
  * ═════════════════════════════════════════════════════════════════════════════
  */
 
@@ -386,7 +386,7 @@ const server = http.createServer((req, res) => {
                 projectedCohortCapacity: 1500
             },
             cloudFirestore: {
-                projectId: 'jsweb-b14f8',
+                projectId: 'stemos-org',
                 status: 'ready',
                 rules: 'multi-tenant ISO 9001:2015 isolated'
             },
@@ -491,7 +491,7 @@ function startServer(targetPort) {
 ║  ══════════════════════════════════════════════════════════════════  ║
 ║  ⚡ Hardware: 15W-85W Ultra-Efficient (0 Liters Water Consumption)    ║
 ║  👥 Capacity: 100 Simultaneous Students / 1,500 Total Cohort         ║
-║  🔥 Cloud Firestore: jsweb-b14f8 (Standard Native / Multi-Tenant)    ║
+║  🔥 Cloud Firestore: stemos-org (Standard Native / Multi-Tenant)    ║
 ║  🤖 AI Engine: Gemini 2.5 Flash + Local Ollama Hybrid Gateway        ║
 ╚══════════════════════════════════════════════════════════════════════╝
 

@@ -10,7 +10,7 @@
       "googleSignIn": {
         "oAuthBrandDisplayName": "stemOS",
         "authorizedRedirectUris": [
-          "https://jsweb-b14f8.firebaseapp.com/__/auth/handler",
+          "https://stemos-org.firebaseapp.com/__/auth/handler",
           "https://stemos.org/__/auth/handler",
           "https://stemos.dev/__/auth/handler"
         ],

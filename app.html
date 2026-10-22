@@ -51,11 +51,12 @@
         body {
             margin: 0;
             padding: 0;
-            background: #030712;
+            background: #060b14;
             color: #f8fafc;
             min-height: 100vh;
             min-height: 100dvh;
             overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
         }
         @media (min-width: 769px) {
             body {
@@ -64,6 +65,378 @@
                 height: 100dvh;
             }
         }
+
+        /* ── LOW-RESOURCE AMBIENT BLUE AURA (ZERO CPU, GPU-ONLY) ── */
+        .ed-main-area {
+            background-color: #060b14 !important;
+            background-image: 
+                radial-gradient(ellipse 70% 45% at 20% 0%, rgba(14, 165, 233, 0.14) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 85% 15%, rgba(99, 102, 241, 0.11) 0%, transparent 60%),
+                radial-gradient(ellipse 70% 60% at 50% 65%, rgba(2, 132, 199, 0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 90% 90%, rgba(56, 189, 248, 0.07) 0%, transparent 60%) !important;
+            background-attachment: fixed !important;
+            color: #f1f5f9;
+        }
+
+        /* ── HIGH-CONTRAST VISIBLE LEFT RAIL SIDEBAR ── */
+        .ed-rail-sidebar {
+            width: 72px !important;
+            background: rgba(10, 16, 30, 0.96) !important;
+            backdrop-filter: blur(24px) !important;
+            -webkit-backdrop-filter: blur(24px) !important;
+            border-right: 1px solid rgba(56, 189, 248, 0.16) !important;
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.45) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding: 16px 0 !important;
+            z-index: 1000 !important;
+        }
+        .ed-rail-btn {
+            width: 48px !important;
+            height: 48px !important;
+            border-radius: 13px !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+            color: #f8fafc !important;
+            font-size: 1.25rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            position: relative !important;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+            text-decoration: none !important;
+            margin: 4px 0 !important;
+        }
+        .ed-rail-btn i {
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+        /* Distinct high-contrast accent colors per sidebar button */
+        #nav-btn-home i { color: #38bdf8 !important; }
+        #nav-btn-placement i { color: #34d399 !important; }
+        #nav-btn-world i { color: #c084fc !important; }
+        #nav-btn-graph i { color: #818cf8 !important; }
+        #nav-btn-tutor i { color: #f472b6 !important; }
+        #nav-btn-badges i { color: #fbbf24 !important; }
+        #nav-btn-glossary i { color: #2dd4bf !important; }
+        #btn-lock-backdoor i { color: #fb7185 !important; }
+        .ed-rail-btn.ed-toggle-btn i { color: #94a3b8 !important; }
+
+        .ed-rail-btn:hover {
+            background: rgba(56, 189, 248, 0.22) !important;
+            border-color: rgba(56, 189, 248, 0.6) !important;
+            color: #ffffff !important;
+            transform: translateY(-2px) scale(1.08) !important;
+            box-shadow: 0 6px 18px rgba(2, 132, 199, 0.4) !important;
+        }
+        .ed-rail-btn.active {
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.45) 0%, rgba(99, 102, 241, 0.4) 100%) !important;
+            border: 1.5px solid #38bdf8 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.5), inset 0 0 10px rgba(56, 189, 248, 0.3) !important;
+        }
+        .ed-rail-btn.active::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            width: 4px;
+            height: 22px;
+            background: #38bdf8;
+            border-radius: 0 4px 4px 0;
+            box-shadow: 0 0 10px #38bdf8;
+        }
+        .ed-rail-tooltip {
+            background: rgba(15, 23, 42, 0.95) !important;
+            color: #f8fafc !important;
+            border: 1px solid rgba(56, 189, 248, 0.3) !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+            font-size: 0.78rem !important;
+            font-weight: 700 !important;
+            border-radius: 8px !important;
+            padding: 6px 12px !important;
+        }
+
+        /* ── REFINED, COMPACT & MODERN UPPER HEADER BAR ── */
+        .ed-top-header-wrapper {
+            padding: 0 16px;
+            margin-bottom: 12px;
+        }
+        .ed-top-header {
+            height: auto !important;
+            min-height: 48px !important;
+            padding: 6px 14px !important;
+            background: rgba(13, 21, 38, 0.88) !important;
+            backdrop-filter: blur(24px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+            border: 1px solid rgba(56, 189, 248, 0.22) !important;
+            box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+            border-radius: 16px !important;
+            gap: 8px !important;
+            flex-wrap: wrap !important;
+        }
+        .ed-header-left, .ed-header-right {
+            gap: 6px !important;
+            flex-wrap: wrap !important;
+        }
+        .ed-brand-title {
+            color: #ffffff !important;
+            font-size: 1.18rem !important;
+        }
+        .ed-student-greeting {
+            font-size: 0.76rem !important;
+            color: #94a3b8 !important;
+            padding-left: 10px !important;
+            border-left: 1px solid rgba(255, 255, 255, 0.12) !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+            flex-wrap: wrap !important;
+        }
+        .ed-student-greeting strong {
+            color: #f8fafc !important;
+        }
+        .ed-student-subsystem-pill {
+            font-size: 0.7rem !important;
+            padding: 2px 7px !important;
+        }
+        .ed-student-campus-badge {
+            font-size: 0.7rem !important;
+            padding: 2px 7px !important;
+        }
+        .btn-header-google-pill {
+            padding: 2px 8px !important;
+            font-size: 0.7rem !important;
+            font-weight: 700 !important;
+            border-radius: 999px !important;
+            background: #ffffff !important;
+            color: #0f172a !important;
+            border: 1px solid rgba(255, 255, 255, 0.4) !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+            cursor: pointer !important;
+            transition: all 0.18s ease !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+        }
+        .btn-header-google-pill:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+        }
+        .ed-level-indicator {
+            padding: 3px 8px !important;
+            font-size: 0.71rem !important;
+            border-radius: 999px !important;
+            font-weight: 600 !important;
+            gap: 5px !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            background: rgba(255, 255, 255, 0.06) !important;
+            color: #e2e8f0 !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+            transition: all 0.2s ease !important;
+            cursor: pointer !important;
+            white-space: nowrap !important;
+        }
+        .ed-level-indicator:hover {
+            background: rgba(255, 255, 255, 0.12) !important;
+            border-color: rgba(56, 189, 248, 0.4) !important;
+            transform: translateY(-1px) !important;
+        }
+        .ed-header-icon-btn {
+            width: 32px !important;
+            height: 32px !important;
+            background: rgba(255, 255, 255, 0.07) !important;
+            border: 1px solid rgba(255, 255, 255, 0.14) !important;
+            color: #cbd5e1 !important;
+            font-size: 0.82rem !important;
+            border-radius: 50% !important;
+        }
+        .ed-header-icon-btn:hover {
+            background: rgba(56, 189, 248, 0.2) !important;
+            color: #38bdf8 !important;
+            border-color: rgba(56, 189, 248, 0.45) !important;
+        }
+        .ed-user-avatar {
+            padding: 2px 7px 2px 2px !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+            border: 1px solid rgba(255, 255, 255, 0.16) !important;
+            border-radius: 999px !important;
+        }
+        .avatar-initials-mini {
+            width: 26px !important;
+            height: 26px !important;
+            font-size: 0.68rem !important;
+        }
+
+        /* ── MODERN KPI STAT CARDS & GLOWING ACCENT CIRCLES ── */
+        .ed-hero-banner {
+            background: linear-gradient(135deg, rgba(13, 21, 38, 0.94) 0%, rgba(8, 14, 26, 0.97) 100%) !important;
+            border: 1px solid rgba(56, 189, 248, 0.22) !important;
+            box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+            height: auto !important;
+            padding: 18px 22px !important;
+            margin: 0 20px 20px !important;
+            width: calc(100% - 40px) !important;
+            border-radius: 18px !important;
+        }
+        .ed-hero-scenery-overlay {
+            display: none !important;
+        }
+        .ed-kpi-cards-grid {
+            display: grid !important;
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 14px !important;
+            width: 100% !important;
+            max-width: 1200px !important;
+        }
+        .ed-kpi-card {
+            background: rgba(17, 27, 49, 0.85) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            border-radius: 16px !important;
+            padding: 14px 16px !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 14px !important;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .ed-kpi-card:hover {
+            transform: translateY(-3px) !important;
+            border-color: rgba(56, 189, 248, 0.45) !important;
+            box-shadow: 0 12px 30px rgba(2, 132, 199, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+        }
+        /* HIGH-CONTRAST GLOWING BORDERED CIRCLES */
+        .ed-kpi-icon-col {
+            width: 48px !important;
+            height: 48px !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+            position: relative !important;
+            transition: transform 0.25s ease !important;
+        }
+        .ed-kpi-card:hover .ed-kpi-icon-col {
+            transform: scale(1.08) rotate(4deg) !important;
+        }
+        /* KPI 1: Course Completion - Sky Blue */
+        .ed-kpi-card:nth-child(1) .ed-kpi-icon-col {
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.32) 0%, rgba(14, 165, 233, 0.1) 70%) !important;
+            border: 2px solid #38bdf8 !important;
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.45), inset 0 0 10px rgba(56, 189, 248, 0.25) !important;
+        }
+        .ed-kpi-card:nth-child(1) .ed-kpi-icon {
+            color: #38bdf8 !important;
+            font-size: 1.25rem !important;
+        }
+        /* KPI 2: Test Score - Emerald Green */
+        .ed-kpi-card:nth-child(2) .ed-kpi-icon-col {
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.32) 0%, rgba(16, 185, 129, 0.1) 70%) !important;
+            border: 2px solid #34d399 !important;
+            box-shadow: 0 0 16px rgba(52, 211, 153, 0.45), inset 0 0 10px rgba(52, 211, 153, 0.25) !important;
+        }
+        .ed-kpi-card:nth-child(2) .ed-kpi-icon {
+            color: #34d399 !important;
+            font-size: 1.25rem !important;
+        }
+        /* KPI 3: Time on Task - Indigo Violet */
+        .ed-kpi-card:nth-child(3) .ed-kpi-icon-col {
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.32) 0%, rgba(99, 102, 241, 0.1) 70%) !important;
+            border: 2px solid #818cf8 !important;
+            box-shadow: 0 0 16px rgba(129, 140, 248, 0.45), inset 0 0 10px rgba(129, 140, 248, 0.25) !important;
+        }
+        .ed-kpi-card:nth-child(3) .ed-kpi-icon {
+            color: #a5b4fc !important;
+            font-size: 1.25rem !important;
+        }
+        /* KPI 4: Curricular XP - Amber Gold */
+        .ed-kpi-card:nth-child(4) .ed-kpi-icon-col, #kpi-card-xp .ed-kpi-icon-col {
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.32) 0%, rgba(245, 158, 11, 0.1) 70%) !important;
+            border: 2px solid #fbbf24 !important;
+            box-shadow: 0 0 16px rgba(251, 191, 36, 0.45), inset 0 0 10px rgba(251, 191, 36, 0.25) !important;
+        }
+        .ed-kpi-card:nth-child(4) .ed-kpi-icon, #kpi-card-xp .ed-kpi-icon {
+            color: #fbbf24 !important;
+            font-size: 1.25rem !important;
+        }
+        .ed-kpi-value {
+            color: #ffffff !important;
+            font-size: 1.65rem !important;
+            font-weight: 800 !important;
+            letter-spacing: -0.02em !important;
+        }
+        .ed-kpi-label {
+            color: #94a3b8 !important;
+            font-size: 0.74rem !important;
+            font-weight: 600 !important;
+        }
+        .ed-kpi-unit {
+            color: #64748b !important;
+        }
+
+        /* ── PROGRAM SWITCHER & FILTER BAR ── */
+        .ed-program-world-bar {
+            background: rgba(13, 21, 38, 0.88) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+        }
+        .ed-world-tab-btn.active {
+            background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4) !important;
+        }
+        .ed-world-tab-btn:not(.active) {
+            background: transparent !important;
+            color: #94a3b8 !important;
+        }
+        .ed-section-heading {
+            color: #f8fafc !important;
+        }
+        .ed-units-subheading {
+            color: #94a3b8 !important;
+        }
+        .ed-filter-chip {
+            background: rgba(255, 255, 255, 0.06) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            color: #cbd5e1 !important;
+        }
+        .ed-filter-chip:hover {
+            background: rgba(56, 189, 248, 0.18) !important;
+            border-color: #38bdf8 !important;
+            color: #38bdf8 !important;
+        }
+        .ed-filter-chip.active {
+            background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%) !important;
+            color: #ffffff !important;
+            border-color: transparent !important;
+        }
+
+        /* ── UNIT CARDS ── */
+        .ed-unit-card {
+            background: rgba(14, 22, 40, 0.9) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+            color: #f8fafc !important;
+        }
+        .ed-unit-card:hover {
+            border-color: #38bdf8 !important;
+            box-shadow: 0 12px 32px rgba(2, 132, 199, 0.3), 0 0 0 1px #38bdf8 !important;
+            transform: translateY(-4px) !important;
+        }
+        .ed-unit-title {
+            color: #f8fafc !important;
+        }
+        .ed-unit-number {
+            color: #38bdf8 !important;
+        }
+
+        /* ── MOBILE RESPONSIVENESS (100% MOBILE ADAPTIVE) ── */
         @media (max-width: 768px) {
             body {
                 overflow-y: auto !important;
@@ -76,6 +449,7 @@
                 padding-right: env(safe-area-inset-right);
             }
             .dashboard-container.ed-theme-container {
+                flex-direction: column !important;
                 height: auto !important;
                 min-height: 100dvh;
                 overflow-y: visible !important;
@@ -83,28 +457,79 @@
                 max-width: 100vw !important;
             }
             .ed-rail-sidebar {
-                position: sticky;
-                top: 0;
-                z-index: 1000;
-                background: rgba(10, 15, 29, 0.95);
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                width: 100% !important;
+                height: auto !important;
+                min-height: 58px !important;
+                flex-direction: row !important;
+                padding: 6px 12px !important;
+                position: sticky !important;
+                top: 0 !important;
+                z-index: 1000 !important;
+                border-right: none !important;
+                border-bottom: 1px solid rgba(56, 189, 248, 0.25) !important;
+            }
+            .ed-rail-nav {
+                flex-direction: row !important;
+                justify-content: flex-start !important;
+                gap: 8px !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+                width: 100% !important;
+                padding: 2px 4px !important;
             }
             .ed-rail-btn {
-                min-height: 44px;
-                min-width: 44px;
-                touch-action: manipulation;
+                min-width: 44px !important;
+                min-height: 44px !important;
+                width: 44px !important;
+                height: 44px !important;
+                flex-shrink: 0 !important;
+                touch-action: manipulation !important;
             }
-            .ed-main-workspace {
-                padding: 16px !important;
-                overflow-x: hidden !important;
+            .ed-sidebar-bottom, .ed-sidebar-top {
+                display: none !important;
+            }
+            .ed-top-header-wrapper {
+                padding: 0 10px !important;
+                margin-top: 10px !important;
+            }
+            .ed-top-header {
+                border-radius: 14px !important;
+                padding: 8px 10px !important;
+            }
+            .ed-student-greeting {
+                border-left: none !important;
+                padding-left: 0 !important;
             }
             .ed-hero-banner {
-                padding: 18px 14px !important;
+                margin: 0 10px 16px !important;
+                width: calc(100% - 20px) !important;
+                padding: 14px !important;
             }
-            .ed-hero-title {
-                font-size: clamp(1.4rem, 5vw, 2.2rem) !important;
+            .ed-kpi-cards-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+            }
+            .ed-kpi-card {
+                padding: 10px 12px !important;
+                gap: 10px !important;
+            }
+            .ed-kpi-icon-col {
+                width: 40px !important;
+                height: 40px !important;
+            }
+            .ed-kpi-value {
+                font-size: 1.35rem !important;
+            }
+            .ed-units-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .ed-views-container {
+                padding: 14px 12px 60px !important;
+            }
+        }
+        @media (max-width: 480px) {
+            .ed-kpi-cards-grid {
+                grid-template-columns: 1fr !important;
             }
         }
     </style>
@@ -230,7 +655,7 @@
                         </div>
 
                         <!-- Mini PC Edge & Cloud Firestore Concurrency Indicator -->
-                        <div class="ed-level-indicator" id="header-connection-hud" title="Conexión de Laboratorio: Cloud Firestore jsweb-b14f8 &amp; Mini PC Campus Edge (100 concurrentes)" style="background:rgba(16,185,129,0.08); border-color:rgba(16,185,129,0.3); color:#059669; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
+                        <div class="ed-level-indicator" id="header-connection-hud" title="Conexión de Laboratorio: Cloud Firestore stemos-org &amp; Mini PC Campus Edge (100 concurrentes)" style="background:rgba(16,185,129,0.08); border-color:rgba(16,185,129,0.3); color:#059669; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
                             <i class="fa-solid fa-server" style="color:#10b981;"></i>
                             <span id="header-connection-text">Mini PC Edge &bull; Firestore 100%</span>
                         </div>
@@ -867,8 +1292,9 @@
             <!-- Footer Info -->
             <footer class="lxp-footer"
                 style="padding: 24px 32px; background: #ffffff; border-top: 1px solid #e2e8f0; margin-top: auto;">
-                <div>
+                <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
                     <strong>stemOS LXP</strong> &copy; 2026. All rights reserved.
+                    <span class="stemos-version-badge" style="display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; font-family:'JetBrains Mono',monospace; color:#38bdf8; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.3); padding:2px 8px; border-radius:999px; font-weight:700;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#22c55e;"></span>v1.1.4</span>
                 </div>
                 <div class="lxp-footer-right">
                     <i class="fa-solid fa-circle-nodes" style="color: var(--accent-indigo); font-size: 0.95rem;"></i>
@@ -1490,9 +1916,12 @@
                     <span>Desbloqueo inmediato de todos tus módulos</span>
                 </div>
             </div>
-            <div style="display:flex; gap:12px; justify-content:flex-end;">
+            <div style="display:flex; gap:12px; justify-content:flex-end; flex-wrap:wrap;">
                 <button type="button" class="btn btn-secondary" onclick="document.getElementById('modal-placement-required').close()" style="padding:10px 18px; border-radius:10px; border:1px solid #cbd5e1; background:#ffffff; color:#475569; font-weight:700; cursor:pointer;">
                     Cerrar
+                </button>
+                <button type="button" class="btn btn-demo" id="btn-explore-unit-demo" onclick="window.exploreUnitDemoMode()" style="padding:10px 18px; border-radius:10px; border:1.5px solid rgba(2,132,199,0.4); background:rgba(2,132,199,0.1); color:#0284c7; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                    <i class="fa-solid fa-eye"></i> Explorar Demo
                 </button>
                 <a href="placement.html" class="btn btn-primary" style="padding:10px 22px; border-radius:10px; background:linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); color:#ffffff; font-weight:800; text-decoration:none; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 12px rgba(2,132,199,0.3);">
                     <i class="fa-solid fa-play"></i> Realizar RapidCheck (30 min)
@@ -2315,6 +2744,7 @@
         document.addEventListener("keydown", function (e) {
             if (e.key === "Escape") closeUnderDevModal();
         });
+        window.STEMOS_VERSION = 'v1.1.4';
     </script>
 </body>
 

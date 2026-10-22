@@ -167,7 +167,7 @@ Cada modismo en `content/phrases_library.js` debe implementar el siguiente esque
 - [x] **7.2 Portal de Verificación Pública de Credenciales (`?verify=FOLIO`) (Opción A)**:
   - Al abrir un enlace con parámetro de consulta `?verify=STEM-...` o escanear el QR, se despliega el modal de validación del libro de registro público con badge verde esmeralda que confirma autenticidad, titular, planta acreditada y norma internacional.
 - [x] **7.3 Hub de Sincronización en la Nube y Multi-Tenant B2B (Opción C)**:
-  - **Conector de Nube (Firebase/Cloud Gateway)**: Indicador de sincronización en tiempo real (`nav-cloud-status`) con soporte para modo Cloud Activo (`jsweb-b14f8`) y modo local aislado para plantas sin internet (*Air-Gapped Local Cache*).
+  - **Conector de Nube (Firebase/Cloud Gateway)**: Indicador de sincronización en tiempo real (`nav-cloud-status`) con soporte para modo Cloud Activo (`stemos-org`) y modo local aislado para plantas sin internet (*Air-Gapped Local Cache*).
   - **Telemetría de Cohortes por Planta**: Monitoreo de tokens de memoria SM-2, reportes 8D, transcripciones de pitches y diplomas emitidos en Tijuana, Monterrey, Ciudad Juárez, Saltillo y Querétaro.
   - **Exportador/Importador de Respaldo JSON**: Permite a directores de L&D y Recursos Humanos descargar e importar respaldos completos de avance de su personal en un solo archivo JSON.
 
@@ -2029,7 +2029,7 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 - [x] **Motor Edge Sync (`initCampusEdgeSync`)**: Detección de estados online/offline y procesamiento de eventos pendientes en cola local (`stemos_campus_edge_sync_queue`) para despliegues en centros de cómputo universitarios con huella de agua cero (Mini PC local).
 
 ### FASE 71: Live Interactive Browser End-to-End Walkthrough & QA Audit
-**Objetivo:** Validar en entorno de producción real (`https://jsweb-b14f8.web.app`) mediante subagente de navegación autónomo: síntesis de voz US Piper / Neural, flujo de diagnóstico de colocación (Welcome, Survey, Instructions, Exam), navegación reactiva, e interfaz ejecutiva del Portal de Administración.
+**Objetivo:** Validar en entorno de producción real (`https://stemos-org.web.app`) mediante subagente de navegación autónomo: síntesis de voz US Piper / Neural, flujo de diagnóstico de colocación (Welcome, Survey, Instructions, Exam), navegación reactiva, e interfaz ejecutiva del Portal de Administración.
 - [x] **Placement Welcome & Audio Check**: Verificación del botón `#btn-audio-test` y reproducción con síntesis auditiva nativa.
 - [x] **Student Onboarding & Survey**: Validación de registro de carrera, semestre y datos institucionales en `placement.html`.
 - [x] **Live Exam Engine**: Validación de reproducción de audio prompts en ítems de escucha (`#btn-play-prompt`), avance entre reactivos y renderizado de textos técnicos.
@@ -2098,7 +2098,7 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 **Objetivo:** Ejecutar la suite integral de verificación automatizada, garantizar paridad bit a bit al 100% y desplegar la versión final en Cloudflare Pages/Workers y Firebase Hosting.
 - [x] **Suite de Auditoría (`scripts/test_phase77_phase78_crucible_and_verifiable_credentials.cjs`)**: 17/17 pruebas unitarias y de integración aprobadas al 100%.
 - [x] **Ejecución de 24 Test Suites**: 100% de suites verdes (Exit Code 0).
-- [x] **Despliegues en Vivo**: Cloudflare Workers (`https://stemos.yepzhi.workers.dev`) y Firebase Hosting (`https://jsweb-b14f8.web.app`).
+- [x] **Despliegues en Vivo**: Cloudflare Workers (`https://stemos.yepzhi.workers.dev`) y Firebase Hosting (`https://stemos-org.web.app`).
 
 ---
 
@@ -2125,7 +2125,7 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 
 ---
 
-*Estado del Proyecto: Fases 1 a 80 COMPLETADAS y 100% validadas. Todos los master test suites ejecutados con éxito: 24 suites y más de 332 pruebas aprobadas (Exit Code 0). stemOS Institutional Ecosystem, Dual-World MCER/ESP Catalog, Ecosistema Curricular MCER (240.0h, 464 Reactivos Estandarizados, 16 Crisoles IA, 4 Exámenes de Certificación Milestone de 20 reactivos con Diploma Oficial CACEI Criterio 4), Whitish Aurora Placement Diagnostic (30 min con US Neural Pre-rendered Audio Assets), Google Sign-In Selector & Resilient Fallback (Cero "SSO"), Pasaporte Diagnóstico en Perfil Estudiantil, Analíticas de Cohorte en Vivo para Profesores y Administradores, Universal Online Payments & Subscriptions ($49 MXN/mes), Teacher MCER Gradebook Matrix & Acta CACEI Criterio 4, Diagnostic Passport & Fast-Track Convalidation, Nearshoring Voice Crucible Studio con Captura de Audio en Vivo, VU Level Meter y Despacho Demo, Motor de Credenciales Verificables W3C Open Badges 3.0 con Código QR y Huella SHA-256, Sincronizador de Tema y Modo de Alto Contraste WCAG 2.1 AA en los 7 Portales, Federación Multi-Campus (TecNM, UTT, UPBC, UACJ) con Campus Edge Sync, Generador de Propuesta & Convenio CACEI en PDF, PWA Offline v6.3.1 con Diadema en Campus y Auditoría E2E en Navegador Real 100% operativos y desplegados en producción en Firebase Hosting (`https://jsweb-b14f8.web.app`) y Cloudflare Pages/Workers (`https://stemos.yepzhi.workers.dev`).*
+*Estado del Proyecto: Fases 1 a 80 COMPLETADAS y 100% validadas. Todos los master test suites ejecutados con éxito: 24 suites y más de 332 pruebas aprobadas (Exit Code 0). stemOS Institutional Ecosystem, Dual-World MCER/ESP Catalog, Ecosistema Curricular MCER (240.0h, 464 Reactivos Estandarizados, 16 Crisoles IA, 4 Exámenes de Certificación Milestone de 20 reactivos con Diploma Oficial CACEI Criterio 4), Whitish Aurora Placement Diagnostic (30 min con US Neural Pre-rendered Audio Assets), Google Sign-In Selector & Resilient Fallback (Cero "SSO"), Pasaporte Diagnóstico en Perfil Estudiantil, Analíticas de Cohorte en Vivo para Profesores y Administradores, Universal Online Payments & Subscriptions ($49 MXN/mes), Teacher MCER Gradebook Matrix & Acta CACEI Criterio 4, Diagnostic Passport & Fast-Track Convalidation, Nearshoring Voice Crucible Studio con Captura de Audio en Vivo, VU Level Meter y Despacho Demo, Motor de Credenciales Verificables W3C Open Badges 3.0 con Código QR y Huella SHA-256, Sincronizador de Tema y Modo de Alto Contraste WCAG 2.1 AA en los 7 Portales, Federación Multi-Campus (TecNM, UTT, UPBC, UACJ) con Campus Edge Sync, Generador de Propuesta & Convenio CACEI en PDF, PWA Offline v6.3.1 con Diadema en Campus y Auditoría E2E en Navegador Real 100% operativos y desplegados en producción en Firebase Hosting (`https://stemos-org.web.app`) y Cloudflare Pages/Workers (`https://stemos.yepzhi.workers.dev`).*
 
 ---
 

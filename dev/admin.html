@@ -1844,6 +1844,10 @@
                     <i class="fa-solid fa-arrow-right-from-bracket" style="color:var(--rose-400);"></i>
                     <span>Sign Out</span>
                 </a>
+                <div style="margin-top:auto; padding:16px 14px 4px; border-top:1px solid var(--border-glass); display:flex; align-items:center; justify-content:space-between;">
+                    <span style="font-size:0.7rem; color:var(--fg-dim);">stemOS Admin</span>
+                    <span class="stemos-version-badge" style="display:inline-flex; align-items:center; gap:5px; font-size:0.7rem; font-family:'JetBrains Mono',monospace; color:#38bdf8; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.25); padding:2px 7px; border-radius:999px; font-weight:700;"><span style="display:inline-block; width:5px; height:5px; border-radius:50%; background:#22c55e;"></span>v1.1.4</span>
+                </div>
             </nav>
         </aside>
 
@@ -1861,8 +1865,8 @@
                         <span class="badge badge-emerald" id="admin-campus-edge-sync-hud" title="Campus Edge Sync: Nodo LAN Central Sincronizado">
                             <i class="fa-solid fa-tower-broadcast"></i> Campus Node LAN
                         </span>
-                        <span class="badge badge-emerald" id="admin-firestore-badge" title="Cloud Firestore jsweb-b14f8 activo para 100 alumnos simultáneos">
-                            <i class="fa-solid fa-cloud"></i> Firestore 100% (jsweb-b14f8)
+                        <span class="badge badge-emerald" id="admin-firestore-badge" title="Cloud Firestore stemos-org activo para 100 alumnos simultáneos">
+                            <i class="fa-solid fa-cloud"></i> Firestore 100% (stemos-org)
                         </span>
                         <span class="badge badge-sky" id="admin-minipc-badge" title="Mini PC Campus Edge / Gemini 2.5 Flash">
                             <i class="fa-solid fa-server"></i> Mini PC Edge (0L Agua) &bull; Gemini 2.5 Flash
@@ -4364,6 +4368,7 @@
                 applyTheme(localStorage.getItem('stemos_theme') || 'dark');
                 window.addEventListener('storage', (e) => { if (e.key === 'stemos_theme') applyTheme(e.newValue || 'dark'); });
             } catch(e){}
+            window.STEMOS_VERSION = 'v1.1.4';
         });
     </script>
 </body>

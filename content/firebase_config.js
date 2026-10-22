@@ -1,7 +1,7 @@
 /**
  * stemOS Universal Firebase Configuration & Offline Resilience Initializer (v6.2.0)
  * ════════════════════════════════════════════════════════════════════════════════════
- * Project: jsweb-b14f8
+ * Project: stemos-org
  * Target: 1,500 students total (100 simultaneous concurrent sessions in campus labs)
  * Persistence: Multi-tab IndexedDB cache with graceful offline fallback
  * ════════════════════════════════════════════════════════════════════════════════════
@@ -11,13 +11,12 @@
     'use strict';
 
     const CONFIG = {
-        projectId: 'jsweb-b14f8',
-        appId: '1:218554230933:web:396ef863b0ebc7d949139c',
-        storageBucket: 'jsweb-b14f8.firebasestorage.app',
-        apiKey: 'AIzaSyCMlLMpHf7IS53etjhLO2D1Y8MfXCUcSuc',
-        authDomain: 'jsweb-b14f8.firebaseapp.com',
-        messagingSenderId: '218554230933',
-        measurementId: 'G-HGW4XK8JW0',
+        projectId: 'stemos-org',
+        appId: '1:82542324261:web:d89c64666c620237a32dcc',
+        storageBucket: 'stemos-org.firebasestorage.app',
+        apiKey: 'AIzaSyBKns4oRdXlQYrdfigI63P0DrZbcnPbqXs',
+        authDomain: 'stemos-org.firebaseapp.com',
+        messagingSenderId: '82542324261',
         maxConcurrentCapacity: 100,
         projectedEnrollment: 1500
     };

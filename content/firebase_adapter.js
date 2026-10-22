@@ -603,7 +603,7 @@
             return {
                 projectedEnrollment: 1500,
                 maxConcurrentCapacity: 100,
-                projectId: (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.projectId) || 'jsweb-b14f8',
+                projectId: (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.projectId) || 'stemos-org',
                 mode: this.mode,
                 isCloudActive: this.isCloudActive(),
                 pendingQueueCount: queue.length,

@@ -1,6 +1,6 @@
 /**
  * stemOS Concurrency, Firestore & Gemini Mini PC Edge Scale Audit Suite
- * Validates Firestore 100% (jsweb-b14f8), Gemini 2.5 Flash / Mini PC LAN Edge (0L water),
+ * Validates Firestore 100% (stemos-org), Gemini 2.5 Flash / Mini PC LAN Edge (0L water),
  * multi-tab persistence, debounced sync queues, and portal script parity.
  */
 
@@ -39,7 +39,7 @@ try {
     const firebasercPath = path.join(ROOT, '.firebaserc');
     assert(fs.existsSync(firebasercPath), '.firebaserc file exists');
     const firebaserc = JSON.parse(fs.readFileSync(firebasercPath, 'utf8'));
-    assert(firebaserc.projects && firebaserc.projects.default === 'jsweb-b14f8', '.firebaserc points default project to jsweb-b14f8');
+    assert(firebaserc.projects && firebaserc.projects.default === 'stemos-org', '.firebaserc points default project to stemos-org');
 
     const firebaseJsonPath = path.join(ROOT, 'firebase.json');
     assert(fs.existsSync(firebaseJsonPath), 'firebase.json exists');
@@ -72,8 +72,8 @@ try {
     assert(fs.existsSync(configPath), 'firebase_config.js exists');
 
     const configCode = fs.readFileSync(configPath, 'utf8');
-    assert(configCode.includes('jsweb-b14f8'), 'Config references projectId jsweb-b14f8');
-    assert(configCode.includes('AIzaSyCMlLMpHf7IS53etjhLO2D1Y8MfXCUcSuc'), 'Config references active web apiKey');
+    assert(configCode.includes('stemos-org'), 'Config references projectId stemos-org');
+    assert(configCode.includes('AIzaSyBKns4oRdXlQYrdfigI63P0DrZbcnPbqXs'), 'Config references active web apiKey');
     assert(configCode.includes('enableIndexedDbPersistence') || configCode.includes('persistentLocalCache'), 'Config enables offline IndexedDB / multi-tab persistence');
 
     // Run in isolated sandbox
@@ -91,7 +91,7 @@ try {
 
     const cfg = sandbox.window.STEMOS_FIREBASE_CONFIG;
     assert(Boolean(cfg), 'STEMOS_FIREBASE_CONFIG is mounted to window');
-    assert(cfg.options && cfg.options.projectId === 'jsweb-b14f8', 'Exported options has projectId jsweb-b14f8');
+    assert(cfg.options && cfg.options.projectId === 'stemos-org', 'Exported options has projectId stemos-org');
     assert(cfg.concurrency && cfg.concurrency.targetConcurrentStudents === 100, 'Concurrency target set for 100 simultaneous users');
     assert(cfg.concurrency && cfg.concurrency.targetTotalCohort === 1500, 'Cohort capacity target set for 1,500 total students');
     assert(typeof cfg.init === 'function', 'Provides cfg.init() entry point');
@@ -277,7 +277,7 @@ try {
     assert(edgeCode.includes('targetConcurrentStudents: 100'), 'Edge server targets 100 concurrent students');
     assert(edgeCode.includes('projectedCohortCapacity: 1500'), 'Edge server projects 1500 student cohort');
     assert(edgeCode.includes('0 Liters'), 'Edge server documents 0 Liters water footprint');
-    assert(edgeCode.includes('jsweb-b14f8'), 'Edge server references Cloud Firestore jsweb-b14f8');
+    assert(edgeCode.includes('stemos-org'), 'Edge server references Cloud Firestore stemos-org');
     assert(edgeCode.includes('/health'), 'Edge server exposes /health endpoint');
     assert(edgeCode.includes('/api/tags'), 'Edge server exposes /api/tags Ollama endpoint');
     assert(edgeCode.includes('/api/chat'), 'Edge server exposes /api/chat Ollama endpoint');

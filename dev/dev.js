@@ -7436,7 +7436,7 @@ function setupCertificatesAndCloudSync(tracks) {
   // Enterprise Cloud Sync Engine
   const cloudState = {
     connected: true,
-    projectId: "jsweb-b14f8",
+    projectId: "stemos-org",
     facility: "tijuana",
     lastSynced: new Date().toISOString()
   };
