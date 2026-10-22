@@ -71,9 +71,8 @@ test('index.html navbar includes nav_student_journey link', () => {
   assert(indexHtml.includes('href="#student-cx-journey-section"'), 'Navbar link must point to #student-cx-journey-section');
 });
 
-test('index.html hero simulators dock includes dock_cx pill', () => {
-  assert(indexHtml.includes('id="hero-cx-btn"'), 'Missing #hero-cx-btn in hero dock');
-  assert(indexHtml.includes('data-i18n="dock_cx"'), 'Missing dock_cx in hero dock');
+test('index.html hero simulators dock cleanly removed per user design direction', () => {
+  assert(!indexHtml.includes('id="hero-simulators-dock"'), 'hero-simulators-dock should be cleanly removed from index.html');
 });
 
 test('index.html Step 1 showcases 1-click Institutional Google SSO', () => {
