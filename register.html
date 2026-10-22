@@ -3024,6 +3024,8 @@
             applyTheme(localStorage.getItem('stemos_theme') || 'dark');
             window.addEventListener('storage', (e) => { if (e.key === 'stemos_theme') applyTheme(e.newValue || 'dark'); });
         } catch(e){}
+        // Global Portal Version
+        window.STEMOS_VERSION = 'v1.1.1';
     </script>
 </body>
 

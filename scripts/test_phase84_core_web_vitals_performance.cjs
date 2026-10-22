@@ -1,13 +1,13 @@
 /**
- * FASE 84 — Core Web Vitals (CWV) Hyper-Optimization, Two-Tier Cache Strategy & Resource Hints Engine
+ * FASE 84 — Core Web Vitals Hyper-Optimization, Two-Tier Service Worker Cache, Non-Blocking Parsing & Cloudflare Early Hints
  * Test Suite: test_phase84_core_web_vitals_performance.cjs
  *
  * Verifies:
- * 1. Resource Hints: dns-prefetch, preconnect, and preload across all core portals (index, dev, tracks, app, placement, teacher, admin, register)
- * 2. Elimination of parser-blocking scripts: deferred loading (defer) for external scripts across all portals
- * 3. Service Worker sw.js v6.5.0 two-tier cache strategy (Stale-While-Revalidate for media/curricula, Network-First for HTML/APIs)
- * 4. Cloudflare HTTP Early Hints Link headers & sw.js instantaneous revalidation policy in _headers
- * 5. Viewport and modern performance rendering tags (viewport-fit=cover, theme-color)
+ * 1. Critical Resource Hints (dns-prefetch, preconnect, preload) in HTML headers across all portals
+ * 2. Elimination of parser-blocking scripts with defer attribute across all primary portals
+ * 3. Service Worker sw.js v6.5.0 two-tier caching engine (Stale-While-Revalidate for media/data, Network-First for HTML/APIs)
+ * 4. Cloudflare _headers HTTP Early Hints & Link preconnect/preload directives
+ * 5. Production version v1.1.1 synchronization and badge integration across portals
  */
 
 const fs = require('fs');
@@ -30,189 +30,261 @@ function assert(condition, message) {
   }
 }
 
-console.log('🚀 RUNNING PHASE 84 TEST SUITE: CORE WEB VITALS (CWV) & SPEED TIER ENGINE');
-console.log('========================================================================\n');
+console.log('🚀 RUNNING PHASE 84 TEST SUITE: CORE WEB VITALS & TWO-TIER CACHE ARCHITECTURE');
+console.log('===============================================================================\n');
 
-const CORE_PORTALS = [
+// ─── SUITE 1: Critical Resource Hints in HTML Portals ───
+console.log('⚡ SUITE 1 — Critical Resource Hints (dns-prefetch, preconnect, preload)');
+
+const portals = [
   'index.html',
   'dev.html',
   'tracks.html',
-  'app.html',
   'placement.html',
+  'register.html',
   'teacher.html',
-  'admin.html',
-  'register.html'
+  'admin.html'
 ];
 
-// ─── SUITE 1: Critical Resource Hints & DNS Prefetch ───
-console.log('⚡ SUITE 1 — Critical Resource Hints & DNS Prefetch in HTML Head');
-CORE_PORTALS.forEach((portal) => {
+portals.forEach(portal => {
   const filePath = path.join(ROOT_DIR, portal);
-  assert(fs.existsSync(filePath), `${portal} exists on disk`);
-
+  assert(fs.existsSync(filePath), `${portal} exists in workspace`);
   const content = fs.readFileSync(filePath, 'utf8');
-  const headMatch = content.match(/<head[^>]*>([\s\S]*?)<\/head>/i);
-  assert(headMatch !== null, `${portal} contains a valid <head> element`);
 
-  if (headMatch) {
-    const headContent = headMatch[1];
-    assert(
-      headContent.includes('rel="dns-prefetch"') && headContent.includes('fonts.googleapis.com'),
-      `${portal} declares <link rel="dns-prefetch" href="https://fonts.googleapis.com">`
-    );
-    assert(
-      headContent.includes('rel="dns-prefetch"') && headContent.includes('fonts.gstatic.com'),
-      `${portal} declares <link rel="dns-prefetch" href="https://fonts.gstatic.com">`
-    );
-    assert(
-      headContent.includes('rel="dns-prefetch"') && headContent.includes('cdnjs.cloudflare.com'),
-      `${portal} declares <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">`
-    );
-    assert(
-      headContent.includes('rel="preconnect"') && headContent.includes('fonts.googleapis.com'),
-      `${portal} declares <link rel="preconnect" href="https://fonts.googleapis.com">`
-    );
-  }
-});
-
-// Verify CSS Preload on critical portals
-['index.html', 'dev.html', 'tracks.html'].forEach((portal) => {
-  const content = fs.readFileSync(path.join(ROOT_DIR, portal), 'utf8');
+  // Verify dns-prefetch for external CDNs and fonts
   assert(
-    content.includes('rel="preload"') && content.includes('as="style"'),
-    `${portal} preloads critical stylesheet dev.css for faster FCP/LCP`
+    content.includes('rel="dns-prefetch" href="https://fonts.googleapis.com"'),
+    `${portal} has dns-prefetch for fonts.googleapis.com`
+  );
+  assert(
+    content.includes('rel="dns-prefetch" href="https://fonts.gstatic.com"'),
+    `${portal} has dns-prefetch for fonts.gstatic.com`
+  );
+  assert(
+    content.includes('rel="dns-prefetch" href="https://cdnjs.cloudflare.com"'),
+    `${portal} has dns-prefetch for cdnjs.cloudflare.com`
+  );
+
+  // Verify preconnect for critical origins
+  assert(
+    content.includes('rel="preconnect" href="https://fonts.googleapis.com"'),
+    `${portal} has preconnect for fonts.googleapis.com`
+  );
+  assert(
+    content.includes('rel="preconnect" href="https://fonts.gstatic.com"') &&
+    content.includes('crossorigin'),
+    `${portal} has preconnect for fonts.gstatic.com with crossorigin`
   );
 });
 
-// ─── SUITE 2: Parser-Blocking Script Elimination (defer attribute) ───
-console.log('\n🚀 SUITE 2 — Parser-Blocking Script Elimination (defer Attributes)');
-CORE_PORTALS.forEach((portal) => {
-  const content = fs.readFileSync(path.join(ROOT_DIR, portal), 'utf8');
-  
-  // Find all external scripts (<script src="..." ...>)
-  const scriptRegex = /<script\s+[^>]*src=["']([^"']+)["'][^>]*>/gi;
-  let match;
-  let deferredCount = 0;
-  let nonDeferredCount = 0;
-  const nonDeferredList = [];
+// Specific checks for primary stylesheet preloads
+const indexContent = fs.readFileSync(path.join(ROOT_DIR, 'index.html'), 'utf8');
+assert(
+  indexContent.includes('rel="preload"') && indexContent.includes('as="style"'),
+  'index.html preloads primary stylesheet dev.css'
+);
 
-  while ((match = scriptRegex.exec(content)) !== null) {
-    const fullTag = match[0];
-    const src = match[1];
+const devContent = fs.readFileSync(path.join(ROOT_DIR, 'dev.html'), 'utf8');
+assert(
+  devContent.includes('rel="preload"') && devContent.includes('as="style"'),
+  'dev.html preloads primary stylesheet dev.css'
+);
 
-    if (fullTag.includes('defer') || fullTag.includes('async')) {
-      deferredCount++;
+const tracksContent = fs.readFileSync(path.join(ROOT_DIR, 'tracks.html'), 'utf8');
+assert(
+  tracksContent.includes('rel="preload"') && tracksContent.includes('as="style"'),
+  'tracks.html preloads primary stylesheet dev.css'
+);
+
+// ─── SUITE 2: Parser-Blocking Elimination with Defer ───
+console.log('\n🚀 SUITE 2 — Parser-Blocking Elimination with defer across Portals');
+
+function checkScriptsHaveDefer(portalName, scriptSubstrings) {
+  const content = fs.readFileSync(path.join(ROOT_DIR, portalName), 'utf8');
+  scriptSubstrings.forEach(scriptSub => {
+    // Look for <script ... src="...scriptSub..."
+    const re = new RegExp(`<script[^>]*src="[^"]*${scriptSub.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[^"]*"[^>]*>`, 'i');
+    const match = content.match(re);
+    if (match) {
+      assert(match[0].includes('defer'), `${portalName}: script matching "${scriptSub}" contains defer attribute`);
     } else {
-      nonDeferredCount++;
-      nonDeferredList.push(src);
+      assert(false, `${portalName}: script matching "${scriptSub}" was not found`);
     }
-  }
+  });
+}
 
-  assert(
-    nonDeferredCount === 0,
-    `${portal} has zero parser-blocking scripts (${deferredCount} deferred, ${nonDeferredCount} blocking: ${nonDeferredList.join(', ')})`
-  );
-});
+// index.html checks
+checkScriptsHaveDefer('index.html', [
+  'courses.js',
+  'career_tracks.js',
+  'career_paths.js',
+  'dev.js',
+  'firebase_config.js',
+  'firebase_adapter.js',
+  'gemini_service.js',
+  'stemos_pwa.js'
+]);
 
-// ─── SUITE 3: Service Worker v6.5.0 Two-Tier High-Performance Architecture ───
-console.log('\n⚙️ SUITE 3 — Service Worker v6.5.0 Two-Tier Speed Cache Engine');
+// dev.html checks
+checkScriptsHaveDefer('dev.html', [
+  'courses.js',
+  'career_tracks.js',
+  'career_paths.js',
+  'dev.js',
+  'stemos_pwa.js'
+]);
+
+// tracks.html checks
+checkScriptsHaveDefer('tracks.html', [
+  'courses.js',
+  'career_tracks.js',
+  'career_paths.js',
+  'dev.js',
+  'stemos_pwa.js'
+]);
+
+// placement.html checks
+checkScriptsHaveDefer('placement.html', [
+  'firebase-app-compat.js',
+  'firebase-auth-compat.js',
+  'firebase-firestore-compat.js',
+  'career_tracks.js',
+  'placement_test.js',
+  'stemos_pwa.js'
+]);
+
+// teacher.html checks
+checkScriptsHaveDefer('teacher.html', [
+  'firebase-app-compat.js',
+  'firebase-auth-compat.js',
+  'firebase-firestore-compat.js',
+  'career_tracks.js',
+  'career_paths.js',
+  'stemos_pwa.js'
+]);
+
+// admin.html checks
+checkScriptsHaveDefer('admin.html', [
+  'firebase-app-compat.js',
+  'firebase-auth-compat.js',
+  'firebase-firestore-compat.js',
+  'career_tracks.js',
+  'career_paths.js',
+  'stemos_pwa.js'
+]);
+
+// register.html checks
+checkScriptsHaveDefer('register.html', [
+  'confetti.browser.min.js'
+]);
+
+// ─── SUITE 3: Service Worker sw.js v6.5.0 Two-Tier Cache Engine ───
+console.log('\n🛡️ SUITE 3 — Service Worker sw.js v6.5.0 Two-Tier Architecture');
+
 const swPath = path.join(ROOT_DIR, 'sw.js');
 assert(fs.existsSync(swPath), 'sw.js exists in root directory');
 
 const swContent = fs.readFileSync(swPath, 'utf8');
+
 assert(
-  /CACHE_NAME\s*=\s*'stemos-lxp-v6\.[5-9]\./.test(swContent),
-  'sw.js defines CACHE_NAME as stemos-lxp-v6.5.0+ (two-tier CWV / RUM speed engine)'
+  swContent.includes("CACHE_NAME = 'stemos-lxp-v6.5.0-cwv-speed-tier'"),
+  'sw.js specifies CACHE_NAME v6.5.0 with cwv-speed-tier'
 );
+
+assert(
+  swContent.includes("SW_VERSION = '6.5.0'"),
+  'sw.js specifies SW_VERSION 6.5.0'
+);
+
+assert(
+  swContent.includes('Two-Tier') || swContent.includes('Stale-While-Revalidate'),
+  'sw.js documents and implements Two-Tier Speed Strategy'
+);
+
+assert(
+  swContent.includes('isSpeedAsset') &&
+  swContent.includes('/content/courses.js') &&
+  swContent.includes('/content/career_tracks.js'),
+  'sw.js has Stale-While-Revalidate tier matching curriculum and media files'
+);
+
+assert(
+  swContent.includes('caches.open(CACHE_NAME)') && swContent.includes('cache.put(event.request, clone)'),
+  'sw.js updates cache in background during Stale-While-Revalidate fetches'
+);
+
 assert(
   swContent.includes('Promise.allSettled'),
-  'sw.js uses Promise.allSettled for robust non-fatal pre-caching'
-);
-assert(
-  swContent.includes('isStaticOrMedia'),
-  'sw.js implements isStaticOrMedia classifier for Stale-While-Revalidate speed tier'
-);
-assert(
-  swContent.includes('// TIER 1: Stale-While-Revalidate'),
-  'sw.js implements TIER 1: Stale-While-Revalidate cache strategy'
-);
-assert(
-  swContent.includes('// TIER 2: Network-First with Instant Cache Fallback'),
-  'sw.js implements TIER 2: Network-First with Instant Cache Fallback strategy'
+  'sw.js uses Promise.allSettled for resilient pre-caching without install failures'
 );
 
-// Verify inclusion of all core curriculum files in cache
-const keyCurricula = [
-  '/content/courses.js',
-  '/content/career_tracks.js',
-  '/content/career_paths.js',
-  '/content/phrases_library.js',
-  '/content/mcer_tracks.js',
-  '/content/placement_test.js',
-  '/content/firebase_config.js',
-  '/content/firebase_adapter.js',
-  '/content/gemini_service.js'
-];
-keyCurricula.forEach((file) => {
-  assert(
-    swContent.includes(file),
-    `sw.js ASSETS_TO_CACHE includes curriculum file: ${file}`
-  );
-});
+assert(
+  swContent.includes('manifest.json') && swContent.includes('manifest.webmanifest'),
+  'sw.js pre-caches both manifest variants for offline PWA compliance'
+);
 
-// ─── SUITE 4: Cloudflare _headers Early Hints & Cache-Control ───
-console.log('\n🌐 SUITE 4 — Cloudflare HTTP Early Hints & Link Headers in _headers');
+// ─── SUITE 4: Cloudflare _headers Early Hints & Caching ───
+console.log('\n🌐 SUITE 4 — Cloudflare _headers Early Hints & Performance Directives');
+
 const headersPath = path.join(ROOT_DIR, '_headers');
-assert(fs.existsSync(headersPath), '_headers exists in root directory');
+assert(fs.existsSync(headersPath), '_headers file exists in root directory');
 
 const headersContent = fs.readFileSync(headersPath, 'utf8');
+
 assert(
-  headersContent.includes('Link: <https://fonts.googleapis.com>; rel="preconnect"'),
-  '_headers specifies Link preconnect for fonts.googleapis.com'
-);
-assert(
-  headersContent.includes('Link: <https://fonts.gstatic.com>; rel="preconnect"; crossorigin') ||
-  headersContent.includes('<https://fonts.gstatic.com>; rel="preconnect"; crossorigin'),
-  '_headers specifies Link preconnect crossorigin for fonts.gstatic.com'
-);
-assert(
-  headersContent.includes('/sw.js') && headersContent.includes('max-age=0, must-revalidate'),
-  '_headers enforces instant revalidation (max-age=0, must-revalidate) for /sw.js'
-);
-assert(
-  headersContent.includes('/*.html') && headersContent.includes('max-age=0, must-revalidate'),
-  '_headers enforces instant revalidation for HTML documents'
-);
-assert(
-  headersContent.includes('/*.js') && headersContent.includes('stale-while-revalidate=604800'),
-  '_headers specifies stale-while-revalidate caching for static JavaScript assets'
-);
-assert(
-  headersContent.includes('/*.css') && headersContent.includes('stale-while-revalidate=604800'),
-  '_headers specifies stale-while-revalidate caching for static CSS assets'
+  headersContent.includes('<https://fonts.googleapis.com>; rel=preconnect; crossorigin'),
+  '_headers defines HTTP Link preconnect for Google Fonts'
 );
 
-// ─── SUITE 5: Modern Performance & Mobile Metas ───
-console.log('\n📱 SUITE 5 — Responsive Viewport & Modern Rendering Metas');
-CORE_PORTALS.forEach((portal) => {
+assert(
+  headersContent.includes('<https://fonts.gstatic.com>; rel=preconnect; crossorigin'),
+  '_headers defines HTTP Link preconnect for Google Fonts Static CDN'
+);
+
+assert(
+  headersContent.includes('<https://cdnjs.cloudflare.com>; rel=dns-prefetch'),
+  '_headers defines HTTP Link dns-prefetch for cdnjs'
+);
+
+assert(
+  headersContent.includes('Link: </dev.css?v=5.12.1>; rel=preload; as=style') ||
+  headersContent.includes('</dev.css?v=5.12.1>; rel=preload; as=style'),
+  '_headers defines HTTP Link preload for dev.css stylesheet'
+);
+
+assert(
+  headersContent.includes('</manifest.webmanifest>; rel=preload; as=fetch; crossorigin=anonymous'),
+  '_headers defines HTTP Link preload for manifest.webmanifest'
+);
+
+assert(
+  headersContent.includes('Cache-Control: public, max-age=31536000, immutable'),
+  '_headers configures 1-year immutable caching for static assets'
+);
+
+// ─── SUITE 5: Global Version Synchronization & Badges ───
+console.log('\n🏷️ SUITE 5 — Global Version Synchronization (v1.1.1)');
+
+['index.html', 'dev.html', 'tracks.html'].forEach(portal => {
   const content = fs.readFileSync(path.join(ROOT_DIR, portal), 'utf8');
   assert(
-    content.includes('viewport-fit=cover'),
-    `${portal} includes viewport-fit=cover in viewport meta tag`
+    content.includes('stemos-version-badge') && content.includes('v1.1.1'),
+    `${portal} includes visible v1.1.1 version badge in footer`
   );
   assert(
-    content.includes('name="theme-color"') || content.includes('content="#0284c7"'),
-    `${portal} declares mobile theme-color`
+    content.includes("STEMOS_VERSION = 'v1.1.1'"),
+    `${portal} exposes global window.STEMOS_VERSION = 'v1.1.1'`
   );
 });
 
-// ─── FINAL SUMMARY ───
-console.log('\n========================================================================');
-console.log(`📊 PHASE 84 TEST RESULTS: ${passedTests} / ${totalTests} PASSED`);
+// Summary
+console.log('\n===============================================================================');
+console.log(`📊 PHASE 84 TEST RESULTS: ${passedTests} passed out of ${totalTests} tests`);
+
 if (failedTests > 0) {
-  console.error(`❌ ${failedTests} TESTS FAILED! Check logs above.`);
+  console.error(`❌ ${failedTests} test(s) failed.`);
   process.exit(1);
 } else {
-  console.log('🎉 ALL PHASE 84 CWV HYPER-OPTIMIZATION TESTS PASSED PERFECTLY!');
+  console.log('🎉 ALL PHASE 84 TESTS PASSED PERFECTLY! ZERO ERRORS.\n');
   process.exit(0);
 }

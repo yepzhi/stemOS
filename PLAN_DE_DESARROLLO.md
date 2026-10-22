@@ -2311,8 +2311,8 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 - [x] **`scripts/test_phase81_mobile_responsive.cjs`**: 37/37 pruebas PASADAS.
 - [x] **`scripts/test_phase82_production_security_and_mobile.cjs`**: 66/66 pruebas PASADAS.
 - [x] **`scripts/test_phase83_pwa_offline_manifest.cjs`**: 74/74 pruebas PASADAS.
-- [x] **`scripts/test_phase84_core_web_vitals_performance.cjs`**: 97/97 pruebas PASADAS.
-- **Total acumulado:** 274 pruebas automatizadas pasando al 100%.
+- [x] **`scripts/test_phase84_core_web_vitals_performance.cjs`**: 103/103 pruebas PASADAS.
+- **Total acumulado:** 280 pruebas automatizadas pasando al 100%.
 
 #### 84.6 Despliegue a Producción Cloudflare
 - [x] **Versión**: `a336dbe9-a32b-4035-a8b6-991bb49c8620`.

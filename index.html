@@ -2710,8 +2710,9 @@
 <footer class="supaste-footer">
     <div class="supaste-footer-inner">
       <div class="footer-brand-col">
-        <div class="footer-logo">
+        <div class="footer-logo" style="display:flex; align-items:center; gap:10px;">
           <span class="footer-brand-name" style="font-size: 1.35rem; font-weight: 800; letter-spacing: -0.03em;"><span class="brand-stem">stem</span><span class="brand-os">OS</span></span>
+          <span class="stemos-version-badge" style="font-size:0.75rem; font-family:'JetBrains Mono',monospace; color:#38bdf8; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3); padding:2px 8px; border-radius:999px; font-weight:700;">v1.1.1</span>
         </div>
         <p class="footer-desc" data-i18n="footer_brand_desc">Advanced English for Specific Purposes (ESP) platform built for semiconductor manufacturing, electromobility, aerospace, and high-precision strategic technologies.</p>
         <div class="footer-standards-chips">
@@ -2742,12 +2743,70 @@
       </div>
     </div>
     <div class="footer-bottom-row">
-      <span data-i18n="footer_copy">© 2026 stemOS • All rights reserved.</span>
+      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+        <span data-i18n="footer_copy">© 2026 stemOS • All rights reserved. • v1.1.1</span>
+        <button type="button" id="stemos-version-btn" class="stemos-version-badge-btn" onclick="openVersionDiagnosticsModal()" title="stemOS LXP Core Engine v1.1.1 — Click for System Health" style="display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; font-family:'JetBrains Mono',monospace; color:#38bdf8; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.3); padding:3px 10px; border-radius:999px; font-weight:700; cursor:pointer; transition:all 0.2s ease;">
+          <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#22c55e; box-shadow:0 0 8px #22c55e;"></span>
+          v1.1.1
+        </button>
+      </div>
       <div style="display:flex; align-items:center; gap:16px;">
         <a href="/privacy.html" style="color:#94a3b8; text-decoration:none; font-size:0.82rem; transition:color 0.2s;" onmouseenter="this.style.color='#38bdf8'" onmouseleave="this.style.color='#94a3b8'" data-i18n="footer_privacy_terms">Políticas de Privacidad y Términos</a>
       </div>
     </div>
   </footer>
+
+  <!-- ── Interactive System Version Diagnostics Modal (Phase 89) ── -->
+  <div class="stemos-diag-modal-overlay" id="stemos-version-modal" style="display:none; position:fixed; inset:0; z-index:999999; background:rgba(3,7,18,0.85); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); align-items:center; justify-content:center; padding:20px;" aria-hidden="true">
+    <div class="stemos-diag-card" style="background:linear-gradient(135deg, rgba(15,23,42,0.96) 0%, rgba(30,41,59,0.96) 100%); border:1px solid rgba(56,189,248,0.35); border-radius:24px; padding:32px; max-width:540px; width:100%; box-shadow:0 24px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1); color:#f8fafc; font-family:var(--font-primary, system-ui, sans-serif); position:relative;">
+      <button type="button" onclick="closeVersionDiagnosticsModal()" style="position:absolute; top:20px; right:20px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#94a3b8; width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1.1rem; transition:all 0.2s;" onmouseenter="this.style.color='#fff'; this.style.borderColor='#38bdf8'" onmouseleave="this.style.color='#94a3b8'; this.style.borderColor='rgba(255,255,255,0.15)'">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+        <span style="display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:14px; background:linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); box-shadow:0 8px 20px rgba(14,165,233,0.35);">
+          <i class="fa-solid fa-microchip" style="color:#ffffff; font-size:1.3rem;"></i>
+        </span>
+        <div>
+          <div style="font-size:1.25rem; font-weight:800; color:#ffffff; letter-spacing:-0.02em;">stemOS Enterprise LXP</div>
+          <div style="font-size:0.82rem; color:#38bdf8; font-family:'JetBrains Mono',monospace; font-weight:700;">Build Release v1.1.1</div>
+        </div>
+      </div>
+      <p style="font-size:0.88rem; color:#cbd5e1; line-height:1.6; margin:0 0 20px 0;">
+        Plataforma oficial de Inglés Técnico Industrial (ESP) para semiconductores, movilidad eléctrica y manufactura aeroespacial en América del Norte (T-MEC / CHIPS Act).
+      </p>
+      <div style="background:rgba(15,23,42,0.6); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:10px; font-size:0.82rem; font-family:'JetBrains Mono',monospace;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#94a3b8;">Release Version:</span>
+          <span style="color:#38bdf8; font-weight:700;">v1.1.1</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#94a3b8;">Service Worker Cache:</span>
+          <span style="color:#22c55e; font-weight:700;">v6.8.0-enterprise-sync</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#94a3b8;">Offline Engine:</span>
+          <span style="color:#38bdf8; font-weight:700;">IndexedDB Multi-Strategy</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#94a3b8;">Acoustic Phonetics:</span>
+          <span style="color:#38bdf8; font-weight:700;">Web Audio FFT (Phase 87)</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#94a3b8;">RUM Telemetry:</span>
+          <span style="color:#38bdf8; font-weight:700;">W3C CWV Observer (Phase 86)</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#94a3b8;">Edge Infrastructure:</span>
+          <span style="color:#f59e0b; font-weight:700;">Cloudflare Workers Global CDN</span>
+        </div>
+      </div>
+      <div style="margin-top:24px; display:flex; justify-content:flex-end;">
+        <button type="button" onclick="closeVersionDiagnosticsModal()" style="padding:10px 22px; border-radius:12px; background:linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%); color:#ffffff; font-weight:700; border:none; cursor:pointer; font-size:0.88rem; box-shadow:0 4px 14px rgba(14,165,233,0.4);">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- ── Interactive Zoom Demo Scheduling Modal ── -->
   <div class="stemos-zoom-modal-overlay" id="stemos-zoom-modal" style="display:none;" aria-hidden="true">
@@ -2983,6 +3042,25 @@
       if (success) success.style.display = 'block';
     }
 
+    // ─── VERSION DIAGNOSTICS CONTROLS (Phase 89) ───
+    function openVersionDiagnosticsModal() {
+      var modal = document.getElementById('stemos-version-modal');
+      if (modal) {
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+      }
+    }
+    function closeVersionDiagnosticsModal() {
+      var modal = document.getElementById('stemos-version-modal');
+      if (modal) {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+      }
+    }
+
+    window.STEMOS_VERSION = 'v1.1.1';
+    window.openVersionDiagnosticsModal = openVersionDiagnosticsModal;
+    window.closeVersionDiagnosticsModal = closeVersionDiagnosticsModal;
     window.updateLabCalc = updateLabCalc;
     window.openZoomDemoModal = openZoomDemoModal;
     window.closeZoomDemoModal = closeZoomDemoModal;
@@ -3242,7 +3320,7 @@
         cookie_accept: 'Accept &amp; Continue',
         cookie_more: 'Learn more',
         footer_link_cache: 'Refresh PWA Cache',
-        footer_copy: '&copy; 2026 stemOS &bull; All rights reserved.'
+        footer_copy: '&copy; 2026 stemOS &bull; All rights reserved. &bull; v1.1.1'
       },
       es: {
         head_title: 'stemOS — El Sistema Operativo de Inglés Técnico para la Industria de Alta Tecnología',
@@ -3495,7 +3573,7 @@
         cookie_accept: 'Aceptar y Continuar',
         cookie_more: 'Conocer más',
         footer_link_cache: 'Actualizar Caché PWA',
-        footer_copy: '&copy; 2026 stemOS &bull; Todos los derechos reservados.'
+        footer_copy: '&copy; 2026 stemOS &bull; Todos los derechos reservados. &bull; v1.1.1'
       }
     };
 
