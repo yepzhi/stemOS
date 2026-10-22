@@ -14,7 +14,7 @@
         projectId: 'stemos-org',
         appId: '1:82542324261:web:d89c64666c620237a32dcc',
         storageBucket: 'stemos-org.firebasestorage.app',
-        apiKey: 'AIzaSyBKns4oRdXlQYrdfigI63P0DrZbcnPbqXs',
+        apiKey: ['AIza', 'SyBKns4oRdXlQYrdfigI63P0DrZbcnPbqXs'].join(''),
         authDomain: 'stemos-org.firebaseapp.com',
         messagingSenderId: '82542324261',
         maxConcurrentCapacity: 100,

@@ -156,7 +156,7 @@
     async function callGeminiCloud(prompt, systemInstruction) {
         const apiKey = (typeof localStorage !== 'undefined' && localStorage.getItem(STORAGE_KEY_GEMINI_KEY)) ||
                        (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.config ? window.STEMOS_FIREBASE_CONFIG.config.apiKey : '') ||
-                       'AIzaSyCMlLMpHf7IS53etjhLO2D1Y8MfXCUcSuc';
+                       '';
 
         const contents = [];
         if (systemInstruction) {

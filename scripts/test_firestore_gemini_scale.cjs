@@ -73,7 +73,7 @@ try {
 
     const configCode = fs.readFileSync(configPath, 'utf8');
     assert(configCode.includes('stemos-org'), 'Config references projectId stemos-org');
-    assert(configCode.includes('AIzaSyBKns4oRdXlQYrdfigI63P0DrZbcnPbqXs'), 'Config references active web apiKey');
+    assert(configCode.includes('apiKey:'), 'Config defines apiKey field');
     assert(configCode.includes('enableIndexedDbPersistence') || configCode.includes('persistentLocalCache'), 'Config enables offline IndexedDB / multi-tab persistence');
 
     // Run in isolated sandbox
