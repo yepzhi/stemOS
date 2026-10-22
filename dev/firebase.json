@@ -32,6 +32,23 @@
     ],
     "cleanUrls": true,
     "trailingSlash": false,
+    "redirects": [
+      {
+        "source": "/dev",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/dev/**",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/dev.html",
+        "destination": "/",
+        "type": 301
+      }
+    ],
     "rewrites": [
       {
         "source": "/admin",
