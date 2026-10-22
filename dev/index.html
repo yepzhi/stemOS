@@ -1465,8 +1465,6 @@
     .promo-card,
     .reality-point-card,
     .std-cluster-card,
-    .inv-cell,
-    .platform-formal-inventory-card,
     .inst-card,
     .inst-career-card,
     .cx-step-card,
@@ -1477,6 +1475,227 @@
       -webkit-backdrop-filter: blur(14px) !important;
       border: 1px solid rgba(56, 189, 248, 0.22) !important;
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    }
+
+    /* Executive Bento-Grid for Formal Curricular Inventory */
+    .platform-formal-inventory-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.94) 0%, rgba(8, 17, 36, 0.98) 100%) !important;
+      border: 1.5px solid rgba(56, 189, 248, 0.3) !important;
+      border-radius: 24px !important;
+      padding: 38px 34px !important;
+      box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+      margin-top: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .inventory-card-header {
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .inventory-card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono, monospace);
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #38bdf8;
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+
+    .inventory-card-title {
+      font-family: var(--font-head, inherit);
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #ffffff !important;
+      letter-spacing: -0.025em;
+      margin: 0 0 10px 0;
+      line-height: 1.25;
+    }
+
+    .inventory-card-desc {
+      font-size: 0.94rem;
+      color: #94a3b8 !important;
+      margin: 0;
+      line-height: 1.6;
+      max-width: 820px;
+    }
+
+    .inventory-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 18px !important;
+      margin-bottom: 28px !important;
+      position: relative;
+      z-index: 2;
+    }
+
+    .inv-cell {
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.55) 0%, rgba(15, 23, 42, 0.75) 100%) !important;
+      border: 1px solid rgba(56, 189, 248, 0.18) !important;
+      border-radius: 18px !important;
+      padding: 22px 20px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      min-height: 142px !important;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .inv-cell:hover {
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%) !important;
+      border-color: rgba(56, 189, 248, 0.45) !important;
+      transform: translateY(-3px);
+      box-shadow: 0 14px 30px -8px rgba(14, 165, 233, 0.25) !important;
+    }
+
+    .inv-cell.highlight-cell {
+      background: linear-gradient(145deg, rgba(16, 185, 129, 0.1) 0%, rgba(15, 23, 42, 0.85) 100%) !important;
+      border: 1.5px solid rgba(16, 185, 129, 0.4) !important;
+      box-shadow: 0 12px 28px -8px rgba(16, 185, 129, 0.18) !important;
+    }
+
+    .inv-cell.highlight-cell:hover {
+      border-color: rgba(16, 185, 129, 0.7) !important;
+      box-shadow: 0 16px 36px -8px rgba(16, 185, 129, 0.3) !important;
+    }
+
+    .inv-cell-top {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      margin-bottom: 12px !important;
+    }
+
+    .inv-num {
+      font-family: var(--font-head, inherit);
+      font-size: 2.1rem !important;
+      font-weight: 900 !important;
+      line-height: 1 !important;
+      letter-spacing: -0.03em !important;
+      color: #38bdf8 !important;
+      background: linear-gradient(135deg, #ffffff 25%, #38bdf8 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+    }
+
+    .inv-cell.highlight-cell .inv-num {
+      background: linear-gradient(135deg, #6ee7b7 0%, #10b981 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+    }
+
+    .inv-icon-chip {
+      width: 42px !important;
+      height: 42px !important;
+      border-radius: 12px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 1.1rem !important;
+      background: rgba(56, 189, 248, 0.12) !important;
+      color: #38bdf8 !important;
+      border: 1px solid rgba(56, 189, 248, 0.25) !important;
+      flex-shrink: 0 !important;
+      transition: transform 0.25s ease !important;
+    }
+
+    .inv-cell:hover .inv-icon-chip {
+      transform: scale(1.1) rotate(4deg);
+    }
+
+    .inv-icon-chip.chip-emerald {
+      background: rgba(16, 185, 129, 0.16) !important;
+      color: #34d399 !important;
+      border-color: rgba(16, 185, 129, 0.35) !important;
+    }
+
+    .inv-title {
+      font-family: var(--font-head, inherit);
+      font-size: 1.05rem !important;
+      font-weight: 700 !important;
+      color: #f8fafc !important;
+      margin-bottom: 6px !important;
+      letter-spacing: -0.01em !important;
+      line-height: 1.3 !important;
+    }
+
+    .inv-sub {
+      font-size: 0.83rem !important;
+      color: #94a3b8 !important;
+      line-height: 1.48 !important;
+    }
+
+    .inv-footer-strip {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 14px !important;
+      flex-wrap: wrap !important;
+      padding-top: 24px !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+      position: relative;
+      z-index: 2;
+    }
+
+    .inv-strip-pill {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      padding: 8px 18px !important;
+      border-radius: 999px !important;
+      background: rgba(15, 23, 42, 0.7) !important;
+      border: 1px solid rgba(56, 189, 248, 0.22) !important;
+      font-size: 0.82rem !important;
+      font-weight: 600 !important;
+      color: #cbd5e1 !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .inv-strip-pill:hover {
+      background: rgba(15, 23, 42, 0.95) !important;
+      border-color: rgba(56, 189, 248, 0.45) !important;
+      color: #ffffff !important;
+    }
+
+    .inv-strip-pill i {
+      color: #34d399 !important;
+      font-size: 0.88rem !important;
+    }
+
+    @media (max-width: 960px) {
+      .inventory-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px !important;
+      }
+      .platform-formal-inventory-card {
+        padding: 28px 22px !important;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .inventory-grid {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+      }
+      .inv-footer-strip {
+        justify-content: flex-start !important;
+      }
+      .inv-strip-pill {
+        width: 100% !important;
+        justify-content: center !important;
+      }
     }
 
     .promo-card:hover,
@@ -1941,69 +2160,69 @@
           <div class="reality-points-list">
             <div class="reality-point-item item-negative">
               <div class="reality-point-icon"><i class="fa-solid fa-xmark"></i></div>
-              <div class="reality-point-body" data-i18n="std_acad_pt1"><strong>Solid structural and syntax foundations</strong><p>Structural grammar, general vocabulary, and foundational communication skills indispensable for the learner.</p></div>
+              <div class="reality-point-body" data-i18n="std_acad_pt1"><strong>Núcleo de Sintaxis y Gramática</strong><p>Estructura lingüística y vocabulario general indispensable.</p></div>
             </div>
 
             <div class="reality-point-item item-negative">
               <div class="reality-point-icon"><i class="fa-solid fa-xmark"></i></div>
-              <div class="reality-point-body" data-i18n="std_acad_pt2"><strong>Broad-competency syllabi</strong><p>Programs designed for a wide spectrum of professions and general vocational preparation in early semesters.</p></div>
+              <div class="reality-point-body" data-i18n="std_acad_pt2"><strong>Planes de Estudio Generales</strong><p>Formación vocacional amplia sin especialización de planta.</p></div>
             </div>
 
             <div class="reality-point-item item-negative">
               <div class="reality-point-icon"><i class="fa-solid fa-xmark"></i></div>
-              <div class="reality-point-body" data-i18n="std_acad_pt3"><strong>Passive technical reading focus</strong><p>Manual reading and theoretical comprehension without intensive simulation of plant incidents or normative standards.</p></div>
+              <div class="reality-point-body" data-i18n="std_acad_pt3"><strong>Lectura Técnica Pasiva</strong><p>Comprensión de manuales sin simulación de incidentes reales.</p></div>
             </div>
 
             <div class="reality-point-item item-negative">
               <div class="reality-point-icon"><i class="fa-solid fa-xmark"></i></div>
-              <div class="reality-point-body" data-i18n="std_acad_pt4"><strong>Formative and summative academic exams</strong><p>Periodic evaluations via exams and coursework targeting degree requirements and graduation benchmarks.</p></div>
+              <div class="reality-point-body" data-i18n="std_acad_pt4"><strong>Evaluaciones Tradicionales</strong><p>Exámenes sumativos orientados a cumplimiento de créditos.</p></div>
             </div>
 
             <div class="reality-point-item item-negative">
               <div class="reality-point-icon"><i class="fa-solid fa-xmark"></i></div>
-              <div class="reality-point-body" data-i18n="std_acad_pt5"><strong>Need for subsequent industry specialization</strong><p>Upon entering advanced manufacturing or nearshoring plants, engineers require an operational bridge to Tier-1 standards.</p></div>
+              <div class="reality-point-body" data-i18n="std_acad_pt5"><strong>Brecha de Especialización</strong><p>Demanda capacitación posterior para operar en plantas Tier-1.</p></div>
             </div>
           </div>
 
-          <div class="reality-col-footer footer-academic" data-i18n="std_acad_footer"><i class="fa-solid fa-circle-exclamation"></i> <span>Foundational Stage: Indispensable base complemented by plant floor specialization and Nearshoring standards.</span></div>
+          <div class="reality-col-footer footer-academic" data-i18n="std_acad_footer"><i class="fa-solid fa-circle-info"></i> <span><strong>Etapa Fundacional:</strong> Base esencial que se complementa con estándares Nearshoring en planta.</span></div>
         </div>
 
         <!-- Right Column: stemOS Live Industry Alignment -->
         <div class="reality-gap-col col-industry">
           <div class="reality-col-header">
-            <div class="reality-badge-industry" data-i18n="std_ind_badge"><i class="fa-solid fa-certificate"></i> <span>STEMOS ESP METHODOLOGY</span></div>
-            <h3 class="reality-col-title" data-i18n="std_ind_title">Live Alignment with Global Standards</h3>
-            <p class="reality-col-desc" data-i18n="std_ind_desc">Pedagogical engineering 100% connected to the international regulatory standards auditing global Tier-1s.</p>
+            <div class="reality-badge-industry" data-i18n="std_ind_badge"><i class="fa-solid fa-certificate"></i> <span>METODOLOGÍA STEMOS ESP</span></div>
+            <h3 class="reality-col-title" data-i18n="std_ind_title">Alineación Viva con Estándares Globales</h3>
+            <p class="reality-col-desc" data-i18n="std_ind_desc">Ingeniería pedagógica conectada al 100% con los estándares internacionales normativos que auditan a los Tier-1 globales.</p>
           </div>
 
           <div class="reality-points-list">
             <div class="reality-point-item item-positive">
               <div class="reality-point-icon"><i class="fa-solid fa-check"></i></div>
-              <div class="reality-point-body" data-i18n="std_ind_pt1"><strong>Mapped to active global regulatory standards</strong><p>SEMI, IEEE, IEC 62443, ISO 26262, NIST SP 800-82, ASME BPVC, OSHA 1910.147, and Tier-1 vendor audits.</p></div>
+              <div class="reality-point-body" data-i18n="std_ind_pt1"><strong>Alineación Normativa Activa</strong><p>Normas SEMI, IEEE, IEC 62443, ISO 26262, NIST y auditorías Tier-1.</p></div>
             </div>
 
             <div class="reality-point-item item-positive">
               <div class="reality-point-icon"><i class="fa-solid fa-check"></i></div>
-              <div class="reality-point-body" data-i18n="std_ind_pt2"><strong>Hyper-updated dynamic syllabus at Nearshoring pace</strong><p>Sub-2nm EUV photolithography, two-phase immersion cooling, SMR modular reactors, 3D chiplets, and USMCA rules of origin.</p></div>
+              <div class="reality-point-body" data-i18n="std_ind_pt2"><strong>Syllabus Nearshoring en Tiempo Real</strong><p>Fotolitografía EUV sub-2nm, inmersión líquida, SMRs y T-MEC.</p></div>
             </div>
 
             <div class="reality-point-item item-positive">
               <div class="reality-point-icon"><i class="fa-solid fa-check"></i></div>
-              <div class="reality-point-body" data-i18n="std_ind_pt3"><strong>Immersion in mission-critical &amp; zero-defect protocols</strong><p>Authentic P&amp;ID schematics, LOTO lockout/tagout procedures, thermal runaway mitigation, and shift logs.</p></div>
+              <div class="reality-point-body" data-i18n="std_ind_pt3"><strong>Protocolos de Misión Crítica</strong><p>Diagramas P&amp;ID, seguridad LOTO, FMEA y bitácoras de turno.</p></div>
             </div>
 
             <div class="reality-point-item item-positive">
               <div class="reality-point-icon"><i class="fa-solid fa-check"></i></div>
-              <div class="reality-point-body" data-i18n="std_ind_pt4"><strong>Feynman AI Socratic Tutor &amp; Plant Simulators</strong><p>Students defend design trade-offs, troubleshoot in virtual War Rooms, and practice executive negotiation under pressure.</p></div>
+              <div class="reality-point-body" data-i18n="std_ind_pt4"><strong>Simuladores Feynman AI Socráticos</strong><p>Resolución en War Rooms y defensa técnica bajo presión.</p></div>
             </div>
 
             <div class="reality-point-item item-positive">
               <div class="reality-point-icon"><i class="fa-solid fa-check"></i></div>
-              <div class="reality-point-body" data-i18n="std_ind_pt5"><strong>Day-one shopfloor readiness</strong><p>Drafts 8D reports, passes regulatory audits, and communicates fluently with corporate HQs in Detroit, Austin, or Stuttgart.</p></div>
+              <div class="reality-point-body" data-i18n="std_ind_pt5"><strong>Operatividad Desde el Día 1</strong><p>Redacción 8D y comunicación fluida con corporativos globales.</p></div>
             </div>
           </div>
 
-          <div class="reality-col-footer footer-industry" data-i18n="std_ind_footer"><i class="fa-solid fa-award"></i> <span>Outcome: W3C Open Badges 3.0 certification with verifiable SHA-256 hash and high international employability profiles.</span></div>
+          <div class="reality-col-footer footer-industry" data-i18n="std_ind_footer"><i class="fa-solid fa-award"></i> <span><strong>Resultado:</strong> W3C Open Badges 3.0 con hash SHA-256 inmutable y alta empleabilidad.</span></div>
         </div>
 
       </div>
@@ -2138,50 +2357,93 @@
 
         <div class="inventory-grid">
           <div class="inv-cell">
-            <div class="inv-num">25</div>
+            <div class="inv-cell-top">
+              <div class="inv-num">25</div>
+              <div class="inv-icon-chip"><i class="fa-solid fa-graduation-cap"></i></div>
+            </div>
             <div class="inv-title" data-i18n="inv_c1_title">Programas Universitarios</div>
             <div class="inv-sub" data-i18n="inv_c1_sub">Ingenierías, Licenciaturas y TSU Convocatoria 2026</div>
           </div>
+
           <div class="inv-cell">
-            <div class="inv-num">34</div>
+            <div class="inv-cell-top">
+              <div class="inv-num">34</div>
+              <div class="inv-icon-chip"><i class="fa-solid fa-microchip"></i></div>
+            </div>
             <div class="inv-title" data-i18n="inv_c2_title">Tracks de Especialidad ESP</div>
             <div class="inv-sub" data-i18n="inv_c2_sub">Semiconductores, Ciberseguridad OT, Baterías, IA/HPC...</div>
           </div>
+
           <div class="inv-cell">
-            <div class="inv-num">60h–240h</div>
+            <div class="inv-cell-top">
+              <div class="inv-num">60h–240h</div>
+              <div class="inv-icon-chip"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            </div>
             <div class="inv-title" data-i18n="inv_c3_title">Horas Curriculares Modulares</div>
             <div class="inv-sub" data-i18n="inv_c3_sub">Rutas acreditadas alineadas a marcos CACEI y DGUTyP</div>
           </div>
+
           <div class="inv-cell">
-            <div class="inv-num">102</div>
+            <div class="inv-cell-top">
+              <div class="inv-num">102</div>
+              <div class="inv-icon-chip"><i class="fa-solid fa-cubes"></i></div>
+            </div>
             <div class="inv-title" data-i18n="inv_c4_title">Módulos Interactivos</div>
             <div class="inv-sub" data-i18n="inv_c4_sub">16 Niveles MCER canónicos A1 a C1 integrados</div>
           </div>
+
           <div class="inv-cell">
-            <div class="inv-num">266+</div>
+            <div class="inv-cell-top">
+              <div class="inv-num">266+</div>
+              <div class="inv-icon-chip"><i class="fa-solid fa-file-shield"></i></div>
+            </div>
             <div class="inv-title" data-i18n="inv_c5_title">Lecturas Técnicas &amp; SOPs</div>
             <div class="inv-sub" data-i18n="inv_c5_sub">Procedimientos operativos de planta industrial real</div>
           </div>
+
           <div class="inv-cell">
-            <div class="inv-num">880+</div>
+            <div class="inv-cell-top">
+              <div class="inv-num">880+</div>
+              <div class="inv-icon-chip"><i class="fa-solid fa-brain"></i></div>
+            </div>
             <div class="inv-title" data-i18n="inv_c6_title">Reactivos de Dominio Cognitivo</div>
             <div class="inv-sub" data-i18n="inv_c6_sub">Entrelazado curricular y repetición espaciada</div>
           </div>
+
           <div class="inv-cell">
-            <div class="inv-num">162</div>
+            <div class="inv-cell-top">
+              <div class="inv-num">162</div>
+              <div class="inv-icon-chip"><i class="fa-solid fa-comments"></i></div>
+            </div>
             <div class="inv-title" data-i18n="inv_c7_title">Modismos y Colocaciones</div>
             <div class="inv-sub" data-i18n="inv_c7_sub">Industrial idioms usados en planta Tier-1</div>
           </div>
+
           <div class="inv-cell">
-            <div class="inv-num">34</div>
+            <div class="inv-cell-top">
+              <div class="inv-num">34</div>
+              <div class="inv-icon-chip"><i class="fa-solid fa-vr-cardboard"></i></div>
+            </div>
             <div class="inv-title" data-i18n="inv_c8_title">Simuladores &amp; Crisoles</div>
             <div class="inv-sub" data-i18n="inv_c8_sub">LOTO, P&amp;ID, GD&amp;T, FMEA y Reportes 8D interactivos</div>
           </div>
+
           <div class="inv-cell highlight-cell">
-            <div class="inv-num" style="color:#10b981;">100%</div>
+            <div class="inv-cell-top">
+              <div class="inv-num" style="color:#10b981;">100%</div>
+              <div class="inv-icon-chip chip-emerald"><i class="fa-solid fa-certificate"></i></div>
+            </div>
             <div class="inv-title" data-i18n="inv_c9_title">Credenciales Verificables</div>
             <div class="inv-sub" data-i18n="inv_c9_sub">W3C Open Badges 3.0 con hash SHA-256 inmutable</div>
           </div>
+        </div>
+
+        <!-- Auditable Accreditation Strip -->
+        <div class="inv-footer-strip">
+          <span class="inv-strip-pill"><i class="fa-solid fa-check-circle"></i> <span data-i18n="inv_strip_dgutyp">Marco DGUTyP 2026</span></span>
+          <span class="inv-strip-pill"><i class="fa-solid fa-check-circle"></i> <span data-i18n="inv_strip_cacei">CACEI Criterio 4</span></span>
+          <span class="inv-strip-pill"><i class="fa-solid fa-check-circle"></i> <span data-i18n="inv_strip_w3c">W3C Open Badges 3.0</span></span>
+          <span class="inv-strip-pill"><i class="fa-solid fa-check-circle"></i> <span data-i18n="inv_strip_usmca">Reglas de Origen T-MEC</span></span>
         </div>
       </div>
 
@@ -3471,21 +3733,21 @@
         std_acad_badge: '<i class="fa-solid fa-triangle-exclamation"></i> <span>GENERAL LINGUISTIC FOUNDATIONS</span>',
         std_acad_title: 'The Essential Academic Foundation',
         std_acad_desc: 'University curriculum focused on fundamental grammar, reading comprehension, and general academic communication.',
-        std_acad_pt1: '<strong>Solid structural and syntax foundations</strong><p>Structural grammar, general vocabulary, and foundational communication skills indispensable for the learner.</p>',
-        std_acad_pt2: '<strong>Broad-competency syllabi</strong><p>Programs designed for a wide spectrum of professions and general vocational preparation in early semesters.</p>',
-        std_acad_pt3: '<strong>Passive technical reading focus</strong><p>Manual reading and theoretical comprehension without intensive simulation of plant incidents or normative standards.</p>',
-        std_acad_pt4: '<strong>Formative and summative academic exams</strong><p>Periodic evaluations via exams and coursework targeting degree requirements and graduation benchmarks.</p>',
-        std_acad_pt5: '<strong>Need for subsequent industry specialization</strong><p>Upon entering advanced manufacturing or nearshoring plants, engineers require an operational bridge to Tier-1 standards.</p>',
-        std_acad_footer: '<i class="fa-solid fa-circle-exclamation"></i> <span>Foundational Stage: Indispensable base complemented by plant floor specialization and Nearshoring standards.</span>',
+        std_acad_pt1: '<strong>Solid Syntax &amp; Grammar Core</strong><p>Essential linguistic foundations and general vocabulary.</p>',
+        std_acad_pt2: '<strong>Broad-Competency Syllabi</strong><p>General vocational curricula across broad engineering disciplines.</p>',
+        std_acad_pt3: '<strong>Passive Technical Reading</strong><p>Manuals and theory without live plant simulations.</p>',
+        std_acad_pt4: '<strong>Standard Coursework Exams</strong><p>Summative evaluations targeting basic graduation credits.</p>',
+        std_acad_pt5: '<strong>Industry Readiness Gap</strong><p>Requires post-grad training for Tier-1 shopfloors.</p>',
+        std_acad_footer: '<i class="fa-solid fa-circle-info"></i> <span><strong>Foundational Base:</strong> Essential academic baseline completed by plant-floor Nearshoring standards.</span>',
         std_ind_badge: '<i class="fa-solid fa-certificate"></i> <span>STEMOS ESP METHODOLOGY</span>',
         std_ind_title: 'Live Alignment with Global Standards',
-        std_ind_desc: 'Pedagogical engineering 100% connected to the international regulatory standards auditing global Tier-1s.',
-        std_ind_pt1: '<strong>Mapped to active global regulatory standards</strong><p>SEMI, IEEE, IEC 62443, ISO 26262, NIST SP 800-82, ASME BPVC, OSHA 1910.147, and Tier-1 vendor audits.</p>',
-        std_ind_pt2: '<strong>Hyper-updated dynamic syllabus at Nearshoring pace</strong><p>Sub-2nm EUV photolithography, two-phase immersion cooling, SMR modular reactors, 3D chiplets, and USMCA rules of origin.</p>',
-        std_ind_pt3: '<strong>Immersion in mission-critical &amp; zero-defect protocols</strong><p>Authentic P&amp;ID schematics, LOTO lockout/tagout procedures, thermal runaway mitigation, and shift logs.</p>',
-        std_ind_pt4: '<strong>Feynman AI Socratic Tutor &amp; Plant Simulators</strong><p>Students defend design trade-offs, troubleshoot in virtual War Rooms, and practice executive negotiation under pressure.</p>',
-        std_ind_pt5: '<strong>Day-one shopfloor readiness</strong><p>Drafts 8D reports, passes regulatory audits, and communicates fluently with corporate HQs in Detroit, Austin, or Stuttgart.</p>',
-        std_ind_footer: '<i class="fa-solid fa-award"></i> <span>Outcome: W3C Open Badges 3.0 certification with verifiable SHA-256 hash and high international employability profiles.</span>',
+        std_ind_desc: 'Pedagogical engineering 100% connected to international regulatory standards auditing global Tier-1s.',
+        std_ind_pt1: '<strong>Active Regulatory Mapping</strong><p>SEMI, IEEE, IEC 62443, ISO 26262, NIST &amp; Tier-1 audits.</p>',
+        std_ind_pt2: '<strong>Real-Time Nearshoring Syllabus</strong><p>Sub-2nm EUV, immersion cooling, SMRs &amp; USMCA rules.</p>',
+        std_ind_pt3: '<strong>Mission-Critical Protocols</strong><p>P&amp;ID schematics, LOTO safety, FMEA &amp; shift logs.</p>',
+        std_ind_pt4: '<strong>Feynman AI Socratic Simulators</strong><p>Virtual War Rooms, incident drills &amp; executive defense.</p>',
+        std_ind_pt5: '<strong>Day-One Shopfloor Fluency</strong><p>8D reports &amp; fluent alignment with global HQs.</p>',
+        std_ind_footer: '<i class="fa-solid fa-award"></i> <span><strong>Outcome:</strong> W3C Open Badges 3.0 credentials with SHA-256 hash &amp; high employability.</span>',
         std_clust_badge: '<i class="fa-solid fa-microchip"></i> INTERNATIONAL STANDARDS MATRIX',
         std_clust_title: 'The Standards Governing Advanced Industry Across Our 34 Tracks',
         std_clust_desc: 'Each stemOS module is not an abstract language exercise: it is an operational simulation under real engineering specifications:',
@@ -3629,6 +3891,10 @@
         inv_c8_sub: 'LOTO, P&amp;ID, GD&amp;T, FMEA and interactive 8D reports',
         inv_c9_title: 'Verifiable Credentials',
         inv_c9_sub: 'W3C Open Badges 3.0 with immutable SHA-256 hash',
+        inv_strip_dgutyp: 'DGUTyP 2026 Framework',
+        inv_strip_cacei: 'CACEI Criterion 4',
+        inv_strip_w3c: 'W3C Open Badges 3.0',
+        inv_strip_usmca: 'USMCA Origin Rules',
         btn_whatsapp: 'Contact via Direct WhatsApp',
         btn_calendly: 'Schedule Quick Meeting (Calendly)',
         btn_contact_form: 'Institutional Form',
@@ -3731,21 +3997,21 @@
         std_acad_badge: '<i class="fa-solid fa-triangle-exclamation"></i> <span>FORMACIÓN LINGÜÍSTICA GENERAL &amp; FUNDAMENTOS</span>',
         std_acad_title: 'La Base Académica Esencial',
         std_acad_desc: 'Formación universitaria centrada en gramática fundamental, lecto-comprensión y comunicación académica general.',
-        std_acad_pt1: '<strong>Fundamentos sólidos de estructura y sintaxis lingüística</strong><p>Gramática estructural, vocabulario general y habilidades básicas de comunicación escrita y oral indispensables para el estudiante.</p>',
-        std_acad_pt2: '<strong>Planes de estudio enfocados en competencias generales</strong><p>Programas diseñados para un espectro amplio de profesiones y preparación integral en etapas tempranas de formación profesional.</p>',
-        std_acad_pt3: '<strong>Enfoque en lectura técnica y comprensión pasiva</strong><p>Comprensión de manuales y textos teóricos sin exposición intensiva a incidentes operativos de planta ni normas normativas.</p>',
-        std_acad_pt4: '<strong>Evaluaciones académicas formativas y sumativas</strong><p>Evaluación periódica mediante exámenes y tareas orientadas al cumplimiento curricular y certificación de nivel de egreso.</p>',
-        std_acad_pt5: '<strong>Necesidad de especialización posterior para la industria</strong><p>Al egresar hacia plantas de manufactura avanzada o nearshoring, el ingeniero requiere un puente de especialización en estándares Tier-1.</p>',
-        std_acad_footer: '<i class="fa-solid fa-circle-exclamation"></i> <span>Etapa Fundacional: Base indispensable que se complementa con la especialización en planta y estándares de Nearshoring.</span>',
+        std_acad_pt1: '<strong>Núcleo de Sintaxis y Gramática</strong><p>Estructura lingüística y vocabulario general indispensable.</p>',
+        std_acad_pt2: '<strong>Planes de Estudio Generales</strong><p>Formación vocacional amplia sin especialización de planta.</p>',
+        std_acad_pt3: '<strong>Lectura Técnica Pasiva</strong><p>Comprensión de manuales sin simulación de incidentes reales.</p>',
+        std_acad_pt4: '<strong>Evaluaciones Tradicionales</strong><p>Exámenes sumativos orientados a cumplimiento de créditos.</p>',
+        std_acad_pt5: '<strong>Brecha de Especialización</strong><p>Demanda capacitación posterior para operar en plantas Tier-1.</p>',
+        std_acad_footer: '<i class="fa-solid fa-circle-info"></i> <span><strong>Etapa Fundacional:</strong> Base esencial que se complementa con estándares Nearshoring en planta.</span>',
         std_ind_badge: '<i class="fa-solid fa-certificate"></i> <span>METODOLOGÍA STEMOS ESP</span>',
         std_ind_title: 'Alineación Viva con Estándares Globales',
-        std_ind_desc: 'Ingeniería pedagógica conectada al 100% con los estándares internacionales normativos que auditan a los Tier-1 globales.',
-        std_ind_pt1: '<strong>Mapeado a estándares normativos globales activos</strong><p>Normas SEMI, IEEE, IEC 62443, ISO 26262, NIST SP 800-82, ASME BPVC, OSHA 1910.147 y auditorías de proveedores Tier-1.</p>',
-        std_ind_pt2: '<strong>Syllabus dinámico hiper-actualizado al ritmo del Nearshoring</strong><p>Fotolitografía EUV sub-2nm, enfriamiento por inmersión bifásica, reactores modulares SMR, chiplets 3D y reglas de origen T-MEC.</p>',
-        std_ind_pt3: '<strong>Inmersión en protocolos de misión crítica y cero defectos</strong><p>Diagramas P&amp;ID auténticos, procedimientos de desenergización LOTO, mitigación de desbocamiento térmico y bitácoras de turno.</p>',
-        std_ind_pt4: '<strong>Feynman AI Tutor Socrático y Simuladores de Planta</strong><p>El alumno defiende decisiones de diseño, resuelve incidentes en War Rooms virtuales y practica negociación ejecutiva bajo presión.</p>',
-        std_ind_pt5: '<strong>Operatividad inmediata desde el primer día</strong><p>Redacta reportes 8D, atiende auditorías regulatorias y se comunica con fluidez con corporativos en Detroit, Austin o Stuttgart.</p>',
-        std_ind_footer: '<i class="fa-solid fa-award"></i> <span>Resultado: Certificación W3C Open Badges 3.0 con hash SHA-256 verificable y perfiles de alta empleabilidad internacional.</span>',
+        std_ind_desc: 'Ingeniería pedagógica conectada al 100% con los estándares normativos que auditan a los Tier-1 globales.',
+        std_ind_pt1: '<strong>Alineación Normativa Activa</strong><p>Normas SEMI, IEEE, IEC 62443, ISO 26262, NIST y auditorías Tier-1.</p>',
+        std_ind_pt2: '<strong>Syllabus Nearshoring en Tiempo Real</strong><p>Fotolitografía EUV sub-2nm, inmersión líquida, SMRs y T-MEC.</p>',
+        std_ind_pt3: '<strong>Protocolos de Misión Crítica</strong><p>Diagramas P&amp;ID, seguridad LOTO, FMEA y bitácoras de turno.</p>',
+        std_ind_pt4: '<strong>Simuladores Feynman AI Socráticos</strong><p>Resolución en War Rooms y defensa técnica bajo presión.</p>',
+        std_ind_pt5: '<strong>Operatividad Desde el Día 1</strong><p>Redacción 8D y comunicación fluida con corporativos globales.</p>',
+        std_ind_footer: '<i class="fa-solid fa-award"></i> <span><strong>Resultado:</strong> W3C Open Badges 3.0 con hash SHA-256 inmutable y alta empleabilidad.</span>',
         std_clust_badge: '<i class="fa-solid fa-microchip"></i> MATRIZ DE ESTÁNDARES INTERNACIONALES',
         std_clust_title: 'Los Estándares que Rigen a la Industria y Gobiernan Nuestros 34 Tracks',
         std_clust_desc: 'Cada módulo de stemOS no es un ejercicio lingüístico abstracto: es una simulación de operación bajo especificaciones de ingeniería reales:',
@@ -3889,6 +4155,10 @@
         inv_c8_sub: 'LOTO, P&amp;ID, GD&amp;T, FMEA y Reportes 8D interactivos',
         inv_c9_title: 'Credenciales Verificables',
         inv_c9_sub: 'W3C Open Badges 3.0 con hash SHA-256 inmutable',
+        inv_strip_dgutyp: 'Marco DGUTyP 2026',
+        inv_strip_cacei: 'CACEI Criterio 4',
+        inv_strip_w3c: 'W3C Open Badges 3.0',
+        inv_strip_usmca: 'Reglas de Origen T-MEC',
         btn_whatsapp: 'Contactar por WhatsApp Directo',
         btn_calendly: 'Agendar Reunión Rápida (Calendly)',
         btn_contact_form: 'Formulario Institucional',
