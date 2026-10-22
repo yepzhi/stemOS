@@ -121,8 +121,8 @@ assert(fs.existsSync(swPath), 'sw.js exists in root directory');
 
 const swContent = fs.readFileSync(swPath, 'utf8');
 assert(
-  swContent.includes("CACHE_NAME = 'stemos-lxp-v6.5.0-cwv-speed-tier'"),
-  'sw.js defines CACHE_NAME as stemos-lxp-v6.5.0-cwv-speed-tier'
+  /CACHE_NAME\s*=\s*'stemos-lxp-v6\.[5-9]\./.test(swContent),
+  'sw.js defines CACHE_NAME as stemos-lxp-v6.5.0+ (two-tier CWV / RUM speed engine)'
 );
 assert(
   swContent.includes('Promise.allSettled'),

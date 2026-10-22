@@ -2354,7 +2354,93 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 
 ---
 
-*Estado del Proyecto: Fases 1 a 85 COMPLETADAS, AUDITADAS Y VERIFICADAS.*
+### ✅ FASE 86 (Enterprise Real User Monitoring - RUM, Web Vitals Observer & Telemetry Analytics)
+
+#### 86.1 Motor de Monitoreo en Tiempo Real (`content/stemos_rum.js`)
+- [x] **Captura Nativa de Core Web Vitals (CWV)**:
+  - Observador basado en `PerformanceObserver` estándar del W3C para métricas de usuario reales:
+    - **LCP (Largest Contentful Paint)**: umbrales estándar (Bueno <= 2500ms, Necesita Mejora <= 4000ms, Pobre > 4000ms).
+    - **INP (Interaction to Next Paint)**: umbrales estándar (Bueno <= 200ms, Necesita Mejora <= 500ms, Pobre > 500ms).
+    - **CLS (Cumulative Layout Shift)**: filtro de desplazamientos inesperados excluyendo `hadRecentInput` (Bueno <= 0.1, Necesita Mejora <= 0.25, Pobre > 0.25).
+    - **FCP (First Contentful Paint)** & **TTFB (Time to First Byte)**.
+- [x] **Puntaje de Rendimiento Agregado y Auditoría**:
+  - Algoritmo ponderado de puntuación general (0 a 100) y clasificaciones individuales.
+  - Almacenamiento local de auditoría en memoria (`telemetryEvents`) y persistencia selectiva con `navigator.sendBeacon` o `fetch` con `keepalive: true`.
+- [x] **Compatibilidad Universal**:
+  - Empaquetado UMD para ejecución nativa en navegadores y Node.js / CommonJS para validaciones en pipelines de CI/CD.
+
+#### 86.2 Despliegue Transversal en Portales
+- [x] Inclusión asíncrona no bloqueante `<script src="/content/stemos_rum.js" defer></script>` en los 9 portales: `index.html`, `dev.html`, `tracks.html`, `placement.html`, `register.html`, `teacher.html`, `admin.html`, `app.html`, `privacy.html`.
+
+#### 86.3 Integración en Caché Service Worker
+- [x] Precarga en `sw.js` y actualización a caché resiliente `stemos-lxp-v6.6.0-rum-telemetry`.
+
+#### 86.4 Suite de Pruebas Automatizadas
+- [x] **`scripts/test_phase86_rum_telemetry.cjs`**: 19/19 pruebas PASADAS.
+
+---
+
+### ✅ FASE 87 (Acoustic Phonetics & Multi-Dialect Pronunciation Trainer Engine)
+
+#### 87.1 Motor de Fonética Acústica y Análisis Espectral FFT (`content/stemos_phonetics.js`)
+- [x] **Detección de Frecuencia Fundamental ($f_0$ Pitch)**:
+  - Algoritmo de autocorrelación normalizada optimizado para voz humana (60 Hz a 600 Hz) con detección de primer pico periódico para erradicar duplicación subarmónica de octava.
+- [x] **Extracción de Formantes Vocálicos ($F_1$, $F_2$, $F_3$)**:
+  - Selector de picos espectrales en bandas críticas de formantes (200 Hz a 3200 Hz) desde `AnalyserNode` de la Web Audio API.
+- [x] **Matriz Fonética de 4 Dialectos Regionales STEM**:
+  - `us_general`: Inglés estadounidense general estándar (General American).
+  - `us_texas_border`: Inglés fronterizo México–Texas (Cross-border bilingual industrial).
+  - `uk_rp`: Pronunciación británica recibida (UK Received Pronunciation).
+  - `de_tech`: Inglés técnico alemán con precisión de ingeniería industrial (German Technical English).
+  - Mapeo de frecuencias de formantes diana ($F_1, F_2$) para vocales cardinales: `/iy/`, `/ih/`, `/eh/`, `/ae/`, `/aa/`, `/uw/`, `/er/`.
+- [x] **Motor de Rúbrica de Puntuación Acústica**:
+  - Cálculo de distancia euclidiana normalizada en el espacio acústico $(F_1, F_2)$ con ponderaciones $60\% / 40\%$.
+  - Clasificación instantánea: *Excellent* (>= 88), *Good* (>= 70), *Needs Practice* (< 70).
+- [x] **Integración Visual y Modos**:
+  - API pública `STEMOS_PHONETICS` con soporte de cambio de dialecto interactivo, inicio/parada de micrófono y análisis en tiempo real.
+
+#### 87.2 Despliegue en Portales & Caché PWA
+- [x] Inclusión con `defer` en `index.html`, `dev.html`, `tracks.html`, `app.html`, `placement.html`.
+- [x] Pre-caché en `sw.js` con bump a `stemos-lxp-v6.7.0-phonetic-trainer`.
+
+#### 87.3 Suite de Pruebas Automatizadas
+- [x] **`scripts/test_phase87_phonetic_trainer.cjs`**: 16/16 pruebas PASADAS.
+
+---
+
+### ✅ FASE 88 (Enterprise Offline Sync Engine, IndexedDB Mutation Queue & Conflict Resolution)
+
+#### 88.1 Cola Transaccional de Mutaciones Desconectadas (`content/stemos_sync.js`)
+- [x] **Persistencia Nativa en IndexedDB con Fallback en Memoria**:
+  - Base de datos `stemos_offline_db` con almacén `mutation_queue` e índices por `status`, `timestamp` y `entityType`.
+  - Generación de identificadores criptográficos únicos de mutación (`mut_TIMESTAMP_RANDOM`).
+- [x] **Estrategias de Resolución de Conflictos**:
+  - **`XP_ACCUMULATIVE`**: Fusión aditiva para puntos de experiencia (XP) y monedas acumuladas en modo avión/desconectado; el progreso obtenido en campo nunca es sobreescrito por el servidor.
+  - **`MAX_PROGRESS`**: Progresión monotónica no decreciente para niveles académicos y módulos completados.
+  - **`LWW (Last-Write-Wins)`**: Resolución por marca de tiempo ISO más reciente para notas y metadatos de configuración.
+- [x] **Resiliencia de Red y Reintentos con Backoff Exponencial**:
+  - Detección de conectividad online/offline (`window.addEventListener`).
+  - Vaciado automático de cola (`flushQueue`) con cálculo de retardo exponencial ($2^{\text{reintentos}} \times 1\text{s}$) en caso de fallos transitorios.
+  - Despacho de eventos de sincronización al DOM (`stemos:sync-status`) para indicadores de estado e interfaces de usuario.
+
+#### 88.2 Integración en Portales y Service Worker
+- [x] Inclusión de `<script src="/content/stemos_sync.js" defer></script>` en los 7 portales principales: `index.html`, `dev.html`, `tracks.html`, `app.html`, `placement.html`, `teacher.html`, `admin.html`.
+- [x] Pre-caché en `sw.js` y actualización de versión de caché a `stemos-lxp-v6.8.0-enterprise-sync`.
+
+#### 88.3 Suites de Pruebas Automatizadas (Fases 81 a 88)
+- [x] **`scripts/test_phase81_mobile_responsive.cjs`**: 37/37 PASADAS.
+- [x] **`scripts/test_phase82_production_security_and_mobile.cjs`**: 66/66 PASADAS.
+- [x] **`scripts/test_phase83_pwa_offline_manifest.cjs`**: 74/74 PASADAS.
+- [x] **`scripts/test_phase84_core_web_vitals_performance.cjs`**: 97/97 PASADAS.
+- [x] **`scripts/test_phase85_security_and_modern_web.cjs`**: 56/56 PASADAS.
+- [x] **`scripts/test_phase86_rum_telemetry.cjs`**: 19/19 PASADAS.
+- [x] **`scripts/test_phase87_phonetic_trainer.cjs`**: 16/16 PASADAS.
+- [x] **`scripts/test_phase88_offline_sync.cjs`**: 18/18 PASADAS.
+- **Gran Total de Pruebas Automatizadas en el Proyecto:** 383/383 pruebas PASADAS (100% éxito sin regresiones).
+
+---
+
+*Estado del Proyecto: Fases 1 a 88 COMPLETADAS, AUDITADAS Y VERIFICADAS.*
 
 
 

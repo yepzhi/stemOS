@@ -2,17 +2,37 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>stemOS | MCER English Placement Diagnostic (A1–B2)</title>
     <meta name="description" content="Evaluación diagnóstica institucional estandarizada de 3 habilidades (Grammar, Listening, Reading) calibrada bajo el Marco Común Europeo (MCER/CEFR).">
+
+    <!-- PWA & Mobile Web App Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="stemOS">
+    <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
+    <link rel="apple-touch-icon" href="/icon-192.svg">
+    <script src="/content/stemos_pwa.js" defer></script>
+    <script src="/content/stemos_rum.js" defer></script>
+    <script src="/content/stemos_phonetics.js" defer></script>
+    <script src="/content/stemos_sync.js" defer></script>
     
+    <!-- Resource Hints & DNS Prefetch (Phase 84 CWV Engine) -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://www.gstatic.com">
+
     <!-- Google Fonts: Outfit & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome 6 Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
     
     <style>
         :root {
@@ -980,13 +1000,83 @@
             line-height: 1.5;
         }
 
-        /* ─── Footer ─── */
-        .lxp-footer {
-            margin-top: 36px;
-            text-align: center;
-            font-size: 0.78rem;
-            color: var(--text-dim);
-            line-height: 1.6;
+        /* ─── Mobile-First Responsive Overhaul (Phase 82) ─── */
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .top-bar {
+            padding-top: max(12px, env(safe-area-inset-top));
+            padding-left: max(16px, env(safe-area-inset-left));
+            padding-right: max(16px, env(safe-area-inset-right));
+        }
+
+        #app {
+            padding-top: calc(85px + env(safe-area-inset-top));
+            padding-bottom: max(32px, env(safe-area-inset-bottom));
+            padding-left: max(12px, env(safe-area-inset-left));
+            padding-right: max(12px, env(safe-area-inset-right));
+            box-sizing: border-box;
+        }
+
+        .btn-play-audio,
+        .btn-audio-test,
+        .option-card,
+        .btn-primary,
+        .btn-secondary {
+            touch-action: manipulation;
+        }
+
+        .option-card {
+            min-height: 48px;
+        }
+
+        @media (max-width: 640px) {
+            .glass-card {
+                padding: clamp(16px, 4vw, 24px);
+                border-radius: 20px;
+            }
+
+            .top-bar {
+                padding: 10px 14px;
+                padding-top: max(10px, env(safe-area-inset-top));
+            }
+
+            .brand-subtitle {
+                display: none;
+            }
+
+            .quiz-actions-row {
+                flex-direction: column-reverse;
+                gap: 10px;
+            }
+
+            .quiz-actions-row button {
+                width: 100%;
+                justify-content: center;
+                min-height: 48px;
+            }
+
+            .option-card {
+                padding: 14px 16px;
+                gap: 10px;
+            }
+
+            .question-prompt {
+                font-size: 1.12rem;
+                margin-bottom: 18px;
+            }
+
+            .reading-passage-box {
+                padding: 14px 16px;
+                font-size: 0.9rem;
+            }
+
+            .audio-player-box {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -1473,15 +1563,15 @@
     </div>
 
     <!-- ── Scripts ── -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="content/firebase_config.js?v=6.2.0"></script>
-    <script src="content/firebase_adapter.js?v=6.1.0"></script>
-    <script src="content/gemini_service.js?v=6.2.0"></script>
-    <script src="content/career_tracks.js?v=2.1.0"></script>
-    <script src="content/stemos_tts.js?v=2.2.0"></script>
-    <script src="content/placement_test.js?v=1.0.0"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js" defer></script>
+    <script src="content/firebase_config.js?v=6.2.0" defer></script>
+    <script src="content/firebase_adapter.js?v=6.1.0" defer></script>
+    <script src="content/gemini_service.js?v=6.2.0" defer></script>
+    <script src="content/career_tracks.js?v=2.1.0" defer></script>
+    <script src="content/stemos_tts.js?v=2.2.0" defer></script>
+    <script src="content/placement_test.js?v=1.0.0" defer></script>
     <script>
         // ── State Management ──
         const state = {
@@ -1524,6 +1614,20 @@
             const timerBadge = document.getElementById('timer-badge');
             if (timerBadge) {
                 timerBadge.style.display = (screenId === 'screen-quiz') ? 'inline-flex' : 'none';
+            }
+
+            // Screen Wake Lock & ARIA Live (Phase 85 Web Hardware)
+            if (screenId === 'screen-quiz') {
+                if (window.stemOS_PWA && window.stemOS_PWA.requestWakeLock) {
+                    window.stemOS_PWA.requestWakeLock();
+                }
+                if (window.stemOS_PWA && window.stemOS_PWA.announce) {
+                    window.stemOS_PWA.announce('Iniciando evaluación diagnóstica MCER de 30 minutos. Pantalla activa.');
+                }
+            } else if (screenId === 'screen-results' || screenId === 'screen-welcome') {
+                if (window.stemOS_PWA && window.stemOS_PWA.releaseWakeLock) {
+                    window.stemOS_PWA.releaseWakeLock();
+                }
             }
         }
 
@@ -2052,6 +2156,11 @@
             skillBadge.className = `skill-badge ${q.section}`;
             skillBadge.textContent = q.sectionLabel || q.section.toUpperCase();
 
+            // ARIA Screen Reader Announcement (Phase 85)
+            if (window.stemOS_PWA && window.stemOS_PWA.announce) {
+                window.stemOS_PWA.announce(`Pregunta ${index + 1} de ${questions.length}: Sección ${q.sectionLabel || q.section}`);
+            }
+
             // Sections UI switches
             const listeningBox = document.getElementById('listening-audio-box');
             const readingBox = document.getElementById('reading-passage-box');
@@ -2130,6 +2239,9 @@
 
                 card.addEventListener('click', () => {
                     state.answers[index] = optIdx;
+                    if (window.stemOS_PWA && window.stemOS_PWA.vibrate) {
+                        window.stemOS_PWA.vibrate(25);
+                    }
                     renderQuestion(index);
                 });
 

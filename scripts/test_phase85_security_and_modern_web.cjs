@@ -121,7 +121,7 @@ allPortalNames.forEach(file => {
 console.log('\n--- 6. Service Worker v6.5.0 Speed & Caching ---');
 const swPath = path.join(ROOT_DIR, 'sw.js');
 const swContent = fs.readFileSync(swPath, 'utf8');
-assert(swContent.includes("CACHE_NAME = 'stemos-lxp-v6.5.0-cwv-speed-tier'"), 'sw.js uses CACHE_NAME v6.5.0');
+assert(/CACHE_NAME\s*=\s*'stemos-lxp-v6\.[5-9]\./.test(swContent), 'sw.js uses CACHE_NAME v6.5.0 or newer');
 assert(swContent.includes('isSpeedAsset'), 'sw.js identifies high-speed assets for Stale-While-Revalidate');
 assert(swContent.includes('caches.match(event.request)'), 'sw.js implements cache matching logic');
 assert(swContent.includes('Promise.allSettled'), 'sw.js uses Promise.allSettled for resilient pre-caching');
