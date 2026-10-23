@@ -335,19 +335,16 @@ try {
   const missingCols = collections.filter(c => !rules.includes(`match /${c}`) && !rules.includes(`match /${c}/`));
   assert(missingCols.length === 0, 'Multi-tenant collection scopes protected in firestore.rules', missingCols.length ? `Missing: ${missingCols.join(', ')}` : 'All collections secured');
 
-  // Verify firebase.json
-  const firebaseJson = JSON.parse(fs.readFileSync(path.join(ROOT, 'firebase.json'), 'utf8'));
-  assert(!!firebaseJson.firestore && !!firebaseJson.hosting, 'firebase.json defines firestore and hosting keys');
-  assert(firebaseJson.hosting.cleanUrls === true, 'Clean URLs enabled in firebase.json');
-
-  const rewrites = firebaseJson.hosting.rewrites || [];
-  const destinations = rewrites.map(r => r.destination);
+  // Verify Cloudflare Pages routing (_redirects & wrangler.jsonc)
+  const redirectsExist = fs.existsSync(path.join(ROOT, '_redirects'));
+  assert(redirectsExist, 'Cloudflare Pages _redirects file exists');
+  const redirects = fs.readFileSync(path.join(ROOT, '_redirects'), 'utf8');
   assert(
-    destinations.includes('/admin.html') &&
-    destinations.includes('/teacher.html') &&
-    destinations.includes('/register.html') &&
-    destinations.includes('/app.html'),
-    'SPA routing rewrites configured for all 4 institutional portals'
+    redirects.includes('/admin.html') &&
+    redirects.includes('/teacher.html') &&
+    redirects.includes('/register.html') &&
+    redirects.includes('/app.html'),
+    'SPA routing rewrites configured for all 4 institutional portals in Cloudflare Pages'
   );
 } catch (err) {
   assert(false, 'TEST 61 Exception', err.message);

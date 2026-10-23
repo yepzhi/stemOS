@@ -1,0 +1,18 @@
+# Cloudflare Pages Redirects & Clean URL Rewrites
+/dev / 301
+/dev/* / 301
+/dev.html / 301
+/generator /generator.html 200
+/generator/* /generator.html 200
+/admin /admin.html 200
+/admin/* /admin.html 200
+/teacher /teacher.html 200
+/teacher/* /teacher.html 200
+/register /register.html 200
+/register/* /register.html 200
+/app /app.html 200
+/app/* /app.html 200
+/placement /placement.html 200
+/placement/* /placement.html 200
+/tracks /tracks.html 200
+/tracks/* /tracks.html 200
