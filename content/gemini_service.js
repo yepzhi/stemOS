@@ -26,17 +26,12 @@
         miniPcDiscoveryTimeoutMs: 1800,
         miniPcConnectTimeoutMs: 7000,
         miniPcCandidates: [
+            'https://yzai.yepzhi.com',
             'http://localhost:8080/api/gemini',
             'http://localhost:8080',
-            'http://localhost:8089',
-            'http://localhost:8096',
-            'http://localhost:8099',
-            'http://127.0.0.1:8080',
-            'http://127.0.0.1:8089',
-            'http://127.0.0.1:8099',
-            'https://yzai.yepzhi.com',
             'http://localhost:11434',
-            'http://127.0.0.1:11434'
+            'http://127.0.0.1:11434',
+            'http://127.0.0.1:8080'
         ]
     };
 
