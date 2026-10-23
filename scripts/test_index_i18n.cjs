@@ -104,12 +104,52 @@ const navCatalogEn = document.querySelector('[data-i18n="nav_catalog"]').textCon
 assert(navCatalogEn === 'ESP Catalog', `Catalog link translated to English: "${navCatalogEn}"`);
 
 const heroSubEn = document.querySelector('[data-i18n="hero_subtitle"]').innerHTML;
-assert(heroSubEn.includes('specialized industry tracks'), 'Hero subtitle translated to English');
+assert(heroSubEn.includes('specialized tracks'), 'Hero subtitle translated to English');
+
+const heroTitleEn = document.querySelector('[data-i18n="hero_title"]').textContent;
+assert(heroTitleEn.includes('From first words to industry-ready English'), `Hero title in English: "${heroTitleEn}"`);
+assert(!heroTitleEn.includes('Mastering'), 'Hero title does NOT contain "Mastering"');
+assert(!heroTitleEn.includes('Advanced Industry'), 'Hero title does NOT contain "Advanced Industry"');
+
+const btnPlacementEn = document.querySelector('[data-i18n="btn_take_placement"]').textContent;
+assert(btnPlacementEn === 'Take your free placement test', `Primary button in English: "${btnPlacementEn}"`);
+
+const btnPricingEn = document.querySelector('[data-i18n="btn_pricing"]').textContent;
+assert(btnPricingEn === 'Request an institutional quote', `Secondary button in English: "${btnPricingEn}"`);
+
+const card1TitleEn = document.querySelector('[data-i18n="hero_card1_title"]').textContent;
+assert(card1TitleEn === '1. Standard English (A1 to C1)', `Card 1 title in English: "${card1TitleEn}"`);
+
+const card2TitleEn = document.querySelector('[data-i18n="hero_card2_title"]').textContent;
+assert(card2TitleEn === '2. Industry English (34 ESP tracks)', `Card 2 title in English: "${card2TitleEn}"`);
+
+const stdLineEn = document.querySelector('[data-i18n="hero_standards_line"]').textContent;
+assert(stdLineEn.includes('USMCA'), `Standards line in English uses USMCA: "${stdLineEn}"`);
 
 // Switch back to Spanish to confirm bidirectionality
 window.setPlatformLanguage('es');
 const heroSubEs = document.querySelector('[data-i18n="hero_subtitle"]').innerHTML;
-assert(heroSubEs.includes('tracks especializados de industria'), 'Hero subtitle translated back to Spanish');
+assert(heroSubEs.includes('tracks especializados'), 'Hero subtitle translated back to Spanish');
+
+const heroTitleEs = document.querySelector('[data-i18n="hero_title"]').textContent;
+assert(heroTitleEs.includes('Del inglés desde cero al inglés de tu industria'), `Hero title in Spanish: "${heroTitleEs}"`);
+assert(!heroTitleEs.includes('Mastering'), 'Hero title in Spanish does NOT contain "Mastering"');
+assert(!heroTitleEs.includes('Advanced Industry'), 'Hero title in Spanish does NOT contain "Advanced Industry"');
+
+const btnPlacementEs = document.querySelector('[data-i18n="btn_take_placement"]').textContent;
+assert(btnPlacementEs === 'Haz tu examen de ubicación gratis', `Primary button in Spanish: "${btnPlacementEs}"`);
+
+const btnPricingEs = document.querySelector('[data-i18n="btn_pricing"]').textContent;
+assert(btnPricingEs === 'Solicitar cotización institucional', `Secondary button in Spanish: "${btnPricingEs}"`);
+
+const card1TitleEs = document.querySelector('[data-i18n="hero_card1_title"]').textContent;
+assert(card1TitleEs === '1. Inglés estándar (A1 a C1)', `Card 1 title in Spanish: "${card1TitleEs}"`);
+
+const card2TitleEs = document.querySelector('[data-i18n="hero_card2_title"]').textContent;
+assert(card2TitleEs === '2. Inglés para la industria (34 tracks ESP)', `Card 2 title in Spanish: "${card2TitleEs}"`);
+
+const stdLineEs = document.querySelector('[data-i18n="hero_standards_line"]').textContent;
+assert(stdLineEs.includes('T-MEC'), `Standards line in Spanish uses T-MEC: "${stdLineEs}"`);
 
 console.log('\n═══════════════════════════════════════════════════════════════════');
 console.log(`🏁 AUDIT COMPLETE: ${passed} Passed, ${failed} Failed`);
