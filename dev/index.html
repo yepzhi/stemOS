@@ -25,6 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link rel="preload" href="/dev.css?v=5.13.2" as="style">
+  <link rel="preload" href="/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@300;400;500;600;700;800&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Outfit:wght@600;700;800;900&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
@@ -1907,12 +1908,12 @@
       <!-- ── TWO PATHWAY CARDS (Standard vs. Industry ESP) ── -->
       <div class="hero-pathway-cards soft-element" style="--delay: 0.58s">
         <div class="hero-pathway-card card-standard">
-          <div class="hero-pathway-badge"><i class="fa-solid fa-layer-group"></i> A1 &rarr; C1</div>
+          <div class="hero-pathway-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px; vertical-align:-2px;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg> A1 &rarr; C1</div>
           <h2 class="hero-pathway-title" data-i18n="hero_card1_title">1. Standard English (A1 to C1)</h2>
           <p class="hero-pathway-desc" data-i18n="hero_card1_desc">For beginners and anyone who needs to level up. Aligned with the CEFR.</p>
         </div>
         <div class="hero-pathway-card card-industry">
-          <div class="hero-pathway-badge"><i class="fa-solid fa-industry"></i> 34 ESP</div>
+          <div class="hero-pathway-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px; vertical-align:-2px;"><path d="M2 20h20M5 20V8l5 4V4l6 5v11"></path></svg> 34 ESP</div>
           <h2 class="hero-pathway-title" data-i18n="hero_card2_title">2. Industry English (34 ESP tracks)</h2>
           <p class="hero-pathway-desc" data-i18n="hero_card2_desc">For learners with a solid base who want to go further in their careers.</p>
         </div>
@@ -1969,7 +1970,10 @@
         <div class="window-content-area">
           <div class="stage-player-pill" id="stage-player-pill">
             <button class="stage-play-btn" id="hero-stage-play" aria-label="Play pronunciation">
-              <i class="fa-solid fa-play" id="hero-stage-icon"></i>
+              <svg class="stage-play-svg" id="hero-stage-svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <polygon points="6 3 20 12 6 21 6 3"></polygon>
+              </svg>
+              <i class="fa-solid fa-play" id="hero-stage-icon" style="display:none;" aria-hidden="true"></i>
             </button>
             <div class="stage-wave-bars" id="stage-wave-bars">
               <span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span><span class="w-bar"></span>
@@ -2055,8 +2059,12 @@
       <!-- 3-Column Bento Cards -->
       <div class="promo-grid-3">
         <div class="promo-card">
-          <div class="promo-card-icon icon-cyan">
-            <i class="fa-solid fa-microchip"></i>
+          <div class="promo-card-icon icon-cyan" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+              <rect x="9" y="9" width="6" height="6"></rect>
+              <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"></path>
+            </svg>
           </div>
           <h3 class="promo-card-title" data-i18n="val_card1_title">Cleanrooms &amp; Sub-Micron Precision</h3>
           <p class="promo-card-desc" data-i18n="val_card1_desc">From EUV photolithography to laminar airflow cleanrooms (ISO 14644-1). Engineers learn exact chemical handling, wafer stepper calibration, and yield defect containment protocols in uncompromised English.</p>
@@ -2068,8 +2076,11 @@
         </div>
 
         <div class="promo-card">
-          <div class="promo-card-icon icon-emerald">
-            <i class="fa-solid fa-shield-halved"></i>
+          <div class="promo-card-icon icon-emerald" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <path d="M9 12l2 2 4-4"></path>
+            </svg>
           </div>
           <h3 class="promo-card-title" data-i18n="val_card2_title">Safety-Critical &amp; Zero-Trust Systems</h3>
           <p class="promo-card-desc" data-i18n="val_card2_desc">Master AS9100 aerospace compliance, PLC ladder logic loop troubleshooting, and OT/ICS zero-trust network defenses. Prevent catastrophic miscommunications across multi-tiered supplier chains.</p>
@@ -2081,8 +2092,12 @@
         </div>
 
         <div class="promo-card">
-          <div class="promo-card-icon icon-purple">
-            <i class="fa-solid fa-earth-americas"></i>
+          <div class="promo-card-icon icon-purple" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
           </div>
           <h3 class="promo-card-title" data-i18n="val_card3_title">Cross-Border Engineering Leadership</h3>
           <p class="promo-card-desc" data-i18n="val_card3_desc">Nearshoring facilities require Mexican and Latin American technical teams to present 8D root-cause analyses, SPC capability studies (Cp/Cpk), and PPAP documentation directly to US and European headquarters.</p>

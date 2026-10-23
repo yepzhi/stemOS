@@ -2900,14 +2900,30 @@ function setupSupasteInteractions(tracks, phrases) {
   const heroStagePlay = document.getElementById('hero-stage-play');
   const stagePlayerPill = document.getElementById('stage-player-pill');
   const heroStageIcon = document.getElementById('hero-stage-icon');
+  const heroStageSvg = document.getElementById('hero-stage-svg');
 
   let isPlayingHeroAudio = false;
 
+  function setHeroStageState(playing) {
+    isPlayingHeroAudio = playing;
+    if (stagePlayerPill) {
+      if (playing) stagePlayerPill.classList.add('playing');
+      else stagePlayerPill.classList.remove('playing');
+    }
+    const svgEl = document.getElementById('hero-stage-svg') || heroStageSvg;
+    if (svgEl) {
+      svgEl.innerHTML = playing
+        ? '<rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect>'
+        : '<polygon points="6 3 20 12 6 21 6 3"></polygon>';
+    }
+    if (heroStageIcon) {
+      heroStageIcon.className = playing ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+    }
+  }
+
   function toggleHeroAudio() {
     if (!isPlayingHeroAudio) {
-      isPlayingHeroAudio = true;
-      if (stagePlayerPill) stagePlayerPill.classList.add('playing');
-      if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-pause';
+      setHeroStageState(true);
 
       const currentLevel = localStorage.getItem('stemos_cefr_level') || 'B1';
       const sampleText = currentLevel === 'A2' 
@@ -2920,19 +2936,13 @@ function setupSupasteInteractions(tracks, phrases) {
           lang: 'en-US',
           voice: 'en_US-lessac-medium',
           onStart: () => {
-            isPlayingHeroAudio = true;
-            if (stagePlayerPill) stagePlayerPill.classList.add('playing');
-            if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-pause';
+            setHeroStageState(true);
           },
           onEnd: () => {
-            isPlayingHeroAudio = false;
-            if (stagePlayerPill) stagePlayerPill.classList.remove('playing');
-            if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-play';
+            setHeroStageState(false);
           },
           onError: () => {
-            isPlayingHeroAudio = false;
-            if (stagePlayerPill) stagePlayerPill.classList.remove('playing');
-            if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-play';
+            setHeroStageState(false);
           }
         });
       } else if ('speechSynthesis' in window) {
@@ -2941,29 +2951,21 @@ function setupSupasteInteractions(tracks, phrases) {
         utter.lang = 'en-US';
         utter.rate = 0.93; // 93% speed requested by user
         utter.onend = () => {
-          isPlayingHeroAudio = false;
-          if (stagePlayerPill) stagePlayerPill.classList.remove('playing');
-          if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-play';
+          setHeroStageState(false);
         };
         utter.onerror = () => {
-          isPlayingHeroAudio = false;
-          if (stagePlayerPill) stagePlayerPill.classList.remove('playing');
-          if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-play';
+          setHeroStageState(false);
         };
         window.speechSynthesis.speak(utter);
       } else {
         setTimeout(() => {
-          isPlayingHeroAudio = false;
-          if (stagePlayerPill) stagePlayerPill.classList.remove('playing');
-          if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-play';
+          setHeroStageState(false);
         }, 4500);
       }
     } else {
-      isPlayingHeroAudio = false;
       if (window.STEMOS_TTS) window.STEMOS_TTS.stop();
       if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-      if (stagePlayerPill) stagePlayerPill.classList.remove('playing');
-      if (heroStageIcon) heroStageIcon.className = 'fa-solid fa-play';
+      setHeroStageState(false);
     }
   }
 
