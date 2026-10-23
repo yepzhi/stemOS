@@ -3,8 +3,8 @@
  * Full offline PWA caching for 4 Portals (Student, Admin, Teacher, Register), 25 Career Paths (60h), Interleaved Curricula, XP HUD, and 3D World Map.
  */
 
-const SW_VERSION = '6.8.0';
-const CACHE_NAME = 'stemos-lxp-v6.8.0-enterprise-sync';
+const SW_VERSION = '6.8.1';
+const CACHE_NAME = 'stemos-lxp-v6.8.1-enterprise-sync';
 // Historical compatibility: v6.0.0-academic-portals, v6.1.0-firebase-sync, v6.2.0-piper-neural, v6.3.0-campus-diadema-offline, v6.3.1-sso-mobile-fixes
 
 const ASSETS_TO_CACHE = [
@@ -63,7 +63,9 @@ const ASSETS_TO_CACHE = [
   '/dev.css',
   '/dev.js',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@600;700;800;900&display=swap',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.woff2'
 ];
 
 // Install Event: Cache all essential assets with resilient fallback
