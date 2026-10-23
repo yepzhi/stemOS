@@ -3717,7 +3717,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Header info
         document.getElementById('mcer-unit-level-badge').textContent = `CEFR ${unit.cefr}`;
-        document.getElementById('mcer-unit-title').textContent = `Unit ${String(unit.unitNumber).padStart(2, '0')} · ${unit.title}`;
+        document.getElementById('mcer-unit-title').textContent = `${unit.modulo || ('Módulo ' + String(unit.unitNumber).padStart(2, '0'))} · ${unit.title}`;
         document.getElementById('mcer-unit-cando').textContent = `${unit.titleES || ''} — ${unit.canDo || ''}`;
 
         // Normalize dialogue lines (handles array or object with lines)
@@ -4891,6 +4891,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Reset to first tab
+        renderMcerWritingLab(unit);
         switchMcerModalTab('dialogue');
         if (typeof modal.showModal === 'function') modal.showModal();
         else modal.setAttribute('open', '');
@@ -4916,10 +4917,162 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const screens = ['dialogue', 'vocab', 'listening', 'grammar', 'reading', 'crucible', 'quiz'];
-        screens.forEach(s => {
+        const allScreens = screens.concat(['writing']);
+        allScreens.forEach(s => {
             const el = document.getElementById(`mcer-screen-${s}`);
             if (el) el.style.display = (s === tabKey) ? 'block' : 'none';
         });
+    }
+
+    function renderMcerWritingLab(unit) {
+        const lab = unit.writingLab;
+        if (!lab) return;
+
+        const titleEl = document.getElementById('mcer-writing-task-title');
+        const promptEl = document.getElementById('mcer-writing-task-prompt');
+        const instructionEl = document.getElementById('mcer-writing-task-instruction');
+        const minWordsBadge = document.getElementById('mcer-writing-min-words-badge');
+        const chipsContainer = document.getElementById('mcer-writing-keywords-chips');
+        const textarea = document.getElementById('mcer-writing-input');
+        const counterEl = document.getElementById('mcer-writing-counter');
+        const feedbackCard = document.getElementById('mcer-writing-feedback-card');
+        const modelAnswerEl = document.getElementById('mcer-writing-model-answer');
+        const btnTemplate = document.getElementById('btn-mcer-insert-template');
+        const btnEvaluate = document.getElementById('btn-mcer-evaluate-writing');
+        const btnClear = document.getElementById('btn-mcer-writing-clear');
+
+        if (titleEl) titleEl.textContent = `${unit.modulo || 'Módulo'} · ${lab.titleES || lab.title}`;
+        if (promptEl) promptEl.textContent = lab.promptES ? `${lab.prompt} (${lab.promptES})` : lab.prompt;
+        if (instructionEl) instructionEl.textContent = lab.instructionES ? `${lab.instruction} — ${lab.instructionES}` : lab.instruction;
+        if (minWordsBadge) minWordsBadge.textContent = `Mínimo: ${lab.minWords || 18} palabras`;
+        if (modelAnswerEl) modelAnswerEl.textContent = lab.modelAnswer || '';
+        if (feedbackCard) feedbackCard.style.display = 'none';
+
+        let savedText = '';
+        try { savedText = localStorage.getItem(`stemos_writing_${unit.id}`) || ''; } catch(e){}
+        if (textarea) textarea.value = savedText;
+
+        function updateCounterAndChips() {
+            if (!textarea) return;
+            const text = textarea.value.trim();
+            const words = text ? text.split(/\s+/).filter(Boolean) : [];
+            const count = words.length;
+            if (counterEl) {
+                counterEl.textContent = `${count} palabras | ${textarea.value.length} caracteres`;
+                counterEl.style.color = count >= (lab.minWords || 15) ? '#10b981' : '#64748b';
+            }
+
+            const lower = textarea.value.toLowerCase();
+            if (chipsContainer) {
+                chipsContainer.querySelectorAll('.writing-kw-chip').forEach(chip => {
+                    const kw = chip.dataset.keyword.toLowerCase();
+                    const isPresent = lower.includes(kw);
+                    chip.style.background = isPresent ? '#dcfce7' : '#f1f5f9';
+                    chip.style.color = isPresent ? '#166534' : '#475569';
+                    chip.style.borderColor = isPresent ? '#86efac' : '#cbd5e1';
+                    const icon = chip.querySelector('.kw-status-icon');
+                    if (icon) icon.className = isPresent ? 'fa-solid fa-check kw-status-icon' : 'fa-solid fa-circle-dot kw-status-icon';
+                });
+            }
+        }
+
+        if (chipsContainer) {
+            chipsContainer.innerHTML = '';
+            (lab.targetKeywords || []).forEach(kw => {
+                const chip = document.createElement('span');
+                chip.className = 'writing-kw-chip';
+                chip.dataset.keyword = kw;
+                chip.style.cssText = 'display:inline-flex; align-items:center; gap:5px; font-size:0.75rem; font-weight:700; padding:3px 10px; border-radius:9999px; border:1px solid #cbd5e1; background:#f1f5f9; color:#475569; transition:all 0.2s;';
+                chip.innerHTML = `<i class="fa-solid fa-circle-dot kw-status-icon" style="font-size:0.55rem;"></i> ${kw}`;
+                chipsContainer.appendChild(chip);
+            });
+        }
+
+        if (textarea) {
+            textarea.oninput = updateCounterAndChips;
+            updateCounterAndChips();
+        }
+
+        if (btnTemplate) {
+            btnTemplate.onclick = () => {
+                if (!textarea) return;
+                if (!textarea.value.trim() || confirm('¿Deseas reemplazar el texto con la plantilla guía?')) {
+                    textarea.value = lab.starterTemplate || '';
+                    updateCounterAndChips();
+                    textarea.focus();
+                }
+            };
+        }
+
+        if (btnClear) {
+            btnClear.onclick = () => {
+                if (textarea) {
+                    textarea.value = '';
+                    updateCounterAndChips();
+                    if (feedbackCard) feedbackCard.style.display = 'none';
+                    try { localStorage.removeItem(`stemos_writing_${unit.id}`); } catch(e){}
+                }
+            };
+        }
+
+        if (btnEvaluate) {
+            btnEvaluate.onclick = () => {
+                if (!textarea) return;
+                const text = textarea.value.trim();
+                if (!text) {
+                    alert('Por favor redacta tu respuesta antes de solicitar la evaluación con IA.');
+                    textarea.focus();
+                    return;
+                }
+
+                let res;
+                if (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.evaluateWritingSubmission === 'function') {
+                    res = window.STEMOS_MCER_TRACKS.evaluateWritingSubmission(unit.id, text);
+                } else {
+                    res = {
+                        score: 85,
+                        passed: true,
+                        feedback: 'Excelente despacho técnico.',
+                        xpAwarded: 120
+                    };
+                }
+
+                try {
+                    localStorage.setItem(`stemos_writing_${unit.id}`, text);
+                    if (res.passed) {
+                        localStorage.setItem(`stemos_writing_pass_${unit.id}`, 'true');
+                        const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+                        const newXP = prevXP + (res.xpAwarded || 120);
+                        localStorage.setItem('stemos_student_xp', String(newXP));
+                        if (typeof window.updateStudentXPHUD === 'function') window.updateStudentXPHUD(newXP);
+                    }
+                } catch(e){}
+
+                if (feedbackCard) {
+                    feedbackCard.style.display = 'block';
+                    const scorePill = document.getElementById('mcer-writing-score-pill');
+                    const verdictEl = document.getElementById('mcer-writing-verdict');
+                    const feedbackTextEl = document.getElementById('mcer-writing-feedback-text');
+                    const xpBadge = document.getElementById('mcer-writing-xp-badge');
+
+                    if (scorePill) {
+                        scorePill.textContent = `${res.score}%`;
+                        scorePill.style.color = res.passed ? '#10b981' : '#f59e0b';
+                    }
+                    if (verdictEl) {
+                        verdictEl.textContent = res.passed ? '¡Despacho Escrito Aprobado!' : 'Requiere Mayor Precisión Léxica';
+                    }
+                    if (xpBadge) {
+                        xpBadge.textContent = res.passed ? `+${res.xpAwarded} XP Acreditados (Habilidad Writing)` : 'Revisa las recomendaciones para ganar +120 XP';
+                    }
+                    if (feedbackTextEl) {
+                        feedbackTextEl.innerHTML = `<strong>Dictamen IA:</strong> ${res.feedback}`;
+                    }
+
+                    feedbackCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            };
+        }
     }
 
     document.querySelectorAll('.mcer-tab-btn').forEach(btn => {

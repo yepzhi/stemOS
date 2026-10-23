@@ -1802,14 +1802,17 @@
         <div class="modal-card academic-card mcer-study-card" style="max-width:880px; background:#ffffff !important; color:#0f172a !important; border:1px solid #cbd5e1 !important; box-shadow:0 25px 60px rgba(15,23,42,0.25) !important;">
             <div class="academic-modal-header" style="border-bottom:1px solid #e2e8f0; padding-bottom:14px; margin-bottom:14px; background:#ffffff !important;">
                 <div class="academic-header-info">
-                    <span class="academic-track-badge" id="mcer-unit-level-badge" style="background:#0284c7; color:#fff;">CEFR A1</span>
-                    <h3 class="academic-module-title" id="mcer-unit-title" style="margin-top:4px; color:#0f172a !important; font-size:1.35rem; font-weight:800;">Unit 01 · Introductions & Personal Info</h3>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="academic-track-badge" id="mcer-unit-level-badge" style="background:#0284c7; color:#fff;">CEFR A1</span>
+                        <span style="background:rgba(16,185,129,0.12); color:#059669; border:1px solid rgba(16,185,129,0.3); font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:6px;"><i class="fa-solid fa-clock"></i> 10 min · 4 Habilidades MCER</span>
+                    </div>
+                    <h3 class="academic-module-title" id="mcer-unit-title" style="margin-top:4px; color:#0f172a !important; font-size:1.35rem; font-weight:800;">Módulo 01 · Introductions & Personal Info</h3>
                     <p style="font-size:0.84rem; color:#475569 !important; margin-top:2px;" id="mcer-unit-cando">Can introduce self and others...</p>
                 </div>
                 <button class="modal-close" id="mcer-unit-close" aria-label="Cerrar" style="color:#64748b;"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- Tab Navigation (7 Comprehensive Pedagogical Dimensions) -->
+            <!-- Tab Navigation (8 Comprehensive Pedagogical Dimensions · 4 Skills Balanced) -->
             <div style="display:flex; border-bottom:1px solid #e2e8f0; gap:6px; margin-bottom:18px; flex-wrap:wrap;">
                 <button class="mcer-tab-btn active" data-mcer-tab="dialogue" style="padding:8px 14px; border:none; background:transparent; font-weight:700; font-size:0.84rem; color:#0284c7; border-bottom:2px solid #0284c7; cursor:pointer;">
                     <i class="fa-solid fa-comments"></i> Diálogo
@@ -1825,6 +1828,9 @@
                 </button>
                 <button class="mcer-tab-btn" data-mcer-tab="reading" style="padding:8px 14px; border:none; background:transparent; font-weight:700; font-size:0.84rem; color:#64748b; cursor:pointer;">
                     <i class="fa-solid fa-file-lines"></i> Lectura (4)
+                </button>
+                <button class="mcer-tab-btn" data-mcer-tab="writing" style="padding:8px 14px; border:none; background:transparent; font-weight:700; font-size:0.84rem; color:#64748b; cursor:pointer;">
+                    <i class="fa-solid fa-pen-to-square" style="color:#f59e0b;"></i> Escritura IA (2.5m)
                 </button>
                 <button class="mcer-tab-btn" data-mcer-tab="crucible" style="padding:8px 14px; border:none; background:transparent; font-weight:700; font-size:0.84rem; color:#64748b; cursor:pointer;">
                     <i class="fa-solid fa-industry"></i> Crisol IA
@@ -2160,6 +2166,82 @@
                             <button id="btn-mcer-crucible-toggle-model" class="btn" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; padding:4px 10px; font-size:0.75rem; border-radius:6px; cursor:pointer;">
                                 Ver Modelo de Referencia
                             </button>
+                        </div>
+                    </div>
+                <!-- Tab: Taller de Redacción con IA Rápida (Writing Lab) -->
+                <div id="mcer-screen-writing" class="mcer-screen" style="display:none;">
+                    <div style="background:linear-gradient(135deg, rgba(245,158,11,0.08) 0%, rgba(217,119,6,0.04) 100%); border:1px solid rgba(245,158,11,0.25); border-radius:14px; padding:16px 20px; margin-bottom:18px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+                            <div style="display:inline-flex; align-items:center; gap:8px;">
+                                <span style="background:#f59e0b; color:#fff; font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:6px; text-transform:uppercase;">HABILIDAD 3 · WRITING</span>
+                                <span style="font-size:0.8rem; font-weight:700; color:#d97706;" id="mcer-writing-time-est"><i class="fa-solid fa-clock"></i> 2.5 min · Redacción Técnica</span>
+                            </div>
+                            <span style="font-size:0.75rem; color:#64748b; font-weight:700;" id="mcer-writing-min-words-badge">Mínimo: 18 palabras</span>
+                        </div>
+                        <h4 style="margin:4px 0 6px 0; color:#0f172a; font-size:1.05rem; font-weight:800;" id="mcer-writing-task-title">Plant Task</h4>
+                        <p style="font-size:0.86rem; color:#475569; line-height:1.45; margin-bottom:10px;" id="mcer-writing-task-prompt">Scenario description...</p>
+                        <div style="background:#ffffff; border:1px dashed #cbd5e1; border-radius:10px; padding:10px 14px; font-size:0.82rem; color:#334155;">
+                            <strong style="color:#d97706;"><i class="fa-solid fa-lightbulb"></i> Instrucción:</strong> <span id="mcer-writing-task-instruction">Instruction text...</span>
+                        </div>
+                    </div>
+
+                    <!-- Keywords Required Badges -->
+                    <div style="margin-bottom:14px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                            <span style="font-size:0.78rem; font-weight:800; color:#475569; text-transform:uppercase; letter-spacing:0.04em;">
+                                <i class="fa-solid fa-tags" style="color:#f59e0b;"></i> Vocabulario Clave Requerido (Usa al menos 3):
+                            </span>
+                            <button type="button" id="btn-mcer-insert-template" style="background:none; border:none; color:#0284c7; font-size:0.78rem; font-weight:700; cursor:pointer; text-decoration:underline;">
+                                <i class="fa-solid fa-paste"></i> Insertar plantilla guía
+                            </button>
+                        </div>
+                        <div id="mcer-writing-keywords-chips" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+                    </div>
+
+                    <!-- Writing Area -->
+                    <div style="position:relative; margin-bottom:14px;">
+                        <textarea id="mcer-writing-input" rows="5" placeholder="Write your professional workplace response here in English..." style="width:100%; border:1.5px solid #cbd5e1; border-radius:12px; padding:12px 14px; font-family:inherit; font-size:0.92rem; color:#0f172a; resize:vertical; outline:none; transition:border-color 0.2s;"></textarea>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px; font-size:0.76rem; color:#64748b;">
+                            <span id="mcer-writing-live-status">Escribe en inglés profesional</span>
+                            <span id="mcer-writing-counter" style="font-weight:700;">0 palabras | 0 caracteres</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Controls -->
+                    <div style="display:flex; gap:10px; align-items:center; margin-bottom:16px;">
+                        <button class="btn btn-primary" id="btn-mcer-evaluate-writing" style="background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border:none; font-weight:800; padding:10px 20px; font-size:0.88rem; box-shadow:0 4px 14px rgba(245,158,11,0.35);">
+                            <i class="fa-solid fa-bolt"></i> Evaluar Redacción con IA Rápida
+                        </button>
+                        <button class="btn" id="btn-mcer-writing-clear" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; padding:10px 14px; font-size:0.85rem;">
+                            Limpiar
+                        </button>
+                    </div>
+
+                    <!-- AI Evaluation Feedback Card -->
+                    <div id="mcer-writing-feedback-card" style="display:none; border-radius:14px; padding:18px; border:1.5px solid #cbd5e1; background:#f8fafc; margin-top:14px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <div id="mcer-writing-score-pill" style="font-size:1.6rem; font-weight:900; color:#10b981;">95%</div>
+                                <div>
+                                    <div id="mcer-writing-verdict" style="font-weight:800; font-size:0.92rem; color:#0f172a;">¡Aprobado con Distinción!</div>
+                                    <div style="font-size:0.75rem; color:#64748b;" id="mcer-writing-xp-badge">+120 XP Acreditados</div>
+                                </div>
+                            </div>
+                            <span id="mcer-writing-badge-chip" style="background:#dcfce7; color:#166534; font-size:0.75rem; font-weight:800; padding:4px 10px; border-radius:9999px;">
+                                CEFR ALIGNED
+                            </span>
+                        </div>
+                        <p id="mcer-writing-feedback-text" style="font-size:0.85rem; color:#334155; line-height:1.45; margin-bottom:12px;"></p>
+                        
+                        <!-- Model Reference Dropdown -->
+                        <div style="border-top:1px solid #e2e8f0; padding-top:12px; margin-top:10px;">
+                            <details style="cursor:pointer;">
+                                <summary style="font-size:0.8rem; font-weight:700; color:#0284c7;">
+                                    <i class="fa-solid fa-circle-info"></i> Ver Modelo de Redacción Nativo Recomendado
+                                </summary>
+                                <div id="mcer-writing-model-answer" style="background:#f1f5f9; border-left:3px solid #0284c7; padding:10px 14px; font-size:0.84rem; color:#0f172a; border-radius:0 8px 8px 0; margin-top:8px; font-style:italic;">
+                                </div>
+                            </details>
                         </div>
                     </div>
                 </div>
