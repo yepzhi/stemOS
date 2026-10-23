@@ -45,7 +45,7 @@ const STEMOS_I18N = {
     mob_nav_academic: 'Academic System 60h (25)',
     mob_nav_standards: 'Standards vs. Academia',
 
-    hero_subtitle: '<strong>34 specialized industry tracks</strong> (ESP) and CEFR leveling tracks (A1 to C1) &mdash; engineered for semiconductor manufacturing, aerospace avionics, industrial robotics, automotive engineering, medical devices, global logistics, quality &amp; EHS, data centers, and nearshoring. Aligned with IEEE, SEMI, ISO, IATF, FDA, OSHA, and USMCA standards.',
+    hero_subtitle: 'Start with standard English from A1-B1 full (CEFR) and move on to 34 specialized tracks for semiconductors, aerospace, robotics, automotive, medical devices, logistics and more. One platform, one learning path, verifiable certificates.',
     btn_take_placement: 'Placement Test (30 min)',
     btn_tracks: 'Explore 34 Tracks &amp; Labs',
     btn_pricing: 'View Proposal &amp; Pricing',
@@ -318,7 +318,7 @@ const STEMOS_I18N = {
     mob_nav_academic: 'Sistema Académico 60h (25)',
     mob_nav_standards: 'Estándares vs. Academia',
 
-    hero_subtitle: '<strong>34 tracks especializados de industria</strong> (ESP) y tracks de nivelación MCER (A1 a C1) &mdash; diseñados para fabricación de semiconductores, aviónica aeroespacial, robótica industrial, ingeniería automotriz, dispositivos médicos, logística internacional, calidad y EHS, centros de datos y nearshoring. Alineados con estándares IEEE, SEMI, ISO, IATF, FDA, OSHA y T-MEC.',
+    hero_subtitle: 'Empieza con inglés estándar desde A1-B1 completo (MCER) y avanza hacia 34 tracks especializados para semiconductores, aeroespacial, robótica, automotriz, dispositivos médicos, logística y más. Una sola plataforma, un solo camino, con certificados verificables.',
     btn_take_placement: 'Test de Ubicación (30 min)',
     btn_tracks: 'Explorar 34 Tracks &amp; Labs',
     btn_pricing: 'Ver Propuesta &amp; Precios',
