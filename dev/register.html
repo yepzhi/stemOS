@@ -2269,6 +2269,46 @@
             updateStageTerms();
             updateCareerSummaryText();
             setRegisterLanguage(currentRegisterLang);
+
+            // Check for Google Auth Redirect result (Seamless return from mobile/browser redirect)
+            ensureFirebaseAuthReady().then(ready => {
+                if (ready && typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+                    firebase.auth().getRedirectResult().then(result => {
+                        const user = result && result.user;
+                        if (user) {
+                            const email = user.email || '';
+                            const fullName = user.displayName || (email ? email.split('@')[0] : 'Estudiante');
+                            const photoURL = user.photoURL || '';
+                            const uid = user.uid || '';
+
+                            const matriculaMatch = email.match(/\d{6,10}/);
+                            const matricula = matriculaMatch ? matriculaMatch[0] : ('2026' + Math.floor(1000 + Math.random() * 9000));
+
+                            const detected = detectInstitutionFromEmail(email) || {
+                                subsystem: 'upbc',
+                                campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
+                                hub: 'tijuana-mxi',
+                                careerId: 'upbc-mecatronica'
+                            };
+
+                            applyGoogleProfileToWizard({
+                                fullName: fullName,
+                                email: email,
+                                photoURL: photoURL,
+                                uid: uid,
+                                matricula: matricula,
+                                subsystem: detected.subsystem,
+                                campus: detected.campus,
+                                degreeModality: 'lic',
+                                careerId: detected.careerId,
+                                ssoProvider: 'google'
+                            });
+                        }
+                    }).catch(err => {
+                        console.info('[stemOS Register] getRedirectResult notice:', err.code || err);
+                    });
+                }
+            });
         });
 
         // ── Check URL Query Params (e.g. ?class=STEM-MECA-A7X3K2) ──
@@ -2707,6 +2747,17 @@
                     if (err.code === 'auth/popup-closed-by-user') {
                         return;
                     }
+                    if (err.code === 'auth/popup-blocked') {
+                        try {
+                            const auth = firebase.auth();
+                            const provider = new firebase.auth.GoogleAuthProvider();
+                            provider.setCustomParameters({ prompt: 'select_account' });
+                            await auth.signInWithRedirect(provider);
+                            return;
+                        } catch(re) {
+                            console.warn('[stemOS Google Auth] Redirect fallback failed:', re);
+                        }
+                    }
                     openGoogleSignInModalRegister();
                     const notice = document.getElementById('google-popup-notice');
                     if (notice) {
@@ -2837,6 +2888,17 @@
                     return;
                 } catch(err) {
                     console.info('[stemOS Google Auth] Fallback to direct institutional access:', err.code || err);
+                    if (err.code === 'auth/popup-blocked') {
+                        try {
+                            const auth = firebase.auth();
+                            const provider = new firebase.auth.GoogleAuthProvider();
+                            provider.setCustomParameters({ prompt: 'select_account' });
+                            await auth.signInWithRedirect(provider);
+                            return;
+                        } catch(re) {
+                            console.warn('[stemOS Google Auth] Redirect fallback failed:', re);
+                        }
+                    }
                     if (notice) {
                         notice.style.display = 'block';
                         notice.innerHTML = '<i class="fa-solid fa-circle-info" style="color:#0284c7;"></i> Modo institucional activo. Selecciona tu cuenta arriba para acceder inmediatamente sin bloqueos de ventana emergente.';
