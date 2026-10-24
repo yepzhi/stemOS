@@ -141,7 +141,9 @@
 
     banner.innerHTML = `
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;">
-        <img src="/icon-192.svg" width="40" height="40" style="border-radius:10px;box-shadow:0 4px 14px rgba(2,132,199,0.4);" alt="stemOS Logo">
+        <div style="padding:6px 12px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.3);border-radius:10px;display:inline-flex;align-items:center;flex-shrink:0;">
+          <span style="font-weight:900;font-size:1.05rem;letter-spacing:-0.02em;color:#f8fafc;">stem<span style="color:#38bdf8;">OS</span><sup style="font-size:0.55em;color:#38bdf8;margin-left:2px;">&reg;</sup></span>
+        </div>
         <div>
           <div style="font-weight:800;font-size:0.96rem;line-height:1.2;">Instalar stemOS</div>
           <div style="font-size:0.75rem;color:#94a3b8;line-height:1.3;margin-top:2px;">Práctica offline y acceso directo en tu dispositivo</div>
