@@ -4413,4 +4413,481 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
   left: 16px;
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   STEMOS LXP - LIGHT THEME CONTRAST & RESPONSIVE POLISH: 5 SECONDARY VIEWS
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* --- 1. Skills Graph (Grafo) --- */
+#view-skills-graph .lxp-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 0.65fr;
+    gap: 20px;
+    min-height: 540px;
+    height: auto;
+    margin-bottom: 24px;
+}
+
+#view-skills-graph .graph-panel,
+#view-skills-graph .info-panel {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+    border-radius: 18px !important;
+}
+
+#view-skills-graph .panel-header {
+    border-bottom: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+}
+
+#view-skills-graph .panel-title {
+    color: #0f172a !important;
+    font-weight: 800;
+}
+
+#view-skills-graph .graph-viewport {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    margin: 14px;
+    min-height: 420px;
+}
+
+#view-skills-graph .skills-svg .line {
+    stroke-width: 2.5px;
+}
+#view-skills-graph .skills-svg .line.completed {
+    stroke: #10b981 !important;
+}
+#view-skills-graph .skills-svg .line.active {
+    stroke: #0284c7 !important;
+}
+#view-skills-graph .skills-svg .line.locked {
+    stroke: #cbd5e1 !important;
+    opacity: 0.8 !important;
+}
+
+#view-skills-graph .node-circle {
+    fill: #ffffff !important;
+    stroke-width: 2.5px !important;
+}
+#view-skills-graph .node-completed .node-circle {
+    stroke: #10b981 !important;
+    fill: #ecfdf5 !important;
+}
+#view-skills-graph .node-active .node-circle {
+    stroke: #0284c7 !important;
+    fill: #f0f9ff !important;
+}
+#view-skills-graph .node-locked .node-circle {
+    stroke: #94a3b8 !important;
+    fill: #f1f5f9 !important;
+}
+
+#view-skills-graph .node-icon-wrapper i {
+    color: #0f172a !important;
+    text-shadow: none !important;
+    font-size: 16px;
+}
+#view-skills-graph .node-text {
+    fill: #0f172a !important;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+#view-skills-graph .info-empty-state {
+    color: #64748b !important;
+    padding: 30px 10px;
+}
+#view-skills-graph .info-node-title {
+    color: #0f172a !important;
+    font-weight: 800;
+}
+#view-skills-graph .info-node-desc {
+    color: #334155 !important;
+    line-height: 1.6;
+}
+#view-skills-graph .meta-lbl {
+    color: #64748b !important;
+}
+#view-skills-graph .meta-val {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+#view-skills-graph .info-meta {
+    border-top: 1px solid #e2e8f0 !important;
+}
+
+/* --- 2. Feynman AI Socratic Tutor --- */
+#view-feynman-tutor .tutor-panel {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 24px rgba(15, 23, 42, 0.05) !important;
+    border-radius: 18px !important;
+    overflow: hidden;
+}
+
+#view-feynman-tutor .panel-header {
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 18px 24px;
+    background: #ffffff !important;
+}
+
+#view-feynman-tutor .panel-title {
+    color: #0f172a !important;
+    font-weight: 800;
+}
+
+#view-feynman-tutor .tutor-status {
+    color: #475569 !important;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+#view-feynman-tutor .tutor-controls-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 16px 24px;
+    background: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+#view-feynman-tutor .tutor-selector-group label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+#view-feynman-tutor .ed-select {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.2s;
+}
+#view-feynman-tutor .ed-select:focus {
+    border-color: #0284c7 !important;
+}
+
+#view-feynman-tutor .tutor-launch-btn {
+    padding: 9px 18px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%) !important;
+    color: #ffffff !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+    cursor: pointer;
+}
+
+#view-feynman-tutor .chat-area {
+    background: #f8fafc !important;
+    padding: 24px;
+    min-height: 420px;
+    max-height: 520px;
+    overflow-y: auto;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+#view-feynman-tutor .chat-message.bot .message-bubble {
+    background: #ffffff !important;
+    border: 1.5px solid #e2e8f0 !important;
+    color: #0f172a !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    border-radius: 16px;
+    border-top-left-radius: 4px;
+}
+
+#view-feynman-tutor .chat-message.bot .avatar {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    color: #ffffff !important;
+    font-weight: 800;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+}
+
+#view-feynman-tutor .chat-message.user .message-bubble {
+    background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    border-radius: 16px;
+    border-top-right-radius: 4px;
+}
+
+#view-feynman-tutor .chat-message.user .avatar {
+    background: #0f172a !important;
+    color: #ffffff !important;
+    font-weight: 800;
+}
+
+#view-feynman-tutor .chat-inputs {
+    display: flex;
+    gap: 12px;
+    padding: 16px 24px;
+    background: #ffffff !important;
+}
+
+#view-feynman-tutor #chat-input {
+    flex-grow: 1;
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 12px !important;
+    padding: 12px 18px;
+    font-size: 0.92rem;
+    color: #0f172a !important;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+#view-feynman-tutor #chat-input:focus {
+    border-color: #0284c7 !important;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+#view-feynman-tutor #chat-input::placeholder {
+    color: #94a3b8 !important;
+}
+
+#view-feynman-tutor #chat-send-btn {
+    padding: 12px 20px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%) !important;
+    color: #ffffff !important;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+}
+
+/* --- 3. Open Badges 3.0 Wall --- */
+#view-micro-badges .badge-panel {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 24px rgba(15, 23, 42, 0.05) !important;
+    border-radius: 18px !important;
+    padding: 8px;
+}
+
+#view-micro-badges .panel-header {
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 18px 24px;
+    background: #ffffff !important;
+}
+
+#view-micro-badges .panel-title {
+    color: #0f172a !important;
+    font-weight: 800;
+}
+
+#view-micro-badges .badge-filter-bar {
+    display: flex;
+    gap: 8px;
+    background: #f1f5f9;
+    padding: 4px;
+    border-radius: 12px;
+}
+
+#view-micro-badges .badge-filter-btn {
+    border: none;
+    background: transparent;
+    color: #64748b;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+#view-micro-badges .badge-filter-btn.active {
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+#view-micro-badges .badge-wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 24px;
+    background: #f8fafc;
+}
+
+#view-micro-badges .badge-card {
+    background: #ffffff !important;
+    border: 1.5px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    padding: 22px 18px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s !important;
+}
+
+#view-micro-badges .badge-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 10px 24px rgba(2, 132, 199, 0.1) !important;
+    border-color: #0284c7 !important;
+}
+
+#view-micro-badges .badge-card .badge-icon-box {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    margin-bottom: 12px;
+    background: #f0f9ff;
+    color: #0284c7;
+    border: 1.5px solid #bae6fd;
+}
+
+#view-micro-badges .badge-card.unlocked .badge-icon-box {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35) !important;
+}
+
+#view-micro-badges .badge-card.in-progress .badge-icon-box {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35) !important;
+}
+
+#view-micro-badges .badge-card-category {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+    background: rgba(2, 132, 199, 0.08);
+    color: #0284c7;
+}
+
+#view-micro-badges .badge-card-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #0f172a !important;
+    margin-bottom: 6px;
+    line-height: 1.35;
+}
+
+#view-micro-badges .badge-card-standard {
+    font-size: 0.78rem;
+    color: #475569 !important;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+#view-micro-badges .badge-card-hash {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.7rem;
+    color: #64748b;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 3px 10px;
+    border-radius: 6px;
+    margin-bottom: 14px;
+}
+
+#view-micro-badges .badge-cert-action-btn {
+    width: 100%;
+    margin-top: auto;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 9px 16px;
+    border-radius: 10px;
+    background: #0284c7 !important;
+    color: #ffffff !important;
+    border: none !important;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
+}
+
+/* --- 4. Technical Glossary & Phrases --- */
+#view-glossary .glass-panel {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 24px rgba(15, 23, 42, 0.05) !important;
+    border-radius: 18px !important;
+}
+
+#view-glossary .glossary-filter-chip {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+#view-glossary .glossary-filter-chip.active {
+    background: #0284c7 !important;
+    color: #ffffff !important;
+    border-color: #0284c7 !important;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25) !important;
+}
+
+#view-glossary .glossary-phrase-card {
+    background: #ffffff !important;
+    border: 1.5px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+}
+#view-glossary .glossary-phrase-card:hover {
+    border-color: #0284c7 !important;
+    box-shadow: 0 8px 24px rgba(2, 132, 199, 0.1) !important;
+    transform: translateY(-2px);
+}
+
+/* --- 5. Mundo stemOS 3D Container Polish --- */
+#view-world-map {
+    width: 100%;
+}
+#world-map-container {
+    width: 100%;
+    min-height: 80vh;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* --- Responsive Breakpoints for secondary views --- */
+@media (max-width: 900px) {
+    #view-skills-graph .lxp-grid {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    #view-feynman-tutor .tutor-controls-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    #view-feynman-tutor .tutor-launch-btn {
+        width: 100%;
+    }
+}
+
 

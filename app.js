@@ -868,7 +868,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Send Message Logic
     async function handleUserReply() {
         const text = chatInput.value.trim();
-        if (!text || !chatState.active) return;
+        if (!text) return;
+
+        // Auto-activate tutor if user typed directly
+        if (!chatState.active) {
+            const selTrack = (tutorTrackSelect && tutorTrackSelect.value) || 'it-innovation';
+            const selMod = (tutorModSelect && tutorModSelect.value) || 'it-innovation-m1';
+            chatState.active = true;
+            chatState.trackId = selTrack;
+            chatState.modId = selMod;
+            chatState.modTitle = (coursesData[selTrack] && (coursesData[selTrack].titleES || coursesData[selTrack].title)) || "Inglés Técnico STEM";
+            if (tutorStatusText) {
+                tutorStatusText.textContent = `Tutor: ${chatState.modTitle}`;
+            }
+        }
 
         chatState.lastUserReply = text;
         addUserMessage(text);
@@ -2137,6 +2150,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 100);
         }
 
+        // Toggle hero banner & assignment mount: ONLY show on dashboard / all-units catalog!
+        const isHome = (viewName === 'all-units' || viewName === 'dashboard' || viewName === 'tracks');
+        const heroBanner = document.querySelector('.ed-hero-banner');
+        const assignmentMount = document.getElementById('stemos-student-assignment-mount');
+        if (heroBanner) heroBanner.style.display = isHome ? '' : 'none';
+        if (assignmentMount) assignmentMount.style.display = isHome ? '' : 'none';
+
+        // Auto-close mobile sidebar if open
+        if (edSidebar && edSidebar.classList.contains('mobile-open')) {
+            edSidebar.classList.remove('mobile-open');
+        }
+
         // Hide all views
         edViews.forEach(v => {
             v.style.display = 'none';
@@ -2168,7 +2193,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.toggle('active', btn.dataset.view === viewName);
         });
 
-        // 3D World Globe & Gamified Level Path Initializer
+        // Dynamic View-Specific Renderers & Initializers
         if (viewName === 'world-map') {
             if (window.StemOSWorldMap) {
                 if (!window.StemOSWorldMap.initialized) {
@@ -2177,15 +2202,34 @@ document.addEventListener('DOMContentLoaded', () => {
                         onLaunchSocratic: (trackId, modId) => launchSocraticChallenge(trackId, modId)
                     });
                     window.StemOSWorldMap.initialized = true;
-                } else {
-                    window.StemOSWorldMap.handleResize();
-                    window.StemOSWorldMap.syncProgress();
                 }
+                setTimeout(() => {
+                    if (window.StemOSWorldMap.handleResize) window.StemOSWorldMap.handleResize();
+                    if (window.StemOSWorldMap.syncProgress) window.StemOSWorldMap.syncProgress();
+                }, 80);
+            }
+        } else if (viewName === 'skills-graph') {
+            if (typeof updateGraphUI === 'function') updateGraphUI();
+        } else if (viewName === 'feynman-tutor') {
+            if (typeof initTutorSelectors === 'function') initTutorSelectors();
+            const chatInputEl = document.getElementById('chat-input');
+            const chatSendBtnEl = document.getElementById('chat-send-btn');
+            if (chatInputEl) chatInputEl.disabled = false;
+            if (chatSendBtnEl) chatSendBtnEl.disabled = false;
+        } else if (viewName === 'micro-badges') {
+            if (typeof renderBadgesWall === 'function') {
+                const activeFilterBtn = document.querySelector('.badge-filter-btn.active');
+                const filterVal = activeFilterBtn ? activeFilterBtn.dataset.badgeFilter : 'all';
+                renderBadgesWall(filterVal);
+            }
+        } else if (viewName === 'glossary') {
+            if (typeof renderGlossaryView === 'function') {
+                renderGlossaryView(activeGlossaryCat || 'all', activeGlossarySearchQuery || '');
             }
         }
     }
     window.switchDashboardView = switchDashboardView;
-    window.STEMOS_VERSION = 'v1.1.5';
+    window.STEMOS_VERSION = 'v1.1.6';
 
     edRailBtns.forEach(btn => {
         btn.addEventListener('click', () => {
