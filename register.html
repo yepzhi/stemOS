@@ -1434,14 +1434,13 @@
                 <p class="question-subtitle" id="subtitle-step-2">Select your academic subsystem. Curricula are calibrated to meet national industry standards across Mexico and Latin America.</p>
 
                 <div class="selection-grid-2">
-                    <div class="selection-card selected" data-subsystem="upbc" data-client="Primer Cliente" onclick="selectSubsystem('upbc')" style="grid-column: 1 / -1; border-color: rgba(2, 132, 199, 0.45); background: linear-gradient(135deg, rgba(2, 132, 199, 0.06) 0%, rgba(16, 185, 129, 0.06) 100%);">
+                    <div class="selection-card selected" data-subsystem="utyp" onclick="selectSubsystem('utyp')" style="grid-column: 1 / -1; border-color: rgba(2, 132, 199, 0.45); background: linear-gradient(135deg, rgba(2, 132, 199, 0.06) 0%, rgba(16, 185, 129, 0.06) 100%);">
                         <div class="card-icon-box" style="background: linear-gradient(135deg, #0284c7, #10b981); color:#fff;"><i class="fa-solid fa-graduation-cap"></i></div>
                         <div class="card-content">
                             <div style="display:flex; align-items:center; gap:8px;">
-                                <h4>Universidad Politécnica de Baja California <span class="card-sub-badge" style="background:linear-gradient(135deg, #0284c7, #10b981); color:#fff; font-weight:700;">UPBC Mexicali</span></h4>
-                                <span style="display:none;" data-client="Primer Cliente">Primer Cliente</span>
+                                <h4>Universidades Tecnológicas y Politécnicas <span class="card-sub-badge" style="background:linear-gradient(135deg, #0284c7, #10b981); color:#fff; font-weight:700;">UTyP</span></h4>
                             </div>
-                            <p id="desc-subsystem-upbc">Campus Mexicali: Carreras de Ingeniería/Licenciatura y especialidades TSU con planes de estudio personalizados.</p>
+                            <p id="desc-subsystem-utyp">Subsistema oficial UTyP (UPBC, UTT y red nacional): Modelo cuatrimestral, TSU, Ingenierías y Estadías Profesionales en la industria.</p>
                         </div>
                     </div>
 
@@ -1450,14 +1449,6 @@
                         <div class="card-content">
                             <h4>Sistema TecNM Nacional <span class="card-sub-badge">TecNM</span></h4>
                             <p>Mexico's largest STEM network with 254 engineering campuses and professional residencies.</p>
-                        </div>
-                    </div>
-
-                    <div class="selection-card" data-subsystem="ut" onclick="selectSubsystem('ut')">
-                        <div class="card-icon-box"><i class="fa-solid fa-microchip"></i></div>
-                        <div class="card-content">
-                            <h4>Universidades Tecnológicas <span class="card-sub-badge">UT</span></h4>
-                            <p>Dual Model, BIS, TSU & Technological Engineering.</p>
                         </div>
                     </div>
 
@@ -1484,9 +1475,9 @@
                         <i class="fa-solid fa-location-dot"></i>
                         <select id="inp-campus" class="text-input" style="cursor: pointer; appearance: auto; background-color: #ffffff; color: var(--fg-primary); font-weight: 600;" onchange="handleCampusDropdownChange(this.value)">
                             <option value="Universidad Politécnica de Baja California (UPBC Mexicali)">Universidad Politécnica de Baja California (UPBC Mexicali)</option>
+                            <option value="Universidad Tecnológica de Tijuana (UTT)">Universidad Tecnológica de Tijuana (UTT)</option>
                             <option value="TecNM Tijuana (ITT)">TecNM Tijuana (ITT)</option>
                             <option value="TecNM Campus Saltillo">TecNM Campus Saltillo</option>
-                            <option value="Universidad Tecnológica de Tijuana (UTT)">Universidad Tecnológica de Tijuana (UTT)</option>
                             <option value="Universidad Autónoma de Baja California (UABC)">Universidad Autónoma de Baja California (UABC)</option>
                             <option value="Continuar sin selección de Universidad / Estudio Independiente">Continuar sin selección de Universidad / Estudio Independiente</option>
                         </select>
@@ -1878,7 +1869,7 @@
                 fullName: '',
                 email: '',
                 matricula: '',
-                subsystem: 'upbc',
+                subsystem: 'utyp',
                 campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
                 degreeModality: 'lic',
                 tsuSpecialtyId: '',
@@ -1944,6 +1935,7 @@
                     tag: '<i class="fa-solid fa-building-columns"></i> Question 02',
                     title: "Which higher education system are you enrolled in?",
                     subtitle: "Select your academic subsystem. Curricula are calibrated to meet national industry standards across Mexico and Latin America.",
+                    desc_utyp: "Official UTyP subsystem (UPBC, UTT & national network): Dual-stage quarter system (cuatrimestres), TSU, Engineering degrees & Industrial Practicum.",
                     lbl_campus: 'Campus or Plantel Name <span class="req">*</span>',
                     hint_campus: '<i class="fa-solid fa-circle-info"></i> If you do not see your institution, contact your school administrator or continue without university selection.'
                 },
@@ -2028,6 +2020,7 @@
                     tag: '<i class="fa-solid fa-building-columns"></i> Pregunta 02',
                     title: "¿En qué sistema de educación superior estás inscrito?",
                     subtitle: "Selecciona tu subsistema académico. El plan de estudio está personalizado para cada carrera y para cumplir con estándares industriales internacionales.",
+                    desc_utyp: "Subsistema oficial UTyP (UPBC, UTT y red nacional): Modelo cuatrimestral, TSU, Ingenierías y Estadías Profesionales en la industria.",
                     lbl_campus: 'Nombre del Campus o Plantel <span class="req">*</span>',
                     hint_campus: '<i class="fa-solid fa-circle-info"></i> Si no ves tu institución, contacta al administrador de tu escuela o continúa sin selección de universidad.'
                 },
@@ -2129,6 +2122,7 @@
             setHtml('tag-step-2', t.step2.tag);
             setText('title-step-2', t.step2.title);
             setText('subtitle-step-2', t.step2.subtitle);
+            setHtml('desc-subsystem-utyp', t.step2.desc_utyp);
             setHtml('lbl-campus', t.step2.lbl_campus);
             setHtml('hint-campus', t.step2.hint_campus);
 
@@ -2367,11 +2361,14 @@
             }
 
             const q = filterQuery.toLowerCase().trim();
+            const isUtyp = (wizardState.data.subsystem === 'utyp' || wizardState.data.subsystem === 'upbc' || wizardState.data.subsystem === 'ut');
             const filtered = careers.filter(c => {
                 const sub = c.system || c.institutionType || '';
-                const matchesSubsystem = (sub === wizardState.data.subsystem) || (q.length > 0);
+                const matchesSubsystem = isUtyp
+                    ? (sub === 'utyp' || sub === 'upbc' || sub === 'ut')
+                    : (sub === wizardState.data.subsystem);
                 const matchesQuery = !q || c.name.toLowerCase().includes(q) || (c.cluster && c.cluster.toLowerCase().includes(q)) || c.id.toLowerCase().includes(q);
-                return matchesSubsystem && matchesQuery;
+                return (matchesSubsystem || q.length > 0) && matchesQuery;
             });
 
             if (filtered.length === 0) {
@@ -2614,8 +2611,11 @@
                 badge.style.background = '#e0f2fe';
                 badge.style.color = '#0369a1';
                 badge.style.border = '1px solid #7dd3fc';
-                badge.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#0284c7;"></i> <span>Auto-detectado: <strong>UPBC Mexicali</strong> (Subsistema Politécnico)</span>';
-                selectSubsystem('upbc');
+                badge.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#0284c7;"></i> <span>Auto-detectado: <strong>UPBC Mexicali</strong> (Subsistema UTyP)</span>';
+                selectSubsystem('utyp');
+                const campusSel = document.getElementById('inp-campus');
+                if (campusSel) campusSel.value = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
+                wizardState.data.campus = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
             } else if (detected.type === 'tecnm') {
                 badge.style.background = '#fef3c7';
                 badge.style.color = '#92400e';
@@ -2638,11 +2638,11 @@
                 badge.style.background = '#f5f3ff';
                 badge.style.color = '#5b21b6';
                 badge.style.border = '1px solid #c4b5fd';
-                badge.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#7c3aed;"></i> <span>Auto-detectado: <strong>UTT</strong> (Universidades Tecnológicas)</span>';
-                selectSubsystem('ut');
+                badge.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#7c3aed;"></i> <span>Auto-detectado: <strong>UTT Tijuana</strong> (Subsistema UTyP)</span>';
+                selectSubsystem('utyp');
                 const campusSel = document.getElementById('inp-campus');
-                if (campusSel) campusSel.value = detected.campus;
-                wizardState.data.campus = detected.campus;
+                if (campusSel) campusSel.value = 'Universidad Tecnológica de Tijuana (UTT)';
+                wizardState.data.campus = 'Universidad Tecnológica de Tijuana (UTT)';
             } else if (detected.type === 'personal') {
                 badge.style.background = '#f1f5f9';
                 badge.style.color = '#334155';
@@ -2653,12 +2653,10 @@
 
         function handleCampusDropdownChange(campusVal) {
             wizardState.data.campus = campusVal;
-            if (campusVal.includes('UPBC')) {
-                selectSubsystem('upbc');
+            if (campusVal.includes('UPBC') || campusVal.includes('UTT') || campusVal.includes('Tecnológica') || campusVal.includes('Politécnica')) {
+                selectSubsystem('utyp');
             } else if (campusVal.includes('TecNM')) {
                 selectSubsystem('it');
-            } else if (campusVal.includes('UTT') || campusVal.includes('Tecnológica')) {
-                selectSubsystem('ut');
             } else if (campusVal.includes('UABC') || campusVal.includes('Autónoma')) {
                 selectSubsystem('univ-estatal');
             } else if (campusVal.includes('sin selección') || campusVal.includes('Independiente')) {
@@ -2667,7 +2665,7 @@
         }
 
         function updateStageTerms() {
-            const isQuarter = (wizardState.data.subsystem === 'upbc' || wizardState.data.subsystem === 'ut');
+            const isQuarter = (wizardState.data.subsystem === 'utyp' || wizardState.data.subsystem === 'upbc' || wizardState.data.subsystem === 'ut');
             const isEs = (currentRegisterLang === 'es');
 
             const titleEarly = document.getElementById('title-stage-early');
@@ -2977,17 +2975,24 @@
 
         // ── Selection Handlers ──
         function selectSubsystem(subId) {
+            if (subId === 'upbc' || subId === 'ut') {
+                subId = 'utyp';
+            }
             wizardState.data.subsystem = subId;
             document.querySelectorAll('#step-2 .selection-card').forEach(el => {
-                el.classList.toggle('selected', el.dataset.subsystem === subId);
+                const elSub = el.dataset.subsystem;
+                const isSelected = (elSub === subId) || (subId === 'utyp' && (elSub === 'utyp' || elSub === 'upbc' || elSub === 'ut'));
+                el.classList.toggle('selected', isSelected);
             });
 
             const campusSelect = document.getElementById('inp-campus');
-            if (subId === 'upbc') {
-                if (campusSelect) campusSelect.value = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
-                wizardState.data.campus = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
+            if (subId === 'utyp') {
+                if (campusSelect && !campusSelect.value.includes('UPBC') && !campusSelect.value.includes('UTT')) {
+                    campusSelect.value = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
+                }
+                wizardState.data.campus = campusSelect ? campusSelect.value : 'Universidad Politécnica de Baja California (UPBC Mexicali)';
                 selectHub('tijuana-mxi');
-                if (!wizardState.data.careerId.startsWith('upbc-')) {
+                if (!wizardState.data.careerId.startsWith('upbc-') && !wizardState.data.careerId.startsWith('ut-')) {
                     wizardState.data.careerId = 'upbc-mecatronica';
                 }
             } else if (subId === 'it') {
@@ -2996,21 +3001,14 @@
                 }
                 wizardState.data.campus = campusSelect ? campusSelect.value : 'TecNM Campus Saltillo';
                 selectHub(campusSelect && campusSelect.value.includes('Tijuana') ? 'tijuana-mxi' : 'saltillo-mty');
-                if (wizardState.data.careerId.startsWith('upbc-')) {
-                    wizardState.data.careerId = 'it-mecatronica';
-                }
-            } else if (subId === 'ut') {
-                if (campusSelect) campusSelect.value = 'Universidad Tecnológica de Tijuana (UTT)';
-                wizardState.data.campus = 'Universidad Tecnológica de Tijuana (UTT)';
-                selectHub('tijuana-mxi');
-                if (wizardState.data.careerId.startsWith('upbc-')) {
+                if (wizardState.data.careerId.startsWith('upbc-') || wizardState.data.careerId.startsWith('ut-')) {
                     wizardState.data.careerId = 'it-mecatronica';
                 }
             } else if (subId === 'univ-estatal') {
                 if (campusSelect) campusSelect.value = 'Universidad Autónoma de Baja California (UABC)';
                 wizardState.data.campus = 'Universidad Autónoma de Baja California (UABC)';
                 selectHub('tijuana-mxi');
-                if (wizardState.data.careerId.startsWith('upbc-')) {
+                if (wizardState.data.careerId.startsWith('upbc-') || wizardState.data.careerId.startsWith('ut-')) {
                     wizardState.data.careerId = 'uabc-bioingenieria';
                 }
             } else if (subId === 'latam') {

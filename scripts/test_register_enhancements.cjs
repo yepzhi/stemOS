@@ -39,17 +39,18 @@ assert(regHtml.includes('@utt.edu.mx'), 'Missing @utt.edu.mx domain');
 assert(regHtml.includes('email-detect-badge'), 'Missing #email-detect-badge indicator');
 console.log('  [PASS] Institutional domains @upbc.edu.mx, @tecnm.mx, @uabc.edu.mx, @utt.edu.mx and Gmail detected');
 
-// 3. Step 2: "Primer Cliente" Visible Badge Removed & Clean Subsystem Copy
+// 3. Step 2: "Primer Cliente" Visible Badge Removed & Clean Subsystem Copy (UTyP Unified)
 console.log('\n▶ 3. Step 2 Subsystems & "Primer Cliente" Removal');
 // Visible badge is gone (not rendered as a visible star badge)
 assert(!regHtml.includes('<i class="fa-solid fa-star"></i> Primer Cliente'), 'Visible Primer Cliente badge was not removed');
-assert(regHtml.includes('Campus Mexicali: Carreras de Ingeniería/Licenciatura y especialidades TSU con planes de estudio personalizados.'), 'Missing clean UPBC description');
+assert(regHtml.includes('Universidades Tecnológicas y Politécnicas'), 'Missing Universidades Tecnológicas y Politécnicas title');
+assert(regHtml.includes('UTyP'), 'Missing UTyP badge');
+assert(regHtml.includes('Subsistema oficial UTyP (UPBC, UTT y red nacional): Modelo cuatrimestral, TSU, Ingenierías y Estadías Profesionales en la industria.'), 'Missing UTyP description');
 assert(regHtml.includes('Sistema TecNM Nacional'), 'Missing Sistema TecNM Nacional title');
 assert(regHtml.includes("Mexico's largest STEM network with 254 engineering campuses and professional residencies."), 'Missing TecNM description');
-assert(regHtml.includes('Dual Model, BIS, TSU & Technological Engineering.'), 'Missing UT description');
 assert(regHtml.includes('UNISON, UNAM, IPN, UANL, UDG, UABC & autonomous research centers with R&D specialization.'), 'Missing State description');
 assert(regHtml.includes('International, LATAM & US Institutions.'), 'Missing LATAM/USA description');
-console.log('  [PASS] Visible "Primer Cliente" removed and all 5 academic subsystem descriptions calibrated');
+console.log('  [PASS] Visible "Primer Cliente" removed and all academic subsystem descriptions calibrated with UTyP unified');
 
 // 4. Step 2: Standardized Campus <select> Dropdown
 console.log('\n▶ 4. Standardized Campus Dropdown');
