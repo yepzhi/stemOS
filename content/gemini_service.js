@@ -53,7 +53,16 @@
         const customUrl = localStorage.getItem(STORAGE_KEY_MINIPC);
         const candidates = [];
         if (customUrl) candidates.push(customUrl);
-        candidates.push(...CONFIG.miniPcCandidates);
+
+        const isHttpsRemote = typeof window !== 'undefined' && 
+                              window.location.protocol === 'https:' && 
+                              !['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+        if (isHttpsRemote) {
+            candidates.push('https://yzai.yepzhi.com');
+        } else {
+            candidates.push(...CONFIG.miniPcCandidates);
+        }
 
         // Deduplicate
         const unique = [...new Set(candidates.filter(Boolean))];

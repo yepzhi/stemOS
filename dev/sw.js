@@ -3,9 +3,9 @@
  * Full offline PWA caching for 4 Portals (Student, Admin, Teacher, Register), 25 Career Paths (60h), Interleaved Curricula, XP HUD, and 3D World Map.
  */
 
-const SW_VERSION = '6.8.3';
-const CACHE_NAME = 'stemos-lxp-v6.8.3-offline-resilient-icons';
-// Historical compatibility: v6.0.0-academic-portals, v6.1.0-firebase-sync, v6.2.0-piper-neural, v6.3.0-campus-diadema-offline, v6.3.1-sso-mobile-fixes, v6.8.2-hero-leveling-pathway
+const SW_VERSION = '6.8.4';
+const CACHE_NAME = 'stemos-lxp-v6.8.4-csp-resilient';
+// Historical compatibility: v6.0.0-academic-portals, v6.1.0-firebase-sync, v6.2.0-piper-neural, v6.3.0-campus-diadema-offline, v6.3.1-sso-mobile-fixes, v6.8.2-hero-leveling-pathway, v6.8.3-offline-resilient-icons
 
 const ASSETS_TO_CACHE = [
   '/',
@@ -121,37 +121,54 @@ self.addEventListener('message', (event) => {
 // Fetch Event: Two-Tier High-Performance Strategy (Phase 84 CWV Engine)
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  if (!event.request.url.startsWith('http://') && !event.request.url.startsWith('https://')) return;
 
-  const url = new URL(event.request.url);
+  let url;
+  try {
+    url = new URL(event.request.url);
+  } catch (e) {
+    return;
+  }
+
   const isSpeedAsset = (
     url.pathname.match(/\.(svg|png|ico|jpg|jpeg|webp|gif|woff2|woff|ttf|wav|mp3)$/i) ||
     url.hostname.includes('fonts.gstatic.com') ||
+    url.hostname.includes('cdnjs.cloudflare.com') ||
     url.pathname.includes('/content/courses.js') ||
     url.pathname.includes('/content/career_tracks.js') ||
     url.pathname.includes('/content/career_paths.js') ||
     url.pathname.includes('/content/phrases_library.js')
   );
-  const isStaticOrMedia = isSpeedAsset;
 
   if (isSpeedAsset) {
-    // TIER 1: Stale-While-Revalidate (Instant response from cache + background revalidation)
+    // TIER 1: Stale-While-Revalidate with bulletproof fallback
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {
-        const fetchPromise = fetch(event.request).then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200 && (networkResponse.type === 'basic' || networkResponse.type === 'cors')) {
-            const clone = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-          }
-          return networkResponse;
-        }).catch(() => {/* Ignore background network errors */});
+        const networkFetch = fetch(event.request)
+          .then((networkResponse) => {
+            if (networkResponse && networkResponse.status === 200 && (networkResponse.type === 'basic' || networkResponse.type === 'cors')) {
+              const clone = networkResponse.clone();
+              caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone)).catch(() => {});
+            }
+            return networkResponse;
+          })
+          .catch((err) => {
+            if (cachedResponse) return cachedResponse;
+            throw err;
+          });
 
-        return cachedResponse || fetchPromise;
+        return cachedResponse || networkFetch;
       })
     );
     return;
   }
 
-  // TIER 2: Network-First with Instant Cache Fallback (HTML Documents & Dynamic Scripts)
+  // Allow external third-party APIs (Firebase, Cloudflare, telemetry) to be handled natively by browser
+  if (url.origin !== self.location.origin) {
+    return;
+  }
+
+  // TIER 2: Same-Origin Network-First with Instant Cache Fallback (HTML Documents & Dynamic Scripts)
   event.respondWith(
     fetch(event.request)
       .then((networkResponse) => {
@@ -159,20 +176,21 @@ self.addEventListener('fetch', (event) => {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, responseToCache);
-          });
+          }).catch(() => {});
         }
         return networkResponse;
       })
-      .catch(() => {
-        return caches.match(event.request).then((cachedResponse) => {
-          if (cachedResponse) {
-            return cachedResponse;
-          }
-          // If HTML request failed, return cached index.html or dev.html
-          if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
-            return caches.match('/index.html') || caches.match('/app.html') || caches.match('/dev.html');
-          }
-        });
+      .catch(async () => {
+        const cachedResponse = await caches.match(event.request);
+        if (cachedResponse) return cachedResponse;
+
+        // If HTML request failed while offline, return cached entry point
+        if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
+          const fallback = await caches.match('/index.html') || await caches.match('/app.html') || await caches.match('/dev.html');
+          if (fallback) return fallback;
+        }
+
+        return new Response('Network error or offline', { status: 503, statusText: 'Service Unavailable' });
       })
   );
 });
