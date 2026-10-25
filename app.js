@@ -5042,6 +5042,8 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
+        window._currentMcerUnit = unit;
+
         // Render Upfront Foundations (Richmond Methodology) & Writing Lab
         renderMcerFundamentals(unit);
         renderMcerWritingLab(unit);
@@ -5049,9 +5051,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Control Crucible (Crisol IA) Tab Visibility:
         // Strictly hidden for A1 and A2 (Universal CEFR foundations, no premature plant simulations)
         const tabCrucible = document.getElementById('mcer-tab-crucible');
+        const sepCrucible = document.getElementById('mcer-sep-crucible');
         const isBeginnerLevel = (unit.cefr === 'A1' || unit.cefr === 'A2');
         if (tabCrucible) {
-            tabCrucible.style.display = isBeginnerLevel ? 'none' : 'inline-block';
+            tabCrucible.style.display = isBeginnerLevel ? 'none' : 'inline-flex';
+        }
+        if (sepCrucible) {
+            sepCrucible.style.display = isBeginnerLevel ? 'none' : 'inline-flex';
         }
 
         // Reset to first tab: Fundamentos & Gramática (UPFRONT)
@@ -5071,21 +5077,118 @@ document.addEventListener('DOMContentLoaded', () => {
         openMcerUnitModal(unitId, true);
     };
 
+    function getActiveMcerSteps() {
+        const unit = window._currentMcerUnit;
+        const isBeginner = !unit || (unit.cefr === 'A1' || unit.cefr === 'A2');
+        const steps = [
+            { key: 'fundamentals', title: 'Fundamentos', nextName: 'Diálogo' },
+            { key: 'dialogue', title: 'Diálogo en Contexto', nextName: 'Vocabulario' },
+            { key: 'vocab', title: 'Vocabulario', nextName: 'Grammar Drills' },
+            { key: 'grammar', title: 'Grammar Drills', nextName: 'Listening' },
+            { key: 'listening', title: 'Listening Lab', nextName: 'Lectura' },
+            { key: 'reading', title: 'Lectura', nextName: 'Escritura IA' },
+            { key: 'writing', title: 'Escritura IA', nextName: isBeginner ? 'Mastery Quiz' : 'Crisol IA' }
+        ];
+        if (!isBeginner) {
+            steps.push({ key: 'crucible', title: 'Crisol IA', nextName: 'Mastery Quiz' });
+        }
+        steps.push({ key: 'quiz', title: 'Mastery Quiz', nextName: 'Finalizar Unidad' });
+        return steps;
+    }
+    window.getActiveMcerSteps = getActiveMcerSteps;
+
     function switchMcerModalTab(tabKey) {
-        document.querySelectorAll('.mcer-tab-btn').forEach(b => {
-            const isActive = b.dataset.mcerTab === tabKey;
-            b.classList.toggle('active', isActive);
-            b.style.color = isActive ? '#0284c7' : '#64748b';
-            b.style.background = isActive ? '#ffffff' : 'transparent';
-            b.style.boxShadow = isActive ? '0 1px 3px rgba(0,0,0,0.06)' : 'none';
+        const steps = getActiveMcerSteps();
+        let currentIndex = steps.findIndex(s => s.key === tabKey);
+        if (currentIndex === -1) currentIndex = 0;
+        const currentStep = steps[currentIndex];
+
+        // 1. Update top Stepper Buttons and completed states
+        document.querySelectorAll('.mcer-tab-btn').forEach(btn => {
+            const btnTab = btn.dataset.mcerTab;
+            const btnIndex = steps.findIndex(s => s.key === btnTab);
+            const isActive = (btnTab === tabKey);
+            const isCompleted = (btnIndex !== -1 && btnIndex < currentIndex);
+
+            btn.classList.toggle('active', isActive);
+            btn.classList.toggle('completed', isCompleted);
+
+            btn.style.color = '';
+            btn.style.background = '';
+            btn.style.boxShadow = '';
+
+            if (isActive) {
+                try {
+                    btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                } catch (e) {}
+            }
         });
 
-        const screens = ['fundamentals', 'dialogue', 'vocab', 'listening', 'grammar', 'reading', 'crucible', 'quiz', 'writing'];
-        screens.forEach(s => {
+        // 2. Hide all screens and display active screen
+        const allScreenKeys = ['fundamentals', 'dialogue', 'vocab', 'listening', 'grammar', 'reading', 'crucible', 'quiz', 'writing'];
+        allScreenKeys.forEach(s => {
             const el = document.getElementById(`mcer-screen-${s}`);
-            if (el) el.style.display = (s === tabKey) ? 'block' : 'none';
+            if (el) {
+                el.style.display = (s === tabKey) ? 'block' : 'none';
+            }
         });
+
+        // 3. Smooth scroll content area to top
+        const contentArea = document.querySelector('#modal-mcer-unit .mcer-tab-content-area');
+        if (contentArea) {
+            contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 4. Update Bottom Sticky Navigation Bar
+        const stepCounterEl = document.getElementById('mcer-step-counter-text');
+        const progressFillEl = document.getElementById('mcer-step-progress-fill');
+        const btnPrev = document.getElementById('btn-mcer-prev-step');
+        const btnNext = document.getElementById('btn-mcer-next-step');
+
+        if (stepCounterEl) {
+            const isMobile = window.innerWidth <= 640;
+            stepCounterEl.textContent = isMobile
+                ? `Paso ${currentIndex + 1} de ${steps.length}`
+                : `Paso ${currentIndex + 1} de ${steps.length} · ${currentStep.title}`;
+        }
+        if (progressFillEl) {
+            const pct = Math.round(((currentIndex + 1) / steps.length) * 100);
+            progressFillEl.style.width = `${pct}%`;
+        }
+
+        if (btnPrev) {
+            if (currentIndex === 0) {
+                btnPrev.style.display = 'none';
+                btnPrev.onclick = null;
+            } else {
+                btnPrev.style.display = 'inline-flex';
+                btnPrev.style.visibility = 'visible';
+                btnPrev.onclick = () => {
+                    switchMcerModalTab(steps[currentIndex - 1].key);
+                };
+            }
+        }
+
+        if (btnNext) {
+            const isMobile = window.innerWidth <= 640;
+            if (currentIndex === steps.length - 1) {
+                btnNext.innerHTML = '<span>Finalizar Unidad</span> <i class="fa-solid fa-circle-check"></i>';
+                btnNext.onclick = () => {
+                    if (window.speechSynthesis) window.speechSynthesis.cancel();
+                    const modal = document.getElementById('modal-mcer-unit');
+                    if (modal && typeof modal.close === 'function') modal.close();
+                };
+            } else {
+                const nextStep = steps[currentIndex + 1];
+                const label = isMobile ? nextStep.title : `Continuar: ${nextStep.title}`;
+                btnNext.innerHTML = `<span>${label}</span> <i class="fa-solid fa-arrow-right"></i>`;
+                btnNext.onclick = () => {
+                    switchMcerModalTab(nextStep.key);
+                };
+            }
+        }
     }
+    window.switchMcerModalTab = switchMcerModalTab;
 
     function renderMcerFundamentals(unit) {
         // Can-Do Statement
