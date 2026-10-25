@@ -162,6 +162,148 @@ const AUDIO_ITEMS = [
     id: 'a1-u4-crucible-model',
     voice: 'Samantha',
     text: 'Excuse me, please stop immediately. Safety goggles and hard hats are mandatory beyond the yellow line. This is a restricted high-voltage robotic cell. Do not cross the safety interlock line. Please report to the security office to sign in.'
+  },
+
+  // ==========================================
+  // LEVEL A2 (ELEMENTARY / WAYSTAGE)
+  // ==========================================
+
+  // A2 Unit 1 - Past Actions & Shift Incident Logs
+  { id: 'a2-u1-d1', voice: 'Eddy', text: 'Good morning, Claudia. Here is the shift handover log for Line 4.' },
+  { id: 'a2-u1-d2', voice: 'Samantha', text: 'Thanks, Luis. Did you experience any downtime during the graveyard shift?' },
+  { id: 'a2-u1-d3', voice: 'Eddy', text: 'Yes, Station 4 stopped for about thirty minutes because a proximity sensor came loose.' },
+  { id: 'a2-u1-d4', voice: 'Samantha', text: 'Did the maintenance technician replace the unit?' },
+  { id: 'a2-u1-d5', voice: 'Eddy', text: 'No, he tightened the mounting bracket and recalibrated the beam. It ran smoothly afterward.' },
+  { id: 'a2-u1-d6', voice: 'Samantha', text: 'Did you log the stop in the digital MES system?' },
+  { id: 'a2-u1-d7', voice: 'Eddy', text: 'Yes, I logged code E-104 and recorded thirty minutes of total downtime.' },
+  {
+    id: 'a2-u1-dialogue-full',
+    voice: 'Samantha',
+    text: 'Luis says: Good morning, Claudia. Here is the shift handover log for Line 4. Claudia asks: Thanks, Luis. Did you experience any downtime during the graveyard shift? Luis explains: Yes, Station 4 stopped for about thirty minutes because a proximity sensor came loose. Claudia asks: Did the maintenance technician replace the unit? Luis answers: No, he tightened the mounting bracket and recalibrated the beam. It ran smoothly afterward. Claudia asks: Did you log the stop in the digital MES system? Luis confirms: Yes, I logged code E-104 and recorded thirty minutes of total downtime.'
+  },
+  { id: 'a2-u1-vocab-malfunction', voice: 'Samantha', text: 'Malfunction. The hydraulic pump malfunctioned around 11:30 AM yesterday.' },
+  { id: 'a2-u1-vocab-replaced', voice: 'Samantha', text: 'Replaced. We replaced the worn timing belt during preventive maintenance.' },
+  { id: 'a2-u1-vocab-inspection', voice: 'Samantha', text: 'Inspection. Quality completed the dimensional inspection this morning.' },
+  { id: 'a2-u1-vocab-downtime', voice: 'Samantha', text: 'Downtime. Line 2 experienced 45 minutes of unexpected downtime.' },
+  { id: 'a2-u1-vocab-logged', voice: 'Samantha', text: 'Logged. The technician logged the voltage variance in the shift binder.' },
+  { id: 'a2-u1-vocab-tripped', voice: 'Samantha', text: 'Tripped. The main circuit breaker tripped due to excessive motor current.' },
+  { id: 'a2-u1-vocab-calibrated', voice: 'Samantha', text: 'Calibrated. We calibrated the load cell before starting production.' },
+  {
+    id: 'a2-u1-listening-lab',
+    voice: 'Eddy',
+    text: 'Date: October 18th. Technician: R. Gomez. At 14:15, spindle drive number 3 overheated and triggered thermal alarm code E-04. The maintenance crew inspected the lubricating reservoir, cleaned the air intake filter, and restarted the drive at 14:45. Normal operating temperature stabilized at 48 degrees Celsius. Total downtime was 30 minutes.'
+  },
+  {
+    id: 'a2-u1-reading-passage',
+    voice: 'Samantha',
+    text: 'Date: October 18th. Technician: R. Gomez. At 14:15, spindle drive number 3 overheated and triggered thermal alarm code E-04. The maintenance crew inspected the lubricating reservoir, cleaned the air intake filter, and restarted the drive at 14:45. Normal operating temperature stabilized at 48 degrees Celsius. Total downtime was 30 minutes.'
+  },
+  {
+    id: 'a2-u1-crucible-model',
+    voice: 'Eddy',
+    text: 'Yesterday at 14:15, spindle drive number 3 overheated and tripped thermal alarm code E-04. The maintenance crew inspected the lubricating reservoir, cleaned the air intake filter, and restarted the line. Normal operating temperature stabilized at 48 degrees Celsius after thirty minutes of downtime.'
+  },
+
+  // A2 Unit 2 - Comparing Equipment, Specs & Materials
+  { id: 'a2-u2-d1', voice: 'Samantha', text: 'Ken, we have two vendor quotes for our end-mill bits: carbide and cobalt steel.' },
+  { id: 'a2-u2-d2', voice: 'Eddy', text: 'Cobalt steel is cheaper, but carbide tooling is much more durable at high RPMs.' },
+  { id: 'a2-u2-d3', voice: 'Samantha', text: 'Will carbide survive our thermal stress specs during titanium milling?' },
+  { id: 'a2-u2-d4', voice: 'Eddy', text: 'Yes, carbide is the most heat-resistant material for this aerospace bracket.' },
+  { id: 'a2-u2-d5', voice: 'Samantha', text: 'Then carbide is the most cost-effective option over the full production run.' },
+  { id: 'a2-u2-d6', voice: 'Eddy', text: 'Agreed. It will give us a tighter tolerance and fewer tool changes.' },
+  {
+    id: 'a2-u2-dialogue-full',
+    voice: 'Samantha',
+    text: 'Sara says: Ken, we have two vendor quotes for our end-mill bits: carbide and cobalt steel. Ken explains: Cobalt steel is cheaper, but carbide tooling is much more durable at high RPMs. Sara asks: Will carbide survive our thermal stress specs during titanium milling? Ken answers: Yes, carbide is the most heat-resistant material for this aerospace bracket. Sara says: Then carbide is the most cost-effective option over the full production run. Ken agrees: Agreed. It will give us a tighter tolerance and fewer tool changes.'
+  },
+  { id: 'a2-u2-vocab-durable', voice: 'Samantha', text: 'Durable. Carbide cutting tips are significantly more durable than high-speed steel.' },
+  { id: 'a2-u2-vocab-lightweight', voice: 'Samantha', text: 'Lightweight. Aluminum alloys are lighter than structural carbon steel.' },
+  { id: 'a2-u2-vocab-costeffective', voice: 'Samantha', text: 'Cost-Effective. Refurbishing servo drives is more cost-effective than buying replacements.' },
+  { id: 'a2-u2-vocab-tolerance', voice: 'Samantha', text: 'Tolerance. The wire EDM machine holds a tighter tolerance than the CNC mill.' },
+  { id: 'a2-u2-vocab-throughput', voice: 'Samantha', text: 'Throughput. The multi-spindle lathe achieves a higher throughput per hour.' },
+  { id: 'a2-u2-vocab-corrosionresistant', voice: 'Samantha', text: 'Corrosion-Resistant. Stainless steel 316 is more corrosion-resistant in marine environments.' },
+  {
+    id: 'a2-u2-listening-lab',
+    voice: 'Eddy',
+    text: 'When selecting clear machine safety enclosures, polycarbonate provides 250 times the impact resistance of standard tempered glass and is twice as impact-resistant as acrylic. While acrylic is more scratch-resistant and marginally cheaper, polycarbonate is significantly safer for high-pressure pneumatic chip containment under ISO 14120 safety regulations.'
+  },
+  {
+    id: 'a2-u2-reading-passage',
+    voice: 'Samantha',
+    text: 'When selecting clear machine safety enclosures, polycarbonate provides 250 times the impact resistance of standard tempered glass and is twice as impact-resistant as acrylic. While acrylic is more scratch-resistant and marginally cheaper, polycarbonate is significantly safer for high-pressure pneumatic chip containment under ISO 14120 safety regulations.'
+  },
+  {
+    id: 'a2-u2-crucible-model',
+    voice: 'Eddy',
+    text: 'I recommend purchasing Tungsten Carbide inserts for the CNC milling cells. Although Carbide is twenty percent more expensive than High-Speed Steel, it is significantly more durable at high cutting speeds. It provides tighter dimensional tolerance and achieves fifteen percent higher throughput with fewer tool changes.'
+  },
+
+  // A2 Unit 3 - Scheduling, Agendas & Future Deadlines
+  { id: 'a2-u3-d1', voice: 'Samantha', text: 'Good morning, Mr. Barnes. We are going to conduct our annual metrology audit next month.' },
+  { id: 'a2-u3-d2', voice: 'Eddy', text: 'Hello Patricia. What dates are best for your engineering team?' },
+  { id: 'a2-u3-d3', voice: 'Samantha', text: 'We are planning for Tuesday the 14th. Will your inspection crew be ready by then?' },
+  { id: 'a2-u3-d4', voice: 'Eddy', text: 'Yes, I will confirm the flight details and email the calibration certificates today.' },
+  { id: 'a2-u3-d5', voice: 'Samantha', text: 'Perfect. We will arrange cleanroom visitor badges before your arrival.' },
+  { id: 'a2-u3-d6', voice: 'Eddy', text: 'Thank you. I will see you on the 14th at 08:30 AM.' },
+  {
+    id: 'a2-u3-dialogue-full',
+    voice: 'Samantha',
+    text: 'Patricia says: Good morning, Mr. Barnes. We are going to conduct our annual metrology audit next month. Mr. Barnes asks: Hello Patricia. What dates are best for your engineering team? Patricia replies: We are planning for Tuesday the 14th. Will your inspection crew be ready by then? Mr. Barnes answers: Yes, I will confirm the flight details and email the calibration certificates today. Patricia confirms: Perfect. We will arrange cleanroom visitor badges before your arrival. Mr. Barnes concludes: Thank you. I will see you on the 14th at 08:30 AM.'
+  },
+  { id: 'a2-u3-vocab-deadline', voice: 'Samantha', text: 'Deadline. The hard deadline for the pre-production sample is next Thursday.' },
+  { id: 'a2-u3-vocab-reschedule', voice: 'Samantha', text: 'Reschedule. Can we reschedule the laser calibration review to 10:00 AM?' },
+  { id: 'a2-u3-vocab-milestone', voice: 'Samantha', text: 'Milestone. Reaching 50,000 continuous cycles is our primary project milestone.' },
+  { id: 'a2-u3-vocab-deliverydate', voice: 'Samantha', text: 'Delivery Date. The steel vendor confirmed the raw billet delivery date for Monday morning.' },
+  { id: 'a2-u3-vocab-followup', voice: 'Samantha', text: 'Follow Up. I will follow up with the plant director after the ISO audit.' },
+  { id: 'a2-u3-vocab-shutdown', voice: 'Samantha', text: 'Shutdown. Annual electrical substation shutdown takes place in December.' },
+  {
+    id: 'a2-u3-listening-lab',
+    voice: 'Eddy',
+    text: 'Notice: Next Saturday, November 3rd, the main electrical substation will be shut down from 06:00 to 14:00 for transformer dielectric oil analysis. Backup diesel generators will supply emergency lighting and critical server racks only. All production equipment must be fully de-energized by Friday afternoon at 17:00.'
+  },
+  {
+    id: 'a2-u3-reading-passage',
+    voice: 'Samantha',
+    text: 'Notice: Next Saturday, November 3rd, the main electrical substation will be shut down from 06:00 to 14:00 for transformer dielectric oil analysis. Backup diesel generators will supply emergency lighting and critical server racks only. All production equipment must be fully de-energized by Friday afternoon at 17:00.'
+  },
+  {
+    id: 'a2-u3-crucible-model',
+    voice: 'Eddy',
+    text: 'Good morning leads. We are going to conduct scheduled preventive maintenance on electrical substation B next Friday from 02:00 to 06:00 AM. Production Line 1 will shut down during this four-hour window. Backup diesel generators will supply power to cleanroom Bay 3, and normal operations will resume promptly at 06:30 AM.'
+  },
+
+  // A2 Unit 4 - Troubleshooting & Describing Problems
+  { id: 'a2-u4-d1', voice: 'Eddy', text: 'Sam, can you take a look at Station 2? The pneumatic pick-and-place is moving very sluggishly.' },
+  { id: 'a2-u4-d2', voice: 'Samantha', text: 'Sure. Let me check the inline pressure regulator. It shows 40 PSI, but it should be 85 PSI.' },
+  { id: 'a2-u4-d3', voice: 'Eddy', text: 'Do you hear that hissing sound behind the manifold block?' },
+  { id: 'a2-u4-d4', voice: 'Samantha', text: 'Yes, the quick-disconnect fitting is leaking compressed air. We must shut the air valve and replace the O-ring.' },
+  { id: 'a2-u4-d5', voice: 'Eddy', text: 'Understood. I will hit the pneumatic isolation valve right now.' },
+  { id: 'a2-u4-d6', voice: 'Samantha', text: 'Thanks. Always bleed the residual line pressure before disconnecting the hose.' },
+  {
+    id: 'a2-u4-dialogue-full',
+    voice: 'Samantha',
+    text: 'Oscar asks: Sam, can you take a look at Station 2? The pneumatic pick-and-place is moving very sluggishly. Sam responds: Sure. Let me check the inline pressure regulator. It shows 40 PSI, but it should be 85 PSI. Oscar asks: Do you hear that hissing sound behind the manifold block? Sam answers: Yes, the quick-disconnect fitting is leaking compressed air. We must shut the air valve and replace the O-ring. Oscar confirms: Understood. I will hit the pneumatic isolation valve right now. Sam concludes: Thanks. Always bleed the residual line pressure before disconnecting the hose.'
+  },
+  { id: 'a2-u4-vocab-leak', voice: 'Samantha', text: 'Leak. There is a hydraulic fluid leak under the main clamp cylinder.' },
+  { id: 'a2-u4-vocab-vibration', voice: 'Samantha', text: 'Vibration. The blower motor has an abnormal vibration at high speeds.' },
+  { id: 'a2-u4-vocab-overheating', voice: 'Samantha', text: 'Overheating. The servo controller is overheating due to blocked air ventilation.' },
+  { id: 'a2-u4-vocab-tighten', voice: 'Samantha', text: 'Tighten. Please tighten the four hex bolts to 35 Newton-meters.' },
+  { id: 'a2-u4-vocab-reset', voice: 'Samantha', text: 'Reset. Press and hold the blue button for three seconds to reset the PLC.' },
+  { id: 'a2-u4-vocab-airpressuredrop', voice: 'Samantha', text: 'Air Pressure Drop. An air pressure drop caused the pneumatic gripper to release.' },
+  {
+    id: 'a2-u4-listening-lab',
+    voice: 'Eddy',
+    text: 'Alarm E-12 indicates pneumatic actuator timeout. Step 1: Inspect the main air supply gauge. If pressure is below 6.0 bar, verify that the facility main ball valve is open. Step 2: Check cylinder reed sensors for magnetic alignment. If the green LED does not illuminate at stroke end, adjust sensor position. Step 3: Check for audible hose leaks. Step 4: If issue persists, notify shift supervisor.'
+  },
+  {
+    id: 'a2-u4-reading-passage',
+    voice: 'Samantha',
+    text: 'Alarm E-12 indicates pneumatic actuator timeout. Step 1: Inspect the main air supply gauge. If pressure is below 6.0 bar, verify that the facility main ball valve is open. Step 2: Check cylinder reed sensors for magnetic alignment. If the green LED does not illuminate at stroke end, adjust sensor position. Step 3: Check for audible hose leaks. Step 4: If issue persists, notify shift supervisor.'
+  },
+  {
+    id: 'a2-u4-crucible-model',
+    voice: 'Samantha',
+    text: 'First, you must inspect the digital torque display and verify the calibration sticker is valid. Second, you have to set the target torque to exactly 45 Newton-meters. Next, you should tighten each bolt in a star sequence until the audible beep sounds. Finally, you must log the verified values on the digital quality tablet.'
   }
 ];
 
@@ -170,6 +312,11 @@ console.log(`Starting generation of ${AUDIO_ITEMS.length} static MP3 audio files
 for (const item of AUDIO_ITEMS) {
   const tmpAiff = `/tmp/${item.id}.aiff`;
   const outMp3 = path.join(OUTPUT_DIR, `${item.id}.mp3`);
+  
+  if (fs.existsSync(outMp3)) {
+    console.log(`⏩ [${item.id}] already exists, skipping.`);
+    continue;
+  }
   
   try {
     // 1. Run say

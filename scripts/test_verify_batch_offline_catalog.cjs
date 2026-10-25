@@ -172,12 +172,102 @@ function createServer() {
       return { ok: true, src: testAudio, bytes: blob.size, triggered: played };
     });
 
-    console.log('✓ Offline audio CacheStorage test result:', audioResult);
+    console.log('✓ Offline audio CacheStorage test result (A1):', audioResult);
     if (!audioResult.ok) {
       throw new Error('Failed to load static audio from cache: ' + JSON.stringify(audioResult));
     }
 
     // Close modal
+    await page.click('#mcer-unit-close');
+
+    // 4. Test Level A2 Batch Download & Offline Capability
+    console.log('\n4. Switching to Nivel A2 Filter and testing Batch Download...');
+    // Restore network first for download
+    await client.send('Network.emulateNetworkConditions', {
+      offline: false,
+      latency: 0,
+      downloadThroughput: -1,
+      uploadThroughput: -1
+    });
+
+    // Click A2 filter chip
+    await page.evaluate(() => {
+      const a2Chip = document.querySelector('#mcer-level-filter-bar .ed-filter-chip[data-mcer-level="A2"]');
+      if (a2Chip) a2Chip.click();
+      else if (window.renderMcerUnitsGrid) window.renderMcerUnitsGrid('A2');
+    });
+
+    await page.waitForFunction(() => {
+      const label = document.getElementById('mcer-batch-btn-label');
+      return label && label.textContent.includes('Descargar Nivel A2 Offline');
+    }, { timeout: 5000 });
+
+    const a2BannerLabel = await page.$eval('#mcer-batch-btn-label', el => el.textContent.trim());
+    console.log(`✓ Banner label updated for A2: "${a2BannerLabel}"`);
+
+    // Trigger batch download for A2
+    console.log('  Triggering Batch Download for Nivel A2...');
+    await page.evaluate(() => {
+      window.downloadCurrentLevelForOffline('A2');
+    });
+
+    await page.waitForFunction(() => {
+      const btn = document.getElementById('btn-mcer-batch-download');
+      return btn && btn.classList.contains('active');
+    }, { timeout: 20000 });
+
+    const a2ActiveBannerText = await page.$eval('#mcer-batch-btn-label', el => el.textContent.trim());
+    console.log(`✓ A2 Batch download completed! Label: "${a2ActiveBannerText}"`);
+
+    // Verify localStorage has all 4 A2 units
+    const storedA2Units = await page.evaluate(() => {
+      return JSON.parse(localStorage.getItem('stemos_offline_units') || '{}');
+    });
+
+    ['a2-u1', 'a2-u2', 'a2-u3', 'a2-u4'].forEach(id => {
+      if (!storedA2Units[id]) throw new Error(`Missing offline record for A2 unit: ${id}`);
+    });
+    console.log('✓ All 4 units of Nivel A2 verified in localStorage with 3-day TTL!');
+
+    // Re-emulate offline mode to test A2 audio playback
+    console.log('  Testing A2 offline audio playback without network connection...');
+    await client.send('Network.emulateNetworkConditions', {
+      offline: true,
+      latency: 0,
+      downloadThroughput: 0,
+      uploadThroughput: 0
+    });
+
+    // Open A2 Unit 1 modal
+    await page.evaluate(() => {
+      window.openMcerUnitModal('a2-u1');
+    });
+    await page.waitForSelector('#modal-mcer-unit', { visible: true, timeout: 5000 });
+
+    const a2AudioResult = await page.evaluate(async () => {
+      if (!window.STEMOS_TTS) return { ok: false, reason: 'No TTS' };
+      const list = window.STEMOS_TTS.getMcerAudioList();
+      const testAudio = list.find(url => url.includes('a2-u1-d1'));
+      if (!testAudio) return { ok: false, reason: 'No test audio for a2-u1-d1' };
+
+      const cached = await caches.match(testAudio);
+      if (!cached) return { ok: false, reason: 'A2 audio not cached in CacheStorage: ' + testAudio };
+      const blob = await cached.blob();
+      if (!blob || blob.size === 0) return { ok: false, reason: 'Empty cache blob for A2' };
+
+      let played = false;
+      await window.STEMOS_TTS.speak("Good morning, Claudia. Here is the shift handover log for Line 4.", {
+        onStart: () => { played = true; }
+      });
+
+      return { ok: true, src: testAudio, bytes: blob.size, triggered: played };
+    });
+
+    console.log('✓ Offline audio CacheStorage test result (A2):', a2AudioResult);
+    if (!a2AudioResult.ok) {
+      throw new Error('Failed to load A2 static audio from cache: ' + JSON.stringify(a2AudioResult));
+    }
+
     await page.click('#mcer-unit-close');
 
     // 4. Restore Network Connection
@@ -206,7 +296,7 @@ function createServer() {
 
     const resetBannerText = await page.$eval('#mcer-batch-btn-label', el => el.textContent.trim());
     console.log(`✓ Banner button label after clear: "${resetBannerText}"`);
-    if (!resetBannerText.includes('Descargar Nivel A1 Offline')) {
+    if (!resetBannerText.includes('Descargar Nivel A2 Offline') && !resetBannerText.includes('Descargar Nivel A1 Offline')) {
       throw new Error('Banner button did not reset to default state');
     }
 

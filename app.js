@@ -4242,13 +4242,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!unit) return;
 
         const isA1 = unit.cefr === 'A1';
-        if (!isDemo && !isA1 && !hasCompletedPlacement()) {
+        const offlineUnits = (typeof getOfflineUnits === 'function') ? getOfflineUnits() : {};
+        const isOffline = !!(offlineUnits && offlineUnits[unit.id] && (!offlineUnits[unit.id].expiresAt || Date.now() < offlineUnits[unit.id].expiresAt));
+
+        if (!isDemo && !isA1 && !isOffline && !hasCompletedPlacement()) {
             window._pendingMcerUnitId = unitId;
             showPlacementRequiredModal(unit);
             return;
         }
 
-        // A1 units are freely accessible to all beginners without requiring placement test
+        // A1 units and offline downloaded units are freely accessible without requiring online placement check
 
         activeMcerUnit = unit;
         const modal = document.getElementById('modal-mcer-unit');
