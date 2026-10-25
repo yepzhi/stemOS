@@ -156,13 +156,81 @@
     // Plant Crucible Model
     [normalizeKey("Good morning. My name is Alex Rivera, employee number 84029. I am the new mechatronics intern assigned to Sub-Assembly Line 3 under shift supervisor Mark Reynolds.")]: '/content/audio/mcer/a1-u1-crucible-model.mp3',
 
-    // Unit 2 Assets
-    [normalizeKey("Good morning, team. Today we review equipment safety procedures on the shop floor.")]: '/content/audio/mcer/a1-u2-d1.mp3',
-    [normalizeKey("Understood, Steve. I have inspected my personal protective equipment.")]: '/content/audio/mcer/a1-u2-d2.mp3',
-    [normalizeKey("Good morning, team. Today we review equipment safety procedures on the shop floor. Understood, Steve. I have inspected my personal protective equipment.")]: '/content/audio/mcer/a1-u2-dialogue-full.mp3',
-    [normalizeKey("Safety. Safety is our top operational priority.")]: '/content/audio/mcer/a1-u2-vocab-safety.mp3',
-    [normalizeKey("Inspection. Daily machine inspection begins at seven AM.")]: '/content/audio/mcer/a1-u2-vocab-inspection.mp3',
-    [normalizeKey("Attention technicians. Line 2 conveyor speed is calibrated at point five meters per second. Maintain safe distance.")]: '/content/audio/mcer/a1-u2-listening-lab.mp3'
+    // Unit 2 Assets (Workplace Routines, Time & Schedules)
+    [normalizeKey("Hi Javier, what shift do you work this week on Line 4?")]: '/content/audio/mcer/a1-u2-d1.mp3',
+    [normalizeKey("I work the first shift, from 7:00 AM to 3:30 PM, Monday through Friday.")]: '/content/audio/mcer/a1-u2-d2.mp3',
+    [normalizeKey("Great. When does your crew have the morning safety briefing?")]: '/content/audio/mcer/a1-u2-d3.mp3',
+    [normalizeKey("We always hold the safety briefing at 7:15 AM in front of the main Kanban board.")]: '/content/audio/mcer/a1-u2-d4.mp3',
+    [normalizeKey("And what time is your scheduled lunch break?")]: '/content/audio/mcer/a1-u2-d5.mp3',
+    [normalizeKey("First shift takes lunch at 11:30 AM for thirty minutes in Cafeteria B.")]: '/content/audio/mcer/a1-u2-d6.mp3',
+    [normalizeKey("Elena asks: Hi Javier, what shift do you work this week on Line 4? Javier answers: I work the first shift, from 7:00 AM to 3:30 PM, Monday through Friday. Elena asks: Great. When does your crew have the morning safety briefing? Javier answers: We always hold the safety briefing at 7:15 AM in front of the main Kanban board. Elena asks: And what time is your scheduled lunch break? Javier explains: First shift takes lunch at 11:30 AM for thirty minutes in Cafeteria B.")]: '/content/audio/mcer/a1-u2-dialogue-full.mp3',
+    [normalizeKey("Schedule")]: '/content/audio/mcer/a1-u2-vocab-schedule.mp3',
+    [normalizeKey("Schedule. My schedule starts at 8:00 AM sharp.")]: '/content/audio/mcer/a1-u2-vocab-schedule.mp3',
+    [normalizeKey("Routine")]: '/content/audio/mcer/a1-u2-vocab-routine.mp3',
+    [normalizeKey("Routine. Daily routines help us stay organized.")]: '/content/audio/mcer/a1-u2-vocab-routine.mp3',
+    [normalizeKey("Afternoon")]: '/content/audio/mcer/a1-u2-vocab-afternoon.mp3',
+    [normalizeKey("Afternoon. Our second session meets in the afternoon.")]: '/content/audio/mcer/a1-u2-vocab-afternoon.mp3',
+    [normalizeKey("Weekend")]: '/content/audio/mcer/a1-u2-vocab-weekend.mp3',
+    [normalizeKey("Weekend. Do you have classes on the weekend?")]: '/content/audio/mcer/a1-u2-vocab-weekend.mp3',
+    [normalizeKey("Break")]: '/content/audio/mcer/a1-u2-vocab-break.mp3',
+    [normalizeKey("Break. We take a 30-minute lunch break at noon.")]: '/content/audio/mcer/a1-u2-vocab-break.mp3',
+    [normalizeKey("On Time")]: '/content/audio/mcer/a1-u2-vocab-ontime.mp3',
+    [normalizeKey("On Time. The meeting starts on time at 9:00 AM.")]: '/content/audio/mcer/a1-u2-vocab-ontime.mp3',
+    [normalizeKey("Usually")]: '/content/audio/mcer/a1-u2-vocab-usually.mp3',
+    [normalizeKey("Usually. I usually finish my tasks before 5:00 PM.")]: '/content/audio/mcer/a1-u2-vocab-usually.mp3',
+    [normalizeKey("Plant operations run on three continuous shifts. Shift 1 runs from 07:00 to 15:30. Shift 2 operates from 15:30 to 23:30. Shift 3 runs from 23:30 to 07:00. To prevent production bottlenecks, cafeteria meal times are strictly staggered: Group A dines at 11:30 AM, and Group B dines at 12:15 PM. Operators must never leave active conveyor lines unattended during break handoffs.")]: '/content/audio/mcer/a1-u2-listening-lab.mp3',
+    [normalizeKey("Hello Javier, first shift produced 420 finished units today on Line 4. The line ran on schedule without stoppage. We always update the digital log before leaving. Scheduled belt maintenance takes place at 4:00 PM.")]: '/content/audio/mcer/a1-u2-crucible-model.mp3',
+
+    // Unit 3 Assets (Workstation Navigation, Tools & Supplies)
+    [normalizeKey("Mateo, where are the replacement optical proximity sensors?")]: '/content/audio/mcer/a1-u3-d1.mp3',
+    [normalizeKey("There are three sealed boxes on the middle shelf, right next to the digital calipers.")]: '/content/audio/mcer/a1-u3-d2.mp3',
+    [normalizeKey("Great. Is there any electrical insulation tape left in the drawer?")]: '/content/audio/mcer/a1-u3-d3.mp3',
+    [normalizeKey("Yes, there is a fresh roll inside the top drawer of the green mobile cart.")]: '/content/audio/mcer/a1-u3-d4.mp3',
+    [normalizeKey("Excellent. Please grab the 5mm hex wrench as well before we enter the cell.")]: '/content/audio/mcer/a1-u3-d5.mp3',
+    [normalizeKey("Got it. I have the hex wrench and sensors ready.")]: '/content/audio/mcer/a1-u3-d6.mp3',
+    [normalizeKey("Tom asks: Mateo, where are the replacement optical proximity sensors? Mateo answers: There are three sealed boxes on the middle shelf, right next to the digital calipers. Tom asks: Great. Is there any electrical insulation tape left in the drawer? Mateo replies: Yes, there is a fresh roll inside the top drawer of the green mobile cart. Tom instructs: Excellent. Please grab the 5mm hex wrench as well before we enter the cell. Mateo confirms: Got it. I have the hex wrench and sensors ready.")]: '/content/audio/mcer/a1-u3-dialogue-full.mp3',
+    [normalizeKey("Toolbox")]: '/content/audio/mcer/a1-u3-vocab-toolbox.mp3',
+    [normalizeKey("Toolbox. There is a calibrated torque wrench in the yellow toolbox.")]: '/content/audio/mcer/a1-u3-vocab-toolbox.mp3',
+    [normalizeKey("Spare Parts")]: '/content/audio/mcer/a1-u3-vocab-spareparts.mp3',
+    [normalizeKey("Spare Parts. Spare parts are kept in Cabinet B across from the tool crib.")]: '/content/audio/mcer/a1-u3-vocab-spareparts.mp3',
+    [normalizeKey("Safety Goggles")]: '/content/audio/mcer/a1-u3-vocab-safetygoggles.mp3',
+    [normalizeKey("Safety Goggles. Safety goggles are mandatory inside the production zone.")]: '/content/audio/mcer/a1-u3-vocab-safetygoggles.mp3',
+    [normalizeKey("Storage Rack")]: '/content/audio/mcer/a1-u3-vocab-storagerack.mp3',
+    [normalizeKey("Storage Rack. Raw materials are stacked on the lower storage rack.")]: '/content/audio/mcer/a1-u3-vocab-storagerack.mp3',
+    [normalizeKey("Emergency Exit")]: '/content/audio/mcer/a1-u3-vocab-emergencyexit.mp3',
+    [normalizeKey("Emergency Exit. The emergency exit is between Line 2 and the testing bay.")]: '/content/audio/mcer/a1-u3-vocab-emergencyexit.mp3',
+    [normalizeKey("Calipers")]: '/content/audio/mcer/a1-u3-vocab-calipers.mp3',
+    [normalizeKey("Calipers. Use the digital calipers to measure the outer diameter.")]: '/content/audio/mcer/a1-u3-vocab-calipers.mp3',
+    [normalizeKey("Tool Crib")]: '/content/audio/mcer/a1-u3-vocab-toolcrib.mp3',
+    [normalizeKey("Tool Crib. Sign out precision torque drivers at the central tool crib.")]: '/content/audio/mcer/a1-u3-vocab-toolcrib.mp3',
+    [normalizeKey("Under 5S housekeeping standards, every tool has a designated shadow outline. All specialized calibration gauges must be signed out electronically using your employee badge. Operators must clean all grease and metal shavings from calipers before returning them to Shelf 4. Never leave loose hand tools on top of active machine guards or electrical enclosures.")]: '/content/audio/mcer/a1-u3-listening-lab.mp3',
+    [normalizeKey("Good afternoon. There is a master Lockout/Tagout padlock cabinet on Wall C, directly between the tool crib and the automated test bay. In addition, there are two emergency eyewash stations located ten feet to your right next to the chemical rack.")]: '/content/audio/mcer/a1-u3-crucible-model.mp3',
+
+    // Unit 4 Assets (Simple Directives, Safety Signs & Protocols)
+    [normalizeKey("David, please stop the feeder conveyor for a moment.")]: '/content/audio/mcer/a1-u4-d1.mp3',
+    [normalizeKey("Sure. Done. The red beacon is on. Is there a problem?")]: '/content/audio/mcer/a1-u4-d2.mp3',
+    [normalizeKey("Yes, can you hand me the 10mm Allen wrench from the magnetic tray?")]: '/content/audio/mcer/a1-u4-d3.mp3',
+    [normalizeKey("Here you go. Do you need an inspection flashlight as well?")]: '/content/audio/mcer/a1-u4-d4.mp3',
+    [normalizeKey("Yes, please. Hold it right here on the lower motor bracket.")]: '/content/audio/mcer/a1-u4-d5.mp3',
+    [normalizeKey("Careful! The notice says the gear housing is extremely hot.")]: '/content/audio/mcer/a1-u4-d6.mp3',
+    [normalizeKey("Good catch. Put on your thermal gloves before touching the casing.")]: '/content/audio/mcer/a1-u4-d7.mp3',
+    [normalizeKey("Rachel says: David, please stop the feeder conveyor for a moment. David responds: Sure. Done. The red beacon is on. Is there a problem? Rachel asks: Yes, can you hand me the 10mm Allen wrench from the magnetic tray? David replies: Here you go. Do you need an inspection flashlight as well? Rachel answers: Yes, please. Hold it right here on the lower motor bracket. David warns: Careful! The notice says the gear housing is extremely hot. Rachel confirms: Good catch. Put on your thermal gloves before touching the casing.")]: '/content/audio/mcer/a1-u4-dialogue-full.mp3',
+    [normalizeKey("Caution")]: '/content/audio/mcer/a1-u4-vocab-caution.mp3',
+    [normalizeKey("Caution. Caution: Hot surface, do not touch without heat-resistant gloves.")]: '/content/audio/mcer/a1-u4-vocab-caution.mp3',
+    [normalizeKey("Ear Protection")]: '/content/audio/mcer/a1-u4-vocab-earprotection.mp3',
+    [normalizeKey("Ear Protection. Ear protection is required beyond this yellow boundary line.")]: '/content/audio/mcer/a1-u4-vocab-earprotection.mp3',
+    [normalizeKey("Shut Down")]: '/content/audio/mcer/a1-u4-vocab-shutdown.mp3',
+    [normalizeKey("Shut Down. Please shut down the conveyor motor before clearing the jam.")]: '/content/audio/mcer/a1-u4-vocab-shutdown.mp3',
+    [normalizeKey("Authorized Personnel")]: '/content/audio/mcer/a1-u4-vocab-authorized.mp3',
+    [normalizeKey("Authorized Personnel. High-voltage enclosure: authorized licensed personnel only.")]: '/content/audio/mcer/a1-u4-vocab-authorized.mp3',
+    [normalizeKey("Keep Clear")]: '/content/audio/mcer/a1-u4-vocab-keepclear.mp3',
+    [normalizeKey("Keep Clear. Keep this forklift corridor clear of wooden pallets at all times.")]: '/content/audio/mcer/a1-u4-vocab-keepclear.mp3',
+    [normalizeKey("Emergency Stop")]: '/content/audio/mcer/a1-u4-vocab-emergencystop.mp3',
+    [normalizeKey("Emergency Stop. Hit the red mushroom emergency stop button in case of jam.")]: '/content/audio/mcer/a1-u4-vocab-emergencystop.mp3',
+    [normalizeKey("Hard Hat")]: '/content/audio/mcer/a1-u4-vocab-hardhat.mp3',
+    [normalizeKey("Hard Hat. Wear your hard hat inside the overhead crane zone.")]: '/content/audio/mcer/a1-u4-vocab-hardhat.mp3',
+    [normalizeKey("DANGER: AUTOMATIC EQUIPMENT MAY ENERGIZE OR START WITHOUT NOTICE. Always verify Lockout/Tagout de-energization before reaching into mechanical pinch points. Keep hands and loose clothing away from rotating spindle drives. Do not bypass safety interlock switches under any operational circumstances.")]: '/content/audio/mcer/a1-u4-listening-lab.mp3',
+    [normalizeKey("Excuse me, please stop immediately. Safety goggles and hard hats are mandatory beyond the yellow line. This is a restricted high-voltage robotic cell. Do not cross the safety interlock line. Please report to the security office to sign in.")]: '/content/audio/mcer/a1-u4-crucible-model.mp3'
   };
 
   function cleanText(text) {
@@ -362,13 +430,36 @@
     }
   }
 
-  function playAudioUrl(url, sessionId, options = {}) {
-    const audio = new Audio(url);
+  async function playAudioUrl(url, sessionId, options = {}) {
+    let playUrl = url;
+    let isBlobUrl = false;
+
+    // Check if available in offline CacheStorage
+    if (typeof window !== 'undefined' && 'caches' in window) {
+      try {
+        const cachedResponse = await caches.match(url);
+        if (cachedResponse) {
+          const blob = await cachedResponse.blob();
+          if (blob && blob.size > 0) {
+            playUrl = URL.createObjectURL(blob);
+            isBlobUrl = true;
+          }
+        }
+      } catch (_) {}
+    }
+
+    if (sessionId !== currentSessionId) {
+      if (isBlobUrl) URL.revokeObjectURL(playUrl);
+      return;
+    }
+
+    const audio = new Audio(playUrl);
     currentAudio = audio;
 
     audio.onplay = () => {
       if (sessionId !== currentSessionId) {
         audio.pause();
+        if (isBlobUrl) URL.revokeObjectURL(playUrl);
         return;
       }
       isPlaying = true;
@@ -376,6 +467,7 @@
     };
 
     audio.onended = () => {
+      if (isBlobUrl) URL.revokeObjectURL(playUrl);
       if (sessionId !== currentSessionId) return;
       isPlaying = false;
       currentAudio = null;
@@ -383,6 +475,7 @@
     };
 
     audio.onerror = (e) => {
+      if (isBlobUrl) URL.revokeObjectURL(playUrl);
       console.warn('[stemOS TTS] Audio play error, falling down to default voice:', e);
       if (sessionId !== currentSessionId) return;
       currentAudio = null;
@@ -394,6 +487,7 @@
       playPromise.catch((err) => {
         console.warn('[stemOS TTS] Audio play promise rejected, falling down to default voice:', err);
         if (sessionId === currentSessionId) {
+          if (isBlobUrl) URL.revokeObjectURL(playUrl);
           currentAudio = null;
           speakSystemDefault(options.rawText || '', options);
         }

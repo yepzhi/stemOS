@@ -3696,6 +3696,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    var activeMcerLevelFilter = 'all';
+    window.activeMcerLevelFilter = 'all';
+
     /* --- 8. INITIAL RENDER --- */
     if (Object.keys(coursesData).length > 0) {
         renderAllUnitsGrid('all');
@@ -3712,8 +3715,6 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ══════════════════════════════════════════════════════════════════════════
        FASE 62: MCER TRACKS (STANDARD AMERICAN ENGLISH) & PLACEMENT INTEGRATION
        ══════════════════════════════════════════════════════════════════════════ */
-
-    let activeMcerLevelFilter = 'all';
 
     // 1. Dual-World Program Switcher
     const btnWorldMcer = document.getElementById('btn-world-mcer');
@@ -3765,6 +3766,7 @@ document.addEventListener('DOMContentLoaded', () => {
             chip.classList.add('active');
             activeMcerLevelFilter = chip.dataset.mcerLevel || 'all';
             renderMcerUnitsGrid(activeMcerLevelFilter);
+            updateMcerOfflineBannerUI();
         });
     });
 
@@ -3797,11 +3799,17 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const userLevel = localStorage.getItem('stemos_user_level') || '';
 
+        checkOfflineUnitsExpiration();
+        const offlineUnits = getOfflineUnits();
+        const now = Date.now();
+
         units.forEach(unit => {
             const meta = levelColors[unit.cefr] || levelColors.A1;
             const gradientBg = `linear-gradient(135deg, ${meta.color}18 0%, ${meta.color}06 50%, #f8fafc 100%)`;
             const isCrucibleDone = localStorage.getItem('stemos_crucible_' + unit.id) === 'completed';
             const isActiveLevel = userLevel && unit.cefr === userLevel;
+            const offlineRecord = offlineUnits[unit.id];
+            const isOffline = offlineRecord && (now < offlineRecord.expiresAt);
 
             const card = document.createElement('div');
             card.className = 'ed-unit-card';
@@ -3817,6 +3825,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="fa-solid ${meta.icon}" style="font-size: 3.5rem; color: ${meta.color}; opacity: 0.5;"></i>
                     <span class="ed-unit-card-cat-badge" style="border-left: 3px solid ${meta.color}; color:${meta.color};">CEFR ${unit.cefr} · ${meta.label}</span>
                     ${isActiveLevel ? `<span style="position:absolute; top:8px; right:8px; background:${meta.color}; color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><i class="fa-solid fa-play"></i> En Curso</span>` : ''}
+                    ${isOffline ? `<span class="ed-unit-offline-badge active" title="Disponible offline · Expira en 3 días"><i class="fa-solid fa-cloud-arrow-down"></i> Offline (3d)</span>` : ''}
                     ${isCrucibleDone ? '<span style="position:absolute; bottom:8px; right:8px; background:#dcfce7; color:#15803d; border:1px solid #86efac; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:6px;"><i class="fa-solid fa-check"></i> Crisol ✓</span>' : ''}
                 </div>
                 <div class="ed-unit-card-body">
@@ -3835,6 +3844,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="fa-solid fa-triangle-exclamation" style="color:#dc2626;"></i> Falsos Amigos · 
                             <i class="fa-solid fa-industry" style="color:#10b981;"></i> Crisol
                         </span>
+                        ${isOffline ? `
+                            <div style="font-size:0.72rem; color:#16a34a; font-weight:700; display:flex; align-items:center; gap:5px; margin-top:2px;">
+                                <i class="fa-solid fa-circle-check"></i> Listo para Offline (Expira en ${Math.max(1, Math.ceil((offlineRecord.expiresAt - now) / 86400000))}d)
+                            </div>
+                        ` : ''}
                     </div>
                 </div>
             `;
@@ -3845,6 +3859,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             grid.appendChild(card);
         });
+
+        updateMcerOfflineBannerUI();
     }
     window.renderMcerUnitsGrid = renderMcerUnitsGrid;
 
@@ -3966,6 +3982,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (btn) btn.disabled = false;
         updateMcerOfflineButtonUI(unitId);
+        updateMcerOfflineBannerUI();
+        renderMcerUnitsGrid(activeMcerLevelFilter);
         showSyncToast('Unidad descargada para Offline (Expira en 3 días)', 'success');
     }
     window.downloadMcerUnitForOffline = downloadMcerUnitForOffline;
@@ -4015,6 +4033,205 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     window.updateMcerOfflineButtonUI = updateMcerOfflineButtonUI;
+
+    function updateMcerOfflineBannerUI() {
+        checkOfflineUnitsExpiration();
+        const banner = document.getElementById('mcer-offline-sync-banner');
+        const titleEl = document.getElementById('mcer-offline-banner-title');
+        const descEl = document.getElementById('mcer-offline-banner-desc');
+        const btn = document.getElementById('btn-mcer-batch-download');
+        const label = document.getElementById('mcer-batch-btn-label');
+        if (!banner || !btn || !label) return;
+
+        const targetLevel = (typeof activeMcerLevelFilter !== 'undefined' && activeMcerLevelFilter && activeMcerLevelFilter !== 'all') ? activeMcerLevelFilter : 'A1';
+        const offlineUnits = getOfflineUnits();
+        const now = Date.now();
+
+        let levelUnits = [];
+        if (window.STEMOS_MCER_TRACKS) {
+            levelUnits = window.STEMOS_MCER_TRACKS.getAllUnits().filter(u => u.cefr === targetLevel);
+        }
+        const totalLevelUnits = levelUnits.length || 4;
+        let cachedLevelUnits = 0;
+        let minRemainingMs = Infinity;
+
+        levelUnits.forEach(u => {
+            const rec = offlineUnits[u.id];
+            if (rec && now < rec.expiresAt) {
+                cachedLevelUnits++;
+                const rem = rec.expiresAt - now;
+                if (rem < minRemainingMs) minRemainingMs = rem;
+            }
+        });
+
+        const isFullyDownloaded = (cachedLevelUnits === totalLevelUnits && totalLevelUnits > 0);
+
+        if (isFullyDownloaded) {
+            const remainingDays = Math.max(1, Math.ceil(minRemainingMs / (24 * 60 * 60 * 1000)));
+            btn.className = 'btn-mcer-batch-download active';
+            btn.disabled = false;
+            label.innerHTML = `<i class="fa-solid fa-circle-check"></i> Nivel ${targetLevel} Offline Listo (${cachedLevelUnits}/${totalLevelUnits}) · Expira en ${remainingDays}d`;
+            btn.title = `Nivel ${targetLevel} completo descargado. Clic para renovar los 3 días.`;
+            btn.onclick = () => {
+                if (confirm(`El Nivel ${targetLevel} ya está disponible offline (${remainingDays} días restantes). ¿Deseas renovar la descarga por 3 días más?`)) {
+                    downloadCurrentLevelForOffline(targetLevel);
+                }
+            };
+            if (titleEl) {
+                titleEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Nivel ${targetLevel} Disponible Offline (${cachedLevelUnits} de ${totalLevelUnits} Módulos)`;
+            }
+            if (descEl) {
+                descEl.innerHTML = `Los ${totalLevelUnits} módulos (60.0h) y sus audios están en la memoria de tu dispositivo. Expira en ${remainingDays} días.`;
+            }
+        } else if (cachedLevelUnits > 0) {
+            btn.className = 'btn-mcer-batch-download';
+            btn.disabled = false;
+            label.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Completar Nivel ${targetLevel} (${cachedLevelUnits}/${totalLevelUnits} Módulos)`;
+            btn.onclick = () => downloadCurrentLevelForOffline(targetLevel);
+            if (titleEl) {
+                titleEl.innerHTML = `Modo Offline & Descarga por Nivel · Nivel ${targetLevel}`;
+            }
+            if (descEl) {
+                descEl.innerHTML = `Tienes ${cachedLevelUnits} de ${totalLevelUnits} módulos descargados. Completa la descarga del nivel para estudiar sin conexión.`;
+            }
+        } else {
+            btn.className = 'btn-mcer-batch-download';
+            btn.disabled = false;
+            label.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Descargar Nivel ${targetLevel} Offline (${totalLevelUnits} Módulos · ~4.6MB)`;
+            btn.onclick = () => downloadCurrentLevelForOffline(targetLevel);
+            if (titleEl) {
+                titleEl.innerHTML = `Modo Offline & Descarga por Nivel · Nivel ${targetLevel}`;
+            }
+            if (descEl) {
+                descEl.innerHTML = `Descarga los ${totalLevelUnits} módulos (60.0h) con audios neuronales para estudiar sin internet durante 3 días.`;
+            }
+        }
+    }
+    window.updateMcerOfflineBannerUI = updateMcerOfflineBannerUI;
+
+    async function downloadCurrentLevelForOffline(levelCode) {
+        if (!window.STEMOS_MCER_TRACKS) return;
+        const targetLevel = levelCode || ((typeof activeMcerLevelFilter !== 'undefined' && activeMcerLevelFilter && activeMcerLevelFilter !== 'all') ? activeMcerLevelFilter : 'A1');
+        const units = window.STEMOS_MCER_TRACKS.getAllUnits().filter(u => u.cefr === targetLevel);
+        if (!units || units.length === 0) return;
+
+        const btn = document.getElementById('btn-mcer-batch-download');
+        const label = document.getElementById('mcer-batch-btn-label');
+        const progressWrapper = document.getElementById('mcer-batch-progress-wrapper');
+        const progressText = document.getElementById('mcer-batch-progress-text');
+        const progressPct = document.getElementById('mcer-batch-progress-pct');
+        const progressFill = document.getElementById('mcer-batch-progress-fill');
+
+        if (btn) {
+            btn.className = 'btn-mcer-batch-download downloading';
+            btn.disabled = true;
+        }
+        if (progressWrapper) progressWrapper.style.display = 'flex';
+
+        try {
+            let cache = null;
+            if ('caches' in window) {
+                cache = await caches.open('stemos-offline-units-v1');
+            }
+
+            const total = units.length;
+            const now = Date.now();
+            const offlineUnits = getOfflineUnits();
+
+            for (let i = 0; i < units.length; i++) {
+                const unit = units[i];
+                const pct = Math.round(((i) / total) * 100);
+                if (progressFill) progressFill.style.width = `${pct}%`;
+                if (progressPct) progressPct.textContent = `${pct}%`;
+                if (progressText) {
+                    progressText.textContent = `Descargando Módulo ${i + 1} de ${total}: ${unit.title}...`;
+                }
+
+                // Collect audios for this unit
+                const audioUrls = [];
+                if (window.STEMOS_TTS && typeof window.STEMOS_TTS.getMcerAudioList === 'function') {
+                    const allAudios = window.STEMOS_TTS.getMcerAudioList();
+                    const prefix = unit.id.toLowerCase();
+                    allAudios.forEach(url => {
+                        if (url.includes(prefix)) audioUrls.push(url);
+                    });
+                    if (audioUrls.length === 0) {
+                        audioUrls.push(...allAudios);
+                    }
+                }
+
+                // Cache audios in CacheStorage
+                if (cache) {
+                    for (const url of audioUrls) {
+                        try {
+                            await cache.add(url);
+                        } catch (e) {
+                            console.warn('[Batch Cache] Skipped:', url, e);
+                        }
+                    }
+                }
+
+                // Register unit in localStorage with 3-day TTL
+                offlineUnits[unit.id] = {
+                    unitId: unit.id,
+                    title: unit.title,
+                    titleES: unit.titleES || '',
+                    cefr: unit.cefr,
+                    unitNumber: unit.unitNumber,
+                    downloadedAt: now,
+                    expiresAt: now + OFFLINE_UNIT_TTL_MS,
+                    audioCount: audioUrls.length
+                };
+                saveOfflineUnits(offlineUnits);
+            }
+
+            if (progressFill) progressFill.style.width = '100%';
+            if (progressPct) progressPct.textContent = '100%';
+            if (progressText) progressText.textContent = `¡Nivel ${targetLevel} guardado exitosamente para offline!`;
+
+            setTimeout(() => {
+                if (progressWrapper) progressWrapper.style.display = 'none';
+            }, 1200);
+
+            showSyncToast(`Nivel ${targetLevel} descargado para Offline (Expira en 3 días)`, 'success');
+        } catch (err) {
+            console.error('[Batch Download Error]:', err);
+            showSyncToast('Error al descargar para offline: ' + err.message, 'info');
+        } finally {
+            if (btn) btn.disabled = false;
+            updateMcerOfflineBannerUI();
+            renderMcerUnitsGrid(typeof activeMcerLevelFilter !== 'undefined' ? activeMcerLevelFilter : 'all');
+        }
+    }
+    window.downloadCurrentLevelForOffline = downloadCurrentLevelForOffline;
+
+    async function clearAllOfflineUnits() {
+        const offlineUnits = getOfflineUnits();
+        const count = Object.keys(offlineUnits).length;
+        if (count === 0) {
+            showSyncToast('No hay módulos descargados en la memoria local.', 'info');
+            return;
+        }
+
+        if (!confirm(`¿Deseas eliminar los ${count} módulos descargados para offline y liberar espacio?`)) {
+            return;
+        }
+
+        try {
+            localStorage.removeItem(STORAGE_KEY_OFFLINE_UNITS);
+            if ('caches' in window) {
+                await caches.delete('stemos-offline-units-v1');
+            }
+            showSyncToast('Caché offline eliminada correctamente.', 'info');
+        } catch (err) {
+            console.warn('[Clear Offline Error]:', err);
+            showSyncToast('Caché local limpiada.', 'info');
+        }
+
+        updateMcerOfflineBannerUI();
+        renderMcerUnitsGrid(typeof activeMcerLevelFilter !== 'undefined' ? activeMcerLevelFilter : 'all');
+    }
+    window.clearAllOfflineUnits = clearAllOfflineUnits;
 
     // 4. MCER Unit Study Modal
     let activeMcerUnit = null;

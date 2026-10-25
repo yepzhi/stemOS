@@ -58,12 +58,111 @@ const AUDIO_ITEMS = [
   },
 
   // A1 Unit 2 - Dialogue & Vocabulary (Module 2)
-  { id: 'a1-u2-d1', voice: 'Eddy', text: 'Good morning, team. Today we review equipment safety procedures on the shop floor.' },
-  { id: 'a1-u2-d2', voice: 'Samantha', text: 'Understood, Steve. I have inspected my personal protective equipment.' },
-  { id: 'a1-u2-dialogue-full', voice: 'Samantha', text: 'Good morning, team. Today we review equipment safety procedures on the shop floor. Understood, Steve. I have inspected my personal protective equipment.' },
-  { id: 'a1-u2-vocab-safety', voice: 'Samantha', text: 'Safety. Safety is our top operational priority.' },
-  { id: 'a1-u2-vocab-inspection', voice: 'Samantha', text: 'Inspection. Daily machine inspection begins at seven AM.' },
-  { id: 'a1-u2-listening-lab', voice: 'Eddy', text: 'Attention technicians. Line 2 conveyor speed is calibrated at point five meters per second. Maintain safe distance.' }
+  { id: 'a1-u2-d1', voice: 'Samantha', text: 'Hi Javier, what shift do you work this week on Line 4?' },
+  { id: 'a1-u2-d2', voice: 'Eddy', text: 'I work the first shift, from 7:00 AM to 3:30 PM, Monday through Friday.' },
+  { id: 'a1-u2-d3', voice: 'Samantha', text: 'Great. When does your crew have the morning safety briefing?' },
+  { id: 'a1-u2-d4', voice: 'Eddy', text: 'We always hold the safety briefing at 7:15 AM in front of the main Kanban board.' },
+  { id: 'a1-u2-d5', voice: 'Samantha', text: 'And what time is your scheduled lunch break?' },
+  { id: 'a1-u2-d6', voice: 'Eddy', text: 'First shift takes lunch at 11:30 AM for thirty minutes in Cafeteria B.' },
+  { 
+    id: 'a1-u2-dialogue-full', 
+    voice: 'Samantha', 
+    text: 'Elena asks: Hi Javier, what shift do you work this week on Line 4? Javier answers: I work the first shift, from 7:00 AM to 3:30 PM, Monday through Friday. Elena asks: Great. When does your crew have the morning safety briefing? Javier answers: We always hold the safety briefing at 7:15 AM in front of the main Kanban board. Elena asks: And what time is your scheduled lunch break? Javier explains: First shift takes lunch at 11:30 AM for thirty minutes in Cafeteria B.' 
+  },
+  { id: 'a1-u2-vocab-schedule', voice: 'Samantha', text: 'Schedule. My schedule starts at 8:00 AM sharp.' },
+  { id: 'a1-u2-vocab-routine', voice: 'Samantha', text: 'Routine. Daily routines help us stay organized.' },
+  { id: 'a1-u2-vocab-morning', voice: 'Samantha', text: 'Morning. I always have a team briefing in the morning.' },
+  { id: 'a1-u2-vocab-afternoon', voice: 'Samantha', text: 'Afternoon. Our second session meets in the afternoon.' },
+  { id: 'a1-u2-vocab-weekend', voice: 'Samantha', text: 'Weekend. Do you have classes on the weekend?' },
+  { id: 'a1-u2-vocab-break', voice: 'Samantha', text: 'Break. We take a 30-minute lunch break at noon.' },
+  { id: 'a1-u2-vocab-ontime', voice: 'Samantha', text: 'On Time. The meeting starts on time at 9:00 AM.' },
+  { id: 'a1-u2-vocab-usually', voice: 'Samantha', text: 'Usually. I usually finish my tasks before 5:00 PM.' },
+  { 
+    id: 'a1-u2-listening-lab', 
+    voice: 'Eddy', 
+    text: 'Plant operations run on three continuous shifts. Shift 1 runs from 07:00 to 15:30. Shift 2 operates from 15:30 to 23:30. Shift 3 runs from 23:30 to 07:00. To prevent production bottlenecks, cafeteria meal times are strictly staggered: Group A dines at 11:30 AM, and Group B dines at 12:15 PM. Operators must never leave active conveyor lines unattended during break handoffs.' 
+  },
+  {
+    id: 'a1-u2-reading-passage',
+    voice: 'Samantha',
+    text: 'Plant operations run on three continuous shifts. Shift 1 runs from 07:00 to 15:30. Shift 2 operates from 15:30 to 23:30. Shift 3 runs from 23:30 to 07:00. To prevent production bottlenecks, cafeteria meal times are strictly staggered: Group A dines at 11:30 AM, and Group B dines at 12:15 PM. Operators must never leave active conveyor lines unattended during break handoffs.'
+  },
+  {
+    id: 'a1-u2-crucible-model',
+    voice: 'Eddy',
+    text: 'Hello Javier, first shift produced 420 finished units today on Line 4. The line ran on schedule without stoppage. We always update the digital log before leaving. Scheduled belt maintenance takes place at 4:00 PM.'
+  },
+
+  // A1 Unit 3 - Workstation Navigation, Tools & Supplies (Module 3)
+  { id: 'a1-u3-d1', voice: 'Eddy', text: 'Mateo, where are the replacement optical proximity sensors?' },
+  { id: 'a1-u3-d2', voice: 'Samantha', text: 'There are three sealed boxes on the middle shelf, right next to the digital calipers.' },
+  { id: 'a1-u3-d3', voice: 'Eddy', text: 'Great. Is there any electrical insulation tape left in the drawer?' },
+  { id: 'a1-u3-d4', voice: 'Samantha', text: 'Yes, there is a fresh roll inside the top drawer of the green mobile cart.' },
+  { id: 'a1-u3-d5', voice: 'Eddy', text: 'Excellent. Please grab the 5mm hex wrench as well before we enter the cell.' },
+  { id: 'a1-u3-d6', voice: 'Samantha', text: 'Got it. I have the hex wrench and sensors ready.' },
+  {
+    id: 'a1-u3-dialogue-full',
+    voice: 'Eddy',
+    text: 'Tom asks: Mateo, where are the replacement optical proximity sensors? Mateo answers: There are three sealed boxes on the middle shelf, right next to the digital calipers. Tom asks: Great. Is there any electrical insulation tape left in the drawer? Mateo replies: Yes, there is a fresh roll inside the top drawer of the green mobile cart. Tom instructs: Excellent. Please grab the 5mm hex wrench as well before we enter the cell. Mateo confirms: Got it. I have the hex wrench and sensors ready.'
+  },
+  { id: 'a1-u3-vocab-toolbox', voice: 'Samantha', text: 'Toolbox. There is a calibrated torque wrench in the yellow toolbox.' },
+  { id: 'a1-u3-vocab-spareparts', voice: 'Samantha', text: 'Spare Parts. Spare parts are kept in Cabinet B across from the tool crib.' },
+  { id: 'a1-u3-vocab-safetygoggles', voice: 'Samantha', text: 'Safety Goggles. Safety goggles are mandatory inside the production zone.' },
+  { id: 'a1-u3-vocab-storagerack', voice: 'Samantha', text: 'Storage Rack. Raw materials are stacked on the lower storage rack.' },
+  { id: 'a1-u3-vocab-emergencyexit', voice: 'Samantha', text: 'Emergency Exit. The emergency exit is between Line 2 and the testing bay.' },
+  { id: 'a1-u3-vocab-calipers', voice: 'Samantha', text: 'Calipers. Use the digital calipers to measure the outer diameter.' },
+  { id: 'a1-u3-vocab-toolcrib', voice: 'Samantha', text: 'Tool Crib. Sign out precision torque drivers at the central tool crib.' },
+  {
+    id: 'a1-u3-listening-lab',
+    voice: 'Eddy',
+    text: 'Under 5S housekeeping standards, every tool has a designated shadow outline. All specialized calibration gauges must be signed out electronically using your employee badge. Operators must clean all grease and metal shavings from calipers before returning them to Shelf 4. Never leave loose hand tools on top of active machine guards or electrical enclosures.'
+  },
+  {
+    id: 'a1-u3-reading-passage',
+    voice: 'Samantha',
+    text: 'Under 5S housekeeping standards, every tool has a designated shadow outline. All specialized calibration gauges must be signed out electronically using your employee badge. Operators must clean all grease and metal shavings from calipers before returning them to Shelf 4. Never leave loose hand tools on top of active machine guards or electrical enclosures.'
+  },
+  {
+    id: 'a1-u3-crucible-model',
+    voice: 'Eddy',
+    text: 'Good afternoon. There is a master Lockout/Tagout padlock cabinet on Wall C, directly between the tool crib and the automated test bay. In addition, there are two emergency eyewash stations located ten feet to your right next to the chemical rack.'
+  },
+
+  // A1 Unit 4 - Simple Directives, Safety Signs & Protocols (Module 4)
+  { id: 'a1-u4-d1', voice: 'Samantha', text: 'David, please stop the feeder conveyor for a moment.' },
+  { id: 'a1-u4-d2', voice: 'Eddy', text: 'Sure. Done. The red beacon is on. Is there a problem?' },
+  { id: 'a1-u4-d3', voice: 'Samantha', text: 'Yes, can you hand me the 10mm Allen wrench from the magnetic tray?' },
+  { id: 'a1-u4-d4', voice: 'Eddy', text: 'Here you go. Do you need an inspection flashlight as well?' },
+  { id: 'a1-u4-d5', voice: 'Samantha', text: 'Yes, please. Hold it right here on the lower motor bracket.' },
+  { id: 'a1-u4-d6', voice: 'Eddy', text: 'Careful! The notice says the gear housing is extremely hot.' },
+  { id: 'a1-u4-d7', voice: 'Samantha', text: 'Good catch. Put on your thermal gloves before touching the casing.' },
+  {
+    id: 'a1-u4-dialogue-full',
+    voice: 'Samantha',
+    text: 'Rachel says: David, please stop the feeder conveyor for a moment. David responds: Sure. Done. The red beacon is on. Is there a problem? Rachel asks: Yes, can you hand me the 10mm Allen wrench from the magnetic tray? David replies: Here you go. Do you need an inspection flashlight as well? Rachel answers: Yes, please. Hold it right here on the lower motor bracket. David warns: Careful! The notice says the gear housing is extremely hot. Rachel confirms: Good catch. Put on your thermal gloves before touching the casing.'
+  },
+  { id: 'a1-u4-vocab-caution', voice: 'Samantha', text: 'Caution. Caution: Hot surface, do not touch without heat-resistant gloves.' },
+  { id: 'a1-u4-vocab-earprotection', voice: 'Samantha', text: 'Ear Protection. Ear protection is required beyond this yellow boundary line.' },
+  { id: 'a1-u4-vocab-shutdown', voice: 'Samantha', text: 'Shut Down. Please shut down the conveyor motor before clearing the jam.' },
+  { id: 'a1-u4-vocab-authorized', voice: 'Samantha', text: 'Authorized Personnel. High-voltage enclosure: authorized licensed personnel only.' },
+  { id: 'a1-u4-vocab-keepclear', voice: 'Samantha', text: 'Keep Clear. Keep this forklift corridor clear of wooden pallets at all times.' },
+  { id: 'a1-u4-vocab-emergencystop', voice: 'Samantha', text: 'Emergency Stop. Hit the red mushroom emergency stop button in case of jam.' },
+  { id: 'a1-u4-vocab-hardhat', voice: 'Samantha', text: 'Hard Hat. Wear your hard hat inside the overhead crane zone.' },
+  {
+    id: 'a1-u4-listening-lab',
+    voice: 'Eddy',
+    text: 'DANGER: AUTOMATIC EQUIPMENT MAY ENERGIZE OR START WITHOUT NOTICE. Always verify Lockout/Tagout de-energization before reaching into mechanical pinch points. Keep hands and loose clothing away from rotating spindle drives. Do not bypass safety interlock switches under any operational circumstances.'
+  },
+  {
+    id: 'a1-u4-reading-passage',
+    voice: 'Samantha',
+    text: 'DANGER: AUTOMATIC EQUIPMENT MAY ENERGIZE OR START WITHOUT NOTICE. Always verify Lockout/Tagout de-energization before reaching into mechanical pinch points. Keep hands and loose clothing away from rotating spindle drives. Do not bypass safety interlock switches under any operational circumstances.'
+  },
+  {
+    id: 'a1-u4-crucible-model',
+    voice: 'Samantha',
+    text: 'Excuse me, please stop immediately. Safety goggles and hard hats are mandatory beyond the yellow line. This is a restricted high-voltage robotic cell. Do not cross the safety interlock line. Please report to the security office to sign in.'
+  }
 ];
 
 console.log(`Starting generation of ${AUDIO_ITEMS.length} static MP3 audio files...`);

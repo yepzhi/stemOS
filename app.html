@@ -1231,6 +1231,42 @@
                             </div>
                         </div>
 
+                        <!-- MCER Offline Batch Downloader & Status Banner (Phase 89) -->
+                        <div class="mcer-offline-sync-banner" id="mcer-offline-sync-banner">
+                            <div class="mcer-offline-banner-main">
+                                <div class="mcer-offline-banner-left">
+                                    <div class="mcer-offline-banner-icon">
+                                        <i class="fa-solid fa-cloud-arrow-down"></i>
+                                    </div>
+                                    <div class="mcer-offline-banner-info">
+                                        <div class="mcer-offline-banner-title" id="mcer-offline-banner-title">
+                                            Modo Offline & Descarga por Nivel
+                                        </div>
+                                        <div class="mcer-offline-banner-desc" id="mcer-offline-banner-desc">
+                                            Estudia sin conexión durante 3 días con audios neuronales y sincronización automática al volver a estar en línea.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mcer-offline-banner-actions">
+                                    <button class="btn-mcer-batch-download" id="btn-mcer-batch-download" onclick="downloadCurrentLevelForOffline()" title="Descargar nivel completo para estudio sin conexión">
+                                        <span id="mcer-batch-btn-label"><i class="fa-solid fa-cloud-arrow-down"></i> Descargar Nivel A1 Offline (4 Módulos · 4.6MB)</span>
+                                    </button>
+                                    <button class="btn-mcer-clear-offline" id="btn-mcer-clear-offline" onclick="clearAllOfflineUnits()" title="Liberar espacio y eliminar caché offline">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mcer-batch-progress-wrapper" id="mcer-batch-progress-wrapper" style="display:none;">
+                                <div class="mcer-batch-progress-meta">
+                                    <span id="mcer-batch-progress-text">Descargando...</span>
+                                    <span id="mcer-batch-progress-pct">0%</span>
+                                </div>
+                                <div class="mcer-batch-progress-track">
+                                    <div class="mcer-batch-progress-fill" id="mcer-batch-progress-fill" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- MCER Units Grid -->
                         <div class="ed-units-grid" id="ed-mcer-units-grid">
                             <!-- Populated dynamically by app.js from STEMOS_MCER_TRACKS -->
