@@ -3716,12 +3716,9 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
     line-height: 1.3;
 }
 
-.lexicon-term-ipa {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.78rem;
-    color: #0284c7;
-    font-weight: 600;
-    margin-top: 2px;
+.lexicon-term-ipa,
+.vocab-term-ipa {
+    display: none !important;
 }
 
 .lexicon-term-es {

@@ -1520,7 +1520,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="lexicon-header">
                         <div class="lexicon-term-box">
                             <div class="lexicon-term-en">${item.term}</div>
-                            ${item.ipa ? `<div class="lexicon-term-ipa">${item.ipa}</div>` : ''}
                             <div class="lexicon-term-es">${item.es || ''}</div>
                         </div>
                         <button class="vocab-audio-btn" title="Escuchar pronunciación nativa">
@@ -1549,7 +1548,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const card = document.createElement('div');
                 card.className = 'vocab-card';
 
-                const ipaHTML = item.ipa ? `<span class="vocab-term-ipa" style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#0284c7;background:rgba(2,132,199,0.08);padding:1px 6px;border-radius:4px;font-weight:500;">${item.ipa}</span>` : '';
+                const ipaHTML = '';
 
                 let collocationsHTML = '';
                 if (item.collocations && item.collocations.length > 0) {
@@ -3971,7 +3970,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <strong style="color:#1d4ed8; font-size:0.92rem;">${pl.term}</strong>
                                 <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#0284c7; background:#eff6ff; padding:1px 6px; border-radius:4px;">${pl.stress}</span>
                             </div>
-                            <div style="font-family:var(--font-mono); font-size:0.72rem; color:#64748b; margin-top:2px;">${pl.ipa || ''}</div>
                             <div style="font-size:0.75rem; color:#334155; margin-top:4px; line-height:1.35;">${pl.rule || ''}</div>
                         </div>
                         <button class="btn-play-pl-audio" style="background:#eff6ff; color:#1d4ed8; border:none; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; margin-left:6px;" title="Escuchar">
@@ -4002,7 +4000,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 vCard.innerHTML = `
                     <div>
                         <strong style="color:#0f172a; font-size:0.95rem;">${termStr}</strong>
-                        <span style="font-family:var(--font-mono); font-size:0.75rem; color:#64748b; margin-left:6px;">${v.ipa || ''}</span>
                         <div style="font-size:0.8rem; color:#0284c7; font-weight:600; margin-top:2px;">${v.es || ''}</div>
                         <div style="font-size:0.75rem; color:#64748b; margin-top:4px; font-style:italic;">"${sampleStr}"</div>
                     </div>
@@ -5187,7 +5184,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const vList = (unit.vocabulary || []).slice(0, 8);
             vList.forEach(v => {
                 const term = v.en || v.term || '';
-                const ipa = v.ipa || '';
                 const es = v.es || '';
                 const sample = v.example || v.sample || '';
                 const stress = v.pinkStress || v.stress || term;
@@ -5200,7 +5196,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             <strong style="color:#0f172a; font-size:0.92rem;">${term}</strong>
                             <span class="pink-stress-badge">${stress}</span>
                         </div>
-                        <div style="font-family:var(--font-mono); font-size:0.74rem; color:#64748b; margin-top:1px;">${ipa}</div>
                         <div style="font-size:0.8rem; font-weight:700; color:#0284c7; margin-top:2px;">${es}</div>
                         ${sample ? `<div style="font-size:0.74rem; color:#475569; margin-top:3px; font-style:italic;">"${sample}"</div>` : ''}
                     </div>
