@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Términos de Servicio y Condiciones de Uso — stemOS®</title>
+  <meta name="description" content="Términos y Condiciones de Uso de stemOS — Plataforma de Inglés Técnico Industrial y ESP para Universidades Tecnológicas, TecNM y Sistemas Estatales.">
+
+  <!-- PWA & Mobile Web App Manifest -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0284c7">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="stemOS">
+  <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
+  <link rel="apple-touch-icon" href="/icon-192.svg">
+  <script src="/content/stemos_pwa.js" defer></script>
+  <script src="/content/stemos_rum.js" defer></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <link rel="stylesheet" href="/dev.css?v=5.12.0">
+
+  <style>
+    body {
+      background: #030712;
+      color: #f1f5f9;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .terms-page-wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 120px 24px 80px;
+      flex: 1;
+    }
+    .terms-header-card {
+      background: radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.15) 0%, rgba(15, 23, 42, 0.85) 70%);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 24px;
+      padding: 42px 36px;
+      margin-bottom: 40px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 0 0 30px rgba(14, 165, 233, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .terms-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: rgba(14, 165, 233, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .terms-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin: 0 0 14px 0;
+    }
+    .terms-meta {
+      font-size: 0.92rem;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+    .terms-section-card {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.16);
+      border-radius: 20px;
+      padding: 32px 30px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+    }
+    .terms-section-card h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0 0 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      letter-spacing: -0.015em;
+    }
+    .terms-section-card h2 i {
+      color: #38bdf8;
+      font-size: 1.15rem;
+    }
+    .terms-section-card p {
+      font-size: 0.94rem;
+      line-height: 1.7;
+      color: #cbd5e1;
+      margin: 0 0 14px 0;
+    }
+    .terms-section-card ul {
+      margin: 0 0 16px 0;
+      padding-left: 22px;
+    }
+    .terms-section-card li {
+      font-size: 0.92rem;
+      line-height: 1.65;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+    }
+    .terms-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #38bdf8;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      transition: color 0.2s ease;
+    }
+    .terms-nav-back:hover {
+      color: #7dd3fc;
+    }
+    footer {
+      border-top: 1px solid rgba(56, 189, 248, 0.15);
+      background: rgba(3, 7, 18, 0.95);
+      padding: 32px 24px;
+      text-align: center;
+      color: #64748b;
+      font-size: 0.85rem;
+    }
+    footer a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="terms-page-wrap">
+    <a href="/index.html" class="terms-nav-back">
+      <i class="fa-solid fa-arrow-left"></i> Volver a stemOS
+    </a>
+
+    <header class="terms-header-card">
+      <div class="terms-badge">
+        <i class="fa-solid fa-file-contract"></i> Gobernanza Institucional &amp; Términos de Servicio
+      </div>
+      <h1 class="terms-title">Términos y Condiciones de Uso de stemOS</h1>
+      <p class="terms-meta">
+        <strong>Vigencia:</strong> Actualizado para el ciclo institucional 2026.<br>
+        <strong>Entidad Responsable:</strong> stemOS Educational Platform &amp; Technology Systems (<a href="https://stemos.org" style="color:#38bdf8; text-decoration:none;">stemos.org</a>).<br>
+        <strong>Contacto de Soporte:</strong> <a href="mailto:yepzhi@gmail.com" style="color:#38bdf8; text-decoration:none;">yepzhi@gmail.com</a>
+      </p>
+    </header>
+
+    <main>
+      <section class="terms-section-card">
+        <h2><i class="fa-solid fa-shield-halved"></i> 1. Aceptación de los Términos</h2>
+        <p>Al acceder, navegar, registrarse o utilizar los servicios de aprendizaje, diagnóstico de nivel (Placement Test), acreditación MCER o simuladores industriales provistos en <strong>stemos.org</strong> (en adelante, "la Plataforma"), usted (el "Usuario" o "Estudiante") acepta de manera vinculante estos Términos de Servicio y nuestro <a href="/privacy.html" style="color:#38bdf8;">Aviso de Privacidad</a>.</p>
+        <p>Si usted accede a la Plataforma en representación de una institución de educación superior (TecNM, Universidades Tecnológicas, Universidades Politécnicas o Estatales), declara contar con las facultades necesarias para vincular a dicha institución bajo convenios académicos vigentes.</p>
+      </section>
+
+      <section class="terms-section-card">
+        <h2><i class="fa-solid fa-graduation-cap"></i> 2. Naturaleza del Servicio</h2>
+        <p>stemOS es un ecosistema educativo digital especializado en la enseñanza del inglés técnico industrial (ESP - English for Specific Purposes) y la alineación curricular con el Marco Común Europeo de Referencia (MCER / CEFR A1-B2). Las características clave comprenden:</p>
+        <ul>
+          <li><strong>Acceso Libre a Nivel Inicial A1:</strong> Todos los estudiantes registrados tienen acceso libre e inmediato a los cursos base del MCER (A1) sin necesidad de evaluación previa.</li>
+          <li><strong>Evaluación Diagnóstica (Placement Test):</strong> Instrumento psicométrico de calibración diagnóstica con validez formativa para ubicar el nivel del alumno y recomendar rutas técnicas personalizadas.</li>
+          <li><strong>Simulaciones de Planta &amp; Laboratorios de Audio:</strong> Herramientas interactivas con síntesis de voz Web Speech API, reconocimiento de cadencia y retroalimentación mayéutica socrática.</li>
+          <li><strong>Credenciales y Folios Verificables:</strong> Registro de horas cursadas y diplomas con identificadores institucionales verificables (CACEI / SEP).</li>
+        </ul>
+      </section>
+
+      <section class="terms-section-card">
+        <h2><i class="fa-solid fa-user-lock"></i> 3. Cuentas de Usuario y Autenticación Segura</h2>
+        <p>Para acceder a su expediente académico y registrar progreso, el usuario puede autenticarse mediante Google Identity Services (OAuth 2.0) o credenciales de correo electrónico:</p>
+        <ul>
+          <li>El usuario es responsable de salvaguardar la confidencialidad de su sesión.</li>
+          <li>stemOS utiliza Google OAuth exclusivamente para autenticar la identidad del usuario y sincronizar su correo y nombre académico, sin solicitar acceso a correos, archivos de Google Drive o calendarios privados.</li>
+          <li>Cualquier uso no autorizado de una cuenta debe ser notificado inmediatamente a <a href="mailto:yepzhi@gmail.com" style="color:#38bdf8;">yepzhi@gmail.com</a>.</li>
+        </ul>
+      </section>
+
+      <section class="terms-section-card">
+        <h2><i class="fa-solid fa-copyright"></i> 4. Propiedad Intelectual y Derechos Curriculares</h2>
+        <p>Todos los contenidos curriculares, bancos de reactivos, algoritmos de recomendación, diálogos industriales, diagramas de procesos y códigos fuente de la Plataforma son propiedad exclusiva de stemOS o de sus licenciantes autorizados, protegidos por las leyes de propiedad intelectual de México e internacionales.</p>
+        <p>Queda estrictamente prohibida la extracción masiva de datos (scraping), ingeniería inversa, reventa no autorizada o copia de los módulos formativos fuera del contexto educativo autorizado por stemOS.</p>
+      </section>
+
+      <section class="terms-section-card">
+        <h2><i class="fa-solid fa-server"></i> 5. Disponibilidad del Servicio y SLA Educativo</h2>
+        <p>stemOS opera sobre infraestructura distribuida de alta velocidad (Cloudflare Pages y Google Cloud Platform). Nos esforzamos por mantener un tiempo de actividad del 99.9%, exceptuando ventanas de mantenimiento programadas.</p>
+      </section>
+
+      <section class="terms-section-card">
+        <h2><i class="fa-solid fa-envelope-open-text"></i> 6. Contacto y Soporte</h2>
+        <p>Para cualquier duda, aclaración o solicitud de soporte técnico respecto a estos Términos de Servicio, puede comunicarse con el equipo directivo y tecnológico a través del correo electrónico: <a href="mailto:yepzhi@gmail.com" style="color:#38bdf8; font-weight:700;">yepzhi@gmail.com</a>.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 stemOS Educational Platform. Todos los derechos reservados. | <a href="/privacy.html">Aviso de Privacidad</a> | <a href="/terms.html">Términos de Servicio</a></p>
+    </footer>
+  </div>
+
+</body>
+</html>

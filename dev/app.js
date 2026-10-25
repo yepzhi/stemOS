@@ -96,9 +96,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.hasCompletedPlacement = hasCompletedPlacement;
 
-    function showPlacementRequiredModal() {
+    function showPlacementRequiredModal(unit) {
         const modal = document.getElementById('modal-placement-required');
         if (modal) {
+            const heading = document.getElementById('placement-modal-heading');
+            const bodyText = document.getElementById('placement-modal-body');
+            if (unit && heading && bodyText) {
+                heading.textContent = `Nivel ${unit.cefr} Requiere Calibración Diagnóstica`;
+                bodyText.innerHTML = `La unidad <strong>"${unit.title}"</strong> pertenece al <strong>Nivel ${unit.cefr}</strong>. Para acceder a niveles superiores o a tracks especializados, realiza tu <strong>Evaluación Diagnóstica (15 min)</strong> para validar tus conocimientos previos. Si vas a comenzar desde cero, puedes acceder al <strong>Nivel A1</strong> inmediatamente sin examen.`;
+            }
             if (typeof modal.showModal === 'function') {
                 modal.showModal();
             } else {
@@ -110,6 +116,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     window.showPlacementRequiredModal = showPlacementRequiredModal;
+
+    window.startA1LevelDirectly = function() {
+        localStorage.setItem('stemos_user_level', 'A1');
+        localStorage.setItem('stemos_active_mcer_level', 'A1');
+        const modal = document.getElementById('modal-placement-required');
+        if (modal) {
+            if (typeof modal.close === 'function') modal.close();
+            else modal.style.display = 'none';
+        }
+        if (typeof syncUserPlacementBadge === 'function') {
+            syncUserPlacementBadge();
+        }
+        if (typeof switchDashboardView === 'function') {
+            switchDashboardView('all-units');
+        }
+        const btnWorldMcer = document.getElementById('btn-world-mcer');
+        if (btnWorldMcer) btnWorldMcer.click();
+        const mcerFilterA1 = document.querySelector('#mcer-level-filter-bar .ed-filter-chip[data-mcer-level="A1"]');
+        if (mcerFilterA1) mcerFilterA1.click();
+        setTimeout(() => {
+            openMcerUnitModal('a1-u1', false);
+        }, 150);
+    };
 
     // Dynamically ensure ALL 26 tracks exist in skillsData from courses.js
     if (typeof LXP_COURSES !== 'undefined') {
@@ -3702,14 +3731,18 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeMcerUnit = null;
 
     function openMcerUnitModal(unitId, isDemo = false) {
-        if (!isDemo && !hasCompletedPlacement()) {
-            window._pendingMcerUnitId = unitId;
-            showPlacementRequiredModal();
-            return;
-        }
         if (!window.STEMOS_MCER_TRACKS) return;
         const unit = window.STEMOS_MCER_TRACKS.getUnitById(unitId);
         if (!unit) return;
+
+        const isA1 = unit.cefr === 'A1';
+        if (!isDemo && !isA1 && !hasCompletedPlacement()) {
+            window._pendingMcerUnitId = unitId;
+            showPlacementRequiredModal(unit);
+            return;
+        }
+
+        // A1 units are freely accessible to all beginners without requiring placement test
 
         activeMcerUnit = unit;
         const modal = document.getElementById('modal-mcer-unit');
@@ -4904,7 +4937,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof modal.close === 'function') modal.close();
             else modal.style.display = 'none';
         }
-        const unitId = window._pendingMcerUnitId || 'a1-u01';
+        const unitId = window._pendingMcerUnitId || 'a1-u1';
         openMcerUnitModal(unitId, true);
     };
 
@@ -5369,23 +5402,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!isPlacementDone) {
             if (badgePill && badgeText) {
-                badgeText.textContent = 'Placement Pendiente';
-                badgePill.style.background = '#fef2f2';
-                badgePill.style.color = '#dc2626';
-                badgePill.style.borderColor = '#fecaca';
+                badgeText.textContent = 'Nivel A1 Activo · Placement Opcional';
+                badgePill.style.background = '#ecfdf5';
+                badgePill.style.color = '#059669';
+                badgePill.style.borderColor = '#a7f3d0';
                 badgePill.style.display = 'inline-flex';
             }
             if (calloutEl && calloutTitle && calloutDesc) {
                 calloutEl.style.display = 'block';
                 if (calloutLevel) {
-                    calloutLevel.textContent = 'Placement Pendiente';
-                    calloutLevel.style.background = '#ef4444';
+                    calloutLevel.textContent = 'Nivel A1 Disponible';
+                    calloutLevel.style.background = '#0284c7';
                 }
-                calloutTitle.textContent = 'Realiza tu Placement Test Diagnóstico (15 min)';
-                calloutDesc.textContent = 'Para calibrar tu track técnico por carrera y desbloquear tus módulos de aprendizaje, completa tu evaluación diagnóstica estandarizada.';
-                if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-clipboard-question" style="color:#ef4444;"></i>';
-                calloutEl.style.background = 'linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.03) 100%)';
-                calloutEl.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                calloutTitle.textContent = 'Aprende desde cero en Nivel A1 o Haz tu Diagnóstico';
+                calloutDesc.textContent = 'Tienes acceso libre inmediato a los cursos base del MCER (A1). Si ya tienes conocimientos previos, completa el Examen Diagnóstico (15 min) para desbloquear A2, B1 o tracks técnicos avanzados.';
+                if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-graduation-cap" style="color:#0284c7;"></i>';
+                calloutEl.style.background = '#f0f9ff';
+                calloutEl.style.borderColor = '#bae6fd';
             }
             return;
         }
@@ -6566,17 +6599,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const applyTheme = (theme) => {
             const root = document.documentElement;
             root.classList.remove('theme-dark', 'theme-light', 'theme-high-contrast');
-            if (theme === 'light') root.classList.add('theme-light');
+            if (theme === 'dark') root.classList.add('theme-dark');
             else if (theme === 'high-contrast') root.classList.add('theme-high-contrast');
-            else root.classList.add('theme-dark');
+            else root.classList.add('theme-light');
         };
 
         try {
-            const savedTheme = localStorage.getItem('stemos_theme') || 'dark';
+            const savedTheme = localStorage.getItem('stemos_theme') || 'light';
             applyTheme(savedTheme);
             window.addEventListener('storage', (e) => {
                 if (e.key === 'stemos_theme') {
-                    applyTheme(e.newValue || 'dark');
+                    applyTheme(e.newValue || 'light');
                 }
             });
         } catch (e) {}
