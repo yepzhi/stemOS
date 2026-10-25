@@ -104,7 +104,7 @@ const navCatalogEn = document.querySelector('[data-i18n="nav_catalog"]').textCon
 assert(navCatalogEn === 'ESP Catalog', `Catalog link translated to English: "${navCatalogEn}"`);
 
 const heroSubEn = document.querySelector('[data-i18n="hero_subtitle"]').innerHTML;
-assert(heroSubEn.includes('specialized tracks'), 'Hero subtitle translated to English');
+assert(heroSubEn.includes('34 tracks') && heroSubEn.includes('A1 to C1'), 'Hero subtitle translated to English');
 
 const heroTitleEn = document.querySelector('[data-i18n="hero_title"]').textContent;
 assert(heroTitleEn.includes('From first words to industry-ready English'), `Hero title in English: "${heroTitleEn}"`);
@@ -129,10 +129,10 @@ assert(stdLineEn.includes('USMCA'), `Standards line in English uses USMCA: "${st
 // Switch back to Spanish to confirm bidirectionality
 window.setPlatformLanguage('es');
 const heroSubEs = document.querySelector('[data-i18n="hero_subtitle"]').innerHTML;
-assert(heroSubEs.includes('tracks especializados'), 'Hero subtitle translated back to Spanish');
+assert(heroSubEs.includes('34 tracks') && heroSubEs.includes('A1 a C1'), 'Hero subtitle translated back to Spanish');
 
 const heroTitleEs = document.querySelector('[data-i18n="hero_title"]').textContent;
-assert(heroTitleEs.includes('Del inglés desde cero al inglés de tu industria'), `Hero title in Spanish: "${heroTitleEs}"`);
+assert(heroTitleEs.includes('Inglés desde cero. Inglés de tu industria'), `Hero title in Spanish: "${heroTitleEs}"`);
 assert(!heroTitleEs.includes('Mastering'), 'Hero title in Spanish does NOT contain "Mastering"');
 assert(!heroTitleEs.includes('Advanced Industry'), 'Hero title in Spanish does NOT contain "Advanced Industry"');
 

@@ -45,7 +45,7 @@ const STEMOS_I18N = {
     mob_nav_academic: 'Academic System 60h (25)',
     mob_nav_standards: 'Standards vs. Academia',
 
-    hero_subtitle: 'Start with standard English from A1-B1 full (CEFR) and move on to 34 specialized tracks for semiconductors, aerospace, robotics, automotive, medical devices, logistics and more. One platform, one learning path, verifiable certificates.',
+    hero_subtitle: 'Learn standard English from A1 to C1 (CEFR) and advance to 34 tracks for your industry: semiconductors, aerospace, robotics, automotive, medical devices, logistics, hospitality and more. Tailored programs for your career and verifiable Open Badges 3.0 certificates.',
     btn_take_placement: 'Placement Test (30 min)',
     btn_tracks: 'Explore 34 Tracks &amp; Labs',
     btn_pricing: 'View Proposal &amp; Pricing',
@@ -318,7 +318,7 @@ const STEMOS_I18N = {
     mob_nav_academic: 'Sistema Académico 60h (25)',
     mob_nav_standards: 'Estándares vs. Academia',
 
-    hero_subtitle: 'Empieza con inglés estándar desde A1-B1 completo (MCER) y avanza hacia 34 tracks especializados para semiconductores, aeroespacial, robótica, automotriz, dispositivos médicos, logística y más. Una sola plataforma, un solo camino, con certificados verificables.',
+    hero_subtitle: 'Aprende inglés estándar de A1 a C1 (MCER) y avanza a 34 tracks para tu industria: semiconductores, aeroespacial, robótica, automotriz, dispositivos médicos, logística, hospitalidad y más. Programas a la medida de tu carrera y certificados verificables Open Badges 3.0.',
     btn_take_placement: 'Test de Ubicación (30 min)',
     btn_tracks: 'Explorar 34 Tracks &amp; Labs',
     btn_pricing: 'Ver Propuesta &amp; Precios',

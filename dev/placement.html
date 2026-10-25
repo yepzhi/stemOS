@@ -1598,11 +1598,10 @@
         </div>
     </div>
 
-    <!-- ── Scripts ── -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js" defer></script>
-    <script src="content/firebase_config.js?v=6.2.0" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="content/firebase_config.js?v=6.2.0"></script>
     <script src="content/firebase_adapter.js?v=6.1.0" defer></script>
     <script src="content/gemini_service.js?v=6.2.0" defer></script>
     <script src="content/career_tracks.js?v=2.1.0" defer></script>
@@ -2001,7 +2000,7 @@
                         return;
                     }
                 } catch(err) {
-                    console.info('[stemOS Placement Google Auth] Popup notice:', err.code || err);
+                    console.info('[stemOS Placement Google Auth] Popup notice or blocked:', err.code || err);
                     if (btn) {
                         btn.disabled = false;
                         btn.innerHTML = originalBtnHtml;
@@ -2009,21 +2008,27 @@
                     if (err.code === 'auth/popup-closed-by-user') {
                         return;
                     }
-                    if (err.code === 'auth/popup-blocked') {
-                        // Automatically try redirect on mobile popup block
-                        try {
-                            const auth = firebase.auth();
-                            const provider = new firebase.auth.GoogleAuthProvider();
-                            provider.setCustomParameters({ prompt: 'select_account' });
-                            await auth.signInWithRedirect(provider);
-                            return;
-                        } catch(re) {
-                            console.warn('[stemOS Google Auth] Redirect fallback failed:', re);
-                        }
+                    // Seamlessly redirect to Google account chooser
+                    try {
+                        const auth = firebase.auth();
+                        const provider = new firebase.auth.GoogleAuthProvider();
+                        provider.setCustomParameters({ prompt: 'select_account' });
+                        await auth.signInWithRedirect(provider);
+                        return;
+                    } catch(re) {
+                        console.warn('[stemOS Google Auth] Redirect fallback failed:', re);
                     }
-                    openGoogleSignInModal(err);
-                    return;
                 }
+            } else {
+                try {
+                    if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+                        const auth = firebase.auth();
+                        const provider = new firebase.auth.GoogleAuthProvider();
+                        provider.setCustomParameters({ prompt: 'select_account' });
+                        await auth.signInWithRedirect(provider);
+                        return;
+                    }
+                } catch(e) {}
             }
 
             if (btn) {

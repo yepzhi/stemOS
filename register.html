@@ -1859,10 +1859,10 @@
     </div>
 
     <!-- Firebase SDK Compat & Universal Adapter (High Concurrency 100 simultaneous / 1,500 students) -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js" defer></script>
-    <script src="content/firebase_config.js?v=6.2.0" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="content/firebase_config.js?v=6.2.0"></script>
     <script src="content/firebase_adapter.js?v=6.1.0" defer></script>
     <script src="content/gemini_service.js?v=6.2.0" defer></script>
     <script src="content/career_tracks.js?v=2.0.0" defer></script>
@@ -2696,7 +2696,7 @@
             const originalBtnHtml = ssoBtn ? ssoBtn.innerHTML : '';
             if (ssoBtn) {
                 ssoBtn.disabled = true;
-                ssoBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="lbl-google-sso">Conectando con Google...</span>';
+                ssoBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="lbl-google-sso">' + (currentRegisterLang === 'en' ? 'Connecting to Google...' : 'Conectando con Google...') + '</span>';
             }
 
             const ready = await ensureFirebaseAuthReady();
@@ -2736,36 +2736,42 @@
                             careerId: detected.careerId,
                             ssoProvider: 'google'
                         });
+                        if (ssoBtn) {
+                            ssoBtn.disabled = false;
+                            ssoBtn.innerHTML = originalBtnHtml;
+                        }
                         return;
                     }
                 } catch (err) {
-                    console.info('[stemOS Google Auth] Popup result or error:', err.code || err);
-                    if (ssoBtn) {
-                        ssoBtn.disabled = false;
-                        ssoBtn.innerHTML = originalBtnHtml;
-                    }
+                    console.info('[stemOS Google Auth] Popup notice or blocked:', err.code || err);
                     if (err.code === 'auth/popup-closed-by-user') {
+                        if (ssoBtn) {
+                            ssoBtn.disabled = false;
+                            ssoBtn.innerHTML = originalBtnHtml;
+                        }
                         return;
                     }
-                    if (err.code === 'auth/popup-blocked') {
-                        try {
-                            const auth = firebase.auth();
-                            const provider = new firebase.auth.GoogleAuthProvider();
-                            provider.setCustomParameters({ prompt: 'select_account' });
-                            await auth.signInWithRedirect(provider);
-                            return;
-                        } catch(re) {
-                            console.warn('[stemOS Google Auth] Redirect fallback failed:', re);
-                        }
+                    // For popup-blocked or any browser issue, seamlessly fallback to signInWithRedirect to show Google account chooser
+                    try {
+                        const auth = firebase.auth();
+                        const provider = new firebase.auth.GoogleAuthProvider();
+                        provider.setCustomParameters({ prompt: 'select_account' });
+                        await auth.signInWithRedirect(provider);
+                        return;
+                    } catch(re) {
+                        console.warn('[stemOS Google Auth] Redirect fallback notice:', re);
                     }
-                    openGoogleSignInModalRegister();
-                    const notice = document.getElementById('google-popup-notice');
-                    if (notice) {
-                        notice.style.display = 'block';
-                        notice.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#d97706;"></i> Google SSO no pudo abrir ventana emergente (' + (err.code || 'popup-blocked') + '). Puedes usar el acceso directo abajo:';
-                    }
-                    return;
                 }
+            } else {
+                try {
+                    if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+                        const auth = firebase.auth();
+                        const provider = new firebase.auth.GoogleAuthProvider();
+                        provider.setCustomParameters({ prompt: 'select_account' });
+                        await auth.signInWithRedirect(provider);
+                        return;
+                    }
+                } catch(e) {}
             }
 
             if (ssoBtn) {
