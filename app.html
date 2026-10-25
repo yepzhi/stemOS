@@ -1814,15 +1814,24 @@
     <dialog class="modal-dialog" id="modal-mcer-unit">
         <div class="modal-card academic-card mcer-study-card">
             <header class="academic-modal-header">
-                <div class="academic-header-info">
-                    <div style="display:flex; align-items:center; gap:8px;">
+                <div class="academic-header-top-row" style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:8px;">
+                    <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
                         <span class="academic-track-badge" id="mcer-unit-level-badge" style="background:#0284c7; color:#fff;">CEFR A1</span>
-                        <span style="background:rgba(16,185,129,0.12); color:#059669; border:1px solid rgba(16,185,129,0.3); font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:6px;"><i class="fa-solid fa-clock"></i> 10 min · MCER Interactiva</span>
+                        <span style="background:rgba(16,185,129,0.12); color:#059669; border:1px solid rgba(16,185,129,0.3); font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:6px;"><i class="fa-solid fa-clock"></i> 10 min · MCER</span>
+                        <span id="mcer-offline-sync-pill" class="mcer-sync-pill" style="display:none;"></span>
                     </div>
+                    <div class="academic-header-actions" style="display:flex; align-items:center; gap:8px;">
+                        <button type="button" class="btn-mcer-offline-download" id="btn-mcer-offline-toggle" title="Descargar unidad completa y audios para modo offline (Expira en 3 días)">
+                            <i class="fa-solid fa-cloud-arrow-down"></i>
+                            <span id="mcer-offline-btn-label">Descargar Offline (3 días)</span>
+                        </button>
+                        <button class="modal-close" id="mcer-unit-close" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+                <div class="academic-header-info" style="margin-top:6px; width:100%;">
                     <h3 class="academic-module-title" id="mcer-unit-title">Módulo 01 · Introductions & Personal Info</h3>
                     <p style="font-size:0.84rem; color:#475569 !important; margin-top:2px;" id="mcer-unit-cando">Can introduce self and others...</p>
                 </div>
-                <button class="modal-close" id="mcer-unit-close" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
             </header>
 
             <!-- Stepper Bar with Arrow Connectors (Fase 82 · Visual Guided Progression) -->

@@ -3,9 +3,9 @@
  * Full offline PWA caching for 4 Portals (Student, Admin, Teacher, Register), 25 Career Paths (60h), Interleaved Curricula, XP HUD, and 3D World Map.
  */
 
-const SW_VERSION = '6.8.4';
-const CACHE_NAME = 'stemos-lxp-v6.8.4-csp-resilient';
-// Historical compatibility: v6.0.0-academic-portals, v6.1.0-firebase-sync, v6.2.0-piper-neural, v6.3.0-campus-diadema-offline, v6.3.1-sso-mobile-fixes, v6.8.2-hero-leveling-pathway, v6.8.3-offline-resilient-icons
+const SW_VERSION = '6.8.5';
+const CACHE_NAME = 'stemos-lxp-v6.8.5-mcer-offline-sync';
+// Historical compatibility: v6.0.0-academic-portals, v6.1.0-firebase-sync, v6.2.0-piper-neural, v6.3.0-campus-diadema-offline, v6.3.1-sso-mobile-fixes, v6.8.2-hero-leveling-pathway, v6.8.3-offline-resilient-icons, v6.8.4-csp-resilient
 
 const ASSETS_TO_CACHE = [
   '/',
@@ -57,6 +57,30 @@ const ASSETS_TO_CACHE = [
   '/content/audio/pt-l08.mp3',
   '/content/audio/pt-l09.mp3',
   '/content/audio/pt-l10.mp3',
+  '/content/audio/mcer/a1-u1-d1.mp3',
+  '/content/audio/mcer/a1-u1-d2.mp3',
+  '/content/audio/mcer/a1-u1-d3.mp3',
+  '/content/audio/mcer/a1-u1-d4.mp3',
+  '/content/audio/mcer/a1-u1-d5.mp3',
+  '/content/audio/mcer/a1-u1-d6.mp3',
+  '/content/audio/mcer/a1-u1-dialogue-full.mp3',
+  '/content/audio/mcer/a1-u1-vocab-hello.mp3',
+  '/content/audio/mcer/a1-u1-vocab-welcome.mp3',
+  '/content/audio/mcer/a1-u1-vocab-name.mp3',
+  '/content/audio/mcer/a1-u1-vocab-student.mp3',
+  '/content/audio/mcer/a1-u1-vocab-coworker.mp3',
+  '/content/audio/mcer/a1-u1-vocab-pleasure.mp3',
+  '/content/audio/mcer/a1-u1-vocab-colleague.mp3',
+  '/content/audio/mcer/a1-u1-vocab-morning.mp3',
+  '/content/audio/mcer/a1-u1-listening-lab.mp3',
+  '/content/audio/mcer/a1-u1-reading-passage.mp3',
+  '/content/audio/mcer/a1-u1-crucible-model.mp3',
+  '/content/audio/mcer/a1-u2-d1.mp3',
+  '/content/audio/mcer/a1-u2-d2.mp3',
+  '/content/audio/mcer/a1-u2-dialogue-full.mp3',
+  '/content/audio/mcer/a1-u2-vocab-safety.mp3',
+  '/content/audio/mcer/a1-u2-vocab-inspection.mp3',
+  '/content/audio/mcer/a1-u2-listening-lab.mp3',
   '/dev',
   '/dev/',
   '/dev.html',

@@ -3848,6 +3848,174 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.renderMcerUnitsGrid = renderMcerUnitsGrid;
 
+    // ══════════════════════════════════════════════════════════════════════════
+    // stemOS MCER Offline Storage & 3-Day Expiration Engine (Phase 89)
+    // ══════════════════════════════════════════════════════════════════════════
+    const STORAGE_KEY_OFFLINE_UNITS = 'stemos_offline_units';
+    const OFFLINE_UNIT_TTL_MS = 3 * 24 * 60 * 60 * 1000; // Exact 3 days TTL
+
+    function getOfflineUnits() {
+        try {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY_OFFLINE_UNITS) || '{}');
+        } catch (_) {
+            return {};
+        }
+    }
+
+    function saveOfflineUnits(units) {
+        try {
+            localStorage.setItem(STORAGE_KEY_OFFLINE_UNITS, JSON.stringify(units));
+        } catch (_) {}
+    }
+
+    function checkOfflineUnitsExpiration() {
+        const offlineUnits = getOfflineUnits();
+        const now = Date.now();
+        let modified = false;
+        for (const id in offlineUnits) {
+            if (offlineUnits[id].expiresAt && now > offlineUnits[id].expiresAt) {
+                console.log(`[stemOS Offline] Unit ${id} expired after 3 days. Evicting from cache.`);
+                delete offlineUnits[id];
+                modified = true;
+            }
+        }
+        if (modified) {
+            saveOfflineUnits(offlineUnits);
+        }
+    }
+
+    function showSyncToast(message, type = 'info') {
+        const oldToast = document.querySelector('.stemos-sync-toast');
+        if (oldToast) oldToast.remove();
+
+        const toast = document.createElement('div');
+        toast.className = `stemos-sync-toast ${type}`;
+        const icon = (type === 'success') ? 'fa-circle-check' : (type === 'info' ? 'fa-cloud' : 'fa-info-circle');
+        toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            if (toast && toast.parentNode) {
+                toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(16px)';
+                setTimeout(() => toast.remove(), 300);
+            }
+        }, 4000);
+    }
+    window.showSyncToast = showSyncToast;
+
+    async function downloadMcerUnitForOffline(unitId) {
+        if (!window.STEMOS_MCER_TRACKS) return;
+        const unit = window.STEMOS_MCER_TRACKS.getUnitById(unitId);
+        if (!unit) return;
+
+        const btn = document.getElementById('btn-mcer-offline-toggle');
+        const label = document.getElementById('mcer-offline-btn-label');
+        if (btn) {
+            btn.className = 'btn-mcer-offline-download downloading';
+            btn.disabled = true;
+        }
+        if (label) {
+            label.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando audios...';
+        }
+
+        // Collect pre-rendered static audio files for this unit
+        const audioUrls = [];
+        if (window.STEMOS_TTS && typeof window.STEMOS_TTS.getMcerAudioList === 'function') {
+            const allAudios = window.STEMOS_TTS.getMcerAudioList();
+            const prefix = unitId.toLowerCase();
+            allAudios.forEach(url => {
+                if (url.includes(prefix)) audioUrls.push(url);
+            });
+            if (audioUrls.length === 0) {
+                audioUrls.push(...allAudios);
+            }
+        }
+
+        // Cache files via CacheStorage API for offline playback
+        if ('caches' in window) {
+            try {
+                const cache = await caches.open('stemos-offline-units-v1');
+                for (const url of audioUrls) {
+                    try {
+                        await cache.add(url);
+                    } catch (e) {
+                        console.warn('[Offline Cache] Skipped audio caching for', url, e);
+                    }
+                }
+            } catch (err) {
+                console.warn('[Offline Cache] CacheStorage unavailable:', err);
+            }
+        }
+
+        // Save in localStorage with 3-day TTL
+        const now = Date.now();
+        const offlineUnits = getOfflineUnits();
+        offlineUnits[unitId] = {
+            unitId: unitId,
+            title: unit.title,
+            titleES: unit.titleES || '',
+            cefr: unit.cefr,
+            unitNumber: unit.unitNumber,
+            downloadedAt: now,
+            expiresAt: now + OFFLINE_UNIT_TTL_MS,
+            audioCount: audioUrls.length
+        };
+        saveOfflineUnits(offlineUnits);
+
+        if (btn) btn.disabled = false;
+        updateMcerOfflineButtonUI(unitId);
+        showSyncToast('Unidad descargada para Offline (Expira en 3 días)', 'success');
+    }
+    window.downloadMcerUnitForOffline = downloadMcerUnitForOffline;
+
+    function updateMcerOfflineButtonUI(unitId) {
+        checkOfflineUnitsExpiration();
+        const btn = document.getElementById('btn-mcer-offline-toggle');
+        const label = document.getElementById('mcer-offline-btn-label');
+        const syncPill = document.getElementById('mcer-offline-sync-pill');
+        if (!btn || !label) return;
+
+        const offlineUnits = getOfflineUnits();
+        const record = offlineUnits[unitId];
+        const now = Date.now();
+
+        // Sync pill status
+        if (syncPill) {
+            if (!navigator.onLine) {
+                syncPill.style.display = 'inline-flex';
+                syncPill.className = 'mcer-sync-pill offline';
+                syncPill.innerHTML = '<i class="fa-solid fa-cloud"></i> Modo Offline';
+            } else {
+                syncPill.style.display = 'inline-flex';
+                syncPill.className = 'mcer-sync-pill synced';
+                syncPill.innerHTML = '<i class="fa-solid fa-cloud-check"></i> Firebase En Línea';
+            }
+        }
+
+        if (record && now < record.expiresAt) {
+            const remainingHours = Math.max(1, Math.round((record.expiresAt - now) / (1000 * 60 * 60)));
+            const remainingDays = Math.ceil(remainingHours / 24);
+            btn.className = 'btn-mcer-offline-download active';
+            btn.disabled = false;
+            label.innerHTML = `<i class="fa-solid fa-circle-check"></i> Offline Activo · Expira en ${remainingDays}d`;
+            btn.title = `Disponible offline hasta el ${new Date(record.expiresAt).toLocaleDateString()} (${remainingHours}h restantes). Clic para renovar.`;
+            btn.onclick = () => {
+                if (confirm(`Esta unidad ya está disponible offline (${remainingHours} horas restantes). ¿Deseas renovar la descarga por 3 días más?`)) {
+                    downloadMcerUnitForOffline(unitId);
+                }
+            };
+        } else {
+            btn.className = 'btn-mcer-offline-download';
+            btn.disabled = false;
+            label.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> Descargar Offline (3 días)';
+            btn.title = 'Descarga el contenido y audios estáticos para estudiar sin conexión durante 3 días.';
+            btn.onclick = () => downloadMcerUnitForOffline(unitId);
+        }
+    }
+    window.updateMcerOfflineButtonUI = updateMcerOfflineButtonUI;
+
     // 4. MCER Unit Study Modal
     let activeMcerUnit = null;
 
@@ -3873,6 +4041,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('mcer-unit-level-badge').textContent = `CEFR ${unit.cefr}`;
         document.getElementById('mcer-unit-title').textContent = `${unit.modulo || ('Módulo ' + String(unit.unitNumber).padStart(2, '0'))} · ${unit.title}`;
         document.getElementById('mcer-unit-cando').textContent = `${unit.titleES || ''} — ${unit.canDo || ''}`;
+
+        // Setup Offline Download Button & 3-Day Expiry Check
+        updateMcerOfflineButtonUI(unit.id);
 
         // Normalize dialogue lines (handles array or object with lines)
         const dialogueLines = Array.isArray(unit.dialogue)
@@ -4496,6 +4667,41 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (pct >= 70) {
                         if (msgEl) msgEl.innerHTML = '🎉 ¡Unidad MCER Aprobada! +300 XP Acreditados · Micro-credencial verificada.';
                         localStorage.setItem(`stemos_mcer_unit_${unit.id}`, 'passed');
+                        localStorage.setItem(`stemos_mcer_${unit.id}_score`, String(pct));
+                        
+                        // Accumulate XP in user profile
+                        try {
+                            const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '450', 10);
+                            const newXP = prevXP + 300;
+                            localStorage.setItem('stemos_student_xp', String(newXP));
+                            if (typeof window.updateStudentXPHUD === 'function') {
+                                window.updateStudentXPHUD(newXP);
+                            }
+                        } catch (e) {}
+
+                        // Enqueue offline mutation with STEMOS_SYNC for Firebase Firestore
+                        if (window.STEMOS_SYNC && typeof window.STEMOS_SYNC.enqueueMutation === 'function') {
+                            window.STEMOS_SYNC.enqueueMutation('MCER_UNIT_PROGRESS', 'SAVE_PROGRESS', {
+                                unitId: unit.id,
+                                unitTitle: unit.title,
+                                cefr: unit.cefr,
+                                score: pct,
+                                passed: true,
+                                xpEarned: 300,
+                                completedAt: new Date().toISOString()
+                            }, { strategy: 'XP_ACCUMULATIVE' });
+
+                            if (navigator.onLine) {
+                                window.STEMOS_SYNC.flushQueue().then(res => {
+                                    if (res && res.synced > 0) {
+                                        showSyncToast(`✓ Progreso sincronizado con Firebase Firestore (+300 XP)`, 'success');
+                                    }
+                                });
+                            } else {
+                                showSyncToast(`Progreso guardado offline. Se sincronizará con Firebase al reconectar.`, 'info');
+                            }
+                        }
+
                         // Update banner hours and badges
                         if (window.renderMcerUnitsGrid) window.renderMcerUnitsGrid();
                     } else {
@@ -7673,5 +7879,51 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    /* --- 10. REAL-TIME OFFLINE SYNC LISTENERS (FIREBASE RESILIENCE) --- */
+    window.addEventListener('online', () => {
+        if (typeof showSyncToast === 'function') {
+            showSyncToast('Conexión restablecida. Sincronizando con Firebase Firestore...', 'info');
+        }
+        const syncPill = document.getElementById('mcer-offline-sync-pill');
+        if (syncPill) {
+            syncPill.style.display = 'inline-flex';
+            syncPill.className = 'mcer-sync-pill syncing';
+            syncPill.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sincronizando...';
+        }
+        if (window.STEMOS_SYNC && typeof window.STEMOS_SYNC.flushQueue === 'function') {
+            window.STEMOS_SYNC.flushQueue().then(res => {
+                if (res && res.synced > 0 && typeof showSyncToast === 'function') {
+                    showSyncToast(`✓ ${res.synced} avance(s) offline respaldados en Firebase`, 'success');
+                }
+                if (syncPill) {
+                    syncPill.className = 'mcer-sync-pill synced';
+                    syncPill.innerHTML = '<i class="fa-solid fa-cloud-check"></i> Firebase En Línea';
+                }
+            }).catch(() => {
+                if (syncPill) {
+                    syncPill.className = 'mcer-sync-pill synced';
+                    syncPill.innerHTML = '<i class="fa-solid fa-cloud-check"></i> Firebase En Línea';
+                }
+            });
+        }
+    });
+
+    window.addEventListener('offline', () => {
+        if (typeof showSyncToast === 'function') {
+            showSyncToast('Modo sin conexión activo. Tu progreso se guardará offline.', 'info');
+        }
+        const syncPill = document.getElementById('mcer-offline-sync-pill');
+        if (syncPill) {
+            syncPill.style.display = 'inline-flex';
+            syncPill.className = 'mcer-sync-pill offline';
+            syncPill.innerHTML = '<i class="fa-solid fa-cloud"></i> Modo Offline';
+        }
+    });
+
+    // Check offline units on launch
+    if (typeof checkOfflineUnitsExpiration === 'function') {
+        checkOfflineUnitsExpiration();
+    }
 
 });

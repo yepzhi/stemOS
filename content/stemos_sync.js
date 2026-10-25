@@ -182,8 +182,77 @@
         });
     }
 
+    // Built-in Firebase Firestore Sender for MCER Progression
+    function defaultFirestoreSender(mutation) {
+        if (typeof window === 'undefined') return Promise.resolve(mutation);
+
+        var db = null;
+        if (window.STEMOS_FIREBASE_CONFIG && typeof window.STEMOS_FIREBASE_CONFIG.getDb === 'function') {
+            db = window.STEMOS_FIREBASE_CONFIG.getDb();
+        } else if (typeof window.firebase !== 'undefined' && window.firebase.firestore) {
+            try { db = window.firebase.firestore(); } catch (_) {}
+        }
+
+        var currentUser = null;
+        if (typeof window.firebase !== 'undefined' && window.firebase.auth) {
+            try { currentUser = window.firebase.auth().currentUser; } catch (_) {}
+        }
+        if (!currentUser && window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.getAuthUser === 'function') {
+            currentUser = window.STEMOS_FIREBASE.getAuthUser();
+        }
+        var userId = (currentUser && (currentUser.uid || currentUser.id || currentUser.matricula)) || 'student-local';
+        var instId = (currentUser && currentUser.institutionId) || 'tecnm-saltillo';
+
+        if (!db) {
+            // Air-gapped fallback: update local Firebase Adapter state
+            if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.updateStudentProgress === 'function' && mutation.payload) {
+                try {
+                    window.STEMOS_FIREBASE.updateStudentProgress(userId, {
+                        xp: mutation.payload.xpEarned || 0,
+                        progress: mutation.payload.progress || 100,
+                        activityText: 'Completó ' + (mutation.payload.unitTitle || 'Unidad MCER')
+                    });
+                } catch (_) {}
+            }
+            return Promise.resolve(mutation);
+        }
+
+        if (mutation.entityType === 'MCER_UNIT_PROGRESS') {
+            var p = mutation.payload || {};
+            return db.collection('institutions').doc(instId)
+                .collection('students').doc(userId)
+                .collection('mcer_progress').doc(p.unitId || 'unit-unknown')
+                .set({
+                    unitId: p.unitId,
+                    unitTitle: p.unitTitle || '',
+                    cefr: p.cefr || 'A1',
+                    score: p.score || 0,
+                    passed: Boolean(p.passed),
+                    xpEarned: p.xpEarned || 0,
+                    completedAt: p.completedAt || new Date().toISOString(),
+                    syncedAt: new Date().toISOString()
+                }, { merge: true })
+                .then(function () {
+                    if (p.xpEarned && typeof window.firebase !== 'undefined' && window.firebase.firestore && window.firebase.firestore.FieldValue) {
+                        try {
+                            db.collection('institutions').doc(instId).collection('students').doc(userId).update({
+                                xp: window.firebase.firestore.FieldValue.increment(p.xpEarned),
+                                lastActiveAt: new Date().toISOString()
+                            });
+                        } catch (_) {}
+                    }
+                    return mutation;
+                }).catch(function (err) {
+                    console.warn('[stemOS Sync] Firestore write error, retrying later:', err);
+                    throw err;
+                });
+        }
+
+        return Promise.resolve(mutation);
+    }
+
     var api = {
-        version: '1.0.0-phase88',
+        version: '1.1.0-phase88',
 
         isOnline: function () {
             return isOnline;
@@ -199,11 +268,13 @@
             }
         },
 
-        // Mock flush for unit tests and actual sync loop
+        // Flush queue to Firestore or custom sender
         flushQueue: function (customSender) {
             if (isSyncing) return Promise.resolve({ synced: 0, status: 'already_syncing' });
             isSyncing = true;
             notifyListeners('sync_start', {});
+
+            var sender = (typeof customSender === 'function') ? customSender : defaultFirestoreSender;
 
             return getPendingMutations().then(function (pending) {
                 if (pending.length === 0) {
@@ -213,26 +284,32 @@
                 }
 
                 var syncPromises = pending.map(function (mutation) {
-                    if (typeof customSender === 'function') {
-                        return customSender(mutation).then(function () {
-                            mutation.status = 'synced';
-                            return mutation;
-                        }).catch(function (err) {
-                            mutation.retries += 1;
-                            // Exponential backoff
-                            mutation.retryAfter = Date.now() + Math.min(30000, Math.pow(2, mutation.retries) * 1000);
-                            return mutation;
+                    return sender(mutation).then(function () {
+                        mutation.status = 'synced';
+                        return getDB().then(function (db) {
+                            if (!db) return mutation;
+                            return new Promise(function (res) {
+                                var tx = db.transaction(STORE_NAME, 'readwrite');
+                                var store = tx.objectStore(STORE_NAME);
+                                store.delete(mutation.id);
+                                tx.oncomplete = function () { res(mutation); };
+                                tx.onerror = function () { res(mutation); };
+                            });
                         });
-                    }
-                    // Default simulate success
-                    mutation.status = 'synced';
-                    return Promise.resolve(mutation);
+                    }).catch(function (err) {
+                        mutation.retries += 1;
+                        mutation.retryAfter = Date.now() + Math.min(30000, Math.pow(2, mutation.retries) * 1000);
+                        return mutation;
+                    });
                 });
 
                 return Promise.all(syncPromises).then(function (results) {
                     isSyncing = false;
                     var syncedCount = results.filter(function (r) { return r.status === 'synced'; }).length;
                     notifyListeners('sync_complete', { synced: syncedCount });
+                    if (syncedCount > 0) {
+                        notifyListeners('firestore_synced', { synced: syncedCount });
+                    }
                     return { synced: syncedCount, total: results.length };
                 });
             });

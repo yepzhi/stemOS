@@ -5025,8 +5025,7 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
 #modal-mcer-unit .academic-modal-header {
     flex-shrink: 0;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    flex-direction: column;
     padding: 16px 24px 14px 24px !important;
     margin: 0 !important;
     border-bottom: 1px solid #e2e8f0 !important;
@@ -5060,6 +5059,112 @@ p, .info-node-desc, .page-subtitle, .cert-body-text {
 #modal-mcer-unit .modal-close:hover {
     background: #e2e8f0;
     color: #0f172a;
+}
+
+/* Offline Download & Sync Controls */
+.btn-mcer-offline-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    min-height: 40px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1.5px solid #0284c7;
+    background: #f0f9ff;
+    color: #0284c7;
+    white-space: nowrap;
+}
+
+.btn-mcer-offline-download:hover {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.btn-mcer-offline-download.active {
+    background: #ecfdf5;
+    border-color: #10b981;
+    color: #047857;
+}
+
+.btn-mcer-offline-download.downloading {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #64748b;
+    cursor: wait;
+}
+
+.btn-mcer-offline-download.expired {
+    background: #fffbeb;
+    border-color: #f59e0b;
+    color: #b45309;
+}
+
+.mcer-sync-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    transition: all 0.2s ease;
+}
+
+.mcer-sync-pill.offline {
+    background: #fffbeb;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+
+.mcer-sync-pill.synced {
+    background: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+}
+
+.mcer-sync-pill.syncing {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+}
+
+/* Global Sync Toast */
+.stemos-sync-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 10000;
+    background: #0f172a;
+    color: #ffffff;
+    padding: 12px 18px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    animation: toastSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    max-width: 90vw;
+}
+
+.stemos-sync-toast.success {
+    background: #065f46;
+    border: 1px solid #34d399;
+}
+
+.stemos-sync-toast.info {
+    background: #1e3a8a;
+    border: 1px solid #60a5fa;
+}
+
+@keyframes toastSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Stepper Track with Arrows */

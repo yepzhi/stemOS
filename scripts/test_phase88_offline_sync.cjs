@@ -167,8 +167,8 @@ async function runAllTests() {
   const swPath = path.join(ROOT_DIR, 'sw.js');
   const swContent = fs.readFileSync(swPath, 'utf8');
 
-  test('sw.js CACHE_NAME bumped to stemos-lxp-v6.8.0-enterprise-sync', () => {
-    assert(swContent.includes("CACHE_NAME = 'stemos-lxp-v6.8.0-enterprise-sync'"), 'Cache name matches Phase 88');
+  test('sw.js CACHE_NAME bumped to stemos-lxp-v6.8.x', () => {
+    assert(/CACHE_NAME = 'stemos-lxp-v6\.8\.\d+/.test(swContent), 'Cache name matches Phase 88+');
   });
 
   test('sw.js precaches /content/stemos_sync.js', () => {

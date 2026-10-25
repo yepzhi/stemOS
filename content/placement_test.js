@@ -1088,7 +1088,56 @@
     'i understand your concern about delivery': '/content/audio/pt-l08.mp3',
     'we are running short on time': '/content/audio/pt-l09.mp3',
     'our containment action was fully effective': '/content/audio/pt-l10.mp3',
-    'welcome to stemos': '/content/audio/pt-test-audio.mp3'
+    'welcome to stemos': '/content/audio/pt-test-audio.mp3',
+
+    // stemOS MCER Track A1 Unit 1 Pre-rendered Audio Assets
+    'are you alex rivera': '/content/audio/mcer/a1-u1-d1.mp3',
+    'welcome to the team. are you alex rivera': '/content/audio/mcer/a1-u1-d1.mp3',
+    'pleasure to meet you in person': '/content/audio/mcer/a1-u1-d2.mp3',
+    'good morning, mark. yes, i am': '/content/audio/mcer/a1-u1-d2.mp3',
+    'how do you spell your last name': '/content/audio/mcer/a1-u1-d3.mp3',
+    'it is r-i-v-e-r-a': '/content/audio/mcer/a1-u1-d4.mp3',
+    'rivera. what is your email address': '/content/audio/mcer/a1-u1-d4.mp3',
+    'mark@stemos.org': '/content/audio/mcer/a1-u1-d5.mp3',
+    'welcome aboard': '/content/audio/mcer/a1-u1-d5.mp3',
+    'thank you, mark. i am very happy to be here': '/content/audio/mcer/a1-u1-d6.mp3',
+    'mark says: good morning': '/content/audio/mcer/a1-u1-dialogue-full.mp3',
+    'mark: good morning': '/content/audio/mcer/a1-u1-dialogue-full.mp3',
+
+    // A1 Unit 1 Vocab & Pronunciation
+    'hello! my name is alex': '/content/audio/mcer/a1-u1-vocab-hello.mp3',
+    'hello. hello! my name is alex': '/content/audio/mcer/a1-u1-vocab-hello.mp3',
+    'welcome to our team': '/content/audio/mcer/a1-u1-vocab-welcome.mp3',
+    'welcome. welcome to our team': '/content/audio/mcer/a1-u1-vocab-welcome.mp3',
+    'what is your last name': '/content/audio/mcer/a1-u1-vocab-name.mp3',
+    'name. what is your last name': '/content/audio/mcer/a1-u1-vocab-name.mp3',
+    'are you a new student here': '/content/audio/mcer/a1-u1-vocab-student.mp3',
+    'student. are you a new student here': '/content/audio/mcer/a1-u1-vocab-student.mp3',
+    'diana is my new coworker': '/content/audio/mcer/a1-u1-vocab-coworker.mp3',
+    'coworker. diana is my new coworker': '/content/audio/mcer/a1-u1-vocab-coworker.mp3',
+    'it is a pleasure to meet you': '/content/audio/mcer/a1-u1-vocab-pleasure.mp3',
+    'pleasure. it is a pleasure to meet you': '/content/audio/mcer/a1-u1-vocab-pleasure.mp3',
+    'mark is an experienced colleague': '/content/audio/mcer/a1-u1-vocab-colleague.mp3',
+    'colleague. mark is an experienced colleague': '/content/audio/mcer/a1-u1-vocab-colleague.mp3',
+    'good morning, everyone': '/content/audio/mcer/a1-u1-vocab-morning.mp3',
+    'morning. good morning, everyone': '/content/audio/mcer/a1-u1-vocab-morning.mp3',
+
+    // A1 Unit 1 Listening Lab & Reading
+    'all incoming engineering interns must step to window 2': '/content/audio/mcer/a1-u1-listening-lab.mp3',
+    'visitor badges are temporary': '/content/audio/mcer/a1-u1-listening-lab.mp3',
+    'welcome to northern tech manufacturing facility': '/content/audio/mcer/a1-u1-reading-passage.mp3',
+    'assigned equipment lockers are located in corridor b': '/content/audio/mcer/a1-u1-reading-passage.mp3',
+
+    // A1 Unit 1 Plant Crucible Model
+    'my name is alex rivera, employee number 84029': '/content/audio/mcer/a1-u1-crucible-model.mp3',
+    'mechatronics intern assigned to sub-assembly line 3': '/content/audio/mcer/a1-u1-crucible-model.mp3',
+
+    // A1 Unit 2 Assets
+    'today we review equipment safety procedures': '/content/audio/mcer/a1-u2-d1.mp3',
+    'i have inspected my personal protective equipment': '/content/audio/mcer/a1-u2-d2.mp3',
+    'safety is our top operational priority': '/content/audio/mcer/a1-u2-vocab-safety.mp3',
+    'daily machine inspection begins at seven am': '/content/audio/mcer/a1-u2-vocab-inspection.mp3',
+    'line 2 conveyor speed is calibrated': '/content/audio/mcer/a1-u2-listening-lab.mp3'
   };
 
   let activePlacementAudio = null;

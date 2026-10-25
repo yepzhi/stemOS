@@ -119,6 +119,52 @@
     [normalizeKey("Welcome to stemOS. Audio check complete. Your speakers and speech synthesis are working perfectly.")]: '/content/audio/pt-test-audio.mp3'
   };
 
+  // stemOS MCER Tracks Static Audio Map (Piper Neural High-Fidelity Pre-Rendered Offline Assets)
+  const MCER_STATIC_AUDIO = {
+    // Dialogue lines
+    [normalizeKey("Good morning! Welcome to the team. Are you Alex Rivera?")]: '/content/audio/mcer/a1-u1-d1.mp3',
+    [normalizeKey("Good morning, Mark. Yes, I am. It is a pleasure to meet you in person.")]: '/content/audio/mcer/a1-u1-d2.mp3',
+    [normalizeKey("It is great to meet you too, Alex. How do you spell your last name?")]: '/content/audio/mcer/a1-u1-d3.mp3',
+    [normalizeKey("It is R-I-V-E-R-A. Rivera. What is your email address?")]: '/content/audio/mcer/a1-u1-d4.mp3',
+    [normalizeKey("My email is mark@stemos.org. Welcome aboard!")]: '/content/audio/mcer/a1-u1-d5.mp3',
+    [normalizeKey("Thank you, Mark. I am very happy to be here.")]: '/content/audio/mcer/a1-u1-d6.mp3',
+    [normalizeKey("Good morning! Welcome to the team. Are you Alex Rivera? Good morning, Mark. Yes, I am. It is a pleasure to meet you in person. It is great to meet you too, Alex. How do you spell your last name? It is R-I-V-E-R-A. Rivera. What is your email address? My email is mark@stemos.org. Welcome aboard! Thank you, Mark. I am very happy to be here.")]: '/content/audio/mcer/a1-u1-dialogue-full.mp3',
+    [normalizeKey("Mark says: Good morning! Welcome to the team. Are you Alex Rivera?. Alex says: Good morning, Mark. Yes, I am. It is a pleasure to meet you in person.. Mark says: It is great to meet you too, Alex. How do you spell your last name?. Alex says: It is R-I-V-E-R-A. Rivera. What is your email address?. Mark says: My email is mark@stemos.org. Welcome aboard!. Alex says: Thank you, Mark. I am very happy to be here.")]: '/content/audio/mcer/a1-u1-dialogue-full.mp3',
+    
+    // Vocab terms + examples
+    [normalizeKey("Hello")]: '/content/audio/mcer/a1-u1-vocab-hello.mp3',
+    [normalizeKey("Hello. Hello! My name is Alex.")]: '/content/audio/mcer/a1-u1-vocab-hello.mp3',
+    [normalizeKey("Welcome")]: '/content/audio/mcer/a1-u1-vocab-welcome.mp3',
+    [normalizeKey("Welcome. Welcome to our team.")]: '/content/audio/mcer/a1-u1-vocab-welcome.mp3',
+    [normalizeKey("Name")]: '/content/audio/mcer/a1-u1-vocab-name.mp3',
+    [normalizeKey("Name. What is your last name?")]: '/content/audio/mcer/a1-u1-vocab-name.mp3',
+    [normalizeKey("Student")]: '/content/audio/mcer/a1-u1-vocab-student.mp3',
+    [normalizeKey("Student. Are you a new student here?")]: '/content/audio/mcer/a1-u1-vocab-student.mp3',
+    [normalizeKey("Coworker")]: '/content/audio/mcer/a1-u1-vocab-coworker.mp3',
+    [normalizeKey("Coworker. Diana is my new coworker.")]: '/content/audio/mcer/a1-u1-vocab-coworker.mp3',
+    [normalizeKey("Pleasure")]: '/content/audio/mcer/a1-u1-vocab-pleasure.mp3',
+    [normalizeKey("Pleasure. It is a pleasure to meet you.")]: '/content/audio/mcer/a1-u1-vocab-pleasure.mp3',
+    [normalizeKey("Colleague")]: '/content/audio/mcer/a1-u1-vocab-colleague.mp3',
+    [normalizeKey("Colleague. Mark is an experienced colleague.")]: '/content/audio/mcer/a1-u1-vocab-colleague.mp3',
+    [normalizeKey("Morning")]: '/content/audio/mcer/a1-u1-vocab-morning.mp3',
+    [normalizeKey("Morning. Good morning, everyone.")]: '/content/audio/mcer/a1-u1-vocab-morning.mp3',
+
+    // Listening Lab & Reading
+    [normalizeKey("Good morning. All incoming engineering interns must step to Window 2. Please state your full legal name, spelling your last name clearly, and provide your university affiliate identification number. Remember that visitor badges are temporary and expire daily at seventeen hundred hours.")]: '/content/audio/mcer/a1-u1-listening-lab.mp3',
+    [normalizeKey("Welcome to Northern Tech Manufacturing Facility. All incoming engineering interns must complete their security credential verification by 08:30 AM on Day One. Please bring your official university credentials and emergency contact sheet to Human Resources on the second floor, Room 210. Assigned equipment lockers are located in Corridor B. Personal cell phones must remain inside your locker during active machine operations.")]: '/content/audio/mcer/a1-u1-reading-passage.mp3',
+    
+    // Plant Crucible Model
+    [normalizeKey("Good morning. My name is Alex Rivera, employee number 84029. I am the new mechatronics intern assigned to Sub-Assembly Line 3 under shift supervisor Mark Reynolds.")]: '/content/audio/mcer/a1-u1-crucible-model.mp3',
+
+    // Unit 2 Assets
+    [normalizeKey("Good morning, team. Today we review equipment safety procedures on the shop floor.")]: '/content/audio/mcer/a1-u2-d1.mp3',
+    [normalizeKey("Understood, Steve. I have inspected my personal protective equipment.")]: '/content/audio/mcer/a1-u2-d2.mp3',
+    [normalizeKey("Good morning, team. Today we review equipment safety procedures on the shop floor. Understood, Steve. I have inspected my personal protective equipment.")]: '/content/audio/mcer/a1-u2-dialogue-full.mp3',
+    [normalizeKey("Safety. Safety is our top operational priority.")]: '/content/audio/mcer/a1-u2-vocab-safety.mp3',
+    [normalizeKey("Inspection. Daily machine inspection begins at seven AM.")]: '/content/audio/mcer/a1-u2-vocab-inspection.mp3',
+    [normalizeKey("Attention technicians. Line 2 conveyor speed is calibrated at point five meters per second. Maintain safe distance.")]: '/content/audio/mcer/a1-u2-listening-lab.mp3'
+  };
+
   function cleanText(text) {
     if (!text) return '';
     return text
@@ -249,6 +295,12 @@
       return;
     }
 
+    // 1c. Check pre-rendered stemOS MCER Track Audio (Zero-latency Piper/Neural static assets)
+    if (MCER_STATIC_AUDIO[normKey]) {
+      playAudioUrl(MCER_STATIC_AUDIO[normKey], sessionId, { ...options, rawText: cleaned });
+      return;
+    }
+
     // 2. Check in-memory audio blob cache for instant replay
     const cacheKey = `${voice}_${speed}_${cleaned}`;
     if (audioBlobCache.has(cacheKey)) {
@@ -350,12 +402,14 @@
   }
 
   return {
-    version: '1.2.0',
+    version: '1.3.0',
     engine: 'Piper Neural (Mini PC Edge) + Web Speech API Fallback',
     cleanText: cleanText,
     speak: speak,
     stop: stop,
     isPlaying: () => isPlaying,
+    MCER_STATIC_AUDIO: MCER_STATIC_AUDIO,
+    getMcerAudioList: () => Array.from(new Set(Object.values(MCER_STATIC_AUDIO))),
     clearCache: () => {
       audioBlobCache.forEach(url => URL.revokeObjectURL(url));
       audioBlobCache.clear();
