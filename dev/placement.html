@@ -1211,6 +1211,27 @@
                     </svg>
                 </button>
 
+                <!-- WAIVER: Iniciar desde Nivel 0 / Renuncia de Examen Diagnóstico -->
+                <div class="waiver-placement-card" style="margin-top: 18px; margin-bottom: 6px; background: #ffffff; border: 1.5px dashed #059669; border-radius: 16px; padding: 18px 20px; text-align: left; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.08);">
+                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                        <div style="width: 38px; height: 38px; border-radius: 10px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; flex-shrink: 0; margin-top: 2px;">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px;">
+                                <span style="background: #ecfdf5; color: #047857; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; text-transform: uppercase;">Waiver de Evaluación</span>
+                                <strong style="color: #0f172a; font-size: 0.95rem;">¿Empiezas desde cero o tienes nivel 0 de inglés?</strong>
+                            </div>
+                            <p style="margin: 0 0 12px 0; font-size: 0.85rem; color: #475569; line-height: 1.5;">
+                                Si no tienes conocimientos previos de inglés, no necesitas presentar el examen diagnóstico de 30 minutos. Puedes <strong>renunciar a la evaluación (Waiver)</strong>, declarar tu nivel inicial como <strong>Nivel 0 / A1 Canónico</strong> y comenzar inmediatamente con tus lecciones.
+                            </p>
+                            <button type="button" class="btn" id="btn-waive-placement" onclick="handlePlacementWaiver()" style="width: 100%; border: 1.5px solid #059669; color: #047857; background: #f0fdf4; font-weight: 800; font-size: 0.9rem; padding: 11px 16px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 8px rgba(5, 150, 105, 0.12); transition: all 0.2s ease;">
+                                <i class="fa-solid fa-hand"></i> Declarar Nivel 0 y Renunciar al Examen (Comenzar en A1)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="resume-container">
                     <div class="resume-prompt" id="resume-prompt-text">¿Ya realizaste tu evaluación y tienes un folio previo?</div>
                     <div class="resume-row">
@@ -1362,6 +1383,12 @@
                     <i class="fa-solid fa-bolt"></i>
                     <span id="btn-start-quiz-text">¡INICIAR EVALUACIÓN DIAGNÓSTICA! (30 MIN)</span>
                 </button>
+
+                <div style="margin-top: 14px; text-align: center;">
+                    <button type="button" onclick="handlePlacementWaiver()" style="background: none; border: none; color: #059669; font-weight: 700; font-size: 0.88rem; cursor: pointer; text-decoration: underline; padding: 6px 12px; display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-hand"></i> No deseo tomar el test. Declaro Nivel 0 (Principiante) y renuncio a la evaluación
+                    </button>
+                </div>
             </div>
         </section>
 
@@ -2791,6 +2818,98 @@
                 window.location.href = `app.html?onboarding=mcer&level=${res.level}&folio=${encodeURIComponent(passport.folio)}`;
             });
         }
+
+        // ── Diagnostic Waiver: Direct Start at Level 0 / A1 ──
+        function handlePlacementWaiver() {
+            const confirmed = confirm(
+                "¿Confirmas que deseas renunciar a la evaluación diagnóstica (Waiver)?\n\n" +
+                "• Declaras tener Nivel 0 (Principiante sin conocimientos previos).\n" +
+                "• Se te asignará Nivel A1 canónico de forma inmediata.\n" +
+                "• Podrás acceder a los cursos base del MCER sin presentar el examen de 30 minutos.\n\n" +
+                "¿Deseas continuar?"
+            );
+            if (!confirmed) return;
+
+            const folio = 'WAIVER-A1-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+            const dateStr = new Date().toISOString();
+
+            const student = state.student || {};
+            const studentName = (student.firstName ? `${student.firstName} ${student.lastName}` : (localStorage.getItem('stemos_user_name') || 'Estudiante stemOS'));
+            const studentEmail = student.email || localStorage.getItem('stemos_user_email') || '';
+
+            const result = {
+                level: 'A1',
+                assignedLevel: 'A1',
+                score: 0,
+                percentage: 0,
+                total: 32,
+                waived: true,
+                waiverDeclaration: 'Student declared Level 0 beginner and waived diagnostic test',
+                grammarScore: 0,
+                listeningScore: 0,
+                readingScore: 0,
+                date: dateStr,
+                folio: folio
+            };
+
+            const payload = {
+                student: {
+                    ...student,
+                    firstName: student.firstName || 'Estudiante',
+                    lastName: student.lastName || 'stemOS',
+                    email: studentEmail,
+                    folio: folio,
+                    assignedLevel: 'A1'
+                },
+                result: result,
+                answers: {},
+                waived: true,
+                completedAt: dateStr
+            };
+
+            try {
+                localStorage.setItem(`stemos_diag_${folio}`, JSON.stringify(payload));
+                localStorage.setItem('stemos_placement_test', JSON.stringify(payload));
+                localStorage.setItem('stemos_placement_result', JSON.stringify(result));
+                localStorage.setItem('stemos_placement_completed', 'true');
+                localStorage.setItem('stemos_placement_waived', 'true');
+                localStorage.setItem('stemos_user_level', 'A1');
+                localStorage.setItem('stemos_active_mcer_level', 'A1');
+                
+                const passport = {
+                    student: payload.student,
+                    level: 'A1',
+                    score: 0,
+                    percentage: 0,
+                    waived: true,
+                    folio: folio,
+                    issuedAt: dateStr,
+                    verifiedAt: dateStr,
+                    fastTrackEligible: false,
+                    recommendedTrackId: 'mcer-track-a1'
+                };
+                localStorage.setItem('stemos_diagnostic_passport', JSON.stringify(passport));
+            } catch(e) {}
+
+            // Sync to universal ecosystem adapter & Cloud Firestore if active
+            if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.savePlacementDiagnostic === 'function') {
+                try {
+                    window.STEMOS_FIREBASE.savePlacementDiagnostic(payload);
+                } catch(e) {}
+            }
+
+            // Direct Cloud Firestore write
+            if (typeof firebase !== 'undefined' && firebase.firestore) {
+                try {
+                    const db = firebase.firestore();
+                    db.collection('placement_tests').doc(folio).set(payload, { merge: true }).catch(() => {});
+                } catch(e) {}
+            }
+
+            alert("¡Renuncia confirmada! Tu nivel ha sido establecido en A1 (Principiante desde Cero). Serás redirigido a la plataforma.");
+            window.location.href = `app.html?onboarding=mcer&level=A1&waived=true&folio=${encodeURIComponent(folio)}`;
+        }
+        window.handlePlacementWaiver = handlePlacementWaiver;
 
         // ── Initialization Entry Point ──
         window.addEventListener('DOMContentLoaded', () => {

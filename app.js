@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const passport = localStorage.getItem('stemos_diagnostic_passport');
             if (passport) return true;
             if (localStorage.getItem('stemos_placement_completed') === 'true') return true;
+            if (localStorage.getItem('stemos_placement_waived') === 'true') return true;
             if (localStorage.getItem('stemos_active_mcer_level')) return true;
             if (localStorage.getItem('stemos_user_level')) return true;
             const stored = localStorage.getItem('stemos_placement_test') || localStorage.getItem('stemos_placement_result');
@@ -137,6 +138,83 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mcerFilterA1) mcerFilterA1.click();
         setTimeout(() => {
             openMcerUnitModal('a1-u1', false);
+        }, 150);
+    };
+
+    window.handlePlacementWaiverFromApp = function() {
+        const confirmed = confirm(
+            "¿Confirmas que deseas renunciar al Examen Diagnóstico (Waiver)?\n\n" +
+            "• Declaras que tu nivel de inglés es 0 (Principiante Absoluto).\n" +
+            "• Tu cuenta quedará configurada en Nivel A1 canónico inmediatamente.\n" +
+            "• El aviso de diagnóstico pendiente se desactivará y podrás estudiar tus módulos sin restricciones.\n\n" +
+            "¿Deseas continuar?"
+        );
+        if (!confirmed) return;
+
+        const folio = 'WAIVER-A1-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+        const dateStr = new Date().toISOString();
+
+        const result = {
+            level: 'A1',
+            assignedLevel: 'A1',
+            score: 0,
+            percentage: 0,
+            waived: true,
+            waiverDeclaration: 'Student declared Level 0 beginner and waived diagnostic test',
+            date: dateStr,
+            folio: folio
+        };
+
+        const payload = {
+            result: result,
+            waived: true,
+            completedAt: dateStr
+        };
+
+        try {
+            localStorage.setItem('stemos_placement_test', JSON.stringify(payload));
+            localStorage.setItem('stemos_placement_result', JSON.stringify(result));
+            localStorage.setItem('stemos_placement_completed', 'true');
+            localStorage.setItem('stemos_placement_waived', 'true');
+            localStorage.setItem('stemos_user_level', 'A1');
+            localStorage.setItem('stemos_active_mcer_level', 'A1');
+            localStorage.setItem('stemos_diagnostic_passport', JSON.stringify({
+                level: 'A1',
+                score: 0,
+                percentage: 0,
+                waived: true,
+                folio: folio,
+                issuedAt: dateStr,
+                verifiedAt: dateStr,
+                fastTrackEligible: false,
+                recommendedTrackId: 'mcer-track-a1'
+            }));
+        } catch(e) {}
+
+        const modal = document.getElementById('modal-placement-required');
+        if (modal) {
+            if (typeof modal.close === 'function') modal.close();
+            else modal.style.display = 'none';
+        }
+
+        const pendingBanner = document.getElementById('panel-placement-pending-banner');
+        if (pendingBanner) pendingBanner.style.display = 'none';
+
+        if (typeof syncUserPlacementBadge === 'function') {
+            syncUserPlacementBadge();
+        }
+
+        alert("¡Nivel 0 Acreditado por Renuncia (Waiver)! Tu perfil está listo en Nivel A1.");
+
+        if (typeof switchDashboardView === 'function') {
+            switchDashboardView('all-units');
+        }
+        const btnWorldMcer = document.getElementById('btn-world-mcer');
+        if (btnWorldMcer) btnWorldMcer.click();
+        const mcerFilterA1 = document.querySelector('#mcer-level-filter-bar .ed-filter-chip[data-mcer-level="A1"]');
+        if (mcerFilterA1) mcerFilterA1.click();
+        setTimeout(() => {
+            if (typeof openMcerUnitModal === 'function') openMcerUnitModal('a1-u1', false);
         }, 150);
     };
 
@@ -5429,7 +5507,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (badgePill && badgeText) {
             badgePill.style.display = 'inline-flex';
             if (userLevel === 'A1') {
-                badgeText.textContent = 'Nivel MCER A1 Asignado (Base)';
+                const isWaived = localStorage.getItem('stemos_placement_waived') === 'true';
+                badgeText.textContent = isWaived ? 'Nivel A1 Asignado (Waiver Nivel 0)' : 'Nivel MCER A1 Asignado (Base)';
                 badgePill.style.background = '#fef3c7';
                 badgePill.style.color = '#b45309';
                 badgePill.style.borderColor = '#fde68a';
