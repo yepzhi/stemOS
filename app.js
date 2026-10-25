@@ -5045,9 +5045,20 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
-        // Reset to first tab
+        // Render Upfront Foundations (Richmond Methodology) & Writing Lab
+        renderMcerFundamentals(unit);
         renderMcerWritingLab(unit);
-        switchMcerModalTab('dialogue');
+
+        // Control Crucible (Crisol IA) Tab Visibility:
+        // Strictly hidden for A1 and A2 (Universal CEFR foundations, no premature plant simulations)
+        const tabCrucible = document.getElementById('mcer-tab-crucible');
+        const isBeginnerLevel = (unit.cefr === 'A1' || unit.cefr === 'A2');
+        if (tabCrucible) {
+            tabCrucible.style.display = isBeginnerLevel ? 'none' : 'inline-block';
+        }
+
+        // Reset to first tab: Fundamentos & Gramática (UPFRONT)
+        switchMcerModalTab('fundamentals');
         if (typeof modal.showModal === 'function') modal.showModal();
         else modal.setAttribute('open', '');
     }
@@ -5068,16 +5079,226 @@ document.addEventListener('DOMContentLoaded', () => {
             const isActive = b.dataset.mcerTab === tabKey;
             b.classList.toggle('active', isActive);
             b.style.color = isActive ? '#0284c7' : '#64748b';
-            b.style.borderBottom = isActive ? '2px solid #0284c7' : 'none';
+            b.style.background = isActive ? '#ffffff' : 'transparent';
+            b.style.boxShadow = isActive ? '0 1px 3px rgba(0,0,0,0.06)' : 'none';
         });
 
-        const screens = ['dialogue', 'vocab', 'listening', 'grammar', 'reading', 'crucible', 'quiz'];
-        const allScreens = screens.concat(['writing']);
-        allScreens.forEach(s => {
+        const screens = ['fundamentals', 'dialogue', 'vocab', 'listening', 'grammar', 'reading', 'crucible', 'quiz', 'writing'];
+        screens.forEach(s => {
             const el = document.getElementById(`mcer-screen-${s}`);
             if (el) el.style.display = (s === tabKey) ? 'block' : 'none';
         });
     }
+
+    function renderMcerFundamentals(unit) {
+        // Can-Do Statement
+        const candoTitle = document.getElementById('mcer-fund-cando-title');
+        const candoDesc = document.getElementById('mcer-fund-cando-desc');
+        if (candoTitle) candoTitle.textContent = unit.titleES || unit.title || 'Fundamentos de la Lección';
+        if (candoDesc) candoDesc.textContent = unit.canDo || unit.communicativeGoal || 'Aprende las estructuras fundamentales y el vocabulario clave antes de ponerlos en práctica.';
+
+        // Visual Grammar Blueprint Box
+        const grammarTag = document.getElementById('mcer-fund-grammar-tag');
+        const formulaBox = document.getElementById('mcer-fund-grammar-formula-box');
+        const explanationEl = document.getElementById('mcer-fund-grammar-explanation');
+        const tipsBox = document.getElementById('mcer-fund-grammar-tips-box');
+
+        if (grammarTag) grammarTag.textContent = unit.grammarFocus ? unit.grammarFocus.split(',')[0].trim() : 'Estructura Sintáctica';
+
+        if (formulaBox) {
+            if (unit.grammarBox && unit.grammarBox.formula) {
+                formulaBox.innerHTML = unit.grammarBox.formula;
+            } else {
+                const gFocus = (unit.grammarFocus || '').toLowerCase();
+                let formulaHtml = '';
+                if (gFocus.includes('to be') || gFocus.includes('am/is/are')) {
+                    formulaHtml = `
+                        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:8px;">
+                            <span class="mcer-formula-chip subject"><i class="fa-solid fa-user"></i> Sujeto (I / You / He...)</span>
+                            <span class="mcer-formula-chip operator">+</span>
+                            <span class="mcer-formula-chip verb"><i class="fa-solid fa-link"></i> am / is / are</span>
+                            <span class="mcer-formula-chip operator">+</span>
+                            <span class="mcer-formula-chip complement"><i class="fa-solid fa-id-badge"></i> Nombre / Puesto / Origen</span>
+                        </div>
+                        <div style="font-size:0.78rem; color:#64748b; font-family:var(--font-mono);">
+                            Ejemplos: <strong>I am Alex.</strong> / <strong>She is an engineer.</strong> / <strong>They are coworkers.</strong>
+                        </div>
+                    `;
+                } else if (gFocus.includes('present') || gFocus.includes('habits') || gFocus.includes('routine')) {
+                    formulaHtml = `
+                        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:8px;">
+                            <span class="mcer-formula-chip subject"><i class="fa-solid fa-user"></i> Sujeto</span>
+                            <span class="mcer-formula-chip operator">+</span>
+                            <span class="mcer-formula-chip verb"><i class="fa-solid fa-bolt"></i> Verbo en Presente (work / works)</span>
+                            <span class="mcer-formula-chip operator">+</span>
+                            <span class="mcer-formula-chip complement"><i class="fa-regular fa-clock"></i> Horario / Hábito</span>
+                        </div>
+                        <div style="font-size:0.78rem; color:#64748b; font-family:var(--font-mono);">
+                            Ejemplos: <strong>I start at 8:00 AM.</strong> / <strong>Carlos manages the shift.</strong>
+                        </div>
+                    `;
+                } else {
+                    formulaHtml = `
+                        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:8px;">
+                            <span class="mcer-formula-chip subject"><i class="fa-solid fa-code"></i> Patrón Sintáctico</span>
+                            <span class="mcer-formula-chip operator">:</span>
+                            <span class="mcer-formula-chip verb">${unit.grammarFocus || 'Standard CEFR Syntax'}</span>
+                        </div>
+                    `;
+                }
+                formulaBox.innerHTML = formulaHtml;
+            }
+        }
+
+        if (explanationEl) {
+            if (unit.grammarBox && unit.grammarBox.explanationES) {
+                explanationEl.innerHTML = unit.grammarBox.explanationES;
+            } else if (unit.grammarExplanation) {
+                explanationEl.innerHTML = unit.grammarExplanation;
+            } else {
+                const gFocus = (unit.grammarFocus || '').toLowerCase();
+                if (gFocus.includes('to be')) {
+                    explanationEl.innerHTML = `<strong>Regla Inductiva en Español:</strong> En inglés, el verbo <em>to be</em> tiene dos significados primordiales: <strong>ser</strong> y <strong>estar</strong>. Se conjuga según el pronombre: <code>I am</code> (yo soy/estoy), <code>you/we/they are</code> (tú eres/estás, nosotros somos/estamos, ellos son/están), y <code>he/she/it is</code> (él/ella es/está). Recuerda que a diferencia del español, en inglés el sujeto pronominal (I, you, he) <strong>nunca se omite</strong>.`;
+                } else {
+                    explanationEl.innerHTML = `<strong>Regla Inductiva en Español:</strong> Esta lección se enfoca en dominar <strong>${unit.grammarFocus || 'las estructuras básicas'}</strong>. Observa el orden de las palabras antes de escuchar el diálogo para anticipar las terminaciones y enlaces fonéticos.`;
+                }
+            }
+        }
+
+        if (tipsBox) {
+            if (unit.grammarBox && unit.grammarBox.tipsES) {
+                tipsBox.style.display = 'block';
+                tipsBox.innerHTML = `<strong><i class="fa-solid fa-lightbulb"></i> Tip de Contracción / Uso:</strong> ${unit.grammarBox.tipsES}`;
+            } else {
+                const gFocus = (unit.grammarFocus || '').toLowerCase();
+                if (gFocus.includes('to be')) {
+                    tipsBox.style.display = 'block';
+                    tipsBox.innerHTML = `<strong><i class="fa-solid fa-lightbulb"></i> Contracciones Cotidianas:</strong> En habla natural estadounidense casi siempre se usan contracciones: <code>I'm</code> (I am), <code>you're</code> (you are), <code>he's</code> (he is), <code>she's</code> (she is), <code>it's</code> (it is), <code>we're</code> (we are), <code>they're</code> (they are).`;
+                } else {
+                    tipsBox.style.display = 'none';
+                }
+            }
+        }
+
+        // Upfront Vocabulary Grid (6-8 items with Pink Stress)
+        const vocabGrid = document.getElementById('mcer-fund-vocab-grid');
+        if (vocabGrid) {
+            vocabGrid.innerHTML = '';
+            const vList = (unit.vocabulary || []).slice(0, 8);
+            vList.forEach(v => {
+                const term = v.en || v.term || '';
+                const ipa = v.ipa || '';
+                const es = v.es || '';
+                const sample = v.example || v.sample || '';
+                const stress = v.pinkStress || v.stress || term;
+
+                const card = document.createElement('div');
+                card.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px 12px; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;';
+                card.innerHTML = `
+                    <div style="flex:1;">
+                        <div style="display:flex; align-items:baseline; gap:6px; flex-wrap:wrap;">
+                            <strong style="color:#0f172a; font-size:0.92rem;">${term}</strong>
+                            <span class="pink-stress-badge">${stress}</span>
+                        </div>
+                        <div style="font-family:var(--font-mono); font-size:0.74rem; color:#64748b; margin-top:1px;">${ipa}</div>
+                        <div style="font-size:0.8rem; font-weight:700; color:#0284c7; margin-top:2px;">${es}</div>
+                        ${sample ? `<div style="font-size:0.74rem; color:#475569; margin-top:3px; font-style:italic;">"${sample}"</div>` : ''}
+                    </div>
+                    <button class="btn-play-fund-vocab" style="background:#e0f2fe; color:#0284c7; border:none; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;" title="Escuchar pronunciación">
+                        <i class="fa-solid fa-volume-high" style="font-size:0.75rem;"></i>
+                    </button>
+                `;
+                card.querySelector('.btn-play-fund-vocab').addEventListener('click', () => {
+                    if (window.STEMOS_PLACEMENT_TEST) {
+                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(`${term}. ${sample}`);
+                    }
+                });
+                vocabGrid.appendChild(card);
+            });
+        }
+
+        // Common Transfer Mistakes Grid
+        const mistakesGrid = document.getElementById('mcer-fund-mistakes-grid');
+        const mistakesContainer = document.getElementById('mcer-fund-mistakes-container');
+        if (mistakesGrid && mistakesContainer) {
+            mistakesGrid.innerHTML = '';
+            let mistakesList = [];
+            if (Array.isArray(unit.commonMistakes)) {
+                mistakesList = unit.commonMistakes;
+            } else if (typeof unit.commonMistakes === 'string') {
+                mistakesList = unit.commonMistakes.split(';').map(m => {
+                    const parts = m.split('->').map(p => p.trim());
+                    return {
+                        bad: parts[0] || '',
+                        good: parts[1] || '',
+                        exp: 'Omisión del verbo auxiliar o interferencia sintáctica directa del español.'
+                    };
+                });
+            } else if (Array.isArray(unit.falseCognates) && unit.falseCognates.length > 0) {
+                mistakesList = unit.falseCognates.map(fc => ({
+                    bad: `Confundir "${fc.term}" con "${fc.mistake}"`,
+                    good: `"${fc.term}" significa: ${fc.correct}`,
+                    exp: fc.tip || ''
+                }));
+            } else {
+                if (unit.cefr === 'A1') {
+                    mistakesList = [
+                        {
+                            bad: "I have 25 years old.",
+                            good: "I am 25 years old. (I'm 25)",
+                            exp: "En inglés la edad no se 'tiene' (have), se 'es' con el verbo to be."
+                        },
+                        {
+                            bad: "Is Carlos.",
+                            good: "He is Carlos. / This is Carlos.",
+                            exp: "En inglés nunca se omite el pronombre sujeto (I, you, he, she)."
+                        },
+                        {
+                            bad: "I am student.",
+                            good: "I am a student.",
+                            exp: "Antes de profesiones y ocupaciones singulares, siempre se usa 'a' o 'an'."
+                        }
+                    ];
+                } else if (unit.cefr === 'A2') {
+                    mistakesList = [
+                        {
+                            bad: "Last night I didn't went.",
+                            good: "Last night I didn't go.",
+                            exp: "El auxiliar 'didn't' ya indica pasado; el verbo principal va en su forma base."
+                        },
+                        {
+                            bad: "In Monday I have class.",
+                            good: "On Monday I have class.",
+                            exp: "Para los días de la semana siempre se utiliza la preposición 'on', nunca 'in'."
+                        }
+                    ];
+                }
+            }
+
+            if (mistakesList.length > 0) {
+                mistakesContainer.style.display = 'block';
+                mistakesList.slice(0, 3).forEach(m => {
+                    const mCard = document.createElement('div');
+                    mCard.className = 'mcer-mistake-card';
+                    mCard.innerHTML = `
+                        <div class="mcer-mistake-bad"><i class="fa-solid fa-circle-xmark"></i> ${m.bad}</div>
+                        <div class="mcer-mistake-good"><i class="fa-solid fa-circle-check"></i> ${m.good}</div>
+                        <div class="mcer-mistake-explanation"><strong>¿Por qué?</strong> ${m.exp}</div>
+                    `;
+                    mistakesGrid.appendChild(mCard);
+                });
+            } else {
+                mistakesContainer.style.display = 'none';
+            }
+        }
+
+        // Step 1 Next Button Listener
+        const btnFundNext = document.getElementById('btn-mcer-fund-next');
+        if (btnFundNext) {
+            btnFundNext.onclick = () => switchMcerModalTab('dialogue');
+        }
+    }
+
 
     function renderMcerWritingLab(unit) {
         const lab = unit.writingLab;

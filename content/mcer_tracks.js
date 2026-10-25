@@ -46,11 +46,33 @@
         "unitNum": 1,
         "unitNumber": 1,
         "title": "Personal & Professional Introductions",
-        "titleES": "Presentación Personal y Roles Laborales en Planta",
-        "cefrDescriptor": "Can introduce him/herself and others, state job title, exchange employee ID details, and ask simple clarifying questions.",
-        "canDo": "Presentarse con colegas y supervisores, deletrear nombres, dar números de empleado y describir puestos de trabajo simples.",
-        "grammarFocus": "Verb to be (am/is/are), Subject Pronouns, Possessive Adjectives (my, your, his, her), Question Words (What, Who, Where)",
-        "communicativeGoal": "Presentarse con colegas y supervisores, deletrear nombres, dar números de teléfono y describir puestos de trabajo simples.",
+        "titleES": "Presentación Personal, Saludos y Deletreo",
+        "cefrDescriptor": "Can introduce him/herself and others, spell names, ask and give contact details, and ask simple clarifying questions.",
+        "canDo": "Presentarte con colegas, saludar formal e informalmente, deletrear nombres y apellidos, y compartir tu correo electrónico.",
+        "grammarFocus": "Verb to be (am/is/are), Subject Pronouns (I, you, he, she), Possessive Adjectives (my, your, his, her), Question Words (What, Who, Where)",
+        "communicativeGoal": "Presentarte con colegas, saludar cordialmente, deletrear tu nombre y compartir tus datos de contacto.",
+        "grammarBox": {
+          "formula": "<div style=\"display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:8px;\"><span class=\"mcer-formula-chip subject\"><i class=\"fa-solid fa-user\"></i> Sujeto (I / You / He / She)</span><span class=\"mcer-formula-chip operator\">+</span><span class=\"mcer-formula-chip verb\"><i class=\"fa-solid fa-link\"></i> am / is / are</span><span class=\"mcer-formula-chip operator\">+</span><span class=\"mcer-formula-chip complement\"><i class=\"fa-solid fa-id-badge\"></i> Nombre / Ocupación / Origen</span></div><div style=\"font-size:0.78rem; color:#64748b; font-family:var(--font-mono);\">Ejemplos: <strong>I am Alex.</strong> / <strong>You are Mark.</strong> / <strong>She is a student.</strong></div>",
+          "explanationES": "<strong>Regla Inductiva en Español:</strong> En inglés, el verbo <em>to be</em> equivale tanto a <strong>ser</strong> como a <strong>estar</strong>. Se conjuga según el pronombre: <code>I am</code> (yo soy/estoy), <code>you are</code> (tú eres/estás), <code>he/she/it is</code> (él/ella/eso es/está), y <code>we/they are</code> (nosotros/ellos son/están). <strong>¡Regla de Oro!</strong> En inglés el sujeto pronominal (I, you, he...) <strong>nunca se omite</strong>, a diferencia del español donde decimos 'Soy Alex' directamente.",
+          "tipsES": "En el habla cotidiana en Estados Unidos siempre se utilizan contracciones: <code>I'm</code> (I am), <code>you're</code> (you are), <code>he's</code> (he is), <code>she's</code> (she is), <code>it's</code> (it is), <code>we're</code> (we are), <code>they're</code> (they are). Para formular preguntas, el verbo to be se coloca al inicio: <em>Are you Alex? — Yes, I am.</em>"
+        },
+        "commonMistakes": [
+          {
+            "bad": "I have 20 years old.",
+            "good": "I am 20 years old. / I'm 20.",
+            "exp": "En inglés la edad no se 'tiene' (have), se 'es' con el verbo to be (am/is/are)."
+          },
+          {
+            "bad": "Is Carlos.",
+            "good": "He is Carlos. / This is Carlos.",
+            "exp": "En inglés nunca omitimos el pronombre sujeto (I, you, he, she, it)."
+          },
+          {
+            "bad": "I am student.",
+            "good": "I am a student.",
+            "exp": "Antes de ocupaciones y profesiones en singular siempre se debe usar el artículo indefinido 'a' o 'an'."
+          }
+        ],
         "hours": 15,
         "xp": 1400,
         "isModule": true,
@@ -67,24 +89,24 @@
         },
         "writingLab": {
                   "id": "write-a1-m1",
-                  "title": "Workplace Check-In & Employee Profile",
-                  "titleES": "Registro de Credencial y Perfil de Empleado en Planta",
-                  "prompt": "You arrive at the plant security kiosk on your first day as a new intern. Complete your written introductory record for your facility badge.",
-                  "promptES": "Llegas al módulo de seguridad en tu primer día como practicante. Redacta tu ficha de presentación para el registro de tu credencial de acceso.",
-                  "instruction": "Write 2-3 short sentences stating your name, your job role (intern / technician), and your assigned workstation or department.",
-                  "instructionES": "Escribe 2-3 oraciones cortas indicando tu nombre, tu puesto (practicante / técnico) y tu estación de trabajo o departamento asignado.",
+                  "title": "Personal Introduction Note",
+                  "titleES": "Ficha de Presentación Personal y Contacto",
+                  "prompt": "You arrive at your first day of class or your new team. Complete your written introductory message to introduce yourself.",
+                  "promptES": "Llegas a tu primer día en tu nuevo equipo o clase. Redacta una breve nota de presentación personal en inglés.",
+                  "instruction": "Write 2-3 short sentences stating your name, your role/occupation (student / member), and your city or greeting.",
+                  "instructionES": "Escribe 2-3 oraciones cortas indicando tu nombre, tu rol u ocupación (student / member), y tu saludo cordial.",
                   "targetKeywords": [
                             "name",
-                            "intern",
-                            "workstation",
-                            "department",
-                            "pleasure"
+                            "student",
+                            "pleasure",
+                            "meet",
+                            "welcome"
                   ],
-                  "minWords": 18,
-                  "starterTemplate": "Good morning, my name is ... I am a new mechatronics intern. My assigned workstation is located in the ... department.",
-                  "modelAnswer": "Good morning, my name is Alex Rivera. I am a new engineering intern. My assigned workstation is on Assembly Line 3 in the quality department. It is a pleasure to join the team.",
+                  "minWords": 15,
+                  "starterTemplate": "Good morning, my name is ... I am a new student. It is a pleasure to meet you.",
+                  "modelAnswer": "Good morning, my name is Alex Rivera. I am a new student from Mexico. It is a pleasure to meet the team.",
                   "rubric": {
-                            "vocabulary": "Includes job title, workstation, and polite professional phrasing.",
+                            "vocabulary": "Includes clear greeting, name, and polite introductory phrasing.",
                             "grammar": "Correct use of verb to be (am/is) and possessive adjectives (my/your).",
                             "mechanics": "Clear sentence boundaries with capitalization and periods."
                   }
@@ -97,64 +119,72 @@
         },
         "vocabulary": [
           {
+            "en": "Hello",
+            "pinkStress": "hel-LO",
+            "es": "Hola (saludo universal)",
+            "ipa": "/həˈloʊ/",
+            "example": "Hello! My name is Alex."
+          },
+          {
+            "en": "Welcome",
+            "pinkStress": "WEL-come",
+            "es": "Bienvenido / Bienvenida",
+            "ipa": "/ˈwɛlkəm/",
+            "example": "Welcome to our team."
+          },
+          {
+            "en": "Name",
+            "pinkStress": "NAME",
+            "es": "Nombre",
+            "ipa": "/neɪm/",
+            "example": "What is your last name?"
+          },
+          {
+            "en": "Student",
+            "pinkStress": "STU-dent",
+            "es": "Estudiante",
+            "ipa": "/ˈstuːdənt/",
+            "example": "Are you a new student here?"
+          },
+          {
             "en": "Coworker",
-            "es": "Compañero de trabajo",
+            "pinkStress": "CO-wor-ker",
+            "es": "Compañero/a de trabajo",
             "ipa": "/ˈkoʊˌwɜːrkər/",
-            "example": "This is Diana, my new coworker in quality inspection."
+            "example": "Diana is my new coworker."
           },
           {
-            "en": "Shift Manager",
-            "es": "Supervisor de turno",
-            "ipa": "/ʃɪft ˈmænɪdʒər/",
-            "example": "Carlos is our shift manager on the morning crew."
+            "en": "Pleasure",
+            "pinkStress": "PLEA-sure",
+            "es": "Placer / Mucho gusto",
+            "ipa": "/ˈplɛʒər/",
+            "example": "It is a pleasure to meet you."
           },
           {
-            "en": "Employee ID Badge",
-            "es": "Credencial de empleado",
-            "ipa": "/ɛmˈplɔɪiː aɪˈdiː bædʒ/",
-            "example": "Please scan your employee badge at the turnstile."
+            "en": "Colleague",
+            "pinkStress": "COL-league",
+            "es": "Colega / Compañero",
+            "ipa": "/ˈkɑːliːɡ/",
+            "example": "Mark is an experienced colleague."
           },
           {
-            "en": "Workstation",
-            "es": "Estación de trabajo",
-            "ipa": "/ˈwɜːrkˌsteɪʃən/",
-            "example": "My workstation is located next to assembly line three."
-          },
-          {
-            "en": "Department",
-            "es": "Departamento / Área",
-            "ipa": "/dɪˈpɑːrtmənt/",
-            "example": "Which department are you assigned to this semester?"
-          },
-          {
-            "en": "Team Lead",
-            "es": "Líder de equipo",
-            "ipa": "/tiːm liːd/",
-            "example": "Report your morning attendance to the team lead before 7:00 AM."
-          },
-          {
-            "en": "Turnstile",
-            "es": "Torniquete de acceso",
-            "ipa": "/ˈtɜːrnˌstaɪl/",
-            "example": "Security requires every employee to badge in at the turnstile."
-          },
-          {
-            "en": "Intern",
-            "es": "Practicante / Pasante",
-            "ipa": "/ˈɪntɜːrn/",
-            "example": "Marco is a mechanical engineering intern from UPBC."
+            "en": "Morning",
+            "pinkStress": "MORN-ing",
+            "es": "Mañana (horario)",
+            "ipa": "/ˈmɔːrnɪŋ/",
+            "example": "Good morning, everyone."
           }
         ],
         "dialogue": {
-          "title": "First Day Orientation at the Manufacturing Facility",
+          "title": "First Day Welcome & Personal Introductions",
           "speakers": [
-            "Mark (Supervisor)",
-            "Alex (New Engineering Intern)"
+            "Mark (Team Member)",
+            "Alex (New Member)"
           ],
           "lines": [
             {
               "speaker": "Mark",
-              "text": "Good morning! Welcome to the team. Are you Alex Rivera, the new mechatronics intern?"
+              "text": "Good morning! Welcome to the team. Are you Alex Rivera?"
             },
             {
               "speaker": "Alex",
@@ -162,23 +192,19 @@
             },
             {
               "speaker": "Mark",
-              "text": "Welcome aboard. Here is your facility access badge. What is your employee number for our shift roster?"
+              "text": "It is great to meet you too, Alex. How do you spell your last name?"
             },
             {
               "speaker": "Alex",
-              "text": "My employee ID is 8-4-0-2-9. My primary workstation is located at Sub-Assembly Line 3, correct?"
+              "text": "It is R-I-V-E-R-A. Rivera. What is your email address?"
             },
             {
               "speaker": "Mark",
-              "text": "That is correct. Let me walk you over and introduce you to your morning team lead."
+              "text": "My email is mark@stemos.org. Welcome aboard!"
             },
             {
               "speaker": "Alex",
-              "text": "Thank you, Mark. Should I keep my safety glasses on while walking across the yellow pedestrian aisle?"
-            },
-            {
-              "speaker": "Mark",
-              "text": "Yes, absolutely. Safety eyewear is mandatory whenever you step past the blue line."
+              "text": "Thank you, Mark. I am very happy to be here."
             }
           ]
         },
@@ -790,11 +816,33 @@
         "unitNum": 2,
         "unitNumber": 2,
         "title": "Workplace Routines, Time & Schedules",
-        "titleES": "Rutinas Laborales, Horarios y Turnos",
-        "cefrDescriptor": "Can describe daily routines, shift start and end times, break periods, and recurring weekly work activities using simple present structures.",
-        "canDo": "Informar a qué hora inicia y termina un turno, describir actividades de rutina y programar descansos.",
+        "titleES": "Rutinas Diarias, Horarios y Días de la Semana",
+        "cefrDescriptor": "Can describe daily routines, shift start and end times, break periods, and recurring weekly activities using simple present structures.",
+        "canDo": "Informar a qué hora inicia y termina tu horario, decir la hora, describir actividades de rutina y usar preposiciones de tiempo (at, in, on).",
         "grammarFocus": "Simple Present (affirmative/negative/questions), Adverbs of Frequency (always, usually, sometimes, never), Prepositions of Time (at 7:00, in the morning, on Monday)",
-        "communicativeGoal": "Informar a qué hora inicia y termina un turno, describir actividades de rutina y programar descansos.",
+        "communicativeGoal": "Informar horarios cotidianos, decir la hora con precisión, describir rutinas y coordinar descansos.",
+        "grammarBox": {
+          "formula": "<div style=\"display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:8px;\"><span class=\"mcer-formula-chip subject\"><i class=\"fa-solid fa-user\"></i> Sujeto (I / You / We / They)</span><span class=\"mcer-formula-chip operator\">+</span><span class=\"mcer-formula-chip verb\"><i class=\"fa-solid fa-bolt\"></i> Verbo Base (start / work)</span><span class=\"mcer-formula-chip operator\">+</span><span class=\"mcer-formula-chip complement\"><i class=\"fa-regular fa-clock\"></i> Preposición (at 7:00 / in the morning / on Monday)</span></div><div style=\"font-size:0.78rem; color:#64748b; font-family:var(--font-mono);\">Tercera persona: <strong>He / She works</strong> (agrega -s o -es al verbo).</div>",
+          "explanationES": "<strong>Regla Inductiva en Español:</strong> El Presente Simple se usa para expresar <strong>hábitos, rutinas y horarios fijos</strong>. Para la mayoría de personas (I, you, we, they), el verbo va en su forma base: <code>I start at 8:00 AM</code>. Cuando el sujeto es <em>he, she, o it</em>, se agrega <strong>-s</strong> al verbo: <code>He starts at 8:00 AM</code>. Para preposiciones de tiempo: usa <strong>AT</strong> para horas exactas (<em>at 7:00</em>), <strong>IN</strong> para partes del día (<em>in the morning, in the afternoon</em>), y <strong>ON</strong> para días específicos (<em>on Monday, on weekends</em>).",
+          "tipsES": "¡Error común! Nunca digas 'in Monday' ni 'at the morning'. La regla mnemotécnica en inglés es: <strong>AT</strong> las horas exactas, <strong>ON</strong> los días de la semana, <strong>IN</strong> los momentos del día o meses."
+        },
+        "commonMistakes": [
+          {
+            "bad": "In Monday I work.",
+            "good": "On Monday I work.",
+            "exp": "Los días de la semana siempre llevan la preposición 'on', nunca 'in'."
+          },
+          {
+            "bad": "At the morning I wake up at 6.",
+            "good": "In the morning I wake up at 6.",
+            "exp": "Los periodos del día (morning, afternoon, evening) llevan 'in the', no 'at the'."
+          },
+          {
+            "bad": "He work in the morning.",
+            "good": "He works in the morning.",
+            "exp": "En Presente Simple afirmativo, con He, She o It siempre se añade la terminación '-s' o '-es' al verbo."
+          }
+        ],
         "hours": 15,
         "xp": 1400,
         "isModule": true,
@@ -811,26 +859,26 @@
         },
         "writingLab": {
                   "id": "write-a1-m2",
-                  "title": "Shift Handover Daily Routine Note",
-                  "titleES": "Bitácora de Entrega de Turno y Rutina Diaria",
-                  "prompt": "End of first shift. Leave a short handover note for the incoming second shift operator about daily production count and scheduled maintenance.",
-                  "promptES": "Fin del primer turno. Deja una nota breve de entrega de turno para el segundo turno indicando piezas producidas y mantenimiento programado.",
-                  "instruction": "Write 2-3 sentences stating your shift hours, the number of finished units produced, and when maintenance starts.",
-                  "instructionES": "Escribe 2-3 oraciones indicando el horario de turno, piezas terminadas producidas y la hora en que inicia el mantenimiento.",
+                  "title": "Daily Schedule Note",
+                  "titleES": "Nota de Horario y Rutina Semanal",
+                  "prompt": "Write a short note describing your weekly work or study schedule, including start time, lunch break, and end of day.",
+                  "promptES": "Escribe una breve nota describiendo tu horario semanal de estudio o trabajo, incluyendo hora de inicio, almuerzo y salida.",
+                  "instruction": "Write 2-3 sentences stating your schedule hours, lunch time, and when your week starts.",
+                  "instructionES": "Escribe 2-3 oraciones indicando tu horario, la hora del descanso o comida, y los días de tu semana.",
                   "targetKeywords": [
-                            "shift",
                             "schedule",
-                            "produced",
-                            "maintenance",
-                            "units"
+                            "start",
+                            "lunch",
+                            "break",
+                            "finish"
                   ],
-                  "minWords": 20,
-                  "starterTemplate": "First shift finishes at 3:30 PM. We produced ... units on schedule today. Scheduled maintenance begins at ...",
-                  "modelAnswer": "First shift finishes at 3:30 PM. We produced 450 finished units on schedule today. Routine maintenance on the conveyor belt begins at 4:00 PM without delay.",
+                  "minWords": 18,
+                  "starterTemplate": "My schedule starts at 8:00 AM from Monday to Friday. We take our lunch break at ... The day finishes at ...",
+                  "modelAnswer": "My schedule starts at 8:00 AM from Monday to Friday. We take our lunch break at 12:30 PM in the cafeteria. The day finishes at 4:30 PM on time.",
                   "rubric": {
-                            "vocabulary": "Includes shift, schedule, units, and maintenance terms.",
+                            "vocabulary": "Includes schedule, lunch, break, and time expressions.",
                             "grammar": "Correct use of Simple Present and time prepositions (at, on).",
-                            "mechanics": "Logical sequence and concise handover clarity."
+                            "mechanics": "Logical sentence structure with clear time references."
                   }
         },
         "workloadBreakdown": {
@@ -841,46 +889,60 @@
         },
         "vocabulary": [
           {
-            "en": "Shift Handover",
-            "es": "Entrega de turno",
-            "ipa": "/ʃɪft ˈhændˌoʊvər/",
-            "example": "Shift handover takes place every day at 2:45 PM sharp."
+            "en": "Schedule",
+            "pinkStress": "SCHED-ule",
+            "es": "Horario / Agenda",
+            "ipa": "/ˈskɛdʒuːl/",
+            "example": "My schedule starts at 8:00 AM sharp."
           },
           {
-            "en": "Break Room",
-            "es": "Comedor / Sala de descanso",
-            "ipa": "/breɪk ruːm/",
-            "example": "Coffee and filtered water are available in the break room."
+            "en": "Routine",
+            "pinkStress": "rou-TINE",
+            "es": "Rutina diaria",
+            "ipa": "/ruːˈtiːn/",
+            "example": "Daily routines help us stay organized."
           },
           {
-            "en": "Daily Log",
-            "es": "Bitácora diaria",
-            "ipa": "/ˈdeɪli lɔːɡ/",
-            "example": "Technicians always update the daily log before leaving their station."
+            "en": "Morning",
+            "pinkStress": "MORN-ing",
+            "es": "Mañana (momento del día)",
+            "ipa": "/ˈmɔːrnɪŋ/",
+            "example": "I always have a team briefing in the morning."
           },
           {
-            "en": "Punch In / Punch Out",
-            "es": "Checar entrada / salida",
-            "ipa": "/pʌntʃ ɪn / pʌntʃ aʊt/",
-            "example": "Remember to punch in at the digital clock before putting on PPE."
+            "en": "Afternoon",
+            "pinkStress": "af-ter-NOON",
+            "es": "Tarde",
+            "ipa": "/ˌæftərˈnuːn/",
+            "example": "Our second session meets in the afternoon."
+          },
+          {
+            "en": "Weekend",
+            "pinkStress": "WEEK-end",
+            "es": "Fin de semana",
+            "ipa": "/ˈwiːkˌɛnd/",
+            "example": "Do you have classes on the weekend?"
+          },
+          {
+            "en": "Break",
+            "pinkStress": "BREAK",
+            "es": "Descanso / Pausa",
+            "ipa": "/breɪk/",
+            "example": "We take a 30-minute lunch break at noon."
           },
           {
             "en": "On Time",
+            "pinkStress": "on TIME",
             "es": "Puntual / A tiempo",
             "ipa": "/ɑːn taɪm/",
-            "example": "The morning safety briefing starts on time at 07:00 AM."
+            "example": "The meeting starts on time at 9:00 AM."
           },
           {
-            "en": "Overtime",
-            "es": "Horas extras",
-            "ipa": "/ˈoʊvərˌtaɪm/",
-            "example": "Weekend overtime is optional but requires supervisor approval."
-          },
-          {
-            "en": "Briefing",
-            "es": "Reunión informativa rápida",
-            "ipa": "/ˈbriːfɪŋ/",
-            "example": "We attend a 10-minute briefing at the start of every shift."
+            "en": "Usually",
+            "pinkStress": "U-su-al-ly",
+            "es": "Usualmente / Por lo general",
+            "ipa": "/ˈjuːʒuəli/",
+            "example": "I usually finish my tasks before 5:00 PM."
           }
         ],
         "dialogue": {
