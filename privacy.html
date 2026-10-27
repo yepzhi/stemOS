@@ -265,9 +265,71 @@
       </div>
     </div>
 
-    <!-- Section 3: IA y Salvaguardas -->
+    <!-- Section 3: Google User Data and OAuth Disclosure -->
+    <div class="privacy-section-card" id="google-user-data-policy" style="border: 1px solid rgba(56, 189, 248, 0.4); background: radial-gradient(circle at top left, rgba(14, 165, 233, 0.1) 0%, rgba(15, 23, 42, 0.8) 100%);">
+      <h2><i class="fa-brands fa-google" style="color:#38bdf8;"></i> 3. Google User Data Policy &amp; OAuth Transparency / Divulgación de Datos de Google</h2>
+      <p>
+        stemOS utilizes Google Sign-In (OAuth 2.0 via Firebase Authentication) to allow students, teachers, and administrators to securely authenticate and access their technical learning environments. We strictly minimize data access and adhere to international student privacy standards.
+      </p>
+
+      <div class="privacy-highlight-box">
+        <div class="privacy-highlight-title"><i class="fa-solid fa-list-check" style="color:#38bdf8;"></i> 1. Specific Google User Data Accessed:</div>
+        <ul>
+          <li><strong>Google Account Unique Identifier (UID):</strong> Used to link and index your encrypted learning records in our Firestore database.</li>
+          <li><strong>Primary Email Address:</strong> Used to confirm institutional affiliation (e.g., <code>@upbc.edu.mx</code>, <code>@tecnm.mx</code>), send verification credentials, and deliver academic reports.</li>
+          <li><strong>Full Name (First and Last Name):</strong> Used exclusively to personalize your learning dashboard and print verifiable accreditation certificates (W3C Open Badges 3.0 / CACEI diplomas).</li>
+          <li><strong>Profile Picture URL:</strong> Used solely to render your avatar in the platform header and navigation HUD while signed in.</li>
+        </ul>
+      </div>
+
+      <div class="privacy-highlight-box">
+        <div class="privacy-highlight-title"><i class="fa-solid fa-bullseye" style="color:#10b981;"></i> 2. How stemOS Uses Google User Data:</div>
+        <ul>
+          <li><strong>Identity Authentication:</strong> Seamless sign-in without requiring students to memorize separate passwords.</li>
+          <li><strong>Curricular Progress Tracking:</strong> Persisting CEFR A1-C1 milestones, 60-hour career track progress, and laboratory crucible simulations across sessions.</li>
+          <li><strong>Certification:</strong> Embedding authenticated student names on tamper-proof digital credentials verified with cryptographic SHA-256 hashes.</li>
+        </ul>
+      </div>
+
+      <div class="privacy-highlight-box" style="border-color:rgba(239, 68, 68, 0.4); background:rgba(30, 15, 20, 0.65);">
+        <div class="privacy-highlight-title" style="color:#f87171;"><i class="fa-solid fa-ban" style="color:#ef4444;"></i> 3. Strict Prohibitions &amp; Data Protection Guarantees:</div>
+        <ul>
+          <li><strong>NO Sale of Data:</strong> stemOS does NOT sell, rent, lease, or monetize Google user data to data brokers, advertisers, or any commercial third parties.</li>
+          <li><strong>NO Advertising or Tracking:</strong> Google user data is NEVER used to serve targeted advertisements, retargeting campaigns, or behavioral profiling.</li>
+          <li><strong>NO Third-Party Transfer:</strong> Google user data is never shared with external parties, except as strictly required to provide core infrastructure services (Google Cloud Platform and Firebase).</li>
+          <li><strong>NO AI Model Training:</strong> Google user data is NEVER used to train or fine-tune public artificial intelligence models, LLMs, or commercial machine learning tools.</li>
+        </ul>
+      </div>
+
+      <!-- Mandatory Google Limited Use Requirements Clause -->
+      <div class="privacy-highlight-box" style="border: 2px solid #38bdf8; background: rgba(14, 165, 233, 0.12); box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);">
+        <div class="privacy-highlight-title" style="color: #38bdf8; font-size: 0.95rem;">
+          <i class="fa-solid fa-scale-balanced"></i> Google API Services User Data Policy Compliance (Limited Use Disclosure)
+        </div>
+        <p style="font-size: 0.95rem; color: #ffffff; font-weight: 700; line-height: 1.65; margin: 0 0 10px 0;">
+          stemOS's use and transfer to any other app of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; text-decoration: underline; font-weight: 800;">Google API Services User Data Policy</a>, including the Limited Use requirements.
+        </p>
+        <p style="font-size: 0.88rem; color: #cbd5e1; margin: 0; line-height: 1.55;">
+          El uso y transferencia que stemOS realice a cualquier otra aplicación de la información recibida a través de las APIs de Google se apegará estrictamente a la <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; text-decoration: underline;">Política de Datos de Usuario de los Servicios de las APIs de Google</a>, incluidos los requisitos de Uso Limitado.
+        </p>
+      </div>
+
+      <div class="privacy-highlight-box">
+        <div class="privacy-highlight-title"><i class="fa-solid fa-trash-can" style="color:#ef4444;"></i> 4. Data Retention, Revocation &amp; Deletion Process:</div>
+        <p>
+          Students and teachers maintain total ownership and control over their data at all times:
+        </p>
+        <ul>
+          <li><strong>Data Retention:</strong> Google user data is retained only for the duration of the student's active enrollment or academic cycle.</li>
+          <li><strong>Right to Deletion:</strong> Any user can request the permanent and irreversible deletion of their account and all associated Google user data by emailing our Privacy Office at <a href="mailto:yepzhi@gmail.com" style="color:#38bdf8; font-weight:700;">yepzhi@gmail.com</a> with the subject line <em>"Data Deletion Request — stemOS"</em>. All records will be completely deleted from our production databases within 72 business hours.</li>
+          <li><strong>OAuth Permission Revocation:</strong> Users can revoke stemOS's access to their Google Account at any time directly through their <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer" style="color:#38bdf8; text-decoration:underline;">Google Account Security Settings</a>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Section 4: IA y Salvaguardas -->
     <div class="privacy-section-card">
-      <h2><i class="fa-solid fa-microchip"></i> 3. Gobernanza de Inteligencia Artificial (Feynman AI Socratic Tutor)</h2>
+      <h2><i class="fa-solid fa-microchip"></i> 4. Gobernanza de Inteligencia Artificial (Feynman AI Socratic Tutor)</h2>
       <p>
         El asistente de tutoría socrática <strong>Feynman AI</strong> y los módulos de debriefing de voz operan con estrictas salvaguardas de gobernanza:
       </p>
@@ -278,9 +340,9 @@
       </ul>
     </div>
 
-    <!-- Section 4: Cookies y Rendimiento Offline -->
+    <!-- Section 5: Cookies y Rendimiento Offline -->
     <div class="privacy-section-card">
-      <h2><i class="fa-solid fa-cookie-bite"></i> 4. Política de Cookies y Almacenamiento Local (PWA Offline)</h2>
+      <h2><i class="fa-solid fa-cookie-bite"></i> 5. Política de Cookies y Almacenamiento Local (PWA Offline)</h2>
       <p>
         stemOS utiliza tecnologías de almacenamiento local en el navegador (Local Storage, IndexedDB y cookies técnicas esenciales):
       </p>
@@ -291,9 +353,9 @@
       </ul>
     </div>
 
-    <!-- Section 5: Derechos ARCO -->
+    <!-- Section 6: Derechos ARCO -->
     <div class="privacy-section-card">
-      <h2><i class="fa-solid fa-user-lock"></i> 5. Ejercicio de Derechos ARCO y Supresión de Datos</h2>
+      <h2><i class="fa-solid fa-user-lock"></i> 6. Ejercicio de Derechos ARCO y Supresión de Datos</h2>
       <p>
         De acuerdo con la legislación vigente, todo estudiante, docente o titular de datos tiene derecho a ejercer en cualquier momento sus derechos de <strong>Acceso, Rectificación, Cancelación y Oposición (ARCO)</strong>:
       </p>
@@ -305,9 +367,9 @@
       </ul>
     </div>
 
-    <!-- Section 6: Contacto -->
+    <!-- Section 7: Contacto -->
     <div class="privacy-section-card">
-      <h2><i class="fa-solid fa-envelope"></i> 6. Unidad de Enlace y Contacto Oficial</h2>
+      <h2><i class="fa-solid fa-envelope"></i> 7. Unidad de Enlace y Contacto Oficial</h2>
       <p>
         Para cualquier duda, solicitud de ejercicio de derechos ARCO o aclaración sobre este Aviso de Privacidad:
       </p>

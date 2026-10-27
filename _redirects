@@ -2,6 +2,15 @@
 /dev / 301
 /dev/* / 301
 /dev.html / 301
+
+# Clean URL Rewrites (Serve 200 without 307 redirects)
+/privacy /privacy.html 200
+/privacy.html /privacy.html 200
+/terms /terms.html 200
+/terms.html /terms.html 200
+/index /index.html 200
+/index.html /index.html 200
+
 /generator/* /generator.html 200
 /admin/* /admin.html 200
 /teacher/* /teacher.html 200
