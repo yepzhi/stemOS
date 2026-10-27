@@ -3,11 +3,6 @@
 /dev/* / 301
 /dev.html / 301
 
-/privacy /privacy.html 200
-/privacy/* /privacy.html 200
-/terms /terms.html 200
-/terms/* /terms.html 200
-
 /generator/* /generator.html 200
 /admin/* /admin.html 200
 /teacher/* /teacher.html 200
