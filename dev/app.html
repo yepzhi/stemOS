@@ -1231,6 +1231,42 @@
                             </div>
                         </div>
 
+                        <!-- MCER Offline Batch Downloader & Status Banner (Phase 89) -->
+                        <div class="mcer-offline-sync-banner" id="mcer-offline-sync-banner">
+                            <div class="mcer-offline-banner-main">
+                                <div class="mcer-offline-banner-left">
+                                    <div class="mcer-offline-banner-icon">
+                                        <i class="fa-solid fa-cloud-arrow-down"></i>
+                                    </div>
+                                    <div class="mcer-offline-banner-info">
+                                        <div class="mcer-offline-banner-title" id="mcer-offline-banner-title">
+                                            Modo Offline & Descarga por Nivel
+                                        </div>
+                                        <div class="mcer-offline-banner-desc" id="mcer-offline-banner-desc">
+                                            Estudia sin conexión durante 3 días con audios neuronales y sincronización automática al volver a estar en línea.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mcer-offline-banner-actions">
+                                    <button class="btn-mcer-batch-download" id="btn-mcer-batch-download" onclick="downloadCurrentLevelForOffline()" title="Descargar nivel completo para estudio sin conexión">
+                                        <span id="mcer-batch-btn-label"><i class="fa-solid fa-cloud-arrow-down"></i> Descargar Nivel A1 Offline (4 Módulos · 4.6MB)</span>
+                                    </button>
+                                    <button class="btn-mcer-clear-offline" id="btn-mcer-clear-offline" onclick="clearAllOfflineUnits()" title="Liberar espacio y eliminar caché offline">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mcer-batch-progress-wrapper" id="mcer-batch-progress-wrapper" style="display:none;">
+                                <div class="mcer-batch-progress-meta">
+                                    <span id="mcer-batch-progress-text">Descargando...</span>
+                                    <span id="mcer-batch-progress-pct">0%</span>
+                                </div>
+                                <div class="mcer-batch-progress-track">
+                                    <div class="mcer-batch-progress-fill" id="mcer-batch-progress-fill" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- MCER Units Grid -->
                         <div class="ed-units-grid" id="ed-mcer-units-grid">
                             <!-- Populated dynamically by app.js from STEMOS_MCER_TRACKS -->
@@ -1563,8 +1599,8 @@
                             </div>
                         </div>
                         <div class="chat-inputs">
-                            <input type="text" id="chat-input" placeholder="Escribe tu explicación técnica aquí..." disabled>
-                            <button id="chat-send-btn" class="btn btn-primary" disabled><i
+                            <input type="text" id="chat-input" placeholder="Escribe tu pregunta o explicación técnica en inglés...">
+                            <button id="chat-send-btn" class="btn btn-primary" title="Enviar"><i
                                     class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
                         </div>
                     </div>
@@ -1635,6 +1671,8 @@
                 style="padding: 24px 32px; background: #ffffff; border-top: 1px solid #e2e8f0; margin-top: auto;">
                 <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
                     <strong>stemOS LXP</strong> &copy; 2026. All rights reserved.
+                    <a href="/privacy" target="_blank" rel="noopener" style="color:#0284c7; font-weight:600; text-decoration:underline;">Privacy Policy</a>
+                    <a href="/terms" target="_blank" rel="noopener" style="color:#0284c7; font-weight:600; text-decoration:underline;">Terms of Service</a>
                     <span class="stemos-version-badge" style="display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; font-family:'JetBrains Mono',monospace; color:#38bdf8; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.3); padding:2px 8px; border-radius:999px; font-weight:700;"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#22c55e;"></span>v1.1.6</span>
                 </div>
                 <div class="lxp-footer-right">
@@ -1810,53 +1848,180 @@
         </div>
     </dialog>
 
-    <!-- MCER Unit Interactive Study Dialog (Fase 62) -->
+    <!-- MCER Unit Interactive Study Dialog (Fase 82 · Full Screen Mobile & Centered Desktop Immersion) -->
     <dialog class="modal-dialog" id="modal-mcer-unit">
-        <div class="modal-card academic-card mcer-study-card" style="max-width:880px; background:#ffffff !important; color:#0f172a !important; border:1px solid #cbd5e1 !important; box-shadow:0 25px 60px rgba(15,23,42,0.25) !important;">
-            <div class="academic-modal-header" style="border-bottom:1px solid #e2e8f0; padding-bottom:14px; margin-bottom:14px; background:#ffffff !important;">
-                <div class="academic-header-info">
-                    <div style="display:flex; align-items:center; gap:8px;">
+        <div class="modal-card academic-card mcer-study-card">
+            <header class="academic-modal-header">
+                <div class="academic-header-top-row" style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:8px;">
+                    <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
                         <span class="academic-track-badge" id="mcer-unit-level-badge" style="background:#0284c7; color:#fff;">CEFR A1</span>
-                        <span style="background:rgba(16,185,129,0.12); color:#059669; border:1px solid rgba(16,185,129,0.3); font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:6px;"><i class="fa-solid fa-clock"></i> 10 min · 4 Habilidades MCER</span>
+                        <span style="background:rgba(16,185,129,0.12); color:#059669; border:1px solid rgba(16,185,129,0.3); font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:6px;"><i class="fa-solid fa-clock"></i> 10 min · MCER</span>
+                        <span id="mcer-offline-sync-pill" class="mcer-sync-pill" style="display:none;"></span>
                     </div>
-                    <h3 class="academic-module-title" id="mcer-unit-title" style="margin-top:4px; color:#0f172a !important; font-size:1.35rem; font-weight:800;">Módulo 01 · Introductions & Personal Info</h3>
+                    <div class="academic-header-actions" style="display:flex; align-items:center; gap:8px;">
+                        <button type="button" class="btn-mcer-offline-download" id="btn-mcer-offline-toggle" title="Descargar unidad completa y audios para modo offline (Expira en 3 días)">
+                            <i class="fa-solid fa-cloud-arrow-down"></i>
+                            <span id="mcer-offline-btn-label">Descargar Offline (3 días)</span>
+                        </button>
+                        <button class="modal-close" id="mcer-unit-close" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+                <div class="academic-header-info" style="margin-top:6px; width:100%;">
+                    <h3 class="academic-module-title" id="mcer-unit-title">Módulo 01 · Introductions & Personal Info</h3>
                     <p style="font-size:0.84rem; color:#475569 !important; margin-top:2px;" id="mcer-unit-cando">Can introduce self and others...</p>
                 </div>
-                <button class="modal-close" id="mcer-unit-close" aria-label="Cerrar" style="color:#64748b;"><i class="fa-solid fa-xmark"></i></button>
-            </div>
+            </header>
 
-            <!-- Tab Navigation (8 Comprehensive Pedagogical Dimensions · 4 Skills Balanced) -->
-            <div style="display:flex; border-bottom:1px solid #e2e8f0; gap:6px; margin-bottom:18px; flex-wrap:wrap;">
-                <button class="mcer-tab-btn active" data-mcer-tab="dialogue" style="padding:8px 14px; border:none; background:transparent; font-weight:700; font-size:0.84rem; color:#0284c7; border-bottom:2px solid #0284c7; cursor:pointer;">
-                    <i class="fa-solid fa-comments"></i> Diálogo
-                </button>
-                <button class="mcer-tab-btn" data-mcer-tab="vocab" style="padding:8px 14px; border:none; background:transparent; font-weight:700; font-size:0.84rem; color:#64748b; cursor:pointer;">
-                    <i class="fa-solid fa-book"></i> Vocab & Fonética
-                </button>
-                <button class="mcer-tab-btn" data-mcer-tab="listening" style="padding:8px 14px; border:none; background:transparent; font-weight:700; font-size:0.84rem; color:#64748b; cursor:pointer;">
-                    <i class="fa-solid fa-headphones"></i> Listening Lab (3)
-                </button>
-                <button class="mcer-tab-btn" data-mcer-tab="grammar" style="padding:8px 14px; border:none; background:transparent; font-weight:700; font-size:0.84rem; color:#64748b; cursor:pointer;">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Grammar Drills (5)
-                </button>
-                <button class="mcer-tab-btn" data-mcer-tab="reading" style="padding:8px 14px; border:none; background:transparent; font-weight:700; font-size:0.84rem; color:#64748b; cursor:pointer;">
-                    <i class="fa-solid fa-file-lines"></i> Lectura (4)
-                </button>
-                <button class="mcer-tab-btn" data-mcer-tab="writing" style="padding:8px 14px; border:none; background:transparent; font-weight:700; font-size:0.84rem; color:#64748b; cursor:pointer;">
-                    <i class="fa-solid fa-pen-to-square" style="color:#f59e0b;"></i> Escritura IA (2.5m)
-                </button>
-                <button class="mcer-tab-btn" data-mcer-tab="crucible" style="padding:8px 14px; border:none; background:transparent; font-weight:700; font-size:0.84rem; color:#64748b; cursor:pointer;">
-                    <i class="fa-solid fa-industry"></i> Crisol IA
-                </button>
-                <button class="mcer-tab-btn" data-mcer-tab="quiz" style="padding:8px 14px; border:none; background:transparent; font-weight:700; font-size:0.84rem; color:#64748b; cursor:pointer;">
-                    <i class="fa-solid fa-circle-check"></i> Mastery Quiz (8)
-                </button>
+            <!-- Stepper Bar with Arrow Connectors (Fase 82 · Visual Guided Progression) -->
+            <div class="mcer-stepper-container" id="mcer-stepper-container">
+                <nav class="mcer-stepper-track" id="mcer-stepper-track" aria-label="Progreso de la Unidad">
+                    <button type="button" class="mcer-tab-btn active" data-mcer-tab="fundamentals" id="mcer-tab-fundamentals">
+                        <span class="mcer-tab-step-num">1</span>
+                        <span class="mcer-tab-label"><i class="fa-solid fa-book-open"></i> Fundamentos</span>
+                    </button>
+                    <span class="mcer-stepper-sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+
+                    <button type="button" class="mcer-tab-btn" data-mcer-tab="dialogue" id="mcer-tab-dialogue">
+                        <span class="mcer-tab-step-num">2</span>
+                        <span class="mcer-tab-label"><i class="fa-solid fa-comments"></i> Diálogo</span>
+                    </button>
+                    <span class="mcer-stepper-sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+
+                    <button type="button" class="mcer-tab-btn" data-mcer-tab="vocab" id="mcer-tab-vocab">
+                        <span class="mcer-tab-step-num">3</span>
+                        <span class="mcer-tab-label"><i class="fa-solid fa-spell-check"></i> Vocabulario</span>
+                    </button>
+                    <span class="mcer-stepper-sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+
+                    <button type="button" class="mcer-tab-btn" data-mcer-tab="grammar" id="mcer-tab-grammar">
+                        <span class="mcer-tab-step-num">4</span>
+                        <span class="mcer-tab-label"><i class="fa-solid fa-wand-magic-sparkles"></i> Grammar Drills</span>
+                    </button>
+                    <span class="mcer-stepper-sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+
+                    <button type="button" class="mcer-tab-btn" data-mcer-tab="listening" id="mcer-tab-listening">
+                        <span class="mcer-tab-step-num">5</span>
+                        <span class="mcer-tab-label"><i class="fa-solid fa-headphones"></i> Listening</span>
+                    </button>
+                    <span class="mcer-stepper-sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+
+                    <button type="button" class="mcer-tab-btn" data-mcer-tab="reading" id="mcer-tab-reading">
+                        <span class="mcer-tab-step-num">6</span>
+                        <span class="mcer-tab-label"><i class="fa-solid fa-file-lines"></i> Lectura</span>
+                    </button>
+                    <span class="mcer-stepper-sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+
+                    <button type="button" class="mcer-tab-btn" data-mcer-tab="writing" id="mcer-tab-writing">
+                        <span class="mcer-tab-step-num">7</span>
+                        <span class="mcer-tab-label"><i class="fa-solid fa-pen-to-square"></i> Escritura IA</span>
+                    </button>
+                    <span class="mcer-stepper-sep mcer-sep-crucible" id="mcer-sep-crucible" aria-hidden="true" style="display:none;"><i class="fa-solid fa-chevron-right"></i></span>
+
+                    <button type="button" class="mcer-tab-btn" id="mcer-tab-crucible" data-mcer-tab="crucible" style="display:none;">
+                        <span class="mcer-tab-step-num">⚡</span>
+                        <span class="mcer-tab-label"><i class="fa-solid fa-industry"></i> Crisol IA</span>
+                    </button>
+                    <span class="mcer-stepper-sep" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+
+                    <button type="button" class="mcer-tab-btn" data-mcer-tab="quiz" id="mcer-tab-quiz">
+                        <span class="mcer-tab-step-num">8</span>
+                        <span class="mcer-tab-label"><i class="fa-solid fa-circle-check"></i> Mastery Quiz</span>
+                    </button>
+                </nav>
             </div>
 
             <!-- Tab Contents -->
-            <div class="mcer-tab-content-area" style="max-height:60vh; overflow-y:auto; padding-right:8px;">
-                <!-- Tab 1: Dialogue -->
-                <div id="mcer-screen-dialogue" class="mcer-screen active">
+            <div class="mcer-tab-content-area">
+                <!-- Screen 1: Fundamentos & Gramática (UPFRONT Blueprint) -->
+                <div id="mcer-screen-fundamentals" class="mcer-screen active">
+                    <!-- Can-Do Statement / Meta Comunicativa -->
+                    <div style="background:linear-gradient(135deg, rgba(2, 132, 199, 0.08) 0%, rgba(99, 102, 241, 0.08) 100%); border:1.5px solid #38bdf8; border-radius:14px; padding:16px 20px; margin-bottom:18px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+                            <span style="font-size:0.72rem; font-weight:800; color:#0284c7; text-transform:uppercase; letter-spacing:0.04em;">
+                                <i class="fa-solid fa-bullseye"></i> Meta Comunicativa · Can-Do Statement
+                            </span>
+                            <span style="font-size:0.72rem; font-weight:800; color:#475569; background:#ffffff; border:1px solid #cbd5e1; padding:2px 8px; border-radius:999px;">
+                                <i class="fa-solid fa-lightbulb" style="color:#f59e0b;"></i> Fundamentos Upfront (Primero la Teoría, luego la Práctica)
+                            </span>
+                        </div>
+                        <h4 id="mcer-fund-cando-title" style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 2px 0;"></h4>
+                        <p id="mcer-fund-cando-desc" style="font-size:0.88rem; color:#334155; line-height:1.45; margin:0;"></p>
+                    </div>
+
+                    <!-- 1. Visual Grammar Blueprint Box (Fórmula Sintáctica Visual) -->
+                    <div style="background:#ffffff; border:1.5px solid #e2e8f0; border-radius:14px; padding:18px 20px; margin-bottom:18px; box-shadow:0 2px 8px rgba(15,23,42,0.04);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <div style="width:32px; height:32px; border-radius:8px; background:#eff6ff; color:#2563eb; display:flex; align-items:center; justify-content:center; font-size:0.95rem;">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                </div>
+                                <div>
+                                    <h4 style="font-size:0.98rem; font-weight:800; color:#0f172a; margin:0;">Estructura Gramatical Clave (Visual Grammar Blueprint)</h4>
+                                    <div style="font-size:0.75rem; color:#64748b;">Fórmula sintáctica inductiva y reglas de uso en español</div>
+                                </div>
+                            </div>
+                            <span id="mcer-fund-grammar-tag" style="background:#f1f5f9; color:#0369a1; border:1px solid #cbd5e1; font-size:0.75rem; font-weight:800; padding:3px 10px; border-radius:6px; font-family:var(--font-mono);">
+                                Structure
+                            </span>
+                        </div>
+
+                        <!-- Visual Formula Container -->
+                        <div id="mcer-fund-grammar-formula-box" style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:10px; padding:14px 16px; margin-bottom:12px;"></div>
+
+                        <!-- Grammar Explanation in Spanish -->
+                        <div id="mcer-fund-grammar-explanation" style="font-size:0.86rem; color:#334155; line-height:1.5; margin-bottom:10px;"></div>
+
+                        <!-- Contractions / Grammar Tips Box -->
+                        <div id="mcer-fund-grammar-tips-box" style="display:none; background:#eff6ff; border-left:4px solid #3b82f6; border-radius:6px; padding:10px 14px; font-size:0.82rem; color:#1e40af;"></div>
+                    </div>
+
+                    <!-- 2. Upfront Core Word Bank with Pink Word Stress -->
+                    <div style="background:#ffffff; border:1.5px solid #e2e8f0; border-radius:14px; padding:18px 20px; margin-bottom:18px; box-shadow:0 2px 8px rgba(15,23,42,0.04);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <div style="width:32px; height:32px; border-radius:8px; background:#fdf2f8; color:#db2777; display:flex; align-items:center; justify-content:center; font-size:0.95rem;">
+                                    <i class="fa-solid fa-spell-check"></i>
+                                </div>
+                                <div>
+                                    <h4 style="font-size:0.98rem; font-weight:800; color:#0f172a; margin:0;">Vocabulario Central Upfront (Con Acento Prosódico)</h4>
+                                    <div style="font-size:0.75rem; color:#64748b;">Escucha y familiarízate con las palabras clave antes de iniciar</div>
+                                </div>
+                            </div>
+                            <span style="font-size:0.72rem; font-weight:800; color:#db2777; background:#fdf2f8; border:1px solid #fbcfe8; padding:2px 8px; border-radius:6px;">
+                                <i class="fa-solid fa-volume-high"></i> Acento Prosódico (Word Stress)
+                            </span>
+                        </div>
+                        <div id="mcer-fund-vocab-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:10px; margin-bottom:10px;"></div>
+                    </div>
+
+                    <!-- 3. Common Transfer Mistakes Alert (Spanish ➔ English Interference) -->
+                    <div id="mcer-fund-mistakes-container" style="background:#ffffff; border:1.5px solid #fecaca; border-radius:14px; padding:18px 20px; margin-bottom:20px; box-shadow:0 2px 8px rgba(220,38,38,0.04);">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                            <div style="width:32px; height:32px; border-radius:8px; background:#fef2f2; color:#dc2626; display:flex; align-items:center; justify-content:center; font-size:0.95rem;">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-size:0.98rem; font-weight:800; color:#991b1b; margin:0;">Errores Comunes de Transferencia (Spanish ➔ English Interference)</h4>
+                                <div style="font-size:0.75rem; color:#64748b;">Evita los errores típicos que cometen los hispanohablantes en este nivel</div>
+                            </div>
+                        </div>
+                        <div id="mcer-fund-mistakes-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(270px, 1fr)); gap:10px;"></div>
+                    </div>
+
+                    <!-- Step 1 Complete / Next Stepper Banner -->
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #cbd5e1; border-radius:12px; padding:12px 18px; flex-wrap:wrap; gap:10px;">
+                        <div>
+                            <div style="font-size:0.86rem; font-weight:800; color:#0f172a;">¿Comprendes la fórmula y el vocabulario básico?</div>
+                            <div style="font-size:0.78rem; color:#64748b;">Avanza al Paso 2 para ver cómo se aplican en una conversación real modelada.</div>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="btn-mcer-fund-next" style="padding:8px 20px; font-size:0.88rem; font-weight:800; border-radius:8px; display:inline-flex; align-items:center; gap:8px;">
+                            <span>Paso 2: Diálogo en Contexto</span> <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Screen 2: Diálogo en Contexto -->
+                <div id="mcer-screen-dialogue" class="mcer-screen" style="display:none;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:#f8fafc; padding:10px 14px; border-radius:12px; border:1px solid #e2e8f0;">
                         <span style="font-size:0.82rem; font-weight:700; color:#475569;"><i class="fa-solid fa-headphones"></i> American English Dialogue (Web Speech API)</span>
                         <button class="btn btn-primary" id="btn-mcer-play-all-dialogue" style="width:auto; padding:6px 14px; font-size:0.8rem; border-radius:8px;">
@@ -1895,7 +2060,7 @@
                         <div id="mcer-pronunciation-lab-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:10px;"></div>
                     </div>
 
-                    <h4 style="font-size:0.9rem; font-weight:800; color:#0f172a; margin-bottom:10px;">Vocabulario Clave con Pronunciación (IPA)</h4>
+                    <h4 style="font-size:0.9rem; font-weight:800; color:#0f172a; margin-bottom:10px;">Vocabulario Clave con Pronunciación en Audio</h4>
                     <div id="mcer-vocab-cards-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:12px; margin-bottom:20px;"></div>
 
                     <!-- Ejercicios de Colocaciones y Léxico Técnico (4 MCQs) -->
@@ -2181,6 +2346,8 @@
                             </button>
                         </div>
                     </div>
+                </div>
+
                 <!-- Tab: Taller de Redacción con IA Rápida (Writing Lab) -->
                 <div id="mcer-screen-writing" class="mcer-screen" style="display:none;">
                     <div style="background:linear-gradient(135deg, rgba(245,158,11,0.08) 0%, rgba(217,119,6,0.04) 100%); border:1px solid rgba(245,158,11,0.25); border-radius:14px; padding:16px 20px; margin-bottom:18px;">
@@ -2271,6 +2438,22 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Sticky Bottom Navigation Bar (Fase 82 · Mobile & Desktop Smooth Stepper Engine) -->
+            <footer class="mcer-modal-bottom-nav" id="mcer-modal-bottom-nav">
+                <button type="button" class="btn mcer-nav-btn-prev" id="btn-mcer-prev-step" style="visibility:hidden;">
+                    <i class="fa-solid fa-arrow-left"></i> <span class="mcer-nav-prev-label">Anterior</span>
+                </button>
+                <div class="mcer-nav-progress-center">
+                    <div id="mcer-step-counter-text" class="mcer-step-counter-text">Paso 1 de 8 · Fundamentos</div>
+                    <div class="mcer-nav-progress-track">
+                        <div id="mcer-step-progress-fill" class="mcer-step-progress-fill" style="width: 12.5%;"></div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary mcer-nav-btn-next" id="btn-mcer-next-step">
+                    <span id="mcer-nav-next-label">Continuar: Diálogo</span> <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </footer>
         </div>
     </dialog>
 
