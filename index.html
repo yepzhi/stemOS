@@ -3275,6 +3275,46 @@
     </div>
   </section>
 
+  <!-- ── PUBLIC ACCESS & GOOGLE OAUTH TRANSPARENCY (Verification Compliance) ── -->
+  <section class="stemos-transparency-section" id="transparency-disclosure" style="background:radial-gradient(circle at 50% 0%, rgba(14,165,233,0.1) 0%, rgba(3,7,18,0.95) 80%); border-top:1px solid rgba(56,189,248,0.22); border-bottom:1px solid rgba(255,255,255,0.06); padding:46px 24px; position:relative;">
+    <div style="max-width:1160px; margin:0 auto; display:flex; flex-direction:column; gap:20px;">
+      <div style="display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:9999px; background:rgba(14,165,233,0.15); border:1px solid rgba(56,189,248,0.35); color:#38bdf8; font-family:'JetBrains Mono',monospace; font-size:0.76rem; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; width:fit-content;">
+        <i class="fa-solid fa-lock-open"></i> <span data-i18n="badge_public_access">PUBLIC EDUCATIONAL PLATFORM • OPEN ACCESS</span>
+      </div>
+      
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:22px; align-items:start;">
+        <div style="background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:24px 26px; backdrop-filter:blur(12px);">
+          <h3 style="color:#ffffff; font-size:1.15rem; font-weight:800; margin:0 0 10px 0; display:flex; align-items:center; gap:10px;">
+            <i class="fa-solid fa-globe" style="color:#10b981;"></i>
+            <span data-i18n="transparency_public_title">Public Curriculum &amp; Free Exploration</span>
+          </h3>
+          <p style="color:#94a3b8; font-size:0.92rem; line-height:1.65; margin:0;" data-i18n="transparency_public_desc">
+            stemOS provides open educational access to our complete catalog of 34 Technical English (ESP) industrial tracks, CEFR A1–C1 benchmarks, interactive laboratory simulations, and vocabulary drills without requiring an account or login.
+          </p>
+        </div>
+
+        <div style="background:rgba(15,23,42,0.7); border:1px solid rgba(56,189,248,0.25); border-radius:18px; padding:24px 26px; backdrop-filter:blur(12px);">
+          <h3 style="color:#ffffff; font-size:1.15rem; font-weight:800; margin:0 0 10px 0; display:flex; align-items:center; gap:10px;">
+            <i class="fa-brands fa-google" style="color:#38bdf8;"></i>
+            <span data-i18n="transparency_oauth_title">Why Google Sign-In is Used</span>
+          </h3>
+          <p style="color:#94a3b8; font-size:0.92rem; line-height:1.65; margin:0 0 12px 0;" data-i18n="transparency_oauth_desc">
+            Google Sign-In is optionally used for registered university students and instructors for single sign-on (SSO), saving learning progress across devices, and issuing cryptographically verified W3C Open Badges 3.0 certificates under your verified name.
+          </p>
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <a href="/privacy.html" style="color:#38bdf8; font-size:0.84rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+              <i class="fa-solid fa-shield-halved"></i> Privacy Policy &amp; Limited Use
+            </a>
+            <span style="color:#475569;">•</span>
+            <a href="/terms.html" style="color:#94a3b8; font-size:0.84rem; text-decoration:none;">
+              Terms of Service
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 <footer class="supaste-footer">
     <div class="supaste-footer-inner">
       <div class="footer-brand-col">
@@ -3305,7 +3345,9 @@
         <ul class="footer-links">
           <li><a href="javascript:void(0)" onclick="window.scrollTo({top:0, behavior:'smooth'})" data-i18n="footer_link_top">Back to Top</a></li>
           <li><a href="/index.html" data-i18n="footer_link_campus">Student Campus</a></li>
-          <li><a href="/privacy.html" data-i18n="footer_privacy">Políticas de Privacidad</a></li>
+          <li><a href="/privacy.html" data-i18n="footer_privacy">Privacy Policy</a></li>
+          <li><a href="/terms.html" data-i18n="footer_terms">Terms of Service</a></li>
+          <li><a href="/privacy.html#google-limited-use" style="color:#38bdf8;" data-i18n="footer_limited_use">Google API Limited Use</a></li>
           <li><a href="javascript:void(0)" id="footer-clear-cache" data-i18n="footer_link_cache">Refresh PWA Cache</a></li>
         </ul>
       </div>
@@ -3314,8 +3356,12 @@
       <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
         <span data-i18n="footer_copy">© 2026 stemOS • All rights reserved.</span>
       </div>
-      <div style="display:flex; align-items:center; gap:16px;">
-        <a href="/privacy.html" style="color:#94a3b8; text-decoration:none; font-size:0.82rem; transition:color 0.2s;" onmouseenter="this.style.color='#38bdf8'" onmouseleave="this.style.color='#94a3b8'" data-i18n="footer_privacy_terms">Políticas de Privacidad y Términos</a>
+      <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+        <a href="/privacy.html" style="color:#94a3b8; text-decoration:none; font-size:0.82rem; transition:color 0.2s;" onmouseenter="this.style.color='#38bdf8'" onmouseleave="this.style.color='#94a3b8'" data-i18n="footer_privacy">Privacy Policy</a>
+        <span style="color:#475569;">•</span>
+        <a href="/terms.html" style="color:#94a3b8; text-decoration:none; font-size:0.82rem; transition:color 0.2s;" onmouseenter="this.style.color='#38bdf8'" onmouseleave="this.style.color='#94a3b8'" data-i18n="footer_terms">Terms of Service</a>
+        <span style="color:#475569;">•</span>
+        <a href="/privacy.html#google-limited-use" style="color:#38bdf8; text-decoration:none; font-size:0.82rem; transition:color 0.2s;" onmouseenter="this.style.color='#7dd3fc'" onmouseleave="this.style.color='#38bdf8'" data-i18n="footer_limited_use">Google Limited Use</a>
       </div>
     </div>
   </footer>
@@ -3953,7 +3999,14 @@
         footer_link_top: 'Back to Top',
         footer_link_campus: 'Student Campus',
         footer_privacy: 'Privacy Policy',
+        footer_terms: 'Terms of Service',
+        footer_limited_use: 'Google API Limited Use',
         footer_privacy_terms: 'Privacy Policy &amp; Terms',
+        badge_public_access: 'PUBLIC EDUCATIONAL PLATFORM • OPEN ACCESS',
+        transparency_public_title: 'Public Curriculum &amp; Free Exploration',
+        transparency_public_desc: 'stemOS provides open educational access to our complete catalog of 34 Technical English (ESP) industrial tracks, CEFR A1–C1 benchmarks, interactive laboratory simulations, and vocabulary drills without requiring an account or login.',
+        transparency_oauth_title: 'Why Google Sign-In is Used',
+        transparency_oauth_desc: 'Google Sign-In is optionally used for registered university students and instructors for single sign-on (SSO), saving learning progress across devices, and issuing cryptographically verified W3C Open Badges 3.0 certificates under your verified name.',
         cookie_title: 'Privacy Notice &amp; Cookies',
         cookie_text: 'stemOS uses technical cookies and essential local storage to calibrate your CEFR diagnostic progress, secure your session, and enable PWA simulators without advertising tracking.',
         cookie_accept: 'Accept &amp; Continue',
@@ -4223,7 +4276,14 @@
         footer_link_top: 'Volver Arriba',
         footer_link_campus: 'Campus del Estudiante',
         footer_privacy: 'Políticas de Privacidad',
+        footer_terms: 'Términos de Servicio',
+        footer_limited_use: 'Uso Limitado de APIs de Google',
         footer_privacy_terms: 'Políticas de Privacidad y Términos',
+        badge_public_access: 'PLATAFORMA EDUCATIVA PÚBLICA • ACCESO ABIERTO',
+        transparency_public_title: 'Plan de Estudios Público y Exploración Libre',
+        transparency_public_desc: 'stemOS ofrece acceso educativo abierto a nuestro catálogo completo de 34 tracks industriales de inglés técnico (ESP), descriptores MCER A1–C1, simuladores de laboratorio y ejercicios de vocabulario sin requerir cuenta ni inicio de sesión.',
+        transparency_oauth_title: 'Por qué se utiliza Google Sign-In',
+        transparency_oauth_desc: 'El inicio de sesión con Google se utiliza de forma opcional para alumnos y docentes registrados como Single Sign-On (SSO), sincronización de progreso en la nube y emisión de certificados digitales verificables W3C Open Badges 3.0 bajo su nombre autenticado.',
         cookie_title: 'Aviso de Privacidad y Cookies',
         cookie_text: 'stemOS utiliza cookies técnicas y almacenamiento local esencial para calibrar tu progreso diagnóstico MCER, garantizar tu sesión segura y habilitar simuladores PWA sin recopilar datos con fines publicitarios.',
         cookie_accept: 'Aceptar y Continuar',

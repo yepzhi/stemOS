@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Aviso de Privacidad y Gobernanza de Datos — stemOS®</title>
-  <meta name="description" content="Aviso de Privacidad Integral de stemOS — Plataforma de Inglés Técnico Industrial y ESP para Universidades Tecnológicas, TecNM y Sistemas Estatales. Cumplimiento con LFPDPPP (México), FERPA y gobernanza ética de IA.">
+  <title>Privacy Policy &amp; Data Governance — stemOS®</title>
+  <meta name="description" content="Official Privacy Policy and Data Governance Disclosure for stemOS — Technical English Operating System for engineering universities and industry. Full compliance with Google API Services User Data Policy, Limited Use requirements, FERPA, and LFPDPPP.">
 
   <!-- PWA & Mobile Web App Manifest -->
   <link rel="manifest" href="/manifest.json">
@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
-  <link rel="stylesheet" href="/dev.css?v=5.12.0">
+  <link rel="stylesheet" href="/dev.css?v=5.13.2">
 
   <style>
     body {
@@ -36,20 +36,22 @@
       flex-direction: column;
     }
     .privacy-page-wrap {
-      max-width: 960px;
+      max-width: 980px;
       margin: 0 auto;
-      padding: 120px 24px 80px;
+      padding: 110px 24px 80px;
       flex: 1;
+      width: 100%;
+      box-sizing: border-box;
     }
     .privacy-header-card {
-      background: radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.15) 0%, rgba(15, 23, 42, 0.85) 70%);
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      background: radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.2) 0%, rgba(15, 23, 42, 0.9) 70%);
+      border: 1px solid rgba(56, 189, 248, 0.35);
       border-radius: 24px;
       padding: 42px 36px;
-      margin-bottom: 40px;
+      margin-bottom: 32px;
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 0 0 30px rgba(14, 165, 233, 0.1);
+      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 0 0 30px rgba(14, 165, 233, 0.12);
       position: relative;
       overflow: hidden;
     }
@@ -58,9 +60,9 @@
       position: absolute;
       top: -60px;
       right: -60px;
-      width: 200px;
-      height: 200px;
-      background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
       filter: blur(40px);
       pointer-events: none;
     }
@@ -70,41 +72,72 @@
       gap: 8px;
       padding: 6px 14px;
       border-radius: 9999px;
-      background: rgba(14, 165, 233, 0.14);
-      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: rgba(14, 165, 233, 0.16);
+      border: 1px solid rgba(56, 189, 248, 0.4);
       color: #38bdf8;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       margin-bottom: 18px;
     }
     .privacy-title {
-      font-size: 2.2rem;
-      font-weight: 800;
+      font-size: 2.3rem;
+      font-weight: 900;
       color: #ffffff;
-      line-height: 1.25;
-      letter-spacing: -0.02em;
+      line-height: 1.22;
+      letter-spacing: -0.025em;
       margin: 0 0 14px 0;
     }
     .privacy-meta {
-      font-size: 0.92rem;
+      font-size: 0.94rem;
       color: #94a3b8;
-      line-height: 1.6;
+      line-height: 1.65;
+      margin: 0;
+    }
+    .privacy-toc-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 32px;
+      padding: 16px 20px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+    }
+    .privacy-toc-link {
+      color: #94a3b8;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .privacy-toc-link:hover {
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.3);
+      transform: translateY(-1px);
     }
     .privacy-section-card {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid rgba(56, 189, 248, 0.16);
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(56, 189, 248, 0.18);
       border-radius: 20px;
-      padding: 32px 30px;
+      padding: 34px 32px;
       margin-bottom: 24px;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
     }
     .privacy-section-card h2 {
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       font-weight: 800;
       color: #ffffff;
       margin: 0 0 16px 0;
@@ -117,9 +150,15 @@
       color: #38bdf8;
       font-size: 1.15rem;
     }
+    .privacy-section-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin: 22px 0 10px 0;
+    }
     .privacy-section-card p {
-      font-size: 0.94rem;
-      line-height: 1.7;
+      font-size: 0.95rem;
+      line-height: 1.72;
       color: #cbd5e1;
       margin: 0 0 14px 0;
     }
@@ -128,29 +167,62 @@
       padding-left: 22px;
     }
     .privacy-section-card li {
-      font-size: 0.92rem;
-      line-height: 1.65;
+      font-size: 0.93rem;
+      line-height: 1.68;
       color: #cbd5e1;
       margin-bottom: 8px;
     }
     .privacy-highlight-box {
       background: rgba(30, 41, 59, 0.7);
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      border: 1px solid rgba(56, 189, 248, 0.28);
       border-radius: 14px;
-      padding: 20px 22px;
+      padding: 22px 24px;
       margin: 18px 0;
     }
     .privacy-highlight-title {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 800;
       color: #38bdf8;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+    .google-limited-use-callout {
+      border: 2px solid #38bdf8;
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.16) 0%, rgba(15, 23, 42, 0.85) 100%);
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
+      border-radius: 16px;
+      padding: 26px;
+      margin: 24px 0;
+    }
+    .google-limited-use-callout h3 {
+      color: #38bdf8;
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin: 0 0 14px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .google-verbatim-text {
+      font-size: 1.05rem;
+      color: #ffffff;
+      font-weight: 700;
+      line-height: 1.7;
+      background: rgba(15, 23, 42, 0.75);
+      border-left: 4px solid #38bdf8;
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 12px 0 14px 0;
+    }
+    .google-verbatim-text a {
+      color: #38bdf8;
+      text-decoration: underline;
+      font-weight: 800;
     }
     .privacy-nav-top {
       position: fixed;
@@ -158,7 +230,7 @@
       left: 0;
       right: 0;
       height: 72px;
-      background: rgba(3, 7, 18, 0.85);
+      background: rgba(3, 7, 18, 0.88);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -182,22 +254,57 @@
       font-size: 0.84rem;
       text-decoration: none;
       transition: all 0.2s ease;
+      min-height: 44px;
+      touch-action: manipulation;
     }
     .btn-return-home:hover {
       background: rgba(56, 189, 248, 0.22);
       transform: translateY(-1px);
     }
-    .btn-return-home {
-      min-height: 44px;
-      touch-action: manipulation;
+    .lang-toggle-pills {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 9999px;
+      padding: 3px 6px;
+      gap: 4px;
     }
-    @media (max-width: 640px) {
-      .privacy-container {
-        padding: 20px 16px;
-        padding-top: max(20px, env(safe-area-inset-top));
-        padding-bottom: max(32px, env(safe-area-inset-bottom));
-        padding-left: max(16px, env(safe-area-inset-left));
-        padding-right: max(16px, env(safe-area-inset-right));
+    .lang-pill {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .lang-pill:hover {
+      color: #ffffff;
+    }
+    .lang-pill.active {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(2, 132, 199, 0.6);
+    }
+    @media (max-width: 768px) {
+      .privacy-page-wrap {
+        padding: 95px 16px 60px;
+      }
+      .privacy-header-card {
+        padding: 28px 20px;
+      }
+      .privacy-title {
+        font-size: 1.8rem;
+      }
+      .privacy-section-card {
+        padding: 24px 20px;
+      }
+      .privacy-nav-top {
+        padding: 0 16px;
       }
     }
   </style>
@@ -207,185 +314,350 @@
   <!-- Top Fixed Navigation -->
   <header class="privacy-nav-top">
     <a href="/index.html" style="display:flex; align-items:center; text-decoration:none;">
-      <span style="font-size:1.25rem; font-weight:900; color:#fff; letter-spacing:-0.03em;">stem<span style="color:#38bdf8;">OS</span></span>
+      <span style="font-size:1.3rem; font-weight:900; color:#fff; letter-spacing:-0.03em;">stem<span style="color:#38bdf8;">OS</span></span>
     </a>
-    <a href="/index.html" class="btn-return-home">
-      <i class="fa-solid fa-arrow-left"></i> Volver a stemOS
-    </a>
+
+    <div style="display:flex; align-items:center; gap:14px;">
+      <!-- Language Anchor Toggle -->
+      <div class="lang-toggle-pills">
+        <a href="#english-policy" class="lang-pill active" id="pill-en" onclick="setActiveLangPill('en')">English</a>
+        <a href="#spanish-policy" class="lang-pill" id="pill-es" onclick="setActiveLangPill('es')">Español</a>
+      </div>
+
+      <a href="/index.html" class="btn-return-home">
+        <i class="fa-solid fa-arrow-left"></i> <span class="return-text">Return to stemOS</span>
+      </a>
+    </div>
   </header>
 
   <main class="privacy-page-wrap">
-    <div class="privacy-header-card">
-      <div class="privacy-badge">
-        <i class="fa-solid fa-shield-halved"></i> GOBERNANZA DE DATOS Y PRIVACIDAD ACADÉMICA
-      </div>
-      <h1 class="privacy-title">Aviso de Privacidad Integral</h1>
-      <p class="privacy-meta">
-        <strong>stemOS® — The Technical English Operating System</strong> • Operado por yepzhi.com y Fundación Jóvenes STEM.<br>
-        Última actualización: Octubre 2026 • Marco de Cumplimiento: Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP México), FERPA, COPPA y Estándares de Seguridad ISO 27001.
-      </p>
-    </div>
 
-    <!-- Section 1: Compromiso -->
-    <div class="privacy-section-card">
-      <h2><i class="fa-solid fa-building-columns"></i> 1. Compromiso Institucional y Alcance</h2>
-      <p>
-        En <strong>stemOS®</strong>, nuestra misión es capacitar a estudiantes de ingeniería, docentes y profesionales técnicos de Universidades Tecnológicas, TecNM y Universidades Estatales en inglés técnico de alta densidad para la industria del Nearshoring.
-      </p>
-      <p>
-        Reconocemos que la privacidad de la identidad académica, las credenciales institucionales y las interacciones formativas no es un requisito accesorio, sino un principio de diseño arquitectónico. Este Aviso regula el tratamiento de los datos recopilados en la plataforma web <code>stemos.org</code>, la aplicación móvil/PWA, el evaluador socrático <strong>Feynman AI Tutor</strong>, los crucibles de laboratorio industrial y el sistema de diplomas y credenciales digitales <strong>W3C Open Badges 3.0</strong>.
-      </p>
-    </div>
-
-    <!-- Section 2: Minimización -->
-    <div class="privacy-section-card">
-      <h2><i class="fa-solid fa-fingerprint"></i> 2. Principio de Minimización de Datos</h2>
-      <p>
-        Operamos bajo una estricta política de minimización: solo recopilamos la información indispensable para validar la matrícula institucional, asignar la ruta curricular por carrera y certificar los hitos evaluados.
-      </p>
-      
-      <div class="privacy-highlight-box">
-        <div class="privacy-highlight-title"><i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Datos que SÍ recopilamos y procesamos:</div>
-        <ul>
-          <li><strong>Identidad y Matrícula Académica:</strong> Nombre completo del estudiante, matrícula escolar o número de control, y correo electrónico institucional (ej. <code>@upbc.edu.mx</code>, <code>@tecnm.mx</code>, <code>@uabc.edu.mx</code>).</li>
-          <li><strong>Perfil Curricular:</strong> Subsistema universitario (TecNM, UT, Estatal), campus, carrera de adscripción (Ingeniería, Licenciatura o TSU) y track de especialización industrial.</li>
-          <li><strong>Progreso Evaluativo:</strong> Módulos completados, tiempo de lectura técnica, desempeño en reactivos con interleaving, puntajes en simuladores de laboratorio y folios de diplomas verificables emitidos.</li>
-          <li><strong>Interacciones Socráticas Feynman AI:</strong> Respuestas conceptuales de defensa técnica y análisis de causa raíz para evaluación formativa inmediata.</li>
-        </ul>
-      </div>
-
-      <div class="privacy-highlight-box" style="border-color:rgba(239, 68, 68, 0.35); background:rgba(30, 15, 20, 0.65);">
-        <div class="privacy-highlight-title" style="color:#f87171;"><i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Datos que NUNCA solicitamos ni almacenamos:</div>
-        <ul>
-          <li>Geolocalización en tiempo real por GPS.</li>
-          <li>Biometría facial permanente, huellas dactilares o escaneo de iris.</li>
-          <li>Información financiera o números de tarjeta de crédito de alumnos institucionales (las licencias de campus se liquidan mediante factura institucional única sin cobro a los estudiantes).</li>
-          <li>Comunicaciones personales no vinculadas a los módulos técnicos.</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Section 3: Google User Data and OAuth Disclosure -->
-    <div class="privacy-section-card" id="google-user-data-policy" style="border: 1px solid rgba(56, 189, 248, 0.4); background: radial-gradient(circle at top left, rgba(14, 165, 233, 0.1) 0%, rgba(15, 23, 42, 0.8) 100%);">
-      <h2><i class="fa-brands fa-google" style="color:#38bdf8;"></i> 3. Google User Data Policy &amp; OAuth Transparency / Divulgación de Datos de Google</h2>
-      <p>
-        stemOS utilizes Google Sign-In (OAuth 2.0 via Firebase Authentication) to allow students, teachers, and administrators to securely authenticate and access their technical learning environments. We strictly minimize data access and adhere to international student privacy standards.
-      </p>
-
-      <div class="privacy-highlight-box">
-        <div class="privacy-highlight-title"><i class="fa-solid fa-list-check" style="color:#38bdf8;"></i> 1. Specific Google User Data Accessed:</div>
-        <ul>
-          <li><strong>Google Account Unique Identifier (UID):</strong> Used to link and index your encrypted learning records in our Firestore database.</li>
-          <li><strong>Primary Email Address:</strong> Used to confirm institutional affiliation (e.g., <code>@upbc.edu.mx</code>, <code>@tecnm.mx</code>), send verification credentials, and deliver academic reports.</li>
-          <li><strong>Full Name (First and Last Name):</strong> Used exclusively to personalize your learning dashboard and print verifiable accreditation certificates (W3C Open Badges 3.0 / CACEI diplomas).</li>
-          <li><strong>Profile Picture URL:</strong> Used solely to render your avatar in the platform header and navigation HUD while signed in.</li>
-        </ul>
-      </div>
-
-      <div class="privacy-highlight-box">
-        <div class="privacy-highlight-title"><i class="fa-solid fa-bullseye" style="color:#10b981;"></i> 2. How stemOS Uses Google User Data:</div>
-        <ul>
-          <li><strong>Identity Authentication:</strong> Seamless sign-in without requiring students to memorize separate passwords.</li>
-          <li><strong>Curricular Progress Tracking:</strong> Persisting CEFR A1-C1 milestones, 60-hour career track progress, and laboratory crucible simulations across sessions.</li>
-          <li><strong>Certification:</strong> Embedding authenticated student names on tamper-proof digital credentials verified with cryptographic SHA-256 hashes.</li>
-        </ul>
-      </div>
-
-      <div class="privacy-highlight-box" style="border-color:rgba(239, 68, 68, 0.4); background:rgba(30, 15, 20, 0.65);">
-        <div class="privacy-highlight-title" style="color:#f87171;"><i class="fa-solid fa-ban" style="color:#ef4444;"></i> 3. Strict Prohibitions &amp; Data Protection Guarantees:</div>
-        <ul>
-          <li><strong>NO Sale of Data:</strong> stemOS does NOT sell, rent, lease, or monetize Google user data to data brokers, advertisers, or any commercial third parties.</li>
-          <li><strong>NO Advertising or Tracking:</strong> Google user data is NEVER used to serve targeted advertisements, retargeting campaigns, or behavioral profiling.</li>
-          <li><strong>NO Third-Party Transfer:</strong> Google user data is never shared with external parties, except as strictly required to provide core infrastructure services (Google Cloud Platform and Firebase).</li>
-          <li><strong>NO AI Model Training:</strong> Google user data is NEVER used to train or fine-tune public artificial intelligence models, LLMs, or commercial machine learning tools.</li>
-        </ul>
-      </div>
-
-      <!-- Mandatory Google Limited Use Requirements Clause -->
-      <div class="privacy-highlight-box" style="border: 2px solid #38bdf8; background: rgba(14, 165, 233, 0.12); box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);">
-        <div class="privacy-highlight-title" style="color: #38bdf8; font-size: 0.95rem;">
-          <i class="fa-solid fa-scale-balanced"></i> Google API Services User Data Policy Compliance (Limited Use Disclosure)
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <!-- ENGLISH PRIVACY POLICY (CANONICAL AUDIT VERSION FOR GOOGLE OAUTH)   -->
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <article id="english-policy">
+      <div class="privacy-header-card">
+        <div class="privacy-badge">
+          <i class="fa-solid fa-shield-halved"></i> DATA GOVERNANCE &amp; ACADEMIC PRIVACY CHARTER
         </div>
-        <p style="font-size: 0.95rem; color: #ffffff; font-weight: 700; line-height: 1.65; margin: 0 0 10px 0;">
-          stemOS's use and transfer to any other app of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; text-decoration: underline; font-weight: 800;">Google API Services User Data Policy</a>, including the Limited Use requirements.
-        </p>
-        <p style="font-size: 0.88rem; color: #cbd5e1; margin: 0; line-height: 1.55;">
-          El uso y transferencia que stemOS realice a cualquier otra aplicación de la información recibida a través de las APIs de Google se apegará estrictamente a la <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; text-decoration: underline;">Política de Datos de Usuario de los Servicios de las APIs de Google</a>, incluidos los requisitos de Uso Limitado.
+        <h1 class="privacy-title">stemOS Privacy Policy</h1>
+        <p class="privacy-meta">
+          <strong>Application Name:</strong> stemOS® — The Technical English Operating System<br>
+          <strong>Operated by:</strong> yepzhi.com &amp; Fundación Jóvenes STEM • <strong>Contact:</strong> <a href="mailto:yepzhi@gmail.com" style="color:#38bdf8; text-decoration:none; font-weight:700;">yepzhi@gmail.com</a><br>
+          <strong>Last Updated:</strong> October 2026 • <strong>Compliance Standards:</strong> Google API Services User Data Policy, Limited Use Requirements, FERPA, COPPA, Mexico LFPDPPP, ISO 27001.
         </p>
       </div>
 
-      <div class="privacy-highlight-box">
-        <div class="privacy-highlight-title"><i class="fa-solid fa-trash-can" style="color:#ef4444;"></i> 4. Data Retention, Revocation &amp; Deletion Process:</div>
+      <!-- Quick Jump Navigation -->
+      <nav class="privacy-toc-bar" aria-label="Table of Contents">
+        <a href="#sec-overview" class="privacy-toc-link"><i class="fa-solid fa-circle-info"></i> 1. Overview</a>
+        <a href="#sec-data-collected" class="privacy-toc-link"><i class="fa-solid fa-database"></i> 2. Google Data Accessed</a>
+        <a href="#sec-data-usage" class="privacy-toc-link"><i class="fa-solid fa-gears"></i> 3. How We Use Data</a>
+        <a href="#google-limited-use" class="privacy-toc-link" style="color:#38bdf8; font-weight:700;"><i class="fa-brands fa-google"></i> 4. Google Limited Use</a>
+        <a href="#sec-prohibitions" class="privacy-toc-link"><i class="fa-solid fa-ban"></i> 5. Prohibitions &amp; AI</a>
+        <a href="#sec-security" class="privacy-toc-link"><i class="fa-solid fa-lock"></i> 6. Security &amp; Storage</a>
+        <a href="#sec-retention-deletion" class="privacy-toc-link" style="color:#f87171;"><i class="fa-solid fa-trash-can"></i> 7. Retention &amp; Deletion</a>
+        <a href="#sec-contact" class="privacy-toc-link"><i class="fa-solid fa-envelope"></i> 8. Contact &amp; Officer</a>
+      </nav>
+
+      <!-- Section 1: Overview -->
+      <section class="privacy-section-card" id="sec-overview">
+        <h2><i class="fa-solid fa-building-columns"></i> 1. Application Overview &amp; Scope</h2>
         <p>
-          Students and teachers maintain total ownership and control over their data at all times:
+          <strong>stemOS®</strong> is an educational platform and technical English learning operating system engineered for engineering students, faculty, and technical professionals across 34 specialized industrial tracks (including semiconductors, aerospace, robotics, automotive engineering, medical devices, and clean energy).
+        </p>
+        <p>
+          This Privacy Policy governs the access, collection, usage, storage, and protection of personal data across the <code>stemos.org</code> web platform, progressive web application (PWA), Socratic Feynman AI Tutor, industrial lab simulation crucibles, and verifiable <strong>W3C Open Badges 3.0</strong> academic credentialing services.
+        </p>
+        <p>
+          We believe academic identity and student privacy are foundational human rights. We design all stemOS features around <strong>strict data minimization</strong>, deterministic access controls, and zero monetization of student records.
+        </p>
+      </section>
+
+      <!-- Section 2: Google User Data Accessed -->
+      <section class="privacy-section-card" id="sec-data-collected">
+        <h2><i class="fa-solid fa-fingerprint"></i> 2. Specific Google User Data Accessed (OAuth 2.0 Scopes)</h2>
+        <p>
+          stemOS integrates Google Sign-In (OAuth 2.0 via Google Identity Services and Firebase Authentication) solely to provide a secure, seamless Single Sign-On (SSO) experience for students and faculty. We request only the minimum required basic identity scopes (<code>openid</code>, <code>profile</code>, and <code>email</code>).
+        </p>
+
+        <div class="privacy-highlight-box">
+          <div class="privacy-highlight-title"><i class="fa-solid fa-list-check" style="color:#38bdf8;"></i> Specific Google User Data Categories Accessed:</div>
+          <ul>
+            <li><strong>Google Account Unique Identifier (UID):</strong> An immutable pseudonymous identifier assigned by Google to link and index your encrypted learning records in our Firestore database.</li>
+            <li><strong>Primary Email Address:</strong> Used to verify institutional enrollment (e.g., matching university domains such as <code>@upbc.edu.mx</code> or <code>@tecnm.mx</code>), deliver administrative notifications, and transmit accredited certificate verification links.</li>
+            <li><strong>Full Name (First and Last Name):</strong> Used exclusively to address you within the dashboard HUD and print verified, tamper-evident completion diplomas and W3C Open Badges 3.0 credentials.</li>
+            <li><strong>Profile Picture URL:</strong> Used strictly to display your user avatar in the platform navigation bar while you are actively logged in.</li>
+          </ul>
+        </div>
+
+        <div class="privacy-highlight-box" style="border-color:rgba(239, 68, 68, 0.4); background:rgba(30, 15, 20, 0.65);">
+          <div class="privacy-highlight-title" style="color:#f87171;"><i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Data Categories stemOS NEVER Requests or Stores:</div>
+          <ul>
+            <li>We NEVER request or access Google Drive files, Gmail messages, Contacts, Google Calendar events, or device files.</li>
+            <li>We NEVER collect real-time GPS geolocation data.</li>
+            <li>We NEVER collect permanent biometric facial recognition, voiceprints, or fingerprint records.</li>
+            <li>We NEVER collect student financial or credit card information (institutional campus licenses are managed via university master contracts without individual student fees).</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 3: How stemOS Uses Google User Data -->
+      <section class="privacy-section-card" id="sec-data-usage">
+        <h2><i class="fa-solid fa-gears"></i> 3. How stemOS Uses Google User Data</h2>
+        <p>
+          stemOS uses information collected through Google APIs exclusively to provide and improve educational and user-facing features within the platform:
         </p>
         <ul>
-          <li><strong>Data Retention:</strong> Google user data is retained only for the duration of the student's active enrollment or academic cycle.</li>
-          <li><strong>Right to Deletion:</strong> Any user can request the permanent and irreversible deletion of their account and all associated Google user data by emailing our Privacy Office at <a href="mailto:yepzhi@gmail.com" style="color:#38bdf8; font-weight:700;">yepzhi@gmail.com</a> with the subject line <em>"Data Deletion Request — stemOS"</em>. All records will be completely deleted from our production databases within 72 business hours.</li>
-          <li><strong>OAuth Permission Revocation:</strong> Users can revoke stemOS's access to their Google Account at any time directly through their <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer" style="color:#38bdf8; text-decoration:underline;">Google Account Security Settings</a>.</li>
+          <li><strong>Identity Authentication &amp; Account Security:</strong> Allowing students and educators to access their personalized technical curriculum without needing to create, remember, or risk separate passwords.</li>
+          <li><strong>Curricular Progress Persistence:</strong> Synchronizing CEFR A1–C1 language proficiency benchmarks, 60-hour industrial specialization track progress, diagnostic exam results, and virtual engineering laboratory simulations across devices.</li>
+          <li><strong>Tamper-Proof Academic Certification:</strong> Embedding authenticated student names onto verifiable digital credentials validated with cryptographic SHA-256 hashes under W3C Open Badges 3.0 and CACEI accreditation criteria.</li>
+          <li><strong>Institutional Cohort Insights (Instructors):</strong> Allowing verified classroom teachers to review aggregated, non-monetized student completion statistics for the classes they manage.</li>
         </ul>
-      </div>
-    </div>
+      </section>
 
-    <!-- Section 4: IA y Salvaguardas -->
-    <div class="privacy-section-card">
-      <h2><i class="fa-solid fa-microchip"></i> 4. Gobernanza de Inteligencia Artificial (Feynman AI Socratic Tutor)</h2>
-      <p>
-        El asistente de tutoría socrática <strong>Feynman AI</strong> y los módulos de debriefing de voz operan con estrictas salvaguardas de gobernanza:
-      </p>
-      <ul>
-        <li><strong>Sanitización de PII (Personally Identifiable Information):</strong> Antes de procesar cualquier prompt de resolución técnica o defensa de caso 8D, el sistema remueve automáticamente correos, números de control y apellidos para mantener el anonimato operativo.</li>
-        <li><strong>Cero Entrenamiento sobre Datos de Estudiantes:</strong> Los prompts y grabaciones de audio efímeras del estudiante no se utilizan para entrenar modelos públicos de terceros ni se comparten con entidades comerciales externas.</li>
-        <li><strong>Fines Exclusivamente Académicos:</strong> Los algoritmos evalúan únicamente la precisión del vocabulario técnico en inglés, la estructura lógica de la respuesta y la justificación de ingeniería bajo normas internacionales (SEMI, IEEE, ISO, OSHA).</li>
-      </ul>
-    </div>
+      <!-- Section 4: Mandatory Google Limited Use Requirements Clause -->
+      <section class="privacy-section-card" id="google-limited-use" style="border: 2px solid #38bdf8; background: radial-gradient(circle at top left, rgba(14, 165, 233, 0.15) 0%, rgba(15, 23, 42, 0.88) 100%);">
+        <h2><i class="fa-brands fa-google" style="color:#38bdf8;"></i> 4. Google API Services User Data Policy Compliance (Limited Use Disclosure)</h2>
+        <p>
+          stemOS adheres strictly to Google's requirements for applications accessing Google user data:
+        </p>
 
-    <!-- Section 5: Cookies y Rendimiento Offline -->
-    <div class="privacy-section-card">
-      <h2><i class="fa-solid fa-cookie-bite"></i> 5. Política de Cookies y Almacenamiento Local (PWA Offline)</h2>
-      <p>
-        stemOS utiliza tecnologías de almacenamiento local en el navegador (Local Storage, IndexedDB y cookies técnicas esenciales):
-      </p>
-      <ul>
-        <li><strong>Cookies Esenciales:</strong> Necesarias para mantener la sesión autenticada con Google y almacenar la preferencia de idioma (EN | ES).</li>
-        <li><strong>IndexedDB y Service Workers:</strong> Permiten descargar el contenido de los 34 tracks para ejecución 100% offline en plantas o laboratorios sin internet. Ningún dato sensible sale del dispositivo durante las sesiones offline.</li>
-        <li><strong>Analíticas Agregadas:</strong> Monitoreo de telemetría de rendimiento y errores técnicos sin rastreo publicitario entre dominios ni venta de perfiles a intermediarios de datos.</li>
-      </ul>
-    </div>
+        <div class="google-limited-use-callout">
+          <h3><i class="fa-solid fa-scale-balanced"></i> Google Limited Use Statement</h3>
+          <div class="google-verbatim-text">
+            stemOS's use and transfer to any other app of information received from Google APIs will adhere to <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">Google API Services User Data Policy</a>, including the Limited Use requirements.
+          </div>
+          <p style="font-size: 0.92rem; color: #cbd5e1; margin: 0; line-height: 1.6;">
+            In full compliance with Google Limited Use specifications:
+          </p>
+          <ul style="margin: 10px 0 0; padding-left: 20px; font-size: 0.9rem; color: #cbd5e1;">
+            <li>We only use Google user data to provide or improve user-facing features that are prominent in the stemOS user interface.</li>
+            <li>We do NOT transfer Google user data to third parties, unless necessary to provide or improve these user-facing features, comply with applicable law, or as part of a merger or acquisition.</li>
+            <li>We do NOT use or transfer Google user data for serving advertisements, including personalized, retargeted, or interest-based advertising.</li>
+            <li>We do NOT allow humans to read Google user data unless: (1) we have obtained the user's affirmative agreement for specific messages, (2) it is necessary for security purposes (such as investigating abuse or debugging), (3) it is required to comply with applicable law, or (4) the data is aggregated and anonymized for internal operations.</li>
+          </ul>
+        </div>
+      </section>
 
-    <!-- Section 6: Derechos ARCO -->
-    <div class="privacy-section-card">
-      <h2><i class="fa-solid fa-user-lock"></i> 6. Ejercicio de Derechos ARCO y Supresión de Datos</h2>
-      <p>
-        De acuerdo con la legislación vigente, todo estudiante, docente o titular de datos tiene derecho a ejercer en cualquier momento sus derechos de <strong>Acceso, Rectificación, Cancelación y Oposición (ARCO)</strong>:
-      </p>
-      <ul>
-        <li><strong>Acceso:</strong> Solicitar copia íntegra de su historial académico, folios de diplomas y avance curricular registrado.</li>
-        <li><strong>Rectificación:</strong> Corregir su nombre, matrícula o carrera en caso de error administrativo en los certificados.</li>
-        <li><strong>Cancelación y Supresión:</strong> Solicitar la eliminación definitiva de su cuenta y registros de progreso en un plazo máximo de 72 horas hábiles.</li>
-        <li><strong>Oposición:</strong> Solicitar que su avance no sea visible en los paneles agregados de cohorte docente.</li>
-      </ul>
-    </div>
+      <!-- Section 5: Strict Prohibitions and AI Governance -->
+      <section class="privacy-section-card" id="sec-prohibitions">
+        <h2><i class="fa-solid fa-ban"></i> 5. Strict Prohibitions &amp; Artificial Intelligence (AI) Governance</h2>
+        <p>
+          We enforce zero-tolerance data protection guarantees across our infrastructure:
+        </p>
+        <div class="privacy-highlight-box" style="border-color:rgba(239, 68, 68, 0.45); background:rgba(30, 15, 20, 0.65);">
+          <div class="privacy-highlight-title" style="color:#f87171;"><i class="fa-solid fa-shield-virus" style="color:#ef4444;"></i> Prohibited Uses:</div>
+          <ul>
+            <li><strong>NO Sale to Third Parties:</strong> stemOS does NOT sell, rent, license, commercialize, or transfer Google user data to data brokers, information resellers, or advertising networks under any circumstances.</li>
+            <li><strong>NO Advertising or Tracking:</strong> Google user data is NEVER used to serve advertisements, personalized promotions, or behavioral targeting.</li>
+            <li><strong>NO Creditworthiness or Lending Evaluation:</strong> Data is never used for financial profiling, lending decisions, or background checks.</li>
+            <li><strong>NO Training of Generalized/Public AI Models:</strong> stemOS explicitly affirms that Google user data, student prompts, and voice audio recordings are <strong>NEVER used to develop, improve, or train generalized or non-personalized Artificial Intelligence (AI) or Machine Learning (ML) models</strong>.</li>
+          </ul>
+        </div>
+        <h3>Feynman AI Socratic Tutor Privacy Safeguards</h3>
+        <p>
+          When students engage with our Socratic Feynman AI Tutor to solve engineering case studies (e.g., 8D root-cause analysis, LOTO, SEMI standards), all input prompts are automatically stripped of Personally Identifiable Information (PII) before ephemeral evaluation. Prompts are never retained to train public foundational models.
+        </p>
+      </section>
 
-    <!-- Section 7: Contacto -->
-    <div class="privacy-section-card">
-      <h2><i class="fa-solid fa-envelope"></i> 7. Unidad de Enlace y Contacto Oficial</h2>
-      <p>
-        Para cualquier duda, solicitud de ejercicio de derechos ARCO o aclaración sobre este Aviso de Privacidad:
-      </p>
-      <div class="privacy-highlight-box" style="margin-top:12px;">
-        <p style="margin:0; font-weight:700; color:#ffffff;">Oficina de Privacidad y Cumplimiento Normativo stemOS®</p>
-        <p style="margin:6px 0 0; color:#94a3b8; font-size:0.9rem;">
-          Correo oficial: <a href="mailto:yepzhi@gmail.com" style="color:#38bdf8; font-weight:700; text-decoration:none;">yepzhi@gmail.com</a><br>
-          Hermosillo, Sonora.
+      <!-- Section 6: Security and Data Protection -->
+      <section class="privacy-section-card" id="sec-security">
+        <h2><i class="fa-solid fa-lock"></i> 6. Data Storage, Security &amp; Protection Mechanisms</h2>
+        <p>
+          We implement rigorous technical, organizational, and physical safeguards to protect all user data against unauthorized access, alteration, disclosure, or destruction:
+        </p>
+        <ul>
+          <li><strong>Encryption in Transit:</strong> All data transmitted between user browsers and stemOS servers is encrypted using modern <strong>TLS 1.3 / HTTPS</strong> with strict HTTP Strict Transport Security (HSTS) headers.</li>
+          <li><strong>Encryption at Rest:</strong> All database records, user profiles, and academic transcripts are encrypted at rest using industry-standard <strong>AES-256</strong> in Google Cloud Platform and Firebase certified data centers.</li>
+          <li><strong>Multi-Tenant Granular Security Rules:</strong> Cloud Firestore database rules enforce cryptographic tenant isolation, ensuring students can only read and write their own authenticated records, and teachers can only inspect enrolled students within their verified classes.</li>
+          <li><strong>Air-Gapped PWA Offline Storage:</strong> Local course track downloads for plant floor or offline laboratory use are stored locally on the client device via encrypted IndexedDB and never transmitted over external networks.</li>
+        </ul>
+      </section>
+
+      <!-- Section 7: Data Retention, Deletion, and Revocation -->
+      <section class="privacy-section-card" id="sec-retention-deletion" style="border: 1px solid rgba(239, 68, 68, 0.35);">
+        <h2><i class="fa-solid fa-trash-can" style="color:#ef4444;"></i> 7. Data Retention, Deletion &amp; OAuth Permission Revocation</h2>
+        <p>
+          stemOS respects each user's absolute ownership over their identity and academic data:
+        </p>
+
+        <div class="privacy-highlight-box">
+          <div class="privacy-highlight-title"><i class="fa-solid fa-clock-rotate-left" style="color:#38bdf8;"></i> Data Retention Policy:</div>
+          <p style="margin:0;">
+            We retain Google user data only for the length of time needed to fulfill the educational purposes outlined in this Privacy Policy (for example, throughout the student's active enrollment period or university term), or until the user requests deletion. When data is no longer necessary for academic accreditation, it is securely destroyed.
+          </p>
+        </div>
+
+        <div class="privacy-highlight-box" style="border-color:rgba(239, 68, 68, 0.4); background:rgba(30, 15, 20, 0.75);">
+          <div class="privacy-highlight-title" style="color:#f87171;"><i class="fa-solid fa-user-xmark" style="color:#ef4444;"></i> How to Request Immediate Data Deletion:</div>
+          <p>
+            Any user (student, educator, or institutional administrator) may request the permanent and irreversible deletion of their account and all associated Google user data at any time:
+          </p>
+          <ol style="margin: 8px 0 12px 20px; padding: 0; color: #cbd5e1; font-size: 0.93rem; line-height: 1.65;">
+            <li>Send an email to our dedicated Privacy Office at <a href="mailto:yepzhi@gmail.com" style="color:#38bdf8; font-weight:700;">yepzhi@gmail.com</a>.</li>
+            <li>Use the subject line: <strong>"Data Deletion Request — stemOS"</strong>.</li>
+            <li>Include your registered Google account email address.</li>
+          </ol>
+          <p style="margin:0; font-weight:700; color:#ffffff;">
+            <i class="fa-solid fa-circle-check" style="color:#10b981; margin-right:6px;"></i> Guarantee: All personal data, OAuth identifiers, and learning records will be completely and permanently purged from our active production databases within seventy-two (72) business hours.
+          </p>
+        </div>
+
+        <div class="privacy-highlight-box">
+          <div class="privacy-highlight-title"><i class="fa-brands fa-google" style="color:#38bdf8;"></i> How to Revoke stemOS Google OAuth Permissions:</div>
+          <p style="margin:0 0 10px 0;">
+            Users can immediately revoke stemOS's access to their Google Account at any time directly through their Google Account settings:
+          </p>
+          <p style="margin:0;">
+            👉 Visit <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer" style="color:#38bdf8; font-weight:700; text-decoration:underline;">Google Third-Party Apps &amp; Services Permissions (myaccount.google.com/permissions)</a>, select <strong>stemOS</strong>, and click <strong>"Remove Access"</strong>. Once revoked, stemOS cannot access any Google account information.
+          </p>
+        </div>
+      </section>
+
+      <!-- Section 8: Contact & Privacy Officer -->
+      <section class="privacy-section-card" id="sec-contact">
+        <h2><i class="fa-solid fa-envelope"></i> 8. Official Privacy Officer &amp; Contact Information</h2>
+        <p>
+          If you have any questions, concerns, complaints, or requests regarding this Privacy Policy, your Google user data, or our data handling practices, please contact our Privacy and Compliance Office:
+        </p>
+        <div class="privacy-highlight-box" style="margin-top:14px;">
+          <p style="margin:0; font-weight:800; font-size:1.05rem; color:#ffffff;">stemOS Data Protection &amp; Regulatory Compliance Office</p>
+          <p style="margin:8px 0 0; color:#cbd5e1; font-size:0.92rem; line-height:1.65;">
+            <strong>Primary Contact Email:</strong> <a href="mailto:yepzhi@gmail.com" style="color:#38bdf8; font-weight:700; text-decoration:none;">yepzhi@gmail.com</a><br>
+            <strong>Parent Organization:</strong> Fundación Jóvenes STEM / yepzhi.com<br>
+            <strong>Application URL:</strong> <a href="https://stemos.org" style="color:#38bdf8; text-decoration:none;">https://stemos.org</a><br>
+            <strong>Privacy Policy URL:</strong> <a href="https://stemos.org/privacy" style="color:#38bdf8; text-decoration:none;">https://stemos.org/privacy</a><br>
+            <strong>Physical Jurisdiction:</strong> Hermosillo, Sonora, Mexico.
+          </p>
+        </div>
+      </section>
+    </article>
+
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <!-- SPANISH PRIVACY POLICY (AVISO DE PRIVACIDAD INTEGRAL - LFPDPPP MÉXICO) -->
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <article id="spanish-policy" style="margin-top: 60px; padding-top: 40px; border-top: 1px dashed rgba(255,255,255,0.15);">
+      <div class="privacy-header-card">
+        <div class="privacy-badge">
+          <i class="fa-solid fa-shield-halved"></i> AVISO DE PRIVACIDAD INTEGRAL (MÉXICO &amp; LATAM)
+        </div>
+        <h2 class="privacy-title" style="font-size: 2rem;">Aviso de Privacidad y Gobernanza de Datos</h2>
+        <p class="privacy-meta">
+          <strong>stemOS® — The Technical English Operating System</strong> • Operado por yepzhi.com y Fundación Jóvenes STEM.<br>
+          Última actualización: Octubre 2026 • Marco de Cumplimiento: Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP México), FERPA, COPPA y Estándares de Seguridad ISO 27001.
         </p>
       </div>
-    </div>
+
+      <!-- Section 1 ES -->
+      <div class="privacy-section-card">
+        <h2><i class="fa-solid fa-building-columns"></i> 1. Compromiso Institucional y Alcance</h2>
+        <p>
+          En <strong>stemOS®</strong>, nuestra misión es capacitar a estudiantes de ingeniería, docentes y profesionales técnicos de Universidades Tecnológicas, TecNM y Universidades Estatales en inglés técnico de alta densidad para la industria del Nearshoring.
+        </p>
+        <p>
+          Reconocemos que la privacidad de la identidad académica, las credenciales institucionales y las interacciones formativas no es un requisito accesorio, sino un principio de diseño arquitectónico. Este Aviso regula el tratamiento de los datos recopilados en la plataforma web <code>stemos.org</code>, la aplicación móvil/PWA, el evaluador socrático <strong>Feynman AI Tutor</strong>, los crucibles de laboratorio industrial y el sistema de diplomas y credenciales digitales <strong>W3C Open Badges 3.0</strong>.
+        </p>
+      </div>
+
+      <!-- Section 2 ES -->
+      <div class="privacy-section-card">
+        <h2><i class="fa-solid fa-fingerprint"></i> 2. Principio de Minimización de Datos</h2>
+        <p>
+          Operamos bajo una estricta política de minimización: solo recopilamos la información indispensable para validar la matrícula institucional, asignar la ruta curricular por carrera y certificar los hitos evaluados.
+        </p>
+        
+        <div class="privacy-highlight-box">
+          <div class="privacy-highlight-title"><i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Datos que SÍ recopilamos y procesamos:</div>
+          <ul>
+            <li><strong>Identidad y Matrícula Académica:</strong> Nombre completo del estudiante, matrícula escolar o número de control, y correo electrónico institucional (ej. <code>@upbc.edu.mx</code>, <code>@tecnm.mx</code>, <code>@uabc.edu.mx</code>).</li>
+            <li><strong>Perfil Curricular:</strong> Subsistema universitario (TecNM, UT, Estatal), campus, carrera de adscripción y track de especialización industrial.</li>
+            <li><strong>Progreso Evaluativo:</strong> Módulos completados, tiempo de lectura técnica, desempeño en reactivos con interleaving, puntajes en simuladores de laboratorio y folios de diplomas verificables emitidos.</li>
+            <li><strong>Interacciones Socráticas Feynman AI:</strong> Respuestas conceptuales de defensa técnica y análisis de causa raíz para evaluación formativa inmediata.</li>
+          </ul>
+        </div>
+
+        <div class="privacy-highlight-box" style="border-color:rgba(239, 68, 68, 0.35); background:rgba(30, 15, 20, 0.65);">
+          <div class="privacy-highlight-title" style="color:#f87171;"><i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Datos que NUNCA solicitamos ni almacenamos:</div>
+          <ul>
+            <li>Geolocalización en tiempo real por GPS.</li>
+            <li>Biometría facial permanente, huellas dactilares o escaneo de iris.</li>
+            <li>Información financiera o números de tarjeta de crédito de alumnos institucionales (las licencias de campus se liquidan mediante factura institucional única sin cobro a los estudiantes).</li>
+            <li>Comunicaciones personales no vinculadas a los módulos técnicos.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Section 3 ES: Google User Data -->
+      <div class="privacy-section-card">
+        <h2><i class="fa-brands fa-google" style="color:#38bdf8;"></i> 3. Divulgación de Datos de Usuario de Google y Requisitos de Uso Limitado</h2>
+        <p>
+          stemOS utiliza Google Sign-In (OAuth 2.0 vía Firebase Authentication) para permitir que estudiantes y profesores se autentiquen de manera segura. Cumplimos rigurosamente con los estándares internacionales de privacidad estudiantil.
+        </p>
+
+        <div class="privacy-highlight-box" style="border: 2px solid #38bdf8; background: rgba(14, 165, 233, 0.12);">
+          <p style="font-size: 0.95rem; color: #ffffff; font-weight: 700; line-height: 1.65; margin: 0 0 10px 0;">
+            El uso y transferencia que stemOS realice a cualquier otra aplicación de la información recibida a través de las APIs de Google se apegará estrictamente a la <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; text-decoration: underline; font-weight: 800;">Política de Datos de Usuario de los Servicios de las APIs de Google</a>, incluidos los requisitos de Uso Limitado.
+          </p>
+        </div>
+
+        <ul>
+          <li><strong>Datos accedidos:</strong> UID de Google, dirección de correo electrónico institucional, nombre completo y fotografía de perfil para el avatar de sesión.</li>
+          <li><strong>Finalidad exclusiva:</strong> Autenticación de cuenta, sincronización de avance curricular y emisión de certificados digitales verificables con hash SHA-256.</li>
+          <li><strong>Cero venta o transferencia publicitaria:</strong> Los datos de Google nunca se venden ni se transfieren a intermediarios de datos, anunciantes o redes publicitarias.</li>
+          <li><strong>Cero entrenamiento de IA general:</strong> Los datos de los usuarios de Google nunca se utilizan para desarrollar o entrenar modelos públicos de Inteligencia Artificial ni aprendizaje automático.</li>
+        </ul>
+      </div>
+
+      <!-- Section 4 ES: Derechos ARCO -->
+      <div class="privacy-section-card">
+        <h2><i class="fa-solid fa-user-lock"></i> 4. Ejercicio de Derechos ARCO y Supresión de Datos</h2>
+        <p>
+          De acuerdo con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP), todo estudiante, docente o titular de datos tiene derecho a ejercer en cualquier momento sus derechos de <strong>Acceso, Rectificación, Cancelación y Oposición (ARCO)</strong>:
+        </p>
+        <ul>
+          <li><strong>Acceso:</strong> Solicitar copia íntegra de su historial académico y avance curricular registrado.</li>
+          <li><strong>Rectificación:</strong> Corregir su nombre, matrícula o carrera en caso de error en los certificados.</li>
+          <li><strong>Cancelación y Supresión Definitiva:</strong> Solicitar la eliminación total de su cuenta y registros de progreso en un plazo máximo de 72 horas hábiles mediante correo a <a href="mailto:yepzhi@gmail.com" style="color:#38bdf8; font-weight:700;">yepzhi@gmail.com</a>.</li>
+          <li><strong>Revocación de Permisos Google:</strong> Los usuarios pueden revocar el acceso de stemOS a su cuenta de Google en cualquier momento en <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer" style="color:#38bdf8; text-decoration:underline;">myaccount.google.com/permissions</a>.</li>
+        </ul>
+      </div>
+
+      <!-- Section 5 ES: Contacto -->
+      <div class="privacy-section-card">
+        <h2><i class="fa-solid fa-envelope"></i> 5. Unidad de Enlace y Contacto Oficial</h2>
+        <div class="privacy-highlight-box" style="margin-top:12px;">
+          <p style="margin:0; font-weight:700; color:#ffffff;">Oficina de Privacidad y Cumplimiento Normativo stemOS®</p>
+          <p style="margin:6px 0 0; color:#94a3b8; font-size:0.9rem;">
+            Correo oficial: <a href="mailto:yepzhi@gmail.com" style="color:#38bdf8; font-weight:700; text-decoration:none;">yepzhi@gmail.com</a><br>
+            Hermosillo, Sonora, México.
+          </p>
+        </div>
+      </div>
+    </article>
+
   </main>
 
   <footer style="text-align:center; padding:32px 24px; border-top:1px solid rgba(255,255,255,0.08); font-size:0.84rem; color:#64748b;">
-    © 2026 stemOS® • The Technical English Operating System for Advanced Industry. Todos los derechos reservados.
+    &copy; 2026 stemOS® • The Technical English Operating System for Advanced Industry. All rights reserved. • <a href="/terms.html" style="color:#94a3b8; text-decoration:underline;">Terms of Service</a>
   </footer>
+
+  <script>
+    function setActiveLangPill(lang) {
+      const pillEn = document.getElementById('pill-en');
+      const pillEs = document.getElementById('pill-es');
+      const returnText = document.querySelector('.return-text');
+      if (lang === 'es') {
+        pillEs.classList.add('active');
+        pillEn.classList.remove('active');
+        if (returnText) returnText.textContent = 'Volver a stemOS';
+      } else {
+        pillEn.classList.add('active');
+        pillEs.classList.remove('active');
+        if (returnText) returnText.textContent = 'Return to stemOS';
+      }
+    }
+  </script>
 
 </body>
 </html>
