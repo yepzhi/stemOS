@@ -3,6 +3,45 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "cleanUrls": true,
+    "rewrites": [
+      {
+        "source": "/generator/**",
+        "destination": "/generator.html"
+      },
+      {
+        "source": "/admin/**",
+        "destination": "/admin.html"
+      },
+      {
+        "source": "/teacher/**",
+        "destination": "/teacher.html"
+      },
+      {
+        "source": "/register/**",
+        "destination": "/register.html"
+      },
+      {
+        "source": "/app/**",
+        "destination": "/app.html"
+      },
+      {
+        "source": "/placement/**",
+        "destination": "/placement.html"
+      },
+      {
+        "source": "/tracks/**",
+        "destination": "/tracks.html"
+      }
+    ]
+  },
   "auth": {
     "providers": {
       "anonymous": true,
