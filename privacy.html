@@ -344,7 +344,7 @@
         <p class="privacy-meta">
           <strong>Application Name:</strong> stemOS® — The Technical English Operating System<br>
           <strong>Operated by:</strong> yepzhi.com &amp; Fundación Jóvenes STEM • <strong>Contact:</strong> <a href="mailto:yepzhi@gmail.com" style="color:#38bdf8; text-decoration:none; font-weight:700;">yepzhi@gmail.com</a><br>
-          <strong>Last Updated:</strong> October 2026 • <strong>Compliance Standards:</strong> Google API Services User Data Policy, Limited Use Requirements, FERPA, COPPA, Mexico LFPDPPP, ISO 27001.
+          <strong>Last Updated:</strong> October 2026 • <strong>Compliance Standards:</strong> Google API Services User Data Policy, Limited Use Requirements, Mexico LFPDPPP.
         </p>
       </div>
 
@@ -397,7 +397,7 @@
             <li>We NEVER request or access Google Drive files, Gmail messages, Contacts, Google Calendar events, or device files.</li>
             <li>We NEVER collect real-time GPS geolocation data.</li>
             <li>We NEVER collect permanent biometric facial recognition, voiceprints, or fingerprint records.</li>
-            <li>We NEVER collect student financial or credit card information (institutional campus licenses are managed via university master contracts without individual student fees).</li>
+            <li>We NEVER store card numbers or bank credentials. Optional paid plans are processed by Stripe or SPEI bank transfer (see Section 6A); this payment data is never combined with Google user data.</li>
           </ul>
         </div>
       </section>
@@ -457,7 +457,7 @@
         </div>
         <h3>Feynman AI Socratic Tutor Privacy Safeguards</h3>
         <p>
-          When students engage with our Socratic Feynman AI Tutor to solve engineering case studies (e.g., 8D root-cause analysis, LOTO, SEMI standards), all input prompts are automatically stripped of Personally Identifiable Information (PII) before ephemeral evaluation. Prompts are never retained to train public foundational models.
+          When students engage with our Socratic Feynman AI Tutor to solve engineering case studies (e.g., 8D root-cause analysis, LOTO, SEMI standards), prompts are sent to an AI model (a campus-hosted model when available, otherwise Google's Gemini API) only to generate the tutor's reply. We do not send your Google account email or profile data in prompts, and prompts are not used by us to train AI models. Please do not enter sensitive personal information in the tutor.
         </p>
       </section>
 
@@ -469,10 +469,30 @@
         </p>
         <ul>
           <li><strong>Encryption in Transit:</strong> All data transmitted between user browsers and stemOS servers is encrypted using modern <strong>TLS 1.3 / HTTPS</strong> with strict HTTP Strict Transport Security (HSTS) headers.</li>
-          <li><strong>Encryption at Rest:</strong> All database records, user profiles, and academic transcripts are encrypted at rest using industry-standard <strong>AES-256</strong> in Google Cloud Platform and Firebase certified data centers.</li>
-          <li><strong>Multi-Tenant Granular Security Rules:</strong> Cloud Firestore database rules enforce cryptographic tenant isolation, ensuring students can only read and write their own authenticated records, and teachers can only inspect enrolled students within their verified classes.</li>
-          <li><strong>Air-Gapped PWA Offline Storage:</strong> Local course track downloads for plant floor or offline laboratory use are stored locally on the client device via encrypted IndexedDB and never transmitted over external networks.</li>
+          <li><strong>Encryption at Rest:</strong> Account and progress records are stored in Google Cloud Firestore (Firebase), which encrypts data at rest by default.</li>
+          <li><strong>Access Controls:</strong> Cloud Firestore security rules restrict students to their own authenticated records, and teachers to students enrolled in their own classes.</li>
+          <li><strong>Local Device Storage:</strong> Offline course downloads and preferences are stored on your own device (browser localStorage / IndexedDB) and are not sent to us.</li>
         </ul>
+      </section>
+
+      <!-- Section 6A: Third parties, cookies, children, rights -->
+      <section class="privacy-section-card" id="sec-third-parties">
+        <h2><i class="fa-solid fa-share-nodes"></i> 6A. Service Providers, Local Storage, Children &amp; Your Rights</h2>
+        <h3>Service providers (processors)</h3>
+        <p>We share data only with the providers needed to run stemOS, under their own privacy terms:</p>
+        <ul>
+          <li><strong>Google Firebase / Google Cloud</strong> &mdash; sign-in (Firebase Authentication) and storage of account and progress data (Cloud Firestore).</li>
+          <li><strong>Cloudflare</strong> &mdash; website hosting, delivery and security; it processes standard connection data such as IP address.</li>
+          <li><strong>Google Gemini API</strong> &mdash; generates AI tutor replies from the text you type into the tutor.</li>
+          <li><strong>Stripe</strong> and <strong>SPEI bank transfer</strong> &mdash; optional paid plans. Stripe collects card details directly; we receive only payment status and an order reference.</li>
+        </ul>
+        <p>We do not sell personal data and do not share Google user data with anyone else, except as required by law or to provide the features described above.</p>
+        <h3>Cookies &amp; local storage</h3>
+        <p>stemOS uses essential browser storage (localStorage, IndexedDB and Firebase Authentication session data) to keep you signed in, remember language and progress, and support offline use. We do not use advertising cookies. Cloudflare may set security cookies. You can clear this storage in your browser at any time.</p>
+        <h3>Children</h3>
+        <p>stemOS is intended for university students and professionals and is not directed to children under 13. If you believe a child has provided us data, contact us and we will delete it.</p>
+        <h3>Your rights</h3>
+        <p>You may request access to, correction of, or deletion of your data, and object to its processing, by emailing <a href="mailto:yepzhi@gmail.com">yepzhi@gmail.com</a> (Mexico LFPDPPP ARCO rights). Changes to this policy are posted on this page with an updated date.</p>
       </section>
 
       <!-- Section 7: Data Retention, Deletion, and Revocation -->
