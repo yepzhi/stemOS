@@ -622,6 +622,11 @@ async function handleSignCredential(request, env, origin, clientIp) {
 }
 
 async function handleVerifyCredential(request, env, origin) {
+  if (request.method === 'GET' && request.headers.get('accept')?.includes('text/html')) {
+    const url = new URL(request.url);
+    return Response.redirect(`${url.origin}/verify.html?${url.searchParams.toString()}`, 302);
+  }
+
   let params = {};
   if (request.method === 'GET') {
     const url = new URL(request.url);
@@ -632,14 +637,20 @@ async function handleVerifyCredential(request, env, origin) {
     return jsonResponse({ error: 'Method not allowed' }, 405, origin);
   }
 
-  const folio = String(params.folio || '').trim();
-  const recipientName = String(params.name || params.recipientName || '').trim();
-  const matricula = String(params.matricula || params.studentId || '').trim();
-  const cefrLevel = String(params.level || params.cefrLevel || 'B2').trim();
-  const accreditedHours = Number(params.hours || params.accreditedHours) || 240;
-  const careerName = String(params.career || params.careerName || 'Ingeniería STEM').trim();
-  const issuedOn = String(params.issuedOn || '').trim();
-  const sig = String(params.sig || params.proofValue || '').trim();
+  const cred = params.credential || params;
+  const subj = cred.credentialSubject || {};
+  const proof = cred.proof || {};
+  const achievement = subj.achievement || {};
+
+  const folio = String(params.folio || cred.folio || cred.id || '').replace(/^urn:uuid:stemos-credential-/, '').replace(/^https?:\/\/stemos\.org\/api\/credentials\/verify\?folio=/, '').trim();
+  const recipientName = String(params.name || params.recipientName || subj.name || '').trim();
+  const matricula = String(params.matricula || params.studentId || subj.matricula || '').trim();
+  const cefrLevel = String(params.level || params.cefrLevel || (achievement.name ? achievement.name.match(/A1|A2|B1|B2/i)?.[0] : null) || 'B2').trim().toUpperCase();
+  const matchHours = achievement.name ? achievement.name.match(/(\d+)\s*Hours/i) : null;
+  const accreditedHours = Number(params.hours || params.accreditedHours || (matchHours ? matchHours[1] : null)) || 240;
+  const careerName = String(params.career || params.careerName || subj.careerName || subj.degreeModality || 'Ingeniería STEM').trim();
+  const issuedOn = String(params.issuedOn || cred.validFrom || cred.issuanceDate || proof.created || '').trim();
+  const sig = String(params.sig || params.proofValue || proof.proofValue || '').trim();
 
   if (!folio) {
     return jsonResponse({

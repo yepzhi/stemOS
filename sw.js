@@ -22,6 +22,8 @@ const ASSETS_TO_CACHE = [
   '/app.js',
   '/placement.html',
   '/tracks.html',
+  '/verify.html',
+  '/verify',
   '/privacy.html',
   '/register.html',
   '/admin.html',

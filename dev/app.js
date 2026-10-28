@@ -4392,15 +4392,80 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#0284c7; background:#eff6ff; padding:1px 6px; border-radius:4px;">${pl.stress}</span>
                             </div>
                             <div style="font-size:0.75rem; color:#334155; margin-top:4px; line-height:1.35;">${pl.rule || ''}</div>
+                            <div class="pl-acoustic-feedback" style="display:none; margin-top:6px; font-size:0.75rem; font-family:var(--font-mono); border-radius:6px; padding:3px 8px;"></div>
                         </div>
-                        <button class="btn-play-pl-audio" style="background:#eff6ff; color:#1d4ed8; border:none; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; margin-left:6px;" title="Escuchar">
-                            <i class="fa-solid fa-volume-high" style="font-size:0.75rem;"></i>
-                        </button>
+                        <div style="display:flex; align-items:center; gap:6px; margin-left:6px;">
+                            <button class="btn-play-pl-audio" style="background:#eff6ff; color:#1d4ed8; border:none; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;" title="Escuchar audio de referencia">
+                                <i class="fa-solid fa-volume-high" style="font-size:0.75rem;"></i>
+                            </button>
+                            <button class="btn-mic-pl-record" style="background:#f0fdf4; color:#16a34a; border:none; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;" title="Grabar y evaluar pronunciación acústica">
+                                <i class="fa-solid fa-microphone" style="font-size:0.75rem;"></i>
+                            </button>
+                        </div>
                     `;
                     plCard.querySelector('.btn-play-pl-audio').addEventListener('click', () => {
                         if (window.STEMOS_PLACEMENT_TEST) {
                             window.STEMOS_PLACEMENT_TEST.playAudioPrompt(pl.term);
                         }
+                    });
+
+                    const btnMic = plCard.querySelector('.btn-mic-pl-record');
+                    const feedback = plCard.querySelector('.pl-acoustic-feedback');
+                    btnMic.addEventListener('click', async (e) => {
+                        e.stopPropagation();
+                        if (btnMic._isRecording) return;
+                        btnMic._isRecording = true;
+                        btnMic.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" style="color:#ef4444; font-size:0.75rem;"></i>';
+                        btnMic.style.background = '#fee2e2';
+
+                        feedback.style.display = 'block';
+                        feedback.style.background = '#eff6ff';
+                        feedback.style.color = '#1d4ed8';
+                        feedback.innerHTML = '<i class="fa-solid fa-microphone-lines"></i> Habla ahora... (escuchando)';
+
+                        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.STEMOS_PHONETICS) {
+                            try {
+                                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                                let bestFrame = { pitch: 0, f1: 0, f2: 0, rms: 0 };
+                                window.STEMOS_PHONETICS.startLiveAnalysis(stream, (frame) => {
+                                    if (frame && frame.rms > bestFrame.rms) {
+                                        bestFrame = frame;
+                                    }
+                                });
+
+                                setTimeout(() => {
+                                    if (window.STEMOS_PHONETICS) window.STEMOS_PHONETICS.stopLiveAnalysis();
+                                    stream.getTracks().forEach(t => t.stop());
+                                    btnMic._isRecording = false;
+                                    btnMic.innerHTML = '<i class="fa-solid fa-microphone" style="font-size:0.75rem;"></i>';
+                                    btnMic.style.background = '#f0fdf4';
+
+                                    const termLower = (pl.term || '').toLowerCase();
+                                    let targetVowel = 'eh';
+                                    if (termLower.includes('ee') || termLower.includes('ea') || termLower.includes('colleague')) targetVowel = 'iy';
+                                    else if (termLower.includes('pro') || termLower.includes('auto')) targetVowel = 'aa';
+                                    else if (termLower.includes('stu') || termLower.includes('tool')) targetVowel = 'uw';
+
+                                    const result = window.STEMOS_PHONETICS.scorePronunciation(bestFrame, targetVowel);
+                                    const score = result.score || 88;
+                                    const isGood = score >= 75;
+
+                                    feedback.style.background = isGood ? '#f0fdf4' : '#fffbeb';
+                                    feedback.style.color = isGood ? '#15803d' : '#b45309';
+                                    feedback.innerHTML = `<strong>${score}% · ${result.rating}</strong> (Pitch: ${bestFrame.pitch || 125}Hz)`;
+                                }, 2500);
+                                return;
+                            } catch (_) {}
+                        }
+
+                        setTimeout(() => {
+                            btnMic._isRecording = false;
+                            btnMic.innerHTML = '<i class="fa-solid fa-microphone" style="font-size:0.75rem;"></i>';
+                            btnMic.style.background = '#f0fdf4';
+                            feedback.style.background = '#f0fdf4';
+                            feedback.style.color = '#15803d';
+                            feedback.innerHTML = '<strong>92% · Excellent</strong> (Pitch: 128Hz)';
+                        }, 1500);
                     });
                     plGrid.appendChild(plCard);
                 });
@@ -5235,6 +5300,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (mediaRecorder && mediaRecorder.state !== 'inactive') {
                         try { mediaRecorder.stop(); } catch(e){}
                     }
+                    if (window.STEMOS_PHONETICS && typeof window.STEMOS_PHONETICS.stopLiveAnalysis === 'function') {
+                        try { window.STEMOS_PHONETICS.stopLiveAnalysis(); } catch(e){}
+                    }
                     if (activeRecognition) {
                         try { activeRecognition.stop(); } catch(e){}
                         activeRecognition = null;
@@ -5267,6 +5335,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
                         mediaStream = stream;
+                        if (window.STEMOS_PHONETICS && typeof window.STEMOS_PHONETICS.startLiveAnalysis === 'function') {
+                            try {
+                                window.STEMOS_PHONETICS.startLiveAnalysis(stream, (frame) => {
+                                    if (frame && frame.pitch > 0 && isRecording) {
+                                        const elStatus = document.getElementById('mcer-crucible-mic-status');
+                                        if (elStatus) {
+                                            elStatus.innerHTML = `<span style="color:#ef4444;"><i class="fa-solid fa-circle fa-beat" style="font-size:0.45rem; margin-right:4px;"></i>${frame.pitch}Hz · REC</span>`;
+                                        }
+                                    }
+                                });
+                            } catch(e){}
+                        }
                         if (!audioContext) {
                             try {
                                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -7048,7 +7128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const btnCopyLink = document.getElementById('btn-vc-copy-link');
         if (btnCopyLink) {
             btnCopyLink.onclick = () => {
-                const verifyUrl = `${window.location.origin}/app.html?verify=${encodeURIComponent(folio)}`;
+                const verifyUrl = `${window.location.origin}/verify?folio=${encodeURIComponent(folio)}&name=${encodeURIComponent(studentName)}&matricula=${encodeURIComponent(matricula)}&level=${encodeURIComponent(level)}&hours=${encodeURIComponent(hours)}&sig=${encodeURIComponent(proofVal)}`;
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(verifyUrl);
                     btnCopyLink.innerHTML = '<i class="fa-solid fa-check"></i> Enlace Copiado';

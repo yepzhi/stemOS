@@ -10,3 +10,6 @@
 /app/* /app.html 200
 /placement/* /placement.html 200
 /tracks/* /tracks.html 200
+/verify /verify.html 200
+/verify/* /verify.html 200
+/credentials/* /verify.html 200

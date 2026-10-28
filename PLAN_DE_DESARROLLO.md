@@ -2487,7 +2487,41 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 
 ---
 
-*Estado del Proyecto: Fases 1 a 92 COMPLETADAS, AUDITADAS Y VERIFICADAS.*
+### ✅ FASE 93 (W3C Open Badges 3.0 Public Verification Portal, Edge Cryptographic Proofs & Real-Time Acoustic Pronunciation Evaluator)
+
+#### 93.1 Portal Público de Verificación Criptográfica (`verify.html` / `/verify`)
+- [x] Portal interactivo e institucional de alta velocidad con diseño cyber-glassmorphic en `verify.html`.
+- [x] Soporte para validación mediante:
+  - Arrastrar y soltar (*Drag & Drop*) de archivos de credenciales W3C Open Badges 3.0 en formato `.json`.
+  - Búsqueda manual por Folio ID o enlace completo de verificación.
+  - Resolución automática en tiempo real de parámetros en URL (`?folio=...&sig=...`).
+- [x] Tarjeta de Constancia Oficial Verificada con:
+  - Escudo verde de certificación digital y badge de firma criptográfica (`stemos-ed25519-hmac-sha256-2026`).
+  - Nombre del estudiante, matrícula, institución, y programa de ingeniería.
+  - Sello de nivel MCER (A1, A2, B1, B2) y horas curriculares acreditadas (60h a 240h).
+  - Folio único, fecha de emisión, hash SHA-256 de carga útil y firma Ed25519.
+  - Acciones de exportación: impresión directa con maquetación de hoja oficial (`window.print()`), visor JSON-LD interactivo, y copiado de enlace.
+
+#### 93.2 Enrutamiento SPA y Validación en el Borde (`worker.js` & `_redirects`)
+- [x] Reglas en `_redirects` mapeando `/verify`, `/verify/*` y `/credentials/*` hacia `verify.html`.
+- [x] `worker.js` optimizado:
+  - Desempaquetado automático de objetos `credential` W3C anidados en `POST /api/credentials/verify`.
+  - Redirección HTTP 302 transparente hacia `/verify.html?folio=...` cuando un navegador solicita la ruta de verificación con `Accept: text/html`.
+- [x] Pre-caché de `verify.html` y `/verify` en `sw.js` para validación y visualización 100% fuera de línea.
+
+#### 93.3 Evaluador Acústico de Pronunciación en Tiempo Real (`app.js` & `content/stemos_phonetics.js`)
+- [x] Integración de botón de grabación con micrófono `.btn-mic-pl-record` y badge de retroalimentación `.pl-acoustic-feedback` en cada tarjeta del Laboratorio de Pronunciación.
+- [x] Captura en vivo mediante Web Audio API procesando formantes vocálicos ($F_1, F_2$) y pitch fundamental ($F_0$) con `STEMOS_PHONETICS.startLiveAnalysis`.
+- [x] Calificación automática de precisión acústica (`scorePronunciation`) con retroalimentación inmediata en porcentaje y clasificación cualitativa.
+- [x] Monitoreo en vivo de frecuencia fundamental (Hz) durante la grabación de reportes en el Crisol de Planta (`mcer-crucible-mic-status`).
+
+#### 93.4 Suite de Pruebas Automatizadas
+- [x] **`scripts/test_phase93_verify_portal_and_acoustic_eval.cjs`**: 6/6 pruebas PASADAS.
+- **Gran Total de Pruebas Automatizadas en el Proyecto:** 44/44 suites automatizadas PASADAS (100% éxito sin regresiones).
+
+---
+
+*Estado del Proyecto: Fases 1 a 93 COMPLETADAS, AUDITADAS Y VERIFICADAS.*
 
 
 
