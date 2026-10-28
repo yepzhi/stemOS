@@ -15,3 +15,6 @@ scratch/
 *.pdf
 .firebase/
 .gemini/
+*.pem
+*.key
+serviceAccountKey*.json
