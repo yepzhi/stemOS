@@ -2096,7 +2096,8 @@
                         notice.style.background = '#fef2f2';
                         notice.style.border = '1.5px solid #fecaca';
                         notice.style.color = '#991b1b';
-                        notice.innerHTML = '<strong><i class="fa-solid fa-circle-exclamation"></i> Aviso de Autenticación (' + (err.code || 'error') + '):</strong><br>Puedes reintentar la conexión o ingresar tu correo institucional abajo:';
+                        const safeErrCode = String(err.code || 'error').replace(/[&<>"']/g, '');
+                        notice.innerHTML = '<strong><i class="fa-solid fa-circle-exclamation"></i> Aviso de Autenticación (' + safeErrCode + '):</strong><br>Puedes reintentar la conexión o ingresar tu correo institucional abajo:';
                     }
                 } else {
                     notice.style.display = 'none';
@@ -2311,7 +2312,8 @@
 
             const ssoBtn = document.querySelector('.btn-google-sso');
             if (ssoBtn) {
-                ssoBtn.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> <span>Autenticado como ' + state.student.email + '</span>';
+                const safeEmail = String(state.student.email || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+                ssoBtn.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> <span>Autenticado como ' + safeEmail + '</span>';
                 ssoBtn.style.background = '#ecfdf5';
                 ssoBtn.style.color = '#065f46';
                 ssoBtn.style.borderColor = '#10b981';

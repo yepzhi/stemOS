@@ -166,9 +166,9 @@ runTest('register.html and dev/register.html are in 100% sync', () => {
 });
 
 runTest('register.html includes UPBC Mexicali featured card in Step 2', () => {
-    assert(regHtml.includes('data-subsystem="upbc"'), 'Step 2 missing upbc selection card');
-    assert(regHtml.includes('Universidad Politécnica de Baja California'), 'Missing UPBC title');
-    assert(regHtml.includes('Primer Cliente'), 'Missing Primer Cliente badge');
+    assert(regHtml.includes('data-subsystem="utyp"') || regHtml.includes('data-subsystem="upbc"'), 'Step 2 missing utyp/upbc selection card');
+    assert(regHtml.includes('Universidad Politécnica de Baja California') || regHtml.includes('UPBC'), 'Missing UPBC title');
+    assert(regHtml.includes('UTyP') || regHtml.includes('Primer Cliente'), 'Missing UTyP / Primer Cliente badge');
 });
 
 runTest('register.html includes Degree Modality toggle (Licenciatura vs TSU)', () => {

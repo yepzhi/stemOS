@@ -631,7 +631,12 @@
 
                 const instId = student.institutionId || 'tecnm-saltillo';
                 const docId = student.id || ('std-' + student.matricula);
-                await db.collection('institutions').doc(instId).collection('students').doc(docId).set(student, { merge: true });
+                let currentUid = student.uid || null;
+                if (!currentUid && typeof window.firebase !== 'undefined' && window.firebase.auth && window.firebase.auth().currentUser) {
+                    currentUid = window.firebase.auth().currentUser.uid;
+                }
+                const payload = currentUid ? Object.assign({}, student, { uid: currentUid }) : student;
+                await db.collection('institutions').doc(instId).collection('students').doc(docId).set(payload, { merge: true });
                 return true;
             } catch (err) {
                 console.warn('[stemOS Firebase] Cloud student sync queued for retry:', err.message || err);
@@ -736,11 +741,16 @@
                 const student = diagnosticPayload.student || {};
                 const instId = (student.institution === 'UPMXL') ? 'upbc-mexicali' : (student.institution || 'tecnm-saltillo');
                 const docId = student.folio || ('diag-' + Date.now().toString(36));
-                await db.collection('institutions').doc(instId).collection('placement_tests').doc(docId).set(diagnosticPayload, { merge: true });
+                let currentUid = diagnosticPayload.uid || student.uid || null;
+                if (!currentUid && typeof window.firebase !== 'undefined' && window.firebase.auth && window.firebase.auth().currentUser) {
+                    currentUid = window.firebase.auth().currentUser.uid;
+                }
+                const diagDoc = currentUid ? Object.assign({}, diagnosticPayload, { uid: currentUid }) : diagnosticPayload;
+                await db.collection('institutions').doc(instId).collection('placement_tests').doc(docId).set(diagDoc, { merge: true });
 
                 if (student.matricula || student.folio) {
                     const stdDocId = student.folio || ('std-' + student.matricula);
-                    await db.collection('institutions').doc(instId).collection('students').doc(stdDocId).set({
+                    const stdDoc = {
                         name: (student.firstName && student.lastName) ? (student.firstName + ' ' + student.lastName) : (student.fullName || 'Student'),
                         matricula: student.matricula || '',
                         email: student.email || '',
@@ -755,7 +765,9 @@
                         placementCompleted: true,
                         diagnosticFolio: student.folio || '',
                         lastDiagnosticAt: diagnosticPayload.completedAt || new Date().toISOString()
-                    }, { merge: true });
+                    };
+                    if (currentUid) stdDoc.uid = currentUid;
+                    await db.collection('institutions').doc(instId).collection('students').doc(stdDocId).set(stdDoc, { merge: true });
                 }
                 return true;
             } catch (err) {

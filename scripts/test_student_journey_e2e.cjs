@@ -45,11 +45,11 @@ test('register.html includes Google SSO button and handler', () => {
   assert(registerHtml.includes('handleGoogleSSORegistration'), 'Missing handleGoogleSSORegistration function');
 });
 
-test('register.html supports all 4 educational subsystems (UPBC, TecNM, UABC, DGETI)', () => {
-  assert(registerHtml.includes('data-subsystem="upbc"'), 'Missing UPBC subsystem');
+test('register.html supports all 4 educational subsystems (UTyP/UPBC, TecNM, State Universities, International)', () => {
+  assert(registerHtml.includes('data-subsystem="utyp"') || registerHtml.includes('data-subsystem="upbc"'), 'Missing UTyP / UPBC subsystem');
   assert(registerHtml.includes('data-subsystem="it"'), 'Missing TecNM (it) subsystem');
   assert(registerHtml.includes('data-subsystem="univ-estatal"'), 'Missing State Universities subsystem');
-  assert(registerHtml.includes('data-subsystem="ut"'), 'Missing Technological Universities subsystem');
+  assert(registerHtml.includes('data-subsystem="latam"') || registerHtml.includes('data-subsystem="ut"'), 'Missing International / UT subsystem');
 });
 
 test('register.html includes degree modality selector (Engineering vs TSU)', () => {

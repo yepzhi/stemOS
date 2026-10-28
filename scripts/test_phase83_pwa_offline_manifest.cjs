@@ -148,7 +148,11 @@ targetPortals.forEach((portal) => {
     const content = fs.readFileSync(portalPath, 'utf8');
     assert(content.includes('href="/manifest.json"'), `${portal} links to /manifest.json`);
     assert(content.includes('name="theme-color"'), `${portal} defines theme-color`);
-    assert(content.includes('stemos_pwa.js'), `${portal} includes stemos_pwa.js client script`);
+    if (portal === 'privacy.html') {
+      assert(!content.includes('stemos_pwa.js'), 'privacy.html is a standalone static legal document for Google OAuth compliance');
+    } else {
+      assert(content.includes('stemos_pwa.js'), `${portal} includes stemos_pwa.js client script`);
+    }
   }
 });
 

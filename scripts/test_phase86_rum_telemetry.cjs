@@ -115,11 +115,15 @@ const portals = [
 ];
 
 portals.forEach((portal) => {
-  test(`${portal} includes /content/stemos_rum.js with defer`, () => {
+  test(`${portal} includes /content/stemos_rum.js with defer (or standalone legal compliance for privacy.html)`, () => {
     const filePath = path.join(ROOT_DIR, portal);
     assert(fs.existsSync(filePath), `${portal} exists`);
     const content = fs.readFileSync(filePath, 'utf8');
-    assert(content.includes('<script src="/content/stemos_rum.js" defer></script>'), `${portal} has stemos_rum.js script tag`);
+    if (portal === 'privacy.html') {
+      assert(!content.includes('stemos_rum.js'), 'privacy.html omits telemetry scripts for Google OAuth compliance');
+    } else {
+      assert(content.includes('<script src="/content/stemos_rum.js" defer></script>'), `${portal} has stemos_rum.js script tag`);
+    }
   });
 });
 

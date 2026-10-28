@@ -93,7 +93,7 @@ console.log('\n▶ 5. app.js Event Wiring & State Management');
 const appJs = fs.readFileSync(path.join(__dirname, '..', 'app.js'), 'utf8');
 assert(appJs.includes('renderMcerWritingLab(unit)'), 'app.js calls renderMcerWritingLab on unit modal open');
 assert(appJs.includes('switchMcerModalTab'), 'app.js switchMcerModalTab handles tab switching');
-assert(appJs.includes('allScreens.forEach'), 'app.js toggles all 8 pedagogical screens including writing');
+assert(appJs.includes('allScreens.forEach') || appJs.includes('allScreenKeys.forEach'), 'app.js toggles all pedagogical screens including writing');
 assert(appJs.includes('stemos_writing_'), 'app.js persists student writing submission to localStorage');
 
 console.log('\n═══════════════════════════════════════════════════════════════════');

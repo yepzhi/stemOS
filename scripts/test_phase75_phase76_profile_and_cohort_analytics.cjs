@@ -86,7 +86,7 @@ test('teacher.html synchronizes placementLevel, cefrScore, and degreeModality fr
 
 test('teacher.html renderMcerGradebook renders CEFR badges and accredited hours', () => {
   assert(teacherHtml.includes('function renderMcerGradebook()'), 'Missing renderMcerGradebook in teacher.html');
-  assert(teacherHtml.includes('CEFR ${diagLevel}'), 'renderMcerGradebook renders CEFR level badge');
+  assert(teacherHtml.includes('CEFR ${diagLevel}') || teacherHtml.includes('CEFR ${esc(diagLevel)}'), 'renderMcerGradebook renders CEFR level badge');
   assert(teacherHtml.includes('totalAccreditedHours'), 'renderMcerGradebook computes totalAccreditedHours');
   assert(teacherHtml.includes('stemOS_CACEI_Acta_'), 'teacher.html provides CACEI Acta download');
 });

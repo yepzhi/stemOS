@@ -868,7 +868,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Send Message Logic
     async function handleUserReply() {
         const text = chatInput.value.trim();
-        if (!text || !chatState.active) return;
+        if (!text) return;
+
+        // Auto-activate tutor if user typed directly
+        if (!chatState.active) {
+            const selTrack = (tutorTrackSelect && tutorTrackSelect.value) || 'it-innovation';
+            const selMod = (tutorModSelect && tutorModSelect.value) || 'it-innovation-m1';
+            chatState.active = true;
+            chatState.trackId = selTrack;
+            chatState.modId = selMod;
+            chatState.modTitle = (coursesData[selTrack] && (coursesData[selTrack].titleES || coursesData[selTrack].title)) || "Inglés Técnico STEM";
+            if (tutorStatusText) {
+                tutorStatusText.textContent = `Tutor: ${chatState.modTitle}`;
+            }
+        }
 
         chatState.lastUserReply = text;
         addUserMessage(text);
@@ -1507,7 +1520,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="lexicon-header">
                         <div class="lexicon-term-box">
                             <div class="lexicon-term-en">${item.term}</div>
-                            ${item.ipa ? `<div class="lexicon-term-ipa">${item.ipa}</div>` : ''}
                             <div class="lexicon-term-es">${item.es || ''}</div>
                         </div>
                         <button class="vocab-audio-btn" title="Escuchar pronunciación nativa">
@@ -1536,7 +1548,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const card = document.createElement('div');
                 card.className = 'vocab-card';
 
-                const ipaHTML = item.ipa ? `<span class="vocab-term-ipa" style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#0284c7;background:rgba(2,132,199,0.08);padding:1px 6px;border-radius:4px;font-weight:500;">${item.ipa}</span>` : '';
+                const ipaHTML = '';
 
                 let collocationsHTML = '';
                 if (item.collocations && item.collocations.length > 0) {
@@ -2137,6 +2149,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 100);
         }
 
+        // Toggle hero banner & assignment mount: ONLY show on dashboard / all-units catalog!
+        const isHome = (viewName === 'all-units' || viewName === 'dashboard' || viewName === 'tracks');
+        const heroBanner = document.querySelector('.ed-hero-banner');
+        const assignmentMount = document.getElementById('stemos-student-assignment-mount');
+        if (heroBanner) heroBanner.style.display = isHome ? '' : 'none';
+        if (assignmentMount) assignmentMount.style.display = isHome ? '' : 'none';
+
+        // Auto-close mobile sidebar if open
+        if (edSidebar && edSidebar.classList.contains('mobile-open')) {
+            edSidebar.classList.remove('mobile-open');
+        }
+
         // Hide all views
         edViews.forEach(v => {
             v.style.display = 'none';
@@ -2168,7 +2192,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.toggle('active', btn.dataset.view === viewName);
         });
 
-        // 3D World Globe & Gamified Level Path Initializer
+        // Dynamic View-Specific Renderers & Initializers
         if (viewName === 'world-map') {
             if (window.StemOSWorldMap) {
                 if (!window.StemOSWorldMap.initialized) {
@@ -2177,10 +2201,29 @@ document.addEventListener('DOMContentLoaded', () => {
                         onLaunchSocratic: (trackId, modId) => launchSocraticChallenge(trackId, modId)
                     });
                     window.StemOSWorldMap.initialized = true;
-                } else {
-                    window.StemOSWorldMap.handleResize();
-                    window.StemOSWorldMap.syncProgress();
                 }
+                setTimeout(() => {
+                    if (window.StemOSWorldMap.handleResize) window.StemOSWorldMap.handleResize();
+                    if (window.StemOSWorldMap.syncProgress) window.StemOSWorldMap.syncProgress();
+                }, 80);
+            }
+        } else if (viewName === 'skills-graph') {
+            if (typeof updateGraphUI === 'function') updateGraphUI();
+        } else if (viewName === 'feynman-tutor') {
+            if (typeof initTutorSelectors === 'function') initTutorSelectors();
+            const chatInputEl = document.getElementById('chat-input');
+            const chatSendBtnEl = document.getElementById('chat-send-btn');
+            if (chatInputEl) chatInputEl.disabled = false;
+            if (chatSendBtnEl) chatSendBtnEl.disabled = false;
+        } else if (viewName === 'micro-badges') {
+            if (typeof renderBadgesWall === 'function') {
+                const activeFilterBtn = document.querySelector('.badge-filter-btn.active');
+                const filterVal = activeFilterBtn ? activeFilterBtn.dataset.badgeFilter : 'all';
+                renderBadgesWall(filterVal);
+            }
+        } else if (viewName === 'glossary') {
+            if (typeof renderGlossaryView === 'function') {
+                renderGlossaryView(activeGlossaryCat || 'all', activeGlossarySearchQuery || '');
             }
         }
     }
@@ -3653,6 +3696,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    var activeMcerLevelFilter = 'all';
+    window.activeMcerLevelFilter = 'all';
+
     /* --- 8. INITIAL RENDER --- */
     if (Object.keys(coursesData).length > 0) {
         renderAllUnitsGrid('all');
@@ -3669,8 +3715,6 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ══════════════════════════════════════════════════════════════════════════
        FASE 62: MCER TRACKS (STANDARD AMERICAN ENGLISH) & PLACEMENT INTEGRATION
        ══════════════════════════════════════════════════════════════════════════ */
-
-    let activeMcerLevelFilter = 'all';
 
     // 1. Dual-World Program Switcher
     const btnWorldMcer = document.getElementById('btn-world-mcer');
@@ -3722,6 +3766,7 @@ document.addEventListener('DOMContentLoaded', () => {
             chip.classList.add('active');
             activeMcerLevelFilter = chip.dataset.mcerLevel || 'all';
             renderMcerUnitsGrid(activeMcerLevelFilter);
+            updateMcerOfflineBannerUI();
         });
     });
 
@@ -3754,11 +3799,17 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const userLevel = localStorage.getItem('stemos_user_level') || '';
 
+        checkOfflineUnitsExpiration();
+        const offlineUnits = getOfflineUnits();
+        const now = Date.now();
+
         units.forEach(unit => {
             const meta = levelColors[unit.cefr] || levelColors.A1;
             const gradientBg = `linear-gradient(135deg, ${meta.color}18 0%, ${meta.color}06 50%, #f8fafc 100%)`;
             const isCrucibleDone = localStorage.getItem('stemos_crucible_' + unit.id) === 'completed';
             const isActiveLevel = userLevel && unit.cefr === userLevel;
+            const offlineRecord = offlineUnits[unit.id];
+            const isOffline = offlineRecord && (now < offlineRecord.expiresAt);
 
             const card = document.createElement('div');
             card.className = 'ed-unit-card';
@@ -3774,6 +3825,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="fa-solid ${meta.icon}" style="font-size: 3.5rem; color: ${meta.color}; opacity: 0.5;"></i>
                     <span class="ed-unit-card-cat-badge" style="border-left: 3px solid ${meta.color}; color:${meta.color};">CEFR ${unit.cefr} · ${meta.label}</span>
                     ${isActiveLevel ? `<span style="position:absolute; top:8px; right:8px; background:${meta.color}; color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><i class="fa-solid fa-play"></i> En Curso</span>` : ''}
+                    ${isOffline ? `<span class="ed-unit-offline-badge active" title="Disponible offline · Expira en 3 días"><i class="fa-solid fa-cloud-arrow-down"></i> Offline (3d)</span>` : ''}
                     ${isCrucibleDone ? '<span style="position:absolute; bottom:8px; right:8px; background:#dcfce7; color:#15803d; border:1px solid #86efac; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:6px;"><i class="fa-solid fa-check"></i> Crisol ✓</span>' : ''}
                 </div>
                 <div class="ed-unit-card-body">
@@ -3792,6 +3844,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="fa-solid fa-triangle-exclamation" style="color:#dc2626;"></i> Falsos Amigos · 
                             <i class="fa-solid fa-industry" style="color:#10b981;"></i> Crisol
                         </span>
+                        ${isOffline ? `
+                            <div style="font-size:0.72rem; color:#16a34a; font-weight:700; display:flex; align-items:center; gap:5px; margin-top:2px;">
+                                <i class="fa-solid fa-circle-check"></i> Listo para Offline (Expira en ${Math.max(1, Math.ceil((offlineRecord.expiresAt - now) / 86400000))}d)
+                            </div>
+                        ` : ''}
                     </div>
                 </div>
             `;
@@ -3802,8 +3859,379 @@ document.addEventListener('DOMContentLoaded', () => {
 
             grid.appendChild(card);
         });
+
+        updateMcerOfflineBannerUI();
     }
     window.renderMcerUnitsGrid = renderMcerUnitsGrid;
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // stemOS MCER Offline Storage & 3-Day Expiration Engine (Phase 89)
+    // ══════════════════════════════════════════════════════════════════════════
+    const STORAGE_KEY_OFFLINE_UNITS = 'stemos_offline_units';
+    const OFFLINE_UNIT_TTL_MS = 3 * 24 * 60 * 60 * 1000; // Exact 3 days TTL
+
+    function getOfflineUnits() {
+        try {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY_OFFLINE_UNITS) || '{}');
+        } catch (_) {
+            return {};
+        }
+    }
+
+    function saveOfflineUnits(units) {
+        try {
+            localStorage.setItem(STORAGE_KEY_OFFLINE_UNITS, JSON.stringify(units));
+        } catch (_) {}
+    }
+
+    function checkOfflineUnitsExpiration() {
+        const offlineUnits = getOfflineUnits();
+        const now = Date.now();
+        let modified = false;
+        for (const id in offlineUnits) {
+            if (offlineUnits[id].expiresAt && now > offlineUnits[id].expiresAt) {
+                console.log(`[stemOS Offline] Unit ${id} expired after 3 days. Evicting from cache.`);
+                delete offlineUnits[id];
+                modified = true;
+            }
+        }
+        if (modified) {
+            saveOfflineUnits(offlineUnits);
+        }
+    }
+
+    function showSyncToast(message, type = 'info') {
+        const oldToast = document.querySelector('.stemos-sync-toast');
+        if (oldToast) oldToast.remove();
+
+        const toast = document.createElement('div');
+        toast.className = `stemos-sync-toast ${type}`;
+        const icon = (type === 'success') ? 'fa-circle-check' : (type === 'info' ? 'fa-cloud' : 'fa-info-circle');
+        toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            if (toast && toast.parentNode) {
+                toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(16px)';
+                setTimeout(() => toast.remove(), 300);
+            }
+        }, 4000);
+    }
+    window.showSyncToast = showSyncToast;
+
+    async function downloadMcerUnitForOffline(unitId) {
+        if (!window.STEMOS_MCER_TRACKS) return;
+        const unit = window.STEMOS_MCER_TRACKS.getUnitById(unitId);
+        if (!unit) return;
+
+        const btn = document.getElementById('btn-mcer-offline-toggle');
+        const label = document.getElementById('mcer-offline-btn-label');
+        if (btn) {
+            btn.className = 'btn-mcer-offline-download downloading';
+            btn.disabled = true;
+        }
+        if (label) {
+            label.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando audios...';
+        }
+
+        // Collect pre-rendered static audio files for this unit
+        const audioUrls = [];
+        if (window.STEMOS_TTS && typeof window.STEMOS_TTS.getMcerAudioList === 'function') {
+            const allAudios = window.STEMOS_TTS.getMcerAudioList();
+            const prefix = unitId.toLowerCase();
+            allAudios.forEach(url => {
+                if (url.includes(prefix)) audioUrls.push(url);
+            });
+            if (audioUrls.length === 0) {
+                audioUrls.push(...allAudios);
+            }
+        }
+
+        // Cache files via CacheStorage API for offline playback
+        if ('caches' in window) {
+            try {
+                const cache = await caches.open('stemos-offline-units-v1');
+                for (const url of audioUrls) {
+                    try {
+                        await cache.add(url);
+                    } catch (e) {
+                        console.warn('[Offline Cache] Skipped audio caching for', url, e);
+                    }
+                }
+            } catch (err) {
+                console.warn('[Offline Cache] CacheStorage unavailable:', err);
+            }
+        }
+
+        // Save in localStorage with 3-day TTL
+        const now = Date.now();
+        const offlineUnits = getOfflineUnits();
+        offlineUnits[unitId] = {
+            unitId: unitId,
+            title: unit.title,
+            titleES: unit.titleES || '',
+            cefr: unit.cefr,
+            unitNumber: unit.unitNumber,
+            downloadedAt: now,
+            expiresAt: now + OFFLINE_UNIT_TTL_MS,
+            audioCount: audioUrls.length
+        };
+        saveOfflineUnits(offlineUnits);
+
+        if (btn) btn.disabled = false;
+        updateMcerOfflineButtonUI(unitId);
+        updateMcerOfflineBannerUI();
+        renderMcerUnitsGrid(activeMcerLevelFilter);
+        showSyncToast('Unidad descargada para Offline (Expira en 3 días)', 'success');
+    }
+    window.downloadMcerUnitForOffline = downloadMcerUnitForOffline;
+
+    function updateMcerOfflineButtonUI(unitId) {
+        checkOfflineUnitsExpiration();
+        const btn = document.getElementById('btn-mcer-offline-toggle');
+        const label = document.getElementById('mcer-offline-btn-label');
+        const syncPill = document.getElementById('mcer-offline-sync-pill');
+        if (!btn || !label) return;
+
+        const offlineUnits = getOfflineUnits();
+        const record = offlineUnits[unitId];
+        const now = Date.now();
+
+        // Sync pill status
+        if (syncPill) {
+            if (!navigator.onLine) {
+                syncPill.style.display = 'inline-flex';
+                syncPill.className = 'mcer-sync-pill offline';
+                syncPill.innerHTML = '<i class="fa-solid fa-cloud"></i> Modo Offline';
+            } else {
+                syncPill.style.display = 'inline-flex';
+                syncPill.className = 'mcer-sync-pill synced';
+                syncPill.innerHTML = '<i class="fa-solid fa-cloud-check"></i> Firebase En Línea';
+            }
+        }
+
+        if (record && now < record.expiresAt) {
+            const remainingHours = Math.max(1, Math.round((record.expiresAt - now) / (1000 * 60 * 60)));
+            const remainingDays = Math.ceil(remainingHours / 24);
+            btn.className = 'btn-mcer-offline-download active';
+            btn.disabled = false;
+            label.innerHTML = `<i class="fa-solid fa-circle-check"></i> Offline Activo · Expira en ${remainingDays}d`;
+            btn.title = `Disponible offline hasta el ${new Date(record.expiresAt).toLocaleDateString()} (${remainingHours}h restantes). Clic para renovar.`;
+            btn.onclick = () => {
+                if (confirm(`Esta unidad ya está disponible offline (${remainingHours} horas restantes). ¿Deseas renovar la descarga por 3 días más?`)) {
+                    downloadMcerUnitForOffline(unitId);
+                }
+            };
+        } else {
+            btn.className = 'btn-mcer-offline-download';
+            btn.disabled = false;
+            label.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> Descargar Offline (3 días)';
+            btn.title = 'Descarga el contenido y audios estáticos para estudiar sin conexión durante 3 días.';
+            btn.onclick = () => downloadMcerUnitForOffline(unitId);
+        }
+    }
+    window.updateMcerOfflineButtonUI = updateMcerOfflineButtonUI;
+
+    function updateMcerOfflineBannerUI() {
+        checkOfflineUnitsExpiration();
+        const banner = document.getElementById('mcer-offline-sync-banner');
+        const titleEl = document.getElementById('mcer-offline-banner-title');
+        const descEl = document.getElementById('mcer-offline-banner-desc');
+        const btn = document.getElementById('btn-mcer-batch-download');
+        const label = document.getElementById('mcer-batch-btn-label');
+        if (!banner || !btn || !label) return;
+
+        const targetLevel = (typeof activeMcerLevelFilter !== 'undefined' && activeMcerLevelFilter && activeMcerLevelFilter !== 'all') ? activeMcerLevelFilter : 'A1';
+        const offlineUnits = getOfflineUnits();
+        const now = Date.now();
+
+        let levelUnits = [];
+        if (window.STEMOS_MCER_TRACKS) {
+            levelUnits = window.STEMOS_MCER_TRACKS.getAllUnits().filter(u => u.cefr === targetLevel);
+        }
+        const totalLevelUnits = levelUnits.length || 4;
+        let cachedLevelUnits = 0;
+        let minRemainingMs = Infinity;
+
+        levelUnits.forEach(u => {
+            const rec = offlineUnits[u.id];
+            if (rec && now < rec.expiresAt) {
+                cachedLevelUnits++;
+                const rem = rec.expiresAt - now;
+                if (rem < minRemainingMs) minRemainingMs = rem;
+            }
+        });
+
+        const isFullyDownloaded = (cachedLevelUnits === totalLevelUnits && totalLevelUnits > 0);
+
+        if (isFullyDownloaded) {
+            const remainingDays = Math.max(1, Math.ceil(minRemainingMs / (24 * 60 * 60 * 1000)));
+            btn.className = 'btn-mcer-batch-download active';
+            btn.disabled = false;
+            label.innerHTML = `<i class="fa-solid fa-circle-check"></i> Nivel ${targetLevel} Offline Listo (${cachedLevelUnits}/${totalLevelUnits}) · Expira en ${remainingDays}d`;
+            btn.title = `Nivel ${targetLevel} completo descargado. Clic para renovar los 3 días.`;
+            btn.onclick = () => {
+                if (confirm(`El Nivel ${targetLevel} ya está disponible offline (${remainingDays} días restantes). ¿Deseas renovar la descarga por 3 días más?`)) {
+                    downloadCurrentLevelForOffline(targetLevel);
+                }
+            };
+            if (titleEl) {
+                titleEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Nivel ${targetLevel} Disponible Offline (${cachedLevelUnits} de ${totalLevelUnits} Módulos)`;
+            }
+            if (descEl) {
+                descEl.innerHTML = `Los ${totalLevelUnits} módulos (60.0h) y sus audios están en la memoria de tu dispositivo. Expira en ${remainingDays} días.`;
+            }
+        } else if (cachedLevelUnits > 0) {
+            btn.className = 'btn-mcer-batch-download';
+            btn.disabled = false;
+            label.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Completar Nivel ${targetLevel} (${cachedLevelUnits}/${totalLevelUnits} Módulos)`;
+            btn.onclick = () => downloadCurrentLevelForOffline(targetLevel);
+            if (titleEl) {
+                titleEl.innerHTML = `Modo Offline & Descarga por Nivel · Nivel ${targetLevel}`;
+            }
+            if (descEl) {
+                descEl.innerHTML = `Tienes ${cachedLevelUnits} de ${totalLevelUnits} módulos descargados. Completa la descarga del nivel para estudiar sin conexión.`;
+            }
+        } else {
+            btn.className = 'btn-mcer-batch-download';
+            btn.disabled = false;
+            label.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Descargar Nivel ${targetLevel} Offline (${totalLevelUnits} Módulos · ~4.6MB)`;
+            btn.onclick = () => downloadCurrentLevelForOffline(targetLevel);
+            if (titleEl) {
+                titleEl.innerHTML = `Modo Offline & Descarga por Nivel · Nivel ${targetLevel}`;
+            }
+            if (descEl) {
+                descEl.innerHTML = `Descarga los ${totalLevelUnits} módulos (60.0h) con audios neuronales para estudiar sin internet durante 3 días.`;
+            }
+        }
+    }
+    window.updateMcerOfflineBannerUI = updateMcerOfflineBannerUI;
+
+    async function downloadCurrentLevelForOffline(levelCode) {
+        if (!window.STEMOS_MCER_TRACKS) return;
+        const targetLevel = levelCode || ((typeof activeMcerLevelFilter !== 'undefined' && activeMcerLevelFilter && activeMcerLevelFilter !== 'all') ? activeMcerLevelFilter : 'A1');
+        const units = window.STEMOS_MCER_TRACKS.getAllUnits().filter(u => u.cefr === targetLevel);
+        if (!units || units.length === 0) return;
+
+        const btn = document.getElementById('btn-mcer-batch-download');
+        const label = document.getElementById('mcer-batch-btn-label');
+        const progressWrapper = document.getElementById('mcer-batch-progress-wrapper');
+        const progressText = document.getElementById('mcer-batch-progress-text');
+        const progressPct = document.getElementById('mcer-batch-progress-pct');
+        const progressFill = document.getElementById('mcer-batch-progress-fill');
+
+        if (btn) {
+            btn.className = 'btn-mcer-batch-download downloading';
+            btn.disabled = true;
+        }
+        if (progressWrapper) progressWrapper.style.display = 'flex';
+
+        try {
+            let cache = null;
+            if ('caches' in window) {
+                cache = await caches.open('stemos-offline-units-v1');
+            }
+
+            const total = units.length;
+            const now = Date.now();
+            const offlineUnits = getOfflineUnits();
+
+            for (let i = 0; i < units.length; i++) {
+                const unit = units[i];
+                const pct = Math.round(((i) / total) * 100);
+                if (progressFill) progressFill.style.width = `${pct}%`;
+                if (progressPct) progressPct.textContent = `${pct}%`;
+                if (progressText) {
+                    progressText.textContent = `Descargando Módulo ${i + 1} de ${total}: ${unit.title}...`;
+                }
+
+                // Collect audios for this unit
+                const audioUrls = [];
+                if (window.STEMOS_TTS && typeof window.STEMOS_TTS.getMcerAudioList === 'function') {
+                    const allAudios = window.STEMOS_TTS.getMcerAudioList();
+                    const prefix = unit.id.toLowerCase();
+                    allAudios.forEach(url => {
+                        if (url.includes(prefix)) audioUrls.push(url);
+                    });
+                    if (audioUrls.length === 0) {
+                        audioUrls.push(...allAudios);
+                    }
+                }
+
+                // Cache audios in CacheStorage
+                if (cache) {
+                    for (const url of audioUrls) {
+                        try {
+                            await cache.add(url);
+                        } catch (e) {
+                            console.warn('[Batch Cache] Skipped:', url, e);
+                        }
+                    }
+                }
+
+                // Register unit in localStorage with 3-day TTL
+                offlineUnits[unit.id] = {
+                    unitId: unit.id,
+                    title: unit.title,
+                    titleES: unit.titleES || '',
+                    cefr: unit.cefr,
+                    unitNumber: unit.unitNumber,
+                    downloadedAt: now,
+                    expiresAt: now + OFFLINE_UNIT_TTL_MS,
+                    audioCount: audioUrls.length
+                };
+                saveOfflineUnits(offlineUnits);
+            }
+
+            if (progressFill) progressFill.style.width = '100%';
+            if (progressPct) progressPct.textContent = '100%';
+            if (progressText) progressText.textContent = `¡Nivel ${targetLevel} guardado exitosamente para offline!`;
+
+            setTimeout(() => {
+                if (progressWrapper) progressWrapper.style.display = 'none';
+            }, 1200);
+
+            showSyncToast(`Nivel ${targetLevel} descargado para Offline (Expira en 3 días)`, 'success');
+        } catch (err) {
+            console.error('[Batch Download Error]:', err);
+            showSyncToast('Error al descargar para offline: ' + err.message, 'info');
+        } finally {
+            if (btn) btn.disabled = false;
+            updateMcerOfflineBannerUI();
+            renderMcerUnitsGrid(typeof activeMcerLevelFilter !== 'undefined' ? activeMcerLevelFilter : 'all');
+        }
+    }
+    window.downloadCurrentLevelForOffline = downloadCurrentLevelForOffline;
+
+    async function clearAllOfflineUnits() {
+        const offlineUnits = getOfflineUnits();
+        const count = Object.keys(offlineUnits).length;
+        if (count === 0) {
+            showSyncToast('No hay módulos descargados en la memoria local.', 'info');
+            return;
+        }
+
+        if (!confirm(`¿Deseas eliminar los ${count} módulos descargados para offline y liberar espacio?`)) {
+            return;
+        }
+
+        try {
+            localStorage.removeItem(STORAGE_KEY_OFFLINE_UNITS);
+            if ('caches' in window) {
+                await caches.delete('stemos-offline-units-v1');
+            }
+            showSyncToast('Caché offline eliminada correctamente.', 'info');
+        } catch (err) {
+            console.warn('[Clear Offline Error]:', err);
+            showSyncToast('Caché local limpiada.', 'info');
+        }
+
+        updateMcerOfflineBannerUI();
+        renderMcerUnitsGrid(typeof activeMcerLevelFilter !== 'undefined' ? activeMcerLevelFilter : 'all');
+    }
+    window.clearAllOfflineUnits = clearAllOfflineUnits;
 
     // 4. MCER Unit Study Modal
     let activeMcerUnit = null;
@@ -3814,13 +4242,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!unit) return;
 
         const isA1 = unit.cefr === 'A1';
-        if (!isDemo && !isA1 && !hasCompletedPlacement()) {
+        const offlineUnits = (typeof getOfflineUnits === 'function') ? getOfflineUnits() : {};
+        const isOffline = !!(offlineUnits && offlineUnits[unit.id] && (!offlineUnits[unit.id].expiresAt || Date.now() < offlineUnits[unit.id].expiresAt));
+
+        if (!isDemo && !isA1 && !isOffline && !hasCompletedPlacement()) {
             window._pendingMcerUnitId = unitId;
             showPlacementRequiredModal(unit);
             return;
         }
 
-        // A1 units are freely accessible to all beginners without requiring placement test
+        // A1 units and offline downloaded units are freely accessible without requiring online placement check
 
         activeMcerUnit = unit;
         const modal = document.getElementById('modal-mcer-unit');
@@ -3830,6 +4261,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('mcer-unit-level-badge').textContent = `CEFR ${unit.cefr}`;
         document.getElementById('mcer-unit-title').textContent = `${unit.modulo || ('Módulo ' + String(unit.unitNumber).padStart(2, '0'))} · ${unit.title}`;
         document.getElementById('mcer-unit-cando').textContent = `${unit.titleES || ''} — ${unit.canDo || ''}`;
+
+        // Setup Offline Download Button & 3-Day Expiry Check
+        updateMcerOfflineButtonUI(unit.id);
 
         // Normalize dialogue lines (handles array or object with lines)
         const dialogueLines = Array.isArray(unit.dialogue)
@@ -3927,7 +4361,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <strong style="color:#1d4ed8; font-size:0.92rem;">${pl.term}</strong>
                                 <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#0284c7; background:#eff6ff; padding:1px 6px; border-radius:4px;">${pl.stress}</span>
                             </div>
-                            <div style="font-family:var(--font-mono); font-size:0.72rem; color:#64748b; margin-top:2px;">${pl.ipa || ''}</div>
                             <div style="font-size:0.75rem; color:#334155; margin-top:4px; line-height:1.35;">${pl.rule || ''}</div>
                         </div>
                         <button class="btn-play-pl-audio" style="background:#eff6ff; color:#1d4ed8; border:none; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; margin-left:6px;" title="Escuchar">
@@ -3958,7 +4391,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 vCard.innerHTML = `
                     <div>
                         <strong style="color:#0f172a; font-size:0.95rem;">${termStr}</strong>
-                        <span style="font-family:var(--font-mono); font-size:0.75rem; color:#64748b; margin-left:6px;">${v.ipa || ''}</span>
                         <div style="font-size:0.8rem; color:#0284c7; font-weight:600; margin-top:2px;">${v.es || ''}</div>
                         <div style="font-size:0.75rem; color:#64748b; margin-top:4px; font-style:italic;">"${sampleStr}"</div>
                     </div>
@@ -4455,6 +4887,41 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (pct >= 70) {
                         if (msgEl) msgEl.innerHTML = '🎉 ¡Unidad MCER Aprobada! +300 XP Acreditados · Micro-credencial verificada.';
                         localStorage.setItem(`stemos_mcer_unit_${unit.id}`, 'passed');
+                        localStorage.setItem(`stemos_mcer_${unit.id}_score`, String(pct));
+                        
+                        // Accumulate XP in user profile
+                        try {
+                            const prevXP = parseInt(localStorage.getItem('stemos_student_xp') || '450', 10);
+                            const newXP = prevXP + 300;
+                            localStorage.setItem('stemos_student_xp', String(newXP));
+                            if (typeof window.updateStudentXPHUD === 'function') {
+                                window.updateStudentXPHUD(newXP);
+                            }
+                        } catch (e) {}
+
+                        // Enqueue offline mutation with STEMOS_SYNC for Firebase Firestore
+                        if (window.STEMOS_SYNC && typeof window.STEMOS_SYNC.enqueueMutation === 'function') {
+                            window.STEMOS_SYNC.enqueueMutation('MCER_UNIT_PROGRESS', 'SAVE_PROGRESS', {
+                                unitId: unit.id,
+                                unitTitle: unit.title,
+                                cefr: unit.cefr,
+                                score: pct,
+                                passed: true,
+                                xpEarned: 300,
+                                completedAt: new Date().toISOString()
+                            }, { strategy: 'XP_ACCUMULATIVE' });
+
+                            if (navigator.onLine) {
+                                window.STEMOS_SYNC.flushQueue().then(res => {
+                                    if (res && res.synced > 0) {
+                                        showSyncToast(`✓ Progreso sincronizado con Firebase Firestore (+300 XP)`, 'success');
+                                    }
+                                });
+                            } else {
+                                showSyncToast(`Progreso guardado offline. Se sincronizará con Firebase al reconectar.`, 'info');
+                            }
+                        }
+
                         // Update banner hours and badges
                         if (window.renderMcerUnitsGrid) window.renderMcerUnitsGrid();
                     } else {
@@ -5001,9 +5468,26 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
-        // Reset to first tab
+        window._currentMcerUnit = unit;
+
+        // Render Upfront Foundations (Richmond Methodology) & Writing Lab
+        renderMcerFundamentals(unit);
         renderMcerWritingLab(unit);
-        switchMcerModalTab('dialogue');
+
+        // Control Crucible (Crisol IA) Tab Visibility:
+        // Strictly hidden for A1 and A2 (Universal CEFR foundations, no premature plant simulations)
+        const tabCrucible = document.getElementById('mcer-tab-crucible');
+        const sepCrucible = document.getElementById('mcer-sep-crucible');
+        const isBeginnerLevel = (unit.cefr === 'A1' || unit.cefr === 'A2');
+        if (tabCrucible) {
+            tabCrucible.style.display = isBeginnerLevel ? 'none' : 'inline-flex';
+        }
+        if (sepCrucible) {
+            sepCrucible.style.display = isBeginnerLevel ? 'none' : 'inline-flex';
+        }
+
+        // Reset to first tab: Fundamentos & Gramática (UPFRONT)
+        switchMcerModalTab('fundamentals');
         if (typeof modal.showModal === 'function') modal.showModal();
         else modal.setAttribute('open', '');
     }
@@ -5019,21 +5503,326 @@ document.addEventListener('DOMContentLoaded', () => {
         openMcerUnitModal(unitId, true);
     };
 
+    function getActiveMcerSteps() {
+        const unit = window._currentMcerUnit;
+        const isBeginner = !unit || (unit.cefr === 'A1' || unit.cefr === 'A2');
+        const steps = [
+            { key: 'fundamentals', title: 'Fundamentos', nextName: 'Diálogo' },
+            { key: 'dialogue', title: 'Diálogo en Contexto', nextName: 'Vocabulario' },
+            { key: 'vocab', title: 'Vocabulario', nextName: 'Grammar Drills' },
+            { key: 'grammar', title: 'Grammar Drills', nextName: 'Listening' },
+            { key: 'listening', title: 'Listening Lab', nextName: 'Lectura' },
+            { key: 'reading', title: 'Lectura', nextName: 'Escritura IA' },
+            { key: 'writing', title: 'Escritura IA', nextName: isBeginner ? 'Mastery Quiz' : 'Crisol IA' }
+        ];
+        if (!isBeginner) {
+            steps.push({ key: 'crucible', title: 'Crisol IA', nextName: 'Mastery Quiz' });
+        }
+        steps.push({ key: 'quiz', title: 'Mastery Quiz', nextName: 'Finalizar Unidad' });
+        return steps;
+    }
+    window.getActiveMcerSteps = getActiveMcerSteps;
+
     function switchMcerModalTab(tabKey) {
-        document.querySelectorAll('.mcer-tab-btn').forEach(b => {
-            const isActive = b.dataset.mcerTab === tabKey;
-            b.classList.toggle('active', isActive);
-            b.style.color = isActive ? '#0284c7' : '#64748b';
-            b.style.borderBottom = isActive ? '2px solid #0284c7' : 'none';
+        const steps = getActiveMcerSteps();
+        let currentIndex = steps.findIndex(s => s.key === tabKey);
+        if (currentIndex === -1) currentIndex = 0;
+        const currentStep = steps[currentIndex];
+
+        // 1. Update top Stepper Buttons and completed states
+        document.querySelectorAll('.mcer-tab-btn').forEach(btn => {
+            const btnTab = btn.dataset.mcerTab;
+            const btnIndex = steps.findIndex(s => s.key === btnTab);
+            const isActive = (btnTab === tabKey);
+            const isCompleted = (btnIndex !== -1 && btnIndex < currentIndex);
+
+            btn.classList.toggle('active', isActive);
+            btn.classList.toggle('completed', isCompleted);
+
+            btn.style.color = '';
+            btn.style.background = '';
+            btn.style.boxShadow = '';
+
+            if (isActive) {
+                try {
+                    btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                } catch (e) {}
+            }
         });
 
-        const screens = ['dialogue', 'vocab', 'listening', 'grammar', 'reading', 'crucible', 'quiz'];
-        const allScreens = screens.concat(['writing']);
-        allScreens.forEach(s => {
+        // 2. Hide all screens and display active screen
+        const allScreenKeys = ['fundamentals', 'dialogue', 'vocab', 'listening', 'grammar', 'reading', 'crucible', 'quiz', 'writing'];
+        allScreenKeys.forEach(s => {
             const el = document.getElementById(`mcer-screen-${s}`);
-            if (el) el.style.display = (s === tabKey) ? 'block' : 'none';
+            if (el) {
+                el.style.display = (s === tabKey) ? 'block' : 'none';
+            }
         });
+
+        // 3. Smooth scroll content area to top
+        const contentArea = document.querySelector('#modal-mcer-unit .mcer-tab-content-area');
+        if (contentArea) {
+            contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 4. Update Bottom Sticky Navigation Bar
+        const stepCounterEl = document.getElementById('mcer-step-counter-text');
+        const progressFillEl = document.getElementById('mcer-step-progress-fill');
+        const btnPrev = document.getElementById('btn-mcer-prev-step');
+        const btnNext = document.getElementById('btn-mcer-next-step');
+
+        if (stepCounterEl) {
+            const isMobile = window.innerWidth <= 640;
+            stepCounterEl.textContent = isMobile
+                ? `Paso ${currentIndex + 1} de ${steps.length}`
+                : `Paso ${currentIndex + 1} de ${steps.length} · ${currentStep.title}`;
+        }
+        if (progressFillEl) {
+            const pct = Math.round(((currentIndex + 1) / steps.length) * 100);
+            progressFillEl.style.width = `${pct}%`;
+        }
+
+        if (btnPrev) {
+            if (currentIndex === 0) {
+                btnPrev.style.display = 'none';
+                btnPrev.onclick = null;
+            } else {
+                btnPrev.style.display = 'inline-flex';
+                btnPrev.style.visibility = 'visible';
+                btnPrev.onclick = () => {
+                    switchMcerModalTab(steps[currentIndex - 1].key);
+                };
+            }
+        }
+
+        if (btnNext) {
+            const isMobile = window.innerWidth <= 640;
+            if (currentIndex === steps.length - 1) {
+                btnNext.innerHTML = '<span>Finalizar Unidad</span> <i class="fa-solid fa-circle-check"></i>';
+                btnNext.onclick = () => {
+                    if (window.speechSynthesis) window.speechSynthesis.cancel();
+                    const modal = document.getElementById('modal-mcer-unit');
+                    if (modal && typeof modal.close === 'function') modal.close();
+                };
+            } else {
+                const nextStep = steps[currentIndex + 1];
+                const label = isMobile ? nextStep.title : `Continuar: ${nextStep.title}`;
+                btnNext.innerHTML = `<span>${label}</span> <i class="fa-solid fa-arrow-right"></i>`;
+                btnNext.onclick = () => {
+                    switchMcerModalTab(nextStep.key);
+                };
+            }
+        }
     }
+    window.switchMcerModalTab = switchMcerModalTab;
+
+    function renderMcerFundamentals(unit) {
+        // Can-Do Statement
+        const candoTitle = document.getElementById('mcer-fund-cando-title');
+        const candoDesc = document.getElementById('mcer-fund-cando-desc');
+        if (candoTitle) candoTitle.textContent = unit.titleES || unit.title || 'Fundamentos de la Lección';
+        if (candoDesc) candoDesc.textContent = unit.canDo || unit.communicativeGoal || 'Aprende las estructuras fundamentales y el vocabulario clave antes de ponerlos en práctica.';
+
+        // Visual Grammar Blueprint Box
+        const grammarTag = document.getElementById('mcer-fund-grammar-tag');
+        const formulaBox = document.getElementById('mcer-fund-grammar-formula-box');
+        const explanationEl = document.getElementById('mcer-fund-grammar-explanation');
+        const tipsBox = document.getElementById('mcer-fund-grammar-tips-box');
+
+        if (grammarTag) grammarTag.textContent = unit.grammarFocus ? unit.grammarFocus.split(',')[0].trim() : 'Estructura Sintáctica';
+
+        if (formulaBox) {
+            if (unit.grammarBox && unit.grammarBox.formula) {
+                formulaBox.innerHTML = unit.grammarBox.formula;
+            } else {
+                const gFocus = (unit.grammarFocus || '').toLowerCase();
+                let formulaHtml = '';
+                if (gFocus.includes('to be') || gFocus.includes('am/is/are')) {
+                    formulaHtml = `
+                        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:8px;">
+                            <span class="mcer-formula-chip subject"><i class="fa-solid fa-user"></i> Sujeto (I / You / He...)</span>
+                            <span class="mcer-formula-chip operator">+</span>
+                            <span class="mcer-formula-chip verb"><i class="fa-solid fa-link"></i> am / is / are</span>
+                            <span class="mcer-formula-chip operator">+</span>
+                            <span class="mcer-formula-chip complement"><i class="fa-solid fa-id-badge"></i> Nombre / Puesto / Origen</span>
+                        </div>
+                        <div style="font-size:0.78rem; color:#64748b; font-family:var(--font-mono);">
+                            Ejemplos: <strong>I am Alex.</strong> / <strong>She is an engineer.</strong> / <strong>They are coworkers.</strong>
+                        </div>
+                    `;
+                } else if (gFocus.includes('present') || gFocus.includes('habits') || gFocus.includes('routine')) {
+                    formulaHtml = `
+                        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:8px;">
+                            <span class="mcer-formula-chip subject"><i class="fa-solid fa-user"></i> Sujeto</span>
+                            <span class="mcer-formula-chip operator">+</span>
+                            <span class="mcer-formula-chip verb"><i class="fa-solid fa-bolt"></i> Verbo en Presente (work / works)</span>
+                            <span class="mcer-formula-chip operator">+</span>
+                            <span class="mcer-formula-chip complement"><i class="fa-regular fa-clock"></i> Horario / Hábito</span>
+                        </div>
+                        <div style="font-size:0.78rem; color:#64748b; font-family:var(--font-mono);">
+                            Ejemplos: <strong>I start at 8:00 AM.</strong> / <strong>Carlos manages the shift.</strong>
+                        </div>
+                    `;
+                } else {
+                    formulaHtml = `
+                        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:8px;">
+                            <span class="mcer-formula-chip subject"><i class="fa-solid fa-code"></i> Patrón Sintáctico</span>
+                            <span class="mcer-formula-chip operator">:</span>
+                            <span class="mcer-formula-chip verb">${unit.grammarFocus || 'Standard CEFR Syntax'}</span>
+                        </div>
+                    `;
+                }
+                formulaBox.innerHTML = formulaHtml;
+            }
+        }
+
+        if (explanationEl) {
+            if (unit.grammarBox && unit.grammarBox.explanationES) {
+                explanationEl.innerHTML = unit.grammarBox.explanationES;
+            } else if (unit.grammarExplanation) {
+                explanationEl.innerHTML = unit.grammarExplanation;
+            } else {
+                const gFocus = (unit.grammarFocus || '').toLowerCase();
+                if (gFocus.includes('to be')) {
+                    explanationEl.innerHTML = `<strong>Regla Inductiva en Español:</strong> En inglés, el verbo <em>to be</em> tiene dos significados primordiales: <strong>ser</strong> y <strong>estar</strong>. Se conjuga según el pronombre: <code>I am</code> (yo soy/estoy), <code>you/we/they are</code> (tú eres/estás, nosotros somos/estamos, ellos son/están), y <code>he/she/it is</code> (él/ella es/está). Recuerda que a diferencia del español, en inglés el sujeto pronominal (I, you, he) <strong>nunca se omite</strong>.`;
+                } else {
+                    explanationEl.innerHTML = `<strong>Regla Inductiva en Español:</strong> Esta lección se enfoca en dominar <strong>${unit.grammarFocus || 'las estructuras básicas'}</strong>. Observa el orden de las palabras antes de escuchar el diálogo para anticipar las terminaciones y enlaces fonéticos.`;
+                }
+            }
+        }
+
+        if (tipsBox) {
+            if (unit.grammarBox && unit.grammarBox.tipsES) {
+                tipsBox.style.display = 'block';
+                tipsBox.innerHTML = `<strong><i class="fa-solid fa-lightbulb"></i> Tip de Contracción / Uso:</strong> ${unit.grammarBox.tipsES}`;
+            } else {
+                const gFocus = (unit.grammarFocus || '').toLowerCase();
+                if (gFocus.includes('to be')) {
+                    tipsBox.style.display = 'block';
+                    tipsBox.innerHTML = `<strong><i class="fa-solid fa-lightbulb"></i> Contracciones Cotidianas:</strong> En habla natural estadounidense casi siempre se usan contracciones: <code>I'm</code> (I am), <code>you're</code> (you are), <code>he's</code> (he is), <code>she's</code> (she is), <code>it's</code> (it is), <code>we're</code> (we are), <code>they're</code> (they are).`;
+                } else {
+                    tipsBox.style.display = 'none';
+                }
+            }
+        }
+
+        // Upfront Vocabulary Grid (6-8 items with Pink Stress)
+        const vocabGrid = document.getElementById('mcer-fund-vocab-grid');
+        if (vocabGrid) {
+            vocabGrid.innerHTML = '';
+            const vList = (unit.vocabulary || []).slice(0, 8);
+            vList.forEach(v => {
+                const term = v.en || v.term || '';
+                const es = v.es || '';
+                const sample = v.example || v.sample || '';
+                const stress = v.pinkStress || v.stress || term;
+
+                const card = document.createElement('div');
+                card.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px 12px; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;';
+                card.innerHTML = `
+                    <div style="flex:1;">
+                        <div style="display:flex; align-items:baseline; gap:6px; flex-wrap:wrap;">
+                            <strong style="color:#0f172a; font-size:0.92rem;">${term}</strong>
+                            <span class="pink-stress-badge">${stress}</span>
+                        </div>
+                        <div style="font-size:0.8rem; font-weight:700; color:#0284c7; margin-top:2px;">${es}</div>
+                        ${sample ? `<div style="font-size:0.74rem; color:#475569; margin-top:3px; font-style:italic;">"${sample}"</div>` : ''}
+                    </div>
+                    <button class="btn-play-fund-vocab" style="background:#e0f2fe; color:#0284c7; border:none; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;" title="Escuchar pronunciación">
+                        <i class="fa-solid fa-volume-high" style="font-size:0.75rem;"></i>
+                    </button>
+                `;
+                card.querySelector('.btn-play-fund-vocab').addEventListener('click', () => {
+                    if (window.STEMOS_PLACEMENT_TEST) {
+                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(`${term}. ${sample}`);
+                    }
+                });
+                vocabGrid.appendChild(card);
+            });
+        }
+
+        // Common Transfer Mistakes Grid
+        const mistakesGrid = document.getElementById('mcer-fund-mistakes-grid');
+        const mistakesContainer = document.getElementById('mcer-fund-mistakes-container');
+        if (mistakesGrid && mistakesContainer) {
+            mistakesGrid.innerHTML = '';
+            let mistakesList = [];
+            if (Array.isArray(unit.commonMistakes)) {
+                mistakesList = unit.commonMistakes;
+            } else if (typeof unit.commonMistakes === 'string') {
+                mistakesList = unit.commonMistakes.split(';').map(m => {
+                    const parts = m.split('->').map(p => p.trim());
+                    return {
+                        bad: parts[0] || '',
+                        good: parts[1] || '',
+                        exp: 'Omisión del verbo auxiliar o interferencia sintáctica directa del español.'
+                    };
+                });
+            } else if (Array.isArray(unit.falseCognates) && unit.falseCognates.length > 0) {
+                mistakesList = unit.falseCognates.map(fc => ({
+                    bad: `Confundir "${fc.term}" con "${fc.mistake}"`,
+                    good: `"${fc.term}" significa: ${fc.correct}`,
+                    exp: fc.tip || ''
+                }));
+            } else {
+                if (unit.cefr === 'A1') {
+                    mistakesList = [
+                        {
+                            bad: "I have 25 years old.",
+                            good: "I am 25 years old. (I'm 25)",
+                            exp: "En inglés la edad no se 'tiene' (have), se 'es' con el verbo to be."
+                        },
+                        {
+                            bad: "Is Carlos.",
+                            good: "He is Carlos. / This is Carlos.",
+                            exp: "En inglés nunca se omite el pronombre sujeto (I, you, he, she)."
+                        },
+                        {
+                            bad: "I am student.",
+                            good: "I am a student.",
+                            exp: "Antes de profesiones y ocupaciones singulares, siempre se usa 'a' o 'an'."
+                        }
+                    ];
+                } else if (unit.cefr === 'A2') {
+                    mistakesList = [
+                        {
+                            bad: "Last night I didn't went.",
+                            good: "Last night I didn't go.",
+                            exp: "El auxiliar 'didn't' ya indica pasado; el verbo principal va en su forma base."
+                        },
+                        {
+                            bad: "In Monday I have class.",
+                            good: "On Monday I have class.",
+                            exp: "Para los días de la semana siempre se utiliza la preposición 'on', nunca 'in'."
+                        }
+                    ];
+                }
+            }
+
+            if (mistakesList.length > 0) {
+                mistakesContainer.style.display = 'block';
+                mistakesList.slice(0, 3).forEach(m => {
+                    const mCard = document.createElement('div');
+                    mCard.className = 'mcer-mistake-card';
+                    mCard.innerHTML = `
+                        <div class="mcer-mistake-bad"><i class="fa-solid fa-circle-xmark"></i> ${m.bad}</div>
+                        <div class="mcer-mistake-good"><i class="fa-solid fa-circle-check"></i> ${m.good}</div>
+                        <div class="mcer-mistake-explanation"><strong>¿Por qué?</strong> ${m.exp}</div>
+                    `;
+                    mistakesGrid.appendChild(mCard);
+                });
+            } else {
+                mistakesContainer.style.display = 'none';
+            }
+        }
+
+        // Step 1 Next Button Listener
+        const btnFundNext = document.getElementById('btn-mcer-fund-next');
+        if (btnFundNext) {
+            btnFundNext.onclick = () => switchMcerModalTab('dialogue');
+        }
+    }
+
 
     function renderMcerWritingLab(unit) {
         const lab = unit.writingLab;
@@ -7310,5 +8099,51 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    /* --- 10. REAL-TIME OFFLINE SYNC LISTENERS (FIREBASE RESILIENCE) --- */
+    window.addEventListener('online', () => {
+        if (typeof showSyncToast === 'function') {
+            showSyncToast('Conexión restablecida. Sincronizando con Firebase Firestore...', 'info');
+        }
+        const syncPill = document.getElementById('mcer-offline-sync-pill');
+        if (syncPill) {
+            syncPill.style.display = 'inline-flex';
+            syncPill.className = 'mcer-sync-pill syncing';
+            syncPill.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sincronizando...';
+        }
+        if (window.STEMOS_SYNC && typeof window.STEMOS_SYNC.flushQueue === 'function') {
+            window.STEMOS_SYNC.flushQueue().then(res => {
+                if (res && res.synced > 0 && typeof showSyncToast === 'function') {
+                    showSyncToast(`✓ ${res.synced} avance(s) offline respaldados en Firebase`, 'success');
+                }
+                if (syncPill) {
+                    syncPill.className = 'mcer-sync-pill synced';
+                    syncPill.innerHTML = '<i class="fa-solid fa-cloud-check"></i> Firebase En Línea';
+                }
+            }).catch(() => {
+                if (syncPill) {
+                    syncPill.className = 'mcer-sync-pill synced';
+                    syncPill.innerHTML = '<i class="fa-solid fa-cloud-check"></i> Firebase En Línea';
+                }
+            });
+        }
+    });
+
+    window.addEventListener('offline', () => {
+        if (typeof showSyncToast === 'function') {
+            showSyncToast('Modo sin conexión activo. Tu progreso se guardará offline.', 'info');
+        }
+        const syncPill = document.getElementById('mcer-offline-sync-pill');
+        if (syncPill) {
+            syncPill.style.display = 'inline-flex';
+            syncPill.className = 'mcer-sync-pill offline';
+            syncPill.innerHTML = '<i class="fa-solid fa-cloud"></i> Modo Offline';
+        }
+    });
+
+    // Check offline units on launch
+    if (typeof checkOfflineUnitsExpiration === 'function') {
+        checkOfflineUnitsExpiration();
+    }
 
 });

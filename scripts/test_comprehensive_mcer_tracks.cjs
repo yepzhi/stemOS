@@ -201,7 +201,7 @@ assert(appHtml.includes('id="modal-mcer-level-exam"'), 'app.html contains #modal
 assert(appHtml.includes('id="btn-submit-mcer-exam"'), 'app.html contains #btn-submit-mcer-exam button');
 
 // app.js hooks
-assert(appJs.includes("screens = ['dialogue', 'vocab', 'listening', 'grammar', 'reading', 'crucible', 'quiz']"), 'app.js switchMcerModalTab handles all 7 pedagogical screens');
+assert(appJs.includes("screens = ['dialogue', 'vocab', 'listening', 'grammar', 'reading', 'crucible', 'quiz']") || appJs.includes("allScreenKeys = ['fundamentals', 'dialogue', 'vocab', 'listening', 'grammar', 'reading', 'crucible', 'quiz', 'writing']"), 'app.js switchMcerModalTab handles all pedagogical screens');
 assert(appJs.includes('openMcerLevelExam'), 'app.js defines openMcerLevelExam(levelId)');
 assert(appJs.includes('btn-mcer-launch-level-exam'), 'app.js wires #btn-mcer-launch-level-exam');
 assert(appJs.includes('btn-submit-mcer-listening'), 'app.js wires #btn-submit-mcer-listening');

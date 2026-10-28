@@ -6,8 +6,8 @@ service cloud.firestore {
     // Assumed Data Model & Multi-Tenant Architecture
     // ===============================================================
     //
-    // - /careers/{careerId}: Curricular catalog (read-only public, admin write)
-    // - /career_paths/{careerId}: Deterministic 16-station paths (read-only public, admin write)
+    // - /careers/{careerId}: Curricular catalog (read-only public, write for admin)
+    // - /career_paths/{careerId}: Deterministic 16-station paths (read-only public, write for admin)
     // - /placement_tests/{testId}: Diagnostic placement results (owner/teacher/admin read, authenticated create, admin update/delete)
     // - /diagnostic_passports/{passportId}: Accredited CEFR diagnostic passports (authenticated read/create, admin update/delete)
     // - /users/{userId}: User profiles with RBAC role/admin field lockdown
@@ -29,11 +29,11 @@ service cloud.firestore {
     }
 
     function getUserRole() {
-      return request.auth.token.role;
+      return request.auth.token.get('role', '');
     }
 
     function isAdmin() {
-      return isAuthenticated() && (getUserRole() == 'admin' || request.auth.token.admin == true);
+      return isAuthenticated() && (getUserRole() == 'admin' || request.auth.token.get('admin', false) == true);
     }
 
     function isTeacher() {
@@ -41,11 +41,11 @@ service cloud.firestore {
     }
 
     function isStudent() {
-      return isAuthenticated() && getUserRole() == 'student';
+      return isAuthenticated() && (!('role' in request.auth.token) || getUserRole() == 'student');
     }
 
     function belongsToInstitution(institutionId) {
-      return isAuthenticated() && (request.auth.token.institutionId == institutionId || isAdmin());
+      return isAuthenticated() && (request.auth.token.get('institutionId', '') == institutionId || isAdmin());
     }
 
     // Public / Curricular Catalogs (Read-only for all, write for admin)
@@ -64,7 +64,7 @@ service cloud.firestore {
       allow create: if isAuthenticated() &&
                        (!('uid' in request.resource.data) || request.resource.data.uid == request.auth.uid);
       allow read: if isAuthenticated() &&
-                     (resource.data.uid == request.auth.uid || isTeacher() || isAdmin());
+                     (resource.data.get('uid', '') == request.auth.uid || isTeacher() || isAdmin());
       allow update, delete: if isAdmin();
     }
 
@@ -93,7 +93,7 @@ service cloud.firestore {
       match /placement_tests/{testId} {
         allow create: if isAuthenticated() &&
                          (!('uid' in request.resource.data) || request.resource.data.uid == request.auth.uid);
-        allow read: if (isAuthenticated() && resource.data.uid == request.auth.uid) ||
+        allow read: if (isAuthenticated() && resource.data.get('uid', '') == request.auth.uid) ||
                        (isTeacher() && belongsToInstitution(institutionId)) ||
                        (isAdmin() && belongsToInstitution(institutionId));
         allow update, delete: if isAdmin() && belongsToInstitution(institutionId);
@@ -134,12 +134,13 @@ service cloud.firestore {
       // Students & Learning Portfolios
       match /students/{studentId} {
         allow read: if isUser(studentId) ||
+                       (isStudent() && resource.data.get('uid', '') == request.auth.uid) ||
                        (isTeacher() && belongsToInstitution(institutionId)) ||
                        (isAdmin() && belongsToInstitution(institutionId));
-        allow create: if (isUser(studentId) &&
+        allow create: if ((isUser(studentId) || (isStudent() && request.resource.data.get('uid', '') == request.auth.uid)) &&
                           (!('role' in request.resource.data) || request.resource.data.role == 'student')) ||
                          ((isTeacher() || isAdmin()) && belongsToInstitution(institutionId));
-        allow update: if (isUser(studentId) &&
+        allow update: if ((isUser(studentId) || (isStudent() && resource.data.get('uid', '') == request.auth.uid && request.resource.data.get('uid', '') == request.auth.uid)) &&
                           !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'admin', 'institutionId'])) ||
                          ((isTeacher() || isAdmin()) && belongsToInstitution(institutionId));
         allow delete: if isAdmin() && belongsToInstitution(institutionId);
@@ -168,7 +169,8 @@ service cloud.firestore {
       // Audit Logs & ISO 9001 Compliance Records
       match /audit_logs/{logId} {
         allow read: if (isTeacher() || isAdmin()) && belongsToInstitution(institutionId);
-        allow create: if isAuthenticated() && belongsToInstitution(institutionId);
+        allow create: if isAuthenticated() &&
+                         request.resource.data.get('institutionId', institutionId) == institutionId;
         allow update, delete: if false; // Immutable audit log
       }
     }
