@@ -2457,7 +2457,37 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 
 ---
 
-*Estado del Proyecto: Fases 1 a 91 COMPLETADAS, AUDITADAS Y VERIFICADAS.*
+### ✅ FASE 92 (CEFR B1 & B2 Complete Neural Audio Pre-Rendering, Universal TTS Map Integration & Service Worker v6.9.0)
+
+#### 92.1 Síntesis y Pre-Renderizado de Audio Neuronal B1 y B2 (`content/audio/mcer/`)
+- [x] Generación de 150 archivos MP3 de alta fidelidad cubriendo todas las unidades de los niveles B1 (`b1-u1` a `b1-u4`) y B2 (`b2-u1` a `b2-u4`).
+- [x] Cobertura al 100% para:
+  - Turnos de diálogo individuales con voces alternadas según el hablante (Eddy / Samantha).
+  - Diálogos completos continuos (`*-dialogue-full.mp3`).
+  - Términos de vocabulario con oraciones contextuales (`*-vocab-*.mp3`).
+  - Laboratorios de pronunciación acústica (`*-pron-*.mp3`).
+  - Despachos y audios de Laboratorio de Escucha (`*-listening-lab.mp3`).
+  - Pasajes técnicos de lectura (`*-reading-passage.mp3`).
+  - Respuestas modelo para el Crisol de Planta (`*-crucible-model.mp3`).
+- [x] Total de audios en catálogo MCER: **293 archivos MP3 estáticos** (A1, A2, B1, B2).
+
+#### 92.2 Mapeo Universal en `content/stemos_tts.js` y `dev/content/stemos_tts.js`
+- [x] Incorporación de 214 entradas clave-valor en `MCER_STATIC_AUDIO` con claves normalizadas libres de puntuación para búsqueda instantánea en memoria O(1).
+- [x] Integración transparente con `playAudioPrompt` y `STEMOS_TTS.speak`, eliminando latencia de red y consumo de cuotas de cómputo en síntesis.
+- [x] Catálogo exportado por `getMcerAudioList()` conteniendo las rutas de descarga por lote para modo fuera de línea.
+
+#### 92.3 Actualización de Caché PWA en `sw.js` (v6.9.0) y Espejo `dev/`
+- [x] Incremento de versión de caché a `stemos-lxp-v6.9.0-mcer-full-audio`.
+- [x] Pre-caché de todos los 150 activos de audio B1 y B2 en `ASSETS_TO_CACHE` garantizando disponibilidad fuera de línea en laboratorios universitarios.
+- [x] Paridad exacta bit a bit entre raíz y carpeta `/dev/`.
+
+#### 92.4 Suite de Pruebas Automatizadas
+- [x] **`scripts/test_phase92_b1_b2_audio_coverage.cjs`**: 5/5 pruebas PASADAS.
+- **Gran Total de Pruebas Automatizadas en el Proyecto:** 43/43 suites automatizadas PASADAS (100% éxito sin regresiones).
+
+---
+
+*Estado del Proyecto: Fases 1 a 92 COMPLETADAS, AUDITADAS Y VERIFICADAS.*
 
 
 
