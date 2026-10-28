@@ -3283,9 +3283,22 @@
         }
 
         /* ══════════════════════════════════════════════════════════════
+           SECURITY & HTML ESCAPING HELPER
+           ══════════════════════════════════════════════════════════════ */
+        function esc(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        /* ══════════════════════════════════════════════════════════════
            AUTHENTICATION HANDLERS
            ══════════════════════════════════════════════════════════════ */
-        function handleAdminLogin(e) {
+        async function handleAdminLogin(e) {
             e.preventDefault();
             const email = document.getElementById('login-email').value.trim();
             const pass = document.getElementById('login-password').value;
@@ -3295,14 +3308,42 @@
                 return;
             }
 
-            state.auth = {
-                uid: 'admin-' + Math.floor(Math.random() * 10000),
-                email: email,
-                name: state.institution.adminName || 'Academic Director',
-                role: 'admin',
-                institutionId: state.institution.id,
-                token: 'mock-jwt-token-admin'
-            };
+            const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+            const isDemoPreset = pass === 'stemOS-Director-2026' && state.isDemoPresetSelected === true;
+
+            if (window.firebase && typeof window.firebase.auth === 'function' && !isDemoPreset) {
+                try {
+                    const cred = await window.firebase.auth().signInWithEmailAndPassword(email, pass);
+                    const idToken = await cred.user.getIdToken();
+                    state.auth = {
+                        uid: cred.user.uid,
+                        email: cred.user.email || email,
+                        name: cred.user.displayName || state.institution.adminName || 'Academic Director',
+                        role: 'admin',
+                        institutionId: state.institution.id,
+                        token: idToken
+                    };
+                } catch (authErr) {
+                    if (!isLocal) {
+                        alert('Authentication failed: ' + (authErr.message || 'Invalid institutional credentials.'));
+                        return;
+                    }
+                }
+            } else if (!isLocal && !isDemoPreset) {
+                alert('Institutional SSO or verified administrator credentials are required in production.');
+                return;
+            }
+
+            if (!state.auth) {
+                state.auth = {
+                    uid: 'admin-demo-' + Math.floor(Math.random() * 10000),
+                    email: email,
+                    name: state.institution.adminName || 'Academic Director (Sandbox)',
+                    role: 'admin',
+                    institutionId: state.institution.id,
+                    isDemo: true
+                };
+            }
 
             localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify(state.auth));
             updateAuthHeader();
@@ -3320,6 +3361,7 @@
             const p = presets[preset] || presets.tecnm;
             document.getElementById('login-email').value = p.email;
             document.getElementById('login-password').value = 'stemOS-Director-2026';
+            state.isDemoPresetSelected = true;
 
             state.institution.name = p.instName;
             state.institution.adminName = p.name;
@@ -3385,24 +3427,24 @@
                 tbody.innerHTML = sampleClasses.map(c => `
                     <tr>
                         <td>
-                            <strong style="color:#ffffff;">${c.name}</strong><br>
-                            <span style="font-size:0.72rem; color:var(--sky-400); font-family:var(--font-mono);">${c.code}</span>
+                            <strong style="color:#ffffff;">${esc(c.name)}</strong><br>
+                            <span style="font-size:0.72rem; color:var(--sky-400); font-family:var(--font-mono);">${esc(c.code)}</span>
                         </td>
-                        <td>${c.teacherName}</td>
-                        <td><span class="badge badge-sky">${c.careerName}</span></td>
-                        <td style="font-family:var(--font-mono);">${c.studentsCount} students</td>
+                        <td>${esc(c.teacherName)}</td>
+                        <td><span class="badge badge-sky">${esc(c.careerName)}</span></td>
+                        <td style="font-family:var(--font-mono);">${Number(c.studentsCount) || 0} students</td>
                         <td>
                             <div class="progress-bar-inline">
                                 <div class="progress-bar-track">
-                                    <div class="progress-bar-fill" style="width:${c.avgProgress}%;"></div>
+                                    <div class="progress-bar-fill" style="width:${Number(c.avgProgress) || 0}%;"></div>
                                 </div>
-                                <span class="progress-percent-label">${c.avgProgress}%</span>
+                                <span class="progress-percent-label">${Number(c.avgProgress) || 0}%</span>
                             </div>
                         </td>
-                        <td style="font-family:var(--font-mono); font-weight:700; color:var(--amber-400);">${(c.avgXp * c.studentsCount).toLocaleString()} XP</td>
+                        <td style="font-family:var(--font-mono); font-weight:700; color:var(--amber-400);">${((Number(c.avgXp) || 0) * (Number(c.studentsCount) || 0)).toLocaleString()} XP</td>
                         <td><span class="badge badge-emerald">Active</span></td>
                         <td>
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="inspectClassDetail('${c.id}')">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="inspectClassDetail('${esc(c.id)}')">
                                 <i class="fa-solid fa-eye"></i> View
                             </button>
                         </td>
@@ -3666,26 +3708,26 @@
             tbody.innerHTML = filtered.map(c => `
                 <tr>
                     <td>
-                        <strong style="color:#ffffff;">${c.name}</strong>
+                        <strong style="color:#ffffff;">${esc(c.name)}</strong>
                     </td>
-                    <td><span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--sky-400);">${c.code}</span></td>
-                    <td>${c.teacherName}</td>
-                    <td><span class="badge badge-sky">${c.careerName}</span></td>
-                    <td style="font-family:var(--font-mono);">${c.studentsCount}</td>
+                    <td><span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--sky-400);">${esc(c.code)}</span></td>
+                    <td>${esc(c.teacherName)}</td>
+                    <td><span class="badge badge-sky">${esc(c.careerName)}</span></td>
+                    <td style="font-family:var(--font-mono);">${Number(c.studentsCount) || 0}</td>
                     <td>
                         <div class="progress-bar-inline">
                             <div class="progress-bar-track">
-                                <div class="progress-bar-fill" style="width:${c.avgProgress}%;"></div>
+                                <div class="progress-bar-fill" style="width:${Number(c.avgProgress) || 0}%;"></div>
                             </div>
-                            <span class="progress-percent-label">${c.avgProgress}%</span>
+                            <span class="progress-percent-label">${Number(c.avgProgress) || 0}%</span>
                         </div>
                     </td>
-                    <td style="font-family:var(--font-mono); color:var(--amber-400);">${c.avgXp} XP</td>
+                    <td style="font-family:var(--font-mono); color:var(--amber-400);">${Number(c.avgXp) || 0} XP</td>
                     <td>
-                        <span class="badge ${c.status === 'active' ? 'badge-emerald' : 'badge-amber'}">${c.status}</span>
+                        <span class="badge ${c.status === 'active' ? 'badge-emerald' : 'badge-amber'}">${esc(c.status)}</span>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="inspectClassDetail('${c.id}')" title="Inspect Class">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="inspectClassDetail('${esc(c.id)}')" title="Inspect Class">
                             <i class="fa-solid fa-eye"></i>
                         </button>
                     </td>
@@ -3705,20 +3747,20 @@
                     <td>
                         <div style="display:flex; align-items:center; gap:10px;">
                             <div class="user-avatar-circle" style="background:linear-gradient(135deg, var(--teal-500), var(--sky-500));">
-                                ${t.name.split(' ').map(n=>n[0]).slice(0,2).join('')}
+                                ${esc(String(t.name || '').split(' ').map(n=>n[0]).slice(0,2).join(''))}
                             </div>
                             <div>
-                                <strong style="color:#ffffff;">${t.name}</strong>
+                                <strong style="color:#ffffff;">${esc(t.name)}</strong>
                             </div>
                         </div>
                     </td>
-                    <td style="font-family:var(--font-mono); font-size:0.8rem; color:var(--fg-muted);">${t.email}</td>
-                    <td><span class="badge badge-sky">${t.specialtyLabel || t.careerSpecialty}</span></td>
-                    <td style="font-family:var(--font-mono); font-weight:700;">${t.classesCount} groups</td>
-                    <td style="font-family:var(--font-mono);">${t.studentsCount} students</td>
-                    <td><span class="badge badge-emerald">${t.status}</span></td>
+                    <td style="font-family:var(--font-mono); font-size:0.8rem; color:var(--fg-muted);">${esc(t.email)}</td>
+                    <td><span class="badge badge-sky">${esc(t.specialtyLabel || t.careerSpecialty)}</span></td>
+                    <td style="font-family:var(--font-mono); font-weight:700;">${Number(t.classesCount) || 0} groups</td>
+                    <td style="font-family:var(--font-mono);">${Number(t.studentsCount) || 0} students</td>
+                    <td><span class="badge badge-emerald">${esc(t.status)}</span></td>
                     <td>
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="alert('Password reset link sent to ${t.email}')" title="Reset Password">
+                        <button type="button" class="btn btn-secondary btn-sm" data-email="${esc(t.email)}" onclick="alert('Password reset link sent to ' + this.getAttribute('data-email'))" title="Reset Password">
                             <i class="fa-solid fa-key"></i>
                         </button>
                     </td>
@@ -3759,16 +3801,16 @@
                 <div class="podium-card ${rankClasses[idx]}">
                     <div class="podium-medal">${medals[idx]}</div>
                     <div class="podium-info">
-                        <div class="podium-name">${t.name}</div>
-                        <div class="podium-meta">${t.specialtyLabel || t.careerSpecialty}</div>
+                        <div class="podium-name">${esc(t.name)}</div>
+                        <div class="podium-meta">${esc(t.specialtyLabel || t.careerSpecialty)}</div>
                         <div style="font-size:0.72rem; color:var(--fg-dim); margin-top:3px;">
-                            ${t.assignedClassesCount} active groups • ${t.totalStudents} students
+                            ${Number(t.assignedClassesCount) || 0} active groups • ${Number(t.totalStudents) || 0} students
                         </div>
                     </div>
                     <div>
-                        <div class="podium-stat">${t.avgProgress}%</div>
+                        <div class="podium-stat">${Number(t.avgProgress) || 0}%</div>
                         <div style="font-size:0.68rem; color:var(--amber-400); font-family:var(--font-mono); text-align:right;">
-                            ${t.totalXp.toLocaleString()} XP
+                            ${(Number(t.totalXp) || 0).toLocaleString()} XP
                         </div>
                     </div>
                 </div>
@@ -3864,21 +3906,21 @@
 
             tbody.innerHTML = state.students.map(s => `
                 <tr>
-                    <td><strong style="color:#ffffff;">${s.name}</strong></td>
-                    <td style="font-family:var(--font-mono); font-size:0.8rem; color:var(--sky-400);">${s.studentId}</td>
-                    <td><span class="badge badge-sky">${s.career}</span></td>
-                    <td>${s.className}</td>
+                    <td><strong style="color:#ffffff;">${esc(s.name)}</strong></td>
+                    <td style="font-family:var(--font-mono); font-size:0.8rem; color:var(--sky-400);">${esc(s.studentId)}</td>
+                    <td><span class="badge badge-sky">${esc(s.career)}</span></td>
+                    <td>${esc(s.className)}</td>
                     <td>
                         <div class="progress-bar-inline">
                             <div class="progress-bar-track">
-                                <div class="progress-bar-fill" style="width:${s.progress}%;"></div>
+                                <div class="progress-bar-fill" style="width:${Number(s.progress) || 0}%;"></div>
                             </div>
-                            <span class="progress-percent-label">${s.progress}%</span>
+                            <span class="progress-percent-label">${Number(s.progress) || 0}%</span>
                         </div>
                     </td>
-                    <td style="font-family:var(--font-mono); font-weight:700; color:var(--amber-400);">${s.xp.toLocaleString()} XP</td>
-                    <td style="font-family:var(--font-mono);">${s.modules} / 4</td>
-                    <td style="font-family:var(--font-mono); font-size:0.75rem; color:var(--fg-dim);">${s.lastActive}</td>
+                    <td style="font-family:var(--font-mono); font-weight:700; color:var(--amber-400);">${(Number(s.xp) || 0).toLocaleString()} XP</td>
+                    <td style="font-family:var(--font-mono);">${Number(s.modules) || 0} / 4</td>
+                    <td style="font-family:var(--font-mono); font-size:0.75rem; color:var(--fg-dim);">${esc(s.lastActive)}</td>
                 </tr>
             `).join('');
 
@@ -3996,10 +4038,10 @@
             if (classRoster.length > 0) {
                 rosterTbody.innerHTML = classRoster.map(s => `
                     <tr>
-                        <td><strong>${s.name}</strong></td>
-                        <td style="font-family:var(--font-mono); font-size:0.75rem;">${s.studentId}</td>
-                        <td>${s.progress}%</td>
-                        <td style="font-family:var(--font-mono); color:var(--amber-400);">${s.xp} XP</td>
+                        <td><strong>${esc(s.name)}</strong></td>
+                        <td style="font-family:var(--font-mono); font-size:0.75rem;">${esc(s.studentId)}</td>
+                        <td>${Number(s.progress) || 0}%</td>
+                        <td style="font-family:var(--font-mono); color:var(--amber-400);">${Number(s.xp) || 0} XP</td>
                         <td><span class="badge badge-emerald">Enrolled</span></td>
                     </tr>
                 `).join('');
@@ -4156,7 +4198,7 @@
                 type: 'enrollment',
                 icon: 'fa-chalkboard',
                 iconClass: 'kpi-icon-teal',
-                text: `New class <strong>${name}</strong> activated for <strong>${teacherName}</strong>`,
+                text: `New class <strong>${esc(name)}</strong> activated for <strong>${esc(teacherName)}</strong>`,
                 time: 'Just now'
             });
 
@@ -4246,7 +4288,7 @@
             if (!select) return;
 
             select.innerHTML = '<option value="">Select faculty professor...</option>' + 
-                state.teachers.map(t => `<option value="${t.id}">${t.name} (${t.email})</option>`).join('');
+                state.teachers.map(t => `<option value="${esc(t.id)}">${esc(t.name)} (${esc(t.email)})</option>`).join('');
         }
 
         function handleGlobalSearch(e) {
@@ -4268,21 +4310,21 @@
 
                 tbody.innerHTML = filtered.map(c => `
                     <tr>
-                        <td><strong style="color:#ffffff;">${c.name}</strong></td>
-                        <td><span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--sky-400);">${c.code}</span></td>
-                        <td>${c.teacherName}</td>
-                        <td><span class="badge badge-sky">${c.careerName}</span></td>
-                        <td style="font-family:var(--font-mono);">${c.studentsCount}</td>
+                        <td><strong style="color:#ffffff;">${esc(c.name)}</strong></td>
+                        <td><span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--sky-400);">${esc(c.code)}</span></td>
+                        <td>${esc(c.teacherName)}</td>
+                        <td><span class="badge badge-sky">${esc(c.careerName)}</span></td>
+                        <td style="font-family:var(--font-mono);">${Number(c.studentsCount) || 0}</td>
                         <td>
                             <div class="progress-bar-inline">
-                                <div class="progress-bar-track"><div class="progress-bar-fill" style="width:${c.avgProgress}%;"></div></div>
-                                <span class="progress-percent-label">${c.avgProgress}%</span>
+                                <div class="progress-bar-track"><div class="progress-bar-fill" style="width:${Number(c.avgProgress) || 0}%;"></div></div>
+                                <span class="progress-percent-label">${Number(c.avgProgress) || 0}%</span>
                             </div>
                         </td>
-                        <td style="font-family:var(--font-mono); color:var(--amber-400);">${c.avgXp} XP</td>
-                        <td><span class="badge badge-emerald">${c.status}</span></td>
+                        <td style="font-family:var(--font-mono); color:var(--amber-400);">${Number(c.avgXp) || 0} XP</td>
+                        <td><span class="badge badge-emerald">${esc(c.status)}</span></td>
                         <td>
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="inspectClassDetail('${c.id}')"><i class="fa-solid fa-eye"></i></button>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="inspectClassDetail('${esc(c.id)}')"><i class="fa-solid fa-eye"></i></button>
                         </td>
                     </tr>
                 `).join('');

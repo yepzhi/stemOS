@@ -19,4 +19,9 @@ docs/**
 firebase.json
 firestore.rules
 firestore.indexes.json
+wrangler.jsonc
+dev/
+dev/**
+.github/
+.github/**
 Cloudflare_*

@@ -8,6 +8,7 @@
 
   <!-- PWA & Mobile Web App Manifest -->
   <link rel="manifest" href="/manifest.json">
+  <link rel="canonical" href="https://stemos.org/privacy">
   <meta name="theme-color" content="#0284c7">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,14 +16,11 @@
   <meta name="apple-mobile-web-app-title" content="stemOS">
   <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
   <link rel="apple-touch-icon" href="/icon-192.svg">
-  <script src="/content/stemos_pwa.js" defer></script>
-  <script src="/content/stemos_rum.js" defer></script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
-  <link rel="stylesheet" href="/dev.css?v=5.13.2">
 
   <style>
     body {
@@ -313,7 +311,7 @@
 
   <!-- Top Fixed Navigation -->
   <header class="privacy-nav-top">
-    <a href="/index.html" style="display:flex; align-items:center; text-decoration:none;">
+    <a href="/" style="display:flex; align-items:center; text-decoration:none;">
       <span style="font-size:1.3rem; font-weight:900; color:#fff; letter-spacing:-0.03em;">stem<span style="color:#38bdf8;">OS</span></span>
     </a>
 
@@ -324,7 +322,7 @@
         <a href="#spanish-policy" class="lang-pill" id="pill-es" onclick="setActiveLangPill('es')">Español</a>
       </div>
 
-      <a href="/index.html" class="btn-return-home">
+      <a href="/" class="btn-return-home">
         <i class="fa-solid fa-arrow-left"></i> <span class="return-text">Return to stemOS</span>
       </a>
     </div>
@@ -344,87 +342,109 @@
         <p class="privacy-meta">
           <strong>Application Name:</strong> stemOS® — The Technical English Operating System<br>
           <strong>Operated by:</strong> yepzhi.com &amp; Fundación Jóvenes STEM • <strong>Contact:</strong> <a href="mailto:yepzhi@gmail.com" style="color:#38bdf8; text-decoration:none; font-weight:700;">yepzhi@gmail.com</a><br>
-          <strong>Last Updated:</strong> October 2026 • <strong>Compliance Standards:</strong> Google API Services User Data Policy, Limited Use Requirements, Mexico LFPDPPP.
+          <strong>Effective Date:</strong> August 1, 2026 • <strong>Last Updated:</strong> October 28, 2026 • <strong>Compliance Standards:</strong> Google API Services User Data Policy (including Limited Use Requirements), FERPA, GDPR, CCPA, and Mexico LFPDPPP.
         </p>
       </div>
 
       <!-- Quick Jump Navigation -->
       <nav class="privacy-toc-bar" aria-label="Table of Contents">
         <a href="#sec-overview" class="privacy-toc-link"><i class="fa-solid fa-circle-info"></i> 1. Overview</a>
-        <a href="#sec-data-collected" class="privacy-toc-link"><i class="fa-solid fa-database"></i> 2. Google Data Accessed</a>
-        <a href="#sec-data-usage" class="privacy-toc-link"><i class="fa-solid fa-gears"></i> 3. How We Use Data</a>
+        <a href="#sec-data-collected" class="privacy-toc-link"><i class="fa-solid fa-database"></i> 2. Data Collection</a>
+        <a href="#sec-data-usage" class="privacy-toc-link"><i class="fa-solid fa-gears"></i> 3. Data Usage</a>
         <a href="#google-limited-use" class="privacy-toc-link" style="color:#38bdf8; font-weight:700;"><i class="fa-brands fa-google"></i> 4. Google Limited Use</a>
         <a href="#sec-prohibitions" class="privacy-toc-link"><i class="fa-solid fa-ban"></i> 5. Prohibitions &amp; AI</a>
-        <a href="#sec-security" class="privacy-toc-link"><i class="fa-solid fa-lock"></i> 6. Security &amp; Storage</a>
+        <a href="#sec-security" class="privacy-toc-link"><i class="fa-solid fa-lock"></i> 6. Data Protection</a>
+        <a href="#sec-third-parties" class="privacy-toc-link"><i class="fa-solid fa-share-nodes"></i> 6A. Data Sharing</a>
         <a href="#sec-retention-deletion" class="privacy-toc-link" style="color:#f87171;"><i class="fa-solid fa-trash-can"></i> 7. Retention &amp; Deletion</a>
         <a href="#sec-contact" class="privacy-toc-link"><i class="fa-solid fa-envelope"></i> 8. Contact &amp; Officer</a>
       </nav>
 
       <!-- Section 1: Overview -->
       <section class="privacy-section-card" id="summary">
-        <h2>Summary: How stemOS Handles Google User Data</h2>
+        <h2>Summary: Data Collection, Usage, Protection &amp; Google User Data Compliance</h2>
         <ul>
-          <li><strong>What Google user data we access:</strong> our application will access the data you provide through Google Sign-In: your name, email address, profile picture and Google account ID (scopes openid, profile, email). Nothing else.</li>
-          <li><strong>How we use it:</strong> we use your data to provide the services you requested: signing you in, saving your learning progress and issuing your certificates. We use it for nothing else.</li>
-          <li><strong>Who we share it with:</strong> we do not transfer or disclose your information to third parties for purposes other than the ones provided. We do not sell your data. The only service providers involved are listed in Section 6A.</li>
-          <li><strong>How we protect it:</strong> security procedures are in place to protect the confidentiality of your data, including HTTPS encryption in transit, encryption at rest in Google Cloud Firestore, and access rules limiting each user to their own records.</li>
-          <li><strong>Retention and deletion:</strong> we retain your personal information only for the length of time needed to fulfill the purposes outlined in this policy. When it is no longer needed we delete or destroy it. You may request for your data to be deleted by emailing yepzhi@gmail.com; we delete it within 72 business hours.</li>
-          <li><strong>No other uses:</strong> we do not use Google user data for advertising, selling to data brokers or information resellers, creditworthiness or lending, or creating databases. Google user data is not used to develop, improve, or train generalized or non-personalized AI and/or ML models.</li>
+          <li><strong>What Google user data we collect and access:</strong> When you optionally sign in with Google Sign-In (OAuth 2.0 scopes <code>openid</code>, <code>profile</code>, and <code>email</code>), stemOS accesses only your basic Google account profile: your full name, primary email address, profile picture URL, and unique Google Account ID (UID). We do not request or access any sensitive or restricted Google scopes.</li>
+          <li><strong>What non-Google application data we collect:</strong> When you register or use stemOS educational modules, we collect your institutional affiliation (university/campus, career track, optional student ID/matrícula, and role), diagnostic placement test responses, CEFR A1–C1 and industrial track learning progress, lab simulation scores, verifiable certificate metadata, text prompts submitted to the Socratic AI Tutor, and essential technical/session data (localStorage, IndexedDB, and standard connection security logs).</li>
+          <li><strong>How we use your data:</strong> We use your personal and Google user data solely to provide the educational services you request: authenticating your account, synchronizing your learning progress across devices, personalizing your CEFR/ESP engineering curriculum, issuing cryptographically verified W3C Open Badges 3.0 academic certificates, enabling classroom progress reporting for your authorized university instructor, and maintaining platform security.</li>
+          <li><strong>How we share your data:</strong> We do not sell, rent, or trade your personal data or Google user data to third parties or data brokers. Data is processed only by the essential infrastructure providers disclosed in Section 6A (Google Cloud / Firebase, Cloudflare, Google Gemini API for ephemeral tutor replies, and Stripe/SPEI for optional paid plans).</li>
+          <li><strong>How we protect your data:</strong> All data is protected using TLS 1.3 / HTTPS encryption in transit, AES-256 encryption at rest in Google Cloud Firestore, strict tenant-isolated Firestore Security Rules restricting users to their own records, and Content Security Policy (CSP) controls.</li>
+          <li><strong>Data retention and deletion:</strong> We retain your personal information only for as long as your account remains active or as needed to provide our educational and credentialing services. You may request complete account and data deletion at any time by emailing <a href="mailto:yepzhi@gmail.com" style="color:#38bdf8;">yepzhi@gmail.com</a> (processed within 72 business hours) and revoke Google OAuth access at <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer" style="color:#38bdf8;">myaccount.google.com/permissions</a>.</li>
+          <li><strong>No advertising or AI model training:</strong> We never use Google user data or student data for advertising, ad targeting, creditworthiness evaluation, or training generalized Artificial Intelligence (AI) or Machine Learning (ML) models.</li>
         </ul>
       </section>
 
       <section class="privacy-section-card" id="sec-overview">
         <h2><i class="fa-solid fa-building-columns"></i> 1. Application Overview &amp; Scope</h2>
         <p>
-          <strong>stemOS®</strong> is an educational platform and technical English learning operating system engineered for engineering students, faculty, and technical professionals across 34 specialized industrial tracks (including semiconductors, aerospace, robotics, automotive engineering, medical devices, and clean energy).
+          <strong>stemOS®</strong> ("stemOS", "we", "us", or "our") is an educational platform and technical English learning operating system engineered for university engineering students, faculty, and technical professionals across 34 specialized industrial tracks (including semiconductors, aerospace, robotics, automotive engineering, medical devices, and clean energy).
         </p>
         <p>
-          This Privacy Policy governs the access, collection, usage, storage, and protection of personal data across the <code>stemos.org</code> web platform, progressive web application (PWA), Socratic Feynman AI Tutor, industrial lab simulation crucibles, and verifiable <strong>W3C Open Badges 3.0</strong> academic credentialing services.
+          This Privacy Policy explains in detail what information we collect, how we collect it, how we use, store, protect, and share that information, and how you can exercise your rights to access, export, revoke, or delete your data across the <code>https://stemos.org</code> web platform, Progressive Web Application (PWA), RapidCheck CEFR Placement Test, Socratic Feynman AI Tutor, industrial lab simulation crucibles, and verifiable <strong>W3C Open Badges 3.0</strong> academic credentialing services.
         </p>
         <p>
-          We believe academic identity and student privacy are foundational human rights. We design all stemOS features around <strong>strict data minimization</strong>, deterministic access controls, and zero monetization of student records.
+          Public educational visitors may browse our 34-track curriculum catalog, CEFR descriptors, and interactive previews without creating an account. Account registration and Google Sign-In are requested only when a student, instructor, or institutional administrator wishes to save progress across devices, join an institutional classroom cohort, or earn a verified digital certificate.
         </p>
       </section>
 
-      <!-- Section 2: Google User Data Accessed -->
+      <!-- Section 2: All Data Collected & Google User Data Accessed -->
       <section class="privacy-section-card" id="sec-data-collected">
-        <h2><i class="fa-solid fa-fingerprint"></i> 2. Specific Google User Data Accessed (OAuth 2.0 Scopes)</h2>
+        <h2><i class="fa-solid fa-fingerprint"></i> 2. Information We Collect and Access (Data Collection)</h2>
         <p>
-          stemOS integrates Google Sign-In (OAuth 2.0 via Google Identity Services and Firebase Authentication) solely to provide a secure, seamless Single Sign-On (SSO) experience for students and faculty. We request only the minimum required basic identity scopes (<code>openid</code>, <code>profile</code>, and <code>email</code>).
+          stemOS collects and accesses only the specific categories of information necessary to operate our educational platform, authenticate users, track curricular mastery, and issue verifiable academic credentials:
         </p>
 
+        <h3>2.1 Google User Data Accessed via Google OAuth 2.0</h3>
+        <p>
+          When you choose to sign in using <strong>Google Sign-In</strong> (OAuth 2.0 via Google Identity Services and Firebase Authentication), stemOS requests only the basic, non-sensitive identity scopes (<code>openid</code>, <code>profile</code>, and <code>email</code>) to access the following specific Google user data:
+        </p>
         <div class="privacy-highlight-box">
           <div class="privacy-highlight-title"><i class="fa-solid fa-list-check" style="color:#38bdf8;"></i> Specific Google User Data Categories Accessed:</div>
           <ul>
-            <li><strong>Google Account Unique Identifier (UID):</strong> An immutable pseudonymous identifier assigned by Google to link and index your encrypted learning records in our Firestore database.</li>
-            <li><strong>Primary Email Address:</strong> Used to verify institutional enrollment (e.g., matching university domains such as <code>@upbc.edu.mx</code> or <code>@tecnm.mx</code>), deliver administrative notifications, and transmit accredited certificate verification links.</li>
-            <li><strong>Full Name (First and Last Name):</strong> Used exclusively to address you within the dashboard HUD and print verified, tamper-evident completion diplomas and W3C Open Badges 3.0 credentials.</li>
-            <li><strong>Profile Picture URL:</strong> Used strictly to display your user avatar in the platform navigation bar while you are actively logged in.</li>
+            <li><strong>Google Account Unique Identifier (UID / <code>sub</code>):</strong> An immutable pseudonymous identifier assigned by Google used solely as the primary key to index and isolate your encrypted learning records in our Cloud Firestore database.</li>
+            <li><strong>Primary Email Address (<code>email</code>):</strong> Used to authenticate your account, verify institutional domain enrollment (e.g., <code>@upbc.edu.mx</code>, <code>@tecnm.mx</code>, <code>@uabc.edu.mx</code>), send account/security notifications, and deliver verifiable certificate links.</li>
+            <li><strong>Full Display Name (<code>name</code>):</strong> Used to personalize your student or instructor dashboard and to inscribe your verified legal or academic name onto completion diplomas and W3C Open Badges 3.0 digital credentials.</li>
+            <li><strong>Profile Picture URL (<code>picture</code>):</strong> Used solely to display your account avatar inside the stemOS navigation bar while you are signed in.</li>
           </ul>
         </div>
 
+        <h3>2.2 Educational &amp; Application Data You Provide Directly</h3>
+        <ul>
+          <li><strong>Account &amp; Institutional Profile Data:</strong> If you register via email/password or complete student/instructor onboarding, we collect your full name, email address, role (student, teacher, or institutional administrator), university or educational subsystem (e.g., TecNM, Technological Universities, State Universities), campus name, academic engineering program, selected career specialization track, classroom invite code, and optional student enrollment ID (<em>matrícula</em>).</li>
+          <li><strong>Diagnostic &amp; Learning Progress Data:</strong> As you study on stemOS, we collect and store your RapidCheck CEFR Placement Test answers and resulting CEFR level (A1–C1), completed reading and listening stations, vocabulary mastery scores, spaced-repetition review intervals, virtual industrial laboratory crucible results, cumulative study hours, XP/streak metrics, and issued certificate verification folios.</li>
+          <li><strong>Socratic AI Tutor &amp; Pronunciation Practice Inputs:</strong> When you interact with the Feynman AI Socratic Tutor or pronunciation drills, we process the text responses you submit to generate real-time pedagogical feedback. Voice pronunciation drills use your browser's native Web Speech API to evaluate phonetic accuracy locally in real time; stemOS does not permanently store raw voice audio recordings on our servers.</li>
+          <li><strong>Institutional &amp; Classroom Inquiries:</strong> When university administrators or faculty submit our institutional contact form, we collect the sender's name, institutional email, university name, estimated student cohort size, and message content to respond to the inquiry.</li>
+        </ul>
+
+        <h3>2.3 Automatically Collected Technical &amp; Local Storage Data</h3>
+        <ul>
+          <li><strong>Browser Local Storage &amp; IndexedDB:</strong> We store essential session tokens, language preferences (English/Spanish), offline course caches, and an encrypted/structured offline mutation queue (<code>stemos_sync_queue</code>) on your device so you can continue studying in low-connectivity university laboratories.</li>
+          <li><strong>Security, Network &amp; Performance Logs:</strong> Our edge hosting provider (Cloudflare) and authentication provider (Google Firebase) automatically process standard connection metadata—including IP address, browser type, operating system, referring URL, request timestamps, and Core Web Vitals performance telemetry—strictly for DDoS mitigation, bot protection, fraud prevention, and service reliability.</li>
+        </ul>
+
         <div class="privacy-highlight-box" style="border-color:rgba(239, 68, 68, 0.4); background:rgba(30, 15, 20, 0.65);">
-          <div class="privacy-highlight-title" style="color:#f87171;"><i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Data Categories stemOS NEVER Requests or Stores:</div>
+          <div class="privacy-highlight-title" style="color:#f87171;"><i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Data Categories stemOS NEVER Requests or Collects:</div>
           <ul>
-            <li>We NEVER request or access Google Drive files, Gmail messages, Contacts, Google Calendar events, or device files.</li>
-            <li>We NEVER collect real-time GPS geolocation data.</li>
-            <li>We NEVER collect permanent biometric facial recognition, voiceprints, or fingerprint records.</li>
-            <li>We NEVER store card numbers or bank credentials. Optional paid plans are processed by Stripe or SPEI bank transfer (see Section 6A); this payment data is never combined with Google user data.</li>
+            <li>We NEVER request or access Google Drive files, Gmail messages, Google Contacts, Google Calendar events, Google Photos, or device files.</li>
+            <li>We NEVER collect precise real-time GPS geolocation data.</li>
+            <li>We NEVER collect biometric templates, facial recognition data, or permanent voiceprints.</li>
+            <li>We NEVER collect or store raw payment card numbers or bank account credentials on stemOS servers. Optional individual subscriptions are processed directly by PCI-DSS Level 1 compliant processors (Stripe) or interbank SPEI transfer references (see Section 6A).</li>
           </ul>
         </div>
       </section>
 
-      <!-- Section 3: How stemOS Uses Google User Data -->
+      <!-- Section 3: How stemOS Uses Data -->
       <section class="privacy-section-card" id="sec-data-usage">
-        <h2><i class="fa-solid fa-gears"></i> 3. How stemOS Uses Google User Data</h2>
+        <h2><i class="fa-solid fa-gears"></i> 3. How We Use Your Information (Data Usage)</h2>
         <p>
-          stemOS uses information collected through Google APIs exclusively to provide and improve educational and user-facing features within the platform:
+          stemOS uses the Google user data and application data described in Section 2 exclusively to deliver, maintain, and improve user-facing educational functionality:
         </p>
         <ul>
-          <li><strong>Identity Authentication &amp; Account Security:</strong> Allowing students and educators to access their personalized technical curriculum without needing to create, remember, or risk separate passwords.</li>
-          <li><strong>Curricular Progress Persistence:</strong> Synchronizing CEFR A1–C1 language proficiency benchmarks, 60-hour industrial specialization track progress, diagnostic exam results, and virtual engineering laboratory simulations across devices.</li>
-          <li><strong>Tamper-Proof Academic Certification:</strong> Embedding authenticated student names onto verifiable digital credentials validated with cryptographic SHA-256 hashes under W3C Open Badges 3.0 and CACEI accreditation criteria.</li>
-          <li><strong>Institutional Cohort Insights (Instructors):</strong> Allowing verified classroom teachers to review aggregated, non-monetized student completion statistics for the classes they manage.</li>
+          <li><strong>Single Sign-On (SSO) Authentication &amp; Account Management:</strong> We use your Google UID, email address, display name, and avatar (or your email/password credentials) to authenticate your identity, maintain your secure session across devices, and associate your learning profile with your university institution.</li>
+          <li><strong>Personalized Curriculum &amp; Cross-Device Progress Synchronization:</strong> We use your placement test scores, career track selection, and station completion records to calibrate reading/listening difficulty (CEFR A1 to C1), unlock sequential engineering modules, and synchronize your academic portfolio between desktop and mobile PWA sessions.</li>
+          <li><strong>Verifiable Academic Credential &amp; Badge Issuance:</strong> We use your verified full name, institutional affiliation, and module completion records to generate tamper-evident digital diplomas and <strong>W3C Open Badges 3.0</strong> credentials signed with cryptographic hashes for academic and employer verification.</li>
+          <li><strong>Instructor Gradebook &amp; Institutional Accreditation Reporting:</strong> When a student enrolls in a teacher-managed class using an institutional class code, we display that student's module completion progress, CEFR benchmark level, and diagnostic scores to the authorized instructor and institutional administrator of that specific university campus for academic grading and CACEI/ISO 21001 educational quality audits.</li>
+          <li><strong>Socratic AI Tutoring &amp; Formative Feedback:</strong> We use the technical English prompts you enter into the Feynman AI Tutor solely to generate immediate, context-aware pedagogical explanations and rubric evaluations during your active study session.</li>
+          <li><strong>Security, Abuse Prevention &amp; Technical Support:</strong> We use connection logs and account identifiers to enforce Cloud Firestore access controls, prevent unauthorized access or automated abuse, debug technical errors, and respond to user support or data rights requests.</li>
         </ul>
       </section>
 
@@ -671,7 +691,7 @@
   </main>
 
   <footer style="text-align:center; padding:32px 24px; border-top:1px solid rgba(255,255,255,0.08); font-size:0.84rem; color:#64748b;">
-    &copy; 2026 stemOS® • The Technical English Operating System for Advanced Industry. All rights reserved. • <a href="/terms.html" style="color:#94a3b8; text-decoration:underline;">Terms of Service</a>
+    &copy; 2026 stemOS® • The Technical English Operating System for Advanced Industry. All rights reserved. • <a href="/terms" style="color:#94a3b8; text-decoration:underline;">Terms of Service</a>
   </footer>
 
   <script>

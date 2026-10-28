@@ -71,8 +71,8 @@
             try {
                 const c = new AbortController();
                 const timer = setTimeout(() => c.abort(), CONFIG.miniPcDiscoveryTimeoutMs);
-                const isYzAI = url.includes('yzai.yepzhi.com');
-                const testUrl = isYzAI ? `${url}/api/tags?clave=secreta123` : `${url}/api/tags`;
+                const cleanUrl = url.replace(/\/+$/, '');
+                const testUrl = `${cleanUrl}/api/tags`;
 
                 const res = await fetch(testUrl, { signal: c.signal });
                 clearTimeout(timer);
@@ -110,8 +110,8 @@
         const timer = setTimeout(() => c.abort(), CONFIG.miniPcConnectTimeoutMs);
 
         try {
-            const isYzAI = discoveredMiniPcUrl.includes('yzai.yepzhi.com');
-            const chatUrl = isYzAI ? `${discoveredMiniPcUrl}/api/chat?clave=secreta123` : `${discoveredMiniPcUrl}/api/chat`;
+            const cleanBaseUrl = discoveredMiniPcUrl.replace(/\/+$/, '');
+            const chatUrl = `${cleanBaseUrl}/api/chat`;
 
             const messages = [];
             if (systemInstruction) {

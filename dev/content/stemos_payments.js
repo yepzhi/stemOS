@@ -251,23 +251,36 @@
         const data = await res.json();
         if (res.ok && data.url) {
           window.location.href = data.url;
-        } else {
-          // Graceful fallback for local development or direct platform simulation
+        } else if (['localhost', '127.0.0.1'].includes(window.location.hostname)) {
+          // Local development sandbox fallback only
           simulateSuccessfulPayment({
             id: 'stripe_mock_' + Date.now(),
-            method: 'Stripe Card / Apple Pay',
+            method: 'Stripe Card / Apple Pay (Local Sandbox)',
             amountReceived: selectedAmount,
             voluntaryContribution: Math.max(0, selectedAmount - 49)
           });
+        } else {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<span>Pagar con Tarjeta / Apple Pay</span>';
+          }
+          alert('El servicio de cobro con tarjeta no está disponible temporalmente. Por favor utiliza transferencia SPEI o un código de beca institucional.');
         }
       } catch (err) {
-        // Fallback simulation in static/local environment
-        simulateSuccessfulPayment({
-          id: 'stripe_mock_' + Date.now(),
-          method: 'Stripe Online Checkout',
-          amountReceived: selectedAmount,
-          voluntaryContribution: Math.max(0, selectedAmount - 49)
-        });
+        if (['localhost', '127.0.0.1'].includes(window.location.hostname)) {
+          simulateSuccessfulPayment({
+            id: 'stripe_mock_' + Date.now(),
+            method: 'Stripe Online Checkout (Local Sandbox)',
+            amountReceived: selectedAmount,
+            voluntaryContribution: Math.max(0, selectedAmount - 49)
+          });
+        } else {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<span>Pagar con Tarjeta / Apple Pay</span>';
+          }
+          alert('No se pudo conectar con la pasarela Stripe. Por favor utiliza transferencia SPEI o ingresa tu código de beca institucional.');
+        }
       }
     };
 
@@ -354,21 +367,25 @@
     }
 
     window.confirmSpeiDeposit = function(orderId, amount) {
+      if (!['localhost', '127.0.0.1'].includes(window.location.hostname)) {
+        alert('La simulación rápida SPEI está restringida al entorno de pruebas local. En producción, la acreditación ocurre automáticamente vía webhook STP.');
+        return;
+      }
       simulateSuccessfulPayment({
         id: orderId,
-        method: 'SPEI (STP Banco 646)',
+        method: 'SPEI (STP Banco 646 - Sandbox)',
         amountReceived: amount,
         voluntaryContribution: Math.max(0, amount - 49)
       });
     };
 
     window.redeemFolioCode = function(uId) {
-      const code = prompt('Ingresa tu código de beca institucional o Folio universitario:');
+      const code = prompt('Ingresa tu código de beca institucional o Folio universitario (ej. STEM-2026-XXXX, UPBC-XXXX):');
       if (!code || !code.trim()) return;
 
       const cleanCode = code.trim().toUpperCase();
-      // Any voucher with STEM, UPBC, BEC, or at least 4 alphanumeric chars
-      if (cleanCode.length >= 4) {
+      const validInstitutionalPattern = /^(STEM|UPBC|TECNM|UTT|UACJ|BECA)-[A-Z0-9-]{4,20}$/;
+      if (validInstitutionalPattern.test(cleanCode)) {
         simulateSuccessfulPayment({
           id: 'voucher_' + cleanCode,
           method: 'Beca Universitaria / Folio [' + cleanCode + ']',
@@ -377,7 +394,7 @@
           isVoucher: true
         });
       } else {
-        alert('Código de folio inválido. Por favor contacta a tu departamento escolar.');
+        alert('Código de folio inválido. El folio debe tener formato institucional oficial (ej. STEM-XXXX o UPBC-XXXX).');
       }
     };
 

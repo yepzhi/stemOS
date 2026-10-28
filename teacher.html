@@ -2460,14 +2460,27 @@
             mcerFilter: 'all'
         };
 
+        function esc(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
         function initState() {
             try {
                 const storedAuth = localStorage.getItem(STORAGE_KEY_TEACHER_AUTH);
+                const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
                 if (storedAuth) {
                     state.auth = JSON.parse(storedAuth);
-                } else {
-                    // Default to t1 for instant testing
+                } else if (isLocal) {
+                    // Default to t1 for instant local testing only
                     state.auth = DEMO_TEACHERS.t1;
+                } else {
+                    state.auth = null;
                 }
 
                 // Sync registered students from universal Firebase adapter (Phase 59)
@@ -2501,7 +2514,7 @@
                 }
             } catch (err) {
                 console.warn('Error reading stored state:', err);
-                state.auth = DEMO_TEACHERS.t1;
+                state.auth = null;
             }
         }
 
@@ -2573,16 +2586,43 @@
         /* ══════════════════════════════════════════════════════════════
            AUTH HANDLERS
            ══════════════════════════════════════════════════════════════ */
-        function handleTeacherLogin(e) {
+        async function handleTeacherLogin(e) {
             e.preventDefault();
             const email = document.getElementById('login-email').value.trim();
-            
-            // Match with demo or generic teacher
+            const passEl = document.getElementById('login-password');
+            const pass = passEl ? passEl.value : '';
+            const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
             let found = Object.values(DEMO_TEACHERS).find(t => t.email.toLowerCase() === email.toLowerCase());
+            const isDemoLogin = found && pass === 'stemOS-Teacher-2026';
+
+            if (!isDemoLogin && window.firebase && typeof window.firebase.auth === 'function') {
+                try {
+                    const cred = await window.firebase.auth().signInWithEmailAndPassword(email, pass);
+                    found = found || {
+                        id: cred.user.uid,
+                        name: cred.user.displayName || 'Faculty Instructor',
+                        email: cred.user.email || email,
+                        department: 'Engineering Department',
+                        careerId: 'it-mecatronica',
+                        careerName: 'Ingeniería Mecatrónica',
+                        classes: DEMO_TEACHERS.t1.classes
+                    };
+                } catch (authErr) {
+                    if (!isLocal) {
+                        alert('Authentication failed: ' + (authErr.message || 'Invalid faculty credentials.'));
+                        return;
+                    }
+                }
+            } else if (!isDemoLogin && !isLocal) {
+                alert('Please sign in with verified institutional faculty credentials or select a sandbox demo profile.');
+                return;
+            }
+
             if (!found) {
                 found = {
                     id: 't-custom',
-                    name: 'Faculty Instructor',
+                    name: 'Faculty Instructor (Sandbox)',
                     email: email,
                     department: 'Engineering Department',
                     careerId: 'it-mecatronica',
@@ -2653,17 +2693,17 @@
             if (!grid) return;
 
             grid.innerHTML = classes.map(c => {
-                const dashOffset = 126 - (126 * (c.avgProgress / 100));
+                const dashOffset = 126 - (126 * ((Number(c.avgProgress) || 0) / 100));
                 return `
-                    <div class="glass-card class-card" onclick="navigateTo('class/${c.id}')">
+                    <div class="glass-card class-card" onclick="navigateTo('class/${esc(c.id)}')">
                         <div class="class-card-head">
                             <div>
-                                <h4 class="class-card-title">${c.name}</h4>
-                                <span class="class-card-code">${c.code}</span>
+                                <h4 class="class-card-title">${esc(c.name)}</h4>
+                                <span class="class-card-code">${esc(c.code)}</span>
                             </div>
-                            <span class="badge badge-teal">${c.period}</span>
+                            <span class="badge badge-teal">${esc(c.period)}</span>
                         </div>
-                        <p class="class-card-desc"><i class="fa-solid fa-graduation-cap" style="color:var(--teal-400); margin-right:4px;"></i> ${c.careerName}</p>
+                        <p class="class-card-desc"><i class="fa-solid fa-graduation-cap" style="color:var(--teal-400); margin-right:4px;"></i> ${esc(c.careerName)}</p>
                         
                         <div class="class-progress-radial-wrap">
                             <svg class="progress-circle-svg" viewBox="0 0 48 48">
@@ -2671,15 +2711,15 @@
                                 <circle class="progress-circle-bar" cx="24" cy="24" r="20" stroke-dasharray="126" stroke-dashoffset="${dashOffset}"></circle>
                             </svg>
                             <div>
-                                <div style="font-family:var(--font-mono); font-size:1.15rem; font-weight:800; color:#fff;">${c.avgProgress}%</div>
+                                <div style="font-family:var(--font-mono); font-size:1.15rem; font-weight:800; color:#fff;">${Number(c.avgProgress) || 0}%</div>
                                 <div style="font-size:0.75rem; color:var(--fg-dim);">Class Average Completion</div>
                             </div>
                         </div>
 
                         <div class="class-card-footer">
-                            <span><i class="fa-solid fa-user-group" style="margin-right:4px;"></i> ${c.studentsCount} Students</span>
-                            <span style="color:var(--amber-400); font-family:var(--font-mono); font-weight:700;"><i class="fa-solid fa-bolt"></i> ${c.avgXp} XP avg</span>
-                            <span><i class="fa-solid fa-clock" style="margin-right:4px;"></i> ${c.lastActivity}</span>
+                            <span><i class="fa-solid fa-user-group" style="margin-right:4px;"></i> ${Number(c.studentsCount) || 0} Students</span>
+                            <span style="color:var(--amber-400); font-family:var(--font-mono); font-weight:700;"><i class="fa-solid fa-bolt"></i> ${Number(c.avgXp) || 0} XP avg</span>
+                            <span><i class="fa-solid fa-clock" style="margin-right:4px;"></i> ${esc(c.lastActivity)}</span>
                         </div>
                     </div>
                 `;
@@ -2758,13 +2798,13 @@
                         <div style="display:flex; align-items:center; gap:10px;">
                             <div style="width:26px; text-align:center; font-size:${isPodium ? '1.1rem' : '0.8rem'};">${medal}</div>
                             <div>
-                                <div style="font-size:0.82rem; font-weight:700; color:#fff;">${s.name}</div>
-                                <div style="font-size:0.7rem; color:var(--fg-dim);">${s.matricula} &bull; <span style="color:var(--teal-400); font-weight:600;">${lvl.badge} ${lvl.title}</span></div>
+                                <div style="font-size:0.82rem; font-weight:700; color:#fff;">${esc(s.name)}</div>
+                                <div style="font-size:0.7rem; color:var(--fg-dim);">${esc(s.matricula)} &bull; <span style="color:var(--teal-400); font-weight:600;">${esc(lvl.badge)} ${esc(lvl.title)}</span></div>
                             </div>
                         </div>
                         <div style="text-align:right;">
-                            <div style="font-family:var(--font-mono); font-size:0.82rem; font-weight:800; color:var(--amber-400);">${s.xp.toLocaleString()} XP</div>
-                            <div style="font-size:0.7rem; color:var(--fg-muted);">${s.modulesDone}/16 modules (${s.progress}%)</div>
+                            <div style="font-family:var(--font-mono); font-size:0.82rem; font-weight:800; color:var(--amber-400);">${(Number(s.xp) || 0).toLocaleString()} XP</div>
+                            <div style="font-size:0.7rem; color:var(--fg-muted);">${Number(s.modulesDone) || 0}/16 modules (${Number(s.progress) || 0}%)</div>
                         </div>
                     </div>
                 `;
@@ -2841,17 +2881,17 @@
                     if (s.daysInactive > 7 && m === s.modulesDone + 1) {
                         cellClass = 'cell-alert';
                     }
-                    cellsHtml += `<td><span class="heatmap-cell ${cellClass}" title="${s.name} - Module ${m}">${label}</span></td>`;
+                    cellsHtml += `<td><span class="heatmap-cell ${cellClass}" title="${esc(s.name)} - Module ${m}">${label}</span></td>`;
                 }
 
                 return `
                     <tr>
                         <td class="heatmap-student-col">
-                            <strong>${s.name}</strong><br>
-                            <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--fg-dim);">${s.matricula}</span>
+                            <strong>${esc(s.name)}</strong><br>
+                            <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--fg-dim);">${esc(s.matricula)}</span>
                         </td>
                         ${cellsHtml}
-                        <td style="font-family:var(--font-mono); font-weight:700; color:var(--teal-400);">${s.progress}%</td>
+                        <td style="font-family:var(--font-mono); font-weight:700; color:var(--teal-400);">${Number(s.progress) || 0}%</td>
                     </tr>
                 `;
             }).join('');
@@ -2895,32 +2935,32 @@
                 return `
                     <tr style="${isInactiveAlert ? 'background:rgba(244, 63, 94, 0.05);' : ''}">
                         <td>
-                            <strong style="color:#ffffff;">${s.name}</strong><br>
-                            <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--teal-400);">${s.matricula}</span>
+                            <strong style="color:#ffffff;">${esc(s.name)}</strong><br>
+                            <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--teal-400);">${esc(s.matricula)}</span>
                         </td>
                         <td>
                             <span style="font-family:var(--font-mono); font-size:0.75rem; font-weight:800; padding:3px 8px; border-radius:999px; ${lvlStyle}">
-                                CEFR ${lvl}
+                                CEFR ${esc(lvl)}
                             </span>
                         </td>
                         <td>
                             <div style="display:flex; align-items:center; gap:8px;">
                                 <div style="flex:1; height:6px; background:rgba(255,255,255,0.08); border-radius:999px; min-width:80px; overflow:hidden;">
-                                    <div style="height:100%; width:${s.progress}%; background:${s.progress > 80 ? 'var(--emerald-400)' : s.progress < 30 ? 'var(--rose-400)' : 'var(--teal-400)'};"></div>
+                                    <div style="height:100%; width:${Number(s.progress) || 0}%; background:${s.progress > 80 ? 'var(--emerald-400)' : s.progress < 30 ? 'var(--rose-400)' : 'var(--teal-400)'};"></div>
                                 </div>
-                                <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:700;">${s.progress}%</span>
+                                <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:700;">${Number(s.progress) || 0}%</span>
                             </div>
                         </td>
-                        <td style="font-family:var(--font-mono); font-weight:700; color:var(--amber-400);">${s.xp.toLocaleString()} XP</td>
-                        <td style="font-family:var(--font-mono);">${s.modulesDone} / 16</td>
-                        <td style="font-size:0.8rem; color:var(--fg-muted);">${s.currentModule}</td>
+                        <td style="font-family:var(--font-mono); font-weight:700; color:var(--amber-400);">${(Number(s.xp) || 0).toLocaleString()} XP</td>
+                        <td style="font-family:var(--font-mono);">${Number(s.modulesDone) || 0} / 16</td>
+                        <td style="font-size:0.8rem; color:var(--fg-muted);">${esc(s.currentModule)}</td>
                         <td>
                             <span style="font-size:0.75rem; ${isInactiveAlert ? 'color:var(--rose-400); font-weight:700;' : 'color:var(--fg-dim);'}">
-                                ${isInactiveAlert ? '<i class="fa-solid fa-triangle-exclamation"></i> ' : ''}${s.lastActive}
+                                ${isInactiveAlert ? '<i class="fa-solid fa-triangle-exclamation"></i> ' : ''}${esc(s.lastActive)}
                             </span>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="openStudentBreakdownModal('${s.id}')">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="openStudentBreakdownModal('${esc(s.id)}')">
                                 <i class="fa-solid fa-eye"></i> View
                             </button>
                         </td>
@@ -3124,12 +3164,12 @@
                 return `
                     <tr>
                         <td>
-                            <strong style="color:#ffffff;">${s.name}</strong><br>
-                            <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--teal-400);">${s.matricula}</span>
+                            <strong style="color:#ffffff;">${esc(s.name)}</strong><br>
+                            <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--teal-400);">${esc(s.matricula)}</span>
                         </td>
                         <td>
                             <span style="font-family:var(--font-mono); font-size:0.75rem; font-weight:800; padding:2px 8px; border-radius:999px; ${lvlBadgeColors[diagLevel] || lvlBadgeColors.A2}">
-                                CEFR ${diagLevel}
+                                CEFR ${esc(diagLevel)}
                             </span>
                         </td>
                         <td style="font-family:var(--font-mono); font-weight:700; color:#fff;">
@@ -3156,7 +3196,7 @@
                             </span>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="openStudentBreakdownModal('${s.id}')">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="openStudentBreakdownModal('${esc(s.id)}')">
                                 <i class="fa-solid fa-file-lines"></i> Dossier
                             </button>
                         </td>
@@ -3361,36 +3401,36 @@
                     : `<span class="badge badge-teal"><i class="fa-solid fa-infinity"></i> Sin límite de tiempo</span>`;
 
                 return `
-                    <div class="asg-item-card" id="asg-card-${asg.id}">
+                    <div class="asg-item-card" id="asg-card-${esc(asg.id)}">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
                             <div>
                                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:4px;">
-                                    <span class="badge badge-teal">${asg.level || 'B1'}</span>
+                                    <span class="badge badge-teal">${esc(asg.level || 'B1')}</span>
                                     ${timeLimitPill}
                                     <span class="badge badge-sky" title="Huso Horario de Entrega">
-                                        <i class="fa-solid fa-earth-americas"></i> ${asg.timezone}
+                                        <i class="fa-solid fa-earth-americas"></i> ${esc(asg.timezone)}
                                     </span>
                                     <span style="font-size:0.75rem; color:var(--emerald-400); font-family:var(--font-mono); font-weight:700;">
-                                        Mínimo ${asg.threshold || 75}% para aprobar
+                                        Mínimo ${Number(asg.threshold) || 75}% para aprobar
                                     </span>
                                 </div>
                                 <h4 style="font-size:1.05rem; font-weight:800; color:#ffffff; margin:0 0 4px 0;">
-                                    ${asg.title}
+                                    ${esc(asg.title)}
                                 </h4>
                                 <div style="font-size:0.78rem; color:var(--fg-muted);">
                                     <i class="fa-solid fa-calendar-check" style="color:var(--sky-400); margin-right:4px;"></i>
-                                    Fecha Límite: <strong style="color:#ffffff;">${formattedDue}</strong>
-                                    ${asg.instructions ? ` &bull; <span style="color:#cbd5e1;">"${asg.instructions}"</span>` : ''}
+                                    Fecha Límite: <strong style="color:#ffffff;">${esc(formattedDue)}</strong>
+                                    ${asg.instructions ? ` &bull; <span style="color:#cbd5e1;">"${esc(asg.instructions)}"</span>` : ''}
                                 </div>
                             </div>
                             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                                <button type="button" class="btn btn-secondary btn-sm" onclick="toggleAssignmentStudentDetail('${asg.id}')">
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="toggleAssignmentStudentDetail('${esc(asg.id)}')">
                                     <i class="fa-solid fa-users-viewfinder"></i> Ver Avance de Alumnos (${completedCount}/${totalRoster})
                                 </button>
-                                <button type="button" class="btn btn-outline-teal btn-sm" onclick="broadcastAssignmentReminder('${asg.id}')" title="Enviar recordatorio a alumnos pendientes">
+                                <button type="button" class="btn btn-outline-teal btn-sm" onclick="broadcastAssignmentReminder('${esc(asg.id)}')" title="Enviar recordatorio a alumnos pendientes">
                                     <i class="fa-solid fa-bullhorn"></i> Recordatorio (${pendingCount})
                                 </button>
-                                <button type="button" class="btn btn-secondary btn-sm" onclick="extendAssignmentTime('${asg.id}')" title="Extender 15 minutos al límite de tiempo">
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="extendAssignmentTime('${esc(asg.id)}')" title="Extender 15 minutos al límite de tiempo">
                                     <i class="fa-solid fa-clock-rotate-left"></i> +15 min
                                 </button>
                             </div>
@@ -3413,10 +3453,10 @@
                         </div>
 
                         <!-- Expandable Submissions Table -->
-                        <div id="asg-table-${asg.id}" style="display:none; margin-top:16px; border-top:1px solid rgba(255,255,255,0.08); padding-top:14px;">
+                        <div id="asg-table-${esc(asg.id)}" style="display:none; margin-top:16px; border-top:1px solid rgba(255,255,255,0.08); padding-top:14px;">
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
                                 <span style="font-size:0.8rem; font-weight:700; color:#fff;">Detalle Individual de Entregas y Tiempos de Resolución:</span>
-                                <span style="font-size:0.72rem; color:var(--fg-dim); font-family:var(--font-mono);">Hora convertida en ${asg.timezone}</span>
+                                <span style="font-size:0.72rem; color:var(--fg-dim); font-family:var(--font-mono);">Hora convertida en ${esc(asg.timezone)}</span>
                             </div>
                             <div class="table-responsive">
                                 <table class="data-table" style="font-size:0.8rem;">
@@ -3442,13 +3482,13 @@
                                             if (sub.status === 'completed') {
                                                 const passed = (sub.score || 0) >= (asg.threshold || 75);
                                                 statusPill = `<span class="badge ${passed ? 'badge-emerald' : 'badge-amber'}">✓ Entregada a Tiempo</span>`;
-                                                scoreText = `<strong style="color:${passed ? 'var(--emerald-400)' : 'var(--amber-400)'};">${sub.score}%</strong> (${sub.xp || 300} XP)`;
-                                                timeSpentText = `<span style="font-family:var(--font-mono);">${sub.timeSpentMinutes || 30} min</span> / ${asg.timeLimitMinutes || 45} min`;
+                                                scoreText = `<strong style="color:${passed ? 'var(--emerald-400)' : 'var(--amber-400)'};">${Number(sub.score) || 0}%</strong> (${Number(sub.xp) || 300} XP)`;
+                                                timeSpentText = `<span style="font-family:var(--font-mono);">${Number(sub.timeSpentMinutes) || 30} min</span> / ${Number(asg.timeLimitMinutes) || 45} min`;
                                                 submittedText = sub.submittedAt ? formatTimestampInTz(sub.submittedAt, asg.timezone) : 'Hoy';
                                             } else if (sub.status === 'in_progress') {
                                                 statusPill = `<span class="badge badge-amber"><span class="asg-live-pulse"></span>En Resolución</span>`;
                                                 scoreText = '<span style="color:var(--amber-400);">Resolviendo...</span>';
-                                                timeSpentText = `<span style="font-family:var(--font-mono); color:var(--amber-400);">${sub.timeSpentMinutes || 15} min transcurridos</span>`;
+                                                timeSpentText = `<span style="font-family:var(--font-mono); color:var(--amber-400);">${Number(sub.timeSpentMinutes) || 15} min transcurridos</span>`;
                                                 submittedText = 'En curso';
                                             } else {
                                                 statusPill = `<span class="badge badge-secondary" style="background:rgba(255,255,255,0.06); color:var(--fg-dim);">Pendiente</span>`;
@@ -3457,16 +3497,16 @@
                                             return `
                                                 <tr>
                                                     <td>
-                                                        <div style="font-weight:700; color:#fff;">${st.name}</div>
-                                                        <div style="font-size:0.72rem; color:var(--fg-dim);">${st.currentModule || 'Inglés B1'}</div>
+                                                        <div style="font-weight:700; color:#fff;">${esc(st.name)}</div>
+                                                        <div style="font-size:0.72rem; color:var(--fg-dim);">${esc(st.currentModule || 'Inglés B1')}</div>
                                                     </td>
-                                                    <td style="font-family:var(--font-mono);">${st.matricula}</td>
+                                                    <td style="font-family:var(--font-mono);">${esc(st.matricula)}</td>
                                                     <td>${statusPill}</td>
                                                     <td>${scoreText}</td>
                                                     <td>${timeSpentText}</td>
-                                                    <td style="font-family:var(--font-mono); font-size:0.75rem;">${submittedText}</td>
+                                                    <td style="font-family:var(--font-mono); font-size:0.75rem;">${esc(submittedText)}</td>
                                                     <td>
-                                                        <button type="button" class="btn btn-secondary btn-sm" style="padding:4px 8px; font-size:0.72rem;" onclick="extendStudentTime('${asg.id}', '${st.id}', '${st.name}')">
+                                                        <button type="button" class="btn btn-secondary btn-sm" style="padding:4px 8px; font-size:0.72rem;" data-asg="${esc(asg.id)}" data-sid="${esc(st.id)}" data-sname="${esc(st.name)}" onclick="extendStudentTime(this.getAttribute('data-asg'), this.getAttribute('data-sid'), this.getAttribute('data-sname'))">
                                                             +15m
                                                         </button>
                                                     </td>
@@ -3612,9 +3652,9 @@
 
                     return `
                         <tr style="border-bottom:1px solid #e2e8f0;">
-                            <td style="padding:6px 10px; font-family:var(--font-mono); font-weight:700; color:#0284c7;">${s.matricula}</td>
-                            <td style="padding:6px 10px; font-weight:600; color:#0f172a;">${s.name}</td>
-                            <td style="padding:6px 10px; font-weight:700;">CEFR ${s.placementLevel || 'A2'}</td>
+                            <td style="padding:6px 10px; font-family:var(--font-mono); font-weight:700; color:#0284c7;">${esc(s.matricula)}</td>
+                            <td style="padding:6px 10px; font-weight:600; color:#0f172a;">${esc(s.name)}</td>
+                            <td style="padding:6px 10px; font-weight:700;">CEFR ${esc(s.placementLevel || 'A2')}</td>
                             <td style="padding:6px 10px; font-family:var(--font-mono); font-weight:800; color:#059669;">${hours.toFixed(1)}h</td>
                             <td style="padding:6px 10px; font-family:var(--font-mono); font-weight:700;">${gradePct}%</td>
                             <td style="padding:6px 10px;">
@@ -3698,7 +3738,7 @@
             const select = document.getElementById('enroll-class-select');
             if (select) {
                 select.innerHTML = (state.auth.classes || []).map(c => `
-                    <option value="${c.id}">${c.name} (${c.code})</option>
+                    <option value="${esc(c.id)}">${esc(c.name)} (${esc(c.code)})</option>
                 `).join('');
             }
             document.getElementById('modal-manual-enroll').classList.add('is-active');

@@ -26,7 +26,12 @@
     // Input Sanitization Helper (Phase 85 Security Hardening)
     function sanitize(val) {
         if (typeof val !== 'string') return val;
-        return val.replace(/[<>]/g, '').trim();
+        return val.trim()
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
     }
 
     // Default Seed Institution
@@ -293,14 +298,14 @@
 
             const newClass = {
                 id: 'class-' + Date.now().toString(36),
-                institutionId: classData.institutionId || 'tecnm-saltillo',
-                teacherId: classData.teacherId || 't1',
-                teacherName: classData.teacherName || 'Faculty Lead',
-                periodId: classData.periodId || 'ago-dic-2026',
-                name: classData.name || 'New Group',
-                careerId: careerId,
-                careerName: classData.careerName || 'Engineering Track',
-                primaryTrackId: classData.primaryTrackId || 'robotics-automation',
+                institutionId: sanitize(classData.institutionId || 'tecnm-saltillo'),
+                teacherId: sanitize(classData.teacherId || 't1'),
+                teacherName: sanitize(classData.teacherName || 'Faculty Lead'),
+                periodId: sanitize(classData.periodId || 'ago-dic-2026'),
+                name: sanitize(classData.name || 'New Group'),
+                careerId: sanitize(careerId),
+                careerName: sanitize(classData.careerName || 'Engineering Track'),
+                primaryTrackId: sanitize(classData.primaryTrackId || 'robotics-automation'),
                 totalHours: 60.0,
                 inviteCode: inviteCode,
                 inviteExpiry: classData.inviteExpiry || null,
@@ -351,10 +356,10 @@
                 system: studentData.system || 'it',
                 hub: studentData.hub || 'Saltillo',
                 semester: studentData.semester || 'mid',
-                institutionId: matchedClass ? matchedClass.institutionId : (studentData.institutionId || 'tecnm-saltillo'),
+                institutionId: sanitize(matchedClass ? matchedClass.institutionId : (studentData.institutionId || 'tecnm-saltillo')),
                 classId: matchedClass ? matchedClass.id : (studentData.classId || null),
-                className: matchedClass ? matchedClass.name : (studentData.className || 'Independent Study'),
-                classCode: matchedClass ? matchedClass.inviteCode : (studentData.classCode || null),
+                className: sanitize(matchedClass ? matchedClass.name : (studentData.className || 'Independent Study')),
+                classCode: sanitize(matchedClass ? matchedClass.inviteCode : (studentData.classCode || '')),
                 progress: 0,
                 xp: 0,
                 modulesCompleted: 0,
