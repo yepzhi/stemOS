@@ -20,6 +20,7 @@ firebase.json
 firestore.rules
 firestore.indexes.json
 wrangler.jsonc
+worker.js
 dev/
 dev/**
 .github/

@@ -1263,6 +1263,11 @@
                     <i class="fa-solid fa-right-to-bracket"></i>
                     <span>Sign In to Teacher Portal</span>
                 </button>
+
+                <button type="button" id="btn-teacher-google-sso" class="btn btn-secondary" onclick="handleTeacherGoogleSSO()" style="width:100%; padding:12px 20px; font-size:0.9rem; margin-top:10px; display:flex; align-items:center; justify-content:center; gap:10px;">
+                    <i class="fa-brands fa-google" style="color:#2dd4bf;"></i>
+                    <span>Sign In with Institutional Google Account</span>
+                </button>
             </form>
 
             <div class="demo-pills-box">
@@ -2635,6 +2640,60 @@
             localStorage.setItem(STORAGE_KEY_TEACHER_AUTH, JSON.stringify(state.auth));
             updateAuthDisplay();
             navigateTo('my-classes');
+        }
+
+        async function handleTeacherGoogleSSO() {
+            if (!window.firebase || typeof window.firebase.auth !== 'function') {
+                alert('Firebase Authentication is initializing. Please try again in a moment.');
+                return;
+            }
+            try {
+                const provider = new window.firebase.auth.GoogleAuthProvider();
+                provider.setCustomParameters({ prompt: 'select_account' });
+                const cred = await window.firebase.auth().signInWithPopup(provider);
+                const user = cred.user;
+                const idToken = await user.getIdToken();
+
+                let verifiedInstitutionId = 'tecnm-saltillo';
+                try {
+                    const roleRes = await fetch('/api/auth/verify-role', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + idToken },
+                        body: JSON.stringify({ uid: user.uid, email: user.email, requestedRole: 'teacher' })
+                    });
+                    const roleData = await roleRes.json();
+                    if (!roleRes.ok || !roleData.verified) {
+                        alert(roleData.error || 'Your Google account is not registered as institutional faculty.');
+                        await window.firebase.auth().signOut();
+                        return;
+                    }
+                    if (roleData.institutionId) verifiedInstitutionId = roleData.institutionId;
+                } catch (_) {}
+
+                const matchedDemo = Object.values(DEMO_TEACHERS).find(t => t.email.toLowerCase() === (user.email || '').toLowerCase());
+                state.auth = matchedDemo || {
+                    id: user.uid,
+                    uid: user.uid,
+                    name: user.displayName || 'Faculty Instructor',
+                    email: user.email,
+                    role: 'teacher',
+                    institutionId: verifiedInstitutionId,
+                    department: 'Engineering Department',
+                    careerId: 'it-mecatronica',
+                    careerName: 'Ingeniería Mecatrónica',
+                    classes: DEMO_TEACHERS.t1.classes
+                };
+                if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.setAuthUser === 'function') {
+                    window.STEMOS_FIREBASE.setAuthUser(state.auth);
+                }
+                localStorage.setItem(STORAGE_KEY_TEACHER_AUTH, JSON.stringify(state.auth));
+                updateAuthDisplay();
+                navigateTo('my-classes');
+            } catch (err) {
+                if (err && err.code !== 'auth/popup-closed-by-user') {
+                    alert('Google SSO sign-in could not be completed: ' + (err.message || err.code));
+                }
+            }
         }
 
         function fillTeacherDemo(teacherId) {

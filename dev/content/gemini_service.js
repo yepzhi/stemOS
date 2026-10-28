@@ -155,12 +155,67 @@
     }
 
     /**
-     * Call Gemini Cloud API (gemini-2.5-flash)
+     * Anti-Runaway Billing Guard: Session Circuit Breaker (Max 50 AI calls / hour)
+     */
+    const AI_CIRCUIT_KEY = 'circuit_stemos_ai';
+    const MAX_AI_CALLS_PER_HOUR = 50;
+
+    function checkAiCircuitBreaker() {
+        if (typeof localStorage === 'undefined') return true;
+        try {
+            const now = Date.now();
+            const raw = localStorage.getItem(AI_CIRCUIT_KEY);
+            let record = raw ? JSON.parse(raw) : { count: 0, windowStart: now };
+            if (now - record.windowStart > 3600000) {
+                record = { count: 0, windowStart: now };
+            }
+            if (record.count >= MAX_AI_CALLS_PER_HOUR) {
+                console.warn('[BillingGuard] Hard quota circuit breaker tripped for stemOS AI Tutor (50 calls/hour). Using local Socratic heuristic.');
+                return false;
+            }
+            record.count += 1;
+            localStorage.setItem(AI_CIRCUIT_KEY, JSON.stringify(record));
+            return true;
+        } catch (_) {
+            return true;
+        }
+    }
+
+    /**
+     * Call Gemini Cloud API (gemini-2.5-flash) via Cloudflare Edge Worker Proxy First
      */
     async function callGeminiCloud(prompt, systemInstruction) {
-        const apiKey = (typeof localStorage !== 'undefined' && localStorage.getItem(STORAGE_KEY_GEMINI_KEY)) ||
-                       (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.config ? window.STEMOS_FIREBASE_CONFIG.config.apiKey : '') ||
-                       '';
+        if (!checkAiCircuitBreaker()) {
+            return null;
+        }
+
+        // 1. Try Cloudflare Edge Worker Proxy (/api/gemini or /api/tutor) first so no API key is exposed in browser
+        const proxyEndpoints = ['/api/gemini', '/api/tutor'];
+        for (const ep of proxyEndpoints) {
+            try {
+                const pRes = await fetch(ep, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt, systemInstruction: systemInstruction })
+                });
+                if (pRes.ok) {
+                    const pData = await pRes.json();
+                    const text = pData.text || pData.message?.content || pData.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (text) {
+                        return {
+                            text: text.trim(),
+                            engine: pData.engine || 'Gemini Edge Proxy (gemini-2.5-flash)'
+                        };
+                    }
+                }
+            } catch (_) {}
+        }
+
+        // 2. Optional user-supplied custom Gemini API key in localStorage
+        const customApiKey = (typeof localStorage !== 'undefined' && localStorage.getItem(STORAGE_KEY_GEMINI_KEY)) || '';
+        if (!customApiKey) {
+            return null;
+        }
 
         const contents = [];
         if (systemInstruction) {
@@ -184,8 +239,7 @@
             }
         };
 
-        // 1. Try direct Gemini API
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${customApiKey}`;
 
         try {
             const res = await fetch(apiUrl, {
@@ -207,28 +261,6 @@
             }
         } catch (e) {
             console.warn('[stemOS AI] Gemini Cloud direct call failed:', e.message || e);
-        }
-
-        // 2. Try Local / Worker Proxy (/api/gemini or /api/tutor)
-        const proxyEndpoints = ['/api/gemini', '/api/tutor'];
-        for (const ep of proxyEndpoints) {
-            try {
-                const pRes = await fetch(ep, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: prompt, systemInstruction: systemInstruction })
-                });
-                if (pRes.ok) {
-                    const pData = await pRes.json();
-                    const text = pData.text || pData.message?.content || pData.candidates?.[0]?.content?.parts?.[0]?.text;
-                    if (text) {
-                        return {
-                            text: text.trim(),
-                            engine: 'Gemini Edge Proxy (gemini-2.5-flash)'
-                        };
-                    }
-                }
-            } catch (_) {}
         }
 
         return null;

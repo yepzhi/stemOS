@@ -2436,11 +2436,28 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 - [x] **`scripts/test_phase86_rum_telemetry.cjs`**: 19/19 PASADAS.
 - [x] **`scripts/test_phase87_phonetic_trainer.cjs`**: 16/16 PASADAS.
 - [x] **`scripts/test_phase88_offline_sync.cjs`**: 18/18 PASADAS.
-- **Gran Total de Pruebas Automatizadas en el Proyecto:** 383/383 pruebas PASADAS (100% éxito sin regresiones).
+- [x] **`scripts/test_phase89_90_91_edge_auth_credentials.cjs`**: 9/9 PASADAS.
+- **Gran Total de Pruebas Automatizadas en el Proyecto:** 42/42 suites automatizadas PASADAS (100% éxito sin regresiones).
 
 ---
 
-*Estado del Proyecto: Fases 1 a 88 COMPLETADAS, AUDITADAS Y VERIFICADAS.*
+### ✅ FASES 89, 90 & 91 (Cloudflare Edge Worker API, Anti-Runaway Billing Guards, Institutional Google SSO & W3C Open Badges 3.0 Signing)
+
+#### 89.1 Cloudflare Edge Worker (`worker.js` + `wrangler.jsonc`) & Anti-Runaway Billing Guards
+- [x] **`/api/gemini` & `/api/tutor`**: Proxy seguro en el borde hacia Mini PC Campus Edge (`YZAI_URL`) y Google Gemini 2.5 Flash (`GEMINI_API_KEY`) sin exponer credenciales en el navegador, con fallback heurístico socrático.
+- [x] **`/api/stripe/checkout`, `/api/stripe/portal`, `/api/spei/reference` & `/api/spei/webhook`**: Endpoints de pago y generación de CLABE STP con validación HMAC-SHA256 *fail-closed* en webhooks.
+- [x] **`/api/tts`**: Proxy con caché en el borde (`caches.default`, TTL 7 días) para síntesis neuronal Piper TTS.
+- [x] **Anti-Runaway Billing Guards**: Token bucket por IP en `worker.js`, disyuntor de sesión (`checkAiCircuitBreaker`: máx. 50 llamadas/hora) en `content/gemini_service.js`, y piso de 60s con verificación `document.visibilityState === 'visible'` en `content/firebase_adapter.js`.
+
+#### 90.1 Autenticación Institucional Google OAuth SSO en Portales Docente y Admin (`teacher.html`, `admin.html`)
+- [x] Botones **Sign In with Institutional Google Account** (`#btn-teacher-google-sso`, `#btn-admin-google-sso`) integrados con Firebase Authentication y verificación de rol/dominio institucional en `/api/auth/verify-role`.
+
+#### 91.1 Firma Criptográfica W3C Open Badges 3.0 en el Borde (`/api/credentials/sign`, `/api/credentials/verify`)
+- [x] Emisión y verificación pública de credenciales `VerifiableCredential` / `OpenBadgeCredential` con prueba criptográfica `stemos-ed25519-hmac-sha256-2026` e integración automática en `app.js`.
+
+---
+
+*Estado del Proyecto: Fases 1 a 91 COMPLETADAS, AUDITADAS Y VERIFICADAS.*
 
 
 

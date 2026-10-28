@@ -816,18 +816,24 @@
         _startBackgroundQueueProcessor: function () {
             const self = this;
             if (typeof window === 'undefined' || typeof setInterval === 'undefined') return;
+            let consecutivePolls = 0;
+            const MAX_CONSECUTIVE_POLLS = 30;
             setInterval(function () {
+                if (typeof document !== 'undefined' && document.visibilityState && document.visibilityState !== 'visible') return;
+                if (consecutivePolls >= MAX_CONSECUTIVE_POLLS) return;
                 if (!self.isCloudActive()) return;
                 const queue = self._getSyncQueue();
                 if (queue.length === 0) return;
 
+                consecutivePolls += 1;
                 const item = queue.shift();
                 localStorage.setItem('stemos_sync_queue', JSON.stringify(queue));
 
                 if (item.type === 'student') self.syncStudentToCloud(item.data);
                 else if (item.type === 'class') self.syncClassToCloud(item.data);
                 else if (item.type === 'audit') self.syncAuditLogToCloud(item.data);
-            }, 30000);
+                else if (item.type === 'diagnostic') self.syncDiagnosticToCloud(item.data);
+            }, 60000);
         },
 
         /**

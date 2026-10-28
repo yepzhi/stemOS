@@ -1738,6 +1738,11 @@
                     <i class="fa-solid fa-right-to-bracket"></i>
                     <span>Sign In as Admin</span>
                 </button>
+
+                <button type="button" id="btn-admin-google-sso" class="btn btn-secondary" onclick="handleAdminGoogleSSO()" style="width:100%; padding:12px 20px; font-size:0.9rem; margin-top:10px; display:flex; align-items:center; justify-content:center; gap:10px;">
+                    <i class="fa-brands fa-google" style="color:#38bdf8;"></i>
+                    <span>Sign In with Institutional Google Account</span>
+                </button>
             </form>
 
             <div class="demo-pills-box">
@@ -3348,6 +3353,59 @@
             localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify(state.auth));
             updateAuthHeader();
             navigateTo('dashboard');
+        }
+
+        async function handleAdminGoogleSSO() {
+            if (!window.firebase || typeof window.firebase.auth !== 'function') {
+                alert('Firebase Authentication is initializing. Please try again in a moment.');
+                return;
+            }
+            try {
+                const provider = new window.firebase.auth.GoogleAuthProvider();
+                provider.setCustomParameters({ prompt: 'select_account' });
+                const cred = await window.firebase.auth().signInWithPopup(provider);
+                const user = cred.user;
+                const idToken = await user.getIdToken();
+
+                let verifiedInstitutionId = state.institution.id || 'tecnm-saltillo';
+                let verifiedInstitutionName = state.institution.name || 'TecNM Campus Saltillo';
+                try {
+                    const roleRes = await fetch('/api/auth/verify-role', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + idToken },
+                        body: JSON.stringify({ uid: user.uid, email: user.email, requestedRole: 'admin' })
+                    });
+                    const roleData = await roleRes.json();
+                    if (!roleRes.ok || !roleData.verified) {
+                        alert(roleData.error || 'Your Google account is not authorized for the Academic Director / Admin Portal.');
+                        await window.firebase.auth().signOut();
+                        return;
+                    }
+                    if (roleData.institutionId) verifiedInstitutionId = roleData.institutionId;
+                    if (roleData.institutionName) verifiedInstitutionName = roleData.institutionName;
+                } catch (_) {}
+
+                state.institution.id = verifiedInstitutionId;
+                state.institution.name = verifiedInstitutionName;
+                state.auth = {
+                    uid: user.uid,
+                    email: user.email,
+                    name: user.displayName || state.institution.adminName || 'Academic Director',
+                    role: 'admin',
+                    institutionId: verifiedInstitutionId,
+                    token: idToken
+                };
+                if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.setAuthUser === 'function') {
+                    window.STEMOS_FIREBASE.setAuthUser(state.auth);
+                }
+                localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify(state.auth));
+                updateAuthHeader();
+                navigateTo('dashboard');
+            } catch (err) {
+                if (err && err.code !== 'auth/popup-closed-by-user') {
+                    alert('Google SSO sign-in could not be completed: ' + (err.message || err.code));
+                }
+            }
         }
 
         function fillAdminDemo(preset) {

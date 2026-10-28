@@ -1190,13 +1190,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
 
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(badgeJson, null, 2));
-            const dlAnchor = document.createElement('a');
-            dlAnchor.setAttribute("href", dataStr);
-            dlAnchor.setAttribute("download", `stemos-open-badge-${currentCertTrackId}.json`);
-            document.body.appendChild(dlAnchor);
-            dlAnchor.click();
-            dlAnchor.remove();
+            // Attempt server-side W3C Open Badges 3.0 cryptographic proof via /api/credentials/sign
+            (async () => {
+                try {
+                    const profile = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
+                    const signRes = await fetch('/api/credentials/sign', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            recipientName: studentName,
+                            matricula: profile.matricula || '000000',
+                            cefrLevel: mcerMatch ? mcerMatch[1].toUpperCase() : 'B2',
+                            accreditedHours: mcerMatch ? 60 : 240,
+                            careerName: profile.careerName || 'Ingeniería STEM',
+                            folio: badgeJson.proof?.proofValue || `STEMOS-OB3-${Date.now().toString(36).toUpperCase()}`
+                        })
+                    });
+                    if (signRes.ok) {
+                        const signedData = await signRes.json();
+                        if (signedData && signedData.proofValue) {
+                            badgeJson.proof = Object.assign({}, badgeJson.proof, {
+                                cryptosuite: 'stemos-ed25519-hmac-sha256-2026',
+                                payloadHash: signedData.payloadHash,
+                                proofValue: signedData.proofValue,
+                                verificationUrl: signedData.verificationUrl
+                            });
+                        }
+                    }
+                } catch (_) {}
+
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(badgeJson, null, 2));
+                const dlAnchor = document.createElement('a');
+                dlAnchor.setAttribute("href", dataStr);
+                dlAnchor.setAttribute("download", `stemos-open-badge-${currentCertTrackId}.json`);
+                document.body.appendChild(dlAnchor);
+                dlAnchor.click();
+                dlAnchor.remove();
+            })();
         });
     }
 
