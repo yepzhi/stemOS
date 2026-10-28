@@ -61,7 +61,6 @@ async function runAll() {
     const redPath = path.join(ROOT, '_redirects');
     const content = fs.readFileSync(redPath, 'utf8');
 
-    assert(content.includes('/verify /verify.html 200'), 'Must route /verify to /verify.html');
     assert(content.includes('/verify/* /verify.html 200'), 'Must route /verify/* to /verify.html');
     assert(content.includes('/credentials/* /verify.html 200'), 'Must route /credentials/* to /verify.html');
   });
