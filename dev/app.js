@@ -4284,6 +4284,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // A1 units and offline downloaded units are freely accessible without requiring online placement check
 
         activeMcerUnit = unit;
+        localStorage.setItem('stemos_active_unit_id', unit.id);
+        window._currentActiveUnitId = unit.id;
+        if (typeof window.updateActivePathCardUI === 'function') {
+            window.updateActivePathCardUI();
+        }
         const modal = document.getElementById('modal-mcer-unit');
         if (!modal) return;
 
@@ -5451,13 +5456,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     audio.play().catch(() => {
                         btnPlayRecorded.innerHTML = '<i class="fa-solid fa-play"></i>';
                     });
-                } else if (window.speechSynthesis && crucibleInput && crucibleInput.value) {
-                    const u = new SpeechSynthesisUtterance(crucibleInput.value);
-                    u.lang = 'en-US';
+                } else if (crucibleInput && crucibleInput.value) {
                     btnPlayRecorded.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
                     triggerVuSimulation(3000);
-                    u.onend = () => { btnPlayRecorded.innerHTML = '<i class="fa-solid fa-play"></i>'; };
-                    window.speechSynthesis.speak(u);
+                    if (window.speakText) {
+                        window.speakText(crucibleInput.value);
+                    } else if (window.speechSynthesis) {
+                        const u = new SpeechSynthesisUtterance(crucibleInput.value);
+                        u.lang = 'en-US';
+                        window.speechSynthesis.speak(u);
+                    }
+                    setTimeout(() => { btnPlayRecorded.innerHTML = '<i class="fa-solid fa-play"></i>'; }, 3000);
                 }
             };
         }
@@ -5639,6 +5648,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentIndex === -1) currentIndex = 0;
         const currentStep = steps[currentIndex];
 
+        if (activeMcerUnit) {
+            localStorage.setItem('stemos_active_unit_id', activeMcerUnit.id);
+            localStorage.setItem(`stemos_active_step_${activeMcerUnit.id}`, tabKey);
+            if (typeof window.updateActivePathCardUI === 'function') {
+                window.updateActivePathCardUI();
+            }
+        }
+
         // 1. Update top Stepper Buttons and completed states
         document.querySelectorAll('.mcer-tab-btn').forEach(btn => {
             const btnTab = btn.dataset.mcerTab;
@@ -5725,6 +5742,223 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     window.switchMcerModalTab = switchMcerModalTab;
+
+    /* --- 6b. MCER COURSE SYLLABUS & ACTIVE LEARNING PATH ENGINE --- */
+    window.updateActivePathCardUI = function() {
+        const card = document.getElementById('stemos-active-path-card');
+        if (!card || !window.STEMOS_MCER_TRACKS) return;
+
+        const userLevel = (hasCompletedPlacement() ? (localStorage.getItem('stemos_placement_cefr') || 'A1') : 'A1');
+        const allUnits = window.STEMOS_MCER_TRACKS.getAllUnits();
+        const levelUnits = allUnits.filter(u => u.cefr.toUpperCase() === userLevel.toUpperCase());
+        if (!levelUnits || levelUnits.length === 0) return;
+
+        // Find active unit: first uncompleted unit or last saved
+        const savedActiveUnitId = localStorage.getItem('stemos_active_unit_id');
+        let activeUnit = null;
+        if (savedActiveUnitId) {
+            activeUnit = window.STEMOS_MCER_TRACKS.getUnitById(savedActiveUnitId);
+        }
+        if (!activeUnit) {
+            activeUnit = levelUnits.find(u => localStorage.getItem(`stemos_mcer_unit_${u.id}`) !== 'passed') || levelUnits[0];
+        }
+        if (!activeUnit) return;
+
+        window._currentActiveUnitId = activeUnit.id;
+
+        const levelPill = document.getElementById('active-path-level-pill');
+        if (levelPill) levelPill.textContent = `CEFR ${activeUnit.cefr}`;
+
+        const titleEl = document.getElementById('active-path-title');
+        if (titleEl) titleEl.textContent = `${activeUnit.modulo || ('Módulo 0' + activeUnit.unitNumber)} · ${activeUnit.title}`;
+
+        const savedStep = localStorage.getItem(`stemos_active_step_${activeUnit.id}`) || 'fundamentals';
+        const stepMetadata = {
+            fundamentals: { num: 1, name: 'Fundamentos & Objetivos' },
+            dialogue: { num: 2, name: 'Diálogo con Audio Nativo' },
+            vocab: { num: 3, name: 'Vocabulario Técnico & Collocations' },
+            grammar: { num: 4, name: 'Grammar Drills Aplicados' },
+            listening: { num: 5, name: 'Listening Lab en Planta' },
+            reading: { num: 6, name: 'Lectura de Normas Técnicas' },
+            writing: { num: 7, name: 'Laboratorio de Escritura IA' },
+            crucible: { num: 7, name: 'Crisol IA' },
+            quiz: { num: 8, name: 'Mastery Quiz de Acreditación' }
+        };
+        const sInfo = stepMetadata[savedStep] || { num: 1, name: 'Fundamentos & Objetivos' };
+        const pct = Math.round((sInfo.num / 8) * 100);
+
+        const stepLabel = document.getElementById('active-path-step-label');
+        if (stepLabel) {
+            stepLabel.innerHTML = `Siguiente tema: <strong>Paso ${sInfo.num} · ${sInfo.name}</strong> — ${activeUnit.communicativeGoal || activeUnit.canDo || ''}`;
+        }
+
+        const pctLabel = document.getElementById('active-path-pct-label');
+        if (pctLabel) pctLabel.textContent = `Paso ${sInfo.num} de 8 (${pct}%)`;
+
+        const fillEl = document.getElementById('active-path-fill');
+        if (fillEl) fillEl.style.width = `${pct}%`;
+    };
+
+    window.resumeActiveLearningUnit = function() {
+        const unitId = window._currentActiveUnitId || localStorage.getItem('stemos_active_unit_id') || 'a1-u1';
+        openMcerUnitModal(unitId);
+        const savedStep = localStorage.getItem(`stemos_active_step_${unitId}`) || 'fundamentals';
+        setTimeout(() => {
+            if (typeof switchMcerModalTab === 'function') {
+                switchMcerModalTab(savedStep);
+            }
+        }, 120);
+    };
+
+    window.openCourseSyllabus = function(targetLevel) {
+        if (!window.STEMOS_MCER_TRACKS) return;
+        const modal = document.getElementById('modal-course-syllabus');
+        if (!modal) return;
+
+        const userLevel = targetLevel || (hasCompletedPlacement() ? (localStorage.getItem('stemos_placement_cefr') || 'A1') : 'A1');
+        const allUnits = window.STEMOS_MCER_TRACKS.getAllUnits();
+        const levelUnits = allUnits.filter(u => u.cefr.toUpperCase() === userLevel.toUpperCase());
+
+        // Update header badges
+        const cefrBadge = document.getElementById('syllabus-cefr-badge');
+        if (cefrBadge) cefrBadge.textContent = `NIVEL CEFR ${userLevel.toUpperCase()}`;
+        const courseTitle = document.getElementById('syllabus-course-title');
+        if (courseTitle) courseTitle.textContent = `Tronco Común Canónico · Nivel ${userLevel.toUpperCase()}`;
+
+        // Calculate progress
+        let passedCount = 0;
+        levelUnits.forEach(u => {
+            if (localStorage.getItem(`stemos_mcer_unit_${u.id}`) === 'passed') {
+                passedCount++;
+            }
+        });
+
+        const pct = Math.round((passedCount / Math.max(1, levelUnits.length)) * 100);
+        const overallPct = document.getElementById('syllabus-overall-pct');
+        if (overallPct) overallPct.textContent = `${pct}% (${passedCount} de ${levelUnits.length} Unidades Completadas)`;
+        const overallBar = document.getElementById('syllabus-overall-bar');
+        if (overallBar) overallBar.style.width = `${pct}%`;
+
+        // Render topics
+        const container = document.getElementById('syllabus-topics-body');
+        if (container) {
+            container.innerHTML = '';
+            levelUnits.forEach((u, idx) => {
+                const isPassed = localStorage.getItem(`stemos_mcer_unit_${u.id}`) === 'passed';
+                const isActive = (!isPassed && (idx === 0 || localStorage.getItem(`stemos_mcer_unit_${levelUnits[idx - 1].id}`) === 'passed'));
+
+                const unitCard = document.createElement('div');
+                unitCard.style.cssText = 'background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; margin-bottom:14px; overflow:hidden; box-shadow:0 2px 8px rgba(15,23,42,0.04);';
+
+                unitCard.innerHTML = `
+                    <div style="padding:14px 18px; background:${isPassed ? '#f0fdf4' : (isActive ? '#f0f9ff' : '#f8fafc')}; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div style="width:34px; height:34px; border-radius:10px; background:${isPassed ? '#10b981' : (isActive ? '#0284c7' : '#94a3b8')}; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.85rem;">
+                                ${isPassed ? '<i class="fa-solid fa-check"></i>' : (idx + 1)}
+                            </div>
+                            <div>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <strong style="font-size:0.95rem; color:#0f172a;">${u.modulo || ('Módulo 0' + (idx + 1))} · ${u.title}</strong>
+                                    <span style="font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:999px; ${isPassed ? 'background:#dcfce7; color:#15803d;' : (isActive ? 'background:#e0f2fe; color:#0284c7;' : 'background:#f1f5f9; color:#64748b;')}">
+                                        ${isPassed ? 'Completado' : (isActive ? 'En Curso' : 'Pendiente')}
+                                    </span>
+                                </div>
+                                <div style="font-size:0.78rem; color:#64748b; margin-top:2px;">${u.titleES || ''} · 15.0h Curriculares</div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-launch-syllabus-unit" data-unit-id="${u.id}" style="padding:7px 16px; border-radius:8px; font-size:0.82rem; font-weight:800; cursor:pointer; border:none; ${isPassed ? 'background:#dcfce7; color:#15803d;' : 'background:#0284c7; color:#ffffff;'}">
+                            ${isPassed ? 'Repasar Unidad' : (isActive ? 'Continuar Unidad ›' : 'Iniciar Unidad')}
+                        </button>
+                    </div>
+
+                    <!-- 8 Pedagogical Steps List -->
+                    <div style="padding:12px 18px;">
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:8px;">
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="fundamentals" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                                <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
+                                    <i class="fa-solid fa-book-open" style="color:#0284c7;"></i> 1. Fundamentos & Objetivos
+                                </span>
+                                <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">0.5h</span>
+                            </div>
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="dialogue" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                                <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
+                                    <i class="fa-solid fa-comments" style="color:#0284c7;"></i> 2. Diálogo con Audio Nativo
+                                </span>
+                                <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">2.0h</span>
+                            </div>
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="vocab" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                                <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
+                                    <i class="fa-solid fa-spell-check" style="color:#0284c7;"></i> 3. Vocabulario & Collocations
+                                </span>
+                                <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">2.5h</span>
+                            </div>
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="grammar" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                                <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
+                                    <i class="fa-solid fa-wand-magic-sparkles" style="color:#0284c7;"></i> 4. Grammar Drills Aplicados
+                                </span>
+                                <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">2.5h</span>
+                            </div>
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="listening" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                                <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
+                                    <i class="fa-solid fa-headphones" style="color:#0284c7;"></i> 5. Listening Lab en Planta
+                                </span>
+                                <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">2.0h</span>
+                            </div>
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="reading" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                                <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
+                                    <i class="fa-solid fa-file-lines" style="color:#0284c7;"></i> 6. Lectura de Normas Técnicas
+                                </span>
+                                <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">2.0h</span>
+                            </div>
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="writing" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                                <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
+                                    <i class="fa-solid fa-pen-to-square" style="color:#0284c7;"></i> 7. Laboratorio de Escritura IA
+                                </span>
+                                <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">2.0h</span>
+                            </div>
+                            <div class="syllabus-step-chip" data-unit-id="${u.id}" data-step="quiz" style="padding:8px 12px; background:#f8fafc; border:1px solid #f1f5f9; border-radius:10px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:0.82rem;">
+                                <span style="display:inline-flex; align-items:center; gap:8px; color:#334155;">
+                                    <i class="fa-solid fa-circle-check" style="color:#0284c7;"></i> 8. Mastery Quiz de Acreditación
+                                </span>
+                                <span style="font-size:0.72rem; color:#94a3b8; font-weight:700;">1.5h</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Wire launch unit
+                const launchBtn = unitCard.querySelector('.btn-launch-syllabus-unit');
+                if (launchBtn) {
+                    launchBtn.onclick = () => {
+                        modal.close();
+                        openMcerUnitModal(u.id);
+                    };
+                }
+
+                // Wire specific step chips
+                unitCard.querySelectorAll('.syllabus-step-chip').forEach(chip => {
+                    chip.onclick = () => {
+                        const stepKey = chip.dataset.step;
+                        modal.close();
+                        openMcerUnitModal(u.id);
+                        setTimeout(() => {
+                            if (typeof switchMcerModalTab === 'function') {
+                                switchMcerModalTab(stepKey);
+                            }
+                        }, 120);
+                    };
+                });
+
+                container.appendChild(unitCard);
+            });
+        }
+
+        if (typeof modal.showModal === 'function') {
+            modal.showModal();
+        } else {
+            modal.setAttribute('open', '');
+        }
+    };
 
     function renderMcerFundamentals(unit) {
         // Can-Do Statement
@@ -6804,10 +7038,12 @@ document.addEventListener('DOMContentLoaded', () => {
             inputEl.value = '';
         }
 
-        // Web Speech Audio Playback
+        // Neural Audio Playback
         if (playBtn) {
             playBtn.onclick = () => {
-                if ('speechSynthesis' in window) {
+                if (window.speakText) {
+                    window.speakText(debriefData.query);
+                } else if ('speechSynthesis' in window) {
                     window.speechSynthesis.cancel();
                     const utter = new SpeechSynthesisUtterance(debriefData.query);
                     utter.lang = 'en-US';
@@ -7222,9 +7458,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 audioBox.style.display = 'flex';
                 if (audioPlayBtn) {
                     audioPlayBtn.onclick = () => {
-                        if ('speechSynthesis' in window) {
+                        const script = q.audioScript || q.q;
+                        if (window.speakText) {
+                            window.speakText(script);
+                        } else if ('speechSynthesis' in window) {
                             window.speechSynthesis.cancel();
-                            const utter = new SpeechSynthesisUtterance(q.audioScript || q.q);
+                            const utter = new SpeechSynthesisUtterance(script);
                             utter.lang = 'en-US';
                             utter.rate = 0.95;
                             window.speechSynthesis.speak(utter);
@@ -8254,6 +8493,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check offline units on launch
     if (typeof checkOfflineUnitsExpiration === 'function') {
         checkOfflineUnitsExpiration();
+    }
+
+    // Initialize Active Learning Path Hero Card
+    if (typeof window.updateActivePathCardUI === 'function') {
+        window.updateActivePathCardUI();
     }
 
 });

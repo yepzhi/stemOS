@@ -694,44 +694,94 @@
                 opacity: 1 !important;
                 transform: scaleX(1) !important;
             }
+            #header-connection-hud,
+            #header-subscription-hud,
+            #header-student-campus-badge,
+            #btn-header-help {
+                display: none !important;
+            }
             .ed-top-header-wrapper {
                 padding: 0 10px !important;
-                margin-top: 10px !important;
+                margin-top: 6px !important;
             }
             .ed-top-header {
                 border-radius: 14px !important;
-                padding: 8px 10px !important;
+                padding: 6px 10px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                gap: 8px !important;
+            }
+            .ed-header-left {
+                display: flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+                overflow: hidden !important;
             }
             .ed-student-greeting {
                 border-left: none !important;
                 padding-left: 0 !important;
+                font-size: 0.85rem !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+            }
+            .ed-header-right {
+                display: flex !important;
+                align-items: center !important;
+                gap: 6px !important;
+                flex-shrink: 0 !important;
             }
             .ed-hero-banner {
-                margin: 0 10px 16px !important;
+                margin: 0 10px 12px !important;
                 width: calc(100% - 20px) !important;
-                padding: 14px !important;
+                padding: 10px 12px !important;
+                border-radius: 16px !important;
+                min-height: auto !important;
             }
             .ed-kpi-cards-grid {
                 grid-template-columns: repeat(2, 1fr) !important;
-                gap: 10px !important;
+                gap: 8px !important;
             }
             .ed-kpi-card {
-                padding: 10px 12px !important;
-                gap: 10px !important;
+                padding: 8px 10px !important;
+                gap: 8px !important;
+                border-radius: 12px !important;
             }
             .ed-kpi-icon-col {
-                width: 40px !important;
-                height: 40px !important;
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 0.85rem !important;
             }
             .ed-kpi-value {
-                font-size: 1.35rem !important;
+                font-size: 1.1rem !important;
+            }
+            .ed-kpi-label {
+                font-size: 0.65rem !important;
             }
             .ed-units-grid {
                 grid-template-columns: 1fr !important;
                 padding: 0 10px 40px !important;
             }
             .ed-views-container {
-                padding: 14px 10px 80px !important;
+                padding: 10px 10px 80px !important;
+            }
+            .ed-category-filter-bar, #mcer-level-filter-bar {
+                display: flex !important;
+                overflow-x: auto !important;
+                white-space: nowrap !important;
+                padding-bottom: 6px !important;
+                scrollbar-width: none !important;
+                -webkit-overflow-scrolling: touch !important;
+                gap: 6px !important;
+            }
+            .ed-category-filter-bar::-webkit-scrollbar, #mcer-level-filter-bar::-webkit-scrollbar {
+                display: none !important;
+            }
+            .ed-filter-chip {
+                flex-shrink: 0 !important;
+                min-height: 40px !important;
+                padding: 6px 14px !important;
             }
         }
         /* ── STUDENT COHORT ASSIGNMENT BANNER & RUNNER (FASE 68) ── */
@@ -887,37 +937,27 @@
             </div>
         </aside>
 
-        <!-- ── Mobile Bottom Navigation Dock (Ergonomic, Touch-Friendly, Safe-Area Protected) ── -->
+        <!-- ── Mobile Bottom Navigation Dock (Ergonomic 4-Tab Architecture · Touch-Friendly · Safe-Area Protected) ── -->
         <nav class="ed-mobile-bottom-dock" id="ed-mobile-dock" aria-label="Navegación Móvil">
-            <button class="ed-dock-btn active" data-view="all-units" id="dock-btn-home" aria-label="Unidades">
+            <button class="ed-dock-btn active" data-view="all-units" id="dock-btn-home" aria-label="Cursos">
                 <span class="ed-dock-indicator"></span>
-                <i class="fa-solid fa-house"></i>
-                <span class="ed-dock-label">Unidades</span>
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span class="ed-dock-label">Cursos</span>
             </button>
-            <a href="placement.html" class="ed-dock-btn" id="dock-btn-placement" aria-label="Placement">
-                <span class="ed-dock-indicator"></span>
-                <i class="fa-solid fa-clipboard-check"></i>
-                <span class="ed-dock-label">Placement</span>
-            </a>
             <button class="ed-dock-btn" data-view="world-map" id="dock-btn-world" aria-label="Mundo 3D">
                 <span class="ed-dock-indicator"></span>
                 <i class="fa-solid fa-earth-americas"></i>
                 <span class="ed-dock-label">Mundo 3D</span>
             </button>
-            <button class="ed-dock-btn" data-view="feynman-tutor" id="dock-btn-tutor" aria-label="Feynman">
+            <button class="ed-dock-btn" data-view="feynman-tutor" id="dock-btn-tutor" aria-label="Feynman AI">
                 <span class="ed-dock-indicator"></span>
                 <i class="fa-solid fa-brain"></i>
                 <span class="ed-dock-label">Feynman AI</span>
             </button>
-            <button class="ed-dock-btn" data-view="micro-badges" id="dock-btn-badges" aria-label="Badges">
+            <button class="ed-dock-btn" data-view="micro-badges" id="dock-btn-badges" aria-label="Progreso">
                 <span class="ed-dock-indicator"></span>
                 <i class="fa-solid fa-award"></i>
-                <span class="ed-dock-label">Badges</span>
-            </button>
-            <button class="ed-dock-btn" data-view="glossary" id="dock-btn-glossary" aria-label="Glosario">
-                <span class="ed-dock-indicator"></span>
-                <i class="fa-solid fa-book-bookmark"></i>
-                <span class="ed-dock-label">Glosario</span>
+                <span class="ed-dock-label">Progreso</span>
             </button>
         </nav>
 
@@ -1106,6 +1146,49 @@
                             </a>
                             <div id="user-placement-badge-pill" style="display:none; align-items:center; gap:6px; font-size:0.75rem; font-weight:800; padding:6px 12px; border-radius:999px; background:#ecfdf5; color:#059669; border:1px solid #a7f3d0;">
                                 <i class="fa-solid fa-circle-check"></i> <span id="user-placement-badge-text">Nivel B1 Asignado</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ════ MI RUTA ACTIVA & CONTINUAR APRENDIZAJE (Hero Anchor Móvil & Desktop) ════ -->
+                    <div class="stemos-active-path-card" id="stemos-active-path-card" style="margin-bottom:20px; padding:18px 20px; border-radius:18px; background:linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%); border:1.5px solid rgba(2,132,199,0.3); box-shadow:0 8px 24px rgba(2,132,199,0.08); position:relative; overflow:hidden;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+                            <div style="display:inline-flex; align-items:center; gap:8px;">
+                                <span style="background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#ffffff; font-size:0.72rem; font-weight:800; padding:3px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:0.04em; display:inline-flex; align-items:center; gap:5px;">
+                                    <i class="fa-solid fa-play"></i> Continuar Donde Te Quedaste
+                                </span>
+                                <span id="active-path-level-pill" style="background:#e0f2fe; color:#0284c7; font-size:0.75rem; font-weight:800; padding:2px 8px; border-radius:6px; border:1px solid #bae6fd;">CEFR A1</span>
+                                <span style="font-size:0.75rem; color:#64748b; font-weight:600;"><i class="fa-solid fa-clock"></i> 15.0h Curriculares</span>
+                            </div>
+                            <div style="font-size:0.8rem; font-weight:800; color:#0284c7; display:inline-flex; align-items:center; gap:4px;">
+                                <i class="fa-solid fa-chart-line"></i> <span id="active-path-pct-label">Paso 1 de 8 (12%)</span>
+                            </div>
+                        </div>
+                        
+                        <div style="display:flex; align-items:flex-start; gap:14px; margin-bottom:14px;">
+                            <div style="width:46px; height:46px; border-radius:14px; background:linear-gradient(135deg, #0284c7 0%, #2563eb 100%); color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0; box-shadow:0 4px 12px rgba(2,132,199,0.25);">
+                                <i class="fa-solid fa-graduation-cap" id="active-path-icon"></i>
+                            </div>
+                            <div style="flex:1; min-width:0;">
+                                <h3 id="active-path-title" style="margin:0; font-size:1.12rem; font-weight:800; color:#0f172a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Módulo 01 · Introductions & Personal Info</h3>
+                                <p id="active-path-step-label" style="margin:4px 0 0; font-size:0.86rem; color:#475569; line-height:1.4;">Siguiente tema: <strong>Fundamentos & Can-Do Objectives</strong> — Conceptos esenciales de ingeniería.</p>
+                            </div>
+                        </div>
+
+                        <!-- Active Unit Micro-Progress Track -->
+                        <div style="width:100%; height:7px; background:#e2e8f0; border-radius:999px; overflow:hidden; margin-bottom:14px;">
+                            <div id="active-path-fill" style="height:100%; width:12%; background:linear-gradient(90deg, #0284c7 0%, #38bdf8 100%); border-radius:999px; transition:width 0.3s ease;"></div>
+                        </div>
+
+                        <!-- Actions Row -->
+                        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+                            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; width:100%;">
+                                <button type="button" class="btn" id="btn-active-path-resume" onclick="window.resumeActiveLearningUnit()" style="flex:1; min-width:180px; min-height:44px; padding:10px 20px; font-size:0.92rem; font-weight:800; border-radius:12px; background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#ffffff; border:none; box-shadow:0 4px 14px rgba(2,132,199,0.3); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; transition:all 0.15s ease;">
+                                    <i class="fa-solid fa-play"></i> Continuar Módulo
+                                </button>
+                                <button type="button" class="btn" id="btn-active-path-syllabus" onclick="window.openCourseSyllabus()" style="min-height:44px; padding:10px 18px; font-size:0.88rem; font-weight:700; border-radius:12px; background:#ffffff; color:#0284c7; border:1.5px solid #0284c7; box-shadow:0 2px 6px rgba(2,132,199,0.08); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+                                    <i class="fa-solid fa-list-check"></i> Ver Temario & Avance (8 Temas)
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -2452,6 +2535,52 @@
                 </div>
                 <button type="button" class="btn btn-primary mcer-nav-btn-next" id="btn-mcer-next-step">
                     <span id="mcer-nav-next-label">Continuar: Diálogo</span> <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </footer>
+        </div>
+    </dialog>
+
+    <!-- ════ MCER COURSE SYLLABUS & CURRICULUM DRILL-DOWN MODAL ════ -->
+    <dialog class="modal-dialog" id="modal-course-syllabus" style="max-width:760px; width:92vw; border:none; border-radius:20px; padding:0; box-shadow:0 25px 60px rgba(15,23,42,0.3);">
+        <div class="modal-card academic-card" style="padding:0; overflow:hidden; border-radius:20px; background:#ffffff; color:#0f172a;">
+            <header style="background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color:#ffffff; padding:22px 24px; position:relative;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+                    <div>
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px; flex-wrap:wrap;">
+                            <span id="syllabus-cefr-badge" style="background:#0284c7; color:#fff; font-size:0.75rem; font-weight:800; padding:2px 10px; border-radius:999px;">NIVEL A1</span>
+                            <span id="syllabus-hours-badge" style="background:rgba(255,255,255,0.15); color:#e2e8f0; font-size:0.75rem; font-weight:700; padding:2px 10px; border-radius:999px;"><i class="fa-solid fa-clock"></i> 60.0h Curriculares</span>
+                            <span style="background:rgba(16,185,129,0.2); color:#34d399; font-size:0.75rem; font-weight:700; padding:2px 10px; border-radius:999px;"><i class="fa-solid fa-circle-check"></i> W3C Open Badges 3.0</span>
+                        </div>
+                        <h2 id="syllabus-course-title" style="margin:0; font-size:1.35rem; font-weight:800; color:#ffffff;">English for Global Engineering · Nivel A1</h2>
+                        <p id="syllabus-course-desc" style="margin:6px 0 0; font-size:0.86rem; color:#94a3b8; line-height:1.4;">Plan curricular estructurado de 4 Unidades Canónicas con 8 dimensiones pedagógicas por módulo.</p>
+                    </div>
+                    <button type="button" class="modal-close" id="btn-close-syllabus" onclick="document.getElementById('modal-course-syllabus').close()" style="background:rgba(255,255,255,0.1); border:none; color:#ffffff; width:36px; height:36px; border-radius:50%; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center;" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <!-- Syllabus Progress Summary Bar -->
+                <div style="margin-top:16px; background:rgba(255,255,255,0.08); padding:12px 16px; border-radius:14px; border:1px solid rgba(255,255,255,0.12);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; margin-bottom:6px;">
+                        <span style="color:#cbd5e1; font-weight:600;"><i class="fa-solid fa-chart-pie" style="color:#38bdf8;"></i> Avance Global del Curso:</span>
+                        <strong id="syllabus-overall-pct" style="color:#38bdf8; font-size:0.95rem;">25% (1 de 4 Unidades)</strong>
+                    </div>
+                    <div style="height:8px; background:rgba(255,255,255,0.15); border-radius:999px; overflow:hidden;">
+                        <div id="syllabus-overall-bar" style="height:100%; width:25%; background:linear-gradient(90deg, #0284c7 0%, #38bdf8 100%); border-radius:999px; transition:width 0.4s ease;"></div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Syllabus Units & Topics List Body -->
+            <div id="syllabus-topics-body" style="padding:18px 20px; max-height:55vh; overflow-y:auto; -webkit-overflow-scrolling:touch; background:#f8fafc;">
+                <!-- Populated dynamically by app.js -->
+            </div>
+
+            <!-- Syllabus Footer -->
+            <footer style="padding:14px 20px; background:#ffffff; border-top:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <div style="font-size:0.8rem; color:#64748b;">
+                    <i class="fa-solid fa-shield-halved" style="color:#0284c7;"></i> Certificación oficial con examen final al completar el 100%
+                </div>
+                <button type="button" class="btn btn-primary" id="btn-syllabus-resume-active" onclick="document.getElementById('modal-course-syllabus').close(); window.resumeActiveLearningUnit();" style="padding:9px 20px; border-radius:10px; font-weight:800; font-size:0.88rem; background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#fff; border:none; cursor:pointer;">
+                    Continuar Unidad Activa ›
                 </button>
             </footer>
         </div>

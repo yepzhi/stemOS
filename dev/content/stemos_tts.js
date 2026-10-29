@@ -739,11 +739,20 @@
           }
         }
       } catch (err) {
-        // Fall through to system default voice
+        // Fall through to direct neural stream
       }
     }
 
-    // 4. Fallback to Native Web Speech API Default
+    // 3b. Progressive High-Fidelity Neural / Piper Audio Stream (Bypasses robotic browser TTS)
+    if (typeof Audio !== 'undefined' && cleaned.length < 500) {
+      try {
+        const edgeStreamUrl = `/api/tts?text=${encodeURIComponent(cleaned)}&voice=${encodeURIComponent(voice)}`;
+        playAudioUrl(edgeStreamUrl, sessionId, { ...options, rawText: cleaned });
+        return;
+      } catch (_) {}
+    }
+
+    // 4. Fallback to Native Web Speech API Default (Offline only)
     if (sessionId === currentSessionId) {
       speakSystemDefault(cleaned, options);
     }

@@ -408,7 +408,7 @@ async function handleTtsProxy(request, env, origin, clientIp) {
   } else if (request.method === 'POST') {
     try {
       const body = await request.json();
-      text = String(body.text || '').trim().slice(0, 500);
+      text = String(body.text || body.input || '').trim().slice(0, 500);
       voice = String(body.voice || voice).trim().slice(0, 64);
     } catch (_) {
       return jsonResponse({ error: 'Invalid JSON body' }, 400, origin);
@@ -444,7 +444,7 @@ async function handleTtsProxy(request, env, origin, clientIp) {
           status: 200,
           headers: {
             'Content-Type': upstreamRes.headers.get('Content-Type') || 'audio/wav',
-            'Cache-Control': 'public, max-age=604800',
+            'Cache-Control': 'public, max-age=604800, s-maxage=604800',
             ...corsHeaders(origin)
           }
         });
@@ -453,6 +453,31 @@ async function handleTtsProxy(request, env, origin, clientIp) {
       }
     } catch (_) {}
   }
+
+  // High-fidelity neural voice upstream fallback (Google Neural TTS / en-US native audio stream)
+  try {
+    const neuralUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=en-US&client=tw-ob`;
+    const neuralRes = await fetch(neuralUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+      }
+    });
+    if (neuralRes.ok) {
+      const audioBuffer = await neuralRes.arrayBuffer();
+      if (audioBuffer && audioBuffer.byteLength > 200) {
+        const response = new Response(audioBuffer, {
+          status: 200,
+          headers: {
+            'Content-Type': 'audio/mpeg',
+            'Cache-Control': 'public, max-age=604800, s-maxage=604800',
+            ...corsHeaders(origin)
+          }
+        });
+        await cache.put(cacheKey, response.clone());
+        return response;
+      }
+    }
+  } catch (_) {}
 
   return jsonResponse({
     fallback: 'web_speech_api',
