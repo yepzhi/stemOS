@@ -3893,3 +3893,7 @@ var STEMOS_PHRASES = [
     "pronunciationHint": "/bæk tuː ðə ˈdrɔː.ɪŋ ˌbɔːrd/."
   }
 ];
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = STEMOS_PHRASES;
+}
