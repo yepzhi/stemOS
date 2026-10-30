@@ -960,31 +960,141 @@
       white-space: nowrap !important;
     }
 
+    /* Trademark Symbol Elevation */
+    .hero-brand-reg,
+    .hero-brand-reg-badge {
+      font-size: 0.30em !important;
+      position: relative !important;
+      top: -2.05em !important;
+      vertical-align: super !important;
+      line-height: 0 !important;
+    }
+
     @media (max-width: 768px) {
       .nav-btn-zoom-header {
         display: none !important;
       }
+      .supaste-nav-wrapper {
+        padding: 0 8px !important;
+        padding-top: max(6px, env(safe-area-inset-top)) !important;
+      }
       .supaste-nav {
-        padding: 10px 14px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 48px !important;
+        min-height: 48px !important;
+        padding: 4px 10px !important;
+        gap: 8px !important;
+        box-sizing: border-box !important;
+      }
+      .supaste-nav-left {
+        flex-shrink: 0 !important;
+      }
+      .supaste-brand-name {
+        font-size: 1.15rem !important;
+      }
+      .supaste-nav-right {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        flex-shrink: 0 !important;
+      }
+      .btn-signup-pill {
+        padding: 5px 9px !important;
+        font-size: 0.70rem !important;
+        font-weight: 800 !important;
+        gap: 4px !important;
+        min-height: 32px !important;
+        height: 32px !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        margin: 0 !important;
+        border-radius: 9999px !important;
+      }
+      .btn-signup-pill span.shiny-text {
+        font-size: 0.70rem !important;
+        white-space: nowrap !important;
+        line-height: 1 !important;
+      }
+      .btn-signup-pill .nav-signup-arrow {
+        font-size: 0.62rem !important;
+      }
+      .supaste-mobile-nav-toggle {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+        border-radius: 8px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        flex-shrink: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+      .hamburger-box {
+        width: 16px !important;
+        height: 12px !important;
+      }
+      .lang-switch-capsule {
+        padding: 2px !important;
+        margin: 0 !important;
+        flex-shrink: 0 !important;
+      }
+      .lang-btn {
+        padding: 2px 6px !important;
+        font-size: 0.66rem !important;
+      }
+      .lang-divider {
+        font-size: 0.65rem !important;
       }
     }
 
     @media (max-width: 480px) {
-      .btn-signup-pill {
-        padding: 5px 9px !important;
-        font-size: 0.72rem !important;
+      .supaste-nav {
+        padding: 4px 8px !important;
+        gap: 6px !important;
+      }
+      .supaste-nav-right {
         gap: 4px !important;
       }
-      .btn-signup-pill span.shiny-text {
-        font-size: 0.72rem !important;
+      .btn-signup-pill {
+        padding: 4px 8px !important;
+        font-size: 0.68rem !important;
       }
-      .lang-switch-capsule {
-        padding: 2px !important;
-        margin-left: 4px !important;
+      .btn-signup-pill span.shiny-text {
+        font-size: 0.68rem !important;
       }
       .lang-btn {
-        padding: 3px 6px !important;
-        font-size: 0.68rem !important;
+        padding: 2px 5px !important;
+        font-size: 0.64rem !important;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .supaste-nav {
+        padding: 4px 6px !important;
+        gap: 4px !important;
+      }
+      .supaste-brand-name {
+        font-size: 1.05rem !important;
+      }
+      .supaste-nav-right {
+        gap: 4px !important;
+      }
+      .btn-signup-pill {
+        padding: 4px 6px !important;
+        font-size: 0.65rem !important;
+      }
+      .btn-signup-pill span.shiny-text {
+        font-size: 0.65rem !important;
+      }
+      .btn-signup-pill .nav-signup-arrow {
+        display: none !important;
+      }
+      .lang-btn {
+        padding: 2px 4px !important;
+        font-size: 0.60rem !important;
       }
     }
 
@@ -1377,13 +1487,26 @@
 
     .drill-pulse-arrow .pulse-indicator {
       font-size: 1.05rem !important;
+      line-height: 1 !important;
+    }
+
+    .pulse-indicator.desktop-only {
       display: inline-block !important;
       animation: pointRight 1s infinite alternate ease-in-out !important;
+    }
+
+    .pulse-indicator.mobile-only {
+      display: none !important;
     }
 
     @keyframes pointRight {
       0% { transform: translateX(0); }
       100% { transform: translateX(5px); }
+    }
+
+    @keyframes pointDown {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(5px); }
     }
 
     @keyframes pulseArrowHint {
@@ -1414,6 +1537,7 @@
       display: inline-flex !important;
       align-items: center !important;
       gap: 8px !important;
+      white-space: nowrap !important;
     }
 
     .drill-toggle-btn:hover {
@@ -1433,6 +1557,44 @@
       border-color: rgba(255, 255, 255, 0.4) !important;
       color: #ffffff !important;
       box-shadow: 0 0 22px rgba(16, 185, 129, 0.5) !important;
+    }
+
+    @media (max-width: 768px) {
+      .drill-toggle-cluster {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        width: 100% !important;
+        gap: 10px !important;
+      }
+      .drill-pulse-arrow {
+        width: 100% !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+      }
+      .pulse-indicator.desktop-only {
+        display: none !important;
+      }
+      .pulse-indicator.mobile-only {
+        display: inline-block !important;
+        animation: pointDown 1s infinite alternate ease-in-out !important;
+      }
+      .drill-toggle-buttons {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        border-radius: 16px !important;
+        padding: 6px !important;
+        box-sizing: border-box !important;
+        gap: 8px !important;
+      }
+      .drill-toggle-btn {
+        width: 100% !important;
+        justify-content: center !important;
+        border-radius: 12px !important;
+        padding: 11px 16px !important;
+        font-size: 0.84rem !important;
+        box-sizing: border-box !important;
+      }
     }
 
     .reality-drill-widget.hero-drill-widget .drill-question-box {
@@ -1798,7 +1960,7 @@
         <span id="header-student-badge-text">Profile</span>
       </a>
 
-      <!-- Mobile Hamburger Button & Right Actions -->
+      <!-- Right Actions & Mobile Hamburger -->
       <div class="supaste-nav-right">
         <!-- Minimalist Language Switcher (EN | ES) without globe icon -->
         <div class="lang-switch-capsule" role="group" aria-label="Language Selector">
@@ -1808,18 +1970,20 @@
         </div>
 
         <!-- Single Primary Action on Right: Sign Up -->
-        <a href="/register.html" class="btn-signup-pill btn-signup-nav-primary" data-starborder="" data-sb-color="#38bdf8" data-sb-speed="2.5" title="Student Registration" style="margin-left:8px; padding: 6px 14px;">
+        <a href="/register.html" class="btn-signup-pill btn-signup-nav-primary" data-starborder="" data-sb-color="#38bdf8" data-sb-speed="2.5" title="Student Registration">
           <span class="shiny-text" data-i18n="btn_signup_nav">Sign Up</span>
-          <i class="fa-solid fa-arrow-right" style="font-size:0.7rem;"></i>
+          <i class="fa-solid fa-arrow-right nav-signup-arrow" style="font-size:0.7rem;"></i>
         </a>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="supaste-nav-mobile-toggle" class="supaste-mobile-nav-toggle" aria-label="Abrir Menú Móvil" onclick="toggleMobileNav()">
+          <span class="hamburger-box">
+            <span class="hamburger-bar" style="background:#ffffff;"></span>
+            <span class="hamburger-bar" style="background:#ffffff;"></span>
+            <span class="hamburger-bar" style="background:#ffffff;"></span>
+          </span>
+        </button>
       </div>
-<button id="supaste-nav-mobile-toggle" class="supaste-mobile-nav-toggle" aria-label="Abrir Menú Móvil" onclick="toggleMobileNav()">
-        <span class="hamburger-box">
-          <span class="hamburger-bar" style="background:#ffffff;"></span>
-          <span class="hamburger-bar" style="background:#ffffff;"></span>
-          <span class="hamburger-bar" style="background:#ffffff;"></span>
-        </span>
-      </button>
     </nav>
   </header>
 
@@ -1920,38 +2084,10 @@
       </div>
 
       <!-- ── STANDARDS LINE (Under the Cards) ── -->
-      <p class="hero-standards-line soft-element" style="--delay: 0.70s" data-i18n="hero_standards_line">Aligned with IEEE, SEMI, ISO, IATF, FDA, OSHA and USMCA.</p>
-
-      <!-- Key Metrics Strip with Soft Fade -->
-      <div class="supaste-metrics-strip soft-element" style="--delay: 1.08s">
-        <div class="metric-pill">
-          <span class="metric-val" id="stat-total-hours">2,280h</span>
-          <span class="metric-lbl" data-i18n="stat_lbl_total_hours">Total Active Hours</span>
-        </div>
-        <span class="metric-dot">•</span>
-        <div class="metric-pill">
-          <span class="metric-val" id="stat-mcer-hours">240h</span>
-          <span class="metric-lbl" data-i18n="stat_lbl_mcer_hours">Base Tracks CEFR (A1–B2)</span>
-        </div>
-        <span class="metric-dot">•</span>
-        <div class="metric-pill">
-          <span class="metric-val" id="stat-esp-hours">2,040h</span>
-          <span class="metric-lbl" data-i18n="stat_lbl_esp_hours">ESP Tracks (34 Careers)</span>
-        </div>
-        <span class="metric-dot">•</span>
-        <div class="metric-pill">
-          <span class="metric-val" id="stat-questions">756+</span>
-          <span class="metric-lbl" data-i18n="stat_lbl_questions">MCQ Questions</span>
-        </div>
-        <span class="metric-dot">•</span>
-        <div class="metric-pill">
-          <span class="metric-val" id="stat-phrases">162</span>
-          <span class="metric-lbl" data-i18n="stat_lbl_phrases">Native Idioms</span>
-        </div>
-      </div>
+      <p class="hero-standards-line soft-element" style="--delay: 0.70s; margin-bottom: 32px;" data-i18n="hero_standards_line">Aligned with IEEE, SEMI, ISO, IATF, FDA, OSHA and USMCA.</p>
 
       <!-- ── Supaste Interactive Stage Window (macOS Live Preview) ── -->
-      <div class="supaste-stage-window soft-element" id="hero-showcase-window" style="--delay: 1.20s">
+      <div class="supaste-stage-window soft-element" id="hero-showcase-window" style="--delay: 1.10s">
         <div class="window-titlebar">
           <div class="traffic-lights">
             <span class="dot dot-close"></span>
@@ -2004,7 +2140,8 @@
           </div>
           <div class="drill-toggle-cluster">
             <div class="drill-pulse-arrow">
-              <span class="pulse-indicator">👉</span>
+              <span class="pulse-indicator desktop-only">👉</span>
+              <span class="pulse-indicator mobile-only">👇</span>
               <span class="pulse-cue" data-i18n="drill_toggle_cue">Haz clic para contrastar métodos:</span>
             </div>
             <div class="drill-toggle-buttons">
