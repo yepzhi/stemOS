@@ -2186,7 +2186,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const heroBanner = document.querySelector('.ed-hero-banner');
         const assignmentMount = document.getElementById('stemos-student-assignment-mount');
         if (heroBanner) heroBanner.style.display = isHome ? '' : 'none';
-        if (assignmentMount) assignmentMount.style.display = isHome ? '' : 'none';
+        if (assignmentMount) {
+            const hasAsg = (typeof getActiveStudentAssignment === 'function') ? !!getActiveStudentAssignment() : false;
+            assignmentMount.style.display = (isHome && hasAsg) ? '' : 'none';
+        }
 
         // Auto-close mobile sidebar if open
         if (edSidebar && edSidebar.classList.contains('mobile-open')) {
@@ -8636,28 +8639,18 @@ Nearshoring Center of Excellence • stemOS Certified`;
     function getActiveStudentAssignment() {
         try {
             const raw = localStorage.getItem('stemos_active_student_assignment');
-            if (raw) return JSON.parse(raw);
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                // Purge hardcoded mock/demo assignment from previous versions
+                if (parsed && (parsed.id === 'asg-live-101' || parsed.title === 'Technical Incident Report & PLC Diagnostics Briefing')) {
+                    localStorage.removeItem('stemos_active_student_assignment');
+                    return null;
+                }
+                return parsed;
+            }
         } catch(e) {}
 
-        const defaultAssignment = {
-            id: 'asg-live-101',
-            classId: 'c1',
-            title: 'Technical Incident Report & PLC Diagnostics Briefing',
-            level: 'B1',
-            scope: 'Full Level Challenge',
-            threshold: 75,
-            deadline: '2026-10-25',
-            dueTime: '23:59',
-            timeLimitMinutes: 45,
-            timezone: 'America/Mexico_City',
-            instructions: 'Comprehend the industrial PLC fault log, formulate the root-cause analysis in technical B1 English, and verify safety interlock protocols.',
-            assignedAt: new Date(Date.now() - 3600000 * 4).toISOString(),
-            submissions: {}
-        };
-        try {
-            localStorage.setItem('stemos_active_student_assignment', JSON.stringify(defaultAssignment));
-        } catch(e) {}
-        return defaultAssignment;
+        return null;
     }
 
     function formatAmericasTzDate(dateStr, timeStr, tz) {
@@ -8698,6 +8691,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         const asg = getActiveStudentAssignment();
         if (!asg) {
+            mount.innerHTML = '';
             mount.style.display = 'none';
             return;
         }
