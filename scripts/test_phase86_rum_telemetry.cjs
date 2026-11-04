@@ -105,7 +105,6 @@ console.log('\n🌐 SUITE 3: Cross-Portal HTML Integration (9 Portals)');
 const portals = [
   'index.html',
   'dev.html',
-  'tracks.html',
   'placement.html',
   'register.html',
   'teacher.html',

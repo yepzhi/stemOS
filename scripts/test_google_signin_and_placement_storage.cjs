@@ -101,7 +101,6 @@ const appHtml = fs.readFileSync(path.join(ROOT, 'app.html'), 'utf8');
 const appJs = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8');
 const teacherHtml = fs.readFileSync(path.join(ROOT, 'teacher.html'), 'utf8');
 const adminHtml = fs.readFileSync(path.join(ROOT, 'admin.html'), 'utf8');
-const tracksHtml = fs.readFileSync(path.join(ROOT, 'tracks.html'), 'utf8');
 
 test('app.html & app.js implement hasCompletedPlacement() checking all diagnostic keys', () => {
   assert(appJs.includes('function hasCompletedPlacement()'), 'Missing hasCompletedPlacement function in app.js');

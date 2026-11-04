@@ -11,10 +11,9 @@ console.log('══════════════════════�
 console.log('🏛️  stemOS Dev Studio Institutional Academic Section Audit');
 console.log('═══════════════════════════════════════════════════════════════════');
 
-// ── 1. Dev Studio & Tracks Studio Career Paths Explorer Audit ──
+// ── 1. Dev Studio Career Paths Explorer Audit ──
 [
-  { name: 'dev.html', path: devHtmlPath, isDevStudio: true },
-  { name: 'tracks.html', path: path.join(__dirname, '../tracks.html'), isDevStudio: false }
+  { name: 'dev.html', path: devHtmlPath, isDevStudio: true }
 ].forEach(target => {
   console.log(`\n▶ Verifying ${target.name}...`);
   const html = fs.readFileSync(target.path, 'utf8');

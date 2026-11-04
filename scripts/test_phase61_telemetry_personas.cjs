@@ -115,7 +115,7 @@ const simDom = new JSDOM(devHtml, { runScripts: "dangerously", url: "https://ste
 const { window } = simDom;
 
 // Mock window.scrollIntoView since JSDOM does not implement layout
-window.HTMLElement.prototype.scrollIntoView = function() {};
+window.HTMLElement.prototype.scrollIntoView = function () { };
 
 // Evaluate Phase 60 and 61 logic
 window.eval(devJs);

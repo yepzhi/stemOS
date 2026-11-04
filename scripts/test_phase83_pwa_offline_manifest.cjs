@@ -135,7 +135,6 @@ const targetPortals = [
   'dev.html',
   'register.html',
   'placement.html',
-  'tracks.html',
   'teacher.html',
   'admin.html',
   'privacy.html'

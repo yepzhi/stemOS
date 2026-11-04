@@ -2577,7 +2577,7 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
   - Eliminación física completa del directorio espejo `dev/` (31 archivos y subcarpetas espejo).
   - Eliminación de rutas `/dev/` y `/dev/index.html` del precache de Service Worker (`sw.js`).
   - Actualización de reglas en `.assetsignore`.
-  - Actualización de enlaces de verificación en `dev.html`, `tracks.html`, `dev.js` y `app.html` hacia el validador oficial (`/verify`).
+  - Actualización de enlaces de verificación en `dev.html`, `dev.js` y `app.html` hacia el validador oficial (`/verify`).
 - [x] **Actualización Integral de Suites de Pruebas**:
   - Retiro de todas las aserciones de paridad bit a bit con `dev/` en los 23 scripts de prueba correspondientes.
   - Conversión a validaciones de existencia e integridad estructural en archivos raíz originales.
@@ -2585,7 +2585,23 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
 
 ---
 
-*Estado del Proyecto: Fases 1 a 95 COMPLETADAS, AUDITADAS Y VERIFICADAS.*
+### ✅ FASE 96 (Retiro de `tracks.html`, Redirección 301 a `/app.html` & Enrutamiento Directo de Catálogo)
+- [x] **Actualización de Navegación y Navbar**:
+  - Botones de "Catálogo" en `index.html` (desktop navbar y mobile drawer) y `verify.html` apuntan directamente a la plataforma real `/app.html`.
+  - Enlace de exploración de los 34 tracks en la sección de experiencia de estudiante (CX) en `index.html` actualizado a `/app.html`.
+  - Callout banner de catálogo en `index.html` actualizado hacia `/app.html`.
+- [x] **Redirección 301 Permanente en Cloudflare**:
+  - En `_redirects`: `/tracks`, `/tracks/*` y `/tracks.html` redirigen con código HTTP 301 a `/app.html`.
+  - En `sw.js`: retiro de `/tracks.html` del precache offline.
+  - En `manifest.json` y `manifest.webmanifest`: atajo de Catálogo actualizado a `/app.html`.
+- [x] **Eliminación Física de `tracks.html`**:
+  - Eliminación de más de 10,900 líneas de código prototipo duplicado.
+  - Actualización de las suites de prueba en `scripts/` para validar la plataforma unificada `app.html`.
+- [x] **Gran Total de Pruebas Automatizadas en el Proyecto:** 45/45 suites automatizadas PASADAS (100% éxito sin regresiones).
+
+---
+
+*Estado del Proyecto: Fases 1 a 96 COMPLETADAS, AUDITADAS Y VERIFICADAS.*
 
 
 

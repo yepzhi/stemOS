@@ -128,21 +128,18 @@ const zoomModal = document.getElementById('stemos-zoom-modal');
 assert(!!zoomModal, '#stemos-zoom-modal scheduling dialog exists');
 assert(!zoomModal.textContent.includes('Mario'), 'Zoom modal does NOT contain "Mario"');
 
-// ── 5. Preview Banner & tracks.html Tab Integrity ──
-console.log('\n▶ 5. Catalog Callout Banner & tracks.html Tab');
+// ── 5. Preview Banner & app.html Catalog Integrity ──
+console.log('\n▶ 5. Catalog Callout Banner & app.html Catalog');
 const previewBanner = document.getElementById('catalog-preview-banner');
 assert(!!previewBanner, '#catalog-preview-banner exists');
-assert(previewBanner.querySelector('a[href="/tracks.html"]'), 'Preview banner links directly to /tracks.html');
+assert(previewBanner.querySelector('a[href="/app.html"]'), 'Preview banner links directly to /app.html');
 
-const tracksHtmlPath = path.join(rootDir, 'tracks.html');
-assert(fs.existsSync(tracksHtmlPath), 'tracks.html dedicated tab page exists');
+const appHtmlPath = path.join(rootDir, 'app.html');
+assert(fs.existsSync(appHtmlPath), 'app.html dedicated platform exists');
 
-const tracksContent = fs.readFileSync(tracksHtmlPath, 'utf8');
-assert(tracksContent.includes('id="catalog-section"'), 'tracks.html houses #catalog-section (34 tracks)');
-assert(tracksContent.includes('id="nearshoring-talent-hub-section"'), 'tracks.html houses #nearshoring-talent-hub-section');
-assert(tracksContent.includes('id="output-engine-section"'), 'tracks.html houses #output-engine-section');
-assert(tracksContent.includes('id="incident-war-room-section"'), 'tracks.html houses #incident-war-room-section');
-assert(tracksContent.includes('switchTracksWorkspaceView'), 'tracks.html implements switchTracksWorkspaceView');
+const appContent = fs.readFileSync(appHtmlPath, 'utf8');
+assert(appContent.includes('id="section-world-esp"'), 'app.html houses #section-world-esp (34 tracks)');
+assert(appContent.includes('id="view-output-lab"'), 'app.html houses #view-output-lab');
 
 console.log('\n═══════════════════════════════════════════════════════════════════');
 console.log(`🏁 AUDIT COMPLETE: ${passed} Passed, ${failed} Failed`);

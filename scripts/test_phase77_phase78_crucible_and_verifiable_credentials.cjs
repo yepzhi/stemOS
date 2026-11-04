@@ -38,7 +38,6 @@ const mcerTracks = require('../content/mcer_tracks.js');
 const devCss = fs.readFileSync(path.join(__dirname, '../dev.css'), 'utf8');
 const adminHtml = fs.readFileSync(path.join(__dirname, '../admin.html'), 'utf8');
 const teacherHtml = fs.readFileSync(path.join(__dirname, '../teacher.html'), 'utf8');
-const tracksHtml = fs.readFileSync(path.join(__dirname, '../tracks.html'), 'utf8');
 const registerHtml = fs.readFileSync(path.join(__dirname, '../register.html'), 'utf8');
 const placementHtml = fs.readFileSync(path.join(__dirname, '../placement.html'), 'utf8');
 
@@ -146,12 +145,11 @@ test('dev.css defines WCAG 2.1 AA high-contrast and light theme rules', () => {
   assert(devCss.includes('html.theme-light body'), 'Missing html.theme-light body style in dev.css');
 });
 
-test('All 6 portals implement initThemeSynchronizer with storage listener', () => {
+test('All active portals implement initThemeSynchronizer with storage listener', () => {
   const portals = [
     { name: 'app.js', content: appJs },
     { name: 'admin.html', content: adminHtml },
     { name: 'teacher.html', content: teacherHtml },
-    { name: 'tracks.html', content: tracksHtml },
     { name: 'register.html', content: registerHtml },
     { name: 'placement.html', content: placementHtml }
   ];

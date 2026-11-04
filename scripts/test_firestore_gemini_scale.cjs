@@ -210,7 +210,6 @@ try {
         { file: 'admin.html', badgeId: 'admin-firestore-badge', script: 'content/firebase_config.js?v=6.2.0' },
         { file: 'register.html', badgeId: null, script: 'content/firebase_config.js?v=6.2.0' },
         { file: 'placement.html', badgeId: null, script: 'content/firebase_config.js?v=6.2.0' },
-        { file: 'tracks.html', badgeId: null, script: 'content/firebase_config.js?v=6.2.0' },
         { file: 'index.html', badgeId: null, script: 'content/firebase_config.js?v=6.2.0' }
     ];
 
@@ -290,7 +289,6 @@ try {
         'teacher.html',
         'register.html',
         'placement.html',
-        'tracks.html',
         'index.html',
         'firebase.json',
         'firestore.rules',

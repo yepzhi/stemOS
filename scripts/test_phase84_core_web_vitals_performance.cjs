@@ -39,7 +39,6 @@ console.log('⚡ SUITE 1 — Critical Resource Hints (dns-prefetch, preconnect, 
 const portals = [
   'index.html',
   'dev.html',
-  'tracks.html',
   'placement.html',
   'register.html',
   'teacher.html',
@@ -90,12 +89,6 @@ assert(
   'dev.html preloads primary stylesheet dev.css'
 );
 
-const tracksContent = fs.readFileSync(path.join(ROOT_DIR, 'tracks.html'), 'utf8');
-assert(
-  tracksContent.includes('rel="preload"') && tracksContent.includes('as="style"'),
-  'tracks.html preloads primary stylesheet dev.css'
-);
-
 // ─── SUITE 2: Parser-Blocking Elimination with Defer ───
 console.log('\n🚀 SUITE 2 — Parser-Blocking Elimination with defer across Portals');
 
@@ -127,15 +120,6 @@ checkScriptsHaveDefer('index.html', [
 
 // dev.html checks
 checkScriptsHaveDefer('dev.html', [
-  'courses.js',
-  'career_tracks.js',
-  'career_paths.js',
-  'dev.js',
-  'stemos_pwa.js'
-]);
-
-// tracks.html checks
-checkScriptsHaveDefer('tracks.html', [
   'courses.js',
   'career_tracks.js',
   'career_paths.js',
@@ -265,7 +249,7 @@ assert(
 // ─── SUITE 5: Global Version Synchronization & Badges ───
 console.log('\n🏷️ SUITE 5 — Global Version Synchronization (v1.1.6)');
 
-['index.html', 'app.html', 'dev.html', 'tracks.html', 'placement.html', 'teacher.html', 'admin.html', 'register.html'].forEach(portal => {
+['index.html', 'app.html', 'dev.html', 'placement.html', 'teacher.html', 'admin.html', 'register.html'].forEach(portal => {
   const content = fs.readFileSync(path.join(ROOT_DIR, portal), 'utf8');
   assert(
     content.includes('stemos-version-badge') && content.includes('v1.1.6'),

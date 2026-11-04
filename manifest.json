@@ -67,7 +67,7 @@
       "name": "Catálogo de Tracks",
       "short_name": "Tracks",
       "description": "Catálogo de 34 Tracks & Laboratorios Industriales",
-      "url": "/tracks.html",
+      "url": "/app.html",
       "icons": [
         {
           "src": "/icon-192.svg",

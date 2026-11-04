@@ -35,8 +35,7 @@ console.log('▶ 1. Root File Integrity');
 const filesToVerify = [
   'content/mcer_tracks.js',
   'app.html',
-  'app.js',
-  'tracks.html'
+  'app.js'
 ];
 
 filesToVerify.forEach(relPath => {
@@ -178,10 +177,9 @@ const grandTotalMCQs = unitQuestionsTotal + totalExamMCQs;
 assert(grandTotalMCQs === 464, `Grand Total Standardized MCQs across ecosystem is exactly 464 items (found: ${grandTotalMCQs})`);
 
 // ── 5. DOM & Interactive UI Hooks ──────────────────────────────────
-console.log('\n▶ 5. DOM & UI Hooks in app.html, app.js and tracks.html');
+console.log('\n▶ 5. DOM & UI Hooks in app.html and app.js');
 const appHtml = fs.readFileSync(path.join(ROOT_DIR, 'app.html'), 'utf8');
 const appJs = fs.readFileSync(path.join(ROOT_DIR, 'app.js'), 'utf8');
-const tracksHtml = fs.readFileSync(path.join(ROOT_DIR, 'tracks.html'), 'utf8');
 
 // app.html hooks
 assert(appHtml.includes('id="btn-mcer-launch-level-exam"'), 'app.html contains #btn-mcer-launch-level-exam in track banner');
@@ -200,13 +198,6 @@ assert(appJs.includes('btn-mcer-launch-level-exam'), 'app.js wires #btn-mcer-lau
 assert(appJs.includes('btn-submit-mcer-listening'), 'app.js wires #btn-submit-mcer-listening');
 assert(appJs.includes('btn-submit-mcer-grammar'), 'app.js wires #btn-submit-mcer-grammar');
 assert(appJs.includes('btn-submit-mcer-vocab'), 'app.js wires #btn-submit-mcer-vocab');
-
-// tracks.html hooks
-assert(tracksHtml.includes('id="tab-btn-mcer"'), 'tracks.html contains #tab-btn-mcer in workspace tab bar');
-assert(tracksHtml.includes('id="mcer-catalog-section"'), 'tracks.html contains #mcer-catalog-section');
-assert(tracksHtml.includes('id="tracks-mcer-units-grid"'), 'tracks.html contains #tracks-mcer-units-grid');
-assert(tracksHtml.includes('switchTracksWorkspaceView(\'mcer\')'), 'tracks.html wires switchTracksWorkspaceView for mcer');
-assert(tracksHtml.includes('initTracksMcerGrid'), 'tracks.html implements initTracksMcerGrid()');
 
 // ── Final Summary ──────────────────────────────────────────────────
 console.log('\n═══════════════════════════════════════════════════════════════════');

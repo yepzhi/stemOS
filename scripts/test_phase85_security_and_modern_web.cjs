@@ -65,7 +65,6 @@ assert(
 const portals = [
     { name: 'index.html', version: '6.5.1', hash: 'sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g' },
     { name: 'dev.html', version: '6.5.1', hash: 'sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g' },
-    { name: 'tracks.html', version: '6.5.1', hash: 'sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g' },
     { name: 'privacy.html', version: '6.5.1', hash: 'sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g' },
     { name: 'app.html', version: '6.4.0', hash: 'sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0' },
     { name: 'placement.html', version: '6.4.0', hash: 'sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0' },
@@ -109,7 +108,7 @@ assert(headersContent.includes('</dev.css?v=5.12.1>; rel="preload"') || headersC
 
 // 5. Modern Web Responsive Viewport & Meta
 console.log('\n--- 5. Modern Web Responsive Viewport & Theme Meta ---');
-const allPortalNames = ['index.html', 'dev.html', 'tracks.html', 'placement.html', 'register.html', 'teacher.html', 'admin.html', 'app.html', 'privacy.html'];
+const allPortalNames = ['index.html', 'dev.html', 'placement.html', 'register.html', 'teacher.html', 'admin.html', 'app.html', 'privacy.html'];
 allPortalNames.forEach(file => {
     const fPath = path.join(ROOT_DIR, file);
     const content = fs.readFileSync(fPath, 'utf8');

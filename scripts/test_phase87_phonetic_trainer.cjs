@@ -151,7 +151,7 @@ test('sw.js precaches /content/stemos_phonetics.js', () => {
 
 // ── SUITE 5: Cross-Portal HTML Integration ──
 console.log('\n🌐 SUITE 5: Cross-Portal HTML Integration');
-const speechPortals = ['index.html', 'dev.html', 'tracks.html', 'app.html', 'placement.html'];
+const speechPortals = ['index.html', 'dev.html', 'app.html', 'placement.html'];
 
 speechPortals.forEach((portal) => {
   test(`${portal} includes /content/stemos_phonetics.js with defer`, () => {

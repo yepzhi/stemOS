@@ -33,14 +33,8 @@ console.log('======================================================\n');
 // 1. FASE 68: MILESTONE EXAM ENGINE & CACEI DIPLOMA
 // ──────────────────────────────────────────────────────────
 console.log('--- 1. Fase 68: Milestone Certification Exam & CACEI Diploma ---');
-const tracksHtml = fs.readFileSync(path.join(ROOT_DIR, 'tracks.html'), 'utf8');
 const appHtml = fs.readFileSync(path.join(ROOT_DIR, 'app.html'), 'utf8');
 const appJs = fs.readFileSync(path.join(ROOT_DIR, 'app.js'), 'utf8');
-
-assert(tracksHtml.includes('href="/app.html?exam=A1"') && tracksHtml.includes('href="/app.html?exam=B2"'), 
-  'tracks.html has direct links to /app.html?exam=[A1-B2]');
-assert(tracksHtml.includes('data-mcer-exam="A1"') && tracksHtml.includes('data-mcer-exam="B2"'),
-  'tracks.html level milestone buttons have data-mcer-exam attributes');
 
 assert(appHtml.includes('id="modal-mcer-level-exam"'), 'app.html contains #modal-mcer-level-exam dialog');
 assert(appHtml.includes('id="mcer-exam-timer-hud"') && appHtml.includes('id="mcer-exam-timer-display"'), 
@@ -125,7 +119,6 @@ assert(appJs.includes('function initCampusEdgeSync()'), 'app.js implements initC
 console.log('\n--- 4. Root File Integrity Audit ---');
 
 const files = [
-  'tracks.html',
   'app.html',
   'app.js',
   'teacher.html',

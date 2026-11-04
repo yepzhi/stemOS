@@ -177,7 +177,7 @@ async function runAllTests() {
 
   // ── SUITE 5: Cross-Portal HTML Integration ──
   console.log('\n🌐 SUITE 5: Cross-Portal HTML Integration (7 Portals)');
-  const portals = ['index.html', 'dev.html', 'tracks.html', 'app.html', 'placement.html', 'teacher.html', 'admin.html'];
+  const portals = ['index.html', 'dev.html', 'app.html', 'placement.html', 'teacher.html', 'admin.html'];
 
   portals.forEach((portal) => {
     test(`${portal} includes /content/stemos_sync.js with defer`, () => {

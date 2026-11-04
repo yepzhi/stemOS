@@ -68,8 +68,7 @@ const htmlFiles = [
   'placement.html',
   'privacy.html',
   'register.html',
-  'teacher.html',
-  'tracks.html'
+  'teacher.html'
 ];
 
 htmlFiles.forEach((file) => {
