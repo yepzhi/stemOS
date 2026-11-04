@@ -1158,7 +1158,7 @@
   function playAudioPrompt(scriptText, onStart, onEnd, qId) {
     stopAudioPrompt();
 
-    // 1. Check exact question ID or text match in pre-rendered US Neural Audio assets
+    // 1. Direct question ID or placement script snippet match in pre-rendered US Neural Audio assets
     let matchedUrl = null;
     if (qId && PLACEMENT_AUDIO_FILES[qId]) {
       matchedUrl = PLACEMENT_AUDIO_FILES[qId];
@@ -1176,6 +1176,8 @@
       try {
         const audio = new Audio(matchedUrl);
         activePlacementAudio = audio;
+        const spd = (typeof window !== 'undefined' && typeof window.getAudioSpeed === 'function') ? window.getAudioSpeed() : 0.85;
+        try { audio.playbackRate = spd; audio.preservesPitch = true; } catch (_) {}
         audio.onplay = () => { if (onStart) onStart(); };
         audio.onended = () => {
           activePlacementAudio = null;
@@ -1195,10 +1197,11 @@
       }
     }
 
-    // 2. Check STEMOS_TTS Piper Neural engine
+    // 2. Primary Engine: Universal Piper Neural PRO TTS Engine with Speed Control
     if (typeof window !== 'undefined' && window.STEMOS_TTS && typeof window.STEMOS_TTS.speak === 'function') {
+      const activeSpeed = (typeof window.getAudioSpeed === 'function') ? window.getAudioSpeed() : 0.85;
       window.STEMOS_TTS.speak(scriptText, {
-        speed: 0.95,
+        speed: activeSpeed,
         lang: 'en-US',
         onStart: onStart,
         onEnd: onEnd,

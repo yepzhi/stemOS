@@ -1032,10 +1032,10 @@
                             <span id="header-rank-badge" style="background:#0284c7; color:#fff; border-radius:999px; padding:1px 7px; font-size:0.68rem; font-weight:800;">L1 Intern</span>
                         </div>
 
-                        <!-- Mini PC Edge & Cloud Firestore Concurrency Indicator -->
-                        <div class="ed-level-indicator" id="header-connection-hud" title="Conexión de Laboratorio: Cloud Firestore stemos-org &amp; Mini PC Campus Edge (100 concurrentes)" style="background:rgba(16,185,129,0.08); border-color:rgba(16,185,129,0.3); color:#059669; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
-                            <i class="fa-solid fa-server" style="color:#10b981;"></i>
-                            <span id="header-connection-text">Mini PC Edge &bull; Firestore 100%</span>
+                        <!-- System Status Indicator (Minimalist Green Icon · OK) -->
+                        <div class="ed-level-indicator" id="header-connection-hud" title="Servicios Activos: Cloud Firestore &amp; Edge AI Operativos" style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); color:#10b981; width:34px; height:34px; padding:0; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; cursor:default;" aria-label="Estado del sistema: Operativo">
+                            <i class="fa-solid fa-cloud" style="color:#10b981; font-size:0.95rem;"></i>
+                            <span id="header-connection-text" style="display:none;"></span>
                         </div>
 
                         <!-- Individual Subscription Status & Quick Payment Trigger -->
@@ -3676,19 +3676,19 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js" defer></script>
-    <script src="content/firebase_config.js?v=6.2.0" defer></script>
-    <script src="content/firebase_adapter.js?v=6.1.0" defer></script>
-    <script src="content/gemini_service.js?v=6.2.0" defer></script>
-    <script src="content/career_tracks.js?v=2.0.0" defer></script>
-    <script src="content/career_paths.js?v=2.0.0" defer></script>
-    <script src="content/courses.js" defer></script>
-    <script src="content/phrases_library.js" defer></script>
-    <script src="content/mcer_tracks.js?v=1.0.0" defer></script>
-    <script src="content/placement_test.js?v=1.0.0" defer></script>
-    <script src="content/stemos_payments.js?v=1.0.0" defer></script>
-    <script src="content/stemos_tts.js?v=1.2.0" defer></script>
-    <script src="app.js" defer></script>
-    <script src="world-map.js" defer></script>
+    <script src="/content/firebase_config.js?v=6.2.0" defer></script>
+    <script src="/content/firebase_adapter.js?v=6.1.0" defer></script>
+    <script src="/content/gemini_service.js?v=6.2.0" defer></script>
+    <script src="/content/career_tracks.js?v=2.0.0" defer></script>
+    <script src="/content/career_paths.js?v=2.0.0" defer></script>
+    <script src="/content/courses.js" defer></script>
+    <script src="/content/phrases_library.js" defer></script>
+    <script src="/content/stemos_tts.js?v=1.4.0" defer></script>
+    <script src="/content/mcer_tracks.js?v=1.0.0" defer></script>
+    <script src="/content/placement_test.js?v=1.0.0" defer></script>
+    <script src="/content/stemos_payments.js?v=1.0.0" defer></script>
+    <script src="/app.js" defer></script>
+    <script src="/world-map.js" defer></script>
 
     <!-- Service Worker PWA Registration -->
     <script>

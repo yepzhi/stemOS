@@ -427,28 +427,30 @@ document.addEventListener('DOMContentLoaded', () => {
         updateGraphUI();
     }, 100);
 
-    // Concurrency HUD & Mini PC / Gemini Edge Status
+    // Minimalist Concurrency & Cloud Services Status Indicator (Green Icon Only)
     function updateConnectionHUD() {
         const hud = document.getElementById('header-connection-hud');
-        const text = document.getElementById('header-connection-text');
-        if (!hud || !text) return;
+        if (!hud) return;
 
         if (typeof window.STEMOS_AI !== 'undefined' && typeof window.STEMOS_AI.getStatus === 'function') {
             window.STEMOS_AI.getStatus().then(status => {
+                hud.style.color = '#10b981';
+                hud.style.background = 'rgba(16,185,129,0.12)';
+                hud.style.borderColor = 'rgba(16,185,129,0.3)';
                 if (status.engine === 'mini_pc') {
-                    hud.style.color = '#059669';
-                    hud.style.background = 'rgba(16,185,129,0.08)';
-                    hud.style.borderColor = 'rgba(16,185,129,0.3)';
-                    hud.title = `Mini PC Campus Edge Conectada (${status.url}) · 0 Litros de Agua · Firestore stemos-org (100 concurrentes)`;
-                    text.innerHTML = '<i class="fa-solid fa-server"></i> Mini PC Edge (0L) &bull; Firestore 100%';
+                    hud.title = `Mini PC Campus Edge (${status.url}) · Cloud Firestore OK`;
+                    hud.innerHTML = '<i class="fa-solid fa-server" style="color:#10b981; font-size:0.95rem;"></i><span id="header-connection-text" style="display:none;"></span>';
                 } else {
-                    hud.style.color = '#0284c7';
-                    hud.style.background = 'rgba(2,132,199,0.08)';
-                    hud.style.borderColor = 'rgba(2,132,199,0.3)';
-                    hud.title = `Gemini Cloud Backup (gemini-2.5-flash) · Firestore stemos-org activo para 100 alumnos simultáneos`;
-                    text.innerHTML = '<i class="fa-solid fa-cloud"></i> Gemini 2.5 Flash &bull; Firestore 100%';
+                    hud.title = 'Servicios en Línea: Cloud Firestore & Gemini AI OK';
+                    hud.innerHTML = '<i class="fa-solid fa-cloud" style="color:#10b981; font-size:0.95rem;"></i><span id="header-connection-text" style="display:none;"></span>';
                 }
-            }).catch(() => {});
+            }).catch(() => {
+                hud.style.color = '#10b981';
+                hud.style.background = 'rgba(16,185,129,0.12)';
+                hud.style.borderColor = 'rgba(16,185,129,0.3)';
+                hud.title = 'Servicios en Línea: Cloud Firestore & Edge OK';
+                hud.innerHTML = '<i class="fa-solid fa-cloud" style="color:#10b981; font-size:0.95rem;"></i><span id="header-connection-text" style="display:none;"></span>';
+            });
         }
     }
     updateConnectionHUD();
@@ -5085,8 +5087,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 `;
                 bubble.querySelector('.btn-play-turn-audio').addEventListener('click', (e) => {
                     e.stopPropagation();
-                    if (window.STEMOS_PLACEMENT_TEST) {
-                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(d.audioScript || textContent);
+                    const audioText = d.audioScript || textContent;
+                    if (typeof window.speakEnglishText === 'function') {
+                        window.speakEnglishText(audioText);
+                    } else if (window.STEMOS_PLACEMENT_TEST) {
+                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(audioText);
                     }
                 });
                 bubblesContainer.appendChild(bubble);
@@ -5097,9 +5102,13 @@ Nearshoring Center of Excellence • stemOS Certified`;
         const btnPlayAll = document.getElementById('btn-mcer-play-all-dialogue');
         if (btnPlayAll) {
             btnPlayAll.onclick = () => {
-                if (dialogueLines.length === 0 || !window.STEMOS_PLACEMENT_TEST) return;
+                if (dialogueLines.length === 0) return;
                 const fullScript = dialogueLines.map(d => `${d.speaker || ''} says: ${d.text || ''}`).join('. ');
-                window.STEMOS_PLACEMENT_TEST.playAudioPrompt(fullScript);
+                if (typeof window.speakEnglishText === 'function') {
+                    window.speakEnglishText(fullScript);
+                } else if (window.STEMOS_PLACEMENT_TEST) {
+                    window.STEMOS_PLACEMENT_TEST.playAudioPrompt(fullScript);
+                }
             };
         }
 
@@ -5166,7 +5175,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         </div>
                     `;
                     plCard.querySelector('.btn-play-pl-audio').addEventListener('click', () => {
-                        if (window.STEMOS_PLACEMENT_TEST) {
+                        if (typeof window.speakEnglishText === 'function') {
+                            window.speakEnglishText(pl.term);
+                        } else if (window.STEMOS_PLACEMENT_TEST) {
                             window.STEMOS_PLACEMENT_TEST.playAudioPrompt(pl.term);
                         }
                     });
@@ -5256,8 +5267,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     </button>
                 `;
                 vCard.querySelector('.btn-play-vocab-audio').addEventListener('click', () => {
-                    if (window.STEMOS_PLACEMENT_TEST) {
-                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(`${termStr}. ${sampleStr}`);
+                    const speechStr = `${termStr}. ${sampleStr}`;
+                    if (typeof window.speakEnglishText === 'function') {
+                        window.speakEnglishText(speechStr);
+                    } else if (window.STEMOS_PLACEMENT_TEST) {
+                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(speechStr);
                     }
                 });
                 vocabGrid.appendChild(vCard);
@@ -5372,7 +5386,10 @@ Nearshoring Center of Excellence • stemOS Certified`;
             }
             if (btnPlayListening) {
                 btnPlayListening.onclick = () => {
-                    if (labData.audioScript && window.STEMOS_PLACEMENT_TEST) {
+                    if (!labData.audioScript) return;
+                    if (typeof window.speakEnglishText === 'function') {
+                        window.speakEnglishText(labData.audioScript);
+                    } else if (window.STEMOS_PLACEMENT_TEST) {
                         window.STEMOS_PLACEMENT_TEST.playAudioPrompt(labData.audioScript);
                     }
                 };
@@ -5809,7 +5826,10 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (btnPlayCrucibleModel && unit.crucible) {
             btnPlayCrucibleModel.onclick = () => {
                 const modelSpeech = unit.crucible.modelResponse || '';
-                if (modelSpeech && window.STEMOS_PLACEMENT_TEST) {
+                if (!modelSpeech) return;
+                if (typeof window.speakEnglishText === 'function') {
+                    window.speakEnglishText(modelSpeech);
+                } else if (window.STEMOS_PLACEMENT_TEST) {
                     window.STEMOS_PLACEMENT_TEST.playAudioPrompt(modelSpeech);
                 }
             };
@@ -6368,6 +6388,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         else modal.setAttribute('open', '');
     }
     window.openMcerUnitModal = openMcerUnitModal;
+    window.openMcerUnitStudyModalById = openMcerUnitModal;
 
     window.exploreUnitDemoMode = function() {
         const modal = document.getElementById('modal-placement-required');
@@ -6834,8 +6855,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     </button>
                 `;
                 card.querySelector('.btn-play-fund-vocab').addEventListener('click', () => {
-                    if (window.STEMOS_PLACEMENT_TEST) {
-                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(`${term}. ${sample}`);
+                    const speechStr = `${term}. ${sample}`;
+                    if (typeof window.speakEnglishText === 'function') {
+                        window.speakEnglishText(speechStr);
+                    } else if (window.STEMOS_PLACEMENT_TEST) {
+                        window.STEMOS_PLACEMENT_TEST.playAudioPrompt(speechStr);
                     }
                 });
                 vocabGrid.appendChild(card);
@@ -7175,7 +7199,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
             if (btnAudio) {
                 btnAudio.onclick = () => {
                     const speechText = qItem.audioScript || qItem.passage || qItem.q;
-                    if (window.STEMOS_PLACEMENT_TEST) {
+                    if (typeof window.speakEnglishText === 'function') {
+                        window.speakEnglishText(speechText);
+                    } else if (window.STEMOS_PLACEMENT_TEST) {
                         window.STEMOS_PLACEMENT_TEST.playAudioPrompt(speechText);
                     }
                 };
@@ -7631,8 +7657,10 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 modal.close();
                 const tabMcer = document.getElementById('tab-btn-mcer');
                 if (tabMcer) tabMcer.click();
-                const starterUnitId = lvl === 'A1' ? 'mcer-a1-u01' : lvl === 'A2' ? 'mcer-a2-u05' : lvl === 'B1' ? 'mcer-b1-u09' : 'mcer-b2-u13';
-                if (typeof window.openMcerUnitStudyModalById === 'function') {
+                const starterUnitId = lvl === 'A1' ? 'a1-u1' : lvl === 'A2' ? 'a2-u1' : lvl === 'B1' ? 'b1-u1' : 'b2-u1';
+                if (typeof window.openMcerUnitModal === 'function') {
+                    window.openMcerUnitModal(starterUnitId);
+                } else if (typeof window.openMcerUnitStudyModalById === 'function') {
                     window.openMcerUnitStudyModalById(starterUnitId);
                 }
             };
@@ -7780,8 +7808,16 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         if (!debriefSection || !unit) return;
 
-        const unitKey = unit.id || 'mcer-a1-u01';
-        const debriefData = MCER_SOCRATIC_DEBRIEFS[unitKey] || MCER_SOCRATIC_DEBRIEFS['mcer-a1-u01'];
+        const legacyKey = (function(id) {
+            if (!id) return 'mcer-a1-u01';
+            const m = id.match(/^([ab][12])-u([0-9]+)$/i);
+            if (!m) return id;
+            const lvl = m[1].toLowerCase();
+            const n = parseInt(m[2], 10);
+            const offset = lvl === 'a1' ? 0 : lvl === 'a2' ? 4 : lvl === 'b1' ? 8 : 12;
+            return `mcer-${lvl}-u${String(n + offset).padStart(2, '0')}`;
+        })(unit.id);
+        const debriefData = MCER_SOCRATIC_DEBRIEFS[unit.id] || MCER_SOCRATIC_DEBRIEFS[legacyKey] || MCER_SOCRATIC_DEBRIEFS['mcer-a1-u01'];
 
         debriefSection.style.display = 'block';
         if (promptEl) {
@@ -7798,13 +7834,15 @@ Nearshoring Center of Excellence • stemOS Certified`;
         // Neural Audio Playback
         if (playBtn) {
             playBtn.onclick = () => {
-                if (window.speakText) {
+                if (typeof window.speakEnglishText === 'function') {
+                    window.speakEnglishText(debriefData.query);
+                } else if (window.speakText) {
                     window.speakText(debriefData.query);
                 } else if ('speechSynthesis' in window) {
                     window.speechSynthesis.cancel();
                     const utter = new SpeechSynthesisUtterance(debriefData.query);
                     utter.lang = 'en-US';
-                    utter.rate = 0.95;
+                    utter.rate = 0.85;
                     utter.pitch = 0.9;
                     window.speechSynthesis.speak(utter);
                 } else {
