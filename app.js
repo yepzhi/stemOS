@@ -2280,7 +2280,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     window.switchDashboardView = switchDashboardView;
-    window.STEMOS_VERSION = 'v1.1.6';
+    window.STEMOS_VERSION = 'v1.1.7';
 
     edRailBtns.forEach(btn => {
         btn.addEventListener('click', () => {
