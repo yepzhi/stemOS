@@ -26,16 +26,26 @@
 
     // Bind convenience helpers for stemOS Studio components
     window.speakEnglishText = function (text, rate, onEnd) {
-      result.speak(text, { speed: rate || 0.93, lang: 'en-US', onEnd: onEnd });
+      const speed = rate || (result.getSpeed ? result.getSpeed() : 0.85);
+      result.speak(text, { speed: speed, lang: 'en-US', onEnd: onEnd });
     };
     window.stopEnglishSpeech = function () {
       result.stop();
     };
-    window.speakText = function (text, lang) {
-      result.speak(text, { lang: lang || 'en-US', speed: 0.93 });
+    window.speakText = function (text, lang, rate) {
+      const speed = rate || (result.getSpeed ? result.getSpeed() : 0.85);
+      result.speak(text, { lang: lang || 'en-US', speed: speed });
     };
     window.stopSpeech = function () {
       result.stop();
+    };
+    window.setAudioSpeed = function (speed) {
+      if (result.setSpeed) return result.setSpeed(speed);
+      return speed;
+    };
+    window.getAudioSpeed = function () {
+      if (result.getSpeed) return result.getSpeed();
+      return 0.85;
     };
 
     // Safe interception for legacy window.speechSynthesis.speak callers in Studio
@@ -51,8 +61,9 @@
         if (utterance._isNativeFallback) {
           return originalSpeak(utterance);
         }
+        const activeSpeed = utterance.rate || (result.getSpeed ? result.getSpeed() : 0.85);
         result.speak(utterance.text, {
-          speed: utterance.rate || 0.93,
+          speed: activeSpeed,
           lang: utterance.lang || 'en-US',
           onStart: () => {
             if (typeof utterance.onstart === 'function') utterance.onstart();
@@ -552,6 +563,50 @@
     [normalizeKey("Good morning, members of the executive steering committee. Our capstone proposal outlines an automated prismatic lithium-ion battery cell assembly line designed specifically for Northern Mexico nearshoring corridors. By deploying six-axis robotic winding cells, integrated vision inspection, and closed-loop thermal testing, this facility achieves a cycle time of 4.2 seconds per cell with a 99.4 percent first-pass yield, reducing supply chain lead times to US assembly plants by sixty percent.")]: '/content/audio/mcer/b2-u4-crucible-model.mp3',
   };
 
+  // User playback speed state (0.8x Lento • 1.0x Normal • 1.2x Rápido)
+  let currentSpeed = 0.85; // Default slow and clear for high-pedagogical nearshoring clarity
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const saved = localStorage.getItem('stemos_audio_speed');
+      if (saved) {
+        const val = parseFloat(saved);
+        if (!isNaN(val) && val >= 0.5 && val <= 2.0) currentSpeed = val;
+      }
+    }
+  } catch (_) {}
+
+  function setSpeed(speed) {
+    const val = parseFloat(speed);
+    if (!isNaN(val) && val >= 0.5 && val <= 2.0) {
+      currentSpeed = val;
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('stemos_audio_speed', String(val));
+        }
+      } catch (_) {}
+      if (currentAudio) {
+        try {
+          currentAudio.playbackRate = val;
+          currentAudio.preservesPitch = true;
+        } catch (_) {}
+      }
+    }
+    return currentSpeed;
+  }
+
+  function getSpeed() {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        const saved = localStorage.getItem('stemos_audio_speed');
+        if (saved) {
+          const val = parseFloat(saved);
+          if (!isNaN(val) && val >= 0.5 && val <= 2.0) return val;
+        }
+      }
+    } catch (_) {}
+    return currentSpeed;
+  }
+
   function cleanText(text) {
     if (!text) return '';
     return text
@@ -576,6 +631,64 @@
     return 'http://127.0.0.1:8080/api/tts';
   }
 
+  /**
+   * High-Precision Audio Resolver: Matches input text to Piper Neural PRO Audio assets
+   * Strictly prioritizes pre-rendered Piper MP3s over browser synthesis.
+   */
+  function getStaticAudioUrl(cleaned) {
+    const normKey = normalizeKey(cleaned);
+    if (!normKey) return null;
+
+    // 1. Direct key match in Cleanroom Photolithography Protocols
+    if (normKey === CLEANROOM_B1_KEY || normKey === CLEANROOM_B1_ALT_KEY) {
+      return STATIC_AUDIO_MAP.cleanroom_photolithography_b1;
+    }
+    if (normKey === CLEANROOM_A2_KEY) {
+      return STATIC_AUDIO_MAP.cleanroom_basic_a2;
+    }
+
+    // 2. Direct key in Placement Test US Neural Audio
+    if (PLACEMENT_STATIC_AUDIO[normKey]) {
+      return PLACEMENT_STATIC_AUDIO[normKey];
+    }
+
+    // 3. Direct key in MCER Tracks Static Audio Map
+    if (MCER_STATIC_AUDIO[normKey]) {
+      return MCER_STATIC_AUDIO[normKey];
+    }
+
+    // 4. Substring & Compound Key Matching (Handles vocabulary example sentences)
+    const mcerKeys = Object.keys(MCER_STATIC_AUDIO);
+    for (let i = 0; i < mcerKeys.length; i++) {
+      const k = mcerKeys[i];
+      if (k.endsWith(normKey) || (normKey.length > 10 && k.includes(normKey)) || (k.length > 10 && normKey.includes(k))) {
+        return MCER_STATIC_AUDIO[k];
+      }
+    }
+
+    // 5. Dynamic Cross-Reference with STEMOS_MCER_TRACKS
+    if (typeof window !== 'undefined' && window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.getAllUnits === 'function') {
+      try {
+        const allUnits = window.STEMOS_MCER_TRACKS.getAllUnits();
+        for (const u of allUnits) {
+          if (u.vocabulary) {
+            for (const v of u.vocabulary) {
+              const vTermKey = normalizeKey(v.en || v.term);
+              const vExKey = normalizeKey(v.example || v.sample);
+              if (vExKey === normKey || (vExKey && (vExKey.includes(normKey) || normKey.includes(vExKey)))) {
+                if (MCER_STATIC_AUDIO[vTermKey]) {
+                  return MCER_STATIC_AUDIO[vTermKey];
+                }
+              }
+            }
+          }
+        }
+      } catch (_) {}
+    }
+
+    return null;
+  }
+
   function stop() {
     currentSessionId++;
     isPlaying = false;
@@ -598,8 +711,41 @@
     }
   }
 
+  // Pre-load and rank Neural Voices for Web Speech API fallback
+  let cachedVoices = [];
+  function refreshVoices() {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      try {
+        const v = window.speechSynthesis.getVoices();
+        if (v && v.length > 0) cachedVoices = v;
+      } catch (_) {}
+    }
+  }
+  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    refreshVoices();
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = refreshVoices;
+    }
+  }
+
+  function getBestNeuralVoice() {
+    refreshVoices();
+    const voices = cachedVoices;
+    if (!voices || voices.length === 0) return null;
+    
+    // Explicit priority for high-definition natural neural voices, rejecting robotic defaults
+    const priorityKeywords = [
+      'Natural', 'Neural', 'Google US English', 'Samantha', 'Ava', 'Jenny', 'Guy', 'Aria', 'Siri', 'en-US'
+    ];
+    for (const kw of priorityKeywords) {
+      const match = voices.find(v => (v.lang && (v.lang === 'en-US' || v.lang.startsWith('en'))) && v.name.includes(kw));
+      if (match) return match;
+    }
+    return voices.find(v => v.lang === 'en-US' || (v.lang && v.lang.startsWith('en')));
+  }
+
   /**
-   * Speak using Native Web Speech API (Default Fallback)
+   * Speak using Native Web Speech API (High-Fidelity Natural Voice Fallback)
    */
   function speakSystemDefault(text, options = {}) {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
@@ -616,14 +762,11 @@
       const utterance = new SpeechSynthesisUtterance(text);
       utterance._isNativeFallback = true;
       utterance.lang = options.lang || 'en-US';
-      utterance.rate = options.speed || 0.93;
+      const activeSpeed = options.speed || getSpeed() || 0.85;
+      utterance.rate = activeSpeed; // Slow, clear pedagogical speech
       utterance.pitch = 1.0;
 
-      const voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
-      const bestVoice = voices.find(v => 
-        (v.lang && (v.lang.startsWith('en') || v.lang === 'en-US')) &&
-        (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Aaron') || v.name.includes('Daniel') || v.name.includes('Jenny') || v.name.includes('Ava') || v.name.includes('Guy'))
-      );
+      const bestVoice = getBestNeuralVoice();
       if (bestVoice) utterance.voice = bestVoice;
 
       utterance.onstart = () => {
@@ -653,7 +796,7 @@
   }
 
   /**
-   * Primary entry point: Piper Neural TTS on Mini PC with automatic fallback
+   * Primary entry point: Piper Neural PRO TTS with multi-speed (0.8x, 1.0x, 1.2x)
    */
   async function speak(text, options = {}) {
     const cleaned = cleanText(text);
@@ -661,30 +804,14 @@
 
     stop();
     const sessionId = currentSessionId;
-    const speed = options.speed || 0.93;
+    const speed = options.speed || getSpeed() || 0.85;
     const lang = options.lang || 'en-US';
     const voice = options.voice || 'en_US-lessac-medium';
-    const normKey = normalizeKey(cleaned);
 
-    // 1. Check static pre-rendered cleanroom audio (Photolithography ISO Class 1)
-    if (normKey === CLEANROOM_B1_KEY || normKey === CLEANROOM_B1_ALT_KEY) {
-      playAudioUrl(STATIC_AUDIO_MAP.cleanroom_photolithography_b1, sessionId, { ...options, rawText: cleaned });
-      return;
-    }
-    if (normKey === CLEANROOM_A2_KEY) {
-      playAudioUrl(STATIC_AUDIO_MAP.cleanroom_basic_a2, sessionId, { ...options, rawText: cleaned });
-      return;
-    }
-
-    // 1b. Check pre-rendered Placement Test US Neural Audio
-    if (PLACEMENT_STATIC_AUDIO[normKey]) {
-      playAudioUrl(PLACEMENT_STATIC_AUDIO[normKey], sessionId, { ...options, rawText: cleaned });
-      return;
-    }
-
-    // 1c. Check pre-rendered stemOS MCER Track Audio (Zero-latency Piper/Neural static assets)
-    if (MCER_STATIC_AUDIO[normKey]) {
-      playAudioUrl(MCER_STATIC_AUDIO[normKey], sessionId, { ...options, rawText: cleaned });
+    // 1. Check Piper Neural High-Fidelity Static Pre-Rendered Audio (Highest Priority)
+    const staticAudioUrl = getStaticAudioUrl(cleaned);
+    if (staticAudioUrl) {
+      playAudioUrl(staticAudioUrl, sessionId, { ...options, speed: speed, rawText: cleaned });
       return;
     }
 
@@ -693,7 +820,7 @@
     if (audioBlobCache.has(cacheKey)) {
       try {
         const cachedUrl = audioBlobCache.get(cacheKey);
-        playAudioUrl(cachedUrl, sessionId, { ...options, rawText: cleaned });
+        playAudioUrl(cachedUrl, sessionId, { ...options, speed: speed, rawText: cleaned });
         return;
       } catch (_) {}
     }
@@ -702,7 +829,6 @@
     if (isPiperActive && typeof fetch === 'function') {
       try {
         const controller = new AbortController();
-        // Fast 2.5s timeout before falling back to system default voice
         const timeout = setTimeout(() => controller.abort(), 2500);
 
         const endpoint = getMiniPCEndpoint();
@@ -733,28 +859,28 @@
               if (sessionId !== currentSessionId) return; // Stale session
               const audioUrl = URL.createObjectURL(blob);
               audioBlobCache.set(cacheKey, audioUrl);
-              playAudioUrl(audioUrl, sessionId, { ...options, rawText: cleaned });
+              playAudioUrl(audioUrl, sessionId, { ...options, speed: speed, rawText: cleaned });
               return;
             }
           }
         }
       } catch (err) {
-        // Fall through to direct neural stream
+        // Fall through to progressive edge stream
       }
     }
 
     // 3b. Progressive High-Fidelity Neural / Piper Audio Stream (Bypasses robotic browser TTS)
     if (typeof Audio !== 'undefined' && cleaned.length < 500) {
       try {
-        const edgeStreamUrl = `/api/tts?text=${encodeURIComponent(cleaned)}&voice=${encodeURIComponent(voice)}`;
-        playAudioUrl(edgeStreamUrl, sessionId, { ...options, rawText: cleaned });
+        const edgeStreamUrl = `/api/tts?text=${encodeURIComponent(cleaned)}&voice=${encodeURIComponent(voice)}&speed=${encodeURIComponent(speed)}`;
+        playAudioUrl(edgeStreamUrl, sessionId, { ...options, speed: speed, rawText: cleaned });
         return;
       } catch (_) {}
     }
 
-    // 4. Fallback to Native Web Speech API Default (Offline only)
+    // 4. Fallback to Natural Neural Web Speech API (Offline only, no robotic defaults)
     if (sessionId === currentSessionId) {
-      speakSystemDefault(cleaned, options);
+      speakSystemDefault(cleaned, { ...options, speed: speed });
     }
   }
 
@@ -783,6 +909,13 @@
 
     const audio = new Audio(playUrl);
     currentAudio = audio;
+    const playbackSpeed = options.speed || getSpeed() || 0.85;
+
+    // Set playback rate & preserve pitch to avoid robotic distortion
+    try {
+      audio.playbackRate = playbackSpeed;
+      audio.preservesPitch = true;
+    } catch (_) {}
 
     audio.onplay = () => {
       if (sessionId !== currentSessionId) {
@@ -791,6 +924,10 @@
         return;
       }
       isPlaying = true;
+      try {
+        audio.playbackRate = options.speed || getSpeed() || 0.85;
+        audio.preservesPitch = true;
+      } catch (_) {}
       if (options.onStart) options.onStart();
     };
 
@@ -804,7 +941,7 @@
 
     audio.onerror = (e) => {
       if (isBlobUrl) URL.revokeObjectURL(playUrl);
-      console.warn('[stemOS TTS] Audio play error, falling down to default voice:', e);
+      console.warn('[stemOS TTS] Audio play error, falling down to natural voice:', e);
       if (sessionId !== currentSessionId) return;
       currentAudio = null;
       speakSystemDefault(options.rawText || '', options);
@@ -813,7 +950,7 @@
     const playPromise = audio.play();
     if (playPromise !== undefined) {
       playPromise.catch((err) => {
-        console.warn('[stemOS TTS] Audio play promise rejected, falling down to default voice:', err);
+        console.warn('[stemOS TTS] Audio play promise rejected, falling down to natural voice:', err);
         if (sessionId === currentSessionId) {
           if (isBlobUrl) URL.revokeObjectURL(playUrl);
           currentAudio = null;
@@ -824,12 +961,15 @@
   }
 
   return {
-    version: '1.3.0',
-    engine: 'Piper Neural (Mini PC Edge) + Web Speech API Fallback',
+    version: '1.4.0',
+    engine: 'Piper Neural PRO TTS (High Fidelity) + Multi-Speed (0.8x/1.0x/1.2x)',
     cleanText: cleanText,
     speak: speak,
     stop: stop,
+    setSpeed: setSpeed,
+    getSpeed: getSpeed,
     isPlaying: () => isPlaying,
+    getStaticAudioUrl: getStaticAudioUrl,
     MCER_STATIC_AUDIO: MCER_STATIC_AUDIO,
     getMcerAudioList: () => Array.from(new Set(Object.values(MCER_STATIC_AUDIO))),
     clearCache: () => {

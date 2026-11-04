@@ -9391,7 +9391,32 @@ Nearshoring Center of Excellence • stemOS Certified`;
         const hoursCountEl = document.getElementById('duo-hours-count');
         const caceiHours = parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '15.0');
         if (hoursCountEl) hoursCountEl.textContent = caceiHours.toFixed(1);
+
+        const speedLabelEl = document.getElementById('duo-audio-speed-label');
+        if (speedLabelEl) {
+            const spd = (typeof window.getAudioSpeed === 'function') ? window.getAudioSpeed() : 0.85;
+            speedLabelEl.textContent = `${spd.toFixed(1)}x`;
+        }
     }
+
+    // Toggle Audio Speed globally: 0.8x Lento -> 1.0x Normal -> 1.2x Rápido
+    window.cycleAudioSpeed = function() {
+        DuoSound.playPop();
+        const current = (typeof window.getAudioSpeed === 'function') ? window.getAudioSpeed() : 0.85;
+        let next = 1.0;
+        if (current <= 0.85) next = 1.0;
+        else if (current <= 1.05) next = 1.2;
+        else next = 0.8;
+
+        if (typeof window.setAudioSpeed === 'function') {
+            window.setAudioSpeed(next);
+        }
+        updateDuoHudUI();
+        if (typeof showSyncToast === 'function') {
+            const label = next === 0.8 ? '0.8x (Lento y Claro)' : (next === 1.0 ? '1.0x (Normal)' : '1.2x (Rápido)');
+            showSyncToast(`Velocidad de pronunciación Piper: ${label}`, 'info');
+        }
+    };
 
     // 3. View Switcher: Duolingo Path vs Traditional Grid
     window.switchDuoViewMode = function(mode) {
@@ -9658,19 +9683,19 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
             // Ex 3: Listen & Select
             if (vocabList[1] && vocabList[1].example) {
+                const targetText = vocabList[1].example;
+                const dist1 = (vocabList[0] && vocabList[0].example) ? vocabList[0].example : 'Please verify the pressure gauge before starting.';
+                const dist2 = (vocabList[2] && vocabList[2].example) ? vocabList[2].example : 'The technician is calibrating the temperature sensor.';
+                const dist3 = (dialogueTurns[0] && dialogueTurns[0].en) ? dialogueTurns[0].en : 'All technicians must verify their badge credentials.';
+                const opts = [targetText, dist1, dist2, dist3].sort(() => Math.random() - 0.5);
                 exercises.push({
                     type: 'audio_listen',
                     category: 'Audio en Planta Industrial',
                     heading: 'Escucha con atención y selecciona la frase',
-                    subtext: 'Presiona el altavoz para reproducir la instrucción técnica con pronunciación Standard American.',
-                    audioText: vocabList[1].example,
-                    correct: vocabList[1].example,
-                    options: [
-                        vocabList[1].example,
-                        vocabList[0] ? vocabList[0].example : 'Safety goggles required on the production line.',
-                        'The pneumatic valve is undergoing calibration.',
-                        'All technicians must verify their badge credentials.'
-                    ]
+                    subtext: 'Presiona el altavoz para reproducir la instrucción técnica con pronunciación Standard American (Piper Neural).',
+                    audioText: targetText,
+                    correct: targetText,
+                    options: opts
                 });
             }
 
@@ -9750,20 +9775,19 @@ Nearshoring Center of Excellence • stemOS Certified`;
         } else if (stepMeta.type === 'listening') {
             // Ex 1: Listening Audio Listen & Select
             if (dialogueTurns[0]) {
-                const audioSentence = dialogueTurns[0].en || dialogueTurns[0].text || 'Good morning, welcome to the engineering department.';
+                const audioSentence = dialogueTurns[0].en || dialogueTurns[0].text || 'Good morning! Welcome to the team. Are you Alex Rivera?';
+                const dist1 = dialogueTurns[1] ? (dialogueTurns[1].en || dialogueTurns[1].text) : 'Please verify the pressure gauge before starting.';
+                const dist2 = (vocabList[0] && vocabList[0].example) ? vocabList[0].example : 'The technician is calibrating the temperature sensor.';
+                const dist3 = (vocabList[1] && vocabList[1].example) ? vocabList[1].example : 'Check the safety protocol at the main station.';
+                const opts = [audioSentence, dist1, dist2, dist3].sort(() => Math.random() - 0.5);
                 exercises.push({
                     type: 'audio_listen',
                     category: 'Comprensión Auditiva de Planta',
                     heading: 'Escucha el audio y selecciona la opción exacta',
-                    subtext: 'Presiona el altavoz y entrena tu oído al habla estándar norteamericana en entornos industriales.',
+                    subtext: 'Presiona el altavoz y entrena tu oído al habla estándar norteamericana en entornos industriales (Piper Neural).',
                     audioText: audioSentence,
                     correct: audioSentence,
-                    options: [
-                        audioSentence,
-                        'Please verify the pressure gauge before starting.',
-                        'The technician is calibrating the temperature sensor.',
-                        'Check the safety protocol at the main station.'
-                    ]
+                    options: opts
                 });
             }
 
@@ -10059,24 +10083,71 @@ Nearshoring Center of Excellence • stemOS Certified`;
             stage.appendChild(pairGrid);
 
         } else if (ex.type === 'audio_listen') {
+            const audioWrapper = document.createElement('div');
+            audioWrapper.style.display = 'flex';
+            audioWrapper.style.flexDirection = 'column';
+            audioWrapper.style.alignItems = 'center';
+            audioWrapper.style.marginBottom = '28px';
+
             const speakerBtn = document.createElement('button');
             speakerBtn.type = 'button';
             speakerBtn.className = 'duo-audio-speaker-btn';
             speakerBtn.setAttribute('aria-label', 'Reproducir audio industrial');
             speakerBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
-            speakerBtn.addEventListener('click', () => {
+
+            const playAudio = () => {
                 DuoSound.playPop();
+                speakerBtn.classList.add('playing');
+                const spd = (typeof window.getAudioSpeed === 'function') ? window.getAudioSpeed() : 0.85;
                 if (typeof window.speakEnglishText === 'function') {
-                    window.speakEnglishText(ex.audioText);
+                    window.speakEnglishText(ex.audioText, spd, () => {
+                        speakerBtn.classList.remove('playing');
+                    });
                 }
+            };
+
+            speakerBtn.addEventListener('click', playAudio);
+            audioWrapper.appendChild(speakerBtn);
+
+            // Speed Selector Controls: 0.8x Lento • 1.0x Normal • 1.2x Rápido
+            const currentSpd = (typeof window.getAudioSpeed === 'function') ? window.getAudioSpeed() : 0.85;
+            const speedBar = document.createElement('div');
+            speedBar.className = 'duo-speed-selector';
+            speedBar.setAttribute('role', 'group');
+            speedBar.setAttribute('aria-label', 'Velocidad de reproducción de audio');
+
+            const speeds = [
+                { val: 0.8, label: '🐢 0.8x Lento' },
+                { val: 1.0, label: '1.0x Normal' },
+                { val: 1.2, label: '⚡ 1.2x Rápido' }
+            ];
+
+            speeds.forEach(s => {
+                const spdBtn = document.createElement('button');
+                spdBtn.type = 'button';
+                const isSelected = Math.abs(currentSpd - s.val) < 0.1 || (s.val === 0.8 && currentSpd < 0.95);
+                spdBtn.className = `duo-speed-btn${isSelected ? ' active' : ''}`;
+                spdBtn.dataset.speed = String(s.val);
+                spdBtn.textContent = s.label;
+                spdBtn.addEventListener('click', () => {
+                    DuoSound.playPop();
+                    if (typeof window.setAudioSpeed === 'function') {
+                        window.setAudioSpeed(s.val);
+                    }
+                    speedBar.querySelectorAll('.duo-speed-btn').forEach(b => b.classList.remove('active'));
+                    spdBtn.classList.add('active');
+                    updateDuoHudUI();
+                    playAudio();
+                });
+                speedBar.appendChild(spdBtn);
             });
-            stage.appendChild(speakerBtn);
+
+            audioWrapper.appendChild(speedBar);
+            stage.appendChild(audioWrapper);
 
             // Auto-play audio once
             setTimeout(() => {
-                if (typeof window.speakEnglishText === 'function') {
-                    window.speakEnglishText(ex.audioText);
-                }
+                playAudio();
             }, 300);
 
             const mcqContainer = document.createElement('div');
@@ -10093,6 +10164,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 card.addEventListener('click', () => {
                     DuoSound.playPop();
                     session.selectedMcqIdx = idx;
+                    session.selectedMcqText = opt;
                     document.querySelectorAll('.duo-mcq-card').forEach(c => c.classList.remove('selected'));
                     card.classList.add('selected');
                     if (checkBtn) {
@@ -10377,9 +10449,10 @@ Nearshoring Center of Excellence • stemOS Certified`;
             solutionText = 'Todas las parejas conectadas.';
             hintExplanation = 'Excelente asociación de vocabulario industrial.';
         } else if (ex.type === 'audio_listen') {
-            isCorrect = (session.selectedMcqIdx === 0);
+            const chosen = (ex.options || [])[session.selectedMcqIdx] || session.selectedMcqText || '';
+            isCorrect = (chosen.toLowerCase().trim() === (ex.correct || '').toLowerCase().trim());
             solutionText = ex.correct;
-            hintExplanation = 'Instrucción técnica Standard American.';
+            hintExplanation = 'Instrucción técnica Standard American (Piper Neural PRO).';
         } else if (ex.type === 'mcq_gap') {
             isCorrect = (session.selectedMcqIdx === ex.correctIdx);
             solutionText = (ex.options || [])[ex.correctIdx] || '';

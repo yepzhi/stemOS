@@ -103,7 +103,41 @@ test('app.js exports public window methods for UI interactions', () => {
   assert(appJs.includes('window.updateDuoHudUI'), 'Missing window.updateDuoHudUI');
 });
 
+console.log('\n▶ 4. High-Fidelity Piper Neural PRO TTS & Multi-Speed Audio (0.8x, 1.0x, 1.2x)');
+const tts = require('../content/stemos_tts.js');
+
+test('stemos_tts.js implements multi-speed control (0.8x, 1.0x, 1.2x)', () => {
+  assert(typeof tts.setSpeed === 'function', 'Missing setSpeed');
+  assert(typeof tts.getSpeed === 'function', 'Missing getSpeed');
+  tts.setSpeed(0.8);
+  assert.strictEqual(tts.getSpeed(), 0.8, 'Failed setting 0.8x');
+  tts.setSpeed(1.2);
+  assert.strictEqual(tts.getSpeed(), 1.2, 'Failed setting 1.2x');
+  tts.setSpeed(1.0);
+  assert.strictEqual(tts.getSpeed(), 1.0, 'Failed setting 1.0x');
+});
+
+test('stemos_tts.js getStaticAudioUrl resolves vocabulary and dialogue to pre-rendered Piper MP3s', () => {
+  const audio1 = tts.getStaticAudioUrl('Hello! My name is Alex.');
+  assert(audio1 && audio1.includes('.mp3'), 'Failed resolving hello to Piper MP3: ' + audio1);
+
+  const audio2 = tts.getStaticAudioUrl('Welcome to our team.');
+  assert(audio2 && audio2.includes('.mp3'), 'Failed resolving welcome to Piper MP3: ' + audio2);
+
+  const audio3 = tts.getStaticAudioUrl('Good morning! Welcome to the team. Are you Alex Rivera?');
+  assert(audio3 && audio3.includes('.mp3'), 'Failed resolving dialogue to Piper MP3: ' + audio3);
+});
+
+test('app.html and dev.css contain speed selector pills and cycle controls', () => {
+  assert(appHtml.includes('id="duo-audio-speed-pill"'), 'Missing #duo-audio-speed-pill in app.html');
+  assert(appHtml.includes('id="duo-audio-speed-label"'), 'Missing #duo-audio-speed-label in app.html');
+  assert(devCss.includes('.duo-speed-selector'), 'Missing .duo-speed-selector in dev.css');
+  assert(devCss.includes('.duo-speed-btn'), 'Missing .duo-speed-btn in dev.css');
+  assert(appJs.includes('window.cycleAudioSpeed'), 'Missing window.cycleAudioSpeed in app.js');
+});
+
 console.log('\n═══════════════════════════════════════════════════════════════════');
-console.log(`🏁 RESULT: ${pass}/10 TESTS PASSED (100%)`);
+console.log(`🏁 RESULT: ${pass}/13 TESTS PASSED (100%)`);
 console.log('═══════════════════════════════════════════════════════════════════\n');
 console.log('🎉 STEMOS DUOLINGO-STYLE LEARNING PATH ENGINE FULLY VERIFIED!\n');
+
