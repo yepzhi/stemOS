@@ -2255,6 +2255,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof renderGlossaryView === 'function') {
                 renderGlossaryView(activeGlossaryCat || 'all', activeGlossarySearchQuery || '');
             }
+            if (typeof initGlossarySM2 === 'function' && window._sm2ModeActive) {
+                initGlossarySM2();
+            }
+        } else if (viewName === 'output-lab') {
+            if (typeof initOutputLab === 'function') {
+                initOutputLab();
+            }
         }
     }
     window.switchDashboardView = switchDashboardView;
@@ -3432,6 +3439,756 @@ document.addEventListener('DOMContentLoaded', () => {
             renderGlossaryView(cat, activeGlossarySearchQuery);
         });
     });
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+    window.escapeHtml = escapeHtml;
+
+    // Glossary Mode Switcher (List vs SM-2 Deck)
+    const btnModeList = document.getElementById('btn-glossary-mode-list');
+    const btnModeSM2 = document.getElementById('btn-glossary-mode-sm2');
+    const listWorkspace = document.getElementById('glossary-list-workspace');
+    const sm2Workspace = document.getElementById('glossary-sm2-workspace');
+    const glossarySearchBox = document.getElementById('glossary-search-box');
+
+    if (btnModeList && btnModeSM2) {
+        btnModeList.addEventListener('click', () => {
+            btnModeList.classList.add('active');
+            btnModeList.setAttribute('aria-selected', 'true');
+            btnModeSM2.classList.remove('active');
+            btnModeSM2.setAttribute('aria-selected', 'false');
+            if (listWorkspace) listWorkspace.style.display = 'block';
+            if (sm2Workspace) sm2Workspace.style.display = 'none';
+            if (glossarySearchBox) glossarySearchBox.style.display = 'flex';
+            window._sm2ModeActive = false;
+        });
+
+        btnModeSM2.addEventListener('click', () => {
+            btnModeSM2.classList.add('active');
+            btnModeSM2.setAttribute('aria-selected', 'true');
+            btnModeList.classList.remove('active');
+            btnModeList.setAttribute('aria-selected', 'false');
+            if (listWorkspace) listWorkspace.style.display = 'none';
+            if (sm2Workspace) sm2Workspace.style.display = 'block';
+            if (glossarySearchBox) glossarySearchBox.style.display = 'none';
+            window._sm2ModeActive = true;
+            initGlossarySM2();
+        });
+    }
+
+    /* --- 8. ADAPTIVE SPACED REPETITION ENGINE (SM-2 DECK) --- */
+    function initGlossarySM2() {
+        const cardEl = document.getElementById('sm2-active-card');
+        if (!cardEl) return;
+
+        const STORAGE_KEY = 'stemos_sm2_deck_v1';
+        let allDeckCards = [];
+        let activeSessionCards = [];
+        let currentCardIndex = 0;
+
+        function seedFullDeck() {
+            const cards = [];
+            if (phrasesData && phrasesData.length) {
+                phrasesData.forEach((phr, idx) => {
+                    cards.push({
+                        id: phr.id || `phr-${idx}`,
+                        type: 'idiom',
+                        term: phr.phrase,
+                        ipa: phr.pronunciationHint || '/ˈstɛm.oʊ.ɛs/',
+                        domain: 'NATIVE IDIOM & CROSS-BORDER RADAR',
+                        trackId: phr.category || 'workplace',
+                        promptHint: '¿Cuál es el significado operacional nativo, origen mental y trampa dialectal?',
+                        definition: phr.operationalMeaning || phr.meaningES || '',
+                        auditTrap: phr.dialectDifference ? `Trampa Dialéctica: US (${phr.dialectDifference.usMeaning}) vs UK (${phr.dialectDifference.ukMeaning})` : (phr.explanation || phr.plantExample || ''),
+                        collocations: [phr.category || 'meetings', phr.riskLevel ? `Riesgo: ${phr.riskLevel}` : 'High Context'],
+                        n: 0,
+                        ef: 2.50,
+                        interval: 0,
+                        lastReview: 0,
+                        nextDue: Date.now()
+                    });
+                });
+            }
+            return cards;
+        }
+
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) allDeckCards = JSON.parse(raw);
+        } catch (e) {
+            allDeckCards = [];
+        }
+
+        if (!allDeckCards || allDeckCards.length === 0) {
+            allDeckCards = seedFullDeck();
+            saveDeck();
+        }
+
+        function saveDeck() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(allDeckCards));
+            } catch (e) {}
+            updateTelemetry();
+        }
+
+        function updateTelemetry() {
+            const total = allDeckCards.length;
+            const now = Date.now();
+            const due = allDeckCards.filter(c => !c.nextDue || c.nextDue <= now).length;
+            const reviewed = allDeckCards.filter(c => c.n > 0);
+            const avgEf = reviewed.length > 0 
+                ? (reviewed.reduce((sum, c) => sum + (c.ef || 2.5), 0) / reviewed.length).toFixed(2)
+                : '2.50';
+            const retention = reviewed.length > 0
+                ? Math.min(100, Math.round((reviewed.filter(c => (c.ef || 2.5) >= 2.0).length / reviewed.length) * 100)) + '%'
+                : '94%';
+
+            const dueEl = document.getElementById('sm2-stat-due');
+            const totalEl = document.getElementById('sm2-stat-total');
+            const retEl = document.getElementById('sm2-stat-retention');
+            const efEl = document.getElementById('sm2-stat-ef');
+
+            if (dueEl) dueEl.textContent = due;
+            if (totalEl) totalEl.textContent = total;
+            if (retEl) retEl.textContent = retention;
+            if (efEl) efEl.textContent = avgEf;
+        }
+
+        function renderActiveCard() {
+            if (!activeSessionCards.length) {
+                const now = Date.now();
+                activeSessionCards = allDeckCards.filter(c => !c.nextDue || c.nextDue <= now);
+                if (!activeSessionCards.length) activeSessionCards = allDeckCards.slice(0, 10);
+                currentCardIndex = 0;
+            }
+
+            const card = activeSessionCards[currentCardIndex % activeSessionCards.length];
+            if (!card) return;
+
+            cardEl.classList.remove('is-flipped');
+
+            const domainEl = document.getElementById('sm2-card-domain');
+            const intervalEl = document.getElementById('sm2-card-interval-badge');
+            const termEl = document.getElementById('sm2-card-term');
+            const ipaEl = document.getElementById('sm2-card-ipa');
+            const hintEl = document.getElementById('sm2-card-hint');
+            const defEl = document.getElementById('sm2-card-def');
+            const trapEl = document.getElementById('sm2-card-audit-trap');
+            const collocsEl = document.getElementById('sm2-card-collocs');
+
+            if (domainEl) domainEl.textContent = card.domain || 'NATIVE IDIOM & CROSS-BORDER RADAR';
+            if (intervalEl) intervalEl.textContent = `Interval: ${card.interval || 0}d (n=${card.n || 0})`;
+            if (termEl) termEl.textContent = card.term;
+            if (ipaEl) ipaEl.textContent = card.ipa || '';
+            if (hintEl) hintEl.textContent = card.promptHint || '¿Cuál es el significado operacional nativo, origen mental y trampa dialectal?';
+            if (defEl) defEl.textContent = card.definition;
+            if (trapEl) trapEl.textContent = card.auditTrap;
+
+            if (collocsEl && Array.isArray(card.collocations)) {
+                collocsEl.innerHTML = card.collocations.map(col => `<span class="sm2-colloc-pill">${escapeHtml(col)}</span>`).join('');
+            }
+
+            const ef = card.ef || 2.50;
+            const hardI = Math.max(1, Math.round((card.interval || 1) * 1.2));
+            const goodI = card.n === 0 ? 1 : (card.n === 1 ? 6 : Math.round((card.interval || 1) * ef));
+            const easyI = Math.round(goodI * 1.3);
+
+            const hardEl = document.getElementById('rate-hard-interval');
+            const goodEl = document.getElementById('rate-good-interval');
+            const easyEl = document.getElementById('rate-easy-interval');
+            if (hardEl) hardEl.textContent = hardI + 'd';
+            if (goodEl) goodEl.textContent = goodI + 'd';
+            if (easyEl) easyEl.textContent = easyI + 'd';
+        }
+
+        const btnFlip = document.getElementById('btn-sm2-flip');
+        if (btnFlip && !btnFlip._bound) {
+            btnFlip._bound = true;
+            btnFlip.addEventListener('click', (e) => {
+                e.stopPropagation();
+                cardEl.classList.toggle('is-flipped');
+            });
+        }
+        if (!cardEl._bound) {
+            cardEl._bound = true;
+            cardEl.addEventListener('click', (e) => {
+                if (e.target.closest('.sm2-rating-buttons') || e.target.closest('.sm2-audio-btn') || e.target.closest('.sm2-audio-btn-small')) return;
+                cardEl.classList.toggle('is-flipped');
+            });
+        }
+
+        const btnAudio = document.getElementById('btn-sm2-audio');
+        const btnAudioBack = document.getElementById('btn-sm2-audio-back');
+        [btnAudio, btnAudioBack].forEach(b => {
+            if (b && !b._bound) {
+                b._bound = true;
+                b.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const card = activeSessionCards[currentCardIndex % activeSessionCards.length];
+                    if (card && card.term) speakText(card.term);
+                });
+            }
+        });
+
+        document.querySelectorAll('.sm2-rate-btn').forEach(btn => {
+            if (btn._bound) return;
+            btn._bound = true;
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const q = parseInt(btn.dataset.quality, 10);
+                rateCard(q);
+            });
+        });
+
+        function rateCard(quality) {
+            const card = activeSessionCards[currentCardIndex % activeSessionCards.length];
+            if (!card) return;
+
+            let n = card.n || 0;
+            let ef = card.ef || 2.50;
+            let interval = card.interval || 0;
+
+            if (quality < 3) {
+                n = 0;
+                interval = 1;
+            } else {
+                if (n === 0) interval = 1;
+                else if (n === 1) interval = 6;
+                else interval = Math.round((interval || 1) * ef);
+
+                if (quality === 5) interval = Math.round(interval * 1.3);
+                n++;
+            }
+
+            ef = ef + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+            if (ef < 1.30) ef = 1.30;
+            if (ef > 3.00) ef = 3.00;
+
+            card.n = n;
+            card.ef = parseFloat(ef.toFixed(2));
+            card.interval = interval;
+            card.lastReview = Date.now();
+            card.nextDue = Date.now() + (interval * 24 * 60 * 60 * 1000);
+
+            saveDeck();
+
+            currentCardIndex++;
+            renderActiveCard();
+        }
+        window.rateSm2Card = rateCard;
+
+        const btnReset = document.getElementById('btn-reset-deck');
+        if (btnReset && !btnReset._bound) {
+            btnReset._bound = true;
+            btnReset.addEventListener('click', () => {
+                if (confirm("¿Reiniciar el mazo SM-2 a su estado inicial?")) {
+                    allDeckCards = seedFullDeck();
+                    saveDeck();
+                    activeSessionCards = [];
+                    currentCardIndex = 0;
+                    renderActiveCard();
+                    if (typeof showSyncToast === 'function') {
+                        showSyncToast("🔄 Mazo SM-2 reiniciado.", "info");
+                    }
+                }
+            });
+        }
+
+        const btnSeed = document.getElementById('btn-seed-deck');
+        if (btnSeed && !btnSeed._bound) {
+            btnSeed._bound = true;
+            btnSeed.addEventListener('click', () => {
+                allDeckCards.forEach(c => { c.nextDue = Date.now(); });
+                saveDeck();
+                activeSessionCards = allDeckCards.slice(0, 10);
+                currentCardIndex = 0;
+                renderActiveCard();
+                if (typeof showSyncToast === 'function') {
+                    showSyncToast("⚡ 10 cartas listas para revisión.", "success");
+                }
+            });
+        }
+
+        if (!window._sm2KeyboardBound) {
+            window._sm2KeyboardBound = true;
+            document.addEventListener('keydown', (e) => {
+                const glossaryView = document.getElementById('view-glossary');
+                if (!glossaryView || glossaryView.style.display === 'none' || !window._sm2ModeActive) return;
+
+                if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                    cardEl.classList.toggle('is-flipped');
+                } else if (cardEl.classList.contains('is-flipped')) {
+                    if (e.key === '1') rateCard(0);
+                    else if (e.key === '2') rateCard(3);
+                    else if (e.key === '3') rateCard(4);
+                    else if (e.key === '4') rateCard(5);
+                }
+            });
+        }
+
+        updateTelemetry();
+        renderActiveCard();
+    }
+    window.initGlossarySM2 = initGlossarySM2;
+
+    /* --- 9. TECHNICAL OUTPUT LAB: 8D PROBLEM SOLVING & ESCALATION EMAIL STUDIO --- */
+    function initOutputLab() {
+        const btnMode8D = document.getElementById('btn-mode-8d');
+        const btnModeEmail = document.getElementById('btn-mode-email');
+        const workspace8D = document.getElementById('workspace-8d');
+        const workspaceEmail = document.getElementById('workspace-email');
+
+        if (!workspace8D || !workspaceEmail) return;
+
+        if (btnMode8D && btnModeEmail && !btnMode8D._bound) {
+            btnMode8D._bound = true;
+            btnMode8D.addEventListener('click', () => {
+                btnMode8D.classList.add('active');
+                btnMode8D.setAttribute('aria-selected', 'true');
+                btnModeEmail.classList.remove('active');
+                btnModeEmail.setAttribute('aria-selected', 'false');
+                workspace8D.style.display = 'block';
+                workspaceEmail.style.display = 'none';
+            });
+
+            btnModeEmail.addEventListener('click', () => {
+                btnModeEmail.classList.add('active');
+                btnModeEmail.setAttribute('aria-selected', 'true');
+                btnMode8D.classList.remove('active');
+                btnMode8D.setAttribute('aria-selected', 'false');
+                workspaceEmail.style.display = 'block';
+                workspace8D.style.display = 'none';
+                renderExecutiveEmail();
+            });
+        }
+
+        const eightDPresets = {
+            auto_weld: {
+                id: "8D-2026-AUTO-042",
+                title: "Automotive Laser Welding 8D Report (IATF 16949)",
+                d1: "Champion: Ing. Roberto Garza (Plant Director), Leader: Ing. Mariana Cordero (SQE Lead), Members: Carlos Mendoza (Laser Process Eng), David Silva (Metrology Tech), Diana Reyes (Production Supervisor Line 2)",
+                d2: "During helium mass spectrometer leak testing at Detroit assembly plant on 2026-09-18, 14 out of 500 high-voltage battery enclosures exhibited micro-porosity along the automated laser stitch weld seam (defect rate 2.8%), exceeding customer IATF 16949 zero-defect threshold.",
+                d3: "1. 100% warehouse quarantine initiated in Saltillo; 320 finished pallets locked in ERP with serialized red hold tags. 2. Detroit assembly quarantine of 85 staged packs. 3. Line 2 halted for optical focal realignment. 4. Customer quality notification submitted within 12 hours.",
+                d4: "Physical Root Cause: Optical protective cover slide sustained spatter accumulation, inducing thermal lensing and a 2.4 mm laser focal point defocus. Escape Root Cause: Visual camera inspection threshold was tuned too coarse to detect porosity under 0.2 mm without helium pressure decay.",
+                d5: "D5: Replace analog protective slide with automated motorized quartz cassette with integrated photodiode back-reflection monitoring. D6 Validation: Run@Rate trial of 1,200 consecutive battery packs demonstrated Cpk = 1.84 with 0 ppm leak escapes across 4 shifts.",
+                d7: "D7: Updated PFMEA (Severity 9, Occurrence reduced from 5 to 1, Detection reduced from 6 to 2; Action Priority dropped from High to Low). Control Plan revised to require shift-handover laser power meter verification. D8: Formal recognition awarded to Saltillo CFT."
+            },
+            med_balloon: {
+                id: "8D-2026-MED-019",
+                title: "Medical Catheter Balloon Burst Pressure 8D (FDA 21 CFR 820)",
+                d1: "Champion: Dr. Gregory Vance (VP Quality), Leader: Ing. Alejandro Villalobos (Principal QA), Members: Sofia De la Rosa (Validation Eng), Karla Dominguez (Cleanroom Supervisor ISO 7)",
+                d2: "Batch testing of PTCA dilatation catheters (Lot MED-2026-884) showed 3 of 30 samples failed minimum burst pressure rating at 12 atm instead of rated 14 atm during final QC inspection in Tijuana cleanroom suite B.",
+                d3: "1. Immediate line clearance executed on catheter crimping line 4. 2. 1,400 packaged units quarantined under HOLD-TAG-992. 3. Form 483 prevention protocol engaged; DHR batch review initiated.",
+                d4: "Physical Root Cause: Extrusion temperature drifted +8°C above validated operating window due to faulty thermocouple element in zone 3, inducing local polymer chain degradation. Escape Point: In-line wall thickness micrometer was calibrated for outer diameter only.",
+                d5: "D5: Replaced thermocouple with dual redundant RTD sensor with automatic machine interlock if delta > 1.5°C. D6 Validation: Three consecutive PQ validation lots (4,500 units) achieved burst pressure Cpk = 1.92 with zero bursts below 16 atm.",
+                d7: "D7: Updated Device Master Record (DMR) SOP-EXT-402, revised Design FMEA and Cleanroom Control Plan. D8: Tijuana biomedical engineering team commended for rapid CAPA closure."
+            },
+            semi_wafer: {
+                id: "8D-2026-SEMI-008",
+                title: "Semiconductor DUV Critical Dimension Drift (SEMI E10)",
+                d1: "Champion: Dr. Chen (Fab Operations VP), Leader: Ing. Morales (Lithography Principal), Members: Track Process Eng, Metrology Specialist, Yield Enhancement Group",
+                d2: "28nm production wafers (Lot W-7741) exhibited gate critical dimension (CD) drift of +3.2 nm on peripheral dies following immersion lithography exposure on Scanner 4.",
+                d3: "1. Scanner 4 placed on maintenance hold. 2. 24 suspect wafer cassettes frozen in fab FOUP stocker. 3. Downstream etch line alerted to withhold processing.",
+                d4: "Physical Root Cause: Barometric pressure sensor drift in post-exposure bake (PEB) module caused a 0.4°C plate temperature shift. Escape Point: Daily CD-SEM sampling was reduced from 9 points to 5 points.",
+                d5: "D5: Calibrated PEB multi-zone heater controllers and installed dual barometric compensation sensors. D6 Validation: Metrology layout across 50 consecutive monitor wafers verified 3-sigma CD uniformity within ±0.6 nm.",
+                d7: "D7: Updated Fab SPC alarm limits in MES; reinstated 9-point metrology recipe in standard recipe library. D8: Fab engineering team recognized at executive yield meeting."
+            },
+            custom_blank: {
+                id: "8D-2026-CUSTOM-001",
+                title: "Custom Corrective Action 8D Report",
+                d1: "", d2: "", d3: "", d4: "", d5: "", d7: ""
+            }
+        };
+
+        function load8DPreset(presetKey) {
+            const data = eightDPresets[presetKey] || eightDPresets.auto_weld;
+            const reportIdEl = document.getElementById('8d-report-id');
+            const formTitleEl = document.getElementById('8d-form-title');
+            const d1El = document.getElementById('8d-d1-input');
+            const d2El = document.getElementById('8d-d2-input');
+            const d3El = document.getElementById('8d-d3-input');
+            const d4El = document.getElementById('8d-d4-input');
+            const d5El = document.getElementById('8d-d5-input');
+            const d7El = document.getElementById('8d-d7-input');
+
+            if (reportIdEl) reportIdEl.textContent = data.id;
+            if (formTitleEl) formTitleEl.textContent = data.title;
+            if (d1El) d1El.value = data.d1;
+            if (d2El) d2El.value = data.d2;
+            if (d3El) d3El.value = data.d3;
+            if (d4El) d4El.value = data.d4;
+            if (d5El) d5El.value = data.d5;
+            if (d7El) d7El.value = data.d7;
+
+            evaluate8DReport(false);
+        }
+
+        document.querySelectorAll('.preset-chip').forEach(btn => {
+            if (btn._bound) return;
+            btn._bound = true;
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.preset-chip').forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                const preset = e.currentTarget.getAttribute('data-preset');
+                load8DPreset(preset);
+            });
+        });
+
+        function evaluate8DReport(showToast = true) {
+            const d1 = (document.getElementById('8d-d1-input')?.value || '').trim();
+            const d2 = (document.getElementById('8d-d2-input')?.value || '').trim();
+            const d3 = (document.getElementById('8d-d3-input')?.value || '').trim();
+            const d4 = (document.getElementById('8d-d4-input')?.value || '').trim();
+            const d5 = (document.getElementById('8d-d5-input')?.value || '').trim();
+            const d7 = (document.getElementById('8d-d7-input')?.value || '').trim();
+
+            let score = 0;
+            const criteria = [];
+
+            if (d1.length > 20 && (/champion/i.test(d1) || /leader/i.test(d1) || /eng/i.test(d1))) {
+                score += 15;
+                criteria.push({ text: "D1: Equipo Multidisciplinario (CFT) Completo", pass: true });
+            } else {
+                criteria.push({ text: "D1: Definir Champion, Líder y Miembros", pass: false });
+            }
+
+            if (d2.length > 30 && (/\d+/i.test(d2) || /%/i.test(d2) || /defect/i.test(d2))) {
+                score += 15;
+                criteria.push({ text: "D2: Problema Cuantificado (5W2H)", pass: true });
+            } else {
+                criteria.push({ text: "D2: Cuantificar tasa o unidades defectuosas", pass: false });
+            }
+
+            if (d3.length > 25 && (/quarantine/i.test(d3) || /hold/i.test(d3) || /freeze/i.test(d3) || /red tag/i.test(d3))) {
+                score += 20;
+                criteria.push({ text: "D3: Contención y Cuarentena de Lotes (ICA)", pass: true });
+            } else {
+                criteria.push({ text: "D3: Especificar cuarentena física y red tags", pass: false });
+            }
+
+            if (d4.length > 25 && (/cause/i.test(d4) || /escape/i.test(d4) || /5 whys/i.test(d4) || /ishikawa/i.test(d4) || /drift/i.test(d4))) {
+                score += 20;
+                criteria.push({ text: "D4: Causa Raíz Física y Punto de Escape", pass: true });
+            } else {
+                criteria.push({ text: "D4: Analizar causa raíz física y punto de escape", pass: false });
+            }
+
+            if (d5.length > 25 && (/cpk/i.test(d5) || /validat/i.test(d5) || /poka/i.test(d5) || /trial/i.test(d5) || /interlock/i.test(d5))) {
+                score += 15;
+                criteria.push({ text: "D5/D6: Poka-Yoke y Validación Estadística (Cpk)", pass: true });
+            } else {
+                criteria.push({ text: "D5/D6: Incluir error-proofing o Cpk >= 1.67", pass: false });
+            }
+
+            if (d7.length > 25 && (/pfmea/i.test(d7) || /control plan/i.test(d7) || /recogni/i.test(d7) || /audit/i.test(d7) || /sop/i.test(d7))) {
+                score += 15;
+                criteria.push({ text: "D7/D8: Actualización de PFMEA / Control Plan", pass: true });
+            } else {
+                criteria.push({ text: "D7/D8: Vincular actualización de PFMEA o Control Plan", pass: false });
+            }
+
+            const scoreValEl = document.getElementById('rubric-score-val');
+            const scoreLblEl = document.getElementById('rubric-score-lbl');
+            const scoreFillEl = document.getElementById('rubric-score-fill');
+            const listEl = document.getElementById('rubric-criteria-list');
+            const feedbackEl = document.getElementById('rubric-feedback-text');
+
+            if (scoreValEl) scoreValEl.textContent = score + "%";
+            if (scoreFillEl) scoreFillEl.style.width = score + "%";
+
+            if (scoreLblEl) {
+                if (score >= 85) {
+                    scoreLblEl.textContent = "AUDIT-READY (EXCELLENT)";
+                    scoreLblEl.style.color = "#10b981";
+                } else if (score >= 60) {
+                    scoreLblEl.textContent = "MINOR DEFICIENCIES (ACTIONABLE)";
+                    scoreLblEl.style.color = "#f59e0b";
+                } else {
+                    scoreLblEl.textContent = "AUDIT DEFICIT (NON-CONFORMING)";
+                    scoreLblEl.style.color = "#ef4444";
+                }
+            }
+
+            if (listEl) {
+                listEl.innerHTML = criteria.map(c => `
+                    <div class="rubric-criterion ${c.pass ? 'pass' : 'fail'}">
+                        <i class="fa-solid ${c.pass ? 'fa-circle-check text-green' : 'fa-circle-xmark text-red'}"></i>
+                        <span>${c.text}</span>
+                    </div>
+                `).join('');
+            }
+
+            if (feedbackEl) {
+                if (score >= 85) {
+                    feedbackEl.textContent = "Exemplary 8D submission meeting IATF 16949 and ISO 9001:2015 audit expectations. Robust 5W2H quantification, verified quarantine, and statistically valid corrective actions.";
+                } else if (score >= 60) {
+                    feedbackEl.textContent = "Acceptable draft with workable containment. Strengthen D4 by distinguishing the physical root cause from the detection escape point, and ensure D6 cites verified Cpk data.";
+                } else {
+                    feedbackEl.textContent = "Insufficient engineering rigor. Re-examine D2 (quantify defect volume and line context), verify quarantine red hold tags in D3, and detail permanent error-proofing in D5.";
+                }
+            }
+
+            const reportId = document.getElementById('8d-report-id')?.textContent || '8D-CUSTOM';
+            const payload = { id: reportId, score, d1, d2, d3, d4, d5, d7, timestamp: Date.now() };
+            try {
+                localStorage.setItem('stemos_8d_' + reportId, JSON.stringify(payload));
+                if (window.STEMOS_SYNC && typeof window.STEMOS_SYNC.queueMutation === 'function') {
+                    window.STEMOS_SYNC.queueMutation({
+                        type: '8D_REPORT_SUBMISSION',
+                        entityType: '8d_report',
+                        entityId: reportId,
+                        data: payload,
+                        resolutionStrategy: 'LWW'
+                    });
+                }
+            } catch (e) {}
+
+            if (showToast) {
+                if (score >= 75) {
+                    globalXP += 150;
+                    if (statPoints) statPoints.textContent = globalXP;
+                    saveProgress();
+                    if (typeof showSyncToast === 'function') {
+                        showSyncToast(`🎉 Reporte 8D Aprobado con ${score}% (+150 XP Acreditados)`, 'success');
+                    }
+                } else {
+                    if (typeof showSyncToast === 'function') {
+                        showSyncToast(`⚠️ Score: ${score}% — Revisa los criterios no conformes para alcanzar nivel de auditoría.`, 'info');
+                    }
+                }
+            }
+
+            return { score, passed: score >= 75, criteria };
+        }
+        window.evaluate8DReport = evaluate8DReport;
+
+        const btnEval8D = document.getElementById('btn-eval-8d');
+        if (btnEval8D && !btnEval8D._bound) {
+            btnEval8D._bound = true;
+            btnEval8D.addEventListener('click', () => evaluate8DReport(true));
+        }
+
+        const btnCopy8D = document.getElementById('btn-copy-8d');
+        if (btnCopy8D && !btnCopy8D._bound) {
+            btnCopy8D._bound = true;
+            btnCopy8D.addEventListener('click', () => {
+                const id = document.getElementById('8d-report-id')?.textContent || '8D-REPORT';
+                const title = document.getElementById('8d-form-title')?.textContent || 'Corrective Action';
+                const d1 = document.getElementById('8d-d1-input')?.value || '';
+                const d2 = document.getElementById('8d-d2-input')?.value || '';
+                const d3 = document.getElementById('8d-d3-input')?.value || '';
+                const d4 = document.getElementById('8d-d4-input')?.value || '';
+                const d5 = document.getElementById('8d-d5-input')?.value || '';
+                const d7 = document.getElementById('8d-d7-input')?.value || '';
+
+                const fullReport = `═══════════════════════════════════════════════════════════════
+8D CORRECTIVE ACTION REPORT — stemOS LXP INDUSTRIAL PORTFOLIO
+Report ID: ${id} | Standard: IATF 16949 / ISO 9001:2015
+Title: ${title}
+═══════════════════════════════════════════════════════════════
+
+[D1] TEAM ESTABLISHMENT:
+${d1}
+
+[D2] PROBLEM DESCRIPTION (5W2H):
+${d2}
+
+[D3] INTERIM CONTAINMENT ACTIONS (ICA):
+${d3}
+
+[D4] ROOT CAUSE ANALYSIS & ESCAPE POINT:
+${d4}
+
+[D5 & D6] PERMANENT CORRECTIVE ACTIONS & VALIDATION (Cpk):
+${d5}
+
+[D7 & D8] PREVENTIVE ACTIONS (PFMEA/CONTROL PLAN) & RECOGNITION:
+${d7}
+
+═══════════════════════════════════════════════════════════════
+Generated by stemOS LXP Technical Output Studio & Evaluator Engine
+═══════════════════════════════════════════════════════════════`;
+
+                navigator.clipboard.writeText(fullReport).then(() => {
+                    if (typeof showSyncToast === 'function') {
+                        showSyncToast("📋 Reporte 8D copiado al portapapeles.", "success");
+                    }
+                }).catch(() => {
+                    alert("Copia el texto manualmente.");
+                });
+            });
+        }
+
+        const btnPrint8D = document.getElementById('btn-print-8d');
+        if (btnPrint8D && !btnPrint8D._bound) {
+            btnPrint8D._bound = true;
+            btnPrint8D.addEventListener('click', () => window.print());
+        }
+
+        const emailPresets = {
+            line_stop: {
+                to: "Gregory Vance <g.vance@oem-operations.com> (VP of Manufacturing)",
+                subject: "[URGENT ESCALATION] Line 2 High-Voltage Battery Housing Containment & Schedule Impact",
+                bluf: "Line 2 battery housing production in Saltillo was paused at 08:30 due to laser weld porosity. We have implemented 100% quarantine on 320 affected assemblies and require engineering sign-off on temporary parameter adjustments by 14:00 EST to protect tomorrow's Detroit shipment.",
+                containment: "All parts produced since 04:00 are tagged in red bins with zero escape risk. Line 1 has been re-allocated to absorb 60% of volume. Projected line-down risk to Detroit is currently mitigated for the next 18 hours.",
+                action: "Please confirm authorization for chartered hot-shot freight and temporary welding concession by 14:00 EST."
+            },
+            concession: {
+                to: "Sarah Jenkins <s.jenkins@aerospace-oem.com> (Chief Quality Officer)",
+                subject: "[CONCESSION REQUEST] AS9100 Lot AS-881 Pinion Gear Surface Roughness Deviation",
+                bluf: "We are requesting a temporary deviation on Lot AS-881 (50 titanium pinion gears) displaying Ra 0.42 μm versus the drawing limit of Ra 0.40 μm. Stress FEA modeling confirms zero structural fatigue impact.",
+                containment: "All 50 gears are segregated in our bonded aerospace stockroom under serialized quarantine tag Q-449. No downstream sub-assembly integration has occurred.",
+                action: "We request Material Review Board (MRB) review and formal disposition sign-off by COB Thursday."
+            },
+            customs_hold: {
+                to: "David Ross <d.ross@logistics-mex.com> (Director of Global Trade)",
+                subject: "[BORDER CRITICAL] IMMEX Expedited Clearance Hold at World Trade Bridge",
+                bluf: "Two dedicated tractor-trailers carrying active medical subassemblies are under CBP secondary inspection at the Laredo World Trade Bridge due to an FDA product code mismatch. We require corrected e-manifest transmission immediately.",
+                containment: "Trucks are secured in refrigerated transit bays with chain-of-custody data loggers active. Zero temperature or sterilization excursion detected.",
+                action: "Please transmit the corrected Form 7501 revision to our customs broker by 11:30 CST to prevent border cutoff."
+            },
+            eco_pushback: {
+                to: "Dr. Walter Sterling <w.sterling@tech-matrix.com> (VP of Hardware Engineering)",
+                subject: "[ENGINEERING FEASIBILITY] Pushback on ECO-992 Implementation Timeline",
+                bluf: "While we support the optical transceiver design update in ECO-992, rolling it out on Line 4 next Monday will cause a 3-day production halt and breach contractual SLA buffers with Tier 1 clients. We propose a staggered rollout during week 42.",
+                containment: "Current inventory of baseline revision components sustains full demand through week 41 without supply chain disruption.",
+                action: "Requesting a 15-minute alignment call tomorrow at 09:00 EST to approve the phase-in schedule."
+            }
+        };
+
+        function loadEmailPreset(key) {
+            const data = emailPresets[key] || emailPresets.line_stop;
+            const toEl = document.getElementById('email-to-input');
+            const subEl = document.getElementById('email-subject-input');
+            const blufEl = document.getElementById('email-bluf-input');
+            const conEl = document.getElementById('email-containment-input');
+            const actEl = document.getElementById('email-action-input');
+
+            if (toEl) toEl.value = data.to;
+            if (subEl) subEl.value = data.subject;
+            if (blufEl) blufEl.value = data.bluf;
+            if (conEl) conEl.value = data.containment;
+            if (actEl) actEl.value = data.action;
+
+            renderExecutiveEmail();
+        }
+
+        document.querySelectorAll('.email-preset-chip').forEach(btn => {
+            if (btn._bound) return;
+            btn._bound = true;
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.email-preset-chip').forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                const preset = e.currentTarget.getAttribute('data-epreset');
+                loadEmailPreset(preset);
+            });
+        });
+
+        function renderExecutiveEmail() {
+            const to = document.getElementById('email-to-input')?.value || '';
+            const sub = document.getElementById('email-subject-input')?.value || '';
+            const bluf = document.getElementById('email-bluf-input')?.value || '';
+            const con = document.getElementById('email-containment-input')?.value || '';
+            const act = document.getElementById('email-action-input')?.value || '';
+            const paperEl = document.getElementById('email-preview-paper');
+
+            if (!paperEl) return;
+
+            paperEl.innerHTML = `
+                <div style="font-family:'Segoe UI',sans-serif;font-size:0.92rem;color:#1e293b;line-height:1.6;">
+                    <div style="padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid #cbd5e1;font-size:0.84rem;color:#64748b;">
+                        <div><strong>To:</strong> ${escapeHtml(to)}</div>
+                        <div><strong>Subject:</strong> <span style="color:#0f172a;font-weight:700;">${escapeHtml(sub)}</span></div>
+                        <div><strong>Date:</strong> ${new Date().toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit' })} EST</div>
+                    </div>
+
+                    <p>Dear Stakeholders,</p>
+
+                    <p style="background:rgba(2,132,199,0.06);border-left:4px solid #0284c7;padding:10px 14px;border-radius:4px;margin:12px 0;">
+                        <strong>BOTTOM LINE UP FRONT (BLUF):</strong><br>
+                        ${escapeHtml(bluf)}
+                    </p>
+
+                    <p><strong>Current Status &amp; Containment:</strong><br>
+                    ${escapeHtml(con)}</p>
+
+                    <p><strong>Required Action &amp; Critical Milestone:</strong><br>
+                    ${escapeHtml(act)}</p>
+
+                    <p style="margin-top:20px;">
+                        We will circle back with our next scheduled status briefing in 2 hours.<br><br>
+                        Best regards,<br>
+                        <strong>Engineering Operations Team</strong><br>
+                        <em>Nearshoring Center of Excellence &bull; stemOS Certified</em>
+                    </p>
+                </div>
+            `;
+        }
+        window.renderExecutiveEmail = renderExecutiveEmail;
+
+        const btnGenEmail = document.getElementById('btn-generate-email');
+        if (btnGenEmail && !btnGenEmail._bound) {
+            btnGenEmail._bound = true;
+            btnGenEmail.addEventListener('click', () => {
+                renderExecutiveEmail();
+                if (typeof showSyncToast === 'function') {
+                    showSyncToast("✨ Correo ejecutivo renderizado con formato BLUF.", "info");
+                }
+            });
+        }
+
+        const btnCopyEmail = document.getElementById('btn-copy-email');
+        if (btnCopyEmail && !btnCopyEmail._bound) {
+            btnCopyEmail._bound = true;
+            btnCopyEmail.addEventListener('click', () => {
+                const to = document.getElementById('email-to-input')?.value || '';
+                const sub = document.getElementById('email-subject-input')?.value || '';
+                const bluf = document.getElementById('email-bluf-input')?.value || '';
+                const con = document.getElementById('email-containment-input')?.value || '';
+                const act = document.getElementById('email-action-input')?.value || '';
+
+                const emailText = `To: ${to}
+Subject: ${sub}
+
+Dear Stakeholders,
+
+BOTTOM LINE UP FRONT (BLUF):
+${bluf}
+
+Current Status & Containment:
+${con}
+
+Required Action & Critical Milestone:
+${act}
+
+We will circle back with our next scheduled status briefing in 2 hours.
+
+Best regards,
+Engineering Operations Team
+Nearshoring Center of Excellence • stemOS Certified`;
+
+                navigator.clipboard.writeText(emailText).then(() => {
+                    if (typeof showSyncToast === 'function') {
+                        showSyncToast("📋 Correo ejecutivo copiado al portapapeles.", "success");
+                    }
+                }).catch(() => {
+                    alert("Copia el texto manualmente.");
+                });
+            });
+        }
+
+        load8DPreset('auto_weld');
+        renderExecutiveEmail();
+    }
+    window.initOutputLab = initOutputLab;
 
     /* --- Constellation Skills Graph (27 Tracks & 4 Clusters) --- */
     const CLUSTER_CONFIG = [

@@ -926,6 +926,12 @@
                     <span class="ed-rail-label">Glosario</span>
                     <span class="ed-rail-tooltip">Vocabulario & Frases</span>
                 </button>
+                <button class="ed-rail-btn" data-view="output-lab" id="nav-btn-output-lab" title="Technical Output Lab (8D & Email)">
+                    <span class="ed-rail-active-indicator"></span>
+                    <i class="fa-solid fa-pen-ruler"></i>
+                    <span class="ed-rail-label">Output Lab</span>
+                    <span class="ed-rail-tooltip">8D Report & Escalation Email</span>
+                </button>
             </nav>
 
             <div class="ed-sidebar-bottom">
@@ -1718,31 +1724,443 @@
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 16px;">
                             <div>
                                 <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 4px; color: #0f172a;"><i
-                                        class="fa-solid fa-book-bookmark text-indigo"></i> Biblioteca de Fraseología Técnica & Native Idioms</h2>
-                                <p style="font-size: 0.88rem; color: #64748b;">Glosario bilingüe de ingeniería, manufactura avanzada y expresiones nativas de reuniones de trabajo (115 Native Phrases con pronunciación y síntesis de audio).</p>
+                                        class="fa-solid fa-book-bookmark text-indigo"></i> Biblioteca de Fraseología Técnica &amp; Native Idioms</h2>
+                                <p style="font-size: 0.88rem; color: #64748b;">Glosario bilingüe de ingeniería, manufactura avanzada y expresiones nativas de reuniones de trabajo (162 Native Phrases con pronunciación y síntesis de audio).</p>
                             </div>
-                            <div class="glossary-search-wrapper">
+                            <div class="glossary-search-wrapper" id="glossary-search-box">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                                 <input type="text" id="glossary-search-input" class="ed-search-input" placeholder="Buscar frase, traducción o ejemplo...">
                             </div>
                         </div>
 
-                        <!-- Category Filter Chips for Phrases (All 8 Dimensions) -->
-                        <div class="glossary-cat-filter-bar" id="glossary-cat-filters">
-                            <button class="glossary-filter-chip active" data-phrase-cat="all">Todas (115)</button>
-                            <button class="glossary-filter-chip" data-phrase-cat="workplace">Workplace & Ops</button>
-                            <button class="glossary-filter-chip" data-phrase-cat="meetings">Meetings & Strategy</button>
-                            <button class="glossary-filter-chip" data-phrase-cat="technical_debate">Technical Debate</button>
-                            <button class="glossary-filter-chip" data-phrase-cat="conflict_resolution">Diplomacy & Conflict</button>
-                            <button class="glossary-filter-chip" data-phrase-cat="problem_solving">Problem Solving (RCA)</button>
-                            <button class="glossary-filter-chip" data-phrase-cat="soft_skills">Soft Skills & Leadership</button>
-                            <button class="glossary-filter-chip" data-phrase-cat="metrics">Metrics & Yield</button>
-                            <button class="glossary-filter-chip" data-phrase-cat="small_talk">Small Talk</button>
+                        <!-- Mode Switcher: Lista de Frases vs Deck de Repetición Espaciada SM-2 -->
+                        <div class="output-mode-pills" style="margin-bottom: 18px;" role="tablist">
+                            <button class="output-mode-btn active" id="btn-glossary-mode-list" role="tab" aria-selected="true">
+                                <i class="fa-solid fa-list-ul"></i>
+                                <span>Glosario Completo (162 Frases)</span>
+                            </button>
+                            <button class="output-mode-btn" id="btn-glossary-mode-sm2" role="tab" aria-selected="false">
+                                <i class="fa-solid fa-brain"></i>
+                                <span>Deck de Flashcards SM-2 (Repetición Espaciada)</span>
+                            </button>
                         </div>
 
-                        <div id="quick-glossary-container"
-                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-top: 18px;">
-                            <!-- Injected dynamically -->
+                        <!-- WORKSPACE 1: Browsing List -->
+                        <div id="glossary-list-workspace">
+                            <!-- Category Filter Chips for Phrases (All 8 Dimensions) -->
+                            <div class="glossary-cat-filter-bar" id="glossary-cat-filters">
+                                <button class="glossary-filter-chip active" data-phrase-cat="all">Todas (162)</button>
+                                <button class="glossary-filter-chip" data-phrase-cat="workplace">Workplace &amp; Ops</button>
+                                <button class="glossary-filter-chip" data-phrase-cat="meetings">Meetings &amp; Strategy</button>
+                                <button class="glossary-filter-chip" data-phrase-cat="technical_debate">Technical Debate</button>
+                                <button class="glossary-filter-chip" data-phrase-cat="conflict_resolution">Diplomacy &amp; Conflict</button>
+                                <button class="glossary-filter-chip" data-phrase-cat="problem_solving">Problem Solving (RCA)</button>
+                                <button class="glossary-filter-chip" data-phrase-cat="soft_skills">Soft Skills &amp; Leadership</button>
+                                <button class="glossary-filter-chip" data-phrase-cat="metrics">Metrics &amp; Yield</button>
+                                <button class="glossary-filter-chip" data-phrase-cat="small_talk">Small Talk</button>
+                            </div>
+
+                            <div id="quick-glossary-container"
+                                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-top: 18px;">
+                                <!-- Injected dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- WORKSPACE 2: SM-2 Spaced Repetition Flashcard Deck -->
+                        <div id="glossary-sm2-workspace" style="display: none;">
+                            <!-- SM-2 Stats Pillbox -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 20px;">
+                                <div class="sm2-stats-pillbox">
+                                    <div class="sm2-stat">
+                                        <span class="sm2-stat-num" id="sm2-stat-due">0</span>
+                                        <span class="sm2-stat-lbl">Due Today</span>
+                                    </div>
+                                    <span class="sm2-stat-divider"></span>
+                                    <div class="sm2-stat">
+                                        <span class="sm2-stat-num" id="sm2-stat-total">162</span>
+                                        <span class="sm2-stat-lbl">In Deck</span>
+                                    </div>
+                                    <span class="sm2-stat-divider"></span>
+                                    <div class="sm2-stat">
+                                        <span class="sm2-stat-num" id="sm2-stat-retention">94%</span>
+                                        <span class="sm2-stat-lbl">Retention</span>
+                                    </div>
+                                    <span class="sm2-stat-divider"></span>
+                                    <div class="sm2-stat">
+                                        <span class="sm2-stat-num" id="sm2-stat-ef">2.50</span>
+                                        <span class="sm2-stat-lbl">Avg. EF</span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="sm2-action-btn" id="btn-seed-deck" title="Cargar nuevas 10 cartas">
+                                        <i class="fa-solid fa-arrows-rotate"></i> Seed 10
+                                    </button>
+                                    <button class="sm2-action-btn" id="btn-reset-deck" title="Reiniciar mazo">
+                                        <i class="fa-solid fa-trash-can"></i> Reset
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Flashcard Card Viewport -->
+                            <div class="sm2-workspace">
+                                <div class="sm2-card-viewport">
+                                    <div class="sm2-card" id="sm2-active-card">
+                                        <!-- Front Face -->
+                                        <div class="sm2-card-face sm2-card-front">
+                                            <div class="sm2-card-meta-top">
+                                                <span class="sm2-card-domain" id="sm2-card-domain">NATIVE IDIOM &amp; CROSS-BORDER RADAR</span>
+                                                <span class="sm2-card-interval" id="sm2-card-interval-badge">Interval: New (0d)</span>
+                                            </div>
+                                            <div class="sm2-card-front-content">
+                                                <div class="sm2-card-term-wrap">
+                                                    <h3 class="sm2-card-term" id="sm2-card-term">I'm swamped at the moment</h3>
+                                                    <div class="sm2-card-ipa-row">
+                                                        <span class="sm2-card-ipa" id="sm2-card-ipa">/swɑːmpt/</span>
+                                                        <button class="sm2-audio-btn" id="btn-sm2-audio" title="Escuchar pronunciación">
+                                                            <i class="fa-solid fa-volume-high"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="sm2-card-prompt-hint">
+                                                    <i class="fa-solid fa-lightbulb"></i>
+                                                    <span id="sm2-card-hint">¿Cuál es el significado operacional nativo, origen mental y trampa dialectal?</span>
+                                                </div>
+                                            </div>
+                                            <div class="sm2-card-bottom-bar">
+                                                <span class="sm2-flip-hint"><kbd>Space</kbd> o Clic para voltear</span>
+                                                <button class="sm2-flip-btn" id="btn-sm2-flip"><i class="fa-solid fa-arrow-rotate-right"></i> Voltear Carta</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Back Face -->
+                                        <div class="sm2-card-face sm2-card-back">
+                                            <div class="sm2-card-meta-top">
+                                                <span class="sm2-card-domain" id="sm2-card-domain-back">SIGNIFICADO Y APLICACIÓN NATIVA</span>
+                                                <button class="sm2-audio-btn-small" id="btn-sm2-audio-back" title="Repetir audio">
+                                                    <i class="fa-solid fa-volume-high"></i>
+                                                </button>
+                                            </div>
+                                            <div class="sm2-card-back-content">
+                                                <div class="sm2-back-section">
+                                                    <div class="sm2-back-label"><i class="fa-solid fa-book-open"></i> Definición Operacional:</div>
+                                                    <div class="sm2-back-text" id="sm2-card-def">Estoy inundado de trabajo / Hasta el cuello de pendientes</div>
+                                                </div>
+                                                <div class="sm2-back-section">
+                                                    <div class="sm2-back-label"><i class="fa-solid fa-triangle-exclamation"></i> Trampa Dialectal &amp; Uso de Planta:</div>
+                                                    <div class="sm2-back-warning" id="sm2-card-audit-trap">En la escuela enseñan 'very busy', pero en la industria nativa se usa 'swamped'.</div>
+                                                </div>
+                                                <div class="sm2-back-section">
+                                                    <div class="sm2-back-label"><i class="fa-solid fa-comments"></i> Colocaciones Industriales:</div>
+                                                    <div class="sm2-colloc-tags" id="sm2-card-collocs">
+                                                        <span class="sm2-colloc-pill">workplace</span>
+                                                        <span class="sm2-colloc-pill">Riesgo: BAJO</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="sm2-card-rating-bar">
+                                                <div class="sm2-rating-title">Evalúa tu recuerdo (Cálculo SM-2):</div>
+                                                <div class="sm2-rating-buttons">
+                                                    <button class="sm2-rate-btn rate-0" data-quality="0">
+                                                        <span class="rate-key">1</span>
+                                                        <span class="rate-name">Again</span>
+                                                        <span class="rate-sub">&lt; 1d (Reset)</span>
+                                                    </button>
+                                                    <button class="sm2-rate-btn rate-3" data-quality="3">
+                                                        <span class="rate-key">2</span>
+                                                        <span class="rate-name">Hard</span>
+                                                        <span class="rate-sub" id="rate-hard-interval">1d</span>
+                                                    </button>
+                                                    <button class="sm2-rate-btn rate-4" data-quality="4">
+                                                        <span class="rate-key">3</span>
+                                                        <span class="rate-name">Good</span>
+                                                        <span class="rate-sub" id="rate-good-interval">6d</span>
+                                                    </button>
+                                                    <button class="sm2-rate-btn rate-5" data-quality="5">
+                                                        <span class="rate-key">4</span>
+                                                        <span class="rate-name">Easy</span>
+                                                        <span class="rate-sub" id="rate-easy-interval">15d</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ════ VIEW 7: TECHNICAL OUTPUT LAB (8D & ESCALATION EMAIL) ════ -->
+                <section class="ed-view" id="view-output-lab" style="display: none;">
+                    <div class="output-lab-section" style="max-width: 1240px; margin: 0 auto; width: 100%; padding: 24px; background: transparent; border: none;">
+                        <div class="output-lab-header">
+                            <div class="output-lab-badge">
+                                <i class="fa-solid fa-pen-ruler"></i> ACTIVE PRODUCTION LAB &bull; OUTPUT ENGINE
+                            </div>
+                            <h2 class="output-lab-title">
+                                Technical Output Studio: <span class="supaste-serif-italic">8D Problem Solving</span> &amp; Escalation Email
+                            </h2>
+                            <p class="output-lab-desc">
+                                Shift from passive comprehension to active engineering output. Draft audit-ready 8D corrective action reports and structured executive escalation emails with real-time AI rubric scoring and diplomatic cross-border tone validation.
+                            </p>
+
+                            <!-- Studio Mode Switcher Pills -->
+                            <div class="output-mode-pills" role="tablist">
+                                <button class="output-mode-btn active" id="btn-mode-8d" data-mode="8d" role="tab" aria-selected="true">
+                                    <i class="fa-solid fa-list-check"></i>
+                                    <span>8D Problem Solving Studio (D1–D8)</span>
+                                </button>
+                                <button class="output-mode-btn" id="btn-mode-email" data-mode="email" role="tab" aria-selected="false">
+                                    <i class="fa-solid fa-envelope-open-text"></i>
+                                    <span>Executive Escalation Email Builder</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- WORKSPACE 1: 8D PROBLEM SOLVING STUDIO -->
+                        <div class="output-workspace" id="workspace-8d">
+                            <!-- Preset Selector Strip -->
+                            <div class="scenario-preset-strip">
+                                <span class="preset-label"><i class="fa-solid fa-bolt"></i> Cargar Escenario Industrial:</span>
+                                <div class="preset-buttons">
+                                    <button class="preset-chip active" data-preset="auto_weld">
+                                        <i class="fa-solid fa-car-side"></i> Automotriz: Porosidad en Soldadura Láser (IATF 16949)
+                                    </button>
+                                    <button class="preset-chip" data-preset="med_balloon">
+                                        <i class="fa-solid fa-heart-pulse"></i> Dispositivos Médicos: Falla de Presión de Balón (FDA 21 CFR 820)
+                                    </button>
+                                    <button class="preset-chip" data-preset="semi_wafer">
+                                        <i class="fa-solid fa-microchip"></i> Semiconductores: Deriva de Dimensión Crítica en Fotolitografía
+                                    </button>
+                                    <button class="preset-chip" data-preset="custom_blank">
+                                        <i class="fa-solid fa-plus"></i> Formulario en Blanco
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="output-grid-layout">
+                                <!-- Left: 8D Step Form -->
+                                <div class="output-form-card">
+                                    <div class="output-form-header">
+                                        <div class="form-title-group">
+                                            <span class="report-code" id="8d-report-id">8D-2026-AUTO-042</span>
+                                            <h3 class="form-title" id="8d-form-title">Automotive Laser Welding 8D Report</h3>
+                                        </div>
+                                        <span class="audit-status-tag" id="8d-audit-status"><i class="fa-solid fa-circle-check"></i> Audit In Progress</span>
+                                    </div>
+
+                                    <!-- Steps Tabs Carousel / Accordion -->
+                                    <div class="eightd-steps-wrapper">
+                                        <!-- Step D1 -->
+                                        <div class="eightd-step-box">
+                                            <div class="step-badge-num">D1</div>
+                                            <div class="step-content">
+                                                <label class="step-label">D1: Establish the Cross-Functional Team (CFT)</label>
+                                                <p class="step-guidance">Identify the Champion, Leader, and cross-functional members (Quality, Manufacturing, Process, Metrology).</p>
+                                                <input type="text" id="8d-d1-input" class="step-input" placeholder="e.g., Champion: Ing. Cordero (Plant Director), Leader: Ing. Garza (SQE)...">
+                                            </div>
+                                        </div>
+
+                                        <!-- Step D2 -->
+                                        <div class="eightd-step-box">
+                                            <div class="step-badge-num">D2</div>
+                                            <div class="step-content">
+                                                <label class="step-label">D2: Problem Description (5W2H Standard)</label>
+                                                <p class="step-guidance">Quantify What, Where, When, How Many, and Defect Rate. Avoid jumping to causes.</p>
+                                                <textarea id="8d-d2-input" class="step-textarea" rows="3" placeholder="During helium leak testing at Detroit assembly line 3..."></textarea>
+                                            </div>
+                                        </div>
+
+                                        <!-- Step D3 -->
+                                        <div class="eightd-step-box">
+                                            <div class="step-badge-num">D3</div>
+                                            <div class="step-content">
+                                                <label class="step-label">D3: Interim Containment Actions (ICA) &amp; Quarantine</label>
+                                                <p class="step-guidance">Document 100% sorting, red hold tags, warehouse freeze, and customer notification within 24h.</p>
+                                                <textarea id="8d-d3-input" class="step-textarea" rows="3" placeholder="Immediate warehouse quarantine on all lots sharing laser head #2..."></textarea>
+                                            </div>
+                                        </div>
+
+                                        <!-- Step D4 -->
+                                        <div class="eightd-step-box">
+                                            <div class="step-badge-num">D4</div>
+                                            <div class="step-content">
+                                                <label class="step-label">D4: Root Cause Analysis (Ishikawa 4M &amp; 5 Whys)</label>
+                                                <p class="step-guidance">Identify the physical root cause and the escape point (why was it not detected internally?).</p>
+                                                <textarea id="8d-d4-input" class="step-textarea" rows="3" placeholder="Optical lens contamination caused laser focal length drift..."></textarea>
+                                            </div>
+                                        </div>
+
+                                        <!-- Step D5 & D6 -->
+                                        <div class="eightd-step-box">
+                                            <div class="step-badge-num">D5/D6</div>
+                                            <div class="step-content">
+                                                <label class="step-label">D5 &amp; D6: Permanent Corrective Action (PCA) &amp; Validation</label>
+                                                <p class="step-guidance">Specify engineering error-proofing (Poka-Yoke) and provide statistical validation data (Cpk ≥ 1.67).</p>
+                                                <textarea id="8d-d5-input" class="step-textarea" rows="3" placeholder="Installed automated inline optical cleanliness sensor with interlocking shutoff..."></textarea>
+                                            </div>
+                                        </div>
+
+                                        <!-- Step D7 & D8 -->
+                                        <div class="eightd-step-box">
+                                            <div class="step-badge-num">D7/D8</div>
+                                            <div class="step-content">
+                                                <label class="step-label">D7 &amp; D8: Prevent Recurrence &amp; Team Recognition</label>
+                                                <p class="step-guidance">Update PFMEA, Control Plan, Layered Process Audit (LPA) checklists, and formally recognize the team.</p>
+                                                <textarea id="8d-d7-input" class="step-textarea" rows="3" placeholder="PFMEA revised to increase detection rating; Layer 1 LPA updated with daily lens check..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Form Actions -->
+                                    <div class="output-form-actions">
+                                        <button class="output-btn-primary" id="btn-eval-8d">
+                                            <i class="fa-solid fa-wand-magic-sparkles"></i> Evaluate 8D with AI Rubric
+                                        </button>
+                                        <button class="output-btn-secondary" id="btn-copy-8d">
+                                            <i class="fa-solid fa-copy"></i> Copy Formal 8D Text
+                                        </button>
+                                        <button class="output-btn-secondary" id="btn-print-8d">
+                                            <i class="fa-solid fa-print"></i> Export / Print Dossier
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Right: Real-Time Audit Rubric & Live Quality Score -->
+                                <div class="output-rubric-card">
+                                    <div class="rubric-header">
+                                        <span class="rubric-badge"><i class="fa-solid fa-gauge-high"></i> Socratic Audit Rubric</span>
+                                        <h4 class="rubric-title">IATF / ISO Compliance Score</h4>
+                                    </div>
+
+                                    <div class="score-display-box">
+                                        <div class="score-number" id="rubric-score-val">88%</div>
+                                        <div class="score-level-text" id="rubric-score-lbl">AUDIT-READY (EXCELLENT)</div>
+                                        <div class="score-progress-bar">
+                                            <div class="score-fill" id="rubric-score-fill" style="width: 88%;"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="rubric-criteria-list" id="rubric-criteria-list">
+                                        <!-- Dynamically populated criteria checks -->
+                                    </div>
+
+                                    <div class="rubric-feedback-box">
+                                        <div class="feedback-title"><i class="fa-solid fa-comment-dots"></i> Lead Auditor Feedback:</div>
+                                        <p class="feedback-text" id="rubric-feedback-text">
+                                            Strong 5W2H problem definition and robust quarantine isolation. To reach 100%, ensure D6 includes explicit statistical capability indices (Cpk) and reference the specific revised PFMEA severity/detection numbers.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- WORKSPACE 2: EXECUTIVE ESCALATION EMAIL BUILDER -->
+                        <div class="output-workspace" id="workspace-email" style="display:none;">
+                            <div class="scenario-preset-strip">
+                                <span class="preset-label"><i class="fa-solid fa-bolt"></i> Cargar Plantilla de Escalación:</span>
+                                <div class="preset-buttons">
+                                    <button class="email-preset-chip active" data-epreset="line_stop">
+                                        <i class="fa-solid fa-triangle-exclamation"></i> Paro Inminente de Línea (Line-Down Alert)
+                                    </button>
+                                    <button class="email-preset-chip" data-epreset="concession">
+                                        <i class="fa-solid fa-file-contract"></i> Solicitud de Desviación / Concesión Técnica
+                                    </button>
+                                    <button class="email-preset-chip" data-epreset="customs_hold">
+                                        <i class="fa-solid fa-bridge"></i> Retención en Puente Aduanal (CBP / SAT Hold)
+                                    </button>
+                                    <button class="email-preset-chip" data-epreset="eco_pushback">
+                                        <i class="fa-solid fa-rotate"></i> Defensa de Factibilidad ante ECO de Matriz
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="output-grid-layout">
+                                <!-- Left: Email Form Builder -->
+                                <div class="output-form-card">
+                                    <div class="output-form-header">
+                                        <div class="form-title-group">
+                                            <span class="report-code">EXECUTIVE CROSS-BORDER ESCALATION</span>
+                                            <h3 class="form-title">Diplomatic Escalation Email Builder</h3>
+                                        </div>
+                                        <span class="audit-status-tag" style="background:rgba(2, 132, 199, 0.1); color:#0284c7; border-color:rgba(2, 132, 199, 0.25);">
+                                            <i class="fa-solid fa-shield"></i> BLUF Standard
+                                        </span>
+                                    </div>
+
+                                    <div class="email-fields-group">
+                                        <div class="email-field-row">
+                                            <label class="field-lbl">To (Executive Stakeholder):</label>
+                                            <input type="text" id="email-to-input" class="step-input" value="Gregory Vance &lt;g.vance@oem-operations.com&gt; (VP of Manufacturing)">
+                                        </div>
+                                        <div class="email-field-row">
+                                            <label class="field-lbl">Subject Line (with Urgency Tag):</label>
+                                            <input type="text" id="email-subject-input" class="step-input" value="[URGENT ESCALATION] Line 2 High-Voltage Battery Housing Containment &amp; Schedule Impact">
+                                        </div>
+                                        <div class="email-field-row">
+                                            <label class="field-lbl">Bottom Line Up Front (BLUF - The Core Message in 2 Sentences):</label>
+                                            <textarea id="email-bluf-input" class="step-textarea" rows="2">Line 2 battery housing production in Saltillo was paused at 08:30 due to laser weld porosity. We have implemented 100% quarantine on 320 affected assemblies and require engineering sign-off on temporary parameter adjustments by 14:00 EST to protect tomorrow's Detroit shipment.</textarea>
+                                        </div>
+                                        <div class="email-field-row">
+                                            <label class="field-lbl">Current Containment &amp; Financial Impact Mitigation:</label>
+                                            <textarea id="email-containment-input" class="step-textarea" rows="2">All parts produced since 04:00 are tagged in red bins with zero escape risk. Line 1 has been re-allocated to absorb 60% of volume. Projected line-down risk to Detroit is currently mitigated for the next 18 hours.</textarea>
+                                        </div>
+                                        <div class="email-field-row">
+                                            <label class="field-lbl">Call to Action &amp; Hard Deadline (Clear Ask):</label>
+                                            <input type="text" id="email-action-input" class="step-input" value="Please confirm authorization for chartered hot-shot freight and temporary welding concession by 14:00 EST.">
+                                        </div>
+                                    </div>
+
+                                    <div class="output-form-actions">
+                                        <button class="output-btn-primary" id="btn-generate-email">
+                                            <i class="fa-solid fa-sparkles"></i> Render Polished Corporate Email
+                                        </button>
+                                        <button class="output-btn-secondary" id="btn-copy-email">
+                                            <i class="fa-solid fa-copy"></i> Copy Email to Clipboard
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Right: Live Formatted Email Preview & Tone Radar -->
+                                <div class="output-rubric-card">
+                                    <div class="rubric-header">
+                                        <span class="rubric-badge"><i class="fa-solid fa-envelope"></i> Rendered Output</span>
+                                        <h4 class="rubric-title">Executive Email Preview</h4>
+                                    </div>
+
+                                    <!-- Tone & Assertiveness Gauge -->
+                                    <div class="email-tone-gauge">
+                                        <div class="tone-metric">
+                                            <span class="tone-lbl">Tone:</span>
+                                            <span class="tone-val" id="email-tone-val">Assertive &amp; Diplomatic</span>
+                                        </div>
+                                        <div class="tone-metric">
+                                            <span class="tone-lbl">Politeness:</span>
+                                            <span class="tone-val" id="email-polite-val">100% Professional</span>
+                                        </div>
+                                        <div class="tone-metric">
+                                            <span class="tone-lbl">BLUF Clarity:</span>
+                                            <span class="tone-val" id="email-clarity-val">High (Immediate Action)</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Email Text Paper Simulation -->
+                                    <div class="email-preview-paper" id="email-preview-paper">
+                                        <!-- Dynamically rendered email body -->
+                                    </div>
+
+                                    <!-- Native Corporate Collocations Injected -->
+                                    <div class="colloquial-suggestion-box">
+                                        <div class="coll-title"><i class="fa-solid fa-bolt"></i> Idiomatic Collocations Included:</div>
+                                        <div class="coll-chips" id="email-colloquial-chips">
+                                            <span class="coll-chip">loop you in</span>
+                                            <span class="coll-chip">hard stop at 14:00</span>
+                                            <span class="coll-chip">touch base</span>
+                                            <span class="coll-chip">circle back</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>

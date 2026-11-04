@@ -479,6 +479,15 @@ body.supaste-theme {
   }
 }
 
+@media (max-width: 768px) {
+  .supaste-mobile-nav-panel .btn,
+  .supaste-mobile-nav-panel a.btn,
+  .btn-touch-target {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+}
+
 /* ── SUPASTE RESPONSIVE MOBILE NAVIGATION DRAWER ── */
 .supaste-mobile-nav-panel {
   position: fixed;
