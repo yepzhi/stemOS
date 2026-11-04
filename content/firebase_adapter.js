@@ -798,15 +798,21 @@
                     updatedAt: new Date().toISOString()
                 });
 
-                // 1. Primary write to /users/{uid}
-                await db.collection('users').doc(uid).set(payload, { merge: true });
-
-                // 2. Multi-tenant mirror write to /institutions/{instId}/students/{docId}
+                // Atomic batch write to both primary /users/{uid} and multi-tenant mirror
                 const instId = progressData.institutionId || progressData.subsystem || 'tecnm-saltillo';
                 const docId = uid;
-                try {
-                    await db.collection('institutions').doc(instId).collection('students').doc(docId).set(payload, { merge: true });
-                } catch(e) {}
+
+                if (typeof db.batch === 'function') {
+                    const batch = db.batch();
+                    batch.set(db.collection('users').doc(uid), payload, { merge: true });
+                    batch.set(db.collection('institutions').doc(instId).collection('students').doc(docId), payload, { merge: true });
+                    await batch.commit();
+                } else {
+                    await Promise.all([
+                        db.collection('users').doc(uid).set(payload, { merge: true }),
+                        db.collection('institutions').doc(instId).collection('students').doc(docId).set(payload, { merge: true })
+                    ]);
+                }
 
                 localStorage.setItem('stemos_last_cloud_sync', new Date().toISOString());
                 this._broadcastStateChange('cloud_progress_saved', payload);

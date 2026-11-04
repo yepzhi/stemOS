@@ -268,23 +268,15 @@
             }
         },
 
-        // Flush queue to Firestore or custom sender
+        // Flush queue to Firestore or custom sender (Smart Batch Commit)
         flushQueue: function (customSender) {
             if (isSyncing) return Promise.resolve({ synced: 0, status: 'already_syncing' });
             isSyncing = true;
             notifyListeners('sync_start', {});
 
-            var sender = (typeof customSender === 'function') ? customSender : defaultFirestoreSender;
-
-            return getPendingMutations().then(function (pending) {
-                if (pending.length === 0) {
-                    isSyncing = false;
-                    notifyListeners('sync_complete', { synced: 0 });
-                    return { synced: 0, remaining: 0 };
-                }
-
-                var syncPromises = pending.map(function (mutation) {
-                    return sender(mutation).then(function () {
+            function sequentialFlush(items, activeSender) {
+                var syncPromises = items.map(function (mutation) {
+                    return activeSender(mutation).then(function () {
                         mutation.status = 'synced';
                         return getDB().then(function (db) {
                             if (!db) return mutation;
@@ -312,6 +304,109 @@
                     }
                     return { synced: syncedCount, total: results.length };
                 });
+            }
+
+            return getPendingMutations().then(function (pending) {
+                if (pending.length === 0) {
+                    isSyncing = false;
+                    notifyListeners('sync_complete', { synced: 0 });
+                    return { synced: 0, remaining: 0 };
+                }
+
+                // If default sender and Firestore batch is supported, execute atomic batch commit
+                var db = null;
+                if (window.STEMOS_FIREBASE_CONFIG && typeof window.STEMOS_FIREBASE_CONFIG.getDb === 'function') {
+                    db = window.STEMOS_FIREBASE_CONFIG.getDb();
+                } else if (typeof window.firebase !== 'undefined' && window.firebase.firestore) {
+                    try { db = window.firebase.firestore(); } catch (_) {}
+                }
+
+                if (!customSender && db && typeof db.batch === 'function') {
+                    var currentUser = null;
+                    if (typeof window.firebase !== 'undefined' && window.firebase.auth) {
+                        try { currentUser = window.firebase.auth().currentUser; } catch (_) {}
+                    }
+                    if (!currentUser && window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.getAuthUser === 'function') {
+                        currentUser = window.STEMOS_FIREBASE.getAuthUser();
+                    }
+                    var userId = (currentUser && (currentUser.uid || currentUser.id || currentUser.matricula)) || 'student-local';
+                    var instId = (currentUser && currentUser.institutionId) || 'tecnm-saltillo';
+
+                    var batch = db.batch();
+                    var totalXp = 0;
+                    var processedMutations = [];
+
+                    pending.forEach(function (m) {
+                        if (m.entityType === 'MCER_UNIT_PROGRESS' && m.payload) {
+                            var p = m.payload;
+                            var docRef = db.collection('institutions').doc(instId)
+                                .collection('students').doc(userId)
+                                .collection('mcer_progress').doc(p.unitId || 'unit-unknown');
+                            batch.set(docRef, {
+                                unitId: p.unitId,
+                                unitTitle: p.unitTitle || '',
+                                cefr: p.cefr || 'A1',
+                                score: p.score || 0,
+                                passed: Boolean(p.passed),
+                                xpEarned: p.xpEarned || 0,
+                                completedAt: p.completedAt || new Date().toISOString(),
+                                syncedAt: new Date().toISOString()
+                            }, { merge: true });
+
+                            if (p.xpEarned) totalXp += p.xpEarned;
+                            processedMutations.push(m);
+                        }
+                    });
+
+                    if (totalXp > 0 && typeof window.firebase !== 'undefined' && window.firebase.firestore && window.firebase.firestore.FieldValue) {
+                        try {
+                            var studentRef = db.collection('institutions').doc(instId).collection('students').doc(userId);
+                            batch.update(studentRef, {
+                                xp: window.firebase.firestore.FieldValue.increment(totalXp),
+                                lastActiveAt: new Date().toISOString()
+                            });
+                        } catch (_) {}
+                    }
+
+                    if (processedMutations.length > 0) {
+                        return batch.commit().then(function () {
+                            return getDB().then(function (idb) {
+                                if (!idb) {
+                                    memoryQueue = memoryQueue.filter(function (m) {
+                                        return !processedMutations.some(function (pm) { return pm.id === m.id; });
+                                    });
+                                    isSyncing = false;
+                                    notifyListeners('sync_complete', { synced: processedMutations.length });
+                                    notifyListeners('firestore_synced', { synced: processedMutations.length });
+                                    return { synced: processedMutations.length, total: pending.length };
+                                }
+                                return new Promise(function (res) {
+                                    var tx = idb.transaction(STORE_NAME, 'readwrite');
+                                    var store = tx.objectStore(STORE_NAME);
+                                    processedMutations.forEach(function (pm) {
+                                        store.delete(pm.id);
+                                    });
+                                    tx.oncomplete = function () {
+                                        isSyncing = false;
+                                        notifyListeners('sync_complete', { synced: processedMutations.length });
+                                        notifyListeners('firestore_synced', { synced: processedMutations.length });
+                                        res({ synced: processedMutations.length, total: pending.length });
+                                    };
+                                    tx.onerror = function () {
+                                        isSyncing = false;
+                                        res({ synced: processedMutations.length, total: pending.length });
+                                    };
+                                });
+                            });
+                        }).catch(function (batchErr) {
+                            console.warn('[stemOS Sync] Batch commit error, falling back to sequential retry:', batchErr);
+                            return sequentialFlush(pending, defaultFirestoreSender);
+                        });
+                    }
+                }
+
+                var sender = (typeof customSender === 'function') ? customSender : defaultFirestoreSender;
+                return sequentialFlush(pending, sender);
             });
         },
 
