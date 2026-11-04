@@ -10062,6 +10062,22 @@ Nearshoring Center of Excellence • stemOS Certified`;
         });
 
         updateDuoHudUI();
+
+        if (window.StemOSSkeleton && typeof window.StemOSSkeleton.progressiveReveal === 'function') {
+            window.StemOSSkeleton.progressiveReveal({
+                stage1: () => {
+                    updateDuoHudUI();
+                },
+                stage2: () => {
+                    const fill = document.getElementById('active-path-fill');
+                    if (fill) fill.classList.add('stemos-stage-resolved');
+                },
+                stage3: () => {
+                    const pc = document.getElementById('stemos-duo-path-view');
+                    if (pc) pc.classList.add('stemos-stage-resolved');
+                }
+            });
+        }
     }
 
     // 5. Dynamic Interactive Lesson Challenge Builder

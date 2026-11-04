@@ -44,6 +44,7 @@ const ASSETS_TO_CACHE = [
   '/content/stemos_pwa.js',
   '/content/stemos_rum.js',
   '/content/stemos_phonetics.js',
+  '/content/stemos_skeleton.js',
   '/content/stemos_sync.js',
   '/content/audio/cleanroom_photolithography.wav',
   '/content/audio/cleanroom_basic_a2.wav',

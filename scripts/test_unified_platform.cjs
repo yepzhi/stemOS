@@ -53,6 +53,7 @@ const coreFiles = [
   'content/stemos_payments.js',
   'content/stemos_phonetics.js',
   'content/stemos_rum.js',
+  'content/stemos_skeleton.js',
   'content/stemos_sync.js',
   'content/stemos_tts.js'
 ];

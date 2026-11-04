@@ -1357,7 +1357,16 @@
 
                         <!-- ════ VISTA 1: RUTA INTERACTIVA DUOLINGO (THE SNAKE) ════ -->
                         <div class="stemos-duo-path-view" id="stemos-duo-path-view">
-                            <!-- Populated dynamically by app.js: renderDuoLearningPath() -->
+                            <div class="skeleton-snake-section stemos-stage-3">
+                                <div class="stemos-skeleton skeleton-snake-banner"></div>
+                                <div style="display:flex; flex-direction:column; align-items:center; gap:16px; width:100%;">
+                                    <div class="stemos-skeleton skeleton-snake-stone" style="transform: translateX(-40px);"></div>
+                                    <div class="stemos-skeleton skeleton-snake-stone" style="transform: translateX(0px);"></div>
+                                    <div class="stemos-skeleton skeleton-snake-stone" style="transform: translateX(40px);"></div>
+                                    <div class="stemos-skeleton skeleton-snake-stone" style="transform: translateX(20px);"></div>
+                                    <div class="stemos-skeleton skeleton-snake-stone" style="width: 84px; height: 84px;"></div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- ════ VISTA 2: MALLA CURRICULAR CLÁSICA & OFFLINE ════ -->
@@ -3693,6 +3702,7 @@
     <script src="/content/mcer_tracks.js?v=1.0.0" defer></script>
     <script src="/content/placement_test.js?v=1.0.0" defer></script>
     <script src="/content/stemos_payments.js?v=1.0.0" defer></script>
+    <script src="/content/stemos_skeleton.js?v=1.0.0" defer></script>
     <script src="/app.js" defer></script>
     <script src="/world-map.js" defer></script>
 
