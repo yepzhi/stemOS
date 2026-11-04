@@ -23,15 +23,12 @@ function assert(condition, message) {
 }
 
 const devHtmlPath = path.join(__dirname, '../dev.html');
-const devIndexPath = path.join(__dirname, '../dev/index.html');
 const devJsPath = path.join(__dirname, '../dev.js');
-const devIndexJsPath = path.join(__dirname, '../dev/index.js');
 const devCssPath = path.join(__dirname, '../dev.css');
 
-// ── 1. Markup Verification in dev.html & dev/index.html ──
+// ── 1. Markup Verification in dev.html ──
 [
-  { name: 'dev.html', path: devHtmlPath },
-  { name: 'dev/index.html', path: devIndexPath }
+  { name: 'dev.html', path: devHtmlPath }
 ].forEach(target => {
   console.log(`\n▶ 1. HTML Markup Structure: ${target.name}`);
   const html = fs.readFileSync(target.path, 'utf8');
@@ -98,10 +95,9 @@ const devCssPath = path.join(__dirname, '../dev.css');
   }
 });
 
-// ── 2. JavaScript Engine & Studio Functions (dev.js & dev/index.js) ──
+// ── 2. JavaScript Engine & Studio Functions (dev.js) ──
 [
-  { name: 'dev.js', path: devJsPath },
-  { name: 'dev/index.js', path: devIndexJsPath }
+  { name: 'dev.js', path: devJsPath }
 ].forEach(target => {
   console.log(`\n▶ 2. JavaScript Functions Integrity: ${target.name}`);
   const code = fs.readFileSync(target.path, 'utf8');

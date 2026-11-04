@@ -120,25 +120,23 @@ assert(appJs.includes('function switchInstitutionalCampus(campusId)'), 'app.js i
 assert(appJs.includes('function initCampusEdgeSync()'), 'app.js implements initCampusEdgeSync with online/offline queue');
 
 // ──────────────────────────────────────────────────────────
-// 4. BIT-FOR-BIT MIRROR PARITY AUDIT
+// 4. ROOT FILE INTEGRITY AUDIT
 // ──────────────────────────────────────────────────────────
-console.log('\n--- 4. Bit-for-Bit Mirror Parity Audit (Root vs dev/) ---');
+console.log('\n--- 4. Root File Integrity Audit ---');
 
-const pairs = [
-  ['tracks.html', 'dev/tracks.html'],
-  ['app.html', 'dev/app.html'],
-  ['app.js', 'dev/app.js'],
-  ['teacher.html', 'dev/teacher.html'],
-  ['admin.html', 'dev/admin.html'],
-  ['placement.html', 'dev/placement.html'],
-  ['content/mcer_tracks.js', 'dev/content/mcer_tracks.js']
+const files = [
+  'tracks.html',
+  'app.html',
+  'app.js',
+  'teacher.html',
+  'admin.html',
+  'placement.html',
+  'content/mcer_tracks.js'
 ];
 
-pairs.forEach(([rootRel, devRel]) => {
-  const rootBuf = fs.readFileSync(path.join(ROOT_DIR, rootRel));
-  const devBuf = fs.readFileSync(path.join(ROOT_DIR, devRel));
-  const isEqual = rootBuf.equals(devBuf);
-  assert(isEqual, `Parity check: ${rootRel} <==> ${devRel}`);
+files.forEach(rootRel => {
+  const rootExists = fs.existsSync(path.join(ROOT_DIR, rootRel));
+  assert(rootExists, `File exists: ${rootRel}`);
 });
 
 console.log(`\n======================================================`);

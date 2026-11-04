@@ -30,8 +30,8 @@ console.log('\n═════════════════════�
 console.log('🔬 stemOS Comprehensive MCER Tracks & Level Certification Audit');
 console.log('═══════════════════════════════════════════════════════════════════\n');
 
-// ── 1. Root vs Dev Parity ──────────────────────────────────────────
-console.log('▶ 1. Root vs Dev Mirror Parity');
+// ── 1. Root File Integrity ───────────────────────────────────────
+console.log('▶ 1. Root File Integrity');
 const filesToVerify = [
   'content/mcer_tracks.js',
   'app.html',
@@ -41,14 +41,7 @@ const filesToVerify = [
 
 filesToVerify.forEach(relPath => {
   const rootFile = path.join(ROOT_DIR, relPath);
-  const devFile = path.join(ROOT_DIR, 'dev', relPath);
-  
   assert(fs.existsSync(rootFile), `Root file exists: ${relPath}`);
-  assert(fs.existsSync(devFile), `Dev file exists: dev/${relPath}`);
-  
-  const rootContent = fs.readFileSync(rootFile, 'utf8');
-  const devContent = fs.readFileSync(devFile, 'utf8');
-  assert(rootContent === devContent, `100% Bit-for-bit Parity: ${relPath} === dev/${relPath}`);
 });
 
 // ── 2. MCER Curricular Catalog Architecture ────────────────────────

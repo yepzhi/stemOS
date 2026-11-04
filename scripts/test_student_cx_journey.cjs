@@ -6,7 +6,7 @@
  * 3. Certificates: W3C Open Badges 3.0, ISO 9001:2015, and cryptographic QR verification
  * 4. Master ESP English for your career
  *
- * Also audits index.html & dev/index.html bilingual i18n switcher, navbar, and hero dock.
+ * Also audits index.html bilingual i18n switcher, navbar, and hero dock.
  */
 
 const fs = require('fs');
@@ -34,9 +34,9 @@ console.log('🎓 stemOS Student Customer Experience (CX) 4-Step Journey Audit')
 console.log('═══════════════════════════════════════════════════════════════════\n');
 
 // ─────────────────────────────────────────────────────────────────
-// 1. FILE PARITY AUDIT
+// 1. FILE INTEGRITY AUDIT
 // ─────────────────────────────────────────────────────────────────
-console.log('▶ 1. File Parity Audit (Root vs dev/)');
+console.log('▶ 1. File Integrity Audit');
 
 const filesToCompare = [
   'index.html',
@@ -48,10 +48,9 @@ const filesToCompare = [
 ];
 
 filesToCompare.forEach(file => {
-  test(`File Parity: ${file} === dev/${file}`, () => {
-    const rootContent = fs.readFileSync(path.join(ROOT, file), 'utf8');
-    const devContent = fs.readFileSync(path.join(ROOT, 'dev', file), 'utf8');
-    assert.strictEqual(rootContent, devContent, `${file} and dev/${file} must have 100% bit-for-bit parity`);
+  test(`File Exists: ${file}`, () => {
+    const rootPath = path.join(ROOT, file);
+    assert(fs.existsSync(rootPath), `Root file ${file} exists`);
   });
 });
 

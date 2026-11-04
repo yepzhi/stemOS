@@ -14,7 +14,6 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const MCER_PATH = path.join(ROOT, 'content', 'mcer_tracks.js');
-const DEV_MCER_PATH = path.join(ROOT, 'dev', 'content', 'mcer_tracks.js');
 
 const WRITING_LABS = {
   'a1-u1': {
@@ -550,8 +549,6 @@ if (code.includes(pedTarget) && !code.includes("id: 'writing'")) {
   console.log('Updated pedagogical dimensions to emphasize the 4 balanced skills.');
 }
 
-// Write to root and dev/ with 100% bit-for-bit parity
 fs.writeFileSync(MCER_PATH, code, 'utf8');
-fs.writeFileSync(DEV_MCER_PATH, code, 'utf8');
 
-console.log('✅ Successfully updated content/mcer_tracks.js and dev/content/mcer_tracks.js');
+console.log('✅ Successfully updated content/mcer_tracks.js');

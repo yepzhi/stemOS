@@ -6,7 +6,7 @@
  * 3. #print-cacei-proposal-document exists with CACEI Criterio 4, 25 careers, and 240h MCER.
  * 4. Zero occurrences of "Mario" in proposal templates.
  * 5. Controller functions openCaceiProposalModal and printCaceiProposal defined.
- * 6. Bit-for-bit parity between admin.html and dev/admin.html.
+ * 1. DOM Elements & Modal Integrity in admin.html.
  */
 
 const fs = require('fs');
@@ -35,18 +35,9 @@ function test(name, fn) {
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 const adminPath = path.join(ROOT_DIR, 'admin.html');
-const devAdminPath = path.join(ROOT_DIR, 'dev', 'admin.html');
 
-// ── 1. Parity Check ──
-console.log('▶ 1. File Parity Check (admin.html === dev/admin.html)');
-test('100% bit-for-bit parity between admin.html and dev/admin.html', () => {
-  const rootContent = fs.readFileSync(adminPath, 'utf8');
-  const devContent = fs.readFileSync(devAdminPath, 'utf8');
-  assert.strictEqual(rootContent, devContent, 'admin.html and dev/admin.html must be identical');
-});
-
-// ── 2. DOM & Modal Audit ──
-console.log('\n▶ 2. DOM Elements & Modal Integrity in admin.html');
+// ── 1. DOM & Modal Audit ──
+console.log('\n▶ 1. DOM Elements & Modal Integrity in admin.html');
 const adminHtml = fs.readFileSync(adminPath, 'utf8');
 const dom = new JSDOM(adminHtml, { runScripts: "outside-only" });
 const doc = dom.window.document;

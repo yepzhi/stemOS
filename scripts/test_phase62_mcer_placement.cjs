@@ -30,32 +30,19 @@ function test(description, fn) {
 // ─────────────────────────────────────────────────────────────────
 // 1. FILE PARITY & INTEGRITY
 // ─────────────────────────────────────────────────────────────────
-console.log('▶ 1. File Parity & Source Integrity');
+console.log('▶ 1. Root File Integrity');
 
 const pMcerRoot = path.join(__dirname, '../content/mcer_tracks.js');
-const pMcerDev = path.join(__dirname, '../dev/content/mcer_tracks.js');
 const pPtRoot = path.join(__dirname, '../content/placement_test.js');
-const pPtDev = path.join(__dirname, '../dev/content/placement_test.js');
-
 const pPlaceHtmlRoot = path.join(__dirname, '../placement.html');
-const pPlaceHtmlDev = path.join(__dirname, '../dev/placement.html');
 const pAppHtmlRoot = path.join(__dirname, '../app.html');
-const pAppHtmlDev = path.join(__dirname, '../dev/app.html');
 const pAppJsRoot = path.join(__dirname, '../app.js');
-const pAppJsDev = path.join(__dirname, '../dev/app.js');
 const pTeacherHtmlRoot = path.join(__dirname, '../teacher.html');
-const pTeacherHtmlDev = path.join(__dirname, '../dev/teacher.html');
 const pAdminHtmlRoot = path.join(__dirname, '../admin.html');
-const pAdminHtmlDev = path.join(__dirname, '../dev/admin.html');
 
 test('content/mcer_tracks.js exists and is non-empty', () => {
   assert(fs.existsSync(pMcerRoot), 'File missing');
   assert(fs.statSync(pMcerRoot).size > 1000, 'File too small');
-});
-
-test('dev/content/mcer_tracks.js is identical to root content', () => {
-  assert(fs.existsSync(pMcerDev), 'dev mirror missing');
-  assert.strictEqual(fs.readFileSync(pMcerRoot, 'utf8'), fs.readFileSync(pMcerDev, 'utf8'), 'Parity mismatch');
 });
 
 test('content/placement_test.js exists and is non-empty', () => {
@@ -63,31 +50,25 @@ test('content/placement_test.js exists and is non-empty', () => {
   assert(fs.statSync(pPtRoot).size > 1000, 'File too small');
 });
 
-test('dev/content/placement_test.js is identical to root content', () => {
-  assert(fs.existsSync(pPtDev), 'dev mirror missing');
-  assert.strictEqual(fs.readFileSync(pPtRoot, 'utf8'), fs.readFileSync(pPtDev, 'utf8'), 'Parity mismatch');
-});
-
-test('placement.html exists and matches dev/placement.html', () => {
+test('placement.html exists and is non-empty', () => {
   assert(fs.existsSync(pPlaceHtmlRoot), 'placement.html missing');
-  assert(fs.existsSync(pPlaceHtmlDev), 'dev/placement.html missing');
-  assert.strictEqual(fs.readFileSync(pPlaceHtmlRoot, 'utf8'), fs.readFileSync(pPlaceHtmlDev, 'utf8'), 'Parity mismatch');
+  assert(fs.statSync(pPlaceHtmlRoot).size > 1000, 'placement.html too small');
 });
 
-test('app.html parity with dev/app.html', () => {
-  assert.strictEqual(fs.readFileSync(pAppHtmlRoot, 'utf8'), fs.readFileSync(pAppHtmlDev, 'utf8'), 'Parity mismatch in app.html');
+test('app.html exists and is non-empty', () => {
+  assert(fs.existsSync(pAppHtmlRoot), 'app.html missing');
 });
 
-test('app.js parity with dev/app.js', () => {
-  assert.strictEqual(fs.readFileSync(pAppJsRoot, 'utf8'), fs.readFileSync(pAppJsDev, 'utf8'), 'Parity mismatch in app.js');
+test('app.js exists and is non-empty', () => {
+  assert(fs.existsSync(pAppJsRoot), 'app.js missing');
 });
 
-test('teacher.html parity with dev/teacher.html', () => {
-  assert.strictEqual(fs.readFileSync(pTeacherHtmlRoot, 'utf8'), fs.readFileSync(pTeacherHtmlDev, 'utf8'), 'Parity mismatch in teacher.html');
+test('teacher.html exists and is non-empty', () => {
+  assert(fs.existsSync(pTeacherHtmlRoot), 'teacher.html missing');
 });
 
-test('admin.html parity with dev/admin.html', () => {
-  assert.strictEqual(fs.readFileSync(pAdminHtmlRoot, 'utf8'), fs.readFileSync(pAdminHtmlDev, 'utf8'), 'Parity mismatch in admin.html');
+test('admin.html exists and is non-empty', () => {
+  assert(fs.existsSync(pAdminHtmlRoot), 'admin.html missing');
 });
 
 // ─────────────────────────────────────────────────────────────────

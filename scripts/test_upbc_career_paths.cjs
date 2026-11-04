@@ -156,14 +156,9 @@ runTest('Zero A2 Policy: All 11 UPBC paths have 0 stations with level A2 or A1',
 });
 
 // 5. Portals Integration: register.html
-console.log('\n▶ 5. Onboarding Portal (register.html & dev/register.html)');
+console.log('\n▶ 5. Onboarding Portal (register.html)');
 
 const regHtml = fs.readFileSync(path.join(__dirname, '../register.html'), 'utf8');
-const devRegHtml = fs.readFileSync(path.join(__dirname, '../dev/register.html'), 'utf8');
-
-runTest('register.html and dev/register.html are in 100% sync', () => {
-    assert.strictEqual(regHtml, devRegHtml, 'dev/register.html must match register.html');
-});
 
 runTest('register.html includes UPBC Mexicali featured card in Step 2', () => {
     assert(regHtml.includes('data-subsystem="utyp"') || regHtml.includes('data-subsystem="upbc"'), 'Step 2 missing utyp/upbc selection card');
@@ -192,14 +187,9 @@ runTest('register.html stores degreeModality and tsuSpecialty in student profile
 });
 
 // 6. Placement Test: placement.html
-console.log('\n▶ 6. Placement Diagnostic (placement.html & dev/placement.html)');
+console.log('\n▶ 6. Placement Diagnostic (placement.html)');
 
 const placeHtml = fs.readFileSync(path.join(__dirname, '../placement.html'), 'utf8');
-const devPlaceHtml = fs.readFileSync(path.join(__dirname, '../dev/placement.html'), 'utf8');
-
-runTest('placement.html and dev/placement.html are in 100% sync', () => {
-    assert.strictEqual(placeHtml, devPlaceHtml, 'dev/placement.html must match placement.html');
-});
 
 runTest('placement.html includes UPMXL as the top institution option', () => {
     assert(placeHtml.includes('value="UPMXL"'), 'Missing UPMXL value');

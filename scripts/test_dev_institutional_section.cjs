@@ -1,12 +1,11 @@
 /**
- * stemOS — Verification Test for Institutional Academic Section in dev.html & dev/index.html
+ * stemOS — Verification Test for Institutional Academic Section in dev.html & tracks.html
  */
 const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
 
 const devHtmlPath = path.join(__dirname, '../dev.html');
-const devIndexPath = path.join(__dirname, '../dev/index.html');
 
 console.log('═══════════════════════════════════════════════════════════════════');
 console.log('🏛️  stemOS Dev Studio Institutional Academic Section Audit');

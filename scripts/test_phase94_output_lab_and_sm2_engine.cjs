@@ -28,8 +28,8 @@ console.log('══════════════════════�
 
 const ROOT_DIR = path.join(__dirname, '..');
 
-// ─── SUITE 1: ROOT VS DEV PARITY ───
-console.log('▶ SUITE 1: Root vs Dev Parity Audit');
+// ─── SUITE 1: ROOT FILE INTEGRITY ───
+console.log('▶ SUITE 1: Root File Integrity Audit');
 const filesToVerify = [
   'app.html',
   'app.js',
@@ -38,12 +38,7 @@ const filesToVerify = [
 
 filesToVerify.forEach(rel => {
   const rootPath = path.join(ROOT_DIR, rel);
-  const devPath = path.join(ROOT_DIR, 'dev', rel);
   assert(fs.existsSync(rootPath), `Root file exists: ${rel}`);
-  assert(fs.existsSync(devPath), `Dev file exists: dev/${rel}`);
-  const rootBuf = fs.readFileSync(rootPath);
-  const devBuf = fs.readFileSync(devPath);
-  assert(rootBuf.equals(devBuf), `Exact bit-for-bit parity: ${rel} === dev/${rel}`);
 });
 
 // ─── SUITE 2: DOM ARCHITECTURE & ACCESSIBILITY IN app.html ───
@@ -193,3 +188,4 @@ console.log('══════════════════════�
 if (failCount > 0) {
   process.exit(1);
 }
+

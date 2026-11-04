@@ -6,10 +6,8 @@ const fs = require('fs');
 const path = require('path');
 
 const audioDir = path.join(__dirname, '../content/audio');
-const devAudioDir = path.join(__dirname, '../dev/content/audio');
 
 if (!fs.existsSync(audioDir)) fs.mkdirSync(audioDir, { recursive: true });
-if (!fs.existsSync(devAudioDir)) fs.mkdirSync(devAudioDir, { recursive: true });
 
 const prompts = [
   { id: 'pt-test-audio', voice: 'en-US-JennyNeural', text: 'Welcome to stemOS. Audio check complete. Your speakers and speech synthesis are working perfectly.' },
@@ -29,11 +27,9 @@ console.log('🎙️ Generating High-Fidelity US Neural Audio for Placement Test
 
 prompts.forEach(p => {
   const mp3Path = path.join(audioDir, `${p.id}.mp3`);
-  const devMp3Path = path.join(devAudioDir, `${p.id}.mp3`);
   console.log(`Generating ${p.id}.mp3 with voice ${p.voice}...`);
   const cmd = `uv run --with edge-tts edge-tts --voice ${p.voice} --rate=-3% --text "${p.text.replace(/"/g, '\\"')}" --write-media "${mp3Path}"`;
   execSync(cmd, { stdio: 'inherit' });
-  fs.copyFileSync(mp3Path, devMp3Path);
 });
 
-console.log('✅ All 11 placement audio assets successfully generated and synced!');
+console.log('✅ All 11 placement audio assets successfully generated!');

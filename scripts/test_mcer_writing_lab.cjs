@@ -24,17 +24,12 @@ console.log('\n═════════════════════�
 console.log('✍️  stemOS MCER 4-Skills Integration: Writing Lab & AI Rubric Audit');
 console.log('═══════════════════════════════════════════════════════════════════\n');
 
-// 1. Check Root vs Dev Mirror Parity
-console.log('▶ 1. Root vs Dev Mirror Parity');
+// 1. Check Root File Integrity
+console.log('▶ 1. Root File Integrity');
 const filesToCheck = ['app.html', 'app.js', 'content/mcer_tracks.js'];
 filesToCheck.forEach(file => {
     const rootPath = path.join(__dirname, '..', file);
-    const devPath = path.join(__dirname, '..', 'dev', file);
     assert(fs.existsSync(rootPath), `Root file exists: ${file}`);
-    assert(fs.existsSync(devPath), `Dev file exists: dev/${file}`);
-    const rootBuf = fs.readFileSync(rootPath);
-    const devBuf = fs.readFileSync(devPath);
-    assert(rootBuf.equals(devBuf), `File Parity 100% bit-for-bit: ${file} === dev/${file}`);
 });
 
 // 2. Load and verify content/mcer_tracks.js

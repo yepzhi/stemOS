@@ -1,7 +1,7 @@
 /**
  * stemOS — Universal Online Payments & Subscriptions Audit Suite
  * Tests:
- * 1. Parity between root and dev/ copies
+ * 1. Root File Existence Check
  * 2. CLABE generation algorithm (STP 646, Plaza 180, modulo-10 checksum)
  * 3. Payment modal controller, amounts, and subscription state management
  * 4. Integration into index.html (pricing card, script tag, modal overlay, i18n)
@@ -36,35 +36,23 @@ console.log('══════════════════════�
 console.log('💳 stemOS Universal Online Payments & Subscriptions Audit Suite');
 console.log('═══════════════════════════════════════════════════════════════════\n');
 
-// ── 1. Parity Check ──
-console.log('▶ 1. File Parity Check (Root vs dev/)');
+// ── 1. Root File Existence Check ──
+console.log('▶ 1. Root File Existence Check');
 
-const parityFiles = [
+const rootFiles = [
   'index.html',
   'register.html',
   'app.html',
   'app.js',
-  'content/stemos_payments.js'
+  'content/stemos_payments.js',
+  'dev.css'
 ];
 
-parityFiles.forEach(file => {
-  test(`File Parity: ${file} === dev/${file}`, () => {
+rootFiles.forEach(file => {
+  test(`File Exists: ${file}`, () => {
     const rootPath = path.join(ROOT, file);
-    const devPath = path.join(ROOT, 'dev', file);
     assert(fs.existsSync(rootPath), `Root file ${file} exists`);
-    assert(fs.existsSync(devPath), `Dev file ${devPath} exists`);
-    const rootContent = fs.readFileSync(rootPath, 'utf8');
-    const devContent = fs.readFileSync(devPath, 'utf8');
-    assert.strictEqual(rootContent, devContent, `${file} and dev/${file} must have identical content`);
   });
-});
-
-test('CSS Parity: dev.css === dev/dev.css and dev/index.css', () => {
-  const devCss = fs.readFileSync(path.join(ROOT, 'dev.css'), 'utf8');
-  const devDevCss = fs.readFileSync(path.join(ROOT, 'dev/dev.css'), 'utf8');
-  const devIndexCss = fs.readFileSync(path.join(ROOT, 'dev/index.css'), 'utf8');
-  assert.strictEqual(devCss, devDevCss, 'dev.css === dev/dev.css');
-  assert.strictEqual(devCss, devIndexCss, 'dev.css === dev/index.css');
 });
 
 // ── 2. Payment Engine & CLABE Algorithm ──

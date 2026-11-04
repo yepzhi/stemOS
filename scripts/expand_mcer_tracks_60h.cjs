@@ -18,7 +18,6 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const outRoot = path.join(ROOT, 'content/mcer_tracks.js');
-const outDev = path.join(ROOT, 'dev/content/mcer_tracks.js');
 
 console.log('═══════════════════════════════════════════════════════════════════');
 console.log('🏗️  stemOS 60.0-Hour MCER Core Curriculum Builder');
@@ -1357,10 +1356,8 @@ const fileContent = `/**
 `;
 
 fs.writeFileSync(outRoot, fileContent, 'utf8');
-fs.writeFileSync(outDev, fileContent, 'utf8');
 
 console.log(`✅ Successfully generated 60.0h MCER catalog:`);
 console.log(`   - Root: ${outRoot} (${fileContent.length} bytes)`);
-console.log(`   - Dev:  ${outDev} (${fileContent.length} bytes)`);
 console.log(`   - 4 Levels (A1, A2, B1, B2) x 60.0h = 240.0h Total`);
 console.log(`   - 16 Comprehensive Units with Vocabulary, Dialogues, Readings, Crucibles, and Quizzes.`);

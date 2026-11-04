@@ -33,13 +33,9 @@ function test(name, fn) {
 
 // Files to audit
 const appHtml = fs.readFileSync(path.join(__dirname, '../app.html'), 'utf8');
-const devAppHtml = fs.readFileSync(path.join(__dirname, '../dev/app.html'), 'utf8');
 const appJs = fs.readFileSync(path.join(__dirname, '../app.js'), 'utf8');
-const devAppJs = fs.readFileSync(path.join(__dirname, '../dev/app.js'), 'utf8');
 const mcerTracks = require('../content/mcer_tracks.js');
-const devMcerTracksCode = fs.readFileSync(path.join(__dirname, '../dev/content/mcer_tracks.js'), 'utf8');
 const devCss = fs.readFileSync(path.join(__dirname, '../dev.css'), 'utf8');
-const devDevCss = fs.readFileSync(path.join(__dirname, '../dev/dev.css'), 'utf8');
 const adminHtml = fs.readFileSync(path.join(__dirname, '../admin.html'), 'utf8');
 const teacherHtml = fs.readFileSync(path.join(__dirname, '../teacher.html'), 'utf8');
 const tracksHtml = fs.readFileSync(path.join(__dirname, '../tracks.html'), 'utf8');
@@ -47,10 +43,6 @@ const registerHtml = fs.readFileSync(path.join(__dirname, '../register.html'), '
 const placementHtml = fs.readFileSync(path.join(__dirname, '../placement.html'), 'utf8');
 
 console.log('▶ 1. Fase 77: Nearshoring Voice Crucible Live Audio Recording & VU Meter');
-
-test('app.html and dev/app.html are 100% in sync for Voice Crucible', () => {
-  assert.strictEqual(appHtml, devAppHtml, 'app.html and dev/app.html must have exact bit-for-bit parity');
-});
 
 test('app.html contains mic status badge (#mcer-crucible-mic-status)', () => {
   assert(appHtml.includes('id="mcer-crucible-mic-status"'), 'Missing #mcer-crucible-mic-status badge');
@@ -73,10 +65,6 @@ test('app.html contains recorded audio playback bar and duration timer', () => {
   assert(appHtml.includes('id="btn-mcer-crucible-play-recorded"'), 'Missing #btn-mcer-crucible-play-recorded');
   assert(appHtml.includes('id="mcer-crucible-recorded-duration"'), 'Missing #mcer-crucible-recorded-duration');
   assert(appHtml.includes('id="btn-mcer-crucible-clear-audio"'), 'Missing #btn-mcer-crucible-clear-audio');
-});
-
-test('app.js and dev/app.js are 100% in sync for crucible logic', () => {
-  assert.strictEqual(appJs, devAppJs, 'app.js and dev/app.js must have exact bit-for-bit parity');
 });
 
 test('app.js defines triggerVuSimulation and RMS decibel calculator', () => {
@@ -130,11 +118,6 @@ test('mcer_tracks.js exports verifyCredentialHash that validates CACEI folios', 
   assert.strictEqual(result.accreditedHours, 60.0);
 });
 
-test('content/mcer_tracks.js and dev/content/mcer_tracks.js are 100% in sync', () => {
-  const rootMcerCode = fs.readFileSync(path.join(__dirname, '../content/mcer_tracks.js'), 'utf8');
-  assert.strictEqual(rootMcerCode, devMcerTracksCode, 'mcer_tracks.js must have 100% parity with dev mirror');
-});
-
 test('app.html contains #modal-verifiable-credential with QR, SHA-256 and JSON-LD', () => {
   assert(appHtml.includes('id="modal-verifiable-credential"'), 'Missing #modal-verifiable-credential');
   assert(appHtml.includes('id="vc-modal-qr-container"'), 'Missing #vc-modal-qr-container');
@@ -161,7 +144,6 @@ test('dev.css defines WCAG 2.1 AA high-contrast and light theme rules', () => {
   assert(devCss.includes('html.theme-high-contrast'), 'Missing html.theme-high-contrast in dev.css');
   assert(devCss.includes('--border-color: #facc15'), 'High-contrast must define gold border color');
   assert(devCss.includes('html.theme-light body'), 'Missing html.theme-light body style in dev.css');
-  assert.strictEqual(devCss, devDevCss, 'dev.css and dev/dev.css must have exact bit-for-bit parity');
 });
 
 test('All 6 portals implement initThemeSynchronizer with storage listener', () => {

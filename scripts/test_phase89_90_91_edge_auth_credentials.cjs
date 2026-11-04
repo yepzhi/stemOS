@@ -109,18 +109,17 @@ test('app.js requests server-side proof from /api/credentials/sign when exportin
   assert(appJs.includes("cryptosuite: 'stemos-ed25519-hmac-sha256-2026'"), 'app.js must attach cryptographic suite metadata');
 });
 
-test('Root and dev/ mirror files remain 100% identical', () => {
-  const pairs = [
+test('Root core files exist and are non-empty', () => {
+  const rootFiles = [
     'app.js',
     'admin.html',
     'teacher.html',
     'content/gemini_service.js',
     'content/firebase_adapter.js'
   ];
-  for (const rel of pairs) {
+  for (const rel of rootFiles) {
     const a = fs.readFileSync(path.join(ROOT, rel), 'utf8');
-    const b = fs.readFileSync(path.join(ROOT, 'dev', rel), 'utf8');
-    assert.strictEqual(a, b, `Parity mismatch between ${rel} and dev/${rel}`);
+    assert(a.length > 0, `Root file ${rel} is empty or missing`);
   }
 });
 

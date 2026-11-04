@@ -39,23 +39,8 @@ console.log('══════════════════════�
 console.log('▶ 1. Google Sign-In Flow & Zero "SSO" UI Verification');
 
 const placementHtml = fs.readFileSync(path.join(ROOT, 'placement.html'), 'utf8');
-const devPlacementHtml = fs.readFileSync(path.join(ROOT, 'dev/placement.html'), 'utf8');
 const registerHtml = fs.readFileSync(path.join(ROOT, 'register.html'), 'utf8');
-const devRegisterHtml = fs.readFileSync(path.join(ROOT, 'dev/register.html'), 'utf8');
 const indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-const devIndexHtml = fs.readFileSync(path.join(ROOT, 'dev/index.html'), 'utf8');
-
-test('Parity check: placement.html <==> dev/placement.html', () => {
-  assert.strictEqual(placementHtml, devPlacementHtml, 'placement.html must match dev/placement.html');
-});
-
-test('Parity check: register.html <==> dev/register.html', () => {
-  assert.strictEqual(registerHtml, devRegisterHtml, 'register.html must match dev/register.html');
-});
-
-test('Parity check: index.html <==> dev/index.html', () => {
-  assert.strictEqual(indexHtml, devIndexHtml, 'index.html must match dev/index.html');
-});
 
 test('placement.html uses "Continuar con Google" and has GoogleAuthProvider integration', () => {
   assert(placementHtml.includes('Continuar con Google') || placementHtml.includes('Google'), 'Missing Google button label in placement.html');
@@ -81,11 +66,6 @@ test('No user-facing "SSO" jargon in primary buttons or hero navigation', () => 
 console.log('\n▶ 2. Placement Diagnostic Complete Database Storage Audit');
 
 const firebaseAdapterJs = fs.readFileSync(path.join(ROOT, 'content/firebase_adapter.js'), 'utf8');
-const devFirebaseAdapterJs = fs.readFileSync(path.join(ROOT, 'dev/content/firebase_adapter.js'), 'utf8');
-
-test('Parity check: content/firebase_adapter.js <==> dev/content/firebase_adapter.js', () => {
-  assert.strictEqual(firebaseAdapterJs, devFirebaseAdapterJs, 'firebase_adapter.js must match dev/content/firebase_adapter.js');
-});
 
 test('placement.html finishQuiz persists all required keys to localStorage', () => {
   assert(placementHtml.includes("localStorage.setItem(`stemos_diag_${state.student.folio}`"), 'Missing stemos_diag_folio');
@@ -118,20 +98,10 @@ test('firebase_adapter.js savePlacementDiagnostic saves student with all metadat
 console.log('\n▶ 3. Cross-Site Ecosystem Platform Compatibility Audit');
 
 const appHtml = fs.readFileSync(path.join(ROOT, 'app.html'), 'utf8');
-const devAppHtml = fs.readFileSync(path.join(ROOT, 'dev/app.html'), 'utf8');
 const appJs = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8');
-const devAppJs = fs.readFileSync(path.join(ROOT, 'dev/app.js'), 'utf8');
 const teacherHtml = fs.readFileSync(path.join(ROOT, 'teacher.html'), 'utf8');
 const adminHtml = fs.readFileSync(path.join(ROOT, 'admin.html'), 'utf8');
 const tracksHtml = fs.readFileSync(path.join(ROOT, 'tracks.html'), 'utf8');
-
-test('Parity check: app.html <==> dev/app.html', () => {
-  assert.strictEqual(appHtml, devAppHtml, 'app.html must match dev/app.html');
-});
-
-test('Parity check: app.js <==> dev/app.js', () => {
-  assert.strictEqual(appJs, devAppJs, 'app.js must match dev/app.js');
-});
 
 test('app.html & app.js implement hasCompletedPlacement() checking all diagnostic keys', () => {
   assert(appJs.includes('function hasCompletedPlacement()'), 'Missing hasCompletedPlacement function in app.js');
@@ -166,11 +136,6 @@ test('teacher.html and admin.html synchronize students via STEMOS_FIREBASE', () 
 console.log('\n▶ 4. MCER Curricular Tracks Expansion & Helper Methods Audit');
 
 const mcerTracksJs = fs.readFileSync(path.join(ROOT, 'content/mcer_tracks.js'), 'utf8');
-const devMcerTracksJs = fs.readFileSync(path.join(ROOT, 'dev/content/mcer_tracks.js'), 'utf8');
-
-test('Parity check: content/mcer_tracks.js <==> dev/content/mcer_tracks.js', () => {
-  assert.strictEqual(mcerTracksJs, devMcerTracksJs, 'mcer_tracks.js must match dev/content/mcer_tracks.js');
-});
 
 const mcerModule = require(path.join(ROOT, 'content/mcer_tracks.js'));
 

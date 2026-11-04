@@ -37,17 +37,7 @@ console.log('══════════════════════�
 console.log('▶ 1. Fase 75: Student Profile Modal Diagnostic Passport Strip');
 
 const appHtml = fs.readFileSync(path.join(ROOT, 'app.html'), 'utf8');
-const devAppHtml = fs.readFileSync(path.join(ROOT, 'dev/app.html'), 'utf8');
 const appJs = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8');
-const devAppJs = fs.readFileSync(path.join(ROOT, 'dev/app.js'), 'utf8');
-
-test('Parity check: app.html <==> dev/app.html', () => {
-  assert.strictEqual(appHtml, devAppHtml, 'app.html must match dev/app.html');
-});
-
-test('Parity check: app.js <==> dev/app.js', () => {
-  assert.strictEqual(appJs, devAppJs, 'app.js must match dev/app.js');
-});
 
 test('app.html contains #sp-modal-cefr-badge, #sp-modal-modality, and #sp-modal-folio', () => {
   assert(appHtml.includes('id="sp-modal-cefr-badge"'), 'Missing #sp-modal-cefr-badge in app.html');
@@ -72,11 +62,6 @@ test('app.js openStudentProfileModal populates CEFR diagnostic passport credenti
 console.log('\n▶ 2. Fase 76: Teacher Portal Cohort MCER Analytics & Roster Sync');
 
 const teacherHtml = fs.readFileSync(path.join(ROOT, 'teacher.html'), 'utf8');
-const devTeacherHtml = fs.readFileSync(path.join(ROOT, 'dev/teacher.html'), 'utf8');
-
-test('Parity check: teacher.html <==> dev/teacher.html', () => {
-  assert.strictEqual(teacherHtml, devTeacherHtml, 'teacher.html must match dev/teacher.html');
-});
 
 test('teacher.html synchronizes placementLevel, cefrScore, and degreeModality from STEMOS_FIREBASE', () => {
   assert(teacherHtml.includes('placementLevel: fbs.cefrLevel'), 'teacher.html maps placementLevel from fbs.cefrLevel');
@@ -97,11 +82,6 @@ test('teacher.html renderMcerGradebook renders CEFR badges and accredited hours'
 console.log('\n▶ 3. Fase 76: Admin Portal Cohort MCER Analytics & Audit Sync');
 
 const adminHtml = fs.readFileSync(path.join(ROOT, 'admin.html'), 'utf8');
-const devAdminHtml = fs.readFileSync(path.join(ROOT, 'dev/admin.html'), 'utf8');
-
-test('Parity check: admin.html <==> dev/admin.html', () => {
-  assert.strictEqual(adminHtml, devAdminHtml, 'admin.html must match dev/admin.html');
-});
 
 test('admin.html synchronizes placementLevel and degreeModality from STEMOS_FIREBASE', () => {
   assert(adminHtml.includes('placementLevel: fbs.cefrLevel'), 'admin.html maps placementLevel from fbs.cefrLevel');

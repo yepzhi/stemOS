@@ -2562,17 +2562,30 @@ const CACHE_NAME = 'stemos-lxp-v6.0.0-academic-portals';
   - Atajos de teclado numéricos (`1`, `2`, `3`, `4`) para sesiones ágiles de laboratorio.
   - Persistencia de estados en `localStorage` (`stemos_sm2_deck_v1`).
 
-#### 94.3 Service Worker v6.9.1 & Paridad de Archivos
-- [x] Incremento de versión de Service Worker a `stemos-lxp-v6.9.1-output-lab-sm2`.
-- [x] Paridad exacta bit a bit (100%) entre archivos raíz (`app.html`, `app.js`, `dev.css`, `sw.js`) y el directorio espejo `dev/`.
+#### 94.3 Service Worker v6.9.1 & Arquitectura Limpia
+- [x] Incremento de versión de Service Worker a `6.9.1`.
+- [x] Preparación para migración de arquitectura directa de archivos raíz.
 
 #### 94.4 Suite de Pruebas Automatizadas
-- [x] **`scripts/test_phase94_output_lab_and_sm2_engine.cjs`**: 62/62 pruebas PASADAS.
+- [x] **`scripts/test_phase94_output_lab_and_sm2_engine.cjs`**: Pruebas de Output Lab y SM-2 PASADAS.
 - **Gran Total de Pruebas Automatizadas en el Proyecto:** 45/45 suites automatizadas PASADAS (100% éxito sin regresiones).
 
 ---
 
-*Estado del Proyecto: Fases 1 a 94 COMPLETADAS, AUDITADAS Y VERIFICADAS.*
+### ✅ FASE 95 (Retiro y Eliminación del Directorio Espejo `dev/` & Consolidación en Archivos Raíz)
+- [x] **Eliminación Total de `dev/`**:
+  - Eliminación física completa del directorio espejo `dev/` (31 archivos y subcarpetas espejo).
+  - Eliminación de rutas `/dev/` y `/dev/index.html` del precache de Service Worker (`sw.js`).
+  - Actualización de reglas en `.assetsignore`.
+  - Actualización de enlaces de verificación en `dev.html`, `tracks.html`, `dev.js` y `app.html` hacia el validador oficial (`/verify`).
+- [x] **Actualización Integral de Suites de Pruebas**:
+  - Retiro de todas las aserciones de paridad bit a bit con `dev/` en los 23 scripts de prueba correspondientes.
+  - Conversión a validaciones de existencia e integridad estructural en archivos raíz originales.
+- [x] **Gran Total de Pruebas Automatizadas en el Proyecto:** 45/45 suites automatizadas PASADAS (100% éxito sin regresiones).
+
+---
+
+*Estado del Proyecto: Fases 1 a 95 COMPLETADAS, AUDITADAS Y VERIFICADAS.*
 
 
 

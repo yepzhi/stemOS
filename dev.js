@@ -7358,7 +7358,7 @@ function setupCertificatesAndCloudSync(tracks) {
     if (displayFolio) displayFolio.textContent = folio;
     if (displayHash) displayHash.textContent = hash;
 
-    const verificationUrl = `https://stemos.org/dev/?verify=${folio}`;
+    const verificationUrl = `https://stemos.org/verify/?id=${folio}`;
     renderQrSvg(verificationUrl, displayQr);
 
     // Persist in localStorage
@@ -7395,7 +7395,7 @@ function setupCertificatesAndCloudSync(tracks) {
 
   window.copyCertificateVerificationLink = function() {
     const folio = currentCertificate.folio || "STEM-ISO9001-2026-TJ-84920";
-    const url = `https://stemos.org/dev/?verify=${folio}`;
+    const url = `https://stemos.org/verify/?id=${folio}`;
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(url).then(() => {
         const btn = document.getElementById('btn-copy-cert-url');
@@ -7569,7 +7569,7 @@ function setupCertificatesAndCloudSync(tracks) {
   // Initial render of the default certificate QR code
   const initialQrBox = document.getElementById('cert-display-qr');
   if (initialQrBox) {
-    renderQrSvg(`https://stemos.org/dev/?verify=STEM-ISO9001-2026-TJ-84920`, initialQrBox);
+    renderQrSvg(`https://stemos.org/verify/?id=STEM-ISO9001-2026-TJ-84920`, initialQrBox);
   }
 }
 
@@ -10514,7 +10514,7 @@ function setupCapstoneBoardExam(tracks) {
     modal.style.display = 'flex';
 
     const qrContainer = document.getElementById('capstone-qr-container');
-    renderCapstoneQrSvg('https://stemos.org/dev/?verify=STEM-CAPSTONE-2026-0042', qrContainer);
+    renderCapstoneQrSvg('https://stemos.org/verify/?id=STEM-CAPSTONE-2026-0042', qrContainer);
   };
 
   window.closeCapstoneDiplomaModal = function() {
@@ -11724,7 +11724,7 @@ function setupActivePathHUDAndW3CCert(tracks) {
     // Generate dynamic QR Code for W3C verification
     if (w3cQrContainer) {
       const folio = 'W3C-BADGE3-PATH60H-2026';
-      const verifyUrl = `https://stemos.org/dev/?verify=${folio}`;
+      const verifyUrl = `https://stemos.org/verify/?id=${folio}`;
       const size = 17;
       const cellSize = 4;
       let rects = '';
@@ -11760,7 +11760,7 @@ function setupActivePathHUDAndW3CCert(tracks) {
   };
 
   window.copyCareerPathW3CLink = function(btn) {
-    const url = 'https://stemos.org/dev/?verify=W3C-BADGE3-PATH60H-2026';
+    const url = 'https://stemos.org/verify/?id=W3C-BADGE3-PATH60H-2026';
     const showCopied = (el) => {
       if (!el) return;
       const original = el.innerHTML;
@@ -12137,7 +12137,7 @@ window.sharePortfolioToLinkedIn = function() {
   const org = encodeURIComponent('stemOS LXP');
   const issueYear = new Date().getFullYear();
   const issueMonth = new Date().getMonth() + 1;
-  const certUrl = encodeURIComponent('https://stemos.org/dev/?verify=W3C-BADGE3-PATH60H-2026');
+  const certUrl = encodeURIComponent('https://stemos.org/verify/?id=W3C-BADGE3-PATH60H-2026');
   const certId = encodeURIComponent('W3C-BADGE3-PATH60H-2026');
   const liUrl = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${name}&organizationId=&issueYear=${issueYear}&issueMonth=${issueMonth}&certUrl=${certUrl}&certId=${certId}`;
   window.open(liUrl, '_blank', 'noopener');
@@ -12148,7 +12148,7 @@ window.copyPortfolioVerifyLink = function(btn) {
   let stored = {};
   try { stored = JSON.parse(localStorage.getItem('stemos_stackable_badges_v1') || '{}'); } catch (_) {}
   const topHash = stored[4] ? stored[4].hash.replace('SHA256: ', '') : 'W3C-BADGE3-PATH60H-2026';
-  const url = `https://stemos.org/dev/?verify=${topHash}`;
+  const url = `https://stemos.org/verify/?id=${topHash}`;
   const showCopied = (el) => {
     if (!el) return;
     const orig = el.innerHTML;
@@ -14652,7 +14652,7 @@ ${summary}
 - **Credential**: Fellowship in Advanced Nearshoring Engineering (60.0 Standardized Hours)
 - **Authority**: stemOS Foundation LXP & TecNM Consortium
 - **Cryptographic Hash**: ${hash}
-- **Verification Portal**: https://stemos.org/dev/?verify=STEM-W3C-2026-MEC-91024
+- **Verification Portal**: https://stemos.org/verify/?id=STEM-W3C-2026-MEC-91024
 
 ## ENGINEERING EXPERIENCE & QUANTITATIVE PLANT IMPACT (GOOGLE XYZ FORMULA)
 ### Lead Process & Quality Engineering Resident | Saltillo Powertrain & EV Facility

@@ -7,7 +7,7 @@
  * 3. 100% of data-i18n keys are fully defined in STEMOS_I18N.en and STEMOS_I18N.es.
  * 4. Language switching bidirectionally updates the entire DOM, document.title, 
  *    input placeholders, active pill classes, and dynamic reality gap drill.
- * 5. Bit-for-bit file parity is maintained between index.html and dev/index.html.
+ * 5. Full bilingual coverage across index.html.
  */
 
 const fs = require('fs');
@@ -15,7 +15,6 @@ const path = require('path');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 const indexPath = path.join(ROOT_DIR, 'index.html');
-const devIndexPath = path.join(ROOT_DIR, 'dev', 'index.html');
 
 let html = fs.readFileSync(indexPath, 'utf8');
 
@@ -1332,9 +1331,8 @@ console.log(`✨ All ${allI18n.length} [data-i18n] elements verified with 100% b
 // Serialize and write
 const finalHtml = dom.serialize();
 fs.writeFileSync(indexPath, finalHtml, 'utf8');
-fs.writeFileSync(devIndexPath, finalHtml, 'utf8');
 
-console.log(`💾 Successfully synchronized index.html and dev/index.html (${finalHtml.length} bytes).`);
+console.log(`💾 Successfully built index.html (${finalHtml.length} bytes).`);
 
 module.exports = { STEMOS_I18N };
 
