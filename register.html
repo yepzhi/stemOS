@@ -2271,16 +2271,53 @@
             updateCareerSummaryText();
             setRegisterLanguage(currentRegisterLang);
 
+            // Fast Session Check: If student already registered or logged in, route directly to app without restarting wizard
+            const urlParams = new URLSearchParams(window.location.search);
+            const isForceNew = urlParams.get('force') === 'true' || urlParams.get('reset') === 'true';
+            if (!isForceNew) {
+                try {
+                    const localProfile = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
+                    if (localProfile && localProfile.name && (localProfile.careerId || localProfile.careerName)) {
+                        console.info('[stemOS Register] Active profile detected in localStorage. Redirecting to platform...');
+                        setTimeout(() => { window.location.replace('/app.html'); }, 300);
+                        return;
+                    }
+                } catch(_) {}
+            }
+
             // Check for Google Auth Redirect result (Seamless return from mobile/browser redirect)
             ensureFirebaseAuthReady().then(ready => {
                 if (ready && typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
-                    firebase.auth().getRedirectResult().then(result => {
+                    // Check active user session observer
+                    firebase.auth().onAuthStateChanged(async (currentUser) => {
+                        if (currentUser && !isForceNew) {
+                            if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.fetchStudentFullProgressFromCloud === 'function') {
+                                const cloudData = await window.STEMOS_FIREBASE.fetchStudentFullProgressFromCloud(currentUser.uid);
+                                if (cloudData && (cloudData.onboardingCompleted || cloudData.level || cloudData.careerId)) {
+                                    console.info('[stemOS Register] Firestore profile found. Redirecting to app...');
+                                    window.location.replace('/app.html');
+                                    return;
+                                }
+                            }
+                        }
+                    });
+
+                    firebase.auth().getRedirectResult().then(async (result) => {
                         const user = result && result.user;
                         if (user) {
                             const email = user.email || '';
                             const fullName = user.displayName || (email ? email.split('@')[0] : 'Estudiante');
                             const photoURL = user.photoURL || '';
                             const uid = user.uid || '';
+
+                            // Check if student is already in cloud
+                            if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.fetchStudentFullProgressFromCloud === 'function') {
+                                const cloudData = await window.STEMOS_FIREBASE.fetchStudentFullProgressFromCloud(uid);
+                                if (cloudData && (cloudData.onboardingCompleted || cloudData.level || cloudData.careerId)) {
+                                    window.location.replace('/app.html');
+                                    return;
+                                }
+                            }
 
                             const matriculaMatch = email.match(/\d{6,10}/);
                             const matricula = matriculaMatch ? matriculaMatch[0] : ('2026' + Math.floor(1000 + Math.random() * 9000));
@@ -2718,6 +2755,48 @@
                         const fullName = user.displayName || (email ? email.split('@')[0] : 'Estudiante');
                         const photoURL = user.photoURL || '';
                         const uid = user.uid || '';
+
+                        // If student already has completed onboarding or progress in Firestore, restore and route directly to app
+                        if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.fetchStudentFullProgressFromCloud === 'function') {
+                            const cloudProfile = await window.STEMOS_FIREBASE.fetchStudentFullProgressFromCloud(uid);
+                            if (cloudProfile && (cloudProfile.onboardingCompleted || cloudProfile.level || cloudProfile.careerId)) {
+                                if (cloudProfile.xp) localStorage.setItem('stemos_student_xp', String(cloudProfile.xp));
+                                if (cloudProfile.streak) localStorage.setItem('stemos_daily_streak', String(cloudProfile.streak));
+                                if (cloudProfile.caceiHours) localStorage.setItem('stemos_cacei_accredited_hours', String(cloudProfile.caceiHours));
+                                if (cloudProfile.level) {
+                                    localStorage.setItem('stemos_user_level', cloudProfile.level);
+                                    localStorage.setItem('stemos_active_mcer_level', cloudProfile.level);
+                                }
+                                if (cloudProfile.duoProgress) localStorage.setItem('stemos_duo_progress', JSON.stringify(cloudProfile.duoProgress));
+                                if (cloudProfile.placementTest) localStorage.setItem('stemos_placement_test', JSON.stringify(cloudProfile.placementTest));
+                                if (cloudProfile.displayName) localStorage.setItem('stemos_student_name', cloudProfile.displayName);
+
+                                const restoredProfile = {
+                                    name: cloudProfile.displayName || fullName,
+                                    fullName: cloudProfile.displayName || fullName,
+                                    email: email,
+                                    photoURL: photoURL,
+                                    matricula: cloudProfile.matricula || ('2026' + Math.floor(1000 + Math.random() * 9000)),
+                                    campus: cloudProfile.campus || 'TecNM Tijuana (ITT)',
+                                    subsystem: cloudProfile.subsystem || 'it',
+                                    careerId: cloudProfile.careerId || 'it-mecatronica',
+                                    careerName: cloudProfile.careerName || 'Ingeniería Mecatrónica',
+                                    hub: cloudProfile.hub || 'Tijuana / Frontera'
+                                };
+                                localStorage.setItem('stemos_student_profile', JSON.stringify(restoredProfile));
+                                localStorage.setItem('stemos_auth_user', JSON.stringify({
+                                    uid: uid,
+                                    email: email,
+                                    displayName: restoredProfile.name,
+                                    photoURL: photoURL,
+                                    role: 'student'
+                                }));
+
+                                if (ssoBtn) ssoBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Redirigiendo a tu plataforma...';
+                                window.location.replace('/app.html');
+                                return;
+                            }
+                        }
 
                         const matriculaMatch = email.match(/\d{6,10}/);
                         const matricula = matriculaMatch ? matriculaMatch[0] : ('2026' + Math.floor(1000 + Math.random() * 9000));
@@ -3449,6 +3528,29 @@
                 role: 'student'
             }));
             localStorage.setItem('stemos_backdoor', 'true');
+
+            // Save full profile and initial onboarding state to Cloud Firestore
+            if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.saveStudentFullProgressToCloud === 'function') {
+                try {
+                    window.STEMOS_FIREBASE.saveStudentFullProgressToCloud({
+                        uid: d.uid || '',
+                        displayName: d.fullName,
+                        email: d.email,
+                        photoURL: d.photoURL || '',
+                        matricula: d.matricula,
+                        campus: d.campus || 'TecNM Tijuana (ITT)',
+                        subsystem: d.subsystem || 'it',
+                        degreeModality: d.degreeModality || 'lic',
+                        careerId: activeCareerKey,
+                        careerName: d.careerName || profile.careerName,
+                        level: localStorage.getItem('stemos_user_level') || 'A1',
+                        xp: 0,
+                        caceiHours: 0.0,
+                        streak: 1,
+                        onboardingCompleted: true
+                    });
+                } catch(_) {}
+            }
 
             // Button feedback & routing
             let hasPlacement = false;

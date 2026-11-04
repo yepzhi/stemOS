@@ -4521,6 +4521,39 @@
           }
         }, 1200);
       }
+
+      // Check active student session and adapt navigation to direct platform access
+      function updateNavForLoggedInUser(profileName) {
+        const signupBtns = document.querySelectorAll('.btn-signup-nav-primary, .btn-signup-pill');
+        signupBtns.forEach(btn => {
+          btn.href = '/app.html';
+          btn.title = 'Ir a mi Plataforma stemOS';
+          const span = btn.querySelector('.shiny-text');
+          if (span) span.textContent = 'Mi Plataforma (App)';
+        });
+        const heroCta = document.querySelector('.cx-step-btn');
+        if (heroCta) {
+          heroCta.href = '/app.html';
+          heroCta.textContent = 'Continuar Aprendiendo ↗';
+        }
+      }
+
+      try {
+        const profile = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
+        if (profile && (profile.name || profile.fullName)) {
+          updateNavForLoggedInUser(profile.name || profile.fullName);
+        }
+      } catch(_) {}
+
+      if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+        try {
+          firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+              updateNavForLoggedInUser(user.displayName || 'Estudiante');
+            }
+          });
+        } catch(_) {}
+      }
     });
   </script>
 

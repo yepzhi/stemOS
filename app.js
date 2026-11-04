@@ -136,6 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btnWorldMcer) btnWorldMcer.click();
         const mcerFilterA1 = document.querySelector('#mcer-level-filter-bar .ed-filter-chip[data-mcer-level="A1"]');
         if (mcerFilterA1) mcerFilterA1.click();
+        if (typeof window.syncStudentProgressToFirestore === 'function') {
+            window.syncStudentProgressToFirestore();
+        }
         setTimeout(() => {
             openMcerUnitModal('a1-u1', false);
         }, 150);
@@ -202,6 +205,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (typeof syncUserPlacementBadge === 'function') {
             syncUserPlacementBadge();
+        }
+
+        if (typeof window.syncStudentProgressToFirestore === 'function') {
+            window.syncStudentProgressToFirestore();
         }
 
         alert("¡Nivel 0 Acreditado por Renuncia (Waiver)! Tu perfil está listo en Nivel A1.");
@@ -418,6 +425,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (window.StemOSWorldMap && typeof window.StemOSWorldMap.syncProgress === 'function') {
             window.StemOSWorldMap.syncProgress();
+        }
+        if (typeof window.syncStudentProgressToFirestore === 'function') {
+            window.syncStudentProgressToFirestore();
         }
     }
 
@@ -3082,6 +3092,184 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /* --- 6.2 FULL CLOUD FIRESTORE PROGRESS & PROFILE SYNC ENGINE --- */
+    let _syncDebounceTimer = null;
+    window.syncStudentProgressToFirestore = async function(immediate) {
+        if (!immediate) {
+            if (_syncDebounceTimer) clearTimeout(_syncDebounceTimer);
+            _syncDebounceTimer = setTimeout(() => {
+                window.syncStudentProgressToFirestore(true);
+            }, 1200);
+            return;
+        }
+
+        if (!window.STEMOS_FIREBASE || typeof window.STEMOS_FIREBASE.saveStudentFullProgressToCloud !== 'function') {
+            return false;
+        }
+
+        let profile = null;
+        try {
+            const raw = localStorage.getItem('stemos_student_profile');
+            if (raw) profile = JSON.parse(raw);
+        } catch(e) {}
+
+        let duoProgress = {};
+        try {
+            duoProgress = JSON.parse(localStorage.getItem('stemos_duo_progress') || '{}');
+        } catch(e) {}
+
+        let userProg = {};
+        try {
+            userProg = JSON.parse(localStorage.getItem('stemos_user_progress') || '{}');
+        } catch(e) {}
+
+        let placementTest = null;
+        try {
+            const rawP = localStorage.getItem('stemos_placement_test');
+            if (rawP) placementTest = JSON.parse(rawP);
+        } catch(e) {}
+
+        const xp = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10);
+        const streak = parseInt(localStorage.getItem('stemos_daily_streak') || '1', 10);
+        const caceiHours = parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '15.0');
+        const level = localStorage.getItem('stemos_user_level') || 'A1';
+        const activeMcerLevel = localStorage.getItem('stemos_active_mcer_level') || level;
+        const ttsSpeed = localStorage.getItem('stemos_tts_playback_rate') || '1.0';
+        const diagFolio = localStorage.getItem('stemos_diag_folio') || '';
+        const placementCompleted = localStorage.getItem('stemos_placement_completed') === 'true';
+
+        const payload = {
+            profile: profile,
+            xp: xp,
+            streak: streak,
+            lastStudyDate: localStorage.getItem('stemos_last_study_date') || new Date().toISOString().slice(0, 10),
+            caceiHours: caceiHours,
+            level: level,
+            activeMcerLevel: activeMcerLevel,
+            duoProgress: duoProgress,
+            userProgress: userProg,
+            placementTest: placementTest,
+            placementCompleted: placementCompleted,
+            diagFolio: diagFolio,
+            ttsSpeed: ttsSpeed,
+            onboardingCompleted: true,
+            institutionId: (profile && (profile.subsystem || profile.system)) || 'tecnm-saltillo'
+        };
+
+        const success = await window.STEMOS_FIREBASE.saveStudentFullProgressToCloud(payload);
+        if (success) {
+            localStorage.setItem('stemos_last_cloud_sync', new Date().toISOString());
+            const lastSyncEl = document.getElementById('sp-modal-last-sync');
+            if (lastSyncEl) {
+                const now = new Date();
+                lastSyncEl.textContent = `• Sincronizado: ${now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+            }
+        }
+        return success;
+    };
+
+    window.forceSyncStudentProgressNow = async function() {
+        const btn = document.getElementById('btn-force-cloud-sync');
+        const origHtml = btn ? btn.innerHTML : '';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sincronizando...`;
+        }
+        try {
+            await window.syncStudentProgressToFirestore(true);
+            if (btn) {
+                btn.innerHTML = `<i class="fa-solid fa-check" style="color:#10b981;"></i> ¡Sincronizado!`;
+                setTimeout(() => {
+                    btn.innerHTML = origHtml;
+                    btn.disabled = false;
+                }, 2000);
+            }
+        } catch(e) {
+            if (btn) {
+                btn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Error`;
+                setTimeout(() => {
+                    btn.innerHTML = origHtml;
+                    btn.disabled = false;
+                }, 2000);
+            }
+        }
+    };
+
+    window.setAudioSpeedFromProfile = function(speed) {
+        const s = parseFloat(speed) || 1.0;
+        localStorage.setItem('stemos_tts_playback_rate', String(s));
+        if (window.STEMOS_TTS && typeof window.STEMOS_TTS.setSpeed === 'function') {
+            window.STEMOS_TTS.setSpeed(s);
+        }
+        if (typeof updateDuoHudUI === 'function') updateDuoHudUI();
+        document.querySelectorAll('.sp-speed-pill').forEach(pill => {
+            const sp = parseFloat(pill.getAttribute('data-speed'));
+            if (Math.abs(sp - s) < 0.05) {
+                pill.style.background = '#0ea5e9';
+                pill.style.color = '#ffffff';
+                pill.style.borderColor = '#38bdf8';
+                pill.classList.add('active');
+            } else {
+                pill.style.background = 'rgba(255,255,255,0.06)';
+                pill.style.color = '#94a3b8';
+                pill.style.borderColor = 'rgba(255,255,255,0.12)';
+                pill.classList.remove('active');
+            }
+        });
+        if (typeof window.syncStudentProgressToFirestore === 'function') {
+            window.syncStudentProgressToFirestore();
+        }
+    };
+
+    window.confirmResetAllStudentProgress = async function() {
+        const confirmed = confirm(
+            "⚠️ REINICIAR TODO MI PROGRESO EN STEMOS\n\n" +
+            "¿Confirmas que deseas reiniciar todas tus estadísticas a cero?\n\n" +
+            "• Puntos XP: Se restablecen a 0 XP\n" +
+            "• Racha diaria: Se restablece a 1 día\n" +
+            "• Horas CACEI: Se restablecen a 0.0 hrs\n" +
+            "• Lecciones Duolingo completadas: Se restablecen a 0\n" +
+            "• Nivel MCER: Se restablece a A1 (Principiante Absoluto)\n" +
+            "• Examen Diagnóstico / Folio: Se borra para permitir volver a presentarlo\n\n" +
+            "Esta acción sincronizará el reinicio tanto en este dispositivo como en tu cuenta de Cloud Firestore.\n\n" +
+            "¿Deseas continuar?"
+        );
+        if (!confirmed) return;
+
+        let uid = null;
+        if (typeof firebase !== 'undefined' && firebase.auth && firebase.auth().currentUser) {
+            uid = firebase.auth().currentUser.uid;
+        }
+        let instId = 'tecnm-saltillo';
+        try {
+            const p = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
+            if (p.subsystem || p.system) instId = p.subsystem || p.system;
+        } catch(e) {}
+
+        if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.resetStudentProgress === 'function') {
+            try {
+                await window.STEMOS_FIREBASE.resetStudentProgress(uid, instId);
+            } catch(e) {
+                console.warn('[stemOS] Reset cloud error:', e);
+            }
+        } else {
+            localStorage.setItem('stemos_student_xp', '0');
+            localStorage.setItem('stemos_daily_streak', '1');
+            localStorage.setItem('stemos_cacei_accredited_hours', '0.00');
+            localStorage.setItem('stemos_user_level', 'A1');
+            localStorage.setItem('stemos_active_mcer_level', 'A1');
+            localStorage.setItem('stemos_duo_progress', JSON.stringify({}));
+            localStorage.setItem('stemos_user_progress', JSON.stringify({ xp: 0, nodeStatuses: {} }));
+            localStorage.removeItem('stemos_placement_test');
+            localStorage.removeItem('stemos_placement_completed');
+            localStorage.removeItem('stemos_diag_folio');
+            localStorage.removeItem('stemos_diag_status');
+        }
+
+        alert('¡Tu progreso ha sido reiniciado a cero con éxito! La plataforma se recargará para que puedas empezar tu ruta desde cero.');
+        window.location.reload();
+    };
+
     window.openStudentProfileModal = function() {
         const modal = document.getElementById('student-profile-modal');
         if (!modal) return;
@@ -3099,36 +3287,105 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const nameEl = document.getElementById('sp-modal-name');
         const matriculaEl = document.getElementById('sp-modal-matricula');
+        const campusEl = document.getElementById('sp-modal-campus');
         const careerEl = document.getElementById('sp-modal-career');
+        const avatarBoxText = document.getElementById('sp-modal-avatar-text');
         const hubEl = document.getElementById('sp-modal-hub');
         const classEl = document.getElementById('sp-modal-class');
         const xpEl = document.getElementById('sp-modal-xp');
         const rankEl = document.getElementById('sp-modal-rank');
         const connEl = document.getElementById('sp-modal-conn');
 
-        const studentFullName = (profile && (profile.name || profile.fullName)) ? (profile.name || profile.fullName) : 'Estudiante stemOS';
+        const studentFullName = (profile && (profile.name || profile.fullName)) ? (profile.name || profile.fullName) : (localStorage.getItem('stemos_student_name') || 'Estudiante stemOS');
         const studentMatricula = (profile && (profile.matricula || profile.folio)) ? (profile.matricula || profile.folio) : 'Pendiente';
 
         if (nameEl) nameEl.textContent = studentFullName;
-        if (matriculaEl) matriculaEl.textContent = `Matrícula: ${studentMatricula}`;
+        if (matriculaEl) matriculaEl.innerHTML = `<i class="fa-solid fa-id-badge" style="color: #38bdf8;"></i> Matrícula: ${studentMatricula}`;
+        if (campusEl) {
+            const camp = (profile && profile.campus) || 'TecNM Tijuana (ITT)';
+            campusEl.innerHTML = `<i class="fa-solid fa-building-columns" style="color: #38bdf8;"></i> ${camp}`;
+        }
+        if (avatarBoxText) {
+            const parts = studentFullName.trim().split(/\s+/);
+            avatarBoxText.textContent = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : parts[0].substring(0, 2).toUpperCase();
+        }
         if (careerEl) {
             let cName = (profile && profile.careerName) ? profile.careerName : 'Ingeniería Mecatrónica';
             if (window.STEMOS_CAREER_TRACKS && window.STEMOS_CAREER_TRACKS.CAREERS) {
                 const cObj = window.STEMOS_CAREER_TRACKS.CAREERS.find(c => c.id === activeCareerId);
                 if (cObj) cName = cObj.name;
             }
-            careerEl.textContent = cName;
+            careerEl.textContent = `${cName} · 60h CACEI`;
         }
         if (hubEl) hubEl.textContent = (profile && profile.hub) ? profile.hub : 'Tijuana / Frontera';
         if (classEl) classEl.textContent = (profile && (profile.className || profile.classCode)) ? `${profile.className || ''} [${profile.classCode || 'Code'}]` : 'Registro General';
         if (xpEl) xpEl.textContent = `${currentXP.toLocaleString()} XP`;
-        if (rankEl) rankEl.textContent = `L${level.level} · ${level.title}`;
+        if (rankEl) rankEl.textContent = `L${level.level} · ${level.title} (${currentXP.toLocaleString()} XP)`;
 
+        // XP Progress Bar
+        const xpBarEl = document.getElementById('sp-modal-kpi-xp-bar');
+        if (xpBarEl && window.STUDENT_LEVELS) {
+            const currIdx = window.STUDENT_LEVELS.findIndex(l => l.level === level.level);
+            if (currIdx >= 0 && currIdx < window.STUDENT_LEVELS.length - 1) {
+                const nextLevelMin = window.STUDENT_LEVELS[currIdx + 1].minXP;
+                const prevLevelMin = window.STUDENT_LEVELS[currIdx].minXP;
+                const pct = Math.min(100, Math.max(5, Math.round(((currentXP - prevLevelMin) / (nextLevelMin - prevLevelMin)) * 100)));
+                xpBarEl.style.width = `${pct}%`;
+            } else {
+                xpBarEl.style.width = '100%';
+            }
+        }
+
+        // Daily Streak KPI
+        const streakEl = document.getElementById('sp-modal-kpi-streak');
+        if (streakEl) {
+            const sData = (typeof getDailyStreakData === 'function') ? getDailyStreakData() : { streak: parseInt(localStorage.getItem('stemos_daily_streak') || '1', 10) };
+            streakEl.textContent = `${sData.streak} ${sData.streak === 1 ? 'Día' : 'Días'}`;
+        }
+
+        // CACEI Hours KPI
+        const hoursEl = document.getElementById('sp-modal-kpi-hours');
+        if (hoursEl) {
+            const hrs = parseFloat(localStorage.getItem('stemos_cacei_accredited_hours') || '15.0');
+            hoursEl.textContent = `${hrs.toFixed(1)} hrs`;
+        }
+
+        // Duo Lessons Completed KPI
+        const lessonsEl = document.getElementById('sp-modal-kpi-lessons');
+        if (lessonsEl) {
+            let completedSteps = 0;
+            try {
+                const dp = JSON.parse(localStorage.getItem('stemos_duo_progress') || '{}');
+                for (let k in dp) {
+                    if (dp[k] && dp[k].completed) completedSteps++;
+                }
+            } catch(e) {}
+            lessonsEl.textContent = `${completedSteps} de 80 pasos`;
+        }
+
+        // Audio Speed Pills
+        const currentSpeed = parseFloat(localStorage.getItem('stemos_tts_playback_rate') || '1.0');
+        document.querySelectorAll('.sp-speed-pill').forEach(pill => {
+            const sp = parseFloat(pill.getAttribute('data-speed'));
+            if (Math.abs(sp - currentSpeed) < 0.05) {
+                pill.style.background = '#0ea5e9';
+                pill.style.color = '#ffffff';
+                pill.style.borderColor = '#38bdf8';
+                pill.classList.add('active');
+            } else {
+                pill.style.background = 'rgba(255,255,255,0.06)';
+                pill.style.color = '#94a3b8';
+                pill.style.borderColor = 'rgba(255,255,255,0.12)';
+                pill.classList.remove('active');
+            }
+        });
+
+        // CEFR Diagnostic Passport
         const cefrBadgeEl = document.getElementById('sp-modal-cefr-badge');
         const modalityEl = document.getElementById('sp-modal-modality');
         const folioEl = document.getElementById('sp-modal-folio');
 
-        const userLvl = (profile && (profile.cefrLevel || profile.level)) || localStorage.getItem('stemos_user_level') || localStorage.getItem('stemos_active_mcer_level') || 'B1';
+        const userLvl = (profile && (profile.cefrLevel || profile.level)) || localStorage.getItem('stemos_user_level') || localStorage.getItem('stemos_active_mcer_level') || 'A1';
         const userScore = (profile && (profile.cefrScore || profile.cefrPercentage)) ? `${profile.cefrPercentage || profile.cefrScore}%` : '75%';
 
         if (cefrBadgeEl) {
@@ -3150,12 +3407,13 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (profile && profile.degreeModality === 'tsu') {
                 modalityEl.textContent = 'Técnico Superior Universitario (TSU)';
             } else {
-                modalityEl.textContent = 'Ingeniería / Licenciatura Profesional';
+                modalityEl.textContent = 'Ingeniería / Licenciatura Profesional (60h)';
             }
         }
 
         if (folioEl) {
-            folioEl.textContent = (profile && (profile.folio || profile.diagnosticFolio)) || localStorage.getItem('stemos_diag_folio') || 'STEMOS-MCER-2026';
+            const fol = (profile && (profile.folio || profile.diagnosticFolio)) || localStorage.getItem('stemos_diag_folio') || 'FOLIO: STEMOS-MCER-2026';
+            folioEl.textContent = fol.startsWith('FOLIO:') ? fol : `FOLIO: ${fol}`;
         }
 
         const subStatusEl = document.getElementById('sp-modal-sub-status');
@@ -3165,8 +3423,30 @@ document.addEventListener('DOMContentLoaded', () => {
             if (sub && sub.active) {
                 subStatusEl.innerHTML = `<span style="color:#34d399; font-weight:800;"><i class="fa-solid fa-circle-check"></i> Suscripción Activa</span> &bull; Plan Individual ($${sub.amount || 49} MXN/mes)`;
             } else {
-                subStatusEl.innerHTML = `Acceso ilimitado a 34 Tracks y Tutor Socrático ($49 MXN/mes)`;
+                subStatusEl.innerHTML = `Acceso ilimitado a 34 Tracks, Laboratorio 8D y Tutor Socrático`;
             }
+        }
+
+        // Cloud sync status bar
+        const connDot = document.getElementById('sp-modal-conn-dot');
+        const connText = document.getElementById('sp-modal-conn-text');
+        const lastSyncEl = document.getElementById('sp-modal-last-sync');
+        const lastSync = localStorage.getItem('stemos_last_cloud_sync');
+        if (lastSyncEl) {
+            if (lastSync) {
+                const d = new Date(lastSync);
+                lastSyncEl.textContent = `• Sincronizado: ${d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+            } else {
+                lastSyncEl.textContent = `• Listo para sincronizar`;
+            }
+        }
+
+        if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.isCloudActive === 'function' && window.STEMOS_FIREBASE.isCloudActive()) {
+            if (connDot) { connDot.style.background = '#10b981'; connDot.style.boxShadow = '0 0 8px #10b981'; }
+            if (connText) connText.textContent = 'Cloud Firestore Sincronizado';
+        } else {
+            if (connDot) { connDot.style.background = '#38bdf8'; connDot.style.boxShadow = '0 0 8px #38bdf8'; }
+            if (connText) connText.textContent = 'Almacenamiento Local Seguro';
         }
 
         if (connEl && window.STEMOS_FIREBASE) {
@@ -3196,9 +3476,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
             try {
                 const auth = firebase.auth();
-                const provider = new firebase.auth.GoogleAuthProvider();
-                provider.setCustomParameters({ prompt: 'select_account' });
-                auth.signInWithPopup(provider).then((result) => {
+                // Enforce LOCAL persistence across all browsers and sessions
+                auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
+                    const provider = new firebase.auth.GoogleAuthProvider();
+                    provider.setCustomParameters({ prompt: 'select_account' });
+                    return auth.signInWithPopup(provider);
+                }).then(async (result) => {
                     const user = result.user;
                     if (!user) return;
                     const realEmail = user.email || '';
@@ -3239,7 +3522,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         careerName: careerName,
                         hub: 'Tijuana / Frontera',
                         className: 'Grupo General',
-                        classCode: ''
+                        classCode: '',
+                        onboardingCompleted: true
                     };
 
                     localStorage.setItem('stemos_student_profile', JSON.stringify(profile));
@@ -3251,6 +3535,34 @@ document.addEventListener('DOMContentLoaded', () => {
                         photoURL: photoURL,
                         role: 'student'
                     }));
+
+                    // Check for existing progress in Cloud Firestore!
+                    if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.fetchStudentFullProgressFromCloud === 'function') {
+                        try {
+                            const cloudData = await window.STEMOS_FIREBASE.fetchStudentFullProgressFromCloud(user.uid);
+                            if (cloudData) {
+                                if (typeof cloudData.xp === 'number') {
+                                    localStorage.setItem('stemos_student_xp', String(cloudData.xp));
+                                    if (typeof globalXP !== 'undefined') globalXP = cloudData.xp;
+                                }
+                                if (cloudData.streak) localStorage.setItem('stemos_daily_streak', String(cloudData.streak));
+                                if (cloudData.caceiHours) localStorage.setItem('stemos_cacei_accredited_hours', String(cloudData.caceiHours));
+                                if (cloudData.level) localStorage.setItem('stemos_user_level', cloudData.level);
+                                if (cloudData.activeMcerLevel) localStorage.setItem('stemos_active_mcer_level', cloudData.activeMcerLevel);
+                                if (cloudData.duoProgress) localStorage.setItem('stemos_duo_progress', JSON.stringify(cloudData.duoProgress));
+                                if (cloudData.placementTest) localStorage.setItem('stemos_placement_test', JSON.stringify(cloudData.placementTest));
+                                if (cloudData.placementCompleted !== undefined) localStorage.setItem('stemos_placement_completed', String(cloudData.placementCompleted));
+                                if (cloudData.diagFolio) localStorage.setItem('stemos_diag_folio', cloudData.diagFolio);
+                                if (cloudData.ttsSpeed) localStorage.setItem('stemos_tts_playback_rate', String(cloudData.ttsSpeed));
+                                localStorage.setItem('stemos_last_cloud_sync', new Date().toISOString());
+                            } else {
+                                // Sync initial state to cloud
+                                window.syncStudentProgressToFirestore && window.syncStudentProgressToFirestore(true);
+                            }
+                        } catch(e) {
+                            console.warn('[stemOS] Cloud fetch on Google sign in warning:', e);
+                        }
+                    }
 
                     if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.registerStudent === 'function') {
                         window.STEMOS_FIREBASE.registerStudent({
@@ -3264,12 +3576,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     window.initStudentProfileBridge();
+                    if (typeof updateStudentXPHUD === 'function') updateStudentXPHUD();
+                    if (typeof updateDuoHudUI === 'function') updateDuoHudUI();
+                    if (typeof syncUserPlacementBadge === 'function') syncUserPlacementBadge();
+                    if (typeof renderDuoLearningPath === 'function') renderDuoLearningPath();
                     alert(`¡Bienvenido, ${realName}! Has iniciado sesión con tu cuenta de Google.`);
                 }).catch((err) => {
                     console.warn('Google sign-in popup error:', err);
                     if (err.code === 'auth/popup-blocked') {
                         try {
-                            auth.signInWithRedirect(provider);
+                            const provider = new firebase.auth.GoogleAuthProvider();
+                            provider.setCustomParameters({ prompt: 'select_account' });
+                            firebase.auth().signInWithRedirect(provider);
                         } catch(e) {
                             alert('Las ventanas emergentes están bloqueadas en tu navegador. Por favor permite popups para stemos.org.');
                         }
@@ -3300,6 +3618,75 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.reload();
         }
     };
+
+    // Firebase Auth Persistent Session Listener (Phase 86)
+    if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+        try {
+            firebase.auth().onAuthStateChanged(async (user) => {
+                if (user) {
+                    const realEmail = user.email || '';
+                    const realName = user.displayName || (realEmail ? realEmail.split('@')[0] : 'Estudiante');
+                    const photoURL = user.photoURL || '';
+
+                    localStorage.setItem('stemos_auth_user', JSON.stringify({
+                        uid: user.uid,
+                        email: realEmail,
+                        displayName: realName,
+                        photoURL: photoURL,
+                        role: 'student'
+                    }));
+
+                    // Fetch student full progress from Cloud Firestore!
+                    if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.fetchStudentFullProgressFromCloud === 'function') {
+                        try {
+                            const cloudData = await window.STEMOS_FIREBASE.fetchStudentFullProgressFromCloud(user.uid);
+                            if (cloudData) {
+                                if (typeof cloudData.xp === 'number') {
+                                    const localXp = parseInt(localStorage.getItem('stemos_student_xp') || '0', 10);
+                                    const mergedXp = Math.max(localXp, cloudData.xp);
+                                    localStorage.setItem('stemos_student_xp', String(mergedXp));
+                                    if (typeof globalXP !== 'undefined') globalXP = mergedXp;
+                                }
+                                if (cloudData.streak) localStorage.setItem('stemos_daily_streak', String(cloudData.streak));
+                                if (cloudData.lastStudyDate) localStorage.setItem('stemos_last_study_date', cloudData.lastStudyDate);
+                                if (cloudData.caceiHours) localStorage.setItem('stemos_cacei_accredited_hours', String(cloudData.caceiHours));
+                                if (cloudData.level) localStorage.setItem('stemos_user_level', cloudData.level);
+                                if (cloudData.activeMcerLevel) localStorage.setItem('stemos_active_mcer_level', cloudData.activeMcerLevel);
+                                if (cloudData.duoProgress) localStorage.setItem('stemos_duo_progress', JSON.stringify(cloudData.duoProgress));
+                                if (cloudData.placementTest) localStorage.setItem('stemos_placement_test', JSON.stringify(cloudData.placementTest));
+                                if (cloudData.placementCompleted !== undefined) localStorage.setItem('stemos_placement_completed', String(cloudData.placementCompleted));
+                                if (cloudData.diagFolio) localStorage.setItem('stemos_diag_folio', cloudData.diagFolio);
+                                if (cloudData.ttsSpeed) {
+                                    localStorage.setItem('stemos_tts_playback_rate', String(cloudData.ttsSpeed));
+                                    if (window.STEMOS_TTS && typeof window.STEMOS_TTS.setSpeed === 'function') {
+                                        window.STEMOS_TTS.setSpeed(parseFloat(cloudData.ttsSpeed));
+                                    }
+                                }
+                                if (cloudData.profile) {
+                                    localStorage.setItem('stemos_student_profile', JSON.stringify(cloudData.profile));
+                                    if (cloudData.profile.name) localStorage.setItem('stemos_student_name', cloudData.profile.name);
+                                }
+                                localStorage.setItem('stemos_last_cloud_sync', new Date().toISOString());
+
+                                window.initStudentProfileBridge();
+                                if (typeof updateStudentXPHUD === 'function') updateStudentXPHUD();
+                                if (typeof updateDuoHudUI === 'function') updateDuoHudUI();
+                                if (typeof syncUserPlacementBadge === 'function') syncUserPlacementBadge();
+                                if (typeof renderDuoLearningPath === 'function') renderDuoLearningPath();
+                            } else {
+                                // User has no cloud doc yet -> upload current local state!
+                                if (typeof window.syncStudentProgressToFirestore === 'function') {
+                                    window.syncStudentProgressToFirestore(true);
+                                }
+                            }
+                        } catch(e) {
+                            console.warn('[stemOS] Auth state cloud sync error:', e);
+                        }
+                    }
+                }
+            });
+        } catch(e) {}
+    }
 
     // Auto-initialize profile bridge on load
     window.initStudentProfileBridge();
@@ -9392,6 +9779,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
             }
             localStorage.setItem('stemos_daily_streak', String(newStreak));
             localStorage.setItem('stemos_last_study_date', today);
+            if (typeof window.syncStudentProgressToFirestore === 'function') {
+                window.syncStudentProgressToFirestore();
+            }
         }
         return newStreak;
     }
@@ -9406,6 +9796,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
     function saveDuoProgress(progressObj) {
         localStorage.setItem('stemos_duo_progress', JSON.stringify(progressObj));
+        if (typeof window.syncStudentProgressToFirestore === 'function') {
+            window.syncStudentProgressToFirestore();
+        }
     }
 
     function updateDuoHudUI() {

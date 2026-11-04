@@ -60,6 +60,21 @@
                         });
                 }
             }
+
+            // Enforce permanent local authentication persistence across browser sessions and tabs
+            if (typeof window.firebase.auth === 'function') {
+                try {
+                    window.firebase.auth().setPersistence(window.firebase.auth.Auth.Persistence.LOCAL)
+                        .then(function() {
+                            console.info('[stemOS Firebase Config] Auth LOCAL persistence enabled successfully.');
+                        })
+                        .catch(function(authErr) {
+                            console.warn('[stemOS Firebase Config] Auth persistence warning:', authErr);
+                        });
+                } catch(pe) {
+                    console.warn('[stemOS Firebase Config] Auth setPersistence exception:', pe);
+                }
+            }
         } catch (e) {
             console.warn('[stemOS Firebase Config] Initialization warning:', e.message || e);
         }

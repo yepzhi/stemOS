@@ -778,6 +778,121 @@
         },
 
         /**
+         * Save full student progress, KPIs, and responses directly to Cloud Firestore
+         */
+        saveStudentFullProgressToCloud: async function (progressData) {
+            if (!this.isCloudActive() || !progressData) return false;
+            try {
+                const db = (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.getDb()) ||
+                           (typeof window.firebase !== 'undefined' && window.firebase.firestore ? window.firebase.firestore() : null);
+                if (!db) return false;
+
+                let uid = progressData.uid;
+                if (!uid && typeof window.firebase !== 'undefined' && window.firebase.auth && window.firebase.auth().currentUser) {
+                    uid = window.firebase.auth().currentUser.uid;
+                }
+                if (!uid) return false;
+
+                const payload = Object.assign({}, progressData, {
+                    uid: uid,
+                    updatedAt: new Date().toISOString()
+                });
+
+                // 1. Primary write to /users/{uid}
+                await db.collection('users').doc(uid).set(payload, { merge: true });
+
+                // 2. Multi-tenant mirror write to /institutions/{instId}/students/{docId}
+                const instId = progressData.institutionId || progressData.subsystem || 'tecnm-saltillo';
+                const docId = uid;
+                try {
+                    await db.collection('institutions').doc(instId).collection('students').doc(docId).set(payload, { merge: true });
+                } catch(e) {}
+
+                localStorage.setItem('stemos_last_cloud_sync', new Date().toISOString());
+                this._broadcastStateChange('cloud_progress_saved', payload);
+                return true;
+            } catch (err) {
+                console.warn('[stemOS Firebase] Cloud progress sync error:', err.message || err);
+                return false;
+            }
+        },
+
+        /**
+         * Fetch full student progress from Cloud Firestore for an authenticated user
+         */
+        fetchStudentFullProgressFromCloud: async function (uid) {
+            if (!this.isCloudActive() || !uid) return null;
+            try {
+                const db = (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.getDb()) ||
+                           (typeof window.firebase !== 'undefined' && window.firebase.firestore ? window.firebase.firestore() : null);
+                if (!db) return null;
+
+                const userDoc = await db.collection('users').doc(uid).get();
+                if (userDoc.exists) {
+                    return userDoc.data();
+                }
+                return null;
+            } catch (err) {
+                console.warn('[stemOS Firebase] Error fetching cloud progress:', err);
+                return null;
+            }
+        },
+
+        /**
+         * Reset student progress locally and in Cloud Firestore
+         */
+        resetStudentProgress: async function (uid, institutionId) {
+            const cleanState = {
+                xp: 0,
+                streak: 1,
+                caceiHours: 0.0,
+                level: 'A1',
+                activeLevel: 'A1',
+                duoProgress: {},
+                userProgress: { xp: 0, nodeStatuses: {} },
+                placementTest: null,
+                placementCompleted: false,
+                lastResetAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            // 1. Reset Local Storage
+            try {
+                localStorage.setItem('stemos_student_xp', '0');
+                localStorage.setItem('stemos_daily_streak', '1');
+                localStorage.setItem('stemos_cacei_accredited_hours', '0.00');
+                localStorage.setItem('stemos_user_level', 'A1');
+                localStorage.setItem('stemos_active_mcer_level', 'A1');
+                localStorage.setItem('stemos_duo_progress', JSON.stringify({}));
+                localStorage.setItem('stemos_user_progress', JSON.stringify({ xp: 0, nodeStatuses: {} }));
+                localStorage.removeItem('stemos_placement_test');
+                localStorage.removeItem('stemos_placement_completed');
+                localStorage.removeItem('stemos_diag_folio');
+                localStorage.removeItem('stemos_diag_status');
+            } catch(_) {}
+
+            // 2. Reset in Cloud Firestore if user is authenticated
+            if (this.isCloudActive() && uid) {
+                try {
+                    const db = (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.getDb()) ||
+                               (typeof window.firebase !== 'undefined' && window.firebase.firestore ? window.firebase.firestore() : null);
+                    if (db) {
+                        await db.collection('users').doc(uid).set(cleanState, { merge: true });
+                        const instId = institutionId || 'tecnm-saltillo';
+                        try {
+                            await db.collection('institutions').doc(instId).collection('students').doc(uid).set(cleanState, { merge: true });
+                        } catch(_) {}
+                    }
+                } catch(err) {
+                    console.warn('[stemOS Firebase] Reset in cloud warning:', err);
+                }
+            }
+
+            this._broadcastStateChange('progress_reset', cleanState);
+            return cleanState;
+        },
+
+        /**
          * Concurrency debounce queue helpers
          */
         _syncQueue: [],
