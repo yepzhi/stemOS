@@ -1299,6 +1299,32 @@
                             </div>
                         </div>
 
+                        <!-- ════ DUOLINGO-STYLE HUD & MODE SWITCHER BAR ════ -->
+                        <div class="stemos-duo-hud-bar" id="stemos-duo-hud-bar">
+                            <div class="stemos-duo-mode-switch" role="tablist" aria-label="Modo de visualización de estudio">
+                                <button type="button" class="stemos-duo-mode-btn active" id="btn-duo-mode-path" onclick="window.switchDuoViewMode('path')" role="tab" aria-selected="true">
+                                    <i class="fa-solid fa-route" style="color:#10b981;"></i> Ruta Interactiva
+                                </button>
+                                <button type="button" class="stemos-duo-mode-btn" id="btn-duo-mode-grid" onclick="window.switchDuoViewMode('grid')" role="tab" aria-selected="false">
+                                    <i class="fa-solid fa-grip" style="color:#0284c7;"></i> Malla Curricular
+                                </button>
+                            </div>
+                            <div class="stemos-duo-hud-metrics">
+                                <div class="duo-hud-pill duo-streak-pill" id="duo-streak-pill" title="Racha de estudio diario consecutivo">
+                                    <i class="fa-solid fa-fire"></i> <span id="duo-streak-count">1</span> Días
+                                </div>
+                                <div class="duo-hud-pill duo-xp-pill" id="duo-xp-pill" title="Puntos de experiencia ganados">
+                                    <i class="fa-solid fa-bolt"></i> <span id="duo-xp-count">0</span> XP
+                                </div>
+                                <div class="duo-hud-pill duo-hearts-pill" id="duo-hearts-pill" title="Escudos de energía restantes">
+                                    <i class="fa-solid fa-heart"></i> <span id="duo-hearts-count">5</span>
+                                </div>
+                                <div class="duo-hud-pill duo-hours-pill" id="duo-hours-pill" title="Horas académicas acreditadas ante CACEI">
+                                    <i class="fa-solid fa-graduation-cap"></i> <span id="duo-hours-count">0.0</span>h CACEI
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- MCER Level Filter Bar -->
                         <div class="ed-units-toolbar-row" style="margin-bottom:20px;">
                             <div class="ed-category-filter-bar" id="mcer-level-filter-bar">
@@ -1320,45 +1346,53 @@
                             </div>
                         </div>
 
-                        <!-- MCER Offline Batch Downloader & Status Banner (Phase 89) -->
-                        <div class="mcer-offline-sync-banner" id="mcer-offline-sync-banner">
-                            <div class="mcer-offline-banner-main">
-                                <div class="mcer-offline-banner-left">
-                                    <div class="mcer-offline-banner-icon">
-                                        <i class="fa-solid fa-cloud-arrow-down"></i>
-                                    </div>
-                                    <div class="mcer-offline-banner-info">
-                                        <div class="mcer-offline-banner-title" id="mcer-offline-banner-title">
-                                            Modo Offline & Descarga por Nivel
-                                        </div>
-                                        <div class="mcer-offline-banner-desc" id="mcer-offline-banner-desc">
-                                            Estudia sin conexión durante 3 días con audios neuronales y sincronización automática al volver a estar en línea.
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mcer-offline-banner-actions">
-                                    <button class="btn-mcer-batch-download" id="btn-mcer-batch-download" onclick="downloadCurrentLevelForOffline()" title="Descargar nivel completo para estudio sin conexión">
-                                        <span id="mcer-batch-btn-label"><i class="fa-solid fa-cloud-arrow-down"></i> Descargar Nivel A1 Offline (4 Módulos · 4.6MB)</span>
-                                    </button>
-                                    <button class="btn-mcer-clear-offline" id="btn-mcer-clear-offline" onclick="clearAllOfflineUnits()" title="Liberar espacio y eliminar caché offline">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="mcer-batch-progress-wrapper" id="mcer-batch-progress-wrapper" style="display:none;">
-                                <div class="mcer-batch-progress-meta">
-                                    <span id="mcer-batch-progress-text">Descargando...</span>
-                                    <span id="mcer-batch-progress-pct">0%</span>
-                                </div>
-                                <div class="mcer-batch-progress-track">
-                                    <div class="mcer-batch-progress-fill" id="mcer-batch-progress-fill" style="width: 0%;"></div>
-                                </div>
-                            </div>
+                        <!-- ════ VISTA 1: RUTA INTERACTIVA DUOLINGO (THE SNAKE) ════ -->
+                        <div class="stemos-duo-path-view" id="stemos-duo-path-view">
+                            <!-- Populated dynamically by app.js: renderDuoLearningPath() -->
                         </div>
 
-                        <!-- MCER Units Grid -->
-                        <div class="ed-units-grid" id="ed-mcer-units-grid">
-                            <!-- Populated dynamically by app.js from STEMOS_MCER_TRACKS -->
+                        <!-- ════ VISTA 2: MALLA CURRICULAR CLÁSICA & OFFLINE ════ -->
+                        <div id="stemos-duo-grid-view" style="display:none;">
+                            <!-- MCER Offline Batch Downloader & Status Banner (Phase 89) -->
+                            <div class="mcer-offline-sync-banner" id="mcer-offline-sync-banner">
+                                <div class="mcer-offline-banner-main">
+                                    <div class="mcer-offline-banner-left">
+                                        <div class="mcer-offline-banner-icon">
+                                            <i class="fa-solid fa-cloud-arrow-down"></i>
+                                        </div>
+                                        <div class="mcer-offline-banner-info">
+                                            <div class="mcer-offline-banner-title" id="mcer-offline-banner-title">
+                                                Modo Offline & Descarga por Nivel
+                                            </div>
+                                            <div class="mcer-offline-banner-desc" id="mcer-offline-banner-desc">
+                                                Estudia sin conexión durante 3 días con audios neuronales y sincronización automática al volver a estar en línea.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mcer-offline-banner-actions">
+                                        <button class="btn-mcer-batch-download" id="btn-mcer-batch-download" onclick="downloadCurrentLevelForOffline()" title="Descargar nivel completo para estudio sin conexión">
+                                            <span id="mcer-batch-btn-label"><i class="fa-solid fa-cloud-arrow-down"></i> Descargar Nivel A1 Offline (4 Módulos · 4.6MB)</span>
+                                        </button>
+                                        <button class="btn-mcer-clear-offline" id="btn-mcer-clear-offline" onclick="clearAllOfflineUnits()" title="Liberar espacio y eliminar caché offline">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mcer-batch-progress-wrapper" id="mcer-batch-progress-wrapper" style="display:none;">
+                                    <div class="mcer-batch-progress-meta">
+                                        <span id="mcer-batch-progress-text">Descargando...</span>
+                                        <span id="mcer-batch-progress-pct">0%</span>
+                                    </div>
+                                    <div class="mcer-batch-progress-track">
+                                        <div class="mcer-batch-progress-fill" id="mcer-batch-progress-fill" style="width: 0%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- MCER Units Grid -->
+                            <div class="ed-units-grid" id="ed-mcer-units-grid">
+                                <!-- Populated dynamically by app.js from STEMOS_MCER_TRACKS -->
+                            </div>
                         </div>
                     </div>
 
@@ -3893,6 +3927,43 @@
             </p>
             <button type="button" class="cs-modal-btn" onclick="closeUnderDevModal()">Got it, thank you</button>
         </div>
+    </div>
+
+    <!-- ════ STEMOS DUOLINGO IMMERSIVE LESSON RUNNER MODAL ════ -->
+    <div id="duo-runner-overlay" class="duo-runner-overlay" role="dialog" aria-modal="true" aria-label="Lección Interactiva stemOS">
+        <!-- Top Bar with Close, Animated Progress & Lives -->
+        <header class="duo-runner-topbar">
+            <button type="button" class="duo-runner-close-btn" id="btn-duo-runner-close" onclick="window.closeDuoLessonRunner()" aria-label="Salir de la lección">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="duo-progress-container" aria-label="Progreso de la sesión">
+                <div class="duo-progress-fill" id="duo-runner-progress-fill" style="width: 0%;"></div>
+            </div>
+            <div class="duo-hearts-display" id="duo-runner-hearts" title="Escudos de vida restantes">
+                <i class="fa-solid fa-heart"></i> <span id="duo-runner-hearts-count">5</span>
+            </div>
+        </header>
+
+        <!-- Main Dynamic Stage: Sentence Builder, Tap-to-Pair, Audio & Voice -->
+        <main class="duo-exercise-stage" id="duo-exercise-stage">
+            <!-- Dynamically populated by app.js: renderDuoExercise() -->
+        </main>
+
+        <!-- Sticky Bottom Sheet Feedback Drawer -->
+        <footer class="duo-feedback-drawer" id="duo-feedback-drawer">
+            <div class="duo-feedback-info" id="duo-feedback-info">
+                <div class="duo-feedback-icon" id="duo-feedback-icon" style="display:none;">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div>
+                    <h4 class="duo-feedback-title" id="duo-feedback-title">¡Selecciona tu respuesta!</h4>
+                    <p class="duo-feedback-subtitle" id="duo-feedback-subtitle">Elige o ensambla las opciones para continuar.</p>
+                </div>
+            </div>
+            <button type="button" class="duo-check-btn disabled" id="btn-duo-check" onclick="window.handleDuoCheckClick()">
+                COMPROBAR
+            </button>
+        </footer>
     </div>
 
     <script>

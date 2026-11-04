@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Validador de Credenciales W3C Open Badges 3.0 | stemOS</title>
-    <meta name="description" content="Portal público de verificación criptográfica de acreditaciones técnicas e industriales en idioma inglés (MCER A1-B2) emitidas por stemOS y consorcios universitarios UPBC, TecNM, UABC y UTT.">
+    <meta name="description"
+        content="Portal público de verificación criptográfica de acreditaciones técnicas e industriales en idioma inglés (MCER A1-B2) emitidas por stemOS y consorcios universitarios UPBC, TecNM, UABC y UTT.">
     <meta name="theme-color" content="#0284c7">
-    
+
     <!-- Open Graph -->
     <meta property="og:title" content="stemOS · Validador Oficial de Credenciales W3C Open Badges 3.0">
-    <meta property="og:description" content="Verificación instantánea de firma criptográfica y acreditación CACEI Criterio 4 para titulación universitaria y nearshoring industrial.">
+    <meta property="og:description"
+        content="Verificación instantánea de firma criptográfica y acreditación CACEI Criterio 4 para titulación universitaria y nearshoring industrial.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://stemos.org/verify">
-    
+
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;800&family=Outfit:wght@600;700;800;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
+
     <link rel="stylesheet" href="/styles.css">
 
     <style>
@@ -237,7 +242,8 @@
             transition: all 0.25s ease;
         }
 
-        .dropzone-container:hover, .dropzone-container.dragover {
+        .dropzone-container:hover,
+        .dropzone-container.dragover {
             border-color: #38bdf8;
             background: rgba(2, 132, 199, 0.08);
             transform: translateY(-2px);
@@ -363,8 +369,14 @@
             box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
         }
 
-        .cert-level-stamp span:first-child { font-size: 0.65rem; opacity: 0.9; }
-        .cert-level-stamp span:last-child { font-size: 1.45rem; }
+        .cert-level-stamp span:first-child {
+            font-size: 0.65rem;
+            opacity: 0.9;
+        }
+
+        .cert-level-stamp span:last-child {
+            font-size: 1.45rem;
+        }
 
         .cert-student-name {
             font-family: var(--font-heading);
@@ -488,19 +500,41 @@
                 background: #ffffff !important;
                 color: #000000 !important;
             }
-            .ambient-glow, .verify-nav, .verify-tabs, .dropzone-container, .search-box, .cert-actions, footer {
+
+            .ambient-glow,
+            .verify-nav,
+            .verify-tabs,
+            .dropzone-container,
+            .search-box,
+            .cert-actions,
+            footer {
                 display: none !important;
             }
+
             .certificate-card {
                 border: 2px solid #000000 !important;
                 box-shadow: none !important;
                 background: #ffffff !important;
                 color: #000000 !important;
             }
-            .cert-student-name { color: #000000 !important; }
-            .cert-field-val { color: #000000 !important; }
-            .cert-field-val.mono { color: #000000 !important; }
-            .cert-proof-box { background: #f8fafc !important; color: #000000 !important; border-color: #ccc !important; }
+
+            .cert-student-name {
+                color: #000000 !important;
+            }
+
+            .cert-field-val {
+                color: #000000 !important;
+            }
+
+            .cert-field-val.mono {
+                color: #000000 !important;
+            }
+
+            .cert-proof-box {
+                background: #f8fafc !important;
+                color: #000000 !important;
+                border-color: #ccc !important;
+            }
         }
 
         /* Footer */
@@ -516,6 +550,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="ambient-glow"></div>
 
@@ -544,14 +579,16 @@
             </div>
             <h1 class="verify-title">Validador de Credenciales Oficiales</h1>
             <p class="verify-subtitle">
-                Verificación descentralizada y en tiempo real de firmas Ed25519 para acreditaciones curriculares de inglés técnico e industrial en ingeniería y ciencias aplicadas.
+                Verificación descentralizada y en tiempo real de firmas Ed25519 para acreditaciones curriculares de
+                inglés técnico e industrial en ingeniería y ciencias aplicadas.
             </p>
         </div>
 
         <div class="verify-card">
             <!-- Mode Tabs -->
             <div class="verify-tabs">
-                <button type="button" class="verify-tab-btn active" id="tab-dropzone" onclick="switchVerifyTab('dropzone')">
+                <button type="button" class="verify-tab-btn active" id="tab-dropzone"
+                    onclick="switchVerifyTab('dropzone')">
                     <i class="fa-solid fa-file-arrow-up"></i> Cargar Archivo JSON
                 </button>
                 <button type="button" class="verify-tab-btn" id="tab-search" onclick="switchVerifyTab('search')">
@@ -562,19 +599,23 @@
             <!-- Panel 1: Drag & Drop JSON -->
             <div id="panel-dropzone">
                 <div class="dropzone-container" id="dropzone" onclick="document.getElementById('file-input').click()">
-                    <input type="file" id="file-input" accept=".json,application/json" style="display:none;" onchange="handleFileSelect(event)">
+                    <input type="file" id="file-input" accept=".json,application/json" style="display:none;"
+                        onchange="handleFileSelect(event)">
                     <div class="dropzone-icon">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
                     </div>
                     <div class="dropzone-text">Arrastra aquí la credencial W3C en formato JSON</div>
-                    <div class="dropzone-hint">o haz clic para explorar en tu equipo (ej. <code>credential-stemos-b2.json</code>)</div>
+                    <div class="dropzone-hint">o haz clic para explorar en tu equipo (ej.
+                        <code>credential-stemos-b2.json</code>)
+                    </div>
                 </div>
             </div>
 
             <!-- Panel 2: Manual Folio / URL Input -->
             <div id="panel-search" style="display:none;">
                 <form class="search-box" onsubmit="handleManualSearch(event)">
-                    <input type="text" class="search-input" id="search-query" placeholder="Ej. STEMOS-OB3-B2-M3X... o enlace https://stemos.org/verify?folio=..." required>
+                    <input type="text" class="search-input" id="search-query"
+                        placeholder="Ej. STEMOS-OB3-B2-M3X... o enlace https://stemos.org/verify?folio=..." required>
                     <button type="submit" class="btn-verify-submit" id="btn-submit-search">
                         <i class="fa-solid fa-check-double"></i> Validar
                     </button>
@@ -677,7 +718,7 @@
                     const params = Object.fromEntries(parsedUrl.searchParams.entries());
                     await verifyCredentialParams(params);
                     return;
-                } catch (_) {}
+                } catch (_) { }
             }
 
             // Treat as Folio
@@ -864,7 +905,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const folio = urlParams.get('folio') || urlParams.get('verify') || urlParams.get('id');
             const sig = urlParams.get('sig') || urlParams.get('signature');
-            
+
             if (folio) {
                 const params = Object.fromEntries(urlParams.entries());
                 params.folio = folio;
@@ -878,9 +919,10 @@
         // Register Service Worker for Offline Verification Support
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').catch(() => {});
+                navigator.serviceWorker.register('/sw.js').catch(() => { });
             });
         }
     </script>
 </body>
+
 </html>

@@ -23229,5 +23229,923 @@ html.theme-light body {
   left: 16px;
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   STEMOS DUOLINGO-STYLE LEARNING PATH ENGINE & BITE-SIZED LESSON RUNNER
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* 1. HUD & Mode Switcher Bar */
+.stemos-duo-hud-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 22px;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.stemos-duo-mode-switch {
+  display: inline-flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 14px;
+  gap: 4px;
+}
+
+.stemos-duo-mode-btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 800;
+  font-size: 0.88rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background: transparent;
+  color: #64748b;
+  transition: all 0.2s ease;
+}
+
+.stemos-duo-mode-btn.active {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.stemos-duo-hud-metrics {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.duo-hud-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  font-family: var(--font-mono, monospace);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.duo-streak-pill {
+  background: #fff7ed;
+  color: #ea580c;
+  border: 1.5px solid #fdba74;
+}
+
+.duo-streak-pill i {
+  color: #f97316;
+  animation: duoFlamePulse 1.8s infinite ease-in-out;
+}
+
+.duo-xp-pill {
+  background: #fefce8;
+  color: #ca8a04;
+  border: 1.5px solid #fde047;
+}
+
+.duo-hearts-pill {
+  background: #fef2f2;
+  color: #e11d48;
+  border: 1.5px solid #fecdd3;
+}
+
+.duo-hours-pill {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1.5px solid #86efac;
+}
+
+@keyframes duoFlamePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.22); }
+}
+
+/* 2. Visual Snake Path Layout */
+.stemos-duo-path-view {
+  max-width: 680px;
+  margin: 0 auto 40px;
+  padding: 10px 16px 60px;
+  position: relative;
+}
+
+.duo-level-banner {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 20px 24px;
+  margin-bottom: 36px;
+  box-shadow: 0 10px 25px rgba(2, 132, 199, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.duo-level-banner::after {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.duo-level-banner-title {
+  font-size: 1.25rem;
+  font-weight: 900;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+
+.duo-level-banner-desc {
+  font-size: 0.85rem;
+  color: #e0f2fe;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.duo-unit-section {
+  margin-bottom: 48px;
+  position: relative;
+}
+
+.duo-unit-milestone-header {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 14px 18px;
+  margin-bottom: 28px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.duo-unit-milestone-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+/* Stepping Stones Snake Track */
+.duo-path-track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  position: relative;
+  padding: 10px 0;
+}
+
+/* Winding Connector SVG */
+.duo-connector-line {
+  position: absolute;
+  width: 4px;
+  background: #e2e8f0;
+  top: 30px;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  border-radius: 999px;
+}
+
+.duo-node-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s ease;
+}
+
+/* Zig-zag snake curves */
+.duo-pos-0 { transform: translateX(0); }
+.duo-pos-1 { transform: translateX(-48px); }
+.duo-pos-2 { transform: translateX(-65px); }
+.duo-pos-3 { transform: translateX(-35px); }
+.duo-pos-4 { transform: translateX(25px); }
+.duo-pos-5 { transform: translateX(65px); }
+.duo-pos-6 { transform: translateX(45px); }
+.duo-pos-7 { transform: translateX(0); }
+
+@media (max-width: 480px) {
+  .duo-pos-1 { transform: translateX(-32px); }
+  .duo-pos-2 { transform: translateX(-46px); }
+  .duo-pos-3 { transform: translateX(-24px); }
+  .duo-pos-4 { transform: translateX(20px); }
+  .duo-pos-5 { transform: translateX(46px); }
+  .duo-pos-6 { transform: translateX(30px); }
+}
+
+/* Stepping Stone Node 3D Buttons */
+.duo-node-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  position: relative;
+  outline: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.duo-node-btn:active:not(.locked) {
+  transform: translateY(4px) !important;
+}
+
+/* Active Node State */
+.duo-node-btn.current {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 0 #047857, 0 14px 20px rgba(16, 185, 129, 0.35);
+  animation: duoPulseActive 2s infinite ease-in-out;
+}
+
+.duo-node-btn.current:active {
+  box-shadow: 0 4px 0 #047857, 0 6px 12px rgba(16, 185, 129, 0.35);
+}
+
+@keyframes duoPulseActive {
+  0% { box-shadow: 0 8px 0 #047857, 0 0 0 0 rgba(16, 185, 129, 0.6); }
+  70% { box-shadow: 0 8px 0 #047857, 0 0 0 18px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 8px 0 #047857, 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* Completed Node State */
+.duo-node-btn.completed {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 0 #047857;
+}
+
+.duo-node-btn.completed:active {
+  box-shadow: 0 2px 0 #047857;
+}
+
+.duo-stars-row {
+  display: flex;
+  gap: 2px;
+  font-size: 0.65rem;
+  color: #facc15;
+  margin-top: 2px;
+}
+
+/* Locked Node State */
+.duo-node-btn.locked {
+  background: #e2e8f0;
+  color: #94a3b8;
+  box-shadow: 0 6px 0 #cbd5e1;
+  cursor: not-allowed;
+}
+
+/* Boss Level Crucible Node */
+.duo-node-btn.boss {
+  width: 82px;
+  height: 82px;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 0 #b45309, 0 16px 24px rgba(245, 158, 11, 0.35);
+  font-size: 2rem;
+}
+
+.duo-node-btn.boss.locked {
+  background: #e2e8f0;
+  color: #94a3b8;
+  box-shadow: 0 6px 0 #cbd5e1;
+}
+
+/* Start Bouncing Floating Tooltip */
+.duo-start-tooltip {
+  position: absolute;
+  top: -38px;
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 900;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+  animation: duoBounceStart 1.5s infinite ease-in-out;
+  pointer-events: none;
+}
+
+.duo-start-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px 5px 0;
+  border-style: solid;
+  border-color: #0f172a transparent transparent;
+}
+
+@keyframes duoBounceStart {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.duo-node-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #334155;
+  margin-top: 8px;
+  max-width: 140px;
+  text-align: center;
+  line-height: 1.25;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DUOLINGO-STYLE FULLSCREEN IMMERSIVE LESSON RUNNER
+   ══════════════════════════════════════════════════════════════════════════ */
+.duo-runner-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: #ffffff;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: inherit;
+}
+
+.duo-runner-overlay.active {
+  display: flex;
+}
+
+/* Top Navigation Bar */
+.duo-runner-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1.5px solid #f1f5f9;
+  background: #ffffff;
+}
+
+.duo-runner-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.35rem;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background 0.15s;
+}
+
+.duo-runner-close-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.duo-progress-container {
+  flex: 1;
+  max-width: 540px;
+  height: 14px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.duo-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+  border-radius: 999px;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+}
+
+.duo-hearts-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #e11d48;
+  font-weight: 900;
+  font-size: 1.05rem;
+}
+
+.duo-hearts-display i {
+  filter: drop-shadow(0 2px 4px rgba(225, 29, 72, 0.25));
+}
+
+/* Exercise Content Stage */
+.duo-exercise-stage {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 20px 140px;
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.duo-prompt-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #0284c7;
+  background: #e0f2fe;
+  padding: 4px 12px;
+  border-radius: 999px;
+  width: fit-content;
+  margin-bottom: 12px;
+}
+
+.duo-prompt-heading {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.duo-prompt-subtext {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin: 0 0 24px;
+}
+
+/* Exercise Type: Sentence Builder */
+.duo-sentence-target-area {
+  min-height: 90px;
+  border-bottom: 2px dashed #cbd5e1;
+  padding: 12px 6px;
+  margin-bottom: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  transition: border-color 0.2s;
+}
+
+.duo-word-bank {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: auto;
+  padding: 16px 0;
+}
+
+.duo-word-chip {
+  padding: 10px 18px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  border-radius: 12px;
+  border: 1.5px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 4px 0 #cbd5e1;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.12s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.duo-word-chip:hover {
+  border-color: #94a3b8;
+  box-shadow: 0 4px 0 #94a3b8;
+}
+
+.duo-word-chip:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #94a3b8;
+}
+
+.duo-word-chip.placed {
+  background: #f1f5f9;
+  color: transparent;
+  border-color: #e2e8f0;
+  box-shadow: none;
+  cursor: default;
+  pointer-events: none;
+}
+
+.duo-word-chip.in-slot {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-color: #7dd3fc;
+  box-shadow: 0 4px 0 #38bdf8;
+  animation: duoChipPop 0.2s ease-out;
+}
+
+.duo-word-chip.in-slot:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #38bdf8;
+}
+
+@keyframes duoChipPop {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Exercise Type: Tap-to-Pair */
+.duo-pair-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+}
+
+.duo-pair-card {
+  padding: 16px 14px;
+  border-radius: 14px;
+  border: 2px solid #e2e8f0;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 0.92rem;
+  box-shadow: 0 4px 0 #e2e8f0;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 64px;
+  user-select: none;
+}
+
+.duo-pair-card:hover {
+  border-color: #cbd5e1;
+}
+
+.duo-pair-card.selected {
+  border-color: #0284c7;
+  background: #f0f9ff;
+  color: #0284c7;
+  box-shadow: 0 4px 0 #0284c7;
+}
+
+.duo-pair-card.matched {
+  border-color: #10b981;
+  background: #ecfdf5;
+  color: #059669;
+  box-shadow: 0 2px 0 #10b981;
+  opacity: 0.35;
+  pointer-events: none;
+  animation: duoMatchDissolve 0.4s ease-out;
+}
+
+.duo-pair-card.mismatch {
+  border-color: #ef4444;
+  background: #fef2f2;
+  color: #dc2626;
+  box-shadow: 0 4px 0 #ef4444;
+  animation: duoShake 0.4s ease-in-out;
+}
+
+@keyframes duoMatchDissolve {
+  0% { transform: scale(1.05); }
+  50% { transform: scale(0.95); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 0.35; }
+}
+
+@keyframes duoShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+/* Exercise Type: Audio Listen & Select */
+.duo-audio-speaker-btn {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: #ffffff;
+  font-size: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px auto 28px;
+  cursor: pointer;
+  box-shadow: 0 8px 0 #075985, 0 14px 24px rgba(2, 132, 199, 0.3);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.duo-audio-speaker-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 4px 0 #075985;
+}
+
+.duo-mcq-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.duo-mcq-card {
+  padding: 16px 20px;
+  border-radius: 16px;
+  border: 2px solid #e2e8f0;
+  background: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  box-shadow: 0 4px 0 #e2e8f0;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+}
+
+.duo-mcq-card:hover {
+  border-color: #cbd5e1;
+}
+
+.duo-mcq-card.selected {
+  border-color: #0284c7;
+  background: #f0f9ff;
+  box-shadow: 0 4px 0 #0284c7;
+  color: #0284c7;
+}
+
+.duo-mcq-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.duo-mcq-card.selected .duo-mcq-num {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+/* Exercise Type: Voice Crucible Microphone */
+.duo-voice-mic-btn {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  font-size: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto 16px;
+  cursor: pointer;
+  box-shadow: 0 8px 0 #991b1b, 0 14px 24px rgba(239, 68, 68, 0.35);
+  transition: all 0.12s ease;
+}
+
+.duo-voice-mic-btn.recording {
+  animation: duoPulseMic 1.2s infinite ease-in-out;
+}
+
+@keyframes duoPulseMic {
+  0% { transform: scale(1); box-shadow: 0 8px 0 #991b1b, 0 0 0 0 rgba(239, 68, 68, 0.6); }
+  50% { transform: scale(1.08); box-shadow: 0 8px 0 #991b1b, 0 0 0 20px rgba(239, 68, 68, 0); }
+  100% { transform: scale(1); box-shadow: 0 8px 0 #991b1b, 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+/* 3. Sticky Bottom Sheet Feedback Drawer */
+.duo-feedback-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100001;
+  padding: 20px 24px calc(20px + env(safe-area-inset-bottom));
+  background: #ffffff;
+  border-top: 2px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.duo-feedback-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 220px;
+}
+
+.duo-feedback-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.duo-feedback-title {
+  font-size: 1.15rem;
+  font-weight: 900;
+  margin: 0;
+}
+
+.duo-feedback-subtitle {
+  font-size: 0.88rem;
+  margin: 3px 0 0;
+  line-height: 1.35;
+}
+
+/* Feedback Drawer: Correct State */
+.duo-feedback-drawer.correct {
+  background: #dcfce7;
+  border-top-color: #86efac;
+}
+
+.duo-feedback-drawer.correct .duo-feedback-icon {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.duo-feedback-drawer.correct .duo-feedback-title {
+  color: #15803d;
+}
+
+.duo-feedback-drawer.correct .duo-feedback-subtitle {
+  color: #166534;
+}
+
+/* Feedback Drawer: Incorrect State */
+.duo-feedback-drawer.incorrect {
+  background: #fee2e2;
+  border-top-color: #fca5a5;
+}
+
+.duo-feedback-drawer.incorrect .duo-feedback-icon {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.duo-feedback-drawer.incorrect .duo-feedback-title {
+  color: #b91c1c;
+}
+
+.duo-feedback-drawer.incorrect .duo-feedback-subtitle {
+  color: #991b1b;
+}
+
+/* Main Action Button */
+.duo-check-btn {
+  min-width: 160px;
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  background: #10b981;
+  color: #ffffff;
+  box-shadow: 0 5px 0 #059669;
+  transition: all 0.12s ease;
+}
+
+.duo-check-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #059669;
+}
+
+.duo-check-btn.disabled {
+  background: #e2e8f0;
+  color: #94a3b8;
+  box-shadow: 0 5px 0 #cbd5e1;
+  cursor: not-allowed;
+}
+
+.duo-check-btn.incorrect-mode {
+  background: #ef4444;
+  box-shadow: 0 5px 0 #dc2626;
+}
+
+.duo-check-btn.incorrect-mode:active {
+  box-shadow: 0 2px 0 #dc2626;
+}
+
+/* 4. Victory / Summary Modal */
+.duo-victory-card {
+  text-align: center;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 480px;
+  margin: auto;
+}
+
+.duo-victory-trophy {
+  font-size: 4.5rem;
+  color: #f59e0b;
+  margin-bottom: 16px;
+  animation: duoBounceStart 1.2s infinite ease-in-out;
+  filter: drop-shadow(0 10px 20px rgba(245, 158, 11, 0.4));
+}
+
+.duo-victory-title {
+  font-size: 1.85rem;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0 0 8px;
+}
+
+.duo-victory-subtitle {
+  font-size: 1rem;
+  color: #475569;
+  margin: 0 0 24px;
+}
+
+.duo-victory-rewards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 32px;
+}
+
+.duo-reward-item {
+  padding: 14px 10px;
+  border-radius: 14px;
+  border: 1.5px solid #e2e8f0;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.duo-reward-val {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.duo-reward-lbl {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+
 
 
