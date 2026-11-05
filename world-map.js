@@ -543,6 +543,7 @@
                         </div>
                     </div>
 
+                    ${!document.getElementById('world-module-drawer') ? `
                     <!-- Module Inspection Bottom Drawer -->
                     <div class="wmd-backdrop" id="wmd-backdrop"></div>
                     <div class="world-module-drawer" id="world-module-drawer">
@@ -598,12 +599,15 @@
                             </button>
                         </div>
                     </div>
+                    ` : ''}
 
+                    ${!document.getElementById('world-toast') ? `
                     <!-- Toast Notification -->
                     <div class="world-toast" id="world-toast">
                         <i class="fa-solid fa-sparkles" style="color:#fbbf24;"></i>
                         <span id="world-toast-text">¡Módulo Desbloqueado!</span>
                     </div>
+                    ` : ''}
                 </div>
             `;
 

@@ -9906,186 +9906,591 @@ Nearshoring Center of Excellence • stemOS Certified`;
         }
     };
 
-    // 4. Visual Snake Path Generator
-    function renderDuoLearningPath(levelFilter) {
-        const pathContainer = document.getElementById('stemos-duo-path-view');
-        if (!pathContainer || !window.STEMOS_MCER_TRACKS) return;
+    // 4. Visual Snake Path Generator & 16-Module Winding Trail Engine (Visual Congruency with 3D World)
+    function createInlineStemBotHtml(options = {}) {
+        const isChampion = options.isChampion || false;
+        const tagText = isChampion ? '¡CAMPEÓN!' : 'stemBOT';
+        const tagIcon = isChampion ? '<i class="fa-solid fa-trophy"></i>' : '<i class="fa-solid fa-bolt"></i>';
+        const phrases = [
+            "¡Hola! ¿Listo para conquistar este reto?",
+            "¡Bip bup! Cada módulo suma XP a tu perfil STEM.",
+            "¡Tu cerebro de ingeniero está en máxima potencia!",
+            "¡Recuerda: la ciencia se aprende experimentando!",
+            "¡Un paso más cerca de tu certificación aeroespacial!",
+            "¡Impresionante avance! Sigue con este ritmo.",
+            "¡Haz clic para iniciar tu próxima misión!",
+            "¡Los grandes científicos nunca se rinden!",
+            "¡Sistemas listos! Modo aprendizaje al 100%."
+        ];
+        const initialSpeech = options.speech || (isChampion 
+            ? "¡Mundo dominado al 100%! ¡Eres una leyenda!" 
+            : phrases[Math.floor(Math.random() * phrases.length)]);
 
-        pathContainer.innerHTML = '';
-        let units = window.STEMOS_MCER_TRACKS.getAllUnits();
-
-        if (levelFilter && levelFilter !== 'all') {
-            units = units.filter(u => u.cefr === levelFilter);
-        }
-
-        const duoProgress = getDuoProgress();
-        const levelColors = {
-            'A1': { color: '#10b981', label: 'Foundations · Inglés I', sub: '60.0h Acreditadas · Vocabulario y Comunicación Esencial' },
-            'A2': { color: '#0284c7', label: 'Waystage · Inglés II', sub: '60.0h Acreditadas · Procesos Industriales y Protocolos Técnicos' },
-            'B1': { color: '#f59e0b', label: 'Threshold · Inglés III', sub: '60.0h Acreditadas · Solución de Fallas, Causa Raíz y Auditorías' },
-            'B2': { color: '#8b5cf6', label: 'Vantage · Inglés IV', sub: '60.0h Acreditadas · Liderazgo de Planta, Nearshoring y Negociación' }
-        };
-
-        const activeLevel = (levelFilter && levelFilter !== 'all') ? levelFilter : (units[0] ? units[0].cefr : 'A1');
-        const meta = levelColors[activeLevel] || levelColors.A1;
-
-        // Level Header Banner
-        const banner = document.createElement('div');
-        banner.className = 'duo-level-banner';
-        banner.style.background = `linear-gradient(135deg, ${meta.color} 0%, #0f172a 100%)`;
-        banner.innerHTML = `
-            <div>
-                <span style="display:inline-block; font-size:0.75rem; font-weight:800; text-transform:uppercase; background:rgba(255,255,255,0.22); color:#ffffff; padding:2px 10px; border-radius:999px; margin-bottom:6px;">
-                    CEFR ${activeLevel} · Nivel Activo
-                </span>
-                <h3 class="duo-level-banner-title">${meta.label}</h3>
-                <p class="duo-level-banner-desc">${meta.sub}</p>
-            </div>
-            <div style="font-size:2.4rem; color:rgba(255,255,255,0.85); flex-shrink:0;">
-                <i class="fa-solid fa-graduation-cap"></i>
+        return `
+            <div class="path-player-mascot ${isChampion ? 'champion' : ''}" id="path-stembot-mascot" role="button" aria-label="Mascota stemBOT: Copiloto de aprendizaje" tabindex="0">
+                <div class="stembot-speech-bubble visible" id="stembot-bubble">
+                    <span class="stembot-bubble-bot-tag">${tagIcon} ${tagText}</span>
+                    <span class="stembot-bubble-text">${initialSpeech}</span>
+                </div>
+                <div class="stembot-body">
+                    <svg class="stembot-svg" width="60" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="sbHeadGrad" x1="14" y1="14" x2="50" y2="38" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#ffffff"/>
+                                <stop offset="100%" stop-color="#dbeafe"/>
+                            </linearGradient>
+                            <linearGradient id="sbBodyGrad" x1="18" y1="39" x2="46" y2="51" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#f8fafc"/>
+                                <stop offset="100%" stop-color="#e2e8f0"/>
+                            </linearGradient>
+                            <linearGradient id="sbFlameGrad" x1="32" y1="53" x2="32" y2="63" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#00f5d4"/>
+                                <stop offset="60%" stop-color="#0284c7"/>
+                                <stop offset="100%" stop-color="rgba(2, 132, 199, 0)"/>
+                            </linearGradient>
+                        </defs>
+                        <line x1="32" y1="14" x2="32" y2="7" stroke="#64748b" stroke-width="2.5" stroke-linecap="round"/>
+                        <circle class="stembot-beacon" cx="32" cy="5" r="4.5" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
+                        <rect x="14" y="14" width="36" height="24" rx="9" fill="url(#sbHeadGrad)" stroke="#38bdf8" stroke-width="1.8"/>
+                        <rect x="10" y="21" width="4" height="8" rx="2" fill="#0284c7"/>
+                        <rect x="50" y="21" width="4" height="8" rx="2" fill="#0284c7"/>
+                        <rect x="18" y="18" width="28" height="15" rx="5" fill="#0f172a"/>
+                        <path d="M20 20 L30 20 L24 23 L20 23 Z" fill="rgba(255,255,255,0.22)"/>
+                        <circle class="stembot-eye" cx="26" cy="25" r="3.2" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
+                        <circle class="stembot-eye" cx="38" cy="25" r="3.2" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
+                        <rect x="18" y="39" width="28" height="12" rx="4" fill="url(#sbBodyGrad)" stroke="#cbd5e1" stroke-width="1.5"/>
+                        <path class="stembot-arm-left" d="M16 41 Q12 45 14 50" stroke="#64748b" stroke-width="2.5" stroke-linecap="round"/>
+                        <path class="stembot-arm-right" d="M48 41 Q52 45 50 50" stroke="#64748b" stroke-width="2.5" stroke-linecap="round"/>
+                        <polygon class="stembot-flame" points="26,52 38,52 32,63" fill="url(#sbFlameGrad)"/>
+                    </svg>
+                </div>
             </div>
         `;
-        pathContainer.appendChild(banner);
+    }
 
-        // Sequence tracks with 5 stepping stones per unit
-        let firstIncompleteFound = false;
+    function drawCurveTrailInContainer(wrap) {
+        if (!wrap) wrap = document.getElementById('duo-path-winding-trail-wrap');
+        if (!wrap) return;
 
-        units.forEach((unit, unitIdx) => {
-            const unitSection = document.createElement('section');
-            unitSection.className = 'duo-unit-section';
+        const bgPath = wrap.querySelector('.path-svg-line-bg');
+        const glowPath = wrap.querySelector('.path-svg-line-glow');
+        if (!bgPath || !glowPath) return;
 
-            // Count completed stones in this unit
-            let unitCompletedCount = 0;
-            const stepsMeta = [
-                { type: 'vocab_sprint', title: 'Vocab Sprint', icon: 'fa-shapes', label: 'Vocabulario & Emparejamiento', estMin: 3, xp: 20 },
-                { type: 'sentence_builder', title: 'Sentence Builder', icon: 'fa-cubes-stacked', label: 'Constructor de Oraciones', estMin: 4, xp: 25 },
-                { type: 'listening', title: 'Industrial Audio Lab', icon: 'fa-headphones', label: 'Comprensión Auditiva en Planta', estMin: 4, xp: 25 },
-                { type: 'grammar_drills', title: 'Grammar Drills', icon: 'fa-wand-magic-sparkles', label: 'Gramática Aplicada & Sintaxis', estMin: 4, xp: 25 },
-                { type: 'voice_crucible', title: 'Voice Crucible Boss', icon: 'fa-crown', label: 'Crisol de Voz (Milestone Boss)', estMin: 5, xp: 40, isBoss: true }
-            ];
+        const discs = wrap.querySelectorAll('.path-node-disc');
+        if (discs.length < 2) return;
 
-            stepsMeta.forEach((s, sIdx) => {
-                const stepKey = `${unit.id}-step${sIdx + 1}`;
-                if (duoProgress[stepKey] && duoProgress[stepKey].completed) {
-                    unitCompletedCount++;
-                }
-            });
+        const wrapRect = wrap.getBoundingClientRect();
+        const points = [];
 
-            // Milestone Header Card
-            const milestoneHeader = document.createElement('div');
-            milestoneHeader.className = 'duo-unit-milestone-header';
-            milestoneHeader.innerHTML = `
-                <div>
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        <span class="duo-unit-milestone-badge" style="background:${meta.color}18; color:${meta.color}; border:1px solid ${meta.color}35;">
-                            Unidad ${String(unit.unitNumber || unitIdx + 1).padStart(2, '0')}
-                        </span>
-                        <strong style="font-size:0.96rem; color:#0f172a;">${unit.title}</strong>
+        discs.forEach(disc => {
+            const rect = disc.getBoundingClientRect();
+            const x = (rect.left + rect.width / 2) - wrapRect.left;
+            const y = (rect.top + rect.height / 2) - wrapRect.top;
+            points.push({ x, y });
+        });
+
+        if (points.length < 2) return;
+
+        let d = `M ${points[0].x} ${points[0].y}`;
+        for (let i = 0; i < points.length - 1; i++) {
+            const p0 = points[i];
+            const p1 = points[i + 1];
+            const midY = (p0.y + p1.y) / 2;
+            d += ` C ${p0.x} ${midY}, ${p1.x} ${midY}, ${p1.x} ${p1.y}`;
+        }
+
+        bgPath.setAttribute('d', d);
+        glowPath.setAttribute('d', d);
+    }
+    window.addEventListener('resize', () => { drawCurveTrailInContainer(); });
+
+    function closeCareerDrawer() {
+        const drawer = document.getElementById('world-module-drawer');
+        const backdrop = document.getElementById('wmd-backdrop');
+        if (drawer) drawer.classList.remove('open');
+        if (backdrop) backdrop.classList.remove('open');
+    }
+    window.closeCareerDrawer = closeCareerDrawer;
+
+    function openStationInspectionDrawer(career, careerPath, mod, modIndex, isUnlocked, isCompleted) {
+        const drawer = document.getElementById('world-module-drawer');
+        const backdrop = document.getElementById('wmd-backdrop');
+        if (!drawer || !backdrop) return;
+
+        const nodeTypeConfig = {
+            'theory': { badge: 'THEORY 3.5h', label: 'Theory', color: '#38bdf8' },
+            'english-b1': { badge: 'ENGLISH B1 3.5h', label: 'English B1', color: '#10b981' },
+            'practical-lab': { badge: 'LAB SIM 4.0h', label: 'Practical Lab', color: '#f59e0b' },
+            'milestone': { badge: 'CHECKPOINT 4.0h', label: 'Checkpoint', color: '#ef4444' }
+        };
+        const typeConfig = nodeTypeConfig[mod.type] || nodeTypeConfig['theory'];
+
+        const catTag = document.getElementById('wmd-cat-tag');
+        if (catTag) {
+            catTag.textContent = `${typeConfig.badge} · ${typeConfig.label.toUpperCase()}`;
+            catTag.style.background = `${typeConfig.color}22`;
+            catTag.style.color = typeConfig.color;
+        }
+
+        const modCode = document.getElementById('wmd-mod-code');
+        if (modCode) modCode.textContent = `STATION ${mod.id}`;
+
+        const levelTag = document.getElementById('wmd-level-tag');
+        if (levelTag) levelTag.textContent = `CEFR B1 Technical Immersion · ${mod.standard || 'ISO Standard'}`;
+
+        const titleEl = document.getElementById('wmd-title');
+        if (titleEl) titleEl.textContent = mod.title;
+
+        const subtitleEl = document.getElementById('wmd-subtitle');
+        if (subtitleEl) subtitleEl.textContent = mod.competency || mod.shortTitle || '';
+
+        const readingsEl = document.getElementById('wmd-stat-readings');
+        if (readingsEl) readingsEl.textContent = `${mod.hours || 3.5}h Curricular`;
+
+        const timeEl = document.getElementById('wmd-stat-time');
+        if (timeEl) timeEl.textContent = `Hito ${mod.hito || Math.floor(modIndex / 4) + 1} de 4`;
+
+        const xpEl = document.getElementById('wmd-stat-xp');
+        if (xpEl) xpEl.textContent = `+${mod.xp || 300} XP`;
+
+        const statusEl = document.getElementById('wmd-stat-status');
+        if (statusEl) {
+            if (isCompleted) {
+                statusEl.innerHTML = '<i class="fa-solid fa-check"></i> Passed';
+                statusEl.style.color = '#10b981';
+            } else if (isUnlocked) {
+                statusEl.innerHTML = '<i class="fa-solid fa-play"></i> In Progress';
+                statusEl.style.color = '#0284c7';
+            } else {
+                statusEl.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
+                statusEl.style.color = '#64748b';
+            }
+        }
+
+        const readingsList = document.getElementById('wmd-readings-list');
+        if (readingsList) {
+            readingsList.innerHTML = `
+                <div class="wmd-reading-item" style="border-left:3px solid ${typeConfig.color};">
+                    <div class="wmd-r-title">
+                        <span style="color:${typeConfig.color};font-weight:800;font-size:0.75rem;margin-right:6px;">${typeConfig.label.toUpperCase()}</span>
+                        ${mod.title}
                     </div>
-                    <div style="font-size:0.8rem; color:#64748b; margin-top:3px;">
-                        ${unit.canDo || unit.titleES || ''}
+                    <div class="wmd-r-meta">
+                        <span><i class="fa-solid fa-clock"></i> ${mod.hours || 3.5}h</span>
+                        <i class="fa-solid ${isCompleted ? 'fa-circle-check' : 'fa-circle'}" style="color:${isCompleted ? '#10b981' : 'rgba(203,213,225,0.7)'};margin-left:8px;"></i>
                     </div>
                 </div>
-                <div style="text-align:right; flex-shrink:0;">
-                    <span style="font-family:var(--font-mono); font-size:0.82rem; font-weight:800; color:${meta.color};">
-                        ${unitCompletedCount}/5
-                    </span>
-                    <div style="font-size:0.68rem; font-weight:700; color:#94a3b8;">Lecciones</div>
+                <div style="padding:10px 14px; background:rgba(15,23,42,0.03); border-radius:10px; margin-top:8px; font-size:0.8rem; color:#475569;">
+                    <div style="font-weight:700; color:#0f172a; margin-bottom:4px;"><i class="fa-solid fa-shield-halved" style="color:#0284c7;"></i> Assessed Industrial Competency:</div>
+                    ${mod.competency || 'Demonstrate technical operational communication and procedural compliance according to ISO and OSHA standards.'}
                 </div>
             `;
-            unitSection.appendChild(milestoneHeader);
+        }
 
-            // Stepping Stones Track
-            const track = document.createElement('div');
-            track.className = 'duo-path-track';
+        const btnPrimary = document.getElementById('wmd-btn-launch-primary');
+        const btnToggle = document.getElementById('wmd-btn-toggle-complete');
+        const toggleText = document.getElementById('wmd-toggle-complete-text');
 
-            // Connector Line
-            const connector = document.createElement('div');
-            connector.className = 'duo-connector-line';
-            track.appendChild(connector);
+        if (btnToggle && toggleText) {
+            toggleText.textContent = isCompleted ? 'Marcar como En Progreso' : 'Marcar Estación como Completada (+XP)';
+            btnToggle.onclick = () => {
+                toggleCareerModuleCompletionDirect((career && career.id) || 'it-mecatronica', mod.id, mod.xp || 300);
+            };
+        }
 
-            // Snake curves zigzag offsets
-            const posOffsets = ['duo-pos-0', 'duo-pos-2', 'duo-pos-5', 'duo-pos-1', 'duo-pos-0'];
-
-            stepsMeta.forEach((step, sIdx) => {
-                const stepKey = `${unit.id}-step${sIdx + 1}`;
-                const isCompleted = !!(duoProgress[stepKey] && duoProgress[stepKey].completed);
-                let isCurrent = false;
-                let isLocked = false;
-
-                if (isCompleted) {
-                    // completed
-                } else if (!firstIncompleteFound) {
-                    isCurrent = true;
-                    firstIncompleteFound = true;
+        if (btnPrimary) {
+            btnPrimary.onclick = () => {
+                closeCareerDrawer();
+                DuoSound.playPop();
+                if (mod.type === 'milestone') {
+                    const examOverlay = document.getElementById('exam-modal-overlay');
+                    if (examOverlay) {
+                        examOverlay.classList.add('active');
+                        examOverlay.style.display = 'flex';
+                    }
+                } else if (mod.type === 'practical-lab') {
+                    if (typeof window.openAcademicModal === 'function') {
+                        window.openAcademicModal((career && career.primaryTrackId) || 'robotics-automation', mod);
+                    }
                 } else {
-                    isLocked = true;
+                    if (typeof window.openDrawer === 'function') {
+                        const courses = (typeof LXP_COURSES !== 'undefined') ? LXP_COURSES : {};
+                        window.openDrawer((career && career.primaryTrackId) || 'robotics-automation', mod.id, courses);
+                    }
                 }
+            };
+        }
 
-                // If user is just beginning and all are locked, unlock first node of first unit
-                if (unitIdx === 0 && sIdx === 0 && !isCompleted && !firstIncompleteFound) {
-                    isCurrent = true;
-                    firstIncompleteFound = true;
-                    isLocked = false;
+        const btnClose = document.getElementById('wmd-btn-close');
+        if (btnClose) btnClose.onclick = () => closeCareerDrawer();
+        backdrop.onclick = () => closeCareerDrawer();
+
+        drawer.classList.add('open');
+        backdrop.classList.add('open');
+    }
+
+    function toggleCareerModuleCompletionDirect(careerId, moduleId, xpReward) {
+        const storageKey = 'stemos_progress_' + careerId;
+        let prog = {};
+        try {
+            prog = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        } catch (e) {}
+
+        if (!prog.modules) prog.modules = {};
+        const current = prog.modules[moduleId] || {};
+        const isNowCompleted = current.status !== 'completed';
+
+        prog.modules[moduleId] = {
+            status: isNowCompleted ? 'completed' : 'in-progress',
+            score: isNowCompleted ? 95 : null,
+            xp: isNowCompleted ? xpReward : 0,
+            completedAt: isNowCompleted ? new Date().toISOString() : null
+        };
+
+        localStorage.setItem(storageKey, JSON.stringify(prog));
+
+        // Sync XP
+        if (isNowCompleted) {
+            let currentXP = parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10);
+            currentXP += xpReward;
+            localStorage.setItem('stemos_student_xp', String(currentXP));
+            DuoSound.playVictory();
+            if (typeof window.updateStudentXPHUD === 'function') {
+                window.updateStudentXPHUD(currentXP);
+            }
+        }
+
+        // Sync with Firebase Multi-Tenant Adapter if available
+        if (typeof window.STEMOS_FIREBASE !== 'undefined') {
+            const completedCount = Object.values(prog.modules || {}).filter(m => m.status === 'completed').length;
+            const calcProgress = Math.min(100, Math.round((completedCount / 16) * 100));
+            const studentUser = window.STEMOS_FIREBASE.getAuthUser() || {};
+            if (studentUser && studentUser.uid) {
+                window.STEMOS_FIREBASE.updateStudentProgress(
+                    studentUser.uid,
+                    {
+                        careerId: careerId,
+                        completedStations: completedCount,
+                        progressPercent: calcProgress,
+                        xp: parseInt(localStorage.getItem('stemos_student_xp') || '3450', 10),
+                        lastActiveModule: moduleId,
+                        lastActiveAt: new Date().toISOString()
+                    }
+                );
+            }
+        }
+
+        closeCareerDrawer();
+        renderDuoLearningPath();
+    }
+
+    function renderDuoLearningPath(levelFilter, trackOrCareerId) {
+        const pathContainer = document.getElementById('stemos-duo-path-view');
+        if (!pathContainer) return;
+
+        pathContainer.innerHTML = '';
+
+        // 1. Resolve Active Career / Track to display
+        const activeCareerId = trackOrCareerId || localStorage.getItem('stemos_active_career') || 'it-mecatronica';
+        let career = null;
+        if (window.STEMOS_CAREER_TRACKS && typeof window.STEMOS_CAREER_TRACKS.getCareerById === 'function') {
+            career = window.STEMOS_CAREER_TRACKS.getCareerById(activeCareerId);
+        }
+        if (!career && window.STEMOS_CAREER_TRACKS && Array.isArray(window.STEMOS_CAREER_TRACKS.CAREERS)) {
+            career = window.STEMOS_CAREER_TRACKS.CAREERS[0];
+        }
+
+        // Check if an individual ESP track was requested (e.g. from courses.js)
+        const courses = (typeof LXP_COURSES !== 'undefined') ? LXP_COURSES : {};
+        const isEspTrack = !career || (courses[trackOrCareerId] && trackOrCareerId !== career.id);
+        const espTrack = isEspTrack ? courses[trackOrCareerId] : null;
+
+        // Career Path definition (16 modules across 4 Hitos)
+        let careerPath = null;
+        if (!isEspTrack && window.STEMOS_CAREER_PATHS && typeof window.STEMOS_CAREER_PATHS.getPathForCareer === 'function') {
+            careerPath = window.STEMOS_CAREER_PATHS.getPathForCareer(career ? career.id : 'it-mecatronica');
+        }
+
+        // Student Progress
+        const storageKey = 'stemos_progress_' + (career ? career.id : 'it-mecatronica');
+        let prog = {};
+        try {
+            prog = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        } catch (e) {}
+        if (!prog.modules) prog.modules = {};
+
+        const completedModuleKeys = Object.keys(prog.modules).filter(k => prog.modules[k].status === 'completed');
+        const completedCount = completedModuleKeys.length;
+        const totalStations = careerPath ? (careerPath.modules || []).length : (espTrack ? (espTrack.modules || []).length : 16);
+        const progressPct = Math.round((completedCount / (totalStations || 16)) * 100);
+        const earnedXP = completedModuleKeys.reduce((acc, k) => acc + (prog.modules[k].xp || 300), 0);
+
+        // System Label (e.g. UPBC, TecNM, UTT, etc.)
+        const systemLabel = (career && career.system) ? career.system.toUpperCase() : 'UPBC';
+        const primaryStandard = (career && career.standards && career.standards[0]) ? career.standards[0] : 'ISO 10218-1/2 Industrial Robots';
+        const trackTitle = isEspTrack ? (espTrack.titleEN || espTrack.title) : `${career ? career.name : 'Ingeniería Mecatrónica'} (60.0h Track)`;
+
+        // 2. Build Top Header Card (Identical to 3D World Header)
+        const headerCard = document.createElement('div');
+        headerCard.className = 'path-header-card';
+        headerCard.innerHTML = `
+            <button type="button" class="path-back-btn" id="duo-path-btn-globe" onclick="switchView('world-map')" title="Explorar en Globo 3D">
+                <i class="fa-solid fa-earth-americas"></i>
+                <span>Volver al Globo 3D</span>
+            </button>
+
+            <div class="path-track-info">
+                <div class="path-track-badges">
+                    <span class="path-cat-badge" id="duo-path-cat-badge" style="background:#0ea5e922; color:#0ea5e9; border:1px solid #0ea5e955;">
+                        ${systemLabel} · 60H DETERMINISTIC
+                    </span>
+                    <span class="path-standard-badge" id="duo-path-std-badge">
+                        CEFR B1 Technical Immersion &bull; ${primaryStandard}
+                    </span>
+                </div>
+                <h2 class="path-track-title" id="duo-path-track-title">${trackTitle}</h2>
+            </div>
+
+            <div class="path-track-stats-row">
+                <div class="path-stat-pill" id="duo-path-stat-progress">
+                    <i class="fa-solid fa-award"></i>
+                    <span id="duo-path-stat-progress-text">${completedCount}/${totalStations} Curricular Stations Completed (${progressPct}% · ${earnedXP}/5,600 XP)</span>
+                </div>
+                <select class="path-track-select" id="duo-path-track-select" aria-label="Cambiar de Track">
+                    <!-- Populated dynamically -->
+                </select>
+            </div>
+        `;
+        pathContainer.appendChild(headerCard);
+
+        // Populate track select dropdown
+        const trackSelect = headerCard.querySelector('#duo-path-track-select');
+        if (trackSelect) {
+            // Group 1: Carreras Universitarias
+            if (window.STEMOS_CAREER_TRACKS && Array.isArray(window.STEMOS_CAREER_TRACKS.CAREERS)) {
+                const grpCareers = document.createElement('optgroup');
+                grpCareers.label = 'Carreras Universitarias (60.0h Tracks)';
+                window.STEMOS_CAREER_TRACKS.CAREERS.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = 'career:' + c.id;
+                    opt.textContent = `${c.name} (16 Estaciones · ${c.system ? c.system.toUpperCase() : 'UPBC'})`;
+                    if (!isEspTrack && career && career.id === c.id) opt.selected = true;
+                    grpCareers.appendChild(opt);
+                });
+                trackSelect.appendChild(grpCareers);
+            }
+
+            // Group 2: Tracks de Especialidad Industrial (ESP)
+            if (courses && Object.keys(courses).length > 0) {
+                const grpEsp = document.createElement('optgroup');
+                grpEsp.label = 'Tracks de Especialidad Industrial (ESP)';
+                for (let k in courses) {
+                    const cr = courses[k];
+                    const opt = document.createElement('option');
+                    opt.value = 'track:' + k;
+                    opt.textContent = `${cr.titleEN || cr.title} (${(cr.modules || []).length} M)`;
+                    if (isEspTrack && trackOrCareerId === k) opt.selected = true;
+                    grpEsp.appendChild(opt);
                 }
+                trackSelect.appendChild(grpEsp);
+            }
 
-                const nodeWrapper = document.createElement('div');
-                nodeWrapper.className = `duo-node-wrapper ${posOffsets[sIdx % posOffsets.length]}`;
-
-                // Floating tooltip for current active node
-                let startTooltipHtml = '';
-                if (isCurrent) {
-                    startTooltipHtml = `<div class="duo-start-tooltip">¡EMPEZAR!</div>`;
+            trackSelect.addEventListener('change', (e) => {
+                const val = e.target.value;
+                if (val.startsWith('career:')) {
+                    const cid = val.replace('career:', '');
+                    localStorage.setItem('stemos_active_career', cid);
+                    renderDuoLearningPath(levelFilter, cid);
+                } else if (val.startsWith('track:')) {
+                    const tid = val.replace('track:', '');
+                    renderDuoLearningPath(levelFilter, tid);
                 }
+            });
+        }
 
-                let nodeBtnClass = 'duo-node-btn';
-                if (step.isBoss) nodeBtnClass += ' boss';
-                if (isCompleted) nodeBtnClass += ' completed';
-                else if (isCurrent) nodeBtnClass += ' current';
-                else if (isLocked) nodeBtnClass += ' locked';
+        // 3. Build Winding Trail Road Container with SVG Bezier Curves
+        const trailWrap = document.createElement('div');
+        trailWrap.className = 'path-winding-trail-wrap';
+        trailWrap.id = 'duo-path-winding-trail-wrap';
 
-                let iconHtml = `<i class="fa-solid ${step.icon}"></i>`;
-                if (isCompleted) {
-                    iconHtml = `
-                        <i class="fa-solid fa-check"></i>
-                        <div class="duo-stars-row">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                    `;
-                } else if (isLocked) {
-                    iconHtml = `<i class="fa-solid fa-lock" style="font-size:1.15rem; opacity:0.6;"></i>`;
-                }
+        const svgTrail = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svgTrail.setAttribute('class', 'path-svg-trail');
+        svgTrail.setAttribute('id', 'duo-path-svg-trail');
+        svgTrail.setAttribute('preserveAspectRatio', 'none');
+        svgTrail.innerHTML = `
+            <path class="path-svg-line-bg" id="duo-path-svg-line-bg" d=""></path>
+            <path class="path-svg-line-glow" id="duo-path-svg-line-glow" d=""></path>
+        `;
+        trailWrap.appendChild(svgTrail);
 
-                nodeWrapper.innerHTML = `
-                    ${startTooltipHtml}
-                    <button type="button" class="${nodeBtnClass}" id="duo-node-${stepKey}" aria-label="${step.title}: ${step.label}">
-                        ${iconHtml}
-                    </button>
-                    <div class="duo-node-label">${step.title}</div>
+        const nodesLayer = document.createElement('div');
+        nodesLayer.className = 'path-nodes-layer';
+        nodesLayer.id = 'duo-path-nodes-layer';
+        trailWrap.appendChild(nodesLayer);
+        pathContainer.appendChild(trailWrap);
+
+        // 4. Populate Stepping Stones & Hito Dividers
+        const modules = isEspTrack ? (espTrack.modules || []) : (careerPath ? careerPath.modules : []);
+        const alignments = ['align-left', 'align-center', 'align-right', 'align-center'];
+        let activeNodeFound = false;
+        let currentHitoRendered = 0;
+
+        const hitoNames = [
+            'Shopfloor Survival & Operational Continuity (15.0h)',
+            'Root Cause Triangulation & Diagnostics (15.0h)',
+            'Cross-Border Negotiation & Auditor Defense (15.0h)',
+            'Capstone Engineering Fellowship (15.0h)'
+        ];
+
+        const nodeTypeConfig = {
+            'theory': { badge: 'THEORY 3.5h', label: 'Theory', icon: 'fa-microchip', color: '#38bdf8', defaultHours: 3.5, defaultXP: 300 },
+            'english-b1': { badge: 'ENGLISH B1 3.5h', label: 'English B1', icon: 'fa-comments', color: '#10b981', defaultHours: 3.5, defaultXP: 300 },
+            'practical-lab': { badge: 'LAB SIM 4.0h', label: 'Practical Lab', icon: 'fa-flask', color: '#f59e0b', defaultHours: 4.0, defaultXP: 400 },
+            'milestone': { badge: 'CHECKPOINT 4.0h', label: 'Checkpoint', icon: 'fa-award', color: '#ef4444', defaultHours: 4.0, defaultXP: 500 }
+        };
+
+        modules.forEach((mod, idx) => {
+            const stepNum = idx + 1;
+            const hitoNum = mod.hito || Math.floor(idx / 4) + 1;
+
+            // Hito Milestone Divider
+            if (hitoNum !== currentHitoRendered) {
+                currentHitoRendered = hitoNum;
+                const hitoDiv = document.createElement('div');
+                hitoDiv.className = 'path-hito-divider';
+                hitoDiv.style.cssText = 'width:100%; max-width:520px; margin:28px auto 14px; text-align:center; position:relative; z-index:2;';
+                hitoDiv.innerHTML = `
+                    <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(15,23,42,0.85); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.15); padding:6px 18px; border-radius:999px; box-shadow:0 6px 20px rgba(0,0,0,0.15);">
+                        <span style="font-size:0.75rem; font-weight:800; color:#38bdf8; text-transform:uppercase; letter-spacing:0.06em;">
+                            <i class="fa-solid fa-flag-checkered"></i> HITO ${hitoNum}
+                        </span>
+                        <span style="color:#64748b; font-size:0.7rem;">&bull;</span>
+                        <span style="font-size:0.75rem; color:#f8fafc; font-weight:700;">${hitoNames[hitoNum - 1] || 'Industrial Milestone'}</span>
+                    </div>
                 `;
+                nodesLayer.appendChild(hitoDiv);
+            }
 
-                const btn = nodeWrapper.querySelector('button');
-                btn.addEventListener('click', () => {
-                    DuoSound.playPop();
-                    if (isLocked) {
+            // Gating Check
+            const isCompleted = !!(prog.modules[mod.id] && (prog.modules[mod.id].status === 'completed' || prog.modules[mod.id].completed));
+            const isPrevCompleted = (idx === 0) || (prog.modules[modules[idx - 1].id] && (prog.modules[modules[idx - 1].id].status === 'completed' || prog.modules[modules[idx - 1].id].completed));
+            const isUnlocked = isCompleted || isPrevCompleted || (idx === 0);
+            const isActive = isUnlocked && !isCompleted && !activeNodeFound;
+            if (isActive) activeNodeFound = true;
+
+            const alignClass = alignments[idx % alignments.length];
+            const typeConfig = nodeTypeConfig[mod.type] || nodeTypeConfig['theory'];
+            const iconClass = typeConfig.icon || 'fa-microchip';
+
+            const stepEl = document.createElement('div');
+            stepEl.className = `path-level-step ${alignClass} ${isCompleted ? 'completed' : isActive ? 'active-node' : isUnlocked ? 'unlocked' : 'locked'}`;
+
+            let statusPill = `<span class="plc-status-pill" style="background:${typeConfig.color}22; color:${typeConfig.color};"><i class="fa-solid fa-play"></i> In Progress</span>`;
+            if (isCompleted) {
+                statusPill = `<span class="plc-status-pill" style="background:#05966922; color:#10b981;"><i class="fa-solid fa-check-double"></i> Station Passed</span>`;
+            } else if (!isUnlocked) {
+                statusPill = `<span class="plc-status-pill" style="background:rgba(15,23,42,0.06); color:#64748b;"><i class="fa-solid fa-lock"></i> Station Locked</span>`;
+            }
+
+            // stemBOT Mascot on active node
+            let mascotHtml = '';
+            if (isActive) {
+                mascotHtml = (window.StemOSWorldMap && typeof window.StemOSWorldMap.createStemBotHtml === 'function')
+                    ? window.StemOSWorldMap.createStemBotHtml({ isChampion: false })
+                    : createInlineStemBotHtml({ isChampion: false });
+            }
+
+            const starCrownHtml = isCompleted ? `
+                <div class="path-star-crown">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+            ` : '';
+
+            stepEl.innerHTML = `
+                <div class="path-node-disc" data-mod-id="${mod.id}" title="${mod.title}" style="border-color:${isUnlocked ? typeConfig.color : '#94a3b8'};">
+                    ${mascotHtml}
+                    ${starCrownHtml}
+                    <span class="node-m-num" style="color:${isUnlocked ? typeConfig.color : '#64748b'};">${mod.id}</span>
+                    <i class="${isUnlocked ? iconClass : 'fa-solid fa-lock'} node-m-icon" style="color:${isUnlocked ? typeConfig.color : '#64748b'};"></i>
+                </div>
+
+                <div class="path-level-card" style="border-left:3px solid ${isUnlocked ? typeConfig.color : '#cbd5e1'};">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                        ${statusPill}
+                        <span style="font-size:0.7rem; font-weight:800; color:${typeConfig.color}; background:${typeConfig.color}15; padding:2px 8px; border-radius:6px;">
+                            ${typeConfig.badge}
+                        </span>
+                    </div>
+                    <div class="plc-title">${mod.title}</div>
+                    <div class="plc-meta">
+                        <span><i class="fa-solid fa-clock"></i> ${mod.hours || 3.5}h Curricular</span>
+                        <span style="margin:0 4px;">&bull;</span>
+                        <span style="color:#d97706; font-weight:700;"><i class="fa-solid fa-bolt"></i> +${mod.xp || 300} XP</span>
+                        <span style="margin:0 4px;">&bull;</span>
+                        <span>${mod.standard || 'ISO / IEEE'}</span>
+                    </div>
+                </div>
+            `;
+
+            // Click listener on disc
+            const disc = stepEl.querySelector('.path-node-disc');
+            if (disc) {
+                disc.addEventListener('click', () => {
+                    if (!isUnlocked) {
                         DuoSound.playIncorrect();
                         if (typeof showSyncToast === 'function') {
-                            showSyncToast('Completa las lecciones anteriores para desbloquear este paso.', 'info');
+                            showSyncToast('Estación bloqueada. Completa las estaciones previas para desbloquear.', 'info');
                         }
                         return;
                     }
-                    openDuoLesson(unit, sIdx + 1, step);
+                    DuoSound.playPop();
+                    openStationInspectionDrawer(career, careerPath, mod, idx, isUnlocked, isCompleted);
                 });
+            }
 
-                track.appendChild(nodeWrapper);
-            });
-
-            unitSection.appendChild(track);
-            pathContainer.appendChild(unitSection);
+            nodesLayer.appendChild(stepEl);
         });
 
+        // If all 16 are completed, place champion mascot on final node
+        if (!activeNodeFound && modules.length > 0) {
+            const lastStep = nodesLayer.querySelector('.path-level-step:last-child .path-node-disc');
+            if (lastStep) {
+                const champMascot = (window.StemOSWorldMap && typeof window.StemOSWorldMap.createStemBotHtml === 'function')
+                    ? window.StemOSWorldMap.createStemBotHtml({ isChampion: true })
+                    : createInlineStemBotHtml({ isChampion: true });
+                lastStep.insertAdjacentHTML('afterbegin', champMascot);
+            }
+        }
+
+        // Attach click on stemBOT mascot
+        const mascotEl = nodesLayer.querySelector('#path-stembot-mascot');
+        if (mascotEl) {
+            mascotEl.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (window.StemOSWorldMap && typeof window.StemOSWorldMap.onStemBotClicked === 'function') {
+                    window.StemOSWorldMap.onStemBotClicked(mascotEl);
+                } else {
+                    DuoSound.playPop();
+                    const bubble = mascotEl.querySelector('.stembot-bubble-text');
+                    const phrases = [
+                        "¡Hola! ¿Listo para conquistar este reto?",
+                        "¡Bip bup! Cada módulo suma XP a tu perfil STEM.",
+                        "¡Tu cerebro de ingeniero está en máxima potencia!",
+                        "¡Recuerda: la ciencia se aprende experimentando!"
+                    ];
+                    if (bubble) bubble.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+                }
+            });
+        }
+
+        // 5. Draw Bezier SVG Trail curve
+        setTimeout(() => {
+            drawCurveTrailInContainer(trailWrap);
+        }, 60);
+
+        // Update HUD
         updateDuoHudUI();
 
         if (window.StemOSSkeleton && typeof window.StemOSSkeleton.progressiveReveal === 'function') {

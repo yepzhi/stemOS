@@ -4102,6 +4102,68 @@
         </footer>
     </div>
 
+    <!-- ════ MODULE INSPECTION BOTTOM DRAWER & BACKDROP (Shared: 3D World & Main App Path) ════ -->
+    <div class="wmd-backdrop" id="wmd-backdrop"></div>
+    <div class="world-module-drawer" id="world-module-drawer">
+        <div class="wmd-handle"></div>
+        <div class="wmd-header">
+            <div class="wmd-title-box">
+                <div class="wmd-tag-row">
+                    <span class="path-cat-badge" id="wmd-cat-tag">TECNOLOGÍA</span>
+                    <span class="path-standard-badge" id="wmd-mod-code">MÓDULO 1</span>
+                    <span class="path-standard-badge" id="wmd-level-tag">CEFR B1 Technical Immersion</span>
+                </div>
+                <h3 class="wmd-title" id="wmd-title">OT/ICS Zero-Trust Architecture</h3>
+                <div class="wmd-subtitle" id="wmd-subtitle">Arquitectura Zero-Trust en OT/ICS y Redes Aisladas</div>
+            </div>
+            <button type="button" class="wmd-close-btn" id="wmd-btn-close" onclick="window.closeCareerDrawer && window.closeCareerDrawer()" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="wmd-stats-grid">
+            <div class="wmd-stat-box">
+                <span class="wmd-stat-lbl">Horas Curriculares</span>
+                <span class="wmd-stat-val" id="wmd-stat-readings">3.5h</span>
+            </div>
+            <div class="wmd-stat-box">
+                <span class="wmd-stat-lbl">Hito Curricular</span>
+                <span class="wmd-stat-val" id="wmd-stat-time">Hito 1 de 4</span>
+            </div>
+            <div class="wmd-stat-box">
+                <span class="wmd-stat-lbl">Recompensa</span>
+                <span class="wmd-stat-val" id="wmd-stat-xp" style="color:#fbbf24;">+300 XP</span>
+            </div>
+            <div class="wmd-stat-box">
+                <span class="wmd-stat-lbl">Estado</span>
+                <span class="wmd-stat-val" id="wmd-stat-status" style="color:#38bdf8;">En Curso</span>
+            </div>
+        </div>
+
+        <div class="wmd-readings-list" id="wmd-readings-list">
+            <!-- Readings injected here -->
+        </div>
+
+        <div class="wmd-actions-row">
+            <button type="button" class="wmd-btn-primary" id="wmd-btn-launch-primary">
+                <i class="fa-solid fa-rocket"></i>
+                <span>Iniciar Módulo Directo</span>
+            </button>
+            <button type="button" class="wmd-btn-secondary" id="wmd-btn-launch-socratic" style="display:none;">
+                <i class="fa-solid fa-brain"></i>
+                <span>Reto Socrático</span>
+            </button>
+            <button type="button" class="wmd-btn-secondary" id="wmd-btn-toggle-complete">
+                <i class="fa-solid fa-circle-check"></i>
+                <span id="wmd-toggle-complete-text">Marcar Completado (+XP)</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- World Toast Notification (Global) -->
+    <div class="world-toast" id="world-toast">
+        <i class="fa-solid fa-sparkles" style="color:#fbbf24;"></i>
+        <span id="world-toast-text">¡Módulo Desbloqueado!</span>
+    </div>
+
     <script>
         function openUnderDevModal(actionLabel) {
             const modal = document.getElementById("under-dev-modal");
