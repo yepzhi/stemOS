@@ -2969,7 +2969,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const elSubsystem = document.getElementById('header-student-subsystem');
         const elCampus = document.getElementById('header-student-campus-badge');
         const elAvatarInitials = document.querySelector('.avatar-initials-mini');
-        const btnGoogleLogin = document.getElementById('btn-header-google-login');
 
         // Check for Google Auth Redirect Result on load
         if (!window._stemos_redirect_checked && typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
@@ -3056,8 +3055,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const initials = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : parts[0].substring(0, 2).toUpperCase();
                 elAvatarInitials.textContent = initials;
             }
-
-            if (btnGoogleLogin) btnGoogleLogin.style.display = 'none';
         } else {
             // Clean un-mocked student state
             if (elName) elName.textContent = 'Estudiante';
@@ -3066,7 +3063,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 elCampus.innerHTML = `<i class="fa-solid fa-building-columns" style="font-size:0.68rem; margin-right:4px;"></i>TecNM Tijuana (ITT)`;
             }
             if (elAvatarInitials) elAvatarInitials.textContent = 'ST';
-            if (btnGoogleLogin) btnGoogleLogin.style.display = 'inline-flex';
         }
 
         // Set up click on greeting or avatar
