@@ -8068,6 +8068,15 @@ Nearshoring Center of Excellence • stemOS Certified`;
         }, 400);
     }
 
+    // Check profile URL parameter (direct entry to My Profile modal)
+    if (urlParams.get('view') === 'profile' || urlParams.get('profile') === 'true') {
+        setTimeout(() => {
+            if (typeof window.openStudentProfileModal === 'function') {
+                window.openStudentProfileModal();
+            }
+        }, 450);
+    }
+
     // Contextual Referral Handler (JóvenesSTEM -> stemOS)
     try {
         const ref = urlParams.get('ref') || urlParams.get('from');

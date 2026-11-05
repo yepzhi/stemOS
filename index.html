@@ -4158,7 +4158,7 @@
         nav_catalog: 'Catálogo ESP',
         nav_placement: 'RapidCheck',
         nav_pricing: 'Precios',
-        btn_signup_nav: 'Regístrate',
+        btn_signup_nav: 'Sign Up',
         mob_nav_portals: '<i class="fa-solid fa-graduation-cap"></i> Portales Académicos',
         mob_nav_admin: 'Portal Admin &amp; School Manager',
         mob_nav_teacher: 'Portal Docente &amp; Faculty',
@@ -4529,14 +4529,17 @@
       function updateNavForLoggedInUser(profileName) {
         const signupBtns = document.querySelectorAll('.btn-signup-nav-primary, .btn-signup-pill');
         signupBtns.forEach(btn => {
-          btn.href = '/app.html';
-          btn.title = 'Ir a mi Plataforma stemOS';
+          btn.href = '/app?view=profile';
+          btn.title = 'My Profile';
           const span = btn.querySelector('.shiny-text');
-          if (span) span.textContent = 'Mi Plataforma (App)';
+          if (span) {
+            span.textContent = 'My Profile';
+            span.removeAttribute('data-i18n');
+          }
         });
         const heroCta = document.querySelector('.cx-step-btn');
         if (heroCta) {
-          heroCta.href = '/app.html';
+          heroCta.href = '/app';
           heroCta.textContent = 'Continuar Aprendiendo ↗';
         }
       }
