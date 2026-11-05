@@ -1965,7 +1965,7 @@
                 return;
             }
 
-            const alignments = ['align-left', 'align-center', 'align-right', 'align-center'];
+            const alignments = ['align-left', 'align-right'];
             let activeNodeFound = false;
 
             modules.forEach((mod, idx) => {
@@ -1989,8 +1989,8 @@
                     statusPill = `<span class="plc-status-pill" style="background:rgba(15,23,42,0.06);color:#64748b;"><i class="fa-solid fa-lock"></i> Bloqueado</span>`;
                 }
 
-                // stemBOT Mascot HTML if this is the active node
-                const mascotHtml = isActive ? this.createStemBotHtml({ isChampion: false }) : '';
+                // stemBOT removed per user request
+                const mascotHtml = '';
 
                 // Star crown if completed
                 const starCrownHtml = isCompleted ? `
@@ -2028,30 +2028,6 @@
                 container.appendChild(stepEl);
             });
 
-            // If all are completed, place mascot on the final node in champion mode!
-            if (!activeNodeFound && modules.length > 0) {
-                const lastStep = container.querySelector('.path-level-step:last-child .path-node-disc');
-                if (lastStep) {
-                    lastStep.insertAdjacentHTML('afterbegin', this.createStemBotHtml({ isChampion: true }));
-                }
-            }
-
-            // Attach interactive click & hover handlers to stemBOT
-            const stemBotMascot = container.querySelector('#path-stembot-mascot');
-            if (stemBotMascot) {
-                stemBotMascot.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this.onStemBotClicked(stemBotMascot);
-                });
-                stemBotMascot.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        this.onStemBotClicked(stemBotMascot);
-                    }
-                });
-            }
-
             // Draw SVG Bezier Curve Trail connecting discs
             setTimeout(() => this.drawSvgCurveTrail(), 60);
         }
@@ -2068,7 +2044,7 @@
                 return;
             }
 
-            const alignments = ['align-left', 'align-center', 'align-right', 'align-center'];
+            const alignments = ['align-left', 'align-right'];
             let activeNodeFound = false;
             let currentHitoHeaderRendered = 0;
 
@@ -2126,7 +2102,8 @@
                     statusPill = `<span class="plc-status-pill" style="background:rgba(15,23,42,0.06); color:#64748b;"><i class="fa-solid fa-lock"></i> Station Locked</span>`;
                 }
 
-                const mascotHtml = isActive ? this.createStemBotHtml({ isChampion: false }) : '';
+                // stemBOT removed per user request
+                const mascotHtml = '';
                 const starCrownHtml = isCompleted ? `
                     <div class="path-star-crown">
                         <i class="fa-solid fa-star"></i>
@@ -2177,23 +2154,6 @@
 
                 container.appendChild(stepEl);
             });
-
-            // If all 16 are completed, place mascot on final node in champion mode
-            if (!activeNodeFound && modules.length > 0) {
-                const lastStep = container.querySelector('.path-level-step:last-child .path-node-disc');
-                if (lastStep) {
-                    lastStep.insertAdjacentHTML('afterbegin', this.createStemBotHtml({ isChampion: true }));
-                }
-            }
-
-            // Interactive click & hover handlers on stemBOT
-            const stemBotMascot = container.querySelector('#path-stembot-mascot');
-            if (stemBotMascot) {
-                stemBotMascot.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this.onStemBotClicked(stemBotMascot);
-                });
-            }
 
             setTimeout(() => this.drawSvgCurveTrail(), 60);
         }
@@ -2375,89 +2335,9 @@
             glowPath.setAttribute('d', d);
         }
 
-        /* ─── stemBOT ROBOTIC MASCOT COMPANION ENGINE ─────────────────── */
+        /* ─── stemBOT ROBOTIC MASCOT (Disabled per user request) ─────── */
         createStemBotHtml(options = {}) {
-            const isChampion = options.isChampion || false;
-            const tagText = isChampion ? '¡CAMPEÓN!' : 'stemBOT';
-            const tagIcon = isChampion ? '<i class="fa-solid fa-trophy"></i>' : '<i class="fa-solid fa-bolt"></i>';
-            const initialSpeech = options.speech || (isChampion 
-                ? "¡Mundo dominado al 100%! ¡Eres una leyenda!" 
-                : STEMBOT_PHRASES[Math.floor(Math.random() * STEMBOT_PHRASES.length)]);
-
-            return `
-                <div class="path-player-mascot ${isChampion ? 'champion' : ''}" id="path-stembot-mascot" role="button" aria-label="Mascota stemBOT: Copiloto de aprendizaje" tabindex="0">
-                    <div class="stembot-speech-bubble visible" id="stembot-bubble">
-                        <span class="stembot-bubble-bot-tag">${tagIcon} ${tagText}</span>
-                        <span class="stembot-bubble-text">${initialSpeech}</span>
-                    </div>
-                    <div class="stembot-body">
-                        <svg class="stembot-svg" width="60" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="sbHeadGrad" x1="14" y1="14" x2="50" y2="38" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stop-color="#ffffff"/>
-                                    <stop offset="100%" stop-color="#dbeafe"/>
-                                </linearGradient>
-                                <linearGradient id="sbBodyGrad" x1="18" y1="39" x2="46" y2="51" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stop-color="#f8fafc"/>
-                                    <stop offset="100%" stop-color="#e2e8f0"/>
-                                </linearGradient>
-                                <linearGradient id="sbFlameGrad" x1="32" y1="53" x2="32" y2="63" gradientUnits="userSpaceOnUse">
-                                    <stop offset="0%" stop-color="#00f5d4"/>
-                                    <stop offset="60%" stop-color="#0284c7"/>
-                                    <stop offset="100%" stop-color="rgba(2, 132, 199, 0)"/>
-                                </linearGradient>
-                            </defs>
-
-                            <!-- Antenna Rod & Beacon -->
-                            <line x1="32" y1="14" x2="32" y2="7" stroke="#64748b" stroke-width="2.5" stroke-linecap="round"/>
-                            <circle class="stembot-beacon" cx="32" cy="5" r="4.5" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
-
-                            <!-- Outer Head / Helmet -->
-                            <rect x="14" y="14" width="36" height="24" rx="9" fill="url(#sbHeadGrad)" stroke="#38bdf8" stroke-width="1.8"/>
-
-                            <!-- Side Ear Bolts -->
-                            <rect x="10" y="21" width="4" height="8" rx="2" fill="#0284c7"/>
-                            <rect x="50" y="21" width="4" height="8" rx="2" fill="#0284c7"/>
-
-                            <!-- Visor Display -->
-                            <rect x="18" y="18" width="28" height="15" rx="5" fill="#0f172a"/>
-                            <!-- Visor Glass Glare -->
-                            <path d="M 20 19 L 26 19 L 22 32 L 18 32 Z" fill="rgba(255, 255, 255, 0.16)"/>
-
-                            <!-- LED Expressive Eyes -->
-                            <ellipse class="stembot-eye" cx="26" cy="25" rx="3.2" ry="4" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
-                            <circle cx="27.2" cy="23.5" r="1" fill="#ffffff"/>
-                            <ellipse class="stembot-eye" cx="38" cy="25" rx="3.2" ry="4" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
-                            <circle cx="39.2" cy="23.5" r="1" fill="#ffffff"/>
-
-                            <!-- Neck Joint -->
-                            <rect x="28" y="37" width="8" height="3" rx="1.5" fill="#64748b"/>
-
-                            <!-- Torso Body -->
-                            <path d="M 18 41 Q 18 39 21 39 L 43 39 Q 46 39 46 41 L 44 49 Q 44 51 41 51 L 23 51 Q 20 51 20 49 Z" fill="url(#sbBodyGrad)" stroke="#38bdf8" stroke-width="1.5"/>
-
-                            <!-- Chest Reactor Core -->
-                            <circle cx="32" cy="45" r="3.5" fill="#0284c7"/>
-                            <circle cx="32" cy="45" r="2" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
-
-                            <!-- Left Arm (Floating Rest) -->
-                            <path d="M 18 42 Q 12 45 14 50" stroke="#0284c7" stroke-width="3" stroke-linecap="round" fill="none"/>
-                            <circle cx="14" cy="50" r="2.5" fill="#38bdf8"/>
-
-                            <!-- Right Arm (Waving Hand!) -->
-                            <g class="stembot-arm-right">
-                                <path d="M 46 42 Q 52 38 52 32" stroke="#0284c7" stroke-width="3" stroke-linecap="round" fill="none"/>
-                                <circle cx="52" cy="31" r="3" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
-                            </g>
-
-                            <!-- Anti-Gravity Nozzle & Plasma Jet -->
-                            <polygon points="27,51 37,51 35,55 29,55" fill="#475569"/>
-                            <polygon class="stembot-flame" points="29,54 35,54 32,63" fill="url(#sbFlameGrad)"/>
-                        </svg>
-                    </div>
-                    <div class="stembot-shadow"></div>
-                </div>
-            `;
+            return '';
         }
 
         triggerStemBotHudTip() {

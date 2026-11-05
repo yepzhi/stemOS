@@ -10180,64 +10180,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
     // 4. Visual Snake Path Generator & 16-Module Winding Trail Engine (Visual Congruency with 3D World)
     function createInlineStemBotHtml(options = {}) {
-        const isChampion = options.isChampion || false;
-        const tagText = isChampion ? '¡CAMPEÓN!' : 'stemBOT';
-        const tagIcon = isChampion ? '<i class="fa-solid fa-trophy"></i>' : '<i class="fa-solid fa-bolt"></i>';
-        const phrases = [
-            "¡Hola! ¿Listo para conquistar este reto?",
-            "¡Bip bup! Cada módulo suma XP a tu perfil STEM.",
-            "¡Tu cerebro de ingeniero está en máxima potencia!",
-            "¡Recuerda: la ciencia se aprende experimentando!",
-            "¡Un paso más cerca de tu certificación aeroespacial!",
-            "¡Impresionante avance! Sigue con este ritmo.",
-            "¡Haz clic para iniciar tu próxima misión!",
-            "¡Los grandes científicos nunca se rinden!",
-            "¡Sistemas listos! Modo aprendizaje al 100%."
-        ];
-        const initialSpeech = options.speech || (isChampion 
-            ? "¡Mundo dominado al 100%! ¡Eres una leyenda!" 
-            : phrases[Math.floor(Math.random() * phrases.length)]);
-
-        return `
-            <div class="path-player-mascot ${isChampion ? 'champion' : ''}" id="path-stembot-mascot" role="button" aria-label="Mascota stemBOT: Copiloto de aprendizaje" tabindex="0">
-                <div class="stembot-speech-bubble visible" id="stembot-bubble">
-                    <span class="stembot-bubble-bot-tag">${tagIcon} ${tagText}</span>
-                    <span class="stembot-bubble-text">${initialSpeech}</span>
-                </div>
-                <div class="stembot-body">
-                    <svg class="stembot-svg" width="60" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="sbHeadGrad" x1="14" y1="14" x2="50" y2="38" gradientUnits="userSpaceOnUse">
-                                <stop offset="0%" stop-color="#ffffff"/>
-                                <stop offset="100%" stop-color="#dbeafe"/>
-                            </linearGradient>
-                            <linearGradient id="sbBodyGrad" x1="18" y1="39" x2="46" y2="51" gradientUnits="userSpaceOnUse">
-                                <stop offset="0%" stop-color="#f8fafc"/>
-                                <stop offset="100%" stop-color="#e2e8f0"/>
-                            </linearGradient>
-                            <linearGradient id="sbFlameGrad" x1="32" y1="53" x2="32" y2="63" gradientUnits="userSpaceOnUse">
-                                <stop offset="0%" stop-color="#00f5d4"/>
-                                <stop offset="60%" stop-color="#0284c7"/>
-                                <stop offset="100%" stop-color="rgba(2, 132, 199, 0)"/>
-                            </linearGradient>
-                        </defs>
-                        <line x1="32" y1="14" x2="32" y2="7" stroke="#64748b" stroke-width="2.5" stroke-linecap="round"/>
-                        <circle class="stembot-beacon" cx="32" cy="5" r="4.5" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
-                        <rect x="14" y="14" width="36" height="24" rx="9" fill="url(#sbHeadGrad)" stroke="#38bdf8" stroke-width="1.8"/>
-                        <rect x="10" y="21" width="4" height="8" rx="2" fill="#0284c7"/>
-                        <rect x="50" y="21" width="4" height="8" rx="2" fill="#0284c7"/>
-                        <rect x="18" y="18" width="28" height="15" rx="5" fill="#0f172a"/>
-                        <path d="M20 20 L30 20 L24 23 L20 23 Z" fill="rgba(255,255,255,0.22)"/>
-                        <circle class="stembot-eye" cx="26" cy="25" r="3.2" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
-                        <circle class="stembot-eye" cx="38" cy="25" r="3.2" fill="${isChampion ? '#fbbf24' : '#00f5d4'}"/>
-                        <rect x="18" y="39" width="28" height="12" rx="4" fill="url(#sbBodyGrad)" stroke="#cbd5e1" stroke-width="1.5"/>
-                        <path class="stembot-arm-left" d="M16 41 Q12 45 14 50" stroke="#64748b" stroke-width="2.5" stroke-linecap="round"/>
-                        <path class="stembot-arm-right" d="M48 41 Q52 45 50 50" stroke="#64748b" stroke-width="2.5" stroke-linecap="round"/>
-                        <polygon class="stembot-flame" points="26,52 38,52 32,63" fill="url(#sbFlameGrad)"/>
-                    </svg>
-                </div>
-            </div>
-        `;
+        return '';
     }
 
     function drawCurveTrailInContainer(wrap) {
@@ -10768,8 +10711,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
         trailWrap.appendChild(nodesLayer);
         pathContainer.appendChild(trailWrap);
 
-        // 4. Populate Stepping Stones & Hito Dividers
-        const alignments = ['align-left', 'align-center', 'align-right', 'align-center'];
+        // 4. Populate Stepping Stones & Hito Dividers (Alternating Zero-Overlap Flow)
+        const alignments = ['align-left', 'align-right'];
         let activeNodeFound = false;
         let currentHitoRendered = 0;
 
@@ -10829,13 +10772,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 statusPill = `<span class="plc-status-pill" style="background:rgba(15,23,42,0.06); color:#64748b;"><i class="fa-solid fa-lock"></i> Station Locked</span>`;
             }
 
-            // stemBOT Mascot on active node
-            let mascotHtml = '';
-            if (isActive) {
-                mascotHtml = (window.StemOSWorldMap && typeof window.StemOSWorldMap.createStemBotHtml === 'function')
-                    ? window.StemOSWorldMap.createStemBotHtml({ isChampion: false })
-                    : createInlineStemBotHtml({ isChampion: false });
-            }
+            // No stemBOT mascot (removed per user request)
+            const mascotHtml = '';
 
             const starCrownHtml = isCompleted ? `
                 <div class="path-star-crown">
@@ -10898,38 +10836,6 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
             nodesLayer.appendChild(stepEl);
         });
-
-        // If all 16 are completed, place champion mascot on final node
-        if (!activeNodeFound && modules.length > 0) {
-            const lastStep = nodesLayer.querySelector('.path-level-step:last-child .path-node-disc');
-            if (lastStep) {
-                const champMascot = (window.StemOSWorldMap && typeof window.StemOSWorldMap.createStemBotHtml === 'function')
-                    ? window.StemOSWorldMap.createStemBotHtml({ isChampion: true })
-                    : createInlineStemBotHtml({ isChampion: true });
-                lastStep.insertAdjacentHTML('afterbegin', champMascot);
-            }
-        }
-
-        // Attach click on stemBOT mascot
-        const mascotEl = nodesLayer.querySelector('#path-stembot-mascot');
-        if (mascotEl) {
-            mascotEl.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (window.StemOSWorldMap && typeof window.StemOSWorldMap.onStemBotClicked === 'function') {
-                    window.StemOSWorldMap.onStemBotClicked(mascotEl);
-                } else {
-                    DuoSound.playPop();
-                    const bubble = mascotEl.querySelector('.stembot-bubble-text');
-                    const phrases = [
-                        "¡Hola! ¿Listo para conquistar este reto?",
-                        "¡Bip bup! Cada módulo suma XP a tu perfil STEM.",
-                        "¡Tu cerebro de ingeniero está en máxima potencia!",
-                        "¡Recuerda: la ciencia se aprende experimentando!"
-                    ];
-                    if (bubble) bubble.textContent = phrases[Math.floor(Math.random() * phrases.length)];
-                }
-            });
-        }
 
         // 5. Draw Bezier SVG Trail curve
         setTimeout(() => {

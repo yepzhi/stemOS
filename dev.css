@@ -24468,20 +24468,143 @@ html.theme-light body {
   transform: translateY(0);
 }
 
-.stemos-stage-resolved {
-  animation: stageFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* ─── WINDING TRACK LEVEL STEPS & CARDS (Zero-Overlap Flow Edition) ── */
+.path-nodes-layer {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
 
-@keyframes stageFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
+.path-level-step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  transition: transform 0.2s ease;
+}
+
+.path-level-step.align-left {
+  flex-direction: row;
+  justify-content: flex-start;
+  padding-left: 8%;
+  padding-right: 6%;
+}
+
+.path-level-step.align-left .path-level-card {
+  margin-left: 20px;
+  text-align: left;
+}
+
+.path-level-step.align-right {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  padding-left: 6%;
+  padding-right: 8%;
+}
+
+.path-level-step.align-right .path-level-card {
+  margin-right: 20px;
+  text-align: left;
+}
+
+.path-level-step.align-center {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+}
+
+.path-level-step.align-center .path-level-card {
+  margin: 0;
+  text-align: center;
+  max-width: 440px;
+}
+
+.path-level-card {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 12px 18px;
+  flex: 1;
+  max-width: 440px;
+  min-width: 220px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.path-level-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
+  border-color: #cbd5e1;
+}
+
+.path-level-step.active-node .path-level-card {
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.14), 0 0 0 1px rgba(2, 132, 199, 0.1);
+}
+
+.path-level-step.locked .path-level-card {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  opacity: 0.85;
+}
+
+.path-level-step.completed .path-level-card {
+  background: #ffffff;
+  border-color: #10b981;
+}
+
+/* Hide stemBOT completely */
+.path-player-mascot,
+#path-stembot-mascot,
+.stembot-speech-bubble,
+.stembot-hud-widget,
+#stembot-globe-hud {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  .path-nodes-layer {
+    gap: 22px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .path-level-step.align-left,
+  .path-level-step.align-right {
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+  .path-node-disc {
+    width: 60px !important;
+    height: 60px !important;
+    min-width: 60px !important;
+    min-height: 60px !important;
+  }
+  .path-level-card {
+    padding: 10px 12px;
+    min-width: 160px;
+    max-width: none;
+  }
+  .path-level-step.align-left .path-level-card {
+    margin-left: 12px;
+  }
+  .path-level-step.align-right .path-level-card {
+    margin-right: 12px;
   }
 }
+
 
 
 

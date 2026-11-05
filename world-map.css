@@ -674,21 +674,49 @@
     display: flex;
     align-items: center;
     width: 100%;
+    box-sizing: border-box;
     transition: transform 0.2s ease;
 }
 
+/* Align Left: Disc on left, Card on right */
 .path-level-step.align-left {
+    flex-direction: row;
     justify-content: flex-start;
-    padding-left: 10%;
+    padding-left: 8%;
+    padding-right: 6%;
 }
 
-.path-level-step.align-center {
-    justify-content: center;
+.path-level-step.align-left .path-level-card {
+    margin-left: 20px;
+    text-align: left;
 }
 
+/* Align Right: Disc on right, Card on left */
 .path-level-step.align-right {
-    justify-content: flex-end;
-    padding-right: 10%;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    padding-left: 6%;
+    padding-right: 8%;
+}
+
+.path-level-step.align-right .path-level-card {
+    margin-right: 20px;
+    text-align: left;
+}
+
+/* Align Center (if used): Clean column centering */
+.path-level-step.align-center {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+}
+
+.path-level-step.align-center .path-level-card {
+    margin: 0;
+    text-align: center;
+    max-width: 440px;
 }
 
 /* Stepping Stone Disc */
@@ -798,34 +826,46 @@
     color: #94a3b8;
 }
 
-/* ─── LEVEL INFO FLOATING CARD ─────────────────────────────────── */
+/* ─── LEVEL INFO FLOATING CARD (No Overlap Flex Edition) ───────── */
 .path-level-card {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--wm-border);
-    border-radius: 14px;
-    padding: 10px 14px;
-    width: 220px;
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
-    pointer-events: none;
-    transition: all 0.2s ease;
+    position: relative;
+    top: auto;
+    transform: none;
+    background: #ffffff;
+    border: 1.5px solid var(--wm-border, #e2e8f0);
+    border-radius: 16px;
+    padding: 12px 18px;
+    flex: 1;
+    max-width: 440px;
+    min-width: 220px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+    pointer-events: auto;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
+    z-index: 2;
 }
 
-.path-level-step.align-left .path-level-card {
-    left: 88px;
+.path-level-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
+    border-color: #cbd5e1;
 }
 
-.path-level-step.align-center .path-level-card {
-    left: 88px;
+.path-level-step.active-node .path-level-card {
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(2, 132, 199, 0.14), 0 0 0 1px rgba(2, 132, 199, 0.1);
 }
 
-.path-level-step.align-right .path-level-card {
-    right: 88px;
-    text-align: right;
+.path-level-step.locked .path-level-card {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    opacity: 0.85;
+}
+
+.path-level-step.completed .path-level-card {
+    background: #ffffff;
+    border-color: #10b981;
 }
 
 .plc-status-pill {
@@ -857,8 +897,17 @@
     color: var(--wm-text-secondary);
 }
 
-/* ─── stemBOT ROBOTIC MASCOT (MARIO OVERWORLD COMPANION) ───────── */
+/* ─── stemBOT ROBOTIC MASCOT (Disabled per User Request) ──────── */
+.path-player-mascot,
+#path-stembot-mascot,
+.stembot-speech-bubble,
+.stembot-hud-widget,
+#stembot-globe-hud {
+    display: none !important;
+}
+
 .path-player-mascot {
+    display: none !important;
     position: absolute;
     top: -66px;
     left: 50%;
@@ -1420,26 +1469,64 @@
         display: none;
     }
 
+    .path-winding-trail-wrap {
+        padding: 12px 6px 40px;
+    }
+
+    .path-nodes-layer {
+        gap: 22px;
+    }
+
     .path-level-step.align-left {
-        padding-left: 4%;
+        padding-left: 2%;
+        padding-right: 2%;
     }
 
     .path-level-step.align-right {
-        padding-right: 4%;
+        padding-left: 2%;
+        padding-right: 2%;
+    }
+
+    .path-node-disc {
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+        min-height: 60px;
+    }
+
+    .path-node-disc .node-m-num {
+        font-size: 0.6rem;
+    }
+
+    .path-node-disc .node-m-icon {
+        font-size: 1.1rem;
     }
 
     .path-level-card {
-        width: 170px;
-        padding: 8px 10px;
+        padding: 10px 12px;
+        min-width: 160px;
+        max-width: none;
+        top: auto;
+        left: auto !important;
+        right: auto !important;
+        transform: none;
     }
 
-    .path-level-step.align-left .path-level-card,
-    .path-level-step.align-center .path-level-card {
-        left: 78px;
+    .path-level-step.align-left .path-level-card {
+        margin-left: 12px;
     }
 
     .path-level-step.align-right .path-level-card {
-        right: 78px;
+        margin-right: 12px;
+    }
+
+    .plc-title {
+        font-size: 0.8rem;
+        line-height: 1.25;
+    }
+
+    .plc-meta {
+        font-size: 0.68rem;
     }
 
     .world-module-drawer {
