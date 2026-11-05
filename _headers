@@ -22,19 +22,39 @@
   Content-Type: application/manifest+json; charset=utf-8
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
-# Static assets aggressive caching (Root & Subdirectories)
+# Core dynamic application scripts & stylesheets - revalidate instantly on deploy
+/app.js
+  Content-Type: application/javascript; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+
+/world-map.js
+  Content-Type: application/javascript; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+
+/dev.css
+  Content-Type: text/css; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+
+/world-map.css
+  Content-Type: text/css; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Static assets aggressive caching (Immutable audio & fonts)
 /*.js
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
 
 /*.css
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
 
 /content/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
 /content/audio/*
   Cache-Control: public, max-age=31536000, immutable
   Access-Control-Allow-Origin: *
+
+/webfonts/*
+  Cache-Control: public, max-age=31536000, immutable
 
 /*.ico
   Cache-Control: public, max-age=604800

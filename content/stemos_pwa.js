@@ -12,10 +12,21 @@
 
   // 1. Service Worker Universal Registration
   if ('serviceWorker' in navigator) {
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) {
+        refreshing = true;
+        window.location.reload();
+      }
+    });
+
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js', { scope: '/' })
         .then((registration) => {
           console.log('[stemOS PWA] Service Worker registered successfully with scope:', registration.scope);
+          if (typeof registration.update === 'function') {
+            registration.update();
+          }
 
           // Check for service worker updates
           registration.addEventListener('updatefound', () => {
@@ -23,7 +34,7 @@
             if (installingWorker) {
               installingWorker.addEventListener('statechange', () => {
                 if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  console.log('[stemOS PWA] New version available — will activate on next visit.');
+                  console.log('[stemOS PWA] New version activated.');
                 }
               });
             }

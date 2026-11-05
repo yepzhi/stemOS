@@ -2318,6 +2318,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    window.switchDashboardView = switchDashboardView;
+    window.switchView = switchDashboardView;
+
     // Lock / Exit button (Sidebar Rail "Salir")
     const btnLockBackdoor = document.getElementById('btn-lock-backdoor');
     if (btnLockBackdoor) {
