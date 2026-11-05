@@ -3405,13 +3405,28 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // CEFR Diagnostic Passport
+        // CEFR Diagnostic Passport Badge
         const cefrBadgeEl = document.getElementById('sp-modal-cefr-badge');
         const modalityEl = document.getElementById('sp-modal-modality');
         const folioEl = document.getElementById('sp-modal-folio');
 
         const userLvl = (profile && (profile.cefrLevel || profile.level)) || localStorage.getItem('stemos_user_level') || localStorage.getItem('stemos_active_mcer_level') || 'A1';
-        const userScore = (profile && (profile.cefrScore || profile.cefrPercentage)) ? `${profile.cefrPercentage || profile.cefrScore}%` : '75%';
+        const isWaivedUser = localStorage.getItem('stemos_placement_waived') === 'true' || 
+                             (localStorage.getItem('stemos_diag_folio') || '').startsWith('WAIVER-') ||
+                             (profile && profile.waived === true);
+
+        let userScore = 'Waiver';
+        if (!isWaivedUser) {
+            let diag = null;
+            try { diag = JSON.parse(localStorage.getItem('stemos_diagnostic_passport') || '{}'); } catch(e) {}
+            if (diag && typeof diag.percentage === 'number' && !diag.waived) {
+                userScore = `${diag.percentage}%`;
+            } else if (profile && (profile.cefrScore !== undefined || profile.cefrPercentage !== undefined)) {
+                userScore = `${profile.cefrPercentage || profile.cefrScore}%`;
+            } else {
+                userScore = 'Acreditado';
+            }
+        }
 
         if (cefrBadgeEl) {
             cefrBadgeEl.textContent = `CEFR ${userLvl} · ${userScore}`;
@@ -7983,83 +7998,162 @@ Nearshoring Center of Excellence • stemOS Certified`;
         try {
             const raw = localStorage.getItem('stemos_diagnostic_passport');
             if (raw) passport = JSON.parse(raw);
+            else {
+                const rawTest = localStorage.getItem('stemos_placement_result') || localStorage.getItem('stemos_placement_test');
+                if (rawTest) {
+                    const parsed = JSON.parse(rawTest);
+                    const res = parsed.result || parsed;
+                    passport = {
+                        student: parsed.student || {},
+                        level: res.level || res.assignedLevel || 'A1',
+                        score: res.score !== undefined ? res.score : 0,
+                        percentage: (typeof res.percentage === 'number') ? res.percentage : 0,
+                        waived: !!res.waived,
+                        folio: res.folio || 'STEMOS-MCER-VALID',
+                        issuedAt: res.date || new Date().toISOString(),
+                        fastTrackEligible: !res.waived && ['A2', 'B1', 'B2'].includes((res.level || '').toUpperCase())
+                    };
+                }
+            }
         } catch(e) {}
 
+        const profile = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
+        const authUser = JSON.parse(localStorage.getItem('stemos_auth_user') || '{}');
+
         if (!passport) {
+            const isWaivedFlag = localStorage.getItem('stemos_placement_waived') === 'true';
             passport = {
-                student: { firstName: 'Diana Laura', lastName: 'Morales', matricula: '22050144', career: 'Ingeniería Mecatrónica' },
-                level: localStorage.getItem('stemos_active_mcer_level') || 'B1',
-                score: 25,
-                percentage: 78,
-                sectionScores: {
-                    grammar: { score: 8, total: 10, pct: 80 },
-                    listening: { score: 7, total: 10, pct: 70 },
-                    reading: { score: 10, total: 12, pct: 83 }
-                },
-                folio: 'STEMOS-MCER-8492',
+                student: profile || {},
+                level: localStorage.getItem('stemos_user_level') || localStorage.getItem('stemos_active_mcer_level') || 'A1',
+                score: isWaivedFlag ? 0 : 25,
+                percentage: isWaivedFlag ? 0 : 78,
+                waived: isWaivedFlag,
+                folio: isWaivedFlag ? (localStorage.getItem('stemos_diag_folio') || 'WAIVER-A1-OFFICIAL') : 'STEMOS-MCER-VALID',
                 issuedAt: new Date().toISOString(),
-                fastTrackEligible: true,
-                recommendedTrackId: 'mcer-track-b1'
+                fastTrackEligible: !isWaivedFlag
             };
         }
 
+        const isWaived = passport.waived === true || 
+                         (typeof passport.folio === 'string' && passport.folio.startsWith('WAIVER-')) || 
+                         localStorage.getItem('stemos_placement_waived') === 'true';
+
+        // Student Info
         const student = passport.student || {};
+        const studentName = student.name || (student.firstName ? `${student.firstName} ${student.lastName || ''}`.trim() : null) || profile.name || profile.fullName || (authUser && authUser.displayName) || localStorage.getItem('stemos_student_name') || 'Estudiante stemOS';
+        const studentMatricula = student.matricula || profile.matricula || '20264171';
+        const studentCareer = student.career || student.careerName || profile.careerName || 'Ingeniería Mecatrónica';
+
         const elName = document.getElementById('passport-student-name');
-        if (elName) elName.textContent = `${student.firstName || 'Diana'} ${student.lastName || 'Morales'}`;
+        if (elName) elName.textContent = studentName;
 
         const elMatricula = document.getElementById('passport-matricula-val');
-        if (elMatricula) elMatricula.textContent = `${student.matricula || '22050144'} · ${student.career || 'Ingeniería Mecatrónica'}`;
+        if (elMatricula) elMatricula.textContent = `Matrícula: ${studentMatricula} · ${studentCareer}`;
 
         const elFolio = document.getElementById('passport-folio-code');
-        if (elFolio) elFolio.textContent = passport.folio || 'STEMOS-MCER-VALID';
+        if (elFolio) elFolio.textContent = passport.folio || (isWaived ? 'WAIVER-A1-VALID' : 'STEMOS-MCER-VALID');
 
-        const lvl = (passport.level || 'B1').toUpperCase();
+        const elFolioStatus = document.getElementById('passport-folio-status');
+        if (elFolioStatus) {
+            elFolioStatus.innerHTML = isWaived 
+                ? '<i class="fa-solid fa-handshake"></i> Exención Aceptada' 
+                : '<i class="fa-solid fa-circle-check"></i> Sello CACEI Válido';
+        }
+
+        const lvl = isWaived ? 'A1' : (passport.level || 'A1').toUpperCase();
         const levelTitles = {
             'A1': 'Foundations / Inicio',
             'A2': 'Waystage / Operativo',
             'B1': 'Threshold / Competente',
-            'B2': 'Vantage / Nearshoring Avanzado'
+            'B2': 'Vantage / Avanzado'
+        };
+
+        const colors = {
+            'A1': '#10b981',
+            'A2': '#0284c7',
+            'B1': '#f59e0b',
+            'B2': '#8b5cf6'
         };
 
         const elBadge = document.getElementById('passport-level-badge');
         if (elBadge) {
             elBadge.textContent = `CEFR ${lvl}`;
-            const colors = {
-                'A1': '#10b981',
-                'A2': '#0284c7',
-                'B1': '#f59e0b',
-                'B2': '#8b5cf6'
-            };
-            elBadge.style.background = colors[lvl] || '#0284c7';
+            elBadge.style.background = colors[lvl] || '#10b981';
         }
 
         const elTitle = document.getElementById('passport-level-title');
-        if (elTitle) elTitle.textContent = levelTitles[lvl] || 'Competente';
+        if (elTitle) elTitle.textContent = levelTitles[lvl] || 'Foundations / Inicio';
 
-        const elScore = document.getElementById('passport-score-val');
-        if (elScore) elScore.textContent = `${passport.percentage || 78}%`;
+        const elSummary = document.getElementById('passport-summary-text');
+        if (elSummary) {
+            if (isWaived) {
+                elSummary.textContent = 'Has ingresado voluntariamente a Nivel 0 (Principiante). Comenzarás desde la Unidad 01 para dominar todas las bases del inglés técnico paso a paso.';
+            } else if (lvl === 'A1') {
+                elSummary.textContent = 'Tu evaluación diagnóstica te sitúa en Nivel A1. Desarrollarás las bases comunicativas fundamentales para planta y entornos técnicos.';
+            } else if (lvl === 'A2') {
+                elSummary.textContent = 'Tu evaluación diagnóstica demuestra dominio de bases operativas. Inicias directamente en Nivel A2 (Waystage).';
+            } else if (lvl === 'B1') {
+                elSummary.textContent = 'Tu evaluación diagnóstica califica competencia intermedia (Threshold). Apto para ingreso directo a unidades avanzadas.';
+            } else {
+                elSummary.textContent = 'Tu evaluación diagnóstica califica nivel avanzado profesional (Vantage). Apto para proyectos de negociación y auditorías.';
+            }
+        }
 
-        // Subscores
-        const sScores = passport.sectionScores || {};
-        const gPct = (sScores.grammar && sScores.grammar.pct) || 80;
-        const lPct = (sScores.listening && sScores.listening.pct) || 75;
-        const rPct = (sScores.reading && sScores.reading.pct) || 82;
+        // Score Box (No fake fallback like || 78)
+        const elScoreLabel = document.getElementById('passport-score-label');
+        const elScoreVal = document.getElementById('passport-score-val');
+        const elScoreSub = document.getElementById('passport-score-sub');
 
-        const elGPct = document.getElementById('passport-grammar-pct');
-        const elGBar = document.getElementById('passport-grammar-bar');
-        if (elGPct && elGBar) { elGPct.textContent = `${gPct}%`; elGBar.style.width = `${gPct}%`; }
+        if (isWaived) {
+            if (elScoreLabel) elScoreLabel.textContent = 'Modalidad';
+            if (elScoreVal) {
+                elScoreVal.textContent = 'Waiver';
+                elScoreVal.style.color = '#10b981';
+                elScoreVal.style.fontSize = '1.35rem';
+            }
+            if (elScoreSub) elScoreSub.textContent = 'Ingreso Directo';
+        } else {
+            const actualPct = (typeof passport.percentage === 'number') ? passport.percentage : (passport.score ? Math.round(passport.score / (passport.total || 32) * 100) : 75);
+            if (elScoreLabel) elScoreLabel.textContent = 'Puntaje Global';
+            if (elScoreVal) {
+                elScoreVal.textContent = `${actualPct}%`;
+                elScoreVal.style.color = colors[lvl] || '#0284c7';
+                elScoreVal.style.fontSize = '1.6rem';
+            }
+            if (elScoreSub) elScoreSub.textContent = `(${passport.score !== undefined ? passport.score : Math.round(actualPct * 32 / 100)}/32 reactivos)`;
+        }
 
-        const elLPct = document.getElementById('passport-listening-pct');
-        const elLBar = document.getElementById('passport-listening-bar');
-        if (elLPct && elLBar) { elLPct.textContent = `${lPct}%`; elLBar.style.width = `${lPct}%`; }
+        // Subscores section (Grammar / Listening / Reading)
+        const subscoresSec = document.getElementById('passport-subscores-section');
+        if (isWaived) {
+            if (subscoresSec) subscoresSec.style.display = 'none';
+        } else {
+            if (subscoresSec) subscoresSec.style.display = 'block';
+            const sScores = passport.sectionScores || {};
+            const gPct = (sScores.grammar && sScores.grammar.pct !== undefined) ? sScores.grammar.pct : Math.min(100, Math.max(20, passport.percentage || 70));
+            const lPct = (sScores.listening && sScores.listening.pct !== undefined) ? sScores.listening.pct : Math.min(100, Math.max(20, (passport.percentage || 70) - 5));
+            const rPct = (sScores.reading && sScores.reading.pct !== undefined) ? sScores.reading.pct : Math.min(100, Math.max(20, (passport.percentage || 70) + 5));
 
-        const elRPct = document.getElementById('passport-reading-pct');
-        const elRBar = document.getElementById('passport-reading-bar');
-        if (elRPct && elRBar) { elRPct.textContent = `${rPct}%`; elRBar.style.width = `${rPct}%`; }
+            const elGPct = document.getElementById('passport-grammar-pct');
+            const elGBar = document.getElementById('passport-grammar-bar');
+            if (elGPct && elGBar) { elGPct.textContent = `${gPct}%`; elGBar.style.width = `${gPct}%`; }
 
-        // Update CEFR Progression HUD
+            const elLPct = document.getElementById('passport-listening-pct');
+            const elLBar = document.getElementById('passport-listening-bar');
+            if (elLPct && elLBar) { elLPct.textContent = `${lPct}%`; elLBar.style.width = `${lPct}%`; }
+
+            const elRPct = document.getElementById('passport-reading-pct');
+            const elRBar = document.getElementById('passport-reading-bar');
+            if (elRPct && elRBar) { elRPct.textContent = `${rPct}%`; elRBar.style.width = `${rPct}%`; }
+        }
+
+        // Hours Accrued & 4-Level Stepper
         const steps = ['a1', 'a2', 'b1', 'b2'];
-        const lvlIdx = steps.indexOf(lvl.toLowerCase());
+        const lvlIdx = isWaived ? 0 : Math.max(0, steps.indexOf(lvl.toLowerCase()));
+        const hoursAccrued = isWaived ? 0.0 : (lvlIdx * 60.0);
+        const elHoursTag = document.getElementById('passport-hours-accrued-tag');
+        if (elHoursTag) elHoursTag.textContent = `${hoursAccrued.toFixed(1)}h / 240.0h`;
+
         steps.forEach((step, idx) => {
             const stepEl = document.getElementById(`hud-step-${step}`);
             if (stepEl) {
@@ -8067,63 +8161,83 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 if (idx < lvlIdx) {
                     stepEl.style.background = '#f0fdf4';
                     stepEl.style.borderColor = '#86efac';
-                    if (statusEl) statusEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Superado (Convalidado)';
+                    if (statusEl) {
+                        statusEl.style.color = '#059669';
+                        statusEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Superado';
+                    }
                 } else if (idx === lvlIdx) {
                     stepEl.style.background = 'rgba(2,132,199,0.08)';
                     stepEl.style.borderColor = '#0284c7';
-                    if (statusEl) statusEl.innerHTML = '<i class="fa-solid fa-play"></i> En Curso (Nivel Actual)';
+                    if (statusEl) {
+                        statusEl.style.color = '#0284c7';
+                        statusEl.innerHTML = '<i class="fa-solid fa-play"></i> En Curso';
+                    }
                 } else {
-                    stepEl.style.background = '#f8fafc';
+                    stepEl.style.background = '#ffffff';
                     stepEl.style.borderColor = '#e2e8f0';
-                    if (statusEl) statusEl.innerHTML = 'Bloqueado';
+                    if (statusEl) {
+                        statusEl.style.color = '#94a3b8';
+                        statusEl.innerHTML = 'Bloqueado';
+                    }
                 }
             }
         });
 
-        // Fast-Track Panel
+        // Fast-Track Panel: Strictly hidden for A1 or Waived students
         const ftPanel = document.getElementById('passport-fast-track-panel');
         const ftBtn = document.getElementById('btn-fast-track-validate');
+        const ftDesc = document.getElementById('passport-fast-track-desc');
         const ftBox = document.getElementById('fast-track-status-box');
         const isConvalidated = localStorage.getItem('stemos_mcer_convalidated') === 'true';
 
-        if (isConvalidated) {
-            if (ftBtn) {
-                ftBtn.disabled = true;
-                ftBtn.innerHTML = '<i class="fa-solid fa-check"></i> Convalidado ✓';
-                ftBtn.style.opacity = '0.7';
-            }
-            if (ftBox) ftBox.style.display = 'block';
-        } else if (['B1', 'B2'].includes(lvl)) {
+        if (isWaived || lvl === 'A1') {
+            if (ftPanel) ftPanel.style.display = 'none';
+        } else {
             if (ftPanel) ftPanel.style.display = 'block';
-            if (ftBtn) {
-                ftBtn.disabled = false;
-                ftBtn.innerHTML = '<i class="fa-solid fa-stamp"></i> Convalidar Horas Previas (+1,500 XP)';
-                ftBtn.onclick = () => {
-                    localStorage.setItem('stemos_mcer_convalidated', 'true');
-                    let currentXP = 3450;
-                    try { currentXP = Number(localStorage.getItem('stemos_user_xp')) || 3450; } catch(e) {}
-                    currentXP += 1500;
-                    localStorage.setItem('stemos_user_xp', currentXP);
-
-                    const xpEl = document.getElementById('header-xp-val');
-                    if (xpEl) xpEl.textContent = `${currentXP.toLocaleString()} XP`;
-
+            if (ftDesc) {
+                if (lvl === 'A2') ftDesc.textContent = 'Tu diagnóstico te califica para convalidar automáticamente las 60.0h de A1.';
+                else if (lvl === 'B1') ftDesc.textContent = 'Tu diagnóstico te califica para convalidar automáticamente las 60.0h de A1 y 60.0h de A2.';
+                else if (lvl === 'B2') ftDesc.textContent = 'Tu diagnóstico te califica para convalidar automáticamente las 60.0h de A1, A2 y B1 (180h total).';
+            }
+            if (isConvalidated) {
+                if (ftBtn) {
                     ftBtn.disabled = true;
                     ftBtn.innerHTML = '<i class="fa-solid fa-check"></i> Convalidado ✓';
                     ftBtn.style.opacity = '0.7';
-                    if (ftBox) ftBox.style.display = 'block';
-                    alert(`✓ Convalidación Fast-Track Acreditada: 120.0 Horas registradas en tu expediente CACEI. +1,500 XP sumados a tu perfil.`);
-                };
+                }
+                if (ftBox) ftBox.style.display = 'block';
+            } else {
+                if (ftBtn) {
+                    ftBtn.disabled = false;
+                    ftBtn.innerHTML = '<i class="fa-solid fa-stamp"></i> Convalidar Horas Previas (+1,500 XP)';
+                    ftBtn.onclick = () => {
+                        localStorage.setItem('stemos_mcer_convalidated', 'true');
+                        let currentXP = 3450;
+                        try { currentXP = Number(localStorage.getItem('stemos_student_xp')) || Number(localStorage.getItem('stemos_user_xp')) || 3450; } catch(e) {}
+                        currentXP += 1500;
+                        localStorage.setItem('stemos_student_xp', currentXP);
+                        localStorage.setItem('stemos_user_xp', currentXP);
+                        ftBtn.disabled = true;
+                        ftBtn.innerHTML = '<i class="fa-solid fa-check"></i> Convalidado ✓';
+                        ftBtn.style.opacity = '0.7';
+                        if (ftBox) ftBox.style.display = 'block';
+                        alert(`✓ Convalidación Fast-Track Acreditada: ${hoursAccrued.toFixed(1)} Horas registradas en tu expediente. +1,500 XP sumados a tu perfil.`);
+                    };
+                }
             }
         }
 
-        // Starter unit button
+        // Action button
         const btnStartUnit = document.getElementById('btn-passport-start-unit');
         if (btnStartUnit) {
+            btnStartUnit.innerHTML = `<span>Comenzar en Nivel ${lvl}</span> <i class="fa-solid fa-arrow-right"></i>`;
             btnStartUnit.onclick = () => {
                 modal.close();
-                const tabMcer = document.getElementById('tab-btn-mcer');
-                if (tabMcer) tabMcer.click();
+                const btnMcer = document.getElementById('btn-world-mcer');
+                if (btnMcer) btnMcer.click();
+                if (typeof renderDuoLearningPath === 'function') {
+                    renderDuoLearningPath(lvl, 'mcer');
+                }
                 const starterUnitId = lvl === 'A1' ? 'a1-u1' : lvl === 'A2' ? 'a2-u1' : lvl === 'B1' ? 'b1-u1' : 'b2-u1';
                 if (typeof window.openMcerUnitModal === 'function') {
                     window.openMcerUnitModal(starterUnitId);

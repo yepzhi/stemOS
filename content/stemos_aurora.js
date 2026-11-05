@@ -271,3 +271,4 @@
   window.StemosAuroraCanvas = StemosAuroraCanvas;
   window.initStemosAurora = init;
 })();
+
