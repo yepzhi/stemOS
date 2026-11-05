@@ -2318,13 +2318,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Lock / Exit button
+    // Lock / Exit button (Sidebar Rail "Salir")
     const btnLockBackdoor = document.getElementById('btn-lock-backdoor');
     if (btnLockBackdoor) {
         btnLockBackdoor.addEventListener('click', () => {
-            localStorage.removeItem('stemos_backdoor');
-            document.documentElement.classList.remove('backdoor-unlocked');
-            window.location.reload();
+            if (typeof window.signOutStudentApp === 'function') {
+                window.signOutStudentApp();
+            } else {
+                localStorage.removeItem('stemos_backdoor');
+                document.documentElement.classList.remove('backdoor-unlocked');
+                window.location.replace('/');
+            }
         });
     }
 
@@ -2952,6 +2956,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (raw) profile = JSON.parse(raw);
             else if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.getAuthUser === 'function') {
                 profile = window.STEMOS_FIREBASE.getAuthUser();
+            } else {
+                const rawAuth = localStorage.getItem('stemos_auth_user');
+                if (rawAuth) profile = JSON.parse(rawAuth);
             }
         } catch (e) {}
 
@@ -3252,22 +3259,23 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch(e) {
                 console.warn('[stemOS] Reset cloud error:', e);
             }
-        } else {
-            localStorage.setItem('stemos_student_xp', '0');
-            localStorage.setItem('stemos_daily_streak', '1');
-            localStorage.setItem('stemos_cacei_accredited_hours', '0.00');
-            localStorage.setItem('stemos_user_level', 'A1');
-            localStorage.setItem('stemos_active_mcer_level', 'A1');
-            localStorage.setItem('stemos_duo_progress', JSON.stringify({}));
-            localStorage.setItem('stemos_user_progress', JSON.stringify({ xp: 0, nodeStatuses: {} }));
-            localStorage.removeItem('stemos_placement_test');
-            localStorage.removeItem('stemos_placement_completed');
-            localStorage.removeItem('stemos_diag_folio');
-            localStorage.removeItem('stemos_diag_status');
         }
+        
+        // Reset local storage student state
+        localStorage.setItem('stemos_student_xp', '0');
+        localStorage.setItem('stemos_daily_streak', '1');
+        localStorage.setItem('stemos_cacei_accredited_hours', '0.00');
+        localStorage.setItem('stemos_user_level', 'A1');
+        localStorage.setItem('stemos_active_mcer_level', 'A1');
+        localStorage.setItem('stemos_duo_progress', JSON.stringify({}));
+        localStorage.setItem('stemos_user_progress', JSON.stringify({ xp: 0, nodeStatuses: {} }));
+        localStorage.removeItem('stemos_placement_test');
+        localStorage.removeItem('stemos_placement_completed');
+        localStorage.removeItem('stemos_diag_folio');
+        localStorage.removeItem('stemos_diag_status');
 
         alert('¡Tu progreso ha sido reiniciado a cero con éxito! La plataforma se recargará para que puedas empezar tu ruta desde cero.');
-        window.location.reload();
+        window.location.replace('/app');
     };
 
     window.openStudentProfileModal = function() {
@@ -3279,6 +3287,10 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const raw = localStorage.getItem('stemos_student_profile');
             if (raw) profile = JSON.parse(raw);
+            else {
+                const rawAuth = localStorage.getItem('stemos_auth_user');
+                if (rawAuth) profile = JSON.parse(rawAuth);
+            }
         } catch(e) {}
 
         const activeCareerId = localStorage.getItem('stemos_active_career') || 'it-mecatronica';
@@ -3295,9 +3307,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const xpEl = document.getElementById('sp-modal-xp');
         const rankEl = document.getElementById('sp-modal-rank');
         const connEl = document.getElementById('sp-modal-conn');
+        const footerInitialsEl = document.getElementById('sp-footer-initials');
+        const footerNameEl = document.getElementById('sp-footer-name');
 
-        const studentFullName = (profile && (profile.name || profile.fullName)) ? (profile.name || profile.fullName) : (localStorage.getItem('stemos_student_name') || 'Estudiante stemOS');
+        let authUser = null;
+        try {
+            const rawAuth = localStorage.getItem('stemos_auth_user');
+            if (rawAuth) authUser = JSON.parse(rawAuth);
+        } catch(e) {}
+
+        const studentFullName = (profile && (profile.name || profile.fullName || profile.displayName)) 
+            ? (profile.name || profile.fullName || profile.displayName) 
+            : (authUser && (authUser.displayName || (authUser.email ? authUser.email.split('@')[0] : null))) || (localStorage.getItem('stemos_student_name') || 'Estudiante stemOS');
         const studentMatricula = (profile && (profile.matricula || profile.folio)) ? (profile.matricula || profile.folio) : 'Pendiente';
+
+        const parts = studentFullName.trim().split(/\s+/);
+        const computedInitials = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : parts[0].substring(0, 2).toUpperCase();
 
         if (nameEl) nameEl.textContent = studentFullName;
         if (matriculaEl) matriculaEl.innerHTML = `<i class="fa-solid fa-id-badge" style="color: #38bdf8;"></i> Matrícula: ${studentMatricula}`;
@@ -3306,9 +3331,10 @@ document.addEventListener('DOMContentLoaded', () => {
             campusEl.innerHTML = `<i class="fa-solid fa-building-columns" style="color: #38bdf8;"></i> ${camp}`;
         }
         if (avatarBoxText) {
-            const parts = studentFullName.trim().split(/\s+/);
-            avatarBoxText.textContent = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : parts[0].substring(0, 2).toUpperCase();
+            avatarBoxText.textContent = computedInitials;
         }
+        if (footerInitialsEl) footerInitialsEl.textContent = computedInitials;
+        if (footerNameEl) footerNameEl.textContent = studentFullName;
         if (careerEl) {
             let cName = (profile && profile.careerName) ? profile.careerName : 'Ingeniería Mecatrónica';
             if (window.STEMOS_CAREER_TRACKS && window.STEMOS_CAREER_TRACKS.CAREERS) {
@@ -3605,18 +3631,59 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    window.signOutStudentApp = function() {
-        if (confirm('¿Deseas cerrar tu sesión y limpiar los datos de este dispositivo?')) {
-            if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
-                try { firebase.auth().signOut(); } catch(e) {}
-            }
-            localStorage.removeItem('stemos_student_profile');
-            localStorage.removeItem('stemos_student_name');
-            localStorage.removeItem('stemos_auth_user');
-            localStorage.removeItem('stemos_student_xp');
-            localStorage.removeItem('stemos_user_progress');
-            window.location.reload();
+    window.signOutStudentApp = async function() {
+        if (!confirm('¿Deseas cerrar tu sesión y salir al inicio?')) {
+            return;
         }
+        try {
+            // 1. Await Firebase Auth Sign Out
+            if (typeof firebase !== 'undefined' && typeof firebase.auth === 'function') {
+                try {
+                    await firebase.auth().signOut();
+                } catch(e) {
+                    console.warn('[stemOS] Firebase signOut warning:', e);
+                }
+            }
+
+            // 2. Clear STEMOS_FIREBASE session
+            if (window.STEMOS_FIREBASE && typeof window.STEMOS_FIREBASE.logout === 'function') {
+                try {
+                    window.STEMOS_FIREBASE.logout();
+                } catch(e) {}
+            }
+
+            // 3. Clear student session identifiers & profiles
+            const sessionKeys = [
+                'stemos_student_profile',
+                'stemos_student_name',
+                'stemos_auth_user',
+                'stemos_user_session',
+                'stemos_admin_auth',
+                'stemos_teacher_auth',
+                'stemos_active_student_uid'
+            ];
+            sessionKeys.forEach(k => {
+                try { localStorage.removeItem(k); } catch(e) {}
+            });
+
+            // 4. Remove cached firebase auth keys in localStorage
+            try {
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    const key = localStorage.key(i);
+                    if (key && (key.startsWith('firebase:authUser') || key.startsWith('firebase:host'))) {
+                        localStorage.removeItem(key);
+                    }
+                }
+            } catch(e) {}
+
+            // 5. Purge sessionStorage completely
+            try { sessionStorage.clear(); } catch(e) {}
+        } catch (err) {
+            console.error('[stemOS] Error during sign out:', err);
+        }
+
+        // 6. Navigate directly to home /, leaving /app and ?view=profile
+        window.location.replace('/');
     };
 
     // Firebase Auth Persistent Session Listener (Phase 86)
