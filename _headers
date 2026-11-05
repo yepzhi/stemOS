@@ -55,3 +55,9 @@
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
   Link: <https://fonts.googleapis.com>; rel="preconnect", <https://fonts.gstatic.com>; rel="preconnect"; crossorigin, <https://cdnjs.cloudflare.com>; rel="dns-prefetch"
+
+/app
+  Cache-Control: public, max-age=0, must-revalidate
+
+/register
+  Cache-Control: public, max-age=0, must-revalidate
