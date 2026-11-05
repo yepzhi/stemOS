@@ -8068,6 +8068,22 @@ Nearshoring Center of Excellence • stemOS Certified`;
         }, 400);
     }
 
+    // Contextual Referral Handler (JóvenesSTEM -> stemOS)
+    try {
+        const ref = urlParams.get('ref') || urlParams.get('from');
+        if (ref === 'js' || ref === 'jovenesstem' || ref === 'jovenesstem.com') {
+            sessionStorage.setItem('stemos_referrer', 'jovenesstem');
+            setTimeout(() => {
+                if (typeof showSyncToast === 'function') {
+                    showSyncToast('🚀 ¡Bienvenido desde JóvenesSTEM! Continúa tu ruta con Inglés Técnico Industrial.', 'info');
+                }
+            }, 800);
+            // Clean URL query parameter without page reload
+            const cleanUrl = window.location.pathname + (window.location.hash || '');
+            window.history.replaceState({}, document.title, cleanUrl);
+        }
+    } catch (e) {}
+
     /* ══════════════════════════════════════════════════════════════════
        8.2. SOCRATIC ORAL DEBRIEF IN VOICE CRUCIBLE (FASE 69)
        Arthur Vance (Plant Engineering Director) Technical Counter-Inquiry
