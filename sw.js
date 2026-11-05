@@ -3,9 +3,9 @@
  * Full offline PWA caching for 4 Portals (Student, Admin, Teacher, Register), 25 Career Paths (60h), Interleaved Curricula, XP HUD, and 3D World Map.
  */
 
-const SW_VERSION = '6.9.4';
-const CACHE_NAME = 'stemos-lxp-v6.9.4-bust';
-// Historical compatibility: v6.0.0-academic-portals, v6.1.0-firebase-sync, v6.2.0-piper-neural, v6.3.0-campus-diadema-offline, v6.3.1-sso-mobile-fixes, v6.8.2-hero-leveling-pathway, v6.8.3-offline-resilient-icons, v6.8.4-csp-resilient, v6.8.5-mcer-offline-sync, v6.8.6-mcer-batch-offline
+const SW_VERSION = '6.9.5';
+const CACHE_NAME = 'stemos-lxp-v6.9.5-mcer-white-profile-aurora';
+// Historical compatibility: v6.0.0-academic-portals, v6.1.0-firebase-sync, v6.2.0-piper-neural, v6.3.0-campus-diadema-offline, v6.3.1-sso-mobile-fixes, v6.8.2-hero-leveling-pathway, v6.8.3-offline-resilient-icons, v6.8.4-csp-resilient, v6.8.5-mcer-offline-sync, v6.8.6-mcer-batch-offline, v6.9.4-bust
 
 const ASSETS_TO_CACHE = [
   '/',
@@ -46,6 +46,7 @@ const ASSETS_TO_CACHE = [
   '/content/stemos_phonetics.js',
   '/content/stemos_skeleton.js',
   '/content/stemos_sync.js',
+  '/content/stemos_aurora.js',
   '/content/audio/cleanroom_photolithography.wav',
   '/content/audio/cleanroom_basic_a2.wav',
   '/content/audio/pt-test-audio.mp3',

@@ -21,6 +21,7 @@
     <script src="/content/stemos_rum.js" defer></script>
     <script src="/content/stemos_phonetics.js" defer></script>
     <script src="/content/stemos_sync.js" defer></script>
+    <script src="/content/stemos_aurora.js?v=1.1.0" defer></script>
     
     <!-- Resource Hints & DNS Prefetch (Phase 84 CWV Engine) -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
@@ -56,8 +57,23 @@
             min-height: 100vh;
             min-height: 100dvh;
             overflow-x: hidden;
-            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             position: relative;
+        }
+        h1, h2, h3, h4, h5, h6,
+        .brand-title,
+        .ed-brand,
+        .path-track-title,
+        .ed-unit-title,
+        .cs-heading,
+        .sp-modal-title,
+        .path-cat-badge,
+        .path-standard-badge,
+        .ed-badge-system,
+        .btn,
+        .stemos-duo-mode-btn {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            letter-spacing: -0.015em;
         }
         @media (min-width: 840px) {
             body {
@@ -68,6 +84,9 @@
         }
 
         /* ── ULTRA-MODERN LIVING CYBER AURA BACKGROUND (LIGHT THEME, AIRY & ETHEREAL) ── */
+        body[data-aurora-full] .stemos-ambient-aura {
+            display: none !important;
+        }
         .stemos-ambient-aura {
             position: fixed;
             top: 0;
@@ -840,7 +859,7 @@
         }
     </style>
 </head>
-<body class="backdoor-unlocked">
+<body class="backdoor-unlocked" data-aurora-full>
     <!-- ── Ambient Living Mesh Aura (Zero CPU, GPU-Accelerated) ── -->
     <div class="stemos-ambient-aura" aria-hidden="true">
         <div class="aura-orb aura-orb-1"></div>
@@ -3684,8 +3703,8 @@
     <script src="/content/placement_test.js?v=1.0.0" defer></script>
     <script src="/content/stemos_payments.js?v=1.0.0" defer></script>
     <script src="/content/stemos_skeleton.js?v=1.0.0" defer></script>
-    <script src="/app.js?v=1.2.0" defer></script>
-    <script src="/world-map.js?v=1.2.0" defer></script>
+    <script src="/app.js?v=1.2.1" defer></script>
+    <script src="/world-map.js?v=1.2.1" defer></script>
 
     <!-- Service Worker PWA Registration & Auto-Update Engine -->
     <script>
@@ -3796,46 +3815,46 @@
         });
     </script>
 
-    <!-- Student Profile & Institutional Digital Pass Modal (Phase 86 - Bento Grid & Full Cloud Sync) -->
+    <!-- Student Profile & Institutional Digital Pass Modal (Phase 86 - White Glassmorphic Bento Grid) -->
     <div id="student-profile-modal" class="cs-modal-overlay" onclick="handleStudentProfileBackdrop(event)" style="z-index: 10000010; overflow-y: auto;">
-        <div class="cs-modal-card" style="max-width: 660px; width: 94%; text-align: left; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(28px); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 20px; padding: 24px; box-shadow: 0 30px 80px -15px rgba(0, 0, 0, 0.9); max-height: 90vh; overflow-y: auto; color: #f8fafc;">
+        <div class="cs-modal-card" style="max-width: 660px; width: 94%; text-align: left; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); border: 1px solid rgba(226, 232, 240, 0.95); border-radius: 24px; padding: 26px; box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(2, 132, 199, 0.08); max-height: 90vh; overflow-y: auto; color: #0f172a;">
             
             <!-- Digital ID Card Header -->
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px;">
                 <div style="display: flex; align-items: center; gap: 14px;">
-                    <div id="sp-modal-avatar-box" style="width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, #0284c7, #06b6d4); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; color: #fff; font-weight: 800; border: 2px solid rgba(56, 189, 248, 0.4); box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35); flex-shrink: 0;">
+                    <div id="sp-modal-avatar-box" style="width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, #0284c7, #06b6d4); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; color: #fff; font-weight: 800; border: 2px solid #bae6fd; box-shadow: 0 4px 14px rgba(14, 165, 233, 0.25); flex-shrink: 0;">
                         <span id="sp-modal-avatar-text">ST</span>
                     </div>
                     <div>
                         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #f8fafc;" id="sp-modal-name">Estudiante stemOS</h3>
-                            <span style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); padding: 2px 8px; border-radius: 999px;">
+                            <h3 style="margin: 0; font-size: 1.22rem; font-weight: 800; color: #0f172a; font-family: 'Outfit', sans-serif;" id="sp-modal-name">Estudiante stemOS</h3>
+                            <span style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; padding: 2px 8px; border-radius: 999px;">
                                 Acreditado
                             </span>
                         </div>
-                        <div style="font-size: 0.78rem; color: #94a3b8; margin-top: 2px; display: flex; gap: 10px; flex-wrap: wrap;">
-                            <span id="sp-modal-matricula"><i class="fa-solid fa-id-badge" style="color: #38bdf8;"></i> Matrícula: Pendiente</span>
-                            <span id="sp-modal-campus"><i class="fa-solid fa-building-columns" style="color: #38bdf8;"></i> TecNM Tijuana</span>
+                        <div style="font-size: 0.78rem; color: #64748b; margin-top: 2px; display: flex; gap: 10px; flex-wrap: wrap;">
+                            <span id="sp-modal-matricula"><i class="fa-solid fa-id-badge" style="color: #0284c7;"></i> Matrícula: Pendiente</span>
+                            <span id="sp-modal-campus"><i class="fa-solid fa-building-columns" style="color: #0284c7;"></i> TecNM Tijuana</span>
                         </div>
-                        <div style="font-size: 0.76rem; color: #38bdf8; font-weight: 600; margin-top: 1px;" id="sp-modal-career">
+                        <div style="font-size: 0.76rem; color: #0284c7; font-weight: 700; margin-top: 1px;" id="sp-modal-career">
                             Ingeniería Mecatrónica · 60h CACEI
                         </div>
                     </div>
                 </div>
-                <button type="button" onclick="closeStudentProfileModal()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; font-size: 1.1rem; width: 34px; height: 34px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                <button type="button" onclick="closeStudentProfileModal()" style="background: #f1f5f9; border: 1px solid #e2e8f0; color: #64748b; font-size: 1.1rem; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
             <!-- Cloud Sync & Connection Live Bar -->
-            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(3, 7, 18, 0.6); padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08); margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 10px 14px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
                 <div style="display: flex; align-items: center; gap: 8px; font-size: 0.78rem;">
-                    <span id="sp-modal-conn-dot" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
-                    <span id="sp-modal-conn-text" style="color: #e2e8f0; font-weight: 600;">Cloud Firestore Sincronizado</span>
+                    <span id="sp-modal-conn-dot" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);"></span>
+                    <span id="sp-modal-conn-text" style="color: #334155; font-weight: 700;">Cloud Firestore Sincronizado</span>
                     <span id="sp-modal-last-sync" style="color: #64748b; font-size: 0.72rem; margin-left: 4px;">• Al día</span>
                     <div id="sp-modal-conn" style="display: none;"></div>
                 </div>
-                <button type="button" id="btn-force-cloud-sync" onclick="window.forceSyncStudentProgressNow()" style="background: rgba(14, 165, 233, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; font-size: 0.74rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                <button type="button" id="btn-force-cloud-sync" onclick="window.forceSyncStudentProgressNow()" style="background: #e0f2fe; border: 1px solid #bae6fd; color: #0284c7; font-size: 0.74rem; font-weight: 700; padding: 5px 12px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;">
                     <i class="fa-solid fa-arrows-rotate"></i> Sincronizar Ahora
                 </button>
             </div>
@@ -3844,16 +3863,16 @@
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 16px;">
                 
                 <!-- KPI 1: MCER Level & Waiver -->
-                <div style="background: linear-gradient(135deg, rgba(2, 132, 199, 0.15), rgba(15, 23, 42, 0.6)); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 12px 14px;">
+                <div style="background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%); border: 1px solid #bae6fd; border-radius: 14px; padding: 12px 14px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                        <span style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;">
-                            <i class="fa-solid fa-passport" style="color: #38bdf8;"></i> Nivel MCER
+                        <span style="font-size: 0.72rem; color: #0369a1; text-transform: uppercase; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;">
+                            <i class="fa-solid fa-passport" style="color: #0284c7;"></i> Nivel MCER
                         </span>
                         <div style="display: flex; gap: 8px;">
-                            <button type="button" id="btn-profile-open-credential" onclick="if(window.openVerifiableCredentialModal){openVerifiableCredentialModal();}else{alert('Presenta y aprueba el examen milestone de nivel para emitir tu credencial verificable.');}" style="background: transparent; border: none; color: #38bdf8; font-size: 0.70rem; font-weight: 700; cursor: pointer; padding: 0;">
+                            <button type="button" id="btn-profile-open-credential" onclick="if(window.openVerifiableCredentialModal){openVerifiableCredentialModal();}else{alert('Presenta y aprueba el examen milestone de nivel para emitir tu credencial verificable.');}" style="background: transparent; border: none; color: #0284c7; font-size: 0.70rem; font-weight: 700; cursor: pointer; padding: 0;">
                                 <i class="fa-solid fa-qrcode"></i> Credencial
                             </button>
-                            <a href="/placement.html" style="font-size: 0.70rem; color: #38bdf8; text-decoration: none; font-weight: 700;">
+                            <a href="/placement.html" style="font-size: 0.70rem; color: #0284c7; text-decoration: none; font-weight: 700;">
                                 Retomar <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.65rem;"></i>
                             </a>
                         </div>
@@ -3863,87 +3882,87 @@
                             CEFR B1 · 75%
                         </span>
                         <div>
-                            <div style="font-size: 0.75rem; color: #cbd5e1; font-weight: 700;" id="sp-modal-modality">Ingeniería / Licenciatura (60h)</div>
-                            <div style="font-size: 0.68rem; color: #34d399; font-family: var(--font-mono, monospace); font-weight: 700;" id="sp-modal-folio">FOLIO: STEMOS-MCER-2026</div>
+                            <div style="font-size: 0.75rem; color: #334155; font-weight: 700;" id="sp-modal-modality">Ingeniería / Licenciatura (60h)</div>
+                            <div style="font-size: 0.68rem; color: #059669; font-family: var(--font-mono, monospace); font-weight: 700;" id="sp-modal-folio">FOLIO: STEMOS-MCER-2026</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- KPI 2: XP & Rank -->
-                <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(15, 23, 42, 0.6)); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 12px 14px;">
+                <div style="background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%); border: 1px solid #fde68a; border-radius: 14px; padding: 12px 14px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                        <span style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;">
+                        <span style="font-size: 0.72rem; color: #92400e; text-transform: uppercase; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;">
                             <i class="fa-solid fa-bolt" style="color: #f59e0b;"></i> Experiencia Acumulada
                         </span>
-                        <span style="font-size: 0.72rem; color: #f59e0b; font-weight: 800;" id="sp-modal-rank">L1 · Intern (0 XP)</span>
+                        <span style="font-size: 0.72rem; color: #b45309; font-weight: 800;" id="sp-modal-rank">L1 · Intern (0 XP)</span>
                     </div>
-                    <div style="font-size: 1.35rem; font-weight: 900; color: #fbbf24;" id="sp-modal-xp">
+                    <div style="font-size: 1.35rem; font-weight: 900; color: #b45309;" id="sp-modal-xp">
                         0 XP
                     </div>
-                    <div style="width: 100%; height: 5px; background: rgba(255, 255, 255, 0.1); border-radius: 999px; margin-top: 6px; overflow: hidden;">
+                    <div style="width: 100%; height: 6px; background: #fef3c7; border-radius: 999px; margin-top: 6px; overflow: hidden;">
                         <div id="sp-modal-kpi-xp-bar" style="height: 100%; width: 10%; background: linear-gradient(90deg, #f59e0b, #fbbf24); border-radius: 999px; transition: width 0.3s;"></div>
                     </div>
                 </div>
 
                 <!-- KPI 3: Daily Streak -->
-                <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(15, 23, 42, 0.6)); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 12px 14px;">
-                    <div style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 6px;">
+                <div style="background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%); border: 1px solid #fecaca; border-radius: 14px; padding: 12px 14px;">
+                    <div style="font-size: 0.72rem; color: #991b1b; text-transform: uppercase; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 6px;">
                         <i class="fa-solid fa-fire-flame-curved" style="color: #ef4444;"></i> Racha Diaria de Estudio
                     </div>
                     <div style="display: flex; align-items: baseline; gap: 8px;">
-                        <span style="font-size: 1.35rem; font-weight: 900; color: #f87171;" id="sp-modal-kpi-streak">1 Día</span>
-                        <span style="font-size: 0.75rem; color: #94a3b8;">consecutivo</span>
+                        <span style="font-size: 1.35rem; font-weight: 900; color: #dc2626;" id="sp-modal-kpi-streak">1 Día</span>
+                        <span style="font-size: 0.75rem; color: #64748b;">consecutivo</span>
                     </div>
-                    <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">
+                    <div style="font-size: 0.72rem; color: #64748b; margin-top: 4px;">
                         ¡Estudia a diario para mantener encendida la llama técnica!
                     </div>
                 </div>
 
                 <!-- KPI 4: CACEI Accredited Hours -->
-                <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(15, 23, 42, 0.6)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 12px 14px;">
-                    <div style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 6px;">
+                <div style="background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%); border: 1px solid #a7f3d0; border-radius: 14px; padding: 12px 14px;">
+                    <div style="font-size: 0.72rem; color: #065f46; text-transform: uppercase; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 6px;">
                         <i class="fa-solid fa-graduation-cap" style="color: #10b981;"></i> Horas Acreditadas CACEI
                     </div>
                     <div style="display: flex; align-items: baseline; gap: 8px;">
-                        <span style="font-size: 1.35rem; font-weight: 900; color: #34d399;" id="sp-modal-kpi-hours">15.0 hrs</span>
+                        <span style="font-size: 1.35rem; font-weight: 900; color: #059669;" id="sp-modal-kpi-hours">15.0 hrs</span>
                         <span style="font-size: 0.75rem; color: #64748b;">/ 60.0 hrs requeridas</span>
                     </div>
-                    <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">
+                    <div style="font-size: 0.72rem; color: #64748b; margin-top: 4px;">
                         Acreditación curricular oficial para titulación técnica.
                     </div>
                 </div>
 
                 <!-- KPI 5: Duolingo Snake Completed Lessons -->
-                <div style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(15, 23, 42, 0.6)); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 12px 14px;">
-                    <div style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 6px;">
-                        <i class="fa-solid fa-route" style="color: #c084fc;"></i> Ruta Duolingo (Snake)
+                <div style="background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%); border: 1px solid #e9d5ff; border-radius: 14px; padding: 12px 14px;">
+                    <div style="font-size: 0.72rem; color: #6b21a8; text-transform: uppercase; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 6px;">
+                        <i class="fa-solid fa-route" style="color: #9333ea;"></i> Ruta Duolingo (Snake)
                     </div>
                     <div style="display: flex; align-items: baseline; gap: 8px;">
-                        <span style="font-size: 1.35rem; font-weight: 900; color: #c084fc;" id="sp-modal-kpi-lessons">0 / 16</span>
-                        <span style="font-size: 0.75rem; color: #94a3b8;">módulos dominados</span>
+                        <span style="font-size: 1.35rem; font-weight: 900; color: #7e22ce;" id="sp-modal-kpi-lessons">0 / 16</span>
+                        <span style="font-size: 0.75rem; color: #64748b;">módulos dominados</span>
                     </div>
-                    <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 4px;">
+                    <div style="font-size: 0.72rem; color: #64748b; margin-top: 4px;">
                         Vía interactiva con ejercicios de pronunciación y audio.
                     </div>
                 </div>
 
                 <!-- KPI 6: Piper Neural Audio Speed Preference -->
-                <div style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(15, 23, 42, 0.6)); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 12px 14px;">
-                    <div style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 6px;">
-                        <i class="fa-solid fa-headphones" style="color: #38bdf8;"></i> Velocidad de Audio PRO TTS
+                <div style="background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%); border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 14px;">
+                    <div style="font-size: 0.72rem; color: #0369a1; text-transform: uppercase; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 6px;">
+                        <i class="fa-solid fa-headphones" style="color: #0284c7;"></i> Velocidad de Audio PRO TTS
                     </div>
                     <div style="display: flex; gap: 6px; margin-top: 6px;">
-                        <button type="button" class="sp-speed-pill" data-speed="0.8" onclick="window.setAudioSpeedFromProfile(0.8)" style="flex: 1; padding: 6px 4px; border-radius: 8px; font-size: 0.74rem; font-weight: 700; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: #94a3b8; cursor: pointer; text-align: center; transition: all 0.2s;">
+                        <button type="button" class="sp-speed-pill" data-speed="0.8" onclick="window.setAudioSpeedFromProfile(0.8)" style="flex: 1; padding: 6px 4px; border-radius: 8px; font-size: 0.74rem; font-weight: 700; border: 1px solid #cbd5e1; background: #f1f5f9; color: #475569; cursor: pointer; text-align: center; transition: all 0.2s;">
                             0.8x Lento
                         </button>
-                        <button type="button" class="sp-speed-pill active" data-speed="1.0" onclick="window.setAudioSpeedFromProfile(1.0)" style="flex: 1; padding: 6px 4px; border-radius: 8px; font-size: 0.74rem; font-weight: 700; border: 1px solid #38bdf8; background: #0ea5e9; color: #fff; cursor: pointer; text-align: center; transition: all 0.2s;">
+                        <button type="button" class="sp-speed-pill active" data-speed="1.0" onclick="window.setAudioSpeedFromProfile(1.0)" style="flex: 1; padding: 6px 4px; border-radius: 8px; font-size: 0.74rem; font-weight: 700; border: 1px solid #0284c7; background: #0284c7; color: #fff; cursor: pointer; text-align: center; transition: all 0.2s;">
                             1.0x Normal
                         </button>
-                        <button type="button" class="sp-speed-pill" data-speed="1.2" onclick="window.setAudioSpeedFromProfile(1.2)" style="flex: 1; padding: 6px 4px; border-radius: 8px; font-size: 0.74rem; font-weight: 700; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: #94a3b8; cursor: pointer; text-align: center; transition: all 0.2s;">
+                        <button type="button" class="sp-speed-pill" data-speed="1.2" onclick="window.setAudioSpeedFromProfile(1.2)" style="flex: 1; padding: 6px 4px; border-radius: 8px; font-size: 0.74rem; font-weight: 700; border: 1px solid #cbd5e1; background: #f1f5f9; color: #475569; cursor: pointer; text-align: center; transition: all 0.2s;">
                             1.2x Nativo
                         </button>
                     </div>
-                    <div style="font-size: 0.70rem; color: #94a3b8; margin-top: 6px;">
+                    <div style="font-size: 0.70rem; color: #64748b; margin-top: 6px;">
                         Piper Neural TTS en alta fidelidad (sin voces robóticas).
                     </div>
                 </div>
@@ -3951,38 +3970,38 @@
             </div>
 
             <!-- Subscription & Online Payment Status (Individual Plan $49/mo) -->
-            <div style="background: rgba(3, 7, 18, 0.6); padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.3); margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #f0f9ff 100%); padding: 12px 14px; border-radius: 12px; border: 1px solid #86efac; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
                 <div>
-                    <div style="font-size: 0.72rem; color: #34d399; text-transform: uppercase; font-weight: 800; display: flex; align-items: center; gap: 6px;">
+                    <div style="font-size: 0.72rem; color: #059669; text-transform: uppercase; font-weight: 800; display: flex; align-items: center; gap: 6px;">
                         <i class="fa-solid fa-bolt"></i> Plan Individual &bull; $49 MXN / mes
                     </div>
-                    <div style="font-size: 0.80rem; color: #cbd5e1; margin-top: 2px;" id="sp-modal-sub-status">
+                    <div style="font-size: 0.80rem; color: #334155; margin-top: 2px;" id="sp-modal-sub-status">
                         Acceso ilimitado a 34 Tracks, Laboratorio 8D y Tutor Socrático
                     </div>
                 </div>
-                <button type="button" class="btn btn-sm" style="background: linear-gradient(135deg, #10b981, #0284c7); color: #fff; font-weight: 800; font-size: 0.75rem; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer;" onclick="if(window.openStemosPaymentModal){openStemosPaymentModal(49);}">
+                <button type="button" class="btn btn-sm" style="background: linear-gradient(135deg, #10b981, #0284c7); color: #fff; font-weight: 800; font-size: 0.75rem; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);" onclick="if(window.openStemosPaymentModal){openStemosPaymentModal(49);}">
                     <i class="fa-solid fa-credit-card"></i> Pagar / Renovar
                 </button>
             </div>
 
             <!-- JóvenesSTEM Scientific Foundations & Leveling Bridge Card -->
-            <div style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.10), rgba(15, 23, 42, 0.7)); border: 1px solid rgba(59, 130, 246, 0.28); border-radius: 14px; padding: 14px 18px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div style="background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%); border: 1px solid #bfdbfe; border-radius: 14px; padding: 14px 18px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
                 <div style="max-width: 440px;">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
-                        <span style="font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); padding: 2px 8px; border-radius: 999px;">
+                        <span style="font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; background: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; padding: 2px 8px; border-radius: 999px;">
                             <i class="fa-solid fa-atom"></i> Fundamentación Técnica
                         </span>
-                        <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 700;">JóvenesSTEM®</span>
+                        <span style="font-size: 0.72rem; color: #64748b; font-weight: 700;">JóvenesSTEM®</span>
                     </div>
-                    <div style="font-size: 0.86rem; font-weight: 800; color: #f8fafc; margin-bottom: 3px;">
+                    <div style="font-size: 0.86rem; font-weight: 800; color: #0f172a; margin-bottom: 3px;">
                         ¿Necesitas reforzar la base conceptual y científica?
                     </div>
-                    <div style="font-size: 0.74rem; color: #94a3b8; line-height: 1.45;">
+                    <div style="font-size: 0.74rem; color: #475569; line-height: 1.45;">
                         Consolida las leyes físicas, microarquitectura, robótica y lógica con el programa completo en español (227 módulos gratuitos).
                     </div>
                 </div>
                 <div style="flex-shrink: 0;">
-                    <a href="https://jovenesstem.com/dashboard.html?ref=stemos" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 7px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #ffffff; text-decoration: none; padding: 8px 14px; border-radius: 10px; font-size: 0.76rem; font-weight: 800; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35); transition: all 0.2s;">
+                    <a href="https://jovenesstem.com/dashboard.html?ref=stemos" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 7px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #ffffff; text-decoration: none; padding: 8px 14px; border-radius: 10px; font-size: 0.76rem; font-weight: 800; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25); transition: all 0.2s;">
                         <span>Explorar JóvenesSTEM</span>
                         <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.70rem;"></i>
                     </a>
@@ -3990,17 +4009,17 @@
             </div>
 
             <!-- Danger Zone / Data Management: Reset All Progress -->
-            <div style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 12px; padding: 12px 16px; margin-bottom: 16px;">
+            <div style="background: #fff5f5; border: 1px solid #fed7d7; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
                     <div>
-                        <div style="font-size: 0.78rem; font-weight: 800; color: #f87171; display: inline-flex; align-items: center; gap: 6px;">
+                        <div style="font-size: 0.78rem; font-weight: 800; color: #dc2626; display: inline-flex; align-items: center; gap: 6px;">
                             <i class="fa-solid fa-triangle-exclamation"></i> Zona de Control: Reiniciar Progreso
                         </div>
-                        <div style="font-size: 0.74rem; color: #94a3b8; margin-top: 2px;">
+                        <div style="font-size: 0.74rem; color: #64748b; margin-top: 2px;">
                             Restablece a cero tus XP, racha, horas y examen diagnóstico para empezar de nuevo.
                         </div>
                     </div>
-                    <button type="button" id="btn-reset-student-progress" onclick="window.confirmResetAllStudentProgress()" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.45); color: #f87171; font-weight: 700; font-size: 0.75rem; padding: 6px 12px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;">
+                    <button type="button" id="btn-reset-student-progress" onclick="window.confirmResetAllStudentProgress()" style="background: #fee2e2; border: 1px solid #fca5a5; color: #dc2626; font-weight: 700; font-size: 0.75rem; padding: 6px 12px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;">
                         <i class="fa-solid fa-rotate-left"></i> Reiniciar Todo mi Progreso
                     </button>
                 </div>
@@ -4011,18 +4030,18 @@
             <div style="display: none;" id="sp-modal-class">Registro General</div>
 
             <!-- Modal Footer Actions (Active User Badge, Sign Out, Close) -->
-            <div style="display: flex; gap: 10px; justify-content: space-between; align-items: center; flex-wrap: wrap; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px;">
+            <div style="display: flex; gap: 10px; justify-content: space-between; align-items: center; flex-wrap: wrap; border-top: 1px solid #e2e8f0; padding-top: 14px;">
                 <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                    <div id="sp-footer-user-badge" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.05); padding: 4px 12px 4px 6px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.12);">
-                        <span id="sp-footer-initials" style="width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #0284c7, #06b6d4); color: #fff; font-size: 0.7rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.35);">ST</span>
-                        <span id="sp-footer-name" style="font-size: 0.82rem; font-weight: 700; color: #e2e8f0; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Estudiante stemOS</span>
+                    <div id="sp-footer-user-badge" style="display: inline-flex; align-items: center; gap: 8px; background: #f8fafc; padding: 4px 12px 4px 6px; border-radius: 999px; border: 1px solid #e2e8f0;">
+                        <span id="sp-footer-initials" style="width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #0284c7, #06b6d4); color: #fff; font-size: 0.7rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(14, 165, 233, 0.25);">ST</span>
+                        <span id="sp-footer-name" style="font-size: 0.82rem; font-weight: 700; color: #0f172a; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Estudiante stemOS</span>
                     </div>
-                    <button type="button" onclick="window.signOutStudentApp()" class="btn btn-secondary btn-sm" style="font-size: 0.8rem; color: #f87171; border-color: rgba(239, 68, 68, 0.3); display: inline-flex; align-items: center; gap: 6px; background: rgba(239, 68, 68, 0.08); padding: 5px 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                    <button type="button" onclick="window.signOutStudentApp()" class="btn btn-secondary btn-sm" style="font-size: 0.8rem; color: #dc2626; border: 1px solid #fca5a5; display: inline-flex; align-items: center; gap: 6px; background: #fee2e2; padding: 5px 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
                     </button>
                 </div>
                 <div style="display: flex; gap: 8px;">
-                    <button type="button" class="btn btn-primary btn-sm" onclick="closeStudentProfileModal()" style="font-size: 0.8rem; padding: 6px 16px; border-radius: 8px;">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="closeStudentProfileModal()" style="font-size: 0.8rem; padding: 6px 16px; border-radius: 8px; background: #0284c7; border: 1px solid #0284c7; color: #fff;">
                         Cerrar
                     </button>
                 </div>

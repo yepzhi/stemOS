@@ -3216,9 +3216,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 pill.style.borderColor = '#38bdf8';
                 pill.classList.add('active');
             } else {
-                pill.style.background = 'rgba(255,255,255,0.06)';
-                pill.style.color = '#94a3b8';
-                pill.style.borderColor = 'rgba(255,255,255,0.12)';
+                pill.style.background = '#f1f5f9';
+                pill.style.color = '#475569';
+                pill.style.borderColor = '#cbd5e1';
                 pill.classList.remove('active');
             }
         });
@@ -3398,9 +3398,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 pill.style.borderColor = '#38bdf8';
                 pill.classList.add('active');
             } else {
-                pill.style.background = 'rgba(255,255,255,0.06)';
-                pill.style.color = '#94a3b8';
-                pill.style.borderColor = 'rgba(255,255,255,0.12)';
+                pill.style.background = '#f1f5f9';
+                pill.style.color = '#475569';
+                pill.style.borderColor = '#cbd5e1';
                 pill.classList.remove('active');
             }
         });
@@ -4982,7 +4982,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
             if (sectionWorldMcer) sectionWorldMcer.style.display = 'block';
             if (sectionWorldEsp) sectionWorldEsp.style.display = 'none';
 
+            localStorage.setItem('stemos_active_path_scope', 'mcer');
             renderMcerUnitsGrid(activeMcerLevelFilter);
+            if (typeof renderDuoLearningPath === 'function') {
+                renderDuoLearningPath(activeMcerLevelFilter, 'mcer');
+            }
         });
 
         btnWorldEsp.addEventListener('click', () => {
@@ -4999,7 +5003,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
             if (sectionWorldMcer) sectionWorldMcer.style.display = 'none';
             if (sectionWorldEsp) sectionWorldEsp.style.display = 'block';
 
+            localStorage.setItem('stemos_active_path_scope', 'esp');
             renderAllUnitsGrid(activeFilterCategory);
+            if (typeof renderDuoLearningPath === 'function') {
+                renderDuoLearningPath(null, localStorage.getItem('stemos_active_career') || 'it-mecatronica');
+            }
         });
     }
 
@@ -5011,6 +5019,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
             chip.classList.add('active');
             activeMcerLevelFilter = chip.dataset.mcerLevel || 'all';
             renderMcerUnitsGrid(activeMcerLevelFilter);
+            if (typeof renderDuoLearningPath === 'function') {
+                renderDuoLearningPath(activeMcerLevelFilter, 'mcer');
+            }
             updateMcerOfflineBannerUI();
         });
     });
@@ -9771,7 +9782,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
        STEMOS DUOLINGO-STYLE LEARNING PATH ENGINE & BITE-SIZED LESSON RUNNER
        ══════════════════════════════════════════════════════════════════════════ */
 
-    // 1. Web Audio Synthesizer for Zero-Latency Haptic Sound Effects
+    // 1. Web Audio Synthesizer for Modern, Zero-Latency Acoustic Haptic Sound Effects
     const DuoSound = {
         ctx: null,
         getCtx() {
@@ -9788,51 +9799,132 @@ Nearshoring Center of Excellence • stemOS Certified`;
             }
             return this.ctx;
         },
-        playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.15, delay = 0) {
+        playBell(freq, duration = 0.35, gainVal = 0.18, delay = 0, overtoneMult = 2.0) {
             try {
                 const ctx = this.getCtx();
                 if (!ctx) return;
                 const now = ctx.currentTime + delay;
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = type;
-                osc.frequency.setValueAtTime(freq, now);
-                gain.gain.setValueAtTime(gainVal, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(now);
-                osc.stop(now + duration);
+
+                // Master gain for note with gentle curved envelope
+                const noteGain = ctx.createGain();
+                noteGain.gain.setValueAtTime(0.0001, now);
+                noteGain.gain.linearRampToValueAtTime(gainVal, now + 0.004);
+                noteGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+                // Warm low-pass filter to eliminate harsh edges
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(3200, now);
+                filter.Q.setValueAtTime(1.1, now);
+
+                // Fundamental oscillator
+                const oscFund = ctx.createOscillator();
+                oscFund.type = 'sine';
+                oscFund.frequency.setValueAtTime(freq, now);
+
+                // Upper shimmer overtone
+                const oscShimmer = ctx.createOscillator();
+                const shimmerGain = ctx.createGain();
+                oscShimmer.type = 'sine';
+                oscShimmer.frequency.setValueAtTime(freq * overtoneMult, now);
+                shimmerGain.gain.setValueAtTime(gainVal * 0.32, now);
+                shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + (duration * 0.5));
+
+                oscFund.connect(noteGain);
+                oscShimmer.connect(shimmerGain);
+                shimmerGain.connect(noteGain);
+                noteGain.connect(filter);
+                filter.connect(ctx.destination);
+
+                oscFund.start(now);
+                oscShimmer.start(now);
+                oscFund.stop(now + duration + 0.05);
+                oscShimmer.stop(now + duration + 0.05);
             } catch (e) {
                 // Audio silent fallback
             }
         },
-        // Joyful major arpeggio chime (C5 - E5 - G5 - C6)
+        playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.15, delay = 0) {
+            this.playBell(freq, duration, gainVal, delay);
+        },
+        // Modern sparkling crystalline chime (E5 -> G#5 -> B5 -> E6)
         playCorrect() {
-            this.playTone(523.25, 'triangle', 0.14, 0.22, 0);
-            this.playTone(659.25, 'triangle', 0.14, 0.22, 0.07);
-            this.playTone(783.99, 'triangle', 0.16, 0.24, 0.14);
-            this.playTone(1046.50, 'triangle', 0.35, 0.28, 0.21);
+            this.playBell(659.25, 0.28, 0.18, 0.00, 2.0); // E5
+            this.playBell(830.61, 0.30, 0.20, 0.06, 2.0); // G#5
+            this.playBell(987.77, 0.34, 0.22, 0.12, 2.0); // B5
+            this.playBell(1318.51, 0.58, 0.26, 0.18, 2.0); // E6
         },
-        // Gentle error blip (two descending tones)
+        // Warm subtle wooden bump (gentle low pitch-slide, no harsh buzzer)
         playIncorrect() {
-            this.playTone(293.66, 'sawtooth', 0.18, 0.14, 0);
-            this.playTone(220.00, 'sine', 0.28, 0.18, 0.1);
+            try {
+                const ctx = this.getCtx();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                const filter = ctx.createBiquadFilter();
+
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(380, now);
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(175, now);
+                osc.frequency.exponentialRampToValueAtTime(85, now + 0.18);
+
+                gain.gain.setValueAtTime(0.001, now);
+                gain.gain.linearRampToValueAtTime(0.20, now + 0.004);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.20);
+
+                osc.connect(gain);
+                gain.connect(filter);
+                filter.connect(ctx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.22);
+            } catch (e) {}
         },
-        // Snappy chip tap pop
+        // Tactile droplet pop (iOS-like tactile micro-pop)
         playPop() {
-            this.playTone(880, 'sine', 0.05, 0.12, 0);
+            try {
+                const ctx = this.getCtx();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(940, now);
+                osc.frequency.exponentialRampToValueAtTime(380, now + 0.035);
+
+                gain.gain.setValueAtTime(0.001, now);
+                gain.gain.linearRampToValueAtTime(0.18, now + 0.003);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } catch (e) {}
         },
-        // Lesson complete celebration fanfare
+        // Celebratory major-9th harmonic fanfare
         playVictory() {
-            const freqs = [523.25, 659.25, 783.99, 1046.50, 1318.51];
-            freqs.forEach((freq, idx) => {
-                this.playTone(freq, 'triangle', 0.22, 0.2, idx * 0.09);
+            const chords = [
+                { f: 523.25, d: 0.00, dur: 0.35 },  // C5
+                { f: 659.25, d: 0.07, dur: 0.35 },  // E5
+                { f: 783.99, d: 0.14, dur: 0.40 },  // G5
+                { f: 987.77, d: 0.21, dur: 0.45 },  // B5
+                { f: 1174.66, d: 0.28, dur: 0.50 }, // D6
+                { f: 1318.51, d: 0.35, dur: 0.65 }, // E6
+                { f: 1567.98, d: 0.42, dur: 0.85 }, // G6
+            ];
+            chords.forEach(c => {
+                this.playBell(c.f, c.dur, 0.18, c.d, 2.0);
             });
             setTimeout(() => {
-                this.playTone(1046.50, 'triangle', 0.45, 0.26, 0.5);
-                this.playTone(1318.51, 'triangle', 0.5, 0.26, 0.5);
-            }, 80);
+                this.playBell(1046.50, 0.85, 0.22, 0.00, 3.0);
+                this.playBell(1318.51, 0.95, 0.22, 0.03, 3.0);
+                this.playBell(1567.98, 1.15, 0.25, 0.06, 2.0);
+            }, 440);
         }
     };
 
@@ -9968,7 +10060,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 btnGrid.setAttribute('aria-selected', 'false');
             }
             localStorage.setItem('stemos_duo_view_mode', 'path');
-            renderDuoLearningPath(activeMcerLevelFilter);
+            renderDuoLearningPath(activeMcerLevelFilter, 'mcer');
         }
     };
 
@@ -10247,7 +10339,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         }
 
         closeCareerDrawer();
-        renderDuoLearningPath();
+        renderDuoLearningPath(null, careerId);
     }
 
     function renderDuoLearningPath(levelFilter, trackOrCareerId) {
@@ -10256,45 +10348,182 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         pathContainer.innerHTML = '';
 
-        // 1. Resolve Active Career / Track to display
-        const activeCareerId = trackOrCareerId || localStorage.getItem('stemos_active_career') || 'it-mecatronica';
+        // Determine active scope: MCER Tracks vs Industrial Career ESP Tracks
+        const sectionWorldMcer = document.getElementById('section-world-mcer');
+        const sectionWorldEsp = document.getElementById('section-world-esp');
+        const isMcerSectionVisible = sectionWorldMcer && (!sectionWorldEsp || sectionWorldEsp.style.display !== 'none');
+        const savedScope = localStorage.getItem('stemos_active_path_scope') || 'mcer';
+
+        const isMcer = trackOrCareerId === 'mcer' || 
+                       (typeof trackOrCareerId === 'string' && trackOrCareerId.startsWith('mcer')) ||
+                       (!trackOrCareerId && (savedScope === 'mcer' || isMcerSectionVisible));
+
+        let modules = [];
+        let headerData = {};
         let career = null;
-        if (window.STEMOS_CAREER_TRACKS && typeof window.STEMOS_CAREER_TRACKS.getCareerById === 'function') {
-            career = window.STEMOS_CAREER_TRACKS.getCareerById(activeCareerId);
-        }
-        if (!career && window.STEMOS_CAREER_TRACKS && Array.isArray(window.STEMOS_CAREER_TRACKS.CAREERS)) {
-            career = window.STEMOS_CAREER_TRACKS.CAREERS[0];
-        }
-
-        // Check if an individual ESP track was requested (e.g. from courses.js)
-        const courses = (typeof LXP_COURSES !== 'undefined') ? LXP_COURSES : {};
-        const isEspTrack = !career || (courses[trackOrCareerId] && trackOrCareerId !== career.id);
-        const espTrack = isEspTrack ? courses[trackOrCareerId] : null;
-
-        // Career Path definition (16 modules across 4 Hitos)
         let careerPath = null;
-        if (!isEspTrack && window.STEMOS_CAREER_PATHS && typeof window.STEMOS_CAREER_PATHS.getPathForCareer === 'function') {
-            careerPath = window.STEMOS_CAREER_PATHS.getPathForCareer(career ? career.id : 'it-mecatronica');
-        }
-
-        // Student Progress
-        const storageKey = 'stemos_progress_' + (career ? career.id : 'it-mecatronica');
+        let isEspTrack = false;
+        let espTrack = null;
         let prog = {};
-        try {
-            prog = JSON.parse(localStorage.getItem(storageKey) || '{}');
-        } catch (e) {}
-        if (!prog.modules) prog.modules = {};
+        let completedCount = 0;
+        let totalStations = 16;
+        let progressPct = 0;
+        let earnedXP = 0;
 
-        const completedModuleKeys = Object.keys(prog.modules).filter(k => prog.modules[k].status === 'completed');
-        const completedCount = completedModuleKeys.length;
-        const totalStations = careerPath ? (careerPath.modules || []).length : (espTrack ? (espTrack.modules || []).length : 16);
-        const progressPct = Math.round((completedCount / (totalStations || 16)) * 100);
-        const earnedXP = completedModuleKeys.reduce((acc, k) => acc + (prog.modules[k].xp || 300), 0);
+        if (isMcer) {
+            // ── A. MCER CORE MODE (A1 to B2 Standard American English) ──
+            localStorage.setItem('stemos_active_path_scope', 'mcer');
 
-        // System Label (e.g. UPBC, TecNM, UTT, etc.)
-        const systemLabel = (career && career.system) ? career.system.toUpperCase() : 'UPBC';
-        const primaryStandard = (career && career.standards && career.standards[0]) ? career.standards[0] : 'ISO 10218-1/2 Industrial Robots';
-        const trackTitle = isEspTrack ? (espTrack.titleEN || espTrack.title) : `${career ? career.name : 'Ingeniería Mecatrónica'} (60.0h Track)`;
+            const allMcerUnits = (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.getAllUnits === 'function') 
+                ? window.STEMOS_MCER_TRACKS.getAllUnits() 
+                : [];
+
+            let selectedLevel = (typeof trackOrCareerId === 'string' && trackOrCareerId.startsWith('mcer:')) 
+                ? trackOrCareerId.replace('mcer:', '') 
+                : (levelFilter || 'all');
+
+            let filteredUnits = allMcerUnits;
+            if (selectedLevel && selectedLevel !== 'all') {
+                filteredUnits = allMcerUnits.filter(u => u.cefr && u.cefr.toUpperCase() === selectedLevel.toUpperCase());
+            }
+            if (!filteredUnits || filteredUnits.length === 0) filteredUnits = allMcerUnits;
+
+            const mcerHitoNames = [
+                'Nivel A1 · Foundations & Everyday Work (60.0h)',
+                'Nivel A2 · Waystage & Maintenance Logs (60.0h)',
+                'Nivel B1 · Threshold & Industrial SOPs (60.0h)',
+                'Nivel B2 · Vantage & Executive Defense (60.0h)'
+            ];
+
+            const nodeTypeCycle = [
+                { type: 'theory', badge: 'THEORY 3.5h', label: 'Theory', icon: 'fa-book-open', color: '#0284c7', hours: 3.5, xp: 350 },
+                { type: 'english-b1', badge: 'DIALOGUE 3.5h', label: 'Dialogue', icon: 'fa-comments', color: '#10b981', hours: 3.5, xp: 350 },
+                { type: 'practical-lab', badge: 'CRUCIBLE 4.0h', label: 'Crucible', icon: 'fa-flask-vial', color: '#f59e0b', hours: 4.0, xp: 400 },
+                { type: 'milestone', badge: 'CHECKPOINT 4.0h', label: 'Checkpoint', icon: 'fa-award', color: '#ef4444', hours: 4.0, xp: 500 }
+            ];
+
+            modules = filteredUnits.map((u, idx) => {
+                const cycle = nodeTypeCycle[idx % nodeTypeCycle.length];
+                const cefrIdx = ['A1', 'A2', 'B1', 'B2'].indexOf(u.cefr);
+                const hitoNum = cefrIdx >= 0 ? (cefrIdx + 1) : Math.floor(idx / 4) + 1;
+                return {
+                    id: u.id,
+                    title: u.title,
+                    titleES: u.titleES || u.canDo,
+                    cefr: u.cefr,
+                    hito: hitoNum,
+                    hitoName: mcerHitoNames[hitoNum - 1] || 'MCER Milestone',
+                    type: cycle.type,
+                    badge: cycle.badge,
+                    color: cycle.color,
+                    icon: cycle.icon,
+                    hours: 15.0,
+                    xp: u.totalXP || cycle.xp,
+                    standard: `CEFR ${u.cefr} · American English`,
+                    isMcerUnit: true,
+                    rawUnit: u
+                };
+            });
+
+            // Calculate student progress across MCER units
+            totalStations = modules.length;
+            completedCount = modules.filter(m => {
+                return (localStorage.getItem('stemos_crucible_' + m.id) === 'completed') || 
+                       (localStorage.getItem('stemos_unit_completed_' + m.id) === 'true');
+            }).length;
+            progressPct = Math.round((completedCount / (totalStations || 16)) * 100);
+            earnedXP = completedCount * 350;
+
+            const titleSuffix = (selectedLevel && selectedLevel !== 'all') 
+                ? ` · Nivel ${selectedLevel.toUpperCase()} (60.0h Track)` 
+                : ' (MCER Core A1–B2)';
+
+            headerData = {
+                systemLabel: 'MCER CORE',
+                badgeText: 'MCER CORE · 240H DETERMINISTIC',
+                standardText: 'Standard American English • W3C Open Badges 3.0 • A1–B2',
+                title: 'Marco Común Europeo' + titleSuffix,
+                progressText: `${completedCount}/${totalStations} Curricular Units Completed (${progressPct}% · ${earnedXP}/5,600 XP)`
+            };
+
+        } else {
+            // ── B. ESP CAREER TRACK MODE (Engineering 60.0h Tracks) ──
+            localStorage.setItem('stemos_active_path_scope', 'esp');
+
+            const activeCareerId = trackOrCareerId || localStorage.getItem('stemos_active_career') || 'it-mecatronica';
+            if (window.STEMOS_CAREER_TRACKS && typeof window.STEMOS_CAREER_TRACKS.getCareerById === 'function') {
+                career = window.STEMOS_CAREER_TRACKS.getCareerById(activeCareerId);
+            }
+            if (!career && window.STEMOS_CAREER_TRACKS && Array.isArray(window.STEMOS_CAREER_TRACKS.CAREERS)) {
+                career = window.STEMOS_CAREER_TRACKS.CAREERS[0];
+            }
+
+            const courses = (typeof LXP_COURSES !== 'undefined') ? LXP_COURSES : {};
+            isEspTrack = !career || (courses[trackOrCareerId] && trackOrCareerId !== career.id);
+            espTrack = isEspTrack ? courses[trackOrCareerId] : null;
+
+            if (!isEspTrack && window.STEMOS_CAREER_PATHS && typeof window.STEMOS_CAREER_PATHS.getPathForCareer === 'function') {
+                careerPath = window.STEMOS_CAREER_PATHS.getPathForCareer(career ? career.id : 'it-mecatronica');
+            }
+
+            const storageKey = 'stemos_progress_' + (career ? career.id : 'it-mecatronica');
+            try {
+                prog = JSON.parse(localStorage.getItem(storageKey) || '{}');
+            } catch (e) {}
+            if (!prog.modules) prog.modules = {};
+
+            const completedModuleKeys = Object.keys(prog.modules).filter(k => prog.modules[k].status === 'completed');
+            completedCount = completedModuleKeys.length;
+            totalStations = careerPath ? (careerPath.modules || []).length : (espTrack ? (espTrack.modules || []).length : 16);
+            progressPct = Math.round((completedCount / (totalStations || 16)) * 100);
+            earnedXP = completedModuleKeys.reduce((acc, k) => acc + (prog.modules[k].xp || 300), 0);
+
+            const systemLabel = (career && career.system) ? career.system.toUpperCase() : 'UPBC';
+            const primaryStandard = (career && career.standards && career.standards[0]) ? career.standards[0] : 'ISO 10218-1/2 Industrial Robots';
+            const trackTitle = isEspTrack ? (espTrack.titleEN || espTrack.title) : `${career ? career.name : 'Ingeniería Mecatrónica'} (60.0h Track)`;
+
+            headerData = {
+                systemLabel: systemLabel,
+                badgeText: `${systemLabel} · 60H DETERMINISTIC`,
+                standardText: `CEFR B1 Technical Immersion &bull; ${primaryStandard}`,
+                title: trackTitle,
+                progressText: `${completedCount}/${totalStations} Curricular Stations Completed (${progressPct}% · ${earnedXP}/5,600 XP)`
+            };
+
+            const espHitoNames = [
+                'Shopfloor Survival & Operational Continuity (15.0h)',
+                'Root Cause Triangulation & Diagnostics (15.0h)',
+                'Cross-Border Negotiation & Auditor Defense (15.0h)',
+                'Capstone Engineering Fellowship (15.0h)'
+            ];
+
+            const nodeTypeConfig = {
+                'theory': { badge: 'THEORY 3.5h', label: 'Theory', icon: 'fa-microchip', color: '#38bdf8', defaultHours: 3.5, defaultXP: 300 },
+                'english-b1': { badge: 'ENGLISH B1 3.5h', label: 'English B1', icon: 'fa-comments', color: '#10b981', defaultHours: 3.5, defaultXP: 300 },
+                'practical-lab': { badge: 'LAB SIM 4.0h', label: 'Practical Lab', icon: 'fa-flask', color: '#f59e0b', defaultHours: 4.0, defaultXP: 400 },
+                'milestone': { badge: 'CHECKPOINT 4.0h', label: 'Checkpoint', icon: 'fa-award', color: '#ef4444', defaultHours: 4.0, defaultXP: 500 }
+            };
+
+            const rawMods = isEspTrack ? (espTrack.modules || []) : (careerPath ? careerPath.modules : []);
+            modules = rawMods.map((mod, idx) => {
+                const hitoNum = mod.hito || Math.floor(idx / 4) + 1;
+                const tc = nodeTypeConfig[mod.type] || nodeTypeConfig['theory'];
+                return {
+                    id: mod.id,
+                    title: mod.title,
+                    hito: hitoNum,
+                    hitoName: espHitoNames[hitoNum - 1] || 'Industrial Milestone',
+                    type: mod.type,
+                    badge: tc.badge,
+                    color: tc.color,
+                    icon: tc.icon,
+                    hours: mod.hours || tc.defaultHours,
+                    xp: mod.xp || tc.defaultXP,
+                    standard: mod.standard || 'ISO / IEEE',
+                    isMcerUnit: false
+                };
+            });
+        }
 
         // 2. Build Top Header Card (Identical to 3D World Header)
         const headerCard = document.createElement('div');
@@ -10308,19 +10537,19 @@ Nearshoring Center of Excellence • stemOS Certified`;
             <div class="path-track-info">
                 <div class="path-track-badges">
                     <span class="path-cat-badge" id="duo-path-cat-badge" style="background:#0ea5e922; color:#0ea5e9; border:1px solid #0ea5e955;">
-                        ${systemLabel} · 60H DETERMINISTIC
+                        ${headerData.badgeText}
                     </span>
                     <span class="path-standard-badge" id="duo-path-std-badge">
-                        CEFR B1 Technical Immersion &bull; ${primaryStandard}
+                        ${headerData.standardText}
                     </span>
                 </div>
-                <h2 class="path-track-title" id="duo-path-track-title">${trackTitle}</h2>
+                <h2 class="path-track-title" id="duo-path-track-title">${headerData.title}</h2>
             </div>
 
             <div class="path-track-stats-row">
                 <div class="path-stat-pill" id="duo-path-stat-progress">
                     <i class="fa-solid fa-award"></i>
-                    <span id="duo-path-stat-progress-text">${completedCount}/${totalStations} Curricular Stations Completed (${progressPct}% · ${earnedXP}/5,600 XP)</span>
+                    <span id="duo-path-stat-progress-text">${headerData.progressText}</span>
                 </div>
                 <select class="path-track-select" id="duo-path-track-select" aria-label="Cambiar de Track">
                     <!-- Populated dynamically -->
@@ -10332,7 +10561,28 @@ Nearshoring Center of Excellence • stemOS Certified`;
         // Populate track select dropdown
         const trackSelect = headerCard.querySelector('#duo-path-track-select');
         if (trackSelect) {
-            // Group 1: Carreras Universitarias
+            // Group 1: Marco Común Europeo (MCER Core Tracks)
+            const grpMcer = document.createElement('optgroup');
+            grpMcer.label = 'Marco Común Europeo (MCER American English)';
+            const mcerOpts = [
+                { val: 'mcer:all', label: 'Todos los Niveles A1–B2 (16 Unidades · 240h)' },
+                { val: 'mcer:A1', label: 'Nivel A1: Foundations (4 Unidades · 60h)' },
+                { val: 'mcer:A2', label: 'Nivel A2: Waystage (4 Unidades · 60h)' },
+                { val: 'mcer:B1', label: 'Nivel B1: Threshold (4 Unidades · 60h)' },
+                { val: 'mcer:B2', label: 'Nivel B2: Vantage (4 Unidades · 60h)' }
+            ];
+            mcerOpts.forEach(o => {
+                const opt = document.createElement('option');
+                opt.value = o.val;
+                opt.textContent = o.label;
+                if (isMcer && (trackOrCareerId === o.val || (trackOrCareerId === 'mcer' && o.val === 'mcer:all') || (!trackOrCareerId && o.val === 'mcer:' + (levelFilter || 'all')))) {
+                    opt.selected = true;
+                }
+                grpMcer.appendChild(opt);
+            });
+            trackSelect.appendChild(grpMcer);
+
+            // Group 2: Carreras Universitarias
             if (window.STEMOS_CAREER_TRACKS && Array.isArray(window.STEMOS_CAREER_TRACKS.CAREERS)) {
                 const grpCareers = document.createElement('optgroup');
                 grpCareers.label = 'Carreras Universitarias (60.0h Tracks)';
@@ -10340,13 +10590,14 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     const opt = document.createElement('option');
                     opt.value = 'career:' + c.id;
                     opt.textContent = `${c.name} (16 Estaciones · ${c.system ? c.system.toUpperCase() : 'UPBC'})`;
-                    if (!isEspTrack && career && career.id === c.id) opt.selected = true;
+                    if (!isMcer && !isEspTrack && career && career.id === c.id) opt.selected = true;
                     grpCareers.appendChild(opt);
                 });
                 trackSelect.appendChild(grpCareers);
             }
 
-            // Group 2: Tracks de Especialidad Industrial (ESP)
+            // Group 3: Tracks de Especialidad Industrial (ESP)
+            const courses = (typeof LXP_COURSES !== 'undefined') ? LXP_COURSES : {};
             if (courses && Object.keys(courses).length > 0) {
                 const grpEsp = document.createElement('optgroup');
                 grpEsp.label = 'Tracks de Especialidad Industrial (ESP)';
@@ -10355,7 +10606,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     const opt = document.createElement('option');
                     opt.value = 'track:' + k;
                     opt.textContent = `${cr.titleEN || cr.title} (${(cr.modules || []).length} M)`;
-                    if (isEspTrack && trackOrCareerId === k) opt.selected = true;
+                    if (!isMcer && isEspTrack && trackOrCareerId === k) opt.selected = true;
                     grpEsp.appendChild(opt);
                 }
                 trackSelect.appendChild(grpEsp);
@@ -10363,13 +10614,21 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
             trackSelect.addEventListener('change', (e) => {
                 const val = e.target.value;
-                if (val.startsWith('career:')) {
+                if (val.startsWith('mcer:')) {
+                    const lvl = val.replace('mcer:', '');
+                    localStorage.setItem('stemos_active_path_scope', 'mcer');
+                    if (sectionWorldMcer) sectionWorldMcer.style.display = 'block';
+                    if (sectionWorldEsp) sectionWorldEsp.style.display = 'none';
+                    renderDuoLearningPath(lvl, val);
+                } else if (val.startsWith('career:')) {
                     const cid = val.replace('career:', '');
+                    localStorage.setItem('stemos_active_path_scope', 'esp');
                     localStorage.setItem('stemos_active_career', cid);
-                    renderDuoLearningPath(levelFilter, cid);
+                    renderDuoLearningPath(null, cid);
                 } else if (val.startsWith('track:')) {
                     const tid = val.replace('track:', '');
-                    renderDuoLearningPath(levelFilter, tid);
+                    localStorage.setItem('stemos_active_path_scope', 'esp');
+                    renderDuoLearningPath(null, tid);
                 }
             });
         }
@@ -10396,24 +10655,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
         pathContainer.appendChild(trailWrap);
 
         // 4. Populate Stepping Stones & Hito Dividers
-        const modules = isEspTrack ? (espTrack.modules || []) : (careerPath ? careerPath.modules : []);
         const alignments = ['align-left', 'align-center', 'align-right', 'align-center'];
         let activeNodeFound = false;
         let currentHitoRendered = 0;
-
-        const hitoNames = [
-            'Shopfloor Survival & Operational Continuity (15.0h)',
-            'Root Cause Triangulation & Diagnostics (15.0h)',
-            'Cross-Border Negotiation & Auditor Defense (15.0h)',
-            'Capstone Engineering Fellowship (15.0h)'
-        ];
-
-        const nodeTypeConfig = {
-            'theory': { badge: 'THEORY 3.5h', label: 'Theory', icon: 'fa-microchip', color: '#38bdf8', defaultHours: 3.5, defaultXP: 300 },
-            'english-b1': { badge: 'ENGLISH B1 3.5h', label: 'English B1', icon: 'fa-comments', color: '#10b981', defaultHours: 3.5, defaultXP: 300 },
-            'practical-lab': { badge: 'LAB SIM 4.0h', label: 'Practical Lab', icon: 'fa-flask', color: '#f59e0b', defaultHours: 4.0, defaultXP: 400 },
-            'milestone': { badge: 'CHECKPOINT 4.0h', label: 'Checkpoint', icon: 'fa-award', color: '#ef4444', defaultHours: 4.0, defaultXP: 500 }
-        };
 
         modules.forEach((mod, idx) => {
             const stepNum = idx + 1;
@@ -10431,27 +10675,40 @@ Nearshoring Center of Excellence • stemOS Certified`;
                             <i class="fa-solid fa-flag-checkered"></i> HITO ${hitoNum}
                         </span>
                         <span style="color:#64748b; font-size:0.7rem;">&bull;</span>
-                        <span style="font-size:0.75rem; color:#f8fafc; font-weight:700;">${hitoNames[hitoNum - 1] || 'Industrial Milestone'}</span>
+                        <span style="font-size:0.75rem; color:#f8fafc; font-weight:700;">${mod.hitoName || 'Curricular Milestone'}</span>
                     </div>
                 `;
                 nodesLayer.appendChild(hitoDiv);
             }
 
             // Gating Check
-            const isCompleted = !!(prog.modules[mod.id] && (prog.modules[mod.id].status === 'completed' || prog.modules[mod.id].completed));
-            const isPrevCompleted = (idx === 0) || (prog.modules[modules[idx - 1].id] && (prog.modules[modules[idx - 1].id].status === 'completed' || prog.modules[modules[idx - 1].id].completed));
+            let isCompleted = false;
+            let isPrevCompleted = false;
+
+            if (mod.isMcerUnit) {
+                isCompleted = (localStorage.getItem('stemos_crucible_' + mod.id) === 'completed') || 
+                              (localStorage.getItem('stemos_unit_completed_' + mod.id) === 'true') ||
+                              !!(prog.modules && prog.modules[mod.id] && prog.modules[mod.id].status === 'completed');
+                isPrevCompleted = (idx === 0) || 
+                                  (localStorage.getItem('stemos_crucible_' + modules[idx - 1].id) === 'completed') || 
+                                  (localStorage.getItem('stemos_unit_completed_' + modules[idx - 1].id) === 'true') ||
+                                  !!(prog.modules && prog.modules[modules[idx - 1].id] && prog.modules[modules[idx - 1].id].status === 'completed');
+            } else {
+                isCompleted = !!(prog.modules && prog.modules[mod.id] && (prog.modules[mod.id].status === 'completed' || prog.modules[mod.id].completed));
+                isPrevCompleted = (idx === 0) || !!(prog.modules && prog.modules[modules[idx - 1].id] && (prog.modules[modules[idx - 1].id].status === 'completed' || prog.modules[modules[idx - 1].id].completed));
+            }
+
             const isUnlocked = isCompleted || isPrevCompleted || (idx === 0);
             const isActive = isUnlocked && !isCompleted && !activeNodeFound;
             if (isActive) activeNodeFound = true;
 
             const alignClass = alignments[idx % alignments.length];
-            const typeConfig = nodeTypeConfig[mod.type] || nodeTypeConfig['theory'];
-            const iconClass = typeConfig.icon || 'fa-microchip';
+            const iconClass = mod.icon || 'fa-microchip';
 
             const stepEl = document.createElement('div');
             stepEl.className = `path-level-step ${alignClass} ${isCompleted ? 'completed' : isActive ? 'active-node' : isUnlocked ? 'unlocked' : 'locked'}`;
 
-            let statusPill = `<span class="plc-status-pill" style="background:${typeConfig.color}22; color:${typeConfig.color};"><i class="fa-solid fa-play"></i> In Progress</span>`;
+            let statusPill = `<span class="plc-status-pill" style="background:${mod.color}22; color:${mod.color};"><i class="fa-solid fa-play"></i> In Progress</span>`;
             if (isCompleted) {
                 statusPill = `<span class="plc-status-pill" style="background:#05966922; color:#10b981;"><i class="fa-solid fa-check-double"></i> Station Passed</span>`;
             } else if (!isUnlocked) {
@@ -10474,19 +10731,21 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 </div>
             ` : '';
 
+            const nodeIdentifier = mod.isMcerUnit ? mod.id.toUpperCase() : mod.id;
+
             stepEl.innerHTML = `
-                <div class="path-node-disc" data-mod-id="${mod.id}" title="${mod.title}" style="border-color:${isUnlocked ? typeConfig.color : '#94a3b8'};">
+                <div class="path-node-disc" data-mod-id="${mod.id}" title="${mod.title}" style="border-color:${isUnlocked ? mod.color : '#94a3b8'}; cursor:pointer;">
                     ${mascotHtml}
                     ${starCrownHtml}
-                    <span class="node-m-num" style="color:${isUnlocked ? typeConfig.color : '#64748b'};">${mod.id}</span>
-                    <i class="${isUnlocked ? iconClass : 'fa-solid fa-lock'} node-m-icon" style="color:${isUnlocked ? typeConfig.color : '#64748b'};"></i>
+                    <span class="node-m-num" style="color:${isUnlocked ? mod.color : '#64748b'}; font-size:0.62rem;">${nodeIdentifier}</span>
+                    <i class="${isUnlocked ? iconClass : 'fa-solid fa-lock'} node-m-icon" style="color:${isUnlocked ? mod.color : '#64748b'};"></i>
                 </div>
 
-                <div class="path-level-card" style="border-left:3px solid ${isUnlocked ? typeConfig.color : '#cbd5e1'};">
+                <div class="path-level-card" style="border-left:3px solid ${isUnlocked ? mod.color : '#cbd5e1'}; cursor:pointer;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
                         ${statusPill}
-                        <span style="font-size:0.7rem; font-weight:800; color:${typeConfig.color}; background:${typeConfig.color}15; padding:2px 8px; border-radius:6px;">
-                            ${typeConfig.badge}
+                        <span style="font-size:0.7rem; font-weight:800; color:${mod.color}; background:${mod.color}15; padding:2px 8px; border-radius:6px;">
+                            ${mod.badge}
                         </span>
                     </div>
                     <div class="plc-title">${mod.title}</div>
@@ -10500,21 +10759,28 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 </div>
             `;
 
-            // Click listener on disc
-            const disc = stepEl.querySelector('.path-node-disc');
-            if (disc) {
-                disc.addEventListener('click', () => {
-                    if (!isUnlocked) {
-                        DuoSound.playIncorrect();
-                        if (typeof showSyncToast === 'function') {
-                            showSyncToast('Estación bloqueada. Completa las estaciones previas para desbloquear.', 'info');
-                        }
-                        return;
+            const onNodeAction = () => {
+                if (!isUnlocked) {
+                    DuoSound.playIncorrect();
+                    if (typeof showSyncToast === 'function') {
+                        showSyncToast('Estación bloqueada. Completa las estaciones previas para desbloquear.', 'info');
                     }
-                    DuoSound.playPop();
+                    return;
+                }
+                DuoSound.playPop();
+                if (mod.isMcerUnit) {
+                    if (typeof openMcerUnitModal === 'function') {
+                        openMcerUnitModal(mod.id);
+                    }
+                } else {
                     openStationInspectionDrawer(career, careerPath, mod, idx, isUnlocked, isCompleted);
-                });
-            }
+                }
+            };
+
+            const disc = stepEl.querySelector('.path-node-disc');
+            if (disc) disc.addEventListener('click', onNodeAction);
+            const cardEl = stepEl.querySelector('.path-level-card');
+            if (cardEl) cardEl.addEventListener('click', onNodeAction);
 
             nodesLayer.appendChild(stepEl);
         });
@@ -11537,7 +11803,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
     duoLevelFilterChips.forEach(chip => {
         chip.addEventListener('click', () => {
             const lvl = chip.dataset.mcerLevel || 'all';
-            renderDuoLearningPath(lvl);
+            renderDuoLearningPath(lvl, 'mcer');
         });
     });
 

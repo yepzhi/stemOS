@@ -136,8 +136,27 @@ test('app.html and dev.css contain speed selector pills and cycle controls', () 
   assert(appJs.includes('window.cycleAudioSpeed'), 'Missing window.cycleAudioSpeed in app.js');
 });
 
+console.log('\n▶ 5. MCER Winding Path, White Profile & Living Aurora');
+test('app.js supports dual-mode MCER tracks vs ESP tracks in renderDuoLearningPath', () => {
+  assert(appJs.includes('// ── A. MCER CORE MODE (A1 to B2 Standard American English) ──'), 'Missing MCER Core mode');
+  assert(appJs.includes('// ── B. ESP CAREER TRACK MODE (Engineering 60.0h Tracks) ──'), 'Missing ESP career mode');
+  assert(appJs.includes('openMcerUnitModal(mod.id)'), 'Missing openMcerUnitModal on MCER unit click');
+});
+
+test('DuoSound uses low-pass filtered warm chimes (playBell) and tactile pop', () => {
+  assert(appJs.includes('playBell('), 'Missing playBell in DuoSound');
+  assert(appJs.includes('createBiquadFilter()'), 'Missing createBiquadFilter in DuoSound');
+});
+
+test('app.html student profile modal uses clean white glassmorphic theme and living aurora canvas', () => {
+  assert(appHtml.includes('<!-- Student Profile & Institutional Digital Pass Modal (Phase 86 - White Glassmorphic Bento Grid) -->'), 'Missing white modal comment');
+  assert(appHtml.includes('background: rgba(255, 255, 255, 0.96)'), 'Missing white background in profile modal');
+  assert(appHtml.includes('/content/stemos_aurora.js'), 'Missing stemos_aurora.js script tag');
+  assert(appHtml.includes('data-aurora-full'), 'Missing data-aurora-full on body');
+});
+
 console.log('\n═══════════════════════════════════════════════════════════════════');
-console.log(`🏁 RESULT: ${pass}/13 TESTS PASSED (100%)`);
+console.log(`🏁 RESULT: ${pass}/16 TESTS PASSED (100%)`);
 console.log('═══════════════════════════════════════════════════════════════════\n');
 console.log('🎉 STEMOS DUOLINGO-STYLE LEARNING PATH ENGINE FULLY VERIFIED!\n');
 
