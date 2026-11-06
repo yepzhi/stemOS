@@ -11499,6 +11499,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         const overlay = document.getElementById('duo-runner-overlay');
         if (overlay) {
+            overlay.style.display = 'flex';
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -11513,6 +11514,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         const overlay = document.getElementById('duo-runner-overlay');
         if (overlay) {
             overlay.classList.remove('active');
+            overlay.style.display = 'none';
             document.body.style.overflow = '';
         }
         activeDuoSession = null;
@@ -12340,13 +12342,13 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         const overlay = document.getElementById('duo-runner-overlay');
         if (overlay) {
+            overlay.style.display = 'flex';
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
         renderCurrentDuoExercise();
     };
-    }
 
     // 9. Initial Load & Event Binding
     updateDuoHudUI();

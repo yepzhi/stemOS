@@ -164,7 +164,7 @@ function fallbackGeminiChat(res, bodyData) {
             try {
                 const parsed = JSON.parse(respData);
                 const candidateText = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
-                
+
                 // Return in Ollama-compatible format
                 const ollamaResponse = JSON.stringify({
                     model: `${DEFAULT_MODEL}-minipc-bridge`,
@@ -263,7 +263,7 @@ function handlePiperTTS(req, res, parsedUrl) {
             const pUrl = new URL(PIPER_URL);
             piperHost = pUrl.hostname;
             piperPort = parseInt(pUrl.port || '5000', 10);
-        } catch (_) {}
+        } catch (_) { }
 
         const piperReq = http.request({
             hostname: piperHost,

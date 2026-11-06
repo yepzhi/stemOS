@@ -23698,7 +23698,7 @@ html.theme-light body {
 }
 
 .duo-runner-overlay.active {
-  display: flex;
+  display: flex !important;
 }
 
 /* Top Navigation Bar */
