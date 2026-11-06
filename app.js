@@ -10451,6 +10451,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
     window.closeCareerDrawer = closeCareerDrawer;
 
     function openStationInspectionDrawer(career, careerPath, mod, modIndex, isUnlocked, isCompleted) {
+        window._currentDrawerModId = mod.id;
+        window._currentDrawerMod = mod;
         const drawer = document.getElementById('world-module-drawer');
         const backdrop = document.getElementById('wmd-backdrop');
         if (!drawer || !backdrop) return;
@@ -11030,6 +11032,34 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         <span style="margin:0 4px;">&bull;</span>
                         <span>${mod.standard || 'ISO / IEEE'}</span>
                     </div>
+
+                    <!-- 5-Step Micro-Lessons Strip (Duolingo Engine) -->
+                    <div class="duo-steps-strip">
+                        <button type="button" class="duo-sub-step-btn" title="Paso 1: Vocab Sprint (Emparejamiento)" data-step="1">
+                            <i class="fa-solid fa-shapes"></i> Vocab
+                        </button>
+                        <button type="button" class="duo-sub-step-btn" title="Paso 2: Sentence Builder (Oraciones)" data-step="2">
+                            <i class="fa-solid fa-cubes-stacked"></i> Builder
+                        </button>
+                        <button type="button" class="duo-sub-step-btn" title="Paso 3: Industrial Audio Lab (Escucha)" data-step="3">
+                            <i class="fa-solid fa-headphones"></i> Audio
+                        </button>
+                        <button type="button" class="duo-sub-step-btn" title="Paso 4: Grammar Drills (Sintaxis)" data-step="4">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Grammar
+                        </button>
+                        <button type="button" class="duo-sub-step-btn boss-step" title="Paso 5: Voice Crucible Boss (Pronunciación)" data-step="5">
+                            <i class="fa-solid fa-crown"></i> Boss
+                        </button>
+                    </div>
+
+                    <div style="display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap;">
+                        <button type="button" class="btn-play-duo-direct" title="Iniciar sesión interactiva tipo Duolingo">
+                            <i class="fa-solid fa-gamepad"></i> <span>Lección Duolingo</span>
+                        </button>
+                        <button type="button" class="btn-syllabus-direct" title="Ver temario formal de la unidad">
+                            <i class="fa-solid fa-book-open"></i> <span>Syllabus Completo</span>
+                        </button>
+                    </div>
                 </div>
             `;
 
@@ -11043,9 +11073,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 }
                 DuoSound.playPop();
                 if (mod.isMcerUnit) {
-                    if (typeof openMcerUnitModal === 'function') {
-                        openMcerUnitModal(mod.id);
-                    }
+                    startDuoLessonForUnit(mod.id, 1);
                 } else {
                     openStationInspectionDrawer(career, careerPath, mod, idx, isUnlocked, isCompleted);
                 }
@@ -11053,6 +11081,52 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
             const disc = stepEl.querySelector('.path-node-disc');
             if (disc) disc.addEventListener('click', onNodeAction);
+
+            const playDuoBtn = stepEl.querySelector('.btn-play-duo-direct');
+            if (playDuoBtn) {
+                playDuoBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (!isUnlocked) {
+                        DuoSound.playIncorrect();
+                        showSyncToast('Estación bloqueada. Completa las estaciones previas para desbloquear.', 'info');
+                        return;
+                    }
+                    startDuoLessonForUnit(mod.id, 1);
+                });
+            }
+
+            const syllabusBtn = stepEl.querySelector('.btn-syllabus-direct');
+            if (syllabusBtn) {
+                syllabusBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (!isUnlocked) {
+                        DuoSound.playIncorrect();
+                        showSyncToast('Estación bloqueada. Completa las estaciones previas para desbloquear.', 'info');
+                        return;
+                    }
+                    if (mod.isMcerUnit) {
+                        if (typeof openMcerUnitModal === 'function') {
+                            openMcerUnitModal(mod.id);
+                        }
+                    } else {
+                        openStationInspectionDrawer(career, careerPath, mod, idx, isUnlocked, isCompleted);
+                    }
+                });
+            }
+
+            stepEl.querySelectorAll('.duo-sub-step-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (!isUnlocked) {
+                        DuoSound.playIncorrect();
+                        showSyncToast('Estación bloqueada. Completa las estaciones previas para desbloquear.', 'info');
+                        return;
+                    }
+                    const sNum = parseInt(btn.dataset.step, 10) || 1;
+                    startDuoLessonForUnit(mod.id, sNum);
+                });
+            });
+
             const cardEl = stepEl.querySelector('.path-level-card');
             if (cardEl) cardEl.addEventListener('click', onNodeAction);
 
@@ -11087,10 +11161,36 @@ Nearshoring Center of Excellence • stemOS Certified`;
     // 5. Dynamic Interactive Lesson Challenge Builder
     function buildDuoLessonExercises(unit, stepMeta) {
         const exercises = [];
-        const vocabList = unit.vocabulary || [];
-        const drillsList = unit.grammarDrills || [];
-        const quizList = unit.unitQuiz || unit.quiz || [];
-        const dialogueTurns = (unit.dialogue && unit.dialogue.lines) ? unit.dialogue.lines : (Array.isArray(unit.dialogue) ? unit.dialogue : []);
+        let vocabList = (unit.vocabulary && unit.vocabulary.length > 0) ? [...unit.vocabulary] : [];
+        let drillsList = (unit.grammarDrills && unit.grammarDrills.length > 0) ? [...unit.grammarDrills] : [];
+        let quizList = (unit.unitQuiz && unit.unitQuiz.length > 0) ? [...unit.unitQuiz] : (unit.quiz || []);
+        let dialogueTurns = (unit.dialogue && unit.dialogue.lines) ? unit.dialogue.lines : (Array.isArray(unit.dialogue) ? unit.dialogue : []);
+
+        if (vocabList.length < 2) {
+            vocabList = [
+                { en: 'Lockout / Tagout (LOTO)', es: 'Bloqueo y etiquetado', example: 'Always apply Lockout Tagout protocols before maintenance.', exampleES: 'Siempre aplica protocolos de bloqueo y etiquetado antes del mantenimiento.' },
+                { en: 'Pressure Gauge', es: 'Manómetro de presión', example: 'Check the pressure gauge before opening valves.', exampleES: 'Verifica el manómetro antes de abrir válvulas.' },
+                { en: 'Root Cause Analysis', es: 'Análisis de causa raíz', example: 'The engineering team completed the 8D root cause report.', exampleES: 'El equipo de ingeniería completó el reporte 8D de causa raíz.' },
+                { en: 'Quality Assurance', es: 'Aseguramiento de calidad', example: 'Perform strict quality assurance checks at each station.', exampleES: 'Realiza controles rigurosos de calidad en cada estación.' }
+            ];
+        }
+        if (drillsList.length === 0) {
+            drillsList = [
+                { q: 'The technician ___ the emergency stop button.', opts: ['presses', 'pressing', 'pressed'], ans: 0, socraticHint: 'Usa el presente simple para protocolos estandarizados.' },
+                { q: 'Engineers ___ inspect all safety interlocks.', opts: ['must', 'can to', 'ought'], ans: 0, socraticHint: 'Usa verbos modales de obligación técnica.' }
+            ];
+        }
+        if (dialogueTurns.length === 0) {
+            dialogueTurns = [
+                { en: 'Please verify the safety interlocks on station two.', es: 'Por favor verifica los enclavamientos de seguridad en la estación dos.' },
+                { en: 'All sensors are calibrated and operating normally.', es: 'Todos los sensores están calibrados y funcionando normalmente.' }
+            ];
+        }
+        if (quizList.length === 0) {
+            quizList = [
+                { q: 'What is the required protocol before repairing energized machinery?', opts: ['Disconnect power and apply LOTO', 'Work while running', 'Ignore warning labels'], ans: 0, exp: 'OSHA 1910.147 requires isolating energy sources with lock and tag.' }
+            ];
+        }
 
         if (stepMeta.type === 'vocab_sprint') {
             // Ex 1: Tap-to-Pair (4 Technical Pairs)
@@ -11403,6 +11503,65 @@ Nearshoring Center of Excellence • stemOS Certified`;
         activeDuoSession = null;
         renderDuoLearningPath(activeMcerLevelFilter);
     };
+
+    const DUO_STEPS_META = [
+        { type: 'vocab_sprint', title: 'Vocab Sprint', icon: 'fa-shapes', label: 'Vocabulario & Emparejamiento', estMin: 3, xp: 20 },
+        { type: 'sentence_builder', title: 'Sentence Builder', icon: 'fa-cubes-stacked', label: 'Constructor de Oraciones', estMin: 4, xp: 25 },
+        { type: 'listening', title: 'Industrial Audio Lab', icon: 'fa-headphones', label: 'Comprensión Auditiva en Planta', estMin: 4, xp: 25 },
+        { type: 'grammar_drills', title: 'Grammar Drills', icon: 'fa-wand-magic-sparkles', label: 'Gramática Aplicada & Sintaxis', estMin: 4, xp: 25 },
+        { type: 'voice_crucible', title: 'Voice Crucible Boss', icon: 'fa-crown', label: 'Crisol de Voz (Milestone Boss)', estMin: 5, xp: 40, isBoss: true }
+    ];
+
+    function startDuoLessonForUnit(unitId, stepIndex = 1) {
+        if (!unitId) return;
+        DuoSound.playPop();
+
+        let unit = null;
+        if (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.getUnitById === 'function') {
+            unit = window.STEMOS_MCER_TRACKS.getUnitById(unitId);
+        }
+        if (!unit) {
+            const allUnits = (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.getAllUnits === 'function')
+                ? window.STEMOS_MCER_TRACKS.getAllUnits() : [];
+            unit = allUnits.find(u => u.id === unitId || (u.id && u.id.toLowerCase() === unitId.toLowerCase())) || allUnits[0];
+        }
+
+        if (!unit) {
+            unit = {
+                id: unitId,
+                title: 'Estación Técnica ' + unitId,
+                titleES: 'Procedimientos y Protocolos de Planta',
+                vocabulary: [
+                    { en: 'Lockout / Tagout (LOTO)', es: 'Bloqueo y etiquetado', example: 'Always apply Lockout Tagout protocols before maintenance.', exampleES: 'Siempre aplica protocolos de bloqueo y etiquetado antes del mantenimiento.' },
+                    { en: 'Pressure Gauge', es: 'Manómetro de presión', example: 'Check the pressure gauge before opening valves.', exampleES: 'Verifica el manómetro antes de abrir válvulas.' },
+                    { en: 'Root Cause Analysis', es: 'Análisis de causa raíz', example: 'The engineering team completed the 8D root cause report.', exampleES: 'El equipo de ingeniería completó el reporte 8D de causa raíz.' },
+                    { en: 'Quality Assurance', es: 'Aseguramiento de calidad', example: 'Perform strict quality assurance checks at each station.', exampleES: 'Realiza controles rigurosos de calidad en cada estación.' }
+                ],
+                grammarDrills: [
+                    { q: 'The technician ___ the emergency stop button.', opts: ['presses', 'pressing', 'pressed'], ans: 0, socraticHint: 'Usa el presente simple para protocolos estandarizados.' }
+                ],
+                unitQuiz: [
+                    { q: 'What is the standard procedure for electrical maintenance?', opts: ['Disconnect power and apply LOTO', 'Work with live circuits', 'Bypass the fuse'], ans: 0 }
+                ]
+            };
+        }
+
+        // Close any open modals/drawers
+        const modal = document.getElementById('modal-mcer-unit');
+        if (modal && typeof modal.close === 'function' && modal.open) {
+            modal.close();
+        }
+        if (typeof closeCareerDrawer === 'function') {
+            closeCareerDrawer();
+        }
+
+        const stepIdx = Math.max(1, Math.min(5, stepIndex));
+        const stepMeta = DUO_STEPS_META[stepIdx - 1] || DUO_STEPS_META[0];
+        openDuoLesson(unit, stepIdx, stepMeta);
+    }
+    window.startDuoLessonForUnit = startDuoLessonForUnit;
+    window.openDuoLesson = openDuoLesson;
+    window.DUO_STEPS_META = DUO_STEPS_META;
 
     function renderCurrentDuoExercise() {
         if (!activeDuoSession) return;

@@ -2229,6 +2229,9 @@
                         <span id="mcer-offline-sync-pill" class="mcer-sync-pill" style="display:none;"></span>
                     </div>
                     <div class="academic-header-actions" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                        <button type="button" class="btn-mcer-launch-duo" id="btn-mcer-launch-duo" onclick="window.startDuoLessonForUnit(window._currentActiveUnitId || 'a1-u1', 1)" title="Iniciar práctica interactiva tipo Duolingo con vidas, XP y audio">
+                            <i class="fa-solid fa-gamepad"></i> <span>Modo Duolingo</span>
+                        </button>
                         <div class="mcer-audio-ctrl-strip" id="mcer-header-audio-controls" style="display:inline-flex; align-items:center; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:8px; padding:2px 4px; gap:2px;">
                             <button type="button" class="mcer-speed-btn" data-speed="0.8" title="Velocidad 0.8x" style="border:none; background:transparent; padding:3px 6px; font-size:0.7rem; font-weight:700; border-radius:4px; cursor:pointer; color:#475569;">0.8x</button>
                             <button type="button" class="mcer-speed-btn active" data-speed="1.0" title="Velocidad normal 1x" style="border:none; background:#ffffff; padding:3px 6px; font-size:0.7rem; font-weight:800; border-radius:4px; cursor:pointer; color:#0284c7; box-shadow:0 1px 2px rgba(0,0,0,0.06);">1x</button>
@@ -3987,6 +3990,10 @@
             <button type="button" class="wmd-btn-primary" id="wmd-btn-launch-primary">
                 <i class="fa-solid fa-rocket"></i>
                 <span>Iniciar Módulo Directo</span>
+            </button>
+            <button type="button" class="wmd-btn-secondary" id="wmd-btn-launch-duo" onclick="window.startDuoLessonForUnit(window._currentDrawerModId || 'M01', 1)" style="background:rgba(16,185,129,0.12); color:#059669; border:1px solid rgba(16,185,129,0.3); font-weight:800;">
+                <i class="fa-solid fa-gamepad"></i>
+                <span>Práctica Duolingo</span>
             </button>
             <button type="button" class="wmd-btn-secondary" id="wmd-btn-launch-socratic" style="display:none;">
                 <i class="fa-solid fa-brain"></i>
