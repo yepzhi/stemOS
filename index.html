@@ -970,22 +970,64 @@
       line-height: 0 !important;
     }
 
+    .nav-placement-pill {
+      display: none;
+    }
+
+    .btn-signup-pill {
+      position: relative !important;
+      overflow: hidden !important;
+      isolation: isolate !important;
+    }
+
+    .btn-signup-pill::after {
+      content: '' !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: -100% !important;
+      width: 60% !important;
+      height: 100% !important;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.45) 50%, transparent 100%) !important;
+      transform: skewX(-20deg) !important;
+      animation: pill-shimmer-sweep 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
+      pointer-events: none !important;
+      z-index: 2 !important;
+    }
+
+    @keyframes pill-shimmer-sweep {
+      0% { transform: translateX(0) skewX(-20deg); }
+      50%, 100% { transform: translateX(360%) skewX(-20deg); }
+    }
+
     @media (max-width: 768px) {
       .nav-btn-zoom-header {
         display: none !important;
       }
       .supaste-nav-wrapper {
-        padding: 0 8px !important;
-        padding-top: max(6px, env(safe-area-inset-top)) !important;
+        padding: 0 !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
       }
       .supaste-nav {
         width: 100% !important;
         max-width: 100% !important;
-        height: 48px !important;
-        min-height: 48px !important;
-        padding: 4px 10px !important;
-        gap: 8px !important;
+        border-radius: 0 !important;
+        background: rgba(8, 22, 54, 0.94) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border-bottom: 1px solid rgba(56, 189, 248, 0.28) !important;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45) !important;
+        padding: max(8px, env(safe-area-inset-top)) 10px 8px 10px !important;
+        height: auto !important;
+        min-height: 52px !important;
         box-sizing: border-box !important;
+        gap: 6px !important;
+      }
+      .supaste-nav::before,
+      .supaste-nav::after {
+        display: none !important;
       }
       .supaste-nav-left {
         flex-shrink: 0 !important;
@@ -999,9 +1041,69 @@
         gap: 6px !important;
         flex-shrink: 0 !important;
       }
-      .btn-signup-pill {
+      .nav-placement-pill {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        background: rgba(245, 158, 11, 0.14) !important;
+        border: 1px solid rgba(245, 158, 11, 0.45) !important;
+        color: #f59e0b !important;
         padding: 5px 9px !important;
-        font-size: 0.70rem !important;
+        border-radius: 9999px !important;
+        font-size: 0.76rem !important;
+        font-weight: 800 !important;
+        text-decoration: none !important;
+        height: 32px !important;
+        min-height: 32px !important;
+        box-sizing: border-box !important;
+        flex-shrink: 0 !important;
+        transition: all 0.2s ease !important;
+      }
+      .nav-placement-pill:active {
+        transform: scale(0.96) !important;
+        background: rgba(245, 158, 11, 0.25) !important;
+      }
+      .lang-switch-capsule {
+        padding: 2px 4px !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(56, 189, 248, 0.3) !important;
+        border-radius: 9999px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 2px !important;
+        height: 32px !important;
+        min-height: 32px !important;
+        box-sizing: border-box !important;
+        flex-shrink: 0 !important;
+        margin: 0 !important;
+      }
+      .lang-btn {
+        padding: 4px 7px !important;
+        font-size: 0.78rem !important;
+        font-weight: 800 !important;
+        color: #94a3b8 !important;
+        border-radius: 9999px !important;
+        line-height: 1 !important;
+        min-height: 24px !important;
+        border: none !important;
+        background: transparent !important;
+        cursor: pointer !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+      .lang-btn.active {
+        background: #0ea5e9 !important;
+        color: #ffffff !important;
+        box-shadow: 0 1px 6px rgba(14, 165, 233, 0.5) !important;
+      }
+      .lang-divider {
+        font-size: 0.72rem !important;
+        color: rgba(255, 255, 255, 0.3) !important;
+      }
+      .btn-signup-pill {
+        padding: 5px 11px !important;
+        font-size: 0.78rem !important;
         font-weight: 800 !important;
         gap: 4px !important;
         min-height: 32px !important;
@@ -1012,12 +1114,12 @@
         border-radius: 9999px !important;
       }
       .btn-signup-pill span.shiny-text {
-        font-size: 0.70rem !important;
+        font-size: 0.78rem !important;
         white-space: nowrap !important;
         line-height: 1 !important;
       }
       .btn-signup-pill .nav-signup-arrow {
-        font-size: 0.62rem !important;
+        font-size: 0.65rem !important;
       }
       .supaste-mobile-nav-toggle {
         width: 32px !important;
@@ -1036,65 +1138,58 @@
         width: 16px !important;
         height: 12px !important;
       }
-      .lang-switch-capsule {
-        padding: 2px !important;
-        margin: 0 !important;
-        flex-shrink: 0 !important;
-      }
-      .lang-btn {
-        padding: 2px 6px !important;
-        font-size: 0.66rem !important;
-      }
-      .lang-divider {
-        font-size: 0.65rem !important;
-      }
     }
 
     @media (max-width: 480px) {
       .supaste-nav {
-        padding: 4px 8px !important;
-        gap: 6px !important;
+        padding: max(8px, env(safe-area-inset-top)) 8px 8px 8px !important;
+        gap: 5px !important;
       }
       .supaste-nav-right {
         gap: 4px !important;
       }
-      .btn-signup-pill {
-        padding: 4px 8px !important;
-        font-size: 0.68rem !important;
-      }
-      .btn-signup-pill span.shiny-text {
-        font-size: 0.68rem !important;
+      .nav-placement-pill {
+        padding: 5px 8px !important;
+        font-size: 0.74rem !important;
       }
       .lang-btn {
-        padding: 2px 5px !important;
-        font-size: 0.64rem !important;
+        padding: 3px 6px !important;
+        font-size: 0.74rem !important;
+      }
+      .btn-signup-pill {
+        padding: 5px 9px !important;
+        font-size: 0.74rem !important;
       }
     }
 
     @media (max-width: 380px) {
       .supaste-nav {
-        padding: 4px 6px !important;
+        padding: max(6px, env(safe-area-inset-top)) 6px 6px 6px !important;
         gap: 4px !important;
       }
       .supaste-brand-name {
-        font-size: 1.05rem !important;
+        font-size: 1.02rem !important;
       }
       .supaste-nav-right {
-        gap: 4px !important;
+        gap: 3px !important;
       }
-      .btn-signup-pill {
-        padding: 4px 6px !important;
-        font-size: 0.65rem !important;
+      .nav-placement-pill {
+        padding: 4px 7px !important;
+        font-size: 0.72rem !important;
       }
-      .btn-signup-pill span.shiny-text {
-        font-size: 0.65rem !important;
-      }
-      .btn-signup-pill .nav-signup-arrow {
+      .nav-placement-pill span {
         display: none !important;
       }
       .lang-btn {
-        padding: 2px 4px !important;
-        font-size: 0.60rem !important;
+        padding: 3px 5px !important;
+        font-size: 0.72rem !important;
+      }
+      .btn-signup-pill {
+        padding: 4px 8px !important;
+        font-size: 0.72rem !important;
+      }
+      .btn-signup-pill .nav-signup-arrow {
+        display: none !important;
       }
     }
 
@@ -1956,15 +2051,21 @@
 
       <!-- Right Actions & Mobile Hamburger -->
       <div class="supaste-nav-right">
-        <!-- Minimalist Language Switcher (EN | ES) without globe icon -->
+        <!-- Rapid Placement Test Shortcut (Visible on Mobile) -->
+        <a href="/placement.html" class="nav-placement-pill" title="Test de Ubicación Rápido">
+          <i class="fa-solid fa-vial" style="color:#f59e0b;"></i>
+          <span data-i18n="nav_quick_test">Test</span>
+        </a>
+
+        <!-- Minimalist Language Switcher (EN | ES) with Clear Legible Sizing -->
         <div class="lang-switch-capsule" role="group" aria-label="Language Selector">
           <button type="button" class="lang-btn active" id="lang-btn-en" onclick="window.setPlatformLanguage('en')">EN</button>
-          <span class="lang-divider" style="color:rgba(255,255,255,0.25); font-size:0.7rem; user-select:none;">|</span>
+          <span class="lang-divider" style="color:rgba(255,255,255,0.25); font-size:0.75rem; user-select:none;">|</span>
           <button type="button" class="lang-btn" id="lang-btn-es" onclick="window.setPlatformLanguage('es')">ES</button>
         </div>
 
-        <!-- Single Primary Action on Right: Sign Up -->
-        <a href="/register.html" class="btn-signup-pill btn-signup-nav-primary" data-starborder="" data-sb-color="#38bdf8" data-sb-speed="2.5" title="Student Registration">
+        <!-- Single Primary Action on Right: Sign Up with Smooth Specular Shimmer -->
+        <a href="/register.html" class="btn-signup-pill btn-signup-nav-primary" title="Student Registration">
           <span class="shiny-text" data-i18n="btn_signup_nav">Sign Up</span>
           <i class="fa-solid fa-arrow-right nav-signup-arrow" style="font-size:0.7rem;"></i>
         </a>
@@ -3307,6 +3408,7 @@
         nav_student_journey: 'Student CX',
         nav_catalog: 'ESP Catalog',
         nav_placement: 'RapidCheck',
+        nav_quick_test: 'Test',
         nav_pricing: 'Pricing',
         btn_signup_nav: 'Sign Up',
         mob_nav_portals: '<i class="fa-solid fa-graduation-cap"></i> Academic Portals',
@@ -3582,6 +3684,7 @@
         nav_student_journey: 'Ruta CX',
         nav_catalog: 'Catálogo ESP',
         nav_placement: 'RapidCheck',
+        nav_quick_test: 'Test',
         nav_pricing: 'Precios',
         btn_signup_nav: 'Sign Up',
         mob_nav_portals: '<i class="fa-solid fa-graduation-cap"></i> Portales Académicos',
