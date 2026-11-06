@@ -1841,6 +1841,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateGraphUI() {
         const allNodes = document.querySelectorAll('.node');
+        if (!allNodes || allNodes.length === 0) return;
         allNodes.forEach(node => {
             const nodeId = node.dataset.node;
             const status = skillsData[nodeId]?.status;
@@ -2266,7 +2267,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 80);
             }
         } else if (viewName === 'skills-graph') {
-            if (typeof updateGraphUI === 'function') updateGraphUI();
+            switchDashboardView('world-map');
+            return;
         } else if (viewName === 'feynman-tutor') {
             if (typeof initTutorSelectors === 'function') initTutorSelectors();
             const chatInputEl = document.getElementById('chat-input');
