@@ -379,8 +379,8 @@
         }
 
         buildDOM() {
-            const currentCareerName = this.activeCareer ? this.activeCareer.name : 'Ing. Mecatrónica (TecNM)';
-            const currentBiomeName = this.activeCareer && this.activeCareer.worldTheme ? this.activeCareer.worldTheme.biomeName : 'Precision Robotics Biome';
+            const sys = (this.activeCareer && this.activeCareer.systemLabel) ? ` (${this.activeCareer.systemLabel.split(' ')[0]})` : '';
+            const currentCareerName = this.activeCareer ? `${this.activeCareer.name}${sys}` : 'Ingeniería Mecatrónica (UPBC)';
 
             this.container.innerHTML = `
                 <div class="world-experience-wrap" id="world-experience-wrap">
@@ -392,46 +392,23 @@
                         <div class="world-aurora-blob aurora-blob-4"></div>
                     </div>
 
-                    <!-- Top HUD -->
+                    <!-- Top HUD (100% Personalizado al Track Real del Alumno) -->
                     <div class="world-hud-top">
                         <div class="world-title-badge">
                             <div class="world-brand-icon"><i class="fa-solid fa-earth-americas"></i></div>
                             <div class="world-title-text">
                                 <span class="world-title-main">Mundo stemOS <span style="font-size:0.7rem;font-weight:800;color:#0284c7;background:rgba(2,132,199,0.12);padding:2px 8px;border-radius:6px;border:1px solid rgba(2,132,199,0.3);">3D ESP</span></span>
-                                <span class="world-title-sub" id="wm-biome-subtitle">Bioma Adaptado: ${currentBiomeName} &bull; 60 Horas Curriculares</span>
                             </div>
                         </div>
 
-                        <!-- Career Selector: Shared World per Career -->
-                        <div class="world-career-selector-wrap" id="world-career-selector-wrap" style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.92); border:1px solid #cbd5e1; border-radius:999px; padding:4px 14px; box-shadow:0 4px 14px rgba(0,0,0,0.06); backdrop-filter:blur(8px);">
-                            <span style="font-size:0.72rem; font-weight:800; color:#0284c7; display:flex; align-items:center; gap:5px;">
+                        <!-- Career Track Pill (100% Personalizado al Track Real del Alumno) -->
+                        <div class="world-career-selector-wrap" id="world-career-selector-wrap" style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.92); border:1px solid #cbd5e1; border-radius:999px; padding:6px 16px; box-shadow:0 2px 10px rgba(0,0,0,0.04); backdrop-filter:blur(8px);">
+                            <span style="font-size:0.75rem; font-weight:800; color:#0284c7; display:flex; align-items:center; gap:5px;">
                                 <i class="fa-solid fa-graduation-cap"></i> <span id="wm-career-system-tag">Carrera:</span>
                             </span>
-                            <select id="wm-career-select" style="background:transparent; border:none; font-family:'Inter',sans-serif; font-size:0.8rem; font-weight:700; color:#0f172a; cursor:pointer; outline:none; max-width:280px;">
-                                <!-- Career Options injected dynamically -->
-                            </select>
-                            <span class="world-shared-pill" title="Mundo Compartido: Todos los alumnos de esta carrera ven exactamente este mismo mundo y este mismo track de 60 horas" style="font-size:0.68rem; font-weight:800; background:#dcfce7; color:#15803d; border:1px solid #86efac; border-radius:999px; padding:2px 8px; display:inline-flex; align-items:center; gap:4px;">
-                                <i class="fa-solid fa-users"></i> Mundo Compartido
+                            <span id="wm-career-name-display" style="font-family:'Outfit',sans-serif; font-size:0.84rem; font-weight:800; color:#0f172a;">
+                                ${currentCareerName}
                             </span>
-                        </div>
-
-                        <!-- Realm Filters -->
-                        <div class="world-realm-filters">
-                            <button class="realm-filter-btn active" data-cat="all">
-                                <i class="fa-solid fa-route"></i> Todos (26)
-                            </button>
-                            <button class="realm-filter-btn" data-cat="technology">
-                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#0284c7;"></span> Tecnología
-                            </button>
-                            <button class="realm-filter-btn" data-cat="engineering">
-                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#ea580c;"></span> Ingeniería
-                            </button>
-                            <button class="realm-filter-btn" data-cat="science">
-                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#9333ea;"></span> Ciencias
-                            </button>
-                            <button class="realm-filter-btn" data-cat="career">
-                                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#16a34a;"></span> Aviación
-                            </button>
                         </div>
 
                         <!-- Tools -->
@@ -525,7 +502,7 @@
                                     <i class="fa-solid fa-award"></i>
                                     <span id="path-stat-progress-text">3/9 Módulos</span>
                                 </div>
-                                <select class="path-track-select" id="path-track-select" aria-label="Cambiar de Mundo">
+                                <select class="path-track-select" id="path-track-select" aria-label="Cambiar de Mundo" style="display:none;">
                                     <!-- Options injected dynamically -->
                                 </select>
                             </div>
@@ -623,25 +600,6 @@
 
             this.canvas = this.els.canvas;
             this.ctx = this.canvas.getContext('2d');
-
-            // Populate Career Select Dropdown (Shared World per Career)
-            const careerSelect = document.getElementById('wm-career-select');
-            if (careerSelect && typeof window.STEMOS_CAREER_TRACKS !== 'undefined') {
-                careerSelect.innerHTML = '';
-                const allCareers = window.STEMOS_CAREER_TRACKS.CAREERS || [];
-                allCareers.forEach(c => {
-                    const opt = document.createElement('option');
-                    opt.value = c.id;
-                    opt.textContent = `${c.name} (${c.systemLabel.split(' ')[0]})`;
-                    if (this.activeCareer && this.activeCareer.id === c.id) {
-                        opt.selected = true;
-                    }
-                    careerSelect.appendChild(opt);
-                });
-                careerSelect.addEventListener('change', (e) => {
-                    this.setCareer(e.target.value);
-                });
-            }
 
             // Populate Track Select Dropdown
             const trackSelect = document.getElementById('path-track-select');
@@ -2595,13 +2553,10 @@
                     localStorage.setItem('stemos_active_career', careerId);
                     
                     // Update header HUD if present
-                    const biomeSub = document.getElementById('wm-biome-subtitle');
-                    if (biomeSub && career.worldTheme) {
-                        biomeSub.textContent = `Bioma Adaptado: ${career.worldTheme.biomeName} • 60 Horas Curriculares`;
-                    }
-                    const careerSelect = document.getElementById('wm-career-select');
-                    if (careerSelect && careerSelect.value !== careerId) {
-                        careerSelect.value = careerId;
+                    const careerDisplay = document.getElementById('wm-career-name-display');
+                    if (careerDisplay) {
+                        const sys = career.systemLabel ? ` (${career.systemLabel.split(' ')[0]})` : '';
+                        careerDisplay.textContent = `${career.name}${sys}`;
                     }
 
                     // Rebuild deterministic sphere nodes
@@ -2612,7 +2567,7 @@
                     this.yaw = 0.35;
                     this.zoom = 1.0;
 
-                    this.showToast(`Mundo Adaptado: ${career.name} (Bioma: ${career.worldTheme.biomeName})`);
+                    this.showToast(`Mundo Adaptado: ${career.name}`);
 
                     // Dispatch event
                     window.dispatchEvent(new CustomEvent('stemos:career-changed', {

@@ -206,6 +206,31 @@
             font-weight: 600;
         }
 
+        .btn-back-app {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #ffffff;
+            color: #0284c7;
+            border: 1px solid #cbd5e1;
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+            white-space: nowrap;
+        }
+
+        .btn-back-app:hover {
+            background: #f0f9ff;
+            border-color: #0284c7;
+            color: #0369a1;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+        }
+
         .top-actions {
             display: flex;
             align-items: center;
@@ -1109,16 +1134,22 @@
 
     <!-- ── Top Floating Glass Header ── -->
     <header class="top-bar">
-        <a href="app.html" class="brand-link" title="stemOS LXP" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
-            <div class="brand-text-col">
-                <div style="display:flex; align-items:center; gap:6px; line-height:1.1;">
-                    <span style="font-weight:900; font-size:1.15rem; letter-spacing:-0.02em; color:#0f172a;">stem<span style="color:#0284c7;">OS</span></span>
-                    <span style="color:#94a3b8; font-weight:600; font-size:0.95rem;">·</span>
-                    <span class="brand-title" style="font-weight:800; font-size:1.05rem; letter-spacing:-0.02em; color:#0f172a;">Rapid<span class="brand-accent" style="color:#0284c7;">Check</span></span>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <a href="app.html" id="btn-back-to-app" class="btn-back-app" title="Volver a stemOS">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span id="lbl-back-to-app">Volver a la App</span>
+            </a>
+            <a href="app.html" class="brand-link" title="stemOS LXP" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+                <div class="brand-text-col">
+                    <div style="display:flex; align-items:center; gap:6px; line-height:1.1;">
+                        <span style="font-weight:900; font-size:1.15rem; letter-spacing:-0.02em; color:#0f172a;">stem<span style="color:#0284c7;">OS</span></span>
+                        <span style="color:#94a3b8; font-weight:600; font-size:0.95rem;">·</span>
+                        <span class="brand-title" style="font-weight:800; font-size:1.05rem; letter-spacing:-0.02em; color:#0f172a;">Rapid<span class="brand-accent" style="color:#0284c7;">Check</span></span>
+                    </div>
+                    <span class="brand-subtitle" id="top-bar-subtitle">Placement Test · Nivelación 30m</span>
                 </div>
-                <span class="brand-subtitle" id="top-bar-subtitle">Placement Test · Nivelación 30m</span>
-            </div>
-        </a>
+            </a>
+        </div>
 
         <div class="top-actions">
             <!-- Language Selector Toggle (ES / EN) -->
@@ -1649,6 +1680,7 @@
 
         const PLACEMENT_I18N = {
             es: {
+                lblBackToApp: 'Volver a la App',
                 topBarSubtitle: 'Placement Test · Nivelación 30m',
                 lblAudioTest: 'Probar Audio',
                 welcomeBadgeText: 'RapidCheck · Examen de Colocación 30 Min',
@@ -1686,6 +1718,7 @@
                 lblModalDomainShortcut: 'Completar dominio:'
             },
             en: {
+                lblBackToApp: 'Back to App',
                 topBarSubtitle: 'Placement Test · 30m Leveling',
                 lblAudioTest: 'Audio Test',
                 welcomeBadgeText: 'RapidCheck · 30-Minute Placement Diagnostic',
@@ -1763,6 +1796,7 @@
                 if (el) el.innerHTML = html;
             };
 
+            updateText('lbl-back-to-app', dict.lblBackToApp);
             updateText('top-bar-subtitle', dict.topBarSubtitle);
             updateText('lbl-audio-test', dict.lblAudioTest);
             updateText('welcome-badge-text', dict.welcomeBadgeText);

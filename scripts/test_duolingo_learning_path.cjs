@@ -186,8 +186,28 @@ test('app.html and app.js omit redundant banners and cards in MCER view', () => 
   assert(!appHtml.includes('<button type="button" class="btn-mcer-offline-download" id="btn-mcer-offline-toggle" title="Descargar unidad completa y audios para modo offline (Expira en 3 días)">\n                            <i class="fa-solid fa-cloud-arrow-down"></i>'), 'Duplicate cloud icon should not exist in offline download button');
 });
 
+console.log('\n▶ 7. Placement Back Button & 3D World HUD Personalization');
+const placementHtml = fs.readFileSync(path.join(ROOT, 'placement.html'), 'utf8');
+const worldMapJs = fs.readFileSync(path.join(ROOT, 'world-map.js'), 'utf8');
+
+test('placement.html includes #btn-back-to-app with .btn-back-app pointing to app.html', () => {
+  assert(placementHtml.includes('id="btn-back-to-app"'), 'Missing #btn-back-to-app in placement.html');
+  assert(placementHtml.includes('class="btn-back-app"'), 'Missing .btn-back-app class in placement.html');
+  assert(placementHtml.includes('href="app.html"'), 'Back button must link to app.html');
+  assert(placementHtml.includes('lblBackToApp'), 'Missing lblBackToApp in PLACEMENT_I18N');
+});
+
+test('world-map.js omits redundant 26-career selector, biome subtitle, and generic realm filters for routed students', () => {
+  assert(worldMapJs.includes('id="wm-career-name-display"'), 'Missing #wm-career-name-display for personalized career');
+  assert(!worldMapJs.includes('id="wm-career-select"'), 'wm-career-select dropdown should be removed from HUD');
+  assert(!worldMapJs.includes('class="world-shared-pill"'), 'world-shared-pill should be removed');
+  assert(!worldMapJs.includes('id="wm-biome-subtitle"'), 'wm-biome-subtitle should be removed');
+  assert(!worldMapJs.includes('class="world-realm-filters"'), 'world-realm-filters should be removed');
+  assert(!worldMapJs.includes('Todos (26)'), 'Generic Todos (26) should be removed');
+});
+
 console.log('\n═══════════════════════════════════════════════════════════════════');
-console.log(`🏁 RESULT: ${pass}/20 TESTS PASSED (100%)`);
+console.log(`🏁 RESULT: ${pass}/22 TESTS PASSED (100%)`);
 console.log('═══════════════════════════════════════════════════════════════════\n');
 console.log('🎉 STEMOS DUOLINGO-STYLE LEARNING PATH ENGINE FULLY VERIFIED!\n');
 
