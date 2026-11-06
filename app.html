@@ -973,6 +973,19 @@
                     </div>
                     <button id="btn-close-exam" style="background:none; border:none; color:#94a3b8; font-size:1.5rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
                 </div>
+
+                <div class="duo-exam-launcher-card" style="padding:14px 18px; border-radius:12px; background:linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(2,132,199,0.06) 100%); border:1.5px solid rgba(16,185,129,0.3); display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:1.2rem; flex-wrap:wrap;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <i class="fa-solid fa-gamepad" style="font-size:1.4rem; color:#10b981;"></i>
+                        <div>
+                            <strong style="font-size:0.92rem; color:#0f172a; display:block;">Modo Examen Interactivo Duolingo</strong>
+                            <span style="font-size:0.78rem; color:#64748b;">Resuelve los reactivos con vidas, XP y retroalimentación acústica inmediata.</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn" id="btn-start-duo-exam" onclick="window.startDuoExamMarathon()" style="padding:8px 16px; font-size:0.82rem; font-weight:800; border-radius:8px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff; border:none; box-shadow:0 3px 8px rgba(16,185,129,0.3); cursor:pointer;">
+                        <i class="fa-solid fa-play"></i> Iniciar Modo Duolingo
+                    </button>
+                </div>
                 
                 <div id="exam-questions-container" style="max-height: 50vh; overflow-y:auto; padding-right:10px; margin-bottom:1.5rem;">
                     <!-- Questions injected here -->
@@ -1187,8 +1200,8 @@
                         <!-- Actions Row -->
                         <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
                             <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; width:100%;">
-                                <button type="button" class="btn" id="btn-active-path-resume" onclick="window.resumeActiveLearningUnit()" style="flex:1; min-width:180px; min-height:44px; padding:10px 20px; font-size:0.92rem; font-weight:800; border-radius:12px; background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#ffffff; border:none; box-shadow:0 4px 14px rgba(2,132,199,0.3); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; transition:all 0.15s ease;">
-                                    <i class="fa-solid fa-play"></i> Continuar Módulo
+                                <button type="button" class="btn" id="btn-active-path-resume" onclick="window.resumeActiveLearningUnit()" style="flex:1; min-width:180px; min-height:44px; padding:10px 20px; font-size:0.92rem; font-weight:800; border-radius:12px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff; border:none; box-shadow:0 4px 14px rgba(16,185,129,0.3); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; transition:all 0.15s ease;">
+                                    <i class="fa-solid fa-gamepad"></i> Continuar Ruta (Modo Duolingo)
                                 </button>
                                 <button type="button" class="btn" id="btn-active-path-syllabus" onclick="window.openCourseSyllabus()" style="min-height:44px; padding:10px 18px; font-size:0.88rem; font-weight:700; border-radius:12px; background:#ffffff; color:#0284c7; border:1.5px solid #0284c7; box-shadow:0 2px 6px rgba(2,132,199,0.08); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
                                     <i class="fa-solid fa-list-check"></i> Ver Temario & Avance (8 Temas)
@@ -2453,18 +2466,35 @@
                     <h4 style="font-size:0.9rem; font-weight:800; color:#0f172a; margin-bottom:10px;">Vocabulario Clave con Pronunciación en Audio</h4>
                     <div id="mcer-vocab-cards-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:12px; margin-bottom:20px;"></div>
 
-                    <!-- Ejercicios de Colocaciones y Léxico Técnico (4 MCQs) -->
+                    <!-- Ejercicios de Colocaciones y Léxico Técnico (Duolingo Interactive Runner) -->
                     <div id="mcer-vocab-exercises-section" style="margin-top:20px; border-top:1px solid #e2e8f0; padding-top:16px;">
+                        <div class="duo-tab-launcher-card" style="margin-bottom:16px; padding:18px 20px; border-radius:14px; background:linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(2,132,199,0.06) 100%); border:1.5px solid rgba(16,185,129,0.3); display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0;">
+                                    <i class="fa-solid fa-shapes"></i>
+                                </div>
+                                <div>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span style="background:#10b981; color:#fff; font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:999px; text-transform:uppercase;">Paso 1 del Track</span>
+                                        <strong style="font-size:0.96rem; color:#0f172a;">Vocab Sprint & Tap-to-Pair Interactivo</strong>
+                                    </div>
+                                    <p style="margin:2px 0 0; font-size:0.84rem; color:#475569;">Relaciona parejas de términos y construye oraciones técnicas con retroalimentación sonora táctil.</p>
+                                </div>
+                            </div>
+                            <button type="button" class="btn" onclick="window.startDuoLessonForUnit(window._currentActiveUnitId, 1)" style="padding:10px 20px; font-size:0.88rem; font-weight:800; border-radius:12px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff; border:none; box-shadow:0 4px 14px rgba(16,185,129,0.35); cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
+                                <i class="fa-solid fa-play"></i> Iniciar Reto Vocab Sprint
+                            </button>
+                        </div>
                         <h4 style="font-size:0.92rem; font-weight:800; color:#0f172a; margin-bottom:10px;">
-                            <i class="fa-solid fa-spell-check" style="color:#0284c7;"></i> Ejercicios de Léxico y Colocaciones Técnicas (4 Reactivos)
+                            <i class="fa-solid fa-spell-check" style="color:#0284c7;"></i> Reactivos de Léxico y Colocaciones Técnicas
                         </h4>
                         <div id="mcer-vocab-exercises-container" style="display:flex; flex-direction:column; gap:12px;"></div>
                         <div id="mcer-vocab-results-box" style="display:none; text-align:center; padding:12px; background:#f0fdf4; border:1px solid #86efac; border-radius:10px; margin-top:12px;">
                             <div id="mcer-vocab-score-val" style="font-size:1.3rem; font-weight:800; color:#16a34a;">4/4 (100%)</div>
                             <div style="font-size:0.8rem; font-weight:700; color:#15803d; margin-top:2px;">¡Léxico técnico dominado! (+100 XP)</div>
                         </div>
-                        <button class="btn btn-primary" id="btn-submit-mcer-vocab" style="margin-top:12px; width:auto; padding:8px 18px; font-size:0.85rem; font-weight:700;">
-                            <i class="fa-solid fa-check"></i> Verificar Respuestas de Vocabulario
+                        <button class="btn btn-primary" id="btn-submit-mcer-vocab" style="margin-top:12px; width:auto; padding:10px 20px; font-size:0.88rem; font-weight:800; border-radius:10px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); border:none; box-shadow:0 3px 10px rgba(16,185,129,0.3);">
+                            <i class="fa-solid fa-gamepad"></i> Practicar Vocab Sprint en Modo Duolingo
                         </button>
                     </div>
                 </div>
@@ -2502,6 +2532,24 @@
                         </div>
                     </div>
 
+                    <div class="duo-tab-launcher-card" style="margin-bottom:16px; padding:18px 20px; border-radius:14px; background:linear-gradient(135deg, rgba(2,132,199,0.08) 0%, rgba(99,102,241,0.06) 100%); border:1.5px solid rgba(2,132,199,0.3); display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0;">
+                                <i class="fa-solid fa-headphones"></i>
+                            </div>
+                            <div>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <span style="background:#0284c7; color:#fff; font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:999px; text-transform:uppercase;">Paso 3 del Track</span>
+                                    <strong style="font-size:0.96rem; color:#0f172a;">Industrial Audio Lab (Piper Neural)</strong>
+                                </div>
+                                <p style="margin:2px 0 0; font-size:0.84rem; color:#475569;">Entrena tu comprensión auditiva con velocidades 0.8x, 1.0x y 1.2x en el runner Duolingo.</p>
+                            </div>
+                        </div>
+                        <button type="button" class="btn" onclick="window.startDuoLessonForUnit(window._currentActiveUnitId, 3)" style="padding:10px 20px; font-size:0.88rem; font-weight:800; border-radius:12px; background:linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); color:#ffffff; border:none; box-shadow:0 4px 14px rgba(2,132,199,0.35); cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-play"></i> Iniciar Audio Lab Interactivo
+                        </button>
+                    </div>
+
                     <h4 style="font-size:0.9rem; font-weight:800; color:#0f172a; margin-bottom:10px;">Preguntas de Comprensión Auditiva (3 Reactivos)</h4>
                     <div id="mcer-listening-questions-container" style="display:flex; flex-direction:column; gap:14px;"></div>
                     
@@ -2509,13 +2557,31 @@
                         <div id="mcer-listening-score-val" style="font-size:1.4rem; font-weight:800; color:#16a34a;">3/3 (100%)</div>
                         <div style="font-size:0.8rem; font-weight:700; color:#15803d; margin-top:2px;">Comprensión auditiva acreditada (+150 XP)</div>
                     </div>
-                    <button class="btn btn-primary" id="btn-submit-mcer-listening" style="margin-top:14px; width:auto; padding:8px 18px; font-size:0.85rem; font-weight:700;">
-                        <i class="fa-solid fa-check"></i> Verificar Respuestas de Audio
+                    <button class="btn btn-primary" id="btn-submit-mcer-listening" style="margin-top:14px; width:auto; padding:10px 20px; font-size:0.88rem; font-weight:800; border-radius:10px; background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border:none; box-shadow:0 3px 10px rgba(2,132,199,0.3);">
+                        <i class="fa-solid fa-gamepad"></i> Practicar Audio Lab en Modo Duolingo
                     </button>
                 </div>
 
                 <!-- Tab 4: Grammar & Applied Syntax Drills (5 MCQs) -->
                 <div id="mcer-screen-grammar" class="mcer-screen" style="display:none;">
+                    <div class="duo-tab-launcher-card" style="margin-bottom:16px; padding:18px 20px; border-radius:14px; background:linear-gradient(135deg, rgba(139,92,246,0.08) 0%, rgba(2,132,199,0.06) 100%); border:1.5px solid rgba(139,92,246,0.3); display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0;">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                            <div>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <span style="background:#8b5cf6; color:#fff; font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:999px; text-transform:uppercase;">Paso 4 del Track</span>
+                                    <strong style="font-size:0.96rem; color:#0f172a;">Grammar Drills & Sintaxis Operativa</strong>
+                                </div>
+                                <p style="margin:2px 0 0; font-size:0.84rem; color:#475569;">Aprende estructuras inductivas con constructor de oraciones y retroalimentación táctil.</p>
+                            </div>
+                        </div>
+                        <button type="button" class="btn" onclick="window.startDuoLessonForUnit(window._currentActiveUnitId, 4)" style="padding:10px 20px; font-size:0.88rem; font-weight:800; border-radius:12px; background:linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); color:#ffffff; border:none; box-shadow:0 4px 14px rgba(139,92,246,0.35); cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-play"></i> Iniciar Grammar Drills
+                        </button>
+                    </div>
+
                     <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #8b5cf6; border-radius:12px; padding:14px 18px; margin-bottom:16px;">
                         <span style="font-size:0.72rem; font-weight:800; color:#7c3aed; text-transform:uppercase; letter-spacing:0.04em;">
                             <i class="fa-solid fa-wand-magic-sparkles"></i> Sintaxis & Reglas de Estructura
@@ -2530,8 +2596,8 @@
                         <div id="mcer-grammar-score-val" style="font-size:1.4rem; font-weight:800; color:#16a34a;">5/5 (100%)</div>
                         <div style="font-size:0.8rem; font-weight:700; color:#15803d; margin-top:2px;">Precisión sintáctica verificada (+200 XP)</div>
                     </div>
-                    <button class="btn btn-primary" id="btn-submit-mcer-grammar" style="margin-top:14px; width:auto; padding:8px 18px; font-size:0.85rem; font-weight:700;">
-                        <i class="fa-solid fa-check"></i> Calificar Drills Gramaticales
+                    <button class="btn btn-primary" id="btn-submit-mcer-grammar" style="margin-top:14px; width:auto; padding:10px 20px; font-size:0.88rem; font-weight:800; border-radius:10px; background:linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); border:none; box-shadow:0 3px 10px rgba(139,92,246,0.3);">
+                        <i class="fa-solid fa-gamepad"></i> Practicar Grammar Drills en Modo Duolingo
                     </button>
                 </div>
 
@@ -2826,15 +2892,26 @@
                     </div>
                 </div>
 
-                <!-- Tab 7: Unit Quiz (8 MCQs) -->
+                <!-- Tab 7: Unit Quiz (Duolingo Boss Evaluation & MCQs) -->
                 <div id="mcer-screen-quiz" class="mcer-screen" style="display:none;">
+                    <div class="duo-quiz-boss-card" style="padding:22px; border-radius:16px; background:linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(239,68,68,0.06) 100%); border:2px solid #f59e0b; text-align:center; margin-bottom:20px;">
+                        <div style="width:60px; height:60px; border-radius:50%; background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color:#ffffff; font-size:1.8rem; display:inline-flex; align-items:center; justify-content:center; margin-bottom:12px; box-shadow:0 6px 18px rgba(245,158,11,0.35);">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <h3 style="font-size:1.2rem; font-weight:900; color:#0f172a; margin:0 0 6px;">Evaluación Boss de Unidad (Paso 5)</h3>
+                        <p style="font-size:0.88rem; color:#475569; max-width:480px; margin:0 auto 16px;">Supera el crisol interactivo con constructor de oraciones, pronunciación de voz y reactivos técnicos para sellar tu acreditación oficial CACEI.</p>
+                        <button type="button" class="btn btn-primary" onclick="window.startDuoLessonForUnit(window._currentActiveUnitId, 5)" style="padding:12px 28px; font-size:0.95rem; font-weight:900; border-radius:14px; background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color:#ffffff; border:none; box-shadow:0 4px 14px rgba(245,158,11,0.35); cursor:pointer;">
+                            <i class="fa-solid fa-gamepad"></i> Iniciar Desafío Boss en Modo Duolingo
+                        </button>
+                    </div>
+
                     <div id="mcer-quiz-questions-container" style="display:flex; flex-direction:column; gap:16px;"></div>
                     <div id="mcer-quiz-results-box" style="display:none; text-align:center; padding:16px; background:#f0fdf4; border:1px solid #86efac; border-radius:14px; margin-top:16px;">
                         <div id="mcer-quiz-score-val" style="font-size:2rem; font-weight:900; color:#16a34a;">100%</div>
                         <div style="font-size:0.85rem; font-weight:700; color:#15803d; margin-top:4px;">¡Unidad MCER Aprobada! Micro-credencial verificada.</div>
                     </div>
-                    <button class="btn btn-primary" id="btn-submit-mcer-quiz" style="margin-top:16px;">
-                        <i class="fa-solid fa-check"></i> Calificar Quiz de Unidad
+                    <button class="btn btn-primary" id="btn-submit-mcer-quiz" style="margin-top:16px; padding:12px 24px; font-weight:800; background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border:none; box-shadow:0 4px 12px rgba(245,158,11,0.3);">
+                        <i class="fa-solid fa-gamepad"></i> Calificar / Iniciar Desafío Boss
                     </button>
                 </div>
             </div>

@@ -246,8 +246,33 @@ test('dev.css defines .duo-steps-strip, .duo-sub-step-btn, .btn-play-duo-direct,
   assert(devCss.includes('.btn-mcer-launch-duo'), 'Missing .btn-mcer-launch-duo in dev.css');
 });
 
+console.log('\n▶ 10. 100% Platform Exercises Duolingo Overhaul & Progression Loop');
+test('resumeActiveLearningUnit routes directly to startDuoLessonForUnit', () => {
+  assert(appJs.includes('window.resumeActiveLearningUnit = function()'), 'Missing resumeActiveLearningUnit');
+  assert(appJs.includes('window.startDuoLessonForUnit(unitId, 1)'), 'resumeActiveLearningUnit not routing to startDuoLessonForUnit');
+});
+
+test('advanceToNextDuoLesson implements continuous flow to next micro-step or unit', () => {
+  assert(appJs.includes('window.advanceToNextDuoLesson = function()'), 'Missing advanceToNextDuoLesson');
+  assert(appJs.includes('startDuoLessonForUnit(currentUnitId, currentStep + 1)'), 'Missing micro-step advancement');
+  assert(appJs.includes('startDuoLessonForUnit(nextUnitId, 1)'), 'Missing canonical unit advancement');
+});
+
+test('startDuoExamMarathon transforms track certification exam to interactive Duolingo runner', () => {
+  assert(appJs.includes('window.startDuoExamMarathon = function()'), 'Missing startDuoExamMarathon');
+  assert(appHtml.includes('id="btn-start-duo-exam"'), 'Missing #btn-start-duo-exam in app.html');
+  assert(appHtml.includes('class="duo-exam-launcher-card"'), 'Missing .duo-exam-launcher-card in app.html');
+});
+
+test('Unit study screens include Duolingo launchers across vocab, listening, grammar and boss quiz', () => {
+  assert(appHtml.includes('Vocab Sprint & Tap-to-Pair Interactivo'), 'Missing Vocab Sprint banner in app.html');
+  assert(appHtml.includes('Industrial Audio Lab (Piper Neural)'), 'Missing Audio Lab banner in app.html');
+  assert(appHtml.includes('Grammar Drills & Sintaxis Operativa'), 'Missing Grammar Drills banner in app.html');
+  assert(appHtml.includes('Evaluación Boss de Unidad (Paso 5)'), 'Missing Boss Quiz banner in app.html');
+});
+
 console.log('\n═══════════════════════════════════════════════════════════════════');
-console.log(`🏁 RESULT: ${pass}/28 TESTS PASSED (100%)`);
+console.log(`🏁 RESULT: ${pass}/32 TESTS PASSED (100%)`);
 console.log('═══════════════════════════════════════════════════════════════════\n');
 console.log('🎉 STEMOS DUOLINGO-STYLE LEARNING PATH ENGINE FULLY VERIFIED!\n');
 

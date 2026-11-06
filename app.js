@@ -6020,6 +6020,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
             const btnSubmitVocab = document.getElementById('btn-submit-mcer-vocab');
             if (btnSubmitVocab) {
                 btnSubmitVocab.onclick = () => {
+                    const anyChecked = document.querySelector('input[name^="mcer-vq-"]:checked');
+                    if (!anyChecked && typeof window.startDuoLessonForUnit === 'function') {
+                        window.startDuoLessonForUnit(unit.id, 1);
+                        return;
+                    }
                     if (vExercises.length === 0) return;
                     let vCorrect = 0;
                     vExercises.forEach((vq, vqIdx) => {
@@ -6124,6 +6129,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 const btnSubmitListening = document.getElementById('btn-submit-mcer-listening');
                 if (btnSubmitListening) {
                     btnSubmitListening.onclick = () => {
+                        const anyChecked = document.querySelector('input[name^="mcer-lq-"]:checked');
+                        if (!anyChecked && typeof window.startDuoLessonForUnit === 'function') {
+                            window.startDuoLessonForUnit(unit.id, 3);
+                            return;
+                        }
                         if (lQuestions.length === 0) return;
                         let lCorrect = 0;
                         lQuestions.forEach((lq, lqIdx) => {
@@ -6235,6 +6245,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
             const btnSubmitGrammar = document.getElementById('btn-submit-mcer-grammar');
             if (btnSubmitGrammar) {
                 btnSubmitGrammar.onclick = () => {
+                    const anyChecked = document.querySelector('input[name^="mcer-gq-"]:checked');
+                    if (!anyChecked && typeof window.startDuoLessonForUnit === 'function') {
+                        window.startDuoLessonForUnit(unit.id, 4);
+                        return;
+                    }
                     if (gDrills.length === 0) return;
                     let gCorrect = 0;
                     gDrills.forEach((gq, gqIdx) => {
@@ -6427,6 +6442,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
         const btnSubmitQuiz = document.getElementById('btn-submit-mcer-quiz');
         if (btnSubmitQuiz) {
             btnSubmitQuiz.onclick = () => {
+                const anyChecked = document.querySelector('input[name^="mcer-quiz-q-"]:checked');
+                if (!anyChecked && typeof window.startDuoLessonForUnit === 'function') {
+                    window.startDuoLessonForUnit(unit.id, 5);
+                    return;
+                }
                 if (quizList.length === 0) return;
                 let correctCount = 0;
                 quizList.forEach((uq, uqIdx) => {
@@ -7285,13 +7305,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
     window.resumeActiveLearningUnit = function() {
         const unitId = window._currentActiveUnitId || localStorage.getItem('stemos_active_unit_id') || 'a1-u1';
-        openMcerUnitModal(unitId);
-        const savedStep = localStorage.getItem(`stemos_active_step_${unitId}`) || 'fundamentals';
-        setTimeout(() => {
-            if (typeof switchMcerModalTab === 'function') {
-                switchMcerModalTab(savedStep);
-            }
-        }, 120);
+        if (typeof window.startDuoLessonForUnit === 'function') {
+            window.startDuoLessonForUnit(unitId, 1);
+        } else {
+            openMcerUnitModal(unitId);
+        }
     };
 
     window.openCourseSyllabus = function(targetLevel) {
@@ -10542,7 +10560,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
             btnPrimary.onclick = () => {
                 closeCareerDrawer();
                 DuoSound.playPop();
-                if (mod.type === 'milestone') {
+                if (typeof window.startDuoLessonForUnit === 'function') {
+                    window.startDuoLessonForUnit(mod.id, 1);
+                } else if (mod.type === 'milestone') {
                     const examOverlay = document.getElementById('exam-modal-overlay');
                     if (examOverlay) {
                         examOverlay.classList.add('active');
@@ -10551,11 +10571,6 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 } else if (mod.type === 'practical-lab') {
                     if (typeof window.openAcademicModal === 'function') {
                         window.openAcademicModal((career && career.primaryTrackId) || 'robotics-automation', mod);
-                    }
-                } else {
-                    if (typeof window.openDrawer === 'function') {
-                        const courses = (typeof LXP_COURSES !== 'undefined') ? LXP_COURSES : {};
-                        window.openDrawer((career && career.primaryTrackId) || 'robotics-automation', mod.id, courses);
                     }
                 }
             };
@@ -12166,6 +12181,23 @@ Nearshoring Center of Excellence • stemOS Certified`;
         };
         saveDuoProgress(duoProgress);
 
+        // If step 5 or milestone boss is completed, mark unit as completed!
+        if (session.stepNum >= 5 || (session.stepMeta && session.stepMeta.isBoss)) {
+            localStorage.setItem('stemos_crucible_' + session.unit.id, 'completed');
+            localStorage.setItem('stemos_unit_completed_' + session.unit.id, 'true');
+            localStorage.setItem('stemos_mcer_unit_' + session.unit.id, 'passed');
+
+            // Advance active unit ID if in MCER
+            if (Array.isArray(CANONICAL_MCER_UNIT_IDS)) {
+                const cIdx = CANONICAL_MCER_UNIT_IDS.indexOf(session.unit.id);
+                if (cIdx >= 0 && cIdx < CANONICAL_MCER_UNIT_IDS.length - 1) {
+                    const nextUnitId = CANONICAL_MCER_UNIT_IDS[cIdx + 1];
+                    localStorage.setItem('stemos_active_unit_id', nextUnitId);
+                    window._currentActiveUnitId = nextUnitId;
+                }
+            }
+        }
+
         // Update UI
         updateDuoHudUI();
 
@@ -12201,12 +12233,119 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-primary" onclick="window.closeDuoLessonRunner()" style="width:100%; padding:14px 28px; font-size:1.05rem; font-weight:900; text-transform:uppercase; border-radius:16px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff; border:none; box-shadow:0 6px 16px rgba(16,185,129,0.35); cursor:pointer;">
-                        CONTINUAR EN LA RUTA
+                    <button type="button" class="btn btn-primary" onclick="window.advanceToNextDuoLesson()" style="width:100%; padding:14px 28px; font-size:1.05rem; font-weight:900; text-transform:uppercase; border-radius:16px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff; border:none; box-shadow:0 6px 16px rgba(16,185,129,0.35); cursor:pointer;">
+                        SIGUIENTE RETO EN LA RUTA &bull; +XP
+                    </button>
+                    <button type="button" onclick="window.closeDuoLessonRunner()" style="width:100%; margin-top:8px; padding:10px 20px; font-size:0.88rem; font-weight:700; border-radius:12px; background:transparent; color:#64748b; border:none; cursor:pointer;">
+                        Ver Progreso en la Ruta (Snake)
                     </button>
                 </div>
             `;
         }
+    }
+
+    window.advanceToNextDuoLesson = function() {
+        if (!activeDuoSession) {
+            window.closeDuoLessonRunner();
+            return;
+        }
+        const session = activeDuoSession;
+        const currentUnitId = session.unit.id;
+        const currentStep = session.stepNum;
+
+        window.closeDuoLessonRunner();
+
+        if (currentStep < 5) {
+            setTimeout(() => {
+                startDuoLessonForUnit(currentUnitId, currentStep + 1);
+            }, 300);
+        } else {
+            if (Array.isArray(CANONICAL_MCER_UNIT_IDS)) {
+                const cIdx = CANONICAL_MCER_UNIT_IDS.indexOf(currentUnitId);
+                if (cIdx >= 0 && cIdx < CANONICAL_MCER_UNIT_IDS.length - 1) {
+                    const nextUnitId = CANONICAL_MCER_UNIT_IDS[cIdx + 1];
+                    setTimeout(() => {
+                        if (typeof showSyncToast === 'function') {
+                            showSyncToast(`¡Unidad completada! Desbloqueaste la estación ${nextUnitId.toUpperCase()}`, 'success');
+                        }
+                        startDuoLessonForUnit(nextUnitId, 1);
+                    }, 400);
+                }
+            }
+        }
+    };
+
+    window.startDuoExamMarathon = function() {
+        if (!currentExamQuestions || currentExamQuestions.length === 0) {
+            if (typeof showSyncToast === 'function') {
+                showSyncToast('No hay reactivos cargados para el examen.', 'info');
+            }
+            return;
+        }
+
+        const examOverlay = document.getElementById('exam-modal-overlay');
+        if (examOverlay) {
+            examOverlay.classList.remove('active');
+        }
+
+        const tagText = document.getElementById('exam-track-tag')?.textContent || 'AEROSPACE';
+        const titleText = document.getElementById('exam-track-title')?.textContent || 'Track Certification Exam';
+
+        const exercises = currentExamQuestions.map((q, idx) => {
+            return {
+                type: 'mcq_gap',
+                category: `👑 Maratón de Certificación (${idx + 1}/${currentExamQuestions.length})`,
+                heading: q.q,
+                subtext: `Reactivo técnico de especialidad · ${q.readTitle || tagText}`,
+                prompt: q.q,
+                options: q.options || [],
+                correctIdx: q.answer,
+                hint: `Consulta la norma técnica relacionada en ${q.readTitle || tagText}`
+            };
+        });
+
+        exercises.push({
+            type: 'sentence_builder',
+            category: '👑 Desafío Final de Certificación',
+            heading: 'Ensambla la orden técnica final',
+            subtext: 'Demuestra precisión sintáctica en procedimientos operativos:',
+            targetSentence: 'All safety protocols must be verified before signing off',
+            distractors: ['never', 'behind', 'delay']
+        });
+
+        const examUnit = {
+            id: 'exam-' + (currentExamTrackId || 'cert'),
+            title: titleText,
+            titleES: 'Examen de Certificación Industrial',
+            vocabulary: [],
+            grammarDrills: [],
+            unitQuiz: []
+        };
+
+        activeDuoSession = {
+            unit: examUnit,
+            stepNum: 5,
+            stepMeta: { type: 'voice_crucible', title: 'Certification Marathon', icon: 'fa-trophy', label: 'Maratón de Certificación', estMin: 10, xp: 500, isBoss: true },
+            stepKey: `exam-${currentExamTrackId || 'cert'}-complete`,
+            exercises: exercises,
+            currentIdx: 0,
+            hearts: 5,
+            selectedSlotWords: [],
+            availableBankWords: [],
+            selectedPairLeft: null,
+            selectedMcqIdx: null,
+            matchedPairsCount: 0,
+            isAnswerChecked: false
+        };
+
+        const overlay = document.getElementById('duo-runner-overlay');
+        if (overlay) {
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        renderCurrentDuoExercise();
+    };
     }
 
     // 9. Initial Load & Event Binding
