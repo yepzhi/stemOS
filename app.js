@@ -5008,6 +5008,55 @@ Nearshoring Center of Excellence • stemOS Certified`;
         });
     });
 
+    // ══════════════════════════════════════════════════════════════════════════
+    // stemOS MCER Sequential Progression & Audio Controls Engine
+    // ══════════════════════════════════════════════════════════════════════════
+    const CANONICAL_MCER_UNIT_IDS = [
+        'a1-u1', 'a1-u2', 'a1-u3', 'a1-u4',
+        'a2-u1', 'a2-u2', 'a2-u3', 'a2-u4',
+        'b1-u1', 'b1-u2', 'b1-u3', 'b1-u4',
+        'b2-u1', 'b2-u2', 'b2-u3', 'b2-u4'
+    ];
+    window.CANONICAL_MCER_UNIT_IDS = CANONICAL_MCER_UNIT_IDS;
+
+    function isMcerUnitCompleted(unitId) {
+        if (!unitId) return false;
+        return (localStorage.getItem('stemos_mcer_unit_' + unitId) === 'passed') ||
+               (localStorage.getItem('stemos_crucible_' + unitId) === 'completed') ||
+               (localStorage.getItem('stemos_unit_completed_' + unitId) === 'true');
+    }
+    window.isMcerUnitCompleted = isMcerUnitCompleted;
+
+    function isMcerUnitUnlocked(unitId) {
+        if (!unitId) return false;
+        const cIdx = CANONICAL_MCER_UNIT_IDS.indexOf(unitId);
+        // First unit of A1 is always unlocked
+        if (cIdx === 0) return true;
+        // Non-canonical or unknown unit allows access
+        if (cIdx === -1) return true;
+
+        // If unit already completed, it's unlocked
+        if (isMcerUnitCompleted(unitId)) return true;
+
+        // Fast-track convalidation from diagnostic placement
+        const isConvalidated = localStorage.getItem('stemos_mcer_convalidated') === 'true';
+        if (isConvalidated) {
+            const placementLvl = (localStorage.getItem('stemos_placement_cefr') || localStorage.getItem('stemos_user_level') || 'A1').toUpperCase();
+            const levels = ['A1', 'A2', 'B1', 'B2'];
+            const userLevelIdx = levels.indexOf(placementLvl);
+            const unitLevel = unitId.split('-')[0].toUpperCase();
+            const unitLevelIdx = levels.indexOf(unitLevel);
+
+            if (unitLevelIdx >= 0 && unitLevelIdx < userLevelIdx) return true;
+            if (unitLevelIdx === userLevelIdx && unitId.endsWith('-u1')) return true;
+        }
+
+        // Strict sequential requirement: immediately prior canonical unit must be completed
+        const prevUnitId = CANONICAL_MCER_UNIT_IDS[cIdx - 1];
+        return isMcerUnitCompleted(prevUnitId);
+    }
+    window.isMcerUnitUnlocked = isMcerUnitUnlocked;
+
     var activeMcerLevelFilter = 'all';
     window.activeMcerLevelFilter = 'all';
 
@@ -5103,54 +5152,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
     }
 
     // ══════════════════════════════════════════════════════════════════════════
-    // stemOS MCER Sequential Progression & Audio Controls Engine
+    // stemOS MCER Audio Controls Engine
     // ══════════════════════════════════════════════════════════════════════════
-    const CANONICAL_MCER_UNIT_IDS = [
-        'a1-u1', 'a1-u2', 'a1-u3', 'a1-u4',
-        'a2-u1', 'a2-u2', 'a2-u3', 'a2-u4',
-        'b1-u1', 'b1-u2', 'b1-u3', 'b1-u4',
-        'b2-u1', 'b2-u2', 'b2-u3', 'b2-u4'
-    ];
-    window.CANONICAL_MCER_UNIT_IDS = CANONICAL_MCER_UNIT_IDS;
-
-    function isMcerUnitCompleted(unitId) {
-        if (!unitId) return false;
-        return (localStorage.getItem('stemos_mcer_unit_' + unitId) === 'passed') ||
-               (localStorage.getItem('stemos_crucible_' + unitId) === 'completed') ||
-               (localStorage.getItem('stemos_unit_completed_' + unitId) === 'true');
-    }
-    window.isMcerUnitCompleted = isMcerUnitCompleted;
-
-    function isMcerUnitUnlocked(unitId) {
-        if (!unitId) return false;
-        const cIdx = CANONICAL_MCER_UNIT_IDS.indexOf(unitId);
-        // First unit of A1 is always unlocked
-        if (cIdx === 0) return true;
-        // Non-canonical or unknown unit allows access
-        if (cIdx === -1) return true;
-
-        // If unit already completed, it's unlocked
-        if (isMcerUnitCompleted(unitId)) return true;
-
-        // Fast-track convalidation from diagnostic placement
-        const isConvalidated = localStorage.getItem('stemos_mcer_convalidated') === 'true';
-        if (isConvalidated) {
-            const placementLvl = (localStorage.getItem('stemos_placement_cefr') || localStorage.getItem('stemos_user_level') || 'A1').toUpperCase();
-            const levels = ['A1', 'A2', 'B1', 'B2'];
-            const userLevelIdx = levels.indexOf(placementLvl);
-            const unitLevel = unitId.split('-')[0].toUpperCase();
-            const unitLevelIdx = levels.indexOf(unitLevel);
-
-            if (unitLevelIdx >= 0 && unitLevelIdx < userLevelIdx) return true;
-            if (unitLevelIdx === userLevelIdx && unitId.endsWith('-u1')) return true;
-        }
-
-        // Strict sequential requirement: immediately prior canonical unit must be completed
-        const prevUnitId = CANONICAL_MCER_UNIT_IDS[cIdx - 1];
-        return isMcerUnitCompleted(prevUnitId);
-    }
-    window.isMcerUnitUnlocked = isMcerUnitUnlocked;
-
     function stopAllStemOSAudio() {
         if (typeof window.stopEnglishSpeech === 'function') {
             try { window.stopEnglishSpeech(); } catch (_) {}
@@ -7144,7 +7147,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
         // 3. Smooth scroll content area to top
         const contentArea = document.querySelector('#modal-mcer-unit .mcer-tab-content-area');
         if (contentArea) {
-            contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+            if (typeof contentArea.scrollTo === 'function') {
+                contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                contentArea.scrollTop = 0;
+            }
         }
 
         // 4. Update Bottom Sticky Navigation Bar
@@ -10607,7 +10614,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         // Determine active scope: MCER Tracks vs Industrial Career ESP Tracks
         const sectionWorldMcer = document.getElementById('section-world-mcer');
         const sectionWorldEsp = document.getElementById('section-world-esp');
-        const isMcerSectionVisible = sectionWorldMcer && (!sectionWorldEsp || sectionWorldEsp.style.display !== 'none');
+        const isMcerSectionVisible = sectionWorldMcer && (sectionWorldMcer.style.display !== 'none');
         const savedScope = localStorage.getItem('stemos_active_path_scope') || 'mcer';
 
         const isMcer = trackOrCareerId === 'mcer' || 
@@ -10760,7 +10767,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 'milestone': { badge: 'CHECKPOINT 4.0h', label: 'Checkpoint', icon: 'fa-award', color: '#ef4444', defaultHours: 4.0, defaultXP: 500 }
             };
 
-            const rawMods = isEspTrack ? (espTrack.modules || []) : (careerPath ? careerPath.modules : []);
+            const rawMods = isEspTrack 
+                ? ((espTrack && espTrack.modules) ? espTrack.modules : []) 
+                : ((careerPath && careerPath.modules) ? careerPath.modules : []);
             modules = rawMods.map((mod, idx) => {
                 const hitoNum = mod.hito || Math.floor(idx / 4) + 1;
                 const tc = nodeTypeConfig[mod.type] || nodeTypeConfig['theory'];
