@@ -1148,6 +1148,22 @@
         width: 16px !important;
         height: 12px !important;
       }
+      .mobile-nav-item {
+        min-height: 48px !important;
+        padding: 12px 14px !important;
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        border: 1px solid rgba(255, 255, 255, 0.06) !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+        border-radius: 12px !important;
+        margin-bottom: 6px !important;
+      }
+      .mobile-nav-item:hover,
+      .mobile-nav-item:active {
+        background: rgba(14, 165, 233, 0.14) !important;
+        border-color: rgba(56, 189, 248, 0.35) !important;
+        color: #38bdf8 !important;
+      }
     }
 
     @media (max-width: 480px) {
@@ -2131,28 +2147,30 @@
         </button>
       </div>
       <div class="mobile-nav-body">
-        <!-- Top Drawer Primary CTAs -->
-        <div style="padding:14px; background:rgba(255,255,255,0.04); border-radius:14px; margin-bottom:16px; border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:10px;">
-          <a href="/register.html" class="btn-signup-pill" style="width:100%; justify-content:center; padding:12px 16px; font-size:0.88rem; box-sizing:border-box;">
+        <!-- Top Drawer Primary CTA -->
+        <div style="margin-bottom:18px;">
+          <a href="/register.html" class="btn-signup-pill" style="width:100%; justify-content:center; padding:12px 16px; font-size:0.86rem; box-sizing:border-box;">
             <i class="fa-solid fa-user-graduate"></i>
             <span class="shiny-text" data-i18n="btn_signup_nav">Sign Up</span>
             <i class="fa-solid fa-arrow-right"></i>
           </a>
-          <a href="/placement.html" style="display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(56,189,248,0.14); border:1px solid rgba(56,189,248,0.35); color:#38bdf8; padding:11px 16px; border-radius:99px; font-size:0.84rem; font-weight:700; text-decoration:none; box-sizing:border-box;">
-            <i class="fa-solid fa-vial"></i>
-            <span data-i18n="nav_placement">Placement Test</span>
-          </a>
         </div>
 
-        <div class="mobile-nav-group-title" data-i18n="mob_nav_portals"><i class="fa-solid fa-graduation-cap"></i> Academic Portals</div>
-        <a href="/admin.html" class="mobile-nav-item"><i class="fa-solid fa-shield-halved" style="color:#0ea5e9;"></i> <span data-i18n="mob_nav_admin">Admin Portal &amp; School Manager</span></a>
-        <a href="/teacher.html" class="mobile-nav-item"><i class="fa-solid fa-chalkboard-user" style="color:#10b981;"></i> <span data-i18n="mob_nav_teacher">Faculty &amp; Teacher Portal</span></a>
-        <a href="/register.html" class="mobile-nav-item"><i class="fa-solid fa-id-card" style="color:#f59e0b;"></i> <span data-i18n="mob_nav_register">Student Registration with Google</span></a>
-        <a href="/app.html" class="mobile-nav-item"><i class="fa-solid fa-globe" style="color:#8b5cf6;"></i> <span data-i18n="mob_nav_app">Campus LXP 3D (Students)</span></a>
-
-        <div class="mobile-nav-group-title" data-i18n="mob_nav_cat_group"><i class="fa-solid fa-layer-group"></i> Catalog &amp; Proposal</div>
-        <a href="#industry-standards-section" class="mobile-nav-item" onclick="toggleMobileNav(false)"><i class="fa-solid fa-scale-balanced" style="color:#0ea5e9;"></i> <span data-i18n="mob_nav_standards">Why us? (Standards)</span></a>
-        <a href="#pricing-institutional-section" class="mobile-nav-item" onclick="toggleMobileNav(false)"><i class="fa-solid fa-file-invoice-dollar" style="color:#10b981;"></i> <span data-i18n="mob_nav_pricing">Institutional Proposal &amp; Pricing</span></a>
+        <!-- Unified Core Navigation (1:1 with Desktop) -->
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <a href="#industry-standards-section" class="mobile-nav-item" onclick="toggleMobileNav(false)">
+            <i class="fa-solid fa-scale-balanced" style="color:#0ea5e9; font-size:1.15rem; width:26px; text-align:center;"></i>
+            <span data-i18n="nav_standards">Why us?</span>
+          </a>
+          <a href="/placement.html" class="mobile-nav-item" onclick="toggleMobileNav(false)">
+            <i class="fa-solid fa-vial" style="color:#f59e0b; font-size:1.15rem; width:26px; text-align:center;"></i>
+            <span data-i18n="nav_placement">Placement</span>
+          </a>
+          <a href="#pricing-institutional-section" class="mobile-nav-item" onclick="toggleMobileNav(false)">
+            <i class="fa-solid fa-file-invoice-dollar" style="color:#34d399; font-size:1.15rem; width:26px; text-align:center;"></i>
+            <span data-i18n="nav_pricing">Pricing</span>
+          </a>
+        </div>
       </div>
     </div>
   </div>
