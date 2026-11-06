@@ -1311,7 +1311,7 @@
 
                         <div class="form-group">
                             <label class="form-label" for="reg-email"><i class="fa-solid fa-envelope"></i> Correo Institucional</label>
-                            <input type="email" id="reg-email" class="form-input" placeholder="e.g. diana.morales@upmxl.edu.mx" required>
+                            <input type="email" id="reg-email" class="form-input" placeholder="e.g. diana.morales@tecnm.mx" required>
                         </div>
 
                         <div class="form-group">
@@ -1322,12 +1322,10 @@
                         <div class="form-group">
                             <label class="form-label" for="reg-institution"><i class="fa-solid fa-building-columns"></i> Institución / Campus</label>
                             <select id="reg-institution" class="form-select" required onchange="handleInstitutionChange()">
-                                <option value="UPMXL">Universidad Politécnica de Baja California (UPBC Mexicali - Cliente Fundador)</option>
+                                <option value="UTyP">Universidades Politécnicas y Tecnológicas (Subsistema UTyP)</option>
                                 <option value="TecNM">Tecnológico Nacional de México (TecNM)</option>
-                                <option value="UTT">Universidad Tecnológica de Tijuana (UTT)</option>
-                                <option value="UABC">Universidad Autónoma de Baja California (UABC)</option>
-                                <option value="UNISON">Universidad de Sonora (UNISON)</option>
-                                <option value="OTHER">Otra Universidad Politécnica / Tecnológica</option>
+                                <option value="ESTATALES">Universidades Públicas Estatales y Autónomas</option>
+                                <option value="OTHER">Otras Instituciones</option>
                             </select>
                         </div>
 
@@ -1343,12 +1341,12 @@
                             <label class="form-label" for="reg-career"><i class="fa-solid fa-microchip"></i> Carrera / Programa</label>
                             <select id="reg-career" class="form-select" required onchange="handlePlacementCareerChange()">
                                 <!-- Dynamically populated from career_tracks.js -->
-                                <option value="upbc-mecatronica">Ingeniería Mecatrónica (UPBC)</option>
+                                <option value="upbc-mecatronica">Ingeniería Mecatrónica (Subsistema UTyP)</option>
                             </select>
                         </div>
 
                         <div class="form-group" id="placement-tsu-group" style="display: none;">
-                            <label class="form-label" for="reg-tsu-specialty"><i class="fa-solid fa-certificate"></i> Especialidad Oficial de TSU (Convocatoria UPBC 2026)</label>
+                            <label class="form-label" for="reg-tsu-specialty"><i class="fa-solid fa-certificate"></i> Especialidad Oficial de TSU (Marco Curricular DGUTyP 2026)</label>
                             <select id="reg-tsu-specialty" class="form-select">
                                 <!-- Populated dynamically based on selected career -->
                             </select>
@@ -1582,7 +1580,7 @@
                 <a href="/privacy" target="_blank" rel="noopener" style="color:#0284c7; font-weight:600; text-decoration:underline;">Privacy Policy</a>
                 <a href="/terms" target="_blank" rel="noopener" style="color:#0284c7; font-weight:600; text-decoration:underline;">Terms of Service</a>
             </div>
-            <p style="margin-top:6px; font-size:0.76rem; color:#64748b;">Alineado a los estándares de titulación de universidades politécnicas y tecnológicas (UPMXL, TecNM, UTT).</p>
+            <p style="margin-top:6px; font-size:0.76rem; color:#64748b;">Alineado a los estándares de titulación de instituciones públicas (TecNM, Subsistema UTyP y Universidades Estatales).</p>
         </footer>
 
     </main>
@@ -1847,7 +1845,7 @@
                 lastName: '',
                 email: '',
                 matricula: '',
-                institution: 'UPMXL',
+                institution: 'UTyP',
                 degreeType: 'lic',
                 careerId: 'upbc-mecatronica',
                 career: 'Ingeniería Mecatrónica',
@@ -1920,13 +1918,13 @@
 
             select.innerHTML = '';
             
-            // Group 1: UPBC Mexicali (Cliente Fundador)
+            // Group 1: Subsistema UTyP (Politécnicas & Tecnológicas)
             const upbcGroup = document.createElement('optgroup');
-            upbcGroup.label = '★ Carreras Oficiales UPBC Mexicali (11 Tracks)';
+            upbcGroup.label = '★ Carreras Oficiales Subsistema UTyP (Politécnicas & Tecnológicas)';
             
             // Group 2: Red Nacional STEM
             const nationalGroup = document.createElement('optgroup');
-            nationalGroup.label = 'Red Nacional de Ingenierías (TecNM / UT / Estatales)';
+            nationalGroup.label = 'Red Nacional de Ingenierías (TecNM / Estatales / Autónomas)';
 
             careers.forEach(c => {
                 const opt = document.createElement('option');
@@ -1949,7 +1947,7 @@
         function handleInstitutionChange() {
             const inst = document.getElementById('reg-institution').value;
             const careerSelect = document.getElementById('reg-career');
-            if (inst === 'UPMXL' && !careerSelect.value.startsWith('upbc-')) {
+            if ((inst === 'UTyP' || inst === 'UPMXL') && !careerSelect.value.startsWith('upbc-')) {
                 careerSelect.value = 'upbc-mecatronica';
                 handlePlacementCareerChange();
             }
@@ -2174,13 +2172,13 @@
             const firstName = parts[0] || 'Estudiante';
             const lastName = parts.slice(1).join(' ') || '';
 
-            const isUpbc = email.toLowerCase().includes('upbc.edu.mx') || email.toLowerCase().includes('upmxl.edu.mx');
+            const isUpbc = email.toLowerCase().includes('utyp.edu.mx') || email.toLowerCase().includes('upbc.edu.mx') || email.toLowerCase().includes('upmxl.edu.mx');
             const isTecnm = email.toLowerCase().includes('tecnm.mx');
             const isUabc = email.toLowerCase().includes('uabc.edu.mx');
             const matriculaMatch = email.match(/\d{6,10}/);
             const matricula = matriculaMatch ? matriculaMatch[0] : '2105' + Math.floor(1000 + Math.random() * 9000);
 
-            let inst = 'UPMXL';
+            let inst = 'UTyP';
             let careerId = 'upbc-mecatronica';
             let career = 'Ingeniería Mecatrónica';
             if (isTecnm) {
@@ -2254,13 +2252,13 @@
         function processGoogleAuthUser(user) {
             const email = user.email || '';
             const names = (user.displayName || 'Estudiante').split(' ');
-            const isUpbc = email.toLowerCase().includes('upbc.edu.mx') || email.toLowerCase().includes('upmxl.edu.mx');
+            const isUpbc = email.toLowerCase().includes('utyp.edu.mx') || email.toLowerCase().includes('upbc.edu.mx') || email.toLowerCase().includes('upmxl.edu.mx');
             const isTecnm = email.toLowerCase().includes('tecnm.mx');
             const isUabc = email.toLowerCase().includes('uabc.edu.mx');
             const matriculaMatch = email.match(/\d{6,10}/);
             const matricula = matriculaMatch ? matriculaMatch[0] : ('2026' + Math.floor(1000 + Math.random() * 9000));
 
-            let inst = 'UPMXL';
+            let inst = 'UTyP';
             let careerId = 'upbc-mecatronica';
             let career = 'Ingeniería Mecatrónica';
             if (isTecnm) {
@@ -2291,7 +2289,7 @@
             state.student.lastName = prof.lastName || '';
             state.student.email = prof.email || '';
             state.student.matricula = prof.matricula || ('2026' + Math.floor(1000 + Math.random() * 9000));
-            state.student.institution = prof.institution || 'UPMXL';
+            state.student.institution = prof.institution || 'UTyP';
             state.student.degreeType = prof.degreeType || 'lic';
             state.student.careerId = prof.careerId || 'upbc-mecatronica';
             state.student.career = prof.career || 'Ingeniería Mecatrónica';
@@ -2303,7 +2301,7 @@
                     name: `${state.student.firstName} ${state.student.lastName}`,
                     email: state.student.email,
                     matricula: state.student.matricula,
-                    subsystem: (state.student.institution === 'UPMXL') ? 'upbc' : 'it',
+                    subsystem: (state.student.institution === 'UTyP' || state.student.institution === 'UPMXL') ? 'upbc' : 'it',
                     careerId: state.student.careerId,
                     careerName: state.student.career,
                     degreeModality: state.student.degreeType
@@ -2370,7 +2368,7 @@
                         state.student.lastName = parts.slice(1).join(' ') || '';
                         state.student.email = prof.email || '';
                         state.student.matricula = prof.matricula || '';
-                        state.student.institution = (prof.subsystem === 'upbc') ? 'UPMXL' : (prof.subsystem === 'it' ? 'IT' : 'UPMXL');
+                        state.student.institution = (prof.subsystem === 'upbc' || prof.subsystem === 'utyp') ? 'UTyP' : (prof.subsystem === 'it' ? 'TecNM' : 'UTyP');
                         state.student.degreeType = prof.degreeModality || 'lic';
                         state.student.careerId = prof.careerId || 'upbc-mecatronica';
                         state.student.career = prof.careerName || 'Ingeniería Mecatrónica';
@@ -2693,8 +2691,8 @@
                 name: `${state.student.firstName} ${state.student.lastName}`,
                 email: state.student.email,
                 matricula: state.student.matricula,
-                campus: (state.student.institution === 'UPMXL') ? 'Universidad Politécnica de Baja California (UPBC Mexicali)' : state.student.institution,
-                subsystem: (state.student.institution === 'UPMXL') ? 'upbc' : 'it',
+                campus: (state.student.institution === 'UTyP' || state.student.institution === 'UPMXL') ? 'Universidades Politécnicas y Tecnológicas (Subsistema UTyP)' : state.student.institution,
+                subsystem: (state.student.institution === 'UTyP' || state.student.institution === 'UPMXL') ? 'upbc' : 'it',
                 degreeModality: state.student.degreeType || 'lic',
                 tsuSpecialtyId: state.student.tsuSpecialtyId || '',
                 tsuSpecialtyName: state.student.tsuSpecialtyName || '',
@@ -2756,7 +2754,7 @@
                     const db = firebase.firestore();
                     const docId = state.student.folio || ('diag-' + Date.now().toString(36));
                     db.collection('placement_tests').doc(docId).set(payload, { merge: true }).catch(err => console.warn('[stemOS Placement] Direct Firestore set failed:', err));
-                    const instId = (state.student.institution === 'UPMXL') ? 'upbc-mexicali' : (state.student.institution || 'tecnm-saltillo');
+                    const instId = (state.student.institution === 'UTyP' || state.student.institution === 'UPMXL') ? 'upbc-mexicali' : (state.student.institution || 'tecnm-saltillo');
                     db.collection('institutions').doc(instId).collection('placement_tests').doc(docId).set(payload, { merge: true }).catch(() => {});
                 } catch (e) {
                     console.warn('[stemOS Placement] Direct Firestore error:', e);

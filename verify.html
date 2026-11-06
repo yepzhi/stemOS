@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Validador de Credenciales W3C Open Badges 3.0 | stemOS</title>
     <meta name="description"
-        content="Portal público de verificación criptográfica de acreditaciones técnicas e industriales en idioma inglés (MCER A1-B2) emitidas por stemOS y consorcios universitarios UPBC, TecNM, UABC y UTT.">
+        content="Portal público de verificación criptográfica de acreditaciones técnicas e industriales en idioma inglés (MCER A1-B2) emitidas por stemOS y consorcios universitarios TecNM, Subsistema UTyP, y Universidades Estatales.">
     <meta name="theme-color" content="#0284c7">
 
     <!-- Open Graph -->
@@ -742,7 +742,7 @@
             } catch (err) {
                 // Client-side fallback check if edge API is unreachable
                 if (params.folio) {
-                    const fallbackValid = /^(STEMOS|UPMXL|UPBC|TECNM|CACEI)-[A-Z0-9-]{4,40}$/i.test(params.folio);
+                    const fallbackValid = /^(STEMOS|UTYP|UPMXL|UPBC|TECNM|CACEI)-[A-Z0-9-]{4,40}$/i.test(params.folio);
                     if (fallbackValid) {
                         renderValidCard({
                             valid: true,

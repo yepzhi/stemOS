@@ -1389,7 +1389,7 @@
                         <span id="lbl-google-sso">Sign in with Google</span>
                     </button>
                     <div id="lbl-sso-hint" aria-live="polite" style="font-size: 0.76rem; color: #64748b; margin-top: 10px;">
-                        Auto-detects <strong>@upbc.edu.mx</strong>, <strong>@tecnm.mx</strong>, <strong>@uabc.edu.mx</strong>, <strong>@utt.edu.mx</strong> or personal Gmail.
+                        Auto-detects <strong>@tecnm.mx</strong>, <strong>@utyp.edu.mx</strong>, <strong>@uabc.edu.mx</strong>, <strong>@utt.edu.mx</strong> or personal Gmail.
                     </div>
                 </div>
 
@@ -1440,7 +1440,7 @@
                             <div style="display:flex; align-items:center; gap:8px;">
                                 <h4>Universidades Tecnológicas y Politécnicas <span class="card-sub-badge" style="background:linear-gradient(135deg, #0284c7, #10b981); color:#fff; font-weight:700;">UTyP</span></h4>
                             </div>
-                            <p id="desc-subsystem-utyp">Subsistema oficial UTyP (UPBC, UTT y red nacional): Modelo cuatrimestral, TSU, Ingenierías y Estadías Profesionales en la industria.</p>
+                            <p id="desc-subsystem-utyp">Subsistema oficial UTyP (Politécnicas, Tecnológicas y red nacional): Modelo cuatrimestral, TSU, Ingenierías y Estadías Profesionales en la industria.</p>
                         </div>
                     </div>
 
@@ -1474,7 +1474,7 @@
                     <div class="text-input-wrapper">
                         <i class="fa-solid fa-location-dot"></i>
                         <select id="inp-campus" class="text-input" style="cursor: pointer; appearance: auto; background-color: #ffffff; color: var(--fg-primary); font-weight: 600;" onchange="handleCampusDropdownChange(this.value)">
-                            <option value="Universidad Politécnica de Baja California (UPBC Mexicali)">Universidad Politécnica de Baja California (UPBC Mexicali)</option>
+                            <option value="Universidades Politécnicas (Subsistema UTyP)">Universidades Politécnicas (Subsistema UTyP)</option>
                             <option value="Universidad Tecnológica de Tijuana (UTT)">Universidad Tecnológica de Tijuana (UTT)</option>
                             <option value="TecNM Tijuana (ITT)">TecNM Tijuana (ITT)</option>
                             <option value="TecNM Campus Saltillo">TecNM Campus Saltillo</option>
@@ -1506,7 +1506,7 @@
                 <!-- TSU Specialty Selector (Dynamic when TSU is selected) -->
                 <div id="tsu-specialty-picker" style="display: none; margin-bottom: 16px; padding: 14px 18px; border-radius: 12px; background: rgba(2, 132, 199, 0.06); border: 1px solid rgba(2, 132, 199, 0.25);">
                     <div style="font-size: 0.78rem; font-weight: 700; color: var(--sky-600); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display:flex; align-items:center; gap:6px;">
-                        <i class="fa-solid fa-route"></i> <span id="lbl-tsu-specialty-title">Especialidad Oficial de TSU (Convocatoria UPBC 2026):</span>
+                        <i class="fa-solid fa-route"></i> <span id="lbl-tsu-specialty-title">Especialidad Oficial de TSU (Marco Curricular DGUTyP 2026):</span>
                     </div>
                     <div id="tsu-specialty-pills" style="display: flex; flex-wrap: wrap; gap: 8px;">
                         <!-- Injected dynamically based on selected career -->
@@ -1826,7 +1826,7 @@
                     <div style="display: flex; flex-direction: column; gap: 10px;">
                         <input type="text" id="custom-google-name" placeholder="Tu nombre y apellido (opcional)" style="width: 100%; padding: 9px 12px; font-size: 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box;">
                         <div style="display: flex; gap: 6px;">
-                            <input type="email" id="custom-google-email" placeholder="usuario@upbc.edu.mx" style="flex: 1; padding: 9px 12px; font-size: 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box;">
+                            <input type="email" id="custom-google-email" placeholder="usuario@tecnm.mx" style="flex: 1; padding: 9px 12px; font-size: 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box;">
                             <button type="button" onclick="submitCustomGoogleAccountRegister()" style="background: #0284c7; color: #ffffff; border: none; padding: 9px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background 0.2s;" onmouseover="this.style.background='#0369a1'" onmouseout="this.style.background='#0284c7'">
                                 Continuar
                             </button>
@@ -1834,7 +1834,7 @@
                         <!-- Domain shortcuts -->
                         <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 2px;">
                             <span style="font-size: 0.72rem; color: #64748b;">Dominio rápido:</span>
-                            <span onclick="appendGoogleDomainRegister('@upbc.edu.mx')" style="font-size: 0.72rem; background: #e2e8f0; color: #334155; padding: 2px 7px; border-radius: 4px; cursor: pointer; font-weight: 600;">@upbc.edu.mx</span>
+                            <span onclick="appendGoogleDomainRegister('@utyp.edu.mx')" style="font-size: 0.72rem; background: #e2e8f0; color: #334155; padding: 2px 7px; border-radius: 4px; cursor: pointer; font-weight: 600;">@utyp.edu.mx</span>
                             <span onclick="appendGoogleDomainRegister('@tecnm.mx')" style="font-size: 0.72rem; background: #e2e8f0; color: #334155; padding: 2px 7px; border-radius: 4px; cursor: pointer; font-weight: 600;">@tecnm.mx</span>
                             <span onclick="appendGoogleDomainRegister('@uabc.edu.mx')" style="font-size: 0.72rem; background: #e2e8f0; color: #334155; padding: 2px 7px; border-radius: 4px; cursor: pointer; font-weight: 600;">@uabc.edu.mx</span>
                             <span onclick="appendGoogleDomainRegister('@utt.edu.mx')" style="font-size: 0.72rem; background: #e2e8f0; color: #334155; padding: 2px 7px; border-radius: 4px; cursor: pointer; font-weight: 600;">@utt.edu.mx</span>
@@ -1877,7 +1877,7 @@
                 email: '',
                 matricula: '',
                 subsystem: 'utyp',
-                campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
+                campus: 'Universidades Politécnicas (Subsistema UTyP)',
                 degreeModality: 'lic',
                 tsuSpecialtyId: '',
                 tsuSpecialtyName: '',
@@ -1942,7 +1942,7 @@
                     tag: '<i class="fa-solid fa-building-columns"></i> Question 02',
                     title: "Which higher education system are you enrolled in?",
                     subtitle: "Select your academic subsystem. Curricula are calibrated to meet national industry standards across Mexico and Latin America.",
-                    desc_utyp: "Official UTyP subsystem (UPBC, UTT & national network): Dual-stage quarter system (cuatrimestres), TSU, Engineering degrees & Industrial Practicum.",
+                    desc_utyp: "Official UTyP subsystem (Polytechnic & Technological Universities): Dual-stage quarter system (cuatrimestres), TSU, Engineering degrees & Industrial Practicum.",
                     lbl_campus: 'Campus or Plantel Name <span class="req">*</span>',
                     hint_campus: '<i class="fa-solid fa-circle-info"></i> If you do not see your institution, contact your school administrator or continue without university selection.'
                 },
@@ -1953,7 +1953,7 @@
                     lbl_modality: "Academic Level:",
                     pill_lic: "Engineering / Bachelor's (Professional)",
                     pill_tsu: "Associate Degree / TSU (2026 Intake)",
-                    tsu_specialty_title: "Official TSU Specialty (UPBC 2026 Intake):",
+                    tsu_specialty_title: "Official TSU Specialty (DGUTyP 2026 Intake):",
                     ph_filter: "Search career tracks by title, cluster, or specialization..."
                 },
                 step4: {
@@ -2013,7 +2013,7 @@
                     subtitle: "Regístrate para obtener tu ruta personalizada según tu carrera y especialidad de ingeniería.",
                     sso_badge: "Acceso Rápido en 1 Clic",
                     sso_btn: "Iniciar sesión con Google",
-                    sso_hint: "Auto-detecta <strong>@upbc.edu.mx</strong>, <strong>@tecnm.mx</strong>, <strong>@uabc.edu.mx</strong>, <strong>@utt.edu.mx</strong> o Gmail personal.",
+                    sso_hint: "Auto-detecta <strong>@tecnm.mx</strong>, <strong>@utyp.edu.mx</strong>, <strong>@uabc.edu.mx</strong>, <strong>@utt.edu.mx</strong> o Gmail personal.",
                     or_divider: "O INGRESA TUS DATOS MANUALMENTE",
                     lbl_name: 'Nombre Completo <span class="req">*</span>',
                     hint_name: '<i class="fa-solid fa-circle-info"></i> Ingresa tus nombres y apellidos oficiales registrados en tu universidad.',
@@ -2027,7 +2027,7 @@
                     tag: '<i class="fa-solid fa-building-columns"></i> Pregunta 02',
                     title: "¿En qué sistema de educación superior estás inscrito?",
                     subtitle: "Selecciona tu subsistema académico. El plan de estudio está personalizado para cada carrera y para cumplir con estándares industriales internacionales.",
-                    desc_utyp: "Subsistema oficial UTyP (UPBC, UTT y red nacional): Modelo cuatrimestral, TSU, Ingenierías y Estadías Profesionales en la industria.",
+                    desc_utyp: "Subsistema oficial UTyP (Politécnicas y Tecnológicas): Modelo cuatrimestral, TSU, Ingenierías y Estadías Profesionales en la industria.",
                     lbl_campus: 'Nombre del Campus o Plantel <span class="req">*</span>',
                     hint_campus: '<i class="fa-solid fa-circle-info"></i> Si no ves tu institución, contacta al administrador de tu escuela o continúa sin selección de universidad.'
                 },
@@ -2038,7 +2038,7 @@
                     lbl_modality: "Nivel Académico:",
                     pill_lic: "Ingeniería / Licenciatura (Profesional)",
                     pill_tsu: "Técnico Superior Universitario (TSU - Convocatoria 2026)",
-                    tsu_specialty_title: "Especialidad Oficial de TSU (Convocatoria UPBC 2026):",
+                    tsu_specialty_title: "Especialidad Oficial de TSU (Marco Curricular DGUTyP 2026):",
                     ph_filter: "Buscar carreras por nombre, clúster o especialidad..."
                 },
                 step4: {
@@ -2205,30 +2205,30 @@
         const DEMO_CLASSES = {
             'UPBC-MECA-2026': {
                 id: 'c-upbc-1',
-                name: 'Ing. Mecatrónica 4°A — UPBC Mexicali',
+                name: 'Ing. Mecatrónica 4°A — Subsistema UTyP',
                 instructor: 'Mtro. José Luis Castro',
-                institution: 'Universidad Politécnica de Baja California',
+                institution: 'Universidades Politécnicas (UTyP)',
                 careerId: 'upbc-mecatronica'
             },
             'UPBC-SEMI-2026': {
                 id: 'c-upbc-2',
-                name: 'Ing. Semiconductores 2°A — UPBC Mexicali',
+                name: 'Ing. Semiconductores 2°A — Subsistema UTyP',
                 instructor: 'Dra. Gabriela Fuentes',
-                institution: 'Universidad Politécnica de Baja California',
+                institution: 'Universidades Politécnicas (UTyP)',
                 careerId: 'upbc-semiconductores'
             },
             'UPBC-TI-2026': {
                 id: 'c-upbc-3',
-                name: 'Ing. TI e Innovación Digital 6°B — UPBC Mexicali',
+                name: 'Ing. TI e Innovación Digital 6°B — Subsistema UTyP',
                 instructor: 'Ing. Martín Solís',
-                institution: 'Universidad Politécnica de Baja California',
+                institution: 'Universidades Politécnicas (UTyP)',
                 careerId: 'upbc-ti'
             },
             'UPBC-ENERGIA-2026': {
                 id: 'c-upbc-4',
-                name: 'Ing. Energía y Desarrollo Sostenible 4°A — UPBC Mexicali',
+                name: 'Ing. Energía y Desarrollo Sostenible 4°A — Subsistema UTyP',
                 instructor: 'Dra. Sofía Valenzuela',
-                institution: 'Universidad Politécnica de Baja California',
+                institution: 'Universidades Politécnicas (UTyP)',
                 careerId: 'upbc-energia'
             },
             'STEM-MECA-A7X3K2': {
@@ -2324,7 +2324,7 @@
 
                             const detected = detectInstitutionFromEmail(email) || {
                                 subsystem: 'upbc',
-                                campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
+                                campus: 'Universidades Politécnicas (Subsistema UTyP)',
                                 hub: 'tijuana-mxi',
                                 careerId: 'upbc-mecatronica'
                             };
@@ -2581,10 +2581,10 @@
             if (email.endsWith('@upbc.edu.mx') || email.includes('@upbc.edu.mx') || email.includes('upbc.edu.mx') || email.includes('upmxl.edu.mx')) {
                 return {
                     subsystem: 'upbc',
-                    campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
+                    campus: 'Universidades Politécnicas (Subsistema UTyP)',
                     hub: 'tijuana-mxi',
                     careerId: 'upbc-mecatronica',
-                    label: 'UPBC Mexicali (Politécnicas)',
+                    label: 'Universidades Politécnicas (UTyP)',
                     type: 'upbc'
                 };
             }
@@ -2655,11 +2655,11 @@
                 badge.style.background = '#e0f2fe';
                 badge.style.color = '#0369a1';
                 badge.style.border = '1px solid #7dd3fc';
-                badge.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#0284c7;"></i> <span>Auto-detectado: <strong>UPBC Mexicali</strong> (Subsistema UTyP)</span>';
+                badge.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#0284c7;"></i> <span>Auto-detectado: <strong>Subsistema UTyP</strong> (Politécnicas)</span>';
                 selectSubsystem('utyp');
                 const campusSel = document.getElementById('inp-campus');
-                if (campusSel) campusSel.value = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
-                wizardState.data.campus = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
+                if (campusSel) campusSel.value = 'Universidades Politécnicas (Subsistema UTyP)';
+                wizardState.data.campus = 'Universidades Politécnicas (Subsistema UTyP)';
             } else if (detected.type === 'tecnm') {
                 badge.style.background = '#fef3c7';
                 badge.style.color = '#92400e';
@@ -2803,7 +2803,7 @@
 
                         const detected = detectInstitutionFromEmail(email) || {
                             subsystem: 'upbc',
-                            campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
+                            campus: 'Universidades Politécnicas (Subsistema UTyP)',
                             hub: 'tijuana-mxi',
                             careerId: 'upbc-mecatronica'
                         };
@@ -2922,7 +2922,7 @@
 
             const detected = detectInstitutionFromEmail(email) || {
                 subsystem: 'upbc',
-                campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
+                campus: 'Universidades Politécnicas (Subsistema UTyP)',
                 hub: 'tijuana-mxi',
                 careerId: 'upbc-mecatronica'
             };
@@ -2952,13 +2952,13 @@
                     }
                     const result = await auth.signInWithPopup(provider);
                     const user = result.user;
-                    const email = user.email || 'estudiante@upbc.edu.mx';
+                    const email = user.email || 'estudiante@tecnm.mx';
                     const matriculaMatch = email.match(/\d{6,10}/);
                     const matricula = matriculaMatch ? matriculaMatch[0] : '2105' + Math.floor(1000 + Math.random() * 9000);
 
                     const detected = detectInstitutionFromEmail(email) || {
                         subsystem: 'upbc',
-                        campus: 'Universidad Politécnica de Baja California (UPBC Mexicali)',
+                        campus: 'Universidades Politécnicas (Subsistema UTyP)',
                         hub: 'tijuana-mxi',
                         careerId: 'upbc-mecatronica'
                     };
@@ -3073,10 +3073,10 @@
 
             const campusSelect = document.getElementById('inp-campus');
             if (subId === 'utyp') {
-                if (campusSelect && !campusSelect.value.includes('UPBC') && !campusSelect.value.includes('UTT')) {
-                    campusSelect.value = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
+                if (campusSelect && !campusSelect.value.includes('Politécnica') && !campusSelect.value.includes('UTT') && !campusSelect.value.includes('Tecnológica')) {
+                    campusSelect.value = 'Universidades Politécnicas (Subsistema UTyP)';
                 }
-                wizardState.data.campus = campusSelect ? campusSelect.value : 'Universidad Politécnica de Baja California (UPBC Mexicali)';
+                wizardState.data.campus = campusSelect ? campusSelect.value : 'Universidades Politécnicas (Subsistema UTyP)';
                 selectHub('tijuana-mxi');
                 if (!wizardState.data.careerId.startsWith('upbc-') && !wizardState.data.careerId.startsWith('ut-')) {
                     wizardState.data.careerId = 'upbc-mecatronica';

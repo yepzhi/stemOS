@@ -21,6 +21,7 @@ const MAX_API_REQS_PER_WINDOW = 60;
 const DEFAULT_ISSUER_PUBLIC_KEY_X = '8f9a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a';
 
 const INSTITUTIONAL_DOMAINS = {
+  'utyp.edu.mx': { institutionId: 'upbc-mexicali', institutionName: 'Universidades Politécnicas y Tecnológicas', system: 'utyp' },
   'upbc.edu.mx': { institutionId: 'upbc-mexicali', institutionName: 'Universidad Politécnica de Baja California', system: 'utyp' },
   'uttijuana.edu.mx': { institutionId: 'utt-tijuana', institutionName: 'Universidad Tecnológica de Tijuana', system: 'utyp' },
   'saltillo.tecnm.mx': { institutionId: 'tecnm-saltillo', institutionName: 'TecNM Campus Saltillo', system: 'it' },
@@ -706,7 +707,7 @@ async function handleVerifyCredential(request, env, origin) {
   }
 
   // Format check for deterministic stemOS folios when queried by folio ID alone
-  const isValidFormat = /^(STEMOS|UPMXL|UPBC|TECNM|ACTA)-[A-Z0-9-]{4,40}$/i.test(folio);
+  const isValidFormat = /^(STEMOS|UTYP|UPMXL|UPBC|TECNM|ACTA)-[A-Z0-9-]{4,40}$/i.test(folio);
   return jsonResponse({
     valid: isValidFormat,
     folio,

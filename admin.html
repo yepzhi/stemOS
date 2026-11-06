@@ -1886,7 +1886,7 @@
                         <option value="tecnm-tijuana">TecNM Tijuana (ITT)</option>
                         <option value="tecnm-saltillo">TecNM Saltillo (ITS)</option>
                         <option value="utt-tijuana">UTT Tijuana</option>
-                        <option value="upbc-mexicali">UPBC Mexicali</option>
+                        <option value="upbc-mexicali">Universidades Politécnicas (UTyP)</option>
                         <option value="uacj-juarez">UACJ Cd. Juárez</option>
                         <option value="tecnm-queretaro">TecNM Querétaro (ITQ)</option>
                     </select>
@@ -4045,7 +4045,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `Dictamen_Acreditacion_CACEI_${state.institution.code || 'UPBC'}_240h_${new Date().toISOString().slice(0, 10)}.csv`;
+            a.download = `Dictamen_Acreditacion_CACEI_${state.institution.code || 'UTYP'}_240h_${new Date().toISOString().slice(0, 10)}.csv`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -4137,7 +4137,7 @@
                 'tecnm-tijuana': 'Instituto Tecnológico de Tijuana (TecNM)',
                 'tecnm-saltillo': 'Instituto Tecnológico de Saltillo (TecNM)',
                 'utt-tijuana': 'Universidad Tecnológica de Tijuana (UTT)',
-                'upbc-mexicali': 'Universidad Politécnica de Baja California (UPBC)',
+                'upbc-mexicali': 'Universidades Politécnicas (Subsistema UTyP)',
                 'uacj-juarez': 'Universidad Autónoma de Ciudad Juárez (UACJ)',
                 'tecnm-queretaro': 'Instituto Tecnológico de Querétaro (TecNM)'
             };
@@ -4312,7 +4312,7 @@
 
             // Group by subsystem
             const subsystems = {
-                upbc: { label: 'UPBC (Universidad Politécnica de Baja California - Cliente Fundador)', items: [] },
+                upbc: { label: 'Universidades Politécnicas (Subsistema UTyP)', items: [] },
                 it: { label: 'TecNM (Institutos Tecnológicos)', items: [] },
                 ut: { label: 'Universidades Tecnológicas & Politécnicas (UT)', items: [] },
                 'univ-estatal': { label: 'Universidades Estatales y Autónomas', items: [] },
@@ -4431,7 +4431,7 @@
                     'tecnm-tijuana': 'TecNM Campus Tijuana',
                     'tecnm-saltillo': 'TecNM Campus Saltillo',
                     'utt-tijuana': 'UTT Campus Valle de las Palmas',
-                    'upbc-mexicali': 'UPBC Campus Mexicali',
+                    'upbc-mexicali': 'Subsistema UTyP (Politécnicas)',
                     'uacj-juarez': 'UACJ Campus Cd. Juárez',
                     'tecnm-queretaro': 'TecNM Campus Querétaro'
                 };

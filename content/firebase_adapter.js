@@ -705,7 +705,7 @@
                     name: (std.firstName && std.lastName) ? (std.firstName + ' ' + std.lastName) : (std.fullName || 'Student'),
                     matricula: std.matricula || '',
                     email: std.email || '',
-                    institutionId: (std.institution === 'UPMXL') ? 'upbc-mexicali' : (std.institution || 'tecnm-saltillo'),
+                    institutionId: (std.institution === 'UTyP' || std.institution === 'UPMXL') ? 'upbc-mexicali' : (std.institution || 'tecnm-saltillo'),
                     careerId: std.careerId || 'upbc-mecatronica',
                     careerName: std.career || 'Ingeniería Mecatrónica',
                     degreeModality: std.degreeType || std.degreeModality || 'lic',
@@ -738,7 +738,7 @@
                 if (!db) return false;
 
                 const student = diagnosticPayload.student || {};
-                const instId = (student.institution === 'UPMXL') ? 'upbc-mexicali' : (student.institution || 'tecnm-saltillo');
+                const instId = (student.institution === 'UTyP' || student.institution === 'UPMXL') ? 'upbc-mexicali' : (student.institution || 'tecnm-saltillo');
                 const docId = student.folio || ('diag-' + Date.now().toString(36));
                 let currentUid = diagnosticPayload.uid || student.uid || null;
                 if (!currentUid && typeof window.firebase !== 'undefined' && window.firebase.auth && window.firebase.auth().currentUser) {

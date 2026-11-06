@@ -1016,7 +1016,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Current Date Formatted
         const todayStr = new Intl.DateTimeFormat('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date());
-        if (modalCertDate) modalCertDate.textContent = `Hermosillo, Sonora / Mexicali, B.C., a ${todayStr}`;
+        if (modalCertDate) modalCertDate.textContent = `México, a ${todayStr}`;
 
         // Check if MCER level
         let isMcer = false;
@@ -3039,7 +3039,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         let careerName = 'Ingeniería Mecatrónica';
                         if (isUpbc) {
                             sub = 'upbc';
-                            campus = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
+                            campus = 'Universidades Politécnicas (Subsistema UTyP)';
                             careerId = 'upbc-mecatronica';
                         } else if (isUabc) {
                             sub = 'univ-estatal';
@@ -3086,7 +3086,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const sysLabels = {
                 'it': 'TecNM',
                 'tecnm': 'TecNM',
-                'upbc': 'UPBC',
+                'upbc': 'UTyP',
                 'ut': 'UT',
                 'estatal': 'Univ. Estatal',
                 'univ-estatal': 'Univ. Estatal',
@@ -3588,7 +3588,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     let careerName = 'Ingeniería Mecatrónica';
                     if (isUpbc) {
                         sub = 'upbc';
-                        campus = 'Universidad Politécnica de Baja California (UPBC Mexicali)';
+                        campus = 'Universidades Politécnicas (Subsistema UTyP)';
                         careerId = 'upbc-mecatronica';
                     } else if (isUabc) {
                         sub = 'univ-estatal';
@@ -8940,7 +8940,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 fullName: studentName,
                 matricula: matricula,
                 degreeModality: profile.degreeModality || 'Ingeniería / Licenciatura',
-                institutionName: profile.subsystem || 'Consorcio UPBC / TecNM'
+                institutionName: profile.subsystem || 'Red Nacional TecNM / UTyP'
             }, {
                 level: level,
                 folio: folio,
@@ -8962,7 +8962,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (elFolio) elFolio.textContent = folio;
 
         const elIssuer = document.getElementById('vc-modal-issuer');
-        if (elIssuer) elIssuer.textContent = (cred && cred.issuer && cred.issuer.institution) || 'Consorcio UPBC / TecNM';
+        if (elIssuer) elIssuer.textContent = (cred && cred.issuer && cred.issuer.institution) || 'Red Nacional TecNM / UTyP';
 
         const elDate = document.getElementById('vc-modal-date');
         if (elDate) {
@@ -9317,7 +9317,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
     /* ══════════════════════════════════════════════════════════════════
        8.4. MULTI-CAMPUS INSTITUTIONAL FEDERATION & CAMPUS EDGE SYNC (FASE 70)
-       TecNM Tijuana · TecNM Saltillo · UTT · UPBC · UACJ · TecNM QRO
+       TecNM · Subsistema UTyP · UACJ · Estatales
        ══════════════════════════════════════════════════════════════════ */
     const STEMOS_CAMPUSES = {
         'tecnm-tijuana': {
@@ -9346,11 +9346,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
         },
         'upbc-mexicali': {
             id: 'upbc-mexicali',
-            name: 'UPBC (Universidad Politécnica de Baja California • Mexicali)',
-            shortName: 'UPBC Mexicali',
-            institutionText: 'Universidad Politécnica de Baja California &bull; Consejo Académico',
+            name: 'Universidades Politécnicas (Subsistema UTyP)',
+            shortName: 'Univ. Politécnicas (UTyP)',
+            institutionText: 'Subsistema de Universidades Politécnicas &bull; Consejo Académico DGUTyP',
             subsystem: 'DGUTyP',
-            domain: '@upbc.edu.mx'
+            domain: '@utyp.edu.mx'
         },
         'uacj-juarez': {
             id: 'uacj-juarez',
@@ -10758,7 +10758,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
             progressPct = Math.round((completedCount / (totalStations || 16)) * 100);
             earnedXP = completedModuleKeys.reduce((acc, k) => acc + (prog.modules[k].xp || 300), 0);
 
-            const systemLabel = (career && career.system) ? career.system.toUpperCase() : 'UPBC';
+            const systemLabel = (career && career.system) ? (career.system === 'upbc' ? 'UTYP' : career.system.toUpperCase()) : 'UTYP';
             const primaryStandard = (career && career.standards && career.standards[0]) ? career.standards[0] : 'ISO 10218-1/2 Industrial Robots';
             const trackTitle = isEspTrack ? (espTrack.titleEN || espTrack.title) : `${career ? career.name : 'Ingeniería Mecatrónica'} (60.0h Track)`;
 
@@ -10872,7 +10872,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     window.STEMOS_CAREER_TRACKS.CAREERS.forEach(c => {
                         const opt = document.createElement('option');
                         opt.value = 'career:' + c.id;
-                        opt.textContent = `${c.name} (16 Estaciones · ${c.system ? c.system.toUpperCase() : 'UPBC'})`;
+                        opt.textContent = `${c.name} (16 Estaciones · ${c.system === 'upbc' ? 'UTYP' : (c.system ? c.system.toUpperCase() : 'UTYP')})`;
                         if (!isMcer && !isEspTrack && career && career.id === c.id) opt.selected = true;
                         grpCareers.appendChild(opt);
                     });

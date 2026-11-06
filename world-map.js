@@ -380,7 +380,7 @@
 
         buildDOM() {
             const sys = (this.activeCareer && this.activeCareer.systemLabel) ? ` (${this.activeCareer.systemLabel.split(' ')[0]})` : '';
-            const currentCareerName = this.activeCareer ? `${this.activeCareer.name}${sys}` : 'Ingeniería Mecatrónica (UPBC)';
+            const currentCareerName = this.activeCareer ? `${this.activeCareer.name}${sys}` : 'Ingeniería Mecatrónica (UTyP)';
 
             this.container.innerHTML = `
                 <div class="world-experience-wrap" id="world-experience-wrap">

@@ -53,9 +53,9 @@
   const INSTITUTION_TYPES = {
     UPBC: {
       id: 'upbc',
-      name: 'Universidad Politécnica de Baja California (UPBC)',
-      badge: 'UP Mexicali (Cliente Fundador)',
-      desc: 'Universidad Politécnica de Baja California — Campus Mexicali. 11 Carreras de Ingeniería/Licenciatura y 25 especialidades TSU con path personalizado de 60 horas.'
+      name: 'Universidades Politécnicas (Subsistema UTyP)',
+      badge: 'Subsistema UTyP',
+      desc: 'Universidades Politécnicas y Tecnológicas (DGUTyP). Carreras de Ingeniería, Licenciatura y especialidades TSU con path personalizado de 60 horas.'
     },
     UT: {
       id: 'ut',
@@ -85,21 +85,21 @@
 
   const CAREERS = [
     // ════════════════════════════════════════════════════════════════════════
-    // 0. UNIVERSIDAD POLITÉCNICA DE BAJA CALIFORNIA (UPBC MEXICALI)
+    // 0. UNIVERSIDADES POLITÉCNICAS (SUBSISTEMA UTYP)
     // ════════════════════════════════════════════════════════════════════════
     {
       id: 'upbc-animacion',
       name: 'Ingeniería en Animación y Efectos Visuales',
       system: 'upbc',
       hub: 'tijuana-mxi',
-      systemLabel: 'UPBC Mexicali',
+      systemLabel: 'Subsistema UTyP',
       area: 'Animación, diseño digital y medios',
       cluster: 'Animación, Diseño Digital & Medios Tech',
       degreeType: 'Ingeniería',
       tsuPrograms: [
         { id: 'tsu-animacion-2d', name: 'TSU en Producción Audiovisual y Animación 2D' }
       ],
-      typicalCampuses: ['UPBC Campus Mexicali'],
+      typicalCampuses: ['Universidades Politécnicas (Red UTyP)'],
       primaryTrackId: 'web-dev-agentic',
       secondaryTrackId: 'ai-ml',
       totalHours: 60.0,
@@ -133,7 +133,7 @@
       name: 'Ingeniería en Energía y Desarrollo Sostenible',
       system: 'upbc',
       hub: 'tijuana-mxi',
-      systemLabel: 'UPBC Mexicali',
+      systemLabel: 'Subsistema UTyP',
       area: 'Energía y sustentabilidad',
       cluster: 'Energía, Sustentabilidad & Turbomaquinaria',
       degreeType: 'Ingeniería',
@@ -142,7 +142,7 @@
         { id: 'tsu-energia-turbo-solar', name: 'TSU en Energía Turbo Solar' },
         { id: 'tsu-turbo-energia', name: 'TSU en Turbo Energía' }
       ],
-      typicalCampuses: ['UPBC Campus Mexicali'],
+      typicalCampuses: ['Universidades Politécnicas (Red UTyP)'],
       primaryTrackId: 'energy-renewables',
       secondaryTrackId: 'energy-data-centers',
       totalHours: 60.0,
@@ -176,7 +176,7 @@
       name: 'Ingeniería Mecatrónica',
       system: 'upbc',
       hub: 'tijuana-mxi',
-      systemLabel: 'UPBC Mexicali',
+      systemLabel: 'Subsistema UTyP',
       area: 'Automatización y robótica',
       cluster: 'Automatización, Robótica & Sistemas Ciberfísicos',
       degreeType: 'Ingeniería',
@@ -188,7 +188,7 @@
         { id: 'tsu-robotica', name: 'TSU en Robótica' },
         { id: 'tsu-sistemas-manufactura-flexible', name: 'TSU en Sistemas de Manufactura Flexible' }
       ],
-      typicalCampuses: ['UPBC Campus Mexicali'],
+      typicalCampuses: ['Universidades Politécnicas (Red UTyP)'],
       primaryTrackId: 'robotics-automation',
       secondaryTrackId: 'embedded-firmware-edge-ai',
       totalHours: 60.0,
@@ -222,7 +222,7 @@
       name: 'Ingeniería en Tecnologías de la Información e Innovación Digital',
       system: 'upbc',
       hub: 'tijuana-mxi',
-      systemLabel: 'UPBC Mexicali',
+      systemLabel: 'Subsistema UTyP',
       area: 'Software, datos e inteligencia artificial',
       cluster: 'Software, Datos, IA & Redes Digitales',
       degreeType: 'Ingeniería',
@@ -233,7 +233,7 @@
         { id: 'tsu-redes-digitales', name: 'TSU en Infraestructura de Redes Digitales' },
         { id: 'tsu-ia', name: 'TSU en Inteligencia Artificial' }
       ],
-      typicalCampuses: ['UPBC Campus Mexicali'],
+      typicalCampuses: ['Universidades Politécnicas (Red UTyP)'],
       primaryTrackId: 'software-dev',
       secondaryTrackId: 'ai-ml',
       totalHours: 60.0,
@@ -267,14 +267,14 @@
       name: 'Ingeniería en Manufactura Avanzada',
       system: 'upbc',
       hub: 'tijuana-mxi',
-      systemLabel: 'UPBC Mexicali',
+      systemLabel: 'Subsistema UTyP',
       area: 'Manufactura y procesos industriales',
       cluster: 'Manufactura Avanzada & Procesos Industriales',
       degreeType: 'Ingeniería',
       tsuPrograms: [
         { id: 'tsu-procesos-fabricacion', name: 'TSU en Procesos de Fabricación' }
       ],
-      typicalCampuses: ['UPBC Campus Mexicali'],
+      typicalCampuses: ['Universidades Politécnicas (Red UTyP)'],
       primaryTrackId: 'advanced-manufacturing',
       secondaryTrackId: 'materials-nanotech',
       totalHours: 60.0,
@@ -308,7 +308,7 @@
       name: 'Licenciatura en Administración',
       system: 'upbc',
       hub: 'tijuana-mxi',
-      systemLabel: 'UPBC Mexicali',
+      systemLabel: 'Subsistema UTyP',
       area: 'Administración y negocios',
       cluster: 'Administración, Capital Humano & Negocios',
       degreeType: 'Licenciatura',
@@ -316,7 +316,7 @@
         { id: 'tsu-capital-humano', name: 'TSU en Gestión del Capital Humano' },
         { id: 'tsu-proyectos', name: 'TSU en Emprendimiento, Formulación y Evaluación de Proyectos' }
       ],
-      typicalCampuses: ['UPBC Campus Mexicali'],
+      typicalCampuses: ['Universidades Politécnicas (Red UTyP)'],
       primaryTrackId: 'business-leadership',
       secondaryTrackId: 'project-management',
       totalHours: 60.0,
@@ -350,14 +350,14 @@
       name: 'Ingeniería en Semiconductores',
       system: 'upbc',
       hub: 'tijuana-mxi',
-      systemLabel: 'UPBC Mexicali',
+      systemLabel: 'Subsistema UTyP',
       area: 'Microelectrónica y semiconductores',
       cluster: 'Microelectrónica & Semiconductores',
       degreeType: 'Ingeniería',
       tsuPrograms: [
         { id: 'tsu-semiconductores', name: 'TSU en Semiconductores' }
       ],
-      typicalCampuses: ['UPBC Campus Mexicali'],
+      typicalCampuses: ['Universidades Politécnicas (Red UTyP)'],
       primaryTrackId: 'semiconductors',
       secondaryTrackId: 'embedded-firmware-edge-ai',
       totalHours: 60.0,
@@ -391,7 +391,7 @@
       name: 'Ingeniería Industrial',
       system: 'upbc',
       hub: 'tijuana-mxi',
-      systemLabel: 'UPBC Mexicali',
+      systemLabel: 'Subsistema UTyP',
       area: 'Procesos y calidad',
       cluster: 'Calidad, Lean Six Sigma & Procesos Industriales',
       degreeType: 'Ingeniería',
@@ -400,7 +400,7 @@
         { id: 'tsu-moldeo-plasticos', name: 'TSU en Moldeo de Plásticos' },
         { id: 'tsu-maquinados-precision', name: 'TSU en Maquinados de Precisión' }
       ],
-      typicalCampuses: ['UPBC Campus Mexicali'],
+      typicalCampuses: ['Universidades Politécnicas (Red UTyP)'],
       primaryTrackId: 'quality-ehs',
       secondaryTrackId: 'automotive-lean',
       totalHours: 60.0,
@@ -434,14 +434,14 @@
       name: 'Licenciatura en Educación',
       system: 'upbc',
       hub: 'tijuana-mxi',
-      systemLabel: 'UPBC Mexicali',
+      systemLabel: 'Subsistema UTyP',
       area: 'Educación y enseñanza',
       cluster: 'Educación, Enseñanza & Pedagogía ESP',
       degreeType: 'Licenciatura',
       tsuPrograms: [
         { id: 'tsu-ensenanza-ingles', name: 'TSU en Enseñanza del Idioma Inglés' }
       ],
-      typicalCampuses: ['UPBC Campus Mexicali'],
+      typicalCampuses: ['Universidades Politécnicas (Red UTyP)'],
       primaryTrackId: 'business-leadership',
       secondaryTrackId: 'project-management',
       totalHours: 60.0,
@@ -475,14 +475,14 @@
       name: 'Licenciatura en Gastronomía',
       system: 'upbc',
       hub: 'tijuana-mxi',
-      systemLabel: 'UPBC Mexicali',
+      systemLabel: 'Subsistema UTyP',
       area: 'Artes culinarias y servicios',
       cluster: 'Artes Culinarias, Inocuidad & Servicios',
       degreeType: 'Licenciatura',
       tsuPrograms: [
         { id: 'tsu-gastronomia', name: 'TSU en Gastronomía' }
       ],
-      typicalCampuses: ['UPBC Campus Mexicali'],
+      typicalCampuses: ['Universidades Politécnicas (Red UTyP)'],
       primaryTrackId: 'hospitality-food',
       secondaryTrackId: 'food-science',
       totalHours: 60.0,
@@ -516,14 +516,14 @@
       name: 'Licenciatura en Negocios y Mercadotecnia',
       system: 'upbc',
       hub: 'tijuana-mxi',
-      systemLabel: 'UPBC Mexicali',
+      systemLabel: 'Subsistema UTyP',
       area: 'Marketing y negocios',
       cluster: 'Marketing, Comercio Internacional & Negocios Digitales',
       degreeType: 'Licenciatura',
       tsuPrograms: [
         { id: 'tsu-mercadotecnia', name: 'TSU en Mercadotecnia' }
       ],
-      typicalCampuses: ['UPBC Campus Mexicali'],
+      typicalCampuses: ['Universidades Politécnicas (Red UTyP)'],
       primaryTrackId: 'business-leadership',
       secondaryTrackId: 'entrepreneurship',
       totalHours: 60.0,
