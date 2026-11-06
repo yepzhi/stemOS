@@ -2255,8 +2255,8 @@
         </div>
 
         <div class="window-content-area">
-          <div class="stage-player-pill" id="stage-player-pill">
-            <button class="stage-play-btn" id="hero-stage-play" aria-label="Play pronunciation">
+          <div class="stage-player-pill" id="stage-player-pill" style="cursor: pointer;" role="button" aria-label="Play cleanroom technical audio" tabindex="0">
+            <button type="button" class="stage-play-btn" id="hero-stage-play" aria-label="Play pronunciation">
               <svg class="stage-play-svg" id="hero-stage-svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <polygon points="6 3 20 12 6 21 6 3"></polygon>
               </svg>
@@ -3413,6 +3413,224 @@
     window.selectInstitutionalPlan = selectInstitutionalPlan;
     window.handleInstitutionalFormSubmit = handleInstitutionalFormSubmit;
 
+    /* ══════════════════════════════════════════════════════════════
+       HERO SHOWCASE AUDIO PLAYER (Cleanroom ISO Class 1 Protocols)
+       ══════════════════════════════════════════════════════════════ */
+    let heroAudioInstance = null;
+    let isPlayingHeroAudio = false;
+
+    function setHeroAudioPlayingState(playing) {
+      isPlayingHeroAudio = playing;
+      const stagePlayerPill = document.getElementById('stage-player-pill');
+      const heroStageSvg = document.getElementById('hero-stage-svg');
+      const heroStageIcon = document.getElementById('hero-stage-icon');
+
+      if (stagePlayerPill) {
+        if (playing) stagePlayerPill.classList.add('playing');
+        else stagePlayerPill.classList.remove('playing');
+      }
+
+      if (heroStageSvg && heroStageIcon) {
+        if (playing) {
+          heroStageSvg.style.display = 'none';
+          heroStageIcon.style.display = 'inline-block';
+          heroStageIcon.className = 'fa-solid fa-pause';
+        } else {
+          heroStageSvg.style.display = 'inline-block';
+          heroStageIcon.style.display = 'none';
+          heroStageIcon.className = 'fa-solid fa-play';
+        }
+      }
+    }
+
+    function toggleHeroAudio() {
+      if (isPlayingHeroAudio) {
+        if (heroAudioInstance) {
+          heroAudioInstance.pause();
+          heroAudioInstance.currentTime = 0;
+        }
+        if (window.STEMOS_TTS && typeof window.STEMOS_TTS.stop === 'function') {
+          window.STEMOS_TTS.stop();
+        }
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+        }
+        setHeroAudioPlayingState(false);
+        return;
+      }
+
+      setHeroAudioPlayingState(true);
+
+      const audioSrc = '/content/audio/cleanroom_photolithography.wav?v=2.1.0-piper-neural';
+      if (!heroAudioInstance) {
+        heroAudioInstance = new Audio(audioSrc);
+      } else {
+        heroAudioInstance.src = audioSrc;
+        heroAudioInstance.currentTime = 0;
+      }
+
+      heroAudioInstance.onended = function() {
+        setHeroAudioPlayingState(false);
+      };
+
+      heroAudioInstance.onerror = function() {
+        const sampleText = "In extreme ultraviolet (EUV) photolithography, wafer steppers operate inside ISO Class 1 cleanrooms with laminar airflow. Photoresist deposition requires precise chemical handling to prevent sub-micron yield defects.";
+        if (window.STEMOS_TTS && typeof window.STEMOS_TTS.speak === 'function') {
+          window.STEMOS_TTS.speak(sampleText, {
+            speed: 0.95,
+            lang: 'en-US',
+            voice: 'en_US-lessac-medium',
+            onEnd: () => setHeroAudioPlayingState(false),
+            onError: () => setHeroAudioPlayingState(false)
+          });
+        } else if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utter = new SpeechSynthesisUtterance(sampleText);
+          utter.lang = 'en-US';
+          utter.rate = 0.95;
+          utter.onend = () => setHeroAudioPlayingState(false);
+          utter.onerror = () => setHeroAudioPlayingState(false);
+          window.speechSynthesis.speak(utter);
+        } else {
+          setTimeout(() => setHeroAudioPlayingState(false), 4500);
+        }
+      };
+
+      heroAudioInstance.play().catch(function(err) {
+        console.warn('[stemOS Hero Audio] Direct play fallback:', err);
+        heroAudioInstance.onerror();
+      });
+    }
+    window.toggleHeroAudio = toggleHeroAudio;
+
+    /* ══════════════════════════════════════════════════════════════
+       INTERACTIVE REALITY GAP CONTRAST TEST CONTROLLER
+       ══════════════════════════════════════════════════════════════ */
+    window.currentDrillMode = 'academic';
+    window.currentPlatformLang = 'en';
+
+    window.REALITY_DRILL_DATA = {
+      en: {
+        academic: {
+          mode: 'mode-academic',
+          scenarioTag: 'General English Exam in Engineering Faculty (Theoretical Academic Syllabus)',
+          scenarioTitle: 'Typical Decontextualized Multiple-Choice Question:',
+          question: '"Choose the correct option: When Mr. Smith arrives at the airport, he ______ a taxi to the international conference."',
+          options: [
+            { text: '[A] takes (Textbook grammar option)', isCorrect: true },
+            { text: '[B] taking', isCorrect: false },
+            { text: '[C] is took', isCorrect: false },
+            { text: '[D] was take', isCorrect: false }
+          ],
+          analysis: '⚠️ <strong>Curricular Gap Diagnostic:</strong> Zero value in advanced manufacturing. This evaluation fails to test whether the engineer can read a P&amp;ID schematic, de-energize high-voltage equipment under OSHA 1910.147 LOTO, contain sub-micron wafer defects under SEMI S2, or defend an 8D root-cause report before Detroit or Silicon Valley auditors.'
+        },
+        industry: {
+          mode: 'mode-industry',
+          scenarioTag: 'stemOS Mission-Critical Challenge — 800V EV Battery Inverter (ISO 26262 ASIL-D & UN 38.3)',
+          scenarioTitle: 'Thermal Test Bay Containment Protocol Simulation:',
+          question: '"During dynamometer thermal stressing, cell cluster #4 reports an uncontrolled dV/dt drop and an exotherm spike above 72°C. Formulate the containment order to the test bay supervisor:"',
+          options: [
+            { text: '<strong>[A] stemOS Rigor:</strong> "Initiate immediate dry-chemical blanket purge, isolate the 800V high-voltage interlock (HVIL), and escalate a Priority-1 thermal runaway containment protocol under UN 38.3."', isCorrect: true },
+            { text: '<strong>[B] Generic:</strong> "Please wait and look at the temperature screen until the battery stops being hot."', isCorrect: false },
+            { text: '<strong>[C] Informal:</strong> "Turn off the computer and call the general maintenance office tomorrow morning."', isCorrect: false },
+            { text: '<strong>[D] Hazardous:</strong> "Open the test chamber door with bare hands to check the battery smell."', isCorrect: false }
+          ],
+          analysis: '🛡️ <strong>stemOS Industrial Rigor:</strong> Authentic immersion in global normative standards. The student masters the exact terminology that prevents catastrophic thermal runaway, safeguards human lives on the shopfloor, and passes Tier-1 automotive quality audits (ISO 26262 / IATF 16949).'
+        }
+      },
+      es: {
+        academic: {
+          mode: 'mode-academic',
+          scenarioTag: 'Examen de Inglés General en Facultad de Ingeniería (Syllabus Académico Teórico)',
+          scenarioTitle: 'Pregunta típica de opción múltiple descontextualizada:',
+          question: '"Choose the correct option: When Mr. Smith arrives at the airport, he ______ a taxi to the international conference."',
+          options: [
+            { text: '[A] takes (Opción gramatical de libro de texto)', isCorrect: true },
+            { text: '[B] taking', isCorrect: false },
+            { text: '[C] is took', isCorrect: false },
+            { text: '[D] was take', isCorrect: false }
+          ],
+          analysis: '⚠️ <strong>Diagnóstico de Desfase:</strong> Cero valor en planta de manufactura avanzada. Esta evaluación no mide si el ingeniero es capaz de leer un diagrama P&amp;ID, aislar una fuente de alta tensión bajo OSHA 1910.147 LOTO, reportar un defecto wafer sub-micrónico bajo SEMI S2, ni defender un reporte de causa raíz 8D ante un auditor de Detroit o Silicon Valley.'
+        },
+        industry: {
+          mode: 'mode-industry',
+          scenarioTag: 'Desafío de Misión Crítica stemOS — Inversor de Batería EV a 800V (ISO 26262 ASIL-D & UN 38.3)',
+          scenarioTitle: 'Simulación de protocolo de contención en celda de pruebas térmicas:',
+          question: '"During dynamometer thermal stressing, cell cluster #4 reports an uncontrolled dV/dt drop and an exotherm spike above 72°C. Formulate the containment order to the test bay supervisor:"',
+          options: [
+            { text: '<strong>[A] Rigor stemOS:</strong> "Initiate immediate dry-chemical blanket purge, isolate the 800V high-voltage interlock (HVIL), and escalate a Priority-1 thermal runaway containment protocol under UN 38.3."', isCorrect: true },
+            { text: '<strong>[B] Genérico:</strong> "Please wait and look at the temperature screen until the battery stops being hot."', isCorrect: false },
+            { text: '<strong>[C] Informal:</strong> "Turn off the computer and call the general maintenance office tomorrow morning."', isCorrect: false },
+            { text: '<strong>[D] Peligroso:</strong> "Open the test chamber door with bare hands to check the battery smell."', isCorrect: false }
+          ],
+          analysis: '🛡️ <strong>Rigor Industrial stemOS:</strong> Inmersión auténtica en estándares globales. El alumno domina la terminología exacta que previene desbocamientos térmicos, resguarda la vida humana en planta, y satisface auditorías de aseguramiento de calidad automotriz (ISO 26262 / IATF 16949).'
+        }
+      }
+    };
+
+    function selectRealityOption(el, isCorrect) {
+      const parent = el.closest('.drill-options-grid');
+      if (!parent) return;
+      parent.querySelectorAll('.drill-opt-item').forEach(item => {
+        item.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+        item.style.background = 'rgba(30, 41, 59, 0.7)';
+      });
+      if (isCorrect) {
+        el.style.borderColor = 'rgba(16, 185, 129, 0.7)';
+        el.style.background = 'rgba(16, 185, 129, 0.15)';
+      } else {
+        el.style.borderColor = 'rgba(239, 68, 68, 0.7)';
+        el.style.background = 'rgba(239, 68, 68, 0.15)';
+      }
+    }
+    window.selectRealityOption = selectRealityOption;
+
+    function switchRealityGapDrill(mode) {
+      mode = (mode === 'industry') ? 'industry' : 'academic';
+      window.currentDrillMode = mode;
+
+      const container = document.getElementById('reality-drill-body');
+      const btnAcademic = document.getElementById('btn-drill-academic');
+      const btnIndustry = document.getElementById('btn-drill-industry');
+      if (!container) return;
+
+      const currentLang = window.currentPlatformLang || localStorage.getItem('stemos_lang') || 'en';
+      const langDataset = (window.REALITY_DRILL_DATA && window.REALITY_DRILL_DATA[currentLang])
+        ? window.REALITY_DRILL_DATA[currentLang]
+        : window.REALITY_DRILL_DATA.en;
+
+      const data = langDataset[mode] || langDataset.academic;
+
+      if (btnAcademic && btnIndustry) {
+        if (mode === 'academic') {
+          btnAcademic.classList.add('active');
+          btnIndustry.classList.remove('active');
+        } else {
+          btnIndustry.classList.add('active');
+          btnAcademic.classList.remove('active');
+        }
+      }
+
+      container.className = 'reality-drill-body ' + data.mode;
+      container.innerHTML = `
+        <span class="drill-scenario-tag">${data.scenarioTag}</span>
+        <div style="font-size:0.86rem; color:#94a3b8; margin-bottom:8px; font-weight:600;">${data.scenarioTitle}</div>
+        <div class="drill-question-box">${data.question}</div>
+        <div class="drill-options-grid">
+          ${data.options.map(opt => `
+            <div class="drill-opt-item" style="cursor:pointer; ${opt.isCorrect ? (mode === 'industry' ? 'border-color:rgba(16,185,129,0.5); background:rgba(16,185,129,0.08);' : 'border-color:rgba(14,165,233,0.5); background:rgba(255,255,255,0.06);') : ''}" onclick="selectRealityOption(this, ${opt.isCorrect})">
+              <i class="fa-solid ${opt.isCorrect ? 'fa-circle-check' : 'fa-circle'}" style="color:${opt.isCorrect ? (mode === 'industry' ? '#10b981' : '#38bdf8') : '#64748b'};"></i>
+              <span>${opt.text}</span>
+            </div>
+          `).join('')}
+        </div>
+        <div class="drill-analysis-note">
+          ${data.analysis}
+        </div>
+      `;
+    }
+    window.switchRealityGapDrill = switchRealityGapDrill;
+
     const STEMOS_I18N = {
       en: {
         head_title: 'stemOS — From First Words to Industry-Ready English',
@@ -3942,6 +4160,7 @@
 
     function setPlatformLanguage(lang) {
       if (!STEMOS_I18N[lang]) lang = 'en';
+      window.currentPlatformLang = lang;
       try {
         localStorage.setItem('stemos_lang', lang);
       } catch (e) {}
@@ -3979,7 +4198,7 @@
       }
 
       if (typeof window.switchRealityGapDrill === 'function') {
-        var activeMode = 'academic';
+        var activeMode = window.currentDrillMode || 'academic';
         var btnInd = document.getElementById('btn-drill-industry');
         if (btnInd && btnInd.classList.contains('active')) {
           activeMode = 'industry';
@@ -3997,6 +4216,27 @@
         savedLang = localStorage.getItem('stemos_lang') || 'en';
       } catch (e) {}
       setPlatformLanguage(savedLang);
+
+      var playBtn = document.getElementById('hero-stage-play');
+      var playPill = document.getElementById('stage-player-pill');
+      if (playBtn) {
+        playBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          toggleHeroAudio();
+        });
+      }
+      if (playPill) {
+        playPill.addEventListener('click', function(e) {
+          if (e.target.closest('#hero-stage-play')) return;
+          toggleHeroAudio();
+        });
+        playPill.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleHeroAudio();
+          }
+        });
+      }
     });
 </script>
 
