@@ -10048,11 +10048,6 @@ Nearshoring Center of Excellence • stemOS Certified`;
             if (examOverlay && examOverlay.classList.contains('active')) {
                 examOverlay.classList.remove('active');
             }
-            // 4. Under dev modal
-            const devModal = document.getElementById('under-dev-modal');
-            if (devModal && devModal.classList.contains('active')) {
-                devModal.classList.remove('active');
-            }
             // 5. World Map Drawer
             if (window.stemWorld && typeof window.stemWorld.closeDrawer === 'function') {
                 window.stemWorld.closeDrawer();

@@ -1641,6 +1641,13 @@
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
     }
 
+    .std-cluster-card {
+      padding: 22px 20px !important;
+    }
+    .std-cluster-card .std-cluster-tags {
+      margin-bottom: 0 !important;
+    }
+
     /* Executive Bento-Grid for Formal Curricular Inventory */
     .platform-formal-inventory-card {
       background: linear-gradient(145deg, rgba(15, 23, 42, 0.94) 0%, rgba(8, 17, 36, 0.98) 100%) !important;
@@ -2385,7 +2392,6 @@
               <span class="std-spec-pill">JEDEC JESD47</span>
               <span class="std-spec-pill">ITRS Roadmap</span>
             </div>
-            <p class="std-cluster-text" data-i18n="std_c1_desc">EUV photolithography with tin laser-produced plasma (LPP) at 13.5 nm, advanced 3D microbump packaging, atomic layer deposition (ALD), and airborne molecular contamination (AMC) control.</p>
           </div>
 
           <!-- Cluster 2: OT/ICS Cybersecurity -->
@@ -2401,7 +2407,6 @@
               <span class="std-spec-pill">CISA Zero Trust OT</span>
               <span class="std-spec-pill">MITRE ATT&amp;CK for ICS</span>
             </div>
-            <p class="std-cluster-text" data-i18n="std_c2_desc">Industrial DMZ isolation under the Purdue Model, MITM attack mitigation on Modbus/DNP3 fieldbuses, SCADA ransomware triage, and PLC incident response.</p>
           </div>
 
           <!-- Cluster 3: Electromobility -->
@@ -2417,7 +2422,6 @@
               <span class="std-spec-pill">UN 38.3 (Lithium Safety)</span>
               <span class="std-spec-pill">UL 9540A / CharIN MCS</span>
             </div>
-            <p class="std-cluster-text" data-i18n="std_c3_desc">Thermal runaway containment protocols, 800V SiC inverter architectures, CAN/CAN-FD BMS telemetry, and megawatt heavy charging for commercial logistics.</p>
           </div>
 
           <!-- Cluster 4: Aerospace & Avionics -->
@@ -2433,7 +2437,6 @@
               <span class="std-spec-pill">ICAO Doc 9835</span>
               <span class="std-spec-pill">MIL-STD-1553B</span>
             </div>
-            <p class="std-cluster-text" data-i18n="std_c4_desc">Safety-critical fly-by-wire software assurance (DAL A), standardized ICAO aviation radiotelephony phraseology, and critical geometric dimensioning and tolerancing (GD&amp;T).</p>
           </div>
 
           <!-- Cluster 5: Process Safety & LOTO -->
@@ -2449,7 +2452,6 @@
               <span class="std-spec-pill">ASME B31.3 &amp; BPVC Sec VIII</span>
               <span class="std-spec-pill">ISA-88 / ISA-95</span>
             </div>
-            <p class="std-cluster-text" data-i18n="std_c5_desc">Lockout/Tagout (LOTO) procedures for zero-energy verification, arc flash boundary calculations, shift handovers, and rigorous P&amp;ID schematic walkthroughs.</p>
           </div>
 
           <!-- Cluster 6: Nearshoring & Quality -->
@@ -2465,7 +2467,6 @@
               <span class="std-spec-pill">APQP / PPAP Nivel 3</span>
               <span class="std-spec-pill">VDA 6.3 Process Audit</span>
             </div>
-            <p class="std-cluster-text" data-i18n="std_c6_desc">Drafting 8D root-cause corrective action reports for US corporate auditors, SPC capability studies (Cp/Cpk), USMCA regional value content rules, and client audit defenses.</p>
           </div>
 
         </div>
@@ -3097,7 +3098,6 @@
   <script src="/content/stemos_payments.js?v=1.2.0" defer></script>
   <script src="/content/stemos_tts.js?v=1.2.0" defer></script>
   <script src="/world-map.js?v=2.0.0" defer></script>
-  <script src="/dev.js?v=5.12.0" defer></script>
 
   <script>
     // ── Mobile Navigation Drawer Toggle ──
@@ -3481,9 +3481,6 @@
         inst_portal_register_desc: 'Guided 7-step onboarding flow: class code verification, educational subsystem selection (TecNM, UT, State), 25 60h career catalog, and student digital pass.',
         inst_portal_app_title: 'Campus LXP &amp; 3D World',
         inst_portal_app_desc: 'Student learning platform with deterministic 3D world, skill tree, Feynman AI Socratic Tutor, and 8 gamification tiers.',
-        inst_portal_action_open: 'Open in Dev Studio',
-        inst_portal_action_start: 'Start in Dev Studio',
-        inst_portal_action_enter: 'Enter in Dev Studio',
         inst_filter_all: '<i class="fa-solid fa-layer-group"></i> <span>All Careers (25)</span>',
         inst_filter_tecnm: '<i class="fa-solid fa-microchip"></i> <span>TecNM (10)</span>',
         inst_filter_ut: '<i class="fa-solid fa-gears"></i> <span>Tech Universities (6)</span>',
@@ -3769,9 +3766,6 @@
         inst_portal_register_desc: 'Flujo guiado de 7 pasos: verificación de código de clase, selección de subsistema (TecNM, UT, Estatal), catálogo de 25 carreras de 60h y credencial digital de alumno.',
         inst_portal_app_title: 'Campus LXP &amp; Mundo 3D',
         inst_portal_app_desc: 'Plataforma del estudiante con mundo 3D determinista, árbol de habilidades, Feynman AI Socratic Tutor y 8 tiers de gamificación.',
-        inst_portal_action_open: 'Abrir en Dev Studio',
-        inst_portal_action_start: 'Iniciar en Dev Studio',
-        inst_portal_action_enter: 'Ingresar en Dev Studio',
         inst_filter_all: '<i class="fa-solid fa-layer-group"></i> <span>Todas las Carreras (25)</span>',
         inst_filter_tecnm: '<i class="fa-solid fa-microchip"></i> <span>TecNM (10)</span>',
         inst_filter_ut: '<i class="fa-solid fa-gears"></i> <span>Univ. Tecnológicas (6)</span>',

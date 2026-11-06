@@ -44,7 +44,6 @@ const coreFiles = [
   'content/stemos_tts.js',
   'content/audio/cleanroom_photolithography.wav',
   'content/audio/cleanroom_basic_a2.wav',
-  'dev.js',
   'app.js',
   'sw.js',
   'index.html',
@@ -62,9 +61,7 @@ const indexHtml = fs.readFileSync(path.join(ROOT_DIR, 'index.html'), 'utf8');
 assert(indexHtml.includes('/content/stemos_tts.js'), 'index.html must load stemos_tts.js');
 const appHtml = fs.readFileSync(path.join(ROOT_DIR, 'app.html'), 'utf8');
 assert(appHtml.includes('content/stemos_tts.js'), 'app.html must load stemos_tts.js');
-const devHtml = fs.readFileSync(path.join(ROOT_DIR, 'dev.html'), 'utf8');
-assert(devHtml.includes('/content/stemos_tts.js'), 'dev.html must load stemos_tts.js');
-console.log('  ✓ stemos_tts.js included across index.html, dev.html, and app.html');
+console.log('  ✓ stemos_tts.js included across index.html and app.html');
 
 console.log('🧪 [TEST 5/5] Testing Mini PC Edge Server /api/tts HTTP Endpoint...');
 const server = require('./minipc_edge_server.cjs');

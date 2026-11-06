@@ -9,7 +9,6 @@
  *  - /teacher.html  (Teacher Classroom & Group Management)
  *  - /register.html (7-Step Student Onboarding Wizard)
  *  - /app.html      (3D Campus Student LXP & Career Map)
- *  - /dev.html      (Dev Studio & Workbench)
  * ═══════════════════════════════════════════════════════════════════════════
  */
 

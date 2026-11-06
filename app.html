@@ -3906,25 +3906,6 @@
         </div>
     </div>
 
-    <!-- Under Development Modal Popup -->
-    <div id="under-dev-modal" class="cs-modal-overlay" onclick="handleBackdropClick(event)">
-        <div class="cs-modal-card">
-            <div class="cs-modal-icon-wrap">
-                <i class="fa-solid fa-compass-drafting"></i>
-            </div>
-            <div class="cs-modal-tag">Platform Preview</div>
-            <h2 class="cs-modal-title">Under Active Development</h2>
-            <p class="cs-modal-text">
-                Our <strong>27 specialized industry tracks</strong> (Semiconductors, Aerospace Avionics, Industrial
-                Robotics, Cleanrooms, and AI Engineering) alongside our Socratic S&P <em>Feynman Engine</em> are
-                currently in calibration.
-                <br><br>
-                Public interactive access will be unlocked shortly. Thank you for your interest!
-            </p>
-            <button type="button" class="cs-modal-btn" onclick="closeUnderDevModal()">Got it, thank you</button>
-        </div>
-    </div>
-
     <!-- ════ STEMOS DUOLINGO IMMERSIVE LESSON RUNNER MODAL ════ -->
     <div id="duo-runner-overlay" class="duo-runner-overlay" role="dialog" aria-modal="true" aria-label="Lección Interactiva stemOS">
         <!-- Top Bar with Close, Animated Progress & Lives -->
@@ -4025,28 +4006,6 @@
     </div>
 
     <script>
-        function openUnderDevModal(actionLabel) {
-            const modal = document.getElementById("under-dev-modal");
-            if (modal) {
-                modal.classList.add("active");
-                document.body.style.overflow = "hidden";
-            }
-        }
-        function closeUnderDevModal() {
-            const modal = document.getElementById("under-dev-modal");
-            if (modal) {
-                modal.classList.remove("active");
-                document.body.style.overflow = "";
-            }
-        }
-        function handleBackdropClick(e) {
-            if (e.target.id === "under-dev-modal") {
-                closeUnderDevModal();
-            }
-        }
-        document.addEventListener("keydown", function (e) {
-            if (e.key === "Escape") closeUnderDevModal();
-        });
         window.STEMOS_VERSION = 'v1.1.7';
     </script>
 </body>

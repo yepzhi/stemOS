@@ -350,9 +350,7 @@ const ASSETS_TO_CACHE = [
   '/content/audio/mcer/b2-u4-listening-lab.mp3',
   '/content/audio/mcer/b2-u4-reading-passage.mp3',
   '/content/audio/mcer/b2-u4-crucible-model.mp3',
-  '/dev.html',
   '/dev.css',
-  '/dev.js',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@600;700;800;900&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2',
@@ -476,7 +474,7 @@ self.addEventListener('fetch', (event) => {
 
         // If HTML request failed while offline, return cached entry point
         if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
-          const fallback = await caches.match('/index.html') || await caches.match('/app.html') || await caches.match('/dev.html');
+          const fallback = await caches.match('/index.html') || await caches.match('/app.html');
           if (fallback) return fallback;
         }
 
