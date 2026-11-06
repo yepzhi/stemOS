@@ -2736,7 +2736,7 @@
             const originalBtnHtml = ssoBtn ? ssoBtn.innerHTML : '';
             if (ssoBtn) {
                 ssoBtn.disabled = true;
-                ssoBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="lbl-google-sso">' + (currentRegisterLang === 'en' ? 'Connecting to Google...' : 'Conectando con Google...') + '</span>';
+                ssoBtn.innerHTML = '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#0284c7; animation:stemosPulseDot 1s infinite alternate; margin-right:6px;"></span> <span id="lbl-google-sso">' + (currentRegisterLang === 'en' ? 'Connecting to Google...' : 'Conectando con Google...') + '</span>';
             }
 
             const ready = await ensureFirebaseAuthReady();
@@ -2946,7 +2946,7 @@
                     provider.setCustomParameters({ prompt: 'select_account' });
                     if (notice) {
                         notice.style.display = 'block';
-                        notice.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Conectando con Google...';
+                        notice.innerHTML = '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#0284c7; animation:stemosPulseDot 1s infinite alternate; margin-right:6px;"></span> Conectando con Google...';
                     }
                     const result = await auth.signInWithPopup(provider);
                     const user = result.user;
@@ -3564,12 +3564,12 @@
             const btn = document.getElementById('btn-next');
             if (!hasPlacement) {
                 btn.innerHTML = isEs 
-                    ? '<i class="fa-solid fa-spinner fa-spin"></i> Registro guardado... Abriendo Placement Test'
-                    : '<i class="fa-solid fa-spinner fa-spin"></i> Profile saved... Opening Placement Test';
+                    ? '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#ffffff; animation:stemosPulseDot 1s infinite alternate; margin-right:6px;"></span> Registro guardado... Abriendo Placement Test'
+                    : '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#ffffff; animation:stemosPulseDot 1s infinite alternate; margin-right:6px;"></span> Profile saved... Opening Placement Test';
             } else {
                 btn.innerHTML = isEs 
-                    ? '<i class="fa-solid fa-spinner fa-spin"></i> Iniciando Mundo...'
-                    : '<i class="fa-solid fa-spinner fa-spin"></i> Launching World...';
+                    ? '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#ffffff; animation:stemosPulseDot 1s infinite alternate; margin-right:6px;"></span> Iniciando Mundo...'
+                    : '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#ffffff; animation:stemosPulseDot 1s infinite alternate; margin-right:6px;"></span> Launching World...';
             }
             btn.disabled = true;
 

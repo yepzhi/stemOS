@@ -338,6 +338,36 @@
             margin-bottom: 20px;
         }
 
+        /* Zero-CLS Credential Skeleton */
+        .cert-skeleton-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 20px;
+            padding: 32px 28px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .cert-skeleton-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            transform: translateX(-100%);
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.1), transparent);
+            animation: certShimmer 1.6s infinite;
+        }
+        @keyframes certShimmer {
+            100% { transform: translateX(100%); }
+        }
+        .cert-skeleton-bar {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+        }
+
         .cert-status-badge {
             display: inline-flex;
             align-items: center;
@@ -785,10 +815,22 @@
             const container = document.getElementById('result-container');
             container.style.display = 'block';
             container.innerHTML = `
-                <div style="text-align:center; padding:32px 16px;">
-                    <i class="fa-solid fa-spinner fa-spin" style="font-size:2.5rem; color:#38bdf8; margin-bottom:12px;"></i>
-                    <div style="font-weight:700; font-size:1.1rem; color:#f1f5f9;">Verificando firma criptográfica en el borde...</div>
-                    <div style="font-size:0.85rem; color:#64748b; margin-top:4px;">Comprobando cryptosuite stemos-ed25519-hmac-sha256-2026</div>
+                <div class="cert-skeleton-card" aria-busy="true" aria-label="Verificando firma criptográfica...">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div class="cert-skeleton-bar" style="width:220px; height:24px; border-radius:6px;"></div>
+                        <div class="cert-skeleton-bar" style="width:70px; height:22px; border-radius:12px;"></div>
+                    </div>
+                    <div class="cert-skeleton-bar" style="width:55%; height:32px; margin-top:8px;"></div>
+                    <div class="cert-skeleton-bar" style="width:80%; height:16px;"></div>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-top:12px;">
+                        <div class="cert-skeleton-bar" style="height:56px; border-radius:10px;"></div>
+                        <div class="cert-skeleton-bar" style="height:56px; border-radius:10px;"></div>
+                        <div class="cert-skeleton-bar" style="height:56px; border-radius:10px;"></div>
+                    </div>
+                    <div style="text-align:center; padding-top:12px; border-top:1px solid rgba(255,255,255,0.06);">
+                        <div style="font-weight:600; font-size:0.95rem; color:#38bdf8;">Verificando firma criptográfica en el borde...</div>
+                        <div style="font-size:0.75rem; color:#64748b; margin-top:4px;">Comprobando cryptosuite stemos-ed25519-hmac-sha256-2026</div>
+                    </div>
                 </div>
             `;
         }

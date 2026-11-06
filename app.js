@@ -766,8 +766,13 @@ document.addEventListener('DOMContentLoaded', () => {
         typingDiv.id = 'tutor-typing';
         typingDiv.innerHTML = `
             <div class="avatar">F</div>
-            <div class="message-bubble" style="padding: 10px 20px;">
-                <span style="font-style: italic; color: var(--text-secondary);"><i class="fa-solid fa-spinner fa-spin"></i> Analizando respuesta técnica...</span>
+            <div class="message-bubble" style="padding: 10px 20px; display:inline-flex; align-items:center; gap:8px;">
+                <span style="display:inline-flex; align-items:center; gap:4px;">
+                    <span style="width:7px; height:7px; border-radius:50%; background:#0284c7; display:inline-block; animation:typingBounce 1.4s infinite ease-in-out both; animation-delay:-0.32s;"></span>
+                    <span style="width:7px; height:7px; border-radius:50%; background:#0284c7; display:inline-block; animation:typingBounce 1.4s infinite ease-in-out both; animation-delay:-0.16s;"></span>
+                    <span style="width:7px; height:7px; border-radius:50%; background:#0284c7; display:inline-block; animation:typingBounce 1.4s infinite ease-in-out both;"></span>
+                </span>
+                <span style="font-style: italic; color: var(--text-secondary); font-size:0.9rem;">Analizando respuesta técnica...</span>
             </div>
         `;
         chatMessagesContainer.appendChild(typingDiv);
@@ -3227,7 +3232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const origHtml = btn ? btn.innerHTML : '';
         if (btn) {
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sincronizando...`;
+            btn.innerHTML = `<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#38bdf8; animation:stemosPulseDot 1s infinite alternate; margin-right:6px;"></span> Sincronizando...`;
         }
         try {
             await window.syncStudentProgressToFirestore(true);
@@ -5391,7 +5396,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
             btn.disabled = true;
         }
         if (label) {
-            label.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando audios...';
+            label.innerHTML = '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#0284c7; animation:stemosPulseDot 1s infinite alternate; margin-right:6px;"></span> Guardando audios...';
         }
 
         // Collect pre-rendered static audio files for this unit
@@ -5890,7 +5895,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         e.stopPropagation();
                         if (btnMic._isRecording) return;
                         btnMic._isRecording = true;
-                        btnMic.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" style="color:#ef4444; font-size:0.75rem;"></i>';
+                        btnMic.innerHTML = '<i class="fa-solid fa-microphone-lines" style="color:#ef4444; font-size:0.75rem;"></i>';
                         btnMic.style.background = '#fee2e2';
 
                         feedback.style.display = 'block';
@@ -6947,7 +6952,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
             btnPlayRecorded.onclick = () => {
                 if (recordedAudioUrl) {
                     const audio = new Audio(recordedAudioUrl);
-                    btnPlayRecorded.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                    btnPlayRecorded.innerHTML = '<i class="fa-solid fa-volume-high" style="color:#0284c7;"></i>';
                     audio.onended = () => {
                         btnPlayRecorded.innerHTML = '<i class="fa-solid fa-play"></i>';
                     };
@@ -6956,7 +6961,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         btnPlayRecorded.innerHTML = '<i class="fa-solid fa-play"></i>';
                     });
                 } else if (crucibleInput && crucibleInput.value) {
-                    btnPlayRecorded.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                    btnPlayRecorded.innerHTML = '<i class="fa-solid fa-volume-high" style="color:#0284c7;"></i>';
                     triggerVuSimulation(3000);
                     if (window.speakText) {
                         window.speakText(crucibleInput.value);
@@ -8714,7 +8719,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 const rec = new SpeechRec();
                 rec.lang = 'en-US';
                 rec.interimResults = false;
-                dictBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Escuchando...';
+                dictBtn.innerHTML = '<i class="fa-solid fa-microphone-lines" style="color:#ef4444;"></i> Escuchando...';
                 rec.onresult = (evt) => {
                     const transcript = evt.results[0][0].transcript;
                     if (inputEl) {
@@ -10091,7 +10096,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (syncPill) {
             syncPill.style.display = 'inline-flex';
             syncPill.className = 'mcer-sync-pill syncing';
-            syncPill.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sincronizando...';
+            syncPill.innerHTML = '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#38bdf8; animation:stemosPulseDot 1s infinite alternate; margin-right:6px;"></span> Sincronizando...';
         }
         if (window.STEMOS_SYNC && typeof window.STEMOS_SYNC.flushQueue === 'function') {
             window.STEMOS_SYNC.flushQueue().then(res => {

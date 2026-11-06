@@ -2009,7 +2009,7 @@
             const testText = "Welcome to stemOS. Audio check complete. Your speakers and speech synthesis are working perfectly.";
             if (window.STEMOS_PLACEMENT_TEST && window.STEMOS_PLACEMENT_TEST.playAudioPrompt) {
                 window.STEMOS_PLACEMENT_TEST.playAudioPrompt(testText, 
-                    () => { document.getElementById('btn-audio-test').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Audio Test...'; },
+                    () => { document.getElementById('btn-audio-test').innerHTML = '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#0284c7; animation:stemosPulseDot 1s infinite alternate; margin-right:6px;"></span> Audio Test...'; },
                     () => { document.getElementById('btn-audio-test').innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Audio OK'; },
                     'pt-test-audio'
                 );
@@ -2049,7 +2049,7 @@
             const originalBtnHtml = btn ? btn.innerHTML : '';
             if (btn) {
                 btn.disabled = true;
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>' + (currentLang === 'en' ? 'Connecting to Google...' : 'Conectando con Google...') + '</span>';
+                btn.innerHTML = '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#0284c7; animation:stemosPulseDot 1s infinite alternate; margin-right:6px;"></span> <span>' + (currentLang === 'en' ? 'Connecting to Google...' : 'Conectando con Google...') + '</span>';
             }
 
             const ready = await ensurePlacementFirebaseAuthReady();
@@ -2214,7 +2214,7 @@
                         notice.style.background = '#f0f9ff';
                         notice.style.border = '1px solid #bae6fd';
                         notice.style.color = '#0284c7';
-                        notice.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Conectando con Google OAuth...';
+                        notice.innerHTML = '<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#0284c7; animation:stemosPulseDot 1s infinite alternate; margin-right:6px;"></span> Conectando con Google OAuth...';
                     }
                     auth.signInWithPopup(provider).then((result) => {
                         if (result && result.user) {
