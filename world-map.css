@@ -1,5 +1,5 @@
 /* ==========================================================================
-   STEMOS LXP - 3D WORLD GLOBE & GAMIFIED LEARNING PATH (MARIO / DUOLINGO)
+   STEMOS LXP - 3D WORLD GLOBE & GAMIFIED LEARNING PATH
    High-performance, lightweight, hardware-accelerated interactive experience
    WHITE TECH MODE WITH DYNAMIC COLORFUL AURORAS & SEQUENTIAL EXPEDITION
    ========================================================================== */
@@ -473,7 +473,7 @@
 }
 
 /* ==========================================================================
-   LEVEL PATH VIEW (SUPER MARIO BROS & DUOLINGO WINDING TRAIL)
+   LEVEL PATH VIEW (INTERACTIVE WINDING TRAIL)
    ========================================================================== */
 .world-level-path-view {
     position: absolute;

@@ -1,5 +1,5 @@
 /**
- * Test Suite: stemOS Duolingo-Style Learning Path Engine & Interactive Lesson Runner
+ * Test Suite: stemOS Interactive Learning Path Engine & Micro-Lesson Runner
  */
 const fs = require('fs');
 const path = require('path');
@@ -11,7 +11,7 @@ const appJs = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8');
 const devCss = fs.readFileSync(path.join(ROOT, 'dev.css'), 'utf8');
 
 console.log('═══════════════════════════════════════════════════════════════════');
-console.log('🎮 stemOS Duolingo-Style Learning Path Verification Suite');
+console.log('🎮 stemOS Interactive Learning Path Verification Suite');
 console.log('═══════════════════════════════════════════════════════════════════\n');
 
 let pass = 0;
@@ -34,7 +34,7 @@ test('app.html contains #stemos-duo-hud-bar with Mode Switcher', () => {
   assert(appHtml.includes('id="btn-duo-mode-grid"'), 'Missing #btn-duo-mode-grid');
 });
 
-test('app.html contains Duolingo HUD metrics (Streak, XP, Hearts, Hours)', () => {
+test('app.html contains Interactive HUD metrics (Streak, XP, Hearts, Hours)', () => {
   assert(appHtml.includes('id="duo-streak-count"'), 'Missing #duo-streak-count');
   assert(appHtml.includes('id="duo-xp-count"'), 'Missing #duo-xp-count');
   assert(appHtml.includes('id="duo-hearts-count"'), 'Missing #duo-hearts-count');
@@ -221,14 +221,14 @@ test('app.js handles atwork-lab view routing directly to Output Workspace', () =
   assert(appJs.includes('window.openAtWorkLab'), 'Missing window.openAtWorkLab helper');
 });
 
-console.log('\n▶ 9. Universal Duolingo Lesson Launchers & 5-Step Micro-Progression');
+console.log('\n▶ 9. Universal Interactive Lesson Launchers & 5-Step Micro-Progression');
 test('app.js exports startDuoLessonForUnit, openDuoLesson, and DUO_STEPS_META', () => {
   assert(appJs.includes('window.startDuoLessonForUnit = startDuoLessonForUnit;'), 'Missing window.startDuoLessonForUnit');
   assert(appJs.includes('window.openDuoLesson = openDuoLesson;'), 'Missing window.openDuoLesson');
   assert(appJs.includes('window.DUO_STEPS_META = DUO_STEPS_META;'), 'Missing window.DUO_STEPS_META');
 });
 
-test('app.js renders 5-step micro-lesson buttons and direct Duolingo play button', () => {
+test('app.js renders 5-step micro-lesson buttons and direct interactive play button', () => {
   assert(appJs.includes('class="duo-sub-step-btn"'), 'Missing duo-sub-step-btn in app.js');
   assert(appJs.includes('class="btn-play-duo-direct"'), 'Missing btn-play-duo-direct in app.js');
   assert(appJs.includes('class="btn-syllabus-direct"'), 'Missing btn-syllabus-direct in app.js');
@@ -246,7 +246,7 @@ test('dev.css defines .duo-steps-strip, .duo-sub-step-btn, .btn-play-duo-direct,
   assert(devCss.includes('.btn-mcer-launch-duo'), 'Missing .btn-mcer-launch-duo in dev.css');
 });
 
-console.log('\n▶ 10. 100% Platform Exercises Duolingo Overhaul & Progression Loop');
+console.log('\n▶ 10. 100% Platform Exercises Interactive Overhaul & Progression Loop');
 test('resumeActiveLearningUnit routes directly to startDuoLessonForUnit', () => {
   assert(appJs.includes('window.resumeActiveLearningUnit = function()'), 'Missing resumeActiveLearningUnit');
   assert(appJs.includes('window.startDuoLessonForUnit(unitId, 1)'), 'resumeActiveLearningUnit not routing to startDuoLessonForUnit');
@@ -258,13 +258,13 @@ test('advanceToNextDuoLesson implements continuous flow to next micro-step or un
   assert(appJs.includes('startDuoLessonForUnit(nextUnitId, 1)'), 'Missing canonical unit advancement');
 });
 
-test('startDuoExamMarathon transforms track certification exam to interactive Duolingo runner', () => {
+test('startDuoExamMarathon transforms track certification exam to interactive runner', () => {
   assert(appJs.includes('window.startDuoExamMarathon = function()'), 'Missing startDuoExamMarathon');
   assert(appHtml.includes('id="btn-start-duo-exam"'), 'Missing #btn-start-duo-exam in app.html');
   assert(appHtml.includes('class="duo-exam-launcher-card"'), 'Missing .duo-exam-launcher-card in app.html');
 });
 
-test('Unit study screens include Duolingo launchers across vocab, listening, grammar and boss quiz', () => {
+test('Unit study screens include interactive launchers across vocab, listening, grammar and boss quiz', () => {
   assert(appHtml.includes('Vocab Sprint & Tap-to-Pair Interactivo'), 'Missing Vocab Sprint banner in app.html');
   assert(appHtml.includes('Industrial Audio Lab (Piper Neural)'), 'Missing Audio Lab banner in app.html');
   assert(appHtml.includes('Grammar Drills & Sintaxis Operativa'), 'Missing Grammar Drills banner in app.html');
@@ -274,5 +274,5 @@ test('Unit study screens include Duolingo launchers across vocab, listening, gra
 console.log('\n═══════════════════════════════════════════════════════════════════');
 console.log(`🏁 RESULT: ${pass}/32 TESTS PASSED (100%)`);
 console.log('═══════════════════════════════════════════════════════════════════\n');
-console.log('🎉 STEMOS DUOLINGO-STYLE LEARNING PATH ENGINE FULLY VERIFIED!\n');
+console.log('🎉 STEMOS INTERACTIVE LEARNING PATH ENGINE FULLY VERIFIED!\n');
 

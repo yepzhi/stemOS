@@ -23201,7 +23201,7 @@ html.theme-light body {
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   STEMOS DUOLINGO-STYLE LEARNING PATH ENGINE & BITE-SIZED LESSON RUNNER
+   STEMOS INTERACTIVE LEARNING PATH ENGINE & BITE-SIZED LESSON RUNNER
    ══════════════════════════════════════════════════════════════════════════ */
 
 /* 1. HUD & Mode Switcher Bar */
@@ -23684,7 +23684,7 @@ html.theme-light body {
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   DUOLINGO-STYLE FULLSCREEN IMMERSIVE LESSON RUNNER
+   INTERACTIVE FULLSCREEN IMMERSIVE LESSON RUNNER
    ══════════════════════════════════════════════════════════════════════════ */
 .duo-runner-overlay {
   position: fixed;

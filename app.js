@@ -3282,7 +3282,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "• Puntos XP: Se restablecen a 0 XP\n" +
             "• Racha diaria: Se restablece a 1 día\n" +
             "• Horas CACEI: Se restablecen a 0.0 hrs\n" +
-            "• Lecciones Duolingo completadas: Se restablecen a 0\n" +
+            "• Lecciones interactivas completadas: Se restablecen a 0\n" +
             "• Nivel MCER: Se restablece a A1 (Principiante Absoluto)\n" +
             "• Examen Diagnóstico / Folio: Se borra para permitir volver a presentarlo\n\n" +
             "Esta acción sincronizará el reinicio tanto en este dispositivo como en tu cuenta de Cloud Firestore.\n\n" +
@@ -10134,7 +10134,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
     }
 
     /* ══════════════════════════════════════════════════════════════════════════
-       STEMOS DUOLINGO-STYLE LEARNING PATH ENGINE & BITE-SIZED LESSON RUNNER
+       STEMOS INTERACTIVE LEARNING PATH ENGINE & BITE-SIZED LESSON RUNNER
        ══════════════════════════════════════════════════════════════════════════ */
 
     // 1. Web Audio Synthesizer for Modern, Zero-Latency Acoustic Haptic Sound Effects
@@ -10381,7 +10381,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         }
     };
 
-    // 3. View Switcher: Duolingo Path vs Traditional Grid
+    // 3. View Switcher: Interactive Path vs Traditional Grid
     window.switchDuoViewMode = function(mode) {
         const pathView = document.getElementById('stemos-duo-path-view');
         const gridView = document.getElementById('stemos-duo-grid-view');
@@ -11048,7 +11048,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         <span>${mod.standard || 'ISO / IEEE'}</span>
                     </div>
 
-                    <!-- 5-Step Micro-Lessons Strip (Duolingo Engine) -->
+                    <!-- 5-Step Micro-Lessons Strip (Interactive Engine) -->
                     <div class="duo-steps-strip">
                         <button type="button" class="duo-sub-step-btn" title="Paso 1: Vocab Sprint (Emparejamiento)" data-step="1">
                             <i class="fa-solid fa-shapes"></i> Vocab
@@ -11068,8 +11068,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     </div>
 
                     <div style="display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap;">
-                        <button type="button" class="btn-play-duo-direct" title="Iniciar sesión interactiva tipo Duolingo">
-                            <i class="fa-solid fa-gamepad"></i> <span>Lección Duolingo</span>
+                        <button type="button" class="btn-play-duo-direct" title="Iniciar sesión interactiva con vidas y XP">
+                            <i class="fa-solid fa-gamepad"></i> <span>Lección Interactiva</span>
                         </button>
                         <button type="button" class="btn-syllabus-direct" title="Ver temario formal de la unidad">
                             <i class="fa-solid fa-book-open"></i> <span>Syllabus Completo</span>
@@ -12353,7 +12353,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
     // 9. Initial Load & Event Binding
     updateDuoHudUI();
 
-    // Default to Duolingo Path view unless explicitly set to grid
+    // Default to Interactive Path view unless explicitly set to grid
     const savedViewMode = localStorage.getItem('stemos_duo_view_mode') || 'path';
     window.switchDuoViewMode(savedViewMode);
 

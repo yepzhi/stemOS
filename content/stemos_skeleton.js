@@ -116,7 +116,7 @@
         },
 
         /**
-         * Generates dimension-matched Snake Path Skeletons (Duolingo Path)
+         * Generates dimension-matched Snake Path Skeletons (Interactive Path)
          */
         renderSnakePathSkeleton: function (unitCount = 2) {
             let html = '';

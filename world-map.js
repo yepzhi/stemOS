@@ -1,6 +1,6 @@
 /**
  * ==========================================================================
- * stemOS LXP - 3D World Globe & Gamified Level Path (Super Mario / Duolingo)
+ * stemOS LXP - 3D World Globe & Gamified Level Path
  * Pure Vanilla JavaScript & HTML5 Canvas, zero external libraries.
  * Fast, lightweight, hardware-accelerated, touch & gesture friendly.
  * ==========================================================================
@@ -449,7 +449,7 @@
                             <span id="wtt-stars-count"><i class="fa-solid fa-star" style="color:#fbbf24;"></i> 2 Ganadas</span>
                         </div>
                         <div class="wtt-cta">
-                            <span>Explorar Camino &bull; Duolingo/Mario</span>
+                            <span>Explorar Ruta Interactiva</span>
                             <i class="fa-solid fa-arrow-right"></i>
                         </div>
                     </div>
@@ -480,7 +480,7 @@
                         </div>
                     </div>
 
-                    <!-- Level Path View (Super Mario & Duolingo Winding Trail) -->
+                    <!-- Level Path View (Interactive Winding Trail) -->
                     <div class="world-level-path-view" id="world-level-path-view">
                         <!-- Top Bar in Path -->
                         <div class="path-header-card">
@@ -1819,7 +1819,7 @@
         }
 
         /* ==========================================================================
-           LEVEL PATH VIEW (SUPER MARIO BROS & DUOLINGO WINDING PATH)
+           LEVEL PATH VIEW (INTERACTIVE WINDING PATH)
            ========================================================================== */
         openWorldPath(trackId, targetNode) {
             let track = this.courses[trackId];
