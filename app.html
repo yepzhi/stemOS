@@ -296,8 +296,7 @@
         #nav-btn-placement i { color: #059669 !important; }
         #nav-btn-world i { color: #7c3aed !important; }
         #nav-btn-graph i { color: #4f46e5 !important; }
-        #nav-btn-email i { color: #0284c7 !important; }
-        #nav-btn-output-lab i { color: #6366f1 !important; }
+        #nav-btn-atwork i, #nav-btn-email i, #nav-btn-output-lab i { color: #0284c7 !important; }
         #nav-btn-tutor i { color: #db2777 !important; }
         #nav-btn-badges i { color: #d97706 !important; }
         #nav-btn-glossary i { color: #0d9488 !important; }
@@ -909,18 +908,12 @@
                     <span class="ed-rail-label">Grafo</span>
                     <span class="ed-rail-tooltip">Skills Graph</span>
                 </button>
-                <button class="ed-rail-btn" data-view="escalation-email" id="nav-btn-email"
-                    title="Executive Escalation Email Builder (BLUF & Cross-Border)">
+                <button class="ed-rail-btn" data-view="atwork-lab" id="nav-btn-atwork"
+                    title="atWork Lab (Executive Email BLUF &amp; 8D Problem Solving Studio)">
                     <span class="ed-rail-active-indicator"></span>
-                    <i class="fa-solid fa-envelope-open-text" style="color:#0284c7;"></i>
-                    <span class="ed-rail-label">Email BLUF</span>
-                    <span class="ed-rail-tooltip">Escalation Email Builder</span>
-                </button>
-                <button class="ed-rail-btn" data-view="output-lab" id="nav-btn-output-lab" title="8D Problem Solving Studio (IATF 16949 / ISO 9001)">
-                    <span class="ed-rail-active-indicator"></span>
-                    <i class="fa-solid fa-pen-ruler"></i>
-                    <span class="ed-rail-label">8D Studio</span>
-                    <span class="ed-rail-tooltip">8D Problem Solving Studio</span>
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span class="ed-rail-label">atWork Lab</span>
+                    <span class="ed-rail-tooltip">atWork Lab</span>
                 </button>
                 <button class="ed-rail-btn" data-view="micro-badges" id="nav-btn-badges"
                     title="Insignias y Certificados">
@@ -964,10 +957,10 @@
                 <i class="fa-solid fa-earth-americas"></i>
                 <span class="ed-dock-label">Mundo 3D</span>
             </button>
-            <button class="ed-dock-btn" data-view="escalation-email" id="dock-btn-email" aria-label="Email Builder">
+            <button class="ed-dock-btn" data-view="atwork-lab" id="dock-btn-atwork" aria-label="atWork Lab">
                 <span class="ed-dock-indicator"></span>
-                <i class="fa-solid fa-envelope-open-text"></i>
-                <span class="ed-dock-label">Email</span>
+                <i class="fa-solid fa-briefcase"></i>
+                <span class="ed-dock-label">atWork</span>
             </button>
             <button class="ed-dock-btn" data-view="micro-badges" id="dock-btn-badges" aria-label="Progreso">
                 <span class="ed-dock-indicator"></span>
@@ -1155,9 +1148,9 @@
                             </button>
                         </div>
                         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-                            <button type="button" class="btn" id="btn-hero-launch-email" onclick="switchDashboardView('escalation-email')" style="padding:8px 16px; font-size:0.85rem; font-weight:700; border-radius:12px; background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color:#ffffff; border:1px solid #334155; box-shadow:0 4px 12px rgba(15,23,42,0.18); cursor:pointer; display:inline-flex; align-items:center; gap:8px;" title="Executive Escalation Email Builder (BLUF Standard)">
-                                <i class="fa-solid fa-envelope-open-text" style="color:#38bdf8;"></i>
-                                <span>Email Builder <span style="font-size:0.7rem; font-weight:800; background:rgba(56,189,248,0.2); color:#38bdf8; padding:1px 6px; border-radius:999px;">BLUF</span></span>
+                            <button type="button" class="btn" id="btn-hero-launch-atwork" data-legacy-id="btn-hero-launch-email" onclick="switchDashboardView('atwork-lab')" style="padding:8px 16px; font-size:0.85rem; font-weight:700; border-radius:12px; background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color:#ffffff; border:1px solid #334155; box-shadow:0 4px 12px rgba(15,23,42,0.18); cursor:pointer; display:inline-flex; align-items:center; gap:8px;" title="atWork Lab (Email BLUF &amp; 8D Problem Solving)">
+                                <i class="fa-solid fa-briefcase" style="color:#38bdf8;"></i>
+                                <span>atWork Lab <span style="font-size:0.7rem; font-weight:800; background:rgba(56,189,248,0.2); color:#38bdf8; padding:1px 6px; border-radius:999px;">BLUF &bull; 8D</span></span>
                             </button>
                             <a href="placement.html" class="btn btn-primary" id="btn-hero-launch-placement" style="padding:8px 16px; font-size:0.85rem; font-weight:700; border-radius:12px; background:linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); color:#ffffff; border:none; box-shadow:0 4px 12px rgba(2,132,199,0.25); text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
                                 <i class="fa-solid fa-clipboard-check"></i> Tomar Placement Test (30 min)
@@ -1924,45 +1917,53 @@
                     <div class="output-lab-section" style="max-width: 1240px; margin: 0 auto; width: 100%; padding: 24px; background: transparent; border: none;">
                         <div class="output-lab-header">
                             <div class="output-lab-badge">
-                                <i class="fa-solid fa-pen-ruler"></i> ACTIVE PRODUCTION LAB &bull; OUTPUT ENGINE
+                                <i class="fa-solid fa-briefcase"></i> ATWORK LAB &bull; INDUSTRIAL OUTPUT SUITE
                             </div>
                             <h2 class="output-lab-title">
-                                Technical Output Studio: <span class="supaste-serif-italic">8D Problem Solving</span> &amp; Escalation Email
+                                atWork Lab: <span class="supaste-serif-italic">Executive Email BLUF</span> &amp; 8D Problem Solving
                             </h2>
                             <p class="output-lab-desc">
-                                Shift from passive comprehension to active engineering output. Draft audit-ready 8D corrective action reports and structured executive escalation emails with real-time AI rubric scoring and diplomatic cross-border tone validation.
+                                Shift from passive comprehension to active engineering output. Draft diplomatic cross-border escalation emails with executive BLUF structure and audit-ready 8D corrective action reports with real-time AI rubric scoring.
                             </p>
 
                             <!-- Studio Mode Switcher Pills -->
                             <div class="output-mode-pills" role="tablist">
-                                <button class="output-mode-btn active" id="btn-mode-8d" data-mode="8d" role="tab" aria-selected="true">
+                                <button class="output-mode-btn active" id="btn-mode-email" data-mode="email" role="tab" aria-selected="true">
+                                    <i class="fa-solid fa-envelope-open-text"></i>
+                                    <span>Executive Escalation Email Builder (BLUF)</span>
+                                </button>
+                                <button class="output-mode-btn" id="btn-mode-8d" data-mode="8d" role="tab" aria-selected="false">
                                     <i class="fa-solid fa-list-check"></i>
                                     <span>8D Problem Solving Studio (D1–D8)</span>
-                                </button>
-                                <button class="output-mode-btn" id="btn-mode-email" data-mode="email" role="tab" aria-selected="false">
-                                    <i class="fa-solid fa-envelope-open-text"></i>
-                                    <span>Executive Escalation Email Builder</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- WORKSPACE 1: 8D PROBLEM SOLVING STUDIO -->
                         <div class="output-workspace" id="workspace-8d">
+                            <!-- Helpful Quick Guidance -->
+                            <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:14px; padding:14px 18px; margin-bottom:18px; display:flex; align-items:center; gap:14px; font-size:0.88rem; color:#0369a1;">
+                                <i class="fa-solid fa-circle-info" style="font-size:1.3rem; color:#0284c7; flex-shrink:0;"></i>
+                                <div style="line-height:1.45;">
+                                    <strong>¿Cómo funciona el 8D Studio?</strong> Redacta tu reporte de acciones correctivas paso a paso (de <strong>D1 a D8</strong>) o explora los <strong>ejemplos resueltos</strong> de la industria abajo para ver cómo se documentan fallas reales en plantas de manufactura automotriz, médica y de semiconductores.
+                                </div>
+                            </div>
+
                             <!-- Preset Selector Strip -->
                             <div class="scenario-preset-strip">
-                                <span class="preset-label"><i class="fa-solid fa-bolt"></i> Cargar Escenario Industrial:</span>
+                                <span class="preset-label"><i class="fa-solid fa-bolt"></i> Cargar Ejemplo Resuelto:</span>
                                 <div class="preset-buttons">
                                     <button class="preset-chip active" data-preset="auto_weld">
-                                        <i class="fa-solid fa-car-side"></i> Automotriz: Porosidad en Soldadura Láser (IATF 16949)
+                                        <i class="fa-solid fa-car-side"></i> Automotriz (Soldadura Láser IATF)
                                     </button>
                                     <button class="preset-chip" data-preset="med_balloon">
-                                        <i class="fa-solid fa-heart-pulse"></i> Dispositivos Médicos: Falla de Presión de Balón (FDA 21 CFR 820)
+                                        <i class="fa-solid fa-heart-pulse"></i> Dispositivos Médicos (Catéter FDA)
                                     </button>
                                     <button class="preset-chip" data-preset="semi_wafer">
-                                        <i class="fa-solid fa-microchip"></i> Semiconductores: Deriva de Dimensión Crítica en Fotolitografía
+                                        <i class="fa-solid fa-microchip"></i> Semiconductores (Litografía DUV)
                                     </button>
                                     <button class="preset-chip" data-preset="custom_blank">
-                                        <i class="fa-solid fa-plus"></i> Formulario en Blanco
+                                        <i class="fa-solid fa-file-pen"></i> Formulario en Blanco
                                     </button>
                                 </div>
                             </div>
@@ -3712,7 +3713,7 @@
     <script src="/content/placement_test.js?v=1.0.0" defer></script>
     <script src="/content/stemos_payments.js?v=1.1.0" defer></script>
     <script src="/content/stemos_skeleton.js?v=1.0.0" defer></script>
-    <script src="/app.js?v=1.2.4" defer></script>
+    <script src="/app.js?v=1.2.5" defer></script>
     <script src="/world-map.js?v=1.2.2" defer></script>
 
     <!-- Service Worker PWA Registration & Auto-Update Engine -->

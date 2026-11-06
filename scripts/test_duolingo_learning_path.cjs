@@ -206,18 +206,19 @@ test('world-map.js omits redundant 26-career selector, biome subtitle, and gener
   assert(!worldMapJs.includes('Todos (26)'), 'Generic Todos (26) should be removed');
 });
 
-console.log('\n▶ 8. Executive Escalation Email Builder Standalone Navigation & Quick Launcher');
-test('app.html contains standalone #nav-btn-email and #dock-btn-email with data-view="escalation-email"', () => {
-  assert(appHtml.includes('id="nav-btn-email"'), 'Missing #nav-btn-email in app.html rail');
-  assert(appHtml.includes('id="dock-btn-email"'), 'Missing #dock-btn-email in app.html mobile dock');
-  assert(appHtml.includes('data-view="escalation-email"'), 'Missing data-view="escalation-email"');
-  assert(appHtml.includes('id="btn-hero-launch-email"'), 'Missing #btn-hero-launch-email quick launcher');
+console.log('\n▶ 8. atWork Lab Unified Navigation (Executive Email & 8D Problem Solving)');
+test('app.html contains unified #nav-btn-atwork and #dock-btn-atwork with data-view="atwork-lab" and label atWork Lab', () => {
+  assert(appHtml.includes('id="nav-btn-atwork"'), 'Missing #nav-btn-atwork in app.html rail');
+  assert(appHtml.includes('atWork Lab'), 'Missing atWork Lab label in app.html rail');
+  assert(appHtml.includes('id="dock-btn-atwork"'), 'Missing #dock-btn-atwork in app.html mobile dock');
+  assert(appHtml.includes('data-view="atwork-lab"'), 'Missing data-view="atwork-lab"');
+  assert(appHtml.includes('id="btn-hero-launch-atwork"'), 'Missing #btn-hero-launch-atwork quick launcher');
 });
 
-test('app.js handles escalation-email view routing directly to Executive Email Workspace', () => {
-  assert(appJs.includes("viewName === 'escalation-email' || viewName === 'email-builder'"), 'Missing escalation-email view router check in app.js');
+test('app.js handles atwork-lab view routing directly to Output Workspace', () => {
+  assert(appJs.includes("viewName === 'atwork-lab'"), 'Missing atwork-lab view router check in app.js');
   assert(appJs.includes('renderExecutiveEmail()'), 'Missing renderExecutiveEmail call on view activation');
-  assert(appJs.includes('window.openEscalationEmailBuilder'), 'Missing window.openEscalationEmailBuilder helper');
+  assert(appJs.includes('window.openAtWorkLab'), 'Missing window.openAtWorkLab helper');
 });
 
 console.log('\n═══════════════════════════════════════════════════════════════════');

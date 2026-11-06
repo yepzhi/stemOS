@@ -2180,7 +2180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollToCatalog = true;
         } else if (viewName === 'lab') {
             targetId = 'view-glossary';
-        } else if (viewName === 'escalation-email' || viewName === 'email-builder') {
+        } else if (viewName === 'atwork-lab' || viewName === 'output-lab' || viewName === 'escalation-email' || viewName === 'email-builder') {
             targetId = 'view-output-lab';
         } else if (viewName === 'eval') {
             targetId = 'view-all-units';
@@ -2232,11 +2232,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Update active state on sidebar buttons & mobile dock buttons
+        const isAtWorkActive = (viewName === 'atwork-lab' || viewName === 'output-lab' || viewName === 'escalation-email' || viewName === 'email-builder');
         edRailBtns.forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.view === viewName);
+            const btnView = btn.dataset.view;
+            if (isAtWorkActive && (btnView === 'atwork-lab' || btnView === 'output-lab' || btnView === 'escalation-email')) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.toggle('active', btnView === viewName);
+            }
         });
         document.querySelectorAll('.ed-dock-btn[data-view]').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.view === viewName);
+            const btnView = btn.dataset.view;
+            if (isAtWorkActive && (btnView === 'atwork-lab' || btnView === 'output-lab' || btnView === 'escalation-email')) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.toggle('active', btnView === viewName);
+            }
         });
 
         // Dynamic View-Specific Renderers & Initializers
@@ -2275,7 +2286,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof initGlossarySM2 === 'function' && window._sm2ModeActive) {
                 initGlossarySM2();
             }
-        } else if (viewName === 'escalation-email' || viewName === 'email-builder') {
+        } else if (viewName === 'atwork-lab' || viewName === 'escalation-email' || viewName === 'email-builder' || viewName === 'output-lab') {
             if (typeof initOutputLab === 'function') {
                 initOutputLab();
             }
@@ -2283,34 +2294,31 @@ document.addEventListener('DOMContentLoaded', () => {
             const btnModeEmail = document.getElementById('btn-mode-email');
             const workspace8D = document.getElementById('workspace-8d');
             const workspaceEmail = document.getElementById('workspace-email');
-            if (btnModeEmail && workspaceEmail) {
-                if (btnMode8D) {
-                    btnMode8D.classList.remove('active');
-                    btnMode8D.setAttribute('aria-selected', 'false');
-                }
-                btnModeEmail.classList.add('active');
-                btnModeEmail.setAttribute('aria-selected', 'true');
-                if (workspace8D) workspace8D.style.display = 'none';
-                workspaceEmail.style.display = 'block';
-                if (typeof renderExecutiveEmail === 'function') renderExecutiveEmail();
-            }
-        } else if (viewName === 'output-lab') {
-            if (typeof initOutputLab === 'function') {
-                initOutputLab();
-            }
-            const btnMode8D = document.getElementById('btn-mode-8d');
-            const btnModeEmail = document.getElementById('btn-mode-email');
-            const workspace8D = document.getElementById('workspace-8d');
-            const workspaceEmail = document.getElementById('workspace-email');
-            if (btnMode8D && workspace8D) {
+
+            const show8D = (viewName === 'output-lab');
+            if (show8D) {
                 if (btnModeEmail) {
                     btnModeEmail.classList.remove('active');
                     btnModeEmail.setAttribute('aria-selected', 'false');
                 }
-                btnMode8D.classList.add('active');
-                btnMode8D.setAttribute('aria-selected', 'true');
-                workspace8D.style.display = 'block';
+                if (btnMode8D) {
+                    btnMode8D.classList.add('active');
+                    btnMode8D.setAttribute('aria-selected', 'true');
+                }
                 if (workspaceEmail) workspaceEmail.style.display = 'none';
+                if (workspace8D) workspace8D.style.display = 'block';
+            } else {
+                if (btnMode8D) {
+                    btnMode8D.classList.remove('active');
+                    btnMode8D.setAttribute('aria-selected', 'false');
+                }
+                if (btnModeEmail) {
+                    btnModeEmail.classList.add('active');
+                    btnModeEmail.setAttribute('aria-selected', 'true');
+                }
+                if (workspace8D) workspace8D.style.display = 'none';
+                if (workspaceEmail) workspaceEmail.style.display = 'block';
+                if (typeof renderExecutiveEmail === 'function') renderExecutiveEmail();
             }
         }
     }
@@ -4266,10 +4274,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 workspace8D.style.display = 'block';
                 workspaceEmail.style.display = 'none';
                 document.querySelectorAll('.ed-rail-btn[data-view]').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.view === 'output-lab');
+                    const v = btn.dataset.view;
+                    btn.classList.toggle('active', v === 'atwork-lab' || v === 'output-lab');
                 });
                 document.querySelectorAll('.ed-dock-btn[data-view]').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.view === 'output-lab');
+                    const v = btn.dataset.view;
+                    btn.classList.toggle('active', v === 'atwork-lab' || v === 'output-lab');
                 });
             });
 
@@ -4282,10 +4292,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 workspace8D.style.display = 'none';
                 renderExecutiveEmail();
                 document.querySelectorAll('.ed-rail-btn[data-view]').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.view === 'escalation-email');
+                    const v = btn.dataset.view;
+                    btn.classList.toggle('active', v === 'atwork-lab' || v === 'escalation-email');
                 });
                 document.querySelectorAll('.ed-dock-btn[data-view]').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.view === 'escalation-email');
+                    const v = btn.dataset.view;
+                    btn.classList.toggle('active', v === 'atwork-lab' || v === 'escalation-email');
                 });
             });
         }
@@ -4711,7 +4723,12 @@ Nearshoring Center of Excellence • stemOS Certified`;
     window.initOutputLab = initOutputLab;
     window.openEscalationEmailBuilder = function() {
         if (typeof window.switchDashboardView === 'function') {
-            window.switchDashboardView('escalation-email');
+            window.switchDashboardView('atwork-lab');
+        }
+    };
+    window.openAtWorkLab = function(mode = 'email') {
+        if (typeof window.switchDashboardView === 'function') {
+            window.switchDashboardView(mode === '8d' ? 'output-lab' : 'atwork-lab');
         }
     };
 
