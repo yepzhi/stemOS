@@ -155,8 +155,39 @@ test('app.html student profile modal uses clean white glassmorphic theme and liv
   assert(appHtml.includes('data-aurora-full'), 'Missing data-aurora-full on body');
 });
 
+console.log('\n▶ 6. Sequential Progression Locking, Audio STOP, English Milestones & Clean UI');
+test('app.js enforces canonical sequential unit progression and prerequisite gating', () => {
+  assert(appJs.includes('CANONICAL_MCER_UNIT_IDS'), 'Missing CANONICAL_MCER_UNIT_IDS');
+  assert(appJs.includes('function isMcerUnitCompleted'), 'Missing isMcerUnitCompleted');
+  assert(appJs.includes('function isMcerUnitUnlocked'), 'Missing isMcerUnitUnlocked');
+  assert(appJs.includes('!isDemo && !isMcerUnitUnlocked(unitId)'), 'openMcerUnitModal missing unlock check');
+  assert(appJs.includes('ed-unit-card${!isUnlocked ? \' unit-locked\' : \'\'}'), 'renderMcerUnitsGrid missing unit-locked class');
+});
+
+test('app.html and app.js implement multi-location audio STOP buttons and speed selectors', () => {
+  assert(appHtml.includes('id="btn-mcer-header-stop-audio"'), 'Missing #btn-mcer-header-stop-audio in header');
+  assert(appHtml.includes('id="btn-mcer-stop-dialogue"'), 'Missing #btn-mcer-stop-dialogue in dialogue screen');
+  assert(appHtml.includes('id="btn-mcer-stop-listening"'), 'Missing #btn-mcer-stop-listening in listening screen');
+  assert(appHtml.includes('class="mcer-speed-btn"'), 'Missing .mcer-speed-btn in app.html');
+  assert(appJs.includes('function stopAllStemOSAudio()'), 'Missing stopAllStemOSAudio() in app.js');
+  assert(appJs.includes('function setStemOSSpeechSpeed('), 'Missing setStemOSSpeechSpeed() in app.js');
+  assert(appJs.includes('duo-stop-btn'), 'Missing duo-stop-btn in interactive audio exercises');
+});
+
+test('MCER milestones use standard English labels without mixed Spanish', () => {
+  assert(appJs.includes("${isMcer ? 'MILESTONE' : 'HITO'} ${hitoNum}"), 'Missing MILESTONE conditional label');
+  assert(appJs.includes('Level A1 · Foundations & Everyday Work (60.0h)'), 'Spanish Nivel A1 still present in mcerHitoNames');
+  assert(!appJs.includes("'Nivel A1 · Foundations & Everyday Work (60.0h)'"), 'Spanish Nivel A1 found in mcerHitoNames');
+});
+
+test('app.html and app.js omit redundant banners and cards in MCER view', () => {
+  assert(!appHtml.includes('id="mcer-active-track-banner"'), 'Redundant #mcer-active-track-banner should be removed');
+  assert(appJs.includes('if (!isMcer) {'), 'Header card should be omitted in MCER mode');
+  assert(!appHtml.includes('<button type="button" class="btn-mcer-offline-download" id="btn-mcer-offline-toggle" title="Descargar unidad completa y audios para modo offline (Expira en 3 días)">\n                            <i class="fa-solid fa-cloud-arrow-down"></i>'), 'Duplicate cloud icon should not exist in offline download button');
+});
+
 console.log('\n═══════════════════════════════════════════════════════════════════');
-console.log(`🏁 RESULT: ${pass}/16 TESTS PASSED (100%)`);
+console.log(`🏁 RESULT: ${pass}/20 TESTS PASSED (100%)`);
 console.log('═══════════════════════════════════════════════════════════════════\n');
 console.log('🎉 STEMOS DUOLINGO-STYLE LEARNING PATH ENGINE FULLY VERIFIED!\n');
 

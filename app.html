@@ -1276,35 +1276,6 @@
                             </div>
                         </div>
 
-                        <!-- MCER Diagnostic Placement & Active Level Banner -->
-                        <div id="mcer-active-track-banner" style="background:linear-gradient(135deg, rgba(2, 132, 199, 0.08) 0%, rgba(16, 185, 129, 0.06) 100%); border:1.5px solid rgba(2, 132, 199, 0.25); border-radius:14px; padding:16px 20px; margin-bottom:18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
-                            <div style="display:flex; align-items:center; gap:14px;">
-                                <div style="width:44px; height:44px; border-radius:12px; background:#e0f2fe; color:#0284c7; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0;">
-                                    <i class="fa-solid fa-graduation-cap"></i>
-                                </div>
-                                <div>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span id="mcer-banner-level-pill" style="font-family:var(--font-mono); font-size:0.75rem; font-weight:800; padding:2px 8px; border-radius:6px; background:#0284c7; color:#fff;">CEFR A1</span>
-                                        <strong id="mcer-banner-title" style="font-size:0.95rem; color:#0f172a;">Tronco Común Universitario · 60.0 Horas Acreditadas</strong>
-                                    </div>
-                                    <div id="mcer-banner-desc" style="font-size:0.8rem; color:#475569; margin-top:3px;">
-                                        Tu currículo MCER activo consta de 4 unidades de 15.0h de trabajo activo (60h total), con diálogos industriales, lectura de normas y simulaciones de crisol.
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                                <button type="button" id="btn-mcer-launch-level-exam" class="btn" style="background:#ffffff; border:1.5px solid #0284c7; color:#0284c7; font-size:0.78rem; font-weight:800; padding:6px 14px; border-radius:8px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(2,132,199,0.12);">
-                                    <i class="fa-solid fa-graduation-cap"></i> Examen de Nivel (60.0h)
-                                </button>
-                                <button type="button" id="btn-mcer-accredit-cert" class="btn" style="background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#fff; font-size:0.78rem; font-weight:700; padding:6px 14px; border-radius:8px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
-                                    <i class="fa-solid fa-award"></i> Credencial 60.0h (W3C)
-                                </button>
-                                <a href="placement.html" class="btn" style="background:#fff; border:1px solid #cbd5e1; color:#0f172a; font-size:0.78rem; font-weight:700; padding:6px 12px; border-radius:8px; text-decoration:none;" title="Revaluar Diagnóstico">
-                                    <i class="fa-solid fa-vial"></i> Placement Test
-                                </a>
-                            </div>
-                        </div>
-
                         <!-- ════ DUOLINGO-STYLE HUD & MODE SWITCHER BAR ════ -->
                         <div class="stemos-duo-hud-bar" id="stemos-duo-hud-bar">
                             <div class="stemos-duo-mode-switch" role="tablist" aria-label="Modo de visualización de estudio">
@@ -2411,10 +2382,17 @@
                         <span style="background:rgba(16,185,129,0.12); color:#059669; border:1px solid rgba(16,185,129,0.3); font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:6px;"><i class="fa-solid fa-clock"></i> 10 min · MCER</span>
                         <span id="mcer-offline-sync-pill" class="mcer-sync-pill" style="display:none;"></span>
                     </div>
-                    <div class="academic-header-actions" style="display:flex; align-items:center; gap:8px;">
+                    <div class="academic-header-actions" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                        <div class="mcer-audio-ctrl-strip" id="mcer-header-audio-controls" style="display:inline-flex; align-items:center; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:8px; padding:2px 4px; gap:2px;">
+                            <button type="button" class="mcer-speed-btn" data-speed="0.8" title="Velocidad 0.8x" style="border:none; background:transparent; padding:3px 6px; font-size:0.7rem; font-weight:700; border-radius:4px; cursor:pointer; color:#475569;">0.8x</button>
+                            <button type="button" class="mcer-speed-btn active" data-speed="1.0" title="Velocidad normal 1x" style="border:none; background:#ffffff; padding:3px 6px; font-size:0.7rem; font-weight:800; border-radius:4px; cursor:pointer; color:#0284c7; box-shadow:0 1px 2px rgba(0,0,0,0.06);">1x</button>
+                            <button type="button" class="mcer-speed-btn" data-speed="1.2" title="Velocidad 1.2x" style="border:none; background:transparent; padding:3px 6px; font-size:0.7rem; font-weight:700; border-radius:4px; cursor:pointer; color:#475569;">1.2x</button>
+                            <button type="button" class="mcer-stop-audio-btn" id="btn-mcer-header-stop-audio" title="Detener audio en reproducción" style="border:none; background:#fee2e2; color:#dc2626; padding:3px 8px; font-size:0.72rem; font-weight:800; border-radius:4px; cursor:pointer; display:inline-flex; align-items:center; gap:3px; margin-left:2px;">
+                                <i class="fa-solid fa-stop"></i> <span>STOP</span>
+                            </button>
+                        </div>
                         <button type="button" class="btn-mcer-offline-download" id="btn-mcer-offline-toggle" title="Descargar unidad completa y audios para modo offline (Expira en 3 días)">
-                            <i class="fa-solid fa-cloud-arrow-down"></i>
-                            <span id="mcer-offline-btn-label">Descargar Offline (3 días)</span>
+                            <span id="mcer-offline-btn-label"><i class="fa-solid fa-cloud-arrow-down"></i> Descargar Offline (3 días)</span>
                         </button>
                         <button class="modal-close" id="mcer-unit-close" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
                     </div>
@@ -2575,11 +2553,21 @@
 
                 <!-- Screen 2: Diálogo en Contexto -->
                 <div id="mcer-screen-dialogue" class="mcer-screen" style="display:none;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:#f8fafc; padding:10px 14px; border-radius:12px; border:1px solid #e2e8f0;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:#f8fafc; padding:10px 14px; border-radius:12px; border:1px solid #e2e8f0; flex-wrap:wrap; gap:8px;">
                         <span style="font-size:0.82rem; font-weight:700; color:#475569;"><i class="fa-solid fa-headphones"></i> American English Dialogue (Web Speech API)</span>
-                        <button class="btn btn-primary" id="btn-mcer-play-all-dialogue" style="width:auto; padding:6px 14px; font-size:0.8rem; border-radius:8px;">
-                            <i class="fa-solid fa-play"></i> Reproducir Diálogo Completo
-                        </button>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <div class="mcer-audio-ctrl-strip" style="display:inline-flex; align-items:center; background:#e2e8f0; border-radius:6px; padding:2px; gap:2px;">
+                                <button type="button" class="mcer-speed-btn" data-speed="0.8" style="border:none; background:transparent; padding:2px 6px; font-size:0.7rem; font-weight:700; border-radius:4px; cursor:pointer; color:#475569;">0.8x</button>
+                                <button type="button" class="mcer-speed-btn active" data-speed="1.0" style="border:none; background:#fff; padding:2px 6px; font-size:0.7rem; font-weight:800; border-radius:4px; cursor:pointer; color:#0284c7;">1x</button>
+                                <button type="button" class="mcer-speed-btn" data-speed="1.2" style="border:none; background:transparent; padding:2px 6px; font-size:0.7rem; font-weight:700; border-radius:4px; cursor:pointer; color:#475569;">1.2x</button>
+                            </div>
+                            <button class="btn btn-primary" id="btn-mcer-play-all-dialogue" style="width:auto; padding:6px 14px; font-size:0.8rem; border-radius:8px;">
+                                <i class="fa-solid fa-play"></i> Reproducir Diálogo Completo
+                            </button>
+                            <button class="btn" id="btn-mcer-stop-dialogue" style="width:auto; padding:6px 12px; font-size:0.8rem; border-radius:8px; background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:4px;" title="Detener audio">
+                                <i class="fa-solid fa-stop"></i> STOP
+                            </button>
+                        </div>
                     </div>
                     <div id="mcer-dialogue-bubbles" style="display:flex; flex-direction:column; gap:12px;"></div>
                 </div>
@@ -2642,9 +2630,19 @@
                                 </span>
                                 <h4 id="mcer-listening-title" style="font-size:1.05rem; font-weight:800; color:#0f172a; margin:4px 0 0 0;">Plant Dispatch Audio</h4>
                             </div>
-                            <button id="btn-mcer-play-listening-scenario" class="btn btn-primary" style="padding:6px 16px; font-size:0.82rem; font-weight:700; border-radius:8px;">
-                                <i class="fa-solid fa-play"></i> Reproducir Despacho
-                            </button>
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <div class="mcer-audio-ctrl-strip" style="display:inline-flex; align-items:center; background:#e2e8f0; border-radius:6px; padding:2px; gap:2px;">
+                                    <button type="button" class="mcer-speed-btn" data-speed="0.8" style="border:none; background:transparent; padding:2px 6px; font-size:0.7rem; font-weight:700; border-radius:4px; cursor:pointer; color:#475569;">0.8x</button>
+                                    <button type="button" class="mcer-speed-btn active" data-speed="1.0" style="border:none; background:#fff; padding:2px 6px; font-size:0.7rem; font-weight:800; border-radius:4px; cursor:pointer; color:#0284c7;">1x</button>
+                                    <button type="button" class="mcer-speed-btn" data-speed="1.2" style="border:none; background:transparent; padding:2px 6px; font-size:0.7rem; font-weight:700; border-radius:4px; cursor:pointer; color:#475569;">1.2x</button>
+                                </div>
+                                <button id="btn-mcer-play-listening-scenario" class="btn btn-primary" style="padding:6px 16px; font-size:0.82rem; font-weight:700; border-radius:8px;">
+                                    <i class="fa-solid fa-play"></i> Reproducir Despacho
+                                </button>
+                                <button class="btn" id="btn-mcer-stop-listening" style="width:auto; padding:6px 12px; font-size:0.8rem; border-radius:8px; background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:4px;" title="Detener audio">
+                                    <i class="fa-solid fa-stop"></i> STOP
+                                </button>
+                            </div>
                         </div>
                         <div style="font-size:0.82rem; font-weight:700; color:#475569;" id="mcer-listening-speaker-badge">Speaker: Supervisor</div>
                         <div id="mcer-listening-script-toggle-box" style="margin-top:8px;">

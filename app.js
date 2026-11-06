@@ -5050,6 +5050,106 @@ Nearshoring Center of Excellence • stemOS Certified`;
         });
     }
 
+    // ══════════════════════════════════════════════════════════════════════════
+    // stemOS MCER Sequential Progression & Audio Controls Engine
+    // ══════════════════════════════════════════════════════════════════════════
+    const CANONICAL_MCER_UNIT_IDS = [
+        'a1-u1', 'a1-u2', 'a1-u3', 'a1-u4',
+        'a2-u1', 'a2-u2', 'a2-u3', 'a2-u4',
+        'b1-u1', 'b1-u2', 'b1-u3', 'b1-u4',
+        'b2-u1', 'b2-u2', 'b2-u3', 'b2-u4'
+    ];
+    window.CANONICAL_MCER_UNIT_IDS = CANONICAL_MCER_UNIT_IDS;
+
+    function isMcerUnitCompleted(unitId) {
+        if (!unitId) return false;
+        return (localStorage.getItem('stemos_mcer_unit_' + unitId) === 'passed') ||
+               (localStorage.getItem('stemos_crucible_' + unitId) === 'completed') ||
+               (localStorage.getItem('stemos_unit_completed_' + unitId) === 'true');
+    }
+    window.isMcerUnitCompleted = isMcerUnitCompleted;
+
+    function isMcerUnitUnlocked(unitId) {
+        if (!unitId) return false;
+        const cIdx = CANONICAL_MCER_UNIT_IDS.indexOf(unitId);
+        // First unit of A1 is always unlocked
+        if (cIdx === 0) return true;
+        // Non-canonical or unknown unit allows access
+        if (cIdx === -1) return true;
+
+        // If unit already completed, it's unlocked
+        if (isMcerUnitCompleted(unitId)) return true;
+
+        // Fast-track convalidation from diagnostic placement
+        const isConvalidated = localStorage.getItem('stemos_mcer_convalidated') === 'true';
+        if (isConvalidated) {
+            const placementLvl = (localStorage.getItem('stemos_placement_cefr') || localStorage.getItem('stemos_user_level') || 'A1').toUpperCase();
+            const levels = ['A1', 'A2', 'B1', 'B2'];
+            const userLevelIdx = levels.indexOf(placementLvl);
+            const unitLevel = unitId.split('-')[0].toUpperCase();
+            const unitLevelIdx = levels.indexOf(unitLevel);
+
+            if (unitLevelIdx >= 0 && unitLevelIdx < userLevelIdx) return true;
+            if (unitLevelIdx === userLevelIdx && unitId.endsWith('-u1')) return true;
+        }
+
+        // Strict sequential requirement: immediately prior canonical unit must be completed
+        const prevUnitId = CANONICAL_MCER_UNIT_IDS[cIdx - 1];
+        return isMcerUnitCompleted(prevUnitId);
+    }
+    window.isMcerUnitUnlocked = isMcerUnitUnlocked;
+
+    function stopAllStemOSAudio() {
+        if (typeof window.stopEnglishSpeech === 'function') {
+            try { window.stopEnglishSpeech(); } catch (_) {}
+        }
+        if (typeof window.stopSpeech === 'function') {
+            try { window.stopSpeech(); } catch (_) {}
+        }
+        if (window.speechSynthesis) {
+            try { window.speechSynthesis.cancel(); } catch (_) {}
+        }
+        if (window.STEMOS_TTS && typeof window.STEMOS_TTS.stop === 'function') {
+            try { window.STEMOS_TTS.stop(); } catch (_) {}
+        }
+        document.querySelectorAll('.btn-play-turn-audio, .btn-play-vocab-audio, .duo-audio-speaker-btn').forEach(btn => {
+            btn.classList.remove('playing');
+        });
+    }
+    window.stopAllStemOSAudio = stopAllStemOSAudio;
+
+    function setStemOSSpeechSpeed(speed) {
+        const spd = parseFloat(speed) || 1.0;
+        if (typeof window.setAudioSpeed === 'function') {
+            window.setAudioSpeed(spd);
+        }
+        window.STEMOS_AUDIO_RATE = spd;
+        localStorage.setItem('stemos_audio_speed', String(spd));
+
+        document.querySelectorAll('.mcer-speed-btn').forEach(btn => {
+            const btnSpd = parseFloat(btn.dataset.speed);
+            if (Math.abs(btnSpd - spd) < 0.05) {
+                btn.classList.add('active');
+                btn.style.background = '#ffffff';
+                btn.style.color = '#0284c7';
+                btn.style.fontWeight = '800';
+                btn.style.boxShadow = '0 1px 2px rgba(0,0,0,0.06)';
+            } else {
+                btn.classList.remove('active');
+                btn.style.background = 'transparent';
+                btn.style.color = '#475569';
+                btn.style.fontWeight = '700';
+                btn.style.boxShadow = 'none';
+            }
+        });
+
+        const speedLabelEl = document.getElementById('duo-audio-speed-label');
+        if (speedLabelEl) {
+            speedLabelEl.textContent = `${spd.toFixed(1)}x`;
+        }
+    }
+    window.setStemOSSpeechSpeed = setStemOSSpeechSpeed;
+
     // 3. Render MCER Units Grid
     function renderMcerUnitsGrid(levelFilter) {
         const grid = document.getElementById('ed-mcer-units-grid');
@@ -5078,24 +5178,29 @@ Nearshoring Center of Excellence • stemOS Certified`;
             const meta = levelColors[unit.cefr] || levelColors.A1;
             const gradientBg = `linear-gradient(135deg, ${meta.color}18 0%, ${meta.color}06 50%, #f8fafc 100%)`;
             const isCrucibleDone = localStorage.getItem('stemos_crucible_' + unit.id) === 'completed';
+            const isCompleted = isMcerUnitCompleted(unit.id);
+            const isUnlocked = isMcerUnitUnlocked(unit.id);
             const isActiveLevel = userLevel && unit.cefr === userLevel;
             const offlineRecord = offlineUnits[unit.id];
             const isOffline = offlineRecord && (now < offlineRecord.expiresAt);
 
             const card = document.createElement('div');
-            card.className = 'ed-unit-card';
+            card.className = `ed-unit-card${!isUnlocked ? ' unit-locked' : ''}`;
             card.dataset.unitId = unit.id;
             card.dataset.cefr = unit.cefr;
-            if (isActiveLevel) {
+            if (!isUnlocked) {
+                card.style.opacity = '0.65';
+                card.style.filter = 'grayscale(0.25)';
+            } else if (isActiveLevel) {
                 card.style.border = `1.5px solid ${meta.color}`;
                 card.style.boxShadow = `0 4px 14px ${meta.color}25`;
             }
 
             card.innerHTML = `
                 <div class="ed-unit-card-img-wrapper" style="background: ${gradientBg}; display:flex; align-items:center; justify-content:center; position:relative;">
-                    <i class="fa-solid ${meta.icon}" style="font-size: 3.5rem; color: ${meta.color}; opacity: 0.5;"></i>
-                    <span class="ed-unit-card-cat-badge" style="border-left: 3px solid ${meta.color}; color:${meta.color};">CEFR ${unit.cefr} · ${meta.label}</span>
-                    ${isActiveLevel ? `<span style="position:absolute; top:8px; right:8px; background:${meta.color}; color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><i class="fa-solid fa-play"></i> En Curso</span>` : ''}
+                    <i class="fa-solid ${isUnlocked ? meta.icon : 'fa-lock'}" style="font-size: 3.5rem; color: ${isUnlocked ? meta.color : '#94a3b8'}; opacity: 0.5;"></i>
+                    <span class="ed-unit-card-cat-badge" style="border-left: 3px solid ${isUnlocked ? meta.color : '#94a3b8'}; color:${isUnlocked ? meta.color : '#64748b'};">CEFR ${unit.cefr} · ${meta.label}</span>
+                    ${!isUnlocked ? '<span style="position:absolute; top:8px; right:8px; background:#64748b; color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><i class="fa-solid fa-lock"></i> Bloqueado</span>' : (isActiveLevel ? `<span style="position:absolute; top:8px; right:8px; background:${meta.color}; color:#fff; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><i class="fa-solid fa-play"></i> En Curso</span>` : '')}
                     ${isOffline ? `<span class="ed-unit-offline-badge active" title="Disponible offline · Expira en 3 días"><i class="fa-solid fa-cloud-arrow-down"></i> Offline (3d)</span>` : ''}
                     ${isCrucibleDone ? '<span style="position:absolute; bottom:8px; right:8px; background:#dcfce7; color:#15803d; border:1px solid #86efac; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:6px;"><i class="fa-solid fa-check"></i> Crisol ✓</span>' : ''}
                 </div>
@@ -5106,11 +5211,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     </div>
                     <div class="ed-unit-title">${unit.title}</div>
                     <div style="font-size:0.8rem; color:#64748b; margin-top:4px; line-height:1.4;">${unit.canDo}</div>
-                    <div style="display:inline-flex; align-items:center; gap:6px; font-size:0.72rem; font-weight:700; color:${meta.color}; background:${meta.color}15; padding:2px 8px; border-radius:999px; margin-top:8px;">
+                    <div style="display:inline-flex; align-items:center; gap:6px; font-size:0.72rem; font-weight:700; color:${isUnlocked ? meta.color : '#64748b'}; background:${isUnlocked ? meta.color + '15' : '#f1f5f9'}; padding:2px 8px; border-radius:999px; margin-top:8px;">
                         <i class="fa-solid fa-wand-magic-sparkles"></i> ${unit.grammarFocus}
                     </div>
                     <div class="ed-unit-progress-container" style="margin-top:12px; display:flex; flex-direction:column; gap:4px;">
-                        <span class="ed-unit-progress-text" style="color:#0284c7; font-weight:700; font-size:0.75rem;">
+                        <span class="ed-unit-progress-text" style="color:${isUnlocked ? '#0284c7' : '#64748b'}; font-weight:700; font-size:0.75rem;">
                             <i class="fa-solid fa-book-open"></i> ${unit.vocabulary ? unit.vocabulary.length : 8} Vocab · 
                             <i class="fa-solid fa-triangle-exclamation" style="color:#dc2626;"></i> Falsos Amigos · 
                             <i class="fa-solid fa-industry" style="color:#10b981;"></i> Crisol
@@ -5125,6 +5230,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
             `;
 
             card.addEventListener('click', () => {
+                if (!isUnlocked) {
+                    if (typeof DuoSound !== 'undefined' && DuoSound.playIncorrect) DuoSound.playIncorrect();
+                    showSyncToast('Unidad bloqueada. Completa las lecciones y crisoles anteriores para avanzar.', 'info');
+                    return;
+                }
                 openMcerUnitModal(unit.id);
             });
 
@@ -5512,6 +5622,12 @@ Nearshoring Center of Excellence • stemOS Certified`;
         const unit = window.STEMOS_MCER_TRACKS.getUnitById(unitId);
         if (!unit) return;
 
+        if (!isDemo && !isMcerUnitUnlocked(unitId)) {
+            if (typeof DuoSound !== 'undefined' && DuoSound.playIncorrect) DuoSound.playIncorrect();
+            showSyncToast('Esta unidad está bloqueada. Debes completar las lecciones previas para desbloquearla.', 'info');
+            return;
+        }
+
         const isA1 = unit.cefr === 'A1';
         const offlineUnits = (typeof getOfflineUnits === 'function') ? getOfflineUnits() : {};
         const isOffline = !!(offlineUnits && offlineUnits[unit.id] && (!offlineUnits[unit.id].expiresAt || Date.now() < offlineUnits[unit.id].expiresAt));
@@ -5540,6 +5656,33 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         // Setup Offline Download Button & 3-Day Expiry Check
         updateMcerOfflineButtonUI(unit.id);
+
+        // Wire Audio Stop & Speed Controls across all unit study screens
+        const btnStopDialogue = document.getElementById('btn-mcer-stop-dialogue');
+        if (btnStopDialogue) {
+            btnStopDialogue.onclick = () => window.stopAllStemOSAudio();
+        }
+        const btnHeaderStopAudio = document.getElementById('btn-mcer-header-stop-audio');
+        if (btnHeaderStopAudio) {
+            btnHeaderStopAudio.onclick = () => window.stopAllStemOSAudio();
+        }
+        const btnStopListening = document.getElementById('btn-mcer-stop-listening');
+        if (btnStopListening) {
+            btnStopListening.onclick = () => window.stopAllStemOSAudio();
+        }
+        document.querySelectorAll('.mcer-speed-btn').forEach(btn => {
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                const spd = parseFloat(btn.dataset.speed) || 1.0;
+                window.setStemOSSpeechSpeed(spd);
+            };
+        });
+        document.querySelectorAll('.mcer-stop-audio-btn').forEach(btn => {
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                window.stopAllStemOSAudio();
+            };
+        });
 
         // Normalize dialogue lines (handles array or object with lines)
         const dialogueLines = Array.isArray(unit.dialogue)
@@ -7591,7 +7734,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
     const mcerUnitCloseBtn = document.getElementById('mcer-unit-close');
     if (mcerUnitCloseBtn) {
         mcerUnitCloseBtn.addEventListener('click', () => {
-            if (window.speechSynthesis) window.speechSynthesis.cancel();
+            if (typeof window.stopAllStemOSAudio === 'function') {
+                window.stopAllStemOSAudio();
+            } else if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
             document.getElementById('modal-mcer-unit').close();
         });
     }
@@ -10446,10 +10593,10 @@ Nearshoring Center of Excellence • stemOS Certified`;
             if (!filteredUnits || filteredUnits.length === 0) filteredUnits = allMcerUnits;
 
             const mcerHitoNames = [
-                'Nivel A1 · Foundations & Everyday Work (60.0h)',
-                'Nivel A2 · Waystage & Maintenance Logs (60.0h)',
-                'Nivel B1 · Threshold & Industrial SOPs (60.0h)',
-                'Nivel B2 · Vantage & Executive Defense (60.0h)'
+                'Level A1 · Foundations & Everyday Work (60.0h)',
+                'Level A2 · Waystage & Maintenance Logs (60.0h)',
+                'Level B1 · Threshold & Industrial SOPs (60.0h)',
+                'Level B2 · Vantage & Executive Defense (60.0h)'
             ];
 
             const nodeTypeCycle = [
@@ -10582,112 +10729,114 @@ Nearshoring Center of Excellence • stemOS Certified`;
             });
         }
 
-        // 2. Build Top Header Card (Identical to 3D World Header)
-        const headerCard = document.createElement('div');
-        headerCard.className = 'path-header-card';
-        headerCard.innerHTML = `
-            <button type="button" class="path-back-btn" id="duo-path-btn-globe" onclick="switchView('world-map')" title="Explorar en Globo 3D">
-                <i class="fa-solid fa-earth-americas"></i>
-                <span>Volver al Globo 3D</span>
-            </button>
+        // 2. Build Top Header Card (Identical to 3D World Header; omitted in MCER Core mode per user request)
+        if (!isMcer) {
+            const headerCard = document.createElement('div');
+            headerCard.className = 'path-header-card';
+            headerCard.innerHTML = `
+                <button type="button" class="path-back-btn" id="duo-path-btn-globe" onclick="switchView('world-map')" title="Explorar en Globo 3D">
+                    <i class="fa-solid fa-earth-americas"></i>
+                    <span>Volver al Globo 3D</span>
+                </button>
 
-            <div class="path-track-info">
-                <div class="path-track-badges">
-                    <span class="path-cat-badge" id="duo-path-cat-badge" style="background:#0ea5e922; color:#0ea5e9; border:1px solid #0ea5e955;">
-                        ${headerData.badgeText}
-                    </span>
-                    <span class="path-standard-badge" id="duo-path-std-badge">
-                        ${headerData.standardText}
-                    </span>
+                <div class="path-track-info">
+                    <div class="path-track-badges">
+                        <span class="path-cat-badge" id="duo-path-cat-badge" style="background:#0ea5e922; color:#0ea5e9; border:1px solid #0ea5e955;">
+                            ${headerData.badgeText}
+                        </span>
+                        <span class="path-standard-badge" id="duo-path-std-badge">
+                            ${headerData.standardText}
+                        </span>
+                    </div>
+                    <h2 class="path-track-title" id="duo-path-track-title">${headerData.title}</h2>
                 </div>
-                <h2 class="path-track-title" id="duo-path-track-title">${headerData.title}</h2>
-            </div>
 
-            <div class="path-track-stats-row">
-                <div class="path-stat-pill" id="duo-path-stat-progress">
-                    <i class="fa-solid fa-award"></i>
-                    <span id="duo-path-stat-progress-text">${headerData.progressText}</span>
+                <div class="path-track-stats-row">
+                    <div class="path-stat-pill" id="duo-path-stat-progress">
+                        <i class="fa-solid fa-award"></i>
+                        <span id="duo-path-stat-progress-text">${headerData.progressText}</span>
+                    </div>
+                    <select class="path-track-select" id="duo-path-track-select" aria-label="Cambiar de Track">
+                        <!-- Populated dynamically -->
+                    </select>
                 </div>
-                <select class="path-track-select" id="duo-path-track-select" aria-label="Cambiar de Track">
-                    <!-- Populated dynamically -->
-                </select>
-            </div>
-        `;
-        pathContainer.appendChild(headerCard);
+            `;
+            pathContainer.appendChild(headerCard);
 
-        // Populate track select dropdown
-        const trackSelect = headerCard.querySelector('#duo-path-track-select');
-        if (trackSelect) {
-            // Group 1: Marco Común Europeo (MCER Core Tracks)
-            const grpMcer = document.createElement('optgroup');
-            grpMcer.label = 'Marco Común Europeo (MCER American English)';
-            const mcerOpts = [
-                { val: 'mcer:all', label: 'Todos los Niveles A1–B2 (16 Unidades · 240h)' },
-                { val: 'mcer:A1', label: 'Nivel A1: Foundations (4 Unidades · 60h)' },
-                { val: 'mcer:A2', label: 'Nivel A2: Waystage (4 Unidades · 60h)' },
-                { val: 'mcer:B1', label: 'Nivel B1: Threshold (4 Unidades · 60h)' },
-                { val: 'mcer:B2', label: 'Nivel B2: Vantage (4 Unidades · 60h)' }
-            ];
-            mcerOpts.forEach(o => {
-                const opt = document.createElement('option');
-                opt.value = o.val;
-                opt.textContent = o.label;
-                if (isMcer && (trackOrCareerId === o.val || (trackOrCareerId === 'mcer' && o.val === 'mcer:all') || (!trackOrCareerId && o.val === 'mcer:' + (levelFilter || 'all')))) {
-                    opt.selected = true;
-                }
-                grpMcer.appendChild(opt);
-            });
-            trackSelect.appendChild(grpMcer);
-
-            // Group 2: Carreras Universitarias
-            if (window.STEMOS_CAREER_TRACKS && Array.isArray(window.STEMOS_CAREER_TRACKS.CAREERS)) {
-                const grpCareers = document.createElement('optgroup');
-                grpCareers.label = 'Carreras Universitarias (60.0h Tracks)';
-                window.STEMOS_CAREER_TRACKS.CAREERS.forEach(c => {
+            // Populate track select dropdown
+            const trackSelect = headerCard.querySelector('#duo-path-track-select');
+            if (trackSelect) {
+                // Group 1: Marco Común Europeo (MCER Core Tracks)
+                const grpMcer = document.createElement('optgroup');
+                grpMcer.label = 'Marco Común Europeo (MCER American English)';
+                const mcerOpts = [
+                    { val: 'mcer:all', label: 'Todos los Niveles A1–B2 (16 Unidades · 240h)' },
+                    { val: 'mcer:A1', label: 'Nivel A1: Foundations (4 Unidades · 60h)' },
+                    { val: 'mcer:A2', label: 'Nivel A2: Waystage (4 Unidades · 60h)' },
+                    { val: 'mcer:B1', label: 'Nivel B1: Threshold (4 Unidades · 60h)' },
+                    { val: 'mcer:B2', label: 'Nivel B2: Vantage (4 Unidades · 60h)' }
+                ];
+                mcerOpts.forEach(o => {
                     const opt = document.createElement('option');
-                    opt.value = 'career:' + c.id;
-                    opt.textContent = `${c.name} (16 Estaciones · ${c.system ? c.system.toUpperCase() : 'UPBC'})`;
-                    if (!isMcer && !isEspTrack && career && career.id === c.id) opt.selected = true;
-                    grpCareers.appendChild(opt);
+                    opt.value = o.val;
+                    opt.textContent = o.label;
+                    if (isMcer && (trackOrCareerId === o.val || (trackOrCareerId === 'mcer' && o.val === 'mcer:all') || (!trackOrCareerId && o.val === 'mcer:' + (levelFilter || 'all')))) {
+                        opt.selected = true;
+                    }
+                    grpMcer.appendChild(opt);
                 });
-                trackSelect.appendChild(grpCareers);
-            }
+                trackSelect.appendChild(grpMcer);
 
-            // Group 3: Tracks de Especialidad Industrial (ESP)
-            const courses = (typeof LXP_COURSES !== 'undefined') ? LXP_COURSES : {};
-            if (courses && Object.keys(courses).length > 0) {
-                const grpEsp = document.createElement('optgroup');
-                grpEsp.label = 'Tracks de Especialidad Industrial (ESP)';
-                for (let k in courses) {
-                    const cr = courses[k];
-                    const opt = document.createElement('option');
-                    opt.value = 'track:' + k;
-                    opt.textContent = `${cr.titleEN || cr.title} (${(cr.modules || []).length} M)`;
-                    if (!isMcer && isEspTrack && trackOrCareerId === k) opt.selected = true;
-                    grpEsp.appendChild(opt);
+                // Group 2: Carreras Universitarias
+                if (window.STEMOS_CAREER_TRACKS && Array.isArray(window.STEMOS_CAREER_TRACKS.CAREERS)) {
+                    const grpCareers = document.createElement('optgroup');
+                    grpCareers.label = 'Carreras Universitarias (60.0h Tracks)';
+                    window.STEMOS_CAREER_TRACKS.CAREERS.forEach(c => {
+                        const opt = document.createElement('option');
+                        opt.value = 'career:' + c.id;
+                        opt.textContent = `${c.name} (16 Estaciones · ${c.system ? c.system.toUpperCase() : 'UPBC'})`;
+                        if (!isMcer && !isEspTrack && career && career.id === c.id) opt.selected = true;
+                        grpCareers.appendChild(opt);
+                    });
+                    trackSelect.appendChild(grpCareers);
                 }
-                trackSelect.appendChild(grpEsp);
-            }
 
-            trackSelect.addEventListener('change', (e) => {
-                const val = e.target.value;
-                if (val.startsWith('mcer:')) {
-                    const lvl = val.replace('mcer:', '');
-                    localStorage.setItem('stemos_active_path_scope', 'mcer');
-                    if (sectionWorldMcer) sectionWorldMcer.style.display = 'block';
-                    if (sectionWorldEsp) sectionWorldEsp.style.display = 'none';
-                    renderDuoLearningPath(lvl, val);
-                } else if (val.startsWith('career:')) {
-                    const cid = val.replace('career:', '');
-                    localStorage.setItem('stemos_active_path_scope', 'esp');
-                    localStorage.setItem('stemos_active_career', cid);
-                    renderDuoLearningPath(null, cid);
-                } else if (val.startsWith('track:')) {
-                    const tid = val.replace('track:', '');
-                    localStorage.setItem('stemos_active_path_scope', 'esp');
-                    renderDuoLearningPath(null, tid);
+                // Group 3: Tracks de Especialidad Industrial (ESP)
+                const courses = (typeof LXP_COURSES !== 'undefined') ? LXP_COURSES : {};
+                if (courses && Object.keys(courses).length > 0) {
+                    const grpEsp = document.createElement('optgroup');
+                    grpEsp.label = 'Tracks de Especialidad Industrial (ESP)';
+                    for (let k in courses) {
+                        const cr = courses[k];
+                        const opt = document.createElement('option');
+                        opt.value = 'track:' + k;
+                        opt.textContent = `${cr.titleEN || cr.title} (${(cr.modules || []).length} M)`;
+                        if (!isMcer && isEspTrack && trackOrCareerId === k) opt.selected = true;
+                        grpEsp.appendChild(opt);
+                    }
+                    trackSelect.appendChild(grpEsp);
                 }
-            });
+
+                trackSelect.addEventListener('change', (e) => {
+                    const val = e.target.value;
+                    if (val.startsWith('mcer:')) {
+                        const lvl = val.replace('mcer:', '');
+                        localStorage.setItem('stemos_active_path_scope', 'mcer');
+                        if (sectionWorldMcer) sectionWorldMcer.style.display = 'block';
+                        if (sectionWorldEsp) sectionWorldEsp.style.display = 'none';
+                        renderDuoLearningPath(lvl, val);
+                    } else if (val.startsWith('career:')) {
+                        const cid = val.replace('career:', '');
+                        localStorage.setItem('stemos_active_path_scope', 'esp');
+                        localStorage.setItem('stemos_active_career', cid);
+                        renderDuoLearningPath(null, cid);
+                    } else if (val.startsWith('track:')) {
+                        const tid = val.replace('track:', '');
+                        localStorage.setItem('stemos_active_path_scope', 'esp');
+                        renderDuoLearningPath(null, tid);
+                    }
+                });
+            }
         }
 
         // 3. Build Winding Trail Road Container with SVG Bezier Curves
@@ -10729,10 +10878,10 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 hitoDiv.innerHTML = `
                     <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(15,23,42,0.85); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.15); padding:6px 18px; border-radius:999px; box-shadow:0 6px 20px rgba(0,0,0,0.15);">
                         <span style="font-size:0.75rem; font-weight:800; color:#38bdf8; text-transform:uppercase; letter-spacing:0.06em;">
-                            <i class="fa-solid fa-flag-checkered"></i> HITO ${hitoNum}
+                            <i class="fa-solid fa-flag-checkered"></i> ${isMcer ? 'MILESTONE' : 'HITO'} ${hitoNum}
                         </span>
                         <span style="color:#64748b; font-size:0.7rem;">&bull;</span>
-                        <span style="font-size:0.75rem; color:#f8fafc; font-weight:700;">${mod.hitoName || 'Curricular Milestone'}</span>
+                        <span style="font-size:0.75rem; color:#f8fafc; font-weight:700;">${mod.hitoName || (isMcer ? 'Curricular Milestone' : 'Hito Curricular')}</span>
                     </div>
                 `;
                 nodesLayer.appendChild(hitoDiv);
@@ -10740,22 +10889,17 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
             // Gating Check
             let isCompleted = false;
-            let isPrevCompleted = false;
+            let isUnlocked = false;
 
             if (mod.isMcerUnit) {
-                isCompleted = (localStorage.getItem('stemos_crucible_' + mod.id) === 'completed') || 
-                              (localStorage.getItem('stemos_unit_completed_' + mod.id) === 'true') ||
-                              !!(prog.modules && prog.modules[mod.id] && prog.modules[mod.id].status === 'completed');
-                isPrevCompleted = (idx === 0) || 
-                                  (localStorage.getItem('stemos_crucible_' + modules[idx - 1].id) === 'completed') || 
-                                  (localStorage.getItem('stemos_unit_completed_' + modules[idx - 1].id) === 'true') ||
-                                  !!(prog.modules && prog.modules[modules[idx - 1].id] && prog.modules[modules[idx - 1].id].status === 'completed');
+                isCompleted = isMcerUnitCompleted(mod.id);
+                isUnlocked = isMcerUnitUnlocked(mod.id);
             } else {
                 isCompleted = !!(prog.modules && prog.modules[mod.id] && (prog.modules[mod.id].status === 'completed' || prog.modules[mod.id].completed));
-                isPrevCompleted = (idx === 0) || !!(prog.modules && prog.modules[modules[idx - 1].id] && (prog.modules[modules[idx - 1].id].status === 'completed' || prog.modules[modules[idx - 1].id].completed));
+                const isPrevCompleted = (idx === 0) || !!(prog.modules && prog.modules[modules[idx - 1].id] && (prog.modules[modules[idx - 1].id].status === 'completed' || prog.modules[modules[idx - 1].id].completed));
+                isUnlocked = isCompleted || isPrevCompleted || (idx === 0);
             }
 
-            const isUnlocked = isCompleted || isPrevCompleted || (idx === 0);
             const isActive = isUnlocked && !isCompleted && !activeNodeFound;
             if (isActive) activeNodeFound = true;
 
@@ -11170,6 +11314,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
     }
 
     window.closeDuoLessonRunner = function() {
+        if (typeof window.stopAllStemOSAudio === 'function') {
+            window.stopAllStemOSAudio();
+        }
         const overlay = document.getElementById('duo-runner-overlay');
         if (overlay) {
             overlay.classList.remove('active');
@@ -11364,6 +11511,20 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 });
                 speedBar.appendChild(spdBtn);
             });
+
+            const duoStopBtn = document.createElement('button');
+            duoStopBtn.type = 'button';
+            duoStopBtn.className = 'duo-stop-btn';
+            duoStopBtn.style.cssText = 'border:1px solid #fca5a5; background:#fee2e2; color:#dc2626; font-size:0.75rem; font-weight:800; padding:4px 10px; border-radius:6px; cursor:pointer; display:inline-flex; align-items:center; gap:4px; margin-left:6px;';
+            duoStopBtn.innerHTML = '<i class="fa-solid fa-stop"></i> STOP';
+            duoStopBtn.setAttribute('title', 'Detener audio');
+            duoStopBtn.addEventListener('click', () => {
+                if (typeof window.stopAllStemOSAudio === 'function') {
+                    window.stopAllStemOSAudio();
+                }
+                speakerBtn.classList.remove('playing');
+            });
+            speedBar.appendChild(duoStopBtn);
 
             audioWrapper.appendChild(speedBar);
             stage.appendChild(audioWrapper);
