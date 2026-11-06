@@ -1193,6 +1193,65 @@
       }
     }
 
+    /* ── JÓVENES STEM HERO BRAND (ORIGINAL JSWEB) ── */
+    .hero-brand {
+      margin-bottom: 16px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .hero-brand-name.jsweb-hero-brand {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.8rem, 7.5vw, 4.8rem);
+      letter-spacing: -.04em;
+      line-height: 1.1;
+      display: inline-block;
+      position: relative;
+      white-space: nowrap;
+      max-width: 100%;
+      text-decoration: none;
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+
+    .hero-brand-name.jsweb-hero-brand:hover {
+      transform: scale(1.02);
+      filter: drop-shadow(0 0 24px rgba(39, 126, 255, 0.45));
+    }
+
+    .hero-brand-jovenes {
+      background: linear-gradient(135deg, #277eff 0%, #1a9dff 40%, #00a896 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      padding-right: 2px;
+    }
+
+    .hero-brand-stem {
+      color: #7baaf7;
+      -webkit-text-fill-color: #7baaf7;
+    }
+
+    .hero-brand-reg {
+      font-size: 0.35em;
+      font-weight: 800;
+      position: relative;
+      top: -0.15em;
+      margin-left: 0.02em;
+      color: #60a5fa;
+      -webkit-text-fill-color: #60a5fa;
+      vertical-align: top;
+      display: inline-block;
+      line-height: 1;
+    }
+
+    @media (max-width: 480px) {
+      .hero-brand-name.jsweb-hero-brand {
+        font-size: clamp(2.2rem, 11vw, 3.2rem) !important;
+        letter-spacing: -0.035em !important;
+      }
+    }
+
     /* Hero Section Vertical Rhythm */
     .supaste-hero-section {
       display: flex !important;
@@ -2925,7 +2984,17 @@
         <div style="display:inline-flex; align-items:center; gap:8px; padding:6px 16px; border-radius:9999px; background:linear-gradient(135deg, rgba(16,185,129,0.15), rgba(14,165,233,0.15)); border:1px solid rgba(16,185,129,0.35); color:#34d399; font-family:'JetBrains Mono',monospace; font-size:0.75rem; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:14px;">
           <i class="fa-solid fa-seedling"></i> <span data-i18n="jsbridge_badge">FOUNDATIONAL PRE-STAGE • 100% FREE IMMERSION</span>
         </div>
-        <h2 style="font-size:clamp(1.75rem, 3.5vw, 2.5rem); font-weight:900; color:#ffffff; font-family:'Outfit', sans-serif; letter-spacing:-0.02em; margin:0 0 12px; line-height:1.2;" data-i18n="jsbridge_title">
+
+        <!-- Centered Original Hero Brand from JSweb -->
+        <div class="hero-brand" style="margin-bottom:14px; text-align:center; width:100%;">
+          <a href="https://jovenesstem.com/" target="_blank" rel="noopener" style="text-decoration:none; display:inline-block;" title="Jóvenes STEM® — Plataforma Abierta de Ciencias">
+            <div class="hero-brand-name jsweb-hero-brand">
+              <span class="hero-brand-jovenes">jóvenes</span><span class="hero-brand-stem">STEM</span><sup class="hero-brand-reg">&reg;</sup>
+            </div>
+          </a>
+        </div>
+
+        <h2 style="font-size:clamp(1.5rem, 3vw, 2.2rem); font-weight:800; color:#ffffff; font-family:'Outfit', sans-serif; letter-spacing:-0.02em; margin:0 0 12px; line-height:1.25;" data-i18n="jsbridge_title">
           Starting Out in STEM? Build Your Foundations with Jóvenes STEM®
         </h2>
         <p style="font-size:1.05rem; color:#94a3b8; max-width:760px; line-height:1.65; margin:0 auto;" data-i18n="jsbridge_desc">
@@ -2964,7 +3033,11 @@
       <div style="background:radial-gradient(ellipse at 80% 50%, rgba(14,165,233,0.15), rgba(15,23,42,0.85) 70%); border:1px solid rgba(56,189,248,0.3); border-radius:24px; padding:28px 32px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; box-shadow:0 15px 40px -10px rgba(0,0,0,0.5);">
         <div style="max-width:620px;">
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-            <span style="font-size:1.25rem; font-weight:900; color:#ffffff; font-family:'Outfit', sans-serif;">Jóvenes<span style="color:#38bdf8;">STEM</span>®</span>
+            <a href="https://jovenesstem.com/" target="_blank" rel="noopener" style="text-decoration:none;">
+              <span class="hero-brand-name jsweb-hero-brand" style="font-size:1.45rem;">
+                <span class="hero-brand-jovenes">jóvenes</span><span class="hero-brand-stem">STEM</span><sup class="hero-brand-reg">&reg;</sup>
+              </span>
+            </a>
             <span style="background:rgba(16,185,129,0.18); color:#34d399; border:1px solid rgba(16,185,129,0.35); font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:6px;">100% FREE</span>
           </div>
           <p style="color:#cbd5e1; font-size:0.92rem; margin:0; line-height:1.5;" data-i18n="jsbridge_action_desc">
@@ -2973,7 +3046,7 @@
         </div>
         <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
           <a href="https://jovenesstem.com/" target="_blank" rel="noopener" class="btn-signup-nav-primary" style="display:inline-flex; align-items:center; gap:8px; padding:12px 24px; border-radius:12px; font-weight:800; font-size:0.95rem; text-decoration:none; background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#ffffff; box-shadow:0 8px 20px rgba(2,132,199,0.35);">
-            <span data-i18n="jsbridge_btn">Explore Jóvenes STEM Free</span>
+            <span data-i18n="jsbridge_btn">Explore jóvenesSTEM® Free</span>
             <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.8rem;"></i>
           </a>
         </div>
@@ -3011,7 +3084,7 @@
         <ul class="footer-links">
           <li><a href="javascript:void(0)" onclick="window.scrollTo({top:0, behavior:'smooth'})" data-i18n="footer_link_top">Back to Top</a></li>
           <li><a href="/index.html" data-i18n="footer_link_campus">Student Campus</a></li>
-          <li><a href="https://jovenesstem.com?ref=stemos" target="_blank" rel="noopener noreferrer" data-i18n="footer_link_jovenesstem">JóvenesSTEM Foundations</a></li>
+          <li><a href="https://jovenesstem.com?ref=stemos" target="_blank" rel="noopener noreferrer" data-i18n="footer_link_jovenesstem">jóvenesSTEM® Foundations</a></li>
           <li><a href="/privacy" data-i18n="footer_privacy">Privacy Policy</a></li>
           <li><a href="/terms" data-i18n="footer_terms">Terms of Service</a></li>
           <li><a href="javascript:void(0)" id="footer-clear-cache" data-i18n="footer_link_cache">Refresh PWA Cache</a></li>
@@ -3649,7 +3722,7 @@
         footer_title_platform: 'Platform',
         footer_link_top: 'Back to Top',
         footer_link_campus: 'Student Campus',
-        footer_link_jovenesstem: 'JóvenesSTEM Foundations',
+        footer_link_jovenesstem: 'jóvenesSTEM® Foundations',
         footer_privacy: 'Privacy Policy',
         footer_terms: 'Terms of Service',
         footer_privacy_terms: 'Privacy Policy &amp; Terms',
@@ -3666,9 +3739,9 @@
         jsbridge_card2_title: 'Elementary Technical English',
         jsbridge_card2_desc: 'Bilingual readings and core vocabulary drills to build familiarity with scientific terms before advanced B1/B2 immersion.',
         jsbridge_card3_title: 'Curricular Bridge Connector',
-        jsbridge_card3_desc: 'Complete foundational modules on Jóvenes STEM and arrive fully equipped to convalidate hours and excel on the stemOS platform.',
+        jsbridge_card3_desc: 'Complete foundational modules on jóvenesSTEM® and arrive fully equipped to convalidate hours and excel on the stemOS platform.',
         jsbridge_action_desc: 'Start today at no cost. Practice with AI Socratic tutoring, earn 7 chapter diplomas, and prepare for high-precision industrial engineering.',
-        jsbridge_btn: 'Explore Jóvenes STEM Free',
+        jsbridge_btn: 'Explore jóvenesSTEM® Free',
         cookie_title: 'Privacy Notice &amp; Cookies',
         cookie_text: 'stemOS uses technical cookies and essential local storage to calibrate your CEFR diagnostic progress, secure your session, and enable PWA simulators without advertising tracking.',
         cookie_accept: 'Accept &amp; Continue',
@@ -3925,7 +3998,7 @@
         footer_title_platform: 'Plataforma',
         footer_link_top: 'Volver Arriba',
         footer_link_campus: 'Campus del Estudiante',
-        footer_link_jovenesstem: 'Fundamentos JóvenesSTEM',
+        footer_link_jovenesstem: 'Fundamentos jóvenesSTEM®',
         footer_privacy: 'Políticas de Privacidad',
         footer_terms: 'Términos de Servicio',
         footer_privacy_terms: 'Políticas de Privacidad y Términos',
@@ -3942,9 +4015,9 @@
         jsbridge_card2_title: 'Inglés Técnico Elemental',
         jsbridge_card2_desc: 'Lecturas bilingües y vocabulario clave para familiarizarte con la terminología científica antes de las inmersiones avanzadas B1/B2.',
         jsbridge_card3_title: 'Puente Curricular Conector',
-        jsbridge_card3_desc: 'Termina los módulos en Jóvenes STEM y llega preparado para convalidar horas curriculares y sobresalir en la plataforma stemOS.',
+        jsbridge_card3_desc: 'Termina los módulos en jóvenesSTEM® y llega preparado para convalidar horas curriculares y sobresalir en la plataforma stemOS.',
         jsbridge_action_desc: 'Empieza hoy sin costo. Practica con el tutor socrático con IA, obtén tus 7 diplomas por capítulo y prepárate para los retos de alta especialización industrial.',
-        jsbridge_btn: 'Ir a Jóvenes STEM Gratis',
+        jsbridge_btn: 'Explorar jóvenesSTEM® Gratis',
         cookie_title: 'Aviso de Privacidad y Cookies',
         cookie_text: 'stemOS utiliza cookies técnicas y almacenamiento local esencial para calibrar tu progreso diagnóstico MCER, garantizar tu sesión segura y habilitar simuladores PWA sin recopilar datos con fines publicitarios.',
         cookie_accept: 'Aceptar y Continuar',
