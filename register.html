@@ -1386,11 +1386,9 @@
                     </div>
                     <button type="button" class="btn-google-sso" onclick="handleGoogleSSORegistration()" style="width: 100%; max-width: 440px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 12px; background: #ffffff; color: #0f172a; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px 20px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);">
                         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
-                        <span id="lbl-google-sso">Sign in with Google</span>
+                        <span id="lbl-google-sso">Inicia sesión con tu cuenta Google</span>
                     </button>
-                    <div id="lbl-sso-hint" aria-live="polite" style="font-size: 0.76rem; color: #64748b; margin-top: 10px;">
-                        Auto-detects <strong>@tecnm.mx</strong>, <strong>@utyp.edu.mx</strong>, <strong>@uabc.edu.mx</strong>, <strong>@utt.edu.mx</strong> or personal Gmail.
-                    </div>
+                    <div id="lbl-sso-hint" aria-live="polite" style="display: none;"></div>
                 </div>
 
                 <div class="or-divider" style="display: flex; align-items: center; margin: 18px 0 24px 0; color: #64748b; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
@@ -1523,7 +1521,7 @@
                 </div>
 
                 <div id="career-selected-summary" style="font-size: 0.8rem; color: var(--sky-600); font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-circle-check"></i> <span id="career-summary-text">Selected: Ing. Mecatrónica (upbc-mecatronica) • Modular Career Path</span>
+                    <i class="fa-solid fa-circle-check"></i> <span id="career-summary-text">Selected: Ing. Mecatrónica (Subsistema UTyP) • Modular Career Path</span>
                 </div>
             </section>
 
@@ -1927,8 +1925,8 @@
                     title: "What is your full name and student email?",
                     subtitle: "Register to get your personalized path depending on your career and engineering specialization.",
                     sso_badge: "Fast 1-Click Access",
-                    sso_btn: "Sign in with Google",
-                    sso_hint: "Auto-detects <strong>@upbc.edu.mx</strong>, <strong>@tecnm.mx</strong>, <strong>@uabc.edu.mx</strong>, <strong>@utt.edu.mx</strong> or personal Gmail.",
+                    sso_btn: "Inicia sesión con tu cuenta Google",
+                    sso_hint: "",
                     or_divider: "OR ENTER DETAILS MANUALLY",
                     lbl_name: 'Full Name <span class="req">*</span>',
                     hint_name: '<i class="fa-solid fa-circle-info"></i> Enter your legal first and last names as registered with your university.',
@@ -2012,8 +2010,8 @@
                     title: "¿Cuál es tu nombre completo y correo institucional?",
                     subtitle: "Regístrate para obtener tu ruta personalizada según tu carrera y especialidad de ingeniería.",
                     sso_badge: "Acceso Rápido en 1 Clic",
-                    sso_btn: "Iniciar sesión con Google",
-                    sso_hint: "Auto-detecta <strong>@tecnm.mx</strong>, <strong>@utyp.edu.mx</strong>, <strong>@uabc.edu.mx</strong>, <strong>@utt.edu.mx</strong> o Gmail personal.",
+                    sso_btn: "Inicia sesión con tu cuenta Google",
+                    sso_hint: "",
                     or_divider: "O INGRESA TUS DATOS MANUALMENTE",
                     lbl_name: 'Nombre Completo <span class="req">*</span>',
                     hint_name: '<i class="fa-solid fa-circle-info"></i> Ingresa tus nombres y apellidos oficiales registrados en tu universidad.',
@@ -2910,7 +2908,7 @@
         function submitCustomGoogleAccountRegister() {
             const inpName = document.getElementById('custom-google-name');
             const inpEmail = document.getElementById('custom-google-email');
-            const email = (inpEmail && inpEmail.value.trim()) || 'estudiante@upbc.edu.mx';
+            const email = (inpEmail && inpEmail.value.trim()) || 'estudiante@tecnm.mx';
             let name = (inpName && inpName.value.trim());
             if (!name) {
                 const userPart = email.split('@')[0].replace(/[._]/g, ' ');

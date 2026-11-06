@@ -15924,7 +15924,7 @@
       const level = (examResult.level || studentData.cefrLevel || 'B1').toUpperCase();
       const studentName = studentData.fullName || studentData.name || 'Estudiante stemOS';
       const matricula = studentData.matricula || studentData.folio || '2026-STEM';
-      const institution = studentData.institutionName || studentData.subsystem || 'UPBC / Consorcio Tecnológico';
+      const institution = studentData.institutionName || studentData.subsystem || 'Subsistema UTyP / Consorcio Tecnológico';
       const score = examResult.score !== undefined ? examResult.score : 85;
       const hours = examResult.hours || 60.0;
       const issuanceDate = examResult.date || new Date().toISOString();
@@ -15947,7 +15947,7 @@
         "id": `urn:uuid:stemos-credential-${folio.toLowerCase()}`,
         "type": ["VerifiableCredential", "OpenBadgeCredential"],
         "issuer": {
-          "id": "https://stemos.edu.mx/issuers/cacei-upbc-tecnm",
+          "id": "https://stemos.edu.mx/issuers/cacei-utyp-tecnm",
           "name": "stemOS / CACEI International Engineering Accreditation Consortium",
           "url": "https://stemos.yepzhi.workers.dev",
           "institution": institution

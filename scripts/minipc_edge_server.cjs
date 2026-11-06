@@ -2,7 +2,7 @@
 /**
  * stemOS Campus Mini PC Edge Gateway & Zero-Water Local Server (v6.2.0)
  * ═════════════════════════════════════════════════════════════════════════════
- * Designed for university and high school computer labs (e.g. UPBC, TecNM, DGETI).
+ * Designed for university and high school computer labs (e.g. Subsistema UTyP, TecNM, DGETI).
  *
  * Capabilities:
  *  1. Zero External Bandwidth: Serves all stemOS static assets locally to 100+

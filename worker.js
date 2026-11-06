@@ -22,7 +22,7 @@ const DEFAULT_ISSUER_PUBLIC_KEY_X = '8f9a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1
 
 const INSTITUTIONAL_DOMAINS = {
   'utyp.edu.mx': { institutionId: 'upbc-mexicali', institutionName: 'Universidades Politécnicas y Tecnológicas', system: 'utyp' },
-  'upbc.edu.mx': { institutionId: 'upbc-mexicali', institutionName: 'Universidad Politécnica de Baja California', system: 'utyp' },
+  'upbc.edu.mx': { institutionId: 'upbc-mexicali', institutionName: 'Universidades Politécnicas (Subsistema UTyP)', system: 'utyp' },
   'uttijuana.edu.mx': { institutionId: 'utt-tijuana', institutionName: 'Universidad Tecnológica de Tijuana', system: 'utyp' },
   'saltillo.tecnm.mx': { institutionId: 'tecnm-saltillo', institutionName: 'TecNM Campus Saltillo', system: 'it' },
   'tecnm.mx': { institutionId: 'tecnm-saltillo', institutionName: 'Tecnológico Nacional de México', system: 'it' },
@@ -547,7 +547,7 @@ async function handleVerifyRole(request, env, origin, clientIp) {
     return jsonResponse({
       verified: false,
       role: 'student',
-      error: 'Faculty Portal requires a verified institutional email (.edu.mx, .tecnm.mx, upbc.edu.mx, uttijuana.edu.mx) or allowlisted instructor account.'
+      error: 'Faculty Portal requires a verified institutional email (.edu.mx, .tecnm.mx, utyp.edu.mx, uttijuana.edu.mx) or allowlisted instructor account.'
     }, 403, origin);
   }
 

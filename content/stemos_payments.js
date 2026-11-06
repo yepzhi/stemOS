@@ -257,7 +257,7 @@
     };
 
     window.redeemFolioCode = function(uId) {
-      const code = prompt('Ingresa tu código de beca institucional o Folio universitario (ej. STEM-2026-XXXX, UPBC-XXXX):');
+      const code = prompt('Ingresa tu código de beca institucional o Folio universitario (ej. STEM-2026-XXXX, TECNM-XXXX, UTYP-XXXX):');
       if (!code || !code.trim()) return;
 
       const cleanCode = code.trim().toUpperCase();
@@ -271,7 +271,7 @@
           isVoucher: true
         });
       } else {
-        alert('Código de folio inválido. El folio debe tener formato institucional oficial (ej. STEM-XXXX o UPBC-XXXX).');
+        alert('Código de folio inválido. El folio debe tener formato institucional oficial (ej. STEM-XXXX o TECNM-XXXX).');
       }
     };
 
