@@ -2180,6 +2180,8 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollToCatalog = true;
         } else if (viewName === 'lab') {
             targetId = 'view-glossary';
+        } else if (viewName === 'escalation-email' || viewName === 'email-builder') {
+            targetId = 'view-output-lab';
         } else if (viewName === 'eval') {
             targetId = 'view-all-units';
             setTimeout(() => {
@@ -2273,9 +2275,42 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof initGlossarySM2 === 'function' && window._sm2ModeActive) {
                 initGlossarySM2();
             }
+        } else if (viewName === 'escalation-email' || viewName === 'email-builder') {
+            if (typeof initOutputLab === 'function') {
+                initOutputLab();
+            }
+            const btnMode8D = document.getElementById('btn-mode-8d');
+            const btnModeEmail = document.getElementById('btn-mode-email');
+            const workspace8D = document.getElementById('workspace-8d');
+            const workspaceEmail = document.getElementById('workspace-email');
+            if (btnModeEmail && workspaceEmail) {
+                if (btnMode8D) {
+                    btnMode8D.classList.remove('active');
+                    btnMode8D.setAttribute('aria-selected', 'false');
+                }
+                btnModeEmail.classList.add('active');
+                btnModeEmail.setAttribute('aria-selected', 'true');
+                if (workspace8D) workspace8D.style.display = 'none';
+                workspaceEmail.style.display = 'block';
+                if (typeof renderExecutiveEmail === 'function') renderExecutiveEmail();
+            }
         } else if (viewName === 'output-lab') {
             if (typeof initOutputLab === 'function') {
                 initOutputLab();
+            }
+            const btnMode8D = document.getElementById('btn-mode-8d');
+            const btnModeEmail = document.getElementById('btn-mode-email');
+            const workspace8D = document.getElementById('workspace-8d');
+            const workspaceEmail = document.getElementById('workspace-email');
+            if (btnMode8D && workspace8D) {
+                if (btnModeEmail) {
+                    btnModeEmail.classList.remove('active');
+                    btnModeEmail.setAttribute('aria-selected', 'false');
+                }
+                btnMode8D.classList.add('active');
+                btnMode8D.setAttribute('aria-selected', 'true');
+                workspace8D.style.display = 'block';
+                if (workspaceEmail) workspaceEmail.style.display = 'none';
             }
         }
     }
@@ -4230,6 +4265,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnModeEmail.setAttribute('aria-selected', 'false');
                 workspace8D.style.display = 'block';
                 workspaceEmail.style.display = 'none';
+                document.querySelectorAll('.ed-rail-btn[data-view]').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.view === 'output-lab');
+                });
+                document.querySelectorAll('.ed-dock-btn[data-view]').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.view === 'output-lab');
+                });
             });
 
             btnModeEmail.addEventListener('click', () => {
@@ -4240,6 +4281,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 workspaceEmail.style.display = 'block';
                 workspace8D.style.display = 'none';
                 renderExecutiveEmail();
+                document.querySelectorAll('.ed-rail-btn[data-view]').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.view === 'escalation-email');
+                });
+                document.querySelectorAll('.ed-dock-btn[data-view]').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.view === 'escalation-email');
+                });
             });
         }
 
@@ -4662,6 +4709,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
         renderExecutiveEmail();
     }
     window.initOutputLab = initOutputLab;
+    window.openEscalationEmailBuilder = function() {
+        if (typeof window.switchDashboardView === 'function') {
+            window.switchDashboardView('escalation-email');
+        }
+    };
 
     /* --- Constellation Skills Graph (27 Tracks & 4 Clusters) --- */
     const CLUSTER_CONFIG = [

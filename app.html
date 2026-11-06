@@ -296,6 +296,8 @@
         #nav-btn-placement i { color: #059669 !important; }
         #nav-btn-world i { color: #7c3aed !important; }
         #nav-btn-graph i { color: #4f46e5 !important; }
+        #nav-btn-email i { color: #0284c7 !important; }
+        #nav-btn-output-lab i { color: #6366f1 !important; }
         #nav-btn-tutor i { color: #db2777 !important; }
         #nav-btn-badges i { color: #d97706 !important; }
         #nav-btn-glossary i { color: #0d9488 !important; }
@@ -907,12 +909,18 @@
                     <span class="ed-rail-label">Grafo</span>
                     <span class="ed-rail-tooltip">Skills Graph</span>
                 </button>
-                <button class="ed-rail-btn" data-view="feynman-tutor" id="nav-btn-tutor"
-                    title="Tutor Socrático Feynman">
+                <button class="ed-rail-btn" data-view="escalation-email" id="nav-btn-email"
+                    title="Executive Escalation Email Builder (BLUF & Cross-Border)">
                     <span class="ed-rail-active-indicator"></span>
-                    <i class="fa-solid fa-brain"></i>
-                    <span class="ed-rail-label">Feynman AI</span>
-                    <span class="ed-rail-tooltip">Feynman AI Tutor</span>
+                    <i class="fa-solid fa-envelope-open-text" style="color:#0284c7;"></i>
+                    <span class="ed-rail-label">Email BLUF</span>
+                    <span class="ed-rail-tooltip">Escalation Email Builder</span>
+                </button>
+                <button class="ed-rail-btn" data-view="output-lab" id="nav-btn-output-lab" title="8D Problem Solving Studio (IATF 16949 / ISO 9001)">
+                    <span class="ed-rail-active-indicator"></span>
+                    <i class="fa-solid fa-pen-ruler"></i>
+                    <span class="ed-rail-label">8D Studio</span>
+                    <span class="ed-rail-tooltip">8D Problem Solving Studio</span>
                 </button>
                 <button class="ed-rail-btn" data-view="micro-badges" id="nav-btn-badges"
                     title="Insignias y Certificados">
@@ -926,12 +934,6 @@
                     <i class="fa-solid fa-book-bookmark"></i>
                     <span class="ed-rail-label">Glosario</span>
                     <span class="ed-rail-tooltip">Vocabulario & Frases</span>
-                </button>
-                <button class="ed-rail-btn" data-view="output-lab" id="nav-btn-output-lab" title="Technical Output Lab (8D & Email)">
-                    <span class="ed-rail-active-indicator"></span>
-                    <i class="fa-solid fa-pen-ruler"></i>
-                    <span class="ed-rail-label">Output Lab</span>
-                    <span class="ed-rail-tooltip">8D Report & Escalation Email</span>
                 </button>
                 <button class="ed-rail-btn" onclick="window.openStudentProfileModal()" id="nav-btn-profile" title="Mi Perfil & Estadísticas">
                     <span class="ed-rail-active-indicator"></span>
@@ -962,10 +964,10 @@
                 <i class="fa-solid fa-earth-americas"></i>
                 <span class="ed-dock-label">Mundo 3D</span>
             </button>
-            <button class="ed-dock-btn" data-view="feynman-tutor" id="dock-btn-tutor" aria-label="Feynman AI">
+            <button class="ed-dock-btn" data-view="escalation-email" id="dock-btn-email" aria-label="Email Builder">
                 <span class="ed-dock-indicator"></span>
-                <i class="fa-solid fa-brain"></i>
-                <span class="ed-dock-label">Feynman AI</span>
+                <i class="fa-solid fa-envelope-open-text"></i>
+                <span class="ed-dock-label">Email</span>
             </button>
             <button class="ed-dock-btn" data-view="micro-badges" id="dock-btn-badges" aria-label="Progreso">
                 <span class="ed-dock-indicator"></span>
@@ -1152,7 +1154,11 @@
                                 <span>ESP Industry Hub <span style="font-size:0.72rem; font-weight:800; background:rgba(100,116,139,0.15); color:#475569; padding:2px 8px; border-radius:999px;">34 Tracks</span></span>
                             </button>
                         </div>
-                        <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                            <button type="button" class="btn" id="btn-hero-launch-email" onclick="switchDashboardView('escalation-email')" style="padding:8px 16px; font-size:0.85rem; font-weight:700; border-radius:12px; background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color:#ffffff; border:1px solid #334155; box-shadow:0 4px 12px rgba(15,23,42,0.18); cursor:pointer; display:inline-flex; align-items:center; gap:8px;" title="Executive Escalation Email Builder (BLUF Standard)">
+                                <i class="fa-solid fa-envelope-open-text" style="color:#38bdf8;"></i>
+                                <span>Email Builder <span style="font-size:0.7rem; font-weight:800; background:rgba(56,189,248,0.2); color:#38bdf8; padding:1px 6px; border-radius:999px;">BLUF</span></span>
+                            </button>
                             <a href="placement.html" class="btn btn-primary" id="btn-hero-launch-placement" style="padding:8px 16px; font-size:0.85rem; font-weight:700; border-radius:12px; background:linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); color:#ffffff; border:none; box-shadow:0 4px 12px rgba(2,132,199,0.25); text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
                                 <i class="fa-solid fa-clipboard-check"></i> Tomar Placement Test (30 min)
                             </a>
