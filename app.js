@@ -726,10 +726,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.launchSocraticChallenge = launchSocraticChallenge;
 
-    startTutorBtn.addEventListener('click', () => {
-        if (!selectedNodeId) return;
-        launchSocraticChallenge(selectedNodeId, `${selectedNodeId}-m1`);
-    });
+    if (startTutorBtn) {
+        startTutorBtn.addEventListener('click', () => {
+            if (!selectedNodeId) return;
+            launchSocraticChallenge(selectedNodeId, `${selectedNodeId}-m1`);
+        });
+    }
 
     // Helper functions for chat
     function addBotMessage(text) {
@@ -1928,7 +1930,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     btnCloseAcademicSuccess.addEventListener('click', () => {
         academicModal.close();
-        document.getElementById('skills-info-panel').scrollIntoView({ behavior: 'smooth' });
+        const infoPanel = document.getElementById('skills-info-panel');
+        if (infoPanel) infoPanel.scrollIntoView({ behavior: 'smooth' });
     });
 
     btnSubmitQuiz.addEventListener('click', () => {

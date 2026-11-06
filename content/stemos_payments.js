@@ -119,6 +119,10 @@
           <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:16px 18px; margin-bottom:22px; font-size:0.84rem; color:#334155; display:flex; flex-direction:column; gap:9px;">
             <div style="display:flex; align-items:center; gap:10px;">
               <span style="color:#10b981; font-weight:900; font-size:1rem;">✓</span>
+              <span><strong>Acceso a todos los niveles MCER Tracks (A1–C1)</strong></span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="color:#10b981; font-weight:900; font-size:1rem;">✓</span>
               <span><strong>34 Tracks de Especialidad Técnica ESP</strong> (Semiconductores, IA, Robótica)</span>
             </div>
             <div style="display:flex; align-items:center; gap:10px;">
@@ -307,7 +311,7 @@
           ${extraThanks}
 
           <p style="font-size:0.9rem; color:#475569; line-height:1.55; margin-bottom:24px;">
-            Tu suscripción mediante <strong>${escapeHTML(order.method)}</strong> ha sido activada con éxito. Tu cuenta ahora cuenta con acceso total a los <strong>34 Tracks de Especialidad</strong>, los simuladores de planta y las micro-credenciales <strong>Open Badges 3.0</strong>.
+            Tu suscripción mediante <strong>${escapeHTML(order.method)}</strong> ha sido activada con éxito. Tu cuenta ahora cuenta con acceso total a <strong>todos los niveles MCER Tracks (A1–C1)</strong>, los <strong>34 Tracks de Especialidad</strong>, los simuladores de planta y las micro-credenciales <strong>Open Badges 3.0</strong>.
           </p>
 
           <div style="display:flex; flex-direction:column; gap:10px;">
