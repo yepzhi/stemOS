@@ -1061,7 +1061,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalCertDemonstration.textContent = 'Por haber demostrado fehacientemente y mediante evaluación conversacional socrática sus competencias en la habilidad de:';
             }
             if (modalCertAccreditation) {
-                modalCertAccreditation.innerHTML = 'Alineado con los estándares internacionales <strong>NGSS HS-PS4</strong> y del marco <strong>CONOCER SEP EC1290</strong>.';
+                modalCertAccreditation.innerHTML = 'Alineado a marcos internacionales de ingeniería (<strong>CACEI / ABET</strong>) y estándares industriales (<strong>IEEE / ICAO / CEFR B2-C1</strong>).';
             }
         }
 
