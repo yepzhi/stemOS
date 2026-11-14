@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Student Onboarding Wizard — stemOS</title>
-    <meta name="description" content="Official student onboarding and 60-hour deterministic engineering curricular path registration for Technological Universities, TecNM, and State Autonomous Systems. Technical English B1 immersion.">
+    <meta name="description" content="Student onboarding and 60-hour modular engineering curricular path registration for higher education students and independent learners. Technical English (CEFR A1–B2) immersion.">
 
     <!-- PWA & Mobile Web App Manifest -->
     <link rel="manifest" href="/manifest.json">
@@ -1401,26 +1401,26 @@
                     <label class="input-label" id="lbl-fullname" for="inp-fullname">Full Name <span class="req">*</span></label>
                     <div class="text-input-wrapper">
                         <i class="fa-regular fa-id-card"></i>
-                        <input type="text" id="inp-fullname" class="text-input" placeholder="e.g. Diana Laura Morales" autocomplete="name" autofocus>
+                        <input type="text" id="inp-fullname" class="text-input" placeholder="e.g. Nombre(s) y Apellidos" autocomplete="name" autofocus>
                     </div>
-                    <div class="input-hint" id="hint-fullname"><i class="fa-solid fa-circle-info"></i> Enter your legal first and last names as registered with your university.</div>
+                    <div class="input-hint" id="hint-fullname"><i class="fa-solid fa-circle-info"></i> Enter your first and last names as you want them displayed on your digital credentials.</div>
                 </div>
 
                 <div class="input-group">
                     <label class="input-label" id="lbl-email" for="inp-email">Institutional or Academic Email <span class="req">*</span></label>
                     <div class="text-input-wrapper">
                         <i class="fa-regular fa-envelope"></i>
-                        <input type="email" id="inp-email" class="text-input" placeholder="e.g. diana.morales@saltillo.tecnm.mx" autocomplete="email" oninput="handleEmailInputDetection(this.value)">
+                        <input type="email" id="inp-email" class="text-input" placeholder="e.g. matricula@institucion.edu.mx" autocomplete="email" oninput="handleEmailInputDetection(this.value)">
                     </div>
                     <div id="email-detect-badge" style="display: none; margin-top: 8px; font-size: 0.8rem; font-weight: 700; padding: 6px 12px; border-radius: 8px; align-items: center; gap: 8px; transition: all 0.2s ease;"></div>
-                    <div class="input-hint" id="hint-email"><i class="fa-solid fa-shield-halved"></i> Used for cohort progress synchronization and official ISO/ABET audit reports.</div>
+                    <div class="input-hint" id="hint-email"><i class="fa-solid fa-shield-halved"></i> Used for cohort progress synchronization and W3C Open Badges 3.0 verifiable credentials.</div>
                 </div>
 
                 <div class="input-group" style="margin-bottom: 0;">
                     <label class="input-label" id="lbl-matricula" for="inp-matricula">Student ID / Enrollment Number (Optional)</label>
                     <div class="text-input-wrapper">
                         <i class="fa-solid fa-fingerprint"></i>
-                        <input type="text" id="inp-matricula" class="text-input" placeholder="e.g. 21050842">
+                        <input type="text" id="inp-matricula" class="text-input" placeholder="e.g. 20260144">
                     </div>
                 </div>
             </section>
@@ -1428,8 +1428,8 @@
             <!-- ================= STEP 2: SUBSYSTEM ================= -->
             <section class="question-step" id="step-2">
                 <span class="step-tag" id="tag-step-2"><i class="fa-solid fa-building-columns"></i> Question 02</span>
-                <h2 class="question-title" id="title-step-2">Which higher education system are you enrolled in?</h2>
-                <p class="question-subtitle" id="subtitle-step-2">Select your academic subsystem. Curricula are calibrated to meet national industry standards across Mexico and Latin America.</p>
+                <h2 class="question-title" id="title-step-2">What type of higher education institution do you study at? (Optional)</h2>
+                <p class="question-subtitle" id="subtitle-step-2">Select your academic model to contextualize your technical English learning path (cuatrimestral or semestral).</p>
 
                 <div class="selection-grid-2">
                     <div class="selection-card selected" data-subsystem="utyp" onclick="selectSubsystem('utyp')" style="grid-column: 1 / -1; border-color: rgba(2, 132, 199, 0.45); background: linear-gradient(135deg, rgba(2, 132, 199, 0.06) 0%, rgba(16, 185, 129, 0.06) 100%);">
@@ -1438,15 +1438,15 @@
                             <div style="display:flex; align-items:center; gap:8px;">
                                 <h4>Universidades Tecnológicas y Politécnicas <span class="card-sub-badge" style="background:linear-gradient(135deg, #0284c7, #10b981); color:#fff; font-weight:700;">UTyP</span></h4>
                             </div>
-                            <p id="desc-subsystem-utyp">Subsistema oficial UTyP (Politécnicas, Tecnológicas y red nacional): Modelo cuatrimestral, TSU, Ingenierías y Estadías Profesionales en la industria.</p>
+                            <p id="desc-subsystem-utyp">Modelo cuatrimestral (Politécnicas y Tecnológicas): TSU, Ingenierías y Estadías Profesionales en la industria.</p>
                         </div>
                     </div>
 
                     <div class="selection-card" data-subsystem="it" onclick="selectSubsystem('it')">
                         <div class="card-icon-box"><i class="fa-solid fa-gear"></i></div>
                         <div class="card-content">
-                            <h4>Sistema TecNM Nacional <span class="card-sub-badge">TecNM</span></h4>
-                            <p>Mexico's largest STEM network with 254 engineering campuses and professional residencies.</p>
+                            <h4>Institutos Tecnológicos <span class="card-sub-badge">Tecnológicos</span></h4>
+                            <p>Engineering campuses on a semester calendar with industrial residencies.</p>
                         </div>
                     </div>
 
@@ -1454,33 +1454,33 @@
                         <div class="card-icon-box"><i class="fa-solid fa-atom"></i></div>
                         <div class="card-content">
                             <h4>State & Autonomous Universities <span class="card-sub-badge">State</span></h4>
-                            <p>UNISON, UNAM, IPN, UANL, UDG, UABC & autonomous research centers with R&D specialization.</p>
+                            <p>Public and autonomous state universities and engineering faculties.</p>
                         </div>
                     </div>
 
                     <div class="selection-card" data-subsystem="latam" onclick="selectSubsystem('latam')">
                         <div class="card-icon-box"><i class="fa-solid fa-earth-americas"></i></div>
                         <div class="card-content">
-                            <h4>Other LATAM & USA Regional Systems <span class="card-sub-badge">International</span></h4>
-                            <p>International, LATAM & US Institutions.</p>
+                            <h4>Other LATAM & Independent Learners <span class="card-sub-badge">International</span></h4>
+                            <p>International, LATAM & Independent Learners.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="input-group" style="margin-bottom: 0;">
-                    <label class="input-label" id="lbl-campus" for="inp-campus">Nombre del Campus o Plantel <span class="req">*</span></label>
+                    <label class="input-label" id="lbl-campus" for="inp-campus">Institución donde estudias (Opcional)</label>
                     <div class="text-input-wrapper">
                         <i class="fa-solid fa-location-dot"></i>
                         <select id="inp-campus" class="text-input" style="cursor: pointer; appearance: auto; background-color: #ffffff; color: var(--fg-primary); font-weight: 600;" onchange="handleCampusDropdownChange(this.value)">
-                            <option value="Universidades Politécnicas (Subsistema UTyP)">Universidades Politécnicas (Subsistema UTyP)</option>
-                            <option value="Universidad Tecnológica de Tijuana (UTT)">Universidad Tecnológica de Tijuana (UTT)</option>
-                            <option value="TecNM Tijuana (ITT)">TecNM Tijuana (ITT)</option>
-                            <option value="TecNM Campus Saltillo">TecNM Campus Saltillo</option>
-                            <option value="Universidad Autónoma de Baja California (UABC)">Universidad Autónoma de Baja California (UABC)</option>
+                            <option value="Universidades Politécnicas (Subsistema UTyP)">Universidad Politécnica / Tecnológica (Modelo Cuatrimestral)</option>
+                            <option value="Universidad Tecnológica de Tijuana (UTT)">Universidad Tecnológica Regional</option>
+                            <option value="TecNM Tijuana (ITT)">Instituto Tecnológico Regional (Noroeste)</option>
+                            <option value="TecNM Campus Saltillo">Instituto Tecnológico Regional (Noreste)</option>
+                            <option value="Universidad Autónoma de Baja California (UABC)">Universidad Estatal / Autónoma</option>
                             <option value="Continuar sin selección de Universidad / Estudio Independiente">Continuar sin selección de Universidad / Estudio Independiente</option>
                         </select>
                     </div>
-                    <div class="input-hint" id="hint-campus"><i class="fa-solid fa-circle-info"></i> Si no ves tu institución, contacta al administrador de tu escuela o continúa sin selección de universidad.</div>
+                    <div class="input-hint" id="hint-campus"><i class="fa-solid fa-circle-info"></i> Selección informativa para contextualizar tu ruta de estudio; no implica afiliación oficial con la institución seleccionada.</div>
                 </div>
             </section>
 
@@ -1683,7 +1683,7 @@
                 <div id="solo-subscription-banner" style="display: none !important; background:#f0fdf4; border:1.5px solid #86efac; border-radius:14px; padding:16px 20px; margin-top:16px; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; box-shadow: 0 4px 14px rgba(16,185,129,0.08);">
                     <div>
                         <div style="font-size:0.75rem; color:#059669; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; display:flex; align-items:center; gap:6px;">
-                            <i class="fa-solid fa-bolt"></i> Plan Individual &bull; $49 MXN / mes
+                            <i class="fa-solid fa-bolt"></i> Plan Individual &bull; $69 MXN / cuatrimestre
                         </div>
                         <div style="font-size:0.86rem; color:#0f172a; font-weight:700; margin-top:2px;">
                             ¿Quieres acceso ilimitado a los 34 Tracks sin esperar código escolar?
@@ -1692,9 +1692,9 @@
                             Paga en línea con Transferencia SPEI, Tarjeta o Beca y activa tu suscripción al instante.
                         </div>
                     </div>
-                    <button type="button" class="btn btn-sm" onclick="if(window.openStemosPaymentModal){openStemosPaymentModal(49);}" style="background:linear-gradient(135deg, #10b981, #0284c7); color:#fff; font-weight:800; font-size:0.82rem; border:none; padding:10px 18px; border-radius:10px; cursor:pointer; box-shadow:0 4px 14px rgba(16,185,129,0.25); display:inline-flex; align-items:center; gap:8px;">
+                    <button type="button" class="btn btn-sm" onclick="if(window.openStemosPaymentModal){openStemosPaymentModal(69);}" style="background:linear-gradient(135deg, #10b981, #0284c7); color:#fff; font-weight:800; font-size:0.82rem; border:none; padding:10px 18px; border-radius:10px; cursor:pointer; box-shadow:0 4px 14px rgba(16,185,129,0.25); display:inline-flex; align-items:center; gap:8px;">
                         <i class="fa-solid fa-credit-card"></i>
-                        <span>Activar por $49/mes</span>
+                        <span>Activar por $69/cuatrimestre</span>
                     </button>
                 </div>
 
@@ -1710,7 +1710,7 @@
                     <div class="class-verified-badge" id="class-verified-badge">
                         <strong><i class="fa-solid fa-circle-check"></i> <span id="lbl-cohort-sync">Cohort Verified & Synchronized</span></strong>
                         <div id="verified-class-details" style="font-size: 0.85rem; margin-top: 4px; line-height: 1.4;">
-                            Mecatrónica 4°A — Ing. Roberto Hernández (TecNM Saltillo)<br>
+                            Mecatrónica 4°A — Docente Titular (Grupo Demo)<br>
                             <span style="color: var(--teal-500); font-family: 'JetBrains Mono', monospace;">Career Track automatically locked to: Ing. Mecatrónica</span>
                         </div>
                     </div>
@@ -1721,7 +1721,7 @@
             <section class="question-step" id="step-7">
                 <span class="step-tag" id="tag-step-7"><i class="fa-solid fa-shield-halved"></i> Question 07</span>
                 <h2 class="question-title" id="title-step-7">Authorization Granted: Your Student Credential is Ready!</h2>
-                <p class="question-subtitle" id="subtitle-step-7">Review your official enrollment summary. Your personalized technical English curriculum is provisioned and ready to launch.</p>
+                <p class="question-subtitle" id="subtitle-step-7">Review your enrollment summary. Your personalized technical English curriculum is provisioned and ready to launch.</p>
 
                 <!-- Holographic Pass Card -->
                 <div class="credential-pass-card">
@@ -1729,14 +1729,14 @@
                         <div class="pass-header-meta">
                             <div>
                                 <div style="font-size: 0.85rem; font-weight: 800; letter-spacing: -0.02em;">stem<span style="color:var(--sky-500);">OS</span>™ LXP INDUSTRIAL PASS</div>
-                                <div style="font-size: 0.68rem; color: var(--teal-500); font-family: 'JetBrains Mono', monospace;">ISO 9001:2015 & ABET VERIFIED</div>
+                                <div style="font-size: 0.68rem; color: var(--teal-500); font-family: 'JetBrains Mono', monospace;">W3C OPEN BADGES 3.0 · PERFIL ESTUDIANTIL</div>
                             </div>
                         </div>
-                        <div class="pass-folio" id="pass-folio-display">FOLIO: STEMOS-2026-8942</div>
+                        <div class="pass-folio" id="pass-folio-display">FOLIO: STEMOS-2026-DEMO</div>
                     </div>
 
-                    <div class="pass-student-name" id="pass-name-display">Diana Laura Morales</div>
-                    <div class="pass-student-email" id="pass-email-display">diana.morales@saltillo.tecnm.mx • ID: 21050842</div>
+                    <div class="pass-student-name" id="pass-name-display">Estudiante stemOS</div>
+                    <div class="pass-student-email" id="pass-email-display">matricula@institucion.edu.mx • ID: 2026-STEM</div>
 
                     <div class="pass-grid">
                         <div>
@@ -1753,7 +1753,7 @@
                         </div>
                         <div>
                             <div class="pass-metric-label">SUBSYSTEM & CAMPUS</div>
-                            <div class="pass-metric-value" id="pass-campus-display">TecNM Saltillo</div>
+                            <div class="pass-metric-value" id="pass-campus-display">Campus Universitario</div>
                         </div>
                         <div>
                             <div class="pass-metric-label">REGIONAL INDUSTRIAL HUB</div>
@@ -1931,18 +1931,18 @@
                     lbl_name: 'Full Name <span class="req">*</span>',
                     hint_name: '<i class="fa-solid fa-circle-info"></i> Enter your legal first and last names as registered with your university.',
                     lbl_email: 'Institutional or Academic Email <span class="req">*</span>',
-                    hint_email: '<i class="fa-solid fa-shield-halved"></i> Used for cohort progress synchronization and official ISO/ABET audit reports.',
+                    hint_email: '<i class="fa-solid fa-shield-halved"></i> Used for cohort progress synchronization and W3C Open Badges 3.0 verifiable credentials.',
                     lbl_matricula: "Student ID / Enrollment Number (Optional)",
-                    ph_name: "e.g. Diana Laura Morales",
-                    ph_email: "e.g. diana.morales@saltillo.tecnm.mx"
+                    ph_name: "e.g. Nombre(s) y Apellidos",
+                    ph_email: "e.g. matricula@institucion.edu.mx"
                 },
                 step2: {
                     tag: '<i class="fa-solid fa-building-columns"></i> Question 02',
-                    title: "Which higher education system are you enrolled in?",
-                    subtitle: "Select your academic subsystem. Curricula are calibrated to meet national industry standards across Mexico and Latin America.",
-                    desc_utyp: "Official UTyP subsystem (Polytechnic & Technological Universities): Dual-stage quarter system (cuatrimestres), TSU, Engineering degrees & Industrial Practicum.",
-                    lbl_campus: 'Campus or Plantel Name <span class="req">*</span>',
-                    hint_campus: '<i class="fa-solid fa-circle-info"></i> If you do not see your institution, contact your school administrator or continue without university selection.'
+                    title: "What type of higher education institution do you study at? (Optional)",
+                    subtitle: "Select your academic model to contextualize your technical English learning path (cuatrimestral or semestral).",
+                    desc_utyp: "Quarter-system universities (Polytechnic & Technological Universities): TSU, Engineering degrees & Industrial Practicum.",
+                    lbl_campus: 'Institution Where You Study (Optional)',
+                    hint_campus: '<i class="fa-solid fa-circle-info"></i> Informative selection to contextualize your study path; does not imply official institutional affiliation.'
                 },
                 step3: {
                     tag: '<i class="fa-solid fa-compass-drafting"></i> Question 03',
@@ -2016,18 +2016,18 @@
                     lbl_name: 'Nombre Completo <span class="req">*</span>',
                     hint_name: '<i class="fa-solid fa-circle-info"></i> Ingresa tus nombres y apellidos oficiales registrados en tu universidad.',
                     lbl_email: 'Correo Institucional o Académico <span class="req">*</span>',
-                    hint_email: '<i class="fa-solid fa-shield-halved"></i> Utilizado para sincronización de progreso y reportes auditables ISO/ABET.',
+                    hint_email: '<i class="fa-solid fa-shield-halved"></i> Utilizado para sincronización de progreso y emisión de credenciales verificables Open Badges 3.0.',
                     lbl_matricula: "Matrícula / Número de Control (Opcional)",
-                    ph_name: "ej. Diana Laura Morales",
-                    ph_email: "ej. diana.morales@saltillo.tecnm.mx"
+                    ph_name: "ej. Nombre(s) y Apellidos",
+                    ph_email: "ej. matricula@institucion.edu.mx"
                 },
                 step2: {
                     tag: '<i class="fa-solid fa-building-columns"></i> Pregunta 02',
-                    title: "¿En qué sistema de educación superior estás inscrito?",
-                    subtitle: "Selecciona tu subsistema académico. El plan de estudio está personalizado para cada carrera y para cumplir con estándares industriales internacionales.",
-                    desc_utyp: "Subsistema oficial UTyP (Politécnicas y Tecnológicas): Modelo cuatrimestral, TSU, Ingenierías y Estadías Profesionales en la industria.",
-                    lbl_campus: 'Nombre del Campus o Plantel <span class="req">*</span>',
-                    hint_campus: '<i class="fa-solid fa-circle-info"></i> Si no ves tu institución, contacta al administrador de tu escuela o continúa sin selección de universidad.'
+                    title: "¿En qué tipo de institución de educación superior estudias? (Opcional)",
+                    subtitle: "Selecciona tu modelo académico para contextualizar tu ruta de inglés técnico (cuatrimestral o semestral).",
+                    desc_utyp: "Modelo cuatrimestral (Politécnicas y Tecnológicas): TSU, Ingenierías y Estadías Profesionales en la industria.",
+                    lbl_campus: 'Institución donde estudias (Opcional)',
+                    hint_campus: '<i class="fa-solid fa-circle-info"></i> Selección informativa para contextualizar tu ruta de estudio; no implica afiliación oficial con la institución seleccionada.'
                 },
                 step3: {
                     tag: '<i class="fa-solid fa-compass-drafting"></i> Pregunta 03',
@@ -2231,30 +2231,30 @@
             },
             'STEM-MECA-A7X3K2': {
                 id: 'c1',
-                name: 'Mecatrónica 4°A',
-                instructor: 'Ing. Roberto Hernández',
-                institution: 'TecNM Saltillo',
+                name: 'Mecatrónica 4°A (Grupo Demo)',
+                instructor: 'Docente Titular (Demo)',
+                institution: 'Campus Universitario Demo',
                 careerId: 'it-mecatronica'
             },
             'STEM-AUTO-B4Y9Z1': {
                 id: 'c2',
-                name: 'Sistemas Automotrices 6°B',
-                instructor: 'Dra. Elena Vázquez',
-                institution: 'TecNM Toluca',
+                name: 'Sistemas Automotrices 6°B (Grupo Demo)',
+                instructor: 'Docente Titular (Demo)',
+                institution: 'Campus Universitario Demo',
                 careerId: 'it-automotriz'
             },
             'STEM-SEMI-C2W8R5': {
                 id: 'c3',
-                name: 'Semiconductores 2°A',
-                instructor: 'Mtro. Carlos Estrada',
-                institution: 'UANL / UT Silicon Hub',
+                name: 'Semiconductores 2°A (Grupo Demo)',
+                instructor: 'Docente Titular (Demo)',
+                institution: 'Campus Universitario Demo',
                 careerId: 'it-semiconductores'
             },
             'STEM-AERO-D9M4L7': {
                 id: 'c4',
-                name: 'Propulsión Aeroespacial 8°A',
-                instructor: 'Dra. Marcela Rivas',
-                institution: 'Univ. Estatal Querétaro',
+                name: 'Propulsión Aeroespacial 8°A (Grupo Demo)',
+                instructor: 'Docente Titular (Demo)',
+                institution: 'Campus Universitario Demo',
                 careerId: 'it-aeroespacial'
             }
         };

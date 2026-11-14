@@ -33,34 +33,34 @@
             .replace(/'/g, '&#39;');
     }
 
-    // Default Seed Institution
+    // Default Seed Institution (Demo Sandbox)
     const DEFAULT_INSTITUTION = {
-        id: 'tecnm-saltillo',
-        name: 'TecNM Campus Saltillo',
+        id: 'campus-demo',
+        name: 'Campus Universitario Demo (Ejemplo)',
         system: 'it',
-        code: 'TECNM-SLW-2026',
-        city: 'Saltillo',
-        state: 'Coahuila',
+        code: 'STEM-DEMO-2026',
+        city: 'Campus Central',
+        state: 'MX',
         country: 'Mexico',
-        adminName: 'Prof. Luis Morales',
-        adminEmail: 'director@saltillo.tecnm.mx',
+        adminName: 'Coordinación de Lenguas (Demo)',
+        adminEmail: 'coordinacion@institucion.edu.mx',
         createdAt: '2026-08-01T08:00:00.000Z'
     };
 
-    // Default Seed Classes for initial offline readiness
+    // Default Seed Classes for initial offline readiness (Demo Sandbox)
     const DEFAULT_CLASSES = [
         {
             id: 'class-meca-4a',
-            institutionId: 'tecnm-saltillo',
+            institutionId: 'campus-demo',
             teacherId: 't1',
-            teacherName: 'Ing. Roberto Hernández',
+            teacherName: 'Docente Titular (Grupo Demo)',
             periodId: 'ago-dic-2026',
-            name: 'Mecatrónica 4°A — Matutino',
+            name: 'Ingeniería 4°A — Grupo Demo',
             careerId: 'it-mecatronica',
             careerName: 'Ingeniería Mecatrónica',
             primaryTrackId: 'robotics-automation',
             totalHours: 60.0,
-            inviteCode: 'STEM-MECA-A7X3K2',
+            inviteCode: 'STEM-DEMO-A1B2C3',
             inviteExpiry: null,
             maxCapacity: 40,
             studentsCount: 32,
@@ -71,11 +71,11 @@
         },
         {
             id: 'class-ind-4c',
-            institutionId: 'tecnm-saltillo',
+            institutionId: 'campus-demo',
             teacherId: 't2',
-            teacherName: 'Dra. Elena Vázquez',
+            teacherName: 'Coordinación Académica (Demo)',
             periodId: 'ago-dic-2026',
-            name: 'Industrial 4°C — Lean Core',
+            name: 'Industrial 4°C — Lean Core (Demo)',
             careerId: 'it-industrial',
             careerName: 'Ingeniería Industrial',
             primaryTrackId: 'automotive-lean',
@@ -91,11 +91,11 @@
         },
         {
             id: 'class-sys-4a',
-            institutionId: 'tecnm-saltillo',
+            institutionId: 'campus-demo',
             teacherId: 't3',
-            teacherName: 'Mtro. Carlos Estrada',
+            teacherName: 'Docente Invitado (Demo)',
             periodId: 'ago-dic-2026',
-            name: 'Sistemas 4°A — Edge AI',
+            name: 'Sistemas 4°A — Edge AI (Demo)',
             careerId: 'it-sistemas',
             careerName: 'Ingeniería en Sistemas Computacionales',
             primaryTrackId: 'ai-ml',

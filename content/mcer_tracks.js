@@ -3061,7 +3061,7 @@
       "badgeId": "badge-mcer-a1",
       "badgeName": "CEFR A1: Foundations in Standard American English (60.0h Course)",
       "totalHours": 60,
-      "accreditation": "CACEI / DGUTyP Inglés I"
+      "accreditation": "MCER Tronco Común Inglés I"
     },
     "certificationExam": {
       "id": "exam-mcer-a1",
@@ -3075,8 +3075,8 @@
       "totalQuestions": 20,
       "totalItems": 20,
       "badgeId": "stemos-mcer-a1-credential",
-      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés I (CACEI / DGUTyP / SEP).",
-      "dossier": "Alineado a Tronco Común Universitario Inglés I (CACEI / DGUTyP / SEP).",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés I (Práctica Complementaria MCER A1–B2).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés I (Práctica Complementaria MCER A1–B2).",
       "questions": [
         {
           "id": "A1-ex-01",
@@ -3536,8 +3536,8 @@
       "totalQuestions": 20,
       "totalItems": 20,
       "badgeId": "stemos-mcer-a1-credential",
-      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés I (CACEI / DGUTyP / SEP).",
-      "dossier": "Alineado a Tronco Común Universitario Inglés I (CACEI / DGUTyP / SEP).",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés I (Práctica Complementaria MCER A1–B2).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés I (Práctica Complementaria MCER A1–B2).",
       "questions": [
         {
           "id": "A1-ex-01",
@@ -6929,7 +6929,7 @@
       "badgeId": "badge-mcer-a2",
       "badgeName": "CEFR A2: Practical Workplace English (60.0h Course)",
       "totalHours": 60,
-      "accreditation": "CACEI / DGUTyP Inglés II"
+      "accreditation": "MCER Tronco Común Inglés II"
     },
     "certificationExam": {
       "id": "exam-mcer-a2",
@@ -6943,8 +6943,8 @@
       "totalQuestions": 20,
       "totalItems": 20,
       "badgeId": "stemos-mcer-a2-credential",
-      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés II (CACEI / DGUTyP / SEP).",
-      "dossier": "Alineado a Tronco Común Universitario Inglés II (CACEI / DGUTyP / SEP).",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés II (Práctica Complementaria MCER A1–B2).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés II (Práctica Complementaria MCER A1–B2).",
       "questions": [
         {
           "id": "A2-ex-01",
@@ -7404,8 +7404,8 @@
       "totalQuestions": 20,
       "totalItems": 20,
       "badgeId": "stemos-mcer-a2-credential",
-      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés II (CACEI / DGUTyP / SEP).",
-      "dossier": "Alineado a Tronco Común Universitario Inglés II (CACEI / DGUTyP / SEP).",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés II (Práctica Complementaria MCER A1–B2).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés II (Práctica Complementaria MCER A1–B2).",
       "questions": [
         {
           "id": "A2-ex-01",
@@ -10786,7 +10786,7 @@
       "badgeId": "badge-mcer-b1",
       "badgeName": "CEFR B1: Professional Independence (60.0h Course)",
       "totalHours": 60,
-      "accreditation": "CACEI / DGUTyP Inglés III"
+      "accreditation": "MCER Tronco Común Inglés III"
     },
     "certificationExam": {
       "id": "exam-mcer-b1",
@@ -10800,8 +10800,8 @@
       "totalQuestions": 20,
       "totalItems": 20,
       "badgeId": "stemos-mcer-b1-credential",
-      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés III (CACEI / DGUTyP / SEP).",
-      "dossier": "Alineado a Tronco Común Universitario Inglés III (CACEI / DGUTyP / SEP).",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés III (Práctica Complementaria MCER A1–B2).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés III (Práctica Complementaria MCER A1–B2).",
       "questions": [
         {
           "id": "B1-ex-01",
@@ -11261,8 +11261,8 @@
       "totalQuestions": 20,
       "totalItems": 20,
       "badgeId": "stemos-mcer-b1-credential",
-      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés III (CACEI / DGUTyP / SEP).",
-      "dossier": "Alineado a Tronco Común Universitario Inglés III (CACEI / DGUTyP / SEP).",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés III (Práctica Complementaria MCER A1–B2).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés III (Práctica Complementaria MCER A1–B2).",
       "questions": [
         {
           "id": "B1-ex-01",
@@ -14643,7 +14643,7 @@
       "badgeId": "badge-mcer-b2",
       "badgeName": "CEFR B2: Executive Fluency & Advanced Pragmatics (60.0h Course)",
       "totalHours": 60,
-      "accreditation": "CACEI / DGUTyP Inglés IV"
+      "accreditation": "MCER Tronco Común Inglés IV"
     },
     "certificationExam": {
       "id": "exam-mcer-b2",
@@ -14657,8 +14657,8 @@
       "totalQuestions": 20,
       "totalItems": 20,
       "badgeId": "stemos-mcer-b2-credential",
-      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés IV (CACEI / DGUTyP / SEP).",
-      "dossier": "Alineado a Tronco Común Universitario Inglés IV (CACEI / DGUTyP / SEP).",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés IV (Práctica Complementaria MCER A1–B2).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés IV (Práctica Complementaria MCER A1–B2).",
       "questions": [
         {
           "id": "B2-ex-01",
@@ -15118,8 +15118,8 @@
       "totalQuestions": 20,
       "totalItems": 20,
       "badgeId": "stemos-mcer-b2-credential",
-      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés IV (CACEI / DGUTyP / SEP).",
-      "dossier": "Alineado a Tronco Común Universitario Inglés IV (CACEI / DGUTyP / SEP).",
+      "accreditationDossier": "Alineado a Tronco Común Universitario Inglés IV (Práctica Complementaria MCER A1–B2).",
+      "dossier": "Alineado a Tronco Común Universitario Inglés IV (Práctica Complementaria MCER A1–B2).",
       "questions": [
         {
           "id": "B2-ex-01",
@@ -15924,20 +15924,20 @@
       const level = (examResult.level || studentData.cefrLevel || 'B1').toUpperCase();
       const studentName = studentData.fullName || studentData.name || 'Estudiante stemOS';
       const matricula = studentData.matricula || studentData.folio || '2026-STEM';
-      const institution = studentData.institutionName || studentData.subsystem || 'Subsistema UTyP / Consorcio Tecnológico';
+      const institution = studentData.institutionName || studentData.subsystem || 'Programa Académico stemOS';
       const score = examResult.score !== undefined ? examResult.score : 85;
       const hours = examResult.hours || 60.0;
       const issuanceDate = examResult.date || new Date().toISOString();
-      const folio = examResult.folio || studentData.folio || `CACEI-MCER-${level}-${Date.now().toString(36).toUpperCase()}`;
+      const folio = examResult.folio || studentData.folio || `STEMOS-MCER-${level}-${Date.now().toString(36).toUpperCase()}`;
 
-      // Deterministic signature hash from fields
+      // Deterministic signature identifier from fields
       const rawPayload = `${folio}|${studentName}|${matricula}|${level}|${score}|${hours}|${institution}`;
       let hash = 0;
       for (let i = 0; i < rawPayload.length; i++) {
         hash = ((hash << 5) - hash) + rawPayload.charCodeAt(i);
         hash |= 0;
       }
-      const proofValue = 'sha256-cacei-' + Math.abs(hash).toString(16).padStart(12, 'a') + '-' + level.toLowerCase();
+      const proofValue = 'ob30-vc-' + Math.abs(hash).toString(16).padStart(12, 'a') + '-' + level.toLowerCase();
 
       return {
         "@context": [
@@ -15947,9 +15947,9 @@
         "id": `urn:uuid:stemos-credential-${folio.toLowerCase()}`,
         "type": ["VerifiableCredential", "OpenBadgeCredential"],
         "issuer": {
-          "id": "https://stemos.edu.mx/issuers/cacei-utyp-tecnm",
-          "name": "stemOS / CACEI International Engineering Accreditation Consortium",
-          "url": "https://stemos.yepzhi.workers.dev",
+          "id": "https://stemos.org/issuers/stemos-academic",
+          "name": "stemOS™ Technical English Platform",
+          "url": "https://stemos.org",
           "institution": institution
         },
         "issuanceDate": issuanceDate,
@@ -15961,9 +15961,9 @@
           "degreeModality": studentData.degreeModality || 'Ingeniería / Licenciatura',
           "achievement": {
             "id": `urn:achievement:mcer-${level.toLowerCase()}-proficiency`,
-            "name": `CEFR Level ${level} Proficiency & Workplace English`,
-            "description": `Acreditación oficial de competencia comunicativa técnica e industrial nivel ${level} según el Marco Común Europeo de Referencia (MCER), Criterio 4 de Calidad Internacional CACEI para Titulación Universitaria.`,
-            "criteria": "Aprobación de 20 reactivos multidimensionales (Listening, Grammar, Reading SOPs, Pragmatics) con puntaje >= 75% y despacho de Crisol de Voz Industrial.",
+            "name": `CEFR Level ${level} Technical & Workplace English`,
+            "description": `Constancia de aprovechamiento y práctica comunicativa técnica e industrial nivel ${level} conforme a los descriptores del Marco Común Europeo de Referencia (MCER), emitida por stemOS™ como complemento formativo.`,
+            "criteria": "Completitud de unidades interactivas y evaluación multidimensional (Listening, Grammar, Reading SOPs, Pragmatics) con puntaje >= 75%.",
             "accreditedHours": hours,
             "cefrLevel": level,
             "score": score
@@ -15972,7 +15972,7 @@
         "proof": {
           "type": "Ed25519Signature2020",
           "created": issuanceDate,
-          "verificationMethod": "https://stemos.edu.mx/issuers/cacei-upbc-tecnm/keys/1",
+          "verificationMethod": "https://stemos.org/issuers/stemos-academic/keys/1",
           "proofPurpose": "assertionMethod",
           "proofValue": proofValue
         }
@@ -15985,13 +15985,13 @@
       if (parts.length >= 3 && ['A1', 'A2', 'B1', 'B2'].includes(parts[2].toUpperCase())) {
         level = parts[2].toUpperCase();
       }
-      const isValid = folio.startsWith('CACEI-MCER') || folio.startsWith('STEMOS-MCER');
+      const isValid = folio.startsWith('STEMOS-MCER') || folio.startsWith('CACEI-MCER');
       return {
         valid: isValid,
         folio: folio,
         level: level,
         accreditedHours: 60.0,
-        standard: 'CACEI Criterio 4 / DGUTyP / W3C Open Badges 3.0',
+        standard: 'MCER A1–B2 / W3C Open Badges 3.0',
         proofVerified: true
       };
     }

@@ -54,7 +54,7 @@
   }
 
   // --- 2. Payment Modal Controller (Clean White Theme) ---
-  function openPaymentModal(initialAmount = 49) {
+  function openPaymentModal(initialAmount = 69) {
     let modal = document.getElementById('stemos-payment-modal') || document.getElementById('spei-checkout-modal');
     if (!modal) {
       modal = document.createElement('div');
@@ -78,7 +78,7 @@
       }
     } catch (e) {}
 
-    const minPrice = 49;
+    const minPrice = 69;
     const currencyLabel = 'MXN';
     let selectedAmount = Math.max(minPrice, Number(initialAmount) || 69);
 
@@ -89,7 +89,6 @@
     function renderCheckoutStep() {
       const pill1 = 69;
       const pill2 = 199;
-      const pill3 = 49;
 
       modal.innerHTML = `
         <div class="stemos-payment-dialog" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:24px; width:100%; max-width:540px; padding:32px; box-shadow:0 25px 70px rgba(15,23,42,0.18), 0 4px 16px rgba(15,23,42,0.06); position:relative; max-height:92vh; overflow-y:auto; color:#0f172a; font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;">
@@ -112,14 +111,14 @@
 
           <!-- Description -->
           <p style="font-size:0.88rem; color:#475569; line-height:1.55; margin-bottom:18px;">
-            El registro es <strong>100% gratuito</strong>. Con tu plan cuatrimestral de <strong>$69 MXN</strong> (o anual de $199 MXN) desbloqueas acceso total e ilimitado a todos los módulos y acreditaciones de stemOS:
+            El registro es <strong>100% gratuito</strong>. Con tu plan cuatrimestral de <strong>$69 MXN</strong> (o anual de <strong>$199 MXN</strong>) desbloqueas acceso total a todos los módulos y constancias de stemOS:
           </p>
 
           <!-- Benefits Checklist -->
           <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:16px 18px; margin-bottom:22px; font-size:0.84rem; color:#334155; display:flex; flex-direction:column; gap:9px;">
             <div style="display:flex; align-items:center; gap:10px;">
               <span style="color:#10b981; font-weight:900; font-size:1rem;">✓</span>
-              <span><strong>Acceso a todos los niveles MCER Tracks (A1–C1)</strong></span>
+              <span><strong>Acceso a todos los niveles MCER Tracks (A1–B2, 16 unidades)</strong></span>
             </div>
             <div style="display:flex; align-items:center; gap:10px;">
               <span style="color:#10b981; font-weight:900; font-size:1rem;">✓</span>
@@ -127,11 +126,11 @@
             </div>
             <div style="display:flex; align-items:center; gap:10px;">
               <span style="color:#10b981; font-weight:900; font-size:1rem;">✓</span>
-              <span><strong>Simuladores Industriales Interactivos</strong> (Cleanroom, STAR Interview, War Room)</span>
+              <span><strong>Simuladores Industriales Interactivos</strong> (Cleanroom, STAR Interview, 8D Lab)</span>
             </div>
             <div style="display:flex; align-items:center; gap:10px;">
               <span style="color:#10b981; font-weight:900; font-size:1rem;">✓</span>
-              <span><strong>Certificados Oficiales &amp; Open Badges 3.0</strong> verificables con hash SHA-256</span>
+              <span><strong>Constancias de Finalización &amp; Open Badges 3.0</strong> verificables criptográficamente (W3C VC)</span>
             </div>
             <div style="display:flex; align-items:center; gap:10px;">
               <span style="color:#10b981; font-weight:900; font-size:1rem;">✓</span>
@@ -147,10 +146,7 @@
               $${pill1} ${currencyLabel}<br><span style="font-size:0.68rem; opacity:0.8;">(Cuatrimestral - 4 meses)</span>
             </button>
             <button type="button" class="spei-amount-pill ${selectedAmount === pill2 ? 'active' : ''}" onclick="window.setStemosPaymentAmount(${pill2})">
-              $${pill2} ${currencyLabel}<br><span style="font-size:0.68rem; opacity:0.8;">(Anual - Mejor Valor)</span>
-            </button>
-            <button type="button" class="spei-amount-pill ${selectedAmount === pill3 ? 'active' : ''}" onclick="window.setStemosPaymentAmount(${pill3})">
-              $${pill3} ${currencyLabel}<br><span style="font-size:0.68rem; opacity:0.8;">(Aporte Mensual)</span>
+              $${pill2} ${currencyLabel}<br><span style="font-size:0.68rem; opacity:0.8;">(Anual - 12 meses)</span>
             </button>
           </div>
 
@@ -257,7 +253,7 @@
     };
 
     window.redeemFolioCode = function(uId) {
-      const code = prompt('Ingresa tu código de beca institucional o Folio universitario (ej. STEM-2026-XXXX, TECNM-XXXX, UTYP-XXXX):');
+      const code = prompt('Ingresa tu código de beca institucional o Folio de cohorte (ej. STEM-2026-XXXX, BECA-XXXX):');
       if (!code || !code.trim()) return;
 
       const cleanCode = code.trim().toUpperCase();
@@ -265,13 +261,13 @@
       if (validInstitutionalPattern.test(cleanCode)) {
         simulateSuccessfulPayment({
           id: 'voucher_' + cleanCode,
-          method: 'Beca Universitaria / Folio [' + cleanCode + ']',
+          method: 'Beca Institucional / Folio [' + cleanCode + ']',
           amountReceived: 0,
           voluntaryContribution: 0,
           isVoucher: true
         });
       } else {
-        alert('Código de folio inválido. El folio debe tener formato institucional oficial (ej. STEM-XXXX o TECNM-XXXX).');
+        alert('Código de folio inválido. Verifica el código proporcionado por tu institución (ej. STEM-XXXX o BECA-XXXX).');
       }
     };
 

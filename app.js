@@ -720,7 +720,7 @@ document.addEventListener('DOMContentLoaded', () => {
             addBotMessage(`¡Excelente! Iniciamos el Reto Socrático para **${chatState.modTitle}**.<br><br><strong>[Paso 1: ${firstCh.concept}]</strong><br>${firstCh.botQuestion}`);
         } else {
             if (tutorChallengeMeta) tutorChallengeMeta.style.display = 'none';
-            addBotMessage(`¡Bienvenido, Alberto! Iniciamos el análisis socrático de **${chatState.modTitle}**.<br><br>Explícame en inglés técnico los conceptos clave de este módulo y cómo los aplicarías en una operación de ingeniería real.`);
+            addBotMessage(`¡Bienvenido(a)! Iniciamos el análisis socrático de **${chatState.modTitle}**.<br><br>Explícame en inglés técnico los conceptos clave de este módulo y cómo los aplicarías en una operación de ingeniería real.`);
         }
         chatInput.focus();
     }
@@ -878,7 +878,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (chatState.step === 1) {
             addBotMessage(`Bien planteado. Ahora, ¿cómo relacionas esto con los estándares de control de calidad o seguridad industrial en plantas de manufactura avanzada?`);
         } else if (chatState.step === 2) {
-            addBotMessage(`¡Sólida argumentación técnica, Alberto! Has articulado el concepto con claridad profesional. <strong>+35 XP otorgados.</strong>`);
+            addBotMessage(`¡Sólida argumentación técnica! Has articulado el concepto con claridad profesional. <strong>+35 XP otorgados.</strong>`);
             awardXP(35);
             resetTutor();
         }
@@ -1011,7 +1011,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const modalCertDate = document.getElementById('modal-cert-date');
 
         // Dynamic Student Name
-        let studentName = 'Alberto Yépiz';
+        let studentName = 'Estudiante stemOS (Vista Previa)';
         try {
             const profile = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
             if (profile && profile.name) studentName = profile.name;
@@ -1034,18 +1034,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (isMcer && mcerLevelObj) {
-            const hashCode = `CACEI-DGUTYP-${mcerLevelObj.code}-${Math.abs((mcerLevelObj.code.charCodeAt(0) * 8191 + studentName.length * 1337)).toString(16).toUpperCase()}`;
+            const hashCode = `STEMOS-MCER-${mcerLevelObj.code}-${Math.abs((mcerLevelObj.code.charCodeAt(0) * 8191 + studentName.length * 1337)).toString(16).toUpperCase()}`;
             if (modalCertSkill) {
-                modalCertSkill.textContent = `Marco MCER ${mcerLevelObj.code}: ${mcerLevelObj.name} (60.0 Horas Acreditadas)`;
+                modalCertSkill.textContent = `Marco MCER ${mcerLevelObj.code}: ${mcerLevelObj.name} (60.0 Horas de Práctica Guiada)`;
             }
             if (modalCertId) {
-                modalCertId.textContent = `VERIFIED: ${hashCode}`;
+                modalCertId.textContent = `FOLIO: ${hashCode}`;
             }
             if (modalCertDemonstration) {
-                modalCertDemonstration.textContent = 'Por haber demostrado fehacientemente mediante evaluación conversacional socrática, simulación de crisol industrial y lectura de normas técnicas sus competencias comunicativas en:';
+                modalCertDemonstration.textContent = 'Por haber demostrado mediante evaluación conversacional socrática, simulación de crisol industrial y lectura de normas técnicas sus competencias comunicativas en:';
             }
             if (modalCertAccreditation) {
-                modalCertAccreditation.innerHTML = `Acreditación Curricular Universitaria <strong>60.0 Horas Activas</strong> conforme al <strong>Marco Común Europeo de Referencia (CEFR/MCER Council of Europe)</strong> e indicadores de acreditación <strong>CACEI / DGUTyP (${mcerLevelObj.milestone ? mcerLevelObj.milestone.accreditation : 'Tronco Común'})</strong>.`;
+                modalCertAccreditation.innerHTML = `Constancia de práctica técnica <strong>60.0 Horas Guiadas</strong> referenciada al <strong>Marco Común Europeo de Referencia (CEFR/MCER Council of Europe)</strong> (${mcerLevelObj.milestone ? mcerLevelObj.milestone.accreditation : 'Tronco Común'}).`;
             }
         } else {
             const track = coursesData[currentCertTrackId] || (typeof LXP_COURSES !== 'undefined' && LXP_COURSES[currentCertTrackId]) || { title: 'stemOS Specialization' };
@@ -1055,13 +1055,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalCertSkill.textContent = `${track.titleEN || track.title} — ${track.badgeName || 'Technical Specialization'}`;
             }
             if (modalCertId) {
-                modalCertId.textContent = `VERIFIED: ${hashCode}`;
+                modalCertId.textContent = `FOLIO: ${hashCode}`;
             }
             if (modalCertDemonstration) {
-                modalCertDemonstration.textContent = 'Por haber demostrado fehacientemente y mediante evaluación conversacional socrática sus competencias en la habilidad de:';
+                modalCertDemonstration.textContent = 'Por haber completado las actividades de práctica y evaluación conversacional socrática en la pista de especialidad técnica:';
             }
             if (modalCertAccreditation) {
-                modalCertAccreditation.innerHTML = 'Alineado a marcos internacionales de ingeniería (<strong>CACEI / ABET</strong>) y estándares industriales (<strong>IEEE / ICAO / CEFR B2-C1</strong>).';
+                modalCertAccreditation.innerHTML = 'Constancia privada de educación continua emitida por <strong>stemOS™</strong> y referenciada al <strong>MCER (Niveles A1–B2)</strong> bajo el estándar abierto <strong>1EdTech Open Badges 3.0 / W3C VC</strong>.';
             }
         }
 
@@ -1101,7 +1101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // W3C Verifiable Credentials / Open Badges 3.0 JSON-LD Export
     if (exportBadgeBtn) {
         exportBadgeBtn.addEventListener('click', () => {
-            let studentName = 'Alberto Yépiz';
+            let studentName = 'Estudiante stemOS';
             try {
                 const profile = JSON.parse(localStorage.getItem('stemos_student_profile') || '{}');
                 if (profile && profile.name) studentName = profile.name;
@@ -1113,7 +1113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (mcerMatch && window.STEMOS_MCER_TRACKS) {
                 const code = mcerMatch[1].toUpperCase();
                 const mcerLevelObj = window.STEMOS_MCER_TRACKS.getLevel(code);
-                const hashCode = `CACEI-DGUTYP-${code}-${Math.abs((code.charCodeAt(0) * 8191 + studentName.length * 1337)).toString(16).toUpperCase()}`;
+                const hashCode = `STEMOS-MCER-${code}-${Math.abs((code.charCodeAt(0) * 8191 + studentName.length * 1337)).toString(16).toUpperCase()}`;
 
                 badgeJson = {
                     "@context": [
@@ -1123,9 +1123,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     "id": `urn:uuid:stemos-mcer-${code.toLowerCase()}-${Date.now()}`,
                     "type": ["VerifiableCredential", "OpenBadgeCredential"],
                     "issuer": {
-                        "id": "https://stemos.org/issuers/mcer-cacei-accreditation",
+                        "id": "https://stemos.org/issuers/stemos-mcer",
                         "type": "Profile",
-                        "name": "stemOS Platform — CACEI & DGUTyP Standard American English Accreditation",
+                        "name": "stemOS™ Technical English Platform",
                         "url": "https://stemos.org",
                         "email": "credentials@stemos.org"
                     },
@@ -1137,16 +1137,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         "achievement": {
                             "id": `https://stemos.org/achievements/mcer-${code.toLowerCase()}`,
                             "type": "Achievement",
-                            "name": `CEFR ${code}: ${mcerLevelObj ? mcerLevelObj.name : 'Curricular English'} (60.0h Course)`,
-                            "description": `Acreditación formal de 60.0 horas de inglés técnico estándar bajo el Marco Común Europeo de Referencia (CEFR/MCER).`,
+                            "name": `CEFR ${code}: ${mcerLevelObj ? mcerLevelObj.name : 'Technical English'} (60.0h Guided Practice)`,
+                            "description": `Constancia digital de 60.0 horas de práctica guiada de inglés técnico referenciada al Marco Común Europeo de Referencia (CEFR/MCER).`,
                             "criteria": {
-                                "narrative": "Aprobación de 4 unidades de 15.0h, simulación de crisol industrial con evaluación por rúbrica AI y Milestone Checkpoint superior al 80%."
+                                "narrative": "Aprobación de 4 unidades de 15.0h, simulación de crisol industrial con evaluación por rúbrica formativa y Milestone Checkpoint superior al 80%."
                             },
                             "alignment": [
-                                {
-                                    "targetName": `CACEI / DGUTyP ${mcerLevelObj && mcerLevelObj.milestone ? mcerLevelObj.milestone.accreditation : 'Inglés I'}`,
-                                    "targetUrl": "http://cacei.org.mx"
-                                },
                                 {
                                     "targetName": `Council of Europe CEFR Level ${code}`,
                                     "targetUrl": "https://www.coe.int/en/web/common-european-framework-reference-languages"
@@ -1155,10 +1151,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     },
                     "proof": {
-                        "type": "Ed25519Signature2020",
+                        "type": "DataIntegrityProof",
                         "created": new Date().toISOString(),
-                        "verificationMethod": "https://stemos.org/issuers/mcer-cacei-accreditation#key-1",
-                        "proofValue": hashCode
+                        "verificationMethod": "https://stemos.org/issuers/stemos-mcer#key-1",
+                        "proofValue": `ob30-vc-${hashCode.toLowerCase()}`
                     }
                 };
             } else {
@@ -1173,11 +1169,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     "id": `urn:uuid:stemos-cert-${currentCertTrackId}-${Date.now()}`,
                     "type": ["VerifiableCredential", "OpenBadgeCredential"],
                     "issuer": {
-                        "id": "https://stemos.dev/issuers/stemos-foundation",
+                        "id": "https://stemos.org/issuers/stemos-platform",
                         "type": "Profile",
-                        "name": "stemOS LXP — JóvenesSTEM & Lovelace Tech",
-                        "url": "https://stemos.dev",
-                        "email": "credentials@stemos.dev"
+                        "name": "stemOS™ Technical English Platform",
+                        "url": "https://stemos.org",
+                        "email": "credentials@stemos.org"
                     },
                     "issuanceDate": new Date().toISOString(),
                     "credentialSubject": {
@@ -1185,7 +1181,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         "type": "AchievementSubject",
                         "name": studentName,
                         "achievement": {
-                            "id": `https://stemos.dev/achievements/${currentCertTrackId}`,
+                            "id": `https://stemos.org/achievements/${currentCertTrackId}`,
                             "type": "Achievement",
                             "name": track.badgeName || track.titleEN || track.title,
                             "description": `Demostró competencia técnica y socrática en el track ${track.titleEN || track.title} (${track.category || 'STEM'}).`,
@@ -1194,8 +1190,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             },
                             "alignment": [
                                 {
-                                    "targetName": track.badgeStandard || track.standard || "SEP CONOCER EC1290 / ISO Standard",
-                                    "targetUrl": "https://conocer.gob.mx"
+                                    "targetName": "Council of Europe CEFR (A1-B2) / Open Badges 3.0",
+                                    "targetUrl": "https://www.1edtech.org/standards/open-badges"
                                 }
                             ]
                         }
@@ -3091,13 +3087,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const sysLabels = {
                 'it': 'TecNM',
                 'tecnm': 'TecNM',
-                'upbc': 'UTyP',
+                'upbc': 'Politécnica',
                 'ut': 'UT',
                 'estatal': 'Univ. Estatal',
                 'univ-estatal': 'Univ. Estatal',
                 'latam': 'LATAM'
             };
-            if (elSubsystem) elSubsystem.textContent = sysLabels[sys] || 'TecNM';
+            if (elSubsystem) elSubsystem.textContent = sysLabels[sys] || 'stemOS';
 
             if (elCampus && profile.campus) {
                 elCampus.innerHTML = `<i class="fa-solid fa-building-columns" style="font-size:0.68rem; margin-right:4px;"></i>${profile.campus}`;
@@ -3113,7 +3109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (elName) elName.textContent = 'Estudiante';
             if (elSubsystem) elSubsystem.textContent = 'stemOS';
             if (elCampus) {
-                elCampus.innerHTML = `<i class="fa-solid fa-building-columns" style="font-size:0.68rem; margin-right:4px;"></i>TecNM Tijuana (ITT)`;
+                elCampus.innerHTML = `<i class="fa-solid fa-building-columns" style="font-size:0.68rem; margin-right:4px;"></i>Campus / Independiente`;
             }
             if (elAvatarInitials) elAvatarInitials.textContent = 'ST';
         }
@@ -3286,7 +3282,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "¿Confirmas que deseas reiniciar todas tus estadísticas a cero?\n\n" +
             "• Puntos XP: Se restablecen a 0 XP\n" +
             "• Racha diaria: Se restablece a 1 día\n" +
-            "• Horas CACEI: Se restablecen a 0.0 hrs\n" +
+            "• Horas de práctica MCER: Se restablecen a 0.0 hrs\n" +
             "• Lecciones interactivas completadas: Se restablecen a 0\n" +
             "• Nivel MCER: Se restablece a A1 (Principiante Absoluto)\n" +
             "• Examen Diagnóstico / Folio: Se borra para permitir volver a presentarlo\n\n" +
@@ -3379,7 +3375,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nameEl) nameEl.textContent = studentFullName;
         if (matriculaEl) matriculaEl.innerHTML = `<i class="fa-solid fa-id-badge" style="color: #38bdf8;"></i> Matrícula: ${studentMatricula}`;
         if (campusEl) {
-            const camp = (profile && profile.campus) || 'TecNM Tijuana (ITT)';
+            const camp = (profile && profile.campus) || 'Campus Universitario / Independiente';
             campusEl.innerHTML = `<i class="fa-solid fa-building-columns" style="color: #38bdf8;"></i> ${camp}`;
         }
         if (avatarBoxText) {
@@ -3393,7 +3389,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const cObj = window.STEMOS_CAREER_TRACKS.CAREERS.find(c => c.id === activeCareerId);
                 if (cObj) cName = cObj.name;
             }
-            careerEl.textContent = `${cName} · 60h CACEI`;
+            careerEl.textContent = `${cName} · 60h Práctica MCER`;
         }
         if (hubEl) hubEl.textContent = (profile && profile.hub) ? profile.hub : 'Tijuana / Frontera';
         if (classEl) classEl.textContent = (profile && (profile.className || profile.classCode)) ? `${profile.className || ''} [${profile.classCode || 'Code'}]` : 'Registro General';
@@ -3514,7 +3510,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let sub = null;
             if (window.getStemosSubscription) sub = window.getStemosSubscription();
             if (sub && sub.active) {
-                subStatusEl.innerHTML = `<span style="color:#34d399; font-weight:800;"><i class="fa-solid fa-circle-check"></i> Suscripción Activa</span> &bull; Plan Individual ($${sub.amount || 49} MXN/mes)`;
+                subStatusEl.innerHTML = `<span style="color:#34d399; font-weight:800;"><i class="fa-solid fa-circle-check"></i> Suscripción Activa</span> &bull; Plan Individual ($${sub.amount || 69} MXN/cuatrimestre)`;
             } else {
                 subStatusEl.innerHTML = `Acceso ilimitado a 34 Tracks, Laboratorio 8D y Tutor Socrático`;
             }
@@ -4448,13 +4444,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (scoreLblEl) {
                 if (score >= 85) {
-                    scoreLblEl.textContent = "AUDIT-READY (EXCELLENT)";
+                    scoreLblEl.textContent = "ESTRUCTURA 8D SÓLIDA (EXCELENTE)";
                     scoreLblEl.style.color = "#10b981";
                 } else if (score >= 60) {
-                    scoreLblEl.textContent = "MINOR DEFICIENCIES (ACTIONABLE)";
+                    scoreLblEl.textContent = "BORRADOR FUNCIONAL (MEJORABLE)";
                     scoreLblEl.style.color = "#f59e0b";
                 } else {
-                    scoreLblEl.textContent = "AUDIT DEFICIT (NON-CONFORMING)";
+                    scoreLblEl.textContent = "INCOMPLETO (REQUIERE REVISIÓN)";
                     scoreLblEl.style.color = "#ef4444";
                 }
             }
@@ -4470,11 +4466,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (feedbackEl) {
                 if (score >= 85) {
-                    feedbackEl.textContent = "Exemplary 8D submission meeting IATF 16949 and ISO 9001:2015 audit expectations. Robust 5W2H quantification, verified quarantine, and statistically valid corrective actions.";
+                    feedbackEl.textContent = "Strong 8D formative draft incorporating 5W2H quantification, clear containment actions, and documented corrective/preventive steps.";
                 } else if (score >= 60) {
                     feedbackEl.textContent = "Acceptable draft with workable containment. Strengthen D4 by distinguishing the physical root cause from the detection escape point, and ensure D6 cites verified Cpk data.";
                 } else {
-                    feedbackEl.textContent = "Insufficient engineering rigor. Re-examine D2 (quantify defect volume and line context), verify quarantine red hold tags in D3, and detail permanent error-proofing in D5.";
+                    feedbackEl.textContent = "Insufficient engineering detail. Re-examine D2 (quantify defect volume and line context), verify quarantine red hold tags in D3, and detail permanent error-proofing in D5.";
                 }
             }
 
@@ -8308,7 +8304,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (elFolioStatus) {
             elFolioStatus.innerHTML = isWaived 
                 ? '<i class="fa-solid fa-handshake"></i> Exención Aceptada' 
-                : '<i class="fa-solid fa-circle-check"></i> Sello CACEI Válido';
+                : '<i class="fa-solid fa-circle-check"></i> Diagnóstico Orientativo';
         }
 
         const lvl = isWaived ? 'A1' : (passport.level || 'A1').toUpperCase();
@@ -8434,49 +8430,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
             }
         });
 
-        // Fast-Track Panel: Strictly hidden for A1 or Waived students
+        // Fast-Track Panel: Strictly hidden in production (no self-awarded hours without assessment)
         const ftPanel = document.getElementById('passport-fast-track-panel');
-        const ftBtn = document.getElementById('btn-fast-track-validate');
-        const ftDesc = document.getElementById('passport-fast-track-desc');
-        const ftBox = document.getElementById('fast-track-status-box');
-        const isConvalidated = localStorage.getItem('stemos_mcer_convalidated') === 'true';
-
-        if (isWaived || lvl === 'A1') {
-            if (ftPanel) ftPanel.style.display = 'none';
-        } else {
-            if (ftPanel) ftPanel.style.display = 'block';
-            if (ftDesc) {
-                if (lvl === 'A2') ftDesc.textContent = 'Tu diagnóstico te califica para convalidar automáticamente las 60.0h de A1.';
-                else if (lvl === 'B1') ftDesc.textContent = 'Tu diagnóstico te califica para convalidar automáticamente las 60.0h de A1 y 60.0h de A2.';
-                else if (lvl === 'B2') ftDesc.textContent = 'Tu diagnóstico te califica para convalidar automáticamente las 60.0h de A1, A2 y B1 (180h total).';
-            }
-            if (isConvalidated) {
-                if (ftBtn) {
-                    ftBtn.disabled = true;
-                    ftBtn.innerHTML = '<i class="fa-solid fa-check"></i> Convalidado ✓';
-                    ftBtn.style.opacity = '0.7';
-                }
-                if (ftBox) ftBox.style.display = 'block';
-            } else {
-                if (ftBtn) {
-                    ftBtn.disabled = false;
-                    ftBtn.innerHTML = '<i class="fa-solid fa-stamp"></i> Convalidar Horas Previas (+1,500 XP)';
-                    ftBtn.onclick = () => {
-                        localStorage.setItem('stemos_mcer_convalidated', 'true');
-                        let currentXP = 3450;
-                        try { currentXP = Number(localStorage.getItem('stemos_student_xp')) || Number(localStorage.getItem('stemos_user_xp')) || 3450; } catch(e) {}
-                        currentXP += 1500;
-                        localStorage.setItem('stemos_student_xp', currentXP);
-                        localStorage.setItem('stemos_user_xp', currentXP);
-                        ftBtn.disabled = true;
-                        ftBtn.innerHTML = '<i class="fa-solid fa-check"></i> Convalidado ✓';
-                        ftBtn.style.opacity = '0.7';
-                        if (ftBox) ftBox.style.display = 'block';
-                        alert(`✓ Convalidación Fast-Track Acreditada: ${hoursAccrued.toFixed(1)} Horas registradas en tu expediente. +1,500 XP sumados a tu perfil.`);
-                    };
-                }
-            }
-        }
+        if (ftPanel) ftPanel.style.display = 'none';
 
         // Action button
         const btnStartUnit = document.getElementById('btn-passport-start-unit');
@@ -8850,7 +8806,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (titleEl) titleEl.textContent = exam.title;
 
         const dossierEl = document.getElementById('mcer-exam-dossier-code');
-        if (dossierEl) dossierEl.textContent = exam.dossier || `CACEI-ING-${exam.level}-2026-60H`;
+        if (dossierEl) dossierEl.textContent = exam.dossier || `STEMOS-MCER-${exam.level}-2026-60H`;
 
         // Render stepper pills
         renderExamStepperPills();
@@ -8924,7 +8880,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     navigator.clipboard.writeText(text);
                     btnCopyFolio.innerHTML = '<i class="fa-solid fa-check"></i> ¡Folio Copiado!';
                     setTimeout(() => {
-                        btnCopyFolio.innerHTML = '<i class="fa-solid fa-link"></i> Copiar Folio CACEI';
+                        btnCopyFolio.innerHTML = '<i class="fa-solid fa-link"></i> Copiar Folio stemOS';
                     }, 2000);
                 }
             };
@@ -8955,7 +8911,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         const studentName = (data && data.studentName) || profile.fullName || profile.name || localStorage.getItem('stemos_student_name') || 'Estudiante stemOS';
         const matricula = profile.matricula || profile.folio || 'Pendiente';
         const hours = (data && data.hours) || 60.0;
-        const folio = (data && data.folio) || `CACEI-MCER-${level}-${Date.now().toString(36).toUpperCase()}`;
+        const folio = (data && data.folio) || `STEMOS-MCER-${level}-${Date.now().toString(36).toUpperCase()}`;
 
         let cred = null;
         if (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.generateVerifiableCredential === 'function') {
@@ -8963,7 +8919,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 fullName: studentName,
                 matricula: matricula,
                 degreeModality: profile.degreeModality || 'Ingeniería / Licenciatura',
-                institutionName: profile.subsystem || 'Red Nacional TecNM / UTyP'
+                institutionName: profile.subsystem || 'stemOS™ Technical English Platform'
             }, {
                 level: level,
                 folio: folio,
@@ -8976,7 +8932,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (elTitle) elTitle.textContent = `CEFR ${level} • ${level === 'A1' ? 'Breakthrough Foundations' : level === 'A2' ? 'Waystage Operational' : level === 'B1' ? 'Threshold Professional' : 'Vantage Leadership'}`;
 
         const elHours = document.getElementById('vc-modal-hours-subtitle');
-        if (elHours) elHours.textContent = `${hours.toFixed(1)} Horas Curriculares Acreditadas • CACEI Criterio 4`;
+        if (elHours) elHours.textContent = `${hours.toFixed(1)} Horas de Práctica Guiada • Referencia MCER`;
 
         const elName = document.getElementById('vc-modal-student-name');
         if (elName) elName.textContent = studentName;
@@ -8985,7 +8941,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (elFolio) elFolio.textContent = folio;
 
         const elIssuer = document.getElementById('vc-modal-issuer');
-        if (elIssuer) elIssuer.textContent = (cred && cred.issuer && cred.issuer.institution) || 'Red Nacional TecNM / UTyP';
+        if (elIssuer) elIssuer.textContent = (cred && cred.issuer && cred.issuer.institution) || 'stemOS™ Technical English Platform';
 
         const elDate = document.getElementById('vc-modal-date');
         if (elDate) {
@@ -8994,7 +8950,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
         }
 
         const elFingerprint = document.getElementById('vc-modal-sha-fingerprint');
-        const proofVal = (cred && cred.proof && cred.proof.proofValue) || `sha256-cacei-${folio.toLowerCase()}`;
+        const proofVal = (cred && cred.proof && cred.proof.proofValue) || `ob30-vc-${folio.toLowerCase()}`;
         if (elFingerprint) elFingerprint.textContent = proofVal;
 
         const elJsonLd = document.getElementById('vc-modal-json-ld');
@@ -9278,7 +9234,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
             if (remCard) remCard.style.display = 'none';
 
             // Generate Diploma details
-            const folio = `CACEI-MCER-${activeMcerExam.level}-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
+            const folio = `STEMOS-MCER-${activeMcerExam.level}-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
             const studentName = localStorage.getItem('stemos_student_name') || 'Estudiante stemOS';
             const hoursMap = { 'A1': 60, 'A2': 120, 'B1': 180, 'B2': 240 };
             const accHours = hoursMap[activeMcerExam.level] || 60;
@@ -9290,7 +9246,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
             if (elFolio) elFolio.textContent = folio;
             if (elName) elName.textContent = studentName;
             if (elBanner) {
-                elBanner.textContent = `CEFR LEVEL ${activeMcerExam.level} &bull; ${accHours}.0 HORAS ACREDITADAS`;
+                elBanner.textContent = `CEFR LEVEL ${activeMcerExam.level} &bull; ${accHours}.0 HORAS DE PRÁCTICA GUIADA`;
             }
 
             // Persist Milestone certification in localStorage
@@ -9340,56 +9296,56 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
     /* ══════════════════════════════════════════════════════════════════
        8.4. MULTI-CAMPUS INSTITUTIONAL FEDERATION & CAMPUS EDGE SYNC (FASE 70)
-       TecNM · Subsistema UTyP · UACJ · Estatales
+       Universidad Politécnica · Tecnológico · Universidad Estatal · Independiente
        ══════════════════════════════════════════════════════════════════ */
     const STEMOS_CAMPUSES = {
         'tecnm-tijuana': {
             id: 'tecnm-tijuana',
-            name: 'TecNM Tijuana (Instituto Tecnológico de Tijuana • ITT)',
-            shortName: 'TecNM Tijuana',
-            institutionText: 'TecNM Instituto Tecnológico de Tijuana &bull; Subdirección Académica',
-            subsystem: 'TecNM',
-            domain: '@tijuana.tecnm.mx'
+            name: 'Instituto Tecnológico / Campus Ingeniería',
+            shortName: 'Campus Tecnológico',
+            institutionText: 'stemOS™ Technical English Platform &bull; Programa de Inglés Técnico',
+            subsystem: 'Tecnológico',
+            domain: '@institucion.edu.mx'
         },
         'tecnm-saltillo': {
             id: 'tecnm-saltillo',
-            name: 'TecNM Saltillo (Instituto Tecnológico de Saltillo • ITS)',
-            shortName: 'TecNM Saltillo',
-            institutionText: 'TecNM Instituto Tecnológico de Saltillo &bull; Coordinación de Idiomas',
-            subsystem: 'TecNM',
-            domain: '@saltillo.tecnm.mx'
+            name: 'Campus Ingeniería Norte',
+            shortName: 'Campus Norte',
+            institutionText: 'stemOS™ Technical English Platform &bull; Coordinación de Idiomas',
+            subsystem: 'Tecnológico',
+            domain: '@institucion.edu.mx'
         },
         'utt-tijuana': {
             id: 'utt-tijuana',
-            name: 'UTT (Universidad Tecnológica de Tijuana • Valle de las Palmas)',
-            shortName: 'UTT Tijuana',
-            institutionText: 'Universidad Tecnológica de Tijuana &bull; Dirección de Carreras STEM',
-            subsystem: 'DGUTyP',
-            domain: '@uttijuana.edu.mx'
+            name: 'Universidad Tecnológica (Subsistema UT)',
+            shortName: 'Univ. Tecnológica',
+            institutionText: 'stemOS™ Technical English Platform &bull; Carreras STEM',
+            subsystem: 'UT',
+            domain: '@ut.edu.mx'
         },
         'upbc-mexicali': {
             id: 'upbc-mexicali',
-            name: 'Universidades Politécnicas (Subsistema UTyP)',
-            shortName: 'Univ. Politécnicas (UTyP)',
-            institutionText: 'Subsistema de Universidades Politécnicas &bull; Consejo Académico DGUTyP',
-            subsystem: 'DGUTyP',
-            domain: '@utyp.edu.mx'
+            name: 'Universidad Politécnica (Ej. UPMXL / Subsistema Politécnico)',
+            shortName: 'Univ. Politécnica',
+            institutionText: 'stemOS™ Technical English Platform &bull; Programa Bilingüe BIS / STEM',
+            subsystem: 'Politécnica',
+            domain: '@upmxl.edu.mx'
         },
         'uacj-juarez': {
             id: 'uacj-juarez',
-            name: 'UACJ (Universidad Autónoma de Ciudad Juárez • IIT)',
-            shortName: 'UACJ Juárez',
-            institutionText: 'Universidad Autónoma de Ciudad Juárez &bull; Instituto de Ingeniería',
-            subsystem: 'UACJ',
-            domain: '@uacj.mx'
+            name: 'Universidad Autónoma / Estatal (Ingeniería)',
+            shortName: 'Univ. Estatal',
+            institutionText: 'stemOS™ Technical English Platform &bull; Facultad de Ingeniería',
+            subsystem: 'Estatal',
+            domain: '@universidad.mx'
         },
         'tecnm-queretaro': {
             id: 'tecnm-queretaro',
-            name: 'TecNM Querétaro (Instituto Tecnológico de Querétaro • ITQ)',
-            shortName: 'TecNM Querétaro',
-            institutionText: 'TecNM Instituto Tecnológico de Querétaro &bull; División de Estudios Superiores',
-            subsystem: 'TecNM',
-            domain: '@queretaro.tecnm.mx'
+            name: 'Estudiante Independiente / Profesional STEM',
+            shortName: 'Independiente',
+            institutionText: 'stemOS™ Technical English Platform &bull; Educación Continua',
+            subsystem: 'stemOS',
+            domain: '@stemos.org'
         }
     };
 
@@ -9616,7 +9572,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                             ${asg.title}
                         </h3>
                         <p style="font-size:0.82rem; color:#94a3b8; margin:0 0 8px 0; line-height:1.4;">
-                            ${asg.instructions || 'Resuelve los retos técnicos industriales en el tiempo asignado bajo estándares CACEI / MCER B1.'}
+                            ${asg.instructions || 'Resuelve los retos técnicos industriales en el tiempo asignado bajo el marco MCER B1.'}
                         </p>
                         <div style="font-size:0.76rem; color:#cbd5e1; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
                             <span>
@@ -9870,7 +9826,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
             <!-- Footer Controls -->
             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:24px; border-top:1px solid rgba(255,255,255,0.1); padding-top:16px; flex-wrap:wrap; gap:12px;">
                 <div style="font-size:0.78rem; color:#94a3b8;">
-                    <i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> Verificación biométrica / CACEI Criterio 4 activa
+                    <i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> Registro de práctica formativa MCER activa
                 </div>
                 <div style="display:flex; gap:10px;">
                     <button type="button" class="btn btn-secondary btn-sm" onclick="closeStudentAssignmentRunner()" style="background:rgba(255,255,255,0.08); color:#cbd5e1; border:1px solid rgba(255,255,255,0.15); padding:8px 16px; border-radius:8px; cursor:pointer;">
@@ -9979,7 +9935,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); padding:14px; border-radius:10px;">
                             <div style="font-size:0.72rem; color:#94a3b8; text-transform:uppercase;">Curricular XP</div>
                             <div style="font-size:1.3rem; font-weight:800; color:#f59e0b;">+${submission.xp} XP</div>
-                            <div style="font-size:0.7rem; color:#cbd5e1;">CACEI Criterio 4</div>
+                            <div style="font-size:0.7rem; color:#cbd5e1;">Práctica MCER</div>
                         </div>
                     </div>
 
@@ -12236,7 +12192,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         </div>
                         <div class="duo-reward-item">
                             <span class="duo-reward-val" style="color:#16a34a;">+15 min</span>
-                            <span class="duo-reward-lbl">Acreditado CACEI</span>
+                            <span class="duo-reward-lbl">Práctica MCER</span>
                         </div>
                     </div>
 
