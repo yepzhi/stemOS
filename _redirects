@@ -1,7 +1,6 @@
 # Cloudflare Pages Redirects
-/dev / 301
-/dev/* / 301
-/dev.html / 301
+/dev /dev.html 200
+/dev/* /dev.html 200
 
 /generator/* /generator.html 200
 /admin/* /admin.html 200
