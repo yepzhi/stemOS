@@ -3133,10 +3133,137 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    window.openStudentHelpModal = function() {
+    let _helpCenterInitialized = false;
+    function normalizeHelpSearchText(str) {
+        return String(str || '')
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function initStudentHelpCenter() {
+        if (_helpCenterInitialized) return;
         const modal = document.getElementById('modal-student-help');
+        if (!modal) return;
+        _helpCenterInitialized = true;
+
+        const searchInput = document.getElementById('help-faq-search');
+        const faqList = document.getElementById('help-faq-list');
+        const statusEl = document.getElementById('help-faq-status');
+        const emptyEl = document.getElementById('help-faq-empty');
+        const toggleAllBtn = document.getElementById('btn-help-toggle-all');
+        const resetBtn = document.getElementById('btn-help-reset-filters');
+        const catButtons = Array.from(modal.querySelectorAll('[data-help-cat]'));
+        const faqItems = faqList ? Array.from(faqList.querySelectorAll('details.help-faq-item')) : [];
+        let activeCat = 'all';
+
+        const syncToggleAllState = () => {
+            if (!toggleAllBtn) return;
+            const visibleItems = faqItems.filter(item => !item.hidden);
+            const allOpen = visibleItems.length > 0 && visibleItems.every(item => item.open);
+            toggleAllBtn.setAttribute('aria-expanded', allOpen ? 'true' : 'false');
+        };
+
+        const applyFaqFilter = () => {
+            const q = normalizeHelpSearchText(searchInput ? searchInput.value.trim() : '');
+            let visibleCount = 0;
+            faqItems.forEach(item => {
+                const cat = item.getAttribute('data-cat') || 'all';
+                const catMatches = activeCat === 'all' || cat === activeCat;
+                const haystack = normalizeHelpSearchText(
+                    (item.getAttribute('data-keywords') || '') + ' ' + item.textContent
+                );
+                const queryMatches = !q || haystack.includes(q);
+                const show = catMatches && queryMatches;
+                item.hidden = !show;
+                if (show) visibleCount++;
+            });
+
+            if (statusEl) {
+                statusEl.textContent = visibleCount === faqItems.length
+                    ? `Mostrando ${faqItems.length} de ${faqItems.length} preguntas`
+                    : `${visibleCount} ${visibleCount === 1 ? 'resultado encontrado' : 'resultados encontrados'}`;
+            }
+            if (emptyEl) {
+                emptyEl.hidden = visibleCount > 0;
+            }
+            syncToggleAllState();
+        };
+
+        if (searchInput) {
+            searchInput.addEventListener('input', applyFaqFilter);
+        }
+
+        catButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                activeCat = btn.getAttribute('data-help-cat') || 'all';
+                catButtons.forEach(other => {
+                    const isActive = other === btn;
+                    other.classList.toggle('active', isActive);
+                    other.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                });
+                applyFaqFilter();
+            });
+        });
+
+        if (toggleAllBtn) {
+            toggleAllBtn.addEventListener('click', () => {
+                const expand = toggleAllBtn.getAttribute('aria-expanded') !== 'true';
+                faqItems.forEach(item => {
+                    if (!item.hidden) item.open = expand;
+                });
+                syncToggleAllState();
+            });
+        }
+
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                if (searchInput) searchInput.value = '';
+                activeCat = 'all';
+                catButtons.forEach(btn => {
+                    const isAll = btn.getAttribute('data-help-cat') === 'all';
+                    btn.classList.toggle('active', isAll);
+                    btn.setAttribute('aria-pressed', isAll ? 'true' : 'false');
+                });
+                applyFaqFilter();
+                if (searchInput) searchInput.focus();
+            });
+        }
+
+        document.addEventListener('toggle', (event) => {
+            if (event.target && event.target.matches('#help-faq-list > details.help-faq-item')) {
+                syncToggleAllState();
+            }
+        }, { capture: true });
+
+        // Light-dismiss fallback for browsers lacking <dialog closedby="any"> (e.g. Safari)
+        if (!('closedBy' in HTMLDialogElement.prototype)) {
+            const isOutside = (e) => {
+                const r = modal.getBoundingClientRect();
+                return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+            };
+            let pressedOutside = false;
+            modal.addEventListener('pointerdown', (e) => {
+                pressedOutside = isOutside(e);
+            });
+            modal.addEventListener('pointerup', (e) => {
+                if (pressedOutside && isOutside(e) && modal.open) {
+                    modal.close();
+                }
+                pressedOutside = false;
+            });
+        }
+
+        applyFaqFilter();
+    }
+
+    window.openStudentHelpModal = function() {
+        initStudentHelpCenter();
+        const modal = document.getElementById('modal-student-help');
+        const body = document.getElementById('help-modal-scroll-body');
+        if (body) body.scrollTop = 0;
         if (modal && typeof modal.showModal === 'function') {
-            modal.showModal();
+            if (!modal.open) modal.showModal();
         } else if (modal) {
             modal.setAttribute('open', '');
         }

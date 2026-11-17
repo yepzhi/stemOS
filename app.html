@@ -37,7 +37,7 @@
         rel="stylesheet">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css?v=1.1.1">
+    <link rel="stylesheet" href="styles.css?v=1.1.2">
     <link rel="stylesheet" href="dev.css?v=5.16.0">
     <link rel="stylesheet" href="world-map.css?v=1.2.0">
 
@@ -697,8 +697,7 @@
             }
             #header-connection-hud,
             #header-subscription-hud,
-            #header-student-campus-badge,
-            #btn-header-help {
+            #header-student-campus-badge {
                 display: none !important;
             }
             .ed-top-header-wrapper {
@@ -1044,9 +1043,10 @@
                             <span class="voice-status-dot"></span>
                         </button>
 
-                        <!-- Help / Info -->
-                        <button class="ed-header-icon-btn" id="btn-header-help" title="Ayuda & Guía del Estudiante">
-                            <i class="fa-solid fa-circle-question"></i>
+                        <!-- Help / FAQ Center -->
+                        <button type="button" class="ed-header-help-btn" id="btn-header-help" title="Centro de Ayuda y Preguntas Frecuentes" aria-label="Centro de Ayuda y Preguntas Frecuentes">
+                            <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+                            <span class="help-btn-text">Ayuda</span>
                         </button>
 
                         <!-- User Profile Avatar -->
@@ -3140,71 +3140,280 @@
     </dialog>
 
     <!-- ══════════════════════════════════════════════════════════════
-         MODAL: STUDENT HELP & ONBOARDING GUIDE
+         MODAL: STUDENT HELP, GUIDE & REAL INTERACTIVE FAQ CENTER
          ══════════════════════════════════════════════════════════════ -->
-    <dialog class="modal-dialog" id="modal-student-help" style="max-width:680px; width:92%; padding:0; border:none; border-radius:22px; background:#ffffff; color:#0f172a; box-shadow:0 25px 60px rgba(15,23,42,0.3); overflow:hidden;">
-        <div style="background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); padding:22px 26px; color:#ffffff; display:flex; justify-content:space-between; align-items:flex-start;">
-            <div>
-                <span style="display:inline-flex; align-items:center; gap:6px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.2); padding:3px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:0.04em;">
-                    <i class="fa-solid fa-circle-question"></i> Centro de Ayuda &amp; Guía stemOS
+    <dialog class="modal-dialog help-modal-dialog" id="modal-student-help" closedby="any" aria-labelledby="help-modal-title">
+        <div class="modal-card help-modal-card">
+            <header class="help-modal-header">
+                <div style="min-width:0; flex:1;">
+                    <span class="help-modal-badge">
+                        <i class="fa-solid fa-circle-question" aria-hidden="true"></i> Centro de Ayuda &amp; FAQ · stemOS
+                    </span>
+                    <h2 class="help-modal-title" id="help-modal-title">¿Cómo funciona tu Campus stemOS?</h2>
+                    <p class="help-modal-subtitle">Guía rápida, preguntas frecuentes reales y soluciones paso a paso sobre niveles, lecciones, audio, certificados y tu cuenta.</p>
+                </div>
+                <button type="button" class="help-close-btn-red" id="btn-close-student-help" onclick="window.closeStudentHelpModal()" aria-label="Cerrar centro de ayuda" title="Cerrar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M18 6 6 18M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </header>
+
+            <div class="help-modal-body" id="help-modal-scroll-body">
+                <!-- 1. Primeros Pasos Reales -->
+                <div>
+                    <h3 class="help-section-heading">
+                        <i class="fa-solid fa-compass" aria-hidden="true"></i> Empieza en 3 pasos reales
+                    </h3>
+                    <div class="help-quickstart-grid">
+                        <div class="help-step-card">
+                            <span class="help-step-num">Paso 1 · Nivel</span>
+                            <div class="help-step-title">Inicia en A1 o haz el Placement</div>
+                            <p class="help-step-desc">Si empiezas de cero, entra directo al <strong>Nivel A1</strong> sin examen. Si ya sabes inglés, toma <strong>Placement (30 min)</strong> para ubicarte en A2–B2.</p>
+                        </div>
+                        <div class="help-step-card">
+                            <span class="help-step-num">Paso 2 · Práctica</span>
+                            <div class="help-step-title">Completa los 7 pasos Duolingo</div>
+                            <p class="help-step-desc">Cada unidad incluye Vocab, Builder, Audio, Grammar, Diálogo, Lectura y Boss de voz, además de <strong>Power Sheet</strong> y <strong>Slides</strong>.</p>
+                        </div>
+                        <div class="help-step-card">
+                            <span class="help-step-num">Paso 3 · Certifica</span>
+                            <div class="help-step-title">Sube XP y desbloquea Badges</div>
+                            <p class="help-step-desc">Suma XP y racha diaria, practica en <strong>atWork Lab</strong> (BLUF y 8D) y obtén credenciales <strong>W3C Open Badges 3.0</strong> con QR.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Buscador + Filtros + Acordeón FAQ -->
+                <section aria-labelledby="help-faq-heading">
+                    <h3 class="help-section-heading" id="help-faq-heading">
+                        <i class="fa-solid fa-circle-question" aria-hidden="true"></i> Preguntas Frecuentes (FAQ)
+                    </h3>
+
+                    <div class="help-faq-toolbar">
+                        <div class="help-search-row">
+                            <div class="help-search-wrap">
+                                <label for="help-faq-search" class="visually-hidden">Buscar en preguntas frecuentes</label>
+                                <i class="fa-solid fa-magnifying-glass help-search-icon" aria-hidden="true"></i>
+                                <input type="search" id="help-faq-search" class="help-search-input" placeholder="Busca un tema: ej. placement, audio, vidas, wifi, certificado, pago..." autocomplete="off">
+                            </div>
+                            <button type="button" id="btn-help-toggle-all" class="help-toggle-all-btn" aria-expanded="false">
+                                <span class="help-label-expand"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i> Expandir todas</span>
+                                <span class="help-label-collapse"><i class="fa-solid fa-chevron-up" aria-hidden="true"></i> Contraer todas</span>
+                            </button>
+                        </div>
+
+                        <div class="help-cat-row">
+                            <div class="help-cat-chips" role="group" aria-label="Filtrar preguntas por categoría">
+                                <button type="button" class="help-cat-chip active" data-help-cat="all" aria-pressed="true">Todas (12)</button>
+                                <button type="button" class="help-cat-chip" data-help-cat="inicio" aria-pressed="false">Inicio &amp; Niveles</button>
+                                <button type="button" class="help-cat-chip" data-help-cat="lecciones" aria-pressed="false">Lecciones &amp; XP</button>
+                                <button type="button" class="help-cat-chip" data-help-cat="audio" aria-pressed="false">Audio &amp; Offline</button>
+                                <button type="button" class="help-cat-chip" data-help-cat="cuenta" aria-pressed="false">Certificados &amp; Cuenta</button>
+                            </div>
+                            <div id="help-faq-status" class="help-faq-status" aria-live="polite">Mostrando 12 de 12 preguntas</div>
+                        </div>
+                    </div>
+
+                    <div class="help-faq-list" id="help-faq-list" style="margin-top:10px;">
+                        <details class="help-faq-item" data-cat="inicio" data-keywords="placement examen diagnostico empezar cero nivel a1 obligatorio">
+                            <summary class="help-faq-summary">
+                                <span class="help-faq-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                                <span class="help-faq-qtext">¿Es obligatorio presentar el Placement Test para empezar a estudiar?</span>
+                                <span class="help-faq-tag">Inicio</span>
+                            </summary>
+                            <div class="help-faq-answer">
+                                <p><strong>No.</strong> Si estás iniciando desde cero o prefieres repasar las bases, puedes comenzar de inmediato en el <strong>Nivel A1 (Tronco Común MCER)</strong> haciendo clic en <em>Iniciar desde Nivel 0 (Principiante)</em> o eligiendo cualquier unidad de A1.</p>
+                                <p>El <strong>Placement Test (30 min, 32 reactivos)</strong> solo es necesario si ya tienes conocimientos previos y quieres colocarte directamente en <strong>A2, B1 o B2</strong> o desbloquear los laboratorios especializados de tu carrera sin cursar A1.</p>
+                            </div>
+                        </details>
+
+                        <details class="help-faq-item" data-cat="inicio" data-keywords="desbloquear a2 b1 b2 tracks especialidad laboratorios avanzados bloqueado candado">
+                            <summary class="help-faq-summary">
+                                <span class="help-faq-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                                <span class="help-faq-qtext">Ya sé inglés (A2/B1/B2), ¿cómo desbloqueo los tracks técnicos de mi carrera?</span>
+                                <span class="help-faq-tag">Niveles</span>
+                            </summary>
+                            <div class="help-faq-answer">
+                                <p>Tienes dos caminos reales dentro de stemOS:</p>
+                                <ul>
+                                    <li><strong>Ruta rápida:</strong> Haz clic en <strong>Placement</strong> en el menú lateral y completa el diagnóstico de 32 reactivos (Listening, Reading y Grammar). Si demuestras nivel A2 o superior, tus módulos técnicos se habilitan al instante.</li>
+                                    <li><strong>Ruta progresiva:</strong> Avanza las unidades del <strong>Tronco Común A1</strong>; al completar las estaciones y acreditar el nivel, desbloqueas automáticamente los tracks siguientes.</li>
+                                </ul>
+                            </div>
+                        </details>
+
+                        <details class="help-faq-item" data-cat="inicio" data-keywords="cambiar carrera perfil nivel actual pasaporte mcer">
+                            <summary class="help-faq-summary">
+                                <span class="help-faq-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                                <span class="help-faq-qtext">¿Dónde consulto mi nivel MCER actual, horas acumuladas o estado de acceso?</span>
+                                <span class="help-faq-tag">Inicio</span>
+                            </summary>
+                            <div class="help-faq-answer">
+                                <p>En el botón <strong>Mi Perfil</strong> (menú izquierdo o tus iniciales en la esquina superior derecha) y en el botón azul <strong>Passport</strong> del encabezado superior. Ahí ves tu nivel asignado, la nota de desbloqueo de tu Track Base, tu folio, horas acumuladas y progreso sincronizado.</p>
+                            </div>
+                        </details>
+
+                        <details class="help-faq-item" data-cat="lecciones" data-keywords="duolingo 7 pasos vocab builder audio grammar dialogo lectura boss corazones vidas">
+                            <summary class="help-faq-summary">
+                                <span class="help-faq-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                                <span class="help-faq-qtext">¿Cómo funcionan las lecciones de 7 pasos y las vidas (corazones)?</span>
+                                <span class="help-faq-tag">Lecciones</span>
+                            </summary>
+                            <div class="help-faq-answer">
+                                <p>Cada unidad recorre 7 etapas interactivas rápidas para no saturarte con teoría pesada:</p>
+                                <ul>
+                                    <li><strong>1. Vocab Sprint (+20 XP)</strong> y <strong>2. Sentence Builder (+25 XP)</strong></li>
+                                    <li><strong>3. Industrial Audio Lab (+25 XP)</strong> y <strong>4. Grammar Drills (+25 XP)</strong></li>
+                                    <li><strong>5. Diálogo Activo (+25 XP)</strong> y <strong>6. Lectura &amp; Práctica (+25 XP)</strong></li>
+                                    <li><strong>7. Voice Crucible Boss (+40 XP)</strong></li>
+                                </ul>
+                                <p>Puedes iniciar en orden con <em>Continúa Donde Te Quedaste</em> o abrir cualquier píldora de paso en las tarjetas. Cuentas con <strong>5 vidas</strong> por sesión; si fallas, recibes explicación inmediata antes de seguir.</p>
+                            </div>
+                        </details>
+
+                        <details class="help-faq-item" data-cat="lecciones" data-keywords="xp aprendiz tecnico ingeniero master fellow rango racha streak">
+                            <summary class="help-faq-summary">
+                                <span class="help-faq-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                                <span class="help-faq-qtext">¿Qué significan XP, rangos como "Nivel XP 1 · Aprendiz" y la Racha?</span>
+                                <span class="help-faq-tag">XP &amp; Racha</span>
+                            </summary>
+                            <div class="help-faq-answer">
+                                <p>Son tu sistema de progreso continuo aparte del nivel MCER (A1–B2). Conforme sumas XP al terminar ejercicios subes de rango: <strong>Nivel 1 Aprendiz (0 XP)</strong>, <strong>Nivel 2 Técnico (500 XP)</strong>, <strong>Especialista (1,200 XP)</strong>, <strong>Ingeniero (2,200 XP)</strong> hasta <strong>Nivel 8 Master Fellow (8,000 XP)</strong>.</p>
+                                <p>La <strong>Racha Diaria</strong> suma 1 día consecutivo cada jornada en que completas al menos una práctica.</p>
+                            </div>
+                        </details>
+
+                        <details class="help-faq-item" data-cat="lecciones" data-keywords="power sheet powersheet 1 pagina pdf slides atwork bluf 8d glosario">
+                            <summary class="help-faq-summary">
+                                <span class="help-faq-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                                <span class="help-faq-qtext">¿Para qué sirven las Power Sheets (1 pág.), Slides, atWork Lab y el Glosario?</span>
+                                <span class="help-faq-tag">Recursos</span>
+                            </summary>
+                            <div class="help-faq-answer">
+                                <p>Tienes cuatro apoyos complementarios dentro del campus:</p>
+                                <ul>
+                                    <li><strong>Power Sheet (1 página):</strong> Hoja resumen lista para repasar o imprimir con el vocabulario clave y reglas de la unidad.</li>
+                                    <li><strong>Slides de Clase:</strong> Presentación guiada de apoyo dentro del modal de estudio de la unidad.</li>
+                                    <li><strong>atWork Lab:</strong> Práctica realista de correos ejecutivos estilo <strong>BLUF</strong> y análisis de causa raíz <strong>8D</strong> para planta.</li>
+                                    <li><strong>Glosario y Mundo 3D:</strong> Consulta rápida de vocabulario técnico ESP y vista espacial de tus estaciones.</li>
+                                </ul>
+                            </div>
+                        </details>
+
+                        <details class="help-faq-item" data-cat="audio" data-keywords="audio no se escucha sonido voz tts piper iphone silencio volumen velocidad">
+                            <summary class="help-faq-summary">
+                                <span class="help-faq-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                                <span class="help-faq-qtext">No escucho el audio o quiero ajustar la velocidad de la voz, ¿qué reviso?</span>
+                                <span class="help-faq-tag">Audio</span>
+                            </summary>
+                            <div class="help-faq-answer">
+                                <p>1) Verifica en la barra superior el icono de <strong>bocina</strong> (debe tener punto verde de audio activo). 2) En <strong>Mi Perfil</strong> puedes ajustar la velocidad del motor TTS entre <strong>0.8x Lento</strong>, <strong>1.0x Normal</strong> y <strong>1.2x Nativo</strong>.</p>
+                                <p>3) Si usas <strong>iPhone o iPad</strong>, asegúrate de que el interruptor lateral de silencio esté apagado, porque iOS bloquea el audio web cuando el modo timbre está silenciado.</p>
+                            </div>
+                        </details>
+
+                        <details class="help-faq-item" data-cat="audio" data-keywords="microfono voice crucible boss hablar grabacion permiso ruido">
+                            <summary class="help-faq-summary">
+                                <span class="help-faq-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                                <span class="help-faq-qtext">¿Qué hago en Voice Crucible (Paso 7) si no tengo micrófono o hay ruido?</span>
+                                <span class="help-faq-tag">Voz</span>
+                            </summary>
+                            <div class="help-faq-answer">
+                                <p>Cuando entras al <strong>Paso 7 (Boss)</strong>, el navegador pedirá permiso para usar tu micrófono en modo entrevista/pronunciación. Si el navegador lo bloqueó, entra al icono del candado/ajustes junto a la barra de dirección y permite el micrófono para <code>stemos.org</code>.</p>
+                                <p>Si estás en un lugar sin micrófono o con mucho ruido, puedes usar la respuesta escrita o práctica guiada para no detener tu avance.</p>
+                            </div>
+                        </details>
+
+                        <details class="help-faq-item" data-cat="audio" data-keywords="offline sin internet pwa instalar app celular cache wifi datos">
+                            <summary class="help-faq-summary">
+                                <span class="help-faq-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                                <span class="help-faq-qtext">¿Puedo estudiar sin internet o instalar stemOS como aplicación en mi teléfono?</span>
+                                <span class="help-faq-tag">Offline</span>
+                            </summary>
+                            <div class="help-faq-answer">
+                                <p><strong>Sí.</strong> stemOS funciona como aplicación web progresiva (<strong>PWA</strong>). En Android/Chrome toca <em>Instalar app</em>; en iPhone/Safari toca <em>Compartir &rarr; Agregar a inicio</em>.</p>
+                                <p>El Service Worker guarda en caché los módulos, audios MCER y estilos para que repases aunque te quedes sin señal. Cuando vuelvas a tener internet, abre <strong>Mi Perfil &rarr; Sincronizar Ahora</strong> para subir tu avance a la nube.</p>
+                            </div>
+                        </details>
+
+                        <details class="help-faq-item" data-cat="cuenta" data-keywords="certificado badge w3c open badges qr folio linkedin verify">
+                            <summary class="help-faq-summary">
+                                <span class="help-faq-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                                <span class="help-faq-qtext">¿Cómo obtengo y valido mi Certificado o W3C Open Badge 3.0?</span>
+                                <span class="help-faq-tag">Badges</span>
+                            </summary>
+                            <div class="help-faq-answer">
+                                <p>Cuando terminas las unidades de un nivel y apruebas su <strong>Examen de Nivel</strong>, puedes emitir tu credencial criptográfica <strong>W3C Open Badges 3.0</strong> con Folio y código QR desde la pestaña <strong>Badges</strong> o en <strong>Mi Perfil &rarr; Credencial</strong>.</p>
+                                <p>Cualquier profesor o reclutador puede comprobar su validez escaneando el QR o entrando a <code>stemos.org/verify</code>.</p>
+                            </div>
+                        </details>
+
+                        <details class="help-faq-item" data-cat="cuenta" data-keywords="profesor maestro tareas grupo cohorte examen asignado banner">
+                            <summary class="help-faq-summary">
+                                <span class="help-faq-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                                <span class="help-faq-qtext">¿Dónde aparecen las tareas o exámenes que asigna mi profesor?</span>
+                                <span class="help-faq-tag">Grupo</span>
+                            </summary>
+                            <div class="help-faq-answer">
+                                <p>Si tu docente programó una actividad para tu cohorte, aparecerá automáticamente una <strong>tarjeta superior destacada</strong> al entrar a la app (con reloj si tiene límite de tiempo). Solo asegúrate de entrar con el mismo correo o matrícula registrada en tu grupo.</p>
+                            </div>
+                        </details>
+
+                        <details class="help-faq-item" data-cat="cuenta" data-keywords="gratis plan individual 69 mxn pago beca codigo sincronizar nube respaldo contacto correo">
+                            <summary class="help-faq-summary">
+                                <span class="help-faq-chevron" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                                <span class="help-faq-qtext">¿Qué es gratis, cómo funciona el Plan Individual ($69 MXN) / Beca y cómo pido soporte?</span>
+                                <span class="help-faq-tag">Cuenta</span>
+                            </summary>
+                            <div class="help-faq-answer">
+                                <p>El <strong>Tronco Común A1</strong>, el diagnóstico y las unidades base están disponibles para iniciar gratis. Si deseas desbloquear ilimitadamente los <strong>34 Tracks especializados</strong>, puedes activar el <strong>Plan Individual ($69 MXN / cuatrimestre)</strong> o canjear una <strong>beca / folio institucional</strong> desde el botón de plan o dentro de <strong>Mi Perfil</strong>.</p>
+                                <p>Para respaldo entre dispositivos, entra con tu cuenta y usa <strong>Mi Perfil &rarr; Sincronizar Ahora</strong>. Si necesitas soporte directo de cuenta o campus, escríbenos a <a href="mailto:alianzas@stemos.org" style="color:#0284c7; font-weight:700;">alianzas@stemos.org</a>.</p>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div id="help-faq-empty" class="help-faq-empty" hidden>
+                        <i class="fa-solid fa-magnifying-glass" style="font-size:1.45rem; color:#94a3b8;" aria-hidden="true"></i>
+                        <div style="font-weight:800; color:#0f172a;">No encontramos preguntas con esa búsqueda</div>
+                        <div style="font-size:0.82rem;">Prueba con otra palabra clave (ej. <em>audio, placement, xp, certificado</em>) o contáctanos directo.</div>
+                        <button type="button" id="btn-help-reset-filters" class="help-btn-ghost">Mostrar todas las preguntas</button>
+                    </div>
+                </section>
+
+                <!-- 3. Atajos Directos y Soporte Real -->
+                <div class="help-support-card">
+                    <div>
+                        <div style="font-size:0.88rem; font-weight:800; color:#0f172a; margin-bottom:2px;">¿Sigues con dudas o un problema técnico?</div>
+                        <div style="font-size:0.78rem; color:#475569;">Abre directo la herramienta que necesitas o contacta al equipo de soporte stemOS.</div>
+                    </div>
+                    <div class="help-support-links">
+                        <button type="button" class="help-support-pill" onclick="window.closeStudentHelpModal(); if(window.openStudentProfileModal){window.openStudentProfileModal();}">
+                            <i class="fa-solid fa-user-check" aria-hidden="true"></i> Ir a Mi Perfil
+                        </button>
+                        <a class="help-support-pill" href="mailto:alianzas@stemos.org?subject=Soporte%20Estudiante%20stemOS">
+                            <i class="fa-solid fa-envelope" aria-hidden="true"></i> alianzas@stemos.org
+                        </a>
+                        <a class="help-support-pill" href="/privacy.html" target="_blank" rel="noopener noreferrer">
+                            <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Privacidad
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="help-modal-footer">
+                <span style="font-size:0.76rem; color:#64748b; display:inline-flex; align-items:center; gap:6px;">
+                    <i class="fa-regular fa-keyboard" aria-hidden="true"></i> Presiona <kbd style="background:#f1f5f9; border:1px solid #cbd5e1; border-radius:4px; padding:1px 5px; font-size:0.72rem;">Esc</kbd> o haz clic fuera para cerrar
                 </span>
-                <h3 style="margin:8px 0 2px 0; font-size:1.35rem; font-weight:800; color:#ffffff;">¿Cómo funciona tu Campus stemOS?</h3>
-                <p style="margin:0; font-size:0.86rem; color:rgba(255,255,255,0.85);">Guía rápida para cursar tu ruta técnica y certificar tus competencias industriales.</p>
-            </div>
-            <button type="button" onclick="window.closeStudentHelpModal()" style="background:rgba(255,255,255,0.15); border:none; color:#ffffff; width:34px; height:34px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1.1rem; transition:background 0.2s;" onmouseenter="this.style.background='rgba(255,255,255,0.3)'" onmouseleave="this.style.background='rgba(255,255,255,0.15)'">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-
-        <div style="padding:24px 26px; max-height:68vh; overflow-y:auto;">
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px;">
-                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:16px;">
-                    <div style="width:36px; height:36px; border-radius:10px; background:#e0f2fe; color:#0284c7; display:flex; align-items:center; justify-content:center; font-size:1.1rem; margin-bottom:10px;">
-                        <i class="fa-solid fa-clipboard-check"></i>
-                    </div>
-                    <h4 style="margin:0 0 6px 0; font-size:0.95rem; font-weight:800; color:#0f172a;">1. RapidCheck, Placement Test</h4>
-                    <p style="margin:0; font-size:0.82rem; color:#475569; line-height:1.45;">Evaluación diagnóstica de 30 min con banco rotativo de reactivos anti-trampas. Asigna tu nivel MCER (A1 a B2) y calibra la dificultad de vocabulario.</p>
+                <div class="help-footer-actions">
+                    <a href="placement.html" class="help-btn-ghost">
+                        <i class="fa-solid fa-clipboard-check" aria-hidden="true"></i> Ir a Placement Test
+                    </a>
+                    <button type="button" class="help-btn-primary" onclick="window.closeStudentHelpModal()">
+                        Entendido
+                    </button>
                 </div>
-
-                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:16px;">
-                    <div style="width:36px; height:36px; border-radius:10px; background:#ecfdf5; color:#059669; display:flex; align-items:center; justify-content:center; font-size:1.1rem; margin-bottom:10px;">
-                        <i class="fa-solid fa-route"></i>
-                    </div>
-                    <h4 style="margin:0 0 6px 0; font-size:0.95rem; font-weight:800; color:#0f172a;">2. Ruta Intercalada (60h)</h4>
-                    <p style="margin:0; font-size:0.82rem; color:#475569; line-height:1.45;">16 estaciones canónicas que siguen el ciclo: <em>Teoría Técnica &rarr; Inglés B1 &rarr; Simulador (LOTO, GD&amp;T, P&amp;ID) &rarr; Hito Evaluativo</em>.</p>
-                </div>
-
-                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:16px;">
-                    <div style="width:36px; height:36px; border-radius:10px; background:#fef3c7; color:#d97706; display:flex; align-items:center; justify-content:center; font-size:1.1rem; margin-bottom:10px;">
-                        <i class="fa-solid fa-brain"></i>
-                    </div>
-                    <h4 style="margin:0 0 6px 0; font-size:0.95rem; font-weight:800; color:#0f172a;">3. Voice Crucible &amp; Feynman IA</h4>
-                    <p style="margin:0; font-size:0.82rem; color:#475569; line-height:1.45;">Simulador socrático de audio para entrevistas técnicas, plantas industriales y resolución de fallas en vivo con medición VU de decibeles.</p>
-                </div>
-
-                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:16px;">
-                    <div style="width:36px; height:36px; border-radius:10px; background:#f3e8ff; color:#7c3aed; display:flex; align-items:center; justify-content:center; font-size:1.1rem; margin-bottom:10px;">
-                        <i class="fa-solid fa-award"></i>
-                    </div>
-                    <h4 style="margin:0 0 6px 0; font-size:0.95rem; font-weight:800; color:#0f172a;">4. Credenciales W3C &amp; Badges</h4>
-                    <p style="margin:0; font-size:0.82rem; color:#475569; line-height:1.45;">Emisión de micro-credenciales verificables criptográficamente (Open Badges 3.0 / W3C VC) para compartir tu progreso en LinkedIn.</p>
-                </div>
-            </div>
-
-            <div style="background:rgba(2,132,199,0.06); border:1px solid rgba(2,132,199,0.25); border-radius:14px; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
-                <div style="font-size:0.84rem; color:#0f172a;">
-                    <strong>¿Aún no calibras tu nivel?</strong> Toma tu RapidCheck Placement Test ahora mismo.
-                </div>
-                <a href="placement.html" class="btn btn-primary" style="padding:8px 16px; font-size:0.82rem; font-weight:800; border-radius:8px; background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#fff; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
-                    <i class="fa-solid fa-play"></i> Iniciar RapidCheck
-                </a>
-            </div>
-        </div>
-
-        <div style="padding:14px 26px; background:#f8fafc; border-top:1px solid #e2e8f0; display:flex; justify-content:flex-end; gap:10px;">
-            <button type="button" class="btn btn-secondary" onclick="window.closeStudentHelpModal()" style="padding:8px 20px; border-radius:8px; border:1px solid #cbd5e1; background:#ffffff; color:#475569; font-weight:700; cursor:pointer;">
-                Entendido
-            </button>
+            </footer>
         </div>
     </dialog>
 
@@ -3688,7 +3897,7 @@
     <script src="/content/placement_test.js?v=1.0.0" defer></script>
     <script src="/content/stemos_payments.js?v=1.2.0" defer></script>
     <script src="/content/stemos_skeleton.js?v=1.0.0" defer></script>
-    <script src="/app.js?v=2026.11.5" defer></script>
+    <script src="/app.js?v=2026.11.6" defer></script>
     <script src="/world-map.js?v=1.2.2" defer></script>
 
     <!-- Service Worker PWA Registration & Auto-Update Engine -->
@@ -4028,7 +4237,10 @@
                         <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
                     </button>
                 </div>
-                <div style="display: flex; gap: 8px;">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="if(window.closeStudentProfileModal){closeStudentProfileModal();} if(window.openStudentHelpModal){openStudentHelpModal();}" style="font-size: 0.8rem; padding: 6px 14px; border-radius: 8px; background: #eff6ff; border: 1px solid #bfdbfe; color: #0369a1; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+                        <i class="fa-solid fa-circle-question" aria-hidden="true"></i> Ayuda &amp; FAQ
+                    </button>
                     <button type="button" class="btn btn-primary btn-sm" onclick="closeStudentProfileModal()" style="font-size: 0.8rem; padding: 6px 16px; border-radius: 8px; background: #0284c7; border: 1px solid #0284c7; color: #fff;">
                         Cerrar
                     </button>
