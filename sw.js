@@ -3,8 +3,8 @@
  * Full offline PWA caching for 4 Portals (Student, Admin, Teacher, Register), 25 Career Paths (60h), Interleaved Curricula, XP HUD, and 3D World Map.
  */
 
-const SW_VERSION = '6.9.14';
-const CACHE_NAME = 'stemos-lxp-v6.9.14-mcer-snake-fix';
+const SW_VERSION = '6.10.0';
+const CACHE_NAME = 'stemos-lxp-v6.10.0-mcer-50m-powersheets';
 // Historical compatibility: v6.0.0-academic-portals, v6.1.0-firebase-sync, v6.2.0-piper-neural, v6.3.0-campus-diadema-offline, v6.3.1-sso-mobile-fixes, v6.8.2-hero-leveling-pathway, v6.8.3-offline-resilient-icons, v6.8.4-csp-resilient, v6.8.5-mcer-offline-sync, v6.8.6-mcer-batch-offline, v6.9.4-bust
 
 const ASSETS_TO_CACHE = [
@@ -27,6 +27,7 @@ const ASSETS_TO_CACHE = [
   '/register.html',
   '/admin.html',
   '/teacher.html',
+  '/powersheet.html',
   '/404.html',
   '/world-map.css',
   '/world-map.js',
@@ -37,6 +38,11 @@ const ASSETS_TO_CACHE = [
   '/content/firebase_adapter.js',
   '/content/gemini_service.js',
   '/content/mcer_tracks.js',
+  '/content/mcer_classes_50m.js',
+  '/content/esp_lesson_designs.js',
+  '/content/stemos_curriculum_config.js',
+  '/content/stemos_slides.js',
+  '/content/stemos_powersheet.js',
   '/content/placement_test.js',
   '/content/stemos_payments.js',
   '/content/phrases_library.js',

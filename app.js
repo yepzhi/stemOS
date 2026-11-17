@@ -5042,6 +5042,36 @@ Nearshoring Center of Excellence • stemOS Certified`;
     ];
     window.CANONICAL_MCER_UNIT_IDS = CANONICAL_MCER_UNIT_IDS;
 
+    function resolveMcerEntityById(unitOrClassId) {
+        if (!unitOrClassId) return null;
+        if (window.STEMOS_MCER_CLASSES && typeof window.STEMOS_MCER_CLASSES.getClassById === 'function') {
+            const cls = window.STEMOS_MCER_CLASSES.getClassById(unitOrClassId);
+            if (cls) return window.STEMOS_MCER_CLASSES.toRunnableUnit(cls);
+        }
+        if (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.getUnitById === 'function') {
+            const u = window.STEMOS_MCER_TRACKS.getUnitById(unitOrClassId);
+            if (u) return u;
+        }
+        return null;
+    }
+    window.resolveMcerEntityById = resolveMcerEntityById;
+
+    function getTeacherCohortUnlocks() {
+        try {
+            const raw = JSON.parse(localStorage.getItem('stemos_teacher_unlocks') || '[]');
+            if (Array.isArray(raw)) return new Set(raw.map(x => String(x).toUpperCase()));
+            if (raw && typeof raw === 'object') {
+                const s = new Set();
+                Object.keys(raw).forEach(k => {
+                    if (Array.isArray(raw[k])) raw[k].forEach(v => s.add(String(v).toUpperCase()));
+                    else if (raw[k]) s.add(String(k).toUpperCase());
+                });
+                return s;
+            }
+        } catch (_) {}
+        return new Set();
+    }
+
     function isMcerUnitCompleted(unitId) {
         if (!unitId) return false;
         return (localStorage.getItem('stemos_mcer_unit_' + unitId) === 'passed') ||
@@ -5052,14 +5082,59 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
     function isMcerUnitUnlocked(unitId) {
         if (!unitId) return false;
+        if (isMcerUnitCompleted(unitId)) return true;
+
+        const unlocks = getTeacherCohortUnlocks();
+        if (unlocks.has(String(unitId).toUpperCase())) return true;
+
+        // Modular 50-minute class unlocking following active cohort sequence
+        const cls = (window.STEMOS_MCER_CLASSES && typeof window.STEMOS_MCER_CLASSES.getClassById === 'function')
+            ? window.STEMOS_MCER_CLASSES.getClassById(unitId) : null;
+        if (cls) {
+            if (cls.unitId && isMcerUnitCompleted(cls.unitId)) return true;
+            const cfgApi = window.STEMOS_CURRICULUM_CONFIG;
+            const classId = cfgApi ? cfgApi.getActiveStudentClassId() : 'DEFAULT';
+            const trackKey = cfgApi ? cfgApi.getTrackKey('mcer', cls.level) : `mcer_${cls.level}`;
+            const ordered = cfgApi
+                ? cfgApi.getEffectiveSequence(classId, trackKey, { includeHidden: false })
+                : window.STEMOS_MCER_CLASSES.getClassesByLevel(cls.level);
+
+            const isConvalidated = localStorage.getItem('stemos_mcer_convalidated') === 'true';
+            if (isConvalidated) {
+                const placementLvl = (localStorage.getItem('stemos_placement_cefr') || localStorage.getItem('stemos_user_level') || 'A1').toUpperCase();
+                const levels = ['A1', 'A2', 'B1', 'B2', 'C1-C2'];
+                const userLevelIdx = levels.indexOf(placementLvl === 'C1' || placementLvl === 'C2' ? 'C1-C2' : placementLvl);
+                const clsLevelIdx = levels.indexOf(cls.level);
+                if (clsLevelIdx >= 0 && clsLevelIdx < userLevelIdx) return true;
+                if (clsLevelIdx === userLevelIdx && ordered.length && ordered[0].id === unitId) return true;
+            }
+
+            if (cls.level === 'A1' && ordered.length && ordered[0].id === unitId) return true;
+
+            if (cfgApi) {
+                const doneIds = ordered.filter(c => isMcerUnitCompleted(c.id) || (c.unitId && isMcerUnitCompleted(c.unitId))).map(c => c.id);
+                const visibleIdx = ordered.findIndex(c => c.id === unitId);
+                if (visibleIdx === 0 && cls.level !== 'A1') {
+                    // Check if previous canonical level's last item is done
+                    const lvlOrder = ['A1', 'A2', 'B1', 'B2', 'C1-C2'];
+                    const prevLvl = lvlOrder[lvlOrder.indexOf(cls.level) - 1];
+                    if (prevLvl) {
+                        const prevSeq = cfgApi.getEffectiveSequence(classId, cfgApi.getTrackKey('mcer', prevLvl), { includeHidden: false });
+                        const lastPrev = prevSeq[prevSeq.length - 1];
+                        if (lastPrev && (isMcerUnitCompleted(lastPrev.id) || (lastPrev.unitId && isMcerUnitCompleted(lastPrev.unitId)))) return true;
+                    }
+                    return cls.level === 'A1';
+                }
+                return cfgApi.isItemUnlockedInSequence(unitId, ordered, doneIds, Array.from(unlocks), false);
+            }
+            return cls.classNum === 1 && cls.level === 'A1';
+        }
+
         const cIdx = CANONICAL_MCER_UNIT_IDS.indexOf(unitId);
         // First unit of A1 is always unlocked
         if (cIdx === 0) return true;
         // Non-canonical or unknown unit allows access
         if (cIdx === -1) return true;
-
-        // If unit already completed, it's unlocked
-        if (isMcerUnitCompleted(unitId)) return true;
 
         // Fast-track convalidation from diagnostic placement
         const isConvalidated = localStorage.getItem('stemos_mcer_convalidated') === 'true';
@@ -5234,9 +5309,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (!grid || !window.STEMOS_MCER_TRACKS) return;
 
         grid.innerHTML = '';
-        let units = window.STEMOS_MCER_TRACKS.getAllUnits();
+        let units = (levelFilter === 'C1-C2' && window.STEMOS_MCER_CLASSES)
+            ? window.STEMOS_MCER_CLASSES.getClassesByLevel('C1-C2').map(c => window.STEMOS_MCER_CLASSES.toRunnableUnit(c))
+            : window.STEMOS_MCER_TRACKS.getAllUnits();
 
-        if (levelFilter && levelFilter !== 'all') {
+        if (levelFilter && levelFilter !== 'all' && levelFilter !== 'C1-C2') {
             units = units.filter(u => u.cefr === levelFilter);
         }
 
@@ -5244,7 +5321,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
             'A1': { color: '#10b981', label: 'Foundations', icon: 'fa-seedling' },
             'A2': { color: '#0284c7', label: 'Waystage', icon: 'fa-route' },
             'B1': { color: '#f59e0b', label: 'Threshold', icon: 'fa-stairs' },
-            'B2': { color: '#8b5cf6', label: 'Vantage', icon: 'fa-award' }
+            'B2': { color: '#8b5cf6', label: 'Vantage', icon: 'fa-award' },
+            'C1-C2': { color: '#ec4899', label: 'Mastery', icon: 'fa-crown' }
         };
         const userLevel = localStorage.getItem('stemos_user_level') || '';
 
@@ -5697,7 +5775,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
     function openMcerUnitModal(unitId, isDemo = false) {
         if (!window.STEMOS_MCER_TRACKS) return;
-        const unit = window.STEMOS_MCER_TRACKS.getUnitById(unitId);
+        const unit = resolveMcerEntityById(unitId) || (window.STEMOS_MCER_TRACKS && window.STEMOS_MCER_TRACKS.getUnitById(unitId));
         if (!unit) return;
 
         if (!isDemo && !isMcerUnitUnlocked(unitId)) {
@@ -5731,6 +5809,26 @@ Nearshoring Center of Excellence • stemOS Certified`;
         document.getElementById('mcer-unit-level-badge').textContent = `CEFR ${unit.cefr}`;
         document.getElementById('mcer-unit-title').textContent = `${unit.modulo || ('Módulo ' + String(unit.unitNumber).padStart(2, '0'))} · ${unit.title}`;
         document.getElementById('mcer-unit-cando').textContent = `${unit.titleES || ''} — ${unit.canDo || ''}`;
+        const durPill = document.getElementById('mcer-unit-duration-pill');
+        if (durPill) {
+            const duoM = unit.onlinePracticeMinutes || 18;
+            durPill.innerHTML = `<i class="fa-solid fa-clock"></i> ${unit.isModularClass ? `50 min clase · ${duoM}m Duo` : '10 min · MCER'}`;
+        }
+        const psModalBtn = document.getElementById('btn-mcer-open-powersheet');
+        if (psModalBtn) {
+            psModalBtn.href = `powersheet.html?lesson=${encodeURIComponent(unit.id)}`;
+        }
+        const slidesModalBtn = document.getElementById('btn-mcer-open-slides');
+        if (slidesModalBtn) {
+            slidesModalBtn.style.display = unit.hasSlides ? 'inline-flex' : 'none';
+            window.openCurrentModalSlides = () => {
+                if (window.STEMOS_SLIDES) {
+                    window.STEMOS_SLIDES.openDeck(unit, {
+                        onStartDuo: () => window.startDuoLessonForUnit(unit.id, 1)
+                    });
+                }
+            };
+        }
 
         // Setup Offline Download Button & 3-Day Expiry Check
         updateMcerOfflineButtonUI(unit.id);
@@ -7666,6 +7764,39 @@ Nearshoring Center of Excellence • stemOS Certified`;
             }
         }
 
+        // 4. Diseño Instruccional 50 Minutos & Actividad en Aula (Modular classes)
+        const designCard = document.getElementById('mcer-fund-50m-design-card');
+        if (designCard) {
+            const phases = Array.isArray(unit.instructionalPhases) ? unit.instructionalPhases : [];
+            if (phases.length > 0) {
+                designCard.style.display = 'block';
+                const modBadge = document.getElementById('mcer-fund-modularity-badge');
+                if (modBadge) modBadge.textContent = (unit.modularityMeta && unit.modularityMeta.name) || 'CLASE MODULAR 50 MIN';
+                const psLink = document.getElementById('mcer-fund-powersheet-link');
+                if (psLink) psLink.href = `powersheet.html?lesson=${encodeURIComponent(unit.id)}`;
+                const phasesGrid = document.getElementById('mcer-fund-phases-grid');
+                if (phasesGrid) {
+                    phasesGrid.innerHTML = phases.map(p => `
+                        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:8px 10px;">
+                            <div style="font-size:0.7rem; font-weight:800; color:#0284c7;">${p.block}</div>
+                            <div style="font-size:0.78rem; font-weight:800; color:#0f172a; margin:2px 0;">${p.phase}</div>
+                            <div style="font-size:0.72rem; color:#475569; line-height:1.35;">${p.desc}</div>
+                        </div>
+                    `).join('');
+                }
+                const actBox = document.getElementById('mcer-fund-classroom-activity');
+                if (actBox && unit.classroomActivity) {
+                    const steps = Array.isArray(unit.classroomActivity.steps) ? unit.classroomActivity.steps : [];
+                    actBox.innerHTML = `
+                        <div style="font-weight:800; color:#6b21a8; margin-bottom:4px;"><i class="fa-solid fa-users"></i> Dinámica Presencial: ${unit.classroomActivity.title} (${unit.classroomActivity.grouping || 'Parejas'})</div>
+                        <ol style="margin:0; padding-left:18px; line-height:1.45;">${steps.map(s => `<li>${s}</li>`).join('')}</ol>
+                    `;
+                }
+            } else {
+                designCard.style.display = 'none';
+            }
+        }
+
         // Step 1 Next Button Listener
         const btnFundNext = document.getElementById('btn-mcer-fund-next');
         if (btnFundNext) {
@@ -9581,175 +9712,6 @@ Nearshoring Center of Excellence • stemOS Certified`;
                             </span>
                             <span>&bull;</span>
                             <span style="color:#34d399; font-weight:700;">
-                                Calificación mínima aprobatoria: ${asg.threshold || 75}%
-                            </span>
-                        </div>
-                    </div>
-                    <div style="display:flex; align-items:center;">
-                        ${actionAreaHtml}
-                    </div>
-                </div>
-            </div>
-        `;
-        mount.style.display = 'block';
-    }
-
-    const ASG_QUESTIONS = [
-        {
-            id: 'q1',
-            title: 'PLC Fault Diagnostics & Emergency Protocol',
-            scenario: 'During high-speed assembly, Sensor S-04 triggered an unexpected interrupt code E-208 on Line 3. The SCADA telemetry indicates intermittent voltage drop before the safety interlock tripped.',
-            prompt: 'Which immediate action is required by the manufacturing engineer according to ISO/B1 maintenance standard?',
-            options: [
-                'Override the safety interlock relay and immediately resume full-speed production.',
-                'Isolate the electrical power bus, execute Lockout/Tagout (LOTO), and measure line impedance with a calibrated multimeter.',
-                'Ignore the telemetry log because intermittent drops reset automatically after 60 seconds.',
-                'Replace the entire PLC backplane without reading the error register history.'
-            ],
-            correct: 1
-        },
-        {
-            id: 'q2',
-            title: 'Precision Calibration & Nearshoring Metric Tolerances',
-            scenario: 'The automotive client in Detroit requested a tolerance verification report for the CNC-machined transmission shafts (+/- 0.015 mm).',
-            prompt: 'Select the most professional technical statement to include in the engineering sign-off memorandum:',
-            options: [
-                'The shafts are probably okay since we calibrated the lathe a couple of weeks ago.',
-                'Dimensions comply with drawing spec within 0.012 mm variance; full CMM laser inspection certificates are attached for batch release.',
-                'We didn’t measure all parts because the calipers were misplaced in the inspection crib.',
-                'Dimensional tolerances are irrelevant as long as the shafts fit into the housing assembly.'
-            ],
-            correct: 1
-        },
-        {
-            id: 'q3',
-            title: 'Cross-Functional Engineering Handoff (B1 Technical)',
-            scenario: 'The night-shift quality supervisor must communicate a pending calibration task to the oncoming morning engineering crew.',
-            prompt: 'Choose the appropriate technical collocation to complete: "We have ______ the thermal sensors and ______ the baseline calibration matrix for shift handover."',
-            options: [
-                'zeroed / logged',
-                'destroyed / hidden',
-                'painted / forgotten',
-                'guessed / guessed'
-            ],
-            correct: 0
-        },
-        {
-            id: 'q4',
-            title: 'Root Cause & Failure Mode Analysis (FMEA)',
-            scenario: 'A robotic weld cell displayed excessive spatter and incomplete penetration on mild steel sub-assemblies.',
-            prompt: 'What root cause should the welding automation specialist investigate first?',
-            options: [
-                'Shielding gas flow rate, wire feed velocity, and shielding gas nozzle oxidation.',
-                'The ambient office temperature in the human resources department.',
-                'The color of the robot arm safety paint.',
-                'Switching from argon mix to pure oxygen without adjusting arc parameters.'
-            ],
-            correct: 0
-        }
-    ];
-
-    let userAssignmentAnswers = {};
-
-    function openStudentAssignmentRunner() {
-        const asg = getActiveStudentAssignment();
-        if (!asg) return;
-
-        let profile = null;
-        try {
-            const raw = localStorage.getItem('stemos_user_profile');
-            if (raw) profile = JSON.parse(raw);
-        } catch(e) {}
-        const studentId = (profile && profile.studentId) || 'st-3';
-        const studentName = (profile && (profile.fullName || profile.name)) || 'Diego Ramírez';
-
-        asg.submissions = asg.submissions || {};
-        if (!asg.submissions[studentId] || asg.submissions[studentId].status === 'pending') {
-            asg.submissions[studentId] = {
-                status: 'in_progress',
-                startedAt: new Date().toISOString(),
-                timeSpentMinutes: 0
-            };
-            saveActiveAssignmentSync(asg);
-        }
-
-        const sub = asg.submissions[studentId];
-        userAssignmentAnswers = sub.answers || {};
-
-        const timeLimitMinutes = asg.timeLimitMinutes || 45;
-        if (timeLimitMinutes > 0) {
-            const started = new Date(sub.startedAt).getTime();
-            const elapsedSeconds = Math.floor((Date.now() - started) / 1000);
-            const totalSeconds = timeLimitMinutes * 60;
-            assignmentSecondsRemaining = Math.max(0, totalSeconds - elapsedSeconds);
-            assignmentTimeLimitTotal = totalSeconds;
-        } else {
-            assignmentSecondsRemaining = 0;
-            assignmentTimeLimitTotal = 0;
-        }
-
-        renderAssignmentRunnerModal(asg, sub, studentName);
-
-        const modal = document.getElementById('modal-student-assignment-runner');
-        if (modal) {
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        startAssignmentTimerCountdown(asg, studentId);
-        initStudentAssignmentHUD();
-    }
-
-    function startAssignmentTimerCountdown(asg, studentId) {
-        if (assignmentTimerInterval) clearInterval(assignmentTimerInterval);
-
-        const updateTimerDisplay = () => {
-            const displayEl = document.getElementById('runner-timer-countdown');
-            const hudEl = document.getElementById('hud-timer-countdown');
-            const timerBadge = document.getElementById('runner-timer-badge');
-
-            if (asg.timeLimitMinutes > 0) {
-                if (assignmentSecondsRemaining <= 0) {
-                    clearInterval(assignmentTimerInterval);
-                    if (displayEl) displayEl.textContent = '00:00 (Tiempo expirado)';
-                    if (hudEl) hudEl.textContent = '00:00 (Tiempo expirado)';
-                    submitStudentAssignment(true);
-                    return;
-                }
-
-                const mins = Math.floor(assignmentSecondsRemaining / 60);
-                const secs = assignmentSecondsRemaining % 60;
-                const timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-
-                if (displayEl) displayEl.textContent = timeStr;
-                if (hudEl) hudEl.textContent = timeStr;
-
-                if (assignmentSecondsRemaining <= 300) {
-                    if (timerBadge) timerBadge.classList.add('danger');
-                } else {
-                    if (timerBadge) timerBadge.classList.remove('danger');
-                }
-
-                assignmentSecondsRemaining--;
-            } else {
-                assignmentSecondsRemaining++;
-                const mins = Math.floor(assignmentSecondsRemaining / 60);
-                const secs = assignmentSecondsRemaining % 60;
-                const timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-                if (displayEl) displayEl.textContent = `${timeStr} (Sin límite)`;
-                if (hudEl) hudEl.textContent = timeStr;
-            }
-        };
-
-        updateTimerDisplay();
-        assignmentTimerInterval = setInterval(updateTimerDisplay, 1000);
-    }
-
-    function renderAssignmentRunnerModal(asg, sub, studentName) {
-        const container = document.getElementById('asg-runner-content');
-        if (!container) return;
-
-        const formattedDue = formatAmericasTzDate(asg.deadline, asg.dueTime, asg.timezone);
         const timeLimitBadge = asg.timeLimitMinutes > 0
             ? `<div class="asg-timer-pulse-badge" id="runner-timer-badge"><i class="fa-solid fa-stopwatch"></i> Tiempo Restante: <span id="runner-timer-countdown">--:--</span></div>`
             : `<div class="asg-timer-pulse-badge"><i class="fa-solid fa-infinity"></i> Modo Práctica: <span id="runner-timer-countdown">00:00</span></div>`;
@@ -10503,6 +10465,14 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     <div style="font-weight:700; color:#0f172a; margin-bottom:4px;"><i class="fa-solid fa-shield-halved" style="color:#0284c7;"></i> Assessed Industrial Competency:</div>
                     ${mod.competency || 'Demonstrate technical operational communication and procedural compliance according to ISO and OSHA standards.'}
                 </div>
+                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;">
+                    <a href="powersheet.html?esp=${encodeURIComponent(`${(career && career.id) || 'it-mecatronica'}:${mod.id}`)}" target="_blank" rel="noopener" style="flex:1; min-width:150px; background:#f0fdf4; color:#15803d; border:1.5px solid #86efac; padding:8px 12px; border-radius:10px; font-size:0.8rem; font-weight:800; text-decoration:none; text-align:center;">
+                        <i class="fa-solid fa-file-lines"></i> Power Sheet (1 Hoja)
+                    </a>
+                    <a href="powersheet.html?esp=${encodeURIComponent(`${(career && career.id) || 'it-mecatronica'}:${mod.id}`)}&mode=teacher" target="_blank" rel="noopener" style="flex:1; min-width:150px; background:#faf5ff; color:#6b21a8; border:1.5px solid #d8b4fe; padding:8px 12px; border-radius:10px; font-size:0.8rem; font-weight:800; text-decoration:none; text-align:center;">
+                        <i class="fa-solid fa-chalkboard-user"></i> Guía 50m
+                    </a>
+                </div>
             `;
         }
 
@@ -10632,68 +10602,128 @@ Nearshoring Center of Excellence • stemOS Certified`;
             // ── A. MCER CORE MODE (A1 to B2 Standard American English) ──
             localStorage.setItem('stemos_active_path_scope', 'mcer');
 
-            const allMcerUnits = (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.getAllUnits === 'function') 
-                ? window.STEMOS_MCER_TRACKS.getAllUnits() 
+            const allMcerUnits = (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.getAllUnits === 'function')
+                ? window.STEMOS_MCER_TRACKS.getAllUnits()
                 : [];
 
-            let selectedLevel = (typeof trackOrCareerId === 'string' && trackOrCareerId.startsWith('mcer:')) 
-                ? trackOrCareerId.replace('mcer:', '') 
+            let selectedLevel = (typeof trackOrCareerId === 'string' && trackOrCareerId.startsWith('mcer:'))
+                ? trackOrCareerId.replace('mcer:', '')
                 : (levelFilter || 'all');
-
-            let filteredUnits = allMcerUnits;
-            if (selectedLevel && selectedLevel !== 'all') {
-                filteredUnits = allMcerUnits.filter(u => u.cefr && u.cefr.toUpperCase() === selectedLevel.toUpperCase());
-            }
-            if (!filteredUnits || filteredUnits.length === 0) filteredUnits = allMcerUnits;
 
             const mcerHitoNames = [
                 'Level A1 · Foundations & Everyday Work (60.0h)',
                 'Level A2 · Waystage & Maintenance Logs (60.0h)',
                 'Level B1 · Threshold & Industrial SOPs (60.0h)',
-                'Level B2 · Vantage & Executive Defense (60.0h)'
+                'Level B2 · Vantage & Executive Defense (60.0h)',
+                'Level C1–C2 · Executive Mastery & Rhetoric (42.0h Ext.)'
             ];
 
-            const nodeTypeCycle = [
-                { type: 'theory', badge: 'THEORY 3.5h', label: 'Theory', icon: 'fa-book-open', color: '#0284c7', hours: 3.5, xp: 350 },
-                { type: 'english-b1', badge: 'DIALOGUE 3.5h', label: 'Dialogue', icon: 'fa-comments', color: '#10b981', hours: 3.5, xp: 350 },
-                { type: 'practical-lab', badge: 'CRUCIBLE 4.0h', label: 'Crucible', icon: 'fa-flask-vial', color: '#f59e0b', hours: 4.0, xp: 400 },
-                { type: 'milestone', badge: 'CHECKPOINT 4.0h', label: 'Checkpoint', icon: 'fa-award', color: '#ef4444', hours: 4.0, xp: 500 }
-            ];
+            const classesApi = window.STEMOS_MCER_CLASSES;
+            const cfgApi = window.STEMOS_CURRICULUM_CONFIG;
+            const activeClassId = cfgApi ? cfgApi.getActiveStudentClassId() : 'DEFAULT';
 
-            modules = filteredUnits.map((u, idx) => {
-                const cycle = nodeTypeCycle[idx % nodeTypeCycle.length];
-                const cefrIdx = ['A1', 'A2', 'B1', 'B2'].indexOf(u.cefr);
-                const hitoNum = cefrIdx >= 0 ? (cefrIdx + 1) : Math.floor(idx / 4) + 1;
-                return {
-                    id: u.id,
-                    title: u.title,
-                    titleES: u.titleES || u.canDo,
-                    cefr: u.cefr,
-                    hito: hitoNum,
-                    hitoName: mcerHitoNames[hitoNum - 1] || 'MCER Milestone',
-                    type: cycle.type,
-                    badge: cycle.badge,
-                    color: cycle.color,
-                    icon: cycle.icon,
-                    hours: 15.0,
-                    xp: u.totalXP || cycle.xp,
-                    standard: `CEFR ${u.cefr} · American English`,
-                    isMcerUnit: true,
-                    rawUnit: u
+            if (classesApi && typeof classesApi.getAllClasses === 'function') {
+                const modStyleMap = {
+                    'grammar-inductive': { badge: '50 MIN · INDUCTIVA', label: 'Gramática 50m', icon: 'fa-book-open', color: '#0284c7' },
+                    'functional-spatial': { badge: '50 MIN · FUNCIONAL', label: 'Funcional 50m', icon: 'fa-map-location-dot', color: '#10b981' },
+                    'communicative-crucible': { badge: '50 MIN · CRISOL BOSS', label: 'Crisol 50m', icon: 'fa-crown', color: '#f59e0b' }
                 };
-            });
 
-            // Calculate student progress across MCER units
-            totalStations = modules.length;
-            completedCount = modules.filter(m => {
-                return (localStorage.getItem('stemos_crucible_' + m.id) === 'completed') || 
-                       (localStorage.getItem('stemos_unit_completed_' + m.id) === 'true');
-            }).length;
-            progressPct = Math.round((completedCount / (totalStations || 16)) * 100);
-            earnedXP = completedCount * 350;
+                const levelsToShow = (!selectedLevel || selectedLevel === 'all')
+                    ? ['A1', 'A2', 'B1', 'B2']
+                    : (selectedLevel.toUpperCase() === 'C1' || selectedLevel.toUpperCase() === 'C2' || selectedLevel.toUpperCase() === 'C1-C2'
+                        ? ['C1-C2']
+                        : [selectedLevel.toUpperCase()]);
 
-            const titleSuffix = (selectedLevel && selectedLevel !== 'all') 
-                ? ` · Nivel ${selectedLevel.toUpperCase()} (60.0h Track)` 
+                let orderedClasses = [];
+                levelsToShow.forEach((lvl) => {
+                    const seq = cfgApi
+                        ? cfgApi.getEffectiveSequence(activeClassId, cfgApi.getTrackKey('mcer', lvl), { includeHidden: false })
+                        : classesApi.getClassesByLevel(lvl);
+                    orderedClasses = orderedClasses.concat(seq);
+                });
+
+                const lvlToHito = { 'A1': 1, 'A2': 2, 'B1': 3, 'B2': 4, 'C1-C2': 5 };
+                modules = orderedClasses.map((cls) => {
+                    const style = modStyleMap[cls.modularity] || modStyleMap['grammar-inductive'];
+                    const hitoNum = lvlToHito[cls.level] || 1;
+                    const duoMin = cls.onlinePracticeMinutes || 18;
+                    return {
+                        id: cls.id,
+                        unitId: cls.unitId,
+                        title: cls.title,
+                        titleES: cls.titleES || cls.canDo,
+                        cefr: cls.level,
+                        hito: hitoNum,
+                        hitoName: mcerHitoNames[hitoNum - 1] || 'MCER Milestone',
+                        type: cls.modularity,
+                        badge: `50 MIN · ${duoMin}M DUO`,
+                        color: style.color,
+                        icon: style.icon,
+                        hours: cls.accreditedHours || 3.0,
+                        xp: cls.xp || 280,
+                        standard: `CEFR ${cls.level} · ${cls.eaqualsRef || 'EAQUALS'}`,
+                        hasSlides: !!cls.hasSlides,
+                        hasCustomOrder: !!cls.hasCustomOrder,
+                        isMcerUnit: true,
+                        isModularClass: true,
+                        rawClass: cls
+                    };
+                });
+
+                totalStations = modules.length;
+                completedCount = modules.filter(m => isMcerUnitCompleted(m.id) || (m.unitId && isMcerUnitCompleted(m.unitId))).length;
+                progressPct = Math.round((completedCount / (totalStations || 1)) * 100);
+                earnedXP = completedCount * 280;
+            } else {
+                let filteredUnits = allMcerUnits;
+                if (selectedLevel && selectedLevel !== 'all') {
+                    filteredUnits = allMcerUnits.filter(u => u.cefr && u.cefr.toUpperCase() === selectedLevel.toUpperCase());
+                }
+                if (!filteredUnits || filteredUnits.length === 0) filteredUnits = allMcerUnits;
+
+                const nodeTypeCycle = [
+                    { type: 'theory', badge: 'THEORY 3.5h', label: 'Theory', icon: 'fa-book-open', color: '#0284c7', hours: 3.5, xp: 350 },
+                    { type: 'english-b1', badge: 'DIALOGUE 3.5h', label: 'Dialogue', icon: 'fa-comments', color: '#10b981', hours: 3.5, xp: 350 },
+                    { type: 'practical-lab', badge: 'CRUCIBLE 4.0h', label: 'Crucible', icon: 'fa-flask-vial', color: '#f59e0b', hours: 4.0, xp: 400 },
+                    { type: 'milestone', badge: 'CHECKPOINT 4.0h', label: 'Checkpoint', icon: 'fa-award', color: '#ef4444', hours: 4.0, xp: 500 }
+                ];
+
+                modules = filteredUnits.map((u, idx) => {
+                    const cycle = nodeTypeCycle[idx % nodeTypeCycle.length];
+                    const cefrIdx = ['A1', 'A2', 'B1', 'B2'].indexOf(u.cefr);
+                    const hitoNum = cefrIdx >= 0 ? (cefrIdx + 1) : Math.floor(idx / 4) + 1;
+                    return {
+                        id: u.id,
+                        title: u.title,
+                        titleES: u.titleES || u.canDo,
+                        cefr: u.cefr,
+                        hito: hitoNum,
+                        hitoName: mcerHitoNames[hitoNum - 1] || 'MCER Milestone',
+                        type: cycle.type,
+                        badge: cycle.badge,
+                        color: cycle.color,
+                        icon: cycle.icon,
+                        hours: 15.0,
+                        xp: u.totalXP || cycle.xp,
+                        standard: `CEFR ${u.cefr} · American English`,
+                        isMcerUnit: true,
+                        rawUnit: u
+                    };
+                });
+
+                // Calculate student progress across MCER units
+                totalStations = modules.length;
+                completedCount = modules.filter(m => {
+                    return (localStorage.getItem('stemos_crucible_' + m.id) === 'completed') ||
+                           (localStorage.getItem('stemos_unit_completed_' + m.id) === 'true');
+                }).length;
+                progressPct = Math.round((completedCount / (totalStations || 16)) * 100);
+                earnedXP = completedCount * 350;
+            }
+
+            const titleSuffix = (selectedLevel && selectedLevel !== 'all')
+                ? ` · Nivel ${selectedLevel.toUpperCase()} (50m Modular)`
                 : ' (MCER Core A1–B2)';
 
             headerData = {
@@ -10701,7 +10731,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 badgeText: 'MCER CORE · 240H DETERMINISTIC',
                 standardText: 'Standard American English • W3C Open Badges 3.0 • A1–B2',
                 title: 'Marco Común Europeo' + titleSuffix,
-                progressText: `${completedCount}/${totalStations} Curricular Units Completed (${progressPct}% · ${earnedXP}/5,600 XP)`
+                progressText: `${completedCount}/${totalStations} Clases 50m Completadas (${progressPct}% · ${earnedXP} XP)`
             };
 
         } else {
@@ -10762,25 +10792,33 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 'milestone': { badge: 'CHECKPOINT 4.0h', label: 'Checkpoint', icon: 'fa-award', color: '#ef4444', defaultHours: 4.0, defaultXP: 500 }
             };
 
-            const rawMods = isEspTrack 
-                ? ((espTrack && espTrack.modules) ? espTrack.modules : []) 
+            const baseRawMods = isEspTrack
+                ? ((espTrack && espTrack.modules) ? espTrack.modules : [])
                 : ((careerPath && careerPath.modules) ? careerPath.modules : []);
+            const activeEspId = isEspTrack ? trackOrCareerId : (career ? career.id : 'it-mecatronica');
+            const cfgApi = window.STEMOS_CURRICULUM_CONFIG;
+            const rawMods = cfgApi
+                ? cfgApi.getEffectiveSequence(cfgApi.getActiveStudentClassId(), cfgApi.getTrackKey('esp', activeEspId), { includeHidden: false, canonicalItems: baseRawMods })
+                : baseRawMods;
             modules = rawMods.map((mod, idx) => {
                 const hitoNum = mod.hito || Math.floor(idx / 4) + 1;
                 const tc = nodeTypeConfig[mod.type] || nodeTypeConfig['theory'];
                 return {
                     id: mod.id,
+                    trackId: activeEspId,
                     title: mod.title,
                     hito: hitoNum,
                     hitoName: espHitoNames[hitoNum - 1] || 'Industrial Milestone',
                     type: mod.type,
-                    badge: tc.badge,
+                    badge: `50M · ${tc.badge}`,
                     color: tc.color,
                     icon: tc.icon,
                     hours: mod.hours || tc.defaultHours,
                     xp: mod.xp || tc.defaultXP,
                     standard: mod.standard || 'ISO / IEEE',
-                    isMcerUnit: false
+                    hasSlides: mod.type === 'theory' || mod.type === 'english-b1',
+                    isMcerUnit: false,
+                    rawMod: mod
                 };
             });
         }
@@ -10948,12 +10986,16 @@ Nearshoring Center of Excellence • stemOS Certified`;
             let isUnlocked = false;
 
             if (mod.isMcerUnit) {
-                isCompleted = isMcerUnitCompleted(mod.id);
-                isUnlocked = isMcerUnitUnlocked(mod.id);
+                isCompleted = isMcerUnitCompleted(mod.id) || (mod.unitId && isMcerUnitCompleted(mod.unitId));
+                isUnlocked = isCompleted || isMcerUnitUnlocked(mod.id);
+                if (!isUnlocked && idx > 0 && modules[idx - 1]) {
+                    isUnlocked = isMcerUnitCompleted(modules[idx - 1].id);
+                }
             } else {
                 isCompleted = !!(prog.modules && prog.modules[mod.id] && (prog.modules[mod.id].status === 'completed' || prog.modules[mod.id].completed));
+                const espUnlocks = getTeacherCohortUnlocks();
                 const isPrevCompleted = (idx === 0) || !!(prog.modules && prog.modules[modules[idx - 1].id] && (prog.modules[modules[idx - 1].id].status === 'completed' || prog.modules[modules[idx - 1].id].completed));
-                isUnlocked = isCompleted || isPrevCompleted || (idx === 0);
+                isUnlocked = isCompleted || isPrevCompleted || (idx === 0) || mod.isUnlockedByTeacher || espUnlocks.has(String(mod.id).toUpperCase());
             }
 
             const isActive = isUnlocked && !isCompleted && !activeNodeFound;
@@ -10985,6 +11027,10 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
             const nodeIdentifier = mod.isMcerUnit ? mod.id.toUpperCase() : mod.id;
 
+            const powerSheetHref = mod.isMcerUnit
+                ? `powersheet.html?lesson=${encodeURIComponent(mod.id)}`
+                : `powersheet.html?esp=${encodeURIComponent(`${mod.trackId || 'it-mecatronica'}:${mod.id}`)}`;
+
             stepEl.innerHTML = `
                 <div class="path-node-disc" data-mod-id="${mod.id}" title="${mod.title}" style="border-color:${isUnlocked ? mod.color : '#94a3b8'}; cursor:pointer;">
                     ${mascotHtml}
@@ -10994,15 +11040,16 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 </div>
 
                 <div class="path-level-card" style="border-left:3px solid ${isUnlocked ? mod.color : '#cbd5e1'}; cursor:pointer;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; gap:6px; flex-wrap:wrap;">
                         ${statusPill}
                         <span style="font-size:0.7rem; font-weight:800; color:${mod.color}; background:${mod.color}15; padding:2px 8px; border-radius:6px;">
                             ${mod.badge}
                         </span>
                     </div>
                     <div class="plc-title">${mod.title}</div>
+                    ${mod.titleES ? `<div style="font-size:0.76rem; color:#475569; margin:2px 0 4px;">${mod.titleES}</div>` : ''}
                     <div class="plc-meta">
-                        <span><i class="fa-solid fa-clock"></i> ${mod.hours || 3.5}h Curricular</span>
+                        <span><i class="fa-solid fa-clock"></i> ${mod.isModularClass ? '50 min clase' : `${mod.hours || 3.5}h Curricular`}</span>
                         <span style="margin:0 4px;">&bull;</span>
                         <span style="color:#d97706; font-weight:700;"><i class="fa-solid fa-bolt"></i> +${mod.xp || 300} XP</span>
                         <span style="margin:0 4px;">&bull;</span>
@@ -11035,6 +11082,10 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         <button type="button" class="btn-syllabus-direct" title="Ver temario formal de la unidad">
                             <i class="fa-solid fa-book-open"></i> <span>Syllabus Completo</span>
                         </button>
+                        <a class="btn-powersheet-direct" href="${powerSheetHref}" target="_blank" rel="noopener" style="background:#f0fdf4; color:#15803d; border:1px solid #86efac; padding:5px 10px; border-radius:10px; font-size:0.74rem; font-weight:800; text-decoration:none; display:inline-flex; align-items:center; gap:5px;" title="Descargar o imprimir hoja resumen de 1 página">
+                            <i class="fa-solid fa-file-lines"></i> <span>Power Sheet</span>
+                        </a>
+                        ${mod.hasSlides ? `<button type="button" class="btn-slides-direct" style="background:#f3e8ff; color:#6b21a8; border:1px solid #d8b4fe; padding:5px 10px; border-radius:10px; font-size:0.74rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:5px;" title="Abrir presentación visual"><i class="fa-solid fa-display"></i> <span>Slides</span></button>` : ''}
                     </div>
                 </div>
             `;
@@ -11102,6 +11153,31 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     startDuoLessonForUnit(mod.id, sNum);
                 });
             });
+
+            const slidesDirectBtn = stepEl.querySelector('.btn-slides-direct');
+            if (slidesDirectBtn) {
+                slidesDirectBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (window.STEMOS_SLIDES) {
+                        let slidePayload = mod.rawClass;
+                        if (!slidePayload && !mod.isMcerUnit && window.STEMOS_ESP_DESIGNS) {
+                            const rawCourse = (typeof LXP_COURSES !== 'undefined' && LXP_COURSES[mod.trackId]) || { id: mod.trackId, modules: [] };
+                            slidePayload = window.STEMOS_ESP_DESIGNS.buildEspClassPayload(mod.trackId || 'it-mecatronica', mod.rawMod || mod, rawCourse);
+                        }
+                        if (slidePayload) {
+                            window.STEMOS_SLIDES.openDeck(slidePayload, {
+                                powerSheetUrl: powerSheetHref,
+                                onStartDuo: () => startDuoLessonForUnit(mod.id, 1)
+                            });
+                        }
+                    }
+                });
+            }
+
+            const psDirectLink = stepEl.querySelector('.btn-powersheet-direct');
+            if (psDirectLink) {
+                psDirectLink.addEventListener('click', (e) => { e.stopPropagation(); });
+            }
 
             const cardEl = stepEl.querySelector('.path-level-card');
             if (cardEl) cardEl.addEventListener('click', onNodeAction);
@@ -11494,14 +11570,27 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (!unitId) return;
         DuoSound.playPop();
 
-        let unit = null;
-        if (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.getUnitById === 'function') {
-            unit = window.STEMOS_MCER_TRACKS.getUnitById(unitId);
-        }
+        let unit = resolveMcerEntityById(unitId);
         if (!unit) {
-            const allUnits = (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.getAllUnits === 'function')
-                ? window.STEMOS_MCER_TRACKS.getAllUnits() : [];
-            unit = allUnits.find(u => u.id === unitId || (u.id && u.id.toLowerCase() === unitId.toLowerCase())) || allUnits[0];
+            // Check active ESP track or career module
+            const activeCareerId = localStorage.getItem('stemos_active_career') || 'it-mecatronica';
+            const careerPath = window.STEMOS_CAREER_PATHS && window.STEMOS_CAREER_PATHS.getPathForCareer
+                ? window.STEMOS_CAREER_PATHS.getPathForCareer(activeCareerId) : null;
+            const matchedMod = careerPath && Array.isArray(careerPath.modules)
+                ? careerPath.modules.find(m => m.id === unitId) : null;
+            if (matchedMod && window.STEMOS_ESP_DESIGNS) {
+                const espObj = window.STEMOS_ESP_DESIGNS.buildEspClassPayload(activeCareerId, matchedMod, { id: activeCareerId, modules: careerPath.modules });
+                unit = Object.assign({}, espObj, {
+                    vocabulary: espObj.vocab,
+                    grammarDrills: espObj.drills,
+                    unitQuiz: espObj.drills,
+                    dialogue: { context: espObj.industryContext, lines: espObj.dialogue.map(l => Object.assign({}, l, { text: l.en })) }
+                });
+            } else {
+                const allUnits = (window.STEMOS_MCER_TRACKS && typeof window.STEMOS_MCER_TRACKS.getAllUnits === 'function')
+                    ? window.STEMOS_MCER_TRACKS.getAllUnits() : [];
+                unit = allUnits.find(u => u.id === unitId || (u.id && u.id.toLowerCase() === unitId.toLowerCase())) || allUnits[0];
+            }
         }
 
         if (!unit) {
@@ -12173,6 +12262,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (drawer) drawer.style.display = 'none';
 
         if (stage) {
+            const psUrl = session.unit && session.unit.isEsp
+                ? `powersheet.html?esp=${encodeURIComponent(`${session.unit.trackId || 'it-mecatronica'}:${session.unit.modId || session.unit.id}`)}`
+                : `powersheet.html?lesson=${encodeURIComponent(session.unit.id)}`;
             stage.innerHTML = `
                 <div class="duo-victory-card">
                     <div class="duo-victory-trophy">
@@ -12191,15 +12283,18 @@ Nearshoring Center of Excellence • stemOS Certified`;
                             <span class="duo-reward-lbl">Días de Racha</span>
                         </div>
                         <div class="duo-reward-item">
-                            <span class="duo-reward-val" style="color:#16a34a;">+15 min</span>
-                            <span class="duo-reward-lbl">Práctica MCER</span>
+                            <span class="duo-reward-val" style="color:#16a34a;">+18 min</span>
+                            <span class="duo-reward-lbl">Práctica Duo</span>
                         </div>
                     </div>
 
                     <button type="button" class="btn btn-primary" onclick="window.advanceToNextDuoLesson()" style="width:100%; padding:14px 28px; font-size:1.05rem; font-weight:900; text-transform:uppercase; border-radius:16px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff; border:none; box-shadow:0 6px 16px rgba(16,185,129,0.35); cursor:pointer;">
                         SIGUIENTE RETO EN LA RUTA &bull; +XP
                     </button>
-                    <button type="button" onclick="window.closeDuoLessonRunner()" style="width:100%; margin-top:8px; padding:10px 20px; font-size:0.88rem; font-weight:700; border-radius:12px; background:transparent; color:#64748b; border:none; cursor:pointer;">
+                    <a href="${psUrl}" target="_blank" rel="noopener" style="display:inline-flex; justify-content:center; align-items:center; gap:8px; width:100%; margin-top:10px; padding:11px 20px; font-size:0.9rem; font-weight:800; border-radius:14px; background:#f0fdf4; color:#15803d; border:1.5px solid #86efac; text-decoration:none;">
+                        <i class="fa-solid fa-print"></i> Descargar / Imprimir Power Sheet (1 Hoja)
+                    </a>
+                    <button type="button" onclick="window.closeDuoLessonRunner()" style="width:100%; margin-top:6px; padding:10px 20px; font-size:0.88rem; font-weight:700; border-radius:12px; background:transparent; color:#64748b; border:none; cursor:pointer;">
                         Ver Progreso en la Ruta (Snake)
                     </button>
                 </div>
@@ -12223,17 +12318,32 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 startDuoLessonForUnit(currentUnitId, currentStep + 1);
             }, 300);
         } else {
-            if (Array.isArray(CANONICAL_MCER_UNIT_IDS)) {
+            let nextUnitId = null;
+            if (window.STEMOS_MCER_CLASSES && window.STEMOS_CURRICULUM_CONFIG) {
+                const cls = window.STEMOS_MCER_CLASSES.getClassById(currentUnitId);
+                if (cls) {
+                    const eff = window.STEMOS_CURRICULUM_CONFIG.getEffectiveSequence(
+                        window.STEMOS_CURRICULUM_CONFIG.getActiveStudentClassId(),
+                        window.STEMOS_CURRICULUM_CONFIG.getTrackKey('mcer', cls.level),
+                        { includeHidden: false }
+                    );
+                    const nextObj = window.STEMOS_CURRICULUM_CONFIG.getNextItemInSequence(currentUnitId, eff);
+                    if (nextObj) nextUnitId = nextObj.id;
+                }
+            }
+            if (!nextUnitId && Array.isArray(CANONICAL_MCER_UNIT_IDS)) {
                 const cIdx = CANONICAL_MCER_UNIT_IDS.indexOf(currentUnitId);
                 if (cIdx >= 0 && cIdx < CANONICAL_MCER_UNIT_IDS.length - 1) {
-                    const nextUnitId = CANONICAL_MCER_UNIT_IDS[cIdx + 1];
-                    setTimeout(() => {
-                        if (typeof showSyncToast === 'function') {
-                            showSyncToast(`¡Unidad completada! Desbloqueaste la estación ${nextUnitId.toUpperCase()}`, 'success');
-                        }
-                        startDuoLessonForUnit(nextUnitId, 1);
-                    }, 400);
+                    nextUnitId = CANONICAL_MCER_UNIT_IDS[cIdx + 1];
                 }
+            }
+            if (nextUnitId) {
+                setTimeout(() => {
+                    if (typeof showSyncToast === 'function') {
+                        showSyncToast(`¡Lección completada! Desbloqueaste ${nextUnitId.toUpperCase()}`, 'success');
+                    }
+                    startDuoLessonForUnit(nextUnitId, 1);
+                }, 400);
             }
         }
     };
@@ -12326,6 +12436,21 @@ Nearshoring Center of Excellence • stemOS Certified`;
             renderDuoLearningPath(lvl, 'mcer');
         });
     });
+
+    // Live refresh when teacher reorders or unlocks sequence
+    window.addEventListener('stemos:curriculum-config-updated', () => {
+        if (typeof renderDuoLearningPath === 'function') {
+            renderDuoLearningPath(window.activeMcerLevelFilter || 'all');
+        }
+    });
+
+    // Deep-link launcher from Power Sheet (app.html#play=a1-c03)
+    if (window.location && window.location.hash && window.location.hash.startsWith('#play=')) {
+        const targetId = decodeURIComponent(window.location.hash.slice(6));
+        if (targetId) {
+            setTimeout(() => startDuoLessonForUnit(targetId, 1), 350);
+        }
+    }
 
     window.renderDuoLearningPath = renderDuoLearningPath;
     window.updateDuoHudUI = updateDuoHudUI;

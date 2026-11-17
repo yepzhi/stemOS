@@ -15570,6 +15570,126 @@
   }
 ];
 
+  const UNIT_CHILD_CLASS_MAP = {
+    'a1-u1': ['a1-c01', 'a1-c02', 'a1-c03', 'a1-c04', 'a1-c05'],
+    'a1-u2': ['a1-c06', 'a1-c07', 'a1-c08', 'a1-c09', 'a1-c10'],
+    'a1-u3': ['a1-c11', 'a1-c12', 'a1-c13', 'a1-c14', 'a1-c15'],
+    'a1-u4': ['a1-c16', 'a1-c17', 'a1-c18', 'a1-c19', 'a1-c20'],
+    'a2-u1': ['a2-c01', 'a2-c02', 'a2-c03', 'a2-c04', 'a2-c05'],
+    'a2-u2': ['a2-c06', 'a2-c07', 'a2-c08', 'a2-c09', 'a2-c10'],
+    'a2-u3': ['a2-c11', 'a2-c12', 'a2-c13', 'a2-c14', 'a2-c15'],
+    'a2-u4': ['a2-c16', 'a2-c17', 'a2-c18', 'a2-c19', 'a2-c20'],
+    'b1-u1': ['b1-c01', 'b1-c02', 'b1-c03', 'b1-c04'],
+    'b1-u2': ['b1-c05', 'b1-c06', 'b1-c07', 'b1-c08'],
+    'b1-u3': ['b1-c09', 'b1-c10', 'b1-c11', 'b1-c12'],
+    'b1-u4': ['b1-c13', 'b1-c14', 'b1-c15', 'b1-c16'],
+    'b2-u1': ['b2-c01', 'b2-c02', 'b2-c03', 'b2-c04'],
+    'b2-u2': ['b2-c05', 'b2-c06', 'b2-c07', 'b2-c08'],
+    'b2-u3': ['b2-c09', 'b2-c10', 'b2-c11', 'b2-c12'],
+    'b2-u4': ['b2-c13', 'b2-c14', 'b2-c15', 'b2-c16']
+  };
+
+  const UNIT_GRAMMAR_BOX_FALLBACKS = {
+    'a1-u3': {
+      title: 'Present Simple Routines, Frequency & Present Continuous',
+      formula: '<code>I/You/We/They + V</code> · <code>He/She/It + V-s/-es</code> | <code>Do/Does + S + V?</code> | <code>am/is/are + V-ing</code>',
+      explanation: 'Usa <strong>Present Simple</strong> con adverbios de frecuencia (<em>always, usually, never</em>) para rutinas y turnos; usa <strong>Present Continuous</strong> (<em>is/are + -ing</em>) para fallas o acciones ocurriendo justo ahora.',
+      goldenRule: 'Recuerda añadir <code>-s/-es</code> con <em>he/she/it</em> en afirmativo y quitarla cuando aparezca <code>doesn\'t/does</code>.',
+      commonMistake: { bad: 'She work on night shift and right now test sensor.', good: 'She works on the night shift and is testing the sensor right now.', exp: 'Aplica -s en 3ª persona habitual y am/is/are + -ing para acción en curso.' }
+    },
+    'a1-u4': {
+      title: 'Was / Were, Past Simple, Can / Can\'t, Going to & Comparatives',
+      formula: '<code>was/were</code> | <code>can + V</code> | <code>am/is/are going to + V</code> | <code>adj-er than / the -est</code>',
+      explanation: 'Consolida eventos terminados (<em>was/were</em> y verbos regulares <em>-ed</em>), habilidades y permisos con <code>can</code>, planes próximos con <code>going to</code> y comparaciones técnicas.',
+      goldenRule: 'Tras <code>can</code> o <code>didn\'t</code> usa siempre el verbo en forma base infinitiva (sin "to" ni "-ed").',
+      commonMistake: { bad: 'Yesterday line was stop and tomorrow I going check.', good: 'Yesterday the line stopped and tomorrow I am going to check it.', exp: 'Usa -ed/did para pasado simple y am/is/are + going to para futuro.' }
+    },
+    'a2-u1': {
+      title: 'Simple Past Logs, Past Continuous & Time Clauses',
+      formula: '<code>S + V2 / didn\'t + V</code> | <code>was/were + V-ing + when + V2</code>',
+      explanation: 'Combina el pasado continuo (<code>was running</code>) para el fondo de turno y el pasado simple (<code>tripped</code>) para el evento puntual interrumpido.',
+      goldenRule: 'Tras <code>while</code> suele ir Past Continuous; tras <code>when</code> suele ir Past Simple.',
+      commonMistake: { bad: 'I was run tests when the sensor break.', good: 'I was running tests when the sensor broke.', exp: 'Usa was/were + -ing + V2 irregular.' }
+    },
+    'a2-u2': {
+      title: 'Present Perfect Experience, Just/Already/Yet & Will vs Going to',
+      formula: '<code>have/has + PP (since / for / just / already / yet)</code> | <code>will + V</code>',
+      explanation: 'Conecta pasado reciente con resultados visibles hoy usando Present Perfect; distingue decisiones espontáneas/promesas (<code>will</code>) de planes previos (<code>going to</code>).',
+      goldenRule: 'Usa <code>since</code> con puntos de inicio exactos (<em>since 08:00</em>) y <code>for</code> con duraciones (<em>for two hours</em>).',
+      commonMistake: { bad: 'Have you calibrated the gage already? — No, I didn\'t yet.', good: 'Have you calibrated the gauge yet? — No, I haven\'t yet.', exp: 'Usa "yet" al final de preguntas/negaciones en Present Perfect.' }
+    },
+    'a2-u3': {
+      title: 'Conditionals 0 & 1, Modals of Obligation & Quantifiers',
+      formula: '<code>If + Present, Present / will + V</code> | <code>must / have to / shouldn\'t + V</code> | <code>much/many/a few/enough</code>',
+      explanation: 'Expresa reglas físicas universales (Zero Cond), riesgos operativos futuros (First Cond), cumplimiento obligatorio (<em>have to / mustn\'t</em>) y cantidades técnicas.',
+      goldenRule: '<code>don\'t have to</code> significa que NO es necesario; <code>mustn\'t</code> significa PROHIBICIÓN estricta.',
+      commonMistake: { bad: 'If pressure will drop, the valve closes.', good: 'If pressure drops, the valve will close.', exp: 'Nunca pongas "will" dentro de la cláusula "If".' }
+    },
+    'a2-u4': {
+      title: 'Modals of Possibility (may/might/could) & Phrasal Verbs',
+      formula: '<code>S + may / might / could + V</code> | <code>turn off / shut down / look into / fill out</code>',
+      explanation: 'Formula hipótesis diagnósticas con cautela y utiliza phrasal verbs separables comunes en piso e informática.',
+      goldenRule: 'Cuando uses pronombre objeto (<em>it / them</em>) con un phrasal separable, colócalo en medio: <code>shut it down</code>.',
+      commonMistake: { bad: 'Turn off it before inspect.', good: 'Turn it off before inspecting.', exp: 'Coloca el pronombre "it" entre verbo y partícula; tras preposición usa -ing.' }
+    },
+    'b1-u1': {
+      title: 'Passive Voice (Processes & SOPs) & Sequence Discourse',
+      formula: '<code>S + am/is/are/was/were + Past Participle (+ by)</code>',
+      explanation: 'Describe procesos industriales, manufactura y reportes de calidad enfocándote en el objeto/proceso en lugar del operador.',
+      goldenRule: 'Toda pasiva exige conjugar <code>be</code> según el tiempo + participio pasado (<em>checked, tested, built</em>).',
+      commonMistake: { bad: 'The housing is inspect every shift.', good: 'The housing is inspected every shift.', exp: 'No olvides la terminación de participio pasado.' }
+    },
+    'b1-u2': {
+      title: 'Second Conditional, Past Habits (used to) & Non-Defining Relatives',
+      formula: '<code>If + Past, would/could + V</code> | <code>used to + V</code> | <code>..., which + V</code>',
+      explanation: 'Analiza escenarios hipotéticos de mejora (2º Condicional), hábitos o sistemas obsoletos (<em>used to</em>) y cláusulas explicativas entre comas con <em>which/who</em>.',
+      goldenRule: 'En cláusulas explicativas entre comas jamás uses <code>that</code>; usa siempre <code>which</code> o <code>who</code>.',
+      commonMistake: { bad: 'If we would automate, scrap dropped.', good: 'If we automated, scrap would drop.', exp: 'El verbo en pasado va en la cláusula If; "would" va en la cláusula principal.' }
+    },
+    'b1-u3': {
+      title: 'Reported Speech, Embedded Polite Questions & Complex Connectors',
+      formula: '<code>told/said (that) + backshift</code> | <code>Could you tell me + S + V?</code> | <code>Although / Despite</code>',
+      explanation: 'Reporta juntas y requerimientos con precisión temporal, formula preguntas indirectas corteses (<em>Could you tell me where the dock is?</em>) y contrasta datos.',
+      goldenRule: 'En preguntas indirectas NO inviertas verbo y sujeto al final (<em>"Do you know where it is?"</em>, nunca <em>"...where is it?"</em>).',
+      commonMistake: { bad: 'Could you clarify why did the line halt?', good: 'Could you clarify why the line halted?', exp: 'Usa orden normal Sujeto + Verbo tras la pregunta cortés introductoria.' }
+    },
+    'b1-u4': {
+      title: 'Present Perfect Continuous, Diplomatic Disagreeing & B1 Synthesis',
+      formula: '<code>have/has been + V-ing</code> | <code>I see your point, however...</code>',
+      explanation: 'Enfatiza duración en progreso con resultados visibles y maneja objeciones técnicas con cortesía profesional B1.',
+      goldenRule: 'Combina validación empática + marcador de contraste (<em>however / on the other hand</em>) + dato objetivo.',
+      commonMistake: { bad: 'We calibrate robots since 6 AM.', good: 'We have been calibrating robots since 6 AM.', exp: 'Acción que inició en el pasado y continúa ahora exige Present Perfect Continuous.' }
+    },
+    'b2-u1': {
+      title: 'Advanced Passives (Continuous, Modal, Reporting) & Gerunds vs Infinitives',
+      formula: '<code>is being + V3</code> | <code>must/should have been + V3</code> | <code>stop + V-ing vs stop + to V</code>',
+      explanation: 'Redacta ECOs, boletines de auditoría y pasivas de reporte (<em>It is estimated that...</em>) cuidando verbos cuyo significado cambia entre gerundio e infinitivo.',
+      goldenRule: '<code>stop + V-ing</code> detiene el hábito/acción; <code>stop + to V</code> se detiene para hacer otra acción.',
+      commonMistake: { bad: 'The valve must be check before shift.', good: 'The valve must have been checked before the shift.', exp: 'Modal + (have been) + V3 para deducciones pasivas pasadas.' }
+    },
+    'b2-u2': {
+      title: 'Third & Mixed Conditionals, Regrets (wish / if only) & Future Perfect',
+      formula: '<code>If + had V3, would have V3 / would V now</code> | <code>will have + V3 / will be + V-ing</code>',
+      explanation: 'Realiza autopsias técnicas conectando causas pasadas con impacto presente (Mixed Conditionals) y proyecta entregas futuras exactas.',
+      goldenRule: 'Conecta pasado irreversible con presente usando <code>If + had V3, would + V (today)</code>.',
+      commonMistake: { bad: 'If we would have checked, it worked now.', good: 'If we had checked earlier, it would work now.', exp: 'Nunca pongas "would" en la condición "If"; usa "had + V3".' }
+    },
+    'b2-u3': {
+      title: 'Past Deduction Modals (must/can\'t/couldn\'t/should have) & Phrasal Prepositional Verbs',
+      formula: '<code>S + must / can\'t / shouldn\'t have + V3</code> | <code>run out of / put up with / follow up on</code>',
+      explanation: 'Evalúa causas raíz con certeza lógica graduada y emplea phrasal-prepositional verbs corporativos de uso diario en planta y oficina.',
+      goldenRule: 'Para certeza negativa imposible usa <code>can\'t/couldn\'t have + V3</code> (NO <code>mustn\'t have</code>).',
+      commonMistake: { bad: 'It mustn\'t have failed because it passed QA.', good: 'It can\'t have failed due to stress because it passed QA.', exp: 'Deducción lógica imposible emplea "can\'t have + V3".' }
+    },
+    'b2-u4': {
+      title: 'Stylistic Inversion, Cleft Sentences, Hedging & US Executive Idioms',
+      formula: '<code>Not only + Aux + S + V</code> | <code>What we need is...</code> | <code>move the needle / ballpark figure</code>',
+      explanation: 'Domina énfasis sintáctico B2 (<em>Not only did..., Rarely have...</em>), atenuación diplomática (<em>hedging</em>) y modismos ejecutivos norteamericanos.',
+      goldenRule: 'Siempre que inicies una oración con adverbio restrictivo negativo (<em>Never, Seldom, Not only</em>) invierte el auxiliar y el sujeto.',
+      commonMistake: { bad: 'Not only they reduced scrap, but raised speed.', good: 'Not only did they reduce scrap, but they also raised speed.', exp: 'Usa inversión "did + S + V base" tras "Not only".' }
+    }
+  };
+
   function normalizeUnit(u, lvl) {
     const lines = (u.dialogue && u.dialogue.lines) ? u.dialogue.lines : (Array.isArray(u.dialogue) ? u.dialogue : []);
     const dialogueArr = [...lines];
@@ -15629,6 +15749,14 @@
       keywords: []
     }, u.crucible || {});
 
+    const rawGBox = u.grammarBox || UNIT_GRAMMAR_BOX_FALLBACKS[u.id] || null;
+    const normalizedGBox = rawGBox ? Object.assign({}, rawGBox, {
+      explanation: rawGBox.explanation || rawGBox.explanationES || '',
+      explanationES: rawGBox.explanationES || rawGBox.explanation || '',
+      goldenRule: rawGBox.goldenRule || rawGBox.tipsES || '',
+      tipsES: rawGBox.tipsES || rawGBox.goldenRule || ''
+    }) : null;
+
     return Object.assign({}, u, {
       levelCode: lvl.code,
       levelName: lvl.name,
@@ -15660,6 +15788,8 @@
         speakingMinutes: 2.5,
         totalMinutes: 10
       },
+      grammarBox: normalizedGBox,
+      childClassIds: u.childClassIds || UNIT_CHILD_CLASS_MAP[u.id] || [],
       writingLab: u.writingLab || null
     });
   }

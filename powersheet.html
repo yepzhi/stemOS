@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>stemOS POWER SHEET — Handout Imprimible de 1 Hoja</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <style id="ps-dynamic-css"></style>
+  <style>
+    .ps-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 18px;
+      background: #0f172a;
+      color: #f8fafc;
+      border-bottom: 2px solid #58cc02;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.25);
+    }
+    .ps-toolbar-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .ps-tb-btn, .ps-tb-select {
+      appearance: none;
+      border: 1.5px solid #475569;
+      background: #1e293b;
+      color: #f8fafc;
+      border-radius: 10px;
+      padding: 7px 12px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ps-tb-btn:hover { background: #334155; }
+    .ps-tb-btn.active { background: #6b21a8; border-color: #a855f7; }
+    .ps-tb-btn.primary {
+      background: #58cc02;
+      border-color: #46a302;
+      color: #ffffff;
+      box-shadow: 0 2px 0 #46a302;
+    }
+    .ps-tb-btn.primary:hover { background: #4eb802; }
+    .ps-tb-btn.blue {
+      background: #1cb0f6;
+      border-color: #0e8ac7;
+      color: #ffffff;
+    }
+    .ps-empty {
+      max-width: 680px;
+      margin: 40px auto;
+      background: #fff;
+      border: 2px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+    }
+  </style>
+  <script src="content/mcer_tracks.js?v=2026.11"></script>
+  <script src="content/mcer_classes_50m.js?v=2026.11"></script>
+  <script src="content/career_paths.js?v=2026.11"></script>
+  <script src="content/courses.js?v=2026.11"></script>
+  <script src="content/esp_lesson_designs.js?v=2026.11"></script>
+  <script src="content/stemos_curriculum_config.js?v=2026.11"></script>
+  <script src="content/stemos_slides.js?v=2026.11"></script>
+  <script src="content/stemos_powersheet.js?v=2026.11"></script>
+</head>
+<body>
+  <div class="ps-toolbar no-print">
+    <div class="ps-toolbar-group">
+      <a href="app.html" class="ps-tb-btn">← Volver a stemOS</a>
+      <select id="ps-quick-select" class="ps-tb-select" aria-label="Seleccionar clase modular"></select>
+      <button type="button" id="ps-mode-student" class="ps-tb-btn active">📄 Handout Alumno (1 Hoja)</button>
+      <button type="button" id="ps-mode-teacher" class="ps-tb-btn">👩‍🏫 Guía Docente 50m</button>
+    </div>
+    <div class="ps-toolbar-group">
+      <button type="button" id="ps-toggle-key" class="ps-tb-btn">🔑 Clave: Visible</button>
+      <button type="button" id="ps-toggle-paper" class="ps-tb-btn">📐 Papel: Carta</button>
+      <button type="button" id="ps-open-slides" class="ps-tb-btn" style="display:none;">🎬 Ver Slides</button>
+      <a id="ps-open-duo" href="app.html" class="ps-tb-btn blue">⚡ Reto Duolingo</a>
+      <button type="button" id="ps-download-html" class="ps-tb-btn">⬇ Descargar Offline (.HTML)</button>
+      <button type="button" id="ps-print-btn" class="ps-tb-btn primary">🖨 Imprimir / Guardar PDF</button>
+    </div>
+  </div>
+
+  <main id="ps-mount" class="ps-pages-wrap"></main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const params = new URLSearchParams(window.location.search);
+      const state = {
+        lesson: params.get('lesson') || params.get('id') || (params.get('esp') || params.get('unit') || params.get('level') || params.get('espTrack') ? '' : 'a1-c01'),
+        esp: params.get('esp') || '',
+        unit: params.get('unit') || '',
+        level: params.get('level') || '',
+        espTrack: params.get('espTrack') || '',
+        batch: params.get('batch') || '',
+        classId: params.get('classId') || '',
+        cohortLabel: params.get('cohort') || '',
+        mode: params.get('mode') === 'teacher' ? 'teacher' : 'student',
+        showKey: params.get('showKey') === '0' || params.get('showKey') === 'false' ? '0' : '1',
+        paperA4: params.get('paper') === 'a4'
+      };
+
+      const cssEl = document.getElementById('ps-dynamic-css');
+      if (cssEl && window.STEMOS_POWERSHEET) {
+        cssEl.textContent = window.STEMOS_POWERSHEET.getEmbeddedCss();
+      }
+
+      const quickSel = document.getElementById('ps-quick-select');
+      if (quickSel && window.STEMOS_MCER_CLASSES) {
+        const all = window.STEMOS_MCER_CLASSES.getAllClasses();
+        const groups = {};
+        all.forEach((c) => {
+          groups[c.level] = groups[c.level] || [];
+          groups[c.level].push(c);
+        });
+        quickSel.innerHTML = Object.keys(groups).map((lvl) => `
+          <optgroup label="Nivel ${lvl} (${groups[lvl].length} clases 50m)">
+            ${groups[lvl].map((c) => `<option value="${c.id}" ${c.id === state.lesson ? 'selected' : ''}>${c.id.toUpperCase()} · ${c.titleES || c.title}</option>`).join('')}
+          </optgroup>
+        `).join('');
+        if (state.esp || state.unit || state.level || state.espTrack) {
+          quickSel.insertAdjacentHTML('afterbegin', '<option value="" selected>Vista actual por enlace/lote</option>');
+        }
+        quickSel.addEventListener('change', () => {
+          if (!quickSel.value) return;
+          state.lesson = quickSel.value;
+          state.esp = '';
+          state.unit = '';
+          state.level = '';
+          state.espTrack = '';
+          state.batch = '';
+          renderPage();
+        });
+      }
+
+      let lastRenderResult = null;
+
+      function renderPage() {
+        if (!window.STEMOS_POWERSHEET) return;
+        document.body.classList.toggle('paper-a4', state.paperA4);
+        document.getElementById('ps-mode-student').classList.toggle('active', state.mode === 'student');
+        document.getElementById('ps-mode-teacher').classList.toggle('active', state.mode === 'teacher');
+        document.getElementById('ps-toggle-key').textContent = state.showKey === '1' ? '🔑 Clave: Visible' : '🔑 Clave: Oculta';
+        document.getElementById('ps-toggle-paper').textContent = state.paperA4 ? '📐 Papel: A4' : '📐 Papel: Carta';
+
+        lastRenderResult = window.STEMOS_POWERSHEET.renderFromQuery(state);
+        const mount = document.getElementById('ps-mount');
+        if (!lastRenderResult || !lastRenderResult.count) {
+          mount.innerHTML = `
+            <div class="ps-empty no-print">
+              <h2>No se encontró el Power Sheet solicitado</h2>
+              <p>Selecciona cualquier clase modular MCER arriba o regresa a <a href="app.html">stemOS LXP</a>.</p>
+            </div>
+          `;
+          return;
+        }
+        mount.innerHTML = lastRenderResult.pagesHtml;
+
+        const firstItem = lastRenderResult.items[0];
+        document.title = firstItem
+          ? `Power Sheet · ${String(firstItem.id || '').toUpperCase()} · ${firstItem.title}`
+          : 'stemOS POWER SHEET';
+
+        const slidesBtn = document.getElementById('ps-open-slides');
+        if (slidesBtn) {
+          slidesBtn.style.display = (lastRenderResult.count === 1 && firstItem && firstItem.hasSlides) ? 'inline-flex' : 'none';
+        }
+        const duoLink = document.getElementById('ps-open-duo');
+        if (duoLink && firstItem) {
+          if (firstItem.isEsp) {
+            duoLink.href = `app.html#career=${encodeURIComponent(firstItem.trackId || '')}`;
+          } else {
+            duoLink.href = `app.html#play=${encodeURIComponent(firstItem.id)}`;
+          }
+        }
+      }
+
+      document.getElementById('ps-mode-student').addEventListener('click', () => {
+        state.mode = 'student';
+        renderPage();
+      });
+      document.getElementById('ps-mode-teacher').addEventListener('click', () => {
+        state.mode = 'teacher';
+        renderPage();
+      });
+      document.getElementById('ps-toggle-key').addEventListener('click', () => {
+        state.showKey = state.showKey === '1' ? '0' : '1';
+        renderPage();
+      });
+      document.getElementById('ps-toggle-paper').addEventListener('click', () => {
+        state.paperA4 = !state.paperA4;
+        renderPage();
+      });
+      document.getElementById('ps-print-btn').addEventListener('click', () => {
+        window.print();
+      });
+      document.getElementById('ps-open-slides').addEventListener('click', () => {
+        if (lastRenderResult && lastRenderResult.items && lastRenderResult.items[0] && window.STEMOS_SLIDES) {
+          window.STEMOS_SLIDES.openDeck(lastRenderResult.items[0]);
+        }
+      });
+      document.getElementById('ps-download-html').addEventListener('click', () => {
+        if (!lastRenderResult || !lastRenderResult.pagesHtml || !window.STEMOS_POWERSHEET) return;
+        const first = lastRenderResult.items[0];
+        const tag = state.mode === 'teacher' ? 'Guia50m' : 'PowerSheet';
+        const baseName = lastRenderResult.count > 1
+          ? `${tag}_${state.unit || state.level || state.espTrack || 'Lote'}.html`
+          : `${tag}_${String((first && first.id) || 'Lesson').replace(/[^a-zA-Z0-9_-]/g, '_')}.html`;
+        const html = window.STEMOS_POWERSHEET.exportStandaloneHtml(lastRenderResult.pagesHtml, document.title);
+        const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = baseName;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 400);
+      });
+
+      renderPage();
+    }());
+  </script>
+</body>
+</html>

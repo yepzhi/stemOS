@@ -665,6 +665,124 @@
         },
 
         /**
+         * Save cohort curriculum sequence configuration (/institutions/{instId}/classes/{classId}/curriculum_config/{trackKey})
+         */
+        saveClassCurriculumConfig: async function (institutionId, classId, trackKey, configData) {
+            if (!classId || !trackKey || !configData) return { success: false };
+            const instId = institutionId || 'tecnm-saltillo';
+            const cleanTrack = String(trackKey).replace(/[^a-zA-Z0-9_-]/g, '_');
+            const payload = Object.assign({}, configData, {
+                classId: classId,
+                institutionId: instId,
+                trackKey: cleanTrack,
+                updatedAt: configData.updatedAt || new Date().toISOString()
+            });
+            try {
+                localStorage.setItem('stemos_cloud_cfg_' + classId + '_' + cleanTrack, JSON.stringify(payload));
+            } catch (_) {}
+
+            if (!this.isCloudActive()) return { success: true, mode: 'local', payload: payload };
+            try {
+                const db = (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.getDb()) ||
+                           (typeof window.firebase !== 'undefined' && window.firebase.firestore ? window.firebase.firestore() : null);
+                if (!db) return { success: false };
+                await db.collection('institutions').doc(instId)
+                    .collection('classes').doc(classId)
+                    .collection('curriculum_config').doc(cleanTrack)
+                    .set(payload, { merge: true });
+                this._broadcastStateChange('curriculum_config_saved', payload);
+                return { success: true, mode: 'cloud', payload: payload };
+            } catch (err) {
+                console.warn('[stemOS Firebase] Curriculum config sync queued for retry:', err.message || err);
+                this._enqueueSync('curriculum_config', payload);
+                return { success: false, error: err.message || String(err) };
+            }
+        },
+
+        /**
+         * Fetch cohort curriculum sequence configuration from Firestore
+         */
+        getClassCurriculumConfig: async function (institutionId, classId, trackKey) {
+            if (!classId || !trackKey) return { success: false, config: null };
+            const instId = institutionId || 'tecnm-saltillo';
+            const cleanTrack = String(trackKey).replace(/[^a-zA-Z0-9_-]/g, '_');
+            if (!this.isCloudActive()) {
+                try {
+                    const cached = localStorage.getItem('stemos_cloud_cfg_' + classId + '_' + cleanTrack);
+                    if (cached) return { success: true, mode: 'local', config: JSON.parse(cached) };
+                } catch (_) {}
+                return { success: false, config: null };
+            }
+            try {
+                const db = (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.getDb()) ||
+                           (typeof window.firebase !== 'undefined' && window.firebase.firestore ? window.firebase.firestore() : null);
+                if (!db) return { success: false, config: null };
+                const doc = await db.collection('institutions').doc(instId)
+                    .collection('classes').doc(classId)
+                    .collection('curriculum_config').doc(cleanTrack).get();
+                if (doc && doc.exists) {
+                    const data = doc.data();
+                    try { localStorage.setItem('stemos_cloud_cfg_' + classId + '_' + cleanTrack, JSON.stringify(data)); } catch (_) {}
+                    return { success: true, mode: 'cloud', config: data };
+                }
+                return { success: true, mode: 'cloud', config: null };
+            } catch (err) {
+                return { success: false, config: null, error: err.message || String(err) };
+            }
+        },
+
+        /**
+         * Save cohort assignment to Cloud Firestore (/institutions/{instId}/classes/{classId}/assignments/{assignmentId})
+         */
+        saveClassAssignment: async function (institutionId, classId, assignmentData) {
+            if (!classId || !assignmentData) return { success: false };
+            const instId = institutionId || 'tecnm-saltillo';
+            const assignId = assignmentData.id || ('asg-' + Date.now().toString(36));
+            const payload = Object.assign({}, assignmentData, {
+                id: assignId,
+                classId: classId,
+                institutionId: instId,
+                createdAt: assignmentData.createdAt || new Date().toISOString()
+            });
+            if (!this.isCloudActive()) return { success: true, mode: 'local', assignment: payload };
+            try {
+                const db = (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.getDb()) ||
+                           (typeof window.firebase !== 'undefined' && window.firebase.firestore ? window.firebase.firestore() : null);
+                if (!db) return { success: false };
+                await db.collection('institutions').doc(instId)
+                    .collection('classes').doc(classId)
+                    .collection('assignments').doc(assignId)
+                    .set(payload, { merge: true });
+                return { success: true, mode: 'cloud', assignment: payload };
+            } catch (err) {
+                console.warn('[stemOS Firebase] Class assignment sync queued for retry:', err.message || err);
+                this._enqueueSync('class_assignment', payload);
+                return { success: false, error: err.message || String(err) };
+            }
+        },
+
+        /**
+         * Fetch cohort assignments from Cloud Firestore
+         */
+        getClassAssignments: async function (institutionId, classId) {
+            if (!classId || !this.isCloudActive()) return { success: false, assignments: [] };
+            const instId = institutionId || 'tecnm-saltillo';
+            try {
+                const db = (window.STEMOS_FIREBASE_CONFIG && window.STEMOS_FIREBASE_CONFIG.getDb()) ||
+                           (typeof window.firebase !== 'undefined' && window.firebase.firestore ? window.firebase.firestore() : null);
+                if (!db) return { success: false, assignments: [] };
+                const snap = await db.collection('institutions').doc(instId)
+                    .collection('classes').doc(classId)
+                    .collection('assignments').orderBy('createdAt', 'desc').get();
+                const list = [];
+                snap.forEach((doc) => list.push(Object.assign({ id: doc.id }, doc.data())));
+                return { success: true, mode: 'cloud', assignments: list };
+            } catch (err) {
+                return { success: false, assignments: [], error: err.message || String(err) };
+            }
+        },
+
+        /**
          * Sync audit log entry to Cloud Firestore
          */
         syncAuditLogToCloud: async function (logEntry) {
@@ -951,6 +1069,8 @@
 
                 if (item.type === 'student') self.syncStudentToCloud(item.data);
                 else if (item.type === 'class') self.syncClassToCloud(item.data);
+                else if (item.type === 'curriculum_config' && item.data) self.saveClassCurriculumConfig(item.data.institutionId, item.data.classId, item.data.trackKey, item.data);
+                else if (item.type === 'class_assignment' && item.data) self.saveClassAssignment(item.data.institutionId, item.data.classId, item.data);
                 else if (item.type === 'audit') self.syncAuditLogToCloud(item.data);
                 else if (item.type === 'diagnostic') self.syncDiagnosticToCloud(item.data);
             }, 60000);

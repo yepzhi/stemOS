@@ -2073,6 +2073,148 @@
       background: rgba(4, 14, 48, 0.96) !important;
       border-top: 1px solid rgba(56, 189, 248, 0.25) !important;
     }
+
+    /* ── POWER SHEETS SHOWCASE SECTION (modern-web-guidance: grid, subgrid, container queries, fluid type) ── */
+    .power-sheets-section {
+      background: radial-gradient(circle at 82% 20%, rgba(88, 204, 2, 0.14) 0%, rgba(5, 22, 74, 0.96) 55%, rgba(2, 12, 46, 0.99) 100%) !important;
+      border-top: 1px solid rgba(88, 204, 2, 0.28);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.22);
+      padding-block: 72px;
+      padding-inline: 24px;
+    }
+    .ps-showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+      gap: 32px;
+      align-items: center;
+      margin-block-start: 28px;
+    }
+    .ps-features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+      grid-template-rows: auto;
+      gap: 14px;
+    }
+    .ps-feature-card {
+      container: ps-feature / inline-size;
+      background: rgba(8, 28, 84, 0.68);
+      border: 1.5px solid rgba(56, 189, 248, 0.25);
+      border-radius: 16px;
+      padding: 16px 18px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 8px;
+      min-inline-size: 0;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .ps-feature-card:hover {
+      border-color: rgba(88, 204, 2, 0.6);
+      transform: translateY(-2px);
+    }
+    .ps-feature-card > header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .ps-feature-icon {
+      inline-size: 36px;
+      block-size: 36px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+    .ps-feature-card h3 {
+      margin: 0;
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.25;
+    }
+    .ps-feature-card p {
+      margin: 0;
+      font-size: 0.84rem;
+      color: #cbd5e1;
+      line-height: 1.55;
+    }
+    @container ps-feature (inline-size > 290px) {
+      .ps-feature-card h3 { font-size: 1.02rem; }
+    }
+    .ps-paper-mockup {
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 18px;
+      padding: 18px 20px;
+      border: 2px solid #cbd5e1;
+      box-shadow: 0 24px 60px rgba(2, 6, 23, 0.55), 0 0 0 6px rgba(88, 204, 2, 0.14);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-inline-size: 0;
+    }
+    .ps-mockup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      border-bottom: 2px solid #0f172a;
+      padding-block-end: 8px;
+    }
+    .ps-mockup-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 8px;
+    }
+    .ps-mockup-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-block-start: 3px solid #22c55e;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.74rem;
+      line-height: 1.4;
+      color: #1e293b;
+    }
+    .ps-mockup-box.blue { border-block-start-color: #0ea5e9; }
+    .ps-mockup-box.purple { border-block-start-color: #8b5cf6; }
+    .ps-mockup-box.amber { border-block-start-color: #f59e0b; }
+    .ps-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-block-start: 18px;
+    }
+    .ps-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-block-size: 44px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 0.86rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .ps-cta-btn:focus-visible {
+      outline: 3px solid #38bdf8;
+      outline-offset: 3px;
+    }
+    .ps-cta-btn.primary {
+      background: #58cc02;
+      color: #ffffff;
+      border: 1px solid #46a302;
+      box-shadow: 0 4px 0 #46a302;
+    }
+    .ps-cta-btn.primary:hover { background: #4eb802; transform: translateY(-1px); }
+    .ps-cta-btn.secondary {
+      background: rgba(56, 189, 248, 0.14);
+      color: #7dd3fc;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+    .ps-cta-btn.secondary:hover { background: rgba(56, 189, 248, 0.24); transform: translateY(-1px); }
   </style>
 </head>
 <body class="supaste-theme">
@@ -2088,15 +2230,19 @@
 
       <div class="supaste-nav-links">
         <a href="#industry-standards-section" class="nav-link">
-          <i class="fa-solid fa-scale-balanced" style="color:#0ea5e9;"></i>
+          <i class="fa-solid fa-scale-balanced" style="color:#0ea5e9;" aria-hidden="true"></i>
           <span data-i18n="nav_standards">Why us?</span>
         </a>
+        <a href="#power-sheets-section" class="nav-link">
+          <i class="fa-solid fa-file-lines" style="color:#58cc02;" aria-hidden="true"></i>
+          <span data-i18n="nav_powersheets">Power Sheets</span>
+        </a>
         <a href="/placement.html" class="nav-link">
-          <i class="fa-solid fa-vial" style="color:#f59e0b;"></i>
+          <i class="fa-solid fa-vial" style="color:#f59e0b;" aria-hidden="true"></i>
           <span data-i18n="nav_placement">Placement</span>
         </a>
         <a href="#pricing-institutional-section" class="nav-link highlight-link" style="color:#34d399; font-weight:700;">
-          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i>
           <span data-i18n="nav_pricing">Pricing</span>
         </a>
       </div>
@@ -2164,8 +2310,12 @@
         <!-- Unified Core Navigation (1:1 with Desktop) -->
         <div style="display:flex; flex-direction:column; gap:6px;">
           <a href="#industry-standards-section" class="mobile-nav-item" onclick="toggleMobileNav(false)">
-            <i class="fa-solid fa-scale-balanced" style="color:#0ea5e9; font-size:1.15rem; width:26px; text-align:center;"></i>
+            <i class="fa-solid fa-scale-balanced" style="color:#0ea5e9; font-size:1.15rem; width:26px; text-align:center;" aria-hidden="true"></i>
             <span data-i18n="nav_standards">Why us?</span>
+          </a>
+          <a href="#power-sheets-section" class="mobile-nav-item" onclick="toggleMobileNav(false)">
+            <i class="fa-solid fa-file-lines" style="color:#58cc02; font-size:1.15rem; width:26px; text-align:center;" aria-hidden="true"></i>
+            <span data-i18n="nav_powersheets">Power Sheets</span>
           </a>
           <a href="/placement.html" class="mobile-nav-item" onclick="toggleMobileNav(false)">
             <i class="fa-solid fa-vial" style="color:#f59e0b; font-size:1.15rem; width:26px; text-align:center;"></i>
@@ -2606,6 +2756,122 @@
     </div>
   </div>
 
+
+  <!-- ── POWER SHEETS: 1 Printable Handout Per 50-Min Class Showcase ── -->
+  <section class="promo-section power-sheets-section" id="power-sheets-section">
+    <div class="promo-container">
+      <div class="section-header-center">
+        <div class="section-badge" style="background:rgba(88,204,2,0.16) !important; border-color:rgba(88,204,2,0.45) !important; color:#86efac !important;" data-i18n="ps_sec_badge">
+          <i class="fa-solid fa-print" aria-hidden="true"></i> 1 HOJA POR DÍA POR CLASE &bull; ALWAYS SOMETHING TO REINFORCE
+        </div>
+        <h2 class="section-title" style="font-size:clamp(1.75rem, 1.15rem + 2.2vw, 2.55rem);" data-i18n="ps_sec_title">
+          Power Sheets: Every Class Ends With a <span style="background: linear-gradient(135deg, #58cc02 0%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">1-Page Printable Study Sheet</span>
+        </h2>
+        <p class="section-subtitle" style="max-inline-size:780px; margin-inline:auto;" data-i18n="ps_sec_subtitle">
+          Digital practice is only half the journey. Every 50-minute class (MCER A1–C2 and all 34 ESP tracks) unlocks a rich, ready-to-print 1-page Power Sheet packed with visual grammar formulas, key vocabulary with pronunciation stress, modeled dialogues, and take-home exercises so your students always have physical material to reinforce what they learned that day.
+        </p>
+      </div>
+
+      <div class="ps-showcase-grid">
+        <div>
+          <div class="ps-features-grid">
+            <article class="ps-feature-card">
+              <header>
+                <div class="ps-feature-icon" style="background:rgba(88,204,2,0.18); color:#86efac;" aria-hidden="true"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <h3 data-i18n="ps_f1_title">Visual Grammar Blueprint &amp; L1→L2 Traps</h3>
+              </header>
+              <p data-i18n="ps_f1_desc">Color-coded syntax formulas, Golden Rules in Spanish, and clear false-cognate warnings so students grasp every structure at a glance.</p>
+            </article>
+
+            <article class="ps-feature-card">
+              <header>
+                <div class="ps-feature-icon" style="background:rgba(56,189,248,0.18); color:#7dd3fc;" aria-hidden="true"><i class="fa-solid fa-spell-check"></i></div>
+                <h3 data-i18n="ps_f2_title">Key Vocabulary, IPA &amp; Stress Map</h3>
+              </header>
+              <p data-i18n="ps_f2_desc">Every essential daily and technical word from the class with syllable stress markers (pink stress), bilingual definitions, and authentic sentence examples.</p>
+            </article>
+
+            <article class="ps-feature-card">
+              <header>
+                <div class="ps-feature-icon" style="background:rgba(168,85,247,0.18); color:#d8b4fe;" aria-hidden="true"><i class="fa-solid fa-stopwatch"></i></div>
+                <h3 data-i18n="ps_f3_title">Designed for 50-Min Class + Duo Online</h3>
+              </header>
+              <p data-i18n="ps_f3_desc">Built around a 50-minute session: class warmup, slides deck, pair speaking activity, 15–20 min Duolingo-style online drills, and Exit Ticket.</p>
+            </article>
+
+            <article class="ps-feature-card">
+              <header>
+                <div class="ps-feature-icon" style="background:rgba(245,158,11,0.18); color:#fcd34d;" aria-hidden="true"><i class="fa-solid fa-chalkboard-user"></i></div>
+                <h3 data-i18n="ps_f4_title">Take-Home Practice &amp; Teacher Playbook</h3>
+              </header>
+              <p data-i18n="ps_f4_desc">Includes fill-in-the-blanks, sentence reordering, writing prompts, and self-check keys—plus a matching 1-page Facilitator Guide with minute-by-minute pacing.</p>
+            </article>
+          </div>
+
+          <div class="ps-cta-row">
+            <a href="/powersheet.html?lesson=a1-c06" target="_blank" rel="noopener" class="ps-cta-btn primary" data-i18n="ps_cta_student">
+              <i class="fa-solid fa-file-lines" aria-hidden="true"></i> <span>Inspect Live Student Power Sheet (A1)</span>
+            </a>
+            <a href="/powersheet.html?lesson=a1-c06&mode=teacher" target="_blank" rel="noopener" class="ps-cta-btn secondary" data-i18n="ps_cta_teacher">
+              <i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> <span>View 50-Min Teacher Guide</span>
+            </a>
+            <a href="/powersheet.html?esp=upbc-energia:M01" target="_blank" rel="noopener" class="ps-cta-btn secondary" data-i18n="ps_cta_esp">
+              <i class="fa-solid fa-industry" aria-hidden="true"></i> <span>Sample Engineering ESP Sheet</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Realistic 1-Page Sheet Visual Mockup -->
+        <aside class="ps-paper-mockup" aria-label="Preview of a 1-page printable stemOS Power Sheet">
+          <div class="ps-mockup-header">
+            <div>
+              <div style="display:flex; flex-wrap:wrap; gap:5px; align-items:center; margin-block-end:4px;">
+                <span style="background:#58cc02; color:#fff; font-weight:900; font-size:0.72rem; padding:2px 7px; border-radius:5px;">stemOS</span>
+                <span style="background:#dcfce7; color:#166534; border:1px solid #86efac; font-size:0.65rem; font-weight:800; padding:1px 6px; border-radius:999px;">POWER SHEET · 1 HOJA</span>
+                <span style="background:#e0f2fe; color:#0369a1; border:1px solid #7dd3fc; font-size:0.65rem; font-weight:800; padding:1px 6px; border-radius:999px;">A1 · A1-C06 · 50 MIN</span>
+              </div>
+              <div style="font-weight:900; font-size:0.95rem; color:#0f172a;" data-i18n="ps_mock_title">Addresses, Numbers, Places in Town &amp; Directions</div>
+              <div style="font-size:0.72rem; color:#475569;" data-i18n="ps_mock_sub">Can-Do: Give street addresses &amp; guide someone cleanly in town or plant gates.</div>
+            </div>
+            <div style="font-size:0.68rem; font-weight:700; color:#475569; min-inline-size:100px; border-inline-start:1px solid #e2e8f0; padding-inline-start:8px;">
+              <div>Name: _________</div>
+              <div>Date: _________</div>
+            </div>
+          </div>
+
+          <div class="ps-mockup-grid">
+            <div class="ps-mockup-box">
+              <div style="font-weight:900; font-size:0.68rem; color:#15803d; margin-block-end:3px;">1. VISUAL FORMULA &amp; RULE</div>
+              <div><code style="background:#dbeafe; color:#1e3a8a; padding:1px 4px; border-radius:4px;">Where is + Place?</code> → <code style="background:#dcfce7; color:#166534; padding:1px 4px; border-radius:4px;">Go straight / Turn left</code></div>
+              <div style="font-size:0.68rem; color:#b91c1c; margin-top:3px;">✗ On 45 Main St → ✓ At 45 Main St (at + exact #)</div>
+            </div>
+            <div class="ps-mockup-box blue">
+              <div style="font-weight:900; font-size:0.68rem; color:#0369a1; margin-block-end:3px;">2. KEY VOCAB &amp; STRESS</div>
+              <div><strong>Street Address</strong> <span style="color:#db2777;">[ad-DRESS]</span> · Dirección</div>
+              <div><strong>Corner</strong> <span style="color:#db2777;">[COR-ner]</span> · Esquina</div>
+              <div><strong>Warehouse / Gate</strong> · Almacén / Acceso</div>
+            </div>
+            <div class="ps-mockup-box amber">
+              <div style="font-weight:900; font-size:0.68rem; color:#b45309; margin-block-end:3px;">3. DIALOGUE &amp; CLASS TASK</div>
+              <div><strong>Guard:</strong> Dock B is across from Bldg 2.</div>
+              <div><strong>Driver:</strong> Turn left on Oak Ave, then 2 blocks straight.</div>
+            </div>
+            <div class="ps-mockup-box purple">
+              <div style="font-weight:900; font-size:0.68rem; color:#6b21a8; margin-block-end:3px;">4. TAKE-HOME DRILL &amp; DUO LINK</div>
+              <div>1. Turn ___ at the light. (left / stay)</div>
+              <div>2. Write directions from your gate: ___________</div>
+              <div style="color:#0369a1; font-weight:700; margin-top:2px;">⚡ app.html#play=a1-c06 · +280 XP</div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; border-block-start:1px solid #cbd5e1; padding-block-start:6px; font-size:0.68rem; color:#475569; font-weight:700;">
+            <span data-i18n="ps_mock_footer_l"><i class="fa-solid fa-print" aria-hidden="true"></i> Letter / A4 Exact 1-Page Print Layout</span>
+            <span data-i18n="ps_mock_footer_r"><i class="fa-solid fa-download" aria-hidden="true"></i> Offline HTML Download &bull; Self-Check Key</span>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
 
   <!-- ── Institutional Pricing & Commercial Proposal Section ── -->
   <section class="promo-section pricing-institutional-section" id="pricing-institutional-section">
@@ -3771,6 +4037,25 @@
         std_stat2_lbl: 'Alignment with Global Standards (IEEE, SEMI, ISO)',
         std_stat3_lbl: 'Grammar Filler or Generic Hotel Dialogues',
         std_stat4_lbl: 'Operational Plant Integration Time',
+        nav_powersheets: 'Power Sheets',
+        ps_sec_badge: '<i class="fa-solid fa-print" aria-hidden="true"></i> 1 SHEET PER DAY PER CLASS &bull; ALWAYS SOMETHING TO REINFORCE',
+        ps_sec_title: 'Power Sheets: Every Class Ends With a <span style="background: linear-gradient(135deg, #58cc02 0%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">1-Page Printable Study Sheet</span>',
+        ps_sec_subtitle: 'Digital practice is only half the journey. Every 50-minute class (MCER A1–C2 and all 34 ESP tracks) unlocks a rich, ready-to-print 1-page Power Sheet packed with visual grammar formulas, key vocabulary with pronunciation stress, modeled dialogues, and take-home exercises so your students always have physical material to reinforce what they learned that day.',
+        ps_f1_title: 'Visual Grammar Blueprint &amp; L1→L2 Traps',
+        ps_f1_desc: 'Color-coded syntax formulas, Golden Rules in Spanish, and clear false-cognate warnings so students grasp every structure at a glance.',
+        ps_f2_title: 'Key Vocabulary, IPA &amp; Stress Map',
+        ps_f2_desc: 'Every essential daily and technical word from the class with syllable stress markers (pink stress), bilingual definitions, and authentic sentence examples.',
+        ps_f3_title: 'Designed for 50-Min Class + Duo Online',
+        ps_f3_desc: 'Built around a 50-minute session: class warmup, slides deck, pair speaking activity, 15–20 min Duolingo-style online drills, and Exit Ticket.',
+        ps_f4_title: 'Take-Home Practice &amp; Teacher Playbook',
+        ps_f4_desc: 'Includes fill-in-the-blanks, sentence reordering, writing prompts, and self-check keys—plus a matching 1-page Facilitator Guide with minute-by-minute pacing.',
+        ps_cta_student: '<i class="fa-solid fa-file-lines" aria-hidden="true"></i> <span>Inspect Live Student Power Sheet (A1)</span>',
+        ps_cta_teacher: '<i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> <span>View 50-Min Teacher Guide</span>',
+        ps_cta_esp: '<i class="fa-solid fa-industry" aria-hidden="true"></i> <span>Sample Engineering ESP Sheet</span>',
+        ps_mock_title: 'Addresses, Numbers, Places in Town &amp; Directions',
+        ps_mock_sub: 'Can-Do: Give street addresses &amp; guide someone cleanly in town or plant gates.',
+        ps_mock_footer_l: '<i class="fa-solid fa-print" aria-hidden="true"></i> Letter / A4 Exact 1-Page Print Layout',
+        ps_mock_footer_r: '<i class="fa-solid fa-download" aria-hidden="true"></i> Offline HTML Download &bull; Self-Check Key',
         inst_badge: '<i class="fa-solid fa-graduation-cap"></i> INSTITUTIONAL ACADEMIC SYSTEM &bull; 60 AUDITABLE HOURS',
         inst_title: '<span style="color:#ffffff; text-shadow:0 2px 16px rgba(0,0,0,0.7);">Curricular Ecosystem for Technological Universities,</span> <br><span style="background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 50%, #2dd4bf 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TecNM, State Universities, and Latin American Institutions</span>',
         inst_subtitle: 'Auditable 60-hour engineering tracks designed for Mexican and Latin American technical universities. Theory, technical English (B1), and industrial simulators interleaved so students graduate job-ready for nearshoring.',
@@ -4034,6 +4319,25 @@
         std_stat2_lbl: 'Alineación con Estándares Globales (IEEE, SEMI, ISO)',
         std_stat3_lbl: 'Relleno Gramatical o Diálogos Genéricos de Hotel',
         std_stat4_lbl: 'Tiempo de Integración Operativa en Planta',
+        nav_powersheets: 'Power Sheets',
+        ps_sec_badge: '<i class="fa-solid fa-print" aria-hidden="true"></i> 1 HOJA POR DÍA POR CLASE &bull; MATERIAL IMPRESO DE REFUERZO',
+        ps_sec_title: 'Power Sheets: Cada Clase Incluye Su <span style="background: linear-gradient(135deg, #58cc02 0%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Hoja Imprimible de 1 Página</span>',
+        ps_sec_subtitle: 'La práctica digital no basta: el alumno siempre debe llevarse material físico para reforzar lo aprendido. Cada clase modular de 50 minutos (MCER A1–C2 y los 34 tracks ESP) genera un Power Sheet listo para imprimir de 1 sola hoja con fórmula visual, vocabulario clave, diálogo modelado y ejercicios de repaso en casa.',
+        ps_f1_title: 'Fórmula Gramatical Visual y Alertas L1→L2',
+        ps_f1_desc: 'Bloques sintácticos inductivos, Regla de Oro en español y advertencias contra falsos cognados para comprender la estructura en segundos.',
+        ps_f2_title: 'Vocabulario Esencial, IPA y Acento Prosódico',
+        ps_f2_desc: 'Palabras cotidianas y técnicas de la clase con acentuación marcada (pink stress), traducción bilingüe y ejemplos listos para usar.',
+        ps_f3_title: 'Diseñado para Clase de 50 Min + Duo Online',
+        ps_f3_desc: 'Secuencia completa: gancho inicial, slides, dinámica comunicativa en parejas, 15–20 min de ejercicios interactivos Duolingo y Exit Ticket.',
+        ps_f4_title: 'Ejercicios de Refuerzo + Guía Docente 50m',
+        ps_f4_desc: 'Incluye ejercicios escritos (fill-in-the-blanks, ordenar frases y redacción) con clave de autoevaluación, más Guía Docente minuto a minuto.',
+        ps_cta_student: '<i class="fa-solid fa-file-lines" aria-hidden="true"></i> <span>Ver Power Sheet Alumno (Ej. A1)</span>',
+        ps_cta_teacher: '<i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i> <span>Ver Guía Docente 50m</span>',
+        ps_cta_esp: '<i class="fa-solid fa-industry" aria-hidden="true"></i> <span>Ver Ejemplo Ingeniería ESP</span>',
+        ps_mock_title: 'Direcciones Postales, Lugares de la Ciudad e Indicaciones',
+        ps_mock_sub: 'Objetivo Can-Do: Dar direcciones exactas y guiar rutas en ciudad o planta.',
+        ps_mock_footer_l: '<i class="fa-solid fa-print" aria-hidden="true"></i> Diseño Exacto de 1 Hoja (Carta / A4)',
+        ps_mock_footer_r: '<i class="fa-solid fa-download" aria-hidden="true"></i> Descarga Offline .HTML &bull; Clave de Autoevaluación',
         inst_badge: '<i class="fa-solid fa-graduation-cap"></i> SISTEMA ACADÉMICO INSTITUCIONAL &bull; 60 HORAS AUDITABLES',
         inst_title: '<span style="color:#ffffff; text-shadow:0 2px 16px rgba(0,0,0,0.7);">Ecosistema Curricular para Universidades Tecnológicas,</span> <br><span style="background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 50%, #2dd4bf 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TecNM, Estatales de México y Universidades LATAM</span>',
         inst_subtitle: 'Rutas de 60 horas auditables diseñadas para universidades técnicas. Teoría, inglés técnico (B1) y simuladores industriales organizados de forma práctica para preparar a los estudiantes ante la industria global.',

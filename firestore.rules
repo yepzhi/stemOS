@@ -14,6 +14,8 @@ service cloud.firestore {
     // - /institutions/{institutionId}: Multi-tenant institution metadata & subcollections:
     //   - /placement_tests/{testId}: Institutional diagnostic records
     //   - /classes/{classId} & /submissions/{submissionId}: Cohort management & Hito submissions
+    //     - /curriculum_config/{trackKey}: Cohort 50m sequence ordering, visibility & unlocks (institution read, class owner/admin write)
+    //     - /assignments/{assignmentId}: Cohort assignments & due metadata (institution read, class owner/admin write)
     //   - /teachers/{teacherId}: Faculty roster scoped to institution
     //   - /students/{studentId}, /station_progress/{stationId}, /mcer_progress/{unitId}: Student portfolios & progress
     //   - /audit_logs/{logId}: Immutable ISO 9001:2015 audit trail
@@ -46,6 +48,89 @@ service cloud.firestore {
 
     function belongsToInstitution(institutionId) {
       return isAuthenticated() && (request.auth.token.get('institutionId', '') == institutionId || isAdmin());
+    }
+
+    // Check if the authenticated teacher owns the parent class document
+    function isClassOwner(institutionId, classId) {
+      let classPath = /databases/$(database)/documents/institutions/$(institutionId)/classes/$(classId);
+      return isTeacher() &&
+             belongsToInstitution(institutionId) &&
+             exists(classPath) &&
+             get(classPath).data.get('teacherId', '') == request.auth.uid;
+    }
+
+    function isValidOptionalStringBound(data, field, maxLen) {
+      return !(field in data) || (data[field] is string && data[field].size() <= maxLen);
+    }
+
+    function isValidOptionalTimestampOrIso(data, field) {
+      return !(field in data) ||
+             data[field] is timestamp ||
+             (data[field] is string && data[field].size() <= 64);
+    }
+
+    function isValidIdList(val, maxItems) {
+      return val is list &&
+             val.size() <= maxItems &&
+             (val.size() == 0 || (val[0] is string && val[0].size() <= 100 &&
+                                  val[val.size() - 1] is string && val[val.size() - 1].size() <= 100));
+    }
+
+    // Domain Validator: Cohort curriculum sequence configuration
+    function isValidCurriculumConfig(data, institutionId, classId) {
+      return data.keys().hasOnly([
+               'classId', 'institutionId', 'trackKey',
+               'orderedIds', 'hiddenIds', 'unlockedIds',
+               'paceMinutes', 'note', 'updatedAt', 'updatedBy', 'syncedAt'
+             ]) &&
+             (!('classId' in data) || (data.classId is string && data.classId == classId && data.classId.size() > 0 && data.classId.size() <= 128)) &&
+             (!('institutionId' in data) || (data.institutionId is string && data.institutionId == institutionId && data.institutionId.size() > 0 && data.institutionId.size() <= 128)) &&
+             (!('trackKey' in data) || (data.trackKey is string && data.trackKey.size() > 0 && data.trackKey.size() <= 80)) &&
+             (!('orderedIds' in data) || isValidIdList(data.orderedIds, 150)) &&
+             (!('hiddenIds' in data) || isValidIdList(data.hiddenIds, 150)) &&
+             (!('unlockedIds' in data) || isValidIdList(data.unlockedIds, 150)) &&
+             (!('paceMinutes' in data) || (data.paceMinutes is number && data.paceMinutes >= 15 && data.paceMinutes <= 180)) &&
+             isValidOptionalStringBound(data, 'note', 1000) &&
+             isValidOptionalStringBound(data, 'updatedBy', 128) &&
+             isValidOptionalTimestampOrIso(data, 'updatedAt') &&
+             isValidOptionalTimestampOrIso(data, 'syncedAt');
+    }
+
+    // Domain Validator: Cohort assignment
+    // Includes both canonical schema fields (targetType, targetId, dueDate, notes, points, createdBy, status)
+    // and active teacher.html payload fields (level, scope, threshold, deadline, dueTime, timeLimitMinutes, timezone, instructions, assignedAt, submissions)
+    function isValidClassAssignment(data, institutionId, classId) {
+      return data.keys().hasOnly([
+               'id', 'classId', 'institutionId', 'title', 'targetType', 'targetId',
+               'dueDate', 'notes', 'points', 'createdBy', 'createdAt', 'updatedAt',
+               'syncedAt', 'status',
+               'level', 'scope', 'threshold', 'deadline', 'dueTime',
+               'timeLimitMinutes', 'timezone', 'instructions', 'assignedAt', 'submissions'
+             ]) &&
+             (!('id' in data) || (data.id is string && data.id.size() > 0 && data.id.size() <= 128)) &&
+             (!('classId' in data) || (data.classId is string && data.classId == classId && data.classId.size() > 0 && data.classId.size() <= 128)) &&
+             (!('institutionId' in data) || (data.institutionId is string && data.institutionId == institutionId && data.institutionId.size() > 0 && data.institutionId.size() <= 128)) &&
+             isValidOptionalStringBound(data, 'title', 200) &&
+             isValidOptionalStringBound(data, 'targetType', 60) &&
+             isValidOptionalStringBound(data, 'targetId', 128) &&
+             isValidOptionalTimestampOrIso(data, 'dueDate') &&
+             isValidOptionalStringBound(data, 'notes', 2000) &&
+             (!('points' in data) || (data.points is number && data.points >= 0 && data.points <= 10000)) &&
+             isValidOptionalStringBound(data, 'createdBy', 128) &&
+             isValidOptionalTimestampOrIso(data, 'createdAt') &&
+             isValidOptionalTimestampOrIso(data, 'updatedAt') &&
+             isValidOptionalTimestampOrIso(data, 'syncedAt') &&
+             isValidOptionalStringBound(data, 'status', 40) &&
+             isValidOptionalStringBound(data, 'level', 20) &&
+             isValidOptionalStringBound(data, 'scope', 64) &&
+             (!('threshold' in data) || (data.threshold is number && data.threshold >= 0 && data.threshold <= 100)) &&
+             isValidOptionalStringBound(data, 'deadline', 64) &&
+             isValidOptionalStringBound(data, 'dueTime', 32) &&
+             (!('timeLimitMinutes' in data) || (data.timeLimitMinutes is number && data.timeLimitMinutes >= 0 && data.timeLimitMinutes <= 600)) &&
+             isValidOptionalStringBound(data, 'timezone', 64) &&
+             isValidOptionalStringBound(data, 'instructions', 2000) &&
+             isValidOptionalTimestampOrIso(data, 'assignedAt') &&
+             (!('submissions' in data) || (data.submissions is map && data.submissions.size() <= 200));
     }
 
     // Public / Curricular Catalogs (Read-only for all, write for admin)
@@ -120,6 +205,29 @@ service cloud.firestore {
           allow update: if (isTeacher() && belongsToInstitution(institutionId)) ||
                            (isAdmin() && belongsToInstitution(institutionId));
           allow delete: if isAdmin() && belongsToInstitution(institutionId);
+        }
+
+        // Cohort Curriculum Sequence Configuration (50m pacing, order, visibility & unlocks)
+        match /curriculum_config/{trackKey} {
+          allow read: if belongsToInstitution(institutionId);
+          allow create: if (isClassOwner(institutionId, classId) || (isAdmin() && belongsToInstitution(institutionId))) &&
+                           isValidCurriculumConfig(request.resource.data, institutionId, classId);
+          allow update: if (isClassOwner(institutionId, classId) || (isAdmin() && belongsToInstitution(institutionId))) &&
+                           isValidCurriculumConfig(request.resource.data, institutionId, classId) &&
+                           (!('trackKey' in resource.data) || request.resource.data.get('trackKey', resource.data.trackKey) == resource.data.trackKey);
+          allow delete: if isClassOwner(institutionId, classId) || (isAdmin() && belongsToInstitution(institutionId));
+        }
+
+        // Cohort Assignments
+        match /assignments/{assignmentId} {
+          allow read: if belongsToInstitution(institutionId);
+          allow create: if (isClassOwner(institutionId, classId) || (isAdmin() && belongsToInstitution(institutionId))) &&
+                           isValidClassAssignment(request.resource.data, institutionId, classId);
+          allow update: if (isClassOwner(institutionId, classId) || (isAdmin() && belongsToInstitution(institutionId))) &&
+                           isValidClassAssignment(request.resource.data, institutionId, classId) &&
+                           (!('id' in resource.data) || request.resource.data.get('id', resource.data.id) == resource.data.id) &&
+                           (!('createdBy' in resource.data) || request.resource.data.get('createdBy', resource.data.createdBy) == resource.data.createdBy);
+          allow delete: if isClassOwner(institutionId, classId) || (isAdmin() && belongsToInstitution(institutionId));
         }
       }
 

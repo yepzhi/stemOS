@@ -248,17 +248,42 @@
                 });
         }
 
+        if (mutation.entityType === 'CURRICULUM_CONFIG') {
+            var cfg = mutation.payload || {};
+            var cfgInst = cfg.institutionId || instId;
+            if (!cfg.classId || !cfg.trackKey) return Promise.resolve(mutation);
+            return db.collection('institutions').doc(cfgInst)
+                .collection('classes').doc(cfg.classId)
+                .collection('curriculum_config').doc(cfg.trackKey)
+                .set(Object.assign({}, cfg, { syncedAt: new Date().toISOString() }), { merge: true })
+                .then(function () { return mutation; });
+        }
+
+        if (mutation.entityType === 'CLASS_ASSIGNMENT') {
+            var asg = mutation.payload || {};
+            var asgInst = asg.institutionId || instId;
+            if (!asg.classId || !asg.id) return Promise.resolve(mutation);
+            return db.collection('institutions').doc(asgInst)
+                .collection('classes').doc(asg.classId)
+                .collection('assignments').doc(asg.id)
+                .set(Object.assign({}, asg, { syncedAt: new Date().toISOString() }), { merge: true })
+                .then(function () { return mutation; });
+        }
+
         return Promise.resolve(mutation);
     }
 
     var api = {
-        version: '1.1.0-phase88',
+        version: '1.2.0-phase89',
 
         isOnline: function () {
             return isOnline;
         },
 
         enqueueMutation: enqueueMutation,
+        queueMutation: function (entityType, payload, options) {
+            return enqueueMutation(entityType, 'UPSERT', payload, options);
+        },
         getPendingMutations: getPendingMutations,
         resolveConflict: resolveConflict,
 

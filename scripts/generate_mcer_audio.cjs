@@ -468,17 +468,44 @@ const AUDIO_ITEMS = [
   { id: 'b2-u4-crucible-model', voice: 'Eddy', text: "Good morning, members of the executive steering committee. Our capstone proposal outlines an automated prismatic lithium-ion battery cell assembly line designed specifically for Northern Mexico nearshoring corridors. By deploying six-axis robotic winding cells, integrated vision inspection, and closed-loop thermal testing, this facility achieves a cycle time of 4.2 seconds per cell with a 99.4 percent first-pass yield, reducing supply chain lead times to US assembly plants by sixty percent." },
 ];
 
-console.log(`Starting generation of ${AUDIO_ITEMS.length} static MP3 audio files...`);
+const DRY_RUN = process.argv.includes('--dry-run');
+
+try {
+  const mcerClasses = require('../content/mcer_classes_50m.js');
+  const existingIds = new Set(AUDIO_ITEMS.map((i) => i.id));
+  mcerClasses.getAllClasses().forEach((cls) => {
+    (cls.vocab || []).slice(0, 4).forEach((v, idx) => {
+      const id = `${cls.id}-v${idx + 1}`;
+      if (!existingIds.has(id)) {
+        existingIds.add(id);
+        AUDIO_ITEMS.push({ id, voice: 'Samantha', text: `${v.en}. ${v.example || ''}`.trim() });
+      }
+    });
+    (cls.dialogue || []).slice(0, 2).forEach((l, idx) => {
+      const id = `${cls.id}-d${idx + 1}`;
+      if (!existingIds.has(id)) {
+        existingIds.add(id);
+        AUDIO_ITEMS.push({ id, voice: idx % 2 === 0 ? 'Eddy' : 'Samantha', text: l.en });
+      }
+    });
+  });
+} catch (_) {}
+
+console.log(`Starting generation of ${AUDIO_ITEMS.length} static MP3 audio files...${DRY_RUN ? ' (DRY RUN)' : ''}`);
 
 for (const item of AUDIO_ITEMS) {
   const tmpAiff = `/tmp/${item.id}.aiff`;
   const outMp3 = path.join(OUTPUT_DIR, `${item.id}.mp3`);
-  
+
+  if (DRY_RUN) {
+    continue;
+  }
+
   if (fs.existsSync(outMp3)) {
     console.log(`⏩ [${item.id}] already exists, skipping.`);
     continue;
   }
-  
+
   try {
     // 1. Run say
     execSync(`say -v "${item.voice}" -o "${tmpAiff}" "${item.text.replace(/"/g, '\\"')}"`);
@@ -494,4 +521,4 @@ for (const item of AUDIO_ITEMS) {
   }
 }
 
-console.log('Static audio generation completed successfully!');
+console.log(DRY_RUN ? `Dry run verified ${AUDIO_ITEMS.length} audio items!` : 'Static audio generation completed successfully!');
