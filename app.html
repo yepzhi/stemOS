@@ -879,7 +879,7 @@
                 </button>
             </div>
 
-            <nav class="ed-rail-nav">
+            <nav class="ed-rail-nav" aria-label="Navegación Principal">
                 <button class="ed-rail-btn active" data-view="all-units" id="nav-btn-home"
                     title="All Units / Dashboard">
                     <span class="ed-rail-active-indicator"></span>
@@ -1010,17 +1010,12 @@
                         <div class="ed-brand-badge" id="dashboard-brand-logo" title="stemOS LXP" style="cursor:default;">
                             <span class="ed-brand-title" style="font-size:1.35rem; font-weight:800; letter-spacing:-0.03em;">stem<span class="ed-brand-accent">OS</span></span>
                         </div>
-                        <div class="ed-student-greeting" id="student-greeting-wrapper" style="cursor:pointer;" title="Ver Perfil y Credenciales del Estudiante">
-                            Hello <strong id="header-student-name">Estudiante</strong>
-                            <span class="ed-student-subsystem-pill" id="header-student-subsystem" style="font-size:0.75rem; background:rgba(14,165,233,0.15); color:var(--sky-400); border:1px solid rgba(14,165,233,0.3); padding:2px 8px; border-radius:999px; margin-left:6px; font-weight:600;">stemOS</span>
-                            <span class="ed-student-campus-badge" id="header-student-campus-badge" style="font-size:0.75rem; background:rgba(15,23,42,0.6); color:#7dd3fc; border:1px solid rgba(14,165,233,0.35); padding:2px 8px; border-radius:8px; margin-left:6px; font-weight:600;"><i class="fa-solid fa-building-columns" style="font-size:0.68rem; margin-right:4px;"></i>Campus stemOS</span>
-                            <select id="header-campus-federation-select" class="campus-select-pill" style="display:none;" tabindex="-1" aria-hidden="true">
-                                <option value="campus-general">Campus Universitario General</option>
-                                <option value="upbc-mexicali">Universidad Politécnica / Tecnológica</option>
-                                <option value="tecnm-general">Instituto Tecnológico / Ingeniería</option>
-                                <option value="uacj-juarez">Universidad Autónoma / Estatal</option>
-                            </select>
-                        </div>
+                        <select id="header-campus-federation-select" class="campus-select-pill" style="display:none;" tabindex="-1" aria-hidden="true">
+                            <option value="campus-general">Campus Universitario General</option>
+                            <option value="upbc-mexicali">Universidad Politécnica / Tecnológica</option>
+                            <option value="tecnm-general">Instituto Tecnológico / Ingeniería</option>
+                            <option value="uacj-juarez">Universidad Autónoma / Estatal</option>
+                        </select>
                     </div>
 
                     <div class="ed-header-right">
@@ -1029,13 +1024,6 @@
                             <i class="fa-solid fa-passport" style="color:#38bdf8;"></i>
                             <span id="header-cefr-passport-text">Passport: Pending Placement</span>
                         </button>
-
-                        <!-- Curricular XP & Engineering Rank HUD (Fase 53) -->
-                        <div class="ed-level-indicator" id="header-xp-hud" title="Curricular XP & Engineering Level" style="background:rgba(245,158,11,0.08); border-color:rgba(245,158,11,0.3); color:#d97706; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
-                            <i class="fa-solid fa-bolt" style="color:#f59e0b;"></i>
-                            <span id="header-xp-val">0 XP</span>
-                            <span id="header-rank-badge" style="background:#0284c7; color:#fff; border-radius:999px; padding:1px 7px; font-size:0.68rem; font-weight:800;">L1 Intern</span>
-                        </div>
 
                         <!-- System Status Indicator (Minimalist Green Icon · OK) -->
                         <div class="ed-level-indicator" id="header-connection-hud" title="Servicios Activos: Cloud Firestore &amp; Edge AI Operativos" style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); color:#10b981; width:34px; height:34px; padding:0; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; cursor:default;" aria-label="Estado del sistema: Operativo">
@@ -1114,13 +1102,13 @@
                     </div>
 
                     <!-- KPI 4: Curricular XP & Rank (Fase 53) -->
-                    <div class="ed-kpi-card" id="kpi-card-xp">
+                    <div class="ed-kpi-card" id="kpi-card-xp" title="Puntos XP ganados por práctica (independiente de tu nivel MCER A1–C2)">
                         <div class="ed-kpi-icon-col">
                             <i class="fa-solid fa-bolt ed-kpi-icon" style="color:#f59e0b;"></i>
                         </div>
                         <div class="ed-kpi-info-col">
                             <div class="ed-kpi-value"><span id="kpi-total-xp">0</span> <span class="ed-kpi-unit">XP</span></div>
-                            <div class="ed-kpi-label" id="kpi-student-rank">L1 · Intern</div>
+                            <div class="ed-kpi-label" id="kpi-student-rank">Nivel XP 1 · Aprendiz (Meta: 500 XP)</div>
                         </div>
                     </div>
                 </div>
@@ -1152,13 +1140,6 @@
                             </button>
                         </div>
                         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-                            <button type="button" class="btn" id="btn-hero-launch-atwork" data-legacy-id="btn-hero-launch-email" onclick="switchDashboardView('atwork-lab')" style="padding:8px 16px; font-size:0.85rem; font-weight:700; border-radius:12px; background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color:#ffffff; border:1px solid #334155; box-shadow:0 4px 12px rgba(15,23,42,0.18); cursor:pointer; display:inline-flex; align-items:center; gap:8px;" title="atWork Lab (Email BLUF &amp; 8D Problem Solving)">
-                                <i class="fa-solid fa-briefcase" style="color:#38bdf8;"></i>
-                                <span>atWork Lab <span style="font-size:0.7rem; font-weight:800; background:rgba(56,189,248,0.2); color:#38bdf8; padding:1px 6px; border-radius:999px;">BLUF &bull; 8D</span></span>
-                            </button>
-                            <a href="placement.html" class="btn btn-primary" id="btn-hero-launch-placement" style="padding:8px 16px; font-size:0.85rem; font-weight:700; border-radius:12px; background:linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); color:#ffffff; border:none; box-shadow:0 4px 12px rgba(2,132,199,0.25); text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
-                                <i class="fa-solid fa-clipboard-check"></i> Tomar Placement Test (30 min)
-                            </a>
                             <div id="user-placement-badge-pill" style="display:none; align-items:center; gap:6px; font-size:0.75rem; font-weight:800; padding:6px 12px; border-radius:999px; background:#ecfdf5; color:#059669; border:1px solid #a7f3d0;">
                                 <i class="fa-solid fa-circle-check"></i> <span id="user-placement-badge-text">Nivel B1 Asignado</span>
                             </div>
@@ -1170,7 +1151,7 @@
                         <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
                             <div style="display:inline-flex; align-items:center; gap:8px;">
                                 <span style="background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color:#ffffff; font-size:0.72rem; font-weight:800; padding:3px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:0.04em; display:inline-flex; align-items:center; gap:5px;">
-                                    <i class="fa-solid fa-play"></i> Continuar Donde Te Quedaste
+                                    <i class="fa-solid fa-play"></i> Continúa Donde Te Quedaste
                                 </span>
                                 <span id="active-path-level-pill" style="background:#e0f2fe; color:#0284c7; font-size:0.75rem; font-weight:800; padding:2px 8px; border-radius:6px; border:1px solid #bae6fd;">CEFR A1</span>
                                 <span style="font-size:0.75rem; color:#64748b; font-weight:600;"><i class="fa-solid fa-clock"></i> 15.0h Curriculares</span>
@@ -1237,9 +1218,6 @@
                                 <button type="button" class="btn" id="btn-banner-waive-placement" onclick="window.handlePlacementWaiverFromApp()" style="padding:12px 18px; font-size:0.92rem; font-weight:800; border-radius:12px; background:#f0fdf4; color:#059669; border:2px solid #10b981; box-shadow:0 2px 8px rgba(16,185,129,0.15); cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
                                     <i class="fa-solid fa-hand"></i> Iniciar desde Nivel 0 (Principiante)
                                 </button>
-                                <a href="placement.html" class="btn btn-primary" id="btn-banner-start-placement" style="padding:12px 22px; font-size:0.92rem; font-weight:800; border-radius:12px; background:linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); color:#ffffff; border:none; box-shadow:0 6px 18px rgba(2,132,199,0.35); text-decoration:none; display:inline-flex; align-items:center; gap:10px;">
-                                    <i class="fa-solid fa-clipboard-check"></i> Diagnóstico Orientativo (30 min)
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -1263,9 +1241,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a href="placement.html" style="font-size:0.8rem; font-weight:700; color:#0284c7; text-decoration:none; display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:8px; background:rgba(2,132,199,0.08); border:1px solid rgba(2,132,199,0.2);">
-                                    <i class="fa-solid fa-rotate"></i> Recalibrar Placement
-                                </a>
                             </div>
                         </div>
                         <!-- MCER Header Row -->
@@ -3717,7 +3692,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js" defer></script>
     <script src="/content/firebase_config.js?v=6.2.0" defer></script>
-    <script src="/content/firebase_adapter.js?v=2026.11.2" defer></script>
+    <script src="/content/firebase_adapter.js?v=2026.11.3" defer></script>
     <script src="/content/gemini_service.js?v=6.2.0" defer></script>
     <script src="/content/career_tracks.js?v=2.0.0" defer></script>
     <script src="/content/career_paths.js?v=2.0.0" defer></script>
@@ -3732,7 +3707,7 @@
     <script src="/content/placement_test.js?v=1.0.0" defer></script>
     <script src="/content/stemos_payments.js?v=1.2.0" defer></script>
     <script src="/content/stemos_skeleton.js?v=1.0.0" defer></script>
-    <script src="/app.js?v=2026.11.2" defer></script>
+    <script src="/app.js?v=2026.11.3" defer></script>
     <script src="/world-map.js?v=1.2.2" defer></script>
 
     <!-- Service Worker PWA Registration & Auto-Update Engine -->
@@ -3923,7 +3898,7 @@
                         <span style="font-size: 0.72rem; color: #92400e; text-transform: uppercase; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;">
                             <i class="fa-solid fa-bolt" style="color: #f59e0b;"></i> Experiencia Acumulada
                         </span>
-                        <span style="font-size: 0.72rem; color: #b45309; font-weight: 800;" id="sp-modal-rank">L1 · Intern (0 XP)</span>
+                        <span style="font-size: 0.72rem; color: #b45309; font-weight: 800;" id="sp-modal-rank">Nivel XP 1 · Aprendiz (0 XP)</span>
                     </div>
                     <div style="font-size: 1.35rem; font-weight: 900; color: #b45309;" id="sp-modal-xp">
                         0 XP

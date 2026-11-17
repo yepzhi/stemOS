@@ -2944,14 +2944,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* ─── XP & GAMIFICATION ENGINE (FASE 53) ─────────────────────── */
     const STUDENT_LEVELS = [
-        { level: 1, title: 'Intern', minXP: 0, icon: '🟢', badge: 'L1 Intern' },
-        { level: 2, title: 'Technician', minXP: 500, icon: '🔵', badge: 'L2 Tech' },
-        { level: 3, title: 'Specialist', minXP: 1200, icon: '🟣', badge: 'L3 Spec' },
-        { level: 4, title: 'Engineer', minXP: 2200, icon: '🟠', badge: 'L4 Eng' },
-        { level: 5, title: 'Senior Engineer', minXP: 3500, icon: '🔴', badge: 'L5 Senior' },
-        { level: 6, title: 'Lead', minXP: 5000, icon: '⭐', badge: 'L6 Lead' },
-        { level: 7, title: 'Fellow', minXP: 6500, icon: '💎', badge: 'L7 Fellow' },
-        { level: 8, title: 'Master Fellow', minXP: 8000, icon: '👑', badge: 'L8 Master' }
+        { level: 1, title: 'Aprendiz', minXP: 0, icon: '🟢', badge: 'XP 1 · Aprendiz' },
+        { level: 2, title: 'Técnico', minXP: 500, icon: '🔵', badge: 'XP 2 · Técnico' },
+        { level: 3, title: 'Especialista', minXP: 1200, icon: '🟣', badge: 'XP 3 · Especialista' },
+        { level: 4, title: 'Ingeniero', minXP: 2200, icon: '🟠', badge: 'XP 4 · Ingeniero' },
+        { level: 5, title: 'Ing. Senior', minXP: 3500, icon: '🔴', badge: 'XP 5 · Senior' },
+        { level: 6, title: 'Líder', minXP: 5000, icon: '⭐', badge: 'XP 6 · Líder' },
+        { level: 7, title: 'Fellow', minXP: 6500, icon: '💎', badge: 'XP 7 · Fellow' },
+        { level: 8, title: 'Master Fellow', minXP: 8000, icon: '👑', badge: 'XP 8 · Master' }
     ];
 
     window.getStudentLevelForXP = function(xp) {
@@ -2986,13 +2986,17 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) {}
 
         const level = window.getStudentLevelForXP(currentXP);
+        const nextLevel = STUDENT_LEVELS.find(l => l.level === level.level + 1);
+        const rankSummary = nextLevel
+            ? `Nivel XP ${level.level} · ${level.title} (Meta: ${nextLevel.minXP.toLocaleString()} XP)`
+            : `Nivel XP ${level.level} · ${level.title} (Máximo)`;
         const elTotalXp = document.getElementById('kpi-total-xp');
         const elRank = document.getElementById('kpi-student-rank');
         const elHeaderXp = document.getElementById('header-xp-val');
         const elHeaderBadge = document.getElementById('header-rank-badge');
 
         if (elTotalXp) elTotalXp.textContent = currentXP.toLocaleString();
-        if (elRank) elRank.textContent = `L${level.level} · ${level.title}`;
+        if (elRank) elRank.textContent = rankSummary;
         if (elHeaderXp) elHeaderXp.textContent = `${currentXP.toLocaleString()} XP`;
         if (elHeaderBadge) elHeaderBadge.textContent = level.badge;
     };
@@ -3375,8 +3379,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nameEl) nameEl.textContent = studentFullName;
         if (matriculaEl) matriculaEl.innerHTML = `<i class="fa-solid fa-id-badge" style="color: #38bdf8;"></i> Matrícula: ${studentMatricula}`;
         if (campusEl) {
+            const sys = ((profile && (profile.subsystem || profile.system)) || '').toLowerCase();
+            const sysLabels = {
+                'it': 'TecNM',
+                'tecnm': 'TecNM',
+                'upbc': 'Politécnica',
+                'ut': 'UT',
+                'estatal': 'Univ. Estatal',
+                'univ-estatal': 'Univ. Estatal',
+                'latam': 'LATAM'
+            };
+            const sysTag = sysLabels[sys] || '';
             const camp = (profile && profile.campus) || 'Campus Universitario / Independiente';
-            campusEl.innerHTML = `<i class="fa-solid fa-building-columns" style="color: #38bdf8;"></i> ${camp}`;
+            const fullCamp = (sysTag && !camp.toLowerCase().includes(sysTag.toLowerCase())) ? `${sysTag} · ${camp}` : camp;
+            campusEl.innerHTML = `<i class="fa-solid fa-building-columns" style="color: #38bdf8;"></i> ${fullCamp}`;
         }
         if (avatarBoxText) {
             avatarBoxText.textContent = computedInitials;
@@ -3394,7 +3410,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (hubEl) hubEl.textContent = (profile && profile.hub) ? profile.hub : 'Tijuana / Frontera';
         if (classEl) classEl.textContent = (profile && (profile.className || profile.classCode)) ? `${profile.className || ''} [${profile.classCode || 'Code'}]` : 'Registro General';
         if (xpEl) xpEl.textContent = `${currentXP.toLocaleString()} XP`;
-        if (rankEl) rankEl.textContent = `L${level.level} · ${level.title} (${currentXP.toLocaleString()} XP)`;
+        if (rankEl) rankEl.textContent = `Nivel XP ${level.level} · ${level.title} (${currentXP.toLocaleString()} XP)`;
 
         // XP Progress Bar
         const xpBarEl = document.getElementById('sp-modal-kpi-xp-bar');
@@ -8262,17 +8278,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 badgePill.style.borderColor = '#a7f3d0';
                 badgePill.style.display = 'inline-flex';
             }
-            if (calloutEl && calloutTitle && calloutDesc) {
-                calloutEl.style.display = 'block';
-                if (calloutLevel) {
-                    calloutLevel.textContent = 'Nivel A1 Disponible';
-                    calloutLevel.style.background = '#0284c7';
-                }
-                calloutTitle.textContent = 'Aprende desde cero en Nivel A1 o Haz tu Diagnóstico';
-                calloutDesc.textContent = 'Tienes acceso libre inmediato a los cursos base del MCER (A1). Si ya tienes conocimientos previos, completa el Examen Diagnóstico (15 min) para desbloquear A2, B1 o tracks técnicos avanzados.';
-                if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-graduation-cap" style="color:#0284c7;"></i>';
-                calloutEl.style.background = '#f0f9ff';
-                calloutEl.style.borderColor = '#bae6fd';
+            if (calloutEl) {
+                // Pending banner already renders this guidance above; avoid stacking a duplicate banner
+                calloutEl.style.display = 'none';
             }
             return;
         }

@@ -364,7 +364,7 @@
                 modulesCompleted: 0,
                 hoursCompleted: 0.0,
                 level: 1,
-                levelTitle: 'Intern',
+                levelTitle: 'Aprendiz',
                 registeredAt: new Date().toISOString(),
                 lastActiveAt: new Date().toISOString()
             };

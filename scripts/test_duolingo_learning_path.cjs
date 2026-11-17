@@ -212,7 +212,8 @@ test('app.html contains unified #nav-btn-atwork and #dock-btn-atwork with data-v
   assert(appHtml.includes('atWork Lab'), 'Missing atWork Lab label in app.html rail');
   assert(appHtml.includes('id="dock-btn-atwork"'), 'Missing #dock-btn-atwork in app.html mobile dock');
   assert(appHtml.includes('data-view="atwork-lab"'), 'Missing data-view="atwork-lab"');
-  assert(appHtml.includes('id="btn-hero-launch-atwork"'), 'Missing #btn-hero-launch-atwork quick launcher');
+  assert(!appHtml.includes('id="btn-hero-launch-atwork"'), 'Duplicate #btn-hero-launch-atwork should remain removed from main workspace');
+  assert(!appHtml.includes('id="btn-hero-launch-placement"'), 'Duplicate #btn-hero-launch-placement should remain removed from main workspace');
 });
 
 test('app.js handles atwork-lab view routing directly to Output Workspace', () => {
