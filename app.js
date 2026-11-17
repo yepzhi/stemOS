@@ -9712,6 +9712,175 @@ Nearshoring Center of Excellence • stemOS Certified`;
                             </span>
                             <span>&bull;</span>
                             <span style="color:#34d399; font-weight:700;">
+                                Calificación mínima aprobatoria: ${asg.threshold || 75}%
+                            </span>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center;">
+                        ${actionAreaHtml}
+                    </div>
+                </div>
+            </div>
+        `;
+        mount.style.display = 'block';
+    }
+
+    const ASG_QUESTIONS = [
+        {
+            id: 'q1',
+            title: 'PLC Fault Diagnostics & Emergency Protocol',
+            scenario: 'During high-speed assembly, Sensor S-04 triggered an unexpected interrupt code E-208 on Line 3. The SCADA telemetry indicates intermittent voltage drop before the safety interlock tripped.',
+            prompt: 'Which immediate action is required by the manufacturing engineer according to ISO/B1 maintenance standard?',
+            options: [
+                'Override the safety interlock relay and immediately resume full-speed production.',
+                'Isolate the electrical power bus, execute Lockout/Tagout (LOTO), and measure line impedance with a calibrated multimeter.',
+                'Ignore the telemetry log because intermittent drops reset automatically after 60 seconds.',
+                'Replace the entire PLC backplane without reading the error register history.'
+            ],
+            correct: 1
+        },
+        {
+            id: 'q2',
+            title: 'Precision Calibration & Nearshoring Metric Tolerances',
+            scenario: 'The automotive client in Detroit requested a tolerance verification report for the CNC-machined transmission shafts (+/- 0.015 mm).',
+            prompt: 'Select the most professional technical statement to include in the engineering sign-off memorandum:',
+            options: [
+                'The shafts are probably okay since we calibrated the lathe a couple of weeks ago.',
+                'Dimensions comply with drawing spec within 0.012 mm variance; full CMM laser inspection certificates are attached for batch release.',
+                'We didn’t measure all parts because the calipers were misplaced in the inspection crib.',
+                'Dimensional tolerances are irrelevant as long as the shafts fit into the housing assembly.'
+            ],
+            correct: 1
+        },
+        {
+            id: 'q3',
+            title: 'Cross-Functional Engineering Handoff (B1 Technical)',
+            scenario: 'The night-shift quality supervisor must communicate a pending calibration task to the oncoming morning engineering crew.',
+            prompt: 'Choose the appropriate technical collocation to complete: "We have ______ the thermal sensors and ______ the baseline calibration matrix for shift handover."',
+            options: [
+                'zeroed / logged',
+                'destroyed / hidden',
+                'painted / forgotten',
+                'guessed / guessed'
+            ],
+            correct: 0
+        },
+        {
+            id: 'q4',
+            title: 'Root Cause & Failure Mode Analysis (FMEA)',
+            scenario: 'A robotic weld cell displayed excessive spatter and incomplete penetration on mild steel sub-assemblies.',
+            prompt: 'What root cause should the welding automation specialist investigate first?',
+            options: [
+                'Shielding gas flow rate, wire feed velocity, and shielding gas nozzle oxidation.',
+                'The ambient office temperature in the human resources department.',
+                'The color of the robot arm safety paint.',
+                'Switching from argon mix to pure oxygen without adjusting arc parameters.'
+            ],
+            correct: 0
+        }
+    ];
+
+    let userAssignmentAnswers = {};
+
+    function openStudentAssignmentRunner() {
+        const asg = getActiveStudentAssignment();
+        if (!asg) return;
+
+        let profile = null;
+        try {
+            const raw = localStorage.getItem('stemos_user_profile');
+            if (raw) profile = JSON.parse(raw);
+        } catch(e) {}
+        const studentId = (profile && profile.studentId) || 'st-3';
+        const studentName = (profile && (profile.fullName || profile.name)) || 'Diego Ramírez';
+
+        asg.submissions = asg.submissions || {};
+        if (!asg.submissions[studentId] || asg.submissions[studentId].status === 'pending') {
+            asg.submissions[studentId] = {
+                status: 'in_progress',
+                startedAt: new Date().toISOString(),
+                timeSpentMinutes: 0
+            };
+            saveActiveAssignmentSync(asg);
+        }
+
+        const sub = asg.submissions[studentId];
+        userAssignmentAnswers = sub.answers || {};
+
+        const timeLimitMinutes = asg.timeLimitMinutes || 45;
+        if (timeLimitMinutes > 0) {
+            const started = new Date(sub.startedAt).getTime();
+            const elapsedSeconds = Math.floor((Date.now() - started) / 1000);
+            const totalSeconds = timeLimitMinutes * 60;
+            assignmentSecondsRemaining = Math.max(0, totalSeconds - elapsedSeconds);
+            assignmentTimeLimitTotal = totalSeconds;
+        } else {
+            assignmentSecondsRemaining = 0;
+            assignmentTimeLimitTotal = 0;
+        }
+
+        renderAssignmentRunnerModal(asg, sub, studentName);
+
+        const modal = document.getElementById('modal-student-assignment-runner');
+        if (modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        startAssignmentTimerCountdown(asg, studentId);
+        initStudentAssignmentHUD();
+    }
+
+    function startAssignmentTimerCountdown(asg, studentId) {
+        if (assignmentTimerInterval) clearInterval(assignmentTimerInterval);
+
+        const updateTimerDisplay = () => {
+            const displayEl = document.getElementById('runner-timer-countdown');
+            const hudEl = document.getElementById('hud-timer-countdown');
+            const timerBadge = document.getElementById('runner-timer-badge');
+
+            if (asg.timeLimitMinutes > 0) {
+                if (assignmentSecondsRemaining <= 0) {
+                    clearInterval(assignmentTimerInterval);
+                    if (displayEl) displayEl.textContent = '00:00 (Tiempo expirado)';
+                    if (hudEl) hudEl.textContent = '00:00 (Tiempo expirado)';
+                    submitStudentAssignment(true);
+                    return;
+                }
+
+                const mins = Math.floor(assignmentSecondsRemaining / 60);
+                const secs = assignmentSecondsRemaining % 60;
+                const timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+                if (displayEl) displayEl.textContent = timeStr;
+                if (hudEl) hudEl.textContent = timeStr;
+
+                if (assignmentSecondsRemaining <= 300) {
+                    if (timerBadge) timerBadge.classList.add('danger');
+                } else {
+                    if (timerBadge) timerBadge.classList.remove('danger');
+                }
+
+                assignmentSecondsRemaining--;
+            } else {
+                assignmentSecondsRemaining++;
+                const mins = Math.floor(assignmentSecondsRemaining / 60);
+                const secs = assignmentSecondsRemaining % 60;
+                const timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (displayEl) displayEl.textContent = `${timeStr} (Sin límite)`;
+                if (hudEl) hudEl.textContent = timeStr;
+            }
+        };
+
+        updateTimerDisplay();
+        assignmentTimerInterval = setInterval(updateTimerDisplay, 1000);
+    }
+
+    function renderAssignmentRunnerModal(asg, sub, studentName) {
+        const container = document.getElementById('asg-runner-content');
+        if (!container) return;
+
+        const formattedDue = formatAmericasTzDate(asg.deadline, asg.dueTime, asg.timezone);
         const timeLimitBadge = asg.timeLimitMinutes > 0
             ? `<div class="asg-timer-pulse-badge" id="runner-timer-badge"><i class="fa-solid fa-stopwatch"></i> Tiempo Restante: <span id="runner-timer-countdown">--:--</span></div>`
             : `<div class="asg-timer-pulse-badge"><i class="fa-solid fa-infinity"></i> Modo Práctica: <span id="runner-timer-countdown">00:00</span></div>`;
@@ -11002,7 +11171,9 @@ Nearshoring Center of Excellence • stemOS Certified`;
             if (isActive) activeNodeFound = true;
 
             const alignClass = alignments[idx % alignments.length];
-            const iconClass = mod.icon || 'fa-microchip';
+            const rawIcon = mod.icon || 'fa-microchip';
+            const iconClass = rawIcon.includes('fa-solid') || rawIcon.includes('fa-regular') ? rawIcon : `fa-solid ${rawIcon}`;
+            const safeAttrTitle = String(mod.title || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 
             const stepEl = document.createElement('div');
             stepEl.className = `path-level-step ${alignClass} ${isCompleted ? 'completed' : isActive ? 'active-node' : isUnlocked ? 'unlocked' : 'locked'}`;
@@ -11032,7 +11203,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 : `powersheet.html?esp=${encodeURIComponent(`${mod.trackId || 'it-mecatronica'}:${mod.id}`)}`;
 
             stepEl.innerHTML = `
-                <div class="path-node-disc" data-mod-id="${mod.id}" title="${mod.title}" style="border-color:${isUnlocked ? mod.color : '#94a3b8'}; cursor:pointer;">
+                <div class="path-node-disc" data-mod-id="${mod.id}" title="${safeAttrTitle}" style="border-color:${isUnlocked ? mod.color : '#94a3b8'}; cursor:pointer;">
                     ${mascotHtml}
                     ${starCrownHtml}
                     <span class="node-m-num" style="color:${isUnlocked ? mod.color : '#64748b'}; font-size:0.62rem;">${nodeIdentifier}</span>
