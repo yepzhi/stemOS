@@ -140,7 +140,7 @@ console.log('\n▶ 5. MCER Winding Path, White Profile & Living Aurora');
 test('app.js supports dual-mode MCER tracks vs ESP tracks in renderDuoLearningPath', () => {
   assert(appJs.includes('// ── A. MCER CORE MODE (A1 to B2 Standard American English) ──'), 'Missing MCER Core mode');
   assert(appJs.includes('// ── B. ESP CAREER TRACK MODE (Engineering 60.0h Tracks) ──'), 'Missing ESP career mode');
-  assert(appJs.includes('openMcerUnitModal(mod.id)'), 'Missing openMcerUnitModal on MCER unit click');
+  assert(appJs.includes('startDuoLessonForUnit(mod.id, 1)'), 'Missing interactive startDuoLessonForUnit on MCER unit click');
 });
 
 test('DuoSound uses low-pass filtered warm chimes (playBell) and tactile pop', () => {
@@ -229,10 +229,12 @@ test('app.js exports startDuoLessonForUnit, openDuoLesson, and DUO_STEPS_META', 
   assert(appJs.includes('window.DUO_STEPS_META = DUO_STEPS_META;'), 'Missing window.DUO_STEPS_META');
 });
 
-test('app.js renders 5-step micro-lesson buttons and direct interactive play button', () => {
-  assert(appJs.includes('class="duo-sub-step-btn"'), 'Missing duo-sub-step-btn in app.js');
+test('app.js renders 7 interactive Duolingo steps including dialogue_roleplay & reading_context without Syllabus Completo button clutter', () => {
+  assert(appJs.includes('class="duo-sub-step-btn'), 'Missing duo-sub-step-btn in app.js');
   assert(appJs.includes('class="btn-play-duo-direct"'), 'Missing btn-play-duo-direct in app.js');
-  assert(appJs.includes('class="btn-syllabus-direct"'), 'Missing btn-syllabus-direct in app.js');
+  assert(appJs.includes("type: 'dialogue_roleplay'"), 'Missing dialogue_roleplay step in DUO_STEPS_META');
+  assert(appJs.includes("type: 'reading_context'"), 'Missing reading_context step in DUO_STEPS_META');
+  assert(!appJs.includes('class="btn-syllabus-direct"'), 'Old static Syllabus Completo card button should be removed');
 });
 
 test('app.html contains #btn-mcer-launch-duo in unit modal and #wmd-btn-launch-duo in career drawer', () => {

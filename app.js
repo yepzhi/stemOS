@@ -3450,7 +3450,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (dp[k] && dp[k].completed) completedSteps++;
                 }
             } catch(e) {}
-            lessonsEl.textContent = `${completedSteps} de 80 pasos`;
+            lessonsEl.textContent = `${completedSteps} pasos completados`;
         }
 
         // Audio Speed Pills
@@ -6572,7 +6572,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
             btnSubmitQuiz.onclick = () => {
                 const anyChecked = document.querySelector('input[name^="mcer-quiz-q-"]:checked');
                 if (!anyChecked && typeof window.startDuoLessonForUnit === 'function') {
-                    window.startDuoLessonForUnit(unit.id, 5);
+                    window.startDuoLessonForUnit(unit.id, DUO_STEPS_META.length);
                     return;
                 }
                 if (quizList.length === 0) return;
@@ -11092,6 +11092,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         // 4. Populate Stepping Stones & Hito Dividers (Alternating Zero-Overlap Flow)
         const alignments = ['align-left', 'align-right'];
+        const duoProgress = getDuoProgress();
         let activeNodeFound = false;
         let currentHitoRendered = 0;
 
@@ -11169,6 +11170,16 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 ? `powersheet.html?lesson=${encodeURIComponent(mod.id)}`
                 : `powersheet.html?esp=${encodeURIComponent(`${mod.trackId || 'it-mecatronica'}:${mod.id}`)}`;
 
+            const duoStepsStripHtml = DUO_STEPS_META.map((st, stIdx) => {
+                const sNum = stIdx + 1;
+                const isStepDone = !!(duoProgress[`${mod.id}-step${sNum}`] && duoProgress[`${mod.id}-step${sNum}`].completed);
+                const extraCls = `${st.isBoss ? ' boss-step' : ''}${isStepDone ? ' completed' : ''}`;
+                const tip = `Paso ${sNum}: ${st.title} (${st.label})`;
+                return `<button type="button" class="duo-sub-step-btn${extraCls}" title="${tip}" data-step="${sNum}">
+                            <i class="fa-solid ${isStepDone ? 'fa-check' : st.icon}"></i> ${st.shortLabel}
+                        </button>`;
+            }).join('\n                        ');
+
             stepEl.innerHTML = `
                 <div class="path-node-disc" data-mod-id="${mod.id}" title="${safeAttrTitle}" style="border-color:${isUnlocked ? mod.color : '#94a3b8'}; cursor:pointer;">
                     ${mascotHtml}
@@ -11194,31 +11205,14 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         <span>${mod.standard || 'ISO / IEEE'}</span>
                     </div>
 
-                    <!-- 5-Step Micro-Lessons Strip (Interactive Engine) -->
+                    <!-- 7-Step Interactive Duolingo Micro-Lessons Strip -->
                     <div class="duo-steps-strip">
-                        <button type="button" class="duo-sub-step-btn" title="Paso 1: Vocab Sprint (Emparejamiento)" data-step="1">
-                            <i class="fa-solid fa-shapes"></i> Vocab
-                        </button>
-                        <button type="button" class="duo-sub-step-btn" title="Paso 2: Sentence Builder (Oraciones)" data-step="2">
-                            <i class="fa-solid fa-cubes-stacked"></i> Builder
-                        </button>
-                        <button type="button" class="duo-sub-step-btn" title="Paso 3: Industrial Audio Lab (Escucha)" data-step="3">
-                            <i class="fa-solid fa-headphones"></i> Audio
-                        </button>
-                        <button type="button" class="duo-sub-step-btn" title="Paso 4: Grammar Drills (Sintaxis)" data-step="4">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> Grammar
-                        </button>
-                        <button type="button" class="duo-sub-step-btn boss-step" title="Paso 5: Voice Crucible Boss (Pronunciación)" data-step="5">
-                            <i class="fa-solid fa-crown"></i> Boss
-                        </button>
+                        ${duoStepsStripHtml}
                     </div>
 
                     <div style="display:flex; align-items:center; gap:8px; margin-top:10px; flex-wrap:wrap;">
                         <button type="button" class="btn-play-duo-direct" title="Iniciar sesión interactiva con vidas y XP">
                             <i class="fa-solid fa-gamepad"></i> <span>Lección Interactiva</span>
-                        </button>
-                        <button type="button" class="btn-syllabus-direct" title="Ver temario formal de la unidad">
-                            <i class="fa-solid fa-book-open"></i> <span>Syllabus Completo</span>
                         </button>
                         <a class="btn-powersheet-direct" href="${powerSheetHref}" target="_blank" rel="noopener" style="background:#f0fdf4; color:#15803d; border:1px solid #86efac; padding:5px 10px; border-radius:10px; font-size:0.74rem; font-weight:800; text-decoration:none; display:inline-flex; align-items:center; gap:5px;" title="Descargar o imprimir hoja resumen de 1 página">
                             <i class="fa-solid fa-file-lines"></i> <span>Power Sheet</span>
@@ -11257,25 +11251,6 @@ Nearshoring Center of Excellence • stemOS Certified`;
                         return;
                     }
                     startDuoLessonForUnit(mod.id, 1);
-                });
-            }
-
-            const syllabusBtn = stepEl.querySelector('.btn-syllabus-direct');
-            if (syllabusBtn) {
-                syllabusBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    if (!isUnlocked) {
-                        DuoSound.playIncorrect();
-                        showSyncToast('Estación bloqueada. Completa las estaciones previas para desbloquear.', 'info');
-                        return;
-                    }
-                    if (mod.isMcerUnit) {
-                        if (typeof openMcerUnitModal === 'function') {
-                            openMcerUnitModal(mod.id);
-                        }
-                    } else {
-                        openStationInspectionDrawer(career, careerPath, mod, idx, isUnlocked, isCompleted);
-                    }
                 });
             }
 
@@ -11593,6 +11568,171 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     distractors: ['has', 'does', 'wrench']
                 });
             }
+        } else if (stepMeta.type === 'dialogue_roleplay') {
+            // Ex 1: Partner A speaks -> pick Partner B's natural reply
+            const turnA = dialogueTurns[0];
+            const turnB = dialogueTurns[1] || { speaker: 'Partner', en: 'Understood. I will log the verification right away.', es: 'Entendido. Registraré la verificación de inmediato.' };
+            const lineA = turnA ? (turnA.en || turnA.text || turnA.line || '') : '';
+            const lineB = turnB ? (turnB.en || turnB.text || turnB.line || '') : '';
+            if (lineA && lineB) {
+                const candidatePool = [
+                    dialogueTurns[2] && (dialogueTurns[2].en || dialogueTurns[2].text),
+                    dialogueTurns[3] && (dialogueTurns[3].en || dialogueTurns[3].text),
+                    vocabList[0] && vocabList[0].example,
+                    vocabList[1] && vocabList[1].example,
+                    'No problem, I already ignored the safety alarm yesterday.',
+                    'Sorry, I forgot my password at the security gate.'
+                ].filter(opt => opt && opt.trim().toLowerCase() !== lineB.trim().toLowerCase());
+                const uniqueDist = [...new Set(candidatePool)].slice(0, 2);
+                const opts = [lineB, ...uniqueDist].sort(() => Math.random() - 0.5);
+                const correctIdx = opts.indexOf(lineB);
+                exercises.push({
+                    type: 'mcq_gap',
+                    category: 'Diálogo Activo · Roleplay en Planta',
+                    heading: 'Responde en el diálogo operativo',
+                    subtext: 'Escucha lo que dice tu compañero y elige la respuesta correcta en inglés:',
+                    contextDialogue: {
+                        speaker: turnA.speaker || 'Colleague',
+                        text: lineA,
+                        translation: turnA.es || turnA.translation || ''
+                    },
+                    prompt: `${turnB.speaker || 'Tú'} responde:`,
+                    options: opts,
+                    correctIdx: correctIdx,
+                    hint: turnB.es || turnB.translation || 'Mantén claridad y registro apropiado al turno.'
+                });
+            }
+
+            // Ex 2: Assemble Partner B reply as Sentence Builder
+            if (lineB) {
+                const cleanReply = lineB.replace(/[.!?]/g, '').trim();
+                const words = cleanReply.split(/\s+/);
+                if (words.length >= 2 && words.length <= 14) {
+                    exercises.push({
+                        type: 'sentence_builder',
+                        category: 'Construcción de Respuesta',
+                        heading: 'Arma tu intervención en la conversación',
+                        subtext: turnB.es || turnB.translation || 'Ordena los bloques para responder correctamente:',
+                        targetSentence: cleanReply,
+                        distractors: ['never', 'already', 'broken']
+                    });
+                }
+            }
+
+            // Ex 3: Turn C -> D follow-up when 4 turns exist
+            if (dialogueTurns.length >= 4) {
+                const turnC = dialogueTurns[2];
+                const turnD = dialogueTurns[3];
+                const lineC = turnC.en || turnC.text || '';
+                const lineD = turnD.en || turnD.text || '';
+                if (lineC && lineD) {
+                    const opts2 = [
+                        lineD,
+                        lineA,
+                        'Let us postpone this inspection until next month.'
+                    ].filter((v, i, a) => v && a.indexOf(v) === i).sort(() => Math.random() - 0.5);
+                    exercises.push({
+                        type: 'mcq_gap',
+                        category: 'Continuación de Diálogo',
+                        heading: 'Completa el cierre de la conversación',
+                        subtext: 'Selecciona la respuesta coherente al escenario:',
+                        contextDialogue: {
+                            speaker: turnC.speaker || 'Colleague',
+                            text: lineC,
+                            translation: turnC.es || turnC.translation || ''
+                        },
+                        prompt: `${turnD.speaker || 'Tú'} continúa:`,
+                        options: opts2,
+                        correctIdx: opts2.indexOf(lineD),
+                        hint: turnD.es || turnD.translation || ''
+                    });
+                }
+            }
+        } else if (stepMeta.type === 'reading_context') {
+            const stripHtml = (s) => String(s || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+            const readingBody = (unit.grammarBox && (unit.grammarBox.goldenRule || unit.grammarBox.explanationES))
+                ? stripHtml(unit.grammarBox.goldenRule || unit.grammarBox.explanationES)
+                : (unit.canDo || 'Aplica la estructura gramatical en contexto operativo real.');
+
+            // Parse fillBlanks + answerKey cleanly when available
+            const ps = unit.powerSheet || {};
+            const akMap = {};
+            if (ps.answerKey) {
+                for (const m of String(ps.answerKey).matchAll(/(\d+)\)\s*([^·|;,\n]+)/g)) {
+                    akMap[m[1]] = m[2].trim();
+                }
+            }
+            const fbItems = Array.isArray(ps.fillBlanks) ? ps.fillBlanks : [];
+            fbItems.slice(0, 2).forEach((rawLine, fIdx) => {
+                const match = String(rawLine).match(/^(\d+)\.\s*(.+?)\s*\(([^)]+)\)\s*$/);
+                if (match && akMap[match[1]]) {
+                    const promptTxt = match[2];
+                    const rawOpts = match[3].split('/').map(s => s.trim()).filter(Boolean);
+                    const ansTxt = akMap[match[1]];
+                    if (!rawOpts.some(o => o.toLowerCase() === ansTxt.toLowerCase())) {
+                        rawOpts.unshift(ansTxt);
+                    }
+                    const shuffled = [...new Set(rawOpts)].sort(() => Math.random() - 0.5);
+                    const cIdx = shuffled.findIndex(o => o.toLowerCase() === ansTxt.toLowerCase());
+                    if (cIdx >= 0 && shuffled.length >= 2) {
+                        exercises.push({
+                            type: 'mcq_gap',
+                            category: 'Lectura & Contexto Aplicado',
+                            heading: 'Lee la nota clave y completa el enunciado',
+                            subtext: 'Aplica el patrón gramatical dentro del contexto técnico:',
+                            contextReading: fIdx === 0 ? {
+                                badge: unit.industryContext || (unit.cefr ? `MCER ${unit.cefr}` : 'Contexto STEM'),
+                                title: unit.titleES || unit.title || 'Nota Rápida de Estudio',
+                                text: readingBody
+                            } : null,
+                            prompt: promptTxt,
+                            options: shuffled,
+                            correctIdx: cIdx,
+                            hint: (unit.grammarBox && unit.grammarBox.goldenRule) ? stripHtml(unit.grammarBox.goldenRule) : ''
+                        });
+                    }
+                }
+            });
+
+            // Spot-the-trap exercise from commonMistake (replaces passive wall-of-text warning!)
+            const cm = (unit.grammarBox && unit.grammarBox.commonMistake) || unit.commonMistake;
+            if (cm && cm.bad && cm.good) {
+                const goodChoice = String(cm.good).split('/')[0].trim();
+                const badChoice = String(cm.bad).split('/')[0].trim();
+                if (goodChoice && badChoice && goodChoice !== badChoice) {
+                    const trapOpts = [goodChoice, badChoice].sort(() => Math.random() - 0.5);
+                    exercises.push({
+                        type: 'mcq_gap',
+                        category: 'Radar Anti-Trampas (Español ➔ Inglés)',
+                        heading: '¿Cuál oración está libre de errores?',
+                        subtext: 'Detecta la interferencia típica del español y elige la forma natural correcta:',
+                        prompt: 'Elige la expresión correcta:',
+                        options: trapOpts,
+                        correctIdx: trapOpts.indexOf(goodChoice),
+                        hint: cm.exp || 'Evita traducir palabra por palabra desde el español.'
+                    });
+                }
+            }
+
+            // Active Writing Sentence Builder from Power Sheet reorder / answerKey
+            let writeSentence = '';
+            if (ps.answerKey && ps.answerKey.includes('Orden:')) {
+                const seg = ps.answerKey.split('Orden:')[1].split('/')[0].replace(/[.!?]/g, '').trim();
+                if (seg.split(/\s+/).length >= 3) writeSentence = seg;
+            }
+            if (!writeSentence && vocabList[0] && vocabList[0].example) {
+                writeSentence = vocabList[0].example.replace(/[.!?]/g, '').trim();
+            }
+            if (writeSentence) {
+                exercises.push({
+                    type: 'sentence_builder',
+                    category: 'Producción Escrita Activa',
+                    heading: 'Construye la oración de salida',
+                    subtext: ps.writePrompt || (unit.writingLab && unit.writingLab.prompt) || 'Ordena los bloques para redactar la idea correctamente:',
+                    targetSentence: writeSentence,
+                    distractors: ['yesterday', 'not', 'only']
+                });
+            }
         } else if (stepMeta.type === 'voice_crucible') {
             // Milestone Boss Level: Voice Crucible Challenge
             const targetVoiceSentence = (vocabList[0] && vocabList[0].example) ? vocabList[0].example : 'We must inspect the cleanroom pressure differential every hour.';
@@ -11697,11 +11837,13 @@ Nearshoring Center of Excellence • stemOS Certified`;
     };
 
     const DUO_STEPS_META = [
-        { type: 'vocab_sprint', title: 'Vocab Sprint', icon: 'fa-shapes', label: 'Vocabulario & Emparejamiento', estMin: 3, xp: 20 },
-        { type: 'sentence_builder', title: 'Sentence Builder', icon: 'fa-cubes-stacked', label: 'Constructor de Oraciones', estMin: 4, xp: 25 },
-        { type: 'listening', title: 'Industrial Audio Lab', icon: 'fa-headphones', label: 'Comprensión Auditiva en Planta', estMin: 4, xp: 25 },
-        { type: 'grammar_drills', title: 'Grammar Drills', icon: 'fa-wand-magic-sparkles', label: 'Gramática Aplicada & Sintaxis', estMin: 4, xp: 25 },
-        { type: 'voice_crucible', title: 'Voice Crucible Boss', icon: 'fa-crown', label: 'Crisol de Voz (Milestone Boss)', estMin: 5, xp: 40, isBoss: true }
+        { type: 'vocab_sprint', shortLabel: 'Vocab', title: 'Vocab Sprint', icon: 'fa-shapes', label: 'Vocabulario & Emparejamiento', estMin: 3, xp: 20 },
+        { type: 'sentence_builder', shortLabel: 'Builder', title: 'Sentence Builder', icon: 'fa-cubes-stacked', label: 'Constructor de Oraciones', estMin: 3, xp: 25 },
+        { type: 'listening', shortLabel: 'Audio', title: 'Industrial Audio Lab', icon: 'fa-headphones', label: 'Comprensión Auditiva en Planta', estMin: 3, xp: 25 },
+        { type: 'grammar_drills', shortLabel: 'Grammar', title: 'Grammar Drills', icon: 'fa-wand-magic-sparkles', label: 'Gramática Aplicada & Sintaxis', estMin: 3, xp: 25 },
+        { type: 'dialogue_roleplay', shortLabel: 'Diálogo', title: 'Diálogo Activo', icon: 'fa-comments', label: 'Conversación & Respuesta en Contexto', estMin: 3, xp: 25 },
+        { type: 'reading_context', shortLabel: 'Lectura', title: 'Lectura & Práctica', icon: 'fa-book-open-reader', label: 'Comprensión de Contexto & Errores Comunes', estMin: 3, xp: 25 },
+        { type: 'voice_crucible', shortLabel: 'Boss', title: 'Voice Crucible Boss', icon: 'fa-crown', label: 'Crisol de Voz (Milestone Boss)', estMin: 4, xp: 40, isBoss: true }
     ];
 
     function startDuoLessonForUnit(unitId, stepIndex = 1) {
@@ -11760,7 +11902,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
             closeCareerDrawer();
         }
 
-        const stepIdx = Math.max(1, Math.min(5, stepIndex));
+        const stepIdx = Math.max(1, Math.min(DUO_STEPS_META.length, stepIndex));
         const stepMeta = DUO_STEPS_META[stepIdx - 1] || DUO_STEPS_META[0];
         openDuoLesson(unit, stepIdx, stepMeta);
     }
@@ -11820,6 +11962,52 @@ Nearshoring Center of Excellence • stemOS Certified`;
             <p class="duo-prompt-subtext">${ex.subtext}</p>
         `;
         stage.appendChild(headerBox);
+
+        // Optional context dialogue bubble with Piper Neural audio playback
+        if (ex.contextDialogue && ex.contextDialogue.text) {
+            const dlgBox = document.createElement('div');
+            dlgBox.style.cssText = 'display:flex; align-items:flex-start; gap:12px; padding:14px 16px; margin-bottom:16px; border-radius:16px; background:linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%); border:1.5px solid #bae6fd;';
+            const playTurnBtn = document.createElement('button');
+            playTurnBtn.type = 'button';
+            playTurnBtn.style.cssText = 'width:40px; height:40px; border-radius:12px; border:none; background:#0284c7; color:#ffffff; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1rem; box-shadow:0 3px 10px rgba(2,132,199,0.25);';
+            playTurnBtn.setAttribute('aria-label', 'Escuchar línea del diálogo');
+            playTurnBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+            playTurnBtn.addEventListener('click', () => {
+                DuoSound.playPop();
+                const spd = (typeof window.getAudioSpeed === 'function') ? window.getAudioSpeed() : 0.9;
+                if (typeof window.speakEnglishText === 'function') {
+                    window.speakEnglishText(ex.contextDialogue.text, spd);
+                }
+            });
+            const dlgTextWrap = document.createElement('div');
+            dlgTextWrap.style.flex = '1';
+            const spkEl = document.createElement('div');
+            spkEl.style.cssText = 'font-size:0.72rem; font-weight:800; color:#0284c7; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px;';
+            spkEl.textContent = ex.contextDialogue.speaker || 'Colleague';
+            const lineEl = document.createElement('div');
+            lineEl.style.cssText = 'font-size:1.05rem; font-weight:700; color:#0f172a; line-height:1.4;';
+            lineEl.textContent = `"${ex.contextDialogue.text}"`;
+            dlgTextWrap.appendChild(spkEl);
+            dlgTextWrap.appendChild(lineEl);
+            dlgBox.appendChild(playTurnBtn);
+            dlgBox.appendChild(dlgTextWrap);
+            stage.appendChild(dlgBox);
+        }
+
+        // Optional compact mini-reading card
+        if (ex.contextReading && ex.contextReading.text) {
+            const readBox = document.createElement('div');
+            readBox.style.cssText = 'padding:14px 16px; margin-bottom:16px; border-radius:16px; background:#f8fafc; border:1.5px solid #cbd5e1;';
+            const rMeta = document.createElement('div');
+            rMeta.style.cssText = 'font-size:0.7rem; font-weight:800; color:#0284c7; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;';
+            rMeta.textContent = `${ex.contextReading.badge || 'Contexto'} · ${ex.contextReading.title || ''}`;
+            const rBody = document.createElement('p');
+            rBody.style.cssText = 'margin:0; font-size:0.9rem; color:#334155; line-height:1.5;';
+            rBody.textContent = ex.contextReading.text;
+            readBox.appendChild(rMeta);
+            readBox.appendChild(rBody);
+            stage.appendChild(readBox);
+        }
 
         // Render exercise body by type
         if (ex.type === 'sentence_builder') {
@@ -12371,8 +12559,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
         };
         saveDuoProgress(duoProgress);
 
-        // If step 5 or milestone boss is completed, mark unit as completed!
-        if (session.stepNum >= 5 || (session.stepMeta && session.stepMeta.isBoss)) {
+        // If final step (Boss) is completed, mark unit as completed!
+        if (session.stepNum >= DUO_STEPS_META.length || (session.stepMeta && session.stepMeta.isBoss)) {
             localStorage.setItem('stemos_crucible_' + session.unit.id, 'completed');
             localStorage.setItem('stemos_unit_completed_' + session.unit.id, 'true');
             localStorage.setItem('stemos_mcer_unit_' + session.unit.id, 'passed');
@@ -12451,7 +12639,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         window.closeDuoLessonRunner();
 
-        if (currentStep < 5) {
+        if (currentStep < DUO_STEPS_META.length) {
             setTimeout(() => {
                 startDuoLessonForUnit(currentUnitId, currentStep + 1);
             }, 300);
@@ -12535,7 +12723,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         activeDuoSession = {
             unit: examUnit,
-            stepNum: 5,
+            stepNum: DUO_STEPS_META.length,
             stepMeta: { type: 'voice_crucible', title: 'Certification Marathon', icon: 'fa-trophy', label: 'Maratón de Certificación', estMin: 10, xp: 500, isBoss: true },
             stepKey: `exam-${currentExamTrackId || 'cert'}-complete`,
             exercises: exercises,
