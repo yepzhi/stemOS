@@ -3506,6 +3506,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        const cefrNoteEl = document.getElementById('sp-modal-cefr-note');
+        if (cefrNoteEl) {
+            if (userLvl === 'A1') {
+                cefrNoteEl.innerHTML = '<strong>Nivel A1 Activo · Tronco Común MCER</strong><br>Ruta de Fundamentos: Track Base MCER A1. Cursas exclusivamente el Track Base A1. Los laboratorios técnicos avanzados de tu especialidad se desbloquean al alcanzar Nivel A2 o superior, o al realizar el Placement Test y demostrar nivel A2+.';
+            } else if (userLvl === 'A2') {
+                cefrNoteEl.innerHTML = '<strong>Nivel A2 Activo · Interleaving Inicial</strong><br>Cursas el Track Base MCER A2 con acceso a laboratorios técnicos introductorios de tu especialidad.';
+            } else if (userLvl === 'B1') {
+                cefrNoteEl.innerHTML = '<strong>Nivel B1 Activo · Inmersión de Carrera</strong><br>Ruta técnica de 60.0h de tu especialidad desbloqueada (tracks industriales, simuladores y reportes 8D).';
+            } else {
+                cefrNoteEl.innerHTML = `<strong>Nivel ${userLvl} Activo · Especialidad Avanzada</strong><br>Acceso completo a laboratorios técnicos avanzados, auditorías y Capstone con IA Socrática.`;
+            }
+        }
+
         if (modalityEl) {
             if (profile && profile.degreeModality === 'tsu' && profile.tsuSpecialtyName) {
                 modalityEl.textContent = `TSU: ${profile.tsuSpecialtyName}`;
@@ -8242,11 +8255,6 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         const badgePill = document.getElementById('user-placement-badge-pill');
         const badgeText = document.getElementById('user-placement-badge-text');
-        const calloutEl = document.getElementById('ed-placement-level-callout');
-        const calloutLevel = document.getElementById('ed-placement-callout-level');
-        const calloutTitle = document.getElementById('ed-placement-callout-title');
-        const calloutDesc = document.getElementById('ed-placement-callout-desc');
-        const calloutIcon = document.getElementById('ed-placement-callout-icon');
         const pendingBanner = document.getElementById('panel-placement-pending-banner');
 
         const isPlacementDone = hasCompletedPlacement() || !!userLevel;
@@ -8278,10 +8286,6 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 badgePill.style.borderColor = '#a7f3d0';
                 badgePill.style.display = 'inline-flex';
             }
-            if (calloutEl) {
-                // Pending banner already renders this guidance above; avoid stacking a duplicate banner
-                calloutEl.style.display = 'none';
-            }
             return;
         }
 
@@ -8311,51 +8315,6 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 badgePill.style.background = '#f3e8ff';
                 badgePill.style.color = '#7e22ce';
                 badgePill.style.borderColor = '#e9d5ff';
-            }
-        }
-
-        if (calloutEl && calloutTitle && calloutDesc) {
-            calloutEl.style.display = 'block';
-            if (userLevel === 'A1') {
-                if (calloutLevel) {
-                    calloutLevel.textContent = 'Nivel A1 Activo · Tronco Común MCER';
-                    calloutLevel.style.background = '#f59e0b';
-                }
-                calloutTitle.textContent = 'Ruta de Fundamentos: Track Base MCER A1';
-                calloutDesc.textContent = 'Por diseño pedagógico para evitar sobrecarga cognitiva, cursas exclusivamente el Track Base A1. Los laboratorios técnicos avanzados de tu especialidad se desbloquean al alcanzar Nivel A2.';
-                if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-shield-halved" style="color:#f59e0b;"></i>';
-                calloutEl.style.background = 'linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0.03) 100%)';
-                calloutEl.style.borderColor = 'rgba(245, 158, 11, 0.3)';
-            } else if (userLevel === 'A2') {
-                if (calloutLevel) {
-                    calloutLevel.textContent = 'Nivel A2 Activo · Interleaving Inicial';
-                    calloutLevel.style.background = '#0284c7';
-                }
-                calloutTitle.textContent = 'MCER A2 + Laboratorios Técnicos Introductorios Desbloqueados';
-                calloutDesc.textContent = '¡Entrelazado activo! Cursas el Track Base MCER A2 y se desbloquean tus primeros laboratorios técnicos de carrera (Vocabulario de Seguridad, EHS y Herramientas Industriales).';
-                if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-sliders" style="color:#0284c7;"></i>';
-                calloutEl.style.background = 'linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(14, 165, 233, 0.03) 100%)';
-                calloutEl.style.borderColor = 'rgba(14, 165, 233, 0.3)';
-            } else if (userLevel === 'B1') {
-                if (calloutLevel) {
-                    calloutLevel.textContent = 'Nivel B1 Activo · Inmersión de Carrera';
-                    calloutLevel.style.background = '#10b981';
-                }
-                calloutTitle.textContent = 'Ruta Determinista de 60.0h de tu Carrera 100% Desbloqueada';
-                calloutDesc.textContent = 'Inmersión total: Cursas las 16 estaciones de tu especialidad de ingeniería con simuladores de incidentes, reportes 8D y 4 hitos de certificación.';
-                if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-graduation-cap" style="color:#10b981;"></i>';
-                calloutEl.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.03) 100%)';
-                calloutEl.style.borderColor = 'rgba(16, 185, 129, 0.3)';
-            } else {
-                if (calloutLevel) {
-                    calloutLevel.textContent = `Nivel ${userLevel} · Senior Nearshoring`;
-                    calloutLevel.style.background = '#a855f7';
-                }
-                calloutTitle.textContent = 'Nearshoring Avanzado, ECOs & Capstone Socrático con IA';
-                calloutDesc.textContent = 'Nivel superior de acreditación: Órdenes de cambio de ingeniería (ECO), auditorías internacionales y defensa de Capstone con IA Socrática.';
-                if (calloutIcon) calloutIcon.innerHTML = '<i class="fa-solid fa-user-astronaut" style="color:#a855f7;"></i>';
-                calloutEl.style.background = 'linear-gradient(135deg, rgba(168, 85, 247, 0.08) 0%, rgba(168, 85, 247, 0.03) 100%)';
-                calloutEl.style.borderColor = 'rgba(168, 85, 247, 0.3)';
             }
         }
 
