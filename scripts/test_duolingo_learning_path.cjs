@@ -315,6 +315,25 @@ test('app.js exposes buildDuoLessonExercises and STEMOS_TECH_RESERVOIR_EXERCISES
   assert(appJs.includes('exercises.length < 8'), 'Missing minimum 8 exercises enforcement loop');
 });
 
+console.log('\n▶ 13. The English Prosody Method Integration (Thought Groups | Connected Speech ‿ | Weak Forms /ə/ | Nuclear Stress ●)');
+test('app.js implements StemOSProsody engine with reductions, catenation, thought groups, intonation & shadowing', () => {
+  assert(appJs.includes('window.STEMOS_PROSODY = StemOSProsody;'), 'Missing window.STEMOS_PROSODY');
+  assert(appJs.includes('FUNCTION_WORD_REDUCTIONS'), 'Missing FUNCTION_WORD_REDUCTIONS');
+  assert(appJs.includes('MULTI_WORD_REDUCTIONS'), 'Missing MULTI_WORD_REDUCTIONS');
+  assert(appJs.includes('renderProsodyBlueprintHtml('), 'Missing renderProsodyBlueprintHtml()');
+  assert(appJs.includes('playShadowingSequence('), 'Missing playShadowingSequence()');
+});
+
+test('dev.css and app.js render .duo-prosody-blueprint, Connected Speech exercises & #duo-prosody-shadow-btn', () => {
+  assert(devCss.includes('.duo-prosody-blueprint'), 'Missing .duo-prosody-blueprint in dev.css');
+  assert(devCss.includes('.prosody-link-arc'), 'Missing .prosody-link-arc in dev.css');
+  assert(devCss.includes('.prosody-chunk-divider'), 'Missing .prosody-chunk-divider in dev.css');
+  assert(devCss.includes('.prosody-beat-dot.pulsing'), 'Missing .prosody-beat-dot.pulsing in dev.css');
+  assert(appJs.includes('id="duo-prosody-shadow-btn"'), 'Missing #duo-prosody-shadow-btn in Voice Crucible');
+  assert(appJs.includes('Connected Speech & Weak-Form Decoding'), 'Missing Connected Speech decoding exercise in Audio Lab');
+  assert(appJs.includes('Pragmatic Nuclear Stress & Intonation'), 'Missing Nuclear Stress pragmatic exercise in Dialogue Roleplay');
+});
+
 console.log('\n═══════════════════════════════════════════════════════════════════');
 console.log(`🏁 RESULT: ${pass}/${pass} TESTS PASSED (100%)`);
 console.log('═══════════════════════════════════════════════════════════════════\n');

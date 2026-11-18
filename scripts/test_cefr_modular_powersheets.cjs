@@ -226,6 +226,12 @@ check('All ESP career modules across all careers hydrate >=10 vocab, >=8 dialogu
     });
   })
 );
+check('All 84 MCER runnable classes include pronunciationLab entries (stress-timed & prosody rules)',
+  allClasses.every((c) => {
+    const r = mcerClasses.toRunnableUnit(c);
+    return Array.isArray(r.pronunciationLab) && r.pronunciationLab.length >= 4 && r.pronunciationLab[0].term && r.pronunciationLab[0].stress;
+  })
+);
 
 console.log('\n═══════════════════════════════════════════════════════════════════');
 console.log(`🏁 RESULT: ${passed}/${passed + failed} CHECKS PASSED (${Math.round((passed / (passed + failed)) * 100)}%)`);

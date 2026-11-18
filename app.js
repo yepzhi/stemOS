@@ -5723,6 +5723,312 @@ Nearshoring Center of Excellence • stemOS Certified`;
     window.DUO_STEPS_META = DUO_STEPS_META;
     var activeDuoSession = null;
 
+    // 2. Linguistic Prosody Engine (The English Prosody Method: Thought Groups | Connected Speech ‿ | Weak Forms /ə/ | Nuclear Stress ●)
+    const StemOSProsody = {
+        FUNCTION_WORD_REDUCTIONS: {
+            'to': '/tə/', 'for': '/fər/', 'of': '/əv/', 'and': '/ən/',
+            'a': '/ə/', 'an': '/ən/', 'the': '/ðə/', 'at': '/ət/',
+            'from': '/frəm/', 'as': '/əz/', 'can': '/kən/', 'have': '/əv/',
+            'has': '/əz/', 'had': '/əd/', 'are': '/ər/', 'was': '/wəz/',
+            'were': '/wər/', 'will': '/əl/', 'would': '/wəd/', 'should': '/ʃəd/',
+            'could': '/kəd/', 'that': '/ðət/', 'you': '/jə/', 'your': '/jər/'
+        },
+        FUNCTION_WORDS: new Set([
+            'a', 'an', 'the', 'to', 'for', 'of', 'and', 'or', 'but', 'in', 'on', 'at', 'by', 'with',
+            'from', 'as', 'if', 'so', 'that', 'than', 'until', 'while', 'when', 'before', 'after',
+            'i', 'you', 'he', 'she', 'it', 'we', 'they', 'me', 'him', 'her', 'us', 'them',
+            'my', 'your', 'his', 'its', 'our', 'their', 'this', 'am', 'is', 'are', 'was', 'were',
+            'be', 'been', 'being', 'do', 'does', 'did', 'have', 'has', 'had', 'will', 'would',
+            'can', 'could', 'shall', 'should', 'may', 'might', 'must'
+        ]),
+        MULTI_WORD_REDUCTIONS: {
+            'going to': '/ˈɡɑnə/',
+            'have to': '/ˈhæftə/',
+            'has to': '/ˈhæstə/',
+            'used to': '/ˈjuːstə/',
+            'want to': '/ˈwɑnə/',
+            'must have': '/ˈmʌstəv/',
+            'should have': '/ˈʃʊdəv/',
+            'could have': '/ˈkʊdəv/',
+            'would have': '/ˈwʊdəv/',
+            'might have': '/ˈmaɪtəv/',
+            'did you': '/ˈdɪdʒə/',
+            'could you': '/ˈkʊdʒə/',
+            'would you': '/ˈwʊdʒə/'
+        },
+        CLAUSE_BREAK_WORDS: new Set([
+            'because', 'although', 'unless', 'however', 'therefore', 'subsequently',
+            'provided', 'whereas', 'albeit', 'thereby', 'nonetheless', 'nevertheless',
+            'when', 'while', 'if', 'and', 'but', 'before', 'after', 'until'
+        ]),
+        PREP_BREAK_WORDS: new Set(['in', 'on', 'at', 'for', 'with', 'under', 'across', 'inside', 'during', 'by', 'before', 'after', 'until']),
+        WH_WORDS: new Set(['what', 'where', 'when', 'why', 'who', 'whose', 'whom', 'which', 'how']),
+        DIPLOMATIC_MARKERS: ['although', 'even though', 'however', 'granted', 'actually', 'i wonder if', 'provided that', 'somewhat', 'it would appear'],
+
+        escHtml(str) {
+            return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        },
+
+        cleanToken(w) {
+            return String(w || '').replace(/^[^a-zA-Z0-9']+|[^a-zA-Z0-9']+$/g, '').toLowerCase();
+        },
+
+        endsWithConsonantSound(clean) {
+            if (!clean) return false;
+            if (/n't$|'s$|'d$|'m$|'ve$|'re$|'ll$/.test(clean)) return true;
+            if (/[bcdfghjklmnpqrstvwxz]$/.test(clean) && !/[wy]$/.test(clean)) return true;
+            // Silent final -e after consonant (make, take, check... line, node, gate, have, are, before)
+            if (clean.length >= 3 && /[bcdfghjklmnpqrstvwxz]e$/.test(clean) && !/the$|he$|she$|we$|me$|be$/.test(clean)) return true;
+            return false;
+        },
+
+        startsWithVowelSound(clean) {
+            if (!clean) return false;
+            if (/^(hour|honest|honor)/.test(clean)) return true;
+            // Exclude consonant /ju/ onset words like unit, user, usb, uniform, utility
+            if (/^(uni|use|usab|usb|user|util)/.test(clean)) return false;
+            return /^[aeiou]/.test(clean);
+        },
+
+        analyze(text) {
+            const rawStr = String(text || '').trim();
+            if (!rawStr) {
+                return {
+                    text: '',
+                    tokens: [],
+                    links: [],
+                    reductions: [],
+                    contentBeats: 0,
+                    nuclearWord: '',
+                    intonation: { symbol: '↘', label: 'Falling Declarative' },
+                    thoughtGroupsText: '',
+                    chunkedConnectedPlain: ''
+                };
+            }
+
+            const rawParts = rawStr.split(/\s+/).filter(Boolean);
+            const tokens = rawParts.map((word) => {
+                const clean = this.cleanToken(word);
+                const isNegContraction = /n't$/.test(clean) || clean === 'not' || clean === 'never';
+                const isContent = Boolean(clean) && (isNegContraction || !this.FUNCTION_WORDS.has(clean));
+                const reductionIpa = (!isContent && this.FUNCTION_WORD_REDUCTIONS[clean]) ? this.FUNCTION_WORD_REDUCTIONS[clean] : '';
+                const hasPunctPause = /[,;:—]$/.test(word);
+                return {
+                    word,
+                    clean,
+                    isContent,
+                    isNuclear: false,
+                    reductionIpa,
+                    multiReductionIpa: '',
+                    linksToNext: false,
+                    chunkBreakAfter: false,
+                    _hasPunctPause: hasPunctPause
+                };
+            });
+
+            // Multi-word natural reductions (going to, have to, must have, did you, etc.)
+            const reductions = [];
+            for (let i = 0; i < tokens.length - 1; i++) {
+                const pairKey = `${tokens[i].clean} ${tokens[i + 1].clean}`;
+                if (this.MULTI_WORD_REDUCTIONS[pairKey]) {
+                    const ipa = this.MULTI_WORD_REDUCTIONS[pairKey];
+                    tokens[i].multiReductionIpa = ipa;
+                    tokens[i].linksToNext = true;
+                    reductions.push({ phrase: `${tokens[i].word} ${tokens[i + 1].word}`, ipa });
+                } else if (tokens[i].reductionIpa) {
+                    reductions.push({ phrase: tokens[i].clean, ipa: tokens[i].reductionIpa });
+                }
+            }
+            if (tokens.length > 0 && tokens[tokens.length - 1].reductionIpa) {
+                const last = tokens[tokens.length - 1];
+                reductions.push({ phrase: last.clean, ipa: last.reductionIpa });
+            }
+
+            // Thought Group Chunking (|)
+            let chunkLen = 0;
+            for (let i = 0; i < tokens.length; i++) {
+                chunkLen++;
+                if (i >= tokens.length - 1) continue;
+                const nextClean = tokens[i + 1].clean;
+                if (tokens[i]._hasPunctPause) {
+                    tokens[i].chunkBreakAfter = true;
+                    chunkLen = 0;
+                } else if (chunkLen >= 2 && this.CLAUSE_BREAK_WORDS.has(nextClean) && (tokens.length - i) >= 3) {
+                    tokens[i].chunkBreakAfter = true;
+                    chunkLen = 0;
+                } else if (chunkLen >= 4 && this.PREP_BREAK_WORDS.has(nextClean) && (tokens.length - i) >= 3) {
+                    tokens[i].chunkBreakAfter = true;
+                    chunkLen = 0;
+                } else if (chunkLen >= 5 && (tokens.length - i) >= 3 && !tokens[i + 1].reductionIpa) {
+                    tokens[i].chunkBreakAfter = true;
+                    chunkLen = 0;
+                }
+            }
+
+            // Connected Speech Linking (‿) strictly within the same Thought Group
+            const links = [];
+            for (let i = 0; i < tokens.length - 1; i++) {
+                if (tokens[i].chunkBreakAfter) {
+                    tokens[i].linksToNext = false;
+                    continue;
+                }
+                const linkedByRule = tokens[i].linksToNext ||
+                    (this.endsWithConsonantSound(tokens[i].clean) && this.startsWithVowelSound(tokens[i + 1].clean));
+                if (linkedByRule) {
+                    tokens[i].linksToNext = true;
+                    links.push(`${tokens[i].clean}‿${tokens[i + 1].clean}`);
+                }
+            }
+
+            // Nuclear Stress (primary pitch focus = final content word of sentence / last chunk; fallback final content word)
+            let nuclearIdx = -1;
+            for (let i = tokens.length - 1; i >= 0; i--) {
+                if (tokens[i].isContent) {
+                    nuclearIdx = i;
+                    break;
+                }
+            }
+            if (nuclearIdx < 0 && tokens.length > 0) nuclearIdx = tokens.length - 1;
+            if (nuclearIdx >= 0) {
+                tokens[nuclearIdx].isNuclear = true;
+                tokens[nuclearIdx].isContent = true;
+            }
+            const nuclearWord = nuclearIdx >= 0 ? tokens[nuclearIdx].word.replace(/[.,!?;:"]/g, '') : '';
+
+            // Intonation contour classification
+            const lowerStr = rawStr.toLowerCase();
+            let intonation = { symbol: '↘', label: 'Falling Declarative' };
+            if (rawStr.endsWith('?')) {
+                const firstWord = tokens[0] ? tokens[0].clean : '';
+                if (this.WH_WORDS.has(firstWord)) {
+                    intonation = { symbol: '↘', label: 'Falling Wh-Question' };
+                } else {
+                    intonation = { symbol: '↗', label: 'Rising Yes/No' };
+                }
+            } else if (this.DIPLOMATIC_MARKERS.some((m) => lowerStr.includes(m))) {
+                intonation = { symbol: '↘↗', label: 'Fall-Rise Diplomatic' };
+            }
+
+            // Plain text views (for MCQs & tooltips)
+            let chunkedConnectedPlain = '';
+            let thoughtGroupsText = '';
+            tokens.forEach((tk, i) => {
+                const displayW = tk.isNuclear ? tk.word.toUpperCase() : tk.word;
+                chunkedConnectedPlain += displayW;
+                thoughtGroupsText += tk.word;
+                if (i < tokens.length - 1) {
+                    if (tk.chunkBreakAfter) {
+                        chunkedConnectedPlain += ' | ';
+                        thoughtGroupsText += ' | ';
+                    } else if (tk.linksToNext) {
+                        chunkedConnectedPlain += '‿';
+                        thoughtGroupsText += ' ';
+                    } else {
+                        chunkedConnectedPlain += ' ';
+                        thoughtGroupsText += ' ';
+                    }
+                }
+            });
+
+            const contentBeats = tokens.filter((t) => t.isContent).length;
+            return {
+                text: rawStr,
+                tokens,
+                links,
+                reductions,
+                contentBeats,
+                nuclearWord,
+                intonation,
+                thoughtGroupsText,
+                chunkedConnectedPlain
+            };
+        },
+
+        renderProsodyBlueprintHtml(text, opts = {}) {
+            const analysis = this.analyze(text);
+            if (!analysis.tokens.length) return '';
+            const compact = Boolean(opts.compact);
+            const showTips = Boolean(opts.showTips);
+            const safeBeats = analysis.contentBeats;
+            const safeLinks = analysis.links.length;
+            const safeNuc = this.escHtml(analysis.nuclearWord || 'FOCUS');
+
+            let tokensHtml = '';
+            analysis.tokens.forEach((tk, idx) => {
+                const wordEsc = this.escHtml(tk.word);
+                if (tk.isNuclear) {
+                    tokensHtml += `<span class="prosody-token nuclear-stress" title="Nuclear Stress (Golpe tonal principal)">`
+                        + `<span class="prosody-beat-dot">●</span>${wordEsc}`
+                        + `<span class="prosody-pitch-tag">${analysis.intonation.symbol}</span></span>`;
+                } else if (tk.isContent) {
+                    tokensHtml += `<span class="prosody-token content-beat" title="Stress-Timed Beat">`
+                        + `<span class="prosody-beat-dot">●</span>${wordEsc}</span>`;
+                } else {
+                    const weakBadge = tk.multiReductionIpa || tk.reductionIpa;
+                    tokensHtml += `<span class="prosody-token weak-form" title="Weak Form (palabra reducida)">`
+                        + `${wordEsc}${weakBadge ? `<sub class="prosody-schwa-badge">${this.escHtml(weakBadge)}</sub>` : ''}</span>`;
+                }
+                if (idx < analysis.tokens.length - 1) {
+                    if (tk.chunkBreakAfter) {
+                        tokensHtml += `<span class="prosody-chunk-divider" title="Pausa breve de Thought Group">|</span>`;
+                    } else if (tk.linksToNext) {
+                        tokensHtml += `<span class="prosody-link-arc" title="Connected Speech (enlace C+V o reducción)">‿</span>`;
+                    }
+                }
+            });
+
+            const redNote = showTips && analysis.reductions.length > 0
+                ? `<div class="prosody-tips-row"><i class="fa-solid fa-wave-square"></i> <strong>Connected Speech &amp; Schwa /ə/:</strong> Habla sin pausas entre enlaces <code>‿</code> y comprime las palabras débiles (${analysis.reductions.slice(0, 3).map((r) => `<code>${this.escHtml(r.phrase)} ${this.escHtml(r.ipa)}</code>`).join(' · ')}).</div>`
+                : '';
+
+            return `
+                <div class="duo-prosody-blueprint${compact ? ' compact' : ''}">
+                    <div class="duo-prosody-header">
+                        <span class="duo-prosody-pill beats"><i class="fa-solid fa-drum"></i> Beats ● × ${safeBeats}</span>
+                        <span class="duo-prosody-pill links"><i class="fa-solid fa-link"></i> Catenation ‿ × ${safeLinks}</span>
+                        <span class="duo-prosody-pill nuclear"><i class="fa-solid fa-bullseye"></i> Nuclear: ${safeNuc}</span>
+                        <span class="duo-prosody-pill intonation" title="${this.escHtml(analysis.intonation.label)}">${analysis.intonation.symbol} ${this.escHtml(analysis.intonation.label)}</span>
+                    </div>
+                    <div class="duo-prosody-tokens">${tokensHtml}</div>
+                    ${redNote}
+                </div>
+            `;
+        },
+
+        playShadowingSequence(containerEl, text, onDone) {
+            const dots = containerEl ? Array.from(containerEl.querySelectorAll('.prosody-beat-dot')) : [];
+            const spd = (typeof window.getAudioSpeed === 'function') ? window.getAudioSpeed() : 0.85;
+            const totalWords = String(text || '').trim().split(/\s+/).filter(Boolean).length || 6;
+            const estMs = Math.max(1400, Math.round((totalWords * 340) / Math.max(0.65, spd)));
+            const intervalMs = Math.max(220, Math.round(estMs / Math.max(1, dots.length)));
+
+            dots.forEach((d) => d.classList.remove('pulsing'));
+            const timers = [];
+            dots.forEach((dot, idx) => {
+                timers.push(setTimeout(() => {
+                    dots.forEach((d) => d.classList.remove('pulsing'));
+                    dot.classList.add('pulsing');
+                }, idx * intervalMs));
+            });
+
+            const finish = () => {
+                timers.forEach((t) => clearTimeout(t));
+                dots.forEach((d) => d.classList.remove('pulsing'));
+                if (typeof onDone === 'function') onDone();
+            };
+
+            if (typeof window.speakEnglishText === 'function') {
+                window.speakEnglishText(text, spd, finish);
+                // Safety fallback timer in case Web Speech doesn't fire callback
+                setTimeout(finish, estMs + 1400);
+            } else {
+                setTimeout(finish, estMs);
+            }
+        }
+    };
+    window.StemOSProsody = StemOSProsody;
+    window.STEMOS_PROSODY = StemOSProsody;
+
     /* --- 8. INITIAL RENDER --- */
     if (Object.keys(coursesData).length > 0) {
         renderAllUnitsGrid('all');
@@ -6469,7 +6775,10 @@ Nearshoring Center of Excellence • stemOS Certified`;
         if (dialogueLines.length > 0) {
             dialogueLines.forEach(d => {
                 const speakerName = d.speaker || 'Speaker';
-                const textContent = d.text || '';
+                const textContent = d.text || d.en || '';
+                const prosodyHtml = (typeof StemOSProsody !== 'undefined' && textContent)
+                    ? StemOSProsody.renderProsodyBlueprintHtml(textContent, { compact: true })
+                    : '';
                 const bubble = document.createElement('div');
                 bubble.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:10px 14px; display:flex; align-items:flex-start; gap:10px;';
                 bubble.innerHTML = `
@@ -6479,6 +6788,7 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     <div style="flex:1;">
                         <div style="font-size:0.75rem; font-weight:800; color:#0284c7; text-transform:uppercase;">${speakerName}</div>
                         <div style="font-size:0.92rem; color:#0f172a; margin-top:2px;">${textContent}</div>
+                        ${prosodyHtml}
                     </div>
                     <button class="btn-play-turn-audio" style="background:none; border:none; color:#0284c7; cursor:pointer; font-size:1rem; padding:4px;" title="Escuchar">
                         <i class="fa-solid fa-volume-high"></i>
@@ -12104,7 +12414,154 @@ Nearshoring Center of Excellence • stemOS Certified`;
         });
         vocabExList = [...vocabExList, ...builtVocabClozes];
 
-        // ── SECTION BUILDERS (Target: 8–10 Unique Non-Repetitive Activities Each) ──
+        // Prosody Exercise Helpers (The English Prosody Method: Connected Speech ‿, Weak Forms /ə/, Thought Groups |, Nuclear Stress ●)
+        const getProsodyCandidates = () => {
+            const cands = [];
+            dialogueTurns.forEach((t) => {
+                const txt = t && (t.en || t.text || t.line);
+                if (txt && txt.split(/\s+/).length >= 4) {
+                    cands.push({ text: txt, speaker: t.speaker || 'Engineer', es: t.es || t.translation || '' });
+                }
+            });
+            vocabList.forEach((v) => {
+                if (v && v.example && v.example.split(/\s+/).length >= 4) {
+                    cands.push({ text: v.example, speaker: 'Tech Lead', es: v.exampleES || v.es || '' });
+                }
+            });
+            return cands;
+        };
+
+        const addConnectedSpeechExercise = (candIdx, cat, extraDialogue = true) => {
+            const cands = getProsodyCandidates();
+            if (cands.length === 0) return false;
+            // Pick first candidate starting from candIdx that has real links or reductions
+            let chosen = cands[candIdx % cands.length];
+            let analysis = StemOSProsody.analyze(chosen.text);
+            for (let k = 0; k < cands.length; k++) {
+                const probe = cands[(candIdx + k) % cands.length];
+                const pa = StemOSProsody.analyze(probe.text);
+                if (pa.links.length > 0 && pa.reductions.length > 0) {
+                    chosen = probe;
+                    analysis = pa;
+                    break;
+                }
+            }
+            const firstLink = analysis.links[0] || '';
+            const firstRed = analysis.reductions[0];
+            let correctStr = '';
+            let distractors = [];
+            let hintStr = '';
+            if (firstLink && firstRed) {
+                correctStr = `Links ${firstLink} (C+V) and reduces "${firstRed.phrase}" ➔ ${firstRed.ipa}`;
+                distractors = [
+                    `Pauses sharply after every single word with zero catenation`,
+                    `Stresses "${firstRed.phrase.toUpperCase()}" loudly with a robotic full vowel`,
+                    `Splits every syllable evenly with Spanish syllable-timed pacing`
+                ];
+                hintStr = `Connected Speech enlaza consonante+vocal (${firstLink}) y comprime "${firstRed.phrase}" a ${firstRed.ipa} para sostener el ritmo Stress-Timed.`;
+            } else if (firstLink) {
+                correctStr = `Natural catenation links ${firstLink} cleanly inside the thought group`;
+                distractors = [
+                    `Inserts a glottal stop between ${firstLink.replace('‿', ' and ')}`,
+                    `Pronounces function words louder than core technical nouns`,
+                    `Pauses after every single syllable in Spanish cadence`
+                ];
+                hintStr = `La dinámica de fluidos enlaza consonante con vocal (${firstLink}) sin pausas artificiales.`;
+            } else {
+                correctStr = `Compresses unstressed words around ${analysis.contentBeats} stress beats (${analysis.nuclearWord.toUpperCase()})`;
+                distractors = [
+                    `Gives equal flat duration to all prepositions and articles`,
+                    `Drops every consonant cluster at the end of verbs`,
+                    `Puts main tonic stress on the shortest article`
+                ];
+                hintStr = `El inglés mantiene golpes rítmicos entre palabras de contenido (${analysis.nuclearWord}).`;
+            }
+            const built = buildShuffledOptions(correctStr, distractors, seedOffset + candIdx * 13 + 7);
+            return pushEx({
+                type: 'mcq_gap',
+                category: cat || 'Connected Speech & Weak Forms',
+                heading: 'Decode natural Connected Speech & schwa reductions',
+                subtext: extraDialogue
+                    ? 'Listen to the spoken engineering line above and identify how native prosody flows:'
+                    : 'Identify the biomechanically efficient American English speech flow:',
+                contextDialogue: extraDialogue ? {
+                    speaker: chosen.speaker,
+                    text: chosen.text,
+                    translation: chosen.es
+                } : null,
+                showProsodyBlueprint: false,
+                prompt: `In "${chosen.text}", how does natural Stress-Timed speech flow?`,
+                options: built.options,
+                correctIdx: built.correctIdx,
+                hint: hintStr
+            });
+        };
+
+        const addThoughtGroupNuclearExercise = (candIdx, cat, withAudioBubble = true) => {
+            const cands = getProsodyCandidates();
+            if (cands.length === 0) return false;
+            const chosen = cands[candIdx % cands.length];
+            const analysis = StemOSProsody.analyze(chosen.text);
+            const rawTokens = analysis.tokens.map((t) => t.word);
+            if (rawTokens.length < 4) return false;
+
+            const correctChunked = analysis.chunkedConnectedPlain;
+            const mid = Math.max(1, Math.floor(rawTokens.length / 2));
+            const badSplit = `${rawTokens[0]} | ${rawTokens[1].toUpperCase()} | ${rawTokens.slice(2, mid).join(' ')} | ${rawTokens.slice(mid).join(' ')}`;
+            const badFlat = rawTokens.map((w, i) => (i === 0 ? w.toUpperCase() : w.toLowerCase())).join(' | ');
+            const badWeakFocus = analysis.tokens.map((t) => (!t.isContent ? t.word.toUpperCase() : t.word.toLowerCase())).join(' ');
+
+            const built = buildShuffledOptions(correctChunked, [badSplit, badFlat, badWeakFocus], seedOffset + candIdx * 19 + 3);
+            return pushEx({
+                type: 'mcq_gap',
+                category: cat || 'Thought Groups & Nuclear Stress',
+                heading: 'Select the accurate Thought-Group chunking & Nuclear Stress',
+                subtext: 'Identify natural meaning chunks (|), consonant-vowel links (‿), and primary tonic stress (CAPS):',
+                contextDialogue: withAudioBubble ? {
+                    speaker: chosen.speaker,
+                    text: chosen.text,
+                    translation: chosen.es
+                } : null,
+                showProsodyBlueprint: false,
+                prompt: `Which rhythm blueprint delivers "${chosen.text}" cleanly?`,
+                options: built.options,
+                correctIdx: built.correctIdx,
+                hint: `Nuclear Stress recae en "${analysis.nuclearWord}" (${analysis.intonation.symbol} ${analysis.intonation.label}) con ${analysis.contentBeats} beats acentuados.`
+            });
+        };
+
+        const addNuclearPragmaticsExercise = (candIdx, cat) => {
+            const cands = getProsodyCandidates();
+            if (cands.length === 0) return false;
+            const chosen = cands[candIdx % cands.length];
+            const analysis = StemOSProsody.analyze(chosen.text);
+            const nuc = analysis.nuclearWord || 'PROTOCOL';
+            const correctAns = `"${nuc}" (${analysis.intonation.symbol} ${analysis.intonation.label})`;
+            const weakEx = (analysis.reductions[0] && analysis.reductions[0].phrase) || 'to / the';
+            const firstToken = (analysis.tokens[0] && analysis.tokens[0].clean) || 'First';
+            const built = buildShuffledOptions(correctAns, [
+                `Reduced function word "${weakEx}" with flat pitch`,
+                `Opening filler syllable "${firstToken}" only, dropping volume early`,
+                `Equal robotic stress on every word with no pitch peak`
+            ], seedOffset + candIdx * 23 + 11);
+            return pushEx({
+                type: 'mcq_gap',
+                category: cat || 'Pragmatic Nuclear Stress & Intonation',
+                heading: 'Control pragmatic meaning with Nuclear Stress & Pitch',
+                subtext: 'Identify which word carries the primary pitch peak and intonation contour:',
+                contextDialogue: {
+                    speaker: chosen.speaker,
+                    text: chosen.text,
+                    translation: chosen.es
+                },
+                prompt: `Where should your primary Nuclear Stress & pitch contour land in this turn?`,
+                options: built.options,
+                correctIdx: built.correctIdx,
+                hint: `El relieve acústico en "${nuc}" y contorno ${analysis.intonation.symbol} transmiten intención clara sin saturar la memoria declarativa.`
+            });
+        };
+
+        // ── SECTION BUILDERS (Target: 8–11 Unique Non-Repetitive Activities Each) ──
         if (stepMeta.type === 'vocab_sprint') {
             // 1-2: Two distinct 4-pair matching boards (8 terms total)
             addPairBoardFromRange(0, 'Technical Lexicon · Set A', 'Match the first 4 core technical terms with their meaning.');
@@ -12258,6 +12715,10 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     addDrillAsMcq(qz, 'Audio Scenario Check', 'Select the accurate technical response', 'Apply what you heard to the operational scenario:');
                 }
             });
+
+            // 10-11: Connected Speech Weak-Form Decoding + Thought-Group Ear Training (The English Prosody Method)
+            addConnectedSpeechExercise(2, 'Connected Speech & Weak-Form Decoding', true);
+            addThoughtGroupNuclearExercise(3, 'Thought-Group & Nuclear Stress Ear Training', true);
         } else if (stepMeta.type === 'grammar_drills') {
             // 1-6: Six distinct CEFR + Tech grammar drills
             drillsList.forEach((dr, idx) => {
@@ -12360,6 +12821,10 @@ Nearshoring Center of Excellence • stemOS Certified`;
             if (!addFalseCognateCheck('Pragmatic Register & Nuance')) {
                 addDrillAsMcq(drillsList[0], 'Conversational Grammar Check', 'Choose the natural spoken structure', 'Apply conversational workplace grammar:');
             }
+
+            // 10-11: Thought-Group Chunking Fluency + Pragmatic Nuclear Stress & Intonation
+            addThoughtGroupNuclearExercise(1, 'Thought-Group Chunking Fluency', false);
+            addNuclearPragmaticsExercise(0, 'Pragmatic Nuclear Stress & Intonation');
         } else if (stepMeta.type === 'reading_context') {
             // 1-4: Reading comprehension + Power Sheet fillBlanks (first carries the rich contextReading card)
             let readAdded = 0;
@@ -12445,12 +12910,25 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 type: 'voice_crucible',
                 category: '👑 Voice Crucible · Shift Handoff 2',
                 heading: 'Deliver the operational update aloud',
-                subtext: 'Practice crisp articulation for cross-border engineering meetings:',
+                subtext: 'Follow the Thought Group dividers | and Connected Speech links ‿ shown below:',
                 targetText: secondVoiceSent,
                 ipa: (vocabList[2] && vocabList[2].ipa) || '/ˈstændərd əˈmɛrɪkən ˈwɜrkˌpleɪs ˈɪŋɡlɪʃ/'
             });
 
-            // 3-4: Final Engineering Work-Order Sentence Builders
+            // 3: 3rd Oral Rhythm & Connected Speech Boss Challenge
+            const thirdVoiceSent = (dialogueTurns[1] && (dialogueTurns[1].en || dialogueTurns[1].text))
+                || (vocabList[3] && vocabList[3].example)
+                || 'Always check in with quality engineering before starting line two.';
+            pushEx({
+                type: 'voice_crucible',
+                category: '👑 Voice Crucible · Connected Rhythm 3',
+                heading: 'Speak the complete Thought-Group flow without mid-chunk pauses',
+                subtext: 'Tap "Escuchar Pulso Rítmico" first to internalize the Stress-Timed beats ● and pitch contour:',
+                targetText: thirdVoiceSent,
+                ipa: (vocabList[3] && vocabList[3].ipa) || '/fləʊ ˈθɔt ɡrups ən kəˈnɛktɪd spitʃ/'
+            });
+
+            // 4-5: Final Engineering Work-Order Sentence Builders
             let bossSb = 0;
             for (let i = 1; i < vocabList.length && bossSb < 2; i++) {
                 const exSent = vocabList[i] && vocabList[i].example;
@@ -12466,14 +12944,19 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 }
             }
 
-            // 5: Boss Audio Verification
-            const bossAudio = (vocabList[3] && vocabList[3].example) || (dialogueTurns[1] && (dialogueTurns[1].en || dialogueTurns[1].text));
+            // 6: Boss Audio Verification (with prosody inspection enabled)
+            const bossAudio = (vocabList[3] && vocabList[3].example) || (dialogueTurns[2] && (dialogueTurns[2].en || dialogueTurns[2].text));
             addAudioFromSentence(bossAudio, 47, 'Boss Audio Verification', 'Verify you recognize the full technical briefing by ear', 'Play audio and match the exact briefing:');
 
-            // 6: Rapid Master Lexicon Review Board
+            // 7: Rapid Master Lexicon Review Board
             addPairBoardFromRange(Math.min(4, Math.max(0, vocabList.length - 4)), 'Boss Lexicon Verification', 'Connect the core technical vocabulary cleanly:');
 
-            // 7-9: Three Boss Knowledge & Can-Do Competency Checks
+            // 8: Boss Prosody & Connected Speech Verification
+            if (!addConnectedSpeechExercise(0, 'Boss Prosody & Connected Speech Verification', true)) {
+                addThoughtGroupNuclearExercise(0, 'Boss Rhythm & Thought-Group Verification', true);
+            }
+
+            // 9-11: Three Boss Knowledge & Can-Do Competency Checks
             let bossMcq = 0;
             for (let i = quizList.length - 1; i >= 0 && bossMcq < 3; i--) {
                 if (addDrillAsMcq(quizList[i], `Final Can-Do Gate · ${bossMcq + 1}`, 'Validate unit mastery before sealing badge', 'Demonstrate complete command of the grammar and engineering standard:')) {
@@ -12824,6 +13307,11 @@ Nearshoring Center of Excellence • stemOS Certified`;
             lineEl.textContent = `"${ex.contextDialogue.text}"`;
             dlgTextWrap.appendChild(spkEl);
             dlgTextWrap.appendChild(lineEl);
+            if (typeof StemOSProsody !== 'undefined' && ex.showProsodyBlueprint !== false) {
+                const prosWrap = document.createElement('div');
+                prosWrap.innerHTML = StemOSProsody.renderProsodyBlueprintHtml(ex.contextDialogue.text, { compact: true });
+                dlgTextWrap.appendChild(prosWrap);
+            }
             dlgBox.appendChild(playTurnBtn);
             dlgBox.appendChild(dlgTextWrap);
             stage.appendChild(dlgBox);
@@ -12992,6 +13480,56 @@ Nearshoring Center of Excellence • stemOS Certified`;
             speedBar.appendChild(duoStopBtn);
 
             audioWrapper.appendChild(speedBar);
+
+            if (typeof StemOSProsody !== 'undefined' && ex.audioText) {
+                const prosAnalysis = StemOSProsody.analyze(ex.audioText);
+                const prosControlsRow = document.createElement('div');
+                prosControlsRow.className = 'duo-prosody-controls-row';
+
+                const sigBadge = document.createElement('span');
+                sigBadge.className = 'duo-prosody-pill beats';
+                sigBadge.innerHTML = `<i class="fa-solid fa-drum"></i> ● ${prosAnalysis.contentBeats} Beats · ‿ ${prosAnalysis.links.length} Links · ${prosAnalysis.intonation.symbol}`;
+
+                const toggleBpBtn = document.createElement('button');
+                toggleBpBtn.type = 'button';
+                toggleBpBtn.className = 'prosody-shadow-btn';
+                toggleBpBtn.innerHTML = '<i class="fa-solid fa-wave-square"></i> Guía Prosódica (| · ‿ · ●)';
+
+                const shadowAudioBtn = document.createElement('button');
+                shadowAudioBtn.type = 'button';
+                shadowAudioBtn.className = 'prosody-shadow-btn';
+                shadowAudioBtn.innerHTML = '<i class="fa-solid fa-drum"></i> Rhythm Shadowing';
+
+                const blueprintWrap = document.createElement('div');
+                blueprintWrap.style.width = '100%';
+                blueprintWrap.style.maxWidth = '560px';
+                blueprintWrap.style.display = ex.showProsodyBlueprint ? 'block' : 'none';
+                blueprintWrap.innerHTML = StemOSProsody.renderProsodyBlueprintHtml(ex.audioText, { showTips: true });
+
+                toggleBpBtn.addEventListener('click', () => {
+                    DuoSound.playPop();
+                    const shown = blueprintWrap.style.display !== 'none';
+                    blueprintWrap.style.display = shown ? 'none' : 'block';
+                    toggleBpBtn.classList.toggle('active', !shown);
+                });
+
+                shadowAudioBtn.addEventListener('click', () => {
+                    DuoSound.playSelect();
+                    blueprintWrap.style.display = 'block';
+                    toggleBpBtn.classList.add('active');
+                    shadowAudioBtn.classList.add('active');
+                    StemOSProsody.playShadowingSequence(blueprintWrap, ex.audioText, () => {
+                        shadowAudioBtn.classList.remove('active');
+                    });
+                });
+
+                prosControlsRow.appendChild(sigBadge);
+                prosControlsRow.appendChild(toggleBpBtn);
+                prosControlsRow.appendChild(shadowAudioBtn);
+                audioWrapper.appendChild(prosControlsRow);
+                audioWrapper.appendChild(blueprintWrap);
+            }
+
             stage.appendChild(audioWrapper);
 
             // Auto-play audio once
@@ -13070,9 +13608,12 @@ Nearshoring Center of Excellence • stemOS Certified`;
             targetPhraseCard.style.borderRadius = '18px';
             targetPhraseCard.style.textAlign = 'center';
             targetPhraseCard.style.marginBottom = '20px';
+            const prosodyBlockHtml = (typeof StemOSProsody !== 'undefined' && ex.targetText)
+                ? StemOSProsody.renderProsodyBlueprintHtml(ex.targetText, { showTips: true })
+                : '';
             targetPhraseCard.innerHTML = `
                 <div style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:#0369a1; letter-spacing:0.05em; margin-bottom:6px;">
-                    Frase Objetivo · Standard American
+                    Frase Objetivo · Standard American Prosody
                 </div>
                 <div style="font-size:1.25rem; font-weight:900; color:#0f172a; margin-bottom:6px;">
                     "${ex.targetText}"
@@ -13080,7 +13621,25 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 <div style="font-family:var(--font-mono); font-size:0.86rem; color:#0284c7; font-weight:700;">
                     ${ex.ipa || ''}
                 </div>
+                ${prosodyBlockHtml}
+                <div class="duo-prosody-controls-row">
+                    <button type="button" id="duo-prosody-shadow-btn" class="prosody-shadow-btn">
+                        <i class="fa-solid fa-drum"></i> Escuchar Pulso Rítmico &amp; Shadowing (Stress-Timed Beats)
+                    </button>
+                </div>
             `;
+            const shadowBtn = targetPhraseCard.querySelector('#duo-prosody-shadow-btn');
+            if (shadowBtn) {
+                shadowBtn.addEventListener('click', () => {
+                    DuoSound.playSelect();
+                    shadowBtn.classList.add('active');
+                    if (typeof StemOSProsody !== 'undefined') {
+                        StemOSProsody.playShadowingSequence(targetPhraseCard, ex.targetText, () => {
+                            shadowBtn.classList.remove('active');
+                        });
+                    }
+                });
+            }
             stage.appendChild(targetPhraseCard);
 
             const micBtn = document.createElement('button');

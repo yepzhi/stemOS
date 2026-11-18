@@ -4893,6 +4893,13 @@
       },
       falseCognates: cls.falseCognate ? [cls.falseCognate] : [],
       falseCognate: cls.falseCognate || null,
+      pronunciationLab: mergedVocab.slice(0, 6).map((v) => ({
+        term: v.en,
+        stress: v.pinkStress || v.ipa || String(v.en || '').toUpperCase(),
+        rule: v.example
+          ? `Stress & Rhythm: "${v.example}"${v.exampleES ? ' · ' + v.exampleES : ''}`
+          : (v.es || 'Standard American stress-timed articulation')
+      })),
       vocabulary: mergedVocab,
       vocabularyExercises: mergedVocabEx,
       grammarDrills: mergedDrills,

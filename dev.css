@@ -25072,6 +25072,239 @@ progress.loading-spinner.duo-btn-spinner:indeterminate {
   }
 }
 
+/* ── ENGLISH PROSODY METHOD BLUEPRINT (Thought Groups | Connected Speech ‿ | Weak Forms /ə/ | Nuclear Stress ●) ── */
+.duo-prosody-blueprint {
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+  border: 1.5px solid #bfdbfe;
+  text-align: left;
+  box-shadow: 0 3px 10px rgba(2, 132, 199, 0.08);
+}
+
+.duo-prosody-blueprint.compact {
+  margin-top: 8px;
+  padding: 8px 11px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid #cbd5e1;
+  box-shadow: none;
+}
+
+.duo-prosody-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.duo-prosody-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  letter-spacing: 0.02em;
+}
+
+.duo-prosody-pill.beats {
+  background: #eff6ff;
+  color: #0369a1;
+  border-color: #7dd3fc;
+}
+
+.duo-prosody-pill.links {
+  background: #fdf2f8;
+  color: #be185d;
+  border-color: #fbcfe8;
+}
+
+.duo-prosody-pill.nuclear {
+  background: #fef3c7;
+  color: #b45309;
+  border-color: #fcd34d;
+}
+
+.duo-prosody-pill.intonation {
+  background: #ecfdf5;
+  color: #047857;
+  border-color: #a7f3d0;
+}
+
+.duo-prosody-tokens {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 5px 6px;
+  line-height: 1.85;
+  font-size: 0.96rem;
+  color: #0f172a;
+}
+
+.duo-prosody-blueprint.compact .duo-prosody-tokens {
+  font-size: 0.85rem;
+  line-height: 1.65;
+}
+
+.prosody-token {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  padding: 1px 4px;
+  border-radius: 6px;
+  transition: transform 0.16s ease, background-color 0.16s ease;
+}
+
+.prosody-token.content-beat {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.prosody-token.nuclear-stress {
+  font-weight: 900;
+  color: #9d174d;
+  background: linear-gradient(135deg, #fce7f3 0%, #fef3c7 100%);
+  border: 1.5px solid #f472b6;
+  padding: 2px 8px;
+  box-shadow: 0 2px 8px rgba(219, 39, 119, 0.16);
+}
+
+.prosody-token.weak-form {
+  font-weight: 500;
+  color: #64748b;
+  font-size: 0.9em;
+}
+
+.prosody-schwa-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: #0284c7;
+  background: #e0f2fe;
+  padding: 0 3px;
+  border-radius: 4px;
+  margin-left: 2px;
+  vertical-align: sub;
+}
+
+.prosody-beat-dot {
+  display: inline-block;
+  font-size: 0.62rem;
+  color: #0284c7;
+  vertical-align: middle;
+  transition: transform 0.18s ease, color 0.18s ease;
+}
+
+.prosody-token.nuclear-stress .prosody-beat-dot {
+  color: #db2777;
+  font-size: 0.72rem;
+}
+
+.prosody-beat-dot.pulsing {
+  color: #e11d48;
+  transform: scale(1.75);
+}
+
+.prosody-pitch-tag {
+  font-size: 0.76rem;
+  font-weight: 900;
+  color: #be185d;
+  margin-left: 3px;
+}
+
+.prosody-link-arc {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 900;
+  font-size: 1.05em;
+  color: #db2777;
+  margin: 0 -4px;
+  padding: 0 1px;
+  user-select: none;
+}
+
+.prosody-chunk-divider {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.05em;
+  color: #0284c7;
+  background: #e0f2fe;
+  border-radius: 5px;
+  padding: 0 6px;
+  margin: 0 4px;
+  user-select: none;
+}
+
+.prosody-tips-row {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #93c5fd;
+  font-size: 0.76rem;
+  color: #334155;
+  line-height: 1.45;
+}
+
+.prosody-tips-row code {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: #0369a1;
+  font-weight: 700;
+}
+
+.duo-prosody-controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.prosody-shadow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1.5px solid #93c5fd;
+  background: #ffffff;
+  color: #0369a1;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.1);
+  transition: all 0.16s ease;
+}
+
+.prosody-shadow-btn:hover {
+  background: #eff6ff;
+  border-color: #0284c7;
+  transform: translateY(-1px);
+}
+
+.prosody-shadow-btn.active {
+  background: #dbeafe;
+  border-color: #0284c7;
+  color: #1e3a8a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prosody-beat-dot.pulsing {
+    transform: none;
+  }
+}
+
 
 
 
