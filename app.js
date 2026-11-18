@@ -5762,6 +5762,13 @@ Nearshoring Center of Excellence • stemOS Certified`;
             'when', 'while', 'if', 'and', 'but', 'before', 'after', 'until'
         ]),
         PREP_BREAK_WORDS: new Set(['in', 'on', 'at', 'for', 'with', 'under', 'across', 'inside', 'during', 'by', 'before', 'after', 'until']),
+        NO_BREAK_AFTER_WORDS: new Set([
+            'a', 'an', 'the', 'my', 'your', 'his', 'her', 'its', 'our', 'their',
+            'this', 'that', 'these', 'those', 'in', 'on', 'at', 'for', 'with',
+            'from', 'to', 'of', 'by', 'as', 'am', 'is', 'are', 'was', 'were',
+            'do', 'does', 'did', 'will', 'would', 'can', 'could', 'must', 'should', 'have', 'has', 'had'
+        ]),
+        POST_NUCLEAR_TAILS: new Set(['please', 'thanks', 'today', 'yet', 'already', 'too', 'either', 'yesterday', 'tomorrow', 'now']),
         WH_WORDS: new Set(['what', 'where', 'when', 'why', 'who', 'whose', 'whom', 'which', 'how']),
         DIPLOMATIC_MARKERS: ['although', 'even though', 'however', 'granted', 'actually', 'i wonder if', 'provided that', 'somewhat', 'it would appear'],
 
@@ -5776,6 +5783,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
         endsWithConsonantSound(clean) {
             if (!clean) return false;
             if (/n't$|'s$|'d$|'m$|'ve$|'re$|'ll$/.test(clean)) return true;
+            // Silent -gh digraphs (through, though, although, high, weigh, right, light)
+            if (/(ough|igh|eigh)$/.test(clean)) return false;
             if (/[bcdfghjklmnpqrstvwxz]$/.test(clean) && !/[wy]$/.test(clean)) return true;
             // Silent final -e after consonant (make, take, check... line, node, gate, have, are, before)
             if (clean.length >= 3 && /[bcdfghjklmnpqrstvwxz]e$/.test(clean) && !/the$|he$|she$|we$|me$|be$/.test(clean)) return true;
@@ -5784,6 +5793,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
 
         startsWithVowelSound(clean) {
             if (!clean) return false;
+            // Words starting with /w/ glide sound ("one", "once")
+            if (/^(one|once)\b/.test(clean)) return false;
             if (/^(hour|honest|honor)/.test(clean)) return true;
             // Exclude consonant /ju/ onset words like unit, user, usb, uniform, utility
             if (/^(uni|use|usab|usb|user|util)/.test(clean)) return false;
@@ -5812,7 +5823,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 const isNegContraction = /n't$/.test(clean) || clean === 'not' || clean === 'never';
                 const isContent = Boolean(clean) && (isNegContraction || !this.FUNCTION_WORDS.has(clean));
                 const reductionIpa = (!isContent && this.FUNCTION_WORD_REDUCTIONS[clean]) ? this.FUNCTION_WORD_REDUCTIONS[clean] : '';
-                const hasPunctPause = /[,;:—]$/.test(word);
+                const hasPunctPause = /[.,!?;:—]$/.test(word);
+                const hasCommaOnly = /[,]$/.test(word);
                 return {
                     word,
                     clean,
@@ -5822,7 +5834,8 @@ Nearshoring Center of Excellence • stemOS Certified`;
                     multiReductionIpa: '',
                     linksToNext: false,
                     chunkBreakAfter: false,
-                    _hasPunctPause: hasPunctPause
+                    _hasPunctPause: hasPunctPause,
+                    _hasComma: hasCommaOnly
                 };
             });
 
@@ -5844,22 +5857,25 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 reductions.push({ phrase: last.clean, ipa: last.reductionIpa });
             }
 
-            // Thought Group Chunking (|)
+            // Thought Group Chunking (|), never splitting immediately after determiners/prepositions/auxiliaries
             let chunkLen = 0;
             for (let i = 0; i < tokens.length; i++) {
                 chunkLen++;
                 if (i >= tokens.length - 1) continue;
                 const nextClean = tokens[i + 1].clean;
+                const noBreakAfterThis = this.NO_BREAK_AFTER_WORDS.has(tokens[i].clean);
                 if (tokens[i]._hasPunctPause) {
                     tokens[i].chunkBreakAfter = true;
                     chunkLen = 0;
+                } else if (noBreakAfterThis) {
+                    continue;
                 } else if (chunkLen >= 2 && this.CLAUSE_BREAK_WORDS.has(nextClean) && (tokens.length - i) >= 3) {
                     tokens[i].chunkBreakAfter = true;
                     chunkLen = 0;
                 } else if (chunkLen >= 4 && this.PREP_BREAK_WORDS.has(nextClean) && (tokens.length - i) >= 3) {
                     tokens[i].chunkBreakAfter = true;
                     chunkLen = 0;
-                } else if (chunkLen >= 5 && (tokens.length - i) >= 3 && !tokens[i + 1].reductionIpa) {
+                } else if (chunkLen >= 6 && (tokens.length - i) >= 3 && !tokens[i + 1].reductionIpa) {
                     tokens[i].chunkBreakAfter = true;
                     chunkLen = 0;
                 }
@@ -5880,12 +5896,28 @@ Nearshoring Center of Excellence • stemOS Certified`;
                 }
             }
 
-            // Nuclear Stress (primary pitch focus = final content word of sentence / last chunk; fallback final content word)
+            // Nuclear Stress: last substantive content word, skipping parenthetical notes, trailing vocatives & post-nuclear tails
             let nuclearIdx = -1;
+            const isSkippableTail = (idx) => {
+                const tk = tokens[idx];
+                if (!tk) return true;
+                if (/^\(.*\)[.,!?;:"]*$/.test(tk.word)) return true;
+                if (this.POST_NUCLEAR_TAILS.has(tk.clean) && idx === tokens.length - 1) return true;
+                if (idx === tokens.length - 1 && idx > 0 && tokens[idx - 1]._hasComma) return true;
+                return false;
+            };
             for (let i = tokens.length - 1; i >= 0; i--) {
-                if (tokens[i].isContent) {
+                if (tokens[i].isContent && !isSkippableTail(i)) {
                     nuclearIdx = i;
                     break;
+                }
+            }
+            if (nuclearIdx < 0) {
+                for (let i = tokens.length - 1; i >= 0; i--) {
+                    if (tokens[i].isContent) {
+                        nuclearIdx = i;
+                        break;
+                    }
                 }
             }
             if (nuclearIdx < 0 && tokens.length > 0) nuclearIdx = tokens.length - 1;
@@ -5895,12 +5927,19 @@ Nearshoring Center of Excellence • stemOS Certified`;
             }
             const nuclearWord = nuclearIdx >= 0 ? tokens[nuclearIdx].word.replace(/[.,!?;:"]/g, '') : '';
 
-            // Intonation contour classification
+            // Intonation contour classification (checks start of the final question clause for polite openers like "Excuse me, how...?")
             const lowerStr = rawStr.toLowerCase();
             let intonation = { symbol: '↘', label: 'Falling Declarative' };
             if (rawStr.endsWith('?')) {
-                const firstWord = tokens[0] ? tokens[0].clean : '';
-                if (this.WH_WORDS.has(firstWord)) {
+                const clauseStartWords = [];
+                if (tokens[0]) clauseStartWords.push(tokens[0].clean);
+                for (let i = 0; i < tokens.length - 1; i++) {
+                    if (/[.,!?;:—]$/.test(tokens[i].word)) {
+                        clauseStartWords.push(tokens[i + 1].clean);
+                    }
+                }
+                const lastClauseStarter = clauseStartWords[clauseStartWords.length - 1] || '';
+                if (clauseStartWords.some((w) => this.WH_WORDS.has(w)) && (this.WH_WORDS.has(lastClauseStarter) || clauseStartWords.length <= 2)) {
                     intonation = { symbol: '↘', label: 'Falling Wh-Question' };
                 } else {
                     intonation = { symbol: '↗', label: 'Rising Yes/No' };
@@ -12354,33 +12393,14 @@ Nearshoring Center of Excellence • stemOS Certified`;
             });
         };
 
-        // Parse reading passage + Power Sheet fillBlanks dynamically
+        // Parse reading passage + Power Sheet fillBlanks dynamically via shared STEMOS_MCER_CLASSES.parsePowerSheetDrills helper
         const readingBody = (unit.grammarBox && (unit.grammarBox.goldenRule || unit.grammarBox.explanationES))
             ? stripTags(unit.grammarBox.goldenRule || unit.grammarBox.explanationES)
             : (unit.reading && (unit.reading.text || unit.reading.passage))
                 || (unit.canDo || 'Apply the grammatical structure in authentic STEM operational contexts.');
-        const akMap = {};
-        if (ps.answerKey) {
-            for (const m of String(ps.answerKey).matchAll(/(\d+)\)\s*([^·|;,\n]+)/g)) {
-                akMap[m[1]] = m[2].trim();
-            }
-        }
-        const parsedPsFillDrills = [];
-        (Array.isArray(ps.fillBlanks) ? ps.fillBlanks : []).forEach((rawLine, fIdx) => {
-            const match = String(rawLine).match(/^(\d+)\.\s*(.+?)\s*\(([^)]+)\)\s*$/);
-            if (!match || !akMap[match[1]]) return;
-            const rawOpts = match[3].split('/').map((s) => s.trim()).filter(Boolean);
-            const ansTxt = akMap[match[1]];
-            if (!rawOpts.some((o) => o.toLowerCase() === ansTxt.toLowerCase())) rawOpts.unshift(ansTxt);
-            const built = buildShuffledOptions(ansTxt, rawOpts.filter((o) => o.toLowerCase() !== ansTxt.toLowerCase()), seedOffset + fIdx * 11 + 5);
-            parsedPsFillDrills.push({
-                q: match[2].trim(),
-                opts: built.options,
-                ans: built.correctIdx,
-                exp: (unit.grammarBox && unit.grammarBox.goldenRule) ? stripTags(unit.grammarBox.goldenRule) : '',
-                socraticHint: 'Aplica el patrón gramatical dentro del contexto técnico:'
-            });
-        });
+        const parsedPsFillDrills = (window.STEMOS_MCER_CLASSES && typeof window.STEMOS_MCER_CLASSES.parsePowerSheetDrills === 'function')
+            ? window.STEMOS_MCER_CLASSES.parsePowerSheetDrills(unit)
+            : [];
 
         // Ensure vocabularyExercises has plenty of dynamic cloze/definition items if < 6
         const builtVocabClozes = [];

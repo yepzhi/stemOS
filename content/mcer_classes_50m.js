@@ -298,7 +298,7 @@
       grammarFormulaHtml: makeFormula('Sujeto + live / work', '+', 'AT (# exacto) / ON (calle) / IN (ciudad)', '+', 'Dirección Postal', "It's <strong>at</strong> 450 Industrial Pkwy, Suite 3, <strong>in</strong> Mexicali, ZIP 21395."),
       explanationES: 'En inglés estadounidense el número exterior va <strong>antes</strong> del nombre de la calle (<code>450 Main St.</code>). Usa el triángulo espacial: <strong>AT</strong> para dirección completa con número, <strong>ON</strong> solo para el nombre de la calle/piso, y <strong>IN</strong> para colonia, ciudad o país.',
       goldenRuleES: 'Aprende las abreviaturas postales universales: <code>St.</code> (Street), <code>Ave.</code> (Avenue), <code>Blvd.</code> (Boulevard), <code>Rd.</code> (Road), <code>Pkwy.</code> (Parkway), <code>ZIP code</code> (código postal).',
-      commonMistake: { bad: 'My factory is in 450 Lazaro Cardenas St. My direction is...', good: 'My factory is AT 450 Lazaro Cardenas St. My ADDRESS is...', exp: 'Usa "at" con número exacto; "direction" significa rumbo, ¡para domicilio se dice "address"!' },
+      commonMistake: { bad: 'My factory is in 450 Lazaro Cardenas St., and that is my direction.', good: 'My factory is at 450 Lazaro Cardenas St., and that is my address.', exp: 'Usa "at" con número exacto; "direction" significa rumbo, ¡para domicilio se dice "address"!' },
       falseCognate: { term: 'Address vs Direction', mistake: 'Decir "My direction is 120..."', correct: 'Address = domicilio | Direction = instrucción/rumbo', tip: '"What is your home address?" = ¿Cuál es tu domicilio?; "Ask for directions" = pedir indicaciones de cómo llegar.' },
       vocab: [
         { en: 'Address', es: 'Dirección / Domicilio', ipa: '/ˈædrɛs/', pinkStress: 'AD-dress', example: 'What is the warehouse address?', exampleES: '¿Cuál es la dirección del almacén?' },
@@ -3022,7 +3022,7 @@
       grammarFormulaHtml: makeFormula('Abrir/Delegar: Would you like to kick off? / Over to you', '|', 'Redirigir: Let\'s circle back to... / Moving on to...', '|', 'Resumir: All in all / To sum up', 'Pilar, <strong>would you like to start</strong>? · Let\'s <strong>circle back to</strong> CapEx right after Logistics. · <strong>To sum up</strong>, we proceed with Option A.'),
       explanationES: 'La competencia discursiva B2 exige controlar el flujo grupal: <strong>Iniciar/Delegar:</strong> <em>Would you like to kick off? / Let\'s get started.</em> <strong>Invitar a continuar:</strong> <em>Go on / Please expand on that.</em> <strong>Reconducir tema:</strong> <em>Let\'s circle back to... / Before I forget... / To get back to what we were saying...</em>. <strong>Resumir:</strong> <em>All in all, / Briefly, / To sum up,</em>.',
       goldenRuleES: 'Si quieres retomar control amablemente cuando alguien interrumpe usa: <em>"If I understood you correctly, you\'re saying..."</em> antes de responder.',
-      commonMistake: { bad: 'Shut up and speak Ana! Change topic now. Resume: good.', good: 'Thanks Mark; Ana, would you like to weigh in? Let\'s table that and circle back to...', exp: 'Usa fórmulas de transición respetuosas y precisas ("weigh in", "circle back", "table a topic").' },
+      commonMistake: { bad: 'Stop talking now and speak Ana! Resume everything: project good.', good: 'Thanks Mark; Ana, would you like to weigh in? To sum up, deliverables remain on schedule.', exp: 'Usa fórmulas de transición respetuosas y precisas ("weigh in", "circle back", "table a topic", "to sum up").' },
       falseCognate: { term: 'Table a topic (US vs UK) / Resume', mistake: 'Confundir "table a topic" en inglés US vs español', correct: 'Table (US) = posponer un tema para después | Wrap up = concluir reunión', tip: 'En reuniones norteamericanas "Let\'s table that for Friday" significa dejarlo pendiente; "Wrap up" = cerrar.' },
       vocab: [
         { en: 'Kick off / Wrap up', es: 'Arrancar junta / Concluir cierre', ipa: '/kɪk ɔf / ræp ʌp/', pinkStress: 'KICK off / WRAP up', example: 'Let\'s kick off on time and wrap up by noon.', exampleES: 'Arranquemos a tiempo y cerremos al mediodía.' },
@@ -3395,7 +3395,7 @@
       grammarFormulaHtml: makeFormula('Modismo Americano', '≠', 'Traducción Literal', '→', 'Significado Pragmático Real', '<strong>I lack bandwidth</strong> = No tengo tiempo/capacidad. · <strong>Drop the ball</strong> = Cometer un descuido. · <strong>Put off</strong> = Posponer / desanimar.'),
       explanationES: 'En EE. UU. las juntas mezclan metáforas deportivas y tecnológicas en tono casual aunque hablen de millones de dólares: <code>bandwidth</code> (capacidad de tiempo/energía), <code>move the needle</code> (tener impacto medible), <code>low-hanging fruit</code> (victorias rápidas con poco esfuerzo), <code>ballpark figure</code> (cifra aproximada), <code>drop the ball</code> (descuidar una responsabilidad).',
       goldenRuleES: 'Los phrasal verbs cambian según contexto: <em>put someone off</em> = desanimar/quitar ganas; <em>put something off</em> = posponer para después.',
-      commonMistake: { bad: 'I don\'t have bandwidth → check Wi-Fi router! Let\'s touch the base (tocar una base física).', good: 'No Wi-Fi issue—they simply mean "my schedule is full" / "let\'s sync up briefly".', exp: 'Reconoce el uso metafórico corporativo para responder alineado sin confusiones literales.' },
+      commonMistake: { bad: 'They said "I lack bandwidth," so we should upgrade the office Wi-Fi router immediately.', good: 'They are using a US business idiom meaning their schedule is full, not a Wi-Fi issue.', exp: 'Reconoce el uso metafórico corporativo para responder alineado sin confusiones literales.' },
       falseCognate: { term: 'Bandwidth / Table / Groundwork', mistake: 'Tomar "bandwidth" literalmente como Mbps', correct: 'Schedule availability / mental capacity', tip: 'Si un colega dice "Can we circle back? I\'m swamped", ofrece retomar mañana por chat.' },
       vocab: [
         { en: 'Move the needle', es: 'Generar impacto medible real', ipa: '/muv ðə ˈnidəl/', pinkStress: 'MOVE the NEE-dle', example: 'Automation will truly move the needle on quality.', exampleES: 'La automatización sí moverá la aguja en calidad.' },
@@ -3438,7 +3438,7 @@
       grammarFormulaHtml: makeFormula('Síntesis B2: Cleft + Mixed Conditional / Past Modal + Inversion + Idiom', '', '', '', '', '<strong>What worked best was</strong> daily syncs. <strong>Had we caught</strong> drift early, we wouldn\'t be reworking. <strong>Never</strong> skip QA.'),
       explanationES: 'La maestría <strong>B2 (Vantage)</strong> demuestra fluidez controlada sin pausas largas ni errores sistemáticos al combinar argumentación lógica, matices de registro, condicionales complejos, voz pasiva y cultura corporativa real.',
       goldenRuleES: 'En presentaciones finales estructura siempre en regla de 3: <em>1) Outcome achieved; 2) Lesson learned; 3) Forward commitment</em>.',
-      commonMistake: { bad: 'Resumen lineal de 20 "and then... and then..." sin jerarquía ejecutiva.', good: 'Síntesis estructurada con "All in all / What stood out was / Going forward, seldom will..."', exp: 'Usa conectores de síntesis y enfoque ejecutivo.' },
+      commonMistake: { bad: 'In resume, we did many tasks and then we finished the project good.', good: 'All in all, what stood out was our daily sync; had we delayed QA, yield would still lag.', exp: 'Usa conectores de síntesis ("All in all / To wrap up") y enfoque ejecutivo.' },
       falseCognate: { term: 'Retrospective vs Lessons Learned / Resume', mistake: 'Cerrar con "In resume..."', correct: 'In summary / To wrap up / All in all, ...', tip: 'Jamás digas "in resume" en inglés; usa "In summary", "All in all" o "To conclude".' },
       vocab: [
         { en: 'Retrospective / Lessons Learned', es: 'Retrospectiva / Lecciones aprendidas', ipa: '/ˌrɛtrəˈspɛktɪv/', pinkStress: 'ret-ro-SPEC-tive', example: 'Hold an honest blameless retrospective.', exampleES: 'Realiza una retrospectiva honesta sin culpas.' },
@@ -3613,7 +3613,7 @@
       grammarFormulaHtml: makeFormula('Notwithstanding + Frase Nominal', '|', 'Adjetivo / Frase, albeit + breve', '|', 'Cláusula, thereby + Gerundio (-ing)', 'The upgrade worked, <strong>albeit at higher cost</strong>. · We automated QA, <strong>thereby slashing</strong> scrap.'),
       explanationES: 'Los conectores C1 tienen sintaxis estricta: <code>notwithstanding</code> equivale a <em>pese a</em> y toma sustantivo (o va al final: <em>supply shocks notwithstanding</em>); <code>albeit</code> significa <em>aunque / si bien</em> y va antes de un adjetivo o frase corta (nunca antes de cláusula con verbo conjugado completo); <code>thereby + -ing</code> introduce el resultado directo.',
       goldenRuleES: 'Formula de oro en reportes técnicos: <strong>[Acción implementada], thereby + [Verbo-ing] + [Métrica impactada]</strong> (ej. <em>"...thereby cutting rework by 32%"</em>).',
-      commonMistake: { bad: 'Albeit the server crashed, users waited. / Thus allowing speed.', good: 'Although the server crashed (o Albeit slowly), users adapted. · ...thereby accelerating speed.', exp: '"Albeit" no abre cláusulas completas con sujeto+verbo; usa "Although".' },
+      commonMistake: { bad: 'Albeit the server crashed, users waited without refreshing.', good: 'Although the server crashed, users adapted seamlessly, thereby preventing data loss.', exp: '"Albeit" no abre cláusulas completas con sujeto+verbo; usa "Although".' },
       falseCognate: { term: 'Inasmuch as / Hence', mistake: 'Traducir "hence" como "entonces/después en tiempo"', correct: 'Por consiguiente / De ahí que', tip: '"Hence the delay" significa "de ahí el retraso" (causalidad lógica, no secuencia temporal).' },
       vocab: [
         { en: 'Albeit', es: 'Aunque / Si bien (antes de adj/frase)', ipa: '/ɔlˈbiɪt/', pinkStress: 'al-BE-it', example: 'Throughput rose, albeit modestly at first.', exampleES: 'La producción subió, si bien modestamente al inicio.' },
@@ -4040,7 +4040,7 @@
         { speaker: 'Lead', en: 'Walk straight past the CNC bay and turn left next to Lab 4.', es: 'Camina derecho pasando la bahía CNC y gira a la izquierda junto al Lab 4.' }
       ],
       readingQuestions: [
-        { q: 'Read: "Shift A runs a automated backup at 6:00 PM on Fridays." When does the backup happen?', opts: ['Every Friday at 6:00 PM', 'Monday at 8:00 AM', 'Only on Sundays', 'Twice per hour'], ans: 0, exp: 'El texto señala horario fijo: "at 6:00 PM on Fridays".', socraticHint: 'Verifica día y hora exacta.' }
+        { q: 'Read: "Shift A runs an automated backup at 6:00 PM on Fridays." When does the backup happen?', opts: ['Every Friday at 6:00 PM', 'Monday at 8:00 AM', 'Only on Sundays', 'Twice per hour'], ans: 0, exp: 'El texto señala horario fijo: "at 6:00 PM on Fridays".', socraticHint: 'Verifica día y hora exacta.' }
       ]
     },
     'a1-u3': {
@@ -4510,40 +4510,109 @@
     return String(str || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
   }
 
+  const MORPH_FAMILIES = {
+    'comply': ['compliance', 'compliant', 'complying', 'complied'],
+    'deploy': ['deployment', 'deploying', 'deployed', 'deploys'],
+    'scarce': ['scarcity', 'scarce', 'scarcely', 'scarcer'],
+    'finish': ['finishes', 'finish', 'finishing', 'finished'],
+    'study': ['studies', 'study', 'studying', 'studied'],
+    'trip': ['tripped', 'trip', 'tripping', 'trips'],
+    'find': ['found', 'find', 'finding', 'finds'],
+    'pass': ['pass', 'passes', 'passed', 'passing']
+  };
+
+  const CLOSED_GRAMMAR_SETS = [
+    ['am', 'is', 'are', 'be'],
+    ["isn't", "aren't", 'am not', "won't"],
+    ['was', 'were', "wasn't", "weren't"],
+    ['do', 'does', "don't", "doesn't"],
+    ['i', 'you', 'he', 'she', 'it', 'we', 'they'],
+    ['my', 'your', 'his', 'her', 'our', 'their'],
+    ['in', 'on', 'at', 'by', 'from', 'under'],
+    ['where', 'who', 'what', 'when', 'why', 'how'],
+    ['a', 'an', 'the', 'some', 'any']
+  ];
+
+  function expandClosedGrammarOptions(uniqueOpts, clsSeed) {
+    if (!Array.isArray(uniqueOpts) || uniqueOpts.length === 0 || uniqueOpts.length >= 4) return uniqueOpts;
+    const lowerOpts = uniqueOpts.map((o) => o.toLowerCase().trim());
+    const matchedSet = CLOSED_GRAMMAR_SETS.find((set) => lowerOpts.every((lo) => set.includes(lo)));
+    if (!matchedSet) return uniqueOpts;
+
+    const isCapitalized = /^[A-Z]/.test(uniqueOpts[0] || '');
+    const out = uniqueOpts.slice();
+    for (let i = 0; i < matchedSet.length && out.length < 4; i++) {
+      let cand = matchedSet[(i + (clsSeed || 0)) % matchedSet.length];
+      if (cand === 'i') cand = 'I';
+      else if (isCapitalized && cand.length > 0) cand = cand.charAt(0).toUpperCase() + cand.slice(1);
+      if (!out.some((o) => o.toLowerCase() === cand.toLowerCase())) {
+        out.push(cand);
+      }
+    }
+    return out;
+  }
+
   function parsePowerSheetDrills(cls) {
     const out = [];
     const ps = cls && cls.powerSheet;
     if (!ps || !Array.isArray(ps.fillBlanks) || !ps.answerKey) return out;
+
     const akMap = {};
-    for (const m of String(ps.answerKey).matchAll(/(\d+)\)\s*([^·|;,\n]+)/g)) {
-      akMap[m[1]] = m[2].trim();
+    const akSection = String(ps.answerKey).split('|')[0];
+    for (const m of akSection.matchAll(/(\d+)\)\s*([^·;\n]+?)(?=\s*(?:·|$|\d+\)))/g)) {
+      akMap[m[1]] = m[2].replace(/\s*\(o [^)]+\)\s*$/i, '').trim();
     }
-    const helperPool = ['am', 'is', 'are', 'was', 'were', 'do', 'does', 'did', 'have', 'has', 'had', 'will', 'would', 'should', 'must', 'can', 'might', 'be', 'being', 'been'];
-    ps.fillBlanks.forEach((rawLine) => {
+
+    const expNote = (cls.goldenRuleES || cls.explanationES || '').replace(/<[^>]+>/g, '').trim();
+    const hintNote = cls.grammarFocus ? `Aplica: ${cls.grammarFocus}` : 'Aplica la regla gramatical de la clase.';
+
+    ps.fillBlanks.forEach((rawLine, idx) => {
       const m = String(rawLine).match(/^(\d+)\.\s*(.+?)\s*\(([^)]+)\)\s*$/);
       if (!m || !akMap[m[1]]) return;
       const promptTxt = m[2].trim();
-      const rawOpts = m[3].split('/').map((s) => s.trim()).filter(Boolean);
+      const parenHint = m[3].trim();
       const ansTxt = akMap[m[1]];
-      if (!rawOpts.some((o) => o.toLowerCase() === ansTxt.toLowerCase())) {
-        rawOpts.unshift(ansTxt);
-      }
-      const uniqueOpts = [...new Set(rawOpts)];
-      // Expand 2-option Power Sheet prompts into richer 4-option checks deterministically
-      for (let h = 0; h < helperPool.length && uniqueOpts.length < 4; h++) {
-        const cand = helperPool[(h + (cls.classNum || 1)) % helperPool.length];
-        if (!uniqueOpts.some((o) => o.toLowerCase() === cand.toLowerCase()) && !ansTxt.includes(' ')) {
-          uniqueOpts.push(cand);
+
+      // Skip compound comma-separated multiple-blank strings unless explicitly formatted
+      if (ansTxt.includes(',')) return;
+
+      if (parenHint.includes('/')) {
+        const rawOpts = parenHint.split('/').map((s) => s.trim()).filter(Boolean);
+        // Handle leading apostrophe contraction case like ('re vs re / will)
+        const normEq = (a, b) => a.toLowerCase().replace(/^'/, '') === b.toLowerCase().replace(/^'/, '');
+        if (!rawOpts.some((o) => normEq(o, ansTxt))) return;
+        const matchedOpt = rawOpts.find((o) => normEq(o, ansTxt)) || ansTxt;
+        const uniqueOpts = expandClosedGrammarOptions([...new Set(rawOpts)], (cls.classNum || 1) + idx);
+        const ansIdx = uniqueOpts.findIndex((o) => o.toLowerCase() === matchedOpt.toLowerCase());
+        if (ansIdx >= 0 && uniqueOpts.length >= 2) {
+          out.push({
+            q: promptTxt,
+            opts: uniqueOpts,
+            ans: ansIdx,
+            exp: `Respuesta Power Sheet: "${matchedOpt}". ${expNote}`.trim(),
+            socraticHint: hintNote
+          });
         }
+        return;
       }
-      const ansIdx = uniqueOpts.findIndex((o) => o.toLowerCase() === ansTxt.toLowerCase());
-      if (ansIdx >= 0 && uniqueOpts.length >= 2) {
+
+      // Single-word morphological prompt matching (e.g. "comply → noun", "finish", "pass — subjunctive")
+      const baseWordMatch = parenHint.toLowerCase().match(/^([a-z]+)/);
+      const baseKey = baseWordMatch ? baseWordMatch[1] : '';
+      const morphOpts = MORPH_FAMILIES[baseKey];
+      if (!morphOpts) return;
+
+      const cleanAns = ansTxt.trim();
+      if (!morphOpts.some((o) => o.toLowerCase() === cleanAns.toLowerCase())) return;
+      const finalOpts = morphOpts.map((o) => o);
+      const ansIdx = finalOpts.findIndex((o) => o.toLowerCase() === cleanAns.toLowerCase());
+      if (ansIdx >= 0) {
         out.push({
           q: promptTxt,
-          opts: uniqueOpts,
+          opts: finalOpts,
           ans: ansIdx,
-          exp: `Respuesta Power Sheet: "${ansTxt}". ${cls.goldenRuleES || cls.explanationES || ''}`.replace(/<[^>]+>/g, ''),
-          socraticHint: cls.grammarFocus ? `Aplica: ${cls.grammarFocus}` : 'Aplica la regla gramatical de la clase.'
+          exp: `Respuesta Power Sheet: "${cleanAns}". ${expNote}`.trim(),
+          socraticHint: hintNote
         });
       }
     });
@@ -4565,7 +4634,7 @@
         });
       }
     }
-    if (cls && cls.falseCognate && cls.falseCognate.term && cls.falseCognate.correct && cls.falseCognate.mistake) {
+    if (cls && cls.falseCognate && cls.falseCognate.term && cls.falseCognate.correct && cls.falseCognate.mistake && !/→/.test(cls.falseCognate.correct)) {
       out.push({
         q: `Precision Alert — What does "${cls.falseCognate.term}" mean in authentic US engineering English?`,
         opts: [
@@ -4974,7 +5043,8 @@
     getClassById,
     toRunnableUnit,
     getCefrCoverageSummary,
-    searchClasses
+    searchClasses,
+    parsePowerSheetDrills
   };
 }));
 
